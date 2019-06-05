@@ -54,3 +54,8 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+
+
+#iOS / Carthage
+*Carthage/
+*Cartfile.resolved
