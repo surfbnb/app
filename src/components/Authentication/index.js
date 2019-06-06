@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity , Image } from 'react-native';
+import { Alert, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import FormData from 'form-data';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import TouchableButton from '../../theme/components/TouchableButton';
-import Theme from "../../theme/styles"
+import Theme from '../../theme/styles';
 import { API_ROOT } from './../../constants';
 import styles from './styles';
-import PepoIcon from "../../assets/pepo_logo.png"
+import PepoIcon from '../../assets/pepo_logo.png';
 const formData = new FormData();
 
 class Authentication extends Component {
@@ -17,7 +17,8 @@ class Authentication extends Component {
       fullname: null,
       username: null,
       password: null,
-      signup: false
+      signup: false,
+      error: null
     };
   }
 
@@ -31,11 +32,11 @@ class Authentication extends Component {
 
   signin() {
     if (!this.state.username || !this.state.password) {
-      Alert.alert('All fields are mandatory');
+      this.setState({ error: 'All fields are mandatory' });
       return;
     }
     if (this.state.signup && !this.state.fullname) {
-      Alert.alert('All fields are mandatory');
+      this.setState({ error: 'All fields are mandatory' });
       return;
     }
     formData.append('username', this.state.username);
@@ -55,9 +56,9 @@ class Authentication extends Component {
         console.log('Signin responseData:', responseData);
         if (responseData.success && responseData.data) {
           this.saveItem('user', JSON.stringify(responseData.data[responseData.data.result_type]));
-          this.props.navigation.navigate('Home');
+          this.props.navigation.navigate('HomeScreen');
         } else {
-          Alert.alert('Error', responseData.msg);
+          this.setState({ error: responseData.msg });
         }
       })
       .catch(console.warn)
@@ -67,23 +68,23 @@ class Authentication extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={PepoIcon} style={styles.imageDimensions}/>
+        <Image source={PepoIcon} style={styles.imageDimensions} />
         <View style={styles.form}>
           {this.state.signup && (
             <TextInput
-            editable={true}
-            onChangeText={(fullname) => this.setState({ fullname })}
-            ref="fullname"
-            returnKeyType="next"
-            value={this.state.fullname}
-            style={Theme.TextInput.textInputStyle}
-            placeholder="Full Name"
-          />
+              editable={true}
+              onChangeText={(fullname) => this.setState({ fullname, error: null })}
+              ref="fullname"
+              returnKeyType="next"
+              value={this.state.fullname}
+              style={Theme.TextInput.textInputStyle}
+              placeholder="Full Name"
+            />
           )}
 
           <TextInput
             editable={true}
-            onChangeText={(username) => this.setState({ username })}
+            onChangeText={(username) => this.setState({ username, error: null })}
             ref="username"
             returnKeyType="next"
             value={this.state.username}
@@ -91,10 +92,9 @@ class Authentication extends Component {
             placeholder="Username"
           />
 
-        
           <TextInput
             editable={true}
-            onChangeText={(password) => this.setState({ password })}
+            onChangeText={(password) => this.setState({ password, error: null })}
             placeholder="Password"
             ref="password"
             returnKeyType="next"
@@ -102,6 +102,8 @@ class Authentication extends Component {
             style={Theme.TextInput.textInputStyle}
             value={this.state.password}
           />
+
+          <Text style={[styles.error]}>{this.state.error}</Text>
 
           {!this.state.signup && (
             <React.Fragment>
@@ -111,13 +113,12 @@ class Authentication extends Component {
                 text="Login"
                 onPress={this.signin.bind(this)}
               />
-              <TouchableOpacity onPress={() => this.setState({ signup: true })}>
+              <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>
                 <Text style={styles.label}>Don't have an account?</Text>
                 <Text style={styles.link}>Create an account</Text>
               </TouchableOpacity>
             </React.Fragment>
           )}
-
           {this.state.signup && (
             <React.Fragment>
               <TouchableButton
@@ -126,8 +127,8 @@ class Authentication extends Component {
                 text="Signup"
                 onPress={this.signin.bind(this)}
               />
-              <TouchableOpacity onPress={() => this.setState({ signup: false })}>
-                <Text style={styles.label}>Have an account?</Text>
+              <TouchableOpacity onPress={() => this.setState({ signup: false, error: null })}>
+                <Text style={styles.label}>Already have an account?</Text>
                 <Text style={styles.link}>Login</Text>
               </TouchableOpacity>
             </React.Fragment>

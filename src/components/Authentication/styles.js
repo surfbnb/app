@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export default (styles = StyleSheet.create({
-
   container: {
     backgroundColor: '#ffffff',
     alignItems: 'center',
@@ -26,10 +25,15 @@ export default (styles = StyleSheet.create({
     color: 'rgb(22,141,193)',
     fontSize: 12
   },
-  imageDimensions:{
-    height : 70,
+  error: {
+    textAlign: 'center',
+    color: '#de350b',
+    fontSize: 12,
+    marginBottom: 6
+  },
+  imageDimensions: {
+    height: 70,
     width: 150,
-    marginBottom : 30
+    marginBottom: 30
   }
-  
 }));

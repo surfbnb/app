@@ -7,7 +7,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@ostdotcom/ost-wallet-sdk-react-native": "https://github.com:ostdotcom/ost-wallet-sdk-react-native.git",
     "@react-native-community/async-storage": "^1.4.2",
     "bignumber.js": "8.1.1",
     "form-data": "2.3.3",

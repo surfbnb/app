@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import AsyncStorage from '@react-native-community/async-storage';
-import PepoApi from '../../services/PepoApi';
-import Logout from '../../services/Logout'
+
+import Logout from '../../services/Logout';
 
 const LogoutLink = (props) => (
   <Text
+    style={{
+      color: '#ffffff',
+      padding: 10
+    }}
     onPress={async () => {
       let logout = new Logout(props.navigation.navigate);
-      await logout.perform()
+      await logout.perform();
     }}
   >
     Logout

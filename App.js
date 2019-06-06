@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, Text } from 'react-native';
 import {
   createBottomTabNavigator,
   createStackNavigator,
@@ -8,51 +8,94 @@ import {
 } from 'react-navigation';
 
 import AuthLoading from './src/components/AuthLoading';
-import Authentication from './src/components/Authentication';
+import AuthScreen from './src/components/Authentication';
 import Feed from './src/components/Feed';
 import Users from './src/components/Users';
 import PinInput from './src/components/PinInput';
 import Settings from './src/components/Settings';
+import LogoutComponent from './src/components/LogoutLink';
 import SettingsIcon from './src/assets/settings_icon_selected.png';
 import UsersIcon from './src/assets/user_icon_selected.png';
 import FeedIcon from './src/assets/wallet_icon_selected.png';
 
-const AppTabNavigator = createBottomTabNavigator(
+const HomeScreen = createBottomTabNavigator(
   {
     Feed: createStackNavigator(
       {
-        FeedContent: Feed,
-        PinScreen: PinInput
+        FeedContent: {
+          screen: Feed,
+          navigationOptions: {
+            headerTitle: 'Feed',
+            headerTitleStyle: {
+              color: '#ffffff'
+            },
+            headerStyle: {
+              backgroundColor: '#61b2d6'
+            },
+            headerRight: <LogoutComponent />
+          }
+        },
+        PinScreen: {
+          screen: PinInput,
+          navigationOptions: {
+            headerTitle: 'Pin Input',
+            headerTitleStyle: {
+              color: '#ffffff'
+            },
+            headerStyle: {
+              backgroundColor: '#61b2d6'
+            },
+            headerRight: <LogoutComponent />
+          }
+        }
       },
       {
         navigationOptions: {
-          tabBarIcon: ({ focused, horizontal, tintColor }) => {
-            return <Image source={FeedIcon} style={{ tintColor: tintColor }} />;
-          }
+          tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={FeedIcon} style={{ tintColor }} />
         }
       }
     ),
     Users: createStackNavigator(
       {
-        Users: Users
+        Users: {
+          screen: Users,
+          navigationOptions: {
+            headerTitle: 'Users',
+            headerTitleStyle: {
+              color: '#ffffff'
+            },
+            headerStyle: {
+              backgroundColor: '#61b2d6'
+            },
+            headerRight: <LogoutComponent />
+          }
+        }
       },
       {
         navigationOptions: {
-          tabBarIcon: ({ focused, horizontal, tintColor }) => {
-            return <Image source={UsersIcon} style={{ tintColor: tintColor }} />;
-          }
+          tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={UsersIcon} style={{ tintColor }} />
         }
       }
     ),
     Settings: createStackNavigator(
       {
-        SettingsScreen: Settings
+        SettingsScreen: {
+          screen: Settings,
+          navigationOptions: {
+            headerTitle: 'Settings',
+            headerTitleStyle: {
+              color: '#ffffff'
+            },
+            headerStyle: {
+              backgroundColor: '#61b2d6'
+            },
+            headerRight: <LogoutComponent />
+          }
+        }
       },
       {
         navigationOptions: {
-          tabBarIcon: ({ focused, horizontal, tintColor }) => {
-            return <Image source={SettingsIcon} style={{ tintColor: tintColor }} />;
-          }
+          tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={SettingsIcon} style={{ tintColor }} />
         }
       }
     )
@@ -60,7 +103,11 @@ const AppTabNavigator = createBottomTabNavigator(
   {
     tabBarOptions: {
       activeTintColor: '#168dc1',
-      inactiveTintColor: '#9b9b9b'
+      inactiveTintColor: '#9b9b9b',
+      style: {
+        backgroundColor: '#f8f8f8',
+        height: 50
+      }
     }
   }
 );
@@ -68,12 +115,12 @@ const AppTabNavigator = createBottomTabNavigator(
 export default createAppContainer(
   createSwitchNavigator(
     {
-      AuthLoadingScreen: AuthLoading,
-      AuthScreen: Authentication,
-      Home: AppTabNavigator
+      AuthLoading,
+      AuthScreen,
+      HomeScreen
     },
     {
-      initialRouteName: 'AuthLoadingScreen'
+      initialRouteName: 'AuthLoading'
     }
   )
 );
