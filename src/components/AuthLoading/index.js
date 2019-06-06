@@ -7,11 +7,11 @@ import styles from './styles';
 export default class AuthLoading extends Component {
   constructor() {
     super();
-    this._bootstrapAsync();
+    this.init();
   }
 
   // Fetch the token from storage then navigate to our appropriate place
-  _bootstrapAsync = async () => {
+  init = async () => {
     const user = await AsyncStorage.getItem('user');
 
     // This will switch to the App screen or Auth screen and this loading
