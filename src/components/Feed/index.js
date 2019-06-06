@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text , Button, Image } from "react-native";
+
+
 
 import { styles } from './styles';
 import LogoutComponent from './../LogoutLink';
+
+
 
 class Feed extends Component {
   static navigationOptions = {
@@ -15,9 +19,12 @@ class Feed extends Component {
   }
 
   render() {
+  
+
+
     return (
       <View>
-        <Text>Inside feed</Text>
+        Inside Feed
       </View>
     );
   }
