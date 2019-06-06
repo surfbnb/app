@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text , Button, Image } from "react-native";
-
-
-
-import { styles } from './styles';
+import { View, Text } from 'react-native';
 import LogoutComponent from './../LogoutLink';
 
-
-
-class Feed extends Component {
+class Settings extends Component {
   static navigationOptions = {
-    headerTitle: 'Feed',
+    headerTitle: 'Settings',
     headerRight: <LogoutComponent />
   };
 
@@ -19,15 +13,12 @@ class Feed extends Component {
   }
 
   render() {
-  
-
-
     return (
       <View>
-        Inside Feed
+        <Text>Inside Settings</Text>
       </View>
     );
   }
 }
 
-export default Feed;
+export default Settings;

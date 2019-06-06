@@ -3,6 +3,8 @@ import { Alert, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import FormData from 'form-data';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import TouchableButton from '../../theme/components/TouchableButton';
+import Theme from "../../theme/styles"
 import { API_ROOT } from './../../constants';
 import styles from './styles';
 
@@ -69,26 +71,27 @@ class Authentication extends Component {
         <View style={styles.form}>
           {this.state.signup && (
             <TextInput
-              editable={true}
-              onChangeText={(fullname) => this.setState({ fullname })}
-              placeholder="Full Name"
-              ref="fullname"
-              returnKeyType="next"
-              style={styles.inputText}
-              value={this.state.fullname}
-            />
+            editable={true}
+            onChangeText={(fullname) => this.setState({ fullname })}
+            ref="fullname"
+            returnKeyType="next"
+            value={this.state.fullname}
+            style={Theme.TextInput.textInputStyle}
+            placeholder="Full Name"
+          />
           )}
 
           <TextInput
             editable={true}
             onChangeText={(username) => this.setState({ username })}
-            placeholder="Username"
             ref="username"
             returnKeyType="next"
-            style={styles.inputText}
             value={this.state.username}
+            style={Theme.TextInput.textInputStyle}
+            placeholder="Username"
           />
 
+        
           <TextInput
             editable={true}
             onChangeText={(password) => this.setState({ password })}
@@ -96,29 +99,37 @@ class Authentication extends Component {
             ref="password"
             returnKeyType="next"
             secureTextEntry={true}
-            style={styles.inputText}
+            style={Theme.TextInput.textInputStyle}
             value={this.state.password}
           />
 
           {!this.state.signup && (
             <React.Fragment>
-              <TouchableOpacity style={styles.buttonWrapper} onPress={this.signin.bind(this)}>
-                <Text style={styles.buttonText}> Log In </Text>
+              <TouchableButton
+                TouchableStyles={[Theme.Button.btnPrimary]}
+                TextStyles={[Theme.Button.btnPrimaryText]}
+                text="Login"
+                onPress={this.signin.bind(this)}
+              />
+              <TouchableOpacity onPress={() => this.setState({ signup: true })}>
+                <Text style={styles.label}>Don't have an account?</Text>
+                <Text style={styles.link}>Create an account</Text>
               </TouchableOpacity>
-              <Text style={styles.buttonTextSm} onPress={() => this.setState({ signup: true })}>
-                Sign Up
-              </Text>
             </React.Fragment>
           )}
 
           {this.state.signup && (
             <React.Fragment>
-              <TouchableOpacity style={styles.buttonWrapper} onPress={this.signin.bind(this)}>
-                <Text style={styles.buttonText}> Sign Up </Text>
+              <TouchableButton
+                TouchableStyles={[Theme.Button.btnPrimary]}
+                TextStyles={[Theme.Button.btnPrimaryText]}
+                text="Signup"
+                onPress={this.signin.bind(this)}
+              />
+              <TouchableOpacity onPress={() => this.setState({ signup: false })}>
+                <Text style={styles.label}>Have an account?</Text>
+                <Text style={styles.link}>Login</Text>
               </TouchableOpacity>
-              <Text style={styles.buttonTextSm} onPress={() => this.setState({ signup: false })}>
-                Log In
-              </Text>
             </React.Fragment>
           )}
         </View>
