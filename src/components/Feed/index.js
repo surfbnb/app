@@ -24,7 +24,7 @@ class Feed extends Component {
 
     return (
       <View>
-        Inside Feed
+        <Text>Inside Feed</Text>
       </View>
     );
   }

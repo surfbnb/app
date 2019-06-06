@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Alert, View, Text, TextInput, TouchableOpacity , Image } from 'react-native';
 import FormData from 'form-data';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -7,7 +7,7 @@ import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from "../../theme/styles"
 import { API_ROOT } from './../../constants';
 import styles from './styles';
-
+import PepoIcon from "../../assets/pepo_logo.png"
 const formData = new FormData();
 
 class Authentication extends Component {
@@ -67,7 +67,7 @@ class Authentication extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Login Screen</Text>
+        <Image source={PepoIcon} style={styles.imageDimensions}/>
         <View style={styles.form}>
           {this.state.signup && (
             <TextInput

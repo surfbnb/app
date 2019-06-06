@@ -26,5 +26,10 @@ export default (styles = StyleSheet.create({
     color: 'rgb(22,141,193)',
     fontSize: 12
   },
+  imageDimensions:{
+    height : 70,
+    width: 150,
+    marginBottom : 30
+  }
   
 }));
