@@ -3,11 +3,12 @@ import {
   createStackNavigator,
   createSwitchNavigator,
   createAppContainer
-} from "react-navigation";
+} from 'react-navigation';
 
-import Authentication from "./src/components/Authentication";
-import Feed from "./src/components/Feed";
-import Users from "./src/components/Users";
+import AuthLoading from './src/components/AuthLoading';
+import Authentication from './src/components/Authentication';
+import Feed from './src/components/Feed';
+import Users from './src/components/Users';
 
 const AppTabNavigator = createBottomTabNavigator({
   Feed: Feed,
@@ -17,11 +18,12 @@ const AppTabNavigator = createBottomTabNavigator({
 export default createAppContainer(
   createSwitchNavigator(
     {
-      App: AppTabNavigator,
-      Auth: Authentication
+      AuthLoadingScreen: AuthLoading,
+      AuthScreen: Authentication,
+      Home: AppTabNavigator
     },
     {
-      initialRouteName: "Auth"
+      initialRouteName: 'AuthLoadingScreen'
     }
   )
 );

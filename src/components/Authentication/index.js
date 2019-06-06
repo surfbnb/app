@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import FormData from 'form-data';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { API_ROOT } from './../../constants';
 import styles from './styles';
@@ -16,6 +17,14 @@ class Authentication extends Component {
       password: null,
       signup: false
     };
+  }
+
+  async saveItem(item, selectedValue) {
+    try {
+      await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+      console.warn('AsyncStorage error: ' + error.message);
+    }
   }
 
   signin() {
@@ -43,7 +52,8 @@ class Authentication extends Component {
       .then((responseData) => {
         console.log('Signin responseData:', responseData);
         if (responseData.success && responseData.data) {
-          this.props.navigation.navigate('App');
+          this.saveItem('user', JSON.stringify(responseData.data[responseData.data.result_type]));
+          this.props.navigation.navigate('Home');
         } else {
           Alert.alert('Error', responseData.msg);
         }
