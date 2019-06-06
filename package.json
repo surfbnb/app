@@ -15,7 +15,7 @@
     "form-data": "2.3.3",
     "jest": "24.8.0",
     "metro-react-native-babel-preset": "0.54.1",
-    "@ostdotcom/ost-wallet-sdk-react-native": "git@github.com:ostdotcom/ost-wallet-sdk-react-native.git",
+    "@ostdotcom/ost-wallet-sdk-react-native": "https://github.com:ostdotcom/ost-wallet-sdk-react-native.git",
     "react-redux": "7.0.3",
     "react-test-renderer": "16.8.3",
     "redux": "4.0.1",

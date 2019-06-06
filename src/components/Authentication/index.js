@@ -1,15 +1,9 @@
-import React, { Component } from "react";
-import {
-  Alert,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity
-} from "react-native";
-import FormData from "form-data";
+import React, { Component } from 'react';
+import { Alert, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import FormData from 'form-data';
 
-import { API_ROOT } from "./../../constants";
+import { API_ROOT } from './../../constants';
+import styles from './styles';
 
 const formData = new FormData();
 
@@ -26,32 +20,32 @@ class Authentication extends Component {
 
   signin() {
     if (!this.state.username || !this.state.password) {
-      Alert.alert("All fields are mandatory");
+      Alert.alert('All fields are mandatory');
       return;
     }
     if (this.state.signup && !this.state.fullname) {
-      Alert.alert("All fields are mandatory");
+      Alert.alert('All fields are mandatory');
       return;
     }
-    formData.append("username", this.state.username);
-    formData.append("password", this.state.password);
-    this.state.signup && formData.append("fullname", this.state.fullname);
+    formData.append('username', this.state.username);
+    formData.append('password', this.state.password);
+    this.state.signup && formData.append('fullname', this.state.fullname);
 
-    fetch(`${API_ROOT}/${this.state.signup ? "signup" : "login"}`, {
-      method: "POST",
-      credentials: "include",
+    fetch(`${API_ROOT}/${this.state.signup ? 'signup' : 'login'}`, {
+      method: 'POST',
+      credentials: 'include',
       headers: {
-        "Content-Type": "multipart/form-data"
+        'Content-Type': 'multipart/form-data'
       },
       body: formData
     })
-      .then(response => response.json())
-      .then(responseData => {
-        console.log("Signin responseData:", responseData);
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log('Signin responseData:', responseData);
         if (responseData.success && responseData.data) {
-          this.props.navigation.navigate("App");
+          this.props.navigation.navigate('App');
         } else {
-          Alert.alert("Error", responseData.msg);
+          Alert.alert('Error', responseData.msg);
         }
       })
       .catch(console.warn)
@@ -66,7 +60,7 @@ class Authentication extends Component {
           {this.state.signup && (
             <TextInput
               editable={true}
-              onChangeText={fullname => this.setState({ fullname })}
+              onChangeText={(fullname) => this.setState({ fullname })}
               placeholder="Full Name"
               ref="fullname"
               returnKeyType="next"
@@ -77,7 +71,7 @@ class Authentication extends Component {
 
           <TextInput
             editable={true}
-            onChangeText={username => this.setState({ username })}
+            onChangeText={(username) => this.setState({ username })}
             placeholder="Username"
             ref="username"
             returnKeyType="next"
@@ -87,7 +81,7 @@ class Authentication extends Component {
 
           <TextInput
             editable={true}
-            onChangeText={password => this.setState({ password })}
+            onChangeText={(password) => this.setState({ password })}
             placeholder="Password"
             ref="password"
             returnKeyType="next"
@@ -98,16 +92,10 @@ class Authentication extends Component {
 
           {!this.state.signup && (
             <React.Fragment>
-              <TouchableOpacity
-                style={styles.buttonWrapper}
-                onPress={this.signin.bind(this)}
-              >
+              <TouchableOpacity style={styles.buttonWrapper} onPress={this.signin.bind(this)}>
                 <Text style={styles.buttonText}> Log In </Text>
               </TouchableOpacity>
-              <Text
-                style={styles.buttonTextSm}
-                onPress={() => this.setState({ signup: true })}
-              >
+              <Text style={styles.buttonTextSm} onPress={() => this.setState({ signup: true })}>
                 Sign Up
               </Text>
             </React.Fragment>
@@ -115,16 +103,10 @@ class Authentication extends Component {
 
           {this.state.signup && (
             <React.Fragment>
-              <TouchableOpacity
-                style={styles.buttonWrapper}
-                onPress={this.signin.bind(this)}
-              >
+              <TouchableOpacity style={styles.buttonWrapper} onPress={this.signin.bind(this)}>
                 <Text style={styles.buttonText}> Sign Up </Text>
               </TouchableOpacity>
-              <Text
-                style={styles.buttonTextSm}
-                onPress={() => this.setState({ signup: false })}
-              >
+              <Text style={styles.buttonTextSm} onPress={() => this.setState({ signup: false })}>
                 Log In
               </Text>
             </React.Fragment>
@@ -136,46 +118,3 @@ class Authentication extends Component {
 }
 
 export default Authentication;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  buttonTextSm: {
-    fontSize: 12,
-    padding: 8,
-    textAlign: "center"
-  },
-  buttonText: {
-    fontSize: 16,
-    padding: 10,
-    textAlign: "center",
-    color: "#fff",
-    fontWeight: "bold"
-  },
-  buttonWrapper: {
-    backgroundColor: "#9accd7",
-    marginBottom: 10,
-    width: "100%",
-    borderRadius: 10
-  },
-  scrollContainer: {
-    alignItems: "center",
-    flexGrow: 1,
-    justifyContent: "center",
-    paddingTop: 20,
-    paddingBottom: 20
-  },
-  form: {
-    width: 300
-  },
-  inputText: {
-    borderColor: "#D3D3D3",
-    borderWidth: 1,
-    marginBottom: 10,
-    padding: 10
-  }
-});
