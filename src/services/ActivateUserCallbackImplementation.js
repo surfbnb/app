@@ -1,6 +1,6 @@
 import OstWalletSdkCallbackImplementation from './OstWalletSdkCallbackImplementation';
 import AsyncStorage from '@react-native-community/async-storage';
-import { API_ROOT } from './../../constants';
+import { API_ROOT } from './../constants';
 
 class ActivateUserCallbackImplementation extends OstWalletSdkCallbackImplementation {
   constructor() {

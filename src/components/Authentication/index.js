@@ -44,26 +44,51 @@ class Authentication extends Component {
     formData.append('password', this.state.password);
     this.state.signup && formData.append('fullname', this.state.fullname);
 
-
-    let pepoApi = new PepoApi(this.state.signup ? '/signup' : '/login', {
+    let authPromise = new PepoApi(this.state.signup ? '/signup' : '/login', {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'multipart/form-data'
       },
       body: formData
-    });
-    pepoApi
-      .fetch(this.props.navigation.navigate)
+    }).fetch(this.props.navigation.navigate);
+
+    let userSaltPromise = new PepoApi('/users/current-user-salt', {
+      method: 'GET',
+      credentials: 'include'
+    }).fetch(this.props.navigation.navigate);
+
+    Promise.all([authPromise, userSaltPromise])
       .then(async (res) => {
         console.log('Signin responseData:', res);
-          if (res.success && res.data) {
-            this.saveItem('user', JSON.stringify(res.data[res.data.result_type]));
-            this.props.navigation.navigate('HomeScreen');
-          } else {
-            this.setState({ error: res.msg });
+        if (res[0].success && res[0].data && res[1].success && res[1].data) {
+          let userData = res[0].data && res[0].data[res[0].data.result_type];
+
+          if (!userData) {
+            Alert.alert('User not found');
+            return;
           }
-     
+
+          let userSalt =
+            res[1].data && res[1].data.current_user_salt && res[1].data.current_user_salt.recovery_pin_salt;
+
+          if (!userSalt) {
+            Alert.alert('User salt not found');
+            return;
+          }
+
+          this.saveItem(
+            'user',
+            JSON.stringify({
+              user_details: userData,
+              user_pin_salt: userSalt
+            })
+          );
+
+          this.props.navigation.navigate('HomeScreen');
+        } else {
+          this.setState({ error: res.msg });
+        }
       })
       .catch((err) => {
         this.setState({ error: res.msg });
