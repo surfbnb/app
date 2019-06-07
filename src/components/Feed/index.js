@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-
-import { styles } from './styles';
+import { View, Text, FlatList } from 'react-native';
+import styles from './styles';
 
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { TOKEN_ID } from './../../constants';
@@ -16,6 +15,7 @@ class Feed extends Component {
 
   componentDidMount() {
     this.initializeDevice();
+    this.getFeedData();
   }
 
   initializeDevice = () => {
@@ -24,6 +24,20 @@ class Feed extends Component {
         this.setupDevice();
       }
     });
+  };
+
+  getFeedData = () => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData, 'responseData');
+
+        this.props.dispatchUpsert(responseData);
+
+        console.log('user-activate responseData:', responseData);
+      })
+      .catch(console.warn)
+      .done();
   };
 
   setupDevice = () => {
@@ -36,7 +50,7 @@ class Feed extends Component {
   render() {
     return (
       <View>
-        <Text>Inside Feed</Text>
+        <FlatList data={this.props.feed} renderItem={({ item }) => <Text style={styles.item}>{item.title}</Text>} />
       </View>
     );
   }

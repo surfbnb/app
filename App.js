@@ -17,13 +17,14 @@ import LogoutComponent from './src/components/LogoutLink';
 import SettingsIcon from './src/assets/settings_icon_selected.png';
 import UsersIcon from './src/assets/user_icon_selected.png';
 import FeedIcon from './src/assets/wallet_icon_selected.png';
+import feedReduxHandler from './src/components/Feed/feedReduxHandler';
 
 const HomeScreen = createBottomTabNavigator(
   {
     Feed: createStackNavigator(
       {
         FeedContent: {
-          screen: Feed,
+          screen: feedReduxHandler,
           navigationOptions: {
             headerTitle: 'Feed',
             headerTitleStyle: {
