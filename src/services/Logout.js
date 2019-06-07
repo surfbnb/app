@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import PepoApi from './PepoApi';
+import { Alert } from 'react-native';
 
 export default class Logout {
   constructor(navigate) {

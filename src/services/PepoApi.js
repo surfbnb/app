@@ -17,15 +17,19 @@ export default class PepoApi {
       try {
         let response = await fetch(this.cleanedUrl, this.params);
         let responseJSON = await response.json();
-
+        console.log('responseJSON for request:', responseJSON);
         if (response.status == 401) {
-          AsyncStorage.removeItem('user', () => {});
-          navigate('Auth');
+          console.log('Request status: 401');
+          AsyncStorage.removeItem('user', () => {
+            navigate('AuthScreen');
+          });
+          return;
         } else if (response.status == 500 || response.status == 302) {
           responseJSON.msg = 'Something went wrong';
         }
         return resolve(responseJSON);
       } catch (err) {
+        console.log('Catched the exception:', err);
         err = { err: String(err), msg: 'Something went wrong' };
         return reject(err);
       }

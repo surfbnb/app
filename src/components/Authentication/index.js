@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Alert, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import FormData from 'form-data';
 import AsyncStorage from '@react-native-community/async-storage';
+import PepoApi from '../../services/PepoApi';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
@@ -43,26 +44,31 @@ class Authentication extends Component {
     formData.append('password', this.state.password);
     this.state.signup && formData.append('fullname', this.state.fullname);
 
-    fetch(`${API_ROOT}/${this.state.signup ? 'signup' : 'login'}`, {
+
+    let pepoApi = new PepoApi(this.state.signup ? '/signup' : '/login', {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'multipart/form-data'
       },
       body: formData
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log('Signin responseData:', responseData);
-        if (responseData.success && responseData.data) {
-          this.saveItem('user', JSON.stringify(responseData.data[responseData.data.result_type]));
-          this.props.navigation.navigate('HomeScreen');
-        } else {
-          this.setState({ error: responseData.msg });
-        }
+    });
+    pepoApi
+      .fetch(this.props.navigation.navigate)
+      .then(async (res) => {
+        console.log('Signin responseData:', res);
+          if (res.success && res.data) {
+            this.saveItem('user', JSON.stringify(res.data[res.data.result_type]));
+            this.props.navigation.navigate('HomeScreen');
+          } else {
+            this.setState({ error: res.msg });
+          }
+     
       })
-      .catch(console.warn)
-      .done();
+      .catch((err) => {
+        this.setState({ error: res.msg });
+        console.warn(err);
+      });
   }
 
   render() {
