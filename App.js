@@ -17,7 +17,7 @@ import LogoutComponent from './src/components/LogoutLink';
 import SettingsIcon from './src/assets/settings_icon_selected.png';
 import UsersIcon from './src/assets/user_icon_selected.png';
 import FeedIcon from './src/assets/wallet_icon_selected.png';
-
+import CustomTab from './src/components/CustomTab'
 const HomeScreen = createBottomTabNavigator(
   {
     Feed: createStackNavigator(
@@ -33,7 +33,9 @@ const HomeScreen = createBottomTabNavigator(
               backgroundColor: '#61b2d6'
             },
             headerRight: <LogoutComponent />
-          }
+          },
+         
+
         },
         PinScreen: {
           screen: PinInput,
@@ -49,11 +51,11 @@ const HomeScreen = createBottomTabNavigator(
           }
         }
       },
-      {
-        navigationOptions: {
-          tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={FeedIcon} style={{ tintColor }} />
-        }
-      }
+      // {
+      //   navigationOptions: {
+      //     // tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={FeedIcon} style={{ tintColor }} />
+      //   }
+      // }
     ),
     Users: createStackNavigator(
       {
@@ -71,11 +73,11 @@ const HomeScreen = createBottomTabNavigator(
           }
         }
       },
-      {
-        navigationOptions: {
-          tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={UsersIcon} style={{ tintColor }} />
-        }
-      }
+      // {
+      //   navigationOptions: {
+      //     tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={UsersIcon} style={{ tintColor }} />
+      //   }
+      // }
     ),
     Settings: createStackNavigator(
       {
@@ -93,23 +95,29 @@ const HomeScreen = createBottomTabNavigator(
           }
         }
       },
-      {
-        navigationOptions: {
-          tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={SettingsIcon} style={{ tintColor }} />
-        }
-      }
+      // {
+      //   navigationOptions: {
+      //     tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={SettingsIcon} style={{ tintColor }} />
+      //   }
+      // }
     )
+  
   },
   {
-    tabBarOptions: {
-      activeTintColor: '#168dc1',
-      inactiveTintColor: '#9b9b9b',
-      style: {
-        backgroundColor: '#f8f8f8',
-        height: 50
-      }
-    }
+    
+    tabBarComponent : CustomTab,
+    tabBarPosition: 'bottom',
   }
+  // {
+  //   tabBarOptions: {
+  //     activeTintColor: '#000',
+  //     inactiveTintColor: '#000',
+  //     style: {
+  //       backgroundColor: '#f8f8f8',
+  //       height: 100
+  //     }
+  //   }
+  // }
 );
 
 export default createAppContainer(
