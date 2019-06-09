@@ -2,7 +2,7 @@ import FormData from 'form-data';
 import { Alert } from 'react-native';
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 
-import { API_ROOT } from './../../constants';
+import { API_ROOT } from './../constants';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const formData = new FormData();

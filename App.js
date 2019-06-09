@@ -18,12 +18,14 @@ import SettingsIcon from './src/assets/settings_icon_selected.png';
 import UsersIcon from './src/assets/user_icon_selected.png';
 import FeedIcon from './src/assets/wallet_icon_selected.png';
 import CustomTab from './src/components/CustomTab'
+import feedReduxHandler from './src/components/Feed/feedReduxHandler';
+
 const HomeScreen = createBottomTabNavigator(
   {
     Feed: createStackNavigator(
       {
         FeedContent: {
-          screen: Feed,
+          screen: feedReduxHandler,
           navigationOptions: {
             headerTitle: 'Feed',
             headerTitleStyle: {
@@ -33,9 +35,7 @@ const HomeScreen = createBottomTabNavigator(
               backgroundColor: '#61b2d6'
             },
             headerRight: <LogoutComponent />
-          },
-         
-
+          }
         },
         PinScreen: {
           screen: PinInput,
@@ -101,10 +101,10 @@ const HomeScreen = createBottomTabNavigator(
       //   }
       // }
     )
-  
+
   },
   {
-    
+
     tabBarComponent : CustomTab,
     tabBarPosition: 'bottom',
   }
