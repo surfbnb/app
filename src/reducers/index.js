@@ -1,24 +1,19 @@
 import { createActions, handleActions } from 'redux-actions';
-import { UPSERT_POSTS, UPSERT_USERS, UPDATE_DEVICE_REGISTERED } from '../actions/constants';
+import { UPSERT_POSTS, UPSERT_USERS, SET_LOGGED_IN } from '../actions/constants';
 
-export const { upsertPosts, upsertUsers, updateDeviceRegistered } = createActions(
-  UPSERT_POSTS,
-  UPSERT_USERS,
-  UPDATE_DEVICE_REGISTERED
-);
+export const { upsertPosts, upsertUsers, setLoggedIn } = createActions(UPSERT_POSTS, UPSERT_USERS, SET_LOGGED_IN);
 
 export const reducer = handleActions(
   {
     [upsertPosts]: (state, action) => {
-      console.log('inside ');
       return { ...state, feed: action.payload.feed };
     },
     [upsertUsers]: (state, action) => {
       return { ...state, users: action.payload.users };
     },
-    [updateDeviceRegistered]: (state, action) => {
-      return { ...state, users: action.payload.isDeviceRegistered };
+    [setLoggedIn]: (state, action) => {
+      return { ...state, isLoggedIn: action.payload.isLoggedIn };
     }
   },
-  { feed: {}, users: {}, isDeviceRegistered: false }
+  { feed: {}, users: {}, isLoggedIn: false }
 );

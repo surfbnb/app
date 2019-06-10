@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import ActivateUserCallback from './../../services/ActivateUserCallbackImplementation';
-
 import styles from './styles';
 
 class Settings extends Component {

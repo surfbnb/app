@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { Alert, View, Text, TextInput, TouchableOpacity, Image , Modal , ActivityIndicator , StyleSheet} from 'react-native';
 import FormData from 'form-data';
 import AsyncStorage from '@react-native-community/async-storage';
 import PepoApi from '../../services/PepoApi';
@@ -9,23 +9,31 @@ import Theme from '../../theme/styles';
 import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
-import deepGet from "lodash/get"; 
+import deepGet from 'lodash/get';
 
 const formData = new FormData();
 const userStatus = {
   activated: 'activated'
 };
 
+const signUpLoginTestMap =  {
+  signup : "Signing up...",
+  signin : "Login in..."
+} 
+
 class Authentication extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       fullname: null,
       username: null,
       password: null,
       signup: false,
-      error: null
+      error: null,
+      isLoginIn : false
     };
+
+    console.log(this.props, 'auth component');
   }
 
   async saveItem(item, selectedValue) {
@@ -37,14 +45,19 @@ class Authentication extends Component {
   }
 
   signin() {
+   
     if (!this.state.username || !this.state.password) {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
+    
     if (this.state.signup && !this.state.fullname) {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
+
+    this.changeIsLogingState( true ); 
+
     formData.append('username', this.state.username);
     formData.append('password', this.state.password);
     this.state.signup && formData.append('fullname', this.state.fullname);
@@ -70,8 +83,9 @@ class Authentication extends Component {
         if (res.success && res.data) {
           let resultType = deepGet( res , "data.result_type") , 
               userData = deepGet( res , "data."+ resultType);
-              
+
           if (!userData) {
+            this.changeIsLogingState( false ); 
             Alert.alert('User not found');
             return;
           }
@@ -81,6 +95,7 @@ class Authentication extends Component {
               let userSalt = res.data && res.data.current_user_salt && res.data.current_user_salt.recovery_pin_salt;
 
               if (!userSalt) {
+                this.changeIsLogingState( false ); 
                 Alert.alert('User salt not found');
                 return;
               }
@@ -92,32 +107,42 @@ class Authentication extends Component {
                   user_pin_salt: userSalt
                 })
               );
+
               InitWalletSdk.initializeDevice();
 
               const status = (userData && userData['status']) || '';
+             
               if (status.toLowerCase() == userStatus.activated) {
                 this.props.navigation.navigate('HomeScreen');
               } else {
                 this.props.navigation.navigate('SetPinScreen');
               }
+
+              this.changeIsLogingState( false );  //TODO remove 
             } else {
+              this.changeIsLogingState( false ); 
               this.setState({ error: res.msg });
             }
           });
         } else {
+          this.changeIsLogingState( false ); 
           this.setState({ error: res.msg });
         }
       })
       .catch((err) => {
+        this.changeIsLogingState( false ); 
         this.setState({ error: res.msg });
-        console.warn(err);
       });
+  }
+
+  changeIsLogingState( isLoging ){
+    this.setState({ isLoginIn: isLoging })
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={{height: 25}}></View>
+        <View style={{ height: 25 }} />
         <View style={styles.form}>
           <Image source={PepoIcon} style={styles.imageDimensions} />
           {this.state.signup && (
@@ -141,7 +166,6 @@ class Authentication extends Component {
             style={Theme.TextInput.textInputStyle}
             placeholder="Username"
           />
-
           <TextInput
             editable={true}
             onChangeText={(password) => this.setState({ password, error: null })}
@@ -152,9 +176,7 @@ class Authentication extends Component {
             style={Theme.TextInput.textInputStyle}
             value={this.state.password}
           />
-
           <Text style={[styles.error]}>{this.state.error}</Text>
-
           {!this.state.signup && (
             <React.Fragment>
               <TouchableButton
@@ -176,6 +198,7 @@ class Authentication extends Component {
             </React.Fragment>
           )}
         </View>
+
         <View style={styles.bottomBtnAndTxt}>
           {!this.state.signup && (
             <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>
@@ -190,9 +213,45 @@ class Authentication extends Component {
             </TouchableOpacity>
           )}
         </View>
+
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={this.state.isLoginIn}
+          coverScreen={false}
+          hasBackdrop={false}
+         >
+          <View style={modalStyles.modalBackground}>
+            <View style={modalStyles.activityIndicatorWrapper}>
+              <Text style={{fontSize: 18}}>{this.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin } </Text>
+              <ActivityIndicator size="small" color="#00ff00" />
+            </View>
+          </View>
+        </Modal>    
+
       </View>
     );
   }
 }
+
+
+const modalStyles = StyleSheet.create({
+  modalBackground: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    backgroundColor: '#00000040'
+  },
+  activityIndicatorWrapper: {
+    backgroundColor: '#FFFFFF',
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  }
+});
 
 export default Authentication;
