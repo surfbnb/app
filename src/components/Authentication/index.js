@@ -6,10 +6,14 @@ import PepoApi from '../../services/PepoApi';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
-import { API_ROOT } from './../../constants';
 import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
+import InitWalletSdk from '../../services/InitWalletSdk';
+
 const formData = new FormData();
+const userStatus = {
+  activated: 'activated'
+};
 
 class Authentication extends Component {
   constructor() {
@@ -86,7 +90,14 @@ class Authentication extends Component {
                   user_pin_salt: userSalt
                 })
               );
-              this.props.navigation.navigate('HomeScreen');
+              InitWalletSdk.initializeDevice();
+
+              const status = (userData && userData['status']) || '';
+              if (status.toLowerCase() == userStatus.activated) {
+                this.props.navigation.navigate('HomeScreen');
+              } else {
+                this.props.navigation.navigate('PinInput');
+              }
             } else {
               this.setState({ error: res.msg });
             }

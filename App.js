@@ -1,5 +1,4 @@
 import React from 'react';
-import { Image, Text } from 'react-native';
 import {
   createBottomTabNavigator,
   createStackNavigator,
@@ -17,29 +16,16 @@ import SettingsIcon from './src/assets/settings_icon_selected.png';
 import UsersIcon from './src/assets/user_icon_selected.png';
 import FeedIcon from './src/assets/wallet_icon_selected.png';
 import CustomTab from './src/components/CustomTab';
-import feedReduxHandler from './src/components/Feed/feedReduxHandler';
+import Feed from './src/components/Feed/feedReduxHandler';
 
 const HomeScreen = createBottomTabNavigator(
   {
     Feed: createStackNavigator(
       {
         FeedContent: {
-          screen: feedReduxHandler,
+          screen: Feed,
           navigationOptions: {
             headerTitle: 'Feed',
-            headerTitleStyle: {
-              color: '#ffffff'
-            },
-            headerStyle: {
-              backgroundColor: '#61b2d6'
-            },
-            headerRight: <LogoutComponent />
-          }
-        },
-        PinScreen: {
-          screen: PinInput,
-          navigationOptions: {
-            headerTitle: 'Pin Input',
             headerTitleStyle: {
               color: '#ffffff'
             },
@@ -122,7 +108,8 @@ export default createAppContainer(
     {
       AuthLoading,
       AuthScreen,
-      HomeScreen
+      HomeScreen,
+      PinInput
     },
     {
       initialRouteName: 'AuthLoading'

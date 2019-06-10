@@ -1,7 +1,11 @@
 import { createActions, handleActions } from 'redux-actions';
-import { UPSERT_POSTS, UPSERT_USERS } from '../actions/constants';
+import { UPSERT_POSTS, UPSERT_USERS, UPDATE_DEVICE_REGISTERED } from '../actions/constants';
 
-export const { upsertPosts, upsertUsers } = createActions(UPSERT_POSTS, UPSERT_USERS);
+export const { upsertPosts, upsertUsers, updateDeviceRegistered } = createActions(
+  UPSERT_POSTS,
+  UPSERT_USERS,
+  UPDATE_DEVICE_REGISTERED
+);
 
 export const reducer = handleActions(
   {
@@ -11,7 +15,10 @@ export const reducer = handleActions(
     },
     [upsertUsers]: (state, action) => {
       return { ...state, users: action.payload.users };
+    },
+    [updateDeviceRegistered]: (state, action) => {
+      return { ...state, users: action.payload.isDeviceRegistered };
     }
   },
-  { feed: {}, users: {} }
+  { feed: {}, users: {}, isDeviceRegistered: false }
 );

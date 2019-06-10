@@ -1,10 +1,8 @@
 import { Alert } from 'react-native';
 
-import OstWalletSdkCallbackImplementation from './OstWalletSdkCallbackImplementation';
-
-class DeviceMnemonicsCallbackImplementation extends OstWalletSdkCallbackImplementation {
+class DeviceMnemonicsCallbackImplementation {
   constructor() {
-    super();
+    //super();
   }
 
   flowComplete(ostWorkflowContext, ostContextEntity) {
