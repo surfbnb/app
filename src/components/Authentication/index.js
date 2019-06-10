@@ -20,7 +20,8 @@ class Authentication extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fullname: null,
+      first_name: null,
+      last_name: null,
       username: null,
       password: null,
       signup: false,
@@ -43,15 +44,19 @@ class Authentication extends Component {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
-    if (this.state.signup && !this.state.fullname) {
+    if (this.state.signup && (!this.state.first_name || !this.state.last_name)) {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
-    formData.append('username', this.state.username);
+    formData.append('user_name', this.state.username);
     formData.append('password', this.state.password);
-    this.state.signup && formData.append('fullname', this.state.fullname);
 
-    let authApi = new PepoApi(this.state.signup ? '/signup' : '/login', {
+    if (this.state.signup) {
+      formData.append('first_name', this.state.first_name);
+      formData.append('last_name', this.state.last_name);
+    }
+
+    let authApi = new PepoApi(this.state.signup ? '/auth/sign-up' : '/auth/login', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -123,15 +128,26 @@ class Authentication extends Component {
         <View style={styles.form}>
           <Image source={PepoIcon} style={styles.imageDimensions} />
           {this.state.signup && (
-            <TextInput
-              editable={true}
-              onChangeText={(fullname) => this.setState({ fullname, error: null })}
-              ref="fullname"
-              returnKeyType="next"
-              value={this.state.fullname}
-              style={Theme.TextInput.textInputStyle}
-              placeholder="Full Name"
-            />
+            <React.Fragment>
+              <TextInput
+                editable={true}
+                onChangeText={(first_name) => this.setState({ first_name, error: null })}
+                ref="first_name"
+                returnKeyType="next"
+                value={this.state.first_name}
+                style={Theme.TextInput.textInputStyle}
+                placeholder="First Name"
+              />
+              <TextInput
+                editable={true}
+                onChangeText={(last_name) => this.setState({ last_name, error: null })}
+                ref="last_name"
+                returnKeyType="next"
+                value={this.state.last_name}
+                style={Theme.TextInput.textInputStyle}
+                placeholder="Last Name"
+              />
+            </React.Fragment>
           )}
 
           <TextInput
