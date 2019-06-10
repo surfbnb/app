@@ -25,18 +25,23 @@ export default class PinInput extends Component {
             backgroundColor: '#A9A9A9',
             borderRadius: 24,
             borderWidth: 1,
-
+            overflow: 'hidden'
           }}
           cellSpacing={30}
           cellStyleFocused={{
             borderColor: '#61b2d6',
             backgroundColor: '#61b2d6'
           }}
-          textStyle={{}}
+          textStyle={{
+            borderColor: '#61b2d6',
+            backgroundColor: '#61b2d6',
+            fontSize: 30,
+            color: '#61b2d6'
+          }}
           textStyleFocused={{}}
           value={this.state.pin}
           password
-          mask=" "
+          mask="o"
           onFulfill={this.props.onPinChange}
           onTextChange={(pin) => this.setState({ pin })}
         />
