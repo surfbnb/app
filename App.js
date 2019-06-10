@@ -7,7 +7,7 @@ import {
 } from 'react-navigation';
 
 import AuthLoading from './src/components/AuthLoading';
-import AuthScreen from './src/components/Authentication';
+import AuthScreen from './src/components/Authentication/authReduxHandler';
 import Users from './src/components/Users/usersReduxHandler';
 import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';

@@ -9,7 +9,7 @@ import Theme from '../../theme/styles';
 import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
-import deepGet from "lodash/get"; 
+import deepGet from 'lodash/get';
 
 const formData = new FormData();
 const userStatus = {
@@ -17,8 +17,8 @@ const userStatus = {
 };
 
 class Authentication extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       fullname: null,
       username: null,
@@ -26,6 +26,8 @@ class Authentication extends Component {
       signup: false,
       error: null
     };
+
+    console.log(this.props, 'auth component');
   }
 
   async saveItem(item, selectedValue) {
@@ -68,9 +70,9 @@ class Authentication extends Component {
       .then((res) => {
         console.log('Signin responseData:', res);
         if (res.success && res.data) {
-          let resultType = deepGet( res , "data.result_type") , 
-              userData = deepGet( res , "data."+ resultType);
-              
+          let resultType = deepGet(res, 'data.result_type'),
+            userData = deepGet(res, 'data.' + resultType);
+
           if (!userData) {
             Alert.alert('User not found');
             return;
@@ -117,7 +119,7 @@ class Authentication extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{height: 25}}></View>
+        <View style={{ height: 25 }} />
         <View style={styles.form}>
           <Image source={PepoIcon} style={styles.imageDimensions} />
           {this.state.signup && (
@@ -141,7 +143,6 @@ class Authentication extends Component {
             style={Theme.TextInput.textInputStyle}
             placeholder="Username"
           />
-
           <TextInput
             editable={true}
             onChangeText={(password) => this.setState({ password, error: null })}
@@ -152,9 +153,7 @@ class Authentication extends Component {
             style={Theme.TextInput.textInputStyle}
             value={this.state.password}
           />
-
           <Text style={[styles.error]}>{this.state.error}</Text>
-
           {!this.state.signup && (
             <React.Fragment>
               <TouchableButton
