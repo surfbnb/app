@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Alert } from 'react-native';
+
 import PinInput from '../PinInput';
+import ActivateUser from '../../services/ActivateUser';
 
 export default class ConfirmPin extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ export default class ConfirmPin extends Component {
   onPinChange = (pin) => {
     if (pin === this.props.navigation.getParam('pin', '')) {
       this.props.navigation.navigate('HomeScreen');
+      ActivateUser.activateUser(pin);
     } else {
       Alert.alert('', 'Incorrect Pin');
     }

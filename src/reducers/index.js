@@ -10,7 +10,6 @@ export const { upsertPosts, upsertUsers, updateDeviceRegistered } = createAction
 export const reducer = handleActions(
   {
     [upsertPosts]: (state, action) => {
-      console.log('inside ');
       return { ...state, feed: action.payload.feed };
     },
     [upsertUsers]: (state, action) => {
