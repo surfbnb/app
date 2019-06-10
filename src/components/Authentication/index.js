@@ -22,7 +22,7 @@ class Authentication extends Component {
     this.state = {
       first_name: null,
       last_name: null,
-      username: null,
+      user_name: null,
       password: null,
       signup: false,
       error: null
@@ -40,7 +40,7 @@ class Authentication extends Component {
   }
 
   signin() {
-    if (!this.state.username || !this.state.password) {
+    if (!this.state.user_name || !this.state.password) {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
@@ -48,7 +48,7 @@ class Authentication extends Component {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
-    formData.append('user_name', this.state.username);
+    formData.append('user_name', this.state.user_name);
     formData.append('password', this.state.password);
 
     if (this.state.signup) {
@@ -60,12 +60,12 @@ class Authentication extends Component {
       method: 'POST',
       credentials: 'include',
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'application/json'
       },
-      body: formData
+      body: JSON.stringify(this.state)
     });
 
-    let userSaltApi = new PepoApi('/users/current-user-salt', {
+    let userSaltApi = new PepoApi('/users/recovery-info', {
       method: 'GET',
       credentials: 'include'
     });
@@ -84,8 +84,10 @@ class Authentication extends Component {
           }
 
           userSaltApi.fetch(this.props.navigation.navigate).then(async (res) => {
+            console.log(res);
             if (res.success && res.data) {
-              let userSalt = res.data && res.data.current_user_salt && res.data.current_user_salt.recovery_pin_salt;
+              let resultType = deepGet(res, 'data.result_type'),
+                userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
 
               if (!userSalt) {
                 Alert.alert('User salt not found');
@@ -152,10 +154,10 @@ class Authentication extends Component {
 
           <TextInput
             editable={true}
-            onChangeText={(username) => this.setState({ username, error: null })}
-            ref="username"
+            onChangeText={(user_name) => this.setState({ user_name, error: null })}
+            ref="user_name"
             returnKeyType="next"
-            value={this.state.username}
+            value={this.state.user_name}
             style={Theme.TextInput.textInputStyle}
             placeholder="Username"
           />

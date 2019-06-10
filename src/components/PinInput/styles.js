@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export default (inlineStyles = StyleSheet.create({
+export default inlineStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -8,4 +8,4 @@ export default (inlineStyles = StyleSheet.create({
     padding: 20,
     marginTop: '40%'
   }
-}));
+});

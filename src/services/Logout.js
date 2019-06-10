@@ -8,6 +8,11 @@ export default class Logout {
   }
 
   async perform() {
+    await AsyncStorage.removeItem('user');
+    this.navigate('AuthScreen');
+    return;
+
+    // Todo logout server implementation
     let pepoApi = new PepoApi('/users/logout', {
       method: 'POST',
       credentials: 'include'

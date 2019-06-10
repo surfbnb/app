@@ -15,15 +15,17 @@ class SetupDevice extends OstWalletWorkFlowCallback {
   registerDevice(apiParams, ostDeviceRegistered) {
     console.log('registerDevice apiParams', apiParams, ostDeviceRegistered);
     //TODO updateDeviceRegistered status update
-    formData.append('address', apiParams.address || apiParams.device.address);
-    formData.append('api_signer_address', apiParams.api_signer_address || apiParams.device.api_signer_address);
-    fetch(`${API_ROOT}/devices`, {
+    let payload = {
+      device_address: apiParams.address || apiParams.device.address,
+      api_signer_address: apiParams.api_signer_address || apiParams.device.api_signer_address
+    };
+    fetch(`${API_ROOT}/register-device`, {
       method: 'POST',
       credentials: 'include',
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'application/json'
       },
-      body: formData
+      body: JSON.stringify(payload)
     })
       .then((response) => response.json())
       .then((responseData) => {
