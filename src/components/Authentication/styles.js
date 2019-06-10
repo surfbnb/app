@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-export default (styles = StyleSheet.create({
+export default styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   form: {
     width: 300
@@ -38,6 +38,6 @@ export default (styles = StyleSheet.create({
     alignSelf: 'center'
   },
   bottomBtnAndTxt: {
-    height: 50,
+    height: 50
   }
-}));
+});

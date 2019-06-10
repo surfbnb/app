@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity, Image , Modal , ActivityIndicator , StyleSheet} from 'react-native';
+import {
+  Alert,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Modal,
+  ActivityIndicator,
+  StyleSheet
+} from 'react-native';
 import FormData from 'form-data';
 import AsyncStorage from '@react-native-community/async-storage';
 import PepoApi from '../../services/PepoApi';
@@ -16,10 +26,10 @@ const userStatus = {
   activated: 'activated'
 };
 
-const signUpLoginTestMap =  {
-  signup : "Signing up...",
-  signin : "Login in..."
-} 
+const signUpLoginTestMap = {
+  signup: 'Signing up...',
+  signin: 'Login in...'
+};
 
 class Authentication extends Component {
   constructor(props) {
@@ -30,7 +40,7 @@ class Authentication extends Component {
       password: null,
       signup: false,
       error: null,
-      isLoginIn : false
+      isLoginIn: false
     };
 
     console.log(this.props, 'auth component');
@@ -45,18 +55,17 @@ class Authentication extends Component {
   }
 
   signin() {
-   
     if (!this.state.username || !this.state.password) {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
-    
+
     if (this.state.signup && !this.state.fullname) {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
 
-    this.changeIsLogingState( true ); 
+    this.changeIsLogingState(true);
 
     formData.append('username', this.state.username);
     formData.append('password', this.state.password);
@@ -81,11 +90,11 @@ class Authentication extends Component {
       .then((res) => {
         console.log('Signin responseData:', res);
         if (res.success && res.data) {
-          let resultType = deepGet( res , "data.result_type") , 
-              userData = deepGet( res , "data."+ resultType);
+          let resultType = deepGet(res, 'data.result_type'),
+            userData = deepGet(res, 'data.' + resultType);
 
           if (!userData) {
-            this.changeIsLogingState( false ); 
+            this.changeIsLogingState(false);
             Alert.alert('User not found');
             return;
           }
@@ -95,7 +104,7 @@ class Authentication extends Component {
               let userSalt = res.data && res.data.current_user_salt && res.data.current_user_salt.recovery_pin_salt;
 
               if (!userSalt) {
-                this.changeIsLogingState( false ); 
+                this.changeIsLogingState(false);
                 Alert.alert('User salt not found');
                 return;
               }
@@ -108,35 +117,34 @@ class Authentication extends Component {
                 })
               );
 
+              this.changeIsLogingState(false); //TODO remove
               InitWalletSdk.initializeDevice();
 
               const status = (userData && userData['status']) || '';
-             
+
               if (status.toLowerCase() == userStatus.activated) {
                 this.props.navigation.navigate('HomeScreen');
               } else {
                 this.props.navigation.navigate('SetPinScreen');
               }
-
-              this.changeIsLogingState( false );  //TODO remove 
             } else {
-              this.changeIsLogingState( false ); 
+              this.changeIsLogingState(false);
               this.setState({ error: res.msg });
             }
           });
         } else {
-          this.changeIsLogingState( false ); 
+          this.changeIsLogingState(false);
           this.setState({ error: res.msg });
         }
       })
       .catch((err) => {
-        this.changeIsLogingState( false ); 
+        this.changeIsLogingState(false);
         this.setState({ error: res.msg });
       });
   }
 
-  changeIsLogingState( isLoging ){
-    this.setState({ isLoginIn: isLoging })
+  changeIsLogingState(isLoging) {
+    this.setState({ isLoginIn: isLoging });
   }
 
   render() {
@@ -220,20 +228,20 @@ class Authentication extends Component {
           visible={this.state.isLoginIn}
           coverScreen={false}
           hasBackdrop={false}
-         >
+        >
           <View style={modalStyles.modalBackground}>
             <View style={modalStyles.activityIndicatorWrapper}>
-              <Text style={{fontSize: 18}}>{this.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin } </Text>
+              <Text style={{ fontSize: 18 }}>
+                {this.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}{' '}
+              </Text>
               <ActivityIndicator size="small" color="#00ff00" />
             </View>
           </View>
-        </Modal>    
-
+        </Modal>
       </View>
     );
   }
 }
-
 
 const modalStyles = StyleSheet.create({
   modalBackground: {

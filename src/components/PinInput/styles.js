@@ -14,5 +14,5 @@ export default inlineStyles = StyleSheet.create({
     textAlign: 'center',
     color: '#101010',
     fontSize: 16
-  },
+  }
 });

@@ -23,8 +23,7 @@ export default class PinInput extends Component {
             borderColor: '#A9A9A9',
             backgroundColor: '#A9A9A9',
             borderRadius: 24,
-            borderWidth: 1,
-            
+            borderWidth: 1
           }}
           cellSpacing={30}
           cellStyleFocused={{
@@ -36,8 +35,6 @@ export default class PinInput extends Component {
           password
           mask=" "
           onFulfill={this.props.onPinChange}
-        
-          
         />
       </View>
     );
