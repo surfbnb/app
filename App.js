@@ -9,7 +9,8 @@ import {
 import AuthLoading from './src/components/AuthLoading';
 import AuthScreen from './src/components/Authentication';
 import Users from './src/components/Users/usersReduxHandler';
-import PinInput from './src/components/PinInput';
+import SetPin from './src/components/SetPin';
+import ConfirmPin from './src/components/ConfirmPin';
 import Settings from './src/components/Settings';
 import LogoutComponent from './src/components/LogoutLink';
 import SettingsIcon from './src/assets/settings_icon_selected.png';
@@ -103,13 +104,49 @@ const HomeScreen = createBottomTabNavigator(
   // }
 );
 
+const PinStack = createStackNavigator(
+  {
+    SetPinScreen: {
+      screen: SetPin,
+      navigationOptions: {
+        headerTitle: 'Set Pin',
+        headerTitleStyle: {
+          color: '#ffffff'
+        },
+        headerStyle: {
+          backgroundColor: '#61b2d6'
+        },
+        headerRight: <LogoutComponent />
+      }
+    },
+    ConfirmPinScreen: {
+      screen: ConfirmPin,
+      navigationOptions: {
+        headerTitle: 'Confirm Pin',
+        headerTitleStyle: {
+          color: '#ffffff'
+        },
+        headerStyle: {
+          backgroundColor: '#61b2d6'
+        },
+        headerRight: <LogoutComponent />
+      }
+    }
+  }
+  // {
+  //   navigationOptions: {
+  //     tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={SettingsIcon} style={{ tintColor }} />
+  //   }
+  // }
+);
+
 export default createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading,
       AuthScreen,
       HomeScreen,
-      PinInput
+      PinStack
     },
     {
       initialRouteName: 'AuthLoading'

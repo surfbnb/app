@@ -98,7 +98,7 @@ class Authentication extends Component {
               if (status.toLowerCase() == userStatus.activated) {
                 this.props.navigation.navigate('HomeScreen');
               } else {
-                this.props.navigation.navigate('PinInput');
+                this.props.navigation.navigate('SetPinScreen');
               }
             } else {
               this.setState({ error: res.msg });

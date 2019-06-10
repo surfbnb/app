@@ -4,22 +4,17 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import inlineStyles from './styles';
 
 export default class PinInput extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      code: ''
+      pin: ''
     };
   }
-
-  onPinChange = () => {};
 
   render() {
     return (
       <View style={inlineStyles.container}>
-        <Text style={{ marginBottom: 20 }}>
-          Add a new 6-digit PIN to secure your Wallet. PIN will also help you recover the wallet if the phone is lost or
-          stolen.
-        </Text>
+        <Text style={{ marginBottom: 20 }}>{this.props.displayText}</Text>
         <SmoothPinCodeInput
           codeLength={6}
           cellSize={40}
@@ -32,8 +27,9 @@ export default class PinInput extends Component {
             fontSize: 14
           }}
           textStyleFocused={{}}
-          value={this.state.code}
-          onTextChange={(code) => this.setState({ code })}
+          value={this.state.pin}
+          onFulfill={this.props.onPinChange}
+          onTextChange={(pin) => this.setState({ pin })}
         />
       </View>
     );
