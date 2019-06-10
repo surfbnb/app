@@ -157,13 +157,15 @@ class Authentication extends Component {
               <TouchableButton
                 TouchableStyles={[Theme.Button.btnPrimary]}
                 TextStyles={[Theme.Button.btnPrimaryText]}
-                text="Login"
+                text="Log In"
                 onPress={this.signin.bind(this)}
-              />
-              <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>
+              />              
+            <View>
+              <TouchableOpacity style={styles.bottomBtnAndTxt} onPress={() => this.setState({ signup: true, error: null })}>
                 <Text style={styles.label}>Don't have an account?</Text>
                 <Text style={styles.link}>Create an account</Text>
               </TouchableOpacity>
+            </View>
             </React.Fragment>
           )}
           {this.state.signup && (
@@ -171,12 +173,12 @@ class Authentication extends Component {
               <TouchableButton
                 TouchableStyles={[Theme.Button.btnPrimary]}
                 TextStyles={[Theme.Button.btnPrimaryText]}
-                text="Signup"
+                text="Create Account"
                 onPress={this.signin.bind(this)}
               />
-              <TouchableOpacity onPress={() => this.setState({ signup: false, error: null })}>
+              <TouchableOpacity style={styles.bottomBtnAndTxt} onPress={() => this.setState({ signup: false, error: null })}>
                 <Text style={styles.label}>Already have an account?</Text>
-                <Text style={styles.link}>Login</Text>
+                <Text style={styles.link}>Log In</Text>
               </TouchableOpacity>
             </React.Fragment>
           )}
