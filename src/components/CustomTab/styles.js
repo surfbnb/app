@@ -10,9 +10,9 @@ export default styles = StyleSheet.create({
     position:'relative',
     backgroundColor :"#ffffff",
     alignItems: 'flex-end',
-    borderTopWidth: 1,
+    borderTopWidth: 2,
     borderTopColor: 'rgb(233,233,233)',  
-    paddingBottom : 5
+    paddingBottom : 10
   },
   tabElement:{
     alignSelf:'center',
@@ -28,5 +28,5 @@ export default styles = StyleSheet.create({
       width:55,
       borderWidth:2,
       borderRadius:50
-  }
+  },
 });
