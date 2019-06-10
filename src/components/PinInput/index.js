@@ -14,22 +14,30 @@ export default class PinInput extends Component {
   render() {
     return (
       <View style={inlineStyles.container}>
-        <Text style={{ marginBottom: 20 }}>{this.props.displayText}</Text>
+        <Text style={inlineStyles.displayText}>{this.props.displayText}</Text>
         <SmoothPinCodeInput
           codeLength={6}
-          cellSize={40}
+          autoFocus="true"
+          cellSize={12}
           cellStyle={{
-            borderColor: 'gray',
-            borderWidth: 1
+            borderColor: '#A9A9A9',
+            backgroundColor: '#A9A9A9',
+            borderRadius: 24,
+            borderWidth: 1,
+            
           }}
-          cellStyleFocused={{}}
-          textStyle={{
-            fontSize: 14
+          cellSpacing={30}
+          cellStyleFocused={{
+            borderColor: '#61b2d6',
+            backgroundColor: '#61b2d6'
           }}
           textStyleFocused={{}}
           value={this.state.pin}
+          password
+          mask=" "
           onFulfill={this.props.onPinChange}
-          onTextChange={(pin) => this.setState({ pin })}
+        
+          
         />
       </View>
     );
