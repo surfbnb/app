@@ -5,7 +5,7 @@ export default (styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'space-between',
   },
   form: {
     width: 300
@@ -34,6 +34,10 @@ export default (styles = StyleSheet.create({
   imageDimensions: {
     height: 70,
     width: 150,
-    marginBottom: 30
+    marginBottom: 20,
+    alignSelf: 'center'
+  },
+  bottomBtnAndTxt: {
+    height: 50,
   }
 }));

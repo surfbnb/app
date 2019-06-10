@@ -117,8 +117,9 @@ class Authentication extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={PepoIcon} style={styles.imageDimensions} />
+        <View style={{height: 25}}></View>
         <View style={styles.form}>
+          <Image source={PepoIcon} style={styles.imageDimensions} />
           {this.state.signup && (
             <TextInput
               editable={true}
@@ -161,13 +162,7 @@ class Authentication extends Component {
                 TextStyles={[Theme.Button.btnPrimaryText]}
                 text="Log In"
                 onPress={this.signin.bind(this)}
-              />              
-            <View>
-              <TouchableOpacity style={styles.bottomBtnAndTxt} onPress={() => this.setState({ signup: true, error: null })}>
-                <Text style={styles.label}>Don't have an account?</Text>
-                <Text style={styles.link}>Create an account</Text>
-              </TouchableOpacity>
-            </View>
+              />
             </React.Fragment>
           )}
           {this.state.signup && (
@@ -178,11 +173,21 @@ class Authentication extends Component {
                 text="Create Account"
                 onPress={this.signin.bind(this)}
               />
-              <TouchableOpacity style={styles.bottomBtnAndTxt} onPress={() => this.setState({ signup: false, error: null })}>
-                <Text style={styles.label}>Already have an account?</Text>
-                <Text style={styles.link}>Log In</Text>
-              </TouchableOpacity>
             </React.Fragment>
+          )}
+        </View>
+        <View style={styles.bottomBtnAndTxt}>
+          {!this.state.signup && (
+            <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>
+              <Text style={styles.label}>Don't have an account?</Text>
+              <Text style={styles.link}>Create an account</Text>
+            </TouchableOpacity>
+          )}
+          {this.state.signup && (
+            <TouchableOpacity onPress={() => this.setState({ signup: false, error: null })}>
+              <Text style={styles.label}>Already have an account?</Text>
+              <Text style={styles.link}>Log In</Text>
+            </TouchableOpacity>
           )}
         </View>
       </View>
