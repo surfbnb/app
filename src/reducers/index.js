@@ -1,16 +1,17 @@
 import { createActions, handleActions } from 'redux-actions';
-import { UPSERT } from '../actions/constants';
+import { UPSERT_POSTS, UPSERT_USERS } from '../actions/constants';
 
-export const { upsert } = createActions(UPSERT);
-
-console.log('upsertAction', upsert, 'UPSERT', UPSERT);
+export const { upsertPosts, upsertUsers } = createActions(UPSERT_POSTS, UPSERT_USERS);
 
 export const reducer = handleActions(
   {
-    [upsert]: (state, action) => {
-      console.log(action.payload.feed, 'action.payload.feed', action.payload, 'action.payload');
+    [upsertPosts]: (state, action) => {
+      console.log('inside ');
       return { ...state, feed: action.payload.feed };
+    },
+    [upsertUsers]: (state, action) => {
+      return { ...state, users: action.payload.users };
     }
   },
-  { feed: {} }
+  { feed: {}, users: {} }
 );

@@ -1,1 +1,4 @@
-export const UPSERT = 'UPSERT';
+const UPSERT_POSTS = 'UPSERT_POSTS';
+const UPSERT_USERS = 'UPSERT_USERS';
+
+export { UPSERT_POSTS, UPSERT_USERS };

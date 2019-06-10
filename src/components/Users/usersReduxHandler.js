@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
-import Feed from './index';
-import { upsertPosts } from '../../actions';
+import Users from './index';
+import { upsertUsers } from '../../actions';
 
-const mapStateToProps = ({ feed }) => ({ feed });
+const mapStateToProps = ({ users }) => ({ users });
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatchUpsert: (data) => {
-      dispatch(upsertPosts(data));
+      dispatch(upsertUsers(data));
     }
   };
 };
@@ -15,4 +15,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Feed);
+)(Users);

@@ -1,3 +1,4 @@
 import * as types from './constants';
 
-export const upsertAction = (data) => ({ type: types.UPSERT, payload: { feed: data } });
+export const upsertPosts = (data) => ({ type: types.UPSERT_POSTS, payload: { feed: data } });
+export const upsertUsers = (data) => ({ type: types.UPSERT_USERS, payload: { users: data } });

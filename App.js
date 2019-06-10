@@ -9,15 +9,14 @@ import {
 
 import AuthLoading from './src/components/AuthLoading';
 import AuthScreen from './src/components/Authentication';
-import Feed from './src/components/Feed';
-import Users from './src/components/Users';
+import Users from './src/components/Users/usersReduxHandler';
 import PinInput from './src/components/PinInput';
 import Settings from './src/components/Settings';
 import LogoutComponent from './src/components/LogoutLink';
 import SettingsIcon from './src/assets/settings_icon_selected.png';
 import UsersIcon from './src/assets/user_icon_selected.png';
 import FeedIcon from './src/assets/wallet_icon_selected.png';
-import CustomTab from './src/components/CustomTab'
+import CustomTab from './src/components/CustomTab';
 import feedReduxHandler from './src/components/Feed/feedReduxHandler';
 
 const HomeScreen = createBottomTabNavigator(
@@ -50,7 +49,7 @@ const HomeScreen = createBottomTabNavigator(
             headerRight: <LogoutComponent />
           }
         }
-      },
+      }
       // {
       //   navigationOptions: {
       //     // tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={FeedIcon} style={{ tintColor }} />
@@ -72,7 +71,7 @@ const HomeScreen = createBottomTabNavigator(
             headerRight: <LogoutComponent />
           }
         }
-      },
+      }
       // {
       //   navigationOptions: {
       //     tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={UsersIcon} style={{ tintColor }} />
@@ -94,19 +93,17 @@ const HomeScreen = createBottomTabNavigator(
             headerRight: <LogoutComponent />
           }
         }
-      },
+      }
       // {
       //   navigationOptions: {
       //     tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={SettingsIcon} style={{ tintColor }} />
       //   }
       // }
     )
-
   },
   {
-
-    tabBarComponent : CustomTab,
-    tabBarPosition: 'bottom',
+    tabBarComponent: CustomTab,
+    tabBarPosition: 'bottom'
   }
   // {
   //   tabBarOptions: {
