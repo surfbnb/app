@@ -9,6 +9,7 @@ import Theme from '../../theme/styles';
 import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
+import deepGet from "lodash/get"; 
 
 const formData = new FormData();
 const userStatus = {
@@ -67,8 +68,9 @@ class Authentication extends Component {
       .then((res) => {
         console.log('Signin responseData:', res);
         if (res.success && res.data) {
-          let userData = res.data && res.data[res.data.result_type];
-
+          let resultType = deepGet( res , "data.result_type") , 
+              userData = deepGet( res , "data."+ resultType);
+              
           if (!userData) {
             Alert.alert('User not found');
             return;
