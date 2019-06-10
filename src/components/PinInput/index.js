@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { TextInput } from 'react-native-gesture-handler';
 import { Text, View } from 'react-native';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+import inlineStyles from './styles';
 
 export default class PinInput extends Component {
   constructor() {
@@ -11,30 +11,28 @@ export default class PinInput extends Component {
     };
   }
 
+  onPinChange = () => {};
+
   render() {
     return (
-      <View>
-        <Text>Enter Pin</Text>
+      <View style={inlineStyles.container}>
+        <Text style={{ marginBottom: 20 }}>
+          Add a new 6-digit PIN to secure your Wallet. PIN will also help you recover the wallet if the phone is lost or
+          stolen.
+        </Text>
         <SmoothPinCodeInput
-          placeholder="⭑"
+          codeLength={6}
+          cellSize={40}
           cellStyle={{
-            borderWidth: 2,
-            borderRadius: 24,
-            borderColor: 'orange',
-            backgroundColor: 'gold'
+            borderColor: 'gray',
+            borderWidth: 1
           }}
-          cellStyleFocused={{
-            borderColor: 'darkorange',
-            backgroundColor: 'orange'
-          }}
+          cellStyleFocused={{}}
           textStyle={{
-            fontSize: 24,
-            color: 'salmon'
+            fontSize: 14
           }}
-          textStyleFocused={{
-            color: 'crimson'
-          }}
-          value={code}
+          textStyleFocused={{}}
+          value={this.state.code}
           onTextChange={(code) => this.setState({ code })}
         />
       </View>
