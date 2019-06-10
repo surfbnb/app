@@ -17,7 +17,7 @@ export default class PinInput extends Component {
         <Text style={inlineStyles.displayText}>{this.props.displayText}</Text>
         <SmoothPinCodeInput
           codeLength={6}
-          autoFocus="true"
+          autoFocus={true}
           cellSize={12}
           cellStyle={{
             borderColor: '#A9A9A9',
