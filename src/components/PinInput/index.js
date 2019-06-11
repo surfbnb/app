@@ -7,9 +7,24 @@ export default class PinInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pin: ''
+      pin: '', 
+      isFocus : true
     };
   }
+
+   componentDidMount() {
+    if ( this.props.navigation ) {
+      this.focusListner = this.props.navigation.addListener('didFocus',payload => {
+        this.setState({ pin: "" });
+      });  
+    }
+   }
+
+   componentWillUnmount() {
+      if ( this.focusListner ) {
+        this.focusListner.remove();
+      }
+   }
 
   render() {
     return (
@@ -17,7 +32,7 @@ export default class PinInput extends Component {
         <Text style={inlineStyles.displayTextStyle}>{this.props.displayText}</Text>
         <SmoothPinCodeInput
           codeLength={6}
-          autoFocus={true}
+          autoFocus={this.state.isFocus}
           cellSize={12}
           cellStyle={{
             borderColor: '#A9A9A9',
@@ -47,4 +62,6 @@ export default class PinInput extends Component {
     );
   }
 }
+
+
 //TODO remove this comment

@@ -7,7 +7,7 @@ class ActivateUser {
     AsyncStorage.getItem('user').then((user) => {
       user = JSON.parse(user);
       OstWalletSdk.activateUser(
-        user.user_details.user_id,
+        user.user_details.ost_user_id,
         pin,
         user.user_pin_salt,
         86400,
