@@ -28,8 +28,7 @@ export default class PinInput extends Component {
           }}
           cellSpacing={30}
           cellStyleFocused={{
-            borderColor: '#61b2d6',
-            backgroundColor: '#61b2d6'
+            borderColor: '#A9A9A9',
           }}
           textStyle={{
             borderColor: '#61b2d6',
