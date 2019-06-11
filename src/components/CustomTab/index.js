@@ -6,7 +6,7 @@ import Feed_icon from '../../assets/wallet_icon_selected.png';
 import Settings_icon from '../../assets/settings_icon_selected.png';
 import User_icon from '../../assets/user_icon_selected.png';
 
-export default (CustomTab = ({ navigation, screenProps }) => (
+export default CustomTab = ({ navigation, screenProps }) => (
   <View style={styles.container}>
     <TouchableOpacity
       onPress={() => {
@@ -48,4 +48,4 @@ export default (CustomTab = ({ navigation, screenProps }) => (
     </TouchableOpacity>
     <TouchableOpacity style={styles.overlayBtn} />
   </View>
-));
+);

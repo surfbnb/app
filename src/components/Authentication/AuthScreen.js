@@ -20,6 +20,7 @@ import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
 import deepGet from 'lodash/get';
 import LoadingModal from '../LoadingModal';
+import { showModal, hideModal, setLoggedIn } from '../../actions';
 
 const userStatus = {
   activated: 'activated'
@@ -65,24 +66,14 @@ class AuthScreen extends Component {
       return;
     }
 
-    this.changeIsLogingState(true);
+    this.props.dispatch(showModal('Loading...'));
 
-    let authApi = new PepoApi(this.state.signup ? '/auth/sign-up' : '/auth/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.state)
-    });
-
-    let userSaltApi = new PepoApi('/users/recovery-info', {
-      method: 'GET',
-      credentials: 'include'
-    });
+    let authApi = new PepoApi(this.state.signup ? '/auth/sign-up' : '/auth/login');
+    let userSaltApi = new PepoApi('/users/recovery-info');
 
     authApi
-      .fetch(this.props.navigation.navigate)
+      .setNavigate(this.props.navigation.navigate)
+      .post(JSON.stringify(this.state))
       .then((res) => {
         console.log('Signin responseData:', res);
         if (res.success && res.data) {
@@ -90,54 +81,57 @@ class AuthScreen extends Component {
             userData = deepGet(res, 'data.' + resultType);
 
           if (!userData) {
-            this.changeIsLogingState(false);
+            this.props.dispatch(hideModal());
             Alert.alert('User not found');
             return;
           }
 
-          userSaltApi.fetch(this.props.navigation.navigate).then(async (res) => {
-            var oThis = this;
-            console.log(res);
-            if (res.success && res.data) {
-              let resultType = deepGet(res, 'data.result_type'),
-                userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
+          userSaltApi
+            .setNavigate(this.props.navigation.navigate)
+            .get()
+            .then(async (res) => {
+              var oThis = this;
+              console.log(res);
+              if (res.success && res.data) {
+                let resultType = deepGet(res, 'data.result_type'),
+                  userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
 
-              if (!userSalt) {
-                this.changeIsLogingState(false);
-                Alert.alert('User salt not found');
-                return;
-              }
-
-              this.saveItem(
-                'user',
-                JSON.stringify({
-                  user_details: userData,
-                  user_pin_salt: userSalt
-                })
-              ).then(() => {
-                oThis.changeIsLogingState(false); //TODO remove
-                InitWalletSdk.initializeDevice();
-
-                const status = (userData && userData['ost_status']) || '';
-
-                if (status.toLowerCase() === userStatus.activated) {
-                  oThis.props.navigation.navigate('HomeScreen');
-                } else {
-                  oThis.props.navigation.navigate('SetPinScreen');
+                if (!userSalt) {
+                  this.props.dispatch(hideModal());
+                  Alert.alert('User salt not found');
+                  return;
                 }
-              });
-            } else {
-              this.changeIsLogingState(false);
-              this.setState({ error: res.msg });
-            }
-          });
+
+                this.saveItem(
+                  'user',
+                  JSON.stringify({
+                    user_details: userData,
+                    user_pin_salt: userSalt
+                  })
+                ).then(() => {
+                  this.props.dispatch(hideModal()); //TODO remove
+                  InitWalletSdk.initializeDevice();
+
+                  const status = (userData && userData['ost_status']) || '';
+
+                  if (status.toLowerCase() === userStatus.activated) {
+                    oThis.props.navigation.navigate('HomeScreen');
+                  } else {
+                    oThis.props.navigation.navigate('SetPinScreen');
+                  }
+                });
+              } else {
+                this.props.dispatch(hideModal());
+                this.setState({ error: res.msg });
+              }
+            });
         } else {
-          this.changeIsLogingState(false);
+          this.props.dispatch(hideModal());
           this.setState({ error: res.msg });
         }
       })
       .catch((err) => {
-        this.changeIsLogingState(false);
+        this.props.dispatch(hideModal());
         this.setState({ error: res.msg });
       });
   }
@@ -216,10 +210,7 @@ class AuthScreen extends Component {
             </React.Fragment>
           )}
         </View>
-        <LoadingModal
-          show={this.state.isLoginIn}
-          loadingText={this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}
-        />
+        <LoadingModal />
         <View style={styles.bottomBtnAndTxt}>
           {!this.state.signup && (
             <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>

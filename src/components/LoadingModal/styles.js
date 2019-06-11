@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export default (modalStyles = StyleSheet.create({
+export default modalStyles = StyleSheet.create({
   modalBackground: {
     flex: 1,
     alignItems: 'center',
@@ -17,4 +17,4 @@ export default (modalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }
-}));
+});

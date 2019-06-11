@@ -7,24 +7,24 @@ export default class PinInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pin: '', 
-      isFocus : true
+      pin: '',
+      isFocus: true
     };
   }
 
-   componentDidMount() {
-    if ( this.props.navigation ) {
-      this.focusListner = this.props.navigation.addListener('didFocus',payload => {
-        this.setState({ pin: "" });
-      });  
+  componentDidMount() {
+    if (this.props.navigation) {
+      this.focusListner = this.props.navigation.addListener('didFocus', (payload) => {
+        this.setState({ pin: '' });
+      });
     }
-   }
+  }
 
-   componentWillUnmount() {
-      if ( this.focusListner ) {
-        this.focusListner.remove();
-      }
-   }
+  componentWillUnmount() {
+    if (this.focusListner) {
+      this.focusListner.remove();
+    }
+  }
 
   render() {
     return (
@@ -43,7 +43,7 @@ export default class PinInput extends Component {
           }}
           cellSpacing={30}
           cellStyleFocused={{
-            borderColor: '#A9A9A9',
+            borderColor: '#A9A9A9'
           }}
           textStyle={{
             borderColor: '#61b2d6',
@@ -62,6 +62,5 @@ export default class PinInput extends Component {
     );
   }
 }
-
 
 //TODO remove this comment

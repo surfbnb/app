@@ -1,8 +1,30 @@
 import * as types from './constants';
 
 export const upsertPosts = (data) => ({ type: types.UPSERT_POSTS, payload: { feed: data } });
+
 export const upsertUsers = (data) => ({ type: types.UPSERT_USERS, payload: { users: data } });
+
 export const setLoggedIn = (isLoggedIn) => ({
   type: types.SET_LOGGED_IN,
   payload: { isLoggedIn: isLoggedIn }
+});
+
+export const showModal = (message = '') => ({
+  type: types.SHOW_MODAL,
+  payload: {
+    modal: {
+      message,
+      show: true
+    }
+  }
+});
+
+export const hideModal = (message = '') => ({
+  type: types.HIDE_MODAL,
+  payload: {
+    modal: {
+      message,
+      show: false
+    }
+  }
 });
