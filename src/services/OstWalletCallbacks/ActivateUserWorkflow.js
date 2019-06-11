@@ -3,8 +3,10 @@ import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-nativ
 import { API_ROOT } from './../../constants';
 
 class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
-  constructor() {
+  constructor( delegate ) {
     super();
+    this.isRequestAcknowledge =  false ; 
+    this.delegate =  delegate ; 
   }
 
   flowComplete(ostWorkflowContext, ostContextEntity) {
@@ -28,6 +30,22 @@ class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
       }
     });
   }
+
+  requestAcknowledged(ostWorkflowContext , ostContextEntity ) { 
+    this.isRequestAcknowledge =  true; 
+    this.delegate.onRequestAcknowledge( ostWorkflowContext , ostContextEntity ); 
+   }
+
+  flowComplete(ostWorkflowContext , ostContextEntity ) {   
+      //TODO long poll for Api 
+  }
+
+    
+  flowInterrupt(ostWorkflowContext , ostError)  {  
+      if( !this.isRequestAcknowledge ){
+        this.delegate.onFlowInterrupt( ostWorkflowContext , ostError ); 
+      }
+   }
 }
 
 export default ActivateUserWorkflow;

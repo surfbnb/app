@@ -11,7 +11,7 @@ import InitWalletSdk from '../../services/InitWalletSdk';
 import deepGet from 'lodash/get';
 import LoadingModal from '../LoadingModal';
 import ErrorMessages from "../../constants/ErrorMessages";
-import { showModal, hideModal, setLoggedIn } from '../../actions';
+import { showModal, hideModal } from '../../actions';
 
 const userStatusMap = {
   activated: 'activated'
