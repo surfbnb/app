@@ -9,7 +9,6 @@ class DefaultStyleGenerator {
         styleObj.fontFamily = "Lato-Regular";
       }
     }}
-    console.log("\n ------------------ \n styles", styles);
     return StyleSheet.create(styles);
   }
 }
