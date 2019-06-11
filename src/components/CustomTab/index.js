@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 
 import styles from './styles';
-import Feed_icon from '../../assets/wallet_icon_selected.png';
-import Settings_icon from '../../assets/settings_icon_selected.png';
-import User_icon from '../../assets/user_icon_selected.png';
+import Feed_icon from '../../assets/feed.png';
+import Profile from '../../assets/profile.png';
+import friends from '../../assets/friends.png';
 
 export default CustomTab = ({ navigation, screenProps }) => (
   <View style={styles.container}>
@@ -14,38 +14,30 @@ export default CustomTab = ({ navigation, screenProps }) => (
       }}
     >
       <Image
-        tintColor={navigation.state.index === 0 ? '#61b2d6' : '#A9A9A9'}
+        tintColor={navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}
         style={styles.tabElement}
         source={Feed_icon}
       />
 
-      <Text>Feed</Text>
+      <Text style={{ color : navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}}>Feed</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => navigation.navigate('Users')}>
       <Image
-        tintColor={navigation.state.index === 1 ? '#61b2d6' : '#A9A9A9'}
+        tintColor={navigation.state.index === 1 ? '#61b2d6' : 'rgb(72,72,72)'}
         style={styles.tabElement}
-        source={User_icon}
+        source={friends}
       />
-      <Text>Friends</Text>
+      <Text style={{ color : navigation.state.index === 1 ? '#61b2d6' : 'rgb(72,72,72)'}}>Friends</Text>
     </TouchableOpacity>
-    <Text> Pepo </Text>
-    <TouchableOpacity>
-      <Image
-        tintColor={navigation.state.index === '' ? '#61b2d6' : '#A9A9A9'}
-        style={styles.tabElement}
-        source={User_icon}
-      />
-      <Text>Send</Text>
-    </TouchableOpacity>
+    {/* <Text> Pepo </Text> */}
     <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
       <Image
-        tintColor={navigation.state.index === 2 ? '#61b2d6' : '#A9A9A9'}
+        tintColor={navigation.state.index === 2 ? '#61b2d6' : 'rgb(72,72,72)'}
         style={styles.tabElement}
-        source={Settings_icon}
+        source={Profile}
       />
-      <Text>Profile</Text>
+      <Text style={{ color : navigation.state.index === 2 ? '#61b2d6' : 'rgb(72,72,72)'}}>Profile</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={styles.overlayBtn} />
+    {/* <TouchableOpacity style={styles.overlayBtn} /> */}
   </View>
 );
