@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View , Text} from 'react-native';
 import PinInput from '../PinInput';
 
 export default class SetPin extends Component {
@@ -14,12 +14,12 @@ export default class SetPin extends Component {
   render() {
     return (
       <View>
+        <Text> 
+          Add a new 6-digit PIN to secure your Wallet. PIN will also help you recover the wallet if the phone is lost or stolen.
+        </Text>
         <PinInput
           navigation={this.props.navigation}
-          onPinChange={this.onPinChange}
-          displayText="Add a new 6-digit PIN to secure your Wallet. PIN will also help you recover the wallet if the phone is lost or
-          stolen."
-        />
+          onPinChange={this.onPinChange}/>
       </View>
     );
   }
