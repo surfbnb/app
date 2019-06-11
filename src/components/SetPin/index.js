@@ -13,8 +13,8 @@ export default class SetPin extends Component {
 
   render() {
     return (
-      <View>
-        <Text> 
+      <View style={{ marginTop: 25, paddingLeft: 50, paddingRight: 50 }}>
+        <Text style={{textAlign: 'center', color: 'rgb(16, 16, 16)'}}>
           Add a new 6-digit PIN to secure your Wallet. PIN will also help you recover the wallet if the phone is lost or stolen.
         </Text>
         <PinInput
