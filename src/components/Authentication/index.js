@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import {
+  Alert,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Modal,
+  ActivityIndicator,
+  StyleSheet
+} from 'react-native';
 import FormData from 'form-data';
 import AsyncStorage from '@react-native-community/async-storage';
 import PepoApi from '../../services/PepoApi';
@@ -16,6 +26,11 @@ const userStatus = {
   activated: 'activated'
 };
 
+const signUpLoginTestMap = {
+  signup: 'Signing up...',
+  signin: 'Login in...'
+};
+
 class Authentication extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +40,8 @@ class Authentication extends Component {
       user_name: null,
       password: null,
       signup: false,
-      error: null
+      error: null,
+      isLoginIn: false
     };
 
     console.log(this.props, 'auth component');
@@ -44,11 +60,14 @@ class Authentication extends Component {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
+
     if (this.state.signup && (!this.state.first_name || !this.state.last_name)) {
       this.setState({ error: 'All fields are mandatory' });
       return;
     }
     formData.append('user_name', this.state.user_name);
+
+    this.changeIsLogingState(true);
     formData.append('password', this.state.password);
 
     if (this.state.signup) {
@@ -79,17 +98,20 @@ class Authentication extends Component {
             userData = deepGet(res, 'data.' + resultType);
 
           if (!userData) {
+            this.changeIsLogingState(false);
             Alert.alert('User not found');
             return;
           }
 
           userSaltApi.fetch(this.props.navigation.navigate).then(async (res) => {
+            var oThis = this;
             console.log(res);
             if (res.success && res.data) {
               let resultType = deepGet(res, 'data.result_type'),
                 userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
 
               if (!userSalt) {
+                this.changeIsLogingState(false);
                 Alert.alert('User salt not found');
                 return;
               }
@@ -100,27 +122,36 @@ class Authentication extends Component {
                   user_details: userData,
                   user_pin_salt: userSalt
                 })
-              );
-              InitWalletSdk.initializeDevice();
+              ).then(() => {
+                oThis.changeIsLogingState(false); //TODO remove
+                InitWalletSdk.initializeDevice();
 
-              const status = (userData && userData['status']) || '';
-              if (status.toLowerCase() == userStatus.activated) {
-                this.props.navigation.navigate('HomeScreen');
-              } else {
-                this.props.navigation.navigate('SetPinScreen');
-              }
+                const status = (userData && userData['status']) || '';
+
+                if (status.toLowerCase() === userStatus.activated) {
+                  oThis.props.navigation.navigate('HomeScreen');
+                } else {
+                  oThis.props.navigation.navigate('SetPinScreen');
+                }
+              });
             } else {
+              this.changeIsLogingState(false);
               this.setState({ error: res.msg });
             }
           });
         } else {
+          this.changeIsLogingState(false);
           this.setState({ error: res.msg });
         }
       })
       .catch((err) => {
+        this.changeIsLogingState(false);
         this.setState({ error: res.msg });
-        console.warn(err);
       });
+  }
+
+  changeIsLogingState(isLoging) {
+    this.setState({ isLoginIn: isLoging });
   }
 
   render() {
@@ -193,6 +224,7 @@ class Authentication extends Component {
             </React.Fragment>
           )}
         </View>
+
         <View style={styles.bottomBtnAndTxt}>
           {!this.state.signup && (
             <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>
@@ -207,9 +239,45 @@ class Authentication extends Component {
             </TouchableOpacity>
           )}
         </View>
+
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={this.state.isLoginIn}
+          coverScreen={false}
+          hasBackdrop={false}
+        >
+          <View style={modalStyles.modalBackground}>
+            <View style={modalStyles.activityIndicatorWrapper}>
+              <Text style={{ fontSize: 18 }}>
+                {this.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}{' '}
+              </Text>
+              <ActivityIndicator size="small" color="#00ff00" />
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
 }
+
+const modalStyles = StyleSheet.create({
+  modalBackground: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    backgroundColor: '#00000040'
+  },
+  activityIndicatorWrapper: {
+    backgroundColor: '#FFFFFF',
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  }
+});
 
 export default Authentication;

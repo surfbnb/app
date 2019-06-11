@@ -19,7 +19,7 @@ class SetupDevice extends OstWalletWorkFlowCallback {
       device_address: apiParams.address || apiParams.device.address,
       api_signer_address: apiParams.api_signer_address || apiParams.device.api_signer_address
     };
-    fetch(`${API_ROOT}/register-device`, {
+    fetch(`${API_ROOT}/users/register-device`, {
       method: 'POST',
       credentials: 'include',
       headers: {

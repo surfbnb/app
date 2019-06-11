@@ -16,7 +16,7 @@ class InitWalletSdk {
   setupDevice = () => {
     AsyncStorage.getItem('user').then(async (user) => {
       user = JSON.parse(user);
-      OstWalletSdk.setupDevice(user.user_details.user_id, TOKEN_ID, new SetupDeviceWorkflow());
+      OstWalletSdk.setupDevice(user.user_details.ost_user_id, TOKEN_ID, new SetupDeviceWorkflow());
     });
   };
 }

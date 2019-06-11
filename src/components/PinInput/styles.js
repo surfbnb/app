@@ -6,6 +6,13 @@ export default inlineStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 20,
-    marginTop: '40%'
+    marginTop: '10%'
+  },
+  displayText: {
+    marginBottom: 40,
+    marginHorizontal: 20,
+    textAlign: 'center',
+    color: '#101010',
+    fontSize: 16
   }
 });
