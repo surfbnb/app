@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  Modal,
-  ActivityIndicator,
-  StyleSheet
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import PepoApi from '../../services/PepoApi';
@@ -20,8 +10,9 @@ import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
 import deepGet from 'lodash/get';
 import LoadingModal from '../LoadingModal';
+import ErrorMessages from "../../constants/ErrorMessages";
 
-const userStatus = {
+const userStatusMap = {
   activated: 'activated'
 };
 
@@ -30,42 +21,92 @@ const signUpLoginTestMap = {
   signin: 'Login in...'
 };
 
+let userStatus = ""; 
+
 class AuthScreen extends Component {
   constructor(props) {
     super(props);
+    this.defaults = {general_error : null , last_name_error : null , first_name_error: null , password_error: null, user_name_error: null}
     this.state = {
       first_name: null,
       last_name: null,
       user_name: null,
       password: null,
       signup: false,
-      error: null,
-      isLoginIn: false
+      isLoginIn: false,
+      ...this.defaults
     };
-
-    console.log(this.props, 'auth component');
   }
 
   async saveItem(item, selectedValue) {
     try {
+      await AsyncStorage.removeItem(item);
       await AsyncStorage.setItem(item, selectedValue);
     } catch (error) {
       console.warn('AsyncStorage error: ' + error.message);
     }
   }
 
+  validateLoginInput(){
+    let isValid = true ; 
+    if( !this.state.user_name ){
+      this.setState(  {user_name_error : ErrorMessages.user_name });
+      isValid = false ; 
+    }
+
+    if( !this.state.password ){
+      this.setState(  {
+        password_error : ErrorMessages.password }
+      );
+      isValid = false ; 
+    } 
+
+    return isValid ; 
+  }
+
+  validateSignInInput(){
+    let isValid = true ; 
+
+    if( !this.validateLoginInput() ){
+      isValid = false ; 
+    }
+
+    if( !this.state.first_name ){
+      this.setState({
+       first_name_error : ErrorMessages.first_name }
+      );
+      isValid = false ; 
+    }
+
+    if( !this.state.last_name ){
+      this.setState( {
+        last_name_error : ErrorMessages.last_name }
+      );
+      isValid = false ; 
+    }
+
+    return isValid ; 
+  }
+
+  isValidInputs(){
+    if( this.state.signup ){
+      return this.validateSignInInput(); 
+    }else{
+      return this.validateLoginInput(); 
+    }
+  }
+
+  clearError(){
+    this.setState(this.defaults);
+  }  
+   
+   
   signin() {
-    if (!this.state.user_name || !this.state.password) {
-      this.setState({ error: 'All fields are mandatory' });
-      return;
+    this.clearError();
+    
+    if(!this.isValidInputs() ){
+      return ; 
     }
-
-    if (this.state.signup && (!this.state.first_name || !this.state.last_name)) {
-      this.setState({ error: 'All fields are mandatory' });
-      return;
-    }
-
-    this.changeIsLogingState(true);
 
     let authApi = new PepoApi(this.state.signup ? '/auth/sign-up' : '/auth/login', {
       method: 'POST',
@@ -84,27 +125,28 @@ class AuthScreen extends Component {
     authApi
       .fetch(this.props.navigation.navigate)
       .then((res) => {
-        console.log('Signin responseData:', res);
         if (res.success && res.data) {
           let resultType = deepGet(res, 'data.result_type'),
             userData = deepGet(res, 'data.' + resultType);
 
           if (!userData) {
-            this.changeIsLogingState(false);
-            Alert.alert('User not found');
+            this.hideLoadingModal();
+            this.setState( {
+              general_error: ErrorMessages.user_not_found
+            });
             return;
           }
 
           userSaltApi.fetch(this.props.navigation.navigate).then(async (res) => {
-            var oThis = this;
-            console.log(res);
             if (res.success && res.data) {
               let resultType = deepGet(res, 'data.result_type'),
                 userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
 
               if (!userSalt) {
-                this.changeIsLogingState(false);
-                Alert.alert('User salt not found');
+                this.hideLoadingModal();
+                this.setState( {
+                  general_error: ErrorMessages.user_not_found
+                });
                 return;
               }
 
@@ -115,35 +157,74 @@ class AuthScreen extends Component {
                   user_pin_salt: userSalt
                 })
               ).then(() => {
-                oThis.changeIsLogingState(false); //TODO remove
-                InitWalletSdk.initializeDevice();
-
-                const status = (userData && userData['status']) || '';
-
-                if (status.toLowerCase() === userStatus.activated) {
-                  oThis.props.navigation.navigate('HomeScreen');
-                } else {
-                  oThis.props.navigation.navigate('SetPinScreen');
-                }
+                userStatus = userData && userData['status'] || '';
+                InitWalletSdk.initializeDevice( this );
               });
             } else {
-              this.changeIsLogingState(false);
-              this.setState({ error: res.msg });
+              this.hideLoadingModal();
+              //TODO check for error structure 
+              this.setState({ general_error: res.msg });
             }
           });
         } else {
-          this.changeIsLogingState(false);
-          this.setState({ error: res.msg });
+          this.hideLoadingModal();
+          this.onServerError( res ); 
         }
       })
       .catch((err) => {
-        this.changeIsLogingState(false);
-        this.setState({ error: res.msg });
+        this.hideLoadingModal();
+        this.onServerError( err ); 
       });
+
+      this.showLoadingModal( );
   }
 
-  changeIsLogingState(isLoging) {
-    this.setState({ isLoginIn: isLoging });
+  hideLoadingModal() {
+    this.setState({ isLoginIn: false });
+  }
+
+  showLoadingModal(){
+    this.setState({ isLoginIn: true });
+  }
+
+  onServerError( res ){
+    const errorData = deepGet( res , "err.error_data"),
+          errorMsg =  deepGet( res , "err.msg") || ErrorMessages.general_error
+    ; 
+    if( errorData ){
+      for( let cnt = 0 ;  cnt < errorData.length ;  cnt++ ){
+        let parameter = errorData[cnt]['parameter'] ,
+            errorParameterName = parameter + "_error",
+            msg = errorData[cnt]['msg']
+            ;
+        if( this.state[parameter] || this.state[parameter] == null ){
+            let tempObj = {}; 
+            tempObj[errorParameterName] = msg ; 
+            this.setState(tempObj); 
+        }    
+      }
+    }else{
+      this.setState({general_error ,  errorMsg }); 
+    }
+  }
+
+  setupDeviceComplete(ostWorkflowContext, ostContextEntity) {
+    console.log("setup devices complete ostWorkflowContext" , ostWorkflowContext );
+    console.log("setup devices complete ostContextEntity " , ostContextEntity );
+    this.hideLoadingModal(); 
+    if (userStatus.toLowerCase() === userStatusMap.activated) {
+      this.props.navigation.navigate('HomeScreen');
+    } else {
+      this.props.navigation.navigate('SetPinScreen');
+    }
+  }
+
+  setupDeviceFailed(ostWorkflowContext, ostError) {
+    console.log("setup devices complete ostWorkflowContext" , ostWorkflowContext );
+    console.log("setup devices complete ostError " , ostError );
+    const errorMessage = ostError && ostError.getErrorMessage() || ErrorMessages.general_error ; 
+    this.hideLoadingModal();
+    this.setState({general_error : errorMessage }); 
   }
 
   render() {
@@ -163,6 +244,8 @@ class AuthScreen extends Component {
                 style={Theme.TextInput.textInputStyle}
                 placeholder="First Name"
               />
+              <Text style={Theme.Errors.errorText}>{this.state.first_name_error}</Text>
+
               <TextInput
                 editable={true}
                 onChangeText={(last_name) => this.setState({ last_name, error: null })}
@@ -172,6 +255,8 @@ class AuthScreen extends Component {
                 style={Theme.TextInput.textInputStyle}
                 placeholder="Last Name"
               />
+              <Text style={Theme.Errors.errorText}>{this.state.last_name_error}</Text>
+
             </React.Fragment>
           )}
 
@@ -184,6 +269,8 @@ class AuthScreen extends Component {
             style={Theme.TextInput.textInputStyle}
             placeholder="Username"
           />
+          <Text style={Theme.Errors.errorText}>{this.state.user_name_error}</Text>
+
           <TextInput
             editable={true}
             onChangeText={(password) => this.setState({ password, error: null })}
@@ -194,6 +281,8 @@ class AuthScreen extends Component {
             style={Theme.TextInput.textInputStyle}
             value={this.state.password}
           />
+          <Text style={Theme.Errors.errorText}>{this.state.password_error}</Text>
+
           <Text style={[styles.error]}>{this.state.error}</Text>
           {!this.state.signup && (
             <React.Fragment>
@@ -222,17 +311,19 @@ class AuthScreen extends Component {
         />
         <View style={styles.bottomBtnAndTxt}>
           {!this.state.signup && (
-            <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>
+            <TouchableOpacity onPress={() => this.setState({ signup: true, error: null, ...this.defaults })}>
               <Text style={styles.label}>Don't have an account?</Text>
               <Text style={styles.link}>Create an account</Text>
             </TouchableOpacity>
           )}
           {this.state.signup && (
-            <TouchableOpacity onPress={() => this.setState({ signup: false, error: null })}>
+            <TouchableOpacity onPress={() => this.setState({ signup: false, error: null, ...this.defaults })}>
               <Text style={styles.label}>Already have an account?</Text>
               <Text style={styles.link}>Log In</Text>
             </TouchableOpacity>
           )}
+
+          <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
         </View>
       </View>
     );
