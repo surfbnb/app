@@ -1,23 +1,22 @@
-import { StyleSheet } from 'react-native';
+import DefaultStyleGenerator from './DefaultStyleGenerator';
 
-export default (Buttons = StyleSheet.create({
+let styles = {
   btn: {
-    borderRadius: 5,
+    borderRadius: 8,
     borderWidth: 1,
     padding: 8,
-    marginBottom: 12
+    marginTop: 15
   },
   btnText: {
     textAlign: 'center',
-    fontSize: 15,
-    fontWeight: '400'
+    fontSize: 15
   },
   btnPrimary: {
     backgroundColor: 'rgb(22,141,193)',
     borderColor: 'rgb(22,141,193)'
   },
   btnPrimaryText: {
-    color: '#ffffff'
+    color: 'rgb(255, 255, 255)',
   },
   btnSecondary: {
     backgroundColor: '#ffffff',
@@ -29,4 +28,8 @@ export default (Buttons = StyleSheet.create({
   disabled: {
     opacity: 0.5
   }
-}));
+};
+
+
+
+export default (Buttons = DefaultStyleGenerator.generate(styles));

@@ -15,7 +15,9 @@ class Users extends Component {
   render() {
     return (
       <View styel={styles.container}>
-        <Text style={styles.item}>{this.props.user.name}</Text>
+        <Text style={styles.item}>
+          {this.props.user.first_name} {this.props.user.last_name}
+        </Text>
         <View>
           <TouchableButton
             TouchableStyles={[Theme.Button.btnSecondary]}

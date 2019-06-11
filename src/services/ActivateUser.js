@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
-import ActivateUserWorkflow from './OstWalletCallbacks/ActivateUser';
+import ActivateUserWorkflow from './OstWalletCallbacks/ActivateUserWorkflow';
 
 class ActivateUser {
   activateUser(pin) {

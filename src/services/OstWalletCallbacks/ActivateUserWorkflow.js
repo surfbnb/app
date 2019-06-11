@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { API_ROOT } from './../../constants';
 
-class ActivateUser extends OstWalletWorkFlowCallback {
+class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
   constructor() {
     super();
   }
@@ -11,7 +11,7 @@ class ActivateUser extends OstWalletWorkFlowCallback {
     console.log('flowComplete ostWorkflowContext', ostWorkflowContext, 'ostContextEntity', ostContextEntity);
     AsyncStorage.getItem('user').then((user) => {
       user = JSON.parse(user);
-      if (user.user_details.status === 'CREATED') {
+      if (user.user_details.ost_status === 'CREATED') {
         fetch(`${API_ROOT}/notify/user-activate`, {
           method: 'POST',
           credentials: 'include',
@@ -30,4 +30,4 @@ class ActivateUser extends OstWalletWorkFlowCallback {
   }
 }
 
-export default ActivateUser;
+export default ActivateUserWorkflow;

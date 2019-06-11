@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
 
-export default styles = StyleSheet.create({
+let stylesMap = {
   container: {
     backgroundColor: '#ffffff',
     alignItems: 'center',
@@ -18,12 +18,14 @@ export default styles = StyleSheet.create({
   label: {
     textAlign: 'center',
     color: 'rgb(136,136,136)',
-    fontSize: 12
+    fontSize: 13,
+    marginBottom: 3
   },
   link: {
     textAlign: 'center',
     color: 'rgb(22,141,193)',
-    fontSize: 12
+    fontSize: 15,
+    fontWeight: '400'
   },
   error: {
     textAlign: 'center',
@@ -31,13 +33,16 @@ export default styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 6
   },
-  imageDimensions: {
+  imgPepoLogoSkipFont: {
     height: 70,
     width: 150,
-    marginBottom: 20,
     alignSelf: 'center'
   },
   bottomBtnAndTxt: {
-    height: 50
+    height: 65,
+    fontSize: 12,
+    fontFamily: "Lato-Black"
   }
-});
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);

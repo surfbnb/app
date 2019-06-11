@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export default (inlineStyles = StyleSheet.create({
+export default inlineStyles = StyleSheet.create({
   item: {
     fontSize: 15,
     borderBottomWidth: 1,
@@ -11,4 +11,4 @@ export default (inlineStyles = StyleSheet.create({
   container: {
     flex: 1
   }
-}));
+});
