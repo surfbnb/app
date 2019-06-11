@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Alert,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  Modal,
-  ActivityIndicator,
-  StyleSheet
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import PepoApi from '../../services/PepoApi';
@@ -20,9 +10,10 @@ import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
 import deepGet from 'lodash/get';
 import LoadingModal from '../LoadingModal';
+import ErrorMessages from "../../constants/ErrorMessages";
 import { showModal, hideModal, setLoggedIn } from '../../actions';
 
-const userStatus = {
+const userStatusMap = {
   activated: 'activated'
 };
 
@@ -31,113 +22,195 @@ const signUpLoginTestMap = {
   signin: 'Login in...'
 };
 
+let userStatus = "";
+
 class AuthScreen extends Component {
   constructor(props) {
     super(props);
+    this.defaults = {general_error : null , last_name_error : null , first_name_error: null , password_error: null, user_name_error: null}
     this.state = {
       first_name: null,
       last_name: null,
       user_name: null,
       password: null,
       signup: false,
-      error: null,
-      isLoginIn: false
+      isLoginIn: false,
+      ...this.defaults
     };
-
-    console.log(this.props, 'auth component');
   }
 
   async saveItem(item, selectedValue) {
     try {
+      await AsyncStorage.removeItem(item);
       await AsyncStorage.setItem(item, selectedValue);
     } catch (error) {
       console.warn('AsyncStorage error: ' + error.message);
     }
   }
 
+  validateLoginInput(){
+    let isValid = true ;
+    if( !this.state.user_name ){
+      this.setState(  {user_name_error : ErrorMessages.user_name });
+      isValid = false ;
+    }
+
+    if( !this.state.password ){
+      this.setState(  {
+        password_error : ErrorMessages.password }
+      );
+      isValid = false ;
+    }
+
+    return isValid ;
+  }
+
+  validateSignInInput(){
+    let isValid = true ;
+
+    if( !this.validateLoginInput() ){
+      isValid = false ;
+    }
+
+    if( !this.state.first_name ){
+      this.setState({
+       first_name_error : ErrorMessages.first_name }
+      );
+      isValid = false ;
+    }
+
+    if( !this.state.last_name ){
+      this.setState( {
+        last_name_error : ErrorMessages.last_name }
+      );
+      isValid = false ;
+    }
+
+    return isValid ;
+  }
+
+  isValidInputs(){
+    if( this.state.signup ){
+      return this.validateSignInInput();
+    }else{
+      return this.validateLoginInput();
+    }
+  }
+
+  clearError(){
+    this.setState(this.defaults);
+  }
+  
+  
   signin() {
-    if (!this.state.user_name || !this.state.password) {
-      this.setState({ error: 'All fields are mandatory' });
-      return;
+    this.clearError();
+    
+    if(!this.isValidInputs() ){
+      return ;
     }
-
-    if (this.state.signup && (!this.state.first_name || !this.state.last_name)) {
-      this.setState({ error: 'All fields are mandatory' });
-      return;
-    }
-
-    this.props.dispatch(showModal('Loading...'));
-
+  
+    this.props.dispatch(showModal( this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin));
+  
     let authApi = new PepoApi(this.state.signup ? '/auth/sign-up' : '/auth/login');
     let userSaltApi = new PepoApi('/users/recovery-info');
-
+  
+  
     authApi
       .setNavigate(this.props.navigation.navigate)
       .post(JSON.stringify(this.state))
       .then((res) => {
-        console.log('Signin responseData:', res);
         if (res.success && res.data) {
           let resultType = deepGet(res, 'data.result_type'),
             userData = deepGet(res, 'data.' + resultType);
 
           if (!userData) {
             this.props.dispatch(hideModal());
-            Alert.alert('User not found');
+            this.setState( {
+              general_error: ErrorMessages.user_not_found
+            });
             return;
           }
-
+  
           userSaltApi
             .setNavigate(this.props.navigation.navigate)
             .get()
             .then(async (res) => {
-              var oThis = this;
-              console.log(res);
-              if (res.success && res.data) {
-                let resultType = deepGet(res, 'data.result_type'),
-                  userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
+            if (res.success && res.data) {
+              let resultType = deepGet(res, 'data.result_type'),
+                userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
 
-                if (!userSalt) {
-                  this.props.dispatch(hideModal());
-                  Alert.alert('User salt not found');
-                  return;
-                }
-
-                this.saveItem(
-                  'user',
-                  JSON.stringify({
-                    user_details: userData,
-                    user_pin_salt: userSalt
-                  })
-                ).then(() => {
-                  this.props.dispatch(hideModal()); //TODO remove
-                  InitWalletSdk.initializeDevice();
-
-                  const status = (userData && userData['ost_status']) || '';
-
-                  if (status.toLowerCase() === userStatus.activated) {
-                    oThis.props.navigation.navigate('HomeScreen');
-                  } else {
-                    oThis.props.navigation.navigate('SetPinScreen');
-                  }
-                });
-              } else {
+              if (!userSalt) {
                 this.props.dispatch(hideModal());
-                this.setState({ error: res.msg });
+                this.setState( {
+                  general_error: ErrorMessages.user_not_found
+                });
+                return;
               }
-            });
+
+              this.saveItem(
+                'user',
+                JSON.stringify({
+                  user_details: userData,
+                  user_pin_salt: userSalt
+                })
+              ).then(() => {
+                userStatus = userData && userData['ost_status'] || '';
+                InitWalletSdk.initializeDevice( this );
+              });
+            } else {
+              this.props.dispatch(hideModal());
+              this.onServerError( res );
+            }
+          });
         } else {
           this.props.dispatch(hideModal());
-          this.setState({ error: res.msg });
+          this.onServerError( res );
         }
       })
       .catch((err) => {
         this.props.dispatch(hideModal());
-        this.setState({ error: res.msg });
+        this.onServerError( res );
       });
   }
+  
+  setupDeviceComplete(ostWorkflowContext, ostContextEntity) {
+    console.log("setup devices complete ostWorkflowContext" , ostWorkflowContext );
+    console.log("setup devices complete ostContextEntity " , ostContextEntity );
+    this.props.dispatch(hideModal());
+    if (userStatus.toLowerCase() === userStatusMap.activated) {
+      this.props.navigation.navigate('HomeScreen');
+    } else {
+      this.props.navigation.navigate('SetPinScreen');
+    }
+  }
 
-  changeIsLogingState(isLoging) {
-    this.setState({ isLoginIn: isLoging });
+  setupDeviceFailed(ostWorkflowContext, ostError) {
+    console.log("setup devices complete ostWorkflowContext", ostWorkflowContext);
+    console.log("setup devices complete ostError ", ostError);
+    const errorMessage = ostError && ostError.getErrorMessage() || ErrorMessages.general_error;
+    this.props.dispatch(hideModal());
+    this.setState({general_error: errorMessage});
+  }
+  
+  onServerError( res ){
+    const errorData = deepGet( res , "err.error_data"),
+      errorMsg =  deepGet( res , "err.msg") || ErrorMessages.general_error
+    ;
+    if( errorData ){
+      for( let cnt = 0 ;  cnt < errorData.length ;  cnt++ ){
+        let parameter = errorData[cnt]['parameter'] ,
+          errorParameterName = parameter + "_error",
+          msg = errorData[cnt]['msg']
+        ;
+        if( this.state[parameter] || this.state[parameter] == null ){
+          let tempObj = {};
+          tempObj[errorParameterName] = msg ;
+          this.setState(tempObj);
+        }
+      }
+    }else{
+      this.setState({general_error ,  errorMsg });
+    }
   }
 
   render() {
@@ -157,6 +230,8 @@ class AuthScreen extends Component {
                 style={Theme.TextInput.textInputStyle}
                 placeholder="First Name"
               />
+              <Text style={Theme.Errors.errorText}>{this.state.first_name_error}</Text>
+
               <TextInput
                 editable={true}
                 onChangeText={(last_name) => this.setState({ last_name, error: null })}
@@ -166,6 +241,8 @@ class AuthScreen extends Component {
                 style={Theme.TextInput.textInputStyle}
                 placeholder="Last Name"
               />
+              <Text style={Theme.Errors.errorText}>{this.state.last_name_error}</Text>
+
             </React.Fragment>
           )}
 
@@ -178,6 +255,8 @@ class AuthScreen extends Component {
             style={Theme.TextInput.textInputStyle}
             placeholder="Username"
           />
+          <Text style={Theme.Errors.errorText}>{this.state.user_name_error}</Text>
+
           <TextInput
             editable={true}
             onChangeText={(password) => this.setState({ password, error: null })}
@@ -188,6 +267,8 @@ class AuthScreen extends Component {
             style={Theme.TextInput.textInputStyle}
             value={this.state.password}
           />
+          <Text style={Theme.Errors.errorText}>{this.state.password_error}</Text>
+
           <Text style={[styles.error]}>{this.state.error}</Text>
           {!this.state.signup && (
             <React.Fragment>
@@ -213,17 +294,19 @@ class AuthScreen extends Component {
         <LoadingModal />
         <View style={styles.bottomBtnAndTxt}>
           {!this.state.signup && (
-            <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>
+            <TouchableOpacity onPress={() => this.setState({ signup: true, error: null, ...this.defaults })}>
               <Text style={styles.label}>Don't have an account?</Text>
               <Text style={styles.link}>Create Account</Text>
             </TouchableOpacity>
           )}
           {this.state.signup && (
-            <TouchableOpacity onPress={() => this.setState({ signup: false, error: null })}>
+            <TouchableOpacity onPress={() => this.setState({ signup: false, error: null, ...this.defaults })}>
               <Text style={styles.label}>Already have an account?</Text>
               <Text style={styles.link}>Log In</Text>
             </TouchableOpacity>
           )}
+
+          <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
         </View>
       </View>
     );

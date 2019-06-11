@@ -2,13 +2,13 @@ import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-nativ
 import { API_ROOT } from './../../constants';
 
 class SetupDeviceWorkflow extends OstWalletWorkFlowCallback {
-  constructor() {
+  constructor(delegate) {
     super();
+    this.delegate = delegate;
   }
 
   registerDevice(apiParams, ostDeviceRegistered) {
     console.log('registerDevice apiParams', apiParams, ostDeviceRegistered);
-    //TODO updateDeviceRegistered status update
     let payload = {
       device_address: apiParams.address || apiParams.device.address,
       api_signer_address: apiParams.api_signer_address || apiParams.device.api_signer_address
@@ -23,24 +23,34 @@ class SetupDeviceWorkflow extends OstWalletWorkFlowCallback {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        if (responseData.data) {
+        if (responseData.success && responseData.data) {
           console.log('data to send:', responseData.data[responseData.data.result_type]);
           //
           ostDeviceRegistered.deviceRegistered(responseData.data[responseData.data.result_type], (error) => {
             console.warn(error);
           });
+        } else {
+          // cancel workflow.
+          ostDeviceRegistered.cancelFlow();
         }
       })
-      .catch(console.warn)
+      .catch(()=>{
+        // cancel workflow.
+        ostDeviceRegistered.cancelFlow();
+      })
       .done();
   }
 
   flowComplete(ostWorkflowContext, ostContextEntity) {
-    //TODO updateDeviceRegistered status update
+    if ( this.delegate && this.delegate.setupDeviceComplete) {
+      this.delegate.setupDeviceComplete(ostWorkflowContext, ostContextEntity);
+    }
   }
 
   flowInterrupt(ostWorkflowContext, ostError) {
-    //TODO updateDeviceRegistered status update
+    if ( this.delegate && this.delegate.setupDeviceFailed) {
+      this.delegate.setupDeviceFailed(ostWorkflowContext, ostError);
+    }
   }
 
   requestAcknowledged(ostWorkflowContext, ostContextEntity) {
