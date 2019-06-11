@@ -19,6 +19,7 @@ import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
 import deepGet from 'lodash/get';
+import CustomModal from '../CustomModal';
 
 const userStatus = {
   activated: 'activated'
@@ -230,45 +231,13 @@ class AuthScreen extends Component {
             </TouchableOpacity>
           )}
         </View>
-
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={this.state.isLoginIn}
-          coverScreen={false}
-          hasBackdrop={false}
-        >
-          <View style={modalStyles.modalBackground}>
-            <View style={modalStyles.activityIndicatorWrapper}>
-              <ActivityIndicator size="large" color="#168dc1" />
-              <Text style={{ fontSize: 18, marginTop: 20, }}>
-                {this.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}{' '}
-              </Text>
-            </View>
-          </View>
-        </Modal>
+        <CustomModal
+          show={this.state.isLoginIn}
+          loadingText={this.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}
+        />
       </View>
     );
   }
 }
-
-const modalStyles = StyleSheet.create({
-  modalBackground: {
-    flex: 1,
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    backgroundColor: '#00000040'
-  },
-  activityIndicatorWrapper: {
-    backgroundColor: '#FFFFFF',
-    height: 128,
-    width: 215,
-    borderRadius: 2,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
 
 export default AuthScreen;
