@@ -12,7 +12,7 @@ export default class ConfirmPin extends Component {
   onPinChange = (pin) => {
     if (pin === this.props.navigation.getParam('pin', '')) {
       this.props.navigation.navigate('HomeScreen');
-      ActivateUser.activateUser(pin);
+      //ActivateUser.activateUser(pin);
     } else {
       Alert.alert('', 'Incorrect Pin');
     }
