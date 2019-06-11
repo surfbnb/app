@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Modal, Text, ActivityIndicator } from 'react-native';
 import modalStyles from './styles';
 
-export default class CustomModal extends Component {
+export default class LoadingModal extends Component {
   constructor(props) {
     super(props);
   }

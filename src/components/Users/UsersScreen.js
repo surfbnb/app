@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
 
+import PepoApi from '../../services/PepoApi';
+import User from './User';
 import styles from './styles';
 
 class Users extends Component {
@@ -13,6 +15,11 @@ class Users extends Component {
   }
 
   getUsersData = () => {
+    // new PepoApi('/users', {
+    //   method: 'GET',
+    //   credentials: 'include'
+    // })
+    //   .fetch(this.props.navigation.navigate)
     fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => response.json())
       .then((responseData) => {
@@ -26,8 +33,12 @@ class Users extends Component {
 
   render() {
     return (
-      <View>
-        <FlatList data={this.props.users} renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>} />
+      <View style={styles.container}>
+        <FlatList
+          data={this.props.users}
+          keyExtractor={(item, index) => String(item.id)}
+          renderItem={({ item }) => <User id={item.id} user={item} />}
+        />
       </View>
     );
   }

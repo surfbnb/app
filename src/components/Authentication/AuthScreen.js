@@ -19,7 +19,7 @@ import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
 import deepGet from 'lodash/get';
-import CustomModal from '../CustomModal';
+import LoadingModal from '../LoadingModal';
 
 const userStatus = {
   activated: "activated"
@@ -231,7 +231,7 @@ class AuthScreen extends Component {
             </TouchableOpacity>
           )}
         </View>
-        <CustomModal
+        <LoadingModal
           show={this.state.isLoginIn}
           loadingText={this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}
         />

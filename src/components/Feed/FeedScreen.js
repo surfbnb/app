@@ -26,7 +26,15 @@ class Feed extends Component {
   render() {
     return (
       <View>
-        <FlatList data={this.props.feed} renderItem={({ item }) => <Text style={styles.item}>{item.title}</Text>} />
+        <FlatList
+          data={this.props.feed}
+          keyExtractor={(item, index) => String(item.id)}
+          renderItem={({ item }) => (
+            <Text id={item.id} style={styles.item}>
+              {item.title}
+            </Text>
+          )}
+        />
       </View>
     );
   }

@@ -5,9 +5,8 @@ import styles from './styles';
 import Feed_icon from '../../assets/wallet_icon_selected.png';
 import Settings_icon from '../../assets/settings_icon_selected.png';
 import User_icon from '../../assets/user_icon_selected.png';
-import Friends_icon from '../../assets/settings_icon_selected.png';
 
-export default CustomTab = ({ navigation, screenProps }) => (
+export default (CustomTab = ({ navigation, screenProps }) => (
   <View style={styles.container}>
     <TouchableOpacity
       onPress={() => {
@@ -22,18 +21,18 @@ export default CustomTab = ({ navigation, screenProps }) => (
 
       <Text>Feed</Text>
     </TouchableOpacity>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate('Users')}>
       <Image
-        tintColor={navigation.state.index === '' ? '#61b2d6' : '#A9A9A9'}
+        tintColor={navigation.state.index === 1 ? '#61b2d6' : '#A9A9A9'}
         style={styles.tabElement}
-        source={Settings_icon}
+        source={User_icon}
       />
       <Text>Friends</Text>
     </TouchableOpacity>
     <Text> Pepo </Text>
-    <TouchableOpacity onPress={() => navigation.navigate('Users')}>
+    <TouchableOpacity>
       <Image
-        tintColor={navigation.state.index === 1 ? '#61b2d6' : '#A9A9A9'}
+        tintColor={navigation.state.index === '' ? '#61b2d6' : '#A9A9A9'}
         style={styles.tabElement}
         source={User_icon}
       />
@@ -43,10 +42,10 @@ export default CustomTab = ({ navigation, screenProps }) => (
       <Image
         tintColor={navigation.state.index === 2 ? '#61b2d6' : '#A9A9A9'}
         style={styles.tabElement}
-        source={Friends_icon}
+        source={Settings_icon}
       />
       <Text>Profile</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={styles.overlayBtn}></TouchableOpacity>
+    <TouchableOpacity style={styles.overlayBtn} />
   </View>
-);
+));
