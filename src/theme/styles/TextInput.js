@@ -11,7 +11,7 @@ let styles = {
     paddingLeft: 15,
     marginTop: 10,
     color: 'rgb(0, 0, 0)',
-    height: 50
+    height: 46
   }
 };
 
