@@ -15,6 +15,7 @@ export default class SetPin extends Component {
     return (
       <View>
         <PinInput
+          navigation={this.props.navigation}
           onPinChange={this.onPinChange}
           displayText="Add a new 6-digit PIN to secure your Wallet. PIN will also help you recover the wallet if the phone is lost or
           stolen."

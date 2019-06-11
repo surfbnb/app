@@ -22,7 +22,7 @@ import deepGet from 'lodash/get';
 import CustomModal from '../CustomModal';
 
 const userStatus = {
-  activated: 'activated'
+  activated: "activated"
 };
 
 const signUpLoginTestMap = {
