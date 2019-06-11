@@ -109,8 +109,7 @@ class AuthScreen extends Component {
       return ;
     }
   
-  
-    this.props.dispatch(showModal('Loading...'));
+    this.props.dispatch(showModal( this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin));
   
     let authApi = new PepoApi(this.state.signup ? '/auth/sign-up' : '/auth/login');
     let userSaltApi = new PepoApi('/users/recovery-info');
@@ -155,7 +154,7 @@ class AuthScreen extends Component {
                   user_pin_salt: userSalt
                 })
               ).then(() => {
-                userStatus = userData && userData['status'] || '';
+                userStatus = userData && userData['ost_status'] || '';
                 InitWalletSdk.initializeDevice( this );
               });
             } else {
@@ -177,7 +176,7 @@ class AuthScreen extends Component {
   setupDeviceComplete(ostWorkflowContext, ostContextEntity) {
     console.log("setup devices complete ostWorkflowContext" , ostWorkflowContext );
     console.log("setup devices complete ostContextEntity " , ostContextEntity );
-    this.hideLoadingModal();
+    this.props.dispatch(hideModal());
     if (userStatus.toLowerCase() === userStatusMap.activated) {
       this.props.navigation.navigate('HomeScreen');
     } else {
@@ -189,7 +188,7 @@ class AuthScreen extends Component {
     console.log("setup devices complete ostWorkflowContext", ostWorkflowContext);
     console.log("setup devices complete ostError ", ostError);
     const errorMessage = ostError && ostError.getErrorMessage() || ErrorMessages.general_error;
-    this.hideLoadingModal();
+    this.props.dispatch(hideModal());
     this.setState({general_error: errorMessage});
   }
   

@@ -24,11 +24,12 @@ class Users extends Component {
     if (query_param) {
       url = url + `?pagination_identifier=${this.state.pageIdentifier}`;
     }
-    new PepoApi(url, {
-      method: 'GET',
-      credentials: 'include'
-    })
-      .fetch(this.props.navigation.navigate)
+    
+    let userFetch =  new PepoApi(url);
+  
+    userFetch
+      .setNavigate(this.props.navigation.navigate)
+      .get()
       .then((responseData) => {
         if (responseData && responseData.data) {
           console.log(responseData, 'users data');
