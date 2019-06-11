@@ -1,13 +1,17 @@
-import { StyleSheet } from 'react-native';
+import DefaultStyleGenerator from "./DefaultStyleGenerator";
 
-export default (TextInput = StyleSheet.create({
+let styles = {
   textInputStyle: {
     borderColor: '#E9E9E9',
-    borderWidth: 1,
-    borderRadius: 5,
-    fontSize: 15,
-    padding: 5,
-    paddingLeft: 10,
-    marginBottom: 12
+      borderWidth: 1.5,
+      borderRadius: 8,
+      fontSize: 14,
+      fontWeight: '300',
+      padding: 5,
+      paddingLeft: 15,
+      marginTop: 20,
+      color: 'rgb(0, 0, 0)'
   }
-}));
+};
+
+export default (TextInput = DefaultStyleGenerator.generate(styles));

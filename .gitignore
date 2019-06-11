@@ -24,6 +24,7 @@ project.xcworkspace
 
 # Android/IntelliJ
 #
+android/app/src/main/assets/fonts/*
 build/
 .idea
 .gradle

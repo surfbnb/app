@@ -145,7 +145,7 @@ class AuthScreen extends Component {
       <View style={styles.container}>
         <View style={{ height: 25 }} />
         <View style={styles.form}>
-          <Image source={PepoIcon} style={styles.imageDimensions} />
+          <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
           {this.state.signup && (
             <React.Fragment>
               <TextInput
@@ -215,7 +215,7 @@ class AuthScreen extends Component {
           {!this.state.signup && (
             <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>
               <Text style={styles.label}>Don't have an account?</Text>
-              <Text style={styles.link}>Create an account</Text>
+              <Text style={styles.link}>Create Account</Text>
             </TouchableOpacity>
           )}
           {this.state.signup && (
