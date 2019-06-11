@@ -19,7 +19,7 @@ let stylesMap = {
     textAlign: 'center',
     color: 'rgb(136,136,136)',
     fontSize: 13,
-    marginBottom: 3
+    marginBottom: 8
   },
   link: {
     textAlign: 'center',
@@ -39,9 +39,7 @@ let stylesMap = {
     alignSelf: 'center'
   },
   bottomBtnAndTxt: {
-    height: 65,
-    fontSize: 12,
-    fontFamily: "Lato-Black"
+    height: 65
   }
 };
 

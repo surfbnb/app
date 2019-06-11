@@ -4,12 +4,12 @@ let styles = {
   btn: {
     borderRadius: 8,
     borderWidth: 1,
-    padding: 8,
-    marginTop: 15
+    padding: 12,
+    // marginTop: 15
   },
   btnText: {
-    textAlign: 'center',
-    fontSize: 15
+    fontSize: 15,
+    textAlign: 'center'
   },
   btnPrimary: {
     backgroundColor: 'rgb(22,141,193)',
