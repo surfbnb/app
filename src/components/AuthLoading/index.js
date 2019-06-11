@@ -20,7 +20,7 @@ export default class AuthLoading extends Component {
 
     // This will switch to the Home screen or SetPinScreen or Auth screen and this loading
     // screen will be unmounted and thrown away.
-    const status = (user && user['status']) || '';
+    const status = (user && user['ost_status']) || '';
     if (user && status.toLowerCase() !== userStatus.activated) {
       this.props.navigation.navigate('SetPinScreen');
     } else if (user) {

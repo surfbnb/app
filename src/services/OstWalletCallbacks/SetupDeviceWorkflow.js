@@ -1,7 +1,7 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { API_ROOT } from './../../constants';
 
-class SetupDevice extends OstWalletWorkFlowCallback {
+class SetupDeviceWorkflow extends OstWalletWorkFlowCallback {
   constructor() {
     super();
   }
@@ -52,4 +52,4 @@ class SetupDevice extends OstWalletWorkFlowCallback {
   }
 }
 
-export default SetupDevice;
+export default SetupDeviceWorkflow;

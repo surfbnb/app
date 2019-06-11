@@ -15,32 +15,33 @@ class Users extends Component {
   }
 
   getUsersData = () => {
-    // new PepoApi('/users', {
-    //   method: 'GET',
-    //   credentials: 'include'
-    // })
-    //   .fetch(this.props.navigation.navigate)
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
+    new PepoApi('/users', {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .fetch(this.props.navigation.navigate)
       .then((responseData) => {
         console.log(responseData, 'users data');
 
-        this.props.dispatchUpsert(responseData);
+        this.props.dispatchUpsert(responseData.data[responseData.data['result_type']]);
       })
       .catch(console.warn)
       .done();
   };
 
   render() {
-    return (
-      <View style={styles.container}>
-        <FlatList
-          data={this.props.users}
-          keyExtractor={(item, index) => String(item.id)}
-          renderItem={({ item }) => <User id={item.id} user={item} />}
-        />
-      </View>
-    );
+    if (this.props.users.length > 0) {
+      return (
+        <View style={styles.container}>
+          <FlatList
+            data={this.props.users}
+            keyExtractor={(item, index) => String(item.id)}
+            renderItem={({ item }) => <User id={item.id} user={item} />}
+          />
+        </View>
+      );
+    }
+    return <View></View>;
   }
 }
 

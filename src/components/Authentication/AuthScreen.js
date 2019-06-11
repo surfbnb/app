@@ -118,7 +118,7 @@ class AuthScreen extends Component {
                 oThis.changeIsLogingState(false); //TODO remove
                 InitWalletSdk.initializeDevice();
 
-                const status = (userData && userData['status']) || '';
+                const status = (userData && userData['ost_status']) || '';
 
                 if (status.toLowerCase() === userStatus.activated) {
                   oThis.props.navigation.navigate('HomeScreen');
