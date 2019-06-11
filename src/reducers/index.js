@@ -15,5 +15,5 @@ export const reducer = handleActions(
       return { ...state, isLoggedIn: action.payload.isLoggedIn };
     }
   },
-  { feed: {}, users: {}, isLoggedIn: false }
+  { feed: [], users: [], isLoggedIn: false }
 );
