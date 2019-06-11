@@ -22,7 +22,7 @@ import deepGet from 'lodash/get';
 import LoadingModal from '../LoadingModal';
 
 const userStatus = {
-  activated: "activated"
+  activated: 'activated'
 };
 
 const signUpLoginTestMap = {
@@ -216,7 +216,10 @@ class AuthScreen extends Component {
             </React.Fragment>
           )}
         </View>
-
+        <CustomModal
+          show={this.state.isLoginIn}
+          loadingText={this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}
+        />
         <View style={styles.bottomBtnAndTxt}>
           {!this.state.signup && (
             <TouchableOpacity onPress={() => this.setState({ signup: true, error: null })}>
