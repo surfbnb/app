@@ -1,35 +1,18 @@
-import React, { Component } from 'react';
-import { View, Text, FlatList } from 'react-native';
-import styles from './styles';
+import { connect } from 'react-redux';
 
-class Feed extends Component {
-  constructor(props) {
-    super(props);
-  }
+import Feed from './FeedScreen';
+import { upsertPosts } from '../../actions';
 
-  componentDidMount() {
-    this.getFeedData();
-  }
-
-  getFeedData = () => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(responseData, 'feed data');
-
-        this.props.dispatchUpsert(responseData);
-      })
-      .catch(console.warn)
-      .done();
+const mapStateToProps = ({ feed }) => ({ feed });
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatchUpsert: (data) => {
+      dispatch(upsertPosts(data));
+    }
   };
+};
 
-  render() {
-    return (
-      <View>
-        <FlatList data={this.props.feed} renderItem={({ item }) => <Text style={styles.item}>{item.title}</Text>} />
-      </View>
-    );
-  }
-}
-
-export default Feed;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Feed);

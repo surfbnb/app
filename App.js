@@ -7,17 +7,14 @@ import {
 } from 'react-navigation';
 
 import AuthLoading from './src/components/AuthLoading';
-import AuthScreen from './src/components/Authentication/authReduxHandler';
-import Users from './src/components/Users/usersReduxHandler';
+import AuthScreen from './src/components/Authentication';
+import Users from './src/components/Users';
 import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';
 import Settings from './src/components/Settings';
 import LogoutComponent from './src/components/LogoutLink';
-import SettingsIcon from './src/assets/settings_icon_selected.png';
-import UsersIcon from './src/assets/user_icon_selected.png';
-import FeedIcon from './src/assets/wallet_icon_selected.png';
 import CustomTab from './src/components/CustomTab';
-import Feed from './src/components/Feed/feedReduxHandler';
+import Feed from './src/components/Feed';
 
 const HomeScreen = createBottomTabNavigator(
   {
