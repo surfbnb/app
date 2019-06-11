@@ -240,10 +240,10 @@ class AuthScreen extends Component {
         >
           <View style={modalStyles.modalBackground}>
             <View style={modalStyles.activityIndicatorWrapper}>
-              <Text style={{ fontSize: 18 }}>
+              <ActivityIndicator size="large" color="#168dc1" />
+              <Text style={{ fontSize: 18, marginTop: 20, }}>
                 {this.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}{' '}
               </Text>
-              <ActivityIndicator size="small" color="#00ff00" />
             </View>
           </View>
         </Modal>
@@ -262,12 +262,12 @@ const modalStyles = StyleSheet.create({
   },
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',
-    height: 100,
-    width: 100,
-    borderRadius: 10,
+    height: 128,
+    width: 215,
+    borderRadius: 2,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'center'
   }
 });
 
