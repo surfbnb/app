@@ -19,8 +19,8 @@ export default class CustomModal extends Component {
         >
           <View style={modalStyles.modalBackground}>
             <View style={modalStyles.activityIndicatorWrapper}>
-              <Text style={{ fontSize: 18 }}>{this.props.loadingText}</Text>
-              <ActivityIndicator size="small" color="#00ff00" />
+              <ActivityIndicator size="large" color="#168dc1" />
+              <Text style={{ fontSize: 18, marginTop: 20 }}>{this.props.loadingText}</Text>
             </View>
           </View>
         </Modal>

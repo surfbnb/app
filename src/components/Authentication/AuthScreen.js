@@ -233,7 +233,7 @@ class AuthScreen extends Component {
         </View>
         <CustomModal
           show={this.state.isLoginIn}
-          loadingText={this.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}
+          loadingText={this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}
         />
       </View>
     );
