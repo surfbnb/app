@@ -216,7 +216,7 @@ class AuthScreen extends Component {
             </React.Fragment>
           )}
         </View>
-        <CustomModal
+        <LoadingModal
           show={this.state.isLoginIn}
           loadingText={this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}
         />
@@ -234,10 +234,6 @@ class AuthScreen extends Component {
             </TouchableOpacity>
           )}
         </View>
-        <LoadingModal
-          show={this.state.isLoginIn}
-          loadingText={this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin}
-        />
       </View>
     );
   }
