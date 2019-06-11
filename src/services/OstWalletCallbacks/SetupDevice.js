@@ -1,11 +1,5 @@
-import FormData from 'form-data';
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { API_ROOT } from './../../constants';
-
-import store from '../../store';
-import { updateDeviceRegistered } from '../../actions';
-
-const formData = new FormData();
 
 class SetupDevice extends OstWalletWorkFlowCallback {
   constructor() {
