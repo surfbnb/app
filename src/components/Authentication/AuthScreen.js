@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image , Keyboard} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import PepoApi from '../../services/PepoApi';
@@ -229,6 +229,8 @@ class AuthScreen extends Component {
                 value={this.state.first_name}
                 style={Theme.TextInput.textInputStyle}
                 placeholder="First Name"
+                returnKeyType="next"
+                returnKeyLabel="next"
               />
               <Text style={Theme.Errors.errorText}>{this.state.first_name_error}</Text>
 
@@ -240,6 +242,8 @@ class AuthScreen extends Component {
                 value={this.state.last_name}
                 style={Theme.TextInput.textInputStyle}
                 placeholder="Last Name"
+                returnKeyType="next"
+                returnKeyLabel="next"
               />
               <Text style={Theme.Errors.errorText}>{this.state.last_name_error}</Text>
 
@@ -254,6 +258,8 @@ class AuthScreen extends Component {
             value={this.state.user_name}
             style={Theme.TextInput.textInputStyle}
             placeholder="Username"
+            returnKeyType="next"
+            returnKeyLabel="next"
           />
           <Text style={Theme.Errors.errorText}>{this.state.user_name_error}</Text>
 
@@ -266,6 +272,8 @@ class AuthScreen extends Component {
             secureTextEntry={true}
             style={Theme.TextInput.textInputStyle}
             value={this.state.password}
+            returnKeyType="done"
+            returnKeyLabel="done"
           />
           <Text style={Theme.Errors.errorText}>{this.state.password_error}</Text>
 
