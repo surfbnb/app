@@ -36,6 +36,7 @@ let stylesMap = {
   imgPepoLogoSkipFont: {
     height: 70,
     width: 150,
+    marginBottom: 20,
     alignSelf: 'center'
   },
   bottomBtnAndTxt: {
