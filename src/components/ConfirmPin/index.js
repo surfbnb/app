@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Alert, Text } from 'react-native';
+import { View, Alert, Text, Linking } from 'react-native';
 import LoadingModal from '../LoadingModal';
 import Store from "../../store"; 
 import { showModal, hideModal } from '../../actions';
@@ -34,7 +34,7 @@ export default class ConfirmPin extends Component {
 
   render() {
     return (
-      <View style={{ marginTop: 25, paddingLeft: 50, paddingRight: 50, fontWeight: '300' }}>
+      <View style={{ marginTop: 25,flex:1, paddingLeft: 50, paddingRight: 50, fontWeight: '300' }}>
         <Text style={{textAlign: 'center', color: 'rgb(16, 16, 16)', fontSize: 15, lineHeight: 22, fontWeight: '300', marginBottom:20}}>
           If you forget your PIN, you cannot recover your Wallet. So please be sure to remember it.
         </Text>
@@ -42,6 +42,16 @@ export default class ConfirmPin extends Component {
           onPinChange={this.onPinChange}
         />
          <LoadingModal />
+         <Text style={{textAlign:'center', alignSelf:'flex-end', marginBottom:8, fontSize:12, fontWeight:'300' }}>
+           By Creating Your Wallet, you Agree to our
+           <Text style={{fontWeight:'500'}} onPress={() => Linking.openURL('http://google.com')}> Terms of Service </Text>  
+           and 
+           <Text style={{fontWeight:'500'}} onPress={() => Linking.openURL('http://google.com')}> Privacy Policy </Text> 
+        </Text>
+        
+        
+        
+       
       </View>
     );
   }
