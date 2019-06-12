@@ -14,7 +14,7 @@ export default class ConfirmPin extends Component {
 
   onPinChange = (pin) => {
     if (pin === this.props.navigation.getParam('pin', '')) {
-      Store.dispatch(showModal('Activatig User...'));
+      Store.dispatch(showModal('Activating User...'));
       ActivateUser.activateUser(pin, this);
     } else {
       Alert.alert('', 'Incorrect Pin');
