@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image , Keyboard} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import PepoApi from '../../services/PepoApi';
@@ -10,7 +10,7 @@ import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
 import deepGet from 'lodash/get';
 import LoadingModal from '../LoadingModal';
-import ErrorMessages from "../../constants/ErrorMessages";
+import ErrorMessages from '../../constants/ErrorMessages';
 import { showModal, hideModal } from '../../actions';
 
 const userStatusMap = {
@@ -22,12 +22,18 @@ const signUpLoginTestMap = {
   signin: 'Login in...'
 };
 
-let userStatus = "";
+let userStatus = '';
 
 class AuthScreen extends Component {
   constructor(props) {
     super(props);
-    this.defaults = {general_error : null , last_name_error : null , first_name_error: null , password_error: null, user_name_error: null}
+    this.defaults = {
+      general_error: null,
+      last_name_error: null,
+      first_name_error: null,
+      password_error: null,
+      user_name_error: null
+    };
     this.state = {
       first_name: null,
       last_name: null,
@@ -48,73 +54,75 @@ class AuthScreen extends Component {
     }
   }
 
-  validateLoginInput(){
-    let isValid = true ;
-    if( !this.state.user_name ){
-      this.setState(  {user_name_error : ErrorMessages.user_name });
-      isValid = false ;
+  validateLoginInput() {
+    let isValid = true;
+    if (!this.state.user_name) {
+      this.setState({ user_name_error: ErrorMessages.user_name });
+      isValid = false;
     }
 
-    if( !this.state.password ){
-      this.setState(  {
-        password_error : ErrorMessages.password }
-      );
-      isValid = false ;
-    }
-
-    return isValid ;
-  }
-
-  validateSignInInput(){
-    let isValid = true ;
-
-    if( !this.validateLoginInput() ){
-      isValid = false ;
-    }
-
-    if( !this.state.first_name ){
+    if (!this.state.password) {
       this.setState({
-       first_name_error : ErrorMessages.first_name }
-      );
-      isValid = false ;
+        password_error: ErrorMessages.password
+      });
+      isValid = false;
     }
 
-    if( !this.state.last_name ){
-      this.setState( {
-        last_name_error : ErrorMessages.last_name }
-      );
-      isValid = false ;
-    }
-
-    return isValid ;
+    return isValid;
   }
 
-  isValidInputs(){
-    if( this.state.signup ){
+  validateSignInInput() {
+    let isValid = true;
+
+    if (!this.validateLoginInput()) {
+      isValid = false;
+    }
+
+    if (!this.state.first_name) {
+      this.setState({
+        first_name_error: ErrorMessages.first_name
+      });
+      isValid = false;
+    }
+
+    if (!this.state.last_name) {
+      this.setState({
+        last_name_error: ErrorMessages.last_name
+      });
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  isValidInputs() {
+    if (this.state.signup) {
       return this.validateSignInInput();
-    }else{
+    } else {
       return this.validateLoginInput();
     }
   }
 
-  clearError(){
+  clearError() {
     this.setState(this.defaults);
   }
-  
-  
+
+  setFocus(ref) {
+    this.refs[ref].focus();
+  }
+
   signin() {
     this.clearError();
-    
-    if(!this.isValidInputs() ){
-      return ;
+
+    if (!this.isValidInputs()) {
+      return;
     }
-  
-    this.props.dispatch(showModal( this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin));
-  
+
+    this.props.dispatch(showModal(this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin));
+
     let authApi = new PepoApi(this.state.signup ? '/auth/sign-up' : '/auth/login');
     let userSaltApi = new PepoApi('/users/recovery-info');
-  
-  
+
     authApi
       .setNavigate(this.props.navigation.navigate)
       .post(JSON.stringify(this.state))
@@ -125,57 +133,57 @@ class AuthScreen extends Component {
 
           if (!userData) {
             this.props.dispatch(hideModal());
-            this.setState( {
+            this.setState({
               general_error: ErrorMessages.user_not_found
             });
             return;
           }
-  
+
           userSaltApi
             .setNavigate(this.props.navigation.navigate)
             .get()
             .then(async (res) => {
-            if (res.success && res.data) {
-              let resultType = deepGet(res, 'data.result_type'),
-                userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
+              if (res.success && res.data) {
+                let resultType = deepGet(res, 'data.result_type'),
+                  userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
 
-              if (!userSalt) {
-                this.props.dispatch(hideModal());
-                this.setState( {
-                  general_error: ErrorMessages.user_not_found
+                if (!userSalt) {
+                  this.props.dispatch(hideModal());
+                  this.setState({
+                    general_error: ErrorMessages.user_not_found
+                  });
+                  return;
+                }
+
+                this.saveItem(
+                  'user',
+                  JSON.stringify({
+                    user_details: userData,
+                    user_pin_salt: userSalt
+                  })
+                ).then(() => {
+                  userStatus = (userData && userData['ost_status']) || '';
+                  InitWalletSdk.initializeDevice(this);
                 });
-                return;
+              } else {
+                this.props.dispatch(hideModal());
+                this.onServerError(res);
               }
-
-              this.saveItem(
-                'user',
-                JSON.stringify({
-                  user_details: userData,
-                  user_pin_salt: userSalt
-                })
-              ).then(() => {
-                userStatus = userData && userData['ost_status'] || '';
-                InitWalletSdk.initializeDevice( this );
-              });
-            } else {
-              this.props.dispatch(hideModal());
-              this.onServerError( res );
-            }
-          });
+            });
         } else {
           this.props.dispatch(hideModal());
-          this.onServerError( res );
+          this.onServerError(res);
         }
       })
       .catch((err) => {
         this.props.dispatch(hideModal());
-        this.onServerError( res );
+        this.onServerError(res);
       });
   }
-  
+
   setupDeviceComplete(ostWorkflowContext, ostContextEntity) {
-    console.log("setup devices complete ostWorkflowContext" , ostWorkflowContext );
-    console.log("setup devices complete ostContextEntity " , ostContextEntity );
+    console.log('setup devices complete ostWorkflowContext', ostWorkflowContext);
+    console.log('setup devices complete ostContextEntity ', ostContextEntity);
     this.props.dispatch(hideModal());
     if (userStatus.toLowerCase() === userStatusMap.activated) {
       this.props.navigation.navigate('HomeScreen');
@@ -185,31 +193,29 @@ class AuthScreen extends Component {
   }
 
   setupDeviceFailed(ostWorkflowContext, ostError) {
-    console.log("setup devices complete ostWorkflowContext", ostWorkflowContext);
-    console.log("setup devices complete ostError ", ostError);
-    const errorMessage = ostError && ostError.getErrorMessage() || ErrorMessages.general_error;
+    console.log('setup devices complete ostWorkflowContext', ostWorkflowContext);
+    console.log('setup devices complete ostError ', ostError);
+    const errorMessage = (ostError && ostError.getErrorMessage()) || ErrorMessages.general_error;
     this.props.dispatch(hideModal());
-    this.setState({general_error: errorMessage});
+    this.setState({ general_error: errorMessage });
   }
-  
-  onServerError( res ){
-    const errorData = deepGet( res , "err.error_data"),
-      errorMsg =  deepGet( res , "err.msg") || ErrorMessages.general_error
-    ;
-    if( errorData ){
-      for( let cnt = 0 ;  cnt < errorData.length ;  cnt++ ){
-        let parameter = errorData[cnt]['parameter'] ,
-          errorParameterName = parameter + "_error",
-          msg = errorData[cnt]['msg']
-        ;
-        if( this.state[parameter] || this.state[parameter] == null ){
+
+  onServerError(res) {
+    const errorData = deepGet(res, 'err.error_data'),
+      errorMsg = deepGet(res, 'err.msg') || ErrorMessages.general_error;
+    if (errorData) {
+      for (let cnt = 0; cnt < errorData.length; cnt++) {
+        let parameter = errorData[cnt]['parameter'],
+          errorParameterName = parameter + '_error',
+          msg = errorData[cnt]['msg'];
+        if (this.state[parameter] || this.state[parameter] == null) {
           let tempObj = {};
-          tempObj[errorParameterName] = msg ;
+          tempObj[errorParameterName] = msg;
           this.setState(tempObj);
         }
       }
-    }else{
-      this.setState({general_error ,  errorMsg });
+    } else {
+      this.setState({ general_error, errorMsg });
     }
   }
 
@@ -221,10 +227,9 @@ class AuthScreen extends Component {
           <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
           {this.state.signup && (
             <React.Fragment>
-            
               <TextInput
                 editable={true}
-                onChangeText={(first_name) => this.setState({ first_name, error: null , first_name_error: null})}
+                onChangeText={(first_name) => this.setState({ first_name, error: null, first_name_error: null })}
                 ref="first_name"
                 returnKeyType="next"
                 value={this.state.first_name}
@@ -237,7 +242,7 @@ class AuthScreen extends Component {
 
               <TextInput
                 editable={true}
-                onChangeText={(last_name) => this.setState({ last_name, error: null , last_name_error: null})}
+                onChangeText={(last_name) => this.setState({ last_name, error: null, last_name_error: null })}
                 ref="last_name"
                 returnKeyType="next"
                 value={this.state.last_name}
@@ -247,13 +252,12 @@ class AuthScreen extends Component {
                 returnKeyLabel="next"
               />
               <Text style={Theme.Errors.errorText}>{this.state.last_name_error}</Text>
-
             </React.Fragment>
           )}
 
           <TextInput
             editable={true}
-            onChangeText={(user_name) => this.setState({ user_name, error: null , user_name_error : null})}
+            onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
             ref="user_name"
             returnKeyType="next"
             value={this.state.user_name}
@@ -261,17 +265,18 @@ class AuthScreen extends Component {
             placeholder="Username"
             returnKeyType="next"
             returnKeyLabel="next"
+            autoFocus={true}
           />
           <Text style={Theme.Errors.errorText}>{this.state.user_name_error}</Text>
 
           <TextInput
             editable={true}
-            onChangeText={(password) => this.setState({ password, error: null , password_error: null  })}
+            onChangeText={(password) => this.setState({ password, error: null, password_error: null })}
             placeholder="Password"
             ref="password"
             returnKeyType="next"
             secureTextEntry={true}
-            style={[Theme.TextInput.textInputStyle , this.state.password_error ? Theme.Errors.errorBorder : {}]}
+            style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
             value={this.state.password}
             returnKeyType="done"
             returnKeyLabel="done"
@@ -299,18 +304,26 @@ class AuthScreen extends Component {
               />
             </React.Fragment>
           )}
-           <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
+          <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
         </View>
         <LoadingModal />
         <View style={styles.bottomBtnAndTxt}>
           {!this.state.signup && (
-            <TouchableOpacity onPress={() => this.setState({ signup: true, error: null, ...this.defaults })}>
+            <TouchableOpacity
+              onPress={() =>
+                this.setState({ signup: true, error: null, ...this.defaults }, this.setFocus.bind(this, 'first_name'))
+              }
+            >
               <Text style={styles.label}>Don't have an account?</Text>
               <Text style={styles.link}>Create Account</Text>
             </TouchableOpacity>
           )}
           {this.state.signup && (
-            <TouchableOpacity onPress={() => this.setState({ signup: false, error: null, ...this.defaults })}>
+            <TouchableOpacity
+              onPress={() =>
+                this.setState({ signup: false, error: null, ...this.defaults }, this.setFocus.bind(this, 'user_name'))
+              }
+            >
               <Text style={styles.label}>Already have an account?</Text>
               <Text style={styles.link}>Log In</Text>
             </TouchableOpacity>
