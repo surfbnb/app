@@ -221,13 +221,14 @@ class AuthScreen extends Component {
           <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
           {this.state.signup && (
             <React.Fragment>
+            
               <TextInput
                 editable={true}
                 onChangeText={(first_name) => this.setState({ first_name, error: null })}
                 ref="first_name"
                 returnKeyType="next"
                 value={this.state.first_name}
-                style={Theme.TextInput.textInputStyle}
+                style={[Theme.TextInput.textInputStyle, this.state.first_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="First Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
@@ -240,7 +241,7 @@ class AuthScreen extends Component {
                 ref="last_name"
                 returnKeyType="next"
                 value={this.state.last_name}
-                style={Theme.TextInput.textInputStyle}
+                style={[Theme.TextInput.textInputStyle, this.state.last_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="Last Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
@@ -256,7 +257,7 @@ class AuthScreen extends Component {
             ref="user_name"
             returnKeyType="next"
             value={this.state.user_name}
-            style={Theme.TextInput.textInputStyle}
+            style={[Theme.TextInput.textInputStyle, this.state.user_name_error ? Theme.Errors.errorBorder : {}]}
             placeholder="Username"
             returnKeyType="next"
             returnKeyLabel="next"
@@ -270,7 +271,7 @@ class AuthScreen extends Component {
             ref="password"
             returnKeyType="next"
             secureTextEntry={true}
-            style={Theme.TextInput.textInputStyle}
+            style={[Theme.TextInput.textInputStyle , this.state.password_error ? Theme.Errors.errorBorder : {}]}
             value={this.state.password}
             returnKeyType="done"
             returnKeyLabel="done"
