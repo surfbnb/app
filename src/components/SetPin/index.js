@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View , Text} from 'react-native';
+import { View , Text, Linking} from 'react-native';
 import PinInput from '../PinInput';
 
 export default class SetPin extends Component {
