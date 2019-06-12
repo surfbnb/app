@@ -224,7 +224,7 @@ class AuthScreen extends Component {
             
               <TextInput
                 editable={true}
-                onChangeText={(first_name) => this.setState({ first_name, error: null })}
+                onChangeText={(first_name) => this.setState({ first_name, error: null , first_name_error: null})}
                 ref="first_name"
                 returnKeyType="next"
                 value={this.state.first_name}
@@ -237,7 +237,7 @@ class AuthScreen extends Component {
 
               <TextInput
                 editable={true}
-                onChangeText={(last_name) => this.setState({ last_name, error: null })}
+                onChangeText={(last_name) => this.setState({ last_name, error: null , last_name_error: null})}
                 ref="last_name"
                 returnKeyType="next"
                 value={this.state.last_name}
@@ -253,7 +253,7 @@ class AuthScreen extends Component {
 
           <TextInput
             editable={true}
-            onChangeText={(user_name) => this.setState({ user_name, error: null })}
+            onChangeText={(user_name) => this.setState({ user_name, error: null , user_name_error : null})}
             ref="user_name"
             returnKeyType="next"
             value={this.state.user_name}
@@ -266,7 +266,7 @@ class AuthScreen extends Component {
 
           <TextInput
             editable={true}
-            onChangeText={(password) => this.setState({ password, error: null })}
+            onChangeText={(password) => this.setState({ password, error: null , password_error: null  })}
             placeholder="Password"
             ref="password"
             returnKeyType="next"
