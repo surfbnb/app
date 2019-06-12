@@ -2,15 +2,15 @@ import DefaultStyleGenerator from "./DefaultStyleGenerator";
 
 let styles = {
   textInputStyle: {
-    borderColor: '#E9E9E9',
-    borderWidth: 1.5,
-    borderRadius: 8,
-    fontSize: 14,
+    borderColor: '#afafaf',
+    borderWidth: 1,
+    borderRadius: 6,
+    fontSize: 17,
     fontWeight: '300',
     padding: 5,
     paddingLeft: 15,
     marginTop: 10,
-    color: 'rgb(0, 0, 0)',
+    color: '#484848',
     height: 46
   }
 };

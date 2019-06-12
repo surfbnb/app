@@ -2,7 +2,7 @@ import DefaultStyleGenerator from './DefaultStyleGenerator';
 
 let styles = {
   btn: {
-    borderRadius: 8,
+    borderRadius: 6,
     borderWidth: 1,
     padding: 12
   },
