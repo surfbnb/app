@@ -1,36 +1,35 @@
 import { StyleSheet } from 'react-native';
 
 export default styles = StyleSheet.create({
-container : { 
-    marginTop: 25,
-    flex:1,
-    paddingLeft: 50, 
-    paddingRight: 50, 
-    fontWeight: '300' 
+container : {
+  marginTop: 25,
+  paddingLeft: 50,
+  paddingRight: 50,
+  fontWeight: '300',
+  alignItems: 'center',
+  flex: 1,
+  justifyContent: 'space-between'
 },
-confirmPinInfoText: {
-    textAlign: 'center', 
-    color: 'rgb(16, 16, 16)', 
-    fontSize: 15, 
-    lineHeight: 22, 
-    fontWeight: '300', 
-    marginBottom:20
+setPinInfoText: {
+  textAlign: 'center',
+  color: '#848484',
+  fontSize: 15,
+  lineHeight: 22,
+  fontWeight: '300',
+  marginBottom: 20
 },
 termsPoliciesInfoText : {
-    flexDirection:'row', 
-    alignSelf:'center', 
-    marginBottom:5, 
-    fontSize:12, 
-    fontWeight:'300', 
-    color: 'rgb(136, 136, 136)' 
+  alignSelf: 'center',
+  marginBottom: 5,
+  fontSize: 12,
+  fontWeight: '300',
+  color: 'rgb(136, 136, 136)'
 },
 termsPoliciesLinkText : {
-    flexDirection:'row', 
-    alignSelf:'center', 
-    marginBottom:15, 
-    fontSize:12, 
-    fontWeight:'500', 
-    color: 'rgb(136, 136, 136)' 
+  alignSelf: 'center',
+  marginBottom: 15,
+  fontSize: 12,
+  color: '#3296d0'
 }
 
 })

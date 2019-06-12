@@ -37,25 +37,10 @@ export default class ConfirmPin extends Component {
     return (
       <View style={{ flex: 1 }}>
         <View
-          style={{
-            marginTop: 25,
-            paddingLeft: 50,
-            paddingRight: 50,
-            fontWeight: '300',
-            alignItems: 'center',
-            flex: 1,
-            justifyContent: 'space-between'
-          }}
+          style={inlineStyles.container}
         >
           <Text
-            style={{
-              textAlign: 'center',
-              color: '#848484',
-              fontSize: 15,
-              lineHeight: 22,
-              fontWeight: '300',
-              marginBottom: 20
-            }}
+            style={inlineStyles.confirmPinInfoText}
           >
             If you forget your PIN, you cannot recover your Wallet. So please be sure to remember it.
           </Text>
@@ -66,17 +51,11 @@ export default class ConfirmPin extends Component {
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={keyboardVerticalOffset}>
           <View>
             <Text
-              style={{
-                alignSelf: 'center',
-                marginBottom: 5,
-                fontSize: 12,
-                fontWeight: '300',
-                color: 'rgb(136, 136, 136)'
-              }}
+              style={inlineStyles.termsPoliciesInfoText}
             >
               By Creating Your Wallet, you Agree to our
             </Text>
-            <Text style={{ alignSelf: 'center', marginBottom: 15, fontSize: 12, color: '#3296d0' }}>
+            <Text style={inlineStyles.termsPoliciesLinkText}>
               <Text onPress={() => Linking.openURL('http://google.com')}> Terms of Service </Text>
               <Text style={{ fontWeight: '300', color: '#484848' }}>and</Text>
               <Text onPress={() => Linking.openURL('http://google.com')}> Privacy Policy </Text>
