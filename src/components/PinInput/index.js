@@ -29,7 +29,6 @@ export default class PinInput extends Component {
   render() {
     return (
       <View style={inlineStyles.container}>
-        <Text style={inlineStyles.displayTextStyle}>{this.props.displayText}</Text>
         <SmoothPinCodeInput
           codeLength={6}
           autoFocus={this.state.isFocus}
@@ -38,7 +37,6 @@ export default class PinInput extends Component {
             borderColor: '#A9A9A9',
             backgroundColor: '#A9A9A9',
             borderRadius: 24,
-            borderWidth: 1,
             overflow: 'hidden'
           }}
           cellSpacing={30}
@@ -46,10 +44,9 @@ export default class PinInput extends Component {
             borderColor: '#A9A9A9'
           }}
           textStyle={{
-            borderColor: '#61b2d6',
-            backgroundColor: '#61b2d6',
+            backgroundColor: '#9accd7',
             fontSize: 30,
-            color: '#61b2d6'
+            color: '#9accd7'
           }}
           textStyleFocused={{}}
           value={this.state.pin}
