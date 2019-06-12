@@ -299,6 +299,7 @@ class AuthScreen extends Component {
               />
             </React.Fragment>
           )}
+           <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
         </View>
         <LoadingModal />
         <View style={styles.bottomBtnAndTxt}>
@@ -314,8 +315,6 @@ class AuthScreen extends Component {
               <Text style={styles.link}>Log In</Text>
             </TouchableOpacity>
           )}
-
-          <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
         </View>
       </View>
     );
