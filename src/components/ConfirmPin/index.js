@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Alert, Text, Linking, KeyboardAvoidingView } from 'react-native';
+import {View, Alert, Text, Linking, KeyboardAvoidingView, Platform} from 'react-native';
 import LoadingModal from '../LoadingModal';
 import Store from '../../store';
 import { showModal, hideModal } from '../../actions';
@@ -33,8 +33,9 @@ export default class ConfirmPin extends Component {
   }
 
   render() {
+    const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : -500;
     return (
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <View
           style={{
             marginTop: 25,
@@ -62,29 +63,27 @@ export default class ConfirmPin extends Component {
           <LoadingModal />
         </View>
 
-        <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
+        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={keyboardVerticalOffset}>
           <View>
-            <View>
-              <Text
-                style={{
-                  alignSelf: 'center',
-                  marginBottom: 5,
-                  fontSize: 12,
-                  fontWeight: '300',
-                  color: 'rgb(136, 136, 136)'
-                }}
-              >
-                By Creating Your Wallet, you Agree to our
-              </Text>
-            </View>
+            <Text
+              style={{
+                alignSelf: 'center',
+                marginBottom: 5,
+                fontSize: 12,
+                fontWeight: '300',
+                color: 'rgb(136, 136, 136)'
+              }}
+            >
+              By Creating Your Wallet, you Agree to our
+            </Text>
             <Text style={{ alignSelf: 'center', marginBottom: 15, fontSize: 12, color: '#3296d0' }}>
               <Text onPress={() => Linking.openURL('http://google.com')}> Terms of Service </Text>
               <Text style={{ fontWeight: '300', color: '#484848' }}>and</Text>
               <Text onPress={() => Linking.openURL('http://google.com')}> Privacy Policy </Text>
             </Text>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </View>
     );
   }
 }
