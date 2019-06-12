@@ -237,6 +237,7 @@ class AuthScreen extends Component {
                 placeholder="First Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
+                placeholderTextColor="#ababab"
               />
               <Text style={Theme.Errors.errorText}>{this.state.first_name_error}</Text>
 
@@ -250,6 +251,7 @@ class AuthScreen extends Component {
                 placeholder="Last Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
+                placeholderTextColor="#ababab"
               />
               <Text style={Theme.Errors.errorText}>{this.state.last_name_error}</Text>
             </React.Fragment>
@@ -266,6 +268,7 @@ class AuthScreen extends Component {
             returnKeyType="next"
             returnKeyLabel="next"
             autoFocus={true}
+            placeholderTextColor="#ababab"
           />
           <Text style={Theme.Errors.errorText}>{this.state.user_name_error}</Text>
 
@@ -280,6 +283,7 @@ class AuthScreen extends Component {
             value={this.state.password}
             returnKeyType="done"
             returnKeyLabel="done"
+            placeholderTextColor="#ababab"
           />
           <Text style={Theme.Errors.errorText}>{this.state.password_error}</Text>
 

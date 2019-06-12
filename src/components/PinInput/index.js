@@ -45,7 +45,7 @@ export default class PinInput extends Component {
           }}
           textStyle={{
             fontSize: 30,
-            color: '#9accd7',
+            color: '#ef5566',
             marginTop: (Platform.OS == 'ios') ? -10 : -5 ,
             marginLeft: (Platform.OS === 'ios') ? -1 : -2.5,
           }}
