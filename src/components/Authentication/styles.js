@@ -1,4 +1,4 @@
-import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 
 let stylesMap = {
   container: {

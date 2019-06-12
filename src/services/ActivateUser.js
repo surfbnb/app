@@ -4,9 +4,8 @@ import ActivateUserWorkflow from './OstWalletCallbacks/ActivateUserWorkflow';
 import { SESSION_KEY_EXPIRY_TIME } from '../constants';
 import { SPENDING_LIMIT } from '../constants';
 
-
 class ActivateUser {
-  activateUser(pin , delegate) {
+  activateUser(pin, delegate) {
     AsyncStorage.getItem('user').then((user) => {
       user = JSON.parse(user);
       OstWalletSdk.activateUser(
@@ -15,7 +14,7 @@ class ActivateUser {
         user.user_pin_salt,
         SESSION_KEY_EXPIRY_TIME,
         SPENDING_LIMIT,
-        new ActivateUserWorkflow( delegate )
+        new ActivateUserWorkflow(delegate)
       );
     });
   }

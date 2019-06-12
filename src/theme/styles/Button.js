@@ -16,7 +16,7 @@ let styles = {
   },
   btnPrimaryText: {
     color: 'rgb(255, 255, 255)',
-    fontFamily: "Lato-Bold"
+    fontFamily: 'Lato-Bold'
   },
   btnSecondary: {
     backgroundColor: '#ffffff',
@@ -30,6 +30,4 @@ let styles = {
   }
 };
 
-
-
-export default (Buttons = DefaultStyleGenerator.generate(styles));
+export default Buttons = DefaultStyleGenerator.generate(styles);
