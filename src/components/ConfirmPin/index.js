@@ -35,7 +35,7 @@ export default class ConfirmPin extends Component {
   render() {
     return (
       <View style={{ marginTop: 25, paddingLeft: 50, paddingRight: 50, fontWeight: '300' }}>
-        <Text style={{textAlign: 'center', color: 'rgb(16, 16, 16)', fontSize: 16, lineHeight: 22}}>
+        <Text style={{textAlign: 'center', color: 'rgb(16, 16, 16)', fontSize: 15, lineHeight: 22, fontWeight: '300', marginBottom:20}}>
           If you forget your PIN, you cannot recover your Wallet. So please be sure to remember it.
         </Text>
         <PinInput
