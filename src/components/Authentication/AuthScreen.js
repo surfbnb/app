@@ -231,7 +231,7 @@ class AuthScreen extends Component {
                 editable={true}
                 onChangeText={(first_name) => this.setState({ first_name, error: null, first_name_error: null })}
                 ref="first_name"
-                returnKeyType="next"
+                textContentType = "none"
                 value={this.state.first_name}
                 style={[Theme.TextInput.textInputStyle, this.state.first_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="First Name"
@@ -245,7 +245,7 @@ class AuthScreen extends Component {
                 editable={true}
                 onChangeText={(last_name) => this.setState({ last_name, error: null, last_name_error: null })}
                 ref="last_name"
-                returnKeyType="next"
+                textContentType = "none"
                 value={this.state.last_name}
                 style={[Theme.TextInput.textInputStyle, this.state.last_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="Last Name"
@@ -261,10 +261,10 @@ class AuthScreen extends Component {
             editable={true}
             onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
             ref="user_name"
-            returnKeyType="next"
             value={this.state.user_name}
             style={[Theme.TextInput.textInputStyle, this.state.user_name_error ? Theme.Errors.errorBorder : {}]}
             placeholder="Username"
+            textContentType = "none"
             returnKeyType="next"
             returnKeyLabel="next"
             autoFocus={true}
@@ -277,7 +277,6 @@ class AuthScreen extends Component {
             onChangeText={(password) => this.setState({ password, error: null, password_error: null })}
             placeholder="Password"
             ref="password"
-            returnKeyType="next"
             secureTextEntry={true}
             style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
             value={this.state.password}

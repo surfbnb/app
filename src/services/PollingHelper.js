@@ -2,21 +2,26 @@ import PepoApi from './PepoApi';
 
 export default class PollingHellper {
 
-    constructor(api , method , params , body ){
-        this.pollingApi = api ;
-        this.pollingMethod =  method || 'GET' ;
-        this.pollingMethod = this.pollingMethod.toLowerCase();
-        this.params  = params || null  ;
-        this.body = body || null ; 
+    constructor( config ){
+        this.pollingApi = config.pollingApi || null   ;
+        this.pollingMethod = config.pollingMethod ||  'GET'; 
+        this.params  =  config.params || null ;
+        this.body = config.body || null  ; 
 
-        this.pollPromise = null ;
-        this.pollingInterval =  2000 ;
+        this.successCallback = config.successCallback || null ;
+        this.errorCallback = config.errorCallback || null ; 
 
-        this.maxRetry =  5 ;
+        this.pollingInterval =  config.pollingInterval || 2000 ;
+        this.maxRetry = config.maxRetry ||  5 ;
+
         this.currentRetry= 0 ;
+        this.pollPromise = null ;
 
         this.isPolling =  false ; // To check if already polling
         this.shouldPoll =  false ; // To check for next polling
+
+        this.pollingMethod = this.pollingMethod.toLowerCase();
+        this.startPolling();
     }
 
     startPolling() {
@@ -31,33 +36,29 @@ export default class PollingHellper {
     }
 
     poll() {
+        var oThis = this; 
         if ( this.pollPromise ) {
           //Polling in progress 
           return false;
         }
         const pepoApi = new PepoApi( this.pollingApi , this.params ) ; 
-        this.pollPromise = pepoApi[this.method](this.body ).then( ( res )=> {
+        this.pollPromise = pepoApi[this.pollingMethod](this.body ).then( ( res )=> {
+            this.successCallback && this.successCallback(  res );  
             this.complete(); 
-            this.success( res );  
-        } ).catch(( error ) => {
-            this.complete(); 
+        } ).catch(( error ) => { 
             this.currentRetry++;
-            this.error( error );  
+            this.errorCallback && this.errorCallback( error );  
+            this.complete(); 
         }); 
         return true;
-    }
-
-    success( res ){
-        //overwrite
-    }
-
-    error( error){
-         //overwrite
     }
 
     complete(){
         pepoApi = null ;
         this.pollPromise = null ;  
+        if( !this.isMaxRetries() ){
+            this.scheduleNextPoll();
+        }
     }
 
     isMaxRetries() {
@@ -69,7 +70,7 @@ export default class PollingHellper {
             this.isPolling = false;
             return;
         }
-        setTimeout(function () {
+        setTimeout( () => {
             this.poll();
         }, this.pollingInterval );  
     }

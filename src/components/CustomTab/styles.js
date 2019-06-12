@@ -18,7 +18,7 @@ export default styles = StyleSheet.create({
     borderTopLeftRadius : 20,
     paddingBottom: 10,
     //android shadow
-    elevation   : 4,
+    elevation   : 8,
     //ios shadow
     // shadowOffset: { width: 10, height: 10 },
     // shadowColor: 'black',
