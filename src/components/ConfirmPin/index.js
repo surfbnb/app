@@ -42,16 +42,14 @@ export default class ConfirmPin extends Component {
           onPinChange={this.onPinChange}
         />
          <LoadingModal />
-         <Text style={{textAlign:'center', alignSelf:'flex-end', marginBottom:8, fontSize:12, fontWeight:'300' }}>
+        <Text style={{flexDirection:'row', alignSelf:'center', marginBottom:5, fontSize:12, fontWeight:'300', color: 'rgb(136, 136, 136)' }}>
            By Creating Your Wallet, you Agree to our
-           <Text style={{fontWeight:'500'}} onPress={() => Linking.openURL('http://google.com')}> Terms of Service </Text>  
-           and 
-           <Text style={{fontWeight:'500'}} onPress={() => Linking.openURL('http://google.com')}> Privacy Policy </Text> 
         </Text>
-        
-        
-        
-       
+        <Text style={{flexDirection:'row', alignSelf:'center', marginBottom:15, fontSize:12, fontWeight:'500', color: 'rgb(136, 136, 136)' }}>
+          <Text onPress={() => Linking.openURL('http://google.com')}> Terms of Service </Text>
+          <Text style={{fontWeight:'300',}}>and</Text>
+          <Text onPress={() => Linking.openURL('http://google.com')}> Privacy Policy </Text>
+        </Text>
       </View>
     );
   }
