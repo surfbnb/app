@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Platform } from 'react-native';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import inlineStyles from './styles';
 
@@ -41,17 +41,18 @@ export default class PinInput extends Component {
           }}
           cellSpacing={30}
           cellStyleFocused={{
-            borderColor: '#A9A9A9'
+            borderColor: '#A9A9A9',
           }}
           textStyle={{
-            backgroundColor: '#9accd7',
             fontSize: 30,
-            color: '#9accd7'
+            color: '#9accd7',
+            marginTop: (Platform.OS == 'ios') ? -10 : -5 ,
+            marginLeft: (Platform.OS === 'ios') ? -1 : -2.5,
           }}
           textStyleFocused={{}}
           value={this.state.pin}
           password
-          mask="o"
+          mask="●"
           onFulfill={this.props.onPinChange}
           onTextChange={(pin) => this.setState({ pin })}
         />
