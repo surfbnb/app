@@ -15,7 +15,7 @@ export default class SetPin extends Component {
   };
 
   render() {
-    const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : -100;
+    const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : -500;
     return (
       <View style={{ flex: 1 }}>
         <View
