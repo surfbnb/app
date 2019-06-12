@@ -1135,8 +1135,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/BigInt.framework",
@@ -1146,8 +1144,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/FMDB.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SipHash.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/OstWalletSdk.framework",
-			);
-			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
