@@ -8,7 +8,7 @@ export default styles = StyleSheet.create({
     bottom: 0,
     flex: 0,
     width: '100%',
-    height: 60,
+    height: 65,
     flexDirection: 'row',
     justifyContent: 'space-around',
     // position: 'relative',

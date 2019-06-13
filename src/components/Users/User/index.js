@@ -22,18 +22,18 @@ class Users extends Component {
             </Text>
           </View>
           {/*<View style={styles.btnWrapper}>*/}
-            {/*<TouchableButton*/}
-              {/*TouchableStyles={[Theme.Button.btnSecondary, styles.expressBtn]}*/}
-              {/*TextStyles={[Theme.Button.btnSecondaryText]}*/}
-              {/*text="Express"*/}
-              {/*onPress={() => {}}*/}
-            {/*/>*/}
-            {/*<TouchableButton*/}
-              {/*TouchableStyles={[Theme.Button.btnSecondary, styles.sendBtn]}*/}
-              {/*TextStyles={[Theme.Button.btnSecondaryText]}*/}
-              {/*text="Send"*/}
-              {/*onPress={() => {}}*/}
-            {/*/>*/}
+          {/*<TouchableButton*/}
+          {/*TouchableStyles={[Theme.Button.btnSecondary, styles.expressBtn]}*/}
+          {/*TextStyles={[Theme.Button.btnSecondaryText]}*/}
+          {/*text="Express"*/}
+          {/*onPress={() => {}}*/}
+          {/*/>*/}
+          {/*<TouchableButton*/}
+          {/*TouchableStyles={[Theme.Button.btnSecondary, styles.sendBtn]}*/}
+          {/*TextStyles={[Theme.Button.btnSecondaryText]}*/}
+          {/*text="Send"*/}
+          {/*onPress={() => {}}*/}
+          {/*/>*/}
           {/*</View>*/}
         </View>
       </View>
