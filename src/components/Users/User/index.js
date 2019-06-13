@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
 import styles from './styles';
-import TouchableButton from '../../../theme/components/TouchableButton';
-import Theme from '../../../theme/styles';
+// import TouchableButton from '../../../theme/components/TouchableButton';
+// import Theme from '../../../theme/styles';
 
 class Users extends Component {
   constructor(props) {
@@ -21,20 +21,20 @@ class Users extends Component {
               {this.props.user.first_name} {this.props.user.last_name}
             </Text>
           </View>
-          <View style={styles.btnWrapper}>
-            <TouchableButton
-              TouchableStyles={[Theme.Button.btnSecondary, styles.expressBtn]}
-              TextStyles={[Theme.Button.btnSecondaryText]}
-              text="Express"
-              onPress={() => {}}
-            />
-            <TouchableButton
-              TouchableStyles={[Theme.Button.btnSecondary, styles.sendBtn]}
-              TextStyles={[Theme.Button.btnSecondaryText]}
-              text="Send"
-              onPress={() => {}}
-            />
-          </View>
+          {/*<View style={styles.btnWrapper}>*/}
+            {/*<TouchableButton*/}
+              {/*TouchableStyles={[Theme.Button.btnSecondary, styles.expressBtn]}*/}
+              {/*TextStyles={[Theme.Button.btnSecondaryText]}*/}
+              {/*text="Express"*/}
+              {/*onPress={() => {}}*/}
+            {/*/>*/}
+            {/*<TouchableButton*/}
+              {/*TouchableStyles={[Theme.Button.btnSecondary, styles.sendBtn]}*/}
+              {/*TextStyles={[Theme.Button.btnSecondaryText]}*/}
+              {/*text="Send"*/}
+              {/*onPress={() => {}}*/}
+            {/*/>*/}
+          {/*</View>*/}
         </View>
       </View>
     );
