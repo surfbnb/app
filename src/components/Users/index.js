@@ -1,18 +1,7 @@
 import { connect } from 'react-redux';
 
 import Users from './UsersScreen';
-import { upsertUsers } from '../../actions';
 
-const mapStateToProps = ({ users }) => ({ users });
-const mapDispatchToProps = (dispatch) => {
-  return {
-    dispatchUpsert: (data) => {
-      dispatch(upsertUsers(data));
-    }
-  };
-};
+const mapStateToProps = ({ user_entities, user_list }) => ({ user_entities, user_list });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Users);
+export default connect(mapStateToProps)(Users);
