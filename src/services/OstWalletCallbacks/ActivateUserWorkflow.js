@@ -1,15 +1,37 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
-import PollingHellper from '../PollingHelper';
-import deepGet from 'lodash/get';
+import currentUserModal from "../../models/CurrentUser";
+import {Alert} from "react-native";
 
-const onUserStatusSuccess = function(res) {
-  const resultType = deepGet(res, 'data.result_type') ,
-        loginUser = deepGet(res, `data.${resultType}`) || {};
-  airDropStatus = loginUser.signup_airdrop_status;
-  if (airDropStatus == 1) {
-    this.shouldPoll = false;
-    //TODO dispatch event for TOAST display 
+
+const initiatePolling = () => {
+  let stopPolling =  false ,
+  currentRetry= 0 ,
+  maxRetry = 5
+  ; 
+  
+  const scheduleAirdropStatusPoll = function() {
+    if( stopPolling || currentRetry > maxRetry ) return ; 
+    longPollUser();
+  };
+  
+  const longPollUser = function(){
+    setTimeout( ()=> {
+      currentUserModal.sync()
+      .then( ( user ) => {
+        const airDropStatus = user && user.signup_airdrop_status; 
+        if( airDropStatus == 1 ){
+          stopPolling = true ; 
+          Alert.alert("User Activated", "TODO show airdrop toast!");
+        }
+      })
+      .catch( (error) => {
+          currentRetry++
+      })
+      .finally( scheduleAirdropStatusPoll );
+    }, 10000)
   }
+
+  scheduleAirdropStatusPoll();
 };
 
 class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
@@ -22,12 +44,7 @@ class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
   requestAcknowledged(ostWorkflowContext, ostContextEntity) {
     this.isRequestAcknowledge = true;
     this.delegate.onRequestAcknowledge(ostWorkflowContext, ostContextEntity);
-
-    new PollingHellper({
-      pollingApi: '/users/current',
-      successCallback: onUserStatusSuccess,
-      pollingInterval: 10000
-    });
+    initiatePolling();
   }
 
   flowComplete(ostWorkflowContext, ostContextEntity) {}
