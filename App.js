@@ -1,4 +1,5 @@
 import React from 'react';
+import {View} from 'react-native';
 import {
   createBottomTabNavigator,
   createStackNavigator,
@@ -123,12 +124,14 @@ const PinStack = createStackNavigator(
       navigationOptions: {
         headerTitle: 'Set Pin',
         headerTitleStyle: {
-          color: '#484848'
+          color: '#484848',
+          flex : 1,
+          textAlign: 'center'
         },
         headerStyle: {
           backgroundColor: '#ffffff'
         },
-        headerRight: <LogoutComponent />
+        // headerRight: <LogoutComponent />
       }
     },
     ConfirmPinScreen: {
@@ -136,12 +139,15 @@ const PinStack = createStackNavigator(
       navigationOptions: {
         headerTitle: 'Confirm Pin',
         headerTitleStyle: {
-          color: '#484848'
+          color: '#484848',
+          flex : 1,
+          textAlign: 'center'
         },
         headerStyle: {
           backgroundColor: '#ffffff'
         },
-        headerRight: <LogoutComponent />
+        headerRight:<View/>
+        // headerRight: <LogoutComponent />
       }
     }
   }
