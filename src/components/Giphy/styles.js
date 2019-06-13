@@ -16,9 +16,9 @@ export default styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height
   },
-  modalInner:{
+  modalInner: {
     backgroundColor: '#ffffff',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,

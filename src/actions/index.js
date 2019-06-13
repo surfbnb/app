@@ -39,3 +39,9 @@ export const upsertUserEntities = (data) => ({ type: types.UPSERT_USER_ENTITIES,
 export const addUserList = (data) => ({ type: types.ADD_USER_LIST, payload: { user_list: data } });
 
 export const logoutUser = () => ({ type: types.LOGOUT_USER });
+
+export const genericEvent = (eventName, payload) => ({
+    type: types.GENERIC_EVENT,
+    eventName: eventName,
+    payload
+});

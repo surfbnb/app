@@ -7,20 +7,20 @@ const initiatePolling = () => {
   let stopPolling =  false ,
   currentRetry= 0 ,
   maxRetry = 5
-  ; 
-  
+  ;
+
   const scheduleAirdropStatusPoll = function() {
-    if( stopPolling || currentRetry > maxRetry ) return ; 
+    if( stopPolling || currentRetry > maxRetry ) return ;
     longPollUser();
   };
-  
+
   const longPollUser = function(){
     setTimeout( ()=> {
       currentUserModal.sync()
       .then( ( user ) => {
-        const airDropStatus = user && user.signup_airdrop_status; 
+        const airDropStatus = user && user.signup_airdrop_status;
         if( airDropStatus == 1 ){
-          stopPolling = true ; 
+          stopPolling = true ;
           Alert.alert("User Activated", "TODO show airdrop toast!");
         }
       })
