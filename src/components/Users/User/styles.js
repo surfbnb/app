@@ -47,7 +47,7 @@ export default inlineStyles = StyleSheet.create({
   imageStyle :{
     backgroundColor : '#ef5566',
     marginRight:10,
-    borderRadius:50,
+    borderRadius:25,
     height : 50,
     width : 50
   }

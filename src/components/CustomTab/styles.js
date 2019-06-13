@@ -36,8 +36,14 @@ export default styles = StyleSheet.create({
   tabElement: {
     alignSelf: 'center',
     marginBottom: 3,
-    height: 20,
-    width: 20
+    height: 22,
+    width: 22
+  },
+  tabElementFriends: {
+    alignSelf: 'center',
+    marginBottom: 3,
+    height: 22,
+    width: 35
   }
   // overlayBtn: {
   //   position: 'absolute',
