@@ -61,18 +61,16 @@ class Giphy extends Component {
         </TouchableOpacity>
         {this.state.modalOpen && (
           <React.Fragment>
-            <View style={{ flexDirection: 'column', flex: 0.3 }}></View>
             <Modal
-              style={inlineStyles.modal}
               animationType="slide"
-              transparent={false}
+              transparent={true}
               visible={this.state.modalVisible}
               onRequestClose={() => {
                 this.closeModal();
               }}
             >
-              <View style={{ marginTop: 22 }}>
-                <View>
+              <View style={inlineStyles.modal}>
+                <View style={{ marginTop: 22 }}>
                   <Text>Hello World!</Text>
 
                   <TouchableHighlight

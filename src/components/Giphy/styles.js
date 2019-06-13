@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export default styles = StyleSheet.create({
   container: {
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 20,
+    paddingTop: 40,
     fontWeight: '300',
     alignItems: 'stretch',
     flex: 1,
@@ -12,8 +12,12 @@ export default styles = StyleSheet.create({
   },
   modal: {
     position: 'absolute',
-    top: 30,
-    marginTop: 50
+    bottom: 0,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    backgroundColor: '#ffffff',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.85,
   },
   giphyPicker: {
     marginBottom: 20,
@@ -21,7 +25,6 @@ export default styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderColor: '#afafaf',
     borderStyle: 'dashed',
-    // margin: 20,
     padding: 20
   },
   plusIcon: {
