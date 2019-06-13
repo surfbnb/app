@@ -4,5 +4,8 @@ export default (Errors = StyleSheet.create({
   errorText: {
     color: "#eb4d4a",
     fontSize: 12
+  },
+  errorField: {
+    borderColor: "#eb4d4a"
   }
 }));

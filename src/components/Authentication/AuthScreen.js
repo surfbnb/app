@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image , Keyboard} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import PepoApi from '../../services/PepoApi';
+
+// components
 import TouchableButton from '../../theme/components/TouchableButton';
+import FormInput from '../../theme/components/FormInput';
+import deepGet from 'lodash/get';
 import Theme from '../../theme/styles';
 import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
-import deepGet from 'lodash/get';
 import LoadingModal from '../LoadingModal';
-import ErrorMessages from "../../constants/ErrorMessages";
+import ErrorMessages from '../../constants/ErrorMessages';
 import { showModal, hideModal } from '../../actions';
 
 const userStatusMap = {
@@ -22,12 +25,21 @@ const signUpLoginTestMap = {
   signin: 'Login in...'
 };
 
-let userStatus = "";
+let userStatus = '';
 
 class AuthScreen extends Component {
   constructor(props) {
     super(props);
-    this.defaults = {general_error : null , last_name_error : null , first_name_error: null , password_error: null, user_name_error: null}
+    this.defaults = {
+      general_error: null,
+      last_name_error: null,
+      first_name_error: null,
+      password_error: null,
+      user_name_error: null,
+      server_errors: {},
+      clearErrors: true,
+      errorMsg: ''
+    };
     this.state = {
       first_name: null,
       last_name: null,
@@ -35,6 +47,8 @@ class AuthScreen extends Component {
       password: null,
       signup: false,
       isLoginIn: false,
+      server_errors: {},
+      clearErrors: false,
       ...this.defaults
     };
   }
@@ -48,73 +62,72 @@ class AuthScreen extends Component {
     }
   }
 
-  validateLoginInput(){
-    let isValid = true ;
-    if( !this.state.user_name ){
-      this.setState(  {user_name_error : ErrorMessages.user_name });
-      isValid = false ;
+  validateLoginInput() {
+    let isValid = true;
+    if (!this.state.user_name) {
+      this.setState({ user_name_error: ErrorMessages.user_name });
+      isValid = false;
     }
 
-    if( !this.state.password ){
-      this.setState(  {
-        password_error : ErrorMessages.password }
-      );
-      isValid = false ;
-    }
-
-    return isValid ;
-  }
-
-  validateSignInInput(){
-    let isValid = true ;
-
-    if( !this.validateLoginInput() ){
-      isValid = false ;
-    }
-
-    if( !this.state.first_name ){
+    if (!this.state.password) {
       this.setState({
-       first_name_error : ErrorMessages.first_name }
-      );
-      isValid = false ;
+        password_error: ErrorMessages.password
+      });
+      isValid = false;
     }
 
-    if( !this.state.last_name ){
-      this.setState( {
-        last_name_error : ErrorMessages.last_name }
-      );
-      isValid = false ;
-    }
-
-    return isValid ;
+    return isValid;
   }
 
-  isValidInputs(){
-    if( this.state.signup ){
+  validateSignInInput() {
+    let isValid = true;
+
+    if (!this.validateLoginInput()) {
+      isValid = false;
+    }
+
+    if (!this.state.first_name) {
+      this.setState({
+        first_name_error: ErrorMessages.first_name
+      });
+      isValid = false;
+    }
+
+    if (!this.state.last_name) {
+      this.setState({
+        last_name_error: ErrorMessages.last_name
+      });
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  isValidInputs() {
+    if (this.state.signup) {
       return this.validateSignInInput();
-    }else{
+    } else {
       return this.validateLoginInput();
     }
   }
 
-  clearError(){
+  clearError() {
     this.setState(this.defaults);
   }
-  
-  
+
   signin() {
     this.clearError();
-    
-    if(!this.isValidInputs() ){
-      return ;
+
+    if (!this.isValidInputs()) {
+      this.setState({ clearErrors: false });
+      return;
     }
-  
-    this.props.dispatch(showModal( this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin));
-  
+
+    this.props.dispatch(showModal(this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin));
+
     let authApi = new PepoApi(this.state.signup ? '/auth/sign-up' : '/auth/login');
     let userSaltApi = new PepoApi('/users/recovery-info');
-  
-  
+
     authApi
       .setNavigate(this.props.navigation.navigate)
       .post(JSON.stringify(this.state))
@@ -125,57 +138,57 @@ class AuthScreen extends Component {
 
           if (!userData) {
             this.props.dispatch(hideModal());
-            this.setState( {
+            this.setState({
               general_error: ErrorMessages.user_not_found
             });
             return;
           }
-  
+
           userSaltApi
             .setNavigate(this.props.navigation.navigate)
             .get()
             .then(async (res) => {
-            if (res.success && res.data) {
-              let resultType = deepGet(res, 'data.result_type'),
-                userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
+              if (res.success && res.data) {
+                let resultType = deepGet(res, 'data.result_type'),
+                  userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
 
-              if (!userSalt) {
-                this.props.dispatch(hideModal());
-                this.setState( {
-                  general_error: ErrorMessages.user_not_found
+                if (!userSalt) {
+                  this.props.dispatch(hideModal());
+                  this.setState({
+                    general_error: ErrorMessages.user_not_found
+                  });
+                  return;
+                }
+
+                this.saveItem(
+                  'user',
+                  JSON.stringify({
+                    user_details: userData,
+                    user_pin_salt: userSalt
+                  })
+                ).then(() => {
+                  userStatus = (userData && userData['ost_status']) || '';
+                  InitWalletSdk.initializeDevice(this);
                 });
-                return;
+              } else {
+                this.props.dispatch(hideModal());
+                this.onServerError(res);
               }
-
-              this.saveItem(
-                'user',
-                JSON.stringify({
-                  user_details: userData,
-                  user_pin_salt: userSalt
-                })
-              ).then(() => {
-                userStatus = userData && userData['ost_status'] || '';
-                InitWalletSdk.initializeDevice( this );
-              });
-            } else {
-              this.props.dispatch(hideModal());
-              this.onServerError( res );
-            }
-          });
+            });
         } else {
           this.props.dispatch(hideModal());
-          this.onServerError( res );
+          this.onServerError(res);
         }
       })
       .catch((err) => {
         this.props.dispatch(hideModal());
-        this.onServerError( res );
+        this.onServerError(err);
       });
   }
-  
+
   setupDeviceComplete(ostWorkflowContext, ostContextEntity) {
-    console.log("setup devices complete ostWorkflowContext" , ostWorkflowContext );
-    console.log("setup devices complete ostContextEntity " , ostContextEntity );
+    console.log('setup devices complete ostWorkflowContext', ostWorkflowContext);
+    console.log('setup devices complete ostContextEntity ', ostContextEntity);
     this.props.dispatch(hideModal());
     if (userStatus.toLowerCase() === userStatusMap.activated) {
       this.props.navigation.navigate('HomeScreen');
@@ -185,32 +198,26 @@ class AuthScreen extends Component {
   }
 
   setupDeviceFailed(ostWorkflowContext, ostError) {
-    console.log("setup devices complete ostWorkflowContext", ostWorkflowContext);
-    console.log("setup devices complete ostError ", ostError);
-    const errorMessage = ostError && ostError.getErrorMessage() || ErrorMessages.general_error;
+    console.log('setup devices complete ostWorkflowContext', ostWorkflowContext);
+    console.log('setup devices complete ostError ', ostError);
+    const errorMessage =
+      (ostError && ostError.getApiErrorMessage()) || ostError.getErrorMessage() || ErrorMessages.general_error;
     this.props.dispatch(hideModal());
-    this.setState({general_error: errorMessage});
+    this.setState({ general_error: errorMessage });
   }
-  
-  onServerError( res ){
-    const errorData = deepGet( res , "err.error_data"),
-      errorMsg =  deepGet( res , "err.msg") || ErrorMessages.general_error
-    ;
-    if( errorData ){
-      for( let cnt = 0 ;  cnt < errorData.length ;  cnt++ ){
-        let parameter = errorData[cnt]['parameter'] ,
-          errorParameterName = parameter + "_error",
-          msg = errorData[cnt]['msg']
-        ;
-        if( this.state[parameter] || this.state[parameter] == null ){
-          let tempObj = {};
-          tempObj[errorParameterName] = msg ;
-          this.setState(tempObj);
-        }
-      }
-    }else{
-      this.setState({general_error ,  errorMsg });
+
+  onServerError(res) {
+    let stateObj = { server_errors: res, clearErrors: false };
+    const errorData = deepGet(res, 'err.error_data'),
+      errorMsg = deepGet(res, 'err.msg') || ErrorMessages.general_error;
+    if (!(errorData && errorData.length)) {
+      stateObj['general_error'] = errorMsg;
     }
+    this.setState(stateObj);
+  }
+
+  ServerErrorHandler(field) {
+    console.log('In ServerErrorHandler', field);
   }
 
   render() {
@@ -221,61 +228,81 @@ class AuthScreen extends Component {
           <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
           {this.state.signup && (
             <React.Fragment>
-              <TextInput
+              <FormInput
                 editable={true}
                 onChangeText={(first_name) => this.setState({ first_name, error: null })}
-                ref="first_name"
+                fieldName="first_name"
                 returnKeyType="next"
                 value={this.state.first_name}
                 style={Theme.TextInput.textInputStyle}
                 placeholder="First Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
+                errorMsg={this.state.first_name_error}
+                serverErrors={this.state.server_errors}
+                clearErrors={this.state.clearErrors}
+                errorHandler={(fieldName) => {
+                  this.ServerErrorHandler(fieldName);
+                }}
               />
-              <Text style={Theme.Errors.errorText}>{this.state.first_name_error}</Text>
 
-              <TextInput
+              <FormInput
                 editable={true}
                 onChangeText={(last_name) => this.setState({ last_name, error: null })}
-                ref="last_name"
+                fieldName="last_name"
                 returnKeyType="next"
                 value={this.state.last_name}
                 style={Theme.TextInput.textInputStyle}
                 placeholder="Last Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
+                maxLength={5}
+                errorMsg={this.state.last_name_error}
+                serverErrors={this.state.server_errors}
+                clearErrors={this.state.clearErrors}
+                errorHandler={(fieldName) => {
+                  this.ServerErrorHandler(fieldName);
+                }}
               />
-              <Text style={Theme.Errors.errorText}>{this.state.last_name_error}</Text>
-
             </React.Fragment>
           )}
 
-          <TextInput
+          <FormInput
             editable={true}
             onChangeText={(user_name) => this.setState({ user_name, error: null })}
-            ref="user_name"
+            fieldName="user_name"
             returnKeyType="next"
             value={this.state.user_name}
             style={Theme.TextInput.textInputStyle}
             placeholder="Username"
             returnKeyType="next"
             returnKeyLabel="next"
+            errorMsg={this.state.user_name_error}
+            clearErrors={this.state.clearErrors}
+            serverErrors={this.state.server_errors}
+            errorHandler={(fieldName) => {
+              this.ServerErrorHandler(fieldName);
+            }}
           />
-          <Text style={Theme.Errors.errorText}>{this.state.user_name_error}</Text>
 
-          <TextInput
+          <FormInput
             editable={true}
             onChangeText={(password) => this.setState({ password, error: null })}
             placeholder="Password"
-            ref="password"
+            fieldName="password"
             returnKeyType="next"
             secureTextEntry={true}
             style={Theme.TextInput.textInputStyle}
             value={this.state.password}
             returnKeyType="done"
             returnKeyLabel="done"
+            errorMsg={this.state.password_error}
+            serverErrors={this.state.server_errors}
+            clearErrors={this.state.clearErrors}
+            errorHandler={(fieldName) => {
+              this.ServerErrorHandler(fieldName);
+            }}
           />
-          <Text style={Theme.Errors.errorText}>{this.state.password_error}</Text>
 
           <Text style={[styles.error]}>{this.state.error}</Text>
           {!this.state.signup && (
