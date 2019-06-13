@@ -95,7 +95,7 @@ export default class PepoApi {
 
         if (responseStatus >= 400 && responseStatus < 500) {
           await AsyncStorage.removeItem('user');
-          this.navigate('AuthScreen', responseJSON);
+          this.navigate && this.navigate('AuthScreen', responseJSON);
           Store.dispatch(hideModal());
         } // Handling 500
 

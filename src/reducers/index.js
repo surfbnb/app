@@ -9,7 +9,8 @@ export const {
   showModal,
   hideModal,
   upsertUserEntities,
-  addUserList
+  addUserList,
+  updateCurrentUser
 } = createActions(...Object.keys(types));
 
 export const reducer = handleActions(
@@ -26,6 +27,10 @@ export const reducer = handleActions(
     [addUserList]: (state, action) => ({
       ...state,
       user_list: [...state.user_list, ...action.payload.user_list]
+    }),
+    [updateCurrentUser]: (state, action) => ({
+      ...state,
+      current_user: AssignIn(state.current_user, action.payload.current_user)
     })
   },
   {
@@ -34,6 +39,7 @@ export const reducer = handleActions(
     isLoggedIn: false,
     modal: { message: '', show: false },
     user_entities: {},
-    user_list: []
+    user_list: [],
+    current_user: {}
   }
 );

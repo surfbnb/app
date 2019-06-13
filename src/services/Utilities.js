@@ -15,14 +15,12 @@ export default {
     }
   },
 
-  async getItem(key) {
-    try {
-      const user = await AsyncStorage.getItem(key);
-      return user; 
-    } catch (error) {
-      console.warn('AsyncStorage error: ' + error.message);
-      return null ;
-    }
+  removeItem(key){
+    return AsyncStorage.removeItem(key);
+  },
+
+  getItem(key) {
+    return AsyncStorage.getItem(key);
   },
 
   isActiveUser( user ){

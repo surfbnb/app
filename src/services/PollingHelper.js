@@ -35,7 +35,6 @@ export default class PollingHellper {
   }
 
   poll() {
-    var oThis = this;
     if (this.pollPromise) {
       //Polling in progress
       return false;

@@ -1,9 +1,16 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import PollingHellper from '../PollingHelper';
 import deepGet from 'lodash/get';
-import utilities from '../Utilities';
-import deepClone from 'lodash/cloneDeep';
-import AsyncStorage from '@react-native-community/async-storage'; 
+
+const onUserStatusSuccess = function(res) {
+  const resultType = deepGet(res, 'data.result_type') ,
+        loginUser = deepGet(res, `data.${resultType}`) || {};
+  airDropStatus = loginUser.signup_airdrop_status;
+  if (airDropStatus == 1) {
+    this.shouldPoll = false;
+    //TODO dispatch event for TOAST display 
+  }
+};
 
 class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
   constructor(delegate) {
@@ -31,20 +38,5 @@ class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
     }
   }
 }
-
-const onUserStatusSuccess = function(res) {
-  const loginUser = deepGet(res, 'data.logged_in_user') || {};
-  airDropStatus = loginUser.signup_airdrop_status;
-  if (airDropStatus == 1) {
-    this.shouldPoll = false;
-    AsyncStorage.getItem('user').then((user) => {
-      if( typeof user == "string"){
-        user =  JSON.parse( user );
-      }
-      const finalUser = deepClone(user, {"user_details" : loginUser} ); 
-      utilities.saveItem('user', JSON.stringify( finalUser ));
-    });
-  }
-};
 
 export default ActivateUserWorkflow;
