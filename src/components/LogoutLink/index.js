@@ -1,8 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
-
-import Logout from '../../services/Logout';
+import currentModal from "../../models/CurrentUser";
 
 const LogoutLink = (props) => (
   <Text
@@ -10,9 +9,8 @@ const LogoutLink = (props) => (
       color: '#ffffff',
       padding: 10
     }}
-    onPress={async () => {
-      let logout = new Logout(props.navigation.navigate);
-      await logout.perform();
+    onPress={ () => {
+      currentModal.logout( props.navigation.navigate );
     }}
   >
     Logout

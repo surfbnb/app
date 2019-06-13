@@ -17,7 +17,7 @@ export default class ConfirmPin extends Component {
       Store.dispatch(showModal('Activating User...'));
       ActivateUser.activateUser(pin, this);
     } else {
-      Alert.alert('', 'Incorrect Pin');
+        Alert.alert('', 'Incorrect Pin');
     }
   };
 
@@ -29,7 +29,9 @@ export default class ConfirmPin extends Component {
   onFlowInterrupt(ostWorkflowContext, ostError) {
     Store.dispatch(hideModal());
     let errMsg = (ostError && ostError.getErrorMessage()) || ErrorMessages.general_error;
-    Alert.alert('', errMsg);
+    setTimeout(()=> {
+      Alert.alert('', errMsg);
+    } , 10 );
   }
 
   render() {

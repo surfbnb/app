@@ -27,6 +27,13 @@ export const hideModal = (message = '') => ({
   }
 });
 
+export const updateCurrentUser = ( current_user ) => ({
+  type : types.UPDATE_CURRENT_USER,
+  payload: {
+    current_user
+  }
+})
+
 export const upsertUserEntities = (data) => ({ type: types.UPSERT_USER_ENTITIES, payload: { user_entities: data } });
 
 export const addUserList = (data) => ({ type: types.ADD_USER_LIST, payload: { user_list: data } });

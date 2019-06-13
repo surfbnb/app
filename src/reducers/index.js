@@ -9,7 +9,9 @@ export const {
   hideModal,
   upsertUserEntities,
   addUserList,
+  updateCurrentUser,
   logoutUser
+
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -34,6 +36,10 @@ export const reducer = handleActions(
     [addUserList]: (state, action) => ({
       ...state,
       user_list: [...state.user_list, ...action.payload.user_list]
+    }),
+    [updateCurrentUser]: (state, action) => ({
+      ...state,
+      current_user: AssignIn(state.current_user, action.payload.current_user)
     }),
     [logoutUser]: (state, action) => ({ ...defaultState, user_entities: {} })
   },

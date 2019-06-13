@@ -15,6 +15,8 @@ import InitWalletSdk from '../../services/InitWalletSdk';
 import LoadingModal from '../LoadingModal';
 import ErrorMessages from '../../constants/ErrorMessages';
 import { showModal, hideModal } from '../../actions';
+import utilities from "../../services/Utilities";
+import currentUserModal from "../../models/CurrentUser";
 
 const userStatusMap = {
   activated: 'activated'
@@ -129,17 +131,13 @@ class AuthScreen extends Component {
 
     this.props.dispatch(showModal(this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin));
 
-    let authApi = new PepoApi(this.state.signup ? '/auth/sign-up' : '/auth/login');
-    let userSaltApi = new PepoApi('/users/recovery-info');
+    const methodName = this.state.signup ? "signUp" : "login"; 
 
-    authApi
-      .setNavigate(this.props.navigation.navigate)
-      .post(JSON.stringify(this.state))
+    currentUserModal[methodName](this.state)
       .then((res) => {
         if (res.success && res.data) {
           let resultType = deepGet(res, 'data.result_type'),
             userData = deepGet(res, 'data.' + resultType);
-
           if (!userData) {
             this.props.dispatch(hideModal());
             this.setState({
@@ -147,38 +145,7 @@ class AuthScreen extends Component {
             });
             return;
           }
-
-          userSaltApi
-            .setNavigate(this.props.navigation.navigate)
-            .get()
-            .then(async (res) => {
-              if (res.success && res.data) {
-                let resultType = deepGet(res, 'data.result_type'),
-                  userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
-
-                if (!userSalt) {
-                  this.props.dispatch(hideModal());
-                  this.setState({
-                    general_error: ErrorMessages.user_not_found
-                  });
-                  return;
-                }
-
-                this.saveItem(
-                  'user',
-                  JSON.stringify({
-                    user_details: userData,
-                    user_pin_salt: userSalt
-                  })
-                ).then(() => {
-                  userStatus = (userData && userData['ost_status']) || '';
-                  InitWalletSdk.initializeDevice(this);
-                });
-              } else {
-                this.props.dispatch(hideModal());
-                this.onServerError(res);
-              }
-            });
+          InitWalletSdk.initializeDevice(this); 
         } else {
           this.props.dispatch(hideModal());
           this.onServerError(res);
@@ -191,8 +158,6 @@ class AuthScreen extends Component {
   }
 
   setupDeviceComplete(ostWorkflowContext, ostContextEntity) {
-    console.log('setup devices complete ostWorkflowContext', ostWorkflowContext);
-    console.log('setup devices complete ostContextEntity ', ostContextEntity);
     this.props.dispatch(hideModal());
     if (userStatus.toLowerCase() === userStatusMap.activated) {
       this.props.navigation.navigate('HomeScreen');
@@ -202,8 +167,6 @@ class AuthScreen extends Component {
   }
 
   setupDeviceFailed(ostWorkflowContext, ostError) {
-    console.log('setup devices complete ostWorkflowContext', ostWorkflowContext);
-    console.log('setup devices complete ostError ', ostError);
     const errorMessage =
       (ostError && ostError.getApiErrorMessage()) || ostError.getErrorMessage() || ErrorMessages.general_error;
     this.props.dispatch(hideModal());
