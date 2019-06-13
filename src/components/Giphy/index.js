@@ -198,9 +198,7 @@ class Giphy extends Component {
 
                   <View style={{
                     flexWrap: 'wrap',
-                    flexDirection: 'column',
-                    flexBlockCount: 2,
-                    flexBlockFlow: 'cross'
+                    flexDirection: 'row',
                   }}>
                     {/*<Text>Elements</Text>*/}
                     {elements}
