@@ -1,25 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Text, Image } from 'react-native';
 
 import styles from './styles';
-// import TouchableButton from '../../../theme/components/TouchableButton';
-// import Theme from '../../../theme/styles';
+import isEmpty from 'lodash/isEmpty';
 
-class Users extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {}
-
-  render() {
+export default Users = React.memo((props) => {
+  if (!isEmpty(props.user)) {
     return (
       <View style={styles.container}>
         <View style={styles.userContainer}>
           <View style={styles.txtWrapper}>
             <Image style={styles.imageStyle}></Image>
-            <Text style={styles.item}>
-              {this.props.user.first_name} {this.props.user.last_name}
+            <Text numberOfLines={1} style={styles.item}>
+              {props.user.first_name} {props.user.last_name}
             </Text>
           </View>
           {/*<View style={styles.btnWrapper}>*/}
@@ -39,7 +32,7 @@ class Users extends Component {
         </View>
       </View>
     );
+  } else {
+    return <View></View>;
   }
-}
-
-export default Users;
+});

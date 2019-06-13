@@ -1,8 +1,8 @@
 import utilities from "../services/Utilities";
 import PepoApi from "../services/PepoApi";
 import deepGet from 'lodash/get';
-import Store from "../store"; 
-import {updateCurrentUser} from "../actions";
+import Store from "../store";
+import {updateCurrentUser, logoutUser} from "../actions";
 
 class CurrentUserModel {
     constructor() {
@@ -100,10 +100,8 @@ class CurrentUserModel {
         try {
             userId = userId || this.userId;
             this.userId = null ; 
-            this.ost_user_id = null; 
-            //TODO clear redux
-            Store.dispatch(updateCurrentUser(null));
-            //TODO clear redux
+            this.ost_user_id = null;
+            Store.dispatch(logoutUser());
             await utilities.removeItem(this._getCurrentUserIdKey());    
             await utilities.removeItem(this._getASKey(userId));
         }catch( e ){

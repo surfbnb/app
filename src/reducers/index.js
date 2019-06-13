@@ -4,19 +4,28 @@ import * as types from '../actions/constants';
 
 export const {
   upsertPosts,
-  upsertUsers,
   setLoggedIn,
   showModal,
   hideModal,
   upsertUserEntities,
   addUserList,
-  updateCurrentUser
+  updateCurrentUser,
+  logoutUser
+
 } = createActions(...Object.keys(types));
+
+const defaultState = {
+  feed: [],
+  users: [],
+  isLoggedIn: false,
+  modal: { message: '', show: false },
+  user_entities: {},
+  user_list: []
+};
 
 export const reducer = handleActions(
   {
     [upsertPosts]: (state, action) => ({ ...state, feed: action.payload.feed }),
-    [upsertUsers]: (state, action) => ({ ...state, users: action.payload.users }),
     [setLoggedIn]: (state, action) => ({ ...state, isLoggedIn: action.payload.isLoggedIn }),
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
@@ -31,15 +40,8 @@ export const reducer = handleActions(
     [updateCurrentUser]: (state, action) => ({
       ...state,
       current_user: AssignIn(state.current_user, action.payload.current_user)
-    })
+    }),
+    [logoutUser]: (state, action) => ({ ...defaultState, user_entities: {} })
   },
-  {
-    feed: [],
-    users: [],
-    isLoggedIn: false,
-    modal: { message: '', show: false },
-    user_entities: {},
-    user_list: [],
-    current_user: {}
-  }
+  defaultState
 );

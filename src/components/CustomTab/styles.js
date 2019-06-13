@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 
 export default styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
     flex: 0,
     width: '100%',
     height: 65,

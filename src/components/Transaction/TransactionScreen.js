@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import Giphy from '../Giphy';
+import inlineStyles from '../Giphy/styles';
 
 class TransactionScreen extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class TransactionScreen extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Giphy />
       </View>
     );
