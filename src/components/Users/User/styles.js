@@ -43,5 +43,12 @@ export default inlineStyles = StyleSheet.create({
     flex: 0.5,
     flexDirection: 'row',
     justifyContent: 'flex-end'
+  },
+  imageStyle :{
+    backgroundColor : '#ef5566',
+    marginRight:10,
+    borderRadius:50,
+    height : 50,
+    width : 50
   }
 });
