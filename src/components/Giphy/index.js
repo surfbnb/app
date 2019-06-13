@@ -97,12 +97,6 @@ class Giphy extends Component {
       });
   }
 
-  handleGiphyPress(e) {
-    console.log('HXUSSXHUSXHSHXSUHXSHXUHSUXhsux', e);
-    console.log('HXUSSXHUSXHSHXSUHXSHXUHSUXhsux', e.currentTarget);
-    console.log(e.currentTarget.getAttribute('data-key'), 'dbfdbhdbhcvbfdhjcvbdhvcbdfhcbdhs');
-  }
-
   handleGiphyPress(gifsData, i) {
     return () => {
       if (this.state.isGifCategory) {
@@ -118,23 +112,23 @@ class Giphy extends Component {
     this.setState({
       selectedImage: gifsData
     });
-    console.log(gifsData, 'gifsDatagifsDatagifsDatagifsDatagifsDatagifsData');
   }
 
   render() {
-    console.log('I am in render', this.state.gifsDataToShow);
     var elements = [];
     var gifsData = this.state.gifsDataToShow;
     var imageSelector;
-    console.log('gifsDatagifsDatagifsDatagifsData', gifsData);
     for (var i = 0; i < gifsData.length; i++) {
-      console.log(gifsData[i], 'gifsData[i]');
+
 
       elements.push(
         <TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gifsData, i)}>
           <View>
             <Image
-              style={{ width: 200, height: 200 }}
+              style={{
+                width: parseInt(gifsData[i]['fixed_width_downsampled']['width']),
+                height: parseInt(gifsData[i]['fixed_width_downsampled']['height'])
+              }}
               source={{ uri: gifsData[i]['fixed_width_downsampled']['url'] }}
             />
           </View>
@@ -142,23 +136,24 @@ class Giphy extends Component {
       );
     }
 
-    console.log(elements, 'elements=======-=-=-=-=-=--=-=-==-=-==-=-==-=-=');
-
     if (Object.keys(this.state.selectedImage).length) {
       imageSelector = (
         <View>
           <Image
-            style={{ width: 200, height: 200 }}
+            style={{
+              width: parseInt(this.state.selectedImage['fixed_width_downsampled']['width']),
+              height: parseInt(this.state.selectedImage['fixed_width_downsampled']['height'])
+            }}
             source={{ uri: this.state.selectedImage['fixed_width_downsampled']['url'] }}
           />
         </View>
       );
     } else {
       imageSelector = (
-          <View style={inlineStyles.giphyPicker}>
-              <Image source={PlusIcon} style={inlineStyles.plusIcon} />
-              <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
-          </View>
+        <View style={inlineStyles.giphyPicker}>
+          <Image source={PlusIcon} style={inlineStyles.plusIcon} />
+          <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
+        </View>
       );
     }
 
@@ -169,7 +164,6 @@ class Giphy extends Component {
             this.giphyPickerHandler();
           }}
         >
-
           {imageSelector}
         </TouchableOpacity>
         {this.state.modalOpen && (
@@ -182,8 +176,8 @@ class Giphy extends Component {
                 this.closeModal();
               }}
             >
-                <View style={inlineStyles.modal}>
-                    <View style={inlineStyles.modalInner}>
+              <View style={inlineStyles.modal}>
+                <View style={inlineStyles.modalInner}>
                   <FormInput
                     editable={true}
                     onChangeText={(gifSearchQuery) => this.searchGiphy(gifSearchQuery)}

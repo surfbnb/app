@@ -15,8 +15,6 @@ class Feed extends Component {
     fetch('https://jsonplaceholder.typicode.com/posts')
       .then((response) => response.json())
       .then((responseData) => {
-        console.log(responseData, 'feed data');
-
         this.props.dispatchUpsert(responseData);
       })
       .catch(console.warn)
