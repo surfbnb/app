@@ -6,6 +6,7 @@ import {
   createSwitchNavigator,
   createAppContainer
 } from 'react-navigation';
+import { Image } from 'react-native';
 
 import AuthLoading from './src/components/AuthLoading';
 import AuthScreen from './src/components/Authentication';
@@ -17,6 +18,7 @@ import LogoutComponent from './src/components/LogoutLink';
 import CustomTab from './src/components/CustomTab';
 import Feed from './src/components/Feed';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
+import BackArrow from './src/assets/back-arrow.png';
 
 const HomeScreen = createBottomTabNavigator(
   {
@@ -131,6 +133,7 @@ const PinStack = createStackNavigator(
         headerStyle: {
           backgroundColor: '#ffffff'
         },
+        headerBackTitle: null,
         // headerRight: <LogoutComponent />
       }
     },
@@ -143,6 +146,7 @@ const PinStack = createStackNavigator(
           flex : 1,
           textAlign: 'center'
         },
+        headerBackImage: <Image source={BackArrow} style={{width: 30, height: 18, marginLeft: 20}}/>,
         headerStyle: {
           backgroundColor: '#ffffff'
         },
