@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import Giphy from '../Giphy';
-import inlineStyles from "../Giphy/styles";
+import inlineStyles from '../Giphy/styles';
 
 class TransactionScreen extends Component {
   constructor(props) {

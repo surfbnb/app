@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image} from 'react-native';
+import { View, Image } from 'react-native';
 import {
   createBottomTabNavigator,
   createStackNavigator,
@@ -69,7 +69,7 @@ const HomeScreen = createBottomTabNavigator(
             headerStyle: {
               backgroundColor: '#ffffff'
             },
-            headerBackImage: <Image source={BackArrow} style={{width: 30, height: 18, marginLeft: 20}}/>,
+            headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />,
             headerRight: <LogoutComponent />
           })
         }
@@ -128,13 +128,13 @@ const PinStack = createStackNavigator(
         headerTitle: 'Set Pin',
         headerTitleStyle: {
           color: '#484848',
-          flex : 1,
+          flex: 1,
           textAlign: 'center'
         },
         headerStyle: {
           backgroundColor: '#ffffff'
         },
-        headerBackTitle: null,
+        headerBackTitle: null
         // headerRight: <LogoutComponent />
       }
     },
@@ -144,14 +144,14 @@ const PinStack = createStackNavigator(
         headerTitle: 'Confirm Pin',
         headerTitleStyle: {
           color: '#484848',
-          flex : 1,
+          flex: 1,
           textAlign: 'center'
         },
-        headerBackImage: <Image source={BackArrow} style={{width: 30, height: 18, marginLeft: 20}}/>,
+        headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />,
         headerStyle: {
           backgroundColor: '#ffffff'
         },
-        headerRight:<View/>
+        headerRight: <View />
         // headerRight: <LogoutComponent />
       }
     }

@@ -15,7 +15,7 @@ export default CustomTab = ({ navigation, screenProps }) => (
     >
       <Image
         tintColor={navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}
-        style={[styles.tabElement,{tintColor:navigation.state.index === 0 ? '#ef5566' : '#484848'}]}
+        style={[styles.tabElement, { tintColor: navigation.state.index === 0 ? '#ef5566' : '#484848' }]}
         source={feed}
       />
 
@@ -24,7 +24,7 @@ export default CustomTab = ({ navigation, screenProps }) => (
     <TouchableOpacity onPress={() => navigation.navigate('Users')}>
       <Image
         tintColor={navigation.state.index === 1 ? '#61b2d6' : '#484848'}
-        style={[styles.tabElementFriends, {tintColor:navigation.state.index === 1 ? '#ef5566' : '#484848'}]}
+        style={[styles.tabElementFriends, { tintColor: navigation.state.index === 1 ? '#ef5566' : '#484848' }]}
         source={friends}
       />
       <Text style={{ color: navigation.state.index === 1 ? '#ef5566' : 'rgb(72,72,72)' }}>Friends</Text>
@@ -33,7 +33,7 @@ export default CustomTab = ({ navigation, screenProps }) => (
     <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
       <Image
         tintColor={navigation.state.index === 2 ? '#61b2d6' : '#484848'}
-        style={[styles.tabElement,{tintColor:navigation.state.index === 2 ? '#ef5566' : '#484848'}]}
+        style={[styles.tabElement, { tintColor: navigation.state.index === 2 ? '#ef5566' : '#484848' }]}
         source={profile}
       />
       <Text style={{ color: navigation.state.index === 2 ? '#ef5566' : '#484848' }}>Profile</Text>

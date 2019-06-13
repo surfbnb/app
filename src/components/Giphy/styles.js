@@ -8,7 +8,7 @@ export default styles = StyleSheet.create({
     fontWeight: '300',
     alignItems: 'stretch',
     flex: 1,
-    backgroundColor: '#f6f6f6',
+    backgroundColor: '#f6f6f6'
   },
   modal: {
     position: 'absolute',
@@ -18,11 +18,11 @@ export default styles = StyleSheet.create({
   giphyPicker: {
     marginBottom: 20,
     borderWidth: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: '#ffffff',
     borderColor: '#afafaf',
     borderStyle: 'dashed',
     // margin: 20,
-    padding: 20,
+    padding: 20
   },
   plusIcon: {
     width: 42,
