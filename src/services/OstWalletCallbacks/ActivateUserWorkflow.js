@@ -3,6 +3,7 @@ import PollingHellper from '../PollingHelper';
 import deepGet from 'lodash/get';
 import utilities from '../Utilities';
 import deepClone from 'lodash/cloneDeep';
+import AsyncStorage from '@react-native-community/async-storage'; 
 
 class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
   constructor(delegate) {
@@ -37,7 +38,11 @@ const onUserStatusSuccess = function(res) {
   if (airDropStatus == 1) {
     this.shouldPoll = false;
     AsyncStorage.getItem('user').then((user) => {
-      utilities.saveItem('user', deepClone(user, loginUser));
+      if( typeof user == "string"){
+        user =  JSON.parse( user );
+      }
+      const finalUser = deepClone(user, {"user_details" : loginUser} ); 
+      utilities.saveItem('user', JSON.stringify( finalUser ));
     });
   }
 };

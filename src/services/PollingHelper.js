@@ -41,7 +41,7 @@ export default class PollingHellper {
       return false;
     }
     this.pepoApi = new PepoApi(this.pollingApi, this.params);
-    this.pollPromise = pepoApi[this.pollingMethod](this.body)
+    this.pollPromise = this.pepoApi[this.pollingMethod](this.body)
       .then((res) => {
         this.successCallback && this.successCallback(res);
         this.complete();

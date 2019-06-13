@@ -15,6 +15,7 @@ import InitWalletSdk from '../../services/InitWalletSdk';
 import LoadingModal from '../LoadingModal';
 import ErrorMessages from '../../constants/ErrorMessages';
 import { showModal, hideModal } from '../../actions';
+import utilities from "../../services/Utilities";
 
 const userStatusMap = {
   activated: 'activated'
@@ -146,7 +147,7 @@ class AuthScreen extends Component {
             return;
           }
 
-          userSaltApi
+          return userSaltApi
             .setNavigate(this.props.navigation.navigate)
             .get()
             .then(async (res) => {
@@ -162,16 +163,16 @@ class AuthScreen extends Component {
                   return;
                 }
 
-                this.saveItem(
-                  'user',
-                  JSON.stringify({
-                    user_details: userData,
-                    user_pin_salt: userSalt
+                console.log("Saving userData", userData);
+                return utilities.saveItem( 'user', userData)
+                  .then(() => {
+                    console.log("userData saved. Saving user_pin_salt");
+                    return utilities.saveItem( 'user_pin_salt', userSalt );
                   })
-                ).then(() => {
-                  userStatus = (userData && userData['ost_status']) || '';
-                  InitWalletSdk.initializeDevice(this);
-                });
+                  .then( () => {
+                    console.log("user_pin_salt saved. calling initializeDevice");
+                    InitWalletSdk.initializeDevice(this);
+                  })
               } else {
                 this.props.dispatch(hideModal());
                 this.onServerError(res);
@@ -183,6 +184,8 @@ class AuthScreen extends Component {
         }
       })
       .catch((err) => {
+        console.log("We have an error");
+        console.log(err);
         this.props.dispatch(hideModal());
         this.onServerError(err);
       });
