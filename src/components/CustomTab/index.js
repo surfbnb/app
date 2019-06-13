@@ -27,7 +27,7 @@ export default CustomTab = ({ navigation, screenProps }) => (
         style={styles.tabElement}
         source={friends}
       />
-      <Text style={{ color: navigation.state.index === 1 ? '#61b2d6' : 'rgb(72,72,72)' }}>Friends</Text>
+      <Text style={{ color: navigation.state.index === 1 ? '#ef5566' : 'rgb(72,72,72)' }}>Friends</Text>
     </TouchableOpacity>
     {/* <Text> Pepo </Text> */}
     <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
