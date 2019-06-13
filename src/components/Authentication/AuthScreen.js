@@ -261,7 +261,6 @@ class AuthScreen extends Component {
                 returnKeyType="next"
                 returnKeyLabel="next"
                 placeholderTextColor="#ababab"
-                maxLength={5}
                 errorMsg={this.state.last_name_error}
                 serverErrors={this.state.server_errors}
                 clearErrors={this.state.clearErrors}

@@ -15,7 +15,7 @@ import Settings from './src/components/Settings';
 import LogoutComponent from './src/components/LogoutLink';
 import CustomTab from './src/components/CustomTab';
 import Feed from './src/components/Feed';
-import TransactionScreen from './src/components/Transaction/TransactionScreen'
+import TransactionScreen from './src/components/Transaction/TransactionScreen';
 
 const HomeScreen = createBottomTabNavigator(
   {
@@ -55,13 +55,11 @@ const HomeScreen = createBottomTabNavigator(
             },
             headerRight: <LogoutComponent />
           }
-        }
-      },
-      {
-        Transaction: {
-          screen : TransactionScreen, 
+        },
+        TransactionScreen: {
+          screen: TransactionScreen,
           navigationOptions: ({ navigation, screenProps }) => ({
-            headerTitle: navigation.getParam("transactionHeader"),
+            headerTitle: navigation.getParam('transactionHeader'),
             headerTitleStyle: {
               color: '#ffffff'
             },
@@ -72,6 +70,7 @@ const HomeScreen = createBottomTabNavigator(
           })
         }
       }
+
       // {
       //   navigationOptions: {
       //     tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={UsersIcon} style={{ tintColor }} />

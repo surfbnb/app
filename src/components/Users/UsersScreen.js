@@ -5,6 +5,7 @@ import PepoApi from '../../services/PepoApi';
 import User from './User';
 import styles from './styles';
 import deepGet from 'lodash/get';
+import { TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 
 class Users extends Component {
   constructor(props) {
@@ -45,12 +46,13 @@ class Users extends Component {
       .done();
   };
 
-  userClick( item ){
-    let headerText = "Transaction"
-    if( item ){
-      headerText = item.first_name + item.last_name; 
+  userClick(item) {
+    let headerText = 'Transaction';
+    if (item) {
+      headerText = item.first_name + item.last_name;
     }
-    this.props.navigation.navigate("Transaction" , {transactionHeader: headerText } );
+    console.log('Hey I m here');
+    this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText });
   }
 
   render() {
@@ -62,9 +64,15 @@ class Users extends Component {
             keyExtractor={(item, index) => String(item.id)}
             onEndReached={this.getUsersData}
             onEndReachedThreshold={0.2}
-            renderItem={({ item }) => <User id={item.id} user={item}  onPress={( item ) => {
-               this.userClick( item ); 
-            }}/>}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={(item) => {
+                  this.userClick(item);
+                }}
+              >
+                <User id={item.id} user={item} />
+              </TouchableOpacity>
+            )}
           />
         </View>
       );

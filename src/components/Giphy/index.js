@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import Giphy from '../Giphy';
+import inlineStyles from './styles';
 
-class TransactionScreen extends Component {
+class Giphy extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     return (
-      <View>
-        <Giphy />
+      <View style={inlineStyles.giphyPicker}>
+        <Text> What do you want to GIF? </Text>
       </View>
     );
   }
 }
 
-export default TransactionScreen;
+export default Giphy;
