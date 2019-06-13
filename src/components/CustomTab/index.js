@@ -15,16 +15,16 @@ export default CustomTab = ({ navigation, screenProps }) => (
     >
       <Image
         tintColor={navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}
-        style={styles.tabElement}
+        style={[styles.tabElement,{tintColor:navigation.state.index === 0 ? '#ef5566' : '#484848'}]}
         source={Feed_icon}
       />
 
-      <Text style={{ color: navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)' }}>Feed</Text>
+      <Text style={{ color: navigation.state.index === 0 ? '#ef5566' : '#484848' }}>Feed</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => navigation.navigate('Users')}>
       <Image
-        tintColor={navigation.state.index === 1 ? '#61b2d6' : 'rgb(72,72,72)'}
-        style={styles.tabElement}
+        tintColor={navigation.state.index === 1 ? '#61b2d6' : '#484848'}
+        style={[styles.tabElement, {tintColor:navigation.state.index === 1 ? '#ef5566' : '#484848'}]}
         source={friends}
       />
       <Text style={{ color: navigation.state.index === 1 ? '#ef5566' : 'rgb(72,72,72)' }}>Friends</Text>
@@ -32,11 +32,11 @@ export default CustomTab = ({ navigation, screenProps }) => (
     {/* <Text> Pepo </Text> */}
     <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
       <Image
-        tintColor={navigation.state.index === 2 ? '#61b2d6' : 'rgb(72,72,72)'}
-        style={styles.tabElement}
+        tintColor={navigation.state.index === 2 ? '#61b2d6' : '#484848'}
+        style={[styles.tabElement,{tintColor:navigation.state.index === 2 ? '#ef5566' : '#484848'}]}
         source={Profile}
       />
-      <Text style={{ color: navigation.state.index === 2 ? '#61b2d6' : 'rgb(72,72,72)' }}>Profile</Text>
+      <Text style={{ color: navigation.state.index === 2 ? '#ef5566' : '#484848' }}>Profile</Text>
     </TouchableOpacity>
     {/* <TouchableOpacity style={styles.overlayBtn} /> */}
   </View>
