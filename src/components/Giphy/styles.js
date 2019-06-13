@@ -13,11 +13,19 @@ export default styles = StyleSheet.create({
   modal: {
     position: 'absolute',
     bottom: 0,
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+  modalInner:{
+    backgroundColor: '#ffffff',
+    flex: 1,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    backgroundColor: '#ffffff',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.85,
+    marginTop: 100,
+    paddingTop: 50,
+    paddingLeft: 50
   },
   giphyPicker: {
     marginBottom: 20,

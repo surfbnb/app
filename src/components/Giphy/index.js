@@ -70,7 +70,7 @@ class Giphy extends Component {
               }}
             >
               <View style={inlineStyles.modal}>
-                <View style={{ marginTop: 22 }}>
+                <View style={inlineStyles.modalInner}>
                   <Text>Hello World!</Text>
 
                   <TouchableHighlight
