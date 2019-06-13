@@ -43,7 +43,7 @@ class FormInput extends Component {
           {...props}
           style={[
             this.props.style,
-            !this.props.clearErrors && (this.state.errorMsg || this.props.errorMsg) ? Theme.Errors.errorField : {}
+            !this.props.clearErrors && (this.state.errorMsg || this.props.errorMsg) ? Theme.Errors.errorBorder : {}
           ]}
         />
         <Text style={Theme.Errors.errorText}>

@@ -235,7 +235,7 @@ class AuthScreen extends Component {
               <FormInput
                 editable={true}
                 onChangeText={(first_name) => this.setState({ first_name, error: null, first_name_error: null })}
-                ref="first_name"
+                fieldName="first_name"
                 textContentType="none"
                 value={this.state.first_name}
                 style={[Theme.TextInput.textInputStyle, this.state.first_name_error ? Theme.Errors.errorBorder : {}]}
@@ -254,7 +254,7 @@ class AuthScreen extends Component {
               <FormInput
                 editable={true}
                 onChangeText={(last_name) => this.setState({ last_name, error: null, last_name_error: null })}
-                ref="last_name"
+                fieldName="last_name"
                 textContentType="none"
                 value={this.state.last_name}
                 style={[Theme.TextInput.textInputStyle, this.state.last_name_error ? Theme.Errors.errorBorder : {}]}
@@ -276,7 +276,7 @@ class AuthScreen extends Component {
           <FormInput
             editable={true}
             onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
-            ref="user_name"
+            fieldName="user_name"
             value={this.state.user_name}
             style={[Theme.TextInput.textInputStyle, this.state.user_name_error ? Theme.Errors.errorBorder : {}]}
             placeholder="Username"
