@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, TouchableHighlight, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Modal, TouchableHighlight, Image, ImageBackground, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import deepGet from 'lodash/get';
@@ -120,14 +120,14 @@ class Giphy extends Component {
     var imageSelector;
     for (var i = 0; i < gifsData.length; i++) {
 
-
       elements.push(
         <TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gifsData, i)}>
           <View>
             <Image
               style={{
-                width: parseInt(gifsData[i]['fixed_width_downsampled']['width']),
-                height: parseInt(gifsData[i]['fixed_width_downsampled']['height'])
+                width: parseInt(gifsData[i]['fixed_width_downsampled']['width']) * 0.5,
+                height: parseInt(gifsData[i]['fixed_width_downsampled']['height']) * 0.5,
+                margin: 5
               }}
               source={{ uri: gifsData[i]['fixed_width_downsampled']['url'] }}
             />
@@ -156,6 +156,8 @@ class Giphy extends Component {
         </View>
       );
     }
+
+    // const screenWidth = Dimensions.get("window").width;
 
     return (
       <View>
@@ -194,8 +196,13 @@ class Giphy extends Component {
                     }}
                   />
 
-                  <View>
-                    <Text>Elements</Text>
+                  <View style={{
+                    flexWrap: 'wrap',
+                    flexDirection: 'column',
+                    flexBlockCount: 2,
+                    flexBlockFlow: 'cross'
+                  }}>
+                    {/*<Text>Elements</Text>*/}
                     {elements}
                   </View>
 

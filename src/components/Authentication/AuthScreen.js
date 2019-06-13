@@ -158,12 +158,18 @@ class AuthScreen extends Component {
   }
 
   setupDeviceComplete(ostWorkflowContext, ostContextEntity) {
-    this.props.dispatch(hideModal());
-    if (userStatus.toLowerCase() === userStatusMap.activated) {
-      this.props.navigation.navigate('HomeScreen');
-    } else {
-      this.props.navigation.navigate('SetPinScreen');
-    }
+    currentUserModal.getUser()
+      .then(( user )=> {
+        this.props.dispatch(hideModal());
+        if ( !utilities.isActiveUser( user) ) {
+          this.props.navigation.navigate('SetPinScreen');
+        } else {
+          this.props.navigation.navigate('HomeScreen');
+        }
+    }).catch(( error)=> {
+      this.props.dispatch(hideModal());
+      utilities.showAlert(null,  ErrorMessages.user_not_found);
+    });
   }
 
   setupDeviceFailed(ostWorkflowContext, ostError) {

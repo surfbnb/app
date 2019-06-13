@@ -20,12 +20,11 @@ export default styles = StyleSheet.create({
   },
   modalInner:{
     backgroundColor: '#ffffff',
-    flex: 1,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     marginTop: 100,
-    paddingTop: 50,
-    paddingLeft: 50
+    padding: 20,
+    paddingTop: 10
   },
   giphyPicker: {
     marginBottom: 20,
