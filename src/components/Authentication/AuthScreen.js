@@ -49,6 +49,8 @@ class AuthScreen extends Component {
       isLoginIn: false,
       server_errors: {},
       clearErrors: false,
+      userNameFocus: true,
+      firstNameFocus: false,
       ...this.defaults
     };
   }
@@ -113,10 +115,6 @@ class AuthScreen extends Component {
 
   clearError() {
     this.setState(this.defaults);
-  }
-
-  setFocus(ref) {
-    this.refs[ref].focus();
   }
 
   signin() {
@@ -246,6 +244,7 @@ class AuthScreen extends Component {
                 errorMsg={this.state.first_name_error}
                 serverErrors={this.state.server_errors}
                 clearErrors={this.state.clearErrors}
+                isFocus={this.state.firstNameFocus}
                 errorHandler={(fieldName) => {
                   this.ServerErrorHandler(fieldName);
                 }}
@@ -288,6 +287,7 @@ class AuthScreen extends Component {
             errorMsg={this.state.user_name_error}
             clearErrors={this.state.clearErrors}
             serverErrors={this.state.server_errors}
+            isFocus={this.state.userNameFocus}
             errorHandler={(fieldName) => {
               this.ServerErrorHandler(fieldName);
             }}
@@ -341,7 +341,13 @@ class AuthScreen extends Component {
           {!this.state.signup && (
             <TouchableOpacity
               onPress={() =>
-                this.setState({ signup: true, error: null, ...this.defaults }, this.setFocus.bind(this, 'first_name'))
+                this.setState({
+                  signup: true,
+                  error: null,
+                  firstNameFocus: true,
+                  userNameFocus: false,
+                  ...this.defaults
+                })
               }
             >
               <Text style={styles.label}>Don't have an account?</Text>
@@ -351,7 +357,14 @@ class AuthScreen extends Component {
           {this.state.signup && (
             <TouchableOpacity
               onPress={() =>
-                this.setState({ signup: false, error: null, ...this.defaults }, this.setFocus.bind(this, 'user_name'))
+                this.setState({
+                  signup: false,
+                  error: null,
+                  isFocus: true,
+                  firstNameFocus: false,
+                  userNameFocus: true,
+                  ...this.defaults
+                })
               }
             >
               <Text style={styles.label}>Already have an account?</Text>

@@ -29,9 +29,18 @@ class FormInput extends Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.isFocus) {
+      this.refs[this.props.fieldName].focus();
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.serverErrors !== this.props.serverErrors) {
       this.validate();
+    }
+    if (this.props.isFocus) {
+      this.refs[this.props.fieldName].focus();
     }
   }
 
