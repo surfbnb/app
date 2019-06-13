@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import { Alert} from 'react-native';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import ActivateUserWorkflow from './OstWalletCallbacks/ActivateUserWorkflow';
@@ -9,6 +8,8 @@ import { hideModal } from "../actions";
 import Store from "../store"; 
 import errorMessage from "../constants/ErrorMessages";
 import deepGet from "lodash/get";
+import utilities from "../services/Utilities";
+
 
 class ActivateUser {
   activateUser(pin, delegate) {
@@ -39,7 +40,7 @@ class ActivateUser {
 
   onError(){
     Store.dispatch(hideModal());
-    Alert.alert("" , errorMessage.general_error) ;  
+    utilities.showAlert(null,  errorMessage.general_error);
   }
 }
 

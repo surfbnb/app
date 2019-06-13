@@ -1,6 +1,8 @@
 import deepGet from "lodash/get"; 
 import appConfig from "../constants/AppConfig"; 
-import AsyncStorage from '@react-native-community/async-storage'; 
+import AsyncStorage from '@react-native-community/async-storage';
+import {Alert} from "react-native";
+import errorMessage from "../constants/ErrorMessages";
 
 export default {
   async saveItem(key, val) {
@@ -28,5 +30,13 @@ export default {
     let status = deepGet( user ,  'ost_status' ) || ""; 
     status = status.toLowerCase(); 
     return status == userStatusMap.activated || status == userStatusMap.activating ; 
+  },
+  
+  showAlert( title , message ){
+    title = title || "";
+    if(!message) return ;
+    setTimeout(()=>{
+      Alert.alert(title , message) ;
+    }, 10);
   }
 };
