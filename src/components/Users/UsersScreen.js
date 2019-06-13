@@ -51,7 +51,6 @@ class Users extends Component {
     if (item) {
       headerText = item.first_name + item.last_name;
     }
-    console.log('Hey I m here');
     this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText });
   }
 
@@ -66,7 +65,7 @@ class Users extends Component {
             onEndReachedThreshold={0.2}
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={(item) => {
+                onPress={() => {
                   this.userClick(item);
                 }}
               >

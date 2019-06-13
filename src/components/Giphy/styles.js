@@ -10,14 +10,22 @@ export default styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between'
   },
+  modal: {
+    position: 'absolute',
+    top: 30,
+    marginTop: 50
+  },
   giphyPicker: {
-    textAlign: 'center',
     color: '#848484',
     fontSize: 15,
     lineHeight: 22,
     fontWeight: '300',
     marginBottom: 20,
+    borderWidth: 1,
     borderStyle: 'dotted'
+  },
+  giphyPickerText: {
+    textAlign: 'center'
   },
   termsPoliciesInfoText: {
     alignSelf: 'center',
