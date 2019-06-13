@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, TouchableHighlight } from 'react-native';
+import {View, Text, Modal, TouchableHighlight, Image} from 'react-native';
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import deepGet from 'lodash/get';
 import { showModal, hideModal } from '../../actions';
 import PepoApi from '../../services/PepoApi';
+import PlusIcon from "../../assets/plus_icon.png";
+import styles from "../Authentication/styles";
 
 class Giphy extends Component {
   constructor(props) {
@@ -53,6 +55,7 @@ class Giphy extends Component {
           }}
         >
           <View style={inlineStyles.giphyPicker}>
+            <Image source={PlusIcon}  style={inlineStyles.plusIcon}/>
             <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
           </View>
         </TouchableOpacity>
