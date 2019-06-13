@@ -14,15 +14,15 @@ export default styles = StyleSheet.create({
     // position: 'relative',
     backgroundColor: '#ffffff',
     alignItems: 'center',
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
+    // borderTopLeftRadius: 20,
     // paddingBottom: 10,
     borderColor: 'rgba(0, 0, 0, 0.25)',
     // borderColor: '#dd0017',
     borderWidth: 1,
-    borderBottomWidth: 0,
-    borderLeftWidth: 0.5,
-    borderRightWidth: 0.5,
+    // borderBottomWidth: 0,
+    // borderLeftWidth: 0.5,
+    // borderRightWidth: 0.5,
     // overflow: 'hidden',
     //android shadow
     elevation: 8
@@ -36,8 +36,14 @@ export default styles = StyleSheet.create({
   tabElement: {
     alignSelf: 'center',
     marginBottom: 3,
-    height: 20,
-    width: 20
+    height: 22,
+    width: 22
+  },
+  tabElementFriends: {
+    alignSelf: 'center',
+    marginBottom: 3,
+    height: 22,
+    width: 35
   }
   // overlayBtn: {
   //   position: 'absolute',

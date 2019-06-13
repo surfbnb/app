@@ -1,4 +1,5 @@
 import React from 'react';
+import {View, Image} from 'react-native';
 import {
   createBottomTabNavigator,
   createStackNavigator,
@@ -16,6 +17,7 @@ import LogoutComponent from './src/components/LogoutLink';
 import CustomTab from './src/components/CustomTab';
 import Feed from './src/components/Feed';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
+import BackArrow from './src/assets/back-arrow.png';
 
 const HomeScreen = createBottomTabNavigator(
   {
@@ -123,12 +125,15 @@ const PinStack = createStackNavigator(
       navigationOptions: {
         headerTitle: 'Set Pin',
         headerTitleStyle: {
-          color: '#484848'
+          color: '#484848',
+          flex : 1,
+          textAlign: 'center'
         },
         headerStyle: {
           backgroundColor: '#ffffff'
         },
-        headerRight: <LogoutComponent />
+        headerBackTitle: null,
+        // headerRight: <LogoutComponent />
       }
     },
     ConfirmPinScreen: {
@@ -136,12 +141,16 @@ const PinStack = createStackNavigator(
       navigationOptions: {
         headerTitle: 'Confirm Pin',
         headerTitleStyle: {
-          color: '#484848'
+          color: '#484848',
+          flex : 1,
+          textAlign: 'center'
         },
+        headerBackImage: <Image source={BackArrow} style={{width: 30, height: 18, marginLeft: 20}}/>,
         headerStyle: {
           backgroundColor: '#ffffff'
         },
-        headerRight: <LogoutComponent />
+        headerRight:<View/>
+        // headerRight: <LogoutComponent />
       }
     }
   }
