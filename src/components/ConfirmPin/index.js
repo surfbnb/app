@@ -22,14 +22,14 @@ export default class ConfirmPin extends Component {
     }
   };
 
-  onRequestAcknowledge(ostWorkflowContext, ostContextEntity) {
+  onRequestAcknowledge() {
     Store.dispatch(hideModal());
     this.props.navigation.navigate('HomeScreen');
   }
 
   onFlowInterrupt(ostWorkflowContext, ostError) {
     Store.dispatch(hideModal());
-    let errMsg = (ostError && ostError.getErrorMessage()) || ErrorMessages.general_error;
+    let errMsg = (ostError && ostError.getApiErrorMessage() || ostError.getErrorMessage()) || ErrorMessages.general_error;
     utilities.showAlert(null , errMsg); 
   }
 

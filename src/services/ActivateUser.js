@@ -1,4 +1,3 @@
-import { Alert} from 'react-native';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import ActivateUserWorkflow from './OstWalletCallbacks/ActivateUserWorkflow';
 import { SESSION_KEY_EXPIRY_TIME } from '../constants';
@@ -31,16 +30,17 @@ class ActivateUser {
               new ActivateUserWorkflow(delegate)
             );
         }else{
-          this.onError(); 
+          this.onError( res ); 
         }        
     }).catch( (error) => {
-      this.onError();
+      this.onError( error );
     })
   }
 
-  onError(){
+  onError( res ){
     Store.dispatch(hideModal());
-    utilities.showAlert(null,  errorMessage.general_error);
+    const errMsg = deepGet( res , "err.msg") || errorMessage.general_error ; 
+    utilities.showAlert(null, errMsg);
   }
 }
 

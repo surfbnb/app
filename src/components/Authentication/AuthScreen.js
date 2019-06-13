@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-
-import PepoApi from '../../services/PepoApi';
 
 // components
 import TouchableButton from '../../theme/components/TouchableButton';
@@ -18,16 +15,10 @@ import { showModal, hideModal } from '../../actions';
 import utilities from "../../services/Utilities";
 import currentUserModal from "../../models/CurrentUser";
 
-const userStatusMap = {
-  activated: 'activated'
-};
-
 const signUpLoginTestMap = {
   signup: 'Signing up...',
   signin: 'Login in...'
 };
-
-let userStatus = '';
 
 class AuthScreen extends Component {
   constructor(props) {
@@ -57,15 +48,6 @@ class AuthScreen extends Component {
       passwordFocus: false,
       ...this.defaults
     };
-  }
-
-  async saveItem(item, selectedValue) {
-    try {
-      await AsyncStorage.removeItem(item);
-      await AsyncStorage.setItem(item, selectedValue);
-    } catch (error) {
-      console.warn('AsyncStorage error: ' + error.message);
-    }
   }
 
   validateLoginInput() {
@@ -147,17 +129,15 @@ class AuthScreen extends Component {
           }
           InitWalletSdk.initializeDevice(this); 
         } else {
-          this.props.dispatch(hideModal());
           this.onServerError(res);
         }
       })
       .catch((err) => {
-        this.props.dispatch(hideModal());
         this.onServerError(err);
       });
   }
 
-  setupDeviceComplete(ostWorkflowContext, ostContextEntity) {
+  setupDeviceComplete() {
     currentUserModal.getUser()
       .then(( user )=> {
         this.props.dispatch(hideModal());
@@ -168,18 +148,19 @@ class AuthScreen extends Component {
         }
     }).catch(( error)=> {
       this.props.dispatch(hideModal());
-      utilities.showAlert(null,  ErrorMessages.user_not_found);
+      this.setState({ general_error: ErrorMessages.user_not_found });
     });
   }
 
   setupDeviceFailed(ostWorkflowContext, ostError) {
+    this.props.dispatch(hideModal());
     const errorMessage =
       (ostError && ostError.getApiErrorMessage()) || ostError.getErrorMessage() || ErrorMessages.general_error;
-    this.props.dispatch(hideModal());
     this.setState({ general_error: errorMessage });
   }
 
   onServerError(res) {
+    this.props.dispatch(hideModal());
     let stateObj = { server_errors: res, clearErrors: false };
     const errorData = deepGet(res, 'err.error_data'),
       errorMsg = deepGet(res, 'err.msg') || ErrorMessages.general_error;
@@ -189,7 +170,7 @@ class AuthScreen extends Component {
     this.setState(stateObj);
   }
 
-  ServerErrorHandler(field) {
+  serverErrorHandler(field) {
     console.log('In ServerErrorHandler', field);
   }
 
@@ -224,7 +205,7 @@ class AuthScreen extends Component {
                 isFocus={this.state.firstNameFocus}
                 blurOnSubmit={false}
                 errorHandler={(fieldName) => {
-                  this.ServerErrorHandler(fieldName);
+                  this.serverErrorHandler(fieldName);
                 }}
               />
 
@@ -251,7 +232,7 @@ class AuthScreen extends Component {
                 isFocus={this.state.lastNameFocus}
                 blurOnSubmit={false}
                 errorHandler={(fieldName) => {
-                  this.ServerErrorHandler(fieldName);
+                  this.serverErrorHandler(fieldName);
                 }}
               />
             </React.Fragment>
@@ -281,7 +262,7 @@ class AuthScreen extends Component {
             isFocus={this.state.userNameFocus}
             blurOnSubmit={false}
             errorHandler={(fieldName) => {
-              this.ServerErrorHandler(fieldName);
+              this.serverErrorHandler(fieldName);
             }}
           />
 
@@ -307,7 +288,7 @@ class AuthScreen extends Component {
             isFocus={this.state.passwordFocus}
             blurOnSubmit={true}
             errorHandler={(fieldName) => {
-              this.ServerErrorHandler(fieldName);
+              this.serverErrorHandler(fieldName);
             }}
             placeholderTextColor="#ababab"
           />
