@@ -55,6 +55,7 @@ const HomeScreen = createBottomTabNavigator(
             headerStyle: {
               backgroundColor: '#ffffff'
             },
+            headerBackTitle: null,
             headerRight: <LogoutComponent />
           }
         },
@@ -63,11 +64,12 @@ const HomeScreen = createBottomTabNavigator(
           navigationOptions: ({ navigation, screenProps }) => ({
             headerTitle: navigation.getParam('transactionHeader'),
             headerTitleStyle: {
-              color: '#ffffff'
+              color: '#484848'
             },
             headerStyle: {
-              backgroundColor: '#61b2d6'
+              backgroundColor: '#ffffff'
             },
+            headerBackImage: <Image source={BackArrow} style={{width: 30, height: 18, marginLeft: 20}}/>,
             headerRight: <LogoutComponent />
           })
         }
