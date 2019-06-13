@@ -2,13 +2,13 @@ import { StyleSheet } from 'react-native';
 
 export default styles = StyleSheet.create({
   container: {
-    marginTop: 25,
-    paddingLeft: 50,
-    paddingRight: 50,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
     fontWeight: '300',
-    alignItems: 'center',
+    alignItems: 'stretch',
     flex: 1,
-    justifyContent: 'space-between'
+    backgroundColor: '#f6f6f6',
   },
   modal: {
     position: 'absolute',
@@ -16,16 +16,25 @@ export default styles = StyleSheet.create({
     marginTop: 50
   },
   giphyPicker: {
-    color: '#848484',
-    fontSize: 15,
-    lineHeight: 22,
-    fontWeight: '300',
     marginBottom: 20,
     borderWidth: 1,
-    borderStyle: 'dotted'
+    backgroundColor: "#ffffff",
+    borderColor: '#afafaf',
+    borderStyle: 'dashed',
+    // margin: 20,
+    padding: 20,
+  },
+  plusIcon: {
+    width: 42,
+    height: 42,
+    alignSelf: 'center'
   },
   giphyPickerText: {
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#ababab',
+    fontSize: 20,
+    fontWeight: '300',
+    marginTop: 10
   },
   termsPoliciesInfoText: {
     alignSelf: 'center',
