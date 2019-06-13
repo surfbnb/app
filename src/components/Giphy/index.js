@@ -1,39 +1,66 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, TouchableHighlight } from 'react-native';
+import { View, Text, Modal, TouchableHighlight, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import deepGet from 'lodash/get';
-import { showModal, hideModal } from '../../actions';
+import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
+import Theme from '../../theme/styles';
 
 class Giphy extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalOpen: false
+      modalOpen: false,
+      gifSearchQuery: '',
+      gifsCategoryMetaData: [],
+      gifsCategoryData: {},
+      gifsDataToShow: [],
+      isGifCategory: true,
+      selectedImage: {}
     };
   }
 
   componentDidMount() {
-    let gifApi = new PepoApi('/gifs/categories');
+    this.getGiphyCategotyData();
+  }
 
+  getGiphyCategotyData() {
+    let gifApi = new PepoApi('/gifs/categories');
     gifApi
       // .setNavigate(this.props.navigation.navigate)
-      .get({ query: 'world cup' })
+      .get()
       .then((res) => {
         if (res.success && res.data) {
           let resultType = deepGet(res, 'data.result_type'),
             gifsCategoryMetaData = deepGet(res, 'data.' + resultType),
-            gifCategoryData = deepGet(res, 'data.gifs');
+            gifsCategoryData = deepGet(res, 'data.gifs');
           this.setState({
             gifsCategoryMetaData,
             gifsCategoryData
           });
+          this.genereateGifDataToShow();
         }
       });
   }
 
+  genereateGifDataToShow() {
+    console.log('In genereateGifDataToShow');
+    let gifsDataToShow = [],
+      gifsCategoryMetaData = this.state.gifsCategoryMetaData,
+      gifsCategoryData = this.state.gifsCategoryData;
+    this.setState({ gifsDataToShow: [] });
+    for (let i = 0; i < gifsCategoryMetaData.length; i++) {
+      let gifId = gifsCategoryMetaData[i]['gif_id'];
+      gifsDataToShow.push({ ...gifsCategoryData[gifId], ...{ name: gifsCategoryMetaData[i]['name'] } });
+    }
+    this.setState({ gifsDataToShow });
+
+    console.log('In genereateGifDataToShow gifsDataToShow', this.state.gifsDataToShow);
+  }
+
   giphyPickerHandler() {
+    console.log('I am here');
     this.setState({
       modalOpen: true
     });
@@ -44,7 +71,94 @@ class Giphy extends Component {
       modalOpen: false
     });
   }
+
+  searchGiphy(gifSearchQuery) {
+    this.setState({
+      gifSearchQuery
+    });
+    console.log(gifSearchQuery, 'gifSearchQuerygifSearchQuery');
+    let gifApi = new PepoApi('/gifs/search');
+    var oThis = this;
+
+    gifApi
+      // .setNavigate(this.props.navigation.navigate)
+      .get({ query: gifSearchQuery })
+      .then((res) => {
+        if (res.success && res.data) {
+          let resultType = deepGet(res, 'data.result_type'),
+            gifsDataToShow = deepGet(res, 'data.' + resultType);
+          oThis.setState({
+            gifsDataToShow,
+            isGifCategory: false
+          });
+        }
+      });
+  }
+
+  handleGiphyPress(e) {
+    console.log('HXUSSXHUSXHSHXSUHXSHXUHSUXhsux', e);
+    console.log('HXUSSXHUSXHSHXSUHXSHXUHSUXhsux', e.currentTarget);
+    console.log(e.currentTarget.getAttribute('data-key'), 'dbfdbhdbhcvbfdhjcvbdhvcbdfhcbdhs');
+  }
+
+  handleGiphyPress(gifsData, i) {
+    return () => {
+      if (this.state.isGifCategory) {
+        this.searchGiphy(gifsData[i]['name']);
+      } else {
+        this.selectImage(gifsData[i]);
+      }
+    };
+  }
+
+  selectImage(gifsData) {
+    this.closeModal();
+    this.setState({
+      selectedImage: gifsData
+    });
+    console.log(gifsData, 'gifsDatagifsDatagifsDatagifsDatagifsDatagifsData');
+  }
+
   render() {
+    console.log('I am in render', this.state.gifsDataToShow);
+    var elements = [];
+    var gifsData = this.state.gifsDataToShow;
+    var imageSelector;
+    console.log('gifsDatagifsDatagifsDatagifsData', gifsData);
+    for (var i = 0; i < gifsData.length; i++) {
+      console.log(gifsData[i], 'gifsData[i]');
+
+      elements.push(
+        <TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gifsData, i)}>
+          <View>
+            <Image
+              style={{ width: 200, height: 200 }}
+              source={{ uri: gifsData[i]['fixed_width_downsampled']['url'] }}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      );
+    }
+
+    console.log(elements, 'elements=======-=-=-=-=-=--=-=-==-=-==-=-==-=-=');
+
+    if (Object.keys(this.state.selectedImage).length) {
+      imageSelector = (
+        <View>
+          <Image
+            style={{ width: 200, height: 200 }}
+            source={{ uri: this.state.selectedImage['fixed_width_downsampled']['url'] }}
+          />
+        </View>
+      );
+    } else {
+      imageSelector = (
+        <View style={inlineStyles.giphyPicker}>
+          <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
+        </View>
+      );
+    }
+
     return (
       <View>
         <TouchableOpacity
@@ -52,9 +166,7 @@ class Giphy extends Component {
             this.giphyPickerHandler();
           }}
         >
-          <View style={inlineStyles.giphyPicker}>
-            <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
-          </View>
+          {imageSelector}
         </TouchableOpacity>
         {this.state.modalOpen && (
           <React.Fragment>
@@ -70,7 +182,26 @@ class Giphy extends Component {
             >
               <View style={{ marginTop: 22 }}>
                 <View>
-                  <Text>Hello World!</Text>
+                  <FormInput
+                    editable={true}
+                    onChangeText={(gifSearchQuery) => this.searchGiphy(gifSearchQuery)}
+                    fieldName="gif_category_search_query"
+                    textContentType="none"
+                    value={this.state.gifSearchQuery}
+                    style={[Theme.TextInput.textInputStyle]}
+                    placeholder="Search Giphy"
+                    returnKeyType="next"
+                    returnKeyLabel="next"
+                    placeholderTextColor="#ababab"
+                    errorHandler={(fieldName) => {
+                      this.ServerErrorHandler(fieldName);
+                    }}
+                  />
+
+                  <View>
+                    <Text>Elements</Text>
+                    {elements}
+                  </View>
 
                   <TouchableHighlight
                     onPress={() => {
