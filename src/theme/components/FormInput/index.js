@@ -39,7 +39,7 @@ class FormInput extends Component {
     if (prevProps.serverErrors !== this.props.serverErrors) {
       this.validate();
     }
-    if (this.props.isFocus) {
+    if (prevProps.isFocus != this.props.isFocus && this.props.isFocus) {
       this.refs[this.props.fieldName].focus();
     }
   }
