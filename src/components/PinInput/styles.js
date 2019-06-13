@@ -1,19 +1,28 @@
-import { StyleSheet } from 'react-native';
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 
-export default inlineStyles = StyleSheet.create({
+let stylesMap = {
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    padding: 20,
-    marginTop: '10%'
-  },
-  displayTextStyle: {
-    marginBottom: 40,
-    color: '#101010',
-    marginHorizontal: 20,
-    fontSize: 16,
-    textAlign: 'center'
-  }
-});
-//TODO remove this comment
+    padding: 20
+  } //,
+  // smoothPinCodeInput : {
+  //   marginTop: -10,
+  //   marginLeft: -1
+  // },
+  // ios: {
+  //   smoothPinCodeInput : {
+  //     marginTop: -10,
+  //     marginLeft: -1
+  //   }
+  // },
+  // android: {
+  //   smoothPinCodeInput: {
+  //     marginTop: -5,
+  //     marginLeft: -2.5
+  //   }
+  // }
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);

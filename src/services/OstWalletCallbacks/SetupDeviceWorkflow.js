@@ -34,7 +34,7 @@ class SetupDeviceWorkflow extends OstWalletWorkFlowCallback {
           ostDeviceRegistered.cancelFlow();
         }
       })
-      .catch(()=>{
+      .catch(() => {
         // cancel workflow.
         ostDeviceRegistered.cancelFlow();
       })
@@ -42,13 +42,13 @@ class SetupDeviceWorkflow extends OstWalletWorkFlowCallback {
   }
 
   flowComplete(ostWorkflowContext, ostContextEntity) {
-    if ( this.delegate && this.delegate.setupDeviceComplete) {
+    if (this.delegate && this.delegate.setupDeviceComplete) {
       this.delegate.setupDeviceComplete(ostWorkflowContext, ostContextEntity);
     }
   }
 
   flowInterrupt(ostWorkflowContext, ostError) {
-    if ( this.delegate && this.delegate.setupDeviceFailed) {
+    if (this.delegate && this.delegate.setupDeviceFailed) {
       this.delegate.setupDeviceFailed(ostWorkflowContext, ostError);
     }
   }

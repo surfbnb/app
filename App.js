@@ -108,10 +108,10 @@ const PinStack = createStackNavigator(
       navigationOptions: {
         headerTitle: 'Set Pin',
         headerTitleStyle: {
-          color: '#ffffff'
+          color: '#484848'
         },
         headerStyle: {
-          backgroundColor: '#61b2d6'
+          backgroundColor: '#ffffff'
         },
         headerRight: <LogoutComponent />
       }
@@ -121,10 +121,10 @@ const PinStack = createStackNavigator(
       navigationOptions: {
         headerTitle: 'Confirm Pin',
         headerTitleStyle: {
-          color: '#ffffff'
+          color: '#484848'
         },
         headerStyle: {
-          backgroundColor: '#61b2d6'
+          backgroundColor: '#ffffff'
         },
         headerRight: <LogoutComponent />
       }

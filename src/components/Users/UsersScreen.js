@@ -24,9 +24,9 @@ class Users extends Component {
     if (query_param) {
       url = url + `?pagination_identifier=${this.state.pageIdentifier}`;
     }
-    
-    let userFetch =  new PepoApi(url);
-  
+
+    let userFetch = new PepoApi(url);
+
     userFetch
       .setNavigate(this.props.navigation.navigate)
       .get()

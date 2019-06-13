@@ -2,10 +2,9 @@ import DefaultStyleGenerator from './DefaultStyleGenerator';
 
 let styles = {
   btn: {
-    borderRadius: 8,
+    borderRadius: 6,
     borderWidth: 1,
-    padding: 12,
-    // marginTop: 15
+    padding: 12
   },
   btnText: {
     fontSize: 15,
@@ -17,6 +16,7 @@ let styles = {
   },
   btnPrimaryText: {
     color: 'rgb(255, 255, 255)',
+    fontFamily: 'Lato-Bold'
   },
   btnSecondary: {
     backgroundColor: '#ffffff',
@@ -30,6 +30,4 @@ let styles = {
   }
 };
 
-
-
-export default (Buttons = DefaultStyleGenerator.generate(styles));
+export default Buttons = DefaultStyleGenerator.generate(styles);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Platform } from 'react-native';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import inlineStyles from './styles';
 
@@ -7,17 +7,15 @@ export default class PinInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pin: '',
-      isFocus: true
+      pin: ''
     };
   }
 
   componentDidMount() {
-    if (this.props.navigation) {
-      this.focusListner = this.props.navigation.addListener('didFocus', (payload) => {
-        this.setState({ pin: '' });
-      });
-    }
+    this.focusListner = this.props.navigation.addListener('didFocus', (payload) => {
+      this.setState({ pin: '' });
+      this.refs['pin_input'].focus();
+    });
   }
 
   componentWillUnmount() {
@@ -29,16 +27,15 @@ export default class PinInput extends Component {
   render() {
     return (
       <View style={inlineStyles.container}>
-        <Text style={inlineStyles.displayTextStyle}>{this.props.displayText}</Text>
         <SmoothPinCodeInput
           codeLength={6}
-          autoFocus={this.state.isFocus}
+          autoFocus={true}
+          ref="pin_input"
           cellSize={12}
           cellStyle={{
             borderColor: '#A9A9A9',
             backgroundColor: '#A9A9A9',
             borderRadius: 24,
-            borderWidth: 1,
             overflow: 'hidden'
           }}
           cellSpacing={30}
@@ -46,15 +43,15 @@ export default class PinInput extends Component {
             borderColor: '#A9A9A9'
           }}
           textStyle={{
-            borderColor: '#61b2d6',
-            backgroundColor: '#61b2d6',
             fontSize: 30,
-            color: '#61b2d6'
+            color: '#ef5566',
+            marginTop: Platform.OS == 'ios' ? -10 : -5,
+            marginLeft: Platform.OS === 'ios' ? -1 : -2.5
           }}
           textStyleFocused={{}}
           value={this.state.pin}
           password
-          mask="o"
+          mask="●"
           onFulfill={this.props.onPinChange}
           onTextChange={(pin) => this.setState({ pin })}
         />

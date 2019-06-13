@@ -1,13 +1,16 @@
 import { createActions, handleActions } from 'redux-actions';
-import { UPSERT_POSTS, UPSERT_USERS, SET_LOGGED_IN, SHOW_MODAL, HIDE_MODAL } from '../actions/constants';
+import AssignIn from 'lodash/assignIn';
+import * as types from '../actions/constants';
 
-export const { upsertPosts, upsertUsers, setLoggedIn, showModal, hideModal } = createActions(
-  UPSERT_POSTS,
-  UPSERT_USERS,
-  SET_LOGGED_IN,
-  SHOW_MODAL,
-  HIDE_MODAL
-);
+export const {
+  upsertPosts,
+  upsertUsers,
+  setLoggedIn,
+  showModal,
+  hideModal,
+  upsertUserEntities,
+  addUserList
+} = createActions(...Object.keys(types));
 
 export const reducer = handleActions(
   {
@@ -15,12 +18,22 @@ export const reducer = handleActions(
     [upsertUsers]: (state, action) => ({ ...state, users: action.payload.users }),
     [setLoggedIn]: (state, action) => ({ ...state, isLoggedIn: action.payload.isLoggedIn }),
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
-    [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal })
+    [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
+    [upsertUserEntities]: (state, action) => ({
+      ...state,
+      user_entities: AssignIn(state.user_entities, action.payload.user_entities)
+    }),
+    [addUserList]: (state, action) => ({
+      ...state,
+      user_list: [...state.user_list, ...action.payload.user_list]
+    })
   },
   {
     feed: [],
     users: [],
     isLoggedIn: false,
-    modal: { message: '', show: false }
+    modal: { message: '', show: false },
+    user_entities: {},
+    user_list: []
   }
 );

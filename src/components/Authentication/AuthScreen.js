@@ -115,6 +115,10 @@ class AuthScreen extends Component {
     this.setState(this.defaults);
   }
 
+  setFocus(ref) {
+    this.refs[ref].focus();
+  }
+
   signin() {
     this.clearError();
 
@@ -230,14 +234,15 @@ class AuthScreen extends Component {
             <React.Fragment>
               <FormInput
                 editable={true}
-                onChangeText={(first_name) => this.setState({ first_name, error: null })}
-                fieldName="first_name"
-                returnKeyType="next"
+                onChangeText={(first_name) => this.setState({ first_name, error: null, first_name_error: null })}
+                ref="first_name"
+                textContentType="none"
                 value={this.state.first_name}
-                style={Theme.TextInput.textInputStyle}
+                style={[Theme.TextInput.textInputStyle, this.state.first_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="First Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
+                placeholderTextColor="#ababab"
                 errorMsg={this.state.first_name_error}
                 serverErrors={this.state.server_errors}
                 clearErrors={this.state.clearErrors}
@@ -248,14 +253,15 @@ class AuthScreen extends Component {
 
               <FormInput
                 editable={true}
-                onChangeText={(last_name) => this.setState({ last_name, error: null })}
-                fieldName="last_name"
-                returnKeyType="next"
+                onChangeText={(last_name) => this.setState({ last_name, error: null, last_name_error: null })}
+                ref="last_name"
+                textContentType="none"
                 value={this.state.last_name}
-                style={Theme.TextInput.textInputStyle}
+                style={[Theme.TextInput.textInputStyle, this.state.last_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="Last Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
+                placeholderTextColor="#ababab"
                 maxLength={5}
                 errorMsg={this.state.last_name_error}
                 serverErrors={this.state.server_errors}
@@ -269,14 +275,16 @@ class AuthScreen extends Component {
 
           <FormInput
             editable={true}
-            onChangeText={(user_name) => this.setState({ user_name, error: null })}
-            fieldName="user_name"
-            returnKeyType="next"
+            onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
+            ref="user_name"
             value={this.state.user_name}
-            style={Theme.TextInput.textInputStyle}
+            style={[Theme.TextInput.textInputStyle, this.state.user_name_error ? Theme.Errors.errorBorder : {}]}
             placeholder="Username"
+            textContentType="none"
             returnKeyType="next"
             returnKeyLabel="next"
+            autoFocus={true}
+            placeholderTextColor="#ababab"
             errorMsg={this.state.user_name_error}
             clearErrors={this.state.clearErrors}
             serverErrors={this.state.server_errors}
@@ -287,12 +295,12 @@ class AuthScreen extends Component {
 
           <FormInput
             editable={true}
-            onChangeText={(password) => this.setState({ password, error: null })}
+            onChangeText={(password) => this.setState({ password, error: null, password_error: null })}
             placeholder="Password"
             fieldName="password"
             returnKeyType="next"
             secureTextEntry={true}
-            style={Theme.TextInput.textInputStyle}
+            style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
             value={this.state.password}
             returnKeyType="done"
             returnKeyLabel="done"
@@ -302,6 +310,7 @@ class AuthScreen extends Component {
             errorHandler={(fieldName) => {
               this.ServerErrorHandler(fieldName);
             }}
+            placeholderTextColor="#ababab"
           />
 
           <Text style={[styles.error]}>{this.state.error}</Text>
@@ -325,23 +334,30 @@ class AuthScreen extends Component {
               />
             </React.Fragment>
           )}
+          <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
         </View>
         <LoadingModal />
         <View style={styles.bottomBtnAndTxt}>
           {!this.state.signup && (
-            <TouchableOpacity onPress={() => this.setState({ signup: true, error: null, ...this.defaults })}>
+            <TouchableOpacity
+              onPress={() =>
+                this.setState({ signup: true, error: null, ...this.defaults }, this.setFocus.bind(this, 'first_name'))
+              }
+            >
               <Text style={styles.label}>Don't have an account?</Text>
               <Text style={styles.link}>Create Account</Text>
             </TouchableOpacity>
           )}
           {this.state.signup && (
-            <TouchableOpacity onPress={() => this.setState({ signup: false, error: null, ...this.defaults })}>
+            <TouchableOpacity
+              onPress={() =>
+                this.setState({ signup: false, error: null, ...this.defaults }, this.setFocus.bind(this, 'user_name'))
+              }
+            >
               <Text style={styles.label}>Already have an account?</Text>
               <Text style={styles.link}>Log In</Text>
             </TouchableOpacity>
           )}
-
-          <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
         </View>
       </View>
     );

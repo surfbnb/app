@@ -1,4 +1,4 @@
-import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 
 let stylesMap = {
   container: {
@@ -36,6 +36,7 @@ let stylesMap = {
   imgPepoLogoSkipFont: {
     height: 70,
     width: 150,
+    marginBottom: 20,
     alignSelf: 'center'
   },
   bottomBtnAndTxt: {
