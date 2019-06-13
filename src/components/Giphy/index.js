@@ -5,6 +5,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import deepGet from 'lodash/get';
 import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
+import PlusIcon from '../../assets/plus_icon.png';
+import styles from '../Authentication/styles';
 import Theme from '../../theme/styles';
 
 class Giphy extends Component {
@@ -153,9 +155,10 @@ class Giphy extends Component {
       );
     } else {
       imageSelector = (
-        <View style={inlineStyles.giphyPicker}>
-          <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
-        </View>
+          <View style={inlineStyles.giphyPicker}>
+              <Image source={PlusIcon} style={inlineStyles.plusIcon} />
+              <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
+          </View>
       );
     }
 
@@ -166,22 +169,21 @@ class Giphy extends Component {
             this.giphyPickerHandler();
           }}
         >
+
           {imageSelector}
         </TouchableOpacity>
         {this.state.modalOpen && (
           <React.Fragment>
-            <View style={{ flexDirection: 'column', flex: 0.3 }}></View>
             <Modal
-              style={inlineStyles.modal}
               animationType="slide"
-              transparent={false}
+              transparent={true}
               visible={this.state.modalVisible}
               onRequestClose={() => {
                 this.closeModal();
               }}
             >
-              <View style={{ marginTop: 22 }}>
-                <View>
+                <View style={inlineStyles.modal}>
+                    <View style={inlineStyles.modalInner}>
                   <FormInput
                     editable={true}
                     onChangeText={(gifSearchQuery) => this.searchGiphy(gifSearchQuery)}

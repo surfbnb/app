@@ -4,7 +4,7 @@ import DeepGet from 'lodash/get';
 import qs from 'qs';
 
 import Store from '../store';
-import { hideModal, upsertUserEntities, addUserList } from '../actions';
+import { hideModal, upsertUserEntities, addUserList, logoutUser } from '../actions';
 
 import { API_ROOT } from '../constants/index';
 
@@ -97,6 +97,7 @@ export default class PepoApi {
           await AsyncStorage.removeItem('user');
           this.navigate('AuthScreen', responseJSON);
           Store.dispatch(hideModal());
+          Store.dispatch(logoutUser());
         } // Handling 500
 
         return resolve(responseJSON);

@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import PepoApi from './PepoApi';
 import { Alert } from 'react-native';
+
+import PepoApi from './PepoApi';
+import Store from '../store';
+import { logoutUser } from '../actions';
 
 export default class Logout {
   constructor(navigate) {
@@ -10,14 +13,11 @@ export default class Logout {
   async perform() {
     await AsyncStorage.removeItem('user');
     this.navigate('AuthScreen');
+    Store.dispatch(logoutUser());
     return;
 
     // Todo logout server implementation
-    let pepoApi = new PepoApi('/users/logout', {
-      method: 'POST',
-      credentials: 'include'
-    });
-    pepoApi
+    new PepoApi('/users/logout')
       .fetch(this.navigate)
       .then(async (res) => {
         console.log('Signout res:', res);

@@ -20,11 +20,10 @@ export default inlineStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#f6f6f6'
+    flexDirection: 'row'
   },
   userContainer: {
-    padding: 20,
+    padding: 12,
     flexDirection: 'row',
     flex: 1,
     // borderBottomWidth: 1,
@@ -35,20 +34,20 @@ export default inlineStyles = StyleSheet.create({
   txtWrapper: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 5
+    alignItems: 'center'
+    // paddingTop: 5,
+    // paddingBottom: 5
   },
   btnWrapper: {
     flex: 0.5,
     flexDirection: 'row',
     justifyContent: 'flex-end'
   },
-  imageStyle :{
-    backgroundColor : '#ef5566',
-    marginRight:10,
-    borderRadius:25,
-    height : 50,
-    width : 50
+  imageStyle: {
+    backgroundColor: '#ef5566',
+    marginRight: 10,
+    borderRadius: 20,
+    height: 40,
+    width: 40
   }
 });
