@@ -1,4 +1,4 @@
-import DefaultStyleGenerator from "./DefaultStyleGenerator";
+import DefaultStyleGenerator from './DefaultStyleGenerator';
 
 let styles = {
   textInputStyle: {
@@ -15,4 +15,4 @@ let styles = {
   }
 };
 
-export default (TextInput = DefaultStyleGenerator.generate(styles));
+export default TextInput = DefaultStyleGenerator.generate(styles);

@@ -1,14 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 class DefaultStyleGenerator {
-  generate( styles ) {
+  generate(styles) {
     let styleKey, styleObj;
-    for( styleKey in styles ) { if ( styles.hasOwnProperty( styleKey ) ) {
-      styleObj = styles[ styleKey ];
-      if ( typeof styleObj.fontFamily === 'undefined' && styleKey.indexOf("SkipFont") < 0 ) {
-        styleObj.fontFamily = "Lato-Regular";
+    for (styleKey in styles) {
+      if (styles.hasOwnProperty(styleKey)) {
+        styleObj = styles[styleKey];
+        if (typeof styleObj.fontFamily === 'undefined' && styleKey.indexOf('SkipFont') < 0) {
+          styleObj.fontFamily = 'Lato-Regular';
+        }
       }
-    }}
+    }
     return StyleSheet.create(styles);
   }
 }

@@ -19,7 +19,7 @@ export default CustomTab = ({ navigation, screenProps }) => (
         source={Feed_icon}
       />
 
-      <Text style={{ color : navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}}>Feed</Text>
+      <Text style={{ color: navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)' }}>Feed</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => navigation.navigate('Users')}>
       <Image
@@ -27,7 +27,7 @@ export default CustomTab = ({ navigation, screenProps }) => (
         style={styles.tabElement}
         source={friends}
       />
-      <Text style={{ color : navigation.state.index === 1 ? '#61b2d6' : 'rgb(72,72,72)'}}>Friends</Text>
+      <Text style={{ color: navigation.state.index === 1 ? '#ef5566' : 'rgb(72,72,72)' }}>Friends</Text>
     </TouchableOpacity>
     {/* <Text> Pepo </Text> */}
     <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
@@ -36,7 +36,7 @@ export default CustomTab = ({ navigation, screenProps }) => (
         style={styles.tabElement}
         source={Profile}
       />
-      <Text style={{ color : navigation.state.index === 2 ? '#61b2d6' : 'rgb(72,72,72)'}}>Profile</Text>
+      <Text style={{ color: navigation.state.index === 2 ? '#61b2d6' : 'rgb(72,72,72)' }}>Profile</Text>
     </TouchableOpacity>
     {/* <TouchableOpacity style={styles.overlayBtn} /> */}
   </View>

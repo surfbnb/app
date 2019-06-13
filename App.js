@@ -46,12 +46,12 @@ const HomeScreen = createBottomTabNavigator(
         Users: {
           screen: Users,
           navigationOptions: {
-            headerTitle: 'Users',
+            headerTitle: 'Friends',
             headerTitleStyle: {
-              color: '#ffffff'
+              color: '#484848'
             },
             headerStyle: {
-              backgroundColor: '#61b2d6'
+              backgroundColor: '#ffffff'
             },
             headerRight: <LogoutComponent />
           }

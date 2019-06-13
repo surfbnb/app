@@ -4,7 +4,8 @@ export default inlineStyles = StyleSheet.create({
   item: {
     fontSize: 15,
     flex: 1,
-    fontWeight: 'bold'
+    fontWeight: '500',
+    color: '#34445b'
   },
   expressBtn: {
     marginRight: 15,
@@ -19,21 +20,24 @@ export default inlineStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: '#f6f6f6'
   },
   userContainer: {
-    padding: 10,
+    padding: 20,
     flexDirection: 'row',
     flex: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgb(233,233,233)',
-    justifyContent: 'space-between',
+    // borderBottomWidth: 1,
+    // borderBottomColor: 'rgb(233,233,233)',
+    // justifyContent: 'space-between',
     flexWrap: 'wrap'
   },
   txtWrapper: {
-    flex: 0.5,
+    flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 5,
+    paddingBottom: 5
   },
   btnWrapper: {
     flex: 0.5,

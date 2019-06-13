@@ -1,12 +1,12 @@
-import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 
 let stylesMap = {
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    padding: 20,
-  }//,
+    padding: 20
+  } //,
   // smoothPinCodeInput : {
   //   marginTop: -10,
   //   marginLeft: -1

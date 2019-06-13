@@ -3,12 +3,15 @@ import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-
 import AsyncStorage from '@react-native-community/async-storage';
 
 import PepoApi from '../../services/PepoApi';
+
+// components
 import TouchableButton from '../../theme/components/TouchableButton';
+import FormInput from '../../theme/components/FormInput';
+import deepGet from 'lodash/get';
 import Theme from '../../theme/styles';
 import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
-import deepGet from 'lodash/get';
 import LoadingModal from '../LoadingModal';
 import ErrorMessages from '../../constants/ErrorMessages';
 import { showModal, hideModal } from '../../actions';
@@ -32,7 +35,10 @@ class AuthScreen extends Component {
       last_name_error: null,
       first_name_error: null,
       password_error: null,
-      user_name_error: null
+      user_name_error: null,
+      server_errors: {},
+      clearErrors: true,
+      errorMsg: ''
     };
     this.state = {
       first_name: null,
@@ -41,6 +47,10 @@ class AuthScreen extends Component {
       password: null,
       signup: false,
       isLoginIn: false,
+      server_errors: {},
+      clearErrors: false,
+      userNameFocus: true,
+      firstNameFocus: false,
       ...this.defaults
     };
   }
@@ -107,14 +117,11 @@ class AuthScreen extends Component {
     this.setState(this.defaults);
   }
 
-  setFocus(ref) {
-    this.refs[ref].focus();
-  }
-
   signin() {
     this.clearError();
 
     if (!this.isValidInputs()) {
+      this.setState({ clearErrors: false });
       return;
     }
 
@@ -177,7 +184,7 @@ class AuthScreen extends Component {
       })
       .catch((err) => {
         this.props.dispatch(hideModal());
-        this.onServerError(res);
+        this.onServerError(err);
       });
   }
 
@@ -195,28 +202,24 @@ class AuthScreen extends Component {
   setupDeviceFailed(ostWorkflowContext, ostError) {
     console.log('setup devices complete ostWorkflowContext', ostWorkflowContext);
     console.log('setup devices complete ostError ', ostError);
-    const errorMessage = (ostError && ostError.getErrorMessage()) || ErrorMessages.general_error;
+    const errorMessage =
+      (ostError && ostError.getApiErrorMessage()) || ostError.getErrorMessage() || ErrorMessages.general_error;
     this.props.dispatch(hideModal());
     this.setState({ general_error: errorMessage });
   }
 
   onServerError(res) {
+    let stateObj = { server_errors: res, clearErrors: false };
     const errorData = deepGet(res, 'err.error_data'),
       errorMsg = deepGet(res, 'err.msg') || ErrorMessages.general_error;
-    if (errorData) {
-      for (let cnt = 0; cnt < errorData.length; cnt++) {
-        let parameter = errorData[cnt]['parameter'],
-          errorParameterName = parameter + '_error',
-          msg = errorData[cnt]['msg'];
-        if (this.state[parameter] || this.state[parameter] == null) {
-          let tempObj = {};
-          tempObj[errorParameterName] = msg;
-          this.setState(tempObj);
-        }
-      }
-    } else {
-      this.setState({ general_error, errorMsg });
+    if (!(errorData && errorData.length)) {
+      stateObj['general_error'] = errorMsg;
     }
+    this.setState(stateObj);
+  }
+
+  ServerErrorHandler(field) {
+    console.log('In ServerErrorHandler', field);
   }
 
   render() {
@@ -227,64 +230,88 @@ class AuthScreen extends Component {
           <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
           {this.state.signup && (
             <React.Fragment>
-              <TextInput
+              <FormInput
                 editable={true}
                 onChangeText={(first_name) => this.setState({ first_name, error: null, first_name_error: null })}
-                ref="first_name"
-                textContentType = "none"
+                fieldName="first_name"
+                textContentType="none"
                 value={this.state.first_name}
                 style={[Theme.TextInput.textInputStyle, this.state.first_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="First Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
                 placeholderTextColor="#ababab"
+                errorMsg={this.state.first_name_error}
+                serverErrors={this.state.server_errors}
+                clearErrors={this.state.clearErrors}
+                isFocus={this.state.firstNameFocus}
+                errorHandler={(fieldName) => {
+                  this.ServerErrorHandler(fieldName);
+                }}
               />
-              <Text style={Theme.Errors.errorText}>{this.state.first_name_error}</Text>
 
-              <TextInput
+              <FormInput
                 editable={true}
                 onChangeText={(last_name) => this.setState({ last_name, error: null, last_name_error: null })}
-                ref="last_name"
-                textContentType = "none"
+                fieldName="last_name"
+                textContentType="none"
                 value={this.state.last_name}
                 style={[Theme.TextInput.textInputStyle, this.state.last_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="Last Name"
                 returnKeyType="next"
                 returnKeyLabel="next"
                 placeholderTextColor="#ababab"
+                maxLength={5}
+                errorMsg={this.state.last_name_error}
+                serverErrors={this.state.server_errors}
+                clearErrors={this.state.clearErrors}
+                errorHandler={(fieldName) => {
+                  this.ServerErrorHandler(fieldName);
+                }}
               />
-              <Text style={Theme.Errors.errorText}>{this.state.last_name_error}</Text>
             </React.Fragment>
           )}
 
-          <TextInput
+          <FormInput
             editable={true}
             onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
-            ref="user_name"
+            fieldName="user_name"
             value={this.state.user_name}
             style={[Theme.TextInput.textInputStyle, this.state.user_name_error ? Theme.Errors.errorBorder : {}]}
             placeholder="Username"
-            textContentType = "none"
+            textContentType="none"
             returnKeyType="next"
             returnKeyLabel="next"
             autoFocus={true}
             placeholderTextColor="#ababab"
+            errorMsg={this.state.user_name_error}
+            clearErrors={this.state.clearErrors}
+            serverErrors={this.state.server_errors}
+            isFocus={this.state.userNameFocus}
+            errorHandler={(fieldName) => {
+              this.ServerErrorHandler(fieldName);
+            }}
           />
-          <Text style={Theme.Errors.errorText}>{this.state.user_name_error}</Text>
 
-          <TextInput
+          <FormInput
             editable={true}
             onChangeText={(password) => this.setState({ password, error: null, password_error: null })}
             placeholder="Password"
-            ref="password"
+            fieldName="password"
+            returnKeyType="next"
             secureTextEntry={true}
             style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
             value={this.state.password}
             returnKeyType="done"
             returnKeyLabel="done"
+            errorMsg={this.state.password_error}
+            serverErrors={this.state.server_errors}
+            clearErrors={this.state.clearErrors}
+            errorHandler={(fieldName) => {
+              this.ServerErrorHandler(fieldName);
+            }}
             placeholderTextColor="#ababab"
           />
-          <Text style={Theme.Errors.errorText}>{this.state.password_error}</Text>
 
           <Text style={[styles.error]}>{this.state.error}</Text>
           {!this.state.signup && (
@@ -314,7 +341,13 @@ class AuthScreen extends Component {
           {!this.state.signup && (
             <TouchableOpacity
               onPress={() =>
-                this.setState({ signup: true, error: null, ...this.defaults }, this.setFocus.bind(this, 'first_name'))
+                this.setState({
+                  signup: true,
+                  error: null,
+                  firstNameFocus: true,
+                  userNameFocus: false,
+                  ...this.defaults
+                })
               }
             >
               <Text style={styles.label}>Don't have an account?</Text>
@@ -324,7 +357,14 @@ class AuthScreen extends Component {
           {this.state.signup && (
             <TouchableOpacity
               onPress={() =>
-                this.setState({ signup: false, error: null, ...this.defaults }, this.setFocus.bind(this, 'user_name'))
+                this.setState({
+                  signup: false,
+                  error: null,
+                  isFocus: true,
+                  firstNameFocus: false,
+                  userNameFocus: true,
+                  ...this.defaults
+                })
               }
             >
               <Text style={styles.label}>Already have an account?</Text>

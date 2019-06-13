@@ -3,7 +3,7 @@ import { View, Text, KeyboardAvoidingView, Platform, Linking } from 'react-nativ
 import PinInput from '../PinInput';
 import styles from '../../theme/styles';
 
-import inlineStyles from './styles'
+import inlineStyles from './styles';
 
 export default class SetPin extends Component {
   constructor(props) {
@@ -18,12 +18,8 @@ export default class SetPin extends Component {
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : -500;
     return (
       <View style={{ flex: 1 }}>
-        <View
-          style={inlineStyles.container}
-        >
-          <Text
-            style={inlineStyles.setPinInfoText}
-          >
+        <View style={inlineStyles.container}>
+          <Text style={inlineStyles.setPinInfoText}>
             Add a new 6-digit PIN to secure your Wallet. PIN will also help you recover the wallet if the phone is lost
             or stolen.
           </Text>
@@ -32,11 +28,7 @@ export default class SetPin extends Component {
 
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={keyboardVerticalOffset}>
           <View>
-            <Text
-              style={inlineStyles.termsPoliciesInfoText}
-            >
-              By Creating Your Wallet, you Agree to our
-            </Text>
+            <Text style={inlineStyles.termsPoliciesInfoText}>By Creating Your Wallet, you Agree to our</Text>
           </View>
           <Text style={inlineStyles.termsPoliciesLinkText}>
             <Text onPress={() => Linking.openURL('http://google.com')}> Terms of Service </Text>
