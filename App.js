@@ -1,12 +1,11 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, Image} from 'react-native';
 import {
   createBottomTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
   createAppContainer
 } from 'react-navigation';
-import { Image } from 'react-native';
 
 import AuthLoading from './src/components/AuthLoading';
 import AuthScreen from './src/components/Authentication';
