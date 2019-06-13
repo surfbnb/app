@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 
 class TransactionScreen extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-    constructor(props){
-        super(props);
-    }
-
-
-    render() {
-
-        return "Hello transaction page"
-    }
-
+  render() {
+    return 'Hello transaction page';
+  }
 }
 
-export default TransactionScreen ; 
+export default TransactionScreen;

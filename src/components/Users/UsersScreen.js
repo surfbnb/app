@@ -45,12 +45,12 @@ class Users extends Component {
       .done();
   };
 
-  userClick( item ){
-    let headerText = "Transaction"
-    if( item ){
-      headerText = item.first_name + item.last_name; 
+  userClick(item) {
+    let headerText = 'Transaction';
+    if (item) {
+      headerText = item.first_name + item.last_name;
     }
-    this.props.navigation.navigate("Transaction" , {transactionHeader: headerText } );
+    this.props.navigation.navigate('Transaction', { transactionHeader: headerText });
   }
 
   render() {
@@ -62,9 +62,15 @@ class Users extends Component {
             keyExtractor={(item, index) => String(item.id)}
             onEndReached={this.getUsersData}
             onEndReachedThreshold={0.2}
-            renderItem={({ item }) => <User id={item.id} user={item}  onPress={( item ) => {
-               this.userClick( item ); 
-            }}/>}
+            renderItem={({ item }) => (
+              <User
+                id={item.id}
+                user={item}
+                onPress={(item) => {
+                  this.userClick(item);
+                }}
+              />
+            )}
           />
         </View>
       );

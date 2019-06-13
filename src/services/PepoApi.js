@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import AssignIn from 'lodash/assignIn';
 import DeepGet from 'lodash/get';
+import qs from 'qs';
+
 import Store from '../store';
 import { hideModal, upsertUserEntities, addUserList } from '../actions';
 
@@ -25,12 +27,22 @@ export default class PepoApi {
     return this;
   }
 
-  get(body = '') {
-    return this._performRequest(body, 'GET');
+  get(q = '') {
+    let query = typeof q !== 'string' ? qs.stringify(q) : q;
+    this.parsedParams = AssignIn(this.parsedParams, {
+      method: 'GET'
+    });
+    this.url += query.length > 0 ? `?${query}` : '';
+    return this._perform();
   }
 
   post(body = '') {
-    return this._performRequest(body, 'POST');
+    body = typeof body !== 'string' ? JSON.stringify(body) : body;
+    this.parsedParams = AssignIn(this.parsedParams, {
+      method: 'POST',
+      body
+    });
+    return this._perform();
   }
 
   _cleanUrl() {
@@ -39,15 +51,6 @@ export default class PepoApi {
 
   _parseParams() {
     this.parsedParams = AssignIn(this.defaultParams, this.params);
-  }
-
-  _performRequest(body = '', method = 'GET') {
-    body = typeof body !== 'string' ? JSON.stringify(body) : body;
-    this.parsedParams = AssignIn(this.parsedParams, {
-      method,
-      body
-    });
-    return this._perform();
   }
 
   _dispatchData(responseJSON) {
@@ -67,13 +70,13 @@ export default class PepoApi {
   }
 
   _getIDList(resultData, key = 'id') {
-    return resultData.map((item) => item['id']);
+    return resultData.map((item) => item[key]);
   }
 
   _getEntities(resultData, key = 'id') {
     const entities = {};
     resultData.forEach((item) => {
-      entities[`${key}_${item['id']}`] = item;
+      entities[`${key}_${item[key]}`] = item;
     });
     return entities;
   }
@@ -94,7 +97,7 @@ export default class PepoApi {
           await AsyncStorage.removeItem('user');
           this.navigate('AuthScreen', responseJSON);
           Store.dispatch(hideModal());
-        }
+        } // Handling 500
 
         return resolve(responseJSON);
       } catch (err) {
