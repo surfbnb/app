@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2019.07.14.01</string>
+	<string>4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -37,8 +37,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription </key>
+	<string>Application uses location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Application uses location</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Black.ttf</string>
@@ -64,9 +66,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSLocationAlwaysUsageDescription </key>
-    <string>Application uses location</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Application uses location</string>
 </dict>
 </plist>

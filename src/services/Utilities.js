@@ -40,5 +40,11 @@ export default {
     setTimeout(()=>{
       Alert.alert(title , message) ;
     }, 10);
+  },
+
+  getErrorMessage( ostError  , generalErrorMsgKey ){
+    ostError = ostError || {}; 
+    generalErrorMsgKey =  generalErrorMsgKey || "general_error" ; 
+   return  deepGet( ostError ,  "err.msg") || errorMessage[generalErrorMsgKey] ; 
   }
 };

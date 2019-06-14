@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
+
 import {
   View,
   Text,
+  Alert,
   Modal,
   TouchableHighlight,
   Image,
   ImageBackground,
   TouchableWithoutFeedback,
   Dimensions,
+  TextInput,
+  Switch,
   ScrollView,
   FlatList
 } from 'react-native';
+
+
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import deepGet from 'lodash/get';
@@ -18,6 +24,7 @@ import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
 import PlusIcon from '../../assets/plus_icon.png';
 import Theme from '../../theme/styles';
+import TouchableButton from '../../theme/components/TouchableButton';
 
 class Giphy extends Component {
   constructor(props) {
@@ -30,7 +37,7 @@ class Giphy extends Component {
       gifsDataToShow: [],
       isGifCategory: true,
       selectedImage: {},
-      gifUrl: ''
+      gifUrl: '',
     };
     this.screenWidth = Dimensions.get('window').width;
     this.nextPagePayload = {};
@@ -135,6 +142,7 @@ class Giphy extends Component {
       selectedImage: gifsData,
       modalOpen: false
     });
+    this.props.onGifySelect &&  this.props.onGifySelect( gifsData );
   }
 
   isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
