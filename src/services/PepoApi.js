@@ -32,7 +32,9 @@ export default class PepoApi {
     this.parsedParams = AssignIn(this.parsedParams, {
       method: 'GET'
     });
-    this.cleanedUrl += query.length > 0 ? `?${query}` : '';
+    query = this.cleanedUrl.indexOf('?') > -1 ? `&${query}` : `?${query}`;
+    this.cleanedUrl += query.length > 0 ? `${query}` : '';
+
     return this._perform();
   }
 

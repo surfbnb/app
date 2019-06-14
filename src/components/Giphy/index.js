@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, TouchableHighlight, Image, ImageBackground, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  TouchableHighlight,
+  Image,
+  ImageBackground,
+  TouchableWithoutFeedback,
+  Dimensions,
+  ScrollView,
+  FlatList
+} from 'react-native';
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import deepGet from 'lodash/get';
@@ -19,8 +30,11 @@ class Giphy extends Component {
       gifsCategoryData: {},
       gifsDataToShow: [],
       isGifCategory: true,
-      selectedImage: {}
+      selectedImage: {},
+      gifUrl: ''
     };
+    this.nextPagePayload = {};
+    this.isFetching = false;
   }
 
   componentDidMount() {
@@ -47,22 +61,21 @@ class Giphy extends Component {
   }
 
   genereateGifDataToShow() {
-    console.log('In genereateGifDataToShow');
     let gifsDataToShow = [],
       gifsCategoryMetaData = this.state.gifsCategoryMetaData,
       gifsCategoryData = this.state.gifsCategoryData;
     this.setState({ gifsDataToShow: [] });
     for (let i = 0; i < gifsCategoryMetaData.length; i++) {
       let gifId = gifsCategoryMetaData[i]['gif_id'];
-      gifsDataToShow.push({ ...gifsCategoryData[gifId], ...{ name: gifsCategoryMetaData[i]['name'] } });
+      gifsDataToShow.push({
+        ...gifsCategoryData[gifId],
+        ...{ gifsUrl: gifsCategoryMetaData[i]['url'], name: gifsCategoryMetaData[i]['name'] }
+      });
     }
-    this.setState({ gifsDataToShow });
-
-    console.log('In genereateGifDataToShow gifsDataToShow', this.state.gifsDataToShow);
+    this.setState({ gifsDataToShow, isGifCategory: true });
   }
 
   giphyPickerHandler() {
-    console.log('I am here');
     this.setState({
       modalOpen: true
     });
@@ -74,33 +87,58 @@ class Giphy extends Component {
     });
   }
 
-  searchGiphy(gifSearchQuery) {
+  searchGiphy(gifSearchQuery, gifUrl = '') {
     this.setState({
-      gifSearchQuery
+      gifSearchQuery,
+      gifUrl
     });
-    console.log(gifSearchQuery, 'gifSearchQuerygifSearchQuery');
-    let gifApi = new PepoApi('/gifs/search');
-    var oThis = this;
+    let gifurl = gifUrl || '/gifs/search',
+      gifQuery = gifUrl ? this.nextPagePayload : { ...{ query: gifSearchQuery }, ...this.nextPagePayload };
+    if (gifSearchQuery) {
+      if (this.isFetching || this.nextPagePayload === null) return;
 
-    gifApi
-      // .setNavigate(this.props.navigation.navigate)
-      .get({ query: gifSearchQuery })
-      .then((res) => {
-        if (res.success && res.data) {
-          let resultType = deepGet(res, 'data.result_type'),
-            gifsDataToShow = deepGet(res, 'data.' + resultType);
-          oThis.setState({
-            gifsDataToShow,
-            isGifCategory: false
-          });
-        }
-      });
+      if (this.lastPagePayload && this.lastPagePayload === JSON.stringify(this.nextPagePayload)) return;
+
+      this.isFetching = true;
+
+      // copy this.nextPagePayload -> this.lastPagePayload
+      this.lastPagePayload = JSON.stringify(this.nextPagePayload);
+
+      let gifApi = new PepoApi(gifurl);
+      var oThis = this;
+
+      gifApi
+        // .setNavigate(this.props.navigation.navigate)
+        .get(gifQuery)
+        .then((res) => {
+          if (res.success && res.data) {
+            let resultType = deepGet(res, 'data.result_type'),
+              gifsDataToShow = deepGet(res, 'data.' + resultType);
+            this.nextPagePayload = deepGet(res, 'data.meta.next_page_payload');
+
+            let gifsData = this.state.isGifCategory
+              ? [...gifsDataToShow]
+              : [...this.state.gifsDataToShow, ...gifsDataToShow];
+
+            oThis.setState({
+              gifsDataToShow: gifsData,
+              isGifCategory: false
+            });
+          }
+        })
+        .catch(console.warn)
+        .done(() => {
+          this.isFetching = false;
+        });
+    } else {
+      this.genereateGifDataToShow();
+    }
   }
 
   handleGiphyPress(gifsData, i) {
     return () => {
       if (this.state.isGifCategory) {
-        this.searchGiphy(gifsData[i]['name']);
+        this.searchGiphy(gifsData[i]['name'], gifsData[i]['gifsUrl']);
       } else {
         this.selectImage(gifsData[i]);
       }
@@ -114,12 +152,17 @@ class Giphy extends Component {
     });
   }
 
+  isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = 20;
+    return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
+  };
+
   render() {
     var elements = [];
     var gifsData = this.state.gifsDataToShow;
     var imageSelector;
-    for (var i = 0; i < gifsData.length; i++) {
 
+    for (var i = 0; i < gifsData.length; i++) {
       elements.push(
         <TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gifsData, i)}>
           <View>
@@ -139,6 +182,7 @@ class Giphy extends Component {
     if (Object.keys(this.state.selectedImage).length) {
       imageSelector = (
         <View>
+          {/* <Text onClick={this.setState({ selectedImage: {} })}>X</Text> */}
           <Image
             style={{
               width: parseInt(this.state.selectedImage['fixed_width_downsampled']['width']),
@@ -196,21 +240,24 @@ class Giphy extends Component {
                     }}
                   />
 
-                  <View style={{
-                    flexWrap: 'wrap',
-                    flexDirection: 'row',
-                  }}>
-                    {/*<Text>Elements</Text>*/}
-                    {elements}
-                  </View>
-
-                  <TouchableHighlight
-                    onPress={() => {
-                      this.setModalVisible(!this.state.modalVisible);
+                  <View
+                    style={{
+                      flexWrap: 'wrap',
+                      flexDirection: 'row'
                     }}
                   >
-                    <Text>Hide Modal</Text>
-                  </TouchableHighlight>
+                    {/*<Text>Elements</Text>*/}
+                    <ScrollView
+                      onScroll={({ nativeEvent }) => {
+                        if (this.isCloseToBottom(nativeEvent)) {
+                          !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
+                        }
+                      }}
+                      scrollEventThrottle={400}
+                    >
+                      {elements}
+                    </ScrollView>
+                  </View>
                 </View>
               </View>
             </Modal>
