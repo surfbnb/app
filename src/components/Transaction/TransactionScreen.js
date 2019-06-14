@@ -247,7 +247,7 @@ class TransactionScreen extends Component {
 
         <View style={inlineStyles.bottomButtonsWrapper}>
           <TouchableButton
-            TouchableStyles={[Theme.Button.btnPrimary,inlineStyles.sendBtn]}
+            TouchableStyles={[Theme.Button.btnPrimary,inlineStyles.sendPepoBtn]}
             TextStyles={[Theme.Button.btnPrimaryText]}
             text="Send P1"
             onPress={() =>
@@ -255,7 +255,7 @@ class TransactionScreen extends Component {
             }
           />
           <TouchableButton
-            TouchableStyles={[Theme.Button.btnPrimary,]}
+            TouchableStyles={[Theme.Button.btnPrimary,inlineStyles.dottedBtn]}
             TextStyles={[Theme.Button.btnPrimaryText]}
             text="..."
             onPress={()=>{this.setState({transactionModal:true})}}

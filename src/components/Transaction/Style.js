@@ -20,9 +20,9 @@ export default styles = StyleSheet.create({
     flexDirection:'row',
     flex:1,
     alignItems:'flex-end',
-    marginBottom:30
+    // marginBottom:30
   },
-  sendBtn:{
+  sendPepoBtn:{
     flex:10,
     marginRight:10
   },
