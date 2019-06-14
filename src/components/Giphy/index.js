@@ -232,57 +232,57 @@ class Giphy extends Component {
                           }}
                         />
 
-                  <FlatList
-                    contentContainerStyle={{
-                      // flexWrap: 'wrap',
-                      // flexDirection: 'row',
-                      marginRight: 4
-                    }}
-                    onEndReached={() => {
-                      !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
-                    }}
-                    data={gifsData}
-                    renderItem={({ item }) => {
-                      console.log('gifffffffffffffffff', item);
-                      return (
-                        <TouchableWithoutFeedback key={item.id} onPress={this.handleGiphyPress(item)}>
-                          <View>
-                            <Image
-                              style={{
-                                width: wh,
-                                height: wh,
-                                margin: 3,
-                                borderRadius: 4
-                              }}
-                              source={{ uri: item.fixed_width_downsampled.url }}
-                            ></Image>
-                            <View
-                              style={[
-                                inlineStyles.overlay,
-                                {
-                                  backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0)',
-                                  height: wh,
-                                  width: wh
-                                }
-                              ]}
-                            >
-                              <Text style={inlineStyles.overlayText}>{item.name}</Text>
-                            </View>
-                          </View>
-                        </TouchableWithoutFeedback>
-                      );
-                    }}
-                    //Setting the number of column
-                    numColumns={3}
-                    keyExtractor={(item, index) => index}
-                  />
-
-
-                </View>
-              </View>
+                        <FlatList
+                          contentContainerStyle={{
+                            // flexWrap: 'wrap',
+                            // flexDirection: 'row',
+                            marginRight: 4
+                          }}
+                          onEndReached={() => {
+                            console.log('On end reachedddd');
+                            !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
+                          }}
+                          data={gifsData}
+                          renderItem={({ item }) => {
+                            return (
+                              <TouchableWithoutFeedback key={item.id} onPress={this.handleGiphyPress(item)}>
+                                <View>
+                                  <Image
+                                    style={{
+                                      width: wh,
+                                      height: wh,
+                                      margin: 3,
+                                      borderRadius: 4
+                                    }}
+                                    source={{ uri: item.fixed_width_downsampled.url }}
+                                  />
+                                  <View
+                                    style={[
+                                      inlineStyles.overlay,
+                                      {
+                                        backgroundColor: this.state.isGifCategory
+                                          ? 'rgba(0,0,0,0.75)'
+                                          : 'rgba(0,0,0,0)',
+                                        height: wh,
+                                        width: wh
+                                      }
+                                    ]}
+                                  >
+                                    <Text style={inlineStyles.overlayText}>{item.name}</Text>
+                                  </View>
+                                </View>
+                              </TouchableWithoutFeedback>
+                            );
+                          }}
+                          //Setting the number of column
+                          numColumns={3}
+                          keyExtractor={(item, index) => index}
+                        />
+                      </View>
+                    </View>
                   </TouchableWithoutFeedback>
                 </ScrollView>
-              </TouchableOpacity>
+              </TouchableWithoutFeedback>
             </Modal>
           </React.Fragment>
         )}
