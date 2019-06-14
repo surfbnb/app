@@ -154,8 +154,7 @@ class AuthScreen extends Component {
 
   setupDeviceFailed(ostWorkflowContext, ostError) {
     this.props.dispatch(hideModal());
-    const errorMessage =
-      (ostError && ostError.getApiErrorMessage()) || ostError.getErrorMessage() || ErrorMessages.general_error;
+    const errorMessage = utilities.getErrorMessage( ostError );
     this.setState({ general_error: errorMessage });
   }
 
