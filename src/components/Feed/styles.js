@@ -1,17 +1,14 @@
 import { StyleSheet } from 'react-native';
 
-export default (inlineStyles = StyleSheet.create({
+export default styles = StyleSheet.create({
   container: {
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
     flex: 1,
-    paddingTop: 22,
-    paddingLeft: 10,
-    paddingRight: 10
+    justifyContent: 'center'
   },
-  item: {
-    fontSize: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgb(233,233,233)',
-    paddingTop: 20,
-    padding: 10
+  link: {
+    color: 'rgb(22,141,193)',
+    fontSize: 20
   }
-}));
+});

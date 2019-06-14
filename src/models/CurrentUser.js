@@ -40,11 +40,11 @@ class CurrentUserModel {
     });
   }
 
+
   getUser() {
     return Store.getState().current_user;
   }
-
-  // The sync method.
+  
   sync(userId) {
     //Sync user with server. Return user js obj in a promise.
     userId = userId || this.userId;
