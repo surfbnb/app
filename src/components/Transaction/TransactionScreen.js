@@ -143,7 +143,7 @@ class TransactionScreen extends Component {
     utilities.showAlert('', 'TODO confrim what to do on transaction success');
   }
 
-  getSendTransactionPlatformData(uuid) {
+  getSendTransactionPlatformData(ostWorkflowEntity) {
     return {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
       ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
