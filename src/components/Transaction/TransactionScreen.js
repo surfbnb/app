@@ -18,7 +18,7 @@ import appConfig from '../../constants/AppConfig';
 import { TOKEN_ID } from '../../constants';
 import LoadingModal from '../../components/LoadingModal';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
-
+import inlineStyles from './Style'
 class TransactionScreen extends Component {
   constructor(props) {
     super(props);
@@ -196,7 +196,7 @@ class TransactionScreen extends Component {
 
   render() {
     return (
-      <View style={[styles.container,{flexDirection:'column',flex:1,}]}>
+      <View style={inlineStyles.container}>
 
 
         <Giphy
@@ -210,14 +210,14 @@ class TransactionScreen extends Component {
           {this.state.addMessageBtnVisible && (
             <TouchableOpacity style={{flex:1}}
                               onPress={() =>{this.setState({addMessageBtnVisible:false,messageTextInput:true})}}>
-              <Text style={{color:'rgb(50,150,208)', fontSize:16}}>+Add Message</Text>
+              <Text style={inlineStyles.addMessageTextStyle}>+Add Message</Text>
             </TouchableOpacity>
           )}
 
           {/* This is Share publically switch */}
           <Switch
             value = {this.state.isPrivate}
-            style={{flex:1,justifyContent:'flex-end',borderEndColor : '#EF5566'}}
+            style={inlineStyles.switchStyle}
             onValueChange={( isPrivate ) => {
               this.setState({isPrivate})
               this.switchOnChangeHandler.bind(this)
@@ -245,9 +245,9 @@ class TransactionScreen extends Component {
           />
         )}
 
-        <View style={{flexDirection:'row',flex:1,alignItems:'flex-end',marginBottom:30}}>
+        <View style={inlineStyles.bottomButtonsWrapper}>
           <TouchableButton
-            TouchableStyles={[Theme.Button.btnPrimary,{flex:10,marginRight:10}]}
+            TouchableStyles={[Theme.Button.btnPrimary,inlineStyles.sendBtn]}
             TextStyles={[Theme.Button.btnPrimaryText]}
             text="Send P1"
             onPress={() =>
@@ -255,7 +255,7 @@ class TransactionScreen extends Component {
             }
           />
           <TouchableButton
-            TouchableStyles={[Theme.Button.btnPrimary,{flex:1}]}
+            TouchableStyles={[Theme.Button.btnPrimary,]}
             TextStyles={[Theme.Button.btnPrimaryText]}
             text="..."
             onPress={()=>{this.setState({transactionModal:true})}}
@@ -268,44 +268,20 @@ class TransactionScreen extends Component {
           transparent={true}
           visible={this.state.transactionModal}
           onRequestClose={() => {
-            // Alert.alert('Modal has been closed.');
             this.setState({transactionModal :false})
           }}>
-          <View style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            alignItems:'center',
-            flex: 1,
-          }}>
+          <View style={inlineStyles.modalBackDrop}>
             <TouchableOpacity
-              style={{
-                position:'absolute',
-                top:50,
-                borderColor:'#ffffff',
-                borderWidth:1,
-                borderRadius:25,
-                height:40,
-                width:40,
-                backgroundColor:'transparent'}}
+              style={inlineStyles.modalCloseBtnWrapper}
               onPress={() =>{this.setState({transactionModal :false})}}
             >
-              <Text style={{color:'#ffffff',textAlign:'center',fontSize:25,transform: [{ rotate: '45deg'}]}}>+</Text>
+              <Text style={inlineStyles.modalCloseBtnContent}>+</Text>
             </TouchableOpacity>
 
-            <View style={{
-              borderRadius:3,
-              width: Dimensions.get('window').width-20,
-              backgroundColor:'#ffffff',
-              justifyContent:'center',
-              padding:20,
-              position: 'absolute',
-              top: '50%',
-              transform: [
-                { translateY: - Dimensions.get('window').height * 0.25 }
-              ],
-            }}>
+            <View style={inlineStyles.modalContentWrapper}>
 
 
-              <Text style={{textAlign:'center', color: '#484848', fontSize: 16, marginBottom: 15}}>Enter The Amount your want to send</Text>
+              <Text style={inlineStyles.modalHeader}>Enter The Amount your want to send</Text>
               <View style={{flexDirection:'row'}}>
                 <View style={{flex:0.7}}>
                   <FormInput
