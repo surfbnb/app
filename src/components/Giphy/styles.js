@@ -32,7 +32,8 @@ export default styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderColor: '#afafaf',
     borderStyle: 'dashed',
-    padding: 20
+    padding: 20,
+    borderRadius: 1
   },
   overlay: {
     position: 'absolute',
