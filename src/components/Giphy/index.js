@@ -124,6 +124,7 @@ class Giphy extends Component {
 
   handleGiphyPress(gifsData) {
     return () => {
+      console.log('handleGiphyPress');
       if (this.state.isGifCategory) {
         this.searchGiphy(gifsData['name'], gifsData['gifsUrl']);
       } else {
@@ -177,36 +178,36 @@ class Giphy extends Component {
     }
 
     return (
-      <View>
-        <TouchableOpacity
-          onPress={() => {
-            this.setState({
-              modalOpen: true
-            });
-          }}
-        >
-          {imageSelector}
-        </TouchableOpacity>
-        {this.state.modalOpen && (
-          <React.Fragment>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={this.state.modalOpen}
-              onRequestClose={() => {
-                this.setState({
-                  modalOpen: false
-                });
-              }}
-            >
-              <TouchableWithoutFeedback
-                onPressOut={() =>
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              this.setState({
+                modalOpen: true
+              });
+            }}
+          >
+            {imageSelector}
+          </TouchableOpacity>
+          {this.state.modalOpen && (
+            <React.Fragment>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.modalOpen}
+                onRequestClose={() => {
                   this.setState({
                     modalOpen: false
-                  })
-                }
+                  });
+                }}
               >
-                <ScrollView directionalLockEnabled={true} contentContainerStyle={styles.scrollModal}>
+                <TouchableWithoutFeedback
+                  onPressOut={() =>
+                    this.setState({
+                      modalOpen: false
+                    })
+                  }
+                >
+
                   <TouchableWithoutFeedback
                     onPress={() => {
                       this.setState({
@@ -281,12 +282,11 @@ class Giphy extends Component {
                       </View>
                     </View>
                   </TouchableWithoutFeedback>
-                </ScrollView>
-              </TouchableWithoutFeedback>
-            </Modal>
-          </React.Fragment>
-        )}
-      </View>
+                </TouchableWithoutFeedback>
+              </Modal>
+            </React.Fragment>
+          )}
+        </View>
     );
   }
 }
