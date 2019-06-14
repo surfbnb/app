@@ -32,7 +32,6 @@ class Users extends Component {
     this.lastPagePayload = JSON.stringify(this.nextPagePayload);
 
     new PepoApi('/users')
-      .setNavigate(this.props.navigation.navigate)
       .get(this.nextPagePayload)
       .then((responseData) => {
         if (responseData && responseData.data) {
