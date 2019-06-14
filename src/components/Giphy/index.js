@@ -75,18 +75,6 @@ class Giphy extends Component {
     this.setState({ gifsDataToShow, isGifCategory: true });
   }
 
-  giphyPickerHandler() {
-    this.setState({
-      modalOpen: true
-    });
-  }
-
-  closeModal() {
-    this.setState({
-      modalOpen: false
-    });
-  }
-
   searchGiphy(gifSearchQuery, gifUrl = '') {
     this.setState({
       gifSearchQuery,
@@ -108,7 +96,6 @@ class Giphy extends Component {
       var oThis = this;
 
       gifApi
-        // .setNavigate(this.props.navigation.navigate)
         .get(gifQuery)
         .then((res) => {
           if (res.success && res.data) {
@@ -146,9 +133,9 @@ class Giphy extends Component {
   }
 
   selectImage(gifsData) {
-    this.closeModal();
     this.setState({
-      selectedImage: gifsData
+      selectedImage: gifsData,
+      modalOpen: false
     });
   }
 
@@ -168,7 +155,6 @@ class Giphy extends Component {
     let wh = itemWidth * ratio;
 
     if (Object.keys(this.state.selectedImage).length) {
-
       imageSelector = (
         <View>
           {/* <Text onClick={this.setState({ selectedImage: {} })}>X</Text> */}
@@ -194,7 +180,9 @@ class Giphy extends Component {
       <View>
         <TouchableOpacity
           onPress={() => {
-            this.giphyPickerHandler();
+            this.setState({
+              modalOpen: true
+            });
           }}
         >
           {imageSelector}
@@ -206,70 +194,92 @@ class Giphy extends Component {
               transparent={true}
               visible={this.state.modalVisible}
               onRequestClose={() => {
-                this.closeModal();
+                this.setState({
+                  modalOpen: false
+                });
               }}
             >
-              <View style={inlineStyles.modal}>
-                <View style={inlineStyles.modalInner}>
-                  <FormInput
-                    editable={true}
-                    onChangeText={(gifSearchQuery) => this.searchGiphy(gifSearchQuery)}
-                    fieldName="gif_category_search_query"
-                    textContentType="none"
-                    value={this.state.gifSearchQuery}
-                    style={[Theme.TextInput.textInputStyle]}
-                    placeholder="Search Giphy"
-                    returnKeyType="next"
-                    returnKeyLabel="next"
-                    placeholderTextColor="#ababab"
-                    errorHandler={(fieldName) => {
-                      this.ServerErrorHandler(fieldName);
+              <TouchableOpacity
+                activeOpacity={1}
+                onPressOut={() =>
+                  this.setState({
+                    modalOpen: false
+                  })
+                }
+              >
+                <ScrollView directionalLockEnabled={true} contentContainerStyle={styles.scrollModal}>
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      this.setState({
+                        modalOpen: false
+                      });
                     }}
-                  />
-
-                  <ScrollView
-                    contentContainerStyle={{
-                      flexWrap: 'wrap',
-                      flexDirection: 'row',
-                      marginRight: 4
-                    }}
-                    onScroll={({ nativeEvent }) => {
-                      if (this.isCloseToBottom(nativeEvent)) {
-                        !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
-                      }
-                    }}
-                    scrollEventThrottle={400}
                   >
-                    {gifsData.map((gif, i) => (
-                      <TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gif)}>
-                        <View>
-                          <Image
-                            style={{
-                              width: wh,
-                              height: wh,
-                              margin: 3,
-                              borderRadius: 4
-                            }}
-                            source={{ uri: gif.fixed_width_downsampled.url }}
-                          ></Image>
-                          <View
-                            style={[
-                              inlineStyles.overlay,
-                              {
-                                backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0)',
-                                height: wh,
-                                width: wh
-                              }
-                            ]}
-                          >
-                            <Text style={inlineStyles.overlayText}>{gif.name}</Text>
-                          </View>
-                        </View>
-                      </TouchableWithoutFeedback>
-                    ))}
-                  </ScrollView>
-                </View>
-              </View>
+                    <View style={inlineStyles.modal}>
+                      <View style={inlineStyles.modalInner}>
+                        <FormInput
+                          editable={true}
+                          onChangeText={(gifSearchQuery) => this.searchGiphy(gifSearchQuery)}
+                          fieldName="gif_category_search_query"
+                          textContentType="none"
+                          value={this.state.gifSearchQuery}
+                          style={[Theme.TextInput.textInputStyle]}
+                          placeholder="Search Giphy"
+                          returnKeyType="next"
+                          returnKeyLabel="next"
+                          placeholderTextColor="#ababab"
+                          errorHandler={(fieldName) => {
+                            this.ServerErrorHandler(fieldName);
+                          }}
+                        />
+
+                        <ScrollView
+                          contentContainerStyle={{
+                            flexWrap: 'wrap',
+                            flexDirection: 'row',
+                            marginRight: 4
+                          }}
+                          onScroll={({ nativeEvent }) => {
+                            if (this.isCloseToBottom(nativeEvent)) {
+                              !this.state.isGifCategory &&
+                                this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
+                            }
+                          }}
+                          scrollEventThrottle={400}
+                        >
+                          {gifsData.map((gif, i) => (
+                            <TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gif)}>
+                              <View>
+                                <Image
+                                  style={{
+                                    width: wh,
+                                    height: wh,
+                                    margin: 3,
+                                    borderRadius: 4
+                                  }}
+                                  source={{ uri: gif.fixed_width_downsampled.url }}
+                                ></Image>
+                                <View
+                                  style={[
+                                    inlineStyles.overlay,
+                                    {
+                                      backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0)',
+                                      height: wh,
+                                      width: wh
+                                    }
+                                  ]}
+                                >
+                                  <Text style={inlineStyles.overlayText}>{gif.name}</Text>
+                                </View>
+                              </View>
+                            </TouchableWithoutFeedback>
+                          ))}
+                        </ScrollView>
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </ScrollView>
+              </TouchableOpacity>
             </Modal>
           </React.Fragment>
         )}
