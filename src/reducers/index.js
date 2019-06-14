@@ -7,11 +7,12 @@ export const {
   setLoggedIn,
   showModal,
   hideModal,
+  showToast,
+  hideToast,
   upsertUserEntities,
   addUserList,
   updateCurrentUser,
   logoutUser
-
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -19,6 +20,7 @@ const defaultState = {
   users: [],
   isLoggedIn: false,
   modal: { message: '', show: false },
+  toast: { message: '', show: false },
   user_entities: {},
   user_list: []
 };
@@ -29,6 +31,8 @@ export const reducer = handleActions(
     [setLoggedIn]: (state, action) => ({ ...state, isLoggedIn: action.payload.isLoggedIn }),
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
+    [showToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
+    [hideToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [upsertUserEntities]: (state, action) => ({
       ...state,
       user_entities: AssignIn(state.user_entities, action.payload.user_entities)

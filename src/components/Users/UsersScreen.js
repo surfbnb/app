@@ -61,7 +61,7 @@ class Users extends Component {
             data={this.props.user_list}
             onEndReached={this.getUsersData}
             keyExtractor={(item, index) => `id_${item}`}
-            onEndReachedThreshold={0.2}
+            onEndReachedThreshold={0.5}
             initialNumToRender={20}
             renderItem={({ item }) => (
               <TouchableOpacity
