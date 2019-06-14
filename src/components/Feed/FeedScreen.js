@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
+import { showToast, hideToast } from '../../actions';
+import Store from '../../store';
+
 import styles from './styles';
+import Toast from '../Toast';
 
 class Feed extends Component {
   constructor(props) {
@@ -33,6 +37,7 @@ class Feed extends Component {
             </Text>
           )}
         />
+        <Toast />
       </View>
     );
   }

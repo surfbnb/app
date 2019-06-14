@@ -1,35 +1,36 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
-import currentUserModal from "../../models/CurrentUser";
-import {Alert} from "react-native";
-
+import currentUserModal from '../../models/CurrentUser';
+import { Alert } from 'react-native';
+import { showToast, hideToast } from '../../actions';
+import Store from '../../store';
 
 const initiatePolling = () => {
-  let stopPolling =  false ,
-  currentRetry= 0 ,
-  maxRetry = 5
-  ;
-
+  let stopPolling = false,
+    currentRetry = 0,
+    maxRetry = 5;
   const scheduleAirdropStatusPoll = function() {
-    if( stopPolling || currentRetry > maxRetry ) return ;
+    if (stopPolling || currentRetry > maxRetry) return;
     longPollUser();
   };
 
-  const longPollUser = function(){
-    setTimeout( ()=> {
-      currentUserModal.sync()
-      .then( ( user ) => {
-        const airDropStatus = user && user.signup_airdrop_status;
-        if( airDropStatus == 1 ){
-          stopPolling = true ;
-          Alert.alert("User Activated", "TODO show airdrop toast!");
-        }
-      })
-      .catch( (error) => {
-          currentRetry++
-      })
-      .finally( scheduleAirdropStatusPoll );
-    }, 10000)
-  }
+  const longPollUser = function() {
+    setTimeout(() => {
+      currentUserModal
+        .sync()
+        .then((user) => {
+          const airDropStatus = user && user.signup_airdrop_status;
+          if (airDropStatus == 1) {
+            stopPolling = true;
+            // Alert.alert('User Activated', 'TODO show airdrop toast!');
+            Store.dispatch(showToast('User Activated! Airdrop is initiated.'));
+          }
+        })
+        .catch((error) => {
+          currentRetry++;
+        })
+        .finally(scheduleAirdropStatusPoll);
+    }, 10000);
+  };
 
   scheduleAirdropStatusPoll();
 };
