@@ -73,6 +73,11 @@ const HomeScreen = createBottomTabNavigator(
             headerRight: <LogoutComponent />
           })
         }
+      },
+      {
+        navigationOptions: ({ navigation }) => ({
+          tabBarVisible: navigation.state.index == 1 ? false : true
+        })
       }
 
       // {
