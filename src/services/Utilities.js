@@ -9,6 +9,8 @@ export default {
     try {
       if( typeof val == "object"){
         val = JSON.stringify( val );
+      }else {
+        val = String( val );
       }
       await AsyncStorage.removeItem(key);
       await AsyncStorage.setItem(key, val);

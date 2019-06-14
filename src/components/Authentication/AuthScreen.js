@@ -284,6 +284,7 @@ class AuthScreen extends Component {
               this.setState({
                 passwordFocus: false
               });
+              this.signin();
             }}
             isFocus={this.state.passwordFocus}
             blurOnSubmit={true}
