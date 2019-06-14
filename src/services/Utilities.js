@@ -45,8 +45,6 @@ export default {
   getErrorMessage( ostError  , generalErrorMsgKey ){
     ostError = ostError || {}; 
     generalErrorMsgKey =  generalErrorMsgKey || "general_error" ; 
-   return  (ostError.getApiErrorMessage && ostError.getApiErrorMessage()) || 
-           ( ostError.getErrorMessage && ostError.getErrorMessage()) ||
-           deepGet( ostError ,  "err.msg") || errorMessage[generalErrorMsgKey] ; 
+   return  deepGet( ostError ,  "err.msg") || errorMessage[generalErrorMsgKey] ; 
   }
 };

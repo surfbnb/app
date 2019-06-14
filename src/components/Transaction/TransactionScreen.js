@@ -26,7 +26,7 @@ class TransactionScreen extends Component {
       message: null,
       clearErrors: false,
       server_errors: null,
-      isPrivate: false,
+      isPublic: true,
       general_error: '',
       btAmount: 1,
       btUSDAmount: null
@@ -39,7 +39,6 @@ class TransactionScreen extends Component {
     this.meta = null;
     this.gify = null;
     this.priceOracle = null;
-    this.btSmallestUnit = null;
     this.workflow = null;
   }
 
@@ -74,11 +73,9 @@ class TransactionScreen extends Component {
   }
 
   onGetPricePointSuccess(token, res) {
-    res = res || {};
     let btUSDAmount = null;
-    this.priceOracle = new PriceOracle(token, res.price_point);
-    this.btSmallestUnit = this.priceOracle.toDecimal(this.state.btAmount);
-    btUSDAmount = this.priceOracle.getBtToFiat(this.btSmallestUnit);
+    this.priceOracle = new PriceOracle(this.getPriceOracleConfig(token, res));
+    btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
     this.setState({ btUSDAmount: btUSDAmount });
   }
 
@@ -102,11 +99,12 @@ class TransactionScreen extends Component {
   sendTransactionToSdk() {
     const user = currentUserModal.getUser();
     const option = { wait_for_finalization: false };
+    const btInDecimal = this.priceOracle.toDecimal( this.state.btAmount );
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
       user.ost_user_id,
       [user.ost_token_holder_address],
-      [this.btSmallestUnit],
+      [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
       appConfig.metaProperties,
       this.workflow,
@@ -156,9 +154,9 @@ class TransactionScreen extends Component {
   }
 
   getPrivacyType() {
-    return this.state.isPrivate
-      ? appConfig.executeTransactionPrivacyType.private
-      : appConfig.executeTransactionPrivacyType.public;
+    return this.state.isPublic
+      ? appConfig.executeTransactionPrivacyType.public :
+      appConfig.executeTransactionPrivacyType.private ;
   }
 
   onError(ostError) {
@@ -175,15 +173,27 @@ class TransactionScreen extends Component {
 
   onGifySelect(gify) {
     this.gify = gify;
-    console.log('gify', gify);
   }
 
   onBtChange(bt) {
-    console.log('onBtChange', bt);
+    const usd = this.priceOracle.btToFiat( bt );
+    this.setState({btAmount : bt ,  btUSDAmount: usd});
   }
 
   onUSDChange(usd) {
-    console.log('onUSDChange', usd);
+    const bt = this.priceOracle.fiatToBt(usd);
+    this.setState({btAmount : bt ,  btUSDAmount: usd});
+  }
+
+  getPriceOracleConfig(token ,res ){
+    const conversionFactor = deepGet(token, "conversion_factor"); 
+    const decimal = deepGet(token,  "decimals");
+    const usdPricePoint = deepGet(res, "price_point.OST.USD");
+    return {
+      conversionFactor: conversionFactor, 
+      usdPricePoint: usdPricePoint, 
+      decimal: decimal
+    }
   }
 
   render() {
@@ -211,11 +221,11 @@ class TransactionScreen extends Component {
           placeholderTextColor="#ababab"
         />
 
-        <Switch value={this.state.isPrivate} onValueChange={(isPrivate) => this.setState({ isPrivate })}></Switch>
+        <Switch value={this.state.isPublic} onValueChange={(isPublic) => this.setState({ isPublic })}></Switch>
 
         <FormInput
           editable={true}
-          onKeyPress={(val) => this.onBtChange(val)}
+          onChangeText={(val) => this.onBtChange(val)}
           placeholder="BT"
           fieldName="bt_amount"
           style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
@@ -230,7 +240,7 @@ class TransactionScreen extends Component {
 
         <FormInput
           editable={true}
-          onKeyPress={(val) => this.onUSDChange(val)}
+          onChangeText={(val) => this.onUSDChange(val)}
           placeholder="USD"
           fieldName="usd_amount"
           style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}

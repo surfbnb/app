@@ -1,35 +1,56 @@
+import BigNumber from 'bignumber.js';
+
+const usdPrecession  = 5; 
+const btPrecession = 5;
+
 export default class PriceOracle {
 
     constructor( config ){
-        this.config =  config; 
+        if( !config || !config.conversionFactor || !config.usdPricePoint || !config.decimal ){
+            return null ;
+        }
+      this.conversionFactor = config.conversionFactor ; 
+      this.usdPricePoint = config.usdPricePoint;
+      this.decimal = config.decimal;
     }
 
-    getBtToFiat( val ){
-    
+    btToFiat( bt ){
+        if( !bt ){ return "" }
+        bt = BigNumber( bt );
+        let fiatBN = BigNumber( this.usdPricePoint ) ;
+        oneBtToFiat = fiatBN.dividedBy(  this.conversionFactor );
+        let result = oneBtToFiat.multipliedBy( bt );
+        return this.toFiat( result );
     }
 
-    getBtToSC( val ){
-
+    toFiat( fiat ) {
+        if (!fiat ) {return "";}
+        fiat = String( fiat );
+        fiat = BigNumber( fiat );
+        return fiat.toFixed( usdPrecession );
     }
 
-    getSCToFiat( val ){
-
+    fiatToBt( fiat ){ 
+        if( !fiat ){ return "" }
+        fiat = BigNumber(fiat);
+        let fiatBN = BigNumber( this.usdPricePoint ) ; 
+        let totalSc = fiat.dividedBy( fiatBN );
+        let totalBt =  totalSc.multipliedBy( this.conversionFactor );
+        return this.toBt( totalBt );
     }
 
-    getFiatToBt( val ){
-
+    toBt( bt ) {
+        if ( !bt ) { return "";}
+        bt = String( bt );
+        bt = BigNumber( bt );
+        return bt.toFixed( btPrecession );
     }
-
-    getFiatToSC( val ){
-        
-    }
-
-    getSCToBt(val){
-
-    }
-
+   
     toDecimal(val){
-        return String( val );
+        if(!val) return ""; 
+        val = BigNumber( val ) ;
+        let exp = BigNumber(10).exponentiatedBy( this.decimal ) ;
+        return val.multipliedBy(exp).toString( 10 );
     }
 
 }
