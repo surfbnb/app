@@ -123,6 +123,7 @@ class Giphy extends Component {
   }
 
   handleGiphyPress(gifsData) {
+    console.log('handleGiphyPress');
     return () => {
       console.log('handleGiphyPress');
       if (this.state.isGifCategory) {
@@ -134,6 +135,7 @@ class Giphy extends Component {
   }
 
   selectImage(gifsData) {
+    console.log('selectImage');
     this.setState({
       selectedImage: gifsData,
       modalOpen: false
