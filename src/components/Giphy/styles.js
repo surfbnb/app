@@ -24,7 +24,8 @@ export default styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     marginTop: 100,
     padding: 20,
-    paddingTop: 10
+    paddingTop: 10,
+    paddingBottom: 100
   },
   giphyPicker: {
     marginBottom: 20,
@@ -41,15 +42,18 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
+    fontFamily: 'Lato-Bold',
+    fontWeight: '700'
   },
   overlayText: {
     color: '#fff',
     fontSize: 14,
-    fontWeight: '700',
     paddingLeft: 10,
     paddingRight: 10,
     textTransform: 'uppercase',
     textAlign: 'center',
+    fontFamily: 'Lato-Bold',
+    fontWeight: '700'
   },
   plusIcon: {
     width: 42,

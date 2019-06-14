@@ -119,7 +119,7 @@ class Giphy extends Component {
     let gifsData = this.state.gifsDataToShow;
     let imageSelector;
 
-    let colWidth = (this.screenWidth - 58) / 3;
+    let colWidth = (this.screenWidth - 62) / 3;
     let itemWidth = 200;
     let ratio = colWidth/itemWidth;
     let wh = itemWidth*ratio;
@@ -185,6 +185,7 @@ class Giphy extends Component {
                   <ScrollView contentContainerStyle={{
                     flexWrap: 'wrap',
                     flexDirection: 'row',
+                    marginRight: 4
                   }}>
                     {gifsData.map((gif, i) => (<TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gif)}>
                       <View>
