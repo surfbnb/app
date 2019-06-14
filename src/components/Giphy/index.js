@@ -112,6 +112,7 @@ class Giphy extends Component {
     this.setState({
       selectedImage: gifsData
     });
+    this.props.onGifySelect &&  this.props.onGifySelect( gifsData );
   }
 
   render() {
