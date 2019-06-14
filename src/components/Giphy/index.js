@@ -21,6 +21,7 @@ class Giphy extends Component {
       isGifCategory: true,
       selectedImage: {}
     };
+    this.screenWidth = Dimensions.get("window").width;
   }
 
   componentDidMount() {
@@ -97,12 +98,12 @@ class Giphy extends Component {
       });
   }
 
-  handleGiphyPress(gifsData, i) {
+  handleGiphyPress(gifsData) {
     return () => {
       if (this.state.isGifCategory) {
-        this.searchGiphy(gifsData[i]['name']);
+        this.searchGiphy(gifsData['name']);
       } else {
-        this.selectImage(gifsData[i]);
+        this.selectImage(gifsData);
       }
     };
   }
@@ -115,26 +116,13 @@ class Giphy extends Component {
   }
 
   render() {
-    var elements = [];
-    var gifsData = this.state.gifsDataToShow;
-    var imageSelector;
-    for (var i = 0; i < gifsData.length; i++) {
+    let elements = [];
+    let gifsData = this.state.gifsDataToShow;
+    let imageSelector;
 
-      elements.push(
-        <TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gifsData, i)}>
-          <View>
-            <Image
-              style={{
-                width: parseInt(gifsData[i]['fixed_width_downsampled']['width']) * 0.5,
-                height: parseInt(gifsData[i]['fixed_width_downsampled']['height']) * 0.5,
-                margin: 5
-              }}
-              source={{ uri: gifsData[i]['fixed_width_downsampled']['url'] }}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-      );
-    }
+    let colWidth = (this.screenWidth - 58) / 3;
+    let itemWidth = 200;
+    let ratio = colWidth/itemWidth;
 
     if (Object.keys(this.state.selectedImage).length) {
       imageSelector = (
@@ -156,8 +144,6 @@ class Giphy extends Component {
         </View>
       );
     }
-
-    // const screenWidth = Dimensions.get("window").width;
 
     return (
       <View>
@@ -200,8 +186,19 @@ class Giphy extends Component {
                     flexWrap: 'wrap',
                     flexDirection: 'row',
                   }}>
-                    {/*<Text>Elements</Text>*/}
-                    {elements}
+                    {gifsData.map((gif, i) => (<TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gif)}>
+                      <View>
+                        <Image
+                          style={{
+                            width: parseInt(gif['fixed_width_downsampled']['width']) * ratio,
+                            height: parseInt(gif['fixed_width_downsampled']['width']) * ratio,
+                            margin: 3,
+                            borderRadius: 4
+                          }}
+                          source={{ uri: gif['fixed_width_downsampled']['url'] }}
+                        />
+                      </View>
+                    </TouchableWithoutFeedback>))}
                   </View>
 
                   <TouchableHighlight
