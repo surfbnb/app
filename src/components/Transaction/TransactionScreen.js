@@ -276,61 +276,76 @@ class TransactionScreen extends Component {
             alignItems:'center',
             flex: 1,
           }}>
-
             <TouchableOpacity
-              style={{borderColor:'#ffffff',borderWidth:2,borderRadius:25,height:35,width:35,backgroundColor:'transparent'}}>
+              style={{
+                position:'absolute',
+                top:50,
+                borderColor:'#ffffff',
+                borderWidth:1,
+                borderRadius:25,
+                height:40,
+                width:40,
+                backgroundColor:'transparent'}}
+              onPress={() =>{this.setState({transactionModal :false})}}
+            >
               <Text style={{color:'#ffffff',textAlign:'center',fontSize:25,transform: [{ rotate: '45deg'}]}}>+</Text>
             </TouchableOpacity>
 
             <View style={{
               marginTop: 100,
-              // flexDirection:'column',
-              // flex: 1,
+              borderRadius:3,
               width: Dimensions.get('window').width-20,
               backgroundColor:'#ffffff',
               height: 300,
               justifyContent:'center',
               padding:10
-              // alignItems:'center'
             }}>
 
 
               <Text style={{textAlign:'center'}}>Enter The Amount your want to send</Text>
-              <View style={{flexDirection:'column', flex:1}}>
-                <FormInput
-                  editable={true}
-                  onKeyPress={(val) => this.onBtChange( val )}
-                  placeholder="BT"
-                  fieldName="bt_amount"
-                  style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : '', ]}
-                  value= {`${this.state.btAmount}`}
-                  returnKeyType="next"
-                  returnKeyLabel="Next"
-                  placeholderTextColor="#ababab"
-                  errorMsg={this.state.pepo_amt_to_send_error}
-                  serverErrors={this.state.server_errors}
-                  clearErrors={this.state.clearErrors}
-                  keyboardType = 'numeric'
-                />
-                <TextInput style={[Theme.TextInput.textInputStyle,{width: '25%'}]}><Text>PEPO</Text></TextInput>
+              <View style={{flexDirection:'row'}}>
+                <View style={{flex:0.7}}>
+                  <FormInput
+                    editable={true}
+                    onKeyPress={(val) => this.onBtChange( val )}
+                    placeholder="BT"
+                    fieldName="bt_amount"
+                    style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : '']}
+                    value= {`${this.state.btAmount}`}
+                    returnKeyType="next"
+                    returnKeyLabel="Next"
+                    placeholderTextColor="#ababab"
+                    errorMsg={this.state.pepo_amt_to_send_error}
+                    serverErrors={this.state.server_errors}
+                    clearErrors={this.state.clearErrors}
+                    keyboardType = 'numeric'
+                  />
+                </View>
+                <View style={{flex:0.3}}>
+                  <TextInput style={[Theme.TextInput.textInputStyle, {marginLeft:10}]}><Text>PEPO</Text></TextInput>
+                </View>
               </View>
 
               <View style={{flexDirection:'row'}}>
-                <FormInput
-                  editable={true}
-                  onKeyPress={(val) => this.onUSDChange( val ) }
-                  placeholder="USD"
-                  fieldName="usd_amount"
-                  textContentType="none"
-                  style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : '',]}
-                  returnKeyType="done"
-                  returnKeyLabel="Done"
-                  placeholderTextColor="#ababab"
-                  serverErrors={this.state.server_errors}
-                  clearErrors={this.state.clearErrors}
-                  keyboardType = 'numeric'
-                />
-                <TextInput style={[Theme.TextInput.textInputStyle,{marginLeft:10}]}><Text>USD</Text></TextInput>
+                <View style={{flex:0.7}}>
+                  <FormInput
+                    editable={true}
+                    onKeyPress={(val) => this.onUSDChange( val ) }
+                    placeholder="USD"
+                    fieldName="usd_amount"
+                    textContentType="none"
+                    style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : '']}
+                    returnKeyType="done"
+                    returnKeyLabel="Done"
+                    placeholderTextColor="#ababab"
+                    serverErrors={this.state.server_errors}
+                    clearErrors={this.state.clearErrors}
+                    keyboardType = 'numeric'
+                  />
+                </View>
+                <View style={{flex:0.3}}>
+                  <TextInput style={[Theme.TextInput.textInputStyle,{marginLeft:10}]}><Text>USD</Text></TextInput>
+                </View>
               </View>
               <TouchableButton
                 TouchableStyles={[Theme.Button.btnPrimary]}
