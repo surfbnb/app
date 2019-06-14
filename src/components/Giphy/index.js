@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, TouchableHighlight, Image, ImageBackground, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { View, ScrollView, Text, Modal, TouchableHighlight, Image, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import deepGet from 'lodash/get';
 import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
 import PlusIcon from '../../assets/plus_icon.png';
-import styles from '../Authentication/styles';
 import Theme from '../../theme/styles';
 
 class Giphy extends Component {
@@ -120,19 +119,20 @@ class Giphy extends Component {
     let gifsData = this.state.gifsDataToShow;
     let imageSelector;
 
-    let colWidth = (this.screenWidth - 58) / 3;
+    let colWidth = (this.screenWidth - 62) / 3;
     let itemWidth = 200;
     let ratio = colWidth/itemWidth;
+    let wh = itemWidth*ratio;
 
     if (Object.keys(this.state.selectedImage).length) {
       imageSelector = (
         <View>
           <Image
             style={{
-              width: parseInt(this.state.selectedImage['fixed_width_downsampled']['width']),
-              height: parseInt(this.state.selectedImage['fixed_width_downsampled']['height'])
+              width: parseInt(this.state.selectedImage.fixed_width_downsampled.width),
+              height: parseInt(this.state.selectedImage.fixed_width_downsampled.height)
             }}
-            source={{ uri: this.state.selectedImage['fixed_width_downsampled']['url'] }}
+            source={{ uri: this.state.selectedImage.fixed_width.url }}
           />
         </View>
       );
@@ -182,24 +182,36 @@ class Giphy extends Component {
                     }}
                   />
 
-                  <View style={{
+                  <ScrollView contentContainerStyle={{
                     flexWrap: 'wrap',
                     flexDirection: 'row',
+                    marginRight: 4
                   }}>
                     {gifsData.map((gif, i) => (<TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gif)}>
                       <View>
                         <Image
                           style={{
-                            width: parseInt(gif['fixed_width_downsampled']['width']) * ratio,
-                            height: parseInt(gif['fixed_width_downsampled']['width']) * ratio,
+                            width: wh,
+                            height: wh,
                             margin: 3,
-                            borderRadius: 4
+                            borderRadius: 4,
                           }}
-                          source={{ uri: gif['fixed_width_downsampled']['url'] }}
-                        />
+                          source={{ uri: gif.fixed_width_downsampled.url }}>
+                        </Image>
+                        <View
+                          style={[inlineStyles.overlay,
+                            {
+                              backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0)',
+                              height: wh,
+                              width: wh
+                            }
+                            ]}
+                        >
+                          <Text style={inlineStyles.overlayText}>{gif.name}</Text>
+                        </View>
                       </View>
                     </TouchableWithoutFeedback>))}
-                  </View>
+                  </ScrollView>
 
                   <TouchableHighlight
                     onPress={() => {
