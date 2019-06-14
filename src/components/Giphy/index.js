@@ -227,47 +227,52 @@ class Giphy extends Component {
                     }}
                   />
 
-                  <ScrollView
+                  <FlatList
                     contentContainerStyle={{
-                      flexWrap: 'wrap',
-                      flexDirection: 'row',
+                      // flexWrap: 'wrap',
+                      // flexDirection: 'row',
                       marginRight: 4
                     }}
-                    onScroll={({ nativeEvent }) => {
-                      if (this.isCloseToBottom(nativeEvent)) {
-                        !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
-                      }
+                    onEndReached={() => {
+                      !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
                     }}
-                    scrollEventThrottle={400}
-                  >
-                    {gifsData.map((gif, i) => (
-                      <TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gif)}>
-                        <View>
-                          <Image
-                            style={{
-                              width: wh,
-                              height: wh,
-                              margin: 3,
-                              borderRadius: 4
-                            }}
-                            source={{ uri: gif.fixed_width_downsampled.url }}
-                          ></Image>
-                          <View
-                            style={[
-                              inlineStyles.overlay,
-                              {
-                                backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0)',
+                    data={gifsData}
+                    renderItem={({ item }) => {
+                      console.log('gifffffffffffffffff', item);
+                      return (
+                        <TouchableWithoutFeedback key={item.id} onPress={this.handleGiphyPress(item)}>
+                          <View>
+                            <Image
+                              style={{
+                                width: wh,
                                 height: wh,
-                                width: wh
-                              }
-                            ]}
-                          >
-                            <Text style={inlineStyles.overlayText}>{gif.name}</Text>
+                                margin: 3,
+                                borderRadius: 4
+                              }}
+                              source={{ uri: item.fixed_width_downsampled.url }}
+                            ></Image>
+                            <View
+                              style={[
+                                inlineStyles.overlay,
+                                {
+                                  backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0)',
+                                  height: wh,
+                                  width: wh
+                                }
+                              ]}
+                            >
+                              <Text style={inlineStyles.overlayText}>{item.name}</Text>
+                            </View>
                           </View>
-                        </View>
-                      </TouchableWithoutFeedback>
-                    ))}
-                  </ScrollView>
+                        </TouchableWithoutFeedback>
+                      );
+                    }}
+                    //Setting the number of column
+                    numColumns={3}
+                    keyExtractor={(item, index) => index}
+                  />
+
+
                 </View>
               </View>
             </Modal>
