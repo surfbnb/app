@@ -44,8 +44,12 @@ export default styles = StyleSheet.create({
   },
   overlayText: {
     color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold'
+    fontSize: 14,
+    fontWeight: '700',
+    paddingLeft: 10,
+    paddingRight: 10,
+    textTransform: 'uppercase',
+    textAlign: 'center',
   },
   plusIcon: {
     width: 42,
