@@ -292,17 +292,20 @@ class TransactionScreen extends Component {
             </TouchableOpacity>
 
             <View style={{
-              marginTop: 100,
               borderRadius:3,
               width: Dimensions.get('window').width-20,
               backgroundColor:'#ffffff',
-              height: 300,
               justifyContent:'center',
-              padding:10
+              padding:20,
+              position: 'absolute',
+              top: '50%',
+              transform: [
+                { translateY: - Dimensions.get('window').height * 0.25 }
+              ],
             }}>
 
 
-              <Text style={{textAlign:'center'}}>Enter The Amount your want to send</Text>
+              <Text style={{textAlign:'center', color: '#484848', fontSize: 16, marginBottom: 15}}>Enter The Amount your want to send</Text>
               <View style={{flexDirection:'row'}}>
                 <View style={{flex:0.7}}>
                   <FormInput
@@ -348,8 +351,8 @@ class TransactionScreen extends Component {
                 </View>
               </View>
               <TouchableButton
-                TouchableStyles={[Theme.Button.btnPrimary]}
-                TextStyles={[Theme.Button.btnPrimaryText]}
+                TouchableStyles={[Theme.Button.btnPink]}
+                TextStyles={[Theme.Button.btnPinkText]}
                 text="CONFIRM"
                 onPress={()=>{this.setState({transactionModal:true})}}
               />
