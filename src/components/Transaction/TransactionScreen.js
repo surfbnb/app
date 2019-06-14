@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Switch } from 'react-native';
 import {View, Text,Alert, TextInput, Switch, TouchableOpacity, Dimensions,Modal} from 'react-native';
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
@@ -30,7 +29,6 @@ class TransactionScreen extends Component {
       isPrivate: false,
       general_error: '',
       btAmount: 1,
-      btUSDAmount: null
       btUSDAmount: null ,
       messageTextInput : false,
       addMessageBtnVisible : true,
@@ -200,8 +198,7 @@ class TransactionScreen extends Component {
     return (
       <View style={[styles.container,{flexDirection:'column',flex:1,}]}>
 
-        <Giphy onGifySelect={ (gify) => { this.onGifySelect( gify ) }} />
-      <View style={styles.container}>
+
         <Giphy
           onGifySelect={(gify) => {
             this.onGifySelect(gify);
