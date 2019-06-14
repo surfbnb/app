@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import currentModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 
 const LogoutLink = (props) => (
   <Text
@@ -10,7 +10,7 @@ const LogoutLink = (props) => (
       padding: 10
     }}
     onPress={() => {
-      currentModal.logout(props.navigation.navigate);
+      CurrentUser.logout(props.navigation.navigate);
     }}
   >
     Logout

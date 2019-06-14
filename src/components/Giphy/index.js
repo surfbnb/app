@@ -16,7 +16,6 @@ import {
   FlatList
 } from 'react-native';
 
-
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import deepGet from 'lodash/get';
@@ -37,7 +36,7 @@ class Giphy extends Component {
       gifsDataToShow: [],
       isGifCategory: true,
       selectedImage: {},
-      gifUrl: '',
+      gifUrl: ''
     };
     this.screenWidth = Dimensions.get('window').width;
     this.nextPagePayload = {};
@@ -142,7 +141,7 @@ class Giphy extends Component {
       selectedImage: gifsData,
       modalOpen: false
     });
-    this.props.onGifySelect &&  this.props.onGifySelect( gifsData );
+    this.props.onGifySelect && this.props.onGifySelect(gifsData);
   }
 
   isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
@@ -237,7 +236,6 @@ class Giphy extends Component {
                         marginRight: 4
                       }}
                       onEndReached={() => {
-                        console.log('On end reachedddd');
                         !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
                       }}
                       data={gifsData}

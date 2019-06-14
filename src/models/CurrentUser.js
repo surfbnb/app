@@ -3,6 +3,7 @@ import PepoApi from '../services/PepoApi';
 import deepGet from 'lodash/get';
 import Store from '../store';
 import { updateCurrentUser, logoutUser } from '../actions';
+import NavigationService from '../services/NavigationService';
 
 class CurrentUserModel {
   constructor() {
@@ -40,11 +41,10 @@ class CurrentUserModel {
     });
   }
 
-
   getUser() {
     return Store.getState().current_user;
   }
-  
+
   sync(userId) {
     //Sync user with server. Return user js obj in a promise.
     userId = userId || this.userId;
@@ -115,13 +115,13 @@ class CurrentUserModel {
     return this._signin('/auth/sign-up', params);
   }
 
-  logout(navigation) {
+  logout() {
     this.clearCurrentUser();
     new PepoApi('/auth/logout')
       .post()
       .catch((error) => {})
       .then((res) => {
-        navigation('AuthScreen');
+        NavigationService.navigate('AuthScreen');
       });
   }
 

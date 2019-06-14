@@ -34,7 +34,7 @@ let styles = {
   },
   btnPinkText: {
     color: '#fff'
-  },
+  }
 };
 
 export default Buttons = DefaultStyleGenerator.generate(styles);

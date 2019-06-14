@@ -7,6 +7,7 @@ import {
   createAppContainer
 } from 'react-navigation';
 
+import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
 import AuthScreen from './src/components/Authentication';
 import Users from './src/components/Users';
@@ -131,7 +132,7 @@ const PinStack = createStackNavigator({
   }
 });
 
-export default createAppContainer(
+const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading,
@@ -144,3 +145,13 @@ export default createAppContainer(
     }
   )
 );
+
+const App = () => (
+  <AppContainer
+    ref={(navigatorRef) => {
+      NavigationService.setTopLevelNavigator(navigatorRef);
+    }}
+  />
+);
+
+export default App;

@@ -29,8 +29,8 @@ export default class ConfirmPin extends Component {
 
   onFlowInterrupt(ostWorkflowContext, ostError) {
     Store.dispatch(hideModal());
-    let errMsg = utilities.getErrorMessage( ostError );
-    utilities.showAlert(null , errMsg);
+    let errMsg = utilities.getErrorMessage(ostError);
+    utilities.showAlert(null, errMsg);
   }
 
   render() {
