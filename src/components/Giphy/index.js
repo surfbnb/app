@@ -17,7 +17,6 @@ import deepGet from 'lodash/get';
 import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
 import PlusIcon from '../../assets/plus_icon.png';
-import styles from '../Authentication/styles';
 import Theme from '../../theme/styles';
 
 class Giphy extends Component {
@@ -33,6 +32,7 @@ class Giphy extends Component {
       selectedImage: {},
       gifUrl: ''
     };
+    this.screenWidth = Dimensions.get("window").width;
     this.nextPagePayload = {};
     this.isFetching = false;
   }
@@ -135,12 +135,12 @@ class Giphy extends Component {
     }
   }
 
-  handleGiphyPress(gifsData, i) {
+  handleGiphyPress(gifsData) {
     return () => {
       if (this.state.isGifCategory) {
         this.searchGiphy(gifsData[i]['name'], gifsData[i]['gifsUrl']);
       } else {
-        this.selectImage(gifsData[i]);
+        this.selectImage(gifsData);
       }
     };
   }
@@ -158,26 +158,14 @@ class Giphy extends Component {
   };
 
   render() {
-    var elements = [];
-    var gifsData = this.state.gifsDataToShow;
-    var imageSelector;
+    let elements = [];
+    let gifsData = this.state.gifsDataToShow;
+    let imageSelector;
 
-    for (var i = 0; i < gifsData.length; i++) {
-      elements.push(
-        <TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gifsData, i)}>
-          <View>
-            <Image
-              style={{
-                width: parseInt(gifsData[i]['fixed_width_downsampled']['width']) * 0.5,
-                height: parseInt(gifsData[i]['fixed_width_downsampled']['height']) * 0.5,
-                margin: 5
-              }}
-              source={{ uri: gifsData[i]['fixed_width_downsampled']['url'] }}
-            />
-          </View>
-        </TouchableWithoutFeedback>
-      );
-    }
+    let colWidth = (this.screenWidth - 62) / 3;
+    let itemWidth = 200;
+    let ratio = colWidth/itemWidth;
+    let wh = itemWidth*ratio;
 
     if (Object.keys(this.state.selectedImage).length) {
       imageSelector = (
@@ -185,10 +173,10 @@ class Giphy extends Component {
           {/* <Text onClick={this.setState({ selectedImage: {} })}>X</Text> */}
           <Image
             style={{
-              width: parseInt(this.state.selectedImage['fixed_width_downsampled']['width']),
-              height: parseInt(this.state.selectedImage['fixed_width_downsampled']['height'])
+              width: parseInt(this.state.selectedImage.fixed_width_downsampled.width),
+              height: parseInt(this.state.selectedImage.fixed_width_downsampled.height)
             }}
-            source={{ uri: this.state.selectedImage['fixed_width_downsampled']['url'] }}
+            source={{ uri: this.state.selectedImage.fixed_width.url }}
           />
         </View>
       );
@@ -200,8 +188,6 @@ class Giphy extends Component {
         </View>
       );
     }
-
-    // const screenWidth = Dimensions.get("window").width;
 
     return (
       <View>
@@ -240,24 +226,44 @@ class Giphy extends Component {
                     }}
                   />
 
-                  <View
-                    style={{
-                      flexWrap: 'wrap',
-                      flexDirection: 'row'
+                  <ScrollView contentContainerStyle={{
+                    flexWrap: 'wrap',
+                    flexDirection: 'row',
+                    marginRight: 4
+                  }}>
+                    {gifsData.map((gif, i) => (<TouchableWithoutFeedback key={i} data-key={i} onPress={this.handleGiphyPress(gif)}>
+                      <View>
+                        <Image
+                          style={{
+                            width: wh,
+                            height: wh,
+                            margin: 3,
+                            borderRadius: 4,
+                          }}
+                          source={{ uri: gif.fixed_width_downsampled.url }}>
+                        </Image>
+                        <View
+                          style={[inlineStyles.overlay,
+                            {
+                              backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0)',
+                              height: wh,
+                              width: wh
+                            }
+                            ]}
+                        >
+                          <Text style={inlineStyles.overlayText}>{gif.name}</Text>
+                        </View>
+                      </View>
+                    </TouchableWithoutFeedback>))}
+                  </ScrollView>
+
+                  <TouchableHighlight
+                    onPress={() => {
+                      this.setModalVisible(!this.state.modalVisible);
                     }}
                   >
-                    {/*<Text>Elements</Text>*/}
-                    <ScrollView
-                      onScroll={({ nativeEvent }) => {
-                        if (this.isCloseToBottom(nativeEvent)) {
-                          !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
-                        }
-                      }}
-                      scrollEventThrottle={400}
-                    >
-                      {elements}
-                    </ScrollView>
-                  </View>
+                    <Text>Hide Modal</Text>
+                  </TouchableHighlight>
                 </View>
               </View>
             </Modal>

@@ -3,6 +3,7 @@ import PepoApi from "../services/PepoApi";
 import deepGet from 'lodash/get';
 import Store from "../store";
 import {updateCurrentUser, logoutUser} from "../actions";
+import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 
 class CurrentUserModel {
     constructor() {
@@ -10,39 +11,35 @@ class CurrentUserModel {
         this.ostUserId = null;
     }
 
-    getUser() {
+    initialize() {
         //Provide user js obj in  a promise.
-        if ( !this.userId ) {
-           return this.currentUserIdFromAS().then( (asUserId) => {
-                if ( !asUserId) {
-                     Promise.resolve(null);
-                }    
-                return this.userFromAS(asUserId)
-                    .then( (userStr)=> {
-                        if ( !userStr ) {
-                            //User json not found in AS.
-                            return null;
-                        }
-                        let userObj;
-                        try {
-                            userObj = JSON.parse(userStr);
-                        } catch(e) {
-                            // Something unexpected in AS.
-                            // As good as user not found in AS.
-                            // Remove the data from AS. But, dont wait for it.
-                            this.clearCurrentUser(asUserId);
-                            return null;
-                        }
+        this.userId = null;
+        this.ostUserId = null;        
+        return this.currentUserIdFromAS().then( (asUserId) => {
+            if ( !asUserId) {
+                 Promise.resolve(null);
+            }    
+            return this.userFromAS(asUserId)
+                .then( (userStr)=> {
+                    if ( !userStr ) {
+                        //User json not found in AS.
+                        return null;
+                    }
+                    let userObj;
+                    try {
+                        userObj = JSON.parse(userStr);
+                    } catch(e) {
+                        // Something unexpected in AS.
+                        // As good as user not found in AS.
+                        // Remove the data from AS. But, dont wait for it.
+                        this.clearCurrentUser(asUserId);
+                        return null;
+                    }
 
-                        //We now have userObj.
-                        return this.sync( userObj.id );
-                    });
-            })    
-        }
-        // Give from redux. 
-        // Promise.resolve( Store.ge )
-        const store = Store.getState(); 
-        return Promise.resolve( store.current_user );
+                    //We now have userObj.
+                    return this.sync( userObj.id );
+                });
+        });
     }
 
     // The sync method.

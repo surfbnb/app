@@ -138,7 +138,7 @@ class AuthScreen extends Component {
   }
 
   setupDeviceComplete() {
-    currentUserModal.getUser()
+    currentUserModal.initialize()
       .then(( user )=> {
         this.props.dispatch(hideModal());
         if ( !utilities.isActiveUser( user) ) {
@@ -284,6 +284,7 @@ class AuthScreen extends Component {
               this.setState({
                 passwordFocus: false
               });
+              this.signin();
             }}
             isFocus={this.state.passwordFocus}
             blurOnSubmit={true}
