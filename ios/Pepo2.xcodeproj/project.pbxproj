@@ -1244,7 +1244,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.production;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.staging;
 				PRODUCT_NAME = Pepo2;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1280,7 +1280,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.production;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.staging;
 				PRODUCT_NAME = Pepo2;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";

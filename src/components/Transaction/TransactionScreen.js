@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { View, Text, Switch } from 'react-native';
 import {View, Text,Alert, TextInput, Switch, TouchableOpacity, Dimensions,Modal} from 'react-native';
 import TouchableButton from '../../theme/components/TouchableButton';
-import FormInput from "../../theme/components/FormInput"
+import FormInput from '../../theme/components/FormInput';
 import Giphy from '../Giphy';
 import Theme from '../../theme/styles';
-import deepGet from "lodash/get";
-import PepoApi from "../../services/PepoApi";
-import PriceOracle from "../../services/PriceOracle";
-import currentUserModal from "../../models/CurrentUser"; 
-import errorMessage from "../../constants/ErrorMessages";
-import utilities from "../../services/Utilities";
-import Store from "../../store";
-import {showModal , hideModal} from "../../actions";
-import appConfig from "../../constants/AppConfig";
-import {TOKEN_ID} from "../../constants";
-import LoadingModal from "../../components/LoadingModal"
-import ExecuteTransactionWorkflow from "../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow"; 
-
+import deepGet from 'lodash/get';
+import PepoApi from '../../services/PepoApi';
+import PriceOracle from '../../services/PriceOracle';
+import currentUserModal from '../../models/CurrentUser';
+import errorMessage from '../../constants/ErrorMessages';
+import utilities from '../../services/Utilities';
+import Store from '../../store';
+import { showModal, hideModal } from '../../actions';
+import appConfig from '../../constants/AppConfig';
+import { TOKEN_ID } from '../../constants';
+import LoadingModal from '../../components/LoadingModal';
+import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 
 class TransactionScreen extends Component {
   constructor(props) {
@@ -28,158 +28,168 @@ class TransactionScreen extends Component {
       clearErrors: false,
       server_errors: null,
       isPrivate: false,
-      general_error: "",
+      general_error: '',
       btAmount: 1,
+      btUSDAmount: null
       btUSDAmount: null ,
       messageTextInput : false,
       addMessageBtnVisible : true,
       switchToggleState : false,
       transactionModal : false
     };
-    this.baseState = this.state ; 
+    this.baseState = this.state;
   }
 
-  defaultVals(){
+  defaultVals() {
     //TODO lets see how to optimise this
-    this.meta = null ; 
+    this.meta = null;
     this.gify = null;
-    this.priceOracle = null ; 
-    this.btSmallestUnit = null ; 
+    this.priceOracle = null;
+    this.btSmallestUnit = null;
     this.workflow = null;
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.defaultVals();
-    this.initPricePoint(); 
+    this.initPricePoint();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.defaultVals();
-    this.setState(this.baseState); 
+    this.setState(this.baseState);
   }
 
-  initPricePoint(){
+  initPricePoint() {
     this.updatePricePoint();
   }
 
-  updatePricePoint( successCallback , errorCallback   ){
-    const ostUserId = currentUserModal.getOstUserId(); 
-    OstWalletSdk.getToken( TOKEN_ID ,  ( token  ) => {
-      OstJsonApi.getBalanceWithPricePointForUserId( ostUserId , (res)=>{
-        this.onGetPricePointSuccess(token , res); 
-        successCallback && successCallback(res);
-      } , (ostError) => {
-        errorCallback && errorCallback( ostError ) ; 
-      })
-    })
+  updatePricePoint(successCallback, errorCallback) {
+    const ostUserId = currentUserModal.getOstUserId();
+    OstWalletSdk.getToken(TOKEN_ID, (token) => {
+      OstJsonApi.getBalanceWithPricePointForUserId(
+        ostUserId,
+        (res) => {
+          this.onGetPricePointSuccess(token, res);
+          successCallback && successCallback(res);
+        },
+        (ostError) => {
+          errorCallback && errorCallback(ostError);
+        }
+      );
+    });
   }
 
- onGetPricePointSuccess( token , res ){
-  res =  res || {}; 
-  let btUSDAmount = null ; 
-  this.priceOracle = new PriceOracle( token , res.price_point );
-  this.btSmallestUnit = this.priceOracle.toDecimal( this.state.btAmount );
-  btUSDAmount = this.priceOracle.getBtToFiat( this.btSmallestUnit ); 
-  this.setState({ btUSDAmount : btUSDAmount });
- }
+  onGetPricePointSuccess(token, res) {
+    res = res || {};
+    let btUSDAmount = null;
+    this.priceOracle = new PriceOracle(token, res.price_point);
+    this.btSmallestUnit = this.priceOracle.toDecimal(this.state.btAmount);
+    btUSDAmount = this.priceOracle.getBtToFiat(this.btSmallestUnit);
+    this.setState({ btUSDAmount: btUSDAmount });
+  }
 
- onGetPricePointError( ostError ){
-    this.onError( ostError );
- }
+  onGetPricePointError(ostError) {
+    this.onError(ostError);
+  }
 
-  excequteTransaction(){
-    if( !this.isValids() ){
-      Alert.alert("" , errorMessage.general_error_ex );
-      return; 
+  excequteTransaction() {
+    if (!this.isValids()) {
+      Alert.alert('', errorMessage.general_error_ex);
+      return;
     }
-    Store.dispatch(showModal("Executing..."));
+    Store.dispatch(showModal('Executing...'));
     this.sendTransactionToSdk();
   }
 
-  isValids(){
+  isValids() {
     return !!this.priceOracle;
   }
 
-  sendTransactionToSdk(){
-    const user = currentUserModal.getUser(); 
-    const option = { wait_for_finalization : false };
-    this.workflow = new ExecuteTransactionWorkflow( this ); 
-    OstWalletSdk.executeTransaction(user.ost_user_id, 
-                                    [user.ost_token_holder_address],
-                                    [this.btSmallestUnit], 
-                                    appConfig.ruleTypeMap.directTransfer, 
-                                    appConfig.metaProperties, 
-                                    this.workflow,
-                                    option)
+  sendTransactionToSdk() {
+    const user = currentUserModal.getUser();
+    const option = { wait_for_finalization: false };
+    this.workflow = new ExecuteTransactionWorkflow(this);
+    OstWalletSdk.executeTransaction(
+      user.ost_user_id,
+      [user.ost_token_holder_address],
+      [this.btSmallestUnit],
+      appConfig.ruleTypeMap.directTransfer,
+      appConfig.metaProperties,
+      this.workflow,
+      option
+    );
   }
 
-  onRequestAcknowledge( ostWorkflowContext , ostWorkflowEntity ){
-    this.sendTransactionToPlatfrom( deepGet(ostWorkflowEntity, "entity.id") );
+  onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
+    this.sendTransactionToPlatfrom(ostWorkflowEntity);
   }
 
-  onFlowInterrupt( ostWorkflowContext, ostError ){
-    this.onError( ostError );
+  onFlowInterrupt(ostWorkflowContext, ostError) {
+    this.onError(ostError);
   }
 
-  sendTransactionToPlatfrom( uuid ){
-    const params =  this.getSendTransactionPlatformData( uuid );
-    new PepoApi("/ost-transactions")
-    .post(params)
-    .then( (res ) => {
-      if( res && res.success ){
-        this.onTransactionSuccess( res );
-      }else{
-        this.onError( res );
-      }
-    })
-    .catch((error)=> {
-      this.onError( error );
-    })
+  sendTransactionToPlatfrom(ostWorkflowEntity) {
+    const params = this.getSendTransactionPlatformData(ostWorkflowEntity);
+    new PepoApi('/ost-transactions')
+      .post(params)
+      .then((res) => {
+        if (res && res.success) {
+          this.onTransactionSuccess(res);
+        } else {
+          this.onError(res);
+        }
+      })
+      .catch((error) => {
+        this.onError(error);
+      });
   }
 
-  onTransactionSuccess( res ){
+  onTransactionSuccess(res) {
     Store.dispatch(hideModal());
-    utilities.showAlert( "",  "TODO confrim what to do on transaction success" );
+    utilities.showAlert('', 'TODO confrim what to do on transaction success');
   }
 
-  getSendTransactionPlatformData( uuid ){
+  getSendTransactionPlatformData(ostWorkflowEntity) {
     return {
-      "ost_transaction_uuid": uuid,
-      "privacy_type": this.getPrivacyType(),
-      "meta": {
-        "text" : this.state.message,
-        "giphy": this.gify
+      ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
+      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
+      privacy_type: this.getPrivacyType(),
+      meta: {
+        text: this.state.message,
+        giphy: this.gify
       }
-    }
+    };
   }
 
-  getPrivacyType(){
-    return this.state.isPrivate ? appConfig.executeTransactionPrivacyType.private : appConfig.executeTransactionPrivacyType.public ;
+  getPrivacyType() {
+    return this.state.isPrivate
+      ? appConfig.executeTransactionPrivacyType.private
+      : appConfig.executeTransactionPrivacyType.public;
   }
 
-  onError( ostError ){
-    const errorMsg = utilities.getErrorMessage( ostError );
-    this.setState({ general_error : errorMsg});
+  onError(ostError) {
+    const errorMsg = utilities.getErrorMessage(ostError);
+    this.setState({ general_error: errorMsg });
 
-    Store.dispatch(hideModal()); 
-    utilities.showAlert("" , errorMsg );
+    Store.dispatch(hideModal());
+    utilities.showAlert('', errorMsg);
   }
 
-  clearErrors(){
-    this.setState({ clearErrors : false , server_errors : null });
+  clearErrors() {
+    this.setState({ clearErrors: false, server_errors: null });
   }
 
-  onGifySelect( gify ){
-    this.gify = gify; 
-    console.log("gify" , gify );
+  onGifySelect(gify) {
+    this.gify = gify;
+    console.log('gify', gify);
   }
 
-  onBtChange( bt ){
-    console.log("onBtChange" , bt );
+  onBtChange(bt) {
+    console.log('onBtChange', bt);
   }
 
-  onUSDChange( usd ){
-    console.log("onUSDChange" , usd );
+  onUSDChange(usd) {
+    console.log('onUSDChange', usd);
   }
   switchOnChangeHandler(value){
     console.log('in switchOnChangeHandler');
@@ -191,6 +201,12 @@ class TransactionScreen extends Component {
       <View style={[styles.container,{flexDirection:'column',flex:1,}]}>
 
         <Giphy onGifySelect={ (gify) => { this.onGifySelect( gify ) }} />
+      <View style={styles.container}>
+        <Giphy
+          onGifySelect={(gify) => {
+            this.onGifySelect(gify);
+          }}
+        />
 
         <View style={{flexDirection:'row'}}>
           {/*{  This is add message button }*/}
