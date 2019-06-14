@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Switch } from 'react-native';
+import {View, Text,Alert, TextInput, Switch, TouchableOpacity, Dimensions,Modal} from 'react-native';
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
 import Giphy from '../Giphy';
@@ -18,7 +18,7 @@ import appConfig from '../../constants/AppConfig';
 import { TOKEN_ID } from '../../constants';
 import LoadingModal from '../../components/LoadingModal';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
-
+import inlineStyles from './Style'
 class TransactionScreen extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +29,11 @@ class TransactionScreen extends Component {
       isPublic: true,
       general_error: '',
       btAmount: 1,
-      btUSDAmount: null
+      btUSDAmount: null ,
+      messageTextInput : false,
+      addMessageBtnVisible : true,
+      switchToggleState : false,
+      transactionModal : false
     };
     this.baseState = this.state;
   }
@@ -195,73 +199,155 @@ class TransactionScreen extends Component {
       decimal: decimal
     }
   }
+  switchOnChangeHandler(value){
+    console.log('in switchOnChangeHandler');
+    this.setState({switchToggleState : value});
+  }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={inlineStyles.container}>
+
+
         <Giphy
           onGifySelect={(gify) => {
             this.onGifySelect(gify);
           }}
         />
 
-        <Text>+ Add Message</Text>
+        <View style={{flexDirection:'row'}}>
+          {/*{  This is add message button }*/}
+          {this.state.addMessageBtnVisible && (
+            <TouchableOpacity style={{flex:1}}
+                              onPress={() =>{this.setState({addMessageBtnVisible:false,messageTextInput:true})}}>
+              <Text style={inlineStyles.addMessageTextStyle}>+Add Message</Text>
+            </TouchableOpacity>
+          )}
+          
+          {/* This is Share publically switch */}
+          <Switch
+            value = {this.state.isPublic}
+            style={inlineStyles.switchStyle}
+            onValueChange={( isPublic ) => {
+              this.setState({isPublic})
+              this.switchOnChangeHandler.bind(this)
+            }}
+            thumbColor = '#EF5566'
+            trackColor = {{false:'#ffffff',true:'#EF5566'}}>
+          </Switch>
+        </View>
+        
 
-        <FormInput
-          editable={true}
-          onChangeText={(message) => this.setState({ message: message })}
-          placeholder="Message"
-          fieldName="message"
-          style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
-          value={this.state.message}
-          returnKeyType="done"
-          returnKeyLabel="done"
-          serverErrors={this.state.server_errors}
-          clearErrors={this.state.clearErrors}
-          placeholderTextColor="#ababab"
-        />
+        {this.state.messageTextInput &&(
+          <FormInput
+            autoFocus={true}
+            editable={true}
+            onChangeText={(message) => this.setState({ message:  message })}
+            placeholder="Message"
+            fieldName="message"
+            style={[Theme.TextInput.textInputStyle, {backgroundColor:'#ffffff'}]}
+            value={this.state.message}
+            returnKeyType="done"
+            returnKeyLabel="done"
+            serverErrors={this.state.server_errors}
+            clearErrors={this.state.clearErrors}
+            placeholderTextColor="#ababab"
+          />
+        )}
 
-        <Switch value={this.state.isPublic} onValueChange={(isPublic) => this.setState({ isPublic })}></Switch>
-
-        <FormInput
-          editable={true}
-          onChangeText={(val) => this.onBtChange(val)}
-          placeholder="BT"
-          fieldName="bt_amount"
-          style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
-          value={`${this.state.btAmount}`}
-          returnKeyType="next"
-          returnKeyLabel="next"
-          serverErrors={this.state.server_errors}
-          clearErrors={this.state.clearErrors}
-          placeholderTextColor="#ababab"
-          keyboardType="numeric"
-        />
-
-        <FormInput
-          editable={true}
-          onChangeText={(val) => this.onUSDChange(val)}
-          placeholder="USD"
-          fieldName="usd_amount"
-          style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
-          value={`${this.state.btUSDAmount}`}
-          returnKeyType="done"
-          returnKeyLabel="done"
-          serverErrors={this.state.server_errors}
-          clearErrors={this.state.clearErrors}
-          placeholderTextColor="#ababab"
-          keyboardType="numeric"
-        />
-
-        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end', marginBottom: 30 }}>
+        <View style={inlineStyles.bottomButtonsWrapper}>
           <TouchableButton
-            TouchableStyles={[Theme.Button.btnPrimary, { flex: 10, marginRight: 10 }]}
+            TouchableStyles={[Theme.Button.btnPrimary,inlineStyles.sendPepoBtn]}
             TextStyles={[Theme.Button.btnPrimaryText]}
-            text="Send P1"
-            onPress={() => this.excequteTransaction()}
+            text={ `Send P${this.state.btAmount}` }
+            onPress={() =>
+              this.excequteTransaction()
+            }
+          />
+          <TouchableButton
+            TouchableStyles={[Theme.Button.btnPrimary,inlineStyles.dottedBtn]}
+            TextStyles={[Theme.Button.btnPrimaryText]}
+            text="..."
+            onPress={()=>{this.setState({transactionModal:true})}}
           />
         </View>
-        <LoadingModal />
+
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.transactionModal}
+          onRequestClose={() => {
+            this.setState({transactionModal :false})
+          }}>
+          <View style={inlineStyles.modalBackDrop}>
+            <TouchableOpacity
+              style={inlineStyles.modalCloseBtnWrapper}
+              onPress={() =>{this.setState({transactionModal :false})}}
+            >
+              <Text style={inlineStyles.modalCloseBtnContent}>+</Text>
+            </TouchableOpacity>
+
+            <View style={inlineStyles.modalContentWrapper}>
+
+
+              <Text style={inlineStyles.modalHeader}>Enter The Amount your want to send</Text>
+              <View style={{flexDirection:'row'}}>
+                <View style={{flex:0.7}}>
+                  <FormInput
+                    editable={true}
+                    onChangeText={(val) => this.onBtChange( val )}
+                    placeholder="BT"
+                    fieldName="bt_amount"
+                    style={Theme.TextInput.textInputStyle}
+                    value= {`${this.state.btAmount}`}
+                    returnKeyType="next"
+                    returnKeyLabel="Next"
+                    placeholderTextColor="#ababab"
+                    errorMsg={this.state.pepo_amt_to_send_error}
+                    serverErrors={this.state.server_errors}
+                    clearErrors={this.state.clearErrors}
+                    keyboardType = 'numeric'
+                  />
+                </View>
+                <View style={{flex:0.3}}>
+                  <TextInput editable={false} style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}><Text>PEPO</Text></TextInput>
+                </View>
+              </View>
+
+              <View style={{flexDirection:'row'}}>
+                <View style={{flex:0.7}}>
+                  <FormInput
+                    editable={true}
+                    onChangeText={(val) => this.onUSDChange( val ) }
+                    value= {`${this.state.btUSDAmount}`}
+                    placeholder="USD"
+                    fieldName="usd_amount"
+                    textContentType="none"
+                    style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : '']}
+                    returnKeyType="done"
+                    returnKeyLabel="Done"
+                    placeholderTextColor="#ababab"
+                    serverErrors={this.state.server_errors}
+                    clearErrors={this.state.clearErrors}
+                    keyboardType = 'numeric'
+                  />
+                </View>
+                <View style={{flex:0.3}}>
+                  <TextInput editable={false} style={[Theme.TextInput.textInputStyle,inlineStyles.nonEditableTextInput]}><Text>USD</Text></TextInput>
+                </View>
+              </View>
+              <TouchableButton
+                TouchableStyles={[Theme.Button.btnPink]}
+                TextStyles={[Theme.Button.btnPinkText]}
+                text="CONFIRM"
+                onPress={()=>{this.setState({transactionModal:true})}}
+              />
+
+            </View>
+          </View>
+        </Modal>
+        <LoadingModal/>
       </View>
     );
   }
