@@ -12,7 +12,7 @@ import AuthScreen from './src/components/Authentication';
 import Users from './src/components/Users';
 import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';
-import Settings from './src/components/Settings';
+import Profile from './src/components/Profile';
 import LogoutComponent from './src/components/LogoutLink';
 import CustomTab from './src/components/CustomTab';
 import Feed from './src/components/Feed';
@@ -27,10 +27,10 @@ const HomeScreen = createBottomTabNavigator(
         navigationOptions: {
           headerTitle: 'Feed',
           headerTitleStyle: {
-            color: '#ffffff'
+            color: '#484848'
           },
           headerStyle: {
-            backgroundColor: '#61b2d6'
+            backgroundColor: '#ffffff'
           },
           headerRight: <LogoutComponent />
         }
@@ -73,16 +73,16 @@ const HomeScreen = createBottomTabNavigator(
         })
       }
     ),
-    Settings: createStackNavigator({
-      SettingsScreen: {
-        screen: Settings,
+    Profile: createStackNavigator({
+      ProfileScreen: {
+        screen: Profile,
         navigationOptions: {
-          headerTitle: 'Settings',
+          headerTitle: 'Profile',
           headerTitleStyle: {
-            color: '#ffffff'
+            color: '#484848'
           },
           headerStyle: {
-            backgroundColor: '#61b2d6'
+            backgroundColor: '#ffffff'
           },
           headerRight: <LogoutComponent />
         }

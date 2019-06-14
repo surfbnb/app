@@ -6,7 +6,7 @@ import currentModal from '../../models/CurrentUser';
 const LogoutLink = (props) => (
   <Text
     style={{
-      color: '#ffffff',
+      color: 'rgb(72,72,72)',
       padding: 10
     }}
     onPress={() => {

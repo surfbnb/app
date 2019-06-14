@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import styles from './styles';
 
-class Settings extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props);
   }
@@ -17,4 +17,4 @@ class Settings extends Component {
   }
 }
 
-export default Settings;
+export default Profile;
