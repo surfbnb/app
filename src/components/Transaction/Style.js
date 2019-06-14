@@ -67,6 +67,11 @@ export default styles = StyleSheet.create({
     color: '#484848',
     fontSize: 16,
     marginBottom: 15
+  },
+  nonEditableTextInput:{
+    marginLeft:10,
+    textAlign:'center',
+    paddingRight:10
   }
 
 });
