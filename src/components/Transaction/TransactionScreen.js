@@ -301,7 +301,7 @@ class TransactionScreen extends Component {
                   />
                 </View>
                 <View style={{flex:0.3}}>
-                  <TextInput style={[Theme.TextInput.textInputStyle, {marginLeft:10}]}><Text>PEPO</Text></TextInput>
+                  <TextInput editable={false} style={[Theme.TextInput.textInputStyle, {marginLeft:10}]}><Text>PEPO</Text></TextInput>
                 </View>
               </View>
 
@@ -323,7 +323,7 @@ class TransactionScreen extends Component {
                   />
                 </View>
                 <View style={{flex:0.3}}>
-                  <TextInput style={[Theme.TextInput.textInputStyle,{marginLeft:10}]}><Text>USD</Text></TextInput>
+                  <TextInput editable={false} style={[Theme.TextInput.textInputStyle,{marginLeft:10}]}><Text>USD</Text></TextInput>
                 </View>
               </View>
               <TouchableButton
