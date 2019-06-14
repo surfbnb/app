@@ -6,7 +6,7 @@ import qs from 'qs';
 import Store from '../store';
 import { hideModal, upsertUserEntities, addUserList, logoutUser } from '../actions';
 import { API_ROOT } from '../constants/index';
-import NavigationService from '../services/NavigationService';
+import CurrentUser from '../models/CurrentUser';
 
 export default class PepoApi {
   constructor(url, params = {}) {
@@ -95,7 +95,7 @@ export default class PepoApi {
 
         if (responseStatus >= 400 && responseStatus < 500) {
           await AsyncStorage.removeItem('user');
-          NavigationService.navigate('AuthScreen', responseJSON);
+          CurrentUser.logout(responseJSON);
           Store.dispatch(hideModal());
           Store.dispatch(logoutUser());
         } // Handling 500

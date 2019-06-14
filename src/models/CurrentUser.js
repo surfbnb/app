@@ -115,13 +115,13 @@ class CurrentUserModel {
     return this._signin('/auth/sign-up', params);
   }
 
-  logout() {
+  logout(params) {
     this.clearCurrentUser();
     new PepoApi('/auth/logout')
       .post()
       .catch((error) => {})
       .then((res) => {
-        NavigationService.navigate('AuthScreen');
+        NavigationService.navigate('AuthScreen', params);
       });
   }
 
