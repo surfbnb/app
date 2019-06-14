@@ -145,23 +145,23 @@ class Giphy extends Component {
   };
 
   render() {
-    let elements = [];
-    let gifsData = this.state.gifsDataToShow;
-    let imageSelector;
-
-    let colWidth = (this.screenWidth - 62) / 3;
-    let itemWidth = 200;
-    let ratio = colWidth / itemWidth;
-    let wh = itemWidth * ratio;
+    let gifsData = this.state.gifsDataToShow,
+      imageSelector,
+      colWidth = (this.screenWidth - 62) / 3,
+      screenWidth = this.screenWidth - 40,
+      itemWidth = 200,
+      ratio = colWidth / itemWidth,
+      wh = itemWidth * ratio;
 
     if (Object.keys(this.state.selectedImage).length) {
+      let ratioFullScreen = screenWidth / parseInt(this.state.selectedImage.downsized.width);
       imageSelector = (
         <View>
           {/* <Text onClick={this.setState({ selectedImage: {} })}>X</Text> */}
           <Image
             style={{
-              width: parseInt(this.state.selectedImage.downsized.width),
-              height: parseInt(this.state.selectedImage.downsized.height)
+              width: parseInt(this.state.selectedImage.downsized.width) * ratioFullScreen,
+              height: parseInt(this.state.selectedImage.downsized.height) * ratioFullScreen
             }}
             source={{ uri: this.state.selectedImage.downsized.url }}
           />
