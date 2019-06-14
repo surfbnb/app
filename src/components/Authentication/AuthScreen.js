@@ -12,8 +12,8 @@ import InitWalletSdk from '../../services/InitWalletSdk';
 import LoadingModal from '../LoadingModal';
 import ErrorMessages from '../../constants/ErrorMessages';
 import { showModal, hideModal } from '../../actions';
-import utilities from "../../services/Utilities";
-import currentUserModal from "../../models/CurrentUser";
+import utilities from '../../services/Utilities';
+import currentUserModal from '../../models/CurrentUser';
 
 const signUpLoginTestMap = {
   signup: 'Signing up...',
@@ -113,7 +113,7 @@ class AuthScreen extends Component {
 
     this.props.dispatch(showModal(this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin));
 
-    const methodName = this.state.signup ? "signUp" : "login"; 
+    const methodName = this.state.signup ? 'signUp' : 'login';
 
     currentUserModal[methodName](this.state)
       .then((res) => {
@@ -127,7 +127,7 @@ class AuthScreen extends Component {
             });
             return;
           }
-          InitWalletSdk.initializeDevice(this); 
+          InitWalletSdk.initializeDevice(this);
         } else {
           this.onServerError(res);
         }
@@ -138,18 +138,20 @@ class AuthScreen extends Component {
   }
 
   setupDeviceComplete() {
-    currentUserModal.initialize()
-      .then(( user )=> {
+    currentUserModal
+      .initialize()
+      .then((user) => {
         this.props.dispatch(hideModal());
-        if ( !utilities.isActiveUser( user) ) {
+        if (!utilities.isActiveUser(user)) {
           this.props.navigation.navigate('SetPinScreen');
         } else {
           this.props.navigation.navigate('HomeScreen');
         }
-    }).catch(( error)=> {
-      this.props.dispatch(hideModal());
-      this.setState({ general_error: ErrorMessages.user_not_found });
-    });
+      })
+      .catch((error) => {
+        this.props.dispatch(hideModal());
+        this.setState({ general_error: ErrorMessages.user_not_found });
+      });
   }
 
   setupDeviceFailed(ostWorkflowContext, ostError) {

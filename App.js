@@ -21,28 +21,21 @@ import BackArrow from './src/assets/back-arrow.png';
 
 const HomeScreen = createBottomTabNavigator(
   {
-    Feed: createStackNavigator(
-      {
-        FeedContent: {
-          screen: Feed,
-          navigationOptions: {
-            headerTitle: 'Feed',
-            headerTitleStyle: {
-              color: '#ffffff'
-            },
-            headerStyle: {
-              backgroundColor: '#61b2d6'
-            },
-            headerRight: <LogoutComponent />
-          }
+    Feed: createStackNavigator({
+      FeedContent: {
+        screen: Feed,
+        navigationOptions: {
+          headerTitle: 'Feed',
+          headerTitleStyle: {
+            color: '#ffffff'
+          },
+          headerStyle: {
+            backgroundColor: '#61b2d6'
+          },
+          headerRight: <LogoutComponent />
         }
       }
-      // {
-      //   navigationOptions: {
-      //     // tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={FeedIcon} style={{ tintColor }} />
-      //   }
-      // }
-    ),
+    }),
     Users: createStackNavigator(
       {
         Users: {
@@ -79,94 +72,64 @@ const HomeScreen = createBottomTabNavigator(
           tabBarVisible: navigation.state.index == 1 ? false : true
         })
       }
-
-      // {
-      //   navigationOptions: {
-      //     tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={UsersIcon} style={{ tintColor }} />
-      //   }
-      // }
     ),
-    Settings: createStackNavigator(
-      {
-        SettingsScreen: {
-          screen: Settings,
-          navigationOptions: {
-            headerTitle: 'Settings',
-            headerTitleStyle: {
-              color: '#ffffff'
-            },
-            headerStyle: {
-              backgroundColor: '#61b2d6'
-            },
-            headerRight: <LogoutComponent />
-          }
+    Settings: createStackNavigator({
+      SettingsScreen: {
+        screen: Settings,
+        navigationOptions: {
+          headerTitle: 'Settings',
+          headerTitleStyle: {
+            color: '#ffffff'
+          },
+          headerStyle: {
+            backgroundColor: '#61b2d6'
+          },
+          headerRight: <LogoutComponent />
         }
       }
-      // {
-      //   navigationOptions: {
-      //     tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={SettingsIcon} style={{ tintColor }} />
-      //   }
-      // }
-    )
+    })
   },
   {
     tabBarComponent: CustomTab,
     tabBarPosition: 'bottom'
   }
-  // {
-  //   tabBarOptions: {
-  //     activeTintColor: '#000',
-  //     inactiveTintColor: '#000',
-  //     style: {
-  //       backgroundColor: '#f8f8f8',
-  //       height: 100
-  //     }
-  //   }
-  // }
 );
 
-const PinStack = createStackNavigator(
-  {
-    SetPinScreen: {
-      screen: SetPin,
-      navigationOptions: {
-        headerTitle: 'Set Pin',
-        headerTitleStyle: {
-          color: '#484848',
-          flex: 1,
-          textAlign: 'center'
-        },
-        headerStyle: {
-          backgroundColor: '#ffffff'
-        },
-        headerBackTitle: null
-        // headerRight: <LogoutComponent />
-      }
-    },
-    ConfirmPinScreen: {
-      screen: ConfirmPin,
-      navigationOptions: {
-        headerTitle: 'Confirm Pin',
-        headerTitleStyle: {
-          color: '#484848',
-          flex: 1,
-          textAlign: 'center'
-        },
-        headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />,
-        headerStyle: {
-          backgroundColor: '#ffffff'
-        },
-        headerRight: <View />
-        // headerRight: <LogoutComponent />
-      }
+const PinStack = createStackNavigator({
+  SetPinScreen: {
+    screen: SetPin,
+    navigationOptions: {
+      headerTitle: 'Set Pin',
+      headerTitleStyle: {
+        color: '#484848',
+        flex: 1,
+        textAlign: 'center'
+      },
+      headerStyle: {
+        backgroundColor: '#ffffff'
+      },
+      headerBackTitle: null
+      // headerRight: <LogoutComponent />
+    }
+  },
+  ConfirmPinScreen: {
+    screen: ConfirmPin,
+    navigationOptions: {
+      headerTitle: 'Confirm Pin',
+      headerTitleStyle: {
+        color: '#484848',
+        flex: 1,
+        textAlign: 'center'
+      },
+      headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />,
+      headerStyle: {
+        backgroundColor: '#ffffff'
+      },
+      headerRight: <View />
+      // headerRight: <LogoutComponent />
     }
   }
-  // {
-  //   navigationOptions: {
-  //     tabBarIcon: ({ focused, horizontal, tintColor }) => <Image source={SettingsIcon} style={{ tintColor }} />
-  //   }
-  // }
-);
+});
 
 export default createAppContainer(
   createSwitchNavigator(

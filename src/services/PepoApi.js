@@ -87,7 +87,7 @@ export default class PepoApi {
     return new Promise(async (resolve, reject) => {
       try {
         console.log('Request URL:', this.cleanedUrl);
-        console.log('Request Params:', this.parsedParams);
+        console.log('Fetch options:', this.parsedParams);
 
         let response = await fetch(this.cleanedUrl, this.parsedParams),
           responseStatus = parseInt(response.status),

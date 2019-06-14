@@ -35,6 +35,8 @@ class Giphy extends Component {
     this.screenWidth = Dimensions.get('window').width;
     this.nextPagePayload = {};
     this.isFetching = false;
+
+    this.handleGiphyPress.bind(this);
   }
 
   componentDidMount() {
@@ -43,28 +45,25 @@ class Giphy extends Component {
 
   getGiphyCategotyData() {
     let gifApi = new PepoApi('/gifs/categories');
-    gifApi
-      // .setNavigate(this.props.navigation.navigate)
-      .get()
-      .then((res) => {
-        if (res.success && res.data) {
-          let resultType = deepGet(res, 'data.result_type'),
-            gifsCategoryMetaData = deepGet(res, 'data.' + resultType),
-            gifsCategoryData = deepGet(res, 'data.gifs');
-          this.setState({
-            gifsCategoryMetaData,
-            gifsCategoryData
-          });
-          this.genereateGifDataToShow();
-        }
-      });
+    gifApi.get().then((res) => {
+      if (res.success && res.data) {
+        let resultType = deepGet(res, 'data.result_type'),
+          gifsCategoryMetaData = deepGet(res, 'data.' + resultType),
+          gifsCategoryData = deepGet(res, 'data.gifs');
+        this.setState({
+          gifsCategoryMetaData,
+          gifsCategoryData
+        });
+        this.genereateGifDataToShow();
+      }
+    });
   }
 
   genereateGifDataToShow() {
     let gifsDataToShow = [],
       gifsCategoryMetaData = this.state.gifsCategoryMetaData,
       gifsCategoryData = this.state.gifsCategoryData;
-    this.setState({ gifsDataToShow: [] });
+
     for (let i = 0; i < gifsCategoryMetaData.length; i++) {
       let gifId = gifsCategoryMetaData[i]['gif_id'];
       gifsDataToShow.push({
@@ -72,6 +71,7 @@ class Giphy extends Component {
         ...{ gifsUrl: gifsCategoryMetaData[i]['url'], name: gifsCategoryMetaData[i]['name'] }
       });
     }
+
     this.setState({ gifsDataToShow, isGifCategory: true });
   }
 
@@ -123,15 +123,12 @@ class Giphy extends Component {
   }
 
   handleGiphyPress(gifsData) {
-    console.log('handleGiphyPress');
-    return () => {
-      console.log('handleGiphyPress');
-      if (this.state.isGifCategory) {
-        this.searchGiphy(gifsData['name'], gifsData['gifsUrl']);
-      } else {
-        this.selectImage(gifsData);
-      }
-    };
+    console.log('handleGiphyPress with ', gifsData);
+    if (this.state.isGifCategory) {
+      this.searchGiphy(gifsData['name'], gifsData['gifsUrl']);
+    } else {
+      this.selectImage(gifsData);
+    }
   }
 
   selectImage(gifsData) {
@@ -180,36 +177,36 @@ class Giphy extends Component {
     }
 
     return (
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({
-                modalOpen: true
-              });
-            }}
-          >
-            {imageSelector}
-          </TouchableOpacity>
-          {this.state.modalOpen && (
-            <React.Fragment>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={this.state.modalOpen}
-                onRequestClose={() => {
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            this.setState({
+              modalOpen: true
+            });
+          }}
+        >
+          {imageSelector}
+        </TouchableOpacity>
+        {this.state.modalOpen && (
+          <React.Fragment>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={this.state.modalOpen}
+              onRequestClose={() => {
+                this.setState({
+                  modalOpen: false
+                });
+              }}
+            >
+              <TouchableWithoutFeedback
+                onPressOut={() =>
                   this.setState({
                     modalOpen: false
-                  });
-                }}
+                  })
+                }
               >
-                <TouchableWithoutFeedback
-                  onPressOut={() =>
-                    this.setState({
-                      modalOpen: false
-                    })
-                  }
-                >
-
+                <ScrollView directionalLockEnabled={true} contentContainerStyle={styles.scrollModal}>
                   <TouchableWithoutFeedback
                     onPress={() => {
                       this.setState({
@@ -284,11 +281,12 @@ class Giphy extends Component {
                       </View>
                     </View>
                   </TouchableWithoutFeedback>
-                </TouchableWithoutFeedback>
-              </Modal>
-            </React.Fragment>
-          )}
-        </View>
+                </ScrollView>
+              </TouchableWithoutFeedback>
+            </Modal>
+          </React.Fragment>
+        )}
+      </View>
     );
   }
 }
