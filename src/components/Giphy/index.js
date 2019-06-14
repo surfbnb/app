@@ -137,6 +137,7 @@ class Giphy extends Component {
       selectedImage: gifsData,
       modalOpen: false
     });
+    this.props.onGifySelect &&  this.props.onGifySelect( gifsData );
   }
 
   isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
