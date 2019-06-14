@@ -16,6 +16,7 @@ import Store from "../../store";
 import {showModal , hideModal} from "../../actions";
 import appConfig from "../../constants/AppConfig";
 import {TOKEN_ID} from "../../constants";
+import LoadingModal from "../../components/LoadingModal"
 import ExecuteTransactionWorkflow from "../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow"; 
 
 
@@ -84,10 +85,10 @@ class TransactionScreen extends Component {
 
   excequteTransaction(){
     if( !this.isValids() ){
-      alert.alert("" , errorMessage.general_error_ex );
+      Alert.alert("" , errorMessage.general_error_ex );
       return; 
     }
-    Store.dispatch(showModal("Executing transaction..."));
+    Store.dispatch(showModal("Executing..."));
     this.sendTransactionToSdk();
   }
 
@@ -96,26 +97,20 @@ class TransactionScreen extends Component {
   }
 
   sendTransactionToSdk(){
-    currentUserModal.getUser()
-    .then( (user) => {
-      const option = { wait_for_finalization : false };
-      this.workflow = new ExecuteTransactionWorkflow( this ); 
-      OstWalletSdk.executeTransaction(user.ost_user_id, 
-                                      [user.ost_token_holder_address],
-                                      [this.btSmallestUnit], 
-                                      appConfig.ruleTypeMap.directTransfer, 
-                                      appConfig.metaProperties, 
-                                      this.workflow,
-                                      option)
-    })
-    .catch( (error)=>{
-      this.onError( error );
-    })
+    const user = currentUserModal.getUser(); 
+    const option = { wait_for_finalization : false };
+    this.workflow = new ExecuteTransactionWorkflow( this ); 
+    OstWalletSdk.executeTransaction(user.ost_user_id, 
+                                    [user.ost_token_holder_address],
+                                    [this.btSmallestUnit], 
+                                    appConfig.ruleTypeMap.directTransfer, 
+                                    appConfig.metaProperties, 
+                                    this.workflow,
+                                    option)
   }
 
   onRequestAcknowledge( ostWorkflowContext , ostWorkflowEntity ){
-    //TODO decide path
-    this.sendTransactionToPlatfrom( deepGet(ostWorkflowEntity, "ost_transaction_uuid") );
+    this.sendTransactionToPlatfrom( deepGet(ostWorkflowEntity, "entity.id") );
   }
 
   onFlowInterrupt( ostWorkflowContext, ostError ){
@@ -127,7 +122,11 @@ class TransactionScreen extends Component {
     new PepoApi("/ost-transactions")
     .post(params)
     .then( (res ) => {
-     this.onTransactionSuccess( res );
+      if( res && res.success ){
+        this.onTransactionSuccess( res );
+      }else{
+        this.onError( res );
+      }
     })
     .catch((error)=> {
       this.onError( error );
@@ -157,6 +156,7 @@ class TransactionScreen extends Component {
   onError( ostError ){
     const errorMsg = utilities.getErrorMessage( ostError );
     this.setState({ general_error : errorMsg});
+
     Store.dispatch(hideModal()); 
     utilities.showAlert("" , errorMsg );
   }
@@ -242,7 +242,7 @@ class TransactionScreen extends Component {
               }
             />
         </View>
-
+        <LoadingModal/>
       </View>
     );
   }

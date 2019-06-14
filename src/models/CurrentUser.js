@@ -3,7 +3,6 @@ import PepoApi from "../services/PepoApi";
 import deepGet from 'lodash/get';
 import Store from "../store";
 import {updateCurrentUser, logoutUser} from "../actions";
-import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 
 class CurrentUserModel {
     constructor() {
@@ -40,6 +39,10 @@ class CurrentUserModel {
                     return this.sync( userObj.id );
                 });
         });
+    }
+
+    getUser(){
+        return Store.getState().current_user ;
     }
 
     // The sync method.

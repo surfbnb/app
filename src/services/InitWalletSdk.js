@@ -8,13 +8,6 @@ import {PLATFROM_API_ENDPOINT} from "../constants";
 class InitWalletSdk {
   initializeDevice = (setupDeviceDelegate) => {
     this.setupDevice(setupDeviceDelegate);
-    // OstWalletSdk.initialize(PLATFROM_API_ENDPOINT, (ostError, success) => {
-    //   if (success) {
-    //     this.setupDevice(setupDeviceDelegate);
-    //   } else if (setupDeviceDelegate) {
-    //     setupDeviceDelegate.setupDeviceFailed(null, ostError);
-    //   }
-    // });
   };
 
   setupDevice = (setupDeviceDelegate) => {

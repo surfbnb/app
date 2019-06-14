@@ -29,7 +29,7 @@ export default class PriceOracle {
     }
 
     toDecimal(val){
-        return val;
+        return String( val );
     }
 
 }
