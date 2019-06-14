@@ -62,6 +62,7 @@ class Users extends Component {
             onEndReached={this.getUsersData}
             keyExtractor={(item, index) => `id_${item}`}
             onEndReachedThreshold={0.2}
+            initialNumToRender={20}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
