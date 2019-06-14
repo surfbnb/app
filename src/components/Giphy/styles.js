@@ -34,6 +34,19 @@ export default styles = StyleSheet.create({
     borderStyle: 'dashed',
     padding: 20
   },
+  overlay: {
+    position: 'absolute',
+    margin: 3,
+    borderRadius: 4,
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  overlayText: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
   plusIcon: {
     width: 42,
     height: 42,
