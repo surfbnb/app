@@ -11,8 +11,6 @@ export default styles = StyleSheet.create({
     backgroundColor: '#f6f6f6'
   },
   modal: {
-    position: 'absolute',
-    bottom: 0,
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
     width: Dimensions.get('window').width,
@@ -22,10 +20,11 @@ export default styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    marginTop: 100,
     padding: 20,
     paddingTop: 10,
-    paddingBottom: 100
+    position: 'absolute',
+    bottom: 0,
+    height: Dimensions.get('window').height * 0.9
   },
   giphyPicker: {
     marginBottom: 20,
