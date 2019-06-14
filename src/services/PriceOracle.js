@@ -28,7 +28,7 @@ export default class PriceOracle {
 
     }
 
-    getToDecimal(val){
+    toDecimal(val){
         return val;
     }
 

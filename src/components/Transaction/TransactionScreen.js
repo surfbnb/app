@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text , TouchableOpacity  ,Switch} from 'react-native';
+import { View, Text   ,Switch} from 'react-native';
+import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from "../../theme/components/FormInput"
 import Giphy from '../Giphy';
 import Theme from '../../theme/styles';
@@ -72,7 +73,7 @@ class TransactionScreen extends Component {
   res =  res || {}; 
   let btUSDAmount = null ; 
   this.priceOracle = new PriceOracle( token , res.price_point );
-  this.btSmallestUnit = this.priceOracle.getToDecimal( this.btAmount );
+  this.btSmallestUnit = this.priceOracle.toDecimal( this.state.btAmount );
   btUSDAmount = this.priceOracle.getBtToFiat( this.btSmallestUnit ); 
   this.setState({ btUSDAmount : btUSDAmount });
  }
@@ -100,8 +101,8 @@ class TransactionScreen extends Component {
       const option = { wait_for_finalization : false };
       this.workflow = new ExecuteTransactionWorkflow( this ); 
       OstWalletSdk.executeTransaction(user.ost_user_id, 
-                                      user.ost_token_holder_address,
-                                      this.btSmallestUnit, 
+                                      [user.ost_token_holder_address],
+                                      [this.btSmallestUnit], 
                                       appConfig.ruleTypeMap.directTransfer, 
                                       appConfig.metaProperties, 
                                       this.workflow,
@@ -154,9 +155,7 @@ class TransactionScreen extends Component {
   }
 
   onError( ostError ){
-    const errorMsg = ostError && ( ostError.getApiErrorMessage() || ostError.getApiErrorMessage()) 
-                     || deepGet( ostError ,  "err.msg")
-                    errorMessage.general_error;
+    const errorMsg = utilities.getErrorMessage( ostError );
     this.setState({ general_error : errorMsg});
     Store.dispatch(hideModal()); 
     utilities.showAlert("" , errorMsg );
@@ -233,12 +232,16 @@ class TransactionScreen extends Component {
             keyboardType = 'numeric'
           />
 
-        <TouchableOpacity
-              style={{position:"absolute", top: 0}}
+          <View style={{flexDirection:'row',flex:1,alignItems:'flex-end',marginBottom:30}}>
+                      <TouchableButton
+                        TouchableStyles={[Theme.Button.btnPrimary,{flex:10,marginRight:10}]}
+                        TextStyles={[Theme.Button.btnPrimaryText]}
+              text="Send P1"
               onPress={() =>
                 this.excequteTransaction()
               }
-            ></TouchableOpacity>
+            />
+        </View>
 
       </View>
     );
