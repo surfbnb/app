@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import Colors from '../../theme/styles/Colors'
 
 export default styles = StyleSheet.create({
   container: {
@@ -8,7 +9,7 @@ export default styles = StyleSheet.create({
     fontWeight: '300',
     alignItems: 'stretch',
     flex: 1,
-    backgroundColor: '#f6f6f6'
+    backgroundColor: Colors.whiteSmoke
   },
   modal: {
     flex: 1,
@@ -17,7 +18,7 @@ export default styles = StyleSheet.create({
     height: Dimensions.get('window').height
   },
   modalInner: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.white,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     padding: 20,
@@ -30,8 +31,8 @@ export default styles = StyleSheet.create({
   giphyPicker: {
     // marginBottom: 20,
     borderWidth: 1,
-    backgroundColor: '#ffffff',
-    borderColor: '#afafaf',
+    backgroundColor: Colors.white,
+    borderColor: Colors.light,
     borderStyle: 'dashed',
     padding: 20,
     borderRadius: 1
@@ -40,19 +41,15 @@ export default styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     flexDirection: 'column',
-    justifyContent: 'center',
-    fontFamily: 'Lato-Bold',
-    fontWeight: '700'
+    justifyContent: 'center'
   },
   overlayText: {
-    color: '#fff',
+    color: Colors.white,
     fontSize: 14,
     paddingLeft: 10,
     paddingRight: 10,
     textTransform: 'uppercase',
     textAlign: 'center',
-    fontFamily: 'Lato-Bold',
-    fontWeight: '700'
   },
   plusIcon: {
     width: 42,
@@ -65,29 +62,15 @@ export default styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     top: 25,
-    // marginTop: -10,
     transform: [
       { rotate: '45deg'},
     ]
   },
   giphyPickerText: {
     textAlign: 'center',
-    color: '#ababab',
+    color: Colors.darkGray,
     fontSize: 20,
     fontWeight: '300',
     marginTop: 10
-  },
-  termsPoliciesInfoText: {
-    alignSelf: 'center',
-    marginBottom: 5,
-    fontSize: 12,
-    fontWeight: '300',
-    color: 'rgb(136, 136, 136)'
-  },
-  termsPoliciesLinkText: {
-    alignSelf: 'center',
-    marginBottom: 15,
-    fontSize: 12,
-    color: '#3296d0'
   }
 });

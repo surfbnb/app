@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Dimensions, Modal } from 'react-native';
+import {View, Text, Alert, TextInput, Switch, TouchableOpacity, Dimensions, Modal, Image} from 'react-native';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
@@ -18,6 +18,7 @@ import appConfig from '../../constants/AppConfig';
 import { TOKEN_ID } from '../../constants';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
+import PlusIcon from "../../assets/plus_icon.png";
 
 class TransactionScreen extends Component {
   constructor(props) {
@@ -315,7 +316,7 @@ class TransactionScreen extends Component {
                 <TouchableOpacity
                   style={inlineStyles.modalCloseBtnWrapper}
                   onPress={() => { this.onAmountModalClose() }} >
-                  <Text style={inlineStyles.modalCloseBtnContent}>+</Text>
+                  <Image source={PlusIcon} style={inlineStyles.crossIcon} />
                 </TouchableOpacity>
               </View>
             <View style={inlineStyles.modalContentWrapper}>
