@@ -80,6 +80,9 @@ class Giphy extends Component {
 
   // region - Category List
   showCategotyList() {
+    this.setState({
+      gifSearchQuery: ''
+    });
     let viewContext = this.getCategoryListViewContext();
     this.showViewContext(viewContext);
   }
@@ -273,18 +276,9 @@ class Giphy extends Component {
             position: 'relative' // because it's parent
           }}
         >
-          <Text
-            style={{
-              fontWeight: 'bold',
-              color: 'black',
-              position: 'absolute', // child
-              top: 5, // position where you want
-              right: 5
-            }}
-            onPress={() => this.setState({ selectedImage: {} })}
-          >
-            X
-          </Text>
+          <TouchableWithoutFeedback onPress={() => this.setState({ selectedImage: {} })}>
+            <Image source={PlusIcon} style={inlineStyles.crossIcon} />
+          </TouchableWithoutFeedback>
         </ImageBackground>
       );
     } else {
@@ -329,21 +323,30 @@ class Giphy extends Component {
               >
                 <View style={inlineStyles.modal}>
                   <View style={inlineStyles.modalInner}>
-                    <FormInput
-                      editable={true}
-                      onChangeText={(gifSearchQuery) => this.serchTermChanged(gifSearchQuery)}
-                      fieldName="gif_category_search_query"
-                      textContentType="none"
-                      value={this.state.gifSearchQuery}
-                      style={[Theme.TextInput.textInputStyle]}
-                      placeholder="Search Giphy"
-                      returnKeyType="next"
-                      returnKeyLabel="next"
-                      placeholderTextColor="#ababab"
-                      errorHandler={(fieldName) => {
-                        this.ServerErrorHandler(fieldName);
-                      }}
-                    />
+                    <View style={{ position: 'relative' }}>
+                      <TextInput
+                        editable={true}
+                        onChangeText={(gifSearchQuery) => this.serchTermChanged(gifSearchQuery)}
+                        ref="gif_category_search_query"
+                        textContentType="none"
+                        value={this.state.gifSearchQuery}
+                        style={[Theme.TextInput.textInputStyle, { marginBottom: 20 }]}
+                        placeholder="Search Giphy"
+                        returnKeyType="next"
+                        returnKeyLabel="next"
+                        placeholderTextColor="#ababab"
+                        errorHandler={(fieldName) => {
+                          this.ServerErrorHandler(fieldName);
+                        }}
+                      />
+                      <TouchableWithoutFeedback
+                        onPress={() => {
+                          this.showCategotyList();
+                        }}
+                      >
+                        <Image source={PlusIcon} style={inlineStyles.crossIcon} />
+                      </TouchableWithoutFeedback>
+                    </View>
 
                     <FlatList
                       ref={(ref) => {

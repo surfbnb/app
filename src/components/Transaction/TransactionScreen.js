@@ -202,10 +202,10 @@ class TransactionScreen extends Component {
     };
   }
 
-  onMessageBtnPress( ){
+  onMessageBtnPress() {
     this.setState({ isMessageVisible: !this.state.isMessageVisible });
-    if( !this.state.isMessageVisible ){
-      this.setState({ message: "" });
+    if (!this.state.isMessageVisible) {
+      this.setState({ message: '' });
     }
   }
 
@@ -237,27 +237,32 @@ class TransactionScreen extends Component {
           }}
         />
 
-        <View style={{ flexDirection: 'row' , justifyContent:"space-between"}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           {/*{  This is add message button }*/}
-            <TouchableOpacity
-              style={{}}
-              onPress={() => { this.onMessageBtnPress() }}
-            >
-              <Text style={inlineStyles.addMessageTextStyle}>
-                { this.state.isMessageVisible ?  "-Clear Message" : "+Add Message" }
-                </Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={{}}
+            onPress={() => {
+              this.onMessageBtnPress();
+            }}
+          >
+            <Text style={inlineStyles.addMessageTextStyle}>
+              {this.state.isMessageVisible ? '-Clear Message' : '+Add Message'}
+            </Text>
+          </TouchableOpacity>
 
           {/* This is Share publically switch */}
-          <View style={{justifyContent:'flex-end'}}> 
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'flex-end' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text>Share Public</Text>
               <Switch
                 value={this.state.isPublic}
                 style={inlineStyles.switchStyle}
-                onValueChange={(isPublic) => { this.setState({ isPublic }); }}
+                onValueChange={(isPublic) => {
+                  this.setState({ isPublic });
+                }}
                 thumbColor="#EF5566"
-                trackColor={{ false: '#ffffff', true: '#EF5566' }}></Switch>
+                trackColor={{ false: '#ffffff', true: '#EF5566' }}
+              ></Switch>
             </View>
           </View>
         </View>

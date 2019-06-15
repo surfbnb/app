@@ -18,6 +18,7 @@ import LogoutComponent from './src/components/LogoutLink';
 import CustomTab from './src/components/CustomTab';
 import Feed from './src/components/Feed';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
+import Colors from './src/theme/styles/Colors';
 import BackArrow from './src/assets/back-arrow.png';
 
 const HomeScreen = createBottomTabNavigator(
@@ -28,10 +29,10 @@ const HomeScreen = createBottomTabNavigator(
         navigationOptions: {
           headerTitle: 'Feed',
           headerTitleStyle: {
-            color: '#484848'
+            color: Colors.dark
           },
           headerStyle: {
-            backgroundColor: '#ffffff'
+            backgroundColor: Colors.white
           },
           headerRight: <LogoutComponent />
         }
@@ -44,10 +45,10 @@ const HomeScreen = createBottomTabNavigator(
           navigationOptions: {
             headerTitle: 'Friends',
             headerTitleStyle: {
-              color: '#484848'
+              color: Colors.dark
             },
             headerStyle: {
-              backgroundColor: '#ffffff'
+              backgroundColor: Colors.white
             },
             headerBackTitle: null,
             headerRight: <LogoutComponent />
@@ -58,10 +59,10 @@ const HomeScreen = createBottomTabNavigator(
           navigationOptions: ({ navigation, screenProps }) => ({
             headerTitle: navigation.getParam('transactionHeader'),
             headerTitleStyle: {
-              color: '#484848'
+              color: Colors.dark
             },
             headerStyle: {
-              backgroundColor: '#ffffff'
+              backgroundColor: Colors.white
             },
             headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />,
             headerRight: <LogoutComponent />
@@ -80,10 +81,10 @@ const HomeScreen = createBottomTabNavigator(
         navigationOptions: {
           headerTitle: 'Profile',
           headerTitleStyle: {
-            color: '#484848'
+            color: Colors.dark
           },
           headerStyle: {
-            backgroundColor: '#ffffff'
+            backgroundColor: Colors.white
           },
           headerRight: <LogoutComponent />
         }
@@ -102,12 +103,12 @@ const PinStack = createStackNavigator({
     navigationOptions: {
       headerTitle: 'Set Pin',
       headerTitleStyle: {
-        color: '#484848',
+        color: Colors.dark,
         flex: 1,
         textAlign: 'center'
       },
       headerStyle: {
-        backgroundColor: '#ffffff'
+        backgroundColor: Colors.white
       },
       headerBackTitle: null
       // headerRight: <LogoutComponent />
@@ -118,13 +119,13 @@ const PinStack = createStackNavigator({
     navigationOptions: {
       headerTitle: 'Confirm Pin',
       headerTitleStyle: {
-        color: '#484848',
+        color: Colors.dark,
         flex: 1,
         textAlign: 'center'
       },
       headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />,
       headerStyle: {
-        backgroundColor: '#ffffff'
+        backgroundColor: Colors.white
       },
       headerRight: <View />
       // headerRight: <LogoutComponent />
