@@ -57,7 +57,7 @@ class AuthScreen extends Component {
       isValid = false;
     }
 
-    if (!this.state.password) {
+    if (!this.state.password || !this.state.password.length < 8 ) {
       this.setState({
         password_error: ErrorMessages.password
       });
