@@ -16,6 +16,7 @@ export const {
 const defaultState = {
   modal: { message: '', show: false },
   toast: { message: '', show: false },
+  current_user: {},
   user_entities: {},
   user_list: []
 };
