@@ -34,7 +34,7 @@ class TransactionScreen extends Component {
       switchToggleState: false,
       transactionModal: false,
       btAmountFocus: true,
-      btUSDAmountFocus: false
+      btAmountErrorMsg: null,
     };
     this.baseState = this.state;
   }
@@ -45,6 +45,7 @@ class TransactionScreen extends Component {
     this.gify = null;
     this.priceOracle = null;
     this.workflow = null;
+    this.previousState = null;
   }
 
   componentWillMount() {
@@ -208,6 +209,25 @@ class TransactionScreen extends Component {
     }
   }
 
+  onAmountModalConfrim(){
+    let btAmount = this.state.btAmount;
+    btAmount = btAmount && Number( btAmount );
+    if( btAmount < 0 ){
+      this.setState( {btAmountErrorMsg : errorMessage.btAmountError });
+      return ;
+    }
+    this.setState({ transactionModal: false });
+  }
+
+  onAmountModalShow(){
+    this.previousState = this.state ; 
+    this.setState({ transactionModal: true });
+  }
+
+  onAmountModalClose(){
+    this.setState(this.previousState);
+  }
+
   render() {
     return (
       <View style={inlineStyles.container}>
@@ -270,9 +290,7 @@ class TransactionScreen extends Component {
             TouchableStyles={[Theme.Button.btnPrimary, inlineStyles.dottedBtn]}
             TextStyles={[Theme.Button.btnPrimaryText]}
             text="..."
-            onPress={() => {
-              this.setState({ transactionModal: true });
-            }}
+            onPress={() => { this.onAmountModalShow()  }}
           />
         </View>
 
@@ -287,10 +305,7 @@ class TransactionScreen extends Component {
           <View style={inlineStyles.modalBackDrop}>
             <TouchableOpacity
               style={inlineStyles.modalCloseBtnWrapper}
-              onPress={() => {
-                this.setState({ transactionModal: false });
-              }}
-            >
+              onPress={() => { this.onAmountModalClose() }} >
               <Text style={inlineStyles.modalCloseBtnContent}>+</Text>
             </TouchableOpacity>
 
@@ -305,28 +320,17 @@ class TransactionScreen extends Component {
                     fieldName="bt_amount"
                     style={Theme.TextInput.textInputStyle}
                     value={`${this.state.btAmount}`}
-                    returnKeyType="next"
-                    returnKeyLabel="Next"
                     placeholderTextColor="#ababab"
-                    errorMsg={this.state.pepo_amt_to_send_error}
+                    errorMsg={this.state.btAmountErrorMsg}
                     serverErrors={this.state.server_errors}
                     clearErrors={this.state.clearErrors}
                     keyboardType="numeric"
-                    onSubmitEditing={() => {
-                      this.setState({
-                        btUSDAmountFocus: true,
-                        btAmountFocus: false
-                      });
-                    }}
                     isFocus={this.state.btAmountFocus}
                     blurOnSubmit={false}
                   />
                 </View>
                 <View style={{ flex: 0.3 }}>
-                  <TextInput
-                    editable={false}
-                    style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
-                  >
+                  <TextInput editable={false} style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}>
                     <Text>PEPO</Text>
                   </TextInput>
                 </View>
@@ -340,21 +344,11 @@ class TransactionScreen extends Component {
                     value={`${this.state.btUSDAmount}`}
                     placeholder="USD"
                     fieldName="usd_amount"
-                    textContentType="none"
-                    style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : '']}
-                    returnKeyType="done"
-                    returnKeyLabel="Done"
+                    style={Theme.TextInput.textInputStyle}
                     placeholderTextColor="#ababab"
                     serverErrors={this.state.server_errors}
                     clearErrors={this.state.clearErrors}
                     keyboardType="numeric"
-                    onSubmitEditing={() => {
-                      this.setState({
-                        btUSDAmountFocus: false,
-                        transactionModal: false
-                      });
-                    }}
-                    isFocus={this.state.btUSDAmountFocus}
                     blurOnSubmit={true}
                   />
                 </View>
@@ -371,9 +365,7 @@ class TransactionScreen extends Component {
                 TouchableStyles={[Theme.Button.btnPink]}
                 TextStyles={[Theme.Button.btnPinkText]}
                 text="CONFIRM"
-                onPress={() => {
-                  this.setState({ transactionModal: false });
-                }}
+                onPress={() => { this.onAmountModalConfrim()}}
               />
             </View>
           </View>
