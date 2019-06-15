@@ -265,28 +265,30 @@ class Giphy extends Component {
     if (Object.keys(this.state.selectedImage).length) {
       let ratioFullScreen = screenWidth / parseInt(this.state.selectedImage.downsized.width);
       imageSelector = (
-        <View>
-          {/* <Text onClick={this.setState({ selectedImage: {} })}>X</Text> */}
-          <Image
+        <ImageBackground
+          source={{ uri: this.state.selectedImage.downsized.url }}
+          style={{
+            height: parseInt(this.state.selectedImage.downsized.height) * ratioFullScreen,
+            width: parseInt(this.state.selectedImage.downsized.width) * ratioFullScreen,
+            position: 'relative' // because it's parent
+          }}
+        >
+          <Text
             style={{
-              width: parseInt(this.state.selectedImage.downsized.width) * ratioFullScreen,
-              height: parseInt(this.state.selectedImage.downsized.height) * ratioFullScreen
+              fontWeight: 'bold',
+              color: 'black',
+              position: 'absolute', // child
+              top: 5, // position where you want
+              right: 5
             }}
-            source={{ uri: this.state.selectedImage.downsized.url }}
-          />
-        </View>
+            onPress={() => this.setState({ selectedImage: {} })}
+          >
+            X
+          </Text>
+        </ImageBackground>
       );
     } else {
       imageSelector = (
-        <View style={inlineStyles.giphyPicker}>
-          <Image source={PlusIcon} style={inlineStyles.plusIcon} />
-          <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
-        </View>
-      );
-    }
-
-    return (
-      <View>
         <TouchableOpacity
           onPress={() => {
             this.setState({
@@ -294,8 +296,19 @@ class Giphy extends Component {
             });
           }}
         >
-          {imageSelector}
+          <View style={inlineStyles.giphyPicker}>
+            <Image source={PlusIcon} style={inlineStyles.plusIcon} />
+            <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
+          </View>
         </TouchableOpacity>
+      );
+    }
+
+    return (
+      <View>
+
+          {imageSelector}
+
         {this.state.modalOpen && (
           <React.Fragment>
             <Modal
