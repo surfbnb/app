@@ -294,7 +294,7 @@ class TransactionScreen extends Component {
           <TouchableButton
             TouchableStyles={[Theme.Button.btnPink, inlineStyles.dottedBtn]}
             TextStyles={[Theme.Button.btnPinkText]}
-            text="..."
+            text="•••"
             onPress={() => {
               this.onAmountModalShow();
             }}

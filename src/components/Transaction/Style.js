@@ -26,7 +26,7 @@ export default styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   sendPepoBtn: {
-    flex: 10,
+    flex: 8,
     marginRight: 10
   },
   dottedBtn: {

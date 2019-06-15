@@ -26,6 +26,7 @@ import Theme from '../../theme/styles';
 import TouchableButton from '../../theme/components/TouchableButton';
 import { GiffyViewContext, CategoryViewContext, VCErrors, CATEGORY_VC_ID } from './view_contexts';
 import GracefulImage from './GracefulImage';
+import Colors from "../../theme/styles/Colors";
 
 class Giphy extends Component {
   constructor(props) {
@@ -277,7 +278,7 @@ class Giphy extends Component {
           }}
         >
           <TouchableWithoutFeedback onPress={() => this.setState({ selectedImage: {} })}>
-            <Image source={PlusIcon} style={inlineStyles.crossIcon} />
+            <Image source={PlusIcon} style={[inlineStyles.crossIcon, {top: 5, right: 5}]} />
           </TouchableWithoutFeedback>
         </ImageBackground>
       );
@@ -330,7 +331,7 @@ class Giphy extends Component {
                         ref="gif_category_search_query"
                         textContentType="none"
                         value={this.state.gifSearchQuery}
-                        style={[Theme.TextInput.textInputStyle, { marginBottom: 20 }]}
+                        style={[Theme.TextInput.textInputStyle, { marginBottom: 10 }]}
                         placeholder="Search Giphy"
                         returnKeyType="next"
                         returnKeyLabel="next"

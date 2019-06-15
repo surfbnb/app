@@ -63,9 +63,9 @@ export default styles = StyleSheet.create({
     width: 20,
     height: 20,
     position: 'absolute',
-    right: 20,
-    top: '50%',
-    marginTop: -10,
+    right: 10,
+    top: 25,
+    // marginTop: -10,
     transform: [
       { rotate: '45deg'},
     ]
