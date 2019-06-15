@@ -26,7 +26,7 @@ import Theme from '../../theme/styles';
 import TouchableButton from '../../theme/components/TouchableButton';
 import { GiffyViewContext, CategoryViewContext, VCErrors, CATEGORY_VC_ID } from './view_contexts';
 import GracefulImage from './GracefulImage';
-import Colors from "../../theme/styles/Colors";
+import Colors from '../../theme/styles/Colors';
 
 class Giphy extends Component {
   constructor(props) {
@@ -278,7 +278,7 @@ class Giphy extends Component {
           }}
         >
           <TouchableWithoutFeedback onPress={() => this.setState({ selectedImage: {} })}>
-            <Image source={PlusIcon} style={[inlineStyles.crossIcon, {top: 5, right: 5}]} />
+            <Image source={PlusIcon} style={[inlineStyles.crossIcon, { top: 5, right: 5 }]} />
           </TouchableWithoutFeedback>
         </ImageBackground>
       );

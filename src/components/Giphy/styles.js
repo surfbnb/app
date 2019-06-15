@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import Colors from '../../theme/styles/Colors'
+import Colors from '../../theme/styles/Colors';
 
 export default styles = StyleSheet.create({
   container: {
@@ -49,7 +49,7 @@ export default styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     textTransform: 'uppercase',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   plusIcon: {
     width: 42,
@@ -62,9 +62,7 @@ export default styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     top: 25,
-    transform: [
-      { rotate: '45deg'},
-    ]
+    transform: [{ rotate: '45deg' }]
   },
   giphyPickerText: {
     textAlign: 'center',

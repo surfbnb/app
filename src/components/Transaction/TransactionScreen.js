@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import {View, Text, Alert, TextInput, Switch, TouchableOpacity, Dimensions, Modal, Image} from 'react-native';
+import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Dimensions, Modal, Image } from 'react-native';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
@@ -18,7 +18,7 @@ import appConfig from '../../constants/AppConfig';
 import { TOKEN_ID } from '../../constants';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
-import PlusIcon from "../../assets/plus_icon.png";
+import PlusIcon from '../../assets/plus_icon.png';
 
 class TransactionScreen extends Component {
   constructor(props) {
@@ -254,7 +254,7 @@ class TransactionScreen extends Component {
           {/* This is Share publically switch */}
           <View style={{ justifyContent: 'flex-end' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{fontSize: 16, color: '#606060'}}>Share Publicly</Text>
+              <Text style={{ fontSize: 16, color: '#606060' }}>Share Publicly</Text>
               <Switch
                 value={this.state.isPublic}
                 style={inlineStyles.switchStyle}
@@ -315,75 +315,78 @@ class TransactionScreen extends Component {
               <View>
                 <TouchableOpacity
                   style={inlineStyles.modalCloseBtnWrapper}
-                  onPress={() => { this.onAmountModalClose() }} >
+                  onPress={() => {
+                    this.onAmountModalClose();
+                  }}
+                >
                   <Image source={PlusIcon} style={inlineStyles.crossIcon} />
                 </TouchableOpacity>
               </View>
-            <View style={inlineStyles.modalContentWrapper}>
-              <Text style={inlineStyles.modalHeader}>Enter The Amount your want to send</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 0.7 }}>
-                  <FormInput
-                    editable={true}
-                    onChangeText={(val) => this.onBtChange(val)}
-                    placeholder="BT"
-                    fieldName="bt_amount"
-                    style={Theme.TextInput.textInputStyle}
-                    value={`${this.state.btAmount}`}
-                    placeholderTextColor="#ababab"
-                    errorMsg={this.state.btAmountErrorMsg}
-                    serverErrors={this.state.server_errors}
-                    clearErrors={this.state.clearErrors}
-                    keyboardType="numeric"
-                    isFocus={this.state.btAmountFocus}
-                    blurOnSubmit={false}
-                  />
+              <View style={inlineStyles.modalContentWrapper}>
+                <Text style={inlineStyles.modalHeader}>Enter The Amount your want to send</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flex: 0.7 }}>
+                    <FormInput
+                      editable={true}
+                      onChangeText={(val) => this.onBtChange(val)}
+                      placeholder="BT"
+                      fieldName="bt_amount"
+                      style={Theme.TextInput.textInputStyle}
+                      value={`${this.state.btAmount}`}
+                      placeholderTextColor="#ababab"
+                      errorMsg={this.state.btAmountErrorMsg}
+                      serverErrors={this.state.server_errors}
+                      clearErrors={this.state.clearErrors}
+                      keyboardType="numeric"
+                      isFocus={this.state.btAmountFocus}
+                      blurOnSubmit={false}
+                    />
+                  </View>
+                  <View style={{ flex: 0.3 }}>
+                    <TextInput
+                      editable={false}
+                      style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
+                    >
+                      <Text>PEPO</Text>
+                    </TextInput>
+                  </View>
                 </View>
-                <View style={{ flex: 0.3 }}>
-                  <TextInput
-                    editable={false}
-                    style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
-                  >
-                    <Text>PEPO</Text>
-                  </TextInput>
-                </View>
-              </View>
 
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 0.7 }}>
-                  <FormInput
-                    editable={true}
-                    onChangeText={(val) => this.onUSDChange(val)}
-                    value={`${this.state.btUSDAmount}`}
-                    placeholder="USD"
-                    fieldName="usd_amount"
-                    style={Theme.TextInput.textInputStyle}
-                    placeholderTextColor="#ababab"
-                    serverErrors={this.state.server_errors}
-                    clearErrors={this.state.clearErrors}
-                    keyboardType="numeric"
-                    blurOnSubmit={true}
-                  />
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flex: 0.7 }}>
+                    <FormInput
+                      editable={true}
+                      onChangeText={(val) => this.onUSDChange(val)}
+                      value={`${this.state.btUSDAmount}`}
+                      placeholder="USD"
+                      fieldName="usd_amount"
+                      style={Theme.TextInput.textInputStyle}
+                      placeholderTextColor="#ababab"
+                      serverErrors={this.state.server_errors}
+                      clearErrors={this.state.clearErrors}
+                      keyboardType="numeric"
+                      blurOnSubmit={true}
+                    />
+                  </View>
+                  <View style={{ flex: 0.3 }}>
+                    <TextInput
+                      editable={false}
+                      style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
+                    >
+                      <Text>USD</Text>
+                    </TextInput>
+                  </View>
                 </View>
-                <View style={{ flex: 0.3 }}>
-                  <TextInput
-                    editable={false}
-                    style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
-                  >
-                    <Text>USD</Text>
-                  </TextInput>
-                </View>
+                <TouchableButton
+                  TouchableStyles={[Theme.Button.btnPink]}
+                  TextStyles={[Theme.Button.btnPinkText]}
+                  text="CONFIRM"
+                  onPress={() => {
+                    this.onAmountModalConfrim();
+                  }}
+                />
               </View>
-              <TouchableButton
-                TouchableStyles={[Theme.Button.btnPink]}
-                TextStyles={[Theme.Button.btnPinkText]}
-                text="CONFIRM"
-                onPress={() => {
-                  this.onAmountModalConfrim();
-                }}
-              />
             </View>
-          </View>
           </View>
         </Modal>
       </View>

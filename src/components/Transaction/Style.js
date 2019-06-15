@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Platform } from 'react-native';
-import Colors from '../../theme/styles/Colors'
+import Colors from '../../theme/styles/Colors';
 
 export default styles = StyleSheet.create({
   container: {
@@ -17,7 +17,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'flex-end',
     borderColor: Colors.primary,
     borderWidth: 1,
-    borderRadius: 25,
+    borderRadius: 25
     // transform: [{ scaleX: .6 }, { scaleY: .6 }]
   },
   bottomButtonsWrapper: {
@@ -37,8 +37,8 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1
   },
-  modelWrapper:{
-    top:'50%',
+  modelWrapper: {
+    top: '50%',
     transform: [{ translateY: -Dimensions.get('window').height * 0.25 }]
   },
   modalCloseBtnWrapper: {
@@ -50,7 +50,7 @@ export default styles = StyleSheet.create({
     left: '50%',
     marginLeft: -20,
     backgroundColor: 'transparent',
-    marginBottom:10
+    marginBottom: 10
   },
   crossIcon: {
     width: 20,
@@ -58,16 +58,14 @@ export default styles = StyleSheet.create({
     right: 10,
     top: 10,
     height: 20,
-    transform: [
-      { rotate: '45deg'},
-    ]
+    transform: [{ rotate: '45deg' }]
   },
   modalContentWrapper: {
     borderRadius: 3,
     width: Dimensions.get('window').width - 20,
     backgroundColor: Colors.white,
     justifyContent: 'center',
-    padding: 20,
+    padding: 20
   },
   modalHeader: {
     textAlign: 'center',
