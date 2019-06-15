@@ -1,12 +1,12 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import AssignIn from 'lodash/assignIn';
 import DeepGet from 'lodash/get';
 import qs from 'qs';
 
 import Store from '../store';
-import { hideModal, upsertUserEntities, addUserList, logoutUser } from '../actions';
+import { hideModal, upsertUserEntities, addUserList, showToast } from '../actions';
 import { API_ROOT } from '../constants/index';
 import CurrentUser from '../models/CurrentUser';
+import ErrorMessages from '../constants/ErrorMessages';
 
 export default class PepoApi {
   constructor(url, params = {}) {
@@ -27,8 +27,7 @@ export default class PepoApi {
     this.parsedParams = AssignIn(this.parsedParams, {
       method: 'GET'
     });
-    query = this.cleanedUrl.indexOf('?') > -1 ? `&${query}` : `?${query}`;
-    this.cleanedUrl += query.length > 0 ? `${query}` : '';
+    this.cleanedUrl += query.length > 0 ? (this.cleanedUrl.indexOf('?') > -1 ? `&${query}` : `?${query}`) : '';
 
     return this._perform();
   }
@@ -81,8 +80,7 @@ export default class PepoApi {
   _perform() {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log('Request URL:', this.cleanedUrl);
-        console.log('Fetch options:', this.parsedParams);
+        console.log(`Requesting ${this.cleanedUrl} with options:`, this.parsedParams);
 
         let response = await fetch(this.cleanedUrl, this.parsedParams),
           responseStatus = parseInt(response.status),
@@ -90,15 +88,14 @@ export default class PepoApi {
 
         this._dispatchData(responseJSON);
 
-        console.log('Response status:', responseStatus);
-        console.log('Response JSON payload:', responseJSON);
+        console.log(`Response status ${responseStatus} with JSON payload:`, responseJSON);
 
         if (responseStatus >= 400 && responseStatus < 500) {
-          await AsyncStorage.removeItem('user');
           CurrentUser.logout(responseJSON);
           Store.dispatch(hideModal());
-          Store.dispatch(logoutUser());
-        } // Handling 500
+        } else if (responseStatus >= 500) {
+          Store.dispatch(showToast(ErrorMessages.general_error));
+        }
 
         return resolve(responseJSON);
       } catch (err) {
