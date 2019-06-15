@@ -1,4 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, Platform } from 'react-native';
+import Colors from '../../theme/styles/Colors'
 
 export default styles = StyleSheet.create({
   container: {
@@ -12,15 +13,17 @@ export default styles = StyleSheet.create({
     fontSize: 16
   },
   switchStyle: {
-    marginLeft: 0,
+    marginLeft: 10,
     justifyContent: 'flex-end',
-    transform: [{ scaleX: .6 }, { scaleY: .6 }]
+    borderColor: Colors.primary,
+    borderWidth: 1,
+    borderRadius: 25,
+    // transform: [{ scaleX: .6 }, { scaleY: .6 }]
   },
   bottomButtonsWrapper: {
     flexDirection: 'row',
     flex: 1,
     alignItems: 'flex-end'
-    // marginBottom:30
   },
   sendPepoBtn: {
     flex: 10,
@@ -39,7 +42,7 @@ export default styles = StyleSheet.create({
     transform: [{ translateY: -Dimensions.get('window').height * 0.25 }]
   },
   modalCloseBtnWrapper: {
-    borderColor: '#ffffff',
+    borderColor: Colors.white,
     borderWidth: 1,
     borderRadius: 25,
     height: 40,

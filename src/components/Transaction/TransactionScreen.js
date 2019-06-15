@@ -237,7 +237,7 @@ class TransactionScreen extends Component {
           }}
         />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, alignItems: 'center' }}>
           {/*{  This is add message button }*/}
           <TouchableOpacity
             style={{}}
@@ -253,7 +253,7 @@ class TransactionScreen extends Component {
           {/* This is Share publically switch */}
           <View style={{ justifyContent: 'flex-end' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text>Share Public</Text>
+              <Text style={{fontSize: 16, color: '#606060'}}>Share Publicly</Text>
               <Switch
                 value={this.state.isPublic}
                 style={inlineStyles.switchStyle}
@@ -286,14 +286,14 @@ class TransactionScreen extends Component {
 
         <View style={inlineStyles.bottomButtonsWrapper}>
           <TouchableButton
-            TouchableStyles={[Theme.Button.btnPrimary, inlineStyles.sendPepoBtn]}
-            TextStyles={[Theme.Button.btnPrimaryText]}
+            TouchableStyles={[Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
+            TextStyles={[Theme.Button.btnPinkText]}
             text={`Send P${this.state.btAmount}`}
             onPress={() => this.excequteTransaction()}
           />
           <TouchableButton
-            TouchableStyles={[Theme.Button.btnPrimary, inlineStyles.dottedBtn]}
-            TextStyles={[Theme.Button.btnPrimaryText]}
+            TouchableStyles={[Theme.Button.btnPink, inlineStyles.dottedBtn]}
+            TextStyles={[Theme.Button.btnPinkText]}
             text="..."
             onPress={() => {
               this.onAmountModalShow();

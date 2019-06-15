@@ -28,7 +28,7 @@ export default styles = StyleSheet.create({
     height: Dimensions.get('window').height * 0.9
   },
   giphyPicker: {
-    marginBottom: 20,
+    // marginBottom: 20,
     borderWidth: 1,
     backgroundColor: '#ffffff',
     borderColor: '#afafaf',
