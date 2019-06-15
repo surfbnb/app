@@ -24,6 +24,7 @@ export default styles = StyleSheet.create({
     paddingTop: 10,
     position: 'absolute',
     bottom: 0,
+    width: '100%',
     height: Dimensions.get('window').height * 0.9
   },
   giphyPicker: {
@@ -57,6 +58,13 @@ export default styles = StyleSheet.create({
     width: 42,
     height: 42,
     alignSelf: 'center'
+  },
+  crossIcon: {
+    width: 20,
+    height: 20,
+    position: 'absolute',
+    right: 5,
+    top: 20
   },
   giphyPickerText: {
     textAlign: 'center',
