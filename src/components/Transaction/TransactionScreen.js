@@ -33,7 +33,9 @@ class TransactionScreen extends Component {
       messageTextInput: false,
       addMessageBtnVisible: true,
       switchToggleState: false,
-      transactionModal: false
+      transactionModal: false,
+      btAmountFocus : true,
+      btUSDAmountFocus : false,
     };
     this.baseState = this.state;
   }
@@ -309,6 +311,14 @@ class TransactionScreen extends Component {
                     serverErrors={this.state.server_errors}
                     clearErrors={this.state.clearErrors}
                     keyboardType="numeric"
+                    onSubmitEditing={() => {
+                      this.setState({
+                        btUSDAmountFocus: true,
+                        btAmountFocus: false
+                      });
+                    }}
+                    isFocus={this.state.btAmountFocus}
+                    blurOnSubmit={false}
                   />
                 </View>
                 <View style={{ flex: 0.3 }}>
@@ -337,6 +347,14 @@ class TransactionScreen extends Component {
                     serverErrors={this.state.server_errors}
                     clearErrors={this.state.clearErrors}
                     keyboardType="numeric"
+                    onSubmitEditing={() => {
+                      this.setState({
+                        btUSDAmountFocus: false,
+                        transactionModal: false
+                      });
+                    }}
+                    isFocus={this.state.btUSDAmountFocus}
+                    blurOnSubmit={true}
                   />
                 </View>
                 <View style={{ flex: 0.3 }}>
@@ -353,7 +371,7 @@ class TransactionScreen extends Component {
                 TextStyles={[Theme.Button.btnPinkText]}
                 text="CONFIRM"
                 onPress={() => {
-                  this.setState({ transactionModal: true });
+                  this.setState({ transactionModal: false });
                 }}
               />
             </View>
