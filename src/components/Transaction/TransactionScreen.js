@@ -260,7 +260,7 @@ class TransactionScreen extends Component {
                 onValueChange={(isPublic) => {
                   this.setState({ isPublic });
                 }}
-                thumbColor="#EF5566"
+                ios_backgroundColor="#ffffff"
                 trackColor={{ false: '#ffffff', true: '#EF5566' }}
               ></Switch>
             </View>

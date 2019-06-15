@@ -12,9 +12,9 @@ export default styles = StyleSheet.create({
     fontSize: 16
   },
   switchStyle: {
-    marginLeft: 5,
+    marginLeft: 0,
     justifyContent: 'flex-end',
-    borderEndColor: '#EF5566'
+    transform: [{ scaleX: .6 }, { scaleY: .6 }]
   },
   bottomButtonsWrapper: {
     flexDirection: 'row',
