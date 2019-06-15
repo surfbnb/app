@@ -6,10 +6,10 @@ export default styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     padding: 20,
-    backgroundColor: 'rgb(246,246,246)'
+    backgroundColor: Colors.whiteSmoke
   },
   addMessageTextStyle: {
-    color: 'rgb(50,150,208)',
+    color: Colors.summerSky,
     fontSize: 16
   },
   switchStyle: {
@@ -26,7 +26,7 @@ export default styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   sendPepoBtn: {
-    flex: 10,
+    flex: 8,
     marginRight: 10
   },
   dottedBtn: {
@@ -52,22 +52,26 @@ export default styles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginBottom:10
   },
-  modalCloseBtnContent: {
-    color: '#ffffff',
-    textAlign: 'center',
-    fontSize: 25,
-    transform: [{ rotate: '45deg' }]
+  crossIcon: {
+    width: 20,
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    height: 20,
+    transform: [
+      { rotate: '45deg'},
+    ]
   },
   modalContentWrapper: {
     borderRadius: 3,
     width: Dimensions.get('window').width - 20,
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.white,
     justifyContent: 'center',
     padding: 20,
   },
   modalHeader: {
     textAlign: 'center',
-    color: '#484848',
+    color: Colors.dark,
     fontSize: 16,
     marginBottom: 15
   },
