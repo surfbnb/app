@@ -24,8 +24,8 @@ import PepoApi from '../../services/PepoApi';
 import PlusIcon from '../../assets/plus_icon.png';
 import Theme from '../../theme/styles';
 import TouchableButton from '../../theme/components/TouchableButton';
-import {GiffyViewContext, CategoryViewContext, VCErrors, CATEGORY_VC_ID} from "./view_contexts";
-import GracefulImage from "./GracefulImage";
+import { GiffyViewContext, CategoryViewContext, VCErrors, CATEGORY_VC_ID } from './view_contexts';
+import GracefulImage from './GracefulImage';
 
 class Giphy extends Component {
   constructor(props) {
@@ -51,27 +51,27 @@ class Giphy extends Component {
   }
 
   getCategoryListViewContext() {
-    if ( !this.viewContexts[ CATEGORY_VC_ID ] ) {
-      this.viewContexts[ CATEGORY_VC_ID ] = new CategoryViewContext();
+    if (!this.viewContexts[CATEGORY_VC_ID]) {
+      this.viewContexts[CATEGORY_VC_ID] = new CategoryViewContext();
     }
-    return this.viewContexts[ CATEGORY_VC_ID ];
+    return this.viewContexts[CATEGORY_VC_ID];
   }
 
   getTrendingViewContext(baseUrl, searchTerm) {
-    let id = "TRENDING_" + baseUrl + "_" +  searchTerm;
-    if ( !this.viewContexts[ id ] ) { 
-      this.viewContexts[ id ] = new GiffyViewContext(id, baseUrl);
+    let id = 'TRENDING_' + baseUrl + '_' + searchTerm;
+    if (!this.viewContexts[id]) {
+      this.viewContexts[id] = new GiffyViewContext(id, baseUrl);
     }
-    return this.viewContexts[ id ];
+    return this.viewContexts[id];
   }
 
-  getSearchViewContext( searchTerm ) {
+  getSearchViewContext(searchTerm) {
     let baseUrl = '/gifs/search';
-    let id = "SEARCH_" + baseUrl + "_" +  searchTerm;
-    if ( !this.viewContexts[ id ] ) { 
-      this.viewContexts[ id ] = new GiffyViewContext(id, baseUrl, searchTerm);
+    let id = 'SEARCH_' + baseUrl + '_' + searchTerm;
+    if (!this.viewContexts[id]) {
+      this.viewContexts[id] = new GiffyViewContext(id, baseUrl, searchTerm);
     }
-    return this.viewContexts[ id ];
+    return this.viewContexts[id];
   }
 
   componentDidMount() {
@@ -86,37 +86,35 @@ class Giphy extends Component {
   // endregion
 
   // region - Search Term
-  serchTermChanged( searchTerm ) {
+  serchTermChanged(searchTerm) {
     this.setState({
       gifSearchQuery: searchTerm
     });
 
-    clearTimeout( this.searchTimeout );
-    this.searchTimeout = setTimeout( () => {
-      this.showSearchTerm( searchTerm );
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      this.showSearchTerm(searchTerm);
     }, 300);
   }
 
-
   showSearchTerm(searchTerm) {
-    if ( !searchTerm || !searchTerm.length ) {
+    if (!searchTerm || !searchTerm.length) {
       // Show Category.
       this.showCategotyList();
       return;
     }
-    let viewContext = this.getSearchViewContext( searchTerm );
-    this.showViewContext( viewContext );
+    let viewContext = this.getSearchViewContext(searchTerm);
+    this.showViewContext(viewContext);
   }
   // endregion
 
   // region - Show selected category/trending.
   showTrending(categoryData) {
-    
     // Show viewContext.
     let url = categoryData['gifsUrl'];
     let searchTerm = categoryData['name'];
     let viewContext = this.getTrendingViewContext(url, searchTerm);
-    this.showViewContext( viewContext );
+    this.showViewContext(viewContext);
 
     // Set the search term in the text box.
     this.setState({
@@ -125,34 +123,34 @@ class Giphy extends Component {
   }
   // endregion
 
-
   // region - show view context.
   showViewContext(viewContext) {
-    console.log("showViewContext: entry");
-    if ( this.currentViewContext == viewContext) {
-      console.log("showViewContext : Already showing viewContext with id", viewContext.id);
+    console.log('showViewContext: entry');
+    if (this.currentViewContext == viewContext) {
+      console.log('showViewContext : Already showing viewContext with id', viewContext.id);
       return;
     }
     this.currentViewContext = viewContext;
     let results = viewContext.getAllResults();
-    console.log("showViewContext: existing results.length:", results.length);
-    if ( results && results.length ) {
+    console.log('showViewContext: existing results.length:', results.length);
+    if (results && results.length) {
       this.showResults(results, viewContext);
       this.scrollFlatListToTop();
       return;
     }
 
-    if ( viewContext.isFetching ) {
+    if (viewContext.isFetching) {
       //Already fetching data.
-      console.log("showViewContext: viewContext is already fetching data. id:", viewContext.id);
+      console.log('showViewContext: viewContext is already fetching data. id:', viewContext.id);
       return;
     }
 
     // Note: This is the right place to set state that shows 'loading' view.
     // And remove 'No Results' view if needed.
 
-    return viewContext.fetch()
-      .then( ( results ) => {
+    return viewContext
+      .fetch()
+      .then((results) => {
         this.showResults(results, viewContext);
         this.scrollFlatListToTop();
         return results;
@@ -165,52 +163,56 @@ class Giphy extends Component {
 
   showResults(results, viewContext) {
     let isGifCategory = viewContext.id == CATEGORY_VC_ID;
-    if ( this.currentViewContext != viewContext ) {
-      console.log("showResults: ignoring viewContext fetch. The viewContext has changed.");
+    if (this.currentViewContext != viewContext) {
+      console.log('showResults: ignoring viewContext fetch. The viewContext has changed.');
       //ignore display;
       return;
     }
-    console.log("Should show data for viewContext.id:", viewContext.id, "results.length:", results.length);
+    console.log('Should show data for viewContext.id:', viewContext.id, 'results.length:', results.length);
     this.setState({ gifsDataToShow: results, isGifCategory: isGifCategory });
 
     // Note: This is right place to set state that shows 'No Results' view.
     // And remove 'loading' view if needed.
-
   }
 
   scrollFlatListToTop() {
     // Note: If app crashes. simply return from here.
     // iOS is know to crash when updating list views while scrolling.
     setTimeout(() => {
-      if ( this.listRef ) {
-        this.listRef.scrollToOffset({x: 0, y: 0, animated: true})
+      if (this.listRef) {
+        this.listRef.scrollToOffset({ x: 0, y: 0, animated: true });
       }
-    }, 100)
+    }, 100);
   }
   // endregion
 
-
   loadMore() {
     let viewContext = this.currentViewContext;
-    if ( !viewContext || !viewContext.hasNextPage || viewContext.isFetching) {
-      console.log("loadMore: call has been ignored.");
-      if ( !viewContext ) {
-        console.log("loadMore: currentViewContext is null");
+    if (!viewContext || !viewContext.hasNextPage || viewContext.isFetching) {
+      console.log('loadMore: call has been ignored.');
+      if (!viewContext) {
+        console.log('loadMore: currentViewContext is null');
       } else {
-        console.log("loadMore: viewContext.hasNextPage:", viewContext.hasNextPage, "viewContext.isFetching:", viewContext.isFetching);
+        console.log(
+          'loadMore: viewContext.hasNextPage:',
+          viewContext.hasNextPage,
+          'viewContext.isFetching:',
+          viewContext.isFetching
+        );
       }
       // ignore.
       return;
     }
 
-    viewContext.fetch()
-      .then( ( resultsToAppend ) => {
-        if ( this.currentViewContext != viewContext || !resultsToAppend || !resultsToAppend.length) {
+    viewContext
+      .fetch()
+      .then((resultsToAppend) => {
+        if (this.currentViewContext != viewContext || !resultsToAppend || !resultsToAppend.length) {
           // ignore.
           return;
         }
         let existingResults = this.state.gifsDataToShow || [];
-        let newResults = existingResults.concat( resultsToAppend );
+        let newResults = existingResults.concat(resultsToAppend);
         this.setState({ gifsDataToShow: newResults });
       })
       .catch((err) => {
@@ -219,12 +221,10 @@ class Giphy extends Component {
       });
   }
 
-
-
   handleGiphyPress(data) {
     if (this.state.isGifCategory) {
       this.showTrending(data);
-    } else if ( !data.isCategory ) {
+    } else if (!data.isCategory) {
       this.selectImage(data);
     }
 
@@ -240,12 +240,12 @@ class Giphy extends Component {
     this.props.onGifySelect && this.props.onGifySelect(gifsData);
   }
 
-  imgLoadStart(e,a,b,c) {
-    console.log("imgLoadStart received.");
+  imgLoadStart(e, a, b, c) {
+    console.log('imgLoadStart received.');
   }
 
-  imgLoadEnd(e,a,b,c) {
-    console.log("imgLoadEnd received.");
+  imgLoadEnd(e, a, b, c) {
+    console.log('imgLoadEnd received.');
   }
 
   isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
@@ -306,8 +306,7 @@ class Giphy extends Component {
 
     return (
       <View>
-
-          {imageSelector}
+        {imageSelector}
 
         {this.state.modalOpen && (
           <React.Fragment>
@@ -347,7 +346,9 @@ class Giphy extends Component {
                     />
 
                     <FlatList
-                      ref={(ref) => { this.listRef = ref; }}
+                      ref={(ref) => {
+                        this.listRef = ref;
+                      }}
                       contentContainerStyle={{
                         // flexWrap: 'wrap',
                         // flexDirection: 'row',
@@ -363,13 +364,13 @@ class Giphy extends Component {
                           <TouchableWithoutFeedback key={item.id} onPress={() => this.handleGiphyPress(item)}>
                             <View
                               style={[
-                                  {
-                                    margin: 3,
-                                    borderRadius: 4,
-                                    backgroundColor: 'rgba(238,238,238,1)',
-                                    overflow: 'hidden'
-                                  }
-                                ]}
+                                {
+                                  margin: 3,
+                                  borderRadius: 4,
+                                  backgroundColor: 'rgba(238,238,238,1)',
+                                  overflow: 'hidden'
+                                }
+                              ]}
                             >
                               <GracefulImage
                                 style={{

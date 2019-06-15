@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { OstWalletSdkEvents } from '@ostdotcom/ost-wallet-sdk-react-native';
 
-import App from './App';
+import RootNavigationContainer from './RootNavigationContainer';
 import Store from './src/store';
 import { Provider } from 'react-redux';
 
@@ -17,7 +17,7 @@ export default class AppContainer extends Component {
   render() {
     return (
       <Provider store={Store}>
-        <App />
+        <RootNavigationContainer />
       </Provider>
     );
   }

@@ -34,8 +34,8 @@ class TransactionScreen extends Component {
       addMessageBtnVisible: true,
       switchToggleState: false,
       transactionModal: false,
-      btAmountFocus : true,
-      btUSDAmountFocus : false,
+      btAmountFocus: true,
+      btUSDAmountFocus: false
     };
     this.baseState = this.state;
   }

@@ -146,7 +146,7 @@ const AppContainer = createAppContainer(
   )
 );
 
-const App = () => (
+const RootNavigationContainer = () => (
   <AppContainer
     ref={(navigatorRef) => {
       NavigationService.setTopLevelNavigator(navigatorRef);
@@ -154,4 +154,4 @@ const App = () => (
   />
 );
 
-export default App;
+export default RootNavigationContainer;
