@@ -124,7 +124,6 @@ class Giphy extends Component {
 
   handleGiphyPress(gifsData) {
     return () => {
-      console.log('handleGiphyPress');
       if (this.state.isGifCategory) {
         this.searchGiphy(gifsData['name'], gifsData['gifsUrl']);
       } else {
@@ -157,136 +156,147 @@ class Giphy extends Component {
     if (Object.keys(this.state.selectedImage).length) {
       let ratioFullScreen = screenWidth / parseInt(this.state.selectedImage.downsized.width);
       imageSelector = (
-        <View>
-          {/* <Text onClick={this.setState({ selectedImage: {} })}>X</Text> */}
-          <Image
+        <ImageBackground
+          source={{ uri: this.state.selectedImage.downsized.url }}
+          style={{
+            height: parseInt(this.state.selectedImage.downsized.height) * ratioFullScreen,
+            width: parseInt(this.state.selectedImage.downsized.width) * ratioFullScreen,
+            position: 'relative' // because it's parent
+          }}
+        >
+          <Text
             style={{
-              width: parseInt(this.state.selectedImage.downsized.width) * ratioFullScreen,
-              height: parseInt(this.state.selectedImage.downsized.height) * ratioFullScreen
+              fontWeight: 'bold',
+              color: 'black',
+              position: 'absolute', // child
+              top: 5, // position where you want
+              right: 5
             }}
-            source={{ uri: this.state.selectedImage.downsized.url }}
-          />
-        </View>
+            onPress={() => this.setState({ selectedImage: {} })}
+          >
+            X
+          </Text>
+        </ImageBackground>
       );
     } else {
       imageSelector = (
-        <View style={inlineStyles.giphyPicker}>
-          <Image source={PlusIcon} style={inlineStyles.plusIcon} />
-          <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
-        </View>
+        <TouchableOpacity
+          onPress={() => {
+            this.setState({
+              modalOpen: true
+            });
+          }}
+        >
+          <View style={inlineStyles.giphyPicker}>
+            <Image source={PlusIcon} style={inlineStyles.plusIcon} />
+            <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
+          </View>
+        </TouchableOpacity>
       );
     }
 
     return (
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({
-                modalOpen: true
-              });
-            }}
-          >
-            {imageSelector}
-          </TouchableOpacity>
-          {this.state.modalOpen && (
-            <React.Fragment>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={this.state.modalOpen}
-                onRequestClose={() => {
+      <View>
+        {imageSelector}
+
+        {this.state.modalOpen && (
+          <React.Fragment>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={this.state.modalOpen}
+              onRequestClose={() => {
+                this.setState({
+                  modalOpen: false
+                });
+              }}
+            >
+              <TouchableWithoutFeedback
+                onPressOut={() =>
                   this.setState({
                     modalOpen: false
-                  });
-                }}
+                  })
+                }
               >
+                {/* <ScrollView directionalLockEnabled={true} contentContainerStyle={styles.scrollModal}> */}
                 <TouchableWithoutFeedback
-                  onPressOut={() =>
+                  onPress={() => {
                     this.setState({
                       modalOpen: false
-                    })
-                  }
+                    });
+                  }}
                 >
+                  <View style={inlineStyles.modal}>
+                    <View style={inlineStyles.modalInner}>
+                      <FormInput
+                        editable={true}
+                        onChangeText={(gifSearchQuery) => this.searchGiphy(gifSearchQuery)}
+                        fieldName="gif_category_search_query"
+                        textContentType="none"
+                        value={this.state.gifSearchQuery}
+                        style={[Theme.TextInput.textInputStyle]}
+                        placeholder="Search Giphy"
+                        returnKeyType="next"
+                        returnKeyLabel="next"
+                        placeholderTextColor="#ababab"
+                        errorHandler={(fieldName) => {
+                          this.ServerErrorHandler(fieldName);
+                        }}
+                      />
 
-                  <TouchableWithoutFeedback
-                    onPress={() => {
-                      this.setState({
-                        modalOpen: false
-                      });
-                    }}
-                  >
-                    <View style={inlineStyles.modal}>
-                      <View style={inlineStyles.modalInner}>
-                        <FormInput
-                          editable={true}
-                          onChangeText={(gifSearchQuery) => this.searchGiphy(gifSearchQuery)}
-                          fieldName="gif_category_search_query"
-                          textContentType="none"
-                          value={this.state.gifSearchQuery}
-                          style={[Theme.TextInput.textInputStyle]}
-                          placeholder="Search Giphy"
-                          returnKeyType="next"
-                          returnKeyLabel="next"
-                          placeholderTextColor="#ababab"
-                          errorHandler={(fieldName) => {
-                            this.ServerErrorHandler(fieldName);
-                          }}
-                        />
-
-                        <FlatList
-                          contentContainerStyle={{
-                            // flexWrap: 'wrap',
-                            // flexDirection: 'row',
-                            marginRight: 4
-                          }}
-                          onEndReached={() => {
-                            console.log('On end reachedddd');
-                            !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
-                          }}
-                          data={gifsData}
-                          renderItem={({ item }) => {
-                            return (
-                              <TouchableWithoutFeedback key={item.id} onPress={this.handleGiphyPress(item)}>
-                                <View>
-                                  <Image
-                                    style={{
-                                      width: wh,
+                      <FlatList
+                        contentContainerStyle={{
+                          // flexWrap: 'wrap',
+                          // flexDirection: 'row',
+                          marginRight: 4
+                        }}
+                        onEndReached={() => {
+                          console.log('On end reachedddd');
+                          !this.state.isGifCategory && this.searchGiphy(this.state.gifSearchQuery, this.state.gifUrl);
+                        }}
+                        data={gifsData}
+                        renderItem={({ item }) => {
+                          return (
+                            <TouchableWithoutFeedback key={item.id} onPress={this.handleGiphyPress(item)}>
+                              <View>
+                                <Image
+                                  style={{
+                                    width: wh,
+                                    height: wh,
+                                    margin: 3,
+                                    borderRadius: 4
+                                  }}
+                                  source={{ uri: item.fixed_width_downsampled.url }}
+                                />
+                                <View
+                                  style={[
+                                    inlineStyles.overlay,
+                                    {
+                                      backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0)',
                                       height: wh,
-                                      margin: 3,
-                                      borderRadius: 4
-                                    }}
-                                    source={{ uri: item.fixed_width_downsampled.url }}
-                                  />
-                                  <View
-                                    style={[
-                                      inlineStyles.overlay,
-                                      {
-                                        backgroundColor: this.state.isGifCategory
-                                          ? 'rgba(0,0,0,0.75)'
-                                          : 'rgba(0,0,0,0)',
-                                        height: wh,
-                                        width: wh
-                                      }
-                                    ]}
-                                  >
-                                    <Text style={inlineStyles.overlayText}>{item.name}</Text>
-                                  </View>
+                                      width: wh
+                                    }
+                                  ]}
+                                >
+                                  <Text style={inlineStyles.overlayText}>{item.name}</Text>
                                 </View>
-                              </TouchableWithoutFeedback>
-                            );
-                          }}
-                          //Setting the number of column
-                          numColumns={3}
-                          keyExtractor={(item, index) => index}
-                        />
-                      </View>
+                              </View>
+                            </TouchableWithoutFeedback>
+                          );
+                        }}
+                        //Setting the number of column
+                        numColumns={3}
+                        keyExtractor={(item, index) => index}
+                      />
                     </View>
-                  </TouchableWithoutFeedback>
+                  </View>
                 </TouchableWithoutFeedback>
-              </Modal>
-            </React.Fragment>
-          )}
-        </View>
+                {/* </ScrollView> */}
+              </TouchableWithoutFeedback>
+            </Modal>
+          </React.Fragment>
+        )}
+      </View>
     );
   }
 }
