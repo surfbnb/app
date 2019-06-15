@@ -1,22 +1,25 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { withNavigation } from 'react-navigation';
 import CurrentUser from '../../models/CurrentUser';
+import LoadingModal from '../../theme/components/LoadingModal';
+import Toast from '../../theme/components/Toast';
 
-const LogoutLink = (props) => (
-  <Text
-    style={{
-      color: 'rgb(72,72,72)',
-      padding: 10
-    }}
-    onPress={() => {
-      CurrentUser.logout(props.navigation.navigate);
-    }}
-  >
-    Logout
-  </Text>
+const LogoutLink = () => (
+  <View>
+    <Text
+      style={{
+        color: 'rgb(72,72,72)',
+        padding: 10
+      }}
+      onPress={() => {
+        CurrentUser.logout();
+      }}
+    >
+      Logout
+    </Text>
+    <LoadingModal />
+    <Toast timeout={3000} />
+  </View>
 );
 
-const LogoutComponent = withNavigation(LogoutLink);
-
-export default LogoutComponent;
+export default LogoutLink;

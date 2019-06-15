@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Dimensions, Modal } from 'react-native';
+
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
 import Giphy from '../Giphy';
@@ -16,9 +16,9 @@ import Store from '../../store';
 import { showModal, hideModal } from '../../actions';
 import appConfig from '../../constants/AppConfig';
 import { TOKEN_ID } from '../../constants';
-import LoadingModal from '../../components/LoadingModal';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
+
 class TransactionScreen extends Component {
   constructor(props) {
     super(props);
@@ -375,7 +375,6 @@ class TransactionScreen extends Component {
             </View>
           </View>
         </Modal>
-        <LoadingModal />
       </View>
     );
   }

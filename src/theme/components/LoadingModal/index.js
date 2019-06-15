@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { View, Modal, Text, ActivityIndicator } from 'react-native';
 import modalStyles from './styles';

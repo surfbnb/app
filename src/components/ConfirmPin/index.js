@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Alert, Text, Linking, KeyboardAvoidingView, Platform } from 'react-native';
-import LoadingModal from '../LoadingModal';
+import LoadingModal from '../../theme/components/LoadingModal';
+import Toast from '../../theme/components/Toast';
 import Store from '../../store';
 import { showModal, hideModal } from '../../actions';
 import utilities from '../../services/Utilities';
@@ -43,6 +44,7 @@ export default class ConfirmPin extends Component {
           </Text>
           <PinInput {...this.props} onPinChange={this.onPinChange} />
           <LoadingModal />
+          <Toast timeout={3000} />
         </View>
 
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={keyboardVerticalOffset}>

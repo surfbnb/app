@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Modal, Text } from 'react-native';
-import { showToast, hideToast } from '../../actions';
-import Store from '../../store';
+import { showToast, hideToast } from '../../../actions';
+import Store from '../../../store';
 
 import toastStyles from './styles';
 

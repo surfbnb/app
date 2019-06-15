@@ -9,7 +9,8 @@ import Theme from '../../theme/styles';
 import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
-import LoadingModal from '../LoadingModal';
+import LoadingModal from '../../theme/components/LoadingModal';
+import Toast from '../../theme/components/Toast';
 import ErrorMessages from '../../constants/ErrorMessages';
 import { showModal, hideModal } from '../../actions';
 import utilities from '../../services/Utilities';
@@ -319,6 +320,7 @@ class AuthScreen extends Component {
           <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
         </View>
         <LoadingModal />
+        <Toast timeout={3000} />
         <View style={styles.bottomBtnAndTxt}>
           {!this.state.signup && (
             <TouchableOpacity
