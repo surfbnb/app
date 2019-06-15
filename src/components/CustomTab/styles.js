@@ -33,8 +33,8 @@ export default styles = StyleSheet.create({
   tabElement: {
     alignSelf: 'center',
     marginBottom: 3,
-    height: 22,
-    width: 22
+    height: 23,
+    width: 22.5
   },
   tabElementFriends: {
     alignSelf: 'center',

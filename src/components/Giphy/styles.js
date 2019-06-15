@@ -1,7 +1,8 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
+import {Dimensions } from 'react-native';
 import Colors from '../../theme/styles/Colors';
 
-export default styles = StyleSheet.create({
+let stylesMap = {
   container: {
     paddingLeft: 20,
     paddingRight: 20,
@@ -49,7 +50,8 @@ export default styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     textTransform: 'uppercase',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   plusIcon: {
     width: 42,
@@ -71,4 +73,7 @@ export default styles = StyleSheet.create({
     fontWeight: '300',
     marginTop: 10
   }
-});
+};
+
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);

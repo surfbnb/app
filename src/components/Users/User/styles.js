@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
+import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
 
-export default inlineStyles = StyleSheet.create({
+let stylesMap = {
   item: {
     fontSize: 15,
     flex: 1,
-    fontWeight: '500',
+    fontWeight: '300',
     color: '#34445b'
   },
   expressBtn: {
@@ -50,4 +50,6 @@ export default inlineStyles = StyleSheet.create({
     height: 40,
     width: 40
   }
-});
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);
