@@ -10,9 +10,9 @@ export default {
   },
 
   metaProperties: {
-    "name":"Pepo",
-    "type":"user_to_user",
-    "details":"Pepo"
+    name: 'Pepo',
+    type: 'user_to_user',
+    details: 'Pepo'
   },
 
   executeTransactionPrivacyType: {

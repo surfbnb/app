@@ -4,7 +4,7 @@ import deepGet from 'lodash/get';
 import Store from '../store';
 import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
-import appConfig from "../constants/AppConfig";
+import appConfig from '../constants/AppConfig';
 
 class CurrentUserModel {
   constructor() {
@@ -145,22 +145,22 @@ class CurrentUserModel {
   getUserId() {
     return this.userId;
   }
-  
+
   isActiveUser() {
     return this.isUserActivated() || this.isUserActivating();
   }
 
-  isUserActivated(){
+  isUserActivated() {
     const userStatusMap = appConfig.userStatusMap;
     return this.__getUserStatus() == userStatusMap.activated;
   }
 
-  isUserActivating(){
+  isUserActivating() {
     const userStatusMap = appConfig.userStatusMap;
     return this.__getUserStatus() == userStatusMap.activating;
   }
 
-  __getUserStatus(){
+  __getUserStatus() {
     const user = this.getUser();
     let status = deepGet(user, 'ost_status') || '';
     return status.toLowerCase();
