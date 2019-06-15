@@ -37,8 +37,6 @@ export default styles = StyleSheet.create({
   },
   overlay: {
     position: 'absolute',
-    margin: 3,
-    borderRadius: 4,
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
