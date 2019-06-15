@@ -30,8 +30,7 @@ class TransactionScreen extends Component {
       general_error: '',
       btAmount: 1,
       btUSDAmount: null,
-      messageTextInput: false,
-      addMessageBtnVisible: true,
+      isMessageVisible: false,
       switchToggleState: false,
       transactionModal: false,
       btAmountFocus : true,
@@ -201,9 +200,12 @@ class TransactionScreen extends Component {
       decimal: decimal
     };
   }
-  switchOnChangeHandler(value) {
-    console.log('in switchOnChangeHandler');
-    this.setState({ switchToggleState: value });
+
+  onMessageBtnPress( ){
+    this.setState({ isMessageVisible: !this.state.isMessageVisible });
+    if( !this.state.isMessageVisible ){
+      this.setState({ message: "" });
+    }
   }
 
   render() {
@@ -215,33 +217,32 @@ class TransactionScreen extends Component {
           }}
         />
 
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row' , justifyContent:"space-between"}}>
           {/*{  This is add message button }*/}
-          {this.state.addMessageBtnVisible && (
             <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={() => {
-                this.setState({ addMessageBtnVisible: false, messageTextInput: true });
-              }}
+              style={{}}
+              onPress={() => { this.onMessageBtnPress() }}
             >
-              <Text style={inlineStyles.addMessageTextStyle}>+Add Message</Text>
+              <Text style={inlineStyles.addMessageTextStyle}>
+                { this.state.isMessageVisible ?  "-Clear Message" : "+Add Message" }
+                </Text>
             </TouchableOpacity>
-          )}
 
           {/* This is Share publically switch */}
-          <Switch
-            value={this.state.isPublic}
-            style={inlineStyles.switchStyle}
-            onValueChange={(isPublic) => {
-              this.setState({ isPublic });
-              this.switchOnChangeHandler.bind(this);
-            }}
-            thumbColor="#EF5566"
-            trackColor={{ false: '#ffffff', true: '#EF5566' }}
-          ></Switch>
+          <View style={{justifyContent:'flex-end'}}> 
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text>Share Public</Text>
+              <Switch
+                value={this.state.isPublic}
+                style={inlineStyles.switchStyle}
+                onValueChange={(isPublic) => { this.setState({ isPublic }); }}
+                thumbColor="#EF5566"
+                trackColor={{ false: '#ffffff', true: '#EF5566' }}></Switch>
+            </View>
+          </View>
         </View>
 
-        {this.state.messageTextInput && (
+        {this.state.isMessageVisible && (
           <FormInput
             autoFocus={true}
             editable={true}

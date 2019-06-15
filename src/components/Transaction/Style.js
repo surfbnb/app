@@ -12,7 +12,7 @@ export default styles = StyleSheet.create({
     fontSize: 16
   },
   switchStyle: {
-    flex: 1,
+    marginLeft: 5,
     justifyContent: 'flex-end',
     borderEndColor: '#EF5566'
   },
