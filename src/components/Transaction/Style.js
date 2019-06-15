@@ -34,15 +34,20 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1
   },
+  modelWrapper:{
+    top:'50%',
+    transform: [{ translateY: -Dimensions.get('window').height * 0.25 }]
+  },
   modalCloseBtnWrapper: {
-    position: 'absolute',
-    top: 50,
     borderColor: '#ffffff',
     borderWidth: 1,
     borderRadius: 25,
     height: 40,
     width: 40,
-    backgroundColor: 'transparent'
+    left: '50%',
+    marginLeft: -20,
+    backgroundColor: 'transparent',
+    marginBottom:10
   },
   modalCloseBtnContent: {
     color: '#ffffff',
@@ -56,9 +61,6 @@ export default styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     padding: 20,
-    position: 'absolute',
-    top: '50%',
-    transform: [{ translateY: -Dimensions.get('window').height * 0.25 }]
   },
   modalHeader: {
     textAlign: 'center',

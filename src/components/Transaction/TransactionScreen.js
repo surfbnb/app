@@ -310,15 +310,14 @@ class TransactionScreen extends Component {
           }}
         >
           <View style={inlineStyles.modalBackDrop}>
-            <TouchableOpacity
-              style={inlineStyles.modalCloseBtnWrapper}
-              onPress={() => {
-                this.onAmountModalClose();
-              }}
-            >
-              <Text style={inlineStyles.modalCloseBtnContent}>+</Text>
-            </TouchableOpacity>
-
+            <View style={inlineStyles.modelWrapper}>
+              <View>
+                <TouchableOpacity
+                  style={inlineStyles.modalCloseBtnWrapper}
+                  onPress={() => { this.onAmountModalClose() }} >
+                  <Text style={inlineStyles.modalCloseBtnContent}>+</Text>
+                </TouchableOpacity>
+              </View>
             <View style={inlineStyles.modalContentWrapper}>
               <Text style={inlineStyles.modalHeader}>Enter The Amount your want to send</Text>
               <View style={{ flexDirection: 'row' }}>
@@ -383,6 +382,7 @@ class TransactionScreen extends Component {
                 }}
               />
             </View>
+          </View>
           </View>
         </Modal>
       </View>
