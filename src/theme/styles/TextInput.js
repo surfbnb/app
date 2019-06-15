@@ -1,8 +1,9 @@
 import DefaultStyleGenerator from './DefaultStyleGenerator';
+import Colors from './Colors';
 
 let styles = {
   textInputStyle: {
-    borderColor: '#afafaf',
+    borderColor: Colors.light,
     borderWidth: 1,
     borderRadius: 6,
     fontSize: 17,
@@ -10,7 +11,7 @@ let styles = {
     padding: 5,
     paddingLeft: 15,
     marginTop: 10,
-    color: '#484848',
+    color: Colors.dark,
     height: 46
   }
 };

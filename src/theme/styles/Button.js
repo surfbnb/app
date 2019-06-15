@@ -1,4 +1,5 @@
 import DefaultStyleGenerator from './DefaultStyleGenerator';
+import Colors from './Colors';
 
 let styles = {
   btn: {
@@ -19,7 +20,7 @@ let styles = {
     fontFamily: 'Lato-Bold'
   },
   btnSecondary: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.white,
     borderColor: 'rgb(22,141,193)'
   },
   btnSecondaryText: {
@@ -29,11 +30,11 @@ let styles = {
     opacity: 0.5
   },
   btnPink: {
-    backgroundColor: '#ef5566',
-    borderColor: '#ef5566'
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary
   },
   btnPinkText: {
-    color: '#fff'
+    color: Colors.white
   }
 };
 

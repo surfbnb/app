@@ -1,9 +1,11 @@
 import Button from './Button';
 import TextInput from './TextInput';
 import Errors from './Errors';
+import Colors from './Colors';
 
-export default Theme = {
+export default {
   Button,
   TextInput,
-  Errors
+  Errors,
+  Colors
 };

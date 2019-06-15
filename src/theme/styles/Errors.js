@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
+import Colors from './Colors';
 
-export default Errors = StyleSheet.create({
+export default StyleSheet.create({
   errorText: {
-    color: '#eb4d4a',
+    color: Colors.primary,
     fontSize: 12
   },
   errorBorder: {
-    borderColor: '#eb4d4a'
+    borderColor: Colors.primary
   }
 });
