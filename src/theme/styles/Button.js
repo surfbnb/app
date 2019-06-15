@@ -27,6 +27,13 @@ let styles = {
   },
   disabled: {
     opacity: 0.5
+  },
+  btnPink: {
+    backgroundColor: '#ef5566',
+    borderColor: '#ef5566'
+  },
+  btnPinkText: {
+    color: '#fff'
   }
 };
 

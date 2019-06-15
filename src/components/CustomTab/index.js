@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 
 import styles from './styles';
 import feed from '../../assets/user_feed.png';
 import profile from '../../assets/user_profile.png';
 import friends from '../../assets/user_friends.png';
 
-export default CustomTab = ({ navigation, screenProps }) => (
+const CustomTab = ({ navigation, screenProps }) => (
   <View style={styles.container}>
     <TouchableOpacity
       onPress={() => {
@@ -30,7 +30,7 @@ export default CustomTab = ({ navigation, screenProps }) => (
       <Text style={{ color: navigation.state.index === 1 ? '#ef5566' : 'rgb(72,72,72)' }}>Friends</Text>
     </TouchableOpacity>
     {/* <Text> Pepo </Text> */}
-    <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+    <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
       <Image
         tintColor={navigation.state.index === 2 ? '#61b2d6' : '#484848'}
         style={[styles.tabElement, { tintColor: navigation.state.index === 2 ? '#ef5566' : '#484848' }]}
@@ -41,3 +41,5 @@ export default CustomTab = ({ navigation, screenProps }) => (
     {/* <TouchableOpacity style={styles.overlayBtn} /> */}
   </View>
 );
+
+export default CustomTab;

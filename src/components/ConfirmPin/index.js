@@ -3,7 +3,7 @@ import { View, Alert, Text, Linking, KeyboardAvoidingView, Platform } from 'reac
 import LoadingModal from '../LoadingModal';
 import Store from '../../store';
 import { showModal, hideModal } from '../../actions';
-import utilities from "../../services/Utilities";
+import utilities from '../../services/Utilities';
 
 import PinInput from '../PinInput';
 import ActivateUser from '../../services/ActivateUser';
@@ -18,7 +18,7 @@ export default class ConfirmPin extends Component {
       Store.dispatch(showModal('Activating User...'));
       ActivateUser.activateUser(pin, this);
     } else {
-        Alert.alert('', 'Incorrect Pin');
+      Alert.alert('', 'Incorrect Pin');
     }
   };
 
@@ -29,8 +29,8 @@ export default class ConfirmPin extends Component {
 
   onFlowInterrupt(ostWorkflowContext, ostError) {
     Store.dispatch(hideModal());
-    let errMsg = (ostError && ostError.getApiErrorMessage() || ostError.getErrorMessage()) || ErrorMessages.general_error;
-    utilities.showAlert(null , errMsg); 
+    let errMsg = utilities.getErrorMessage(ostError);
+    utilities.showAlert(null, errMsg);
   }
 
   render() {

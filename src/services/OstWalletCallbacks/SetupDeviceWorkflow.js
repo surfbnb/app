@@ -1,6 +1,6 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { API_ROOT } from './../../constants';
-import PepoApi from "../PepoApi";
+import PepoApi from '../PepoApi';
 
 class SetupDeviceWorkflow extends OstWalletWorkFlowCallback {
   constructor(delegate) {
@@ -14,24 +14,24 @@ class SetupDeviceWorkflow extends OstWalletWorkFlowCallback {
       device_address: apiParams.address || apiParams.device.address,
       api_signer_address: apiParams.api_signer_address || apiParams.device.api_signer_address
     };
-    new PepoApi("/users/register-device")
-    .post( payload )
-    .then((responseData) => {
-      if (responseData.success && responseData.data) {
-        console.log('data to send:', responseData.data[responseData.data.result_type]);
-        //
-        ostDeviceRegistered.deviceRegistered(responseData.data[responseData.data.result_type], (error) => {
-          console.warn(error);
-        });
-      } else {
+    new PepoApi('/users/register-device')
+      .post(payload)
+      .then((responseData) => {
+        if (responseData.success && responseData.data) {
+          console.log('data to send:', responseData.data[responseData.data.result_type]);
+          //
+          ostDeviceRegistered.deviceRegistered(responseData.data[responseData.data.result_type], (error) => {
+            console.warn(error);
+          });
+        } else {
+          // cancel workflow.
+          ostDeviceRegistered.cancelFlow();
+        }
+      })
+      .catch(() => {
         // cancel workflow.
         ostDeviceRegistered.cancelFlow();
-      }
-    })
-    .catch(() => {
-      // cancel workflow.
-      ostDeviceRegistered.cancelFlow();
-    })
+      });
   }
 
   flowComplete(ostWorkflowContext, ostContextEntity) {
