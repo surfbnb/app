@@ -65,7 +65,7 @@ class TransactionScreen extends Component {
   updatePricePoint(successCallback, errorCallback) {
     const ostUserId = currentUserModal.getOstUserId();
     OstWalletSdk.getToken(TOKEN_ID, (token) => {
-      OstJsonApi.getBalanceWithPricePointForUserId(
+      OstJsonApi.getPricePointForUserId(
         ostUserId,
         (res) => {
           this.onGetPricePointSuccess(token, res);

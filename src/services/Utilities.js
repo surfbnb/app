@@ -27,13 +27,6 @@ export default {
     return AsyncStorage.getItem(key);
   },
 
-  isActiveUser(user) {
-    const userStatusMap = appConfig.userStatusMap;
-    let status = deepGet(user, 'ost_status') || '';
-    status = status.toLowerCase();
-    return status == userStatusMap.activated || status == userStatusMap.activating;
-  },
-
   showAlert(title, message) {
     title = title || '';
     if (!message) return;

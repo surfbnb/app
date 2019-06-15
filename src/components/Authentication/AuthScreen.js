@@ -143,7 +143,7 @@ class AuthScreen extends Component {
       .initialize()
       .then((user) => {
         this.props.dispatch(hideModal());
-        if (!utilities.isActiveUser(user)) {
+        if (!currentUserModal.isActiveUser()) {
           this.props.navigation.navigate('SetPinScreen');
         } else {
           this.props.navigation.navigate('HomeScreen');

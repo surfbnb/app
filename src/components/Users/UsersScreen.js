@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList } from 'react-native';
-
+import { View , FlatList } from 'react-native';
 import PepoApi from '../../services/PepoApi';
 import User from './User';
 import styles from './styles';
 import deepGet from 'lodash/get';
-import { TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import currentUserModel from "../../models/CurrentUser";
+import utilities from "../../services/Utilities";
+import errorMessage from "../../constants/ErrorMessages";
 
 class Users extends Component {
   constructor(props) {
@@ -48,6 +50,10 @@ class Users extends Component {
     let headerText = 'Transaction';
     if (item) {
       headerText = item.first_name + item.last_name;
+    }
+    if(!currentUserModel.isUserActivated()){
+      utilities.showAlert("" ,  errorMessage.userNotActive );
+      return;
     }
     this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText });
   }

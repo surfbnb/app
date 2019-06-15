@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
-import utilities from '../../services/Utilities';
 import errorMessages from '../../constants/ErrorMessages';
 import styles from './styles';
 import currentUserModal from '../../models/CurrentUser';
@@ -31,7 +30,7 @@ export default class AuthLoading extends Component {
           this.props.navigation.navigate('AuthScreen');
           return;
         }
-        if (!utilities.isActiveUser(user)) {
+        if (!currentUserModal.isActiveUser(user)) {
           this.props.navigation.navigate('SetPinScreen');
         } else {
           this.props.navigation.navigate('HomeScreen');
