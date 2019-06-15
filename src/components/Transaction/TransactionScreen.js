@@ -34,7 +34,7 @@ class TransactionScreen extends Component {
       switchToggleState: false,
       transactionModal: false,
       btAmountFocus: true,
-      btAmountErrorMsg: null,
+      btAmountErrorMsg: null
     };
     this.baseState = this.state;
   }
@@ -209,22 +209,22 @@ class TransactionScreen extends Component {
     }
   }
 
-  onAmountModalConfrim(){
+  onAmountModalConfrim() {
     let btAmount = this.state.btAmount;
-    btAmount = btAmount && Number( btAmount );
-    if( btAmount < 0 ){
-      this.setState( {btAmountErrorMsg : errorMessage.btAmountError });
-      return ;
+    btAmount = btAmount && Number(btAmount);
+    if (btAmount < 0) {
+      this.setState({ btAmountErrorMsg: errorMessage.btAmountError });
+      return;
     }
     this.setState({ transactionModal: false });
   }
 
-  onAmountModalShow(){
-    this.previousState = this.state ; 
+  onAmountModalShow() {
+    this.previousState = this.state;
     this.setState({ transactionModal: true });
   }
 
-  onAmountModalClose(){
+  onAmountModalClose() {
     this.setState(this.previousState);
   }
 
@@ -295,7 +295,9 @@ class TransactionScreen extends Component {
             TouchableStyles={[Theme.Button.btnPrimary, inlineStyles.dottedBtn]}
             TextStyles={[Theme.Button.btnPrimaryText]}
             text="..."
-            onPress={() => { this.onAmountModalShow()  }}
+            onPress={() => {
+              this.onAmountModalShow();
+            }}
           />
         </View>
 
@@ -310,7 +312,10 @@ class TransactionScreen extends Component {
           <View style={inlineStyles.modalBackDrop}>
             <TouchableOpacity
               style={inlineStyles.modalCloseBtnWrapper}
-              onPress={() => { this.onAmountModalClose() }} >
+              onPress={() => {
+                this.onAmountModalClose();
+              }}
+            >
               <Text style={inlineStyles.modalCloseBtnContent}>+</Text>
             </TouchableOpacity>
 
@@ -335,7 +340,10 @@ class TransactionScreen extends Component {
                   />
                 </View>
                 <View style={{ flex: 0.3 }}>
-                  <TextInput editable={false} style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}>
+                  <TextInput
+                    editable={false}
+                    style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
+                  >
                     <Text>PEPO</Text>
                   </TextInput>
                 </View>
@@ -370,7 +378,9 @@ class TransactionScreen extends Component {
                 TouchableStyles={[Theme.Button.btnPink]}
                 TextStyles={[Theme.Button.btnPinkText]}
                 text="CONFIRM"
-                onPress={() => { this.onAmountModalConfrim()}}
+                onPress={() => {
+                  this.onAmountModalConfrim();
+                }}
               />
             </View>
           </View>

@@ -5,7 +5,7 @@ import LoadingModal from '../../theme/components/LoadingModal';
 import Toast from '../../theme/components/Toast';
 
 const LogoutLink = () => (
-  <View>
+  <React.Fragment>
     <Text
       style={{
         color: 'rgb(72,72,72)',
@@ -19,7 +19,7 @@ const LogoutLink = () => (
     </Text>
     <LoadingModal />
     <Toast timeout={3000} />
-  </View>
+  </React.Fragment>
 );
 
 export default LogoutLink;
