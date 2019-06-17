@@ -33,8 +33,7 @@ const HomeScreen = createMaterialTopTabNavigator(
           },
           headerStyle: {
             backgroundColor: Colors.white
-          },
-          headerRight: <LogoutComponent />
+          }
         }
       }
     }),
@@ -50,8 +49,7 @@ const HomeScreen = createMaterialTopTabNavigator(
             headerStyle: {
               backgroundColor: Colors.white
             },
-            headerBackTitle: null,
-            headerRight: <LogoutComponent />
+            headerBackTitle: null
           }
         },
         TransactionScreen: {
@@ -64,8 +62,7 @@ const HomeScreen = createMaterialTopTabNavigator(
             headerStyle: {
               backgroundColor: Colors.white
             },
-            headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />,
-            headerRight: <LogoutComponent />
+            headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />
           })
         }
       },
