@@ -396,7 +396,7 @@ class TransactionScreen extends Component {
                       </View>
                     </View>
                     <TouchableButton
-                      TouchableStyles={[Theme.Button.btnPink]}
+                      TouchableStyles={[Theme.Button.btnPink,{marginTop:10}]}
                       TextStyles={[Theme.Button.btnPinkText]}
                       text="CONFIRM"
                       onPress={() => {
