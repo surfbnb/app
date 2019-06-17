@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image } from 'react-native';
 import {
-  createBottomTabNavigator,
+  createMaterialTopTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
   createAppContainer
@@ -21,7 +21,7 @@ import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import BackArrow from './src/assets/back-arrow.png';
 
-const HomeScreen = createBottomTabNavigator(
+const HomeScreen = createMaterialTopTabNavigator(
   {
     Feed: createStackNavigator({
       FeedContent: {
