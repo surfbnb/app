@@ -53,12 +53,12 @@ let stylesMap = {
     textAlign: 'center',
     fontWeight: 'bold'
   },
-  plusIcon: {
+  plusIconSkipFont: {
     width: 42,
     height: 42,
     alignSelf: 'center'
   },
-  crossIcon: {
+  crossIconSkipFont: {
     width: 20,
     height: 20,
     position: 'absolute',

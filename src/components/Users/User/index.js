@@ -10,7 +10,7 @@ export default Users = React.memo((props) => {
       <View style={styles.container}>
         <View style={styles.userContainer}>
           <View style={styles.txtWrapper}>
-            <Image style={styles.imageStyle}></Image>
+            <Image style={styles.imageStyleSkipFont}></Image>
             <Text numberOfLines={1} style={styles.item}>
               {props.user.first_name} {props.user.last_name}
             </Text>

@@ -43,7 +43,7 @@ let stylesMap = {
     flexDirection: 'row',
     justifyContent: 'flex-end'
   },
-  imageStyle: {
+  imageStyleSkipFont: {
     backgroundColor: '#ef5566',
     marginRight: 10,
     borderRadius: 20,

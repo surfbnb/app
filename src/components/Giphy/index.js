@@ -278,7 +278,7 @@ class Giphy extends Component {
           }}
         >
           <TouchableWithoutFeedback onPress={() => this.setState({ selectedImage: {} })}>
-            <Image source={PlusIcon} style={[inlineStyles.crossIcon, { top: 5, right: 5 }]} />
+            <Image source={PlusIcon} style={[inlineStyles.crossIconSkipFont, { top: 5, right: 5 }]} />
           </TouchableWithoutFeedback>
         </ImageBackground>
       );
@@ -292,7 +292,7 @@ class Giphy extends Component {
           }}
         >
           <View style={inlineStyles.giphyPicker}>
-            <Image source={PlusIcon} style={inlineStyles.plusIcon} />
+            <Image source={PlusIcon} style={inlineStyles.plusIconSkipFont} />
             <Text style={inlineStyles.giphyPickerText}> What do you want to GIF? </Text>
           </View>
         </TouchableOpacity>
@@ -346,7 +346,7 @@ class Giphy extends Component {
                             this.showCategotyList();
                           }}
                         >
-                          <Image source={PlusIcon} style={inlineStyles.crossIcon} />
+                          <Image source={PlusIcon} style={inlineStyles.crossIconSkipFont} />
                         </TouchableWithoutFeedback>
                       </View>
 
