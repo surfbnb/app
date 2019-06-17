@@ -30,7 +30,7 @@ export default styles = StyleSheet.create({
     marginRight: 10
   },
   dottedBtn: {
-    flex: 1
+    flex: 2
   },
   modalBackDrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
