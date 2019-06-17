@@ -73,7 +73,7 @@ export default class PepoApi {
         Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data["ost_transaction"])));
         Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data["gifs"])));
         Store.dispatch(upsertFeedEntities(this._getEntities(resultData)));
-        Store.dispatch(addUserFeedList(this._getIDList(resultData), data["user_id"]));
+        Store.dispatch(addUserFeedList(this._getIDList(resultData), data["meta"]["profile_user_id"]));
         break;
     }
   }
