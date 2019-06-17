@@ -138,8 +138,9 @@ class CategoryViewContext extends GiffyViewContext {
     }
 
     let resultType = deepGet(response, 'data.result_type'),
-      gifs = deepGet(response, 'data.gifs');
-    (gifId = category.gif_id), (gifData = gifs[gifId]);
+      gifs = deepGet(response, 'data.gifs'),
+      gifId = category.gif_id,
+      gifData = gifs[gifId];
 
     if (!gifData) {
       console.log('CategoryViewContext.formatResult exit gifData null. gifId:', gifId);

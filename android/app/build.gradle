@@ -107,7 +107,7 @@ android {
         applicationId "com.pepo.production"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 71
+        versionCode 76
         versionName "2.0.9"
     }
     signingConfigs {

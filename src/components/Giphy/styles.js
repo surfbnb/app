@@ -1,5 +1,5 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
-import {Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
@@ -74,6 +74,5 @@ let stylesMap = {
     marginTop: 10
   }
 };
-
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
