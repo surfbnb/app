@@ -300,8 +300,8 @@ class AuthScreen extends Component {
           {!this.state.signup && (
             <React.Fragment>
               <TouchableButton
-                TouchableStyles={[Theme.Button.btnPrimary]}
-                TextStyles={[Theme.Button.btnPrimaryText]}
+                TouchableStyles={[Theme.Button.btnPink]}
+                TextStyles={[Theme.Button.btnPinkText]}
                 text="Log In"
                 onPress={this.signin.bind(this)}
               />
@@ -310,8 +310,8 @@ class AuthScreen extends Component {
           {this.state.signup && (
             <React.Fragment>
               <TouchableButton
-                TouchableStyles={[Theme.Button.btnPrimary]}
-                TextStyles={[Theme.Button.btnPrimaryText]}
+                TouchableStyles={[Theme.Button.btnPink]}
+                TextStyles={[Theme.Button.btnPinkText]}
                 text="Create Account"
                 onPress={this.signin.bind(this)}
               />

@@ -19,7 +19,6 @@ const CustomTab = ({ navigation, screenProps }) => (
         source={feed}
       />
 
-      <Text style={{ color: navigation.state.index === 0 ? '#ef5566' : '#484848' }}>Feed</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => navigation.navigate('Users')}>
       <Image
@@ -27,7 +26,6 @@ const CustomTab = ({ navigation, screenProps }) => (
         style={[styles.tabElementFriends, { tintColor: navigation.state.index === 1 ? '#ef5566' : '#484848' }]}
         source={friends}
       />
-      <Text style={{ color: navigation.state.index === 1 ? '#ef5566' : 'rgb(72,72,72)' }}>Friends</Text>
     </TouchableOpacity>
     {/* <Text> Pepo </Text> */}
     <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
@@ -36,7 +34,6 @@ const CustomTab = ({ navigation, screenProps }) => (
         style={[styles.tabElement, { tintColor: navigation.state.index === 2 ? '#ef5566' : '#484848' }]}
         source={profile}
       />
-      <Text style={{ color: navigation.state.index === 2 ? '#ef5566' : '#484848' }}>Profile</Text>
     </TouchableOpacity>
     {/* <TouchableOpacity style={styles.overlayBtn} /> */}
   </View>

@@ -64,7 +64,6 @@ let stylesMap = {
     position: 'absolute',
     right: 10,
     top: 25,
-    transform: [{ rotate: '45deg' }]
   },
   giphyPickerText: {
     textAlign: 'center',

@@ -19,6 +19,8 @@ import { TOKEN_ID } from '../../constants';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import PlusIcon from '../../assets/plus_icon.png';
+import CircleCloseIcon from '../../assets/circle_close_icon.png'
+import EditIcon from '../../assets/edit_icon.png'
 
 class TransactionScreen extends Component {
   constructor(props) {
@@ -259,14 +261,14 @@ class TransactionScreen extends Component {
                 }}
               >
                 <Text style={inlineStyles.addMessageTextStyle}>
-                  {this.state.isMessageVisible ? '-Clear Message' : '+Add Message'}
+                  {this.state.isMessageVisible ? 'Clear Message' : 'Add Message'}
                 </Text>
               </TouchableOpacity>
     
               {/* This is Share publically switch */}
               <View style={{ justifyContent: 'flex-end' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ fontSize: 16, color: '#606060' }}>Share Publicly</Text>
+                  <Text style={{ fontSize: 16, color: '#606060' }}>Make Public</Text>
                   <Switch
                     value={this.state.isPublic}
                     style={inlineStyles.switchStyle}
@@ -288,7 +290,7 @@ class TransactionScreen extends Component {
                 onChangeText={(message) => this.setState({ message: message })}
                 placeholder="Message"
                 fieldName="message"
-                style={[Theme.TextInput.textInputStyle, { backgroundColor: '#ffffff' }]}
+                style={[Theme.TextInput.textInputStyle, { backgroundColor: '#ffffff',marginTop : 20 }]}
                 value={this.state.message}
                 returnKeyType="done"
                 returnKeyLabel="done"
@@ -305,14 +307,16 @@ class TransactionScreen extends Component {
                 text={`Send P${this.state.btAmount}`}
                 onPress={() => this.excequteTransaction()}
               />
-              <TouchableButton
-                TouchableStyles={[Theme.Button.btnPink, inlineStyles.dottedBtn]}
-                TextStyles={[Theme.Button.btnPinkText]}
-                text="•••"
+              <TouchableOpacity
+                style={[Theme.Button.btn,Theme.Button.btnPink, inlineStyles.dottedBtn]}
                 onPress={() => {
                   this.onAmountModalShow();
-                }}
-              />
+                }}>
+                <Image
+                  style= {{width:20,height:20}}
+                  source={EditIcon}
+                ></Image>
+              </TouchableOpacity>
             </View>
     
             <Modal
@@ -332,7 +336,7 @@ class TransactionScreen extends Component {
                         this.onAmountModalClose();
                       }}
                     >
-                      <Image source={PlusIcon} style={inlineStyles.crossIcon} />
+                      <Image source={CircleCloseIcon} style={inlineStyles.crossIcon} />
                     </TouchableOpacity>
                   </View>
                   <View style={inlineStyles.modalContentWrapper}>

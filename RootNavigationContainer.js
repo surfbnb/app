@@ -56,17 +56,21 @@ const HomeScreen = createBottomTabNavigator(
         },
         TransactionScreen: {
           screen: TransactionScreen,
-          navigationOptions: ({ navigation, screenProps }) => ({
-            headerTitle: navigation.getParam('transactionHeader'),
-            headerTitleStyle: {
-              color: Colors.dark
-            },
-            headerStyle: {
-              backgroundColor: Colors.white
-            },
-            headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />,
-            headerRight: <LogoutComponent />
-          })
+          navigationOptions: (options) => {
+
+            return {
+              headerTitle: options.navigation.getParam('transactionHeader'),
+              headerTitleStyle: {
+                color: Colors.dark
+              },
+              headerStyle: {
+                backgroundColor: Colors.white
+              },
+              headerBackImage: <Image source={BackArrow} style={{ width: 10, height: 18, marginLeft: 8 }} />,
+              headerRight: <LogoutComponent />
+            };
+          }
+
         }
       },
       {
@@ -78,7 +82,9 @@ const HomeScreen = createBottomTabNavigator(
     Profile: createStackNavigator({
       ProfileScreen: {
         screen: Profile,
-        navigationOptions: {
+        navigationOptions:(options) => {
+          console.log("options prof",options)
+          return {
           headerTitle: 'Profile',
           headerTitleStyle: {
             color: Colors.dark
@@ -86,7 +92,7 @@ const HomeScreen = createBottomTabNavigator(
           headerStyle: {
             backgroundColor: Colors.white
           },
-          headerRight: <LogoutComponent />
+          headerRight: <LogoutComponent {...options}/>}
         }
       }
     })

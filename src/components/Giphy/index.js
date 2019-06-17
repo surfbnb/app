@@ -22,11 +22,13 @@ import deepGet from 'lodash/get';
 import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
 import PlusIcon from '../../assets/plus_icon.png';
+import CrossIcon from '../../assets/cross_icon.png'
 import Theme from '../../theme/styles';
 import TouchableButton from '../../theme/components/TouchableButton';
 import { GiffyViewContext, CategoryViewContext, VCErrors, CATEGORY_VC_ID } from './view_contexts';
 import GracefulImage from './GracefulImage';
 import Colors from '../../theme/styles/Colors';
+import CircleCloseIcon from '../../assets/circle_close_icon.png'
 
 class Giphy extends Component {
   constructor(props) {
@@ -278,7 +280,7 @@ class Giphy extends Component {
           }}
         >
           <TouchableWithoutFeedback onPress={() => this.setState({ selectedImage: {} })}>
-            <Image source={PlusIcon} style={[inlineStyles.crossIconSkipFont, { top: 5, right: 5 }]} />
+            <Image source={CircleCloseIcon} style={[inlineStyles.crossIconSkipFont, { top: 5, right: 5 }]} />
           </TouchableWithoutFeedback>
         </ImageBackground>
       );
@@ -346,7 +348,7 @@ class Giphy extends Component {
                             this.showCategotyList();
                           }}
                         >
-                          <Image source={PlusIcon} style={inlineStyles.crossIconSkipFont} />
+                          <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
                         </TouchableWithoutFeedback>
                       </View>
 

@@ -1,4 +1,5 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
+import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   container: {
@@ -23,7 +24,7 @@ let stylesMap = {
   },
   link: {
     textAlign: 'center',
-    color: 'rgb(22,141,193)',
+    color: Colors.primary,
     fontSize: 15,
     fontWeight: '400'
   },
