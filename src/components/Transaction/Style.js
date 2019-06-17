@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Platform } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import Colors from '../../theme/styles/Colors';
 
 export default styles = StyleSheet.create({
@@ -15,9 +15,9 @@ export default styles = StyleSheet.create({
   switchStyle: {
     marginLeft: 10,
     justifyContent: 'flex-end',
-    borderColor: Colors.primary,
-    borderWidth: 1,
-    borderRadius: 25
+    borderColor: Colors.white,
+    borderWidth: 0,
+    borderRadius: 15
     // transform: [{ scaleX: .6 }, { scaleY: .6 }]
   },
   bottomButtonsWrapper: {
@@ -30,7 +30,7 @@ export default styles = StyleSheet.create({
     marginRight: 10
   },
   dottedBtn: {
-    flex: 1
+    flex: 2
   },
   modalBackDrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
