@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import { View , FlatList , Text} from 'react-native';
-import styles from './styles';
-import FeedRow from '../FeedComponents/FeedRow';
+import { View , FlatList} from 'react-native';
+import deepGet from 'lodash/get';
 
+import currentUserModel from "../../models/CurrentUser";
+import FeedRow from "../FeedComponents/FeedRow";
 import {FetchComponent} from "../FetchComponent";
 
-class Feed extends Component {
+import styles from './styles';
+
+class ProfileScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      feeds : []
-    }
   }
 
   componentWillMount() {
-    this.fetchComponent = new FetchComponent('/feeds'); 
+    const url = `/user/${currentUserModel.getUserId()}/feeds`
+    this.fetchComponent = new FetchComponent(url); 
     this.getFeedList();
   }
 
@@ -24,6 +25,7 @@ class Feed extends Component {
   }
 
   getFeedList = () => {
+    return ;
     this.fetchComponent
       .fetch()
       .then(( res ) => {
@@ -35,21 +37,24 @@ class Feed extends Component {
   };
 
   render() {
+    if (this.props.user_feed && this.props.user_feed.length > 0) {
       return (
         <View style={styles.container}>
           <FlatList
-            data={this.state.feeds}
+            data={this.props.user_feed}
             onEndReached={this.getFeedList}
             keyExtractor={(item, index) => `id_${item}`}
             onEndReachedThreshold={0.5}
             initialNumToRender={20}
             renderItem={({ item }) => (
-                <FeedRow id={item} />
+              <FeedRow id={item} />
             )}
           />
         </View>
       );
+    }
+    return <View></View>;
   }
 }
 
-export default Feed;
+export default ProfileScreen;

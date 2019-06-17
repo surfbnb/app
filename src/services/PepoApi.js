@@ -63,17 +63,11 @@ export default class PepoApi {
         Store.dispatch(addUserList(this._getIDList(resultData)));
         break;
       case 'public_feed': 
-        Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data["users"])));
-        Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data["ost_transaction"])));
-        Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data["gifs"])));
-        Store.dispatch(upsertFeedEntities(this._getEntities(resultData)));
-        Store.dispatch(addPublicFeedList(this._getIDList(resultData)));      
       case 'user_feed':
         Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data["users"])));
         Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data["ost_transaction"])));
         Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data["gifs"])));
         Store.dispatch(upsertFeedEntities(this._getEntities(resultData)));
-        Store.dispatch(addUserFeedList(this._getIDList(resultData), data["meta"]["profile_user_id"]));
         break;
     }
   }
@@ -113,7 +107,7 @@ export default class PepoApi {
 
         this._dispatchData(responseJSON);
 
-        console.log(`Response status ${responseStatus} with JSON payload:`, responseJSON);
+        console.log(`Response status ${responseStatus} for ${this.cleanedUrl} with JSON payload:`, responseJSON);
 
         if (responseStatus >= 400 && responseStatus < 500) {
           CurrentUser.logout(responseJSON);

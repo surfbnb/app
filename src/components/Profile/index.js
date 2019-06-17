@@ -1,20 +1,8 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { connect } from 'react-redux';
+import currenUserModel from "../../models/CurrentUser";
 
-import styles from './styles';
+import ProfileScreen from './ProfileScreen';
 
-class Profile extends Component {
-  constructor(props) {
-    super(props);
-  }
+const mapStateToProps = ({ user_feed_list }) => ({ user_feed : user_feed_list[currenUserModel.getUserId()] });
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.link}>Profile</Text>
-      </View>
-    );
-  }
-}
-
-export default Profile;
+export default connect(mapStateToProps)(ProfileScreen);
