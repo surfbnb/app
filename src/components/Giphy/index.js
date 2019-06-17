@@ -323,86 +323,87 @@ class Giphy extends Component {
                 }
               >
                 <View style={inlineStyles.modal}>
-                  <View style={inlineStyles.modalInner}>
-                    <View style={{ position: 'relative' }}>
-                      <TextInput
-                        editable={true}
-                        onChangeText={(gifSearchQuery) => this.serchTermChanged(gifSearchQuery)}
-                        ref="gif_category_search_query"
-                        textContentType="none"
-                        value={this.state.gifSearchQuery}
-                        style={[Theme.TextInput.textInputStyle, { marginBottom: 10 }]}
-                        placeholder="Search Giphy"
-                        returnKeyType="next"
-                        returnKeyLabel="next"
-                        placeholderTextColor="#ababab"
-                        errorHandler={(fieldName) => {
-                          this.ServerErrorHandler(fieldName);
-                        }}
-                      />
-                      <TouchableWithoutFeedback
-                        onPress={() => {
-                          this.showCategotyList();
-                        }}
-                      >
-                        <Image source={PlusIcon} style={inlineStyles.crossIcon} />
-                      </TouchableWithoutFeedback>
-                    </View>
+                  <TouchableWithoutFeedback>
+                    <View style={inlineStyles.modalInner}>
+                      <View style={{ position: 'relative' }}>
+                        <TextInput
+                          editable={true}
+                          onChangeText={(gifSearchQuery) => this.serchTermChanged(gifSearchQuery)}
+                          ref="gif_category_search_query"
+                          textContentType="none"
+                          value={this.state.gifSearchQuery}
+                          style={[Theme.TextInput.textInputStyle, { marginBottom: 10 }]}
+                          placeholder="Search Giphy"
+                          returnKeyType="next"
+                          returnKeyLabel="next"
+                          placeholderTextColor="#ababab"
+                          errorHandler={(fieldName) => {
+                            this.ServerErrorHandler(fieldName);
+                          }}
+                        />
+                        <TouchableWithoutFeedback
+                          onPress={() => {
+                            this.showCategotyList();
+                          }}
+                        >
+                          <Image source={PlusIcon} style={inlineStyles.crossIcon} />
+                        </TouchableWithoutFeedback>
+                      </View>
 
-                    <FlatList
-                      ref={(ref) => {
-                        this.listRef = ref;
-                      }}
-                      contentContainerStyle={{
-                        // flexWrap: 'wrap',
-                        // flexDirection: 'row',
-                        marginRight: 4
-                      }}
-                      onEndReached={() => {
-                        console.log('On end reachedddd');
-                        this.loadMore();
-                      }}
-                      data={gifsData}
-                      renderItem={({ item }) => {
-                        return (
-                          <TouchableWithoutFeedback key={item.id} onPress={() => this.handleGiphyPress(item)}>
-                            <View
-                              style={[
-                                {
-                                  margin: 3,
-                                  borderRadius: 4,
-                                  backgroundColor: 'rgba(238,238,238,1)',
-                                  overflow: 'hidden'
-                                }
-                              ]}
-                            >
-                              <GracefulImage
-                                style={{
-                                  width: wh,
-                                  height: wh
-                                }}
-                                source={{ uri: item.fixed_width_downsampled.url }}
-                              />
+                      <FlatList
+                        ref={(ref) => {
+                          this.listRef = ref;
+                        }}
+                        contentContainerStyle={{
+                          // flexWrap: 'wrap',
+                          // flexDirection: 'row',
+                          marginRight: 4
+                        }}
+                        onEndReached={() => {
+                          this.loadMore();
+                        }}
+                        data={gifsData}
+                        renderItem={({ item }) => {
+                          return (
+                            <TouchableWithoutFeedback key={item.id} onPress={() => this.handleGiphyPress(item)}>
                               <View
                                 style={[
-                                  inlineStyles.overlay,
                                   {
-                                    backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)',
-                                    height: wh,
-                                    width: wh
+                                    margin: 3,
+                                    borderRadius: 4,
+                                    backgroundColor: 'rgba(238,238,238,1)',
+                                    overflow: 'hidden'
                                   }
                                 ]}
                               >
-                                <Text style={inlineStyles.overlayText}>{item.name}</Text>
+                                <GracefulImage
+                                  style={{
+                                    width: wh,
+                                    height: wh
+                                  }}
+                                  source={{ uri: item.fixed_width_downsampled.url }}
+                                />
+                                <View
+                                  style={[
+                                    inlineStyles.overlay,
+                                    {
+                                      backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)',
+                                      height: wh,
+                                      width: wh
+                                    }
+                                  ]}
+                                >
+                                  <Text style={inlineStyles.overlayText}>{item.name}</Text>
+                                </View>
                               </View>
-                            </View>
-                          </TouchableWithoutFeedback>
-                        );
-                      }}
-                      numColumns={3}
-                      keyExtractor={(item, index) => index}
-                    />
-                  </View>
+                            </TouchableWithoutFeedback>
+                          );
+                        }}
+                        numColumns={3}
+                        keyExtractor={(item, index) => index}
+                      />
+                    </View>
+                  </TouchableWithoutFeedback>
                 </View>
               </TouchableWithoutFeedback>
             </Modal>
