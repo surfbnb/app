@@ -4,6 +4,7 @@ import deepGet from "lodash/get";
 
 import PepoApi from "../../services/PepoApi";
 import styles from './styles';
+import FeedRow from '../FeedComponents/FeedRow';
 
 
 class Feed extends Component {
@@ -48,10 +49,9 @@ class Feed extends Component {
             onEndReachedThreshold={0.5}
             initialNumToRender={20}
             renderItem={({ item }) => (
-              <Text> {JSON.stringify( item )}</Text>
+              <FeedRow id={item} />
             )}
           />
-          <View style={{ height: 78 }}></View>
         </View>
       );
     }
