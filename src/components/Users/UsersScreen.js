@@ -49,13 +49,13 @@ class Users extends Component {
   userClick(item) {
     let headerText = 'Transaction';
     if (item) {
-      headerText = item.first_name + item.last_name;
+      headerText =  item.first_name +" " + item.last_name;
     }
     if (!currentUserModel.isUserActivated()) {
       utilities.showAlert('', errorMessage.userNotActive);
       return;
     }
-    this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText });
+    this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText , toUser : item });
   }
 
   render() {

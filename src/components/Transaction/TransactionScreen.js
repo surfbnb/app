@@ -39,6 +39,7 @@ class TransactionScreen extends Component {
       btAmountErrorMsg: null
     };
     this.baseState = this.state;
+    this.toUser = this.props.navigation.getParam("toUser");
   }
 
   defaultVals() {
@@ -112,7 +113,7 @@ class TransactionScreen extends Component {
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
       user.ost_user_id,
-      [user.ost_token_holder_address],
+      [this.toUser.ost_token_holder_address],
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
       appConfig.metaProperties,
