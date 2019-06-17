@@ -29,8 +29,8 @@ const defaultState = {
   feed_entities: {},
   public_feed_list: [],
   user_feed_list: {},
-  upsertTransactionEntities: {},
-  upsertGiffyEntities: {}
+  transaction_entities: {},
+  giffy_entities: {}
 };
 
 export const reducer = handleActions(
