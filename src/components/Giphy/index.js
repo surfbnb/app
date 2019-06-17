@@ -387,7 +387,7 @@ class Giphy extends Component {
                                 style={[
                                   inlineStyles.overlay,
                                   {
-                                    backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.5)' : '',
+                                    backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)',
                                     height: wh,
                                     width: wh
                                   }
