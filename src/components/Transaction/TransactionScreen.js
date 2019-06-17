@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Dimensions, Modal, Image } from 'react-native';
+import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Dimensions, Modal, Image, Platform } from 'react-native';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
@@ -261,8 +261,9 @@ class TransactionScreen extends Component {
                 onValueChange={(isPublic) => {
                   this.setState({ isPublic });
                 }}
-                ios_backgroundColor="#ffffff"
-                trackColor={{ false: '#ffffff', true: '#EF5566' }}
+                ios_backgroundColor="#d3d3d3"
+                trackColor={{ true: '#EF5566', false: Platform.OS=='android'?'#d3d3d3':'#ffffff' }}
+                thumbColor={[Platform.OS=='android' ? '#ffffff' : '']}
               ></Switch>
             </View>
           </View>
