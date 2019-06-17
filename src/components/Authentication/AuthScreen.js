@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
+import { Animated, Dimensions, Keyboard, TextInput, UIManager, View, Text, TouchableOpacity, Image } from 'react-native';
 
 // components
 import TouchableButton from '../../theme/components/TouchableButton';
@@ -20,6 +20,8 @@ const signUpLoginTestMap = {
   signup: 'Signing up...',
   signin: 'Login in...'
 };
+
+const { State: TextInputState } = TextInput;
 
 class AuthScreen extends Component {
   constructor(props) {
@@ -47,8 +49,54 @@ class AuthScreen extends Component {
       firstNameFocus: false,
       lastNameFocus: false,
       passwordFocus: false,
+      shift: new Animated.Value(0),
       ...this.defaults
     };
+  }
+
+  componentWillMount() {
+    this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.handleKeyboardDidShow);
+    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.handleKeyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowSub.remove();
+    this.keyboardDidHideSub.remove();
+  }
+
+  handleKeyboardDidShow = (event) => {
+    const { height: windowHeight } = Dimensions.get('window');
+    const keyboardHeight = event.endCoordinates.height;
+    const currentlyFocusedField = TextInputState.currentlyFocusedField();
+    if(currentlyFocusedField) {
+      UIManager.measure(currentlyFocusedField, (originX, originY, width, height, pageX, pageY) => {
+        const fieldHeight = height;
+        const fieldTop = pageY;
+        const gap = (windowHeight - keyboardHeight) - (fieldTop + fieldHeight);
+        if (!gap || gap >= 0) {
+          return;
+        }
+        Animated.timing(
+          this.state.shift,
+          {
+            toValue: gap - 125,
+            duration: 1000,
+            useNativeDriver: true
+          }
+        ).start();
+      });
+    }
+  }
+
+  handleKeyboardDidHide = () => {
+    Animated.timing(
+      this.state.shift,
+      {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }
+    ).start();
   }
 
   validateLoginInput() {
@@ -178,9 +226,12 @@ class AuthScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{ height: 25 }} />
-        <View style={styles.form}>
+      <Animated.View style={[{
+        transform: [{translateY: this.state.shift}]
+      },{...styles.container}]}>
+        <View style={{flex: 1}} />
+        <View style={{flex: 9}}>
+          <View style={styles.form}>
           <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
           {this.state.signup && (
             <React.Fragment>
@@ -250,6 +301,8 @@ class AuthScreen extends Component {
             textContentType="none"
             returnKeyType="next"
             returnKeyLabel="next"
+            autoCorrect={false}
+            // autoCapitalize="none"
             autoFocus={this.state.userNameFocus}
             placeholderTextColor="#ababab"
             errorMsg={this.state.user_name_error}
@@ -356,7 +409,8 @@ class AuthScreen extends Component {
             </TouchableOpacity>
           )}
         </View>
-      </View>
+        </View>
+      </Animated.View>
     );
   }
 }
