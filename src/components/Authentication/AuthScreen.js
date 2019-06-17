@@ -43,7 +43,7 @@ class AuthScreen extends Component {
       isLoginIn: false,
       server_errors: {},
       clearErrors: false,
-      userNameFocus: true,
+      userNameFocus: false,
       firstNameFocus: false,
       lastNameFocus: false,
       passwordFocus: false,
@@ -250,7 +250,7 @@ class AuthScreen extends Component {
             textContentType="none"
             returnKeyType="next"
             returnKeyLabel="next"
-            autoFocus={true}
+            autoFocus={this.state.userNameFocus}
             placeholderTextColor="#ababab"
             errorMsg={this.state.user_name_error}
             clearErrors={this.state.clearErrors}
@@ -328,7 +328,7 @@ class AuthScreen extends Component {
                 this.setState({
                   signup: true,
                   error: null,
-                  firstNameFocus: true,
+                  firstNameFocus: false,
                   userNameFocus: false,
                   ...this.defaults
                 })
@@ -346,7 +346,7 @@ class AuthScreen extends Component {
                   error: null,
                   isFocus: true,
                   firstNameFocus: false,
-                  userNameFocus: true,
+                  userNameFocus: false,
                   ...this.defaults
                 })
               }

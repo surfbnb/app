@@ -1,13 +1,14 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import currentUserModal from '../../models/CurrentUser';
-import { Alert } from 'react-native';
-import { showToast, hideToast } from '../../actions';
+import { showToast } from '../../actions';
 import Store from '../../store';
+import deepGet from "lodash/get";
 
-const initiatePolling = () => {
+const initiatePolling = ( expectedUserId ) => {
   let stopPolling = false,
     currentRetry = 0,
     maxRetry = 5;
+    
   const scheduleAirdropStatusPoll = function() {
     if (stopPolling || currentRetry > maxRetry) return;
     longPollUser();
@@ -18,10 +19,14 @@ const initiatePolling = () => {
       currentUserModal
         .sync()
         .then((user) => {
+          const currentUserId = currentUserModal.getOstUserId();
+          if (currentUserId != expectedUserId ) {
+            stopPolling = true ;
+            return  ;
+          }
           const airDropStatus = user && user.signup_airdrop_status;
-          if (airDropStatus == 1) {
-            stopPolling = true;
-            // Alert.alert('User Activated', 'TODO show airdrop toast!');
+          if( airDropStatus == 1 ){
+            stopPolling = true ;
             Store.dispatch(showToast('User Activated! Airdrop is initiated.'));
           }
         })
@@ -32,7 +37,9 @@ const initiatePolling = () => {
     }, 10000);
   };
 
-  scheduleAirdropStatusPoll();
+  if( expectedUserId == currentUserModal.getOstUserId()  ){
+    scheduleAirdropStatusPoll();
+  }
 };
 
 class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
@@ -45,7 +52,8 @@ class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
   requestAcknowledged(ostWorkflowContext, ostContextEntity) {
     this.isRequestAcknowledge = true;
     this.delegate.onRequestAcknowledge(ostWorkflowContext, ostContextEntity);
-    initiatePolling();
+    const expectedUserId = deepGet(ostContextEntity , "entity.id");
+    initiatePolling( expectedUserId );
   }
 
   flowComplete(ostWorkflowContext, ostContextEntity) {}
