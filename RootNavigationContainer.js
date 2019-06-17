@@ -114,7 +114,6 @@ const PinStack = createStackNavigator({
         backgroundColor: Colors.white
       },
       headerBackTitle: null
-      // headerRight: <LogoutComponent />
     }
   },
   ConfirmPinScreen: {
@@ -131,7 +130,6 @@ const PinStack = createStackNavigator({
         backgroundColor: Colors.white
       },
       headerRight: <View />
-      // headerRight: <LogoutComponent />
     }
   }
 });

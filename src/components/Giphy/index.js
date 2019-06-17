@@ -266,7 +266,8 @@ class Giphy extends Component {
       screenWidth = this.screenWidth - 40,
       itemWidth = 200,
       ratio = colWidth / itemWidth,
-      wh = itemWidth * ratio;
+      wh = itemWidth * ratio,
+      showCloseIcon = this.state.gifSearchQuery ? true : false;
 
     if (Object.keys(this.state.selectedImage).length) {
       let ratioFullScreen = screenWidth / parseInt(this.state.selectedImage.downsized.width);
@@ -343,14 +344,15 @@ class Giphy extends Component {
                             this.ServerErrorHandler(fieldName);
                           }}
                         />
-                        <TouchableWithoutFeedback
-                          onPress={() => {
-                            this.showCategotyList();
-                          }}
-                        >
-                          <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
-                        </TouchableWithoutFeedback>
-                      </View>
+                        {(showCloseIcon && (
+                          <TouchableWithoutFeedback
+                            onPress={() => {
+                              this.showCategotyList();
+                            }}
+                          >
+                            <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
+                          </TouchableWithoutFeedback>)) || null}
+                        </View>
 
                       <FlatList
                         ref={(ref) => {
