@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image } from 'react-native';
 import {
-  createBottomTabNavigator,
+  createMaterialTopTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
   createAppContainer
@@ -21,7 +21,7 @@ import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import BackArrow from './src/assets/back-arrow.png';
 
-const HomeScreen = createBottomTabNavigator(
+const HomeScreen = createMaterialTopTabNavigator(
   {
     Feed: createStackNavigator({
       FeedContent: {
@@ -33,8 +33,7 @@ const HomeScreen = createBottomTabNavigator(
           },
           headerStyle: {
             backgroundColor: Colors.white
-          },
-          headerRight: <LogoutComponent />
+          }
         }
       }
     }),
@@ -50,27 +49,25 @@ const HomeScreen = createBottomTabNavigator(
             headerStyle: {
               backgroundColor: Colors.white
             },
-            headerBackTitle: null,
-            headerRight: <LogoutComponent />
+            headerBackTitle: null
           }
         },
         TransactionScreen: {
           screen: TransactionScreen,
           navigationOptions: (options) => {
 
-            return {
-              headerTitle: options.navigation.getParam('transactionHeader'),
-              headerTitleStyle: {
-                color: Colors.dark
-              },
-              headerStyle: {
-                backgroundColor: Colors.white
-              },
-              headerBackImage: <Image source={BackArrow} style={{ width: 10, height: 18, marginLeft: 8 }} />,
-              headerRight: <LogoutComponent />
-            };
-          }
+            return{
+            headerTitle: options.navigation.getParam('transactionHeader'),
+            headerTitleStyle: {
+              color: Colors.dark
+            },
+            headerStyle: {
+              backgroundColor: Colors.white
+            },
+            headerBackImage: <Image source={BackArrow} style={{ width: 10, height: 18, marginLeft: 8 }} />
 
+          };
+          }
         }
       },
       {
