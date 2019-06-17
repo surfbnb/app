@@ -1,31 +1,53 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Dimensions } from 'react-native';
 import styles from './styles';
+import Store from '../../store';
 import PepoIcon from '../../assets/user_friends.png';
 
 class FeedRow extends Component {
   constructor(props) {
     super(props);
-    this.gif = {
-      downsized: {
-        frames: null,
-        height: '480',
-        media_id: 'KHJw9NRFDMom487qyo',
-        mp4: null,
-        mp4_size: null,
-        rendition_type: 'downsized',
-        size: '1400997',
-        url:
-          'https://media0.giphy.com/media/KHJw9NRFDMom487qyo/giphy-downsized.gif?cid=3f796fa35d07874c35565a722e845130&rid=giphy-downsized.gif',
-        webp: null,
-        webp_size: null,
-        width: '270'
-      }
-    };
+    this.feedEntity = this.getFeedEntity;
+
+    this.setTransactionEntity();
+    this.setGiphyEntity();
+  }
+
+  get getFeedEntity() {
+    return Store.getState().feed_entities[`id_${this.props.id}`];
+  }
+
+  setTransactionEntity() {
+    let ostTxId = this.feedEntity.payload.ost_transaction_id;
+    this.transactionEntity = Store.getState().transaction_entities[`id_${ostTxId}`];
+  }
+
+  setGiphyEntity() {
+    let gifId = this.feedEntity.payload.gif_id || '';
+    this.giphyEntity = gifId ? Store.getState().giffy_entities[`id_${gifId}`] : null;
+  }
+
+  get fromUserName() {
+    let fromUserId = this.transactionEntity.from_user_id,
+      fromUser = Store.getState().user_entities[`id_${fromUserId}`];
+    return fromUserId == this.getCurrentUserId ? 'You' : fromUser.first_name;
+  }
+
+  get toUserName() {
+    let toUserId = this.transactionEntity.to_user_ids[0],
+      toUser = Store.getState().user_entities[`id_${toUserId}`];
+    return toUserId == this.getCurrentUserId ? 'You' : toUser.first_name;
+  }
+
+  get getCurrentUserId() {
+    return Store.getState().current_user.id;
+  }
+
+  get getTextMessage() {
+    return this.feedEntity.payload.text ? this.feedEntity.payload.text : null;
   }
 
   render() {
-
     return (
       <View style={styles.container}>
         <View style={styles.cellWrapper}>
@@ -34,7 +56,6 @@ class FeedRow extends Component {
               <Image
                 source={{ uri: 'https://image.flaticon.com/icons/png/512/17/17004.png' }}
                 style={{
-                  // backgroundColor: '#ef5566',
                   padding: 5,
                   borderRadius: 30,
                   height: '100%',
@@ -44,11 +65,11 @@ class FeedRow extends Component {
             </View>
             <View style={{ width: '70%', height: 50, marginLeft: 10, marginTop: 5 }}>
               <Text style={{ fontSize: 18 }}>
-                <Text style={{ fontWeight: 'bold' }}> Sender </Text>
+                <Text style={{ fontWeight: 'bold' }}> {this.fromUserName} </Text>
                 <Text>gave </Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 18 }}> Receiver:</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 18 }}> {this.toUserName}:</Text>
               </Text>
-              <Text style={{ marginLeft: 5 }}>just now</Text>
+              <Text style={{ marginLeft: 5 }}>{this.feedEntity.published_ts}</Text>
             </View>
             <View
               style={{
@@ -60,22 +81,25 @@ class FeedRow extends Component {
                 justifyContent: 'center'
               }}
             >
-              <Text style={{ fontSize: 18, textAlign: 'center' }}>P1</Text>
+              <Text style={{ fontSize: 18, textAlign: 'center' }}>P{String(this.transactionEntity.amounts[0])[0]}</Text>
             </View>
           </View>
-          <View>
-            <Image
-              source={{ uri: this.gif.downsized.url }}
-              style={{
-                //height: parseInt(this.gif.downsized.height) * ratioFullScreen,
-                width: '100%', //parseInt(this.gif.downsized.width) * ratioFullScreen
-                aspectRatio: parseInt(this.gif.downsized.width) / parseInt(this.gif.downsized.height)
-              }}
-            />
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ fontSize: 18 }}>"Message sent with gif"</Text>
-          </View>
+          {this.giphyEntity && (
+            <View>
+              <Image
+                source={{ uri: this.giphyEntity.downsized.url }}
+                style={{
+                  width: '100%',
+                  aspectRatio: parseInt(this.giphyEntity.downsized.width) / parseInt(this.giphyEntity.downsized.height)
+                }}
+              />
+            </View>
+          )}
+          {this.getTextMessage && (
+            <View style={{ marginTop: 10 }}>
+              <Text style={{ fontSize: 18 }}>{this.getTextMessage}</Text>
+            </View>
+          )}
         </View>
       </View>
     );

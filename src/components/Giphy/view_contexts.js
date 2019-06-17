@@ -60,7 +60,10 @@ class GiffyViewContext {
           return Promise.reject(response);
         }
         console.log('api.get calling dataReceived');
-        this.isFetching = false;
+        setTimeout(() => {
+          this.isFetching = false;
+        }, 100);
+
         return this.dataReceived(response);
       })
       .catch((err) => {
