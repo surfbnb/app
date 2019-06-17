@@ -126,7 +126,7 @@ const PinStack = createStackNavigator({
         flex: 1,
         textAlign: 'center'
       },
-      headerBackImage: <Image source={BackArrow} style={{ width: 30, height: 18, marginLeft: 20 }} />,
+      headerBackImage: <Image source={BackArrow} style={{ width: 10, height: 18, marginLeft: 20 }} />,
       headerStyle: {
         backgroundColor: Colors.white
       },
