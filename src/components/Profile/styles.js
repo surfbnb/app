@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors'
 
-export default (styles = StyleSheet.create({
+let stylesMap = {
   container: {
     backgroundColor: '#ffffff',
     alignItems: 'center',
@@ -42,4 +42,6 @@ export default (styles = StyleSheet.create({
     fontWeight:'500'
   }
 
-}));
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);

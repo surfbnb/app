@@ -353,7 +353,7 @@ class TransactionScreen extends Component {
                         this.onAmountModalClose();
                       }}
                     >
-                      <Image source={CircleCloseIcon} style={inlineStyles.crossIcon} />
+                      <Image source={CircleCloseIcon} style={inlineStyles.crossIconSkipFont} />
                     </TouchableOpacity>
                   </View>
                   <View style={inlineStyles.modalContentWrapper}>
