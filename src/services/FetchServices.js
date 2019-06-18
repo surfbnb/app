@@ -8,11 +8,16 @@ const VCErrors = {
 
 let idCnt = 1;
 
+let defaultOptions = {
+    removeDuplicate: true
+};
+
 class FetchServices {
-  constructor(url, params, id = 'fcomp_' + String(idCnt++)) {
+  constructor(url, params, id = 'fcomp_' + String(idCnt++), options={}) {
     this.id = id;
     this.url = url;
     this.extraParams = params;
+    this.options = Object.assign({}, defaultOptions, options);
     this.initVals();
   }
 
@@ -106,10 +111,14 @@ class FetchServices {
 
       // Format Data.
       result = this.formatResult(result, response);
+      if (!result) {
+        // Some wrong entry.
+        continue;
+      }
       let existingResult = this.resultMap[resultId];
       // Update existing result if available.
-      if (!result || existingResult) {
-        result && Object.assign(existingResult, result);
+      if (existingResult && this.options.removeDuplicate) {
+        Object.assign(existingResult, result);
         continue;
       }
 
