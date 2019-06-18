@@ -1,7 +1,8 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
+import { Dimensions } from 'react-native';
 import Colors from '../../theme/styles/Colors';
 
-export default styles = StyleSheet.create({
+let stylesMap = {
   container: {
     flex: 1,
     padding: 20,
@@ -15,7 +16,8 @@ export default styles = StyleSheet.create({
     justifyContent: 'flex-end',
     borderColor: Colors.white,
     borderWidth: 0,
-    borderRadius: 15
+    borderRadius: 15,
+    marginLeft: 5
   },
   bottomButtonsWrapper: {
     flexDirection: 'row',
@@ -47,7 +49,7 @@ export default styles = StyleSheet.create({
     marginLeft: -20,
     marginBottom: 10
   },
-  crossIcon: {
+  crossIconSkipFont: {
     width: 30,
     position: 'absolute',
     right: 10,
@@ -72,4 +74,6 @@ export default styles = StyleSheet.create({
     textAlign: 'center',
     paddingRight: 15
   }
-});
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);

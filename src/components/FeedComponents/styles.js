@@ -1,7 +1,7 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
 import Colors from '../../theme/styles/Colors';
 
-export default styles = StyleSheet.create({
+let stylesMap = {
   container: {
     flexDirection: 'column',
     flex: 1,
@@ -16,4 +16,6 @@ export default styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20
   }
-});
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);
