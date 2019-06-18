@@ -18,7 +18,6 @@ const CustomTab = ({ navigation, screenProps }) => (
         style={[styles.tabElement, { tintColor: navigation.state.index === 0 ? '#ef5566' : '#484848' }]}
         source={feed}
       />
-
     </TouchableOpacity>
     <TouchableOpacity onPress={() => navigation.navigate('Users')}>
       <Image

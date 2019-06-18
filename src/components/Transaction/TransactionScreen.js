@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Dimensions, Modal, Image, ActivityIndicator , Platform} from 'react-native';
+import {
+  View,
+  Text,
+  Alert,
+  TextInput,
+  Switch,
+  TouchableOpacity,
+  Dimensions,
+  Modal,
+  Image,
+  ActivityIndicator,
+  Platform
+} from 'react-native';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
@@ -19,14 +31,14 @@ import { TOKEN_ID } from '../../constants';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import PlusIcon from '../../assets/plus_icon.png';
-import CircleCloseIcon from '../../assets/circle_close_icon.png'
-import EditIcon from '../../assets/edit_icon.png'
+import CircleCloseIcon from '../../assets/circle_close_icon.png';
+import EditIcon from '../../assets/edit_icon.png';
 
 class TransactionScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading : true,
+      isLoading: true,
       message: null,
       clearErrors: false,
       server_errors: null,
@@ -41,7 +53,7 @@ class TransactionScreen extends Component {
       btAmountErrorMsg: null
     };
     this.baseState = this.state;
-    this.toUser = this.props.navigation.getParam("toUser");
+    this.toUser = this.props.navigation.getParam('toUser');
   }
 
   defaultVals() {
@@ -88,7 +100,7 @@ class TransactionScreen extends Component {
     let btUSDAmount = null;
     this.priceOracle = new PriceOracle(this.getPriceOracleConfig(token, res));
     btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
-    this.setState({ btUSDAmount: btUSDAmount , isLoading: false });
+    this.setState({ btUSDAmount: btUSDAmount, isLoading: false });
   }
 
   onGetPricePointError(ostError) {
@@ -237,23 +249,23 @@ class TransactionScreen extends Component {
   render() {
     return (
       <View style={inlineStyles.container}>
-  
         {this.state.isLoading && (
           <React.Fragment>
             <ActivityIndicator />
           </React.Fragment>
         )}
-  
+
         {!this.state.isLoading && (
           <React.Fragment>
-        
             <Giphy
               onGifySelect={(gify) => {
                 this.onGifySelect(gify);
               }}
             />
-    
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, alignItems: 'center' }}>
+
+            <View
+              style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, alignItems: 'center' }}
+            >
               {/*{  This is add message button }*/}
               <TouchableOpacity
                 style={{}}
@@ -265,7 +277,7 @@ class TransactionScreen extends Component {
                   {this.state.isMessageVisible ? 'Clear Message' : 'Add Message'}
                 </Text>
               </TouchableOpacity>
-    
+
               {/* This is Share publically switch */}
               <View style={{ justifyContent: 'flex-end' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -277,13 +289,13 @@ class TransactionScreen extends Component {
                       this.setState({ isPublic });
                     }}
                     ios_backgroundColor="#d3d3d3"
-                    trackColor={{ true: '#EF5566', false: Platform.OS=='android'?'#d3d3d3':'#ffffff' }}
-                    thumbColor={[Platform.OS=='android' ? '#ffffff' : '']}
+                    trackColor={{ true: '#EF5566', false: Platform.OS == 'android' ? '#d3d3d3' : '#ffffff' }}
+                    thumbColor={[Platform.OS == 'android' ? '#ffffff' : '']}
                   ></Switch>
                 </View>
               </View>
             </View>
-    
+
             {this.state.isMessageVisible && (
               <FormInput
                 autoFocus={true}
@@ -291,7 +303,7 @@ class TransactionScreen extends Component {
                 onChangeText={(message) => this.setState({ message: message })}
                 placeholder="Message"
                 fieldName="message"
-                style={[Theme.TextInput.textInputStyle, { backgroundColor: '#ffffff',marginTop : 20 }]}
+                style={[Theme.TextInput.textInputStyle, { backgroundColor: '#ffffff', marginTop: 20 }]}
                 value={this.state.message}
                 returnKeyType="done"
                 returnKeyLabel="done"
@@ -300,7 +312,7 @@ class TransactionScreen extends Component {
                 placeholderTextColor="#ababab"
               />
             )}
-    
+
             <View style={inlineStyles.bottomButtonsWrapper}>
               <TouchableButton
                 TouchableStyles={[Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
@@ -309,17 +321,15 @@ class TransactionScreen extends Component {
                 onPress={() => this.excequteTransaction()}
               />
               <TouchableOpacity
-                style={[Theme.Button.btn,Theme.Button.btnPink, inlineStyles.dottedBtn]}
+                style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
                 onPress={() => {
                   this.onAmountModalShow();
-                }}>
-                <Image
-                  style= {{width:20,height:20}}
-                  source={EditIcon}
-                ></Image>
+                }}
+              >
+                <Image style={{ width: 20, height: 20 }} source={EditIcon}></Image>
               </TouchableOpacity>
             </View>
-    
+
             <Modal
               animationType="slide"
               transparent={true}
@@ -369,7 +379,7 @@ class TransactionScreen extends Component {
                         </TextInput>
                       </View>
                     </View>
-    
+
                     <View style={{ flexDirection: 'row' }}>
                       <View style={{ flex: 0.7 }}>
                         <FormInput
@@ -396,7 +406,7 @@ class TransactionScreen extends Component {
                       </View>
                     </View>
                     <TouchableButton
-                      TouchableStyles={[Theme.Button.btnPink,{marginTop:10}]}
+                      TouchableStyles={[Theme.Button.btnPink, { marginTop: 10 }]}
                       TextStyles={[Theme.Button.btnPinkText]}
                       text="CONFIRM"
                       onPress={() => {
@@ -407,9 +417,8 @@ class TransactionScreen extends Component {
                 </View>
               </View>
             </Modal>
-  
-          </React.Fragment>)}
-          
+          </React.Fragment>
+        )}
       </View>
     );
   }

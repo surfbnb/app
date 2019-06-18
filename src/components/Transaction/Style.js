@@ -30,7 +30,7 @@ export default styles = StyleSheet.create({
   },
   dottedBtn: {
     flex: 2,
-    alignItems:'center'
+    alignItems: 'center'
   },
   modalBackDrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
@@ -53,7 +53,7 @@ export default styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     top: 10,
-    height: 30,
+    height: 30
   },
   modalContentWrapper: {
     borderRadius: 3,

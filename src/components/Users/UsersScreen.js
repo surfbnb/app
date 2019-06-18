@@ -55,7 +55,7 @@ class Users extends Component {
       utilities.showAlert('', errorMessage.userNotActive);
       return;
     }
-    this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText , toUser : item });
+    this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
   }
 
   render() {

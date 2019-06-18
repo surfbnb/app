@@ -3,7 +3,7 @@ import { View, Text, Image } from 'react-native';
 
 import styles from './styles';
 import isEmpty from 'lodash/isEmpty';
-import default_user_icon from '../../../assets/default_user_icon.png'
+import default_user_icon from '../../../assets/default_user_icon.png';
 
 export default Users = React.memo((props) => {
   if (!isEmpty(props.user)) {

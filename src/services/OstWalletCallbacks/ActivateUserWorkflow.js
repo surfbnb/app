@@ -2,13 +2,13 @@ import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-nativ
 import currentUserModal from '../../models/CurrentUser';
 import { showToast } from '../../actions';
 import Store from '../../store';
-import deepGet from "lodash/get";
+import deepGet from 'lodash/get';
 
-const initiatePolling = ( expectedUserId ) => {
+const initiatePolling = (expectedUserId) => {
   let stopPolling = false,
     currentRetry = 0,
     maxRetry = 5;
-    
+
   const scheduleAirdropStatusPoll = function() {
     if (stopPolling || currentRetry > maxRetry) return;
     longPollUser();
@@ -20,13 +20,13 @@ const initiatePolling = ( expectedUserId ) => {
         .sync()
         .then((user) => {
           const currentUserId = currentUserModal.getOstUserId();
-          if (currentUserId != expectedUserId ) {
-            stopPolling = true ;
-            return  ;
+          if (currentUserId != expectedUserId) {
+            stopPolling = true;
+            return;
           }
           const airDropStatus = user && user.signup_airdrop_status;
-          if( airDropStatus == 1 ){
-            stopPolling = true ;
+          if (airDropStatus == 1) {
+            stopPolling = true;
             Store.dispatch(showToast('User Activated! Airdrop is initiated.'));
           }
         })
@@ -37,7 +37,7 @@ const initiatePolling = ( expectedUserId ) => {
     }, 10000);
   };
 
-  if( expectedUserId == currentUserModal.getOstUserId()  ){
+  if (expectedUserId == currentUserModal.getOstUserId()) {
     scheduleAirdropStatusPoll();
   }
 };
@@ -52,8 +52,8 @@ class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
   requestAcknowledged(ostWorkflowContext, ostContextEntity) {
     this.isRequestAcknowledge = true;
     this.delegate.onRequestAcknowledge(ostWorkflowContext, ostContextEntity);
-    const expectedUserId = deepGet(ostContextEntity , "entity.id");
-    initiatePolling( expectedUserId );
+    const expectedUserId = deepGet(ostContextEntity, 'entity.id');
+    initiatePolling(expectedUserId);
   }
 
   flowComplete(ostWorkflowContext, ostContextEntity) {}

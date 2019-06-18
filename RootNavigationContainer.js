@@ -55,18 +55,16 @@ const HomeScreen = createMaterialTopTabNavigator(
         TransactionScreen: {
           screen: TransactionScreen,
           navigationOptions: (options) => {
-
-            return{
-            headerTitle: options.navigation.getParam('transactionHeader'),
-            headerTitleStyle: {
-              color: Colors.dark
-            },
-            headerStyle: {
-              backgroundColor: Colors.white
-            },
-            headerBackImage: <Image source={BackArrow} style={{ width: 10, height: 18, marginLeft: 8 }} />
-
-          };
+            return {
+              headerTitle: options.navigation.getParam('transactionHeader'),
+              headerTitleStyle: {
+                color: Colors.dark
+              },
+              headerStyle: {
+                backgroundColor: Colors.white
+              },
+              headerBackImage: <Image source={BackArrow} style={{ width: 10, height: 18, marginLeft: 8 }} />
+            };
           }
         }
       },
@@ -79,17 +77,18 @@ const HomeScreen = createMaterialTopTabNavigator(
     Profile: createStackNavigator({
       ProfileScreen: {
         screen: Profile,
-        navigationOptions:(options) => {
-          console.log("options prof",options)
+        navigationOptions: (options) => {
+          console.log('options prof', options);
           return {
-          headerTitle: 'Profile',
-          headerTitleStyle: {
-            color: Colors.dark
-          },
-          headerStyle: {
-            backgroundColor: Colors.white
-          },
-          headerRight: <LogoutComponent {...options}/>}
+            headerTitle: 'Profile',
+            headerTitleStyle: {
+              color: Colors.dark
+            },
+            headerStyle: {
+              backgroundColor: Colors.white
+            },
+            headerRight: <LogoutComponent {...options} />
+          };
         }
       }
     })

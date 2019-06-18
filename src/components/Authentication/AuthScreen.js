@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { Animated, Dimensions, Keyboard, TextInput, UIManager, View, Text, TouchableOpacity, Image } from 'react-native';
+import {
+  Animated,
+  Dimensions,
+  Keyboard,
+  TextInput,
+  UIManager,
+  View,
+  Text,
+  TouchableOpacity,
+  Image
+} from 'react-native';
 
 // components
 import TouchableButton from '../../theme/components/TouchableButton';
@@ -68,36 +78,30 @@ class AuthScreen extends Component {
     const { height: windowHeight } = Dimensions.get('window');
     const keyboardHeight = event.endCoordinates.height;
     const currentlyFocusedField = TextInputState.currentlyFocusedField();
-    if(currentlyFocusedField) {
+    if (currentlyFocusedField) {
       UIManager.measure(currentlyFocusedField, (originX, originY, width, height, pageX, pageY) => {
         const fieldHeight = height;
         const fieldTop = pageY;
-        const gap = (windowHeight - keyboardHeight) - (fieldTop + fieldHeight);
+        const gap = windowHeight - keyboardHeight - (fieldTop + fieldHeight);
         if (!gap || gap >= 0) {
           return;
         }
-        Animated.timing(
-          this.state.shift,
-          {
-            toValue: gap - 125,
-            duration: 1000,
-            useNativeDriver: true
-          }
-        ).start();
+        Animated.timing(this.state.shift, {
+          toValue: gap - 125,
+          duration: 1000,
+          useNativeDriver: true
+        }).start();
       });
     }
-  }
+  };
 
   handleKeyboardDidHide = () => {
-    Animated.timing(
-      this.state.shift,
-      {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: true,
-      }
-    ).start();
-  }
+    Animated.timing(this.state.shift, {
+      toValue: 0,
+      duration: 1000,
+      useNativeDriver: true
+    }).start();
+  };
 
   validateLoginInput() {
     let isValid = true;
@@ -226,189 +230,194 @@ class AuthScreen extends Component {
 
   render() {
     return (
-      <Animated.View style={[{
-        transform: [{translateY: this.state.shift}]
-      },{...styles.container}]}>
-        <View style={{flex: 1}} />
-        <View style={{flex: 9}}>
+      <Animated.View
+        style={[
+          {
+            transform: [{ translateY: this.state.shift }]
+          },
+          { ...styles.container }
+        ]}
+      >
+        <View style={{ flex: 1 }} />
+        <View style={{ flex: 9 }}>
           <View style={styles.form}>
-          <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
-          {this.state.signup && (
-            <React.Fragment>
-              <FormInput
-                editable={true}
-                onChangeText={(first_name) => this.setState({ first_name, error: null, first_name_error: null })}
-                fieldName="first_name"
-                textContentType="none"
-                value={this.state.first_name}
-                style={[Theme.TextInput.textInputStyle, this.state.first_name_error ? Theme.Errors.errorBorder : {}]}
-                placeholder="First Name"
-                returnKeyType="next"
-                returnKeyLabel="next"
-                placeholderTextColor="#ababab"
-                errorMsg={this.state.first_name_error}
-                serverErrors={this.state.server_errors}
-                clearErrors={this.state.clearErrors}
-                onSubmitEditing={() => {
-                  this.setState({
-                    lastNameFocus: true,
-                    firstNameFocus: false
-                  });
-                }}
-                isFocus={this.state.firstNameFocus}
-                blurOnSubmit={false}
-                errorHandler={(fieldName) => {
-                  this.serverErrorHandler(fieldName);
-                }}
-              />
+            <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
+            {this.state.signup && (
+              <React.Fragment>
+                <FormInput
+                  editable={true}
+                  onChangeText={(first_name) => this.setState({ first_name, error: null, first_name_error: null })}
+                  fieldName="first_name"
+                  textContentType="none"
+                  value={this.state.first_name}
+                  style={[Theme.TextInput.textInputStyle, this.state.first_name_error ? Theme.Errors.errorBorder : {}]}
+                  placeholder="First Name"
+                  returnKeyType="next"
+                  returnKeyLabel="next"
+                  placeholderTextColor="#ababab"
+                  errorMsg={this.state.first_name_error}
+                  serverErrors={this.state.server_errors}
+                  clearErrors={this.state.clearErrors}
+                  onSubmitEditing={() => {
+                    this.setState({
+                      lastNameFocus: true,
+                      firstNameFocus: false
+                    });
+                  }}
+                  isFocus={this.state.firstNameFocus}
+                  blurOnSubmit={false}
+                  errorHandler={(fieldName) => {
+                    this.serverErrorHandler(fieldName);
+                  }}
+                />
 
-              <FormInput
-                editable={true}
-                onChangeText={(last_name) => this.setState({ last_name, error: null, last_name_error: null })}
-                fieldName="last_name"
-                textContentType="none"
-                value={this.state.last_name}
-                style={[Theme.TextInput.textInputStyle, this.state.last_name_error ? Theme.Errors.errorBorder : {}]}
-                placeholder="Last Name"
-                returnKeyType="next"
-                returnKeyLabel="Next"
-                placeholderTextColor="#ababab"
-                errorMsg={this.state.last_name_error}
-                serverErrors={this.state.server_errors}
-                clearErrors={this.state.clearErrors}
-                onSubmitEditing={() => {
-                  this.setState({
-                    userNameFocus: true,
-                    lastNameFocus: false
-                  });
-                }}
-                isFocus={this.state.lastNameFocus}
-                blurOnSubmit={false}
-                errorHandler={(fieldName) => {
-                  this.serverErrorHandler(fieldName);
-                }}
-              />
-            </React.Fragment>
-          )}
+                <FormInput
+                  editable={true}
+                  onChangeText={(last_name) => this.setState({ last_name, error: null, last_name_error: null })}
+                  fieldName="last_name"
+                  textContentType="none"
+                  value={this.state.last_name}
+                  style={[Theme.TextInput.textInputStyle, this.state.last_name_error ? Theme.Errors.errorBorder : {}]}
+                  placeholder="Last Name"
+                  returnKeyType="next"
+                  returnKeyLabel="Next"
+                  placeholderTextColor="#ababab"
+                  errorMsg={this.state.last_name_error}
+                  serverErrors={this.state.server_errors}
+                  clearErrors={this.state.clearErrors}
+                  onSubmitEditing={() => {
+                    this.setState({
+                      userNameFocus: true,
+                      lastNameFocus: false
+                    });
+                  }}
+                  isFocus={this.state.lastNameFocus}
+                  blurOnSubmit={false}
+                  errorHandler={(fieldName) => {
+                    this.serverErrorHandler(fieldName);
+                  }}
+                />
+              </React.Fragment>
+            )}
 
-          <FormInput
-            editable={true}
-            onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
-            fieldName="user_name"
-            value={this.state.user_name}
-            style={[Theme.TextInput.textInputStyle, this.state.user_name_error ? Theme.Errors.errorBorder : {}]}
-            placeholder="Username"
-            textContentType="none"
-            returnKeyType="next"
-            returnKeyLabel="next"
-            autoCorrect={false}
-            // autoCapitalize="none"
-            autoFocus={this.state.userNameFocus}
-            placeholderTextColor="#ababab"
-            errorMsg={this.state.user_name_error}
-            clearErrors={this.state.clearErrors}
-            serverErrors={this.state.server_errors}
-            onSubmitEditing={() => {
-              this.setState({
-                passwordFocus: true,
-                userNameFocus: false
-              });
-            }}
-            isFocus={this.state.userNameFocus}
-            blurOnSubmit={false}
-            errorHandler={(fieldName) => {
-              this.serverErrorHandler(fieldName);
-            }}
-          />
-
-          <FormInput
-            editable={true}
-            onChangeText={(password) => this.setState({ password, error: null, password_error: null })}
-            placeholder="Password"
-            fieldName="password"
-            returnKeyType="next"
-            secureTextEntry={true}
-            style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
-            value={this.state.password}
-            returnKeyType="done"
-            returnKeyLabel="done"
-            errorMsg={this.state.password_error}
-            serverErrors={this.state.server_errors}
-            clearErrors={this.state.clearErrors}
-            onSubmitEditing={() => {
-              this.setState({
-                passwordFocus: false
-              });
-              this.signin();
-            }}
-            isFocus={this.state.passwordFocus}
-            blurOnSubmit={true}
-            errorHandler={(fieldName) => {
-              this.serverErrorHandler(fieldName);
-            }}
-            placeholderTextColor="#ababab"
-          />
-
-          <Text style={[styles.error]}>{this.state.error}</Text>
-          {!this.state.signup && (
-            <React.Fragment>
-              <TouchableButton
-                TouchableStyles={[Theme.Button.btnPink]}
-                TextStyles={[Theme.Button.btnPinkText]}
-                text="Log In"
-                onPress={this.signin.bind(this)}
-              />
-            </React.Fragment>
-          )}
-          {this.state.signup && (
-            <React.Fragment>
-              <TouchableButton
-                TouchableStyles={[Theme.Button.btnPink]}
-                TextStyles={[Theme.Button.btnPinkText]}
-                text="Create Account"
-                onPress={this.signin.bind(this)}
-              />
-            </React.Fragment>
-          )}
-          <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
-        </View>
-        <LoadingModal />
-        <Toast timeout={3000} />
-        <View style={styles.bottomBtnAndTxt}>
-          {!this.state.signup && (
-            <TouchableOpacity
-              onPress={() =>
+            <FormInput
+              editable={true}
+              onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
+              fieldName="user_name"
+              value={this.state.user_name}
+              style={[Theme.TextInput.textInputStyle, this.state.user_name_error ? Theme.Errors.errorBorder : {}]}
+              placeholder="Username"
+              textContentType="none"
+              returnKeyType="next"
+              returnKeyLabel="next"
+              autoCorrect={false}
+              // autoCapitalize="none"
+              autoFocus={this.state.userNameFocus}
+              placeholderTextColor="#ababab"
+              errorMsg={this.state.user_name_error}
+              clearErrors={this.state.clearErrors}
+              serverErrors={this.state.server_errors}
+              onSubmitEditing={() => {
                 this.setState({
-                  signup: true,
-                  error: null,
-                  firstNameFocus: false,
-                  userNameFocus: false,
-                  ...this.defaults
-                })
-              }
-            >
-              <Text style={styles.label}>Don't have an account?</Text>
-              <Text style={styles.link}>Create Account</Text>
-            </TouchableOpacity>
-          )}
-          {this.state.signup && (
-            <TouchableOpacity
-              onPress={() =>
+                  passwordFocus: true,
+                  userNameFocus: false
+                });
+              }}
+              isFocus={this.state.userNameFocus}
+              blurOnSubmit={false}
+              errorHandler={(fieldName) => {
+                this.serverErrorHandler(fieldName);
+              }}
+            />
+
+            <FormInput
+              editable={true}
+              onChangeText={(password) => this.setState({ password, error: null, password_error: null })}
+              placeholder="Password"
+              fieldName="password"
+              returnKeyType="next"
+              secureTextEntry={true}
+              style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
+              value={this.state.password}
+              returnKeyType="done"
+              returnKeyLabel="done"
+              errorMsg={this.state.password_error}
+              serverErrors={this.state.server_errors}
+              clearErrors={this.state.clearErrors}
+              onSubmitEditing={() => {
                 this.setState({
-                  signup: false,
-                  error: null,
-                  isFocus: true,
-                  firstNameFocus: false,
-                  userNameFocus: false,
-                  ...this.defaults
-                })
-              }
-            >
-              <Text style={styles.label}>Already have an account?</Text>
-              <Text style={styles.link}>Log In</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+                  passwordFocus: false
+                });
+                this.signin();
+              }}
+              isFocus={this.state.passwordFocus}
+              blurOnSubmit={true}
+              errorHandler={(fieldName) => {
+                this.serverErrorHandler(fieldName);
+              }}
+              placeholderTextColor="#ababab"
+            />
+
+            <Text style={[styles.error]}>{this.state.error}</Text>
+            {!this.state.signup && (
+              <React.Fragment>
+                <TouchableButton
+                  TouchableStyles={[Theme.Button.btnPink]}
+                  TextStyles={[Theme.Button.btnPinkText]}
+                  text="Log In"
+                  onPress={this.signin.bind(this)}
+                />
+              </React.Fragment>
+            )}
+            {this.state.signup && (
+              <React.Fragment>
+                <TouchableButton
+                  TouchableStyles={[Theme.Button.btnPink]}
+                  TextStyles={[Theme.Button.btnPinkText]}
+                  text="Create Account"
+                  onPress={this.signin.bind(this)}
+                />
+              </React.Fragment>
+            )}
+            <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
+          </View>
+          <LoadingModal />
+          <Toast timeout={3000} />
+          <View style={styles.bottomBtnAndTxt}>
+            {!this.state.signup && (
+              <TouchableOpacity
+                onPress={() =>
+                  this.setState({
+                    signup: true,
+                    error: null,
+                    firstNameFocus: false,
+                    userNameFocus: false,
+                    ...this.defaults
+                  })
+                }
+              >
+                <Text style={styles.label}>Don't have an account?</Text>
+                <Text style={styles.link}>Create Account</Text>
+              </TouchableOpacity>
+            )}
+            {this.state.signup && (
+              <TouchableOpacity
+                onPress={() =>
+                  this.setState({
+                    signup: false,
+                    error: null,
+                    isFocus: true,
+                    firstNameFocus: false,
+                    userNameFocus: false,
+                    ...this.defaults
+                  })
+                }
+              >
+                <Text style={styles.label}>Already have an account?</Text>
+                <Text style={styles.link}>Log In</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       </Animated.View>
     );

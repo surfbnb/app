@@ -63,7 +63,7 @@ let stylesMap = {
     height: 20,
     position: 'absolute',
     right: 10,
-    top: 25,
+    top: 25
   },
   giphyPickerText: {
     textAlign: 'center',

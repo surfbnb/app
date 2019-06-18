@@ -22,13 +22,13 @@ import deepGet from 'lodash/get';
 import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
 import PlusIcon from '../../assets/plus_icon.png';
-import CrossIcon from '../../assets/cross_icon.png'
+import CrossIcon from '../../assets/cross_icon.png';
 import Theme from '../../theme/styles';
 import TouchableButton from '../../theme/components/TouchableButton';
 import { GiffyViewContext, CategoryViewContext, VCErrors, CATEGORY_VC_ID } from './view_contexts';
 import GracefulImage from './GracefulImage';
 import Colors from '../../theme/styles/Colors';
-import CircleCloseIcon from '../../assets/circle_close_icon.png'
+import CircleCloseIcon from '../../assets/circle_close_icon.png';
 
 class Giphy extends Component {
   constructor(props) {
@@ -351,8 +351,10 @@ class Giphy extends Component {
                             }}
                           >
                             <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
-                          </TouchableWithoutFeedback>)) || null}
-                        </View>
+                          </TouchableWithoutFeedback>
+                        )) ||
+                          null}
+                      </View>
 
                       <FlatList
                         ref={(ref) => {
