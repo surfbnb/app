@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View  } from 'react-native';
+import ProfileScreen from "./ProfileScreen";
 
 import styles from './styles';
 import LogoutComponent from '../LogoutLink';
@@ -18,7 +19,7 @@ class Profile extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.link}>Profile</Text>
+        <ProfileScreen></ProfileScreen>
       </View>
     );
   }

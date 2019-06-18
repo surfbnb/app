@@ -1,5 +1,4 @@
 import deepGet from 'lodash/get';
-import appConfig from '../constants/AppConfig';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
 import errorMessage from '../constants/ErrorMessages';
@@ -39,5 +38,16 @@ export default {
     ostError = ostError || {};
     generalErrorMsgKey = generalErrorMsgKey || 'general_error';
     return deepGet(ostError, 'err.msg') || errorMessage[generalErrorMsgKey];
+  },
+
+  getPriceOracleConfig(token, pricePoints) {
+    const conversionFactor = deepGet(token, 'conversion_factor');
+    const decimal = deepGet(token, 'decimals');
+    const usdPricePoint = deepGet(pricePoints, 'price_point.OST.USD');
+    return {
+      conversionFactor: conversionFactor,
+      usdPricePoint: usdPricePoint,
+      decimal: decimal
+    };
   }
 };

@@ -3,7 +3,7 @@ import DeepGet from 'lodash/get';
 import qs from 'qs';
 
 import Store from '../store';
-import { hideModal, upsertUserEntities, addUserList, showToast } from '../actions';
+import { hideModal, upsertUserEntities, upsertTransactionEntities, upsertGiffyEntities , upsertFeedEntities , addPublicFeedList ,addUserList, addUserFeedList, showToast } from '../actions';
 import { API_ROOT } from '../constants/index';
 import CurrentUser from '../models/CurrentUser';
 import ErrorMessages from '../constants/ErrorMessages';
@@ -55,12 +55,19 @@ export default class PepoApi {
     if (!resultType) {
       return;
     }
-    const resultData = DeepGet(responseJSON, `data.${resultType}`);
+    const data = DeepGet(responseJSON, 'data') ,
+          resultData = DeepGet(responseJSON, `data.${resultType}`);
     switch (resultType) {
       case 'users':
-        console.log('Dispatching upsertUserEntities, addUserList...');
         Store.dispatch(upsertUserEntities(this._getEntities(resultData)));
         Store.dispatch(addUserList(this._getIDList(resultData)));
+        break;
+      case 'public_feed': 
+      case 'user_feed':
+        Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data["users"])));
+        Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data["ost_transaction"])));
+        Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data["gifs"])));
+        Store.dispatch(upsertFeedEntities(this._getEntities(resultData)));
         break;
     }
   }
@@ -69,11 +76,23 @@ export default class PepoApi {
     return resultData.map((item) => item[key]);
   }
 
+  _getIDListFromObj( resultObj ){
+    return Object.keys(resultObj) ; 
+  }
+
   _getEntities(resultData, key = 'id') {
     const entities = {};
     resultData.forEach((item) => {
       entities[`${key}_${item[key]}`] = item;
     });
+    return entities;
+  }
+
+  _getEntitiesFromObj( resultObj , key="id" ){
+    const entities = {};
+    for( let identifier in resultObj ){
+      entities[`${key}_${identifier}`] = resultObj[ identifier ];
+    }
     return entities;
   }
 
@@ -89,7 +108,7 @@ export default class PepoApi {
         this._dispatchData(responseJSON);
 
         console.log(`Response status ${responseStatus} for ${this.cleanedUrl} with JSON payload:`, responseJSON);
-
+        
         switch (responseStatus) {
           case 401:
             CurrentUser.logout(responseJSON);

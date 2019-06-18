@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  Alert,
   Modal,
-  TouchableHighlight,
   Image,
   ImageBackground,
   TouchableWithoutFeedback,
@@ -26,8 +24,9 @@ import PlusIcon from '../../assets/plus_icon.png';
 import CrossIcon from '../../assets/cross_icon.png';
 import Theme from '../../theme/styles';
 import TouchableButton from '../../theme/components/TouchableButton';
-import { GiffyViewContext, CategoryViewContext, VCErrors, CATEGORY_VC_ID } from './view_contexts';
+import { CategoryViewContext, CATEGORY_VC_ID } from './view_contexts';
 import GracefulImage from './GracefulImage';
+import { FetchComponent, VCErrors } from '../FetchComponent';
 import Colors from '../../theme/styles/Colors';
 import CircleCloseIcon from '../../assets/circle_close_icon.png';
 
@@ -39,7 +38,9 @@ class Giphy extends Component {
       isGifCategory: true,
       gifSearchQuery: '',
       gifsDataToShow: [],
-      selectedImage: {}
+      selectedImage: {},
+      isRefreshing: false,
+      isLoadingMore: false
     };
 
     this.screenWidth = Dimensions.get('window').width;
@@ -64,7 +65,7 @@ class Giphy extends Component {
   getTrendingViewContext(baseUrl, searchTerm) {
     let id = 'TRENDING_' + baseUrl + '_' + searchTerm;
     if (!this.viewContexts[id]) {
-      this.viewContexts[id] = new GiffyViewContext(id, baseUrl);
+      this.viewContexts[id] = new FetchComponent(baseUrl, {}, id);
     }
     return this.viewContexts[id];
   }
@@ -73,7 +74,7 @@ class Giphy extends Component {
     let baseUrl = '/gifs/search';
     let id = 'SEARCH_' + baseUrl + '_' + searchTerm;
     if (!this.viewContexts[id]) {
-      this.viewContexts[id] = new GiffyViewContext(id, baseUrl, searchTerm);
+      this.viewContexts[id] = new FetchComponent(baseUrl, { query: searchTerm }, id);
     }
     return this.viewContexts[id];
   }
@@ -155,6 +156,10 @@ class Giphy extends Component {
     // Note: This is the right place to set state that shows 'loading' view.
     // And remove 'No Results' view if needed.
 
+    // Show pull to refresh loader.
+    this.setState({
+      isRefreshing: true
+    });
     return viewContext
       .fetch()
       .then((results) => {
@@ -165,6 +170,12 @@ class Giphy extends Component {
       .catch((err) => {
         console.log('showViewContext: Something went wrong while calling fetch');
         console.log(err);
+      })
+      .done(() => {
+        // Hide pull to refresh loader.
+        this.setState({
+          isRefreshing: false
+        });
       });
   }
 
@@ -211,6 +222,10 @@ class Giphy extends Component {
       return;
     }
 
+    // Show load more loader.
+    this.setState({
+      isLoadingMore: true
+    });
     viewContext
       .fetch()
       .then((resultsToAppend) => {
@@ -225,7 +240,17 @@ class Giphy extends Component {
       .catch((err) => {
         console.log('loadMore: Something went wrong. fetch threw an error');
         console.log(err);
+      })
+      .done(() => {
+        this.setState({
+          isLoadingMore: false
+        });
       });
+  }
+  renderFooter() {
+    //it will show indicator at the bottom of the list when data is loading otherwise it returns null
+    if (!this.state.isLoadingMore) return null;
+    return <ActivityIndicator style={{ color: '#000' }} />;
   }
 
   handleGiphyPress(data) {
@@ -259,6 +284,32 @@ class Giphy extends Component {
     const paddingToBottom = 20;
     return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
   };
+
+  refreshFlatList() {
+    if (this.state.isRefreshing) {
+      // Ignore.
+      return;
+    }
+
+    let viewContext;
+    let currentViewContext = this.currentViewContext;
+    let currentResults = currentViewContext.getAllResults();
+
+    // Bug Prone Area Begins.
+    if (!currentResults || !currentResults.length) {
+      // The currentViewContext has not been used yet. let's not create a new one.
+      viewContext = currentViewContext;
+    } else {
+      //Clone and update our books.
+      viewContext = this.currentViewContext.clone();
+
+      this.viewContexts[viewContext.id] = viewContext;
+      console.log('viewContext with id:', viewContext.id, 'has been cloned and reassigned.');
+    }
+    // Bug Prone Area Ends.
+
+    this.showViewContext(viewContext);
+  }
 
   render() {
     let gifsData = this.state.gifsDataToShow,
@@ -380,6 +431,11 @@ class Giphy extends Component {
                         onEndReached={() => {
                           this.loadMore();
                         }}
+                        refreshing={this.state.isRefreshing}
+                        onRefresh={() => {
+                          this.refreshFlatList();
+                        }}
+                        onEndReachedThreshold={0.7}
                         data={gifsData}
                         renderItem={({ item }) => {
                           return (
@@ -419,6 +475,7 @@ class Giphy extends Component {
                         }}
                         numColumns={3}
                         keyExtractor={(item, index) => index}
+                        ListFooterComponent={this.renderFooter.bind(this)}
                       />
                     </View>
                   </TouchableWithoutFeedback>

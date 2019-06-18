@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import styles from './styles';
+import FeedList from "../FeedComponents/FeedList";
 
 class Feed extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -11,14 +10,15 @@ class Feed extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      refreshing : false
+    }
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.link}>Feed</Text>
-      </View>
-    );
+      return (
+        <FeedList fetchUrl={"/feeds"} ></FeedList>
+      );
   }
 }
 
