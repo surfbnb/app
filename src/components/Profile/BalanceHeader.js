@@ -17,6 +17,7 @@ class BalanceHeader extends Component {
             balInUsd: 0
         }
         this.fetching =false;
+        this.isRetryUpdatePricePoint = false;
         this.initDefaults();
         this.updatePricePoint(); 
     }
@@ -54,9 +55,15 @@ class BalanceHeader extends Component {
     }  
 
     getBalance(  ){
-        if( !this.priceOracle || this.fetching ){
+        if( this.fetching ){
             return ;
         }
+        if( !this.priceOracle  && !this.isRetryUpdatePricePoint ){
+            this.isRetryUpdatePricePoint = true;
+            this.updatePricePoint();
+            return;
+        }
+        this.isRetryUpdatePricePoint = false;
         this.fetching = true ; 
         const ostUserId = currentUserModal.getOstUserId();
         OstJsonApi.getBalanceForUserId( ostUserId ,  (res)=> {
