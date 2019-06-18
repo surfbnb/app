@@ -1,77 +1,38 @@
 import React, { Component } from 'react';
-import { View , FlatList, Text} from 'react-native';
-
 import currentUserModel from "../../models/CurrentUser";
-import FeedRow from "../FeedComponents/FeedRow";
-import {FetchComponent} from "../FetchComponent";
-import BalanceHeader from "./BalanceHeader";
-
-import styles from './styles';
+import FeedList from "../FeedComponents/FeedList";
+import BalanceHeader from "../Profile/BalanceHeader";
 
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feeds : [],
-      refreshing : false
+      toRefresh : false
     }
+    this.fetchUrl = `/users/${currentUserModel.getUserId()}/feeds`;
   }
 
-  componentWillMount() {
-    const url = `/users/${currentUserModel.getUserId()}/feeds/`
-    this.fetchComponent = new FetchComponent(url); 
-    this.getFeedList();
+  beforeRefresh(){
+    this.setState({ toRefresh : true });
   }
-
-  componentWillUnmount(){
-    this.fetchComponent = null;
-    this.setState({ feeds : []});
-  }
-  
-  getFeedList = () => {
-    this.fetchComponent
-      .fetch()
-      .then(( res ) => {
-        this.setState( {feeds : this.fetchComponent.getIDList() })
-      })
-      .catch((error) => {
-        console.log("getFeedList error" , error);
-      })
-  };
 
   onRefresh(){
-    this.setState({ refreshing  : true  });
-    this.fetchComponent
-    .refresh()
-    .then( ( res) => {
-      this.setState({ refreshing  : false , feeds : this.fetchComponent.getIDList() });
-    })
-    .catch((error)=>{
-      this.setState({ refreshing  : false  });
-    });
+    this.setState({ toRefresh : false });
+  }
+
+  onRefreshError(){
+    this.setState({ toRefresh : false });
   }
 
   render() {
-    if (this.state.feeds && this.state.feeds.length > 0) {
-      return (
-        <View style={styles.container}>
-          <FlatList
-            data={this.state.feeds}
-            onEndReached={this.getFeedList}
-            onRefresh={()=>{this.onRefresh()}}
-            refreshing={this.state.refreshing}
-            keyExtractor={(item, index) => `id_${item}`}
-            onEndReachedThreshold={0.5}
-            initialNumToRender={20}
-            ListHeaderComponent={<BalanceHeader isToRefresh={this.state.refreshing}></BalanceHeader>}
-            renderItem={({ item }) => (
-              <FeedRow id={item} />
-            )}
-          />
-        </View>
-      );
-    }
-    return <View></View>;
+    return (
+      <FeedList fetchUrl={this.fetchUrl} 
+       ListHeaderComponent={<BalanceHeader toRefresh={this.state.toRefresh} />}
+       beforeRefresh={() => {this.beforeRefresh()}}
+       onRefresh={(res) => {this.refreshDone(res)}}
+       onRefreshError={(error) => {this.onRefreshError(error) }}
+       ></FeedList>
+    );
   }
 }
 

@@ -13,41 +13,27 @@ class BalanceHeader extends Component {
     constructor(props){
         super(props);
         this.state = {
-            fetching: true,
             balInBt : 0,
             balInUsd: 0
         }
-        this.baseState = this.state;
+        this.fetching =false;
         this.initDefaults();
+        this.updatePricePoint(); 
     }
 
     initDefaults(){
         this.priceOracle = null;
     }
 
-    componentWillMount(){
-        this.initBalance();
-    }
-
-    componentWillUnmount(){
-        this.setState( this.baseState );
-        this.initDefaults();
-    }
-
-    componentWillUpdate(){
-        if( this.props.isToRefresh ){
+    componentDidUpdate(){
+        if( !!this.props.toRefresh ){
             this.getBalance();
         }
     }
     
-    initBalance(){
-        this.updatePricePoint();
-    }
-
     updatePricePoint() {
         const ostUserId = currentUserModal.getOstUserId();
         if( !currentUserModal.isUserActivated() ){
-            this.onBalanceStateChange();
             return;
         }
         OstWalletSdk.getToken(TOKEN_ID, (token) => {
@@ -58,7 +44,6 @@ class BalanceHeader extends Component {
                 this.getBalance();
             },
             (ostError) => {
-                this.onBalanceStateChange();
             }
           );
         });
@@ -69,28 +54,26 @@ class BalanceHeader extends Component {
     }  
 
     getBalance(  ){
-        if( !this.priceOracle ){
-            this.onBalanceStateChange();
+        if( !this.priceOracle || this.fetching ){
+            return ;
         }
+        this.fetching = true ; 
         const ostUserId = currentUserModal.getOstUserId();
         OstJsonApi.getBalanceForUserId( ostUserId ,  (res)=> {
             this.updateBalance( res );
         } , (err)=> {
-            this.onBalanceStateChange();
+            this.fetching = false;
         })
     }
 
-    onBalanceStateChange(){
-        this.setState({ fetching: false });
-    }
 
     updateBalance( res ){
+        this.fetching = false;
         let btBalance = deepGet( res , "balance.available_balance"); 
         btBalance = this.priceOracle.fromDecimal( btBalance );
         btBalance = this.priceOracle.toBt( btBalance );
         let usdBalance = this.priceOracle.btToFiat( btBalance ); 
         this.setState({ balInBt :btBalance , balInUsd:  usdBalance });
-        this.onBalanceStateChange();
     }
 
 
