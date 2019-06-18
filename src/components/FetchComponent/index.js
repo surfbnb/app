@@ -9,14 +9,14 @@ const VCErrors = {
 let idCnt = 1;
 
 class FetchComponent {
-  constructor(url, params, id=("fcomp_" + String(idCnt++))  ) {
+  constructor(url, params, id = 'fcomp_' + String(idCnt++)) {
     this.id = id;
     this.url = url;
     this.extraParams = params;
     this.initVals();
   }
 
-  initVals(){
+  initVals() {
     this.isFetching = false;
     this.hasNextPage = true;
     this.nextPagePayload = null;
@@ -60,9 +60,9 @@ class FetchComponent {
           return Promise.reject(response);
         }
         console.log('api.get calling dataReceived');
-        setTimeout(()=>{
+        setTimeout(() => {
           this.isFetching = false;
-        }, 100)
+        }, 100);
         return this.dataReceived(response);
       })
       .catch((err) => {
@@ -122,7 +122,7 @@ class FetchComponent {
     return cleanedUpList;
   }
 
-  refresh(){
+  refresh() {
     this.initVals();
     return this.fetch();
   }
@@ -135,10 +135,14 @@ class FetchComponent {
     return this.results;
   }
 
-  getIDList( key = 'id') {
+  getIDList(key = 'id') {
     return this.results.map((item) => item[key]);
   }
 
+  clone() {
+    let Constructor = this.constructor;
+    return new Constructor(this.url, this.extraParams, this.id);
+  }
 }
 
-export { FetchComponent , VCErrors }; 
+export { FetchComponent, VCErrors };
