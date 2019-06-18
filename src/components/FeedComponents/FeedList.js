@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList , View } from 'react-native';
 import FeedRow from '../FeedComponents/FeedRow';
-import {FetchComponent} from "../FetchComponent";
+import {FetchServices} from "../../services/FetchServices";
 
 class FeedList extends Component {
   constructor(props) {
@@ -13,17 +13,17 @@ class FeedList extends Component {
     }
     this.loadingNext = false;
     if( this.props.fetchUrl ){
-        this.fetchComponent = new FetchComponent(this.props.fetchUrl);
+        this.fetchServices = new FetchServices(this.props.fetchUrl);
     }
   }
 
   componentDidMount() {
-    if(!this.fetchComponent) return;
+    if(!this.fetchServices) return;
     this.initList();
   }
 
   componentWillUnmount(){
-    this.fetchComponent = null;
+    this.fetchServices = null;
   }
 
   initList(){
@@ -34,10 +34,10 @@ class FeedList extends Component {
     this.beforeRefresh();
     if( this.state.refreshing ) return ;
     this.setState({ refreshing  : true  });
-    this.fetchComponent
+    this.fetchServices
     .refresh()
     .then( ( res) => {
-      this.setState({ refreshing  : false , feeds : this.fetchComponent.getIDList() });
+      this.setState({ refreshing  : false , feeds : this.fetchServices.getIDList() });
       this.onRefresh( res );
     })
     .catch((error)=>{
@@ -61,11 +61,11 @@ class FeedList extends Component {
   getNext = () => {
     if(this.loadingNext) return ;
     this.beforeNext();
-    this.fetchComponent
+    this.fetchServices
       .fetch()
       .then(( res ) => {
         this.onNext( res );
-        this.setState( {feeds : this.fetchComponent.getIDList() })
+        this.setState( {feeds : this.fetchServices.getIDList() })
       })
       .catch((error) => {
         this.onNextError( error );

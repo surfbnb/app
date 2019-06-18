@@ -9,25 +9,18 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
   TextInput,
-  Switch,
-  ScrollView,
   FlatList,
   ActivityIndicator
 } from 'react-native';
 
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import deepGet from 'lodash/get';
-import FormInput from '../../theme/components/FormInput';
-import PepoApi from '../../services/PepoApi';
 import PlusIcon from '../../assets/plus_icon.png';
 import CrossIcon from '../../assets/cross_icon.png';
 import Theme from '../../theme/styles';
-import TouchableButton from '../../theme/components/TouchableButton';
 import { CategoryViewContext, CATEGORY_VC_ID } from './view_contexts';
 import GracefulImage from './GracefulImage';
-import { FetchComponent, VCErrors } from '../FetchComponent';
-import Colors from '../../theme/styles/Colors';
+import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/circle_close_icon.png';
 
 class Giphy extends Component {
@@ -65,7 +58,7 @@ class Giphy extends Component {
   getTrendingViewContext(baseUrl, searchTerm) {
     let id = 'TRENDING_' + baseUrl + '_' + searchTerm;
     if (!this.viewContexts[id]) {
-      this.viewContexts[id] = new FetchComponent(baseUrl, {}, id);
+      this.viewContexts[id] = new FetchServices(baseUrl, {}, id);
     }
     return this.viewContexts[id];
   }
@@ -74,7 +67,7 @@ class Giphy extends Component {
     let baseUrl = '/gifs/search';
     let id = 'SEARCH_' + baseUrl + '_' + searchTerm;
     if (!this.viewContexts[id]) {
-      this.viewContexts[id] = new FetchComponent(baseUrl, { query: searchTerm }, id);
+      this.viewContexts[id] = new FetchServices(baseUrl, { query: searchTerm }, id);
     }
     return this.viewContexts[id];
   }

@@ -1,4 +1,4 @@
-import PepoApi from '../../services/PepoApi';
+import PepoApi from './PepoApi';
 
 const VCErrors = {
   AlreadyFetchingError: 'AlreadyFetchingError',
@@ -8,7 +8,7 @@ const VCErrors = {
 
 let idCnt = 1;
 
-class FetchComponent {
+class FetchServices {
   constructor(url, params, id = 'fcomp_' + String(idCnt++)) {
     this.id = id;
     this.url = url;
@@ -145,4 +145,4 @@ class FetchComponent {
   }
 }
 
-export { FetchComponent, VCErrors };
+export { FetchServices, VCErrors };

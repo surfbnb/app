@@ -1,8 +1,8 @@
 import deepGet from 'lodash/get';
 const CATEGORY_VC_ID = 'CATEGORY';
-import { FetchComponent } from '../FetchComponent';
+import { FetchServices } from '../../services/FetchServices';
 
-class CategoryViewContext extends FetchComponent {
+class CategoryViewContext extends FetchServices {
   constructor() {
     super('/gifs/categories', {}, CATEGORY_VC_ID);
   }
