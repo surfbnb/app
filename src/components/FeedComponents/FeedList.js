@@ -47,6 +47,7 @@ class FeedList extends Component {
   }
 
   beforeRefresh(){
+    this.flatListRef.scrollToOffset({ animated: true, offset: 0 });
     this.props.beforeRefresh && this.props.beforeRefresh();
   }
 
@@ -91,6 +92,7 @@ class FeedList extends Component {
   render() {
       return (
           <FlatList
+            ref={(ref) => { this.flatListRef = ref; }}
             data={this.state.feeds}
             onEndReached={this.getNext}
             onRefresh={()=>{this.refresh()}}

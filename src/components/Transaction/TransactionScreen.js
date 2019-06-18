@@ -118,7 +118,7 @@ class TransactionScreen extends Component {
       Alert.alert('', errorMessage.general_error_ex);
       return;
     }
-    Store.dispatch(showModal('Executing...'));
+    Store.dispatch(showModal('Sending...'));
     this.sendTransactionToSdk();
   }
 
