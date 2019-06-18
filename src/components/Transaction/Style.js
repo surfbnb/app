@@ -3,7 +3,6 @@ import Colors from '../../theme/styles/Colors';
 
 export default styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
     flex: 1,
     padding: 20,
     backgroundColor: Colors.whiteSmoke
@@ -17,7 +16,6 @@ export default styles = StyleSheet.create({
     borderColor: Colors.white,
     borderWidth: 0,
     borderRadius: 15
-    // transform: [{ scaleX: .6 }, { scaleY: .6 }]
   },
   bottomButtonsWrapper: {
     flexDirection: 'row',
@@ -30,6 +28,7 @@ export default styles = StyleSheet.create({
   },
   dottedBtn: {
     flex: 2,
+    padding: 10.5,
     alignItems: 'center'
   },
   modalBackDrop: {

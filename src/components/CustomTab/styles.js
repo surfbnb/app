@@ -1,11 +1,10 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import PropTypes from 'prop-types';
 
 export default styles = StyleSheet.create({
   container: {
     flex: 0,
     width: '100%',
-    height: 65,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'space-around',
     // position: 'relative',
@@ -34,7 +33,7 @@ export default styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 3,
     height: 23,
-    width: 22.5
+    width: 23
   },
   tabElementFriends: {
     alignSelf: 'center',

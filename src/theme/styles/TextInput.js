@@ -1,5 +1,6 @@
 import DefaultStyleGenerator from './DefaultStyleGenerator';
 import Colors from './Colors';
+import { Platform } from 'react-native';
 
 let styles = {
   textInputStyle: {
@@ -12,7 +13,7 @@ let styles = {
     paddingLeft: 15,
     marginTop: 10,
     color: Colors.dark,
-    height: 46
+    height: Platform.OS === 'ios' ? 46 : 40,
   }
 };
 

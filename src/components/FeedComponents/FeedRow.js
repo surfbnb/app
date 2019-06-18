@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Text, Image, Dimensions } from 'react-native';
 import styles from './styles';
 import Store from '../../store';
-import PepoIcon from '../../assets/user_friends.png';
 import TimestampHandling from '../../helpers/timestampHandling';
 
 class FeedRow extends Component {
