@@ -18,11 +18,13 @@ import CustomTab from './src/components/CustomTab';
 import Feed from './src/components/Feed';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
+import UserFeedScreen from "./src/components/UserFeed/UserFeedScreen";
 
 const HomeScreen = createMaterialTopTabNavigator(
   {
     Feed: createStackNavigator({
-      FeedContent: Feed
+      FeedContent: Feed,
+      UserFeedScreen: UserFeedScreen
     }),
     Users: createStackNavigator(
       {
@@ -36,7 +38,8 @@ const HomeScreen = createMaterialTopTabNavigator(
       }
     ),
     Profile: createStackNavigator({
-      ProfileScreen: Profile
+      ProfileScreen: Profile,
+      UserFeedScreen: UserFeedScreen
     })
   },
   {

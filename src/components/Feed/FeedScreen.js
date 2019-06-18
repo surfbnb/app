@@ -10,14 +10,11 @@ class Feed extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      refreshing : false
-    }
   }
 
   render() {
       return (
-        <FeedList fetchUrl={"/feeds"} ></FeedList>
+        <FeedList fetchUrl={"/feeds"} nestedNavigation={true}></FeedList>
       );
   }
 }

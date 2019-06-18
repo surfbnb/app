@@ -101,7 +101,7 @@ class FeedList extends Component {
             progressViewOffset={this.state.progressViewOffset}
             ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
             renderItem={({ item }) => (
-                <FeedRow id={item} />
+                <FeedRow id={item} nestedNavigation={ this.props.nestedNavigation ? true : false } />
             )}
           />
       );
