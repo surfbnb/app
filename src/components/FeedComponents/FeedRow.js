@@ -4,7 +4,7 @@ import styles from './styles';
 import Store from '../../store';
 import TimestampHandling from '../../helpers/timestampHandling';
 import NavigationService from '../../services/NavigationService'; 
-
+import DefaultUserIcon from '../../assets/default_user_icon.png'
 class FeedRow extends Component {
   constructor(props) {
     super(props);
@@ -84,7 +84,7 @@ class FeedRow extends Component {
           <View style={{ flexDirection: 'row', marginBottom: 10 }}>
             <View style={{ width: '15%', height: 50 }}>
               <Image
-                source={{ uri: 'https://image.flaticon.com/icons/png/512/17/17004.png' }}
+                source={DefaultUserIcon}
                 style={{
                   padding: 5,
                   borderRadius: 30,
