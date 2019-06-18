@@ -310,7 +310,7 @@ class AuthScreen extends Component {
               textContentType="none"
               returnKeyType="next"
               returnKeyLabel="next"
-              autoCorrect={false}
+              // autoCorrect={false}
               // autoCapitalize="none"
               autoFocus={this.state.userNameFocus}
               placeholderTextColor="#ababab"
