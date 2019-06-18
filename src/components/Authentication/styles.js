@@ -1,10 +1,12 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 
 let stylesMap = {
   container: {
     flex: 1,
+    alignSelf: 'center',
+    justifyContent: 'center',
     backgroundColor: Colors.white
   },
   form: {
@@ -14,8 +16,15 @@ let stylesMap = {
     paddingRight: 30
   },
   bottomBtnAndTxt: {
-    flex: 1,
-    justifyContent: 'flex-end'
+    height: 70,
+    position: 'absolute',
+    left: 0,
+    alignSelf: ( Platform.OS === 'ios' ) ? 'center' : 'flex-start',
+    justifyContent: ( Platform.OS === 'ios' ) ? 'center' : 'flex-start',
+    top: Dimensions.get('window').height - 70,
+    width: Dimensions.get('window').width
+    // flex: 0.2,
+    // justifyContent: 'flex-end'
   },
   title: {
     fontSize: 24,
@@ -32,7 +41,6 @@ let stylesMap = {
     textAlign: 'center',
     color: Colors.primary,
     fontSize: 15,
-    marginBottom: 20,
     fontWeight: '400'
   },
   error: {
