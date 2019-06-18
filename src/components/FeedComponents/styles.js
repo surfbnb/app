@@ -4,7 +4,7 @@ import Colors from '../../theme/styles/Colors';
 let stylesMap = {
   container: {
     // flexDirection: 'column',
-    // flex: 1,
+    flex: 1,
     // padding: 20,
     paddingHorizontal: 15,
     backgroundColor: Colors.whiteSmoke
