@@ -6,6 +6,15 @@ import styles from '../../theme/styles';
 import inlineStyles from './styles';
 
 export default class SetPin extends Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    const { params } = navigation.state;
+
+    return {
+      headerTitle: 'Set Pin',
+      headerBackTitle: null
+    };
+  };
+
   constructor(props) {
     super(props);
   }

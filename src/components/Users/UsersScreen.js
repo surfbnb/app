@@ -10,6 +10,12 @@ import utilities from '../../services/Utilities';
 import errorMessage from '../../constants/ErrorMessages';
 
 class Users extends Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      headerTitle: 'Friends',
+      headerBackTitle: null
+    };
+  };
   constructor(props) {
     super(props);
     this.nextPagePayload = {};

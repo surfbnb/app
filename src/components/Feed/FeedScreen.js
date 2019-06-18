@@ -3,6 +3,12 @@ import { View, Text } from 'react-native';
 import styles from './styles';
 
 class Feed extends Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      headerTitle: 'Feed'
+    };
+  };
+
   constructor(props) {
     super(props);
   }

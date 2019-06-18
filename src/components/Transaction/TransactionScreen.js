@@ -30,11 +30,17 @@ import appConfig from '../../constants/AppConfig';
 import { TOKEN_ID } from '../../constants';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
-import PlusIcon from '../../assets/plus_icon.png';
 import CircleCloseIcon from '../../assets/circle_close_icon.png';
 import EditIcon from '../../assets/edit_icon.png';
+import BackArrow from '../../assets/back-arrow.png';
 
 class TransactionScreen extends Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      headerTitle: navigation.getParam('transactionHeader'),
+      headerBackImage: <Image source={BackArrow} style={{ width: 10, height: 18, marginLeft: 8 }} />
+    };
+  };
   constructor(props) {
     super(props);
     this.state = {
