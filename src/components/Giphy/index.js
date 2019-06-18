@@ -13,7 +13,8 @@ import {
   TextInput,
   Switch,
   ScrollView,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from 'react-native';
 
 import inlineStyles from './styles';
@@ -272,18 +273,28 @@ class Giphy extends Component {
     if (Object.keys(this.state.selectedImage).length) {
       let ratioFullScreen = screenWidth / parseInt(this.state.selectedImage.downsized.width);
       imageSelector = (
-        <ImageBackground
-          source={{ uri: this.state.selectedImage.downsized.url }}
-          style={{
-            height: parseInt(this.state.selectedImage.downsized.height) * ratioFullScreen,
-            width: parseInt(this.state.selectedImage.downsized.width) * ratioFullScreen,
-            position: 'relative' // because it's parent
-          }}
-        >
-          <TouchableWithoutFeedback onPress={() => this.setState({ selectedImage: {} })}>
-            <Image source={CircleCloseIcon} style={[inlineStyles.crossIconSkipFont, { top: 5, right: 5 }]} />
-          </TouchableWithoutFeedback>
-        </ImageBackground>
+          <View
+              style={[
+                {
+                  backgroundColor: 'rgba(238,238,238,1)',
+                  overflow: 'hidden'
+                }
+              ]}
+          >
+            <ActivityIndicator style={{position: 'absolute', left: '50%', top: '50%'}}/>
+            <ImageBackground
+              source={{ uri: this.state.selectedImage.downsized.url }}
+              style={{
+                height: parseInt(this.state.selectedImage.downsized.height) * ratioFullScreen,
+                width: parseInt(this.state.selectedImage.downsized.width) * ratioFullScreen,
+                position: 'relative' // because it's parent
+              }}
+            >
+              <TouchableWithoutFeedback onPress={() => this.setState({ selectedImage: {} })}>
+                <Image source={CircleCloseIcon} style={[inlineStyles.crossIconSkipFont, { top: 5, right: 5 }]} />
+              </TouchableWithoutFeedback>
+            </ImageBackground>
+          </View>
       );
     } else {
       imageSelector = (
