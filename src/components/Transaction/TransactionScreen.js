@@ -168,7 +168,8 @@ class TransactionScreen extends Component {
 
   onTransactionSuccess(res) {
     Store.dispatch(hideModal());
-    utilities.showAlert('', 'TODO confrim what to do on transaction success');
+    this.props.navigation.goBack();
+    this.props.navigation.navigate('Feed');
   }
 
   getSendTransactionPlatformData(ostWorkflowEntity) {
