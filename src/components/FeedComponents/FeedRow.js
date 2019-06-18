@@ -81,41 +81,42 @@ class FeedRow extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.cellWrapper}>
-          <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-            <View style={{ width: '15%', height: 50 }}>
+          <View style={{ flexDirection: 'row',alignItems: 'center', marginBottom: 10}}>
+            <View>
               <Image
                 source={DefaultUserIcon}
                 style={{
-                  padding: 5,
-                  borderRadius: 30,
-                  height: '100%',
-                  width: '100%'
+                  borderRadius: 20,
+                  height: 40,
+                  width: 40
                 }}
               />
             </View>
-            <View style={{ width: '70%', height: 50, marginLeft: 10, marginTop: 5 }}>
-              <Text style={{ fontSize: 18 }}>
-                <Text style={{ fontWeight: 'bold' }}  onPress={() => { this.fromUserClick(); }}> 
-                  {this.fromUserName} 
-                </Text>
-                <Text> gave </Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 18 }}  onPress={() => { this.toUserClick(); }}> 
-                  {this.toUserName}:
-                </Text>
-              </Text>
-              <Text style={{ marginLeft: 5 }}>{TimestampHandling.fromNow(this.feedEntity.published_ts)}</Text>
-            </View>
-            <View
-              style={{
-                width: '15%',
-                borderRadius: 20,
-                height: 40,
-                backgroundColor: '#EEEEEE',
-                marginTop: 7,
-                justifyContent: 'center'
-              }}
-            >
-              <Text style={{ fontSize: 18, textAlign: 'center' }}>P{String(this.transactionEntity.amounts[0])[0]}</Text>
+            <View style={{flex: 1}}>
+              <View style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginLeft: 10
+                // justifyContent: "space-between"
+                }}>
+                <View>
+                  <Text style={{ marginBottom: 2 }}>
+                    <Text style={{ fontWeight: '500', fontSize: 16 }}  onPress={() => { this.fromUserClick(); }}>
+                      {this.fromUserName}
+                    </Text>
+                    <Text style={{ fontWeight: '300', fontSize: 14  }}> gave </Text>
+                    <Text style={{ fontWeight: '500', fontSize: 16 }}  onPress={() => { this.toUserClick(); }}>
+                      {this.toUserName}:
+                    </Text>
+                  </Text>
+                  <Text style={{color: '#afafaf', fontSize: 12}}>{TimestampHandling.fromNow(this.feedEntity.published_ts)}</Text>
+                </View>
+                <View
+                  style={{backgroundColor: '#EEEEEE',borderRadius: 25, paddingVertical: 4, paddingHorizontal: 15, marginLeft: 'auto'}}
+                >
+                  <Text style={{ fontSize: 14, textAlign: 'center', justifyContent: 'center', color: '#484848' }}>P{String(this.transactionEntity.amounts[0])[0]}</Text>
+                </View>
+              </View>
             </View>
           </View>
           {this.giphyEntity && (
@@ -131,7 +132,7 @@ class FeedRow extends Component {
           )}
           {this.getTextMessage && (
             <View style={{ marginTop: 10 }}>
-              <Text style={{ fontSize: 18 }}>{this.getTextMessage}</Text>
+              <Text style={{ fontSize: 14, color: '#34445b' }}>{this.getTextMessage}</Text>
             </View>
           )}
         </View>
