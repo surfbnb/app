@@ -7,7 +7,7 @@ import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native
 import utilities from "../../services/Utilities";
 import deepGet from "lodash/get";
 
-
+import inlineStyles from './styles'
 class BalanceHeader extends Component {
 
     constructor(props){
@@ -79,10 +79,12 @@ class BalanceHeader extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
-                <Text>Your Balance</Text>
-                <Text>P {this.state.balInBt}</Text>
-                <Text>$ {this.state.balInUsd} </Text>
+            <View style={inlineStyles.balanceHeaderContainer}>
+                <View style={inlineStyles.balanceHeader}>
+                <Text style={inlineStyles.balanceToptext}>Your Balance</Text>
+                <Text style={inlineStyles.pepoBalance}>P {this.state.balInBt}</Text>
+                <Text style={inlineStyles.usdBalance}>$ {this.state.balInUsd} </Text>
+                </View>
             </View>
         );
     }
