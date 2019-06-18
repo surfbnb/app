@@ -87,7 +87,7 @@ class AuthScreen extends Component {
           return;
         }
         Animated.timing(this.state.shift, {
-          toValue: gap - 125,
+          toValue: gap - 100,
           duration: 1000,
           useNativeDriver: true
         }).start();
