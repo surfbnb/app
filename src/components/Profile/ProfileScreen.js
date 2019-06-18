@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View , FlatList} from 'react-native';
-import deepGet from 'lodash/get';
 
 import currentUserModel from "../../models/CurrentUser";
 import FeedRow from "../FeedComponents/FeedRow";
@@ -14,7 +13,7 @@ class ProfileScreen extends Component {
   }
 
   componentWillMount() {
-    const url = `/user/${currentUserModel.getUserId()}/feeds`
+    const url = `/users/${currentUserModel.getUserId()}/feeds/`
     this.fetchComponent = new FetchComponent(url); 
     this.getFeedList();
   }
@@ -25,7 +24,6 @@ class ProfileScreen extends Component {
   }
 
   getFeedList = () => {
-    return ;
     this.fetchComponent
       .fetch()
       .then(( res ) => {

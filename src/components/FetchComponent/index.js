@@ -12,12 +12,17 @@ class FetchComponent {
   constructor(url, params, id=("fcomp_" + String(idCnt++))  ) {
     this.id = id;
     this.url = url;
+    this.extraParams = params;
+    this.initVals();
+  }
+
+  initVals(){
     this.isFetching = false;
     this.hasNextPage = true;
     this.nextPagePayload = null;
     this.results = [];
+    this.meta = null;
     this.resultMap = {};
-    this.extraParams = params;
   }
 
   getUrlParams() {
@@ -32,7 +37,6 @@ class FetchComponent {
   }
 
   fetch() {
-    console.log('==here', this);
     if (this.isFetching) {
       return Promise.reject({
         code_error: VCErrors.AlreadyFetchingError
@@ -56,7 +60,9 @@ class FetchComponent {
           return Promise.reject(response);
         }
         console.log('api.get calling dataReceived');
-        this.isFetching = false;
+        setTimeout(()=>{
+          this.isFetching = false;
+        }, 100)
         return this.dataReceived(response);
       })
       .catch((err) => {
@@ -114,6 +120,11 @@ class FetchComponent {
     }
     console.log('processData exit. cleanedUpList.length:', cleanedUpList.length);
     return cleanedUpList;
+  }
+
+  refresh(){
+    this.initVals();
+    return this.fetch();
   }
 
   formatResult(result, response) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View , FlatList , Text} from 'react-native';
+import { View , FlatList } from 'react-native';
 import styles from './styles';
 import FeedRow from '../FeedComponents/FeedRow';
 
@@ -9,7 +9,8 @@ class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feeds : []
+      feeds : [],
+      refreshing : false
     }
   }
 
@@ -34,15 +35,29 @@ class Feed extends Component {
       })
   };
 
+  onRefresh(){
+    this.setState({ refreshing  : true  });
+    this.fetchComponent
+    .refresh()
+    .then( ( res) => {
+      this.setState({ refreshing  : false , feeds : this.fetchComponent.getIDList() });
+    })
+    .catch((error)=>{
+      this.setState({ refreshing  : false  });
+    });
+  }
+
   render() {
       return (
         <View style={styles.container}>
           <FlatList
             data={this.state.feeds}
             onEndReached={this.getFeedList}
+            onRefresh={()=>{this.onRefresh()}}
             keyExtractor={(item, index) => `id_${item}`}
             onEndReachedThreshold={0.5}
             initialNumToRender={20}
+            refreshing={this.state.refreshing}
             renderItem={({ item }) => (
                 <FeedRow id={item} />
             )}
