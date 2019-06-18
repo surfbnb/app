@@ -59,4 +59,11 @@ export default class PriceOracle {
     let exp = BigNumber(10).exponentiatedBy(this.decimal);
     return val.multipliedBy(exp).toString(10);
   }
+
+  fromDecimal( val ){
+    if (!val) return '';
+    val = BigNumber(val);
+    let exp = BigNumber(10).exponentiatedBy(this.decimal);
+    return val.dividedBy(exp).toString(10);
+  }
 }

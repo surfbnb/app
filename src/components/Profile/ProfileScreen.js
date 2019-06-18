@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import { View , FlatList} from 'react-native';
+import { View , FlatList, Text} from 'react-native';
 
 import currentUserModel from "../../models/CurrentUser";
 import FeedRow from "../FeedComponents/FeedRow";
 import {FetchComponent} from "../FetchComponent";
+import BalanceHeader from "./BalanceHeader";
 
 import styles from './styles';
 
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      feeds : [],
+      refreshing : false
+    }
   }
 
   componentWillMount() {
@@ -22,7 +27,7 @@ class ProfileScreen extends Component {
     this.fetchComponent = null;
     this.setState({ feeds : []});
   }
-
+  
   getFeedList = () => {
     this.fetchComponent
       .fetch()
@@ -34,16 +39,31 @@ class ProfileScreen extends Component {
       })
   };
 
+  onRefresh(){
+    this.setState({ refreshing  : true  });
+    this.fetchComponent
+    .refresh()
+    .then( ( res) => {
+      this.setState({ refreshing  : false , feeds : this.fetchComponent.getIDList() });
+    })
+    .catch((error)=>{
+      this.setState({ refreshing  : false  });
+    });
+  }
+
   render() {
-    if (this.props.user_feed && this.props.user_feed.length > 0) {
+    if (this.state.feeds && this.state.feeds.length > 0) {
       return (
         <View style={styles.container}>
           <FlatList
-            data={this.props.user_feed}
+            data={this.state.feeds}
             onEndReached={this.getFeedList}
+            onRefresh={()=>{this.onRefresh()}}
+            refreshing={this.state.refreshing}
             keyExtractor={(item, index) => `id_${item}`}
             onEndReachedThreshold={0.5}
             initialNumToRender={20}
+            ListHeaderComponent={<BalanceHeader isToRefresh={this.state.refreshing}></BalanceHeader>}
             renderItem={({ item }) => (
               <FeedRow id={item} />
             )}

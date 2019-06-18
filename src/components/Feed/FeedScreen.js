@@ -10,7 +10,8 @@ class Feed extends Component {
     super(props);
     this.state = {
       feeds : [],
-      refreshing : false
+      refreshing : false,
+      progressViewOffset: 0
     }
   }
 
@@ -25,15 +26,26 @@ class Feed extends Component {
   }
 
   getFeedList = () => {
+    this.onFetchStart();
     this.fetchComponent
       .fetch()
       .then(( res ) => {
+        this.onFetchEnd();
         this.setState( {feeds : this.fetchComponent.getIDList() })
       })
       .catch((error) => {
+        this.onFetchEnd();
         console.log("getFeedList error" , error);
       })
   };
+
+  onFetchStart(){
+    this.setState({progressViewOffset: 10});
+  }
+
+  onFetchEnd(){
+    this.setState({progressViewOffset: 0});
+  }
 
   onRefresh(){
     this.setState({ refreshing  : true  });
@@ -58,6 +70,7 @@ class Feed extends Component {
             onEndReachedThreshold={0.5}
             initialNumToRender={20}
             refreshing={this.state.refreshing}
+            progressViewOffset={this.state.progressViewOffset}
             renderItem={({ item }) => (
                 <FeedRow id={item} />
             )}
