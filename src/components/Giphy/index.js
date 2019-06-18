@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
   TextInput,
+  ScrollView,
   FlatList,
   ActivityIndicator
 } from 'react-native';
@@ -374,106 +375,109 @@ class Giphy extends Component {
                 });
               }}
             >
-              <TouchableWithoutFeedback
-                onPressOut={() =>
-                  this.setState({
-                    modalOpen: false
-                  })
-                }
-              >
-                <View style={inlineStyles.modal}>
-                  <TouchableWithoutFeedback>
-                    <View style={inlineStyles.modalInner}>
-                      <View style={{ position: 'relative' }}>
-                        <TextInput
-                          editable={true}
-                          onChangeText={(gifSearchQuery) => this.serchTermChanged(gifSearchQuery)}
-                          ref="gif_category_search_query"
-                          textContentType="none"
-                          value={this.state.gifSearchQuery}
-                          style={[Theme.TextInput.textInputStyle, { marginBottom: 10 }]}
-                          placeholder="Search Giphy"
-                          returnKeyType="next"
-                          returnKeyLabel="next"
-                          placeholderTextColor="#ababab"
-                          errorHandler={(fieldName) => {
-                            this.ServerErrorHandler(fieldName);
-                          }}
-                        />
-                        {(showCloseIcon && (
-                          <TouchableWithoutFeedback
-                            onPress={() => {
-                              this.showCategotyList();
+              <ScrollView nestedScrollEnabled={true}>
+                <TouchableWithoutFeedback
+                  onPressOut={() =>
+                    this.setState({
+                      modalOpen: false
+                    })
+                  }
+                >
+                  <View style={inlineStyles.modal}>
+                    <TouchableWithoutFeedback>
+                      <View style={inlineStyles.modalInner}>
+                        <View style={{ position: 'relative' }}>
+                          <TextInput
+                            editable={true}
+                            onChangeText={(gifSearchQuery) => this.serchTermChanged(gifSearchQuery)}
+                            ref="gif_category_search_query"
+                            textContentType="none"
+                            value={this.state.gifSearchQuery}
+                            style={[Theme.TextInput.textInputStyle, { marginBottom: 10 }]}
+                            placeholder="Search Giphy"
+                            returnKeyType="next"
+                            returnKeyLabel="next"
+                            placeholderTextColor="#ababab"
+                            errorHandler={(fieldName) => {
+                              this.ServerErrorHandler(fieldName);
                             }}
-                          >
-                            <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
-                          </TouchableWithoutFeedback>
-                        )) ||
-                          null}
-                      </View>
+                          />
+                          {(showCloseIcon && (
+                            <TouchableWithoutFeedback
+                              onPress={() => {
+                                this.showCategotyList();
+                              }}
+                            >
+                              <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
+                            </TouchableWithoutFeedback>
+                          )) ||
+                            null}
+                        </View>
 
-                      <FlatList
-                        ref={(ref) => {
-                          this.listRef = ref;
-                        }}
-                        contentContainerStyle={{
-                          // flexWrap: 'wrap',
-                          // flexDirection: 'row',
-                          marginRight: 4
-                        }}
-                        onEndReached={() => {
-                          this.loadMore();
-                        }}
-                        refreshing={this.state.isRefreshing}
-                        onRefresh={() => {
-                          this.refreshFlatList();
-                        }}
-                        onEndReachedThreshold={0.7}
-                        data={gifsData}
-                        renderItem={({ item }) => {
-                          return (
-                            <TouchableWithoutFeedback key={item.id} onPress={() => this.handleGiphyPress(item)}>
-                              <View
-                                style={[
-                                  {
-                                    margin: 3,
-                                    borderRadius: 4,
-                                    backgroundColor: 'rgba(238,238,238,1)',
-                                    overflow: 'hidden'
-                                  }
-                                ]}
-                              >
-                                <GracefulImage
-                                  style={{
-                                    width: wh,
-                                    height: wh
-                                  }}
-                                  source={{ uri: item.fixed_width_downsampled.url }}
-                                />
+                        <FlatList
+                          nestedScrollEnabled={true}
+                          ref={(ref) => {
+                            this.listRef = ref;
+                          }}
+                          contentContainerStyle={{
+                            // flexWrap: 'wrap',
+                            // flexDirection: 'row',
+                            marginRight: 4
+                          }}
+                          onEndReached={() => {
+                            this.loadMore();
+                          }}
+                          refreshing={this.state.isRefreshing}
+                          onRefresh={() => {
+                            this.refreshFlatList();
+                          }}
+                          onEndReachedThreshold={0.7}
+                          data={gifsData}
+                          renderItem={({ item }) => {
+                            return (
+                              <TouchableWithoutFeedback key={item.id} onPress={() => this.handleGiphyPress(item)}>
                                 <View
                                   style={[
-                                    inlineStyles.overlay,
                                     {
-                                      backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)',
-                                      height: wh,
-                                      width: wh
+                                      margin: 3,
+                                      borderRadius: 4,
+                                      backgroundColor: 'rgba(238,238,238,1)',
+                                      overflow: 'hidden'
                                     }
                                   ]}
                                 >
-                                  <Text style={inlineStyles.overlayText}>{item.name}</Text>
+                                  <GracefulImage
+                                    style={{
+                                      width: wh,
+                                      height: wh
+                                    }}
+                                    source={{ uri: item.fixed_width_downsampled.url }}
+                                  />
+                                  <View
+                                    style={[
+                                      inlineStyles.overlay,
+                                      {
+                                        backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)',
+                                        height: wh,
+                                        width: wh
+                                      }
+                                    ]}
+                                  >
+                                    <Text style={inlineStyles.overlayText}>{item.name}</Text>
+                                  </View>
                                 </View>
-                              </View>
-                            </TouchableWithoutFeedback>
-                          );
-                        }}
-                        numColumns={3}
-                        keyExtractor={(item, index) => index}
-                        ListFooterComponent={this.renderFooter.bind(this)}
-                      />
-                    </View>
-                  </TouchableWithoutFeedback>
-                </View>
-              </TouchableWithoutFeedback>
+                              </TouchableWithoutFeedback>
+                            );
+                          }}
+                          numColumns={3}
+                          keyExtractor={(item, index) => index}
+                          ListFooterComponent={this.renderFooter.bind(this)}
+                        />
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </View>
+                </TouchableWithoutFeedback>
+              </ScrollView>
             </Modal>
           </React.Fragment>
         )}
