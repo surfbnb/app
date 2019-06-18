@@ -19,8 +19,8 @@ let stylesMap = {
     height: 70,
     position: 'absolute',
     left: 0,
-    alignSelf: ( Platform.OS === 'ios' ) ? 'center' : 'flex-start',
-    justifyContent: ( Platform.OS === 'ios' ) ? 'center' : 'flex-start',
+    alignSelf: Platform.OS === 'ios' ? 'center' : 'flex-start',
+    justifyContent: Platform.OS === 'ios' ? 'center' : 'flex-start',
     top: Dimensions.get('window').height - 70,
     width: Dimensions.get('window').width
     // flex: 0.2,
