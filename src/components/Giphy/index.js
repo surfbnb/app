@@ -9,6 +9,8 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
   TextInput,
+  Switch,
+  ScrollView,
   FlatList,
   ActivityIndicator
 } from 'react-native';
@@ -19,12 +21,14 @@ import deepGet from 'lodash/get';
 import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
 import PlusIcon from '../../assets/plus_icon.png';
+import CrossIcon from '../../assets/cross_icon.png';
 import Theme from '../../theme/styles';
 import TouchableButton from '../../theme/components/TouchableButton';
 import { CategoryViewContext, CATEGORY_VC_ID } from './view_contexts';
 import GracefulImage from './GracefulImage';
 import { FetchComponent, VCErrors } from '../FetchComponent';
 import Colors from '../../theme/styles/Colors';
+import CircleCloseIcon from '../../assets/circle_close_icon.png';
 
 class Giphy extends Component {
   constructor(props) {
@@ -314,23 +318,35 @@ class Giphy extends Component {
       screenWidth = this.screenWidth - 40,
       itemWidth = 200,
       ratio = colWidth / itemWidth,
-      wh = itemWidth * ratio;
+      wh = itemWidth * ratio,
+      showCloseIcon = this.state.gifSearchQuery ? true : false;
 
     if (Object.keys(this.state.selectedImage).length) {
-      let ratioFullScreen = screenWidth / parseInt(this.state.selectedImage.downsized.width);
       imageSelector = (
-        <ImageBackground
-          source={{ uri: this.state.selectedImage.downsized.url }}
-          style={{
-            height: parseInt(this.state.selectedImage.downsized.height) * ratioFullScreen,
-            width: parseInt(this.state.selectedImage.downsized.width) * ratioFullScreen,
-            position: 'relative' // because it's parent
-          }}
+        <View
+          style={[
+            {
+              backgroundColor: 'rgba(238,238,238,1)',
+              overflow: 'hidden'
+            }
+          ]}
         >
-          <TouchableWithoutFeedback onPress={() => this.setState({ selectedImage: {} })}>
-            <Image source={PlusIcon} style={[inlineStyles.crossIconSkipFont, { top: 5, right: 5 }]} />
-          </TouchableWithoutFeedback>
-        </ImageBackground>
+          <ActivityIndicator style={{ position: 'absolute', left: '50%', top: '50%' }} />
+          <ImageBackground
+            source={{ uri: this.state.selectedImage.downsized.url }}
+            style={{
+              width: '100%',
+              aspectRatio:
+                parseInt(this.state.selectedImage.downsized.width) /
+                parseInt(this.state.selectedImage.downsized.height),
+              position: 'relative' // because it's parent
+            }}
+          >
+            <TouchableWithoutFeedback onPress={() => this.setState({ selectedImage: {} })}>
+              <Image source={CircleCloseIcon} style={[inlineStyles.crossIconSkipFont, { top: 5, right: 5 }]} />
+            </TouchableWithoutFeedback>
+          </ImageBackground>
+        </View>
       );
     } else {
       imageSelector = (
@@ -391,13 +407,16 @@ class Giphy extends Component {
                             this.ServerErrorHandler(fieldName);
                           }}
                         />
-                        <TouchableWithoutFeedback
-                          onPress={() => {
-                            this.showCategotyList();
-                          }}
-                        >
-                          <Image source={PlusIcon} style={inlineStyles.crossIconSkipFont} />
-                        </TouchableWithoutFeedback>
+                        {(showCloseIcon && (
+                          <TouchableWithoutFeedback
+                            onPress={() => {
+                              this.showCategotyList();
+                            }}
+                          >
+                            <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
+                          </TouchableWithoutFeedback>
+                        )) ||
+                          null}
                       </View>
 
                       <FlatList

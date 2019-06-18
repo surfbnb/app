@@ -108,12 +108,19 @@ export default class PepoApi {
         this._dispatchData(responseJSON);
 
         console.log(`Response status ${responseStatus} for ${this.cleanedUrl} with JSON payload:`, responseJSON);
-
-        if( responseStatus == 401 ){
-          CurrentUser.logout(responseJSON);
-          Store.dispatch(hideModal());
-        }else if (responseStatus >= 400 && responseStatus <= 500) {
-          Store.dispatch(hideModal());
+        
+        switch (responseStatus) {
+          case 401:
+            CurrentUser.logout(responseJSON);
+            Store.dispatch(hideModal());
+            break;
+          case 404:
+            Store.dispatch(hideModal());
+            break;
+          case 500:
+            Store.dispatch(hideModal());
+            Store.dispatch(showToast(ErrorMessages.general_error));
+            break;
         }
 
         return resolve(responseJSON);

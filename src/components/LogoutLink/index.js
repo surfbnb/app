@@ -1,22 +1,21 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import CurrentUser from '../../models/CurrentUser';
 import LoadingModal from '../../theme/components/LoadingModal';
 import Toast from '../../theme/components/Toast';
+import Logout_icon from '../../assets/logout_icon.png';
 
-const LogoutLink = () => (
+const LogoutLink = (props) => (
   <React.Fragment>
-    <Text
-      style={{
-        color: 'rgb(72,72,72)',
-        padding: 10
-      }}
-      onPress={() => {
-        CurrentUser.logout();
-      }}
-    >
-      Logout
-    </Text>
+    {props.navigation && props.navigation.state.routeName === 'ProfileScreen' && (
+      <TouchableOpacity
+        onPress={() => {
+          CurrentUser.logout();
+        }}
+      >
+        <Image style={{ height: 18, width: 18, marginRight: 20 }} source={Logout_icon} />
+      </TouchableOpacity>
+    )}
     <LoadingModal />
     <Toast timeout={3000} />
   </React.Fragment>

@@ -1,8 +1,28 @@
-import { connect } from 'react-redux';
-import currenUserModel from "../../models/CurrentUser";
+import React, { Component } from 'react';
+import { View  } from 'react-native';
+import ProfileScreen from "./ProfileScreen";
 
-import ProfileScreen from './ProfileScreen';
+import styles from './styles';
+import LogoutComponent from '../LogoutLink';
 
-const mapStateToProps = ({ user_feed_list }) => ({ user_feed : user_feed_list[currenUserModel.getUserId()] });
+class Profile extends Component {
+  static navigationOptions = (options) => {
+    return {
+      headerTitle: 'Profile',
+      headerRight: <LogoutComponent {...options} />
+    };
+  };
+  constructor(props) {
+    super(props);
+  }
 
-export default connect(mapStateToProps)(ProfileScreen);
+  render() {
+    return (
+      <View style={styles.container}>
+        <ProfileScreen></ProfileScreen>
+      </View>
+    );
+  }
+}
+
+export default Profile;

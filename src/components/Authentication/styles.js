@@ -1,14 +1,30 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
+import Colors from '../../theme/styles/Colors';
+import { Dimensions, Platform } from 'react-native';
 
 let stylesMap = {
   container: {
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
     flex: 1,
-    justifyContent: 'space-between'
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.white
   },
   form: {
-    width: 300
+    backgroundColor: Colors.white,
+    width: Dimensions.get('window').width,
+    paddingLeft: ( Platform.OS === 'ios' ) ? 20 : 30,
+    paddingRight: ( Platform.OS === 'ios' ) ? 20 : 30
+  },
+  bottomBtnAndTxt: {
+    height: 70,
+    position: 'absolute',
+    left: 0,
+    alignSelf: Platform.OS === 'ios' ? 'center' : 'flex-start',
+    justifyContent: Platform.OS === 'ios' ? 'center' : 'flex-start',
+    top: Dimensions.get('window').height - 70,
+    width: Dimensions.get('window').width
+    // flex: 0.2,
+    // justifyContent: 'flex-end'
   },
   title: {
     fontSize: 24,
@@ -19,13 +35,14 @@ let stylesMap = {
     textAlign: 'center',
     color: 'rgb(136,136,136)',
     fontSize: 13,
-    marginBottom: 8
+    marginBottom: 5
   },
   link: {
     textAlign: 'center',
-    color: 'rgb(22,141,193)',
+    color: Colors.primary,
     fontSize: 15,
-    fontWeight: '400'
+    fontWeight: '400',
+    paddingBottom: 20
   },
   error: {
     textAlign: 'center',
@@ -36,11 +53,8 @@ let stylesMap = {
   imgPepoLogoSkipFont: {
     height: 70,
     width: 150,
-    marginBottom: 20,
+    marginBottom: 10,
     alignSelf: 'center'
-  },
-  bottomBtnAndTxt: {
-    height: 65
   }
 };
 

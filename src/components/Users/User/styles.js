@@ -44,7 +44,6 @@ let stylesMap = {
     justifyContent: 'flex-end'
   },
   imageStyleSkipFont: {
-    backgroundColor: '#ef5566',
     marginRight: 10,
     borderRadius: 20,
     height: 40,

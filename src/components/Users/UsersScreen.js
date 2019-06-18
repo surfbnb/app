@@ -10,6 +10,12 @@ import utilities from '../../services/Utilities';
 import errorMessage from '../../constants/ErrorMessages';
 
 class Users extends Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      headerTitle: 'Friends',
+      headerBackTitle: null
+    };
+  };
   constructor(props) {
     super(props);
     this.nextPagePayload = {};
@@ -49,13 +55,13 @@ class Users extends Component {
   userClick(item) {
     let headerText = 'Transaction';
     if (item) {
-      headerText =  item.first_name +" " + item.last_name;
+      headerText = `${item.first_name} ${item.last_name}`;
     }
     if (!currentUserModel.isUserActivated()) {
       utilities.showAlert('', errorMessage.userNotActive);
       return;
     }
-    this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText , toUser : item });
+    this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
   }
 
   render() {

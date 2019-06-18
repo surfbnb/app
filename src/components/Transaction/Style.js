@@ -13,7 +13,6 @@ export default styles = StyleSheet.create({
     fontSize: 16
   },
   switchStyle: {
-    marginLeft: 10,
     justifyContent: 'flex-end',
     borderColor: Colors.white,
     borderWidth: 0,
@@ -30,7 +29,8 @@ export default styles = StyleSheet.create({
     marginRight: 10
   },
   dottedBtn: {
-    flex: 2
+    flex: 2,
+    alignItems: 'center'
   },
   modalBackDrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
@@ -42,23 +42,18 @@ export default styles = StyleSheet.create({
     transform: [{ translateY: -Dimensions.get('window').height * 0.25 }]
   },
   modalCloseBtnWrapper: {
-    borderColor: Colors.white,
-    borderWidth: 1,
-    borderRadius: 25,
     height: 40,
     width: 40,
     left: '50%',
     marginLeft: -20,
-    backgroundColor: 'transparent',
     marginBottom: 10
   },
   crossIcon: {
-    width: 20,
+    width: 30,
     position: 'absolute',
     right: 10,
     top: 10,
-    height: 20,
-    transform: [{ rotate: '45deg' }]
+    height: 30
   },
   modalContentWrapper: {
     borderRadius: 3,
@@ -76,6 +71,6 @@ export default styles = StyleSheet.create({
   nonEditableTextInput: {
     marginLeft: 10,
     textAlign: 'center',
-    paddingRight: 10
+    paddingRight: 15
   }
 });
