@@ -3,6 +3,7 @@ import { View, Text, Image, Dimensions } from 'react-native';
 import styles from './styles';
 import Store from '../../store';
 import PepoIcon from '../../assets/user_friends.png';
+import TimestampHandling from '../../helpers/timestampHandling';
 
 class FeedRow extends Component {
   constructor(props) {
@@ -69,7 +70,7 @@ class FeedRow extends Component {
                 <Text>gave </Text>
                 <Text style={{ fontWeight: 'bold', fontSize: 18 }}> {this.toUserName}:</Text>
               </Text>
-              <Text style={{ marginLeft: 5 }}>{this.feedEntity.published_ts}</Text>
+              <Text style={{ marginLeft: 5 }}>{TimestampHandling.fromNow(this.feedEntity.published_ts)}</Text>
             </View>
             <View
               style={{
