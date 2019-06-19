@@ -13,7 +13,7 @@ let styles = {
     paddingLeft: 15,
     marginTop: 10,
     color: Colors.dark,
-    height: Platform.OS === 'ios' ? 46 : 40,
+    height: Platform.OS === 'ios' ? 46 : 40
   }
 };
 

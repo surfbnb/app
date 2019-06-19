@@ -2,6 +2,8 @@ import AssignIn from 'lodash/assignIn';
 import DeepGet from 'lodash/get';
 import qs from 'qs';
 import NetInfo from '@react-native-community/netinfo';
+import Package from '../../package';
+import { Platform } from 'react-native';
 
 import Store from '../store';
 import {
@@ -10,9 +12,7 @@ import {
   upsertTransactionEntities,
   upsertGiffyEntities,
   upsertFeedEntities,
-  addPublicFeedList,
   addUserList,
-  addUserFeedList,
   showToast
 } from '../actions';
 import { API_ROOT } from '../constants/index';
@@ -26,7 +26,8 @@ export default class PepoApi {
     this.defaultParams = {
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'User-Agent': this._getUserAgent()
       }
     };
     this._cleanUrl();
@@ -58,6 +59,16 @@ export default class PepoApi {
 
   _parseParams() {
     this.parsedParams = AssignIn(this.defaultParams, this.params);
+  }
+
+  _getUserAgent() {
+    let name = Package.name,
+      appVersion = Package.version,
+      rnVersion = Package.dependencies['react-native'],
+      os = Platform.OS,
+      osVersion = Platform.Version,
+      envDev = __DEV__ === true;
+    return `${os} ${osVersion}; RN ${rnVersion}; ${name} ${appVersion}; envDev ${envDev}`;
   }
 
   _dispatchData(responseJSON) {

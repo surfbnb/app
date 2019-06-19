@@ -88,23 +88,16 @@ class FeedRow extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{marginTop: 10}}></View>
+        <View style={{ marginTop: 10 }}></View>
         <View style={styles.cellWrapper}>
           <View style={styles.header}>
             <View>
-              <Image
-                source={DefaultUserIcon}
-                style={ styles.profileImgSkipFont}
-              />
+              <Image source={DefaultUserIcon} style={styles.profileImgSkipFont} />
             </View>
             <View style={{ flex: 1 }}>
-              <View
-                style={ styles.userInfo }
-              >
-                <View style={{flex: 1}}>
-                  <Text style={ styles.userNameText }
-                        numberOfLines={1}
-                  >
+              <View style={styles.userInfo}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.userNameText} numberOfLines={1}>
                     <Text
                       onPress={() => {
                         this.fromUserClick();
@@ -121,22 +114,16 @@ class FeedRow extends Component {
                       {this.toUserName}
                     </Text>
                   </Text>
-                  <Text style={ styles.timeStamp }>
-                    {TimestampHandling.fromNow(this.feedEntity.published_ts)}
-                  </Text>
+                  <Text style={styles.timeStamp}>{TimestampHandling.fromNow(this.feedEntity.published_ts)}</Text>
                 </View>
-                <View
-                  style={ styles.figure}
-                >
-                  <Text style={{ textAlign: 'center' }}>
-                    P{this.getBtAmount()}
-                  </Text>
+                <View style={styles.figure}>
+                  <Text style={{ textAlign: 'center' }}>P{this.getBtAmount()}</Text>
                 </View>
               </View>
             </View>
           </View>
           {this.giphyEntity && (
-            <View style={{marginTop: 10}}>
+            <View style={{ marginTop: 10 }}>
               <Image
                 source={{ uri: this.giphyEntity.downsized.url }}
                 style={{
@@ -147,7 +134,7 @@ class FeedRow extends Component {
             </View>
           )}
           {this.getTextMessage && (
-            <View style={{marginTop: 10}}>
+            <View style={{ marginTop: 10 }}>
               <Text style={{ fontSize: 14, color: '#484848', fontWeight: '100' }}>{this.getTextMessage}</Text>
             </View>
           )}

@@ -1,4 +1,4 @@
-import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
@@ -12,7 +12,7 @@ let stylesMap = {
     backgroundColor: Colors.white,
     borderColor: Colors.lightGrey,
     borderRadius: 6,
-    padding: 15,
+    padding: 15
   },
   profileImgSkipFont: {
     borderRadius: 20,

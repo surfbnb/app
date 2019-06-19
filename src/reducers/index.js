@@ -1,7 +1,7 @@
 import { createActions, handleActions } from 'redux-actions';
 import assignIn from 'lodash/assignIn';
 import * as types from '../actions/constants';
-import deepGet from "lodash/get";
+import deepGet from 'lodash/get';
 
 export const {
   showModal,
@@ -16,8 +16,7 @@ export const {
   addPublicFeedList,
   addUserFeedList,
   upsertTransactionEntities,
-  upsertGiffyEntities 
-
+  upsertGiffyEntities
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -68,18 +67,17 @@ export const reducer = handleActions(
       giffy_entities: assignIn({}, state.giffy_entities, action.payload.giffy_entities)
     }),
     [addUserFeedList]: (state, action) => {
-      let stateUserfeedList = state.user_feed_list , 
-          userId = action.payload.user_id, 
-          exisitingUserFeedList = deepGet( stateUserfeedList , userId ) || []
-          newUserFeedList = action.payload.user_feed_list,
-          userFeedList = [...exisitingUserFeedList , ...newUserFeedList],
-          finalUserList = {}
-          ;
-        finalUserList[ userId ] = userFeedList; 
-        return {
-          ...state,
-          user_feed_list:assignIn({}, stateUserfeedList , finalUserList )
-        }
+      let stateUserfeedList = state.user_feed_list,
+        userId = action.payload.user_id,
+        exisitingUserFeedList = deepGet(stateUserfeedList, userId) || [];
+      (newUserFeedList = action.payload.user_feed_list),
+        (userFeedList = [...exisitingUserFeedList, ...newUserFeedList]),
+        (finalUserList = {});
+      finalUserList[userId] = userFeedList;
+      return {
+        ...state,
+        user_feed_list: assignIn({}, stateUserfeedList, finalUserList)
+      };
     },
     [logoutUser]: (state, action) => ({ ...defaultState })
   },
