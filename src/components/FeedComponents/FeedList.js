@@ -89,10 +89,10 @@ class FeedList extends Component {
     this.props.onNextError && this.props.onNextError(error);
   }
 
-  renderFooter() {
-    if (!this.state.isLoadingMore) return null;
+  renderFooter = () => {
+    if (!this.state.loadingNext) return null;
     return <ActivityIndicator />;
-  }
+  };
 
   render() {
     return (
@@ -112,7 +112,7 @@ class FeedList extends Component {
         refreshing={this.state.refreshing}
         progressViewOffset={this.state.progressViewOffset}
         ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
-        ListFooterComponent={this.renderFooter.bind(this)}
+        ListFooterComponent={this.renderFooter}
         renderItem={({ item }) => <FeedRow id={item} nestedNavigation={this.props.nestedNavigation ? true : false} />}
       />
     );
