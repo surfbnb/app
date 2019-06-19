@@ -88,69 +88,55 @@ class FeedRow extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={{marginTop: 10}}></View>
         <View style={styles.cellWrapper}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+          <View style={styles.header}>
             <View>
               <Image
                 source={DefaultUserIcon}
-                style={{
-                  borderRadius: 20,
-                  height: 40,
-                  width: 40
-                }}
+                style={ styles.profileImgSkipFont}
               />
             </View>
             <View style={{ flex: 1 }}>
               <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginLeft: 10
-                  // justifyContent: "space-between"
-                }}
+                style={ styles.userInfo }
               >
-                <View>
-                  <Text style={{ marginBottom: 2 }}>
+                <View style={{flex: 1}}>
+                  <Text style={ styles.userNameText }
+                        numberOfLines={1}
+                  >
                     <Text
-                      style={{ fontWeight: '500', fontSize: 16 }}
                       onPress={() => {
                         this.fromUserClick();
                       }}
                     >
                       {this.fromUserName}
                     </Text>
-                    <Text style={{ fontWeight: '300', fontSize: 14 }}> gave </Text>
+                    <Text style={{ fontWeight: '300', fontSize: 13 }}> gave </Text>
                     <Text
-                      style={{ fontWeight: '500', fontSize: 16 }}
                       onPress={() => {
                         this.toUserClick();
                       }}
                     >
-                      {this.toUserName}:
+                      {this.toUserName}
                     </Text>
                   </Text>
-                  <Text style={{ color: '#afafaf', fontSize: 12 }}>
+                  <Text style={ styles.timeStamp }>
                     {TimestampHandling.fromNow(this.feedEntity.published_ts)}
                   </Text>
                 </View>
                 <View
-                  style={{
-                    backgroundColor: '#EEEEEE',
-                    borderRadius: 25,
-                    paddingVertical: 4,
-                    paddingHorizontal: 15,
-                    marginLeft: 'auto'
-                  }}
+                  style={ styles.figure}
                 >
-                  <Text style={{ fontSize: 14, textAlign: 'center', justifyContent: 'center', color: '#484848' }}>
-                    P {this.getBtAmount()}
+                  <Text style={{ textAlign: 'center' }}>
+                    P{this.getBtAmount()}
                   </Text>
                 </View>
               </View>
             </View>
           </View>
           {this.giphyEntity && (
-            <View>
+            <View style={{marginTop: 10}}>
               <Image
                 source={{ uri: this.giphyEntity.downsized.url }}
                 style={{
@@ -161,8 +147,8 @@ class FeedRow extends Component {
             </View>
           )}
           {this.getTextMessage && (
-            <View style={{ marginTop: 10 }}>
-              <Text style={{ fontSize: 14, color: '#34445b' }}>{this.getTextMessage}</Text>
+            <View style={{marginTop: 10}}>
+              <Text style={{ fontSize: 14, color: '#484848', fontWeight: '100' }}>{this.getTextMessage}</Text>
             </View>
           )}
         </View>

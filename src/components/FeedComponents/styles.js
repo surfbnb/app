@@ -3,21 +3,49 @@ import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   container: {
-    // flexDirection: 'column',
     flex: 1,
-    // padding: 20,
     paddingHorizontal: 15,
     backgroundColor: Colors.whiteSmoke
   },
   cellWrapper: {
-    // marginBottom: 20,
     borderWidth: 0.2,
     backgroundColor: Colors.white,
-    borderColor: 'rgba(0, 0, 0, 0.5)',
+    borderColor: Colors.lightGrey,
     borderRadius: 6,
     padding: 15,
-    marginVertical: 20,
-    marginBottom: 5
+  },
+  profileImgSkipFont: {
+    borderRadius: 20,
+    height: 40,
+    width: 40
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 10
+  },
+  figure: {
+    backgroundColor: Colors.whiteSmoke,
+    borderRadius: 25,
+    paddingVertical: 4,
+    width: 50,
+    fontSize: 12,
+    color: Colors.dark
+  },
+  userNameText: {
+    marginBottom: 2,
+    fontSize: 14,
+    color: Colors.dark,
+    paddingRight: 8,
+    fontWeight: '500'
+  },
+  timeStamp: {
+    color: Colors.light,
+    fontSize: 12
   }
 };
 
