@@ -32,8 +32,7 @@ let stylesMap = {
     backgroundColor: Colors.whiteSmoke,
     borderRadius: 25,
     paddingVertical: 4,
-    width: 50,
-    fontSize: 12,
+    minWidth: 50,
     color: Colors.dark
   },
   userNameText: {

@@ -97,7 +97,7 @@ class FeedRow extends Component {
             <View style={{ flex: 1 }}>
               <View style={styles.userInfo}>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.userNameText} numberOfLines={1}>
+                  <Text style={styles.userNameText}>
                     <Text
                       onPress={() => {
                         this.fromUserClick();
@@ -117,7 +117,7 @@ class FeedRow extends Component {
                   <Text style={styles.timeStamp}>{TimestampHandling.fromNow(this.feedEntity.published_ts)}</Text>
                 </View>
                 <View style={styles.figure}>
-                  <Text style={{ textAlign: 'center' }}>P{this.getBtAmount()}</Text>
+                  <Text style={{ textAlign: 'center', fontSize: 12 }}>P{this.getBtAmount()}</Text>
                 </View>
               </View>
             </View>

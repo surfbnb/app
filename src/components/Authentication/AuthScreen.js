@@ -277,12 +277,7 @@ class AuthScreen extends Component {
                       this.onSubmitEditing(this.tabIndex.firstName)
                     }}
                     isFocus={this.state.current_formField == this.tabIndex.firstName}
-                    onFocus={() => {
-                      //this.state.current_formField = this.tabIndex.firstName ;
-                      this.setState({
-                        current_formField: this.tabIndex.firstName
-                      })
-                    }}
+                    onFocus={() => { this.state.current_formField = this.tabIndex.firstName ; }}
                     blurOnSubmit={false}
                     errorHandler={(fieldName) => {
                       this.serverErrorHandler(fieldName);
@@ -293,7 +288,6 @@ class AuthScreen extends Component {
                     editable={true}
                     onChangeText={(last_name) => this.setState({ last_name, error: null, last_name_error: null })}
                     fieldName="last_name"
-                    index={2}
                     textContentType="none"
                     value={this.state.last_name}
                     style={[Theme.TextInput.textInputStyle, this.state.last_name_error ? Theme.Errors.errorBorder : {}]}
@@ -308,12 +302,7 @@ class AuthScreen extends Component {
                       this.onSubmitEditing(this.tabIndex.lastName)
                     }}
                     isFocus={this.state.current_formField == this.tabIndex.lastName}
-                    onFocus={() => {
-                      //this.state.current_formField = this.tabIndex.lastName ;
-                      this.setState({
-                        current_formField: this.tabIndex.lastName
-                      })
-                    }}
+                    onFocus={() => {this.state.current_formField = this.tabIndex.lastName ;}}
                     blurOnSubmit={false}
                     errorHandler={(fieldName) => {
                       this.serverErrorHandler(fieldName);
@@ -326,7 +315,6 @@ class AuthScreen extends Component {
                 editable={true}
                 onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
                 fieldName="user_name"
-                index={3}
                 value={this.state.user_name}
                 style={[Theme.TextInput.textInputStyle, this.state.user_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="Username"
@@ -342,7 +330,6 @@ class AuthScreen extends Component {
                 }}
                 isFocus={this.state.current_formField == this.tabIndex.userName}
                 onFocus={() => {
-                  //this.state.current_formField = this.tabIndex.userName ;
                   this.setState({
                     current_formField: this.tabIndex.userName
                   })
@@ -358,7 +345,6 @@ class AuthScreen extends Component {
                 onChangeText={(password) => this.setState({ password, error: null, password_error: null })}
                 placeholder="Password"
                 fieldName="password"
-                index={4}
                 returnKeyType="next"
                 secureTextEntry={true}
                 style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
@@ -372,12 +358,7 @@ class AuthScreen extends Component {
                   this.onSubmitEditing(this.tabIndex.password)
                 }}
                 isFocus={ this.state.current_formField == this.tabIndex.password }
-                onFocus={() => {
-                  //this.state.current_formField = this.tabIndex.password;
-                  this.setState({
-                    current_formField: this.tabIndex.password
-                  })
-                }}
+                onFocus={() => {this.state.current_formField = this.tabIndex.password;}}
                 blurOnSubmit={true}
                 errorHandler={(fieldName) => {
                   this.serverErrorHandler(fieldName);
