@@ -7,7 +7,12 @@ let stylesMap = {
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
+    height: '100%',
+    left: 0,
+    position: 'absolute',
+    top: 0,
+    width: '100%'
   },
   form: {
     backgroundColor: Colors.white,
