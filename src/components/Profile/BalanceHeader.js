@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import PriceOracle from '../../services/PriceOracle';
-import { TOKEN_ID } from '../../constants';
 import currentUserModal from '../../models/CurrentUser';
-import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import utilities from '../../services/Utilities';
+import {  OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
+import pricer from "../../services/Pricer";
 
 import inlineStyles from './styles';
 class BalanceHeader extends Component {
@@ -17,12 +16,8 @@ class BalanceHeader extends Component {
     };
     this.fetching = false;
     this.isRetryUpdatePricePoint = false;
-    this.initDefaults();
-    this.updatePricePoint();
-  }
-
-  initDefaults() {
     this.priceOracle = null;
+    this.updatePricePoint();
   }
 
   componentWillReceiveProps() {
@@ -36,20 +31,16 @@ class BalanceHeader extends Component {
     if (!currentUserModal.isUserActivated()) {
       return;
     }
-    OstWalletSdk.getToken(TOKEN_ID, (token) => {
-      OstJsonApi.getPricePointForUserId(
-        ostUserId,
-        (pricePoints) => {
-          this.initPriceOracle(token, pricePoints);
-          this.getBalance();
-        },
-        (error) => {}
-      );
-    });
+    pricer.getPriceOracleConfig( ostUserId , (token, pricePoints)=>{
+      this.initPriceOracle(token, pricePoints);
+      this.getBalance();
+    }, (error)=>{
+      //DO nothing. 
+    }); 
   }
 
   initPriceOracle(token, pricePoints) {
-    this.priceOracle = new PriceOracle(utilities.getPriceOracleConfig(token, pricePoints));
+    this.priceOracle = new PriceOracle( token, pricePoints );
   }
 
   getBalance() {
@@ -76,6 +67,7 @@ class BalanceHeader extends Component {
   }
 
   updateBalance(res) {
+    if(!this.priceOracle) return;
     this.fetching = false;
     let btBalance = deepGet(res, 'balance.available_balance');
     btBalance = this.priceOracle.fromDecimal(btBalance);

@@ -1,22 +1,21 @@
 import BigNumber from 'bignumber.js';
 
+
 const usdPrecession = 5;
 const btPrecession = 5;
 
 export default class PriceOracle {
-  constructor(config) {
-    if (!config || !config.conversionFactor || !config.usdPricePoint || !config.decimal) {
+  constructor( token , pricePoints ) {
+    if (!token || !token.conversion_factor || !token.decimals || !pricePoints ) {
       return null;
     }
-    this.conversionFactor = config.conversionFactor;
-    this.usdPricePoint = config.usdPricePoint;
-    this.decimal = config.decimal;
+    this.conversionFactor = token.conversion_factor;
+    this.decimals = token.decimals;
+    this.usdPricePoint = pricePoints["USD"];
   }
 
   btToFiat(bt) {
-    if (!bt) {
-      return '';
-    }
+    if (!bt || !this.usdPricePoint) { return ''; }
     bt = BigNumber(bt);
     let fiatBN = BigNumber(this.usdPricePoint);
     oneBtToFiat = fiatBN.dividedBy(this.conversionFactor);
@@ -34,7 +33,7 @@ export default class PriceOracle {
   }
 
   fiatToBt(fiat) {
-    if (!fiat) {
+    if (!fiat || !this.usdPricePoint ) {
       return '';
     }
     fiat = BigNumber(fiat);
@@ -56,22 +55,22 @@ export default class PriceOracle {
   toDecimal(val) {
     if (!val) return '';
     val = BigNumber(val);
-    let exp = BigNumber(10).exponentiatedBy(this.decimal);
+    let exp = BigNumber(10).exponentiatedBy(this.decimals);
     return val.multipliedBy(exp).toString(10);
   }
 
   fromDecimal(val) {
     if (!val) return '';
     val = BigNumber(val);
-    let exp = BigNumber(10).exponentiatedBy(this.decimal);
+    let exp = BigNumber(10).exponentiatedBy(this.decimals);
     return val.dividedBy(exp).toString(10);
   }
 
-  static fromDecimal(val, decimal) {
-    decimal = decimal || 18;
+  static fromDecimal(val, decimals) {
+    decimals = decimals || 18;
     if (!val) return '';
     val = BigNumber(val);
-    let exp = BigNumber(10).exponentiatedBy(decimal);
+    let exp = BigNumber(10).exponentiatedBy(decimals);
     return val.dividedBy(exp).toString(10);
   }
 

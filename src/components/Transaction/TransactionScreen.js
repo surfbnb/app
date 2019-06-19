@@ -7,10 +7,8 @@ import {
   TextInput,
   Switch,
   TouchableOpacity,
-  Dimensions,
   Modal,
   Image,
-  ActivityIndicator,
   Platform
 } from 'react-native';
 
@@ -26,13 +24,13 @@ import utilities from '../../services/Utilities';
 import Store from '../../store';
 import { showModal, hideModal } from '../../actions';
 import appConfig from '../../constants/AppConfig';
-import { TOKEN_ID } from '../../constants';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import CircleCloseIcon from '../../assets/circle_close_icon.png';
 import EditIcon from '../../assets/edit_icon.png';
 import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
+import pricer from "../../services/Pricer";
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -44,7 +42,7 @@ class TransactionScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      isLoading: false,
       message: null,
       clearErrors: false,
       server_errors: null,
@@ -88,26 +86,19 @@ class TransactionScreen extends Component {
 
   updatePricePoint(successCallback, errorCallback) {
     const ostUserId = currentUserModal.getOstUserId();
-    OstWalletSdk.getToken(TOKEN_ID, (token) => {
-      OstJsonApi.getPricePointForUserId(
-        ostUserId,
-        (res) => {
-          this.onGetPricePointSuccess(token, res);
-          successCallback && successCallback(res);
-        },
-        (error) => {
-          this.setState({ isLoading: false });
-          errorCallback && errorCallback(error);
-        }
-      );
+    pricer.getPriceOracleConfig( ostUserId , (token , pricePoints )=>{
+      this.onGetPricePointSuccess(token, pricePoints);
+      successCallback && successCallback(token , pricePoints );
+    }, (error)=>{
+      errorCallback && errorCallback(error);
     });
   }
 
-  onGetPricePointSuccess(token, res) {
+  onGetPricePointSuccess(token, pricePoints) {
     let btUSDAmount = null;
-    this.priceOracle = new PriceOracle(this.getPriceOracleConfig(token, res));
+    this.priceOracle = new PriceOracle(token, pricePoints);
     btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
-    this.setState({ btUSDAmount: btUSDAmount, isLoading: false });
+    this.setState({ btUSDAmount: btUSDAmount});
   }
 
   onGetPricePointError(error) {
@@ -225,17 +216,6 @@ class TransactionScreen extends Component {
     this.setState({ btAmount: bt, btUSDAmount: usd });
   }
 
-  getPriceOracleConfig(token, res) {
-    const conversionFactor = deepGet(token, 'conversion_factor');
-    const decimal = deepGet(token, 'decimals');
-    const usdPricePoint = deepGet(res, 'price_point.OST.USD');
-    return {
-      conversionFactor: conversionFactor,
-      usdPricePoint: usdPricePoint,
-      decimal: decimal
-    };
-  }
-
   onMessageBtnPress() {
     this.setState({ isMessageVisible: !this.state.isMessageVisible });
     if (this.state.isMessageVisible) {
@@ -265,11 +245,12 @@ class TransactionScreen extends Component {
   render() {
     return (
       <View style={inlineStyles.container}>
-        {this.state.isLoading && (
+       
+        {/* {this.state.isLoading && (
           <React.Fragment>
             <ActivityIndicator />
           </React.Fragment>
-        )}
+        )} */}
 
         {!this.state.isLoading && (
           <React.Fragment>

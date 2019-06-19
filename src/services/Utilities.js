@@ -31,16 +31,5 @@ export default {
     setTimeout(() => {
       Alert.alert(title, message);
     }, 10);
-  },
-
-  getPriceOracleConfig(token, pricePoints) {
-    const conversionFactor = deepGet(token, 'conversion_factor');
-    const decimal = deepGet(token, 'decimals');
-    const usdPricePoint = deepGet(pricePoints, 'price_point.OST.USD');
-    return {
-      conversionFactor: conversionFactor,
-      usdPricePoint: usdPricePoint,
-      decimal: decimal
-    };
   }
 };
