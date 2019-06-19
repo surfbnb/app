@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList , View } from 'react-native';
+import { FlatList , View , ActivityIndicator} from 'react-native';
 import FeedRow from '../FeedComponents/FeedRow';
 import {FetchServices} from "../../services/FetchServices";
 
@@ -9,9 +9,9 @@ class FeedList extends Component {
     this.state = {
       feeds : [],
       refreshing : false,
+      loadingNext: false,
       progressViewOffset: 0
     }
-    this.loadingNext = false;
     if( this.props.fetchUrl ){
         this.fetchServices = new FetchServices(this.props.fetchUrl);
     }
@@ -60,7 +60,7 @@ class FeedList extends Component {
   }
 
   getNext = () => {
-    if(this.loadingNext) return ;
+    if(this.state.loadingNext) return ;
     this.beforeNext();
     this.fetchServices
       .fetch()
@@ -75,18 +75,23 @@ class FeedList extends Component {
   };
 
   beforeNext(){
-    this.loadingNext = true;
+    this.setState({ loadingNext : true });
     this.props.beforeNext && this.props.beforeNext();
   }
 
   onNext( res ){
-    this.loadingNext = false;
+    this.setState({ loadingNext : false });
     this.props.onNext && this.props.onNext( res );
   }
 
   onNextError(error){
-    this.loadingNext = false;
+    this.setState({ loadingNext : false });
     this.props.onNextError && this.props.onNextError(error);
+  }
+
+  renderFooter() {
+    if (!this.state.isLoadingMore) return null;
+    return <ActivityIndicator/>;
   }
 
   render() {
@@ -102,6 +107,7 @@ class FeedList extends Component {
             refreshing={this.state.refreshing}
             progressViewOffset={this.state.progressViewOffset}
             ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
+            ListFooterComponent={this.renderFooter.bind(this)}
             renderItem={({ item }) => (
                 <FeedRow id={item} nestedNavigation={ this.props.nestedNavigation ? true : false } />
             )}

@@ -26,7 +26,7 @@ class BalanceHeader extends Component {
         this.priceOracle = null;
     }
 
-    componentDidUpdate(){
+    componentWillReceiveProps(){
         if( !!this.props.toRefresh ){
             this.getBalance();
         }
