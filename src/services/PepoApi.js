@@ -17,7 +17,8 @@ import {
 } from '../actions';
 import { API_ROOT } from '../constants/index';
 import CurrentUser from '../models/CurrentUser';
-import ErrorMessages from '../constants/ErrorMessages';
+
+import { ostErrors, UIWhitelistedErrorCode } from './OstErrors';
 
 export default class PepoApi {
   constructor(url, params = {}) {
@@ -123,9 +124,9 @@ export default class PepoApi {
       try {
         let netInfo = await NetInfo.fetch();
         if (!netInfo.isConnected) {
-          console.log(`Error requesting ${this.cleanedUrl}. ${ErrorMessages.noNet}`);
-          Store.dispatch(showToast(ErrorMessages.noNet));
-          throw 'noNet';
+          console.log(`Error requesting ${this.cleanedUrl}. ${ostErrors.getUIErrorMessage('no_internet')}`);
+          Store.dispatch(showToast(ostErrors.getUIErrorMessage('no_internet')));
+          throw UIWhitelistedErrorCode['no_internet'];
         }
 
         console.log(`Requesting ${this.cleanedUrl} with options:`, this.parsedParams);
@@ -148,7 +149,7 @@ export default class PepoApi {
             break;
           case 500:
             Store.dispatch(hideModal());
-            Store.dispatch(showToast(ErrorMessages.general_error));
+            Store.dispatch(showToast(ostErrors.getUIErrorMessage('general_error')));
             break;
         }
 

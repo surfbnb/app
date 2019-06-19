@@ -10,6 +10,7 @@ import PinInput from '../PinInput';
 import ActivateUser from '../../services/ActivateUser';
 import inlineStyles from './styles';
 import BackArrow from '../../assets/back-arrow.png';
+import { ostErrors } from '../../services/OstErrors';
 
 export default class ConfirmPin extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -37,10 +38,9 @@ export default class ConfirmPin extends Component {
     this.props.navigation.navigate('HomeScreen');
   }
 
-  onFlowInterrupt(ostWorkflowContext, ostError) {
+  onFlowInterrupt(ostWorkflowContext, error) {
     Store.dispatch(hideModal());
-    let errMsg = utilities.getErrorMessage(ostError);
-    utilities.showAlert(null, errMsg);
+    utilities.showAlert(null, ostErrors.getErrorMessage(error));
   }
 
   render() {

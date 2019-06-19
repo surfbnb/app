@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
-import errorMessages from '../../constants/ErrorMessages';
 import styles from './styles';
 import currentUserModal from '../../models/CurrentUser';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { PLATFROM_API_ENDPOINT } from '../../constants';
+import { ostErrors } from '../../services/OstErrors';
 
 let t1, t2;
 
@@ -20,7 +20,7 @@ export default class AuthLoading extends Component {
     OstWalletSdk.initialize(PLATFROM_API_ENDPOINT, this.onSdkInitialized);
   };
 
-  onSdkInitialized = (ostError, success) => {
+  onSdkInitialized = (error, success) => {
     t2 = Date.now();
     console.log('onSdkInitialized. OstWalletSdk.initialize took:', t2 - t1, 'miliseconds');
     currentUserModal
@@ -37,7 +37,7 @@ export default class AuthLoading extends Component {
         }
       })
       .catch(() => {
-        Alert.alert('', errorMessages.general_error);
+        Alert.alert('', ostErrors.getUIErrorMessage('general_error'));
       });
   };
 

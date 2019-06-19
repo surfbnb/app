@@ -1,7 +1,6 @@
 import deepGet from 'lodash/get';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
-import errorMessage from '../constants/ErrorMessages';
 
 export default {
   async saveItem(key, val) {
@@ -32,12 +31,6 @@ export default {
     setTimeout(() => {
       Alert.alert(title, message);
     }, 10);
-  },
-
-  getErrorMessage(ostError, generalErrorMsgKey) {
-    ostError = ostError || {};
-    generalErrorMsgKey = generalErrorMsgKey || 'general_error';
-    return deepGet(ostError, 'err.msg') || errorMessage[generalErrorMsgKey];
   },
 
   getPriceOracleConfig(token, pricePoints) {

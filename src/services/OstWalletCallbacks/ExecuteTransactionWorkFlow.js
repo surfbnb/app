@@ -12,9 +12,9 @@ class ExecuteTransactionWorkflow extends OstWalletWorkFlowCallback {
     this.delegate.onRequestAcknowledge(ostWorkflowContext, ostContextEntity);
   }
 
-  flowInterrupt(ostWorkflowContext, ostError) {
+  flowInterrupt(ostWorkflowContext, error) {
     if (!this.isRequestAcknowledge) {
-      this.delegate.onFlowInterrupt(ostWorkflowContext, ostError);
+      this.delegate.onFlowInterrupt(ostWorkflowContext, error);
     }
   }
 }

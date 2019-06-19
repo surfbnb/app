@@ -58,9 +58,9 @@ class ActivateUserWorkflow extends OstWalletWorkFlowCallback {
 
   flowComplete(ostWorkflowContext, ostContextEntity) {}
 
-  flowInterrupt(ostWorkflowContext, ostError) {
+  flowInterrupt(ostWorkflowContext, error) {
     if (!this.isRequestAcknowledge) {
-      this.delegate.onFlowInterrupt(ostWorkflowContext, ostError);
+      this.delegate.onFlowInterrupt(ostWorkflowContext, error);
     }
   }
 }

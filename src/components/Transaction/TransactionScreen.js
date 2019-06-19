@@ -22,7 +22,6 @@ import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
 import PriceOracle from '../../services/PriceOracle';
 import currentUserModal from '../../models/CurrentUser';
-import errorMessage from '../../constants/ErrorMessages';
 import utilities from '../../services/Utilities';
 import Store from '../../store';
 import { showModal, hideModal } from '../../actions';
@@ -33,6 +32,7 @@ import inlineStyles from './Style';
 import CircleCloseIcon from '../../assets/circle_close_icon.png';
 import EditIcon from '../../assets/edit_icon.png';
 import BackArrow from '../../assets/back-arrow.png';
+import { ostErrors } from '../../services/OstErrors';
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -94,9 +94,9 @@ class TransactionScreen extends Component {
           this.onGetPricePointSuccess(token, res);
           successCallback && successCallback(res);
         },
-        (ostError) => {
+        (error) => {
           this.setState({ isLoading: false });
-          errorCallback && errorCallback(ostError);
+          errorCallback && errorCallback(error);
         }
       );
     });
@@ -109,13 +109,13 @@ class TransactionScreen extends Component {
     this.setState({ btUSDAmount: btUSDAmount, isLoading: false });
   }
 
-  onGetPricePointError(ostError) {
-    this.onError(ostError);
+  onGetPricePointError(error) {
+    this.onError(error);
   }
 
   excequteTransaction() {
     if (!this.isValids()) {
-      Alert.alert('', errorMessage.general_error_ex);
+      Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
       return;
     }
     Store.dispatch(showModal('Sending...'));
@@ -146,8 +146,8 @@ class TransactionScreen extends Component {
     this.sendTransactionToPlatfrom(ostWorkflowEntity);
   }
 
-  onFlowInterrupt(ostWorkflowContext, ostError) {
-    this.onError(ostError);
+  onFlowInterrupt(ostWorkflowContext, error) {
+    this.onError(error);
   }
 
   sendTransactionToPlatfrom(ostWorkflowEntity) {
@@ -190,10 +190,9 @@ class TransactionScreen extends Component {
       : appConfig.executeTransactionPrivacyType.private;
   }
 
-  onError(ostError) {
-    const errorMsg = utilities.getErrorMessage(ostError);
+  onError(error) {
+    const errorMsg = ostErrors.getErrorMessage(error);
     this.setState({ general_error: errorMsg });
-
     Store.dispatch(hideModal());
     utilities.showAlert('', errorMsg);
   }
@@ -238,7 +237,7 @@ class TransactionScreen extends Component {
     let btAmount = this.state.btAmount;
     btAmount = btAmount && Number(btAmount);
     if (btAmount <= 0) {
-      this.setState({ btAmountErrorMsg: errorMessage.btAmountError });
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
       return;
     }
     this.setState({ transactionModal: false });

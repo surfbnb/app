@@ -5,9 +5,10 @@ import { SPENDING_LIMIT } from '../constants';
 import currentUserModal from '../models/CurrentUser';
 import { hideModal } from '../actions';
 import Store from '../store';
-import errorMessage from '../constants/ErrorMessages';
 import deepGet from 'lodash/get';
 import utilities from '../services/Utilities';
+
+import { ostErrors } from '../services/OstErrors';
 
 class ActivateUser {
   activateUser(pin, delegate) {
@@ -40,8 +41,7 @@ class ActivateUser {
 
   onError(res) {
     Store.dispatch(hideModal());
-    const errMsg = deepGet(res, 'err.msg') || errorMessage.general_error;
-    utilities.showAlert(null, errMsg);
+    utilities.showAlert(null, ostErrors.getErrorMessage(res));
   }
 }
 

@@ -40,9 +40,9 @@ class SetupDeviceWorkflow extends OstWalletWorkFlowCallback {
     }
   }
 
-  flowInterrupt(ostWorkflowContext, ostError) {
+  flowInterrupt(ostWorkflowContext, error) {
     if (this.delegate && this.delegate.setupDeviceFailed) {
-      this.delegate.setupDeviceFailed(ostWorkflowContext, ostError);
+      this.delegate.setupDeviceFailed(ostWorkflowContext, error);
     }
   }
 

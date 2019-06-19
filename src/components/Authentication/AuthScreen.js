@@ -21,10 +21,10 @@ import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
 import LoadingModal from '../../theme/components/LoadingModal';
 import Toast from '../../theme/components/Toast';
-import ErrorMessages from '../../constants/ErrorMessages';
 import { showModal, hideModal } from '../../actions';
 import utilities from '../../services/Utilities';
 import currentUserModal from '../../models/CurrentUser';
+import { ostErrors } from '../../services/OstErrors';
 
 const signUpLoginTestMap = {
   signup: 'Signing up...',
@@ -106,13 +106,13 @@ class AuthScreen extends Component {
   validateLoginInput() {
     let isValid = true;
     if (!this.state.user_name) {
-      this.setState({ user_name_error: ErrorMessages.user_name });
+      this.setState({ user_name_error: ostErrors.getUIErrorMessage('user_name') });
       isValid = false;
     }
 
     if (!this.state.password || this.state.password.length < 1) {
       this.setState({
-        password_error: ErrorMessages.password
+        password_error: ostErrors.getUIErrorMessage('password')
       });
       isValid = false;
     }
@@ -129,14 +129,14 @@ class AuthScreen extends Component {
 
     if (!this.state.first_name) {
       this.setState({
-        first_name_error: ErrorMessages.first_name
+        first_name_error: ostErrors.getUIErrorMessage('first_name')
       });
       isValid = false;
     }
 
     if (!this.state.last_name) {
       this.setState({
-        last_name_error: ErrorMessages.last_name
+        last_name_error: ostErrors.getUIErrorMessage('last_name')
       });
       isValid = false;
     }
@@ -176,7 +176,7 @@ class AuthScreen extends Component {
           if (!userData) {
             this.props.dispatch(hideModal());
             this.setState({
-              general_error: ErrorMessages.user_not_found
+              general_error: ostErrors.getUIErrorMessage('user_not_found')
             });
             return;
           }
@@ -203,21 +203,20 @@ class AuthScreen extends Component {
       })
       .catch((error) => {
         this.props.dispatch(hideModal());
-        this.setState({ general_error: ErrorMessages.user_not_found });
+        this.setState({ general_error: ostErrors.getUIErrorMessage('user_not_found') });
       });
   }
 
-  setupDeviceFailed(ostWorkflowContext, ostError) {
+  setupDeviceFailed(ostWorkflowContext, error) {
     this.props.dispatch(hideModal());
-    const errorMessage = utilities.getErrorMessage(ostError);
-    this.setState({ general_error: errorMessage });
+    this.setState({ general_error: ostErrors.getErrorMessage(error) });
   }
 
   onServerError(res) {
     this.props.dispatch(hideModal());
     let stateObj = { server_errors: res, clearErrors: false };
     const errorData = deepGet(res, 'err.error_data'),
-      errorMsg = deepGet(res, 'err.msg') || ErrorMessages.general_error;
+      errorMsg = ostErrors.getErrorMessage(res);
     if (!(errorData && errorData.length)) {
       stateObj['general_error'] = errorMsg;
     }

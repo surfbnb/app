@@ -43,7 +43,7 @@ class BalanceHeader extends Component {
           this.initPriceOracle(token, pricePoints);
           this.getBalance();
         },
-        (ostError) => {}
+        (error) => {}
       );
     });
   }
