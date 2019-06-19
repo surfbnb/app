@@ -9,11 +9,11 @@ const VCErrors = {
 let idCnt = 1;
 
 let defaultOptions = {
-    removeDuplicate: true
+  removeDuplicate: true
 };
 
 class FetchServices {
-  constructor(url, params, id = 'fcomp_' + String(idCnt++), options={}) {
+  constructor(url, params, id = 'fcomp_' + String(idCnt++), options = {}) {
     this.id = id;
     this.url = url;
     this.extraParams = params;

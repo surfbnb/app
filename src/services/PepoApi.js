@@ -1,9 +1,20 @@
 import AssignIn from 'lodash/assignIn';
 import DeepGet from 'lodash/get';
 import qs from 'qs';
+import NetInfo from '@react-native-community/netinfo';
 
 import Store from '../store';
-import { hideModal, upsertUserEntities, upsertTransactionEntities, upsertGiffyEntities , upsertFeedEntities , addPublicFeedList ,addUserList, addUserFeedList, showToast } from '../actions';
+import {
+  hideModal,
+  upsertUserEntities,
+  upsertTransactionEntities,
+  upsertGiffyEntities,
+  upsertFeedEntities,
+  addPublicFeedList,
+  addUserList,
+  addUserFeedList,
+  showToast
+} from '../actions';
 import { API_ROOT } from '../constants/index';
 import CurrentUser from '../models/CurrentUser';
 import ErrorMessages from '../constants/ErrorMessages';
@@ -55,18 +66,18 @@ export default class PepoApi {
     if (!resultType) {
       return;
     }
-    const data = DeepGet(responseJSON, 'data') ,
-          resultData = DeepGet(responseJSON, `data.${resultType}`);
+    const data = DeepGet(responseJSON, 'data'),
+      resultData = DeepGet(responseJSON, `data.${resultType}`);
     switch (resultType) {
       case 'users':
         Store.dispatch(upsertUserEntities(this._getEntities(resultData)));
         Store.dispatch(addUserList(this._getIDList(resultData)));
         break;
-      case 'public_feed': 
+      case 'public_feed':
       case 'user_feed':
-        Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data["users"])));
-        Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data["ost_transaction"])));
-        Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data["gifs"])));
+        Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
+        Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data['ost_transaction'])));
+        Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data['gifs'])));
         Store.dispatch(upsertFeedEntities(this._getEntities(resultData)));
         break;
     }
@@ -76,8 +87,8 @@ export default class PepoApi {
     return resultData.map((item) => item[key]);
   }
 
-  _getIDListFromObj( resultObj ){
-    return Object.keys(resultObj) ; 
+  _getIDListFromObj(resultObj) {
+    return Object.keys(resultObj);
   }
 
   _getEntities(resultData, key = 'id') {
@@ -88,10 +99,10 @@ export default class PepoApi {
     return entities;
   }
 
-  _getEntitiesFromObj( resultObj , key="id" ){
+  _getEntitiesFromObj(resultObj, key = 'id') {
     const entities = {};
-    for( let identifier in resultObj ){
-      entities[`${key}_${identifier}`] = resultObj[ identifier ];
+    for (let identifier in resultObj) {
+      entities[`${key}_${identifier}`] = resultObj[identifier];
     }
     return entities;
   }
@@ -99,6 +110,13 @@ export default class PepoApi {
   _perform() {
     return new Promise(async (resolve, reject) => {
       try {
+        let netInfo = await NetInfo.fetch();
+        if (!netInfo.isConnected) {
+          console.log(`Error requesting ${this.cleanedUrl}. ${ErrorMessages.noNet}`);
+          Store.dispatch(showToast(ErrorMessages.noNet));
+          throw 'noNet';
+        }
+
         console.log(`Requesting ${this.cleanedUrl} with options:`, this.parsedParams);
 
         let response = await fetch(this.cleanedUrl, this.parsedParams),
@@ -107,8 +125,8 @@ export default class PepoApi {
 
         this._dispatchData(responseJSON);
 
-        console.log(`Response status ${responseStatus} for ${this.cleanedUrl} with JSON payload:`, responseJSON);
-        
+        console.log(`Response for ${this.cleanedUrl} code ${responseStatus}, JSON payload:`, responseJSON);
+
         switch (responseStatus) {
           case 401:
             CurrentUser.logout(responseJSON);
