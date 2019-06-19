@@ -324,12 +324,12 @@ class Giphy extends Component {
         <View
           style={[
             {
-              backgroundColor: 'rgba(238,238,238,1)',
-              overflow: 'hidden'
+              backgroundColor: 'rgba(238,238,238,1)'
             }
           ]}
         >
-          <ActivityIndicator style={{ position: 'absolute', left: '50%', top: '50%' }} />
+          <ActivityIndicator style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0
+          }}/>
           <ImageBackground
             source={{ uri: this.state.selectedImage.downsized.url }}
             style={{
