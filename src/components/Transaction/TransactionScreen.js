@@ -238,7 +238,7 @@ class TransactionScreen extends Component {
 
   onMessageBtnPress() {
     this.setState({ isMessageVisible: !this.state.isMessageVisible });
-    if (!this.state.isMessageVisible) {
+    if (this.state.isMessageVisible) {
       this.setState({ message: '' });
     }
   }
