@@ -150,7 +150,7 @@ class FetchServices {
 
   clone() {
     let Constructor = this.constructor;
-    return new Constructor(this.url, this.extraParams, this.id);
+    return new Constructor(this.url, this.extraParams, this.id, this.options);
   }
 }
 
