@@ -24,6 +24,8 @@ import GracefulImage from './GracefulImage';
 import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/circle_close_icon.png';
 
+const removeSearchDuplicateGiphy = false;
+
 class Giphy extends Component {
   constructor(props) {
     super(props);
@@ -59,7 +61,7 @@ class Giphy extends Component {
   getTrendingViewContext(baseUrl, searchTerm) {
     let id = 'TRENDING_' + baseUrl + '_' + searchTerm;
     if (!this.viewContexts[id]) {
-      this.viewContexts[id] = new FetchServices(baseUrl, {}, id);
+      this.viewContexts[id] = new FetchServices(baseUrl, {}, id, { removeDuplicate: removeSearchDuplicateGiphy });
     }
     return this.viewContexts[id];
   }
@@ -68,7 +70,9 @@ class Giphy extends Component {
     let baseUrl = '/gifs/search';
     let id = 'SEARCH_' + baseUrl + '_' + searchTerm;
     if (!this.viewContexts[id]) {
-      this.viewContexts[id] = new FetchServices(baseUrl, { query: searchTerm }, id);
+      this.viewContexts[id] = new FetchServices(baseUrl, { query: searchTerm }, id, {
+        removeDuplicate: removeSearchDuplicateGiphy
+      });
     }
     return this.viewContexts[id];
   }
