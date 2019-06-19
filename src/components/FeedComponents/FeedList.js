@@ -9,8 +9,7 @@ class FeedList extends Component {
     this.state = {
       feeds: [],
       refreshing: false,
-      loadingNext: false,
-      progressViewOffset: 0
+      loadingNext: false
     };
     if (this.props.fetchUrl) {
       this.fetchServices = new FetchServices(this.props.fetchUrl);
@@ -22,45 +21,40 @@ class FeedList extends Component {
     this.initList();
   }
 
-  componentWillUnmount() {
-    this.fetchServices = null;
-  }
-
   initList() {
     this.refresh();
   }
 
   refresh() {
-    this.beforeRefresh();
     if (this.state.refreshing) return;
-    this.setState({ refreshing: true });
+    this.beforeRefresh();
     this.fetchServices
       .refresh()
       .then((res) => {
-        this.setState({ refreshing: false, feeds: this.fetchServices.getIDList() });
         this.onRefresh(res);
       })
-      .catch((error) => {
-        this.setState({ refreshing: false });
+      .catch((error) => {  
         this.onRefreshError(error);
       });
   }
 
   beforeRefresh() {
-    this.flatListRef.scrollToOffset({ animated: true, offset: 0 });
+    this.setState({ refreshing: true });
     this.props.beforeRefresh && this.props.beforeRefresh();
   }
 
   onRefresh(res) {
+    this.setState({ refreshing: false, feeds: this.fetchServices.getIDList() });
     this.props.onRefresh && this.props.onRefresh(res);
   }
 
   onRefreshError(error) {
+    this.setState({ refreshing: false });
     this.props.onRefreshError && this.props.onRefreshError(error);
   }
 
   getNext = () => {
-    if (this.state.loadingNext) return;
+    if (this.state.loadingNext || this.state.refreshing) return;
     this.beforeNext();
     this.fetchServices
       .fetch()
@@ -110,7 +104,6 @@ class FeedList extends Component {
         onEndReachedThreshold={0.5}
         initialNumToRender={20}
         refreshing={this.state.refreshing}
-        progressViewOffset={this.state.progressViewOffset}
         ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
         ListFooterComponent={this.renderFooter}
         renderItem={({ item }) => <FeedRow id={item} nestedNavigation={this.props.nestedNavigation ? true : false} />}
