@@ -20,12 +20,10 @@ let stylesMap = {
     width: 40
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: 'row'
   },
   userInfo: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginLeft: 10
   },
   figure: {
@@ -33,6 +31,7 @@ let stylesMap = {
     borderRadius: 25,
     paddingVertical: 4,
     minWidth: 50,
+    alignSelf: 'flex-start',
     color: Colors.dark
   },
   userNameText: {

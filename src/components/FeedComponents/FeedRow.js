@@ -91,12 +91,12 @@ class FeedRow extends Component {
         <View style={{ marginTop: 10 }}></View>
         <View style={styles.cellWrapper}>
           <View style={styles.header}>
-            <View>
+            <View style={{alignSelf: 'flex-start'}}>
               <Image source={DefaultUserIcon} style={styles.profileImgSkipFont} />
             </View>
             <View style={{ flex: 1 }}>
               <View style={styles.userInfo}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, alignSelf: 'flex-start' }}>
                   <Text style={styles.userNameText}>
                     <Text
                       onPress={() => {
