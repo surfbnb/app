@@ -31,7 +31,8 @@ let stylesMap = {
   dottedBtn: {
     flex: 2,
     padding: 10.5,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#fff'
   },
   modalBackDrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
