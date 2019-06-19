@@ -47,6 +47,7 @@ class AuthScreen extends Component {
       errorMsg: ''
     };
     this.state = {
+      current_formField: 0,
       first_name: null,
       last_name: null,
       user_name: null,
@@ -55,13 +56,19 @@ class AuthScreen extends Component {
       isLoginIn: false,
       server_errors: {},
       clearErrors: false,
-      userNameFocus: false,
-      firstNameFocus: false,
-      lastNameFocus: false,
-      passwordFocus: false,
       shift: new Animated.Value(0),
       ...this.defaults
     };
+
+    this.tabIndex = {
+      firstName : 1 ,
+      lastName:  2,
+      userName:  3,
+      password:4
+    } ;
+
+    this.counter = 0;
+
   }
 
   componentWillMount() {
@@ -88,7 +95,7 @@ class AuthScreen extends Component {
         }
         Animated.timing(this.state.shift, {
           toValue: gap - 100,
-          duration: 1000,
+          duration: 500,
           useNativeDriver: true
         }).start();
       });
@@ -98,7 +105,7 @@ class AuthScreen extends Component {
   handleKeyboardDidHide = () => {
     Animated.timing(this.state.shift, {
       toValue: 0,
-      duration: 1000,
+      duration: 500,
       useNativeDriver: true
     }).start();
   };
@@ -227,6 +234,12 @@ class AuthScreen extends Component {
     console.log('In ServerErrorHandler', field);
   }
 
+  onSubmitEditing(currentIndex) {
+    this.setState({
+      current_formField: currentIndex+1
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -261,12 +274,15 @@ class AuthScreen extends Component {
                     serverErrors={this.state.server_errors}
                     clearErrors={this.state.clearErrors}
                     onSubmitEditing={() => {
-                      this.setState({
-                        lastNameFocus: true,
-                        firstNameFocus: false
-                      });
+                      this.onSubmitEditing(this.tabIndex.firstName)
                     }}
-                    isFocus={this.state.firstNameFocus}
+                    isFocus={this.state.current_formField == this.tabIndex.firstName}
+                    onFocus={() => {
+                      //this.state.current_formField = this.tabIndex.firstName ;
+                      this.setState({
+                        current_formField: this.tabIndex.firstName
+                      })
+                    }}
                     blurOnSubmit={false}
                     errorHandler={(fieldName) => {
                       this.serverErrorHandler(fieldName);
@@ -277,6 +293,7 @@ class AuthScreen extends Component {
                     editable={true}
                     onChangeText={(last_name) => this.setState({ last_name, error: null, last_name_error: null })}
                     fieldName="last_name"
+                    index={2}
                     textContentType="none"
                     value={this.state.last_name}
                     style={[Theme.TextInput.textInputStyle, this.state.last_name_error ? Theme.Errors.errorBorder : {}]}
@@ -288,12 +305,15 @@ class AuthScreen extends Component {
                     serverErrors={this.state.server_errors}
                     clearErrors={this.state.clearErrors}
                     onSubmitEditing={() => {
-                      this.setState({
-                        userNameFocus: true,
-                        lastNameFocus: false
-                      });
+                      this.onSubmitEditing(this.tabIndex.lastName)
                     }}
-                    isFocus={this.state.lastNameFocus}
+                    isFocus={this.state.current_formField == this.tabIndex.lastName}
+                    onFocus={() => {
+                      //this.state.current_formField = this.tabIndex.lastName ;
+                      this.setState({
+                        current_formField: this.tabIndex.lastName
+                      })
+                    }}
                     blurOnSubmit={false}
                     errorHandler={(fieldName) => {
                       this.serverErrorHandler(fieldName);
@@ -306,26 +326,27 @@ class AuthScreen extends Component {
                 editable={true}
                 onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
                 fieldName="user_name"
+                index={3}
                 value={this.state.user_name}
                 style={[Theme.TextInput.textInputStyle, this.state.user_name_error ? Theme.Errors.errorBorder : {}]}
                 placeholder="Username"
                 textContentType="none"
                 returnKeyType="next"
                 returnKeyLabel="next"
-                // autoCorrect={false}
-                // autoCapitalize="none"
-                autoFocus={this.state.userNameFocus}
                 placeholderTextColor="#ababab"
                 errorMsg={this.state.user_name_error}
                 clearErrors={this.state.clearErrors}
                 serverErrors={this.state.server_errors}
                 onSubmitEditing={() => {
-                  this.setState({
-                    passwordFocus: true,
-                    userNameFocus: false
-                  });
+                  this.onSubmitEditing(this.tabIndex.userName)
                 }}
-                isFocus={this.state.userNameFocus}
+                isFocus={this.state.current_formField == this.tabIndex.userName}
+                onFocus={() => {
+                  //this.state.current_formField = this.tabIndex.userName ;
+                  this.setState({
+                    current_formField: this.tabIndex.userName
+                  })
+                }}
                 blurOnSubmit={false}
                 errorHandler={(fieldName) => {
                   this.serverErrorHandler(fieldName);
@@ -337,6 +358,7 @@ class AuthScreen extends Component {
                 onChangeText={(password) => this.setState({ password, error: null, password_error: null })}
                 placeholder="Password"
                 fieldName="password"
+                index={4}
                 returnKeyType="next"
                 secureTextEntry={true}
                 style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
@@ -347,12 +369,15 @@ class AuthScreen extends Component {
                 serverErrors={this.state.server_errors}
                 clearErrors={this.state.clearErrors}
                 onSubmitEditing={() => {
-                  this.setState({
-                    passwordFocus: false
-                  });
-                  this.signin();
+                  this.onSubmitEditing(this.tabIndex.password)
                 }}
-                isFocus={this.state.passwordFocus}
+                isFocus={ this.state.current_formField == this.tabIndex.password }
+                onFocus={() => {
+                  //this.state.current_formField = this.tabIndex.password;
+                  this.setState({
+                    current_formField: this.tabIndex.password
+                  })
+                }}
                 blurOnSubmit={true}
                 errorHandler={(fieldName) => {
                   this.serverErrorHandler(fieldName);
@@ -393,8 +418,6 @@ class AuthScreen extends Component {
                   this.setState({
                     signup: true,
                     error: null,
-                    firstNameFocus: false,
-                    userNameFocus: false,
                     ...this.defaults
                   })
                 }
@@ -410,8 +433,6 @@ class AuthScreen extends Component {
                     signup: false,
                     error: null,
                     isFocus: true,
-                    firstNameFocus: false,
-                    userNameFocus: false,
                     ...this.defaults
                   })
                 }
