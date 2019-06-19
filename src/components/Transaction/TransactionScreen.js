@@ -162,7 +162,7 @@ class TransactionScreen extends Component {
   onTransactionSuccess(res) {
     Store.dispatch(hideModal());
     this.props.navigation.goBack();
-    this.props.navigation.navigate('Feed');
+    this.props.navigation.navigate('Profile');
   }
 
   getSendTransactionPlatformData(ostWorkflowEntity) {
