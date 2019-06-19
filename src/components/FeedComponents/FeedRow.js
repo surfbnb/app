@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Image} from 'react-native';
+import { View, Text, Image } from 'react-native';
 import styles from './styles';
 import Store from '../../store';
 import TimestampHandling from '../../helpers/timestampHandling';
-import NavigationService from '../../services/NavigationService'; 
+import NavigationService from '../../services/NavigationService';
+import DefaultUserIcon from '../../assets/default_user_icon.png';
+import PriceOracle from '../../services/PriceOracle';
 
 class FeedRow extends Component {
   constructor(props) {
@@ -28,18 +30,18 @@ class FeedRow extends Component {
     this.giphyEntity = gifId ? Store.getState().giffy_entities[`id_${gifId}`] : null;
   }
 
-  getFromUserId(){
-    return this.transactionEntity.from_user_id; 
+  getFromUserId() {
+    return this.transactionEntity.from_user_id;
   }
 
-  getToUserId(){
-    return this.transactionEntity.to_user_ids[0] ; 
+  getToUserId() {
+    return this.transactionEntity.to_user_ids[0];
   }
 
   get fromUserName() {
     let fromUserId = this.transactionEntity.from_user_id,
       fromUser = Store.getState().user_entities[`id_${fromUserId}`];
-    return fromUserId == this.getCurrentUserId ? 'You' : fromUser.first_name ;
+    return fromUserId == this.getCurrentUserId ? 'You' : fromUser.first_name;
   }
 
   get toUserName() {
@@ -56,70 +58,85 @@ class FeedRow extends Component {
     return this.feedEntity.payload.text ? this.feedEntity.payload.text : null;
   }
 
-  fromUserClick(){
-    if(!this.props.nestedNavigation) return;
-    const userId = this.getFromUserId(); 
-    if(userId ==  this.getCurrentUserId ) {
+  fromUserClick() {
+    if (!this.props.nestedNavigation) return;
+    const userId = this.getFromUserId();
+    if (userId == this.getCurrentUserId) {
       NavigationService.navigate('Profile');
-    } else{
-      NavigationService.navigate('UserFeedScreen', { headerText: this.fromUserName, userId:userId});
+    } else {
+      NavigationService.navigate('UserFeedScreen', { headerText: this.fromUserName, userId: userId });
     }
   }
 
-  toUserClick(){
-    if(!this.props.nestedNavigation) return;
-    const userId = this.getToUserId(); 
-    if(userId ==  this.getCurrentUserId ) {
+  toUserClick() {
+    if (!this.props.nestedNavigation) return;
+    const userId = this.getToUserId();
+    if (userId == this.getCurrentUserId) {
       NavigationService.navigate('Profile');
-    } else{
-      NavigationService.navigate('UserFeedScreen', { headerText: this.toUserName, userId:userId});
+    } else {
+      NavigationService.navigate('UserFeedScreen', { headerText: this.toUserName, userId: userId });
     }
-   
+  }
+
+  getBtAmount() {
+    let btAmount = this.transactionEntity.amounts[0];
+    btAmount = PriceOracle.fromDecimal(btAmount);
+    btAmount = PriceOracle.toBt(btAmount, 1);
+    return btAmount;
   }
 
   render() {
     return (
       <View style={styles.container}>
+        <View style={{marginTop: 10}}></View>
         <View style={styles.cellWrapper}>
-          <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-            <View style={{ width: '15%', height: 50 }}>
+          <View style={styles.header}>
+            <View>
               <Image
-                source={{ uri: 'https://image.flaticon.com/icons/png/512/17/17004.png' }}
-                style={{
-                  padding: 5,
-                  borderRadius: 30,
-                  height: '100%',
-                  width: '100%'
-                }}
+                source={DefaultUserIcon}
+                style={ styles.profileImgSkipFont}
               />
             </View>
-            <View style={{ width: '70%', height: 50, marginLeft: 10, marginTop: 5 }}>
-              <Text style={{ fontSize: 18 }}>
-                <Text style={{ fontWeight: 'bold' }}  onPress={() => { this.fromUserClick(); }}> 
-                  {this.fromUserName} 
-                </Text>
-                <Text> gave </Text>
-                <Text style={{ fontWeight: 'bold', fontSize: 18 }}  onPress={() => { this.toUserClick(); }}> 
-                  {this.toUserName}:
-                </Text>
-              </Text>
-              <Text style={{ marginLeft: 5 }}>{TimestampHandling.fromNow(this.feedEntity.published_ts)}</Text>
-            </View>
-            <View
-              style={{
-                width: '15%',
-                borderRadius: 20,
-                height: 40,
-                backgroundColor: '#EEEEEE',
-                marginTop: 7,
-                justifyContent: 'center'
-              }}
-            >
-              <Text style={{ fontSize: 18, textAlign: 'center' }}>P{String(this.transactionEntity.amounts[0])[0]}</Text>
+            <View style={{ flex: 1 }}>
+              <View
+                style={ styles.userInfo }
+              >
+                <View style={{flex: 1}}>
+                  <Text style={ styles.userNameText }
+                        numberOfLines={1}
+                  >
+                    <Text
+                      onPress={() => {
+                        this.fromUserClick();
+                      }}
+                    >
+                      {this.fromUserName}
+                    </Text>
+                    <Text style={{ fontWeight: '300', fontSize: 13 }}> gave </Text>
+                    <Text
+                      onPress={() => {
+                        this.toUserClick();
+                      }}
+                    >
+                      {this.toUserName}
+                    </Text>
+                  </Text>
+                  <Text style={ styles.timeStamp }>
+                    {TimestampHandling.fromNow(this.feedEntity.published_ts)}
+                  </Text>
+                </View>
+                <View
+                  style={ styles.figure}
+                >
+                  <Text style={{ textAlign: 'center' }}>
+                    P{this.getBtAmount()}
+                  </Text>
+                </View>
+              </View>
             </View>
           </View>
           {this.giphyEntity && (
-            <View>
+            <View style={{marginTop: 10}}>
               <Image
                 source={{ uri: this.giphyEntity.downsized.url }}
                 style={{
@@ -130,8 +147,8 @@ class FeedRow extends Component {
             </View>
           )}
           {this.getTextMessage && (
-            <View style={{ marginTop: 10 }}>
-              <Text style={{ fontSize: 18 }}>{this.getTextMessage}</Text>
+            <View style={{marginTop: 10}}>
+              <Text style={{ fontSize: 14, color: '#484848', fontWeight: '100' }}>{this.getTextMessage}</Text>
             </View>
           )}
         </View>

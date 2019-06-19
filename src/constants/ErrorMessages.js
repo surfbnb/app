@@ -7,5 +7,6 @@ export default {
   general_error: 'Something went wrong please try again later',
   general_error_ex: 'Unable to execute transaction, please try again later.',
   btAmountError: 'Please enter valid amount.',
-  userNotActive: "Please wait till user activation."
+  userNotActive: 'Please wait till user activation.',
+  noNet: 'No Internet, please try again later.'
 };

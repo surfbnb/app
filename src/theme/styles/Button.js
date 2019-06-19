@@ -3,7 +3,7 @@ import Colors from './Colors';
 
 let styles = {
   btn: {
-    borderRadius: 6,
+    borderRadius: 3,
     borderWidth: 1,
     padding: 12
   },

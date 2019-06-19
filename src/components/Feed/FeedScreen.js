@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FeedList from "../FeedComponents/FeedList";
+import FeedList from '../FeedComponents/FeedList';
 
 class Feed extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -13,9 +13,7 @@ class Feed extends Component {
   }
 
   render() {
-      return (
-        <FeedList fetchUrl={"/feeds"} nestedNavigation={true}></FeedList>
-      );
+    return <FeedList fetchUrl={'/feeds'} nestedNavigation={true}></FeedList>;
   }
 }
 

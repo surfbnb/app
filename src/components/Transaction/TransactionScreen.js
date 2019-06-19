@@ -118,7 +118,7 @@ class TransactionScreen extends Component {
       Alert.alert('', errorMessage.general_error_ex);
       return;
     }
-    Store.dispatch(showModal('Executing...'));
+    Store.dispatch(showModal('Sending...'));
     this.sendTransactionToSdk();
   }
 
@@ -333,7 +333,7 @@ class TransactionScreen extends Component {
                   this.onAmountModalShow();
                 }}
               >
-                <Image style={{ width: 20, height: 20 }} source={EditIcon}></Image>
+                <Image style={[{ width: 20, height: 20 }, {tintColor: '#ef5566' }]} source={EditIcon} ></Image>
               </TouchableOpacity>
             </View>
 

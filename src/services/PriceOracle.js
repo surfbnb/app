@@ -60,10 +60,28 @@ export default class PriceOracle {
     return val.multipliedBy(exp).toString(10);
   }
 
-  fromDecimal( val ){
+  fromDecimal(val) {
     if (!val) return '';
     val = BigNumber(val);
     let exp = BigNumber(10).exponentiatedBy(this.decimal);
     return val.dividedBy(exp).toString(10);
+  }
+
+  static fromDecimal(val, decimal) {
+    decimal = decimal || 18;
+    if (!val) return '';
+    val = BigNumber(val);
+    let exp = BigNumber(10).exponentiatedBy(decimal);
+    return val.dividedBy(exp).toString(10);
+  }
+
+  static toBt(bt, precession) {
+    precession = precession || btPrecession;
+    if (!bt) {
+      return '';
+    }
+    bt = String(bt);
+    bt = BigNumber(bt);
+    return bt.toPrecision(precession);
   }
 }

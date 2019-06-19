@@ -33,7 +33,7 @@ let stylesMap = {
     // marginBottom: 20,
     borderWidth: 1,
     backgroundColor: Colors.white,
-    borderColor: Colors.light,
+    borderColor: Colors.zambezi,
     borderStyle: 'dashed',
     padding: 20,
     borderRadius: 1
@@ -70,7 +70,8 @@ let stylesMap = {
     color: Colors.darkGray,
     fontSize: 20,
     fontWeight: '300',
-    marginTop: 10
+    marginTop: 10,
+    fontFamily: 'Lato-Italic'
   }
 };
 

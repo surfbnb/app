@@ -7,5 +7,7 @@ export default {
   summerSky: '#3296D0',
   darkGray: '#ABABAB',
   grey: '#888888',
-  greyLite: '#848484'
+  greyLite: '#848484',
+  lightGrey: '#D5D5D5',
+  zambezi: '#606060'
 };
