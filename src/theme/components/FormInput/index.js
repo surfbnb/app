@@ -12,21 +12,22 @@ class FormInput extends Component {
   }
 
   validate() {
-    let errors = this.props.serverErrors;
+    let errors = this.props.serverErrors,
+      msg = '';
     const errorData = deepGet(errors, 'err.error_data');
     if (errorData && errorData.length) {
       for (let cnt = 0; cnt < errorData.length; cnt++) {
-        let parameter = errorData[cnt]['parameter'],
-          msg = errorData[cnt]['msg'];
+        let parameter = errorData[cnt]['parameter'];
         if (parameter == this.props.fieldName) {
-          this.setState({
-            errorMsg: msg
-          });
-          this.props.errorHandler && this.props.errorHandler(this.props.fieldName);
+          msg = errorData[cnt]['msg'];
           break;
         }
       }
     }
+    if (msg) {
+      this.props.errorHandler && this.props.errorHandler(msg);
+    }
+    this.setState({ errorMsg: msg });
   }
 
   componentDidMount() {
@@ -44,12 +45,21 @@ class FormInput extends Component {
     }
   }
 
+  onChange(val) {
+    console.log('i am in base compomponent');
+    this.setState({ errorMsg: null });
+    this.props.onChangeText && this.props.onChangeText(val);
+  }
+
   render() {
     let props = { ...this.props, ...{ ref: this.props.fieldName } };
     return (
       <View>
         <TextInput
           {...props}
+          onChangeText={(val) => {
+            this.onChange(val);
+          }}
           style={[
             this.props.style,
             !this.props.clearErrors && (this.state.errorMsg || this.props.errorMsg) ? Theme.Errors.errorBorder : {}

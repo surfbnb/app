@@ -18,19 +18,6 @@ let stylesMap = {
     lineHeight: 22,
     fontWeight: '300',
     marginBottom: 20
-  },
-  termsPoliciesInfoText: {
-    alignSelf: 'center',
-    marginBottom: 5,
-    fontSize: 12,
-    fontWeight: '300',
-    color: Colors.greyLite
-  },
-  termsPoliciesLinkText: {
-    alignSelf: 'center',
-    marginBottom: 15,
-    fontSize: 12,
-    color: Colors.summerSky
   }
 };
 

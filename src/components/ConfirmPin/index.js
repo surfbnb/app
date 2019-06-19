@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { View, Alert, Text, Image, Linking, KeyboardAvoidingView, Platform } from 'react-native';
+
 import LoadingModal from '../../theme/components/LoadingModal';
 import Toast from '../../theme/components/Toast';
 import Store from '../../store';
 import { showModal, hideModal } from '../../actions';
 import utilities from '../../services/Utilities';
-
 import PinInput from '../PinInput';
+import PinFooter from '../PinInput/PinFooter';
 import ActivateUser from '../../services/ActivateUser';
 import inlineStyles from './styles';
 import BackArrow from '../../assets/back-arrow.png';
@@ -44,7 +45,6 @@ export default class ConfirmPin extends Component {
   }
 
   render() {
-    const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : -500;
     return (
       <View style={{ flex: 1 }}>
         <View style={inlineStyles.container}>
@@ -56,16 +56,7 @@ export default class ConfirmPin extends Component {
           <Toast timeout={3000} />
         </View>
 
-        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={keyboardVerticalOffset}>
-          <View>
-            <Text style={inlineStyles.termsPoliciesInfoText}>By Creating Your Wallet, you Agree to our</Text>
-            <Text style={inlineStyles.termsPoliciesLinkText}>
-              <Text onPress={() => Linking.openURL('http://google.com')}> Terms of Service </Text>
-              <Text style={{ fontWeight: '300', color: '#484848' }}>and</Text>
-              <Text onPress={() => Linking.openURL('http://google.com')}> Privacy Policy </Text>
-            </Text>
-          </View>
-        </KeyboardAvoidingView>
+        <PinFooter />
       </View>
     );
   }

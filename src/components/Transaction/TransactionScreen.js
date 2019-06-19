@@ -56,7 +56,8 @@ class TransactionScreen extends Component {
       switchToggleState: false,
       transactionModal: false,
       btAmountFocus: true,
-      btAmountErrorMsg: null
+      btAmountErrorMsg: null,
+      feildErrorText: null
     };
     this.baseState = this.state;
     this.toUser = this.props.navigation.getParam('toUser');
@@ -119,6 +120,7 @@ class TransactionScreen extends Component {
       return;
     }
     Store.dispatch(showModal('Sending...'));
+    this.setState({ feildErrorText: null });
     this.sendTransactionToSdk();
   }
 
@@ -191,10 +193,18 @@ class TransactionScreen extends Component {
   }
 
   onError(error) {
-    const errorMsg = ostErrors.getErrorMessage(error);
-    this.setState({ general_error: errorMsg });
     Store.dispatch(hideModal());
-    utilities.showAlert('', errorMsg);
+    const errorMsg = ostErrors.getErrorMessage(error);
+    if (errorMsg) {
+      this.setState({ general_error: errorMsg });
+      utilities.showAlert('', errorMsg);
+      return;
+    }
+    const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
+    if (errorDataMsg) {
+      this.setState({ feildErrorText: errorDataMsg });
+      return;
+    }
   }
 
   clearErrors() {
@@ -318,6 +328,8 @@ class TransactionScreen extends Component {
                 placeholderTextColor="#ababab"
               />
             )}
+
+            <Text style={Theme.Errors.errorText}> {this.state.feildErrorText}</Text>
 
             <View style={inlineStyles.bottomButtonsWrapper}>
               <TouchableButton

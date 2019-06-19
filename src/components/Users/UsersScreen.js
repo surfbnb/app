@@ -8,6 +8,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import currentUserModel from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
 import { ostErrors } from '../../services/OstErrors';
+import { showToast } from '../../actions';
+import Store from '../../store';
 
 class Users extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -58,7 +60,7 @@ class Users extends Component {
       headerText = `${item.first_name} ${item.last_name}`;
     }
     if (!currentUserModel.isUserActivated()) {
-      utilities.showAlert('', ostErrors.getUIErrorMessage('user_not_active'));
+      Store.dispatch(showToast(ostErrors.getUIErrorMessage('user_not_active')));
       return;
     }
     this.props.navigation.navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });

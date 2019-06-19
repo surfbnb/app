@@ -16,7 +16,7 @@ const UIErros = {
   general_error: 'Something went wrong please try again later',
   general_error_ex: 'Unable to execute transaction, please try again later.',
   bt_amount_error: 'Please enter valid amount.',
-  user_not_active: 'Please wait till user activation.',
+  user_not_active: 'Please wait for your user activation.',
   no_internet: 'No Internet, please try again later.'
 };
 
