@@ -12,8 +12,7 @@ let stylesMap = {
   form: {
     backgroundColor: Colors.white,
     width: Dimensions.get('window').width,
-    paddingLeft: Platform.OS === 'ios' ? 20 : 30,
-    paddingRight: Platform.OS === 'ios' ? 20 : 30
+    paddingHorizontal: Platform.OS === 'ios' ? 20 : 30
   },
   bottomBtnAndTxt: {
     height: 70,

@@ -241,6 +241,7 @@ class AuthScreen extends Component {
   }
 
   render() {
+    const { shift } = this.state;
     return (
       <React.Fragment>
         <View style={{ flex: 1 }}>
