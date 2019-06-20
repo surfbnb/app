@@ -8,7 +8,7 @@ class UserFeedScreen extends Component {
     return {
       headerTitle: navigation.getParam('headerText'),
       headerBackTitle: null,
-      headerBackImage: <Image source={BackArrow} style={{ width: 10, height: 18, marginLeft: 8 }} />
+      headerBackImage: <View style={{paddingRight:30,paddingVertical:30}}><Image source={BackArrow} style={{width: 10, height: 18,paddingLeft:8}} /></View>,
     };
   };
 

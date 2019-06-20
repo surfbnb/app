@@ -411,8 +411,8 @@ class Giphy extends Component {
                               onPress={() => {
                                 this.showCategotyList();
                               }}
-                            >
-                              <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
+                            ><Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
+
                             </TouchableWithoutFeedback>
                           )) ||
                             null}
