@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import {
-  Animated,
   Dimensions,
-  Keyboard,
   TextInput,
-  UIManager,
   View,
   Text,
   TouchableOpacity,
@@ -57,7 +54,6 @@ class AuthScreen extends Component {
       isLoginIn: false,
       server_errors: {},
       clearErrors: false,
-      shift: new Animated.Value(0),
       ...this.defaults
     };
 
@@ -71,45 +67,6 @@ class AuthScreen extends Component {
     this.counter = 0;
 
   }
-
-  componentWillMount() {
-    this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.handleKeyboardDidShow);
-    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.handleKeyboardDidHide);
-  }
-
-  componentWillUnmount() {
-    this.keyboardDidShowSub.remove();
-    this.keyboardDidHideSub.remove();
-  }
-
-  handleKeyboardDidShow = (event) => {
-    const { height: windowHeight } = Dimensions.get('window');
-    const keyboardHeight = event.endCoordinates.height;
-    const currentlyFocusedField = TextInputState.currentlyFocusedField();
-    if (currentlyFocusedField) {
-      UIManager.measure(currentlyFocusedField, (originX, originY, width, height, pageX, pageY) => {
-        const fieldHeight = height;
-        const fieldTop = pageY;
-        const gap = windowHeight - keyboardHeight - (fieldTop + fieldHeight);
-        if (!gap || gap >= 0) {
-          return;
-        }
-        Animated.timing(this.state.shift, {
-          toValue: gap - 100,
-          duration: 500,
-          useNativeDriver: true
-        }).start();
-      });
-    }
-  };
-
-  handleKeyboardDidHide = () => {
-    Animated.timing(this.state.shift, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: true
-    }).start();
-  };
 
   validateLoginInput() {
     let isValid = true;
@@ -260,17 +217,9 @@ class AuthScreen extends Component {
   render() {
     // const { shift } = this.state;
     return (
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView enableOnAndroid={true}>
         <View style={{ height: Dimensions.get("window").height }}>
           <View style={styles.container}>
-          {/*<Animated.View*/}
-            {/*style={[*/}
-              {/*{*/}
-                {/*transform: [{perspective: 500},{ translateY: this.state.shift }]*/}
-              {/*},*/}
-              {/*{ ...styles.container }*/}
-            {/*]}*/}
-          {/*>*/}
             <View style={styles.form}>
               <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
               {this.state.signup && (
@@ -287,7 +236,7 @@ class AuthScreen extends Component {
                     ]}
                     placeholder="First Name"
                     returnKeyType="next"
-                    returnKeyLabel="next"
+                    returnKeyLabel="Next"
                     placeholderTextColor="#ababab"
                     errorMsg={this.state.first_name_error}
                     serverErrors={this.state.server_errors}
@@ -339,7 +288,9 @@ class AuthScreen extends Component {
                 placeholder="Username"
                 textContentType="none"
                 returnKeyType="next"
-                returnKeyLabel="next"
+                returnKeyLabel="Next"
+                autocorrect="off"
+                autocapitalize="none"
                 placeholderTextColor="#ababab"
                 errorMsg={this.state.user_name_error}
                 clearErrors={this.state.clearErrors}
@@ -369,7 +320,7 @@ class AuthScreen extends Component {
                 style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
                 value={this.state.password}
                 returnKeyType="done"
-                returnKeyLabel="done"
+                returnKeyLabel="Done"
                 errorMsg={this.state.password_error}
                 serverErrors={this.state.server_errors}
                 clearErrors={this.state.clearErrors}
