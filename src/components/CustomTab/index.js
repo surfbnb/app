@@ -11,6 +11,11 @@ const CustomTab = ({ navigation, screenProps }) => (
     <TouchableOpacity
       onPress={() => {
         navigation.navigate('Feed');
+        try {
+          navigation.goBack(null);
+        } catch {
+          console.log('Catch error');
+        }
       }}
     >
       <Image
