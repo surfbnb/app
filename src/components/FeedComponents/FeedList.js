@@ -25,6 +25,12 @@ class FeedList extends Component {
     this.initList();
   }
 
+  componentDidUpdate(){
+    if( this.props.toRefresh ){
+      this.refresh();
+    }
+  }
+
   initList() {
     this.refresh();
   }
@@ -53,7 +59,7 @@ class FeedList extends Component {
   }
 
   onRefreshError(error) {
-    this.setState({ refreshing: false });
+    this.setState({ refreshing: false , feeds: this.fetchServices.getIDList() });
     this.props.onRefreshError && this.props.onRefreshError(error);
   }
 
@@ -64,7 +70,6 @@ class FeedList extends Component {
       .fetch()
       .then((res) => {
         this.onNext(res);
-        this.setState({ feeds: this.fetchServices.getIDList() });
       })
       .catch((error) => {
         this.onNextError(error);
@@ -78,12 +83,12 @@ class FeedList extends Component {
   }
 
   onNext(res) {
-    this.setState({ loadingNext: false });
+    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList()  });
     this.props.onNext && this.props.onNext(res);
   }
 
   onNextError(error) {
-    this.setState({ loadingNext: false });
+    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList() });
     this.props.onNextError && this.props.onNextError(error);
   }
 
@@ -96,15 +101,10 @@ class FeedList extends Component {
     return (
       <View style={{flex:1}}>
         <FlatList
-        ref={(ref) => {
-          this.flatListRef = ref;
-        }}
         style={[this.props.style]}
         data={this.state.feeds}
-        onEndReached={this.getNext}
-        onRefresh={() => {
-          this.refresh();
-        }}
+        onEndReached={() => this.getNext()}
+        onRefresh={() => this.refresh()}
         keyExtractor={(item, index) => `id_${item}`}
         onEndReachedThreshold={0.5}
         initialNumToRender={20}

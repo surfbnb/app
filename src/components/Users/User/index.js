@@ -1,30 +1,55 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
-
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import currentUserModel from '../../../models/CurrentUser';
 import styles from './styles';
 import isEmpty from 'lodash/isEmpty';
 import default_user_icon from '../../../assets/default_user_icon.png';
-import appConfig from "../../../constants/AppConfig";
+import appConfig from '../../../constants/AppConfig';
+import store from '../../../store';
 
-const isActivated = function ( user ){
-  let userStatus = user && user["ost_status"] || "";
-  userStatus = userStatus.toLowerCase(); 
+const isActivated = function(user) {
+  let userStatus = (user && user['ost_status']) || '';
+  userStatus = userStatus.toLowerCase();
   return userStatus == appConfig.userStatusMap.activated;
-}
+};
+
+const userClick = function(item, navigate) {
+  let headerText = 'Transaction';
+  if (item) {
+    headerText = `${item.first_name} ${item.last_name}`;
+  }
+  if (!currentUserModel.isUserActivated()) {
+    Store.dispatch(showToast(ostErrors.getUIErrorMessage('user_not_active')));
+    return;
+  }
+  navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
+};
+
+const getUser = function(id) {
+  return store.getState().user_entities[`id_${id}`] || {};
+};
 
 export default Users = React.memo((props) => {
-  if (!isEmpty(props.user) && isActivated( props.user ) ) {
+  let user = getUser(props.id);
+
+  if (!isEmpty(user) && isActivated(user)) {
     return (
-      <View style={styles.container}>
-        <View style={styles.userContainer}>
-          <View style={styles.txtWrapper}>
-            <Image style={styles.imageStyleSkipFont} source={default_user_icon}></Image>
-            <Text numberOfLines={1} style={styles.item}>
-              {props.user.first_name} {props.user.last_name}
-            </Text>
+      <TouchableOpacity
+        onPress={() => {
+          userClick(user, props.navigate);
+        }}
+      >
+        <View style={styles.container}>
+          <View style={styles.userContainer}>
+            <View style={styles.txtWrapper}>
+              <Image style={styles.imageStyleSkipFont} source={default_user_icon}></Image>
+              <Text numberOfLines={1} style={styles.item}>
+                {user.first_name} {user.last_name}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   } else {
     return <View></View>;
