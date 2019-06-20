@@ -328,8 +328,7 @@ class Giphy extends Component {
             }
           ]}
         >
-          <ActivityIndicator style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0
-          }}/>
+          <ActivityIndicator style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
           <ImageBackground
             source={{ uri: this.state.selectedImage.downsized.url }}
             style={{
@@ -446,7 +445,6 @@ class Giphy extends Component {
                                     {
                                       margin: 3,
                                       borderRadius: 4,
-                                      backgroundColor: 'rgba(238,238,238,1)',
                                       overflow: 'hidden'
                                     }
                                   ]}
@@ -457,19 +455,23 @@ class Giphy extends Component {
                                       height: wh
                                     }}
                                     source={{ uri: item.fixed_width_downsampled.url }}
+                                    showActivityIndicator={this.state.isGifCategory ? false : true}
+                                    imageBackgroundColor={['rgba(238,238,238,1)']} //can be string or array of colors
                                   />
-                                  <View
-                                    style={[
-                                      inlineStyles.overlay,
-                                      {
-                                        backgroundColor: this.state.isGifCategory ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0)',
-                                        height: wh,
-                                        width: wh
-                                      }
-                                    ]}
-                                  >
-                                    <Text style={inlineStyles.overlayText}>{item.name}</Text>
-                                  </View>
+                                  {this.state.isGifCategory && (
+                                    <View
+                                      style={[
+                                        inlineStyles.overlay,
+                                        {
+                                          backgroundColor: 'rgba(0,0,0,0.5)',
+                                          height: wh,
+                                          width: wh
+                                        }
+                                      ]}
+                                    >
+                                      <Text style={inlineStyles.overlayText}>{item.name}</Text>
+                                    </View>
+                                  )}
                                 </View>
                               </TouchableWithoutFeedback>
                             );

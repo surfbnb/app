@@ -28,14 +28,14 @@ class ProfileScreen extends Component {
     this.eventSubscription =  this.props.navigation && this.props.navigation.addListener(
       'didFocus',
       payload => {
-        let toRefresh = deepGet( payload , "action.params.toRefresh"); 
+        let toRefresh = deepGet( payload , "action.params.toRefresh");
         toRefresh && this.setState({ toRefresh : toRefresh });
       }
     )
   };
 
   componentWillUnmount(){
-    this.eventSubscription && this.eventSubscription.remove(); 
+    this.eventSubscription && this.eventSubscription.remove();
   }
 
   beforeRefresh() {
@@ -55,7 +55,7 @@ class ProfileScreen extends Component {
   render() {
       return (
         <FeedList
-          style={{ backgroundColor: '#f6f6f6' }}
+          style={{ backgroundColor: '#f6f6f6',flex:1 }}
           fetchUrl={this.fetchUrl}
           toRefresh={ this.state.toRefresh }
           ListHeaderComponent={<BalanceHeader toRefresh={this.state.refreshBalance} />}
@@ -70,7 +70,7 @@ class ProfileScreen extends Component {
           }}
         ></FeedList>
       );
-    }   
+    }
 }
 
 export default ProfileScreen;

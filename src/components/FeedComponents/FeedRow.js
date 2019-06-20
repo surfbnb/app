@@ -6,6 +6,7 @@ import TimestampHandling from '../../helpers/timestampHandling';
 import NavigationService from '../../services/NavigationService';
 import DefaultUserIcon from '../../assets/default_user_icon.png';
 import PriceOracle from '../../services/PriceOracle';
+import GracefulImage from '../Giphy/GracefulImage';
 
 class FeedRow extends Component {
   constructor(props) {
@@ -120,12 +121,14 @@ class FeedRow extends Component {
           </View>
           {this.giphyEntity && (
             <View style={{ marginTop: 10 }}>
-              <Image
-                source={{ uri: this.giphyEntity.downsized.url }}
+              <GracefulImage
                 style={{
                   width: '100%',
                   aspectRatio: parseInt(this.giphyEntity.downsized.width) / parseInt(this.giphyEntity.downsized.height)
                 }}
+                source={{ uri: this.giphyEntity.downsized.url }}
+                showActivityIndicator={true}
+                imageBackgroundColor="rgba(238,238,238,1)" //can be string or array of colors
               />
             </View>
           )}
