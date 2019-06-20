@@ -250,6 +250,7 @@ class TransactionScreen extends Component {
     return (
       <KeyboardAwareScrollView
         enableOnAndroid={true}
+        extraHeight={200}
         onKeyboardWillShow={(frames) => {
           this.setState({
             viewStyle: {flex: 1}
@@ -352,6 +353,11 @@ class TransactionScreen extends Component {
                   this.setState({ transactionModal: false });
                 }}
               >
+                <KeyboardAwareScrollView
+                  enableOnAndroid={true}
+                  extraHeight={200}
+                  >
+                  <View style={{height: Dimensions.get("window").height}}>
                 <View style={inlineStyles.modalBackDrop}>
                   <View style={inlineStyles.modelWrapper}>
                     <View>
@@ -430,6 +436,8 @@ class TransactionScreen extends Component {
                     </View>
                   </View>
                 </View>
+                  </View>
+                </KeyboardAwareScrollView>
               </Modal>
 
           </React.Fragment>

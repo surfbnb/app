@@ -36,8 +36,8 @@ let stylesMap = {
     flex: 1
   },
   modelWrapper: {
-    top: '50%',
-    transform: [{ translateY: -Dimensions.get('window').height * 0.25 }]
+    bottom: 10,
+    position: 'absolute'
   },
   modalCloseBtnWrapper: {
     height: 40,
