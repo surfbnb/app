@@ -1,12 +1,13 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: Colors.whiteSmoke
+    backgroundColor: Colors.whiteSmoke,
+    justifyContent: 'space-between'
   },
   addMessageTextStyle: {
     color: Colors.summerSky,
@@ -18,11 +19,6 @@ let stylesMap = {
     borderWidth: 0,
     borderRadius: 15,
     marginLeft: 5
-  },
-  bottomButtonsWrapper: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'flex-end'
   },
   sendPepoBtn: {
     flex: 8,
