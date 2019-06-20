@@ -4,7 +4,8 @@ import FeedList from '../FeedComponents/FeedList';
 class Feed extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      headerTitle: 'Feed'
+      headerTitle: 'Feed',
+      headerBackTitle: null
     };
   };
 

@@ -50,9 +50,14 @@ class CurrentUserModel {
     //Sync user with server. Return user js obj in a promise.
     userId = userId || this.userId;
     if (!userId) return;
-    return new PepoApi('/users/current').get().then((apiResponse) => {
-      return this._saveCurrentUser(apiResponse, userId);
-    });
+    return new PepoApi('/users/current')
+      .get()
+      .then((apiResponse) => {
+        return this._saveCurrentUser(apiResponse, userId);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   _saveCurrentUser(apiResponse, expectedUserId) {

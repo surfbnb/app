@@ -38,18 +38,18 @@ class List extends Component {
   }
 
   beforeRefresh() {
-    this.setState({ refreshing: true });
     this.props.beforeRefresh && this.props.beforeRefresh();
+    this.setState({ refreshing: true });
   }
 
   onRefresh(res) {
-    this.setState({ refreshing: false, list: this.fetchServices.getIDList() });
     this.props.onRefresh && this.props.onRefresh(res);
+    this.setState({ refreshing: false, list: this.fetchServices.getIDList() }); 
   }
 
   onRefreshError(error) {
-    this.setState({ refreshing: false , list: this.fetchServices.getIDList()});
     this.props.onRefreshError && this.props.onRefreshError(error);
+    this.setState({ refreshing: false , list: this.fetchServices.getIDList()});
   }
 
   getNext = () => {
@@ -68,19 +68,18 @@ class List extends Component {
   };
 
   beforeNext() {
-    this.setState({ loadingNext: true });
     this.props.beforeNext && this.props.beforeNext();
+    this.setState({ loadingNext: true });
   }
 
   onNext(res) {
-    this.setState({ loadingNext: false, list: this.fetchServices.getIDList() });
     this.props.onNext && this.props.onNext(res);
+    this.setState({ loadingNext: false, list: this.fetchServices.getIDList() });
   }
 
   onNextError(error) {
-    console.log('fetching error');
-    this.setState({ loadingNext: false, list: this.fetchServices.getIDList() });
     this.props.onNextError && this.props.onNextError(error);
+    this.setState({ loadingNext: false, list: this.fetchServices.getIDList() });
   }
 
   renderFooter = () => {

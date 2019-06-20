@@ -39,7 +39,7 @@ class ProfileScreen extends Component {
   }
 
   beforeRefresh() {
-    if( !this.state.refreshBalance ){
+    if( !this.state.refreshBalance ) {
       this.setState({ refreshBalance: true });
     }
   }

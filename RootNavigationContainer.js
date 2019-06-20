@@ -18,14 +18,19 @@ import Feed from './src/components/Feed';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
-import ProfileScreen from "./src/components/Profile/ProfileScreen";
+import ProfileScreen from './src/components/Profile/ProfileScreen';
 
 const HomeScreen = createMaterialTopTabNavigator(
   {
-    Feed: createStackNavigator({
-      FeedContent: Feed,
-      UserFeedScreen: UserFeedScreen
-    }),
+    Feed: createStackNavigator(
+      {
+        FeedContent: Feed,
+        UserFeedScreen: UserFeedScreen
+      },
+      {
+        headerLayoutPreset: 'center'
+      }
+    ),
     Users: createStackNavigator(
       {
         Users: Users,
@@ -34,13 +39,19 @@ const HomeScreen = createMaterialTopTabNavigator(
       {
         navigationOptions: ({ navigation }) => ({
           tabBarVisible: navigation.state.index == 1 ? false : true
-        })
+        }),
+        headerLayoutPreset: 'center'
       }
     ),
-    Profile: createStackNavigator({
-      ProfileScreen: ProfileScreen,
-      UserFeedScreen: UserFeedScreen
-    })
+    Profile: createStackNavigator(
+      {
+        ProfileScreen: ProfileScreen,
+        UserFeedScreen: UserFeedScreen
+      },
+      {
+        headerLayoutPreset: 'center'
+      }
+    )
   },
   {
     tabBarComponent: CustomTab,
@@ -62,6 +73,7 @@ const PinStack = createStackNavigator(
     ConfirmPinScreen: ConfirmPin
   },
   {
+    headerLayoutPreset: 'center',
     defaultNavigationOptions: {
       headerTitleStyle: {
         color: Colors.dark,
