@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import {
-  Animated,
   Dimensions,
-  Keyboard,
   TextInput,
-  UIManager,
   View,
   Text,
   TouchableOpacity,
   Image
 } from 'react-native';
+
+import  { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 
 // components
 import TouchableButton from '../../theme/components/TouchableButton';
@@ -22,13 +21,12 @@ import InitWalletSdk from '../../services/InitWalletSdk';
 import LoadingModal from '../../theme/components/LoadingModal';
 import Toast from '../../theme/components/Toast';
 import { showModal, hideModal } from '../../actions';
-import utilities from '../../services/Utilities';
 import currentUserModal from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
 
 const signUpLoginTestMap = {
   signup: 'Signing up...',
-  signin: 'Login in...'
+  signin: 'Loging in...'
 };
 
 const { State: TextInputState } = TextInput;
@@ -56,7 +54,6 @@ class AuthScreen extends Component {
       isLoginIn: false,
       server_errors: {},
       clearErrors: false,
-      shift: new Animated.Value(0),
       ...this.defaults
     };
 
@@ -70,45 +67,6 @@ class AuthScreen extends Component {
     this.counter = 0;
 
   }
-
-  componentWillMount() {
-    this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', this.handleKeyboardDidShow);
-    this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', this.handleKeyboardDidHide);
-  }
-
-  componentWillUnmount() {
-    this.keyboardDidShowSub.remove();
-    this.keyboardDidHideSub.remove();
-  }
-
-  handleKeyboardDidShow = (event) => {
-    const { height: windowHeight } = Dimensions.get('window');
-    const keyboardHeight = event.endCoordinates.height;
-    const currentlyFocusedField = TextInputState.currentlyFocusedField();
-    if (currentlyFocusedField) {
-      UIManager.measure(currentlyFocusedField, (originX, originY, width, height, pageX, pageY) => {
-        const fieldHeight = height;
-        const fieldTop = pageY;
-        const gap = windowHeight - keyboardHeight - (fieldTop + fieldHeight);
-        if (!gap || gap >= 0) {
-          return;
-        }
-        Animated.timing(this.state.shift, {
-          toValue: gap - 100,
-          duration: 500,
-          useNativeDriver: true
-        }).start();
-      });
-    }
-  };
-
-  handleKeyboardDidHide = () => {
-    Animated.timing(this.state.shift, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: true
-    }).start();
-  };
 
   validateLoginInput() {
     let isValid = true;
@@ -161,6 +119,22 @@ class AuthScreen extends Component {
 
   clearError() {
     this.setState(this.defaults);
+  }
+
+  getParams(){
+    let params = {};
+    if( this.state.signup ) {
+     return  {
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        user_name: this.state.user_name,
+        password: this.state.password,
+      }
+    }
+    return {
+      user_name: this.state.user_name,
+      password: this.state.password,
+    }
   }
 
   signin() {
@@ -241,18 +215,11 @@ class AuthScreen extends Component {
   }
 
   render() {
-    const { shift } = this.state;
+    // const { shift } = this.state;
     return (
-      <React.Fragment>
-        <View style={{ flex: 1 }}>
-          <Animated.View
-            style={[
-              {
-                transform: [{ translateY: this.state.shift }]
-              },
-              { ...styles.container }
-            ]}
-          >
+      <KeyboardAwareScrollView enableOnAndroid={true}>
+        <View style={{ height: Dimensions.get("window").height }}>
+          <View style={styles.container}>
             <View style={styles.form}>
               <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
               {this.state.signup && (
@@ -269,7 +236,7 @@ class AuthScreen extends Component {
                     ]}
                     placeholder="First Name"
                     returnKeyType="next"
-                    returnKeyLabel="next"
+                    returnKeyLabel="Next"
                     placeholderTextColor="#ababab"
                     errorMsg={this.state.first_name_error}
                     serverErrors={this.state.server_errors}
@@ -321,7 +288,9 @@ class AuthScreen extends Component {
                 placeholder="Username"
                 textContentType="none"
                 returnKeyType="next"
-                returnKeyLabel="next"
+                returnKeyLabel="Next"
+                autocorrect="off"
+                autocapitalize="none"
                 placeholderTextColor="#ababab"
                 errorMsg={this.state.user_name_error}
                 clearErrors={this.state.clearErrors}
@@ -351,7 +320,7 @@ class AuthScreen extends Component {
                 style={[Theme.TextInput.textInputStyle, this.state.password_error ? Theme.Errors.errorBorder : {}]}
                 value={this.state.password}
                 returnKeyType="done"
-                returnKeyLabel="done"
+                returnKeyLabel="Done"
                 errorMsg={this.state.password_error}
                 serverErrors={this.state.server_errors}
                 clearErrors={this.state.clearErrors}
@@ -392,7 +361,7 @@ class AuthScreen extends Component {
             </View>
             <LoadingModal />
             <Toast timeout={3000} />
-          </Animated.View>
+          </View>
           <View style={styles.bottomBtnAndTxt}>
             {!this.state.signup && (
               <TouchableOpacity
@@ -425,7 +394,7 @@ class AuthScreen extends Component {
             )}
           </View>
         </View>
-      </React.Fragment>
+      </KeyboardAwareScrollView>
     );
   }
 }

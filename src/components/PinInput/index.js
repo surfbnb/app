@@ -13,7 +13,7 @@ export default class PinInput extends Component {
 
   componentDidMount() {
     this.focusListner = this.props.navigation.addListener('didFocus', (payload) => {
-      this.setState({ pin: '' });
+      this.resetPin();
       this.refs['pin_input'].focus();
     });
   }
@@ -23,6 +23,10 @@ export default class PinInput extends Component {
       this.focusListner.remove();
     }
   }
+
+  resetPin = () => {
+    this.setState({ pin: '' });
+  };
 
   render() {
     return (
@@ -52,7 +56,9 @@ export default class PinInput extends Component {
           value={this.state.pin}
           password
           mask="●"
-          onFulfill={this.props.onPinChange}
+          onFulfill={(pin) => {
+            this.props.onPinChange(pin, this.resetPin);
+          }}
           onTextChange={(pin) => this.setState({ pin })}
         />
       </View>

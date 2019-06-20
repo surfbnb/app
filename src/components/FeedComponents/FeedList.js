@@ -91,9 +91,6 @@ class FeedList extends Component {
   render() {
     return (
       <FlatList
-        ref={(ref) => {
-          this.flatListRef = ref;
-        }}
         style={[this.props.style]}
         data={this.state.feeds}
         onEndReached={this.getNext}

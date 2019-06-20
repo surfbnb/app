@@ -110,7 +110,7 @@ class TransactionScreen extends Component {
       Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
       return;
     }
-    Store.dispatch(showModal('Sending...'));
+    Store.dispatch(showModal('Posting...'));
     this.setState({ feildErrorText: null });
     this.sendTransactionToSdk();
   }
