@@ -8,9 +8,12 @@ import {
   Switch,
   TouchableOpacity,
   Modal,
+  KeyboardAvoidingView,
   Image,
-  Platform
+  Platform, Dimensions
 } from 'react-native';
+import  { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+import { Header } from 'react-navigation';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
@@ -55,7 +58,8 @@ class TransactionScreen extends Component {
       transactionModal: false,
       btAmountFocus: true,
       btAmountErrorMsg: null,
-      feildErrorText: null
+      feildErrorText: null,
+      viewStyle: {height: Dimensions.get("window").height - Header.HEIGHT}
     };
     this.baseState = this.state;
     this.toUser = this.props.navigation.getParam('toUser');
@@ -244,181 +248,196 @@ class TransactionScreen extends Component {
 
   render() {
     return (
-      <View style={inlineStyles.container}>
-       
-        {/* {this.state.isLoading && (
-          <React.Fragment>
-            <ActivityIndicator />
-          </React.Fragment>
-        )} */}
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        onKeyboardWillShow={(frames) => {
+          this.setState({
+            viewStyle: {flex: 1}
+          });
+        }}
+        onKeyboardWillHide={(frames) => {
+          this.setState({
+            viewStyle: {height: Dimensions.get("window").height - Header.HEIGHT}
+          });
+        }}>
+        <View style={this.state.viewStyle}>
+          <View style={inlineStyles.container}>
 
         {!this.state.isLoading && (
           <React.Fragment>
-            <Giphy
-              onGifySelect={(gify) => {
-                this.onGifySelect(gify);
-              }}
-            />
 
-            <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, alignItems: 'center' }}
-            >
-              {/*{  This is add message button }*/}
-              <TouchableOpacity
-                style={{}}
-                onPress={() => {
-                  this.onMessageBtnPress();
+            <View>
+              <Giphy
+                onGifySelect={(gify) => {
+                  this.onGifySelect(gify);
                 }}
-              >
-                <Text style={inlineStyles.addMessageTextStyle}>
-                  {this.state.isMessageVisible ? 'Clear Message' : 'Add Message'}
-                </Text>
-              </TouchableOpacity>
+              />
 
-              {/* This is Share publically switch */}
-              <View style={{ justifyContent: 'flex-end' }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ fontSize: 16, color: '#606060' }}>Make Public</Text>
-                  <Switch
-                    value={this.state.isPublic}
-                    style={inlineStyles.switchStyle}
-                    onValueChange={(isPublic) => {
-                      this.setState({ isPublic });
+              <View
+                style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, alignItems: 'center' }}
+              >
+                {/*{  This is add message button }*/}
+                <TouchableOpacity
+                  style={{}}
+                  onPress={() => {
+                    this.onMessageBtnPress();
+                  }}
+                >
+                  <Text style={inlineStyles.addMessageTextStyle}>
+                    {this.state.isMessageVisible ? 'Clear Message' : 'Add Message'}
+                  </Text>
+                </TouchableOpacity>
+
+                {/* This is Share publically switch */}
+                <View style={{ justifyContent: 'flex-end' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 16, color: '#606060' }}>Make Public</Text>
+                    <Switch
+                      value={this.state.isPublic}
+                      style={inlineStyles.switchStyle}
+                      onValueChange={(isPublic) => {
+                        this.setState({ isPublic });
+                      }}
+                      ios_backgroundColor="#d3d3d3"
+                      trackColor={{ true: '#EF5566', false: Platform.OS == 'android' ? '#d3d3d3' : '#ffffff' }}
+                      thumbColor={[Platform.OS == 'android' ? '#ffffff' : '']}
+                    ></Switch>
+                  </View>
+                </View>
+              </View>
+
+              {this.state.isMessageVisible && (
+                <FormInput
+                  autoFocus={true}
+                  editable={true}
+                  onChangeText={(message) => this.setState({ message: message })}
+                  placeholder="Message"
+                  fieldName="message"
+                  style={[Theme.TextInput.textInputStyle, { backgroundColor: '#ffffff', marginTop: 20 }]}
+                  value={this.state.message}
+                  returnKeyType="done"
+                  returnKeyLabel="done"
+                  serverErrors={this.state.server_errors}
+                  clearErrors={this.state.clearErrors}
+                  placeholderTextColor="#ababab"
+                />
+              )}
+
+              <Text style={Theme.Errors.errorText}> {this.state.feildErrorText}</Text>
+              </View>
+              <View style={inlineStyles.bottomButtonsWrapper}>
+                <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                  <TouchableButton
+                    TouchableStyles={[Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
+                    TextStyles={[Theme.Button.btnPinkText]}
+                    text={`Send P${this.state.btAmount}`}
+                    onPress={() => this.excequteTransaction()}
+                  />
+                  <TouchableOpacity
+                    style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
+                    onPress={() => {
+                      this.onAmountModalShow();
                     }}
-                    ios_backgroundColor="#d3d3d3"
-                    trackColor={{ true: '#EF5566', false: Platform.OS == 'android' ? '#d3d3d3' : '#ffffff' }}
-                    thumbColor={[Platform.OS == 'android' ? '#ffffff' : '']}
-                  ></Switch>
+                  >
+                    <Image style={[{ width: 20, height: 20 }, { tintColor: '#ef5566' }]} source={EditIcon}></Image>
+                  </TouchableOpacity>
                 </View>
               </View>
-            </View>
 
-            {this.state.isMessageVisible && (
-              <FormInput
-                autoFocus={true}
-                editable={true}
-                onChangeText={(message) => this.setState({ message: message })}
-                placeholder="Message"
-                fieldName="message"
-                style={[Theme.TextInput.textInputStyle, { backgroundColor: '#ffffff', marginTop: 20 }]}
-                value={this.state.message}
-                returnKeyType="done"
-                returnKeyLabel="done"
-                serverErrors={this.state.server_errors}
-                clearErrors={this.state.clearErrors}
-                placeholderTextColor="#ababab"
-              />
-            )}
-
-            <Text style={Theme.Errors.errorText}> {this.state.feildErrorText}</Text>
-
-            <View style={inlineStyles.bottomButtonsWrapper}>
-              <TouchableButton
-                TouchableStyles={[Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
-                TextStyles={[Theme.Button.btnPinkText]}
-                text={`Send P${this.state.btAmount}`}
-                onPress={() => this.excequteTransaction()}
-              />
-              <TouchableOpacity
-                style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
-                onPress={() => {
-                  this.onAmountModalShow();
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.transactionModal}
+                onRequestClose={() => {
+                  this.setState({ transactionModal: false });
                 }}
               >
-                <Image style={[{ width: 20, height: 20 }, { tintColor: '#ef5566' }]} source={EditIcon}></Image>
-              </TouchableOpacity>
-            </View>
-
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={this.state.transactionModal}
-              onRequestClose={() => {
-                this.setState({ transactionModal: false });
-              }}
-            >
-              <View style={inlineStyles.modalBackDrop}>
-                <View style={inlineStyles.modelWrapper}>
-                  <View>
-                    <TouchableOpacity
-                      style={inlineStyles.modalCloseBtnWrapper}
-                      onPress={() => {
-                        this.onAmountModalClose();
-                      }}
-                    >
-                      <Image source={CircleCloseIcon} style={inlineStyles.crossIconSkipFont} />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={inlineStyles.modalContentWrapper}>
-                    <Text style={inlineStyles.modalHeader}>Enter The Amount your want to send</Text>
-                    <View style={{ flexDirection: 'row' }}>
-                      <View style={{ flex: 0.7 }}>
-                        <FormInput
-                          editable={true}
-                          onChangeText={(val) => this.onBtChange(val)}
-                          placeholder="BT"
-                          fieldName="bt_amount"
-                          style={Theme.TextInput.textInputStyle}
-                          value={`${this.state.btAmount}`}
-                          placeholderTextColor="#ababab"
-                          errorMsg={this.state.btAmountErrorMsg}
-                          serverErrors={this.state.server_errors}
-                          clearErrors={this.state.clearErrors}
-                          keyboardType="numeric"
-                          isFocus={this.state.btAmountFocus}
-                          blurOnSubmit={false}
-                        />
-                      </View>
-                      <View style={{ flex: 0.3 }}>
-                        <TextInput
-                          editable={false}
-                          style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
-                        >
-                          <Text>PEPO</Text>
-                        </TextInput>
-                      </View>
+                <View style={inlineStyles.modalBackDrop}>
+                  <View style={inlineStyles.modelWrapper}>
+                    <View>
+                      <TouchableOpacity
+                        style={inlineStyles.modalCloseBtnWrapper}
+                        onPress={() => {
+                          this.onAmountModalClose();
+                        }}
+                      >
+                        <Image source={CircleCloseIcon} style={inlineStyles.crossIconSkipFont} />
+                      </TouchableOpacity>
                     </View>
+                    <View style={inlineStyles.modalContentWrapper}>
+                      <Text style={inlineStyles.modalHeader}>Enter The Amount your want to send</Text>
+                      <View style={{ flexDirection: 'row' }}>
+                        <View style={{ flex: 0.7 }}>
+                          <FormInput
+                            editable={true}
+                            onChangeText={(val) => this.onBtChange(val)}
+                            placeholder="BT"
+                            fieldName="bt_amount"
+                            style={Theme.TextInput.textInputStyle}
+                            value={`${this.state.btAmount}`}
+                            placeholderTextColor="#ababab"
+                            errorMsg={this.state.btAmountErrorMsg}
+                            serverErrors={this.state.server_errors}
+                            clearErrors={this.state.clearErrors}
+                            keyboardType="numeric"
+                            isFocus={this.state.btAmountFocus}
+                            blurOnSubmit={false}
+                          />
+                        </View>
+                        <View style={{ flex: 0.3 }}>
+                          <TextInput
+                            editable={false}
+                            style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
+                          >
+                            <Text>PEPO</Text>
+                          </TextInput>
+                        </View>
+                      </View>
 
-                    <View style={{ flexDirection: 'row' }}>
-                      <View style={{ flex: 0.7 }}>
-                        <FormInput
-                          editable={true}
-                          onChangeText={(val) => this.onUSDChange(val)}
-                          value={`${this.state.btUSDAmount}`}
-                          placeholder="USD"
-                          fieldName="usd_amount"
-                          style={Theme.TextInput.textInputStyle}
-                          placeholderTextColor="#ababab"
-                          serverErrors={this.state.server_errors}
-                          clearErrors={this.state.clearErrors}
-                          keyboardType="numeric"
-                          blurOnSubmit={true}
-                        />
+                      <View style={{ flexDirection: 'row' }}>
+                        <View style={{ flex: 0.7 }}>
+                          <FormInput
+                            editable={true}
+                            onChangeText={(val) => this.onUSDChange(val)}
+                            value={`${this.state.btUSDAmount}`}
+                            placeholder="USD"
+                            fieldName="usd_amount"
+                            style={Theme.TextInput.textInputStyle}
+                            placeholderTextColor="#ababab"
+                            serverErrors={this.state.server_errors}
+                            clearErrors={this.state.clearErrors}
+                            keyboardType="numeric"
+                            blurOnSubmit={true}
+                          />
+                        </View>
+                        <View style={{ flex: 0.3 }}>
+                          <TextInput
+                            editable={false}
+                            style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
+                          >
+                            <Text>USD</Text>
+                          </TextInput>
+                        </View>
                       </View>
-                      <View style={{ flex: 0.3 }}>
-                        <TextInput
-                          editable={false}
-                          style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
-                        >
-                          <Text>USD</Text>
-                        </TextInput>
-                      </View>
+                      <TouchableButton
+                        TouchableStyles={[Theme.Button.btnPink, { marginTop: 10 }]}
+                        TextStyles={[Theme.Button.btnPinkText]}
+                        text="CONFIRM"
+                        onPress={() => {
+                          this.onAmountModalConfrim();
+                        }}
+                      />
                     </View>
-                    <TouchableButton
-                      TouchableStyles={[Theme.Button.btnPink, { marginTop: 10 }]}
-                      TextStyles={[Theme.Button.btnPinkText]}
-                      text="CONFIRM"
-                      onPress={() => {
-                        this.onAmountModalConfrim();
-                      }}
-                    />
                   </View>
                 </View>
-              </View>
-            </Modal>
+              </Modal>
+
           </React.Fragment>
         )}
       </View>
+
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

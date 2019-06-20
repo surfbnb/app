@@ -289,8 +289,8 @@ class AuthScreen extends Component {
                 textContentType="none"
                 returnKeyType="next"
                 returnKeyLabel="Next"
-                autocorrect="off"
-                autocapitalize="none"
+                autoCorrect={false}
+                autoCapitalize="none"
                 placeholderTextColor="#ababab"
                 errorMsg={this.state.user_name_error}
                 clearErrors={this.state.clearErrors}
