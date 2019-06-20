@@ -39,7 +39,7 @@ export default class GracefulImage extends Component {
 
   render() {
     return (
-      <View style={[{ ...this.props.imageStyle }, { backgroundColor: this.color }]}>
+      <View style={[{ ...this.props.imageWrapperStyle }, { backgroundColor: this.color }]}>
         {this.state.showLoader && this.props.showActivityIndicator && (
           <ActivityIndicator style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
         )}
