@@ -20,7 +20,7 @@ class UserFeedScreen extends Component {
   }
 
   render() {
-    return <FeedList fetchUrl={this.fetchUrl}></FeedList>;
+    return <FeedList style={{ backgroundColor: '#f6f6f6',flex:1 }} fetchUrl={this.fetchUrl}></FeedList>;
   }
 }
 

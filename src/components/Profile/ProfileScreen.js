@@ -27,7 +27,7 @@ class ProfileScreen extends Component {
   render() {
     return (
       <FeedList
-        style={{ backgroundColor: '#f6f6f6' }}
+        style={{ backgroundColor: '#f6f6f6',flex:1 }}
         fetchUrl={this.fetchUrl}
         ListHeaderComponent={<BalanceHeader toRefresh={this.state.toRefresh} />}
         beforeRefresh={() => {
