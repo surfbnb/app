@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Dimensions,
-  TextInput,
-  View,
-  Text,
-  TouchableOpacity,
-  Image
-} from 'react-native';
+import { Dimensions, TextInput, View, Text, TouchableOpacity, Image } from 'react-native';
 
-import  { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 // components
 import TouchableButton from '../../theme/components/TouchableButton';
@@ -26,7 +19,7 @@ import { ostErrors } from '../../services/OstErrors';
 
 const signUpLoginTestMap = {
   signup: 'Signing up...',
-  signin: 'Loging in...'
+  signin: 'Logging in...'
 };
 
 const { State: TextInputState } = TextInput;
@@ -58,14 +51,13 @@ class AuthScreen extends Component {
     };
 
     this.tabIndex = {
-      firstName : 1 ,
-      lastName:  2,
-      userName:  3,
-      password:4
-    } ;
+      firstName: 1,
+      lastName: 2,
+      userName: 3,
+      password: 4
+    };
 
     this.counter = 0;
-
   }
 
   validateLoginInput() {
@@ -121,20 +113,20 @@ class AuthScreen extends Component {
     this.setState(this.defaults);
   }
 
-  getParams(){
+  getParams() {
     let params = {};
-    if( this.state.signup ) {
-     return  {
+    if (this.state.signup) {
+      return {
         first_name: this.state.first_name,
         last_name: this.state.last_name,
         user_name: this.state.user_name,
-        password: this.state.password,
-      }
+        password: this.state.password
+      };
     }
     return {
       user_name: this.state.user_name,
-      password: this.state.password,
-    }
+      password: this.state.password
+    };
   }
 
   signin() {
@@ -210,15 +202,15 @@ class AuthScreen extends Component {
 
   onSubmitEditing(currentIndex) {
     this.setState({
-      current_formField: currentIndex+1
-    })
+      current_formField: currentIndex + 1
+    });
   }
 
   render() {
     // const { shift } = this.state;
     return (
       <KeyboardAwareScrollView enableOnAndroid={true}>
-        <View style={{ height: Dimensions.get("window").height }}>
+        <View style={{ height: Dimensions.get('window').height }}>
           <View style={styles.container}>
             <View style={styles.form}>
               <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
@@ -242,10 +234,12 @@ class AuthScreen extends Component {
                     serverErrors={this.state.server_errors}
                     clearErrors={this.state.clearErrors}
                     onSubmitEditing={() => {
-                      this.onSubmitEditing(this.tabIndex.firstName)
+                      this.onSubmitEditing(this.tabIndex.firstName);
                     }}
                     isFocus={this.state.current_formField == this.tabIndex.firstName}
-                    onFocus={() => { this.state.current_formField = this.tabIndex.firstName ; }}
+                    onFocus={() => {
+                      this.state.current_formField = this.tabIndex.firstName;
+                    }}
                     blurOnSubmit={false}
                     errorHandler={(fieldName) => {
                       this.serverErrorHandler(fieldName);
@@ -267,10 +261,12 @@ class AuthScreen extends Component {
                     serverErrors={this.state.server_errors}
                     clearErrors={this.state.clearErrors}
                     onSubmitEditing={() => {
-                      this.onSubmitEditing(this.tabIndex.lastName)
+                      this.onSubmitEditing(this.tabIndex.lastName);
                     }}
                     isFocus={this.state.current_formField == this.tabIndex.lastName}
-                    onFocus={() => {this.state.current_formField = this.tabIndex.lastName ;}}
+                    onFocus={() => {
+                      this.state.current_formField = this.tabIndex.lastName;
+                    }}
                     blurOnSubmit={false}
                     errorHandler={(fieldName) => {
                       this.serverErrorHandler(fieldName);
@@ -296,13 +292,13 @@ class AuthScreen extends Component {
                 clearErrors={this.state.clearErrors}
                 serverErrors={this.state.server_errors}
                 onSubmitEditing={() => {
-                  this.onSubmitEditing(this.tabIndex.userName)
+                  this.onSubmitEditing(this.tabIndex.userName);
                 }}
                 isFocus={this.state.current_formField == this.tabIndex.userName}
                 onFocus={() => {
                   this.setState({
                     current_formField: this.tabIndex.userName
-                  })
+                  });
                 }}
                 blurOnSubmit={false}
                 errorHandler={(fieldName) => {
@@ -325,10 +321,12 @@ class AuthScreen extends Component {
                 serverErrors={this.state.server_errors}
                 clearErrors={this.state.clearErrors}
                 onSubmitEditing={() => {
-                  this.onSubmitEditing(this.tabIndex.password)
+                  this.onSubmitEditing(this.tabIndex.password);
                 }}
-                isFocus={ this.state.current_formField == this.tabIndex.password }
-                onFocus={() => {this.state.current_formField = this.tabIndex.password;}}
+                isFocus={this.state.current_formField == this.tabIndex.password}
+                onFocus={() => {
+                  this.state.current_formField = this.tabIndex.password;
+                }}
                 blurOnSubmit={true}
                 errorHandler={(fieldName) => {
                   this.serverErrorHandler(fieldName);
