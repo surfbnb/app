@@ -22,13 +22,12 @@ import InitWalletSdk from '../../services/InitWalletSdk';
 import LoadingModal from '../../theme/components/LoadingModal';
 import Toast from '../../theme/components/Toast';
 import { showModal, hideModal } from '../../actions';
-import utilities from '../../services/Utilities';
 import currentUserModal from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
 
 const signUpLoginTestMap = {
   signup: 'Signing up...',
-  signin: 'Login in...'
+  signin: 'Loging in...'
 };
 
 const { State: TextInputState } = TextInput;
