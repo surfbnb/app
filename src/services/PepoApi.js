@@ -12,7 +12,6 @@ import {
   upsertTransactionEntities,
   upsertGiffyEntities,
   upsertFeedEntities,
-  addUserList,
   showToast
 } from '../actions';
 import { API_ROOT } from '../constants/index';
@@ -83,7 +82,6 @@ export default class PepoApi {
     switch (resultType) {
       case 'users':
         Store.dispatch(upsertUserEntities(this._getEntities(resultData)));
-        Store.dispatch(addUserList(this._getIDList(resultData)));
         break;
       case 'public_feed':
       case 'user_feed':

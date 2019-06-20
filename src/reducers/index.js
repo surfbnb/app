@@ -9,12 +9,10 @@ export const {
   showToast,
   hideToast,
   upsertUserEntities,
-  addUserList,
   updateCurrentUser,
   logoutUser,
   upsertFeedEntities,
   addPublicFeedList,
-  addUserFeedList,
   upsertTransactionEntities,
   upsertGiffyEntities
 } = createActions(...Object.keys(types));
@@ -42,10 +40,6 @@ export const reducer = handleActions(
       ...state,
       user_entities: assignIn({}, state.user_entities, action.payload.user_entities)
     }),
-    [addUserList]: (state, action) => ({
-      ...state,
-      user_list: [...state.user_list, ...action.payload.user_list]
-    }),
     [updateCurrentUser]: (state, action) => ({
       ...state,
       current_user: assignIn({}, state.current_user, action.payload.current_user)
@@ -66,19 +60,6 @@ export const reducer = handleActions(
       ...state,
       giffy_entities: assignIn({}, state.giffy_entities, action.payload.giffy_entities)
     }),
-    [addUserFeedList]: (state, action) => {
-      let stateUserfeedList = state.user_feed_list,
-        userId = action.payload.user_id,
-        exisitingUserFeedList = deepGet(stateUserfeedList, userId) || [];
-      (newUserFeedList = action.payload.user_feed_list),
-        (userFeedList = [...exisitingUserFeedList, ...newUserFeedList]),
-        (finalUserList = {});
-      finalUserList[userId] = userFeedList;
-      return {
-        ...state,
-        user_feed_list: assignIn({}, stateUserfeedList, finalUserList)
-      };
-    },
     [logoutUser]: (state, action) => ({ ...defaultState })
   },
   defaultState

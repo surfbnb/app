@@ -7,12 +7,7 @@ let stylesMap = {
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.white,
-    height: '100%',
-    left: 0,
-    position: 'absolute',
-    top: 0,
-    width: '100%'
+    backgroundColor: Colors.white
   },
   form: {
     backgroundColor: Colors.white,
@@ -25,10 +20,8 @@ let stylesMap = {
     left: 0,
     alignSelf: Platform.OS === 'ios' ? 'center' : 'flex-start',
     justifyContent: Platform.OS === 'ios' ? 'center' : 'flex-start',
-    top: Dimensions.get('window').height - 70,
+    top: Dimensions.get('window').height - 80,
     width: Dimensions.get('window').width
-    // flex: 0.2,
-    // justifyContent: 'flex-end'
   },
   title: {
     fontSize: 24,
