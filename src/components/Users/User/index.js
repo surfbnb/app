@@ -5,7 +5,9 @@ import styles from './styles';
 import isEmpty from 'lodash/isEmpty';
 import default_user_icon from '../../../assets/default_user_icon.png';
 import appConfig from '../../../constants/AppConfig';
-import store from '../../../store';
+import Store from '../../../store';
+import  {showToast} from  "../../../actions";
+import  {ostErrors} from "../../../services/OstErrors";
 
 const isActivated = function(user) {
   let userStatus = (user && user['ost_status']) || '';
@@ -26,7 +28,7 @@ const userClick = function(item, navigate) {
 };
 
 const getUser = function(id) {
-  return store.getState().user_entities[`id_${id}`] || {};
+  return Store.getState().user_entities[`id_${id}`] || {};
 };
 
 export default Users = React.memo((props) => {
