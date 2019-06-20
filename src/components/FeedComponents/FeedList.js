@@ -45,18 +45,18 @@ class FeedList extends Component {
   }
 
   beforeRefresh() {
-    this.setState({ refreshing: true });
     this.props.beforeRefresh && this.props.beforeRefresh();
+    this.setState({ refreshing: true });
   }
 
   onRefresh(res) {
-    this.setState({ refreshing: false, feeds: this.fetchServices.getIDList() });
     this.props.onRefresh && this.props.onRefresh(res);
+    this.setState({ refreshing: false, feeds: this.fetchServices.getIDList() }); 
   }
 
   onRefreshError(error) {
-    this.setState({ refreshing: false , feeds: this.fetchServices.getIDList() });
     this.props.onRefreshError && this.props.onRefreshError(error);
+    this.setState({ refreshing: false , feeds: this.fetchServices.getIDList() });
   }
 
   getNext = () => {
@@ -69,23 +69,22 @@ class FeedList extends Component {
       })
       .catch((error) => {
         this.onNextError(error);
-        console.log('getFeedList error', error);
       });
   };
 
   beforeNext() {
-    this.setState({ loadingNext: true });
     this.props.beforeNext && this.props.beforeNext();
+    this.setState({ loadingNext: true });
   }
 
   onNext(res) {
-    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList()  });
     this.props.onNext && this.props.onNext(res);
+    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList()  });
   }
 
   onNextError(error) {
-    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList() });
     this.props.onNextError && this.props.onNextError(error);
+    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList() });
   }
 
   renderFooter = () => {
