@@ -11,6 +11,8 @@ import {
   Image
 } from 'react-native';
 
+import  { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+
 // components
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
@@ -256,18 +258,19 @@ class AuthScreen extends Component {
   }
 
   render() {
-    const { shift } = this.state;
+    // const { shift } = this.state;
     return (
-      <React.Fragment>
-        <View style={{ flex: 1 }}>
-          <Animated.View
-            style={[
-              {
-                transform: [{ translateY: this.state.shift }]
-              },
-              { ...styles.container }
-            ]}
-          >
+      <KeyboardAwareScrollView>
+        <View style={{ height: Dimensions.get("window").height }}>
+          <View style={styles.container}>
+          {/*<Animated.View*/}
+            {/*style={[*/}
+              {/*{*/}
+                {/*transform: [{perspective: 500},{ translateY: this.state.shift }]*/}
+              {/*},*/}
+              {/*{ ...styles.container }*/}
+            {/*]}*/}
+          {/*>*/}
             <View style={styles.form}>
               <Image source={PepoIcon} style={styles.imgPepoLogoSkipFont} />
               {this.state.signup && (
@@ -407,7 +410,7 @@ class AuthScreen extends Component {
             </View>
             <LoadingModal />
             <Toast timeout={3000} />
-          </Animated.View>
+          </View>
           <View style={styles.bottomBtnAndTxt}>
             {!this.state.signup && (
               <TouchableOpacity
@@ -440,7 +443,7 @@ class AuthScreen extends Component {
             )}
           </View>
         </View>
-      </React.Fragment>
+      </KeyboardAwareScrollView>
     );
   }
 }
