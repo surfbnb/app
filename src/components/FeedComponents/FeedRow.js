@@ -10,31 +10,27 @@ import PriceOracle from '../../services/PriceOracle';
 class FeedRow extends Component {
   constructor(props) {
     super(props);
-    this.feedEntity = this.getFeedEntity;
-
-    this.setTransactionEntity();
-    this.setGiphyEntity();
   }
 
-  get getFeedEntity() {
+  get feedEntity() {
     return Store.getState().feed_entities[`id_${this.props.id}`];
   }
 
-  setTransactionEntity() {
+  get transactionEntity(){
     let ostTxId = this.feedEntity.payload.ost_transaction_id;
-    this.transactionEntity = Store.getState().transaction_entities[`id_${ostTxId}`];
+    return Store.getState().transaction_entities[`id_${ostTxId}`];
   }
 
-  setGiphyEntity() {
+  get giphyEntity(){
     let gifId = this.feedEntity.payload.gif_id || '';
-    this.giphyEntity = gifId ? Store.getState().giffy_entities[`id_${gifId}`] : null;
+    return gifId ? Store.getState().giffy_entities[`id_${gifId}`] : null;
   }
 
-  getFromUserId() {
+  get fromUserId() {
     return this.transactionEntity.from_user_id;
   }
 
-  getToUserId() {
+  get toUserId() {
     return this.transactionEntity.to_user_ids[0];
   }
 
@@ -60,7 +56,7 @@ class FeedRow extends Component {
 
   fromUserClick() {
     if (!this.props.nestedNavigation) return;
-    const userId = this.getFromUserId();
+    const userId = this.fromUserId;
     if (userId == this.getCurrentUserId) {
       NavigationService.navigate('Profile');
     } else {
@@ -70,7 +66,7 @@ class FeedRow extends Component {
 
   toUserClick() {
     if (!this.props.nestedNavigation) return;
-    const userId = this.getToUserId();
+    const userId = this.toUserId;
     if (userId == this.getCurrentUserId) {
       NavigationService.navigate('Profile');
     } else {
