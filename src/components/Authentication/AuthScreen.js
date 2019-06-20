@@ -162,6 +162,22 @@ class AuthScreen extends Component {
     this.setState(this.defaults);
   }
 
+  getParams(){
+    let params = {};
+    if( this.state.signup ) {
+     return  {
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        user_name: this.state.user_name,
+        password: this.state.password,
+      }
+    }
+    return {
+      user_name: this.state.user_name,
+      password: this.state.password,
+    }
+  }
+
   signin() {
     this.clearError();
 

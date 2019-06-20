@@ -16,7 +16,7 @@ const initiatePolling = (expectedUserId) => {
 
   const longPollUser = function() {
     setTimeout(() => {
-      currentUserModal
+      currentUserModal && currentUserModal
         .sync()
         .then((user) => {
           const currentUserId = currentUserModal.getOstUserId();
