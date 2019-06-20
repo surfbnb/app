@@ -16,12 +16,12 @@ class FeedRow extends Component {
     return Store.getState().feed_entities[`id_${this.props.id}`];
   }
 
-  get transactionEntity(){
+  get transactionEntity() {
     let ostTxId = this.feedEntity.payload.ost_transaction_id;
     return Store.getState().transaction_entities[`id_${ostTxId}`];
   }
 
-  get giphyEntity(){
+  get giphyEntity() {
     let gifId = this.feedEntity.payload.gif_id || '';
     return gifId ? Store.getState().giffy_entities[`id_${gifId}`] : null;
   }
@@ -87,7 +87,7 @@ class FeedRow extends Component {
         <View style={{ marginTop: 10 }}></View>
         <View style={styles.cellWrapper}>
           <View style={styles.header}>
-            <View style={{alignSelf: 'flex-start'}}>
+            <View style={{ alignSelf: 'flex-start' }}>
               <Image source={DefaultUserIcon} style={styles.profileImgSkipFont} />
             </View>
             <View style={{ flex: 1 }}>
@@ -110,7 +110,7 @@ class FeedRow extends Component {
                       {this.toUserName}
                     </Text>
                   </Text>
-                  <Text style={styles.timeStamp}>{TimestampHandling.fromNow(this.feedEntity.published_ts)}</Text>
+                  <Text style={styles.timeStamp}>{TimestampHandling.fromNow(this.feedEntity.display_ts)}</Text>
                 </View>
                 <View style={styles.figure}>
                   <Text style={{ textAlign: 'center', fontSize: 12 }}>P{this.getBtAmount()}</Text>
