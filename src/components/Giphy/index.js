@@ -405,15 +405,18 @@ class Giphy extends Component {
                               this.ServerErrorHandler(fieldName);
                             }}
                           />
-                          {(showCloseIcon && (
-                            <TouchableWithoutFeedback
-                              onPress={() => {
-                                this.showCategotyList();
-                              }}
-                            >
-                              <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
-                            </TouchableWithoutFeedback>
-                          )) ||
+                          {(showCloseIcon &&
+                            (this.state.isRefreshing ? (
+                              <ActivityIndicator style={inlineStyles.crossIconSkipFont} />
+                            ) : (
+                              <TouchableWithoutFeedback
+                                onPress={() => {
+                                  this.showCategotyList();
+                                }}
+                              >
+                                <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
+                              </TouchableWithoutFeedback>
+                            ))) ||
                             null}
                         </View>
 
@@ -431,10 +434,10 @@ class Giphy extends Component {
                           onEndReached={() => {
                             this.loadMore();
                           }}
-                          refreshing={this.state.isRefreshing}
-                          onRefresh={() => {
-                            this.refreshFlatList();
-                          }}
+                          // refreshing={this.state.isRefreshing}
+                          // onRefresh={() => {
+                          //   this.refreshFlatList();
+                          // }}
                           onEndReachedThreshold={0.7}
                           data={gifsData}
                           renderItem={({ item }) => {

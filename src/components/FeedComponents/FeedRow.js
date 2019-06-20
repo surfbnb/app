@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
 import styles from './styles';
 import Store from '../../store';
+import appConfig from '../../constants/AppConfig';
 import TimestampHandling from '../../helpers/timestampHandling';
 import NavigationService from '../../services/NavigationService';
 import DefaultUserIcon from '../../assets/default_user_icon.png';
@@ -111,7 +112,11 @@ class FeedRow extends Component {
                       {this.toUserName}
                     </Text>
                   </Text>
-                  <Text style={styles.timeStamp}>{TimestampHandling.fromNow(this.feedEntity.display_ts)}</Text>
+                  <Text style={styles.timeStamp}>
+                    {this.feedEntity.status == appConfig.transactionStatus.published
+                      ? TimestampHandling.fromNow(this.feedEntity.display_ts)
+                      : this.feedEntity.status.toLowerCase()}
+                  </Text>
                 </View>
                 <View style={styles.figure}>
                   <Text style={{ textAlign: 'center', fontSize: 12 }}>P{this.getBtAmount()}</Text>
@@ -124,9 +129,11 @@ class FeedRow extends Component {
               <GracefulImage
                 style={{
                   width: '100%',
-                  aspectRatio: parseInt(this.giphyEntity.downsized.width) / parseInt(this.giphyEntity.downsized.height)
+                  aspectRatio:
+                    parseInt(this.giphyEntity.fixed_width_downsampled.width) /
+                    parseInt(this.giphyEntity.fixed_width_downsampled.height)
                 }}
-                source={{ uri: this.giphyEntity.downsized.url }}
+                source={{ uri: this.giphyEntity.fixed_width_downsampled.url }}
                 showActivityIndicator={true}
                 imageBackgroundColor="rgba(238,238,238,1)" //can be string or array of colors
               />

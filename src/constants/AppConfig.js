@@ -18,5 +18,9 @@ export default {
   executeTransactionPrivacyType: {
     public: 'PUBLIC',
     private: 'PRIVATE'
+  },
+
+  transactionStatus: {
+    published: 'PUBLISHED'
   }
 };
