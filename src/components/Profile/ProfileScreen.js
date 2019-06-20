@@ -7,21 +7,24 @@ class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toRefresh: false
+      toRefresh: false,
+      refreshBalance: false
     };
     this.fetchUrl = `/users/${currentUserModel.getUserId()}/feeds`;
   }
 
   beforeRefresh() {
-    this.setState({ toRefresh: true });
+    if( !this.state.refreshBalance ){
+      this.setState({ refreshBalance: true });
+    }
   }
 
   onRefresh() {
-    this.setState({ toRefresh: false });
+    this.setState({ toRefresh: false , refreshBalance : false });
   }
 
   onRefreshError() {
-    this.setState({ toRefresh: false });
+    this.setState({ toRefresh: false , refreshBalance : false });
   }
 
   render() {
@@ -29,7 +32,8 @@ class ProfileScreen extends Component {
       <FeedList
         style={{ backgroundColor: '#f6f6f6' }}
         fetchUrl={this.fetchUrl}
-        ListHeaderComponent={<BalanceHeader toRefresh={this.state.toRefresh} />}
+        toRefresh={ this.state.toRefresh }
+        ListHeaderComponent={<BalanceHeader toRefresh={this.state.refreshBalance} />}
         beforeRefresh={() => {
           this.beforeRefresh();
         }}

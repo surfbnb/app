@@ -21,6 +21,13 @@ class FeedList extends Component {
     this.initList();
   }
 
+  componentWillUpdate(){
+    const toRefresh = this.props.toRefresh ; 
+    if( toRefresh ){
+      this.refresh();
+    }
+  }
+
   initList() {
     this.refresh();
   }
@@ -49,7 +56,7 @@ class FeedList extends Component {
   }
 
   onRefreshError(error) {
-    this.setState({ refreshing: false });
+    this.setState({ refreshing: false , feeds: this.fetchServices.getIDList() });
     this.props.onRefreshError && this.props.onRefreshError(error);
   }
 
@@ -60,7 +67,6 @@ class FeedList extends Component {
       .fetch()
       .then((res) => {
         this.onNext(res);
-        this.setState({ feeds: this.fetchServices.getIDList() });
       })
       .catch((error) => {
         this.onNextError(error);
@@ -74,12 +80,12 @@ class FeedList extends Component {
   }
 
   onNext(res) {
-    this.setState({ loadingNext: false });
+    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList()  });
     this.props.onNext && this.props.onNext(res);
   }
 
   onNextError(error) {
-    this.setState({ loadingNext: false });
+    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList() });
     this.props.onNextError && this.props.onNextError(error);
   }
 
@@ -89,23 +95,24 @@ class FeedList extends Component {
   };
 
   render() {
-    return (
-      <FlatList
-        style={[this.props.style]}
-        data={this.state.feeds}
-        onEndReached={this.getNext}
-        onRefresh={() => {
-          this.refresh();
-        }}
-        keyExtractor={(item, index) => `id_${item}`}
-        onEndReachedThreshold={0.5}
-        initialNumToRender={20}
-        refreshing={this.state.refreshing}
-        ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
-        ListFooterComponent={this.renderFooter}
-        renderItem={({ item }) => <FeedRow id={item} nestedNavigation={this.props.nestedNavigation ? true : false} />}
-      />
-    );
+    if( this.state.feeds && this.state.feeds.length > 0 ){
+      return (
+        <FlatList
+          style={[this.props.style]}
+          data={this.state.feeds}
+          onEndReached={() => this.getNext()}
+          onRefresh={() => this.refresh()}
+          keyExtractor={(item, index) => `id_${item}`}
+          onEndReachedThreshold={0.5}
+          initialNumToRender={20}
+          refreshing={this.state.refreshing}
+          ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
+          ListFooterComponent={this.renderFooter}
+          renderItem={({ item }) => <FeedRow id={item} nestedNavigation={this.props.nestedNavigation ? true : false} />}
+        />
+      );
+    }
+    return  <View></View>;
   }
 }
 

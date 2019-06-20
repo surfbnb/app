@@ -190,7 +190,7 @@ class AuthScreen extends Component {
 
     const methodName = this.state.signup ? 'signUp' : 'login';
 
-    currentUserModal[methodName](this.state)
+    currentUserModal[methodName](this.getParams())
       .then((res) => {
         if (res.success && res.data) {
           let resultType = deepGet(res, 'data.result_type'),
