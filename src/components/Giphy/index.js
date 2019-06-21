@@ -22,7 +22,7 @@ import Theme from '../../theme/styles';
 import { CategoryViewContext, CATEGORY_VC_ID } from './view_contexts';
 import GracefulImage from './GracefulImage';
 import { FetchServices } from '../../services/FetchServices';
-import CircleCloseIcon from '../../assets/circle_close_icon.png';
+import CircleCloseIcon from '../../assets/universalCross.png';
 
 const removeSearchDuplicateGiphy = false;
 
