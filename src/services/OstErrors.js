@@ -14,7 +14,7 @@ const UIErros = {
   last_name: 'Last name is mandatory',
   user_not_found: 'User not found.',
   general_error: 'Something went wrong please try again later',
-  general_error_ex: 'Unable to execute transaction, please try again later.',
+  general_error_ex: 'Oops, Please try again.',
   bt_amount_error: 'Please enter valid amount.',
   user_not_active: 'Please wait for your user activation.',
   no_internet: 'No Internet, please try again later.'

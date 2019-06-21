@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import PriceOracle from '../../services/PriceOracle';
 import currentUserModal from '../../models/CurrentUser';
-import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import {  OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
-import pricer from '../../services/Pricer';
+import pricer from "../../services/Pricer";
 
 import inlineStyles from './styles';
 class BalanceHeader extends Component {
@@ -14,54 +14,50 @@ class BalanceHeader extends Component {
       balInBt: 0,
       balInUsd: 0
     };
-    this.fetching = false;
-    this.isRetryUpdatePricePoint = false;
     this.priceOracle = null;
-    this.updatePricePoint();
+    this.fetching = false;
+    this.fetchBalance();
   }
 
   componentWillReceiveProps() {
     if (!!this.props.toRefresh) {
-      this.getBalance();
+     this.fetchBalance();
     }
+  }
+
+  fetchBalance(){
+    if(this.fetching) return ; 
+    this.fetching = true;
+    this.updatePricePoint();
   }
 
   updatePricePoint() {
     const ostUserId = currentUserModal.getOstUserId();
-    if (!currentUserModal.isUserActivated()) {
-      return;
-    }
-    pricer.getPriceOracleConfig(
-      ostUserId,
-      (token, pricePoints) => {
-        this.initPriceOracle(token, pricePoints);
-        this.getBalance();
-      },
-      (error) => {
-        //DO nothing.
-      }
-    );
+    pricer.getPriceOracleConfig( ostUserId , (token, pricePoints)=>{
+      this.getBalance( token, pricePoints );
+    }, (error)=>{
+      this.fetching = false;
+    }); 
   }
 
-  initPriceOracle(token, pricePoints) {
-    this.priceOracle = new PriceOracle(token, pricePoints);
-  }
+  getBalance( token, pricePoints ) {
+   
+    if ( !currentUserModal.isUserActivated() ) {
+      this.fetching = false; 
+      return ; 
+    }
 
-  getBalance() {
-    if (this.fetching) {
+    this.priceOracle = new PriceOracle( token, pricePoints );
+    if (!this.priceOracle ) {
+      this.fetching = false; 
       return;
     }
-    if (!this.priceOracle && !this.isRetryUpdatePricePoint) {
-      this.isRetryUpdatePricePoint = true;
-      this.updatePricePoint();
-      return;
-    }
-    this.isRetryUpdatePricePoint = false;
-    this.fetching = true;
+    
     const ostUserId = currentUserModal.getOstUserId();
     OstJsonApi.getBalanceForUserId(
       ostUserId,
       (res) => {
+        this.fetching = false;
         this.updateBalance(res);
       },
       (err) => {
@@ -71,8 +67,6 @@ class BalanceHeader extends Component {
   }
 
   updateBalance(res) {
-    if (!this.priceOracle) return;
-    this.fetching = false;
     let btBalance = deepGet(res, 'balance.available_balance');
     btBalance = this.priceOracle.fromDecimal(btBalance);
     btBalance = this.priceOracle.toBt(btBalance);
