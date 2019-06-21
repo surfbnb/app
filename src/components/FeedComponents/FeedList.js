@@ -97,21 +97,24 @@ class FeedList extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <FlatList
-          style={[this.props.style]}
-          data={this.state.feeds}
-          onEndReached={() => this.getNext()}
-          onRefresh={() => this.refresh()}
-          keyExtractor={(item, index) => `id_${item}`}
-          onEndReachedThreshold={0.5}
-          initialNumToRender={20}
-          removeClippedSubviews={false}
-          refreshing={this.state.refreshing}
-          ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
-          ListFooterComponent={this.renderFooter}
-          renderItem={({ item }) => <FeedRow id={item} nestedNavigation={this.props.nestedNavigation ? true : false} />}
-        ></FlatList>
-
+        {this.state.feeds.length >= 0 && (
+          <FlatList
+            style={[this.props.style]}
+            data={this.state.feeds}
+            onEndReached={() => this.getNext()}
+            onRefresh={() => this.refresh()}
+            keyExtractor={(item, index) => `id_${item}`}
+            onEndReachedThreshold={0.5}
+            initialNumToRender={20}
+            removeClippedSubviews={false}
+            refreshing={this.state.refreshing}
+            ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
+            ListFooterComponent={this.renderFooter}
+            renderItem={({ item }) => (
+              <FeedRow id={item} nestedNavigation={this.props.nestedNavigation ? true : false} />
+            )}
+          ></FlatList>
+        )}
         {this.state.feeds.length == 0 && !this.state.refreshing && (
           <View style={inlineStyles.emptyFeed}>
             <Image style={[inlineStyles.emptyFeedIconSkipFont]} source={EmptyFeedIcon}></Image>

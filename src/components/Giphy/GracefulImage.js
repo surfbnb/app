@@ -4,6 +4,7 @@ import { Animated, View, ActivityIndicator } from 'react-native';
 export default class GracefulImage extends Component {
   constructor(props) {
     super(props);
+    this.color = '';
     this.setRandomColor();
   }
 
@@ -33,8 +34,9 @@ export default class GracefulImage extends Component {
     let color = this.props.imageBackgroundColor;
     if (Array.isArray(color)) {
       this.color = color[Math.floor(Math.random() * color.length)];
+    } else {
+      this.color = color;
     }
-    this.color = color;
   }
 
   render() {

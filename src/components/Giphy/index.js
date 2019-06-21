@@ -459,7 +459,7 @@ class Giphy extends Component {
                                     }}
                                     source={{ uri: item.fixed_width_downsampled.url }}
                                     showActivityIndicator={this.state.isGifCategory ? false : true}
-                                    imageBackgroundColor={['rgba(238,238,238,1)']} //can be string or array of colors
+                                    imageBackgroundColor={['#f22e3e', '#b3f2f2', '#05d9c4', '#05d98c', '#f2d479']} //can be string or array of colors
                                   />
                                   {this.state.isGifCategory && (
                                     <View
