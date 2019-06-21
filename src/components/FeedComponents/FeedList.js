@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { FlatList, View, ActivityIndicator, Image, Text } from 'react-native';
 import FeedRow from '../FeedComponents/FeedRow';
 import { FetchServices } from '../../services/FetchServices';
-import styles from "../Users/User/styles";
-import EmptyFeedIcon from '../../assets/empty_feed_icon.png'
-import inlineStyles from './styles'
-import Colors from "../../theme/styles/Colors";
+import styles from '../Users/User/styles';
+import EmptyFeedIcon from '../../assets/empty_feed_icon.png';
+import inlineStyles from './styles';
+import Colors from '../../theme/styles/Colors';
 
 class FeedList extends Component {
   constructor(props) {
@@ -25,8 +25,8 @@ class FeedList extends Component {
     this.initList();
   }
 
-  componentDidUpdate(){
-    if( this.props.toRefresh ){
+  componentDidUpdate() {
+    if (this.props.toRefresh) {
       this.refresh();
     }
   }
@@ -43,7 +43,7 @@ class FeedList extends Component {
       .then((res) => {
         this.onRefresh(res);
       })
-      .catch((error) => {  
+      .catch((error) => {
         this.onRefreshError(error);
       });
   }
@@ -55,12 +55,12 @@ class FeedList extends Component {
 
   onRefresh(res) {
     this.props.onRefresh && this.props.onRefresh(res);
-    this.setState({ refreshing: false, feeds: this.fetchServices.getIDList() }); 
+    this.setState({ refreshing: false, feeds: this.fetchServices.getIDList() });
   }
 
   onRefreshError(error) {
     this.props.onRefreshError && this.props.onRefreshError(error);
-    this.setState({ refreshing: false , feeds: this.fetchServices.getIDList() });
+    this.setState({ refreshing: false, feeds: this.fetchServices.getIDList() });
   }
 
   getNext = () => {
@@ -83,12 +83,12 @@ class FeedList extends Component {
 
   onNext(res) {
     this.props.onNext && this.props.onNext(res);
-    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList()  });
+    this.setState({ loadingNext: false, feeds: this.fetchServices.getIDList() });
   }
 
   onNextError(error) {
     this.props.onNextError && this.props.onNextError(error);
-    this.setState({ loadingNext: false , feeds: this.fetchServices.getIDList() });
+    this.setState({ loadingNext: false, feeds: this.fetchServices.getIDList() });
   }
 
   renderFooter = () => {
@@ -98,30 +98,29 @@ class FeedList extends Component {
 
   render() {
     return (
-      <View style={{flex:1}}>
+      <View style={{ flex: 1 }}>
         <FlatList
-        style={[this.props.style]}
-        data={this.state.feeds}
-        onEndReached={() => this.getNext()}
-        onRefresh={() => this.refresh()}
-        keyExtractor={(item, index) => `id_${item}`}
-        onEndReachedThreshold={0.5}
-        initialNumToRender={20}
-        refreshing={this.state.refreshing}
-        ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
-        ListFooterComponent={this.renderFooter}
-        renderItem={({ item }) => <FeedRow id={item} nestedNavigation={this.props.nestedNavigation ? true : false} />}
-        >
-        </FlatList>
+          style={[this.props.style]}
+          data={this.state.feeds}
+          onEndReached={() => this.getNext()}
+          onRefresh={() => this.refresh()}
+          keyExtractor={(item, index) => `id_${item}`}
+          onEndReachedThreshold={0.5}
+          initialNumToRender={20}
+          removeClippedSubviews={false}
+          refreshing={this.state.refreshing}
+          ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
+          ListFooterComponent={this.renderFooter}
+          renderItem={({ item }) => <FeedRow id={item} nestedNavigation={this.props.nestedNavigation ? true : false} />}
+        ></FlatList>
 
-      {this.state.feeds.length == 0  && !this.state.refreshing &&(
-        <View style={ inlineStyles.emptyFeed }>
-          <Image style={[inlineStyles.emptyFeedIconSkipFont]} source={EmptyFeedIcon}></Image>
-          <Text style={inlineStyles.emptyFeedText}>Empty Feed.</Text>
-          <Text style={inlineStyles.emptyFeedText}>Pepo your friends now</Text>
-        </View>
-      )}
-
+        {this.state.feeds.length == 0 && !this.state.refreshing && (
+          <View style={inlineStyles.emptyFeed}>
+            <Image style={[inlineStyles.emptyFeedIconSkipFont]} source={EmptyFeedIcon}></Image>
+            <Text style={inlineStyles.emptyFeedText}>Empty Feed.</Text>
+            <Text style={inlineStyles.emptyFeedText}>Pepo your friends now</Text>
+          </View>
+        )}
       </View>
     );
   }

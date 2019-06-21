@@ -6,8 +6,8 @@ import isEmpty from 'lodash/isEmpty';
 import default_user_icon from '../../../assets/default_user_icon.png';
 import appConfig from '../../../constants/AppConfig';
 import Store from '../../../store';
-import  {showToast} from  "../../../actions";
-import  {ostErrors} from "../../../services/OstErrors";
+import { showToast } from '../../../actions';
+import { ostErrors } from '../../../services/OstErrors';
 
 const isActivated = function(user) {
   let userStatus = (user && user['ost_status']) || '';

@@ -16,24 +16,25 @@ const initiatePolling = (expectedUserId) => {
 
   const longPollUser = function() {
     setTimeout(() => {
-      currentUserModal && currentUserModal
-        .sync()
-        .then((user) => {
-          const currentUserId = currentUserModal.getOstUserId();
-          if (currentUserId != expectedUserId) {
-            stopPolling = true;
-            return;
-          }
-          const airDropStatus = user && user.signup_airdrop_status;
-          if (airDropStatus == 1) {
-            stopPolling = true;
-            Store.dispatch(showToast('User Activated! Airdrop is initiated.'));
-          }
-        })
-        .catch((error) => {
-          currentRetry++;
-        })
-        .finally(scheduleAirdropStatusPoll);
+      currentUserModal &&
+        currentUserModal
+          .sync()
+          .then((user) => {
+            const currentUserId = currentUserModal.getOstUserId();
+            if (currentUserId != expectedUserId) {
+              stopPolling = true;
+              return;
+            }
+            const airDropStatus = user && user.signup_airdrop_status;
+            if (airDropStatus == 1) {
+              stopPolling = true;
+              Store.dispatch(showToast('User Activated! Airdrop is initiated.'));
+            }
+          })
+          .catch((error) => {
+            currentRetry++;
+          })
+          .finally(scheduleAirdropStatusPoll);
     }, 10000);
   };
 

@@ -40,7 +40,11 @@ class TransactionScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       headerTitle: navigation.getParam('transactionHeader'),
-      headerBackImage: <View style={{paddingRight:30,paddingVertical:30}}><Image source={BackArrow} style={{width: 10, height: 18,paddingLeft:8}} /></View>
+      headerBackImage: (
+        <View style={{ paddingRight: 30, paddingVertical: 30 }}>
+          <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
+        </View>
+      )
     };
   };
   constructor(props) {
@@ -261,7 +265,17 @@ class TransactionScreen extends Component {
             viewStyle: { flex: 1 }
           });
         }}
+        onKeyboardDidShow={(frames) => {
+          this.setState({
+            viewStyle: { flex: 1 }
+          });
+        }}
         onKeyboardWillHide={(frames) => {
+          this.setState({
+            viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
+          });
+        }}
+        onKeyboardDidHide={(frames) => {
           this.setState({
             viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
           });

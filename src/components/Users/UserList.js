@@ -13,7 +13,6 @@ class UserList extends List {
         <FlatList
           data={this.state.list}
           onEndReached={() => {
-            console.log('Why i m here');
             setTimeout(() => {
               this.getNext();
             }, 100);
@@ -21,6 +20,7 @@ class UserList extends List {
           onRefresh={() => {
             this.refresh();
           }}
+          removeClippedSubviews={false}
           keyExtractor={(item, index) => `id_${item}`}
           onEndReachedThreshold={0.8}
           refreshing={this.state.refreshing}

@@ -45,22 +45,21 @@ let stylesMap = {
     color: Colors.light,
     fontSize: 12
   },
-  emptyFeed:{
-    flex:1,
-    alignItems:'center',
-    justifyContent:'flex-start',
-    backgroundColor:Colors.whiteSmoke
+  emptyFeed: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: Colors.whiteSmoke
   },
-  emptyFeedIconSkipFont:{
-    width:81,
-    height:51,
-    marginBottom:20,
+  emptyFeedIconSkipFont: {
+    width: 81,
+    height: 51,
+    marginBottom: 20
   },
-  emptyFeedText:{
-    fontSize:15,
-    color:Colors.dark,
+  emptyFeedText: {
+    fontSize: 15,
+    color: Colors.dark
   }
-
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

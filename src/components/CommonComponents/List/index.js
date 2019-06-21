@@ -44,12 +44,12 @@ class List extends Component {
 
   onRefresh(res) {
     this.props.onRefresh && this.props.onRefresh(res);
-    this.setState({ refreshing: false, list: this.fetchServices.getIDList() }); 
+    this.setState({ refreshing: false, list: this.fetchServices.getIDList() });
   }
 
   onRefreshError(error) {
     this.props.onRefreshError && this.props.onRefreshError(error);
-    this.setState({ refreshing: false , list: this.fetchServices.getIDList()});
+    this.setState({ refreshing: false, list: this.fetchServices.getIDList() });
   }
 
   getNext = () => {

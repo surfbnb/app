@@ -1,21 +1,22 @@
 import BigNumber from 'bignumber.js';
 
-
 const usdPrecession = 5;
 const btPrecession = 5;
 
 export default class PriceOracle {
-  constructor( token , pricePoints ) {
-    if (!token || !token.conversion_factor || !token.decimals || !pricePoints ) {
+  constructor(token, pricePoints) {
+    if (!token || !token.conversion_factor || !token.decimals || !pricePoints) {
       return null;
     }
     this.conversionFactor = token.conversion_factor;
     this.decimals = token.decimals;
-    this.usdPricePoint = pricePoints["USD"];
+    this.usdPricePoint = pricePoints['USD'];
   }
 
   btToFiat(bt) {
-    if (!bt || !this.usdPricePoint) { return ''; }
+    if (!bt || !this.usdPricePoint) {
+      return '';
+    }
     bt = BigNumber(bt);
     let fiatBN = BigNumber(this.usdPricePoint);
     oneBtToFiat = fiatBN.dividedBy(this.conversionFactor);
@@ -33,7 +34,7 @@ export default class PriceOracle {
   }
 
   fiatToBt(fiat) {
-    if (!fiat || !this.usdPricePoint ) {
+    if (!fiat || !this.usdPricePoint) {
       return '';
     }
     fiat = BigNumber(fiat);

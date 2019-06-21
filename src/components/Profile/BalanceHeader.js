@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import PriceOracle from '../../services/PriceOracle';
 import currentUserModal from '../../models/CurrentUser';
-import {  OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
-import pricer from "../../services/Pricer";
+import pricer from '../../services/Pricer';
 
 import inlineStyles from './styles';
 class BalanceHeader extends Component {
@@ -31,16 +31,20 @@ class BalanceHeader extends Component {
     if (!currentUserModal.isUserActivated()) {
       return;
     }
-    pricer.getPriceOracleConfig( ostUserId , (token, pricePoints)=>{
-      this.initPriceOracle(token, pricePoints);
-      this.getBalance();
-    }, (error)=>{
-      //DO nothing. 
-    }); 
+    pricer.getPriceOracleConfig(
+      ostUserId,
+      (token, pricePoints) => {
+        this.initPriceOracle(token, pricePoints);
+        this.getBalance();
+      },
+      (error) => {
+        //DO nothing.
+      }
+    );
   }
 
   initPriceOracle(token, pricePoints) {
-    this.priceOracle = new PriceOracle( token, pricePoints );
+    this.priceOracle = new PriceOracle(token, pricePoints);
   }
 
   getBalance() {
@@ -67,7 +71,7 @@ class BalanceHeader extends Component {
   }
 
   updateBalance(res) {
-    if(!this.priceOracle) return;
+    if (!this.priceOracle) return;
     this.fetching = false;
     let btBalance = deepGet(res, 'balance.available_balance');
     btBalance = this.priceOracle.fromDecimal(btBalance);

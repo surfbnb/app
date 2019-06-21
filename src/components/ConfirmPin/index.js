@@ -17,7 +17,11 @@ export default class ConfirmPin extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       headerTitle: 'Confirm Pin',
-      headerBackImage: <View style={{paddingRight:30,paddingVertical:30}}><Image source={BackArrow} style={{width: 10, height: 18,paddingLeft:8}} /></View>,
+      headerBackImage: (
+        <View style={{ paddingRight: 30, paddingVertical: 30 }}>
+          <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
+        </View>
+      ),
       headerRight: <View />
     };
   };
