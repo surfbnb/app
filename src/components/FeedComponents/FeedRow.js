@@ -79,7 +79,7 @@ class FeedRow extends Component {
   getBtAmount() {
     let btAmount = this.transactionEntity.amounts[0];
     btAmount = PriceOracle.fromDecimal(btAmount);
-    btAmount = PriceOracle.toBt(btAmount, 1);
+    btAmount = PriceOracle.toBt(btAmount);
     return btAmount;
   }
 
