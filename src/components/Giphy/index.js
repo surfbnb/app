@@ -24,6 +24,7 @@ import GracefulImage from './GracefulImage';
 import appConfig from '../../constants/AppConfig';
 import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/universalCross.png';
+import FormInput from "../../theme/components/FormInput";
 
 const removeSearchDuplicateGiphy = false;
 
@@ -399,7 +400,7 @@ class Giphy extends Component {
                             ref="gif_category_search_query"
                             textContentType="none"
                             value={this.state.gifSearchQuery}
-                            style={[Theme.TextInput.textInputStyle, { marginBottom: 10 }]}
+                            style={[Theme.TextInput.textInputStyle, { marginBottom: 10, position: 'relative' }]}
                             placeholder="Search Giphy"
                             returnKeyType="next"
                             returnKeyLabel="next"
@@ -410,14 +411,14 @@ class Giphy extends Component {
                           />
                           {(showCloseIcon &&
                             (this.state.isRefreshing ? (
-                              <ActivityIndicator style={inlineStyles.crossIconSkipFont} />
+                              <ActivityIndicator style={[inlineStyles.crossIconSkipFont, { top: 25, right: 20 }]} />
                             ) : (
                               <TouchableWithoutFeedback
                                 onPress={() => {
                                   this.showCategotyList();
                                 }}
                               >
-                                <Image source={CrossIcon} style={inlineStyles.crossIconSkipFont} />
+                                <Image source={CrossIcon} style={[inlineStyles.crossIconSkipFont, { top: 25, right: 10 }]} />
                               </TouchableWithoutFeedback>
                             ))) ||
                             null}

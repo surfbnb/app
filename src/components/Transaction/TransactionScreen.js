@@ -64,7 +64,7 @@ class TransactionScreen extends Component {
       btAmountFocus: true,
       btAmountErrorMsg: null,
       feildErrorText: null,
-      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
+      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT}
     };
     this.baseState = this.state;
     this.toUser = this.props.navigation.getParam('toUser');
@@ -349,7 +349,7 @@ class TransactionScreen extends Component {
 
                   <Text style={Theme.Errors.errorText}> {this.state.feildErrorText}</Text>
                 </View>
-                <View style={inlineStyles.bottomButtonsWrapper}>
+                <View style={[inlineStyles.bottomButtonsWrapper, {marginBottom: 15}]}>
                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                     <TouchableOpacity
                       style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
