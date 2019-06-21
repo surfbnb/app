@@ -137,8 +137,7 @@ class FeedRow extends Component {
                     parseInt(this.giphyEntity[appConfig.giphySizes.feed].height)
                 }}
                 source={{
-                  uri:
-                    this.giphyEntity[appConfig.giphySizes.feed].webp || this.giphyEntity[appConfig.giphySizes.feed].url
+                  uri:this.giphyEntity[appConfig.giphySizes.feed].url
                 }}
                 showActivityIndicator={true}
                 imageBackgroundColor="rgba(238,238,238,1)" //can be string or array of colors

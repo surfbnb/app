@@ -33,6 +33,6 @@ export default {
 
   giphySizes: {
     search: 'preview_gif',
-    feed: 'fixed_height'
+    feed: 'downsized'
   }
 };

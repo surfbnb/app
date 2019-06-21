@@ -332,9 +332,7 @@ class Giphy extends Component {
           <ActivityIndicator style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
           <ImageBackground
             source={{
-              uri:
-                this.state.selectedImage[appConfig.giphySizes.feed].webp ||
-                this.state.selectedImage[appConfig.giphySizes.feed].url
+              uri:this.state.selectedImage[appConfig.giphySizes.feed].url
             }}
             style={{
               width: '100%',
@@ -463,8 +461,7 @@ class Giphy extends Component {
                                       height: wh
                                     }}
                                     source={{
-                                      uri:
-                                        item[appConfig.giphySizes.search].webp || item[appConfig.giphySizes.search].url
+                                      uri:item[appConfig.giphySizes.search].url
                                     }}
                                     showActivityIndicator={this.state.isGifCategory ? false : true}
                                     imageBackgroundColor={[
