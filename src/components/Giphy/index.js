@@ -426,7 +426,6 @@ class Giphy extends Component {
 
                         <FlatList
                           nestedScrollEnabled={true}
-                          removeClippedSubviews={true}
                           ref={(ref) => {
                             this.listRef = ref;
                           }}

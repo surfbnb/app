@@ -14,7 +14,6 @@ class UserList extends List {
           data={this.state.list}
           onEndReached={() => this.getNext()}
           onRefresh={() => this.refresh()}
-          removeClippedSubviews={false}
           keyExtractor={(item, index) => `id_${item}`}
           onEndReachedThreshold={0.5}
           initialNumToRender={20}

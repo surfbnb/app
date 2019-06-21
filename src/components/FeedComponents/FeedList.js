@@ -105,7 +105,6 @@ class FeedList extends Component {
           keyExtractor={(item, index) => `id_${item}`}
           onEndReachedThreshold={0.5}
           initialNumToRender={20}
-          removeClippedSubviews={false}
           refreshing={this.state.refreshing}
           ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
           ListFooterComponent={this.renderFooter}
