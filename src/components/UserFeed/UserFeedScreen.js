@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image , View} from 'react-native';
+import { Image , View, Platform} from 'react-native';
 import FeedList from '../FeedComponents/FeedList';
 import BackArrow from '../../assets/back-arrow.png';
 
@@ -9,7 +9,7 @@ class UserFeedScreen extends Component {
       headerTitle: navigation.getParam('headerText'),
       headerBackTitle: null,
       headerBackImage: (
-        <View style={{ paddingRight: 30, paddingVertical: 30 }}>
+        <View style={{ paddingRight: 30, paddingVertical: 30, paddingLeft: Platform.OS === 'ios' ? 20 : 0 }}>
           <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
         </View>
       )

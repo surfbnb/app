@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import PriceOracle from '../../services/PriceOracle';
 import currentUserModal from '../../models/CurrentUser';
-import {  OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
-import pricer from "../../services/Pricer";
+import pricer from '../../services/Pricer';
 
 import inlineStyles from './styles';
 class BalanceHeader extends Component {
@@ -21,38 +21,41 @@ class BalanceHeader extends Component {
 
   componentWillReceiveProps() {
     if (!!this.props.toRefresh) {
-     this.fetchBalance();
+      this.fetchBalance();
     }
   }
 
-  fetchBalance(){
-    if(this.fetching) return ; 
+  fetchBalance() {
+    if (this.fetching) return;
     this.fetching = true;
     this.updatePricePoint();
   }
 
   updatePricePoint() {
     const ostUserId = currentUserModal.getOstUserId();
-    pricer.getPriceOracleConfig( ostUserId , (token, pricePoints)=>{
-      this.getBalance( token, pricePoints );
-    }, (error)=>{
-      this.fetching = false;
-    }); 
+    pricer.getPriceOracleConfig(
+      ostUserId,
+      (token, pricePoints) => {
+        this.getBalance(token, pricePoints);
+      },
+      (error) => {
+        this.fetching = false;
+      }
+    );
   }
 
-  getBalance( token, pricePoints ) {
-   
-    if ( !currentUserModal.isUserActivated() ) {
-      this.fetching = false; 
-      return ; 
-    }
-
-    this.priceOracle = new PriceOracle( token, pricePoints );
-    if (!this.priceOracle ) {
-      this.fetching = false; 
+  getBalance(token, pricePoints) {
+    if (!currentUserModal.isUserActivated()) {
+      this.fetching = false;
       return;
     }
-    
+
+    this.priceOracle = new PriceOracle(token, pricePoints);
+    if (!this.priceOracle) {
+      this.fetching = false;
+      return;
+    }
+
     const ostUserId = currentUserModal.getOstUserId();
     OstJsonApi.getBalanceForUserId(
       ostUserId,

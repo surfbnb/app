@@ -82,6 +82,6 @@ export default class PriceOracle {
     }
     bt = String(bt);
     bt = BigNumber(bt);
-    return bt.decimalPlaces(precession , 1).toString(10);
+    return bt.decimalPlaces(precession, 1).toString(10);
   }
 }

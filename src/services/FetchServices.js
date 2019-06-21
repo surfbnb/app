@@ -60,11 +60,9 @@ class FetchServices {
     return api
       .get(this.getUrlParams())
       .then((response) => {
-        console.log('api.get then response', response, !response, !response.success, !response.data);
         if (!response || !response.success || !response.data) {
           return Promise.reject(response);
         }
-        console.log('api.get calling dataReceived');
         setTimeout(() => {
           this.isFetching = false;
         }, 100);
@@ -88,7 +86,6 @@ class FetchServices {
   }
 
   processData(response) {
-    console.log('processData entry');
     let data = response.data;
     let resultType = data.result_type;
     if (!resultType || !data[resultType]) {
@@ -127,7 +124,6 @@ class FetchServices {
       this.results.push(result);
       cleanedUpList.push(result);
     }
-    console.log('processData exit. cleanedUpList.length:', cleanedUpList.length);
     return cleanedUpList;
   }
 
