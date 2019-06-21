@@ -21,6 +21,7 @@ import CrossIcon from '../../assets/cross_icon.png';
 import Theme from '../../theme/styles';
 import { CategoryViewContext, CATEGORY_VC_ID } from './view_contexts';
 import GracefulImage from './GracefulImage';
+import appConfig from '../../constants/AppConfig';
 import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/universalCross.png';
 
@@ -330,12 +331,16 @@ class Giphy extends Component {
         >
           <ActivityIndicator style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
           <ImageBackground
-            source={{ uri: this.state.selectedImage.downsized.url }}
+            source={{
+              uri:
+                this.state.selectedImage[appConfig.giphySizes.feed].webp ||
+                this.state.selectedImage[appConfig.giphySizes.feed].url
+            }}
             style={{
               width: '100%',
               aspectRatio:
-                parseInt(this.state.selectedImage.downsized.width) /
-                parseInt(this.state.selectedImage.downsized.height),
+                parseInt(this.state.selectedImage[appConfig.giphySizes.feed].width) /
+                parseInt(this.state.selectedImage[appConfig.giphySizes.feed].height),
               position: 'relative' // because it's parent
             }}
           >
@@ -457,7 +462,10 @@ class Giphy extends Component {
                                       width: wh,
                                       height: wh
                                     }}
-                                    source={{ uri: item.fixed_width_downsampled.url }}
+                                    source={{
+                                      uri:
+                                        item[appConfig.giphySizes.search].webp || item[appConfig.giphySizes.search].url
+                                    }}
                                     showActivityIndicator={this.state.isGifCategory ? false : true}
                                     imageBackgroundColor={['#f22e3e', '#b3f2f2', '#05d9c4', '#05d98c', '#f2d479']} //can be string or array of colors
                                   />

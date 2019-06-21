@@ -22,7 +22,7 @@ export default class AuthLoading extends Component {
 
   onSdkInitialized = (error, success) => {
     t2 = Date.now();
-    console.log('onSdkInitialized. OstWalletSdk.initialize took:', t2 - t1, 'miliseconds');
+    console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
     currentUserModal
       .initialize()
       .then((user) => {

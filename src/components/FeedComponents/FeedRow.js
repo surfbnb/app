@@ -8,7 +8,7 @@ import NavigationService from '../../services/NavigationService';
 import DefaultUserIcon from '../../assets/default_user_icon.png';
 import PriceOracle from '../../services/PriceOracle';
 import GracefulImage from '../Giphy/GracefulImage';
-import utilities from "../../services/Utilities"
+import utilities from '../../services/Utilities';
 class FeedRow extends Component {
   constructor(props) {
     super(props);
@@ -120,7 +120,9 @@ class FeedRow extends Component {
                 </View>
                 <View style={styles.figure}>
                   <Text style={{ textAlign: 'center', fontSize: 12 }}>
-                    <Image style={{width:8,height:9}} source={utilities.getTokenSymbolImageConfig()["image1"]}/> {this.getBtAmount()}</Text>
+                    <Image style={{ width: 8, height: 9 }} source={utilities.getTokenSymbolImageConfig()['image1']} />{' '}
+                    {this.getBtAmount()}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -131,10 +133,13 @@ class FeedRow extends Component {
                 style={{
                   width: '100%',
                   aspectRatio:
-                    parseInt(this.giphyEntity.fixed_width_downsampled.width) /
-                    parseInt(this.giphyEntity.fixed_width_downsampled.height)
+                    parseInt(this.giphyEntity[appConfig.giphySizes.feed].width) /
+                    parseInt(this.giphyEntity[appConfig.giphySizes.feed].height)
                 }}
-                source={{ uri: this.giphyEntity.fixed_width_downsampled.url }}
+                source={{
+                  uri:
+                    this.giphyEntity[appConfig.giphySizes.feed].webp || this.giphyEntity[appConfig.giphySizes.feed].url
+                }}
                 showActivityIndicator={true}
                 imageBackgroundColor="rgba(238,238,238,1)" //can be string or array of colors
               />

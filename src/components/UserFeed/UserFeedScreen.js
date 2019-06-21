@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image , View, Platform} from 'react-native';
+import { Image, View, Platform } from 'react-native';
 import FeedList from '../FeedComponents/FeedList';
 import BackArrow from '../../assets/back-arrow.png';
 

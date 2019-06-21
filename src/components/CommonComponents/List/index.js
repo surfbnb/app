@@ -55,7 +55,6 @@ class List extends Component {
   getNext = () => {
     if (this.state.loadingNext || this.state.refreshing) return;
 
-    console.log('fetching exce');
     this.beforeNext();
     this.fetchServices
       .fetch()

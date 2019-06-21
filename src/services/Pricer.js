@@ -8,8 +8,8 @@ class Pricer {
     this.pricePoints = null;
   }
 
-  getTokenSymbol(){
-    let  symbol = deepGet(this.token , "symbol" )|| "PEPO";
+  getTokenSymbol() {
+    let symbol = deepGet(this.token, 'symbol') || 'PEPO';
     return symbol.toLowerCase();
   }
 

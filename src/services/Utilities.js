@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
-import  pricer from "./Pricer";
-import  appConfig from "../constants/AppConfig";
+import pricer from './Pricer';
+import appConfig from '../constants/AppConfig';
 
 export default {
   async saveItem(key, val) {
@@ -34,8 +34,8 @@ export default {
     }, 10);
   },
 
-  getTokenSymbolImageConfig(){
+  getTokenSymbolImageConfig() {
     let symbol = pricer.getTokenSymbol();
-    return appConfig["tokenSymbols"][symbol];
+    return appConfig['tokenSymbols'][symbol];
   }
 };

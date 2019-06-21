@@ -29,5 +29,10 @@ export default {
         image1:pepo_icon,
         image2:balance_header_pepo_icon
       }
+  },
+
+  giphySizes: {
+    search: 'preview_gif',
+    feed: 'fixed_height'
   }
 };
