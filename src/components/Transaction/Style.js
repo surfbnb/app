@@ -23,7 +23,7 @@ let stylesMap = {
   sendPepoBtn: {
     flex: 8,
     marginRight: 10,
-    alignItems:'center'
+    alignItems: 'center'
   },
   dottedBtn: {
     flex: 2,

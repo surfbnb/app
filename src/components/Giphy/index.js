@@ -467,7 +467,17 @@ class Giphy extends Component {
                                         item[appConfig.giphySizes.search].webp || item[appConfig.giphySizes.search].url
                                     }}
                                     showActivityIndicator={this.state.isGifCategory ? false : true}
-                                    imageBackgroundColor={['#f22e3e', '#b3f2f2', '#05d9c4', '#05d98c', '#f2d479']} //can be string or array of colors
+                                    imageBackgroundColor={[
+                                      'rgb(255,140,140)',
+                                      'rgb(253,244,128)',
+                                      'rgb(5,217,200)',
+                                      'rgb(59,188,255)',
+                                      'rgb(242,212,121)',
+                                      'rgb(164,251,158)',
+                                      'rgb(251,162,255)',
+                                      'rgb(55,108,180)',
+                                      'rgb(141,121,242)'
+                                    ]} //can be string or array of colors
                                   />
                                   {this.state.isGifCategory && (
                                     <View

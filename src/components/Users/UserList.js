@@ -8,24 +8,24 @@ class UserList extends List {
   }
 
   render() {
-      return (
-        <View style={{ flex: 1 }}>
-          <FlatList
-            data={this.state.list}
-            onEndReached={() => this.getNext()}
-            onRefresh={() =>  this.refresh()}
-            removeClippedSubviews={false}
-            keyExtractor={(item, index) => `id_${item}`}
-            onEndReachedThreshold={0.5}
-            initialNumToRender={20}
-            refreshing={this.state.refreshing}
-            ListFooterComponent={this.renderFooter}
-            renderItem={({ item }) => {
-              return <User id={item} navigate={this.props.navigate} />;
-            }}
-          />
-        </View>
-      );
+    return (
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={this.state.list}
+          onEndReached={() => this.getNext()}
+          onRefresh={() => this.refresh()}
+          removeClippedSubviews={false}
+          keyExtractor={(item, index) => `id_${item}`}
+          onEndReachedThreshold={0.5}
+          initialNumToRender={20}
+          refreshing={this.state.refreshing}
+          ListFooterComponent={this.renderFooter}
+          renderItem={({ item }) => {
+            return <User id={item} navigate={this.props.navigate} />;
+          }}
+        />
+      </View>
+    );
   }
 }
 

@@ -6,10 +6,9 @@ import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
 import pricer from '../../services/Pricer';
 import inlineStyles from './styles';
-import  utilities from "../../services/Utilities";
+import utilities from '../../services/Utilities';
 
 class BalanceHeader extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -85,7 +84,9 @@ class BalanceHeader extends Component {
         <View style={inlineStyles.balanceHeader}>
           <Text style={inlineStyles.balanceToptext}>Your Balance</Text>
           <Text style={inlineStyles.pepoBalance}>
-            <Image style={{width:25,height:22}} source={utilities.getTokenSymbolImageConfig()["image2"]}></Image> {this.state.balInBt}</Text>
+            <Image style={{ width: 25, height: 22 }} source={utilities.getTokenSymbolImageConfig()['image2']}></Image>{' '}
+            {this.state.balInBt}
+          </Text>
           <Text style={inlineStyles.usdBalance}>$ {this.state.balInUsd} </Text>
         </View>
       </View>

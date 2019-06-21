@@ -13,9 +13,7 @@ class Users extends Component {
   }
 
   render() {
-    return (
-      <UserList fetchUrl="/users" navigate={this.props.navigation.navigate} />
-    );
+    return <UserList fetchUrl="/users" navigate={this.props.navigation.navigate} />;
   }
 }
 
