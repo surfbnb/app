@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import styles from './styles';
 import UserList from './UserList';
 
 class Users extends Component {
@@ -16,10 +14,7 @@ class Users extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <UserList fetchUrl="/users" navigate={this.props.navigation.navigate} />
-        <View style={{ height: 78 }}></View>
-      </View>
+      <UserList fetchUrl="/users" navigate={this.props.navigation.navigate} />
     );
   }
 }

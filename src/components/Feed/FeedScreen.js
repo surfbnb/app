@@ -14,7 +14,7 @@ class Feed extends Component {
   }
 
   render() {
-    return <FeedList fetchUrl={'/feeds'} nestedNavigation={true}></FeedList>;
+    return <FeedList style={{ backgroundColor: '#f6f6f6'}} fetchUrl={'/feeds'} nestedNavigation={true}></FeedList>;
   }
 }
 

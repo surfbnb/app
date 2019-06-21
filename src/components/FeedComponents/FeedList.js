@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { FlatList, View, ActivityIndicator, Image, Text } from 'react-native';
 import FeedRow from '../FeedComponents/FeedRow';
 import { FetchServices } from '../../services/FetchServices';
-import styles from '../Users/User/styles';
 import EmptyFeedIcon from '../../assets/empty_feed_icon.png';
 import inlineStyles from './styles';
-import Colors from '../../theme/styles/Colors';
 
 class FeedList extends Component {
   constructor(props) {
