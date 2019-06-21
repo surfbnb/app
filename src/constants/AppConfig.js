@@ -1,3 +1,5 @@
+import pepo_icon from '../assets/pepo_icon.png';
+import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png'
 export default {
   userStatusMap: {
     activated: 'activated',
@@ -22,5 +24,12 @@ export default {
 
   transactionStatus: {
     published: 'PUBLISHED'
+  },
+
+  tokenSymbols: {
+    pepo: {
+        image1:pepo_icon,
+        image2:balance_header_pepo_icon
+      }
   }
 };

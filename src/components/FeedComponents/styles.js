@@ -32,7 +32,8 @@ let stylesMap = {
     paddingVertical: 4,
     minWidth: 50,
     alignSelf: 'flex-start',
-    color: Colors.dark
+    color: Colors.dark,
+    paddingHorizontal:5
   },
   userNameText: {
     marginBottom: 2,

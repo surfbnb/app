@@ -36,6 +36,7 @@ import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
 import pricer from '../../services/Pricer';
 
+
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
@@ -351,12 +352,15 @@ class TransactionScreen extends Component {
                 </View>
                 <View style={inlineStyles.bottomButtonsWrapper}>
                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                    <TouchableButton
-                      TouchableStyles={[Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
-                      TextStyles={[Theme.Button.btnPinkText]}
-                      text={`Send P${this.state.btAmount}`}
+                    <TouchableOpacity
+                      style={[Theme.Button.btn,Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
                       onPress={() => this.excequteTransaction()}
-                    />
+                    >
+                      <Text style={[Theme.Button.btnPinkText,{fontWeight:'500'}]}>Send <Image style={{width:10,height:11,tintColor:'#ffffff'}}  source={utilities.getTokenSymbolImageConfig()["image1"]}></Image> {this.state.btAmount}
+                      </Text>
+
+                      {/*<Text style={[Theme.Button.btnPinkText]}>{this.state.btAmount}</Text>*/}
+                    </TouchableOpacity>
                     <TouchableOpacity
                       style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
                       onPress={() => {

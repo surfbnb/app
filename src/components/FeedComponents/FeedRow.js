@@ -8,7 +8,7 @@ import NavigationService from '../../services/NavigationService';
 import DefaultUserIcon from '../../assets/default_user_icon.png';
 import PriceOracle from '../../services/PriceOracle';
 import GracefulImage from '../Giphy/GracefulImage';
-
+import utilities from "../../services/Utilities"
 class FeedRow extends Component {
   constructor(props) {
     super(props);
@@ -119,7 +119,8 @@ class FeedRow extends Component {
                   </Text>
                 </View>
                 <View style={styles.figure}>
-                  <Text style={{ textAlign: 'center', fontSize: 12 }}>P{this.getBtAmount()}</Text>
+                  <Text style={{ textAlign: 'center', fontSize: 12 }}>
+                    <Image style={{width:8,height:9}} source={utilities.getTokenSymbolImageConfig()["image1"]}/> {this.getBtAmount()}</Text>
                 </View>
               </View>
             </View>

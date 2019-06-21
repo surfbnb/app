@@ -1,6 +1,7 @@
-import deepGet from 'lodash/get';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
+import  pricer from "./Pricer";
+import  appConfig from "../constants/AppConfig";
 
 export default {
   async saveItem(key, val) {
@@ -31,5 +32,10 @@ export default {
     setTimeout(() => {
       Alert.alert(title, message);
     }, 10);
+  },
+
+  getTokenSymbolImageConfig(){
+    let symbol = pricer.getTokenSymbol();
+    return appConfig["tokenSymbols"][symbol];
   }
 };

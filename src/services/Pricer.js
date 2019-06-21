@@ -8,6 +8,11 @@ class Pricer {
     this.pricePoints = null;
   }
 
+  getTokenSymbol(){
+    let  symbol = deepGet(this.token , "symbol" )|| "PEPO";
+    return symbol.toLowerCase();
+  }
+
   getToken(successCallback) {
     if (this.token) {
       successCallback && successCallback(this.token);
