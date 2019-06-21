@@ -46,7 +46,6 @@ class FormInput extends Component {
   }
 
   onChange(val) {
-    console.log('i am in base compomponent');
     this.setState({ errorMsg: null });
     this.props.onChangeText && this.props.onChangeText(val);
   }
