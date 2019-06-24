@@ -64,7 +64,7 @@ class TransactionScreen extends Component {
       btAmountFocus: true,
       btAmountErrorMsg: null,
       feildErrorText: null,
-      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT}
+      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
     };
     this.baseState = this.state;
     this.toUser = this.props.navigation.getParam('toUser');
@@ -280,6 +280,7 @@ class TransactionScreen extends Component {
             viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
           });
         }}
+        keyboardShouldPersistTaps="always"
       >
         <View style={this.state.viewStyle}>
           <View style={inlineStyles.container}>
@@ -349,7 +350,7 @@ class TransactionScreen extends Component {
 
                   <Text style={Theme.Errors.errorText}> {this.state.feildErrorText}</Text>
                 </View>
-                <View style={[inlineStyles.bottomButtonsWrapper, {marginBottom: 15}]}>
+                <View style={[inlineStyles.bottomButtonsWrapper, { marginBottom: 15 }]}>
                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                     <TouchableOpacity
                       style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
@@ -385,7 +386,7 @@ class TransactionScreen extends Component {
                     this.setState({ transactionModal: false });
                   }}
                 >
-                  <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200}>
+                  <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200} keyboardShouldPersistTaps="always">
                     <View style={{ height: Dimensions.get('window').height }}>
                       <View style={inlineStyles.modalBackDrop}>
                         <View style={inlineStyles.modelWrapper}>
