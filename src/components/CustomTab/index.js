@@ -22,8 +22,7 @@ function onTabPressed(navigation, tabName) {
   navigation.navigate(tabName);
 }
 
-const CustomTab = ({ navigation, screenProps }) => {
-  return(
+const CustomTab = ({ navigation, screenProps }) => (
   <View style={styles.container}>
     <TouchableOpacity
       onPress={() => onTabPressed(navigation, tabNames.feedTab)}>
@@ -50,7 +49,6 @@ const CustomTab = ({ navigation, screenProps }) => {
     </TouchableOpacity>
     {/* <TouchableOpacity style={styles.overlayBtn} /> */}
   </View>
+);
 
-
-);}
 export default CustomTab;
