@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { StackActions } from 'react-navigation';
 
 import styles from './styles';
 import feed from '../../assets/user_feed.png';
@@ -12,7 +13,7 @@ const CustomTab = ({ navigation, screenProps }) => (
       onPress={() => {
         navigation.navigate('Feed');
         try {
-          navigation.goBack(null);
+          navigation.dispatch(StackActions.popToTop());
         } catch {
           console.log('Catch error');
         }

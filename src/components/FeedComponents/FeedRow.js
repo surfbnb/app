@@ -57,8 +57,8 @@ class FeedRow extends Component {
   }
 
   fromUserClick() {
-    if (!this.props.nestedNavigation) return;
     const userId = this.fromUserId;
+    if (this.props.userId == userId ) return;
     if (userId == this.getCurrentUserId) {
       NavigationService.navigate('Profile');
     } else {
@@ -67,8 +67,8 @@ class FeedRow extends Component {
   }
 
   toUserClick() {
-    if (!this.props.nestedNavigation) return;
     const userId = this.toUserId;
+    if (this.props.userId == userId ) return;
     if (userId == this.getCurrentUserId) {
       NavigationService.navigate('Profile');
     } else {
