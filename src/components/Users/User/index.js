@@ -31,7 +31,7 @@ const getUser = function(id) {
   return Store.getState().user_entities[`id_${id}`] || {};
 };
 
-export default Users = React.memo((props) => {
+const Users = (props) => {
   let user = getUser(props.id);
 
   if (!isEmpty(user) && isActivated(user)) {
@@ -56,4 +56,6 @@ export default Users = React.memo((props) => {
   } else {
     return <View></View>;
   }
-});
+};
+
+export default Users
