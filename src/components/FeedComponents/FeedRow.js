@@ -9,7 +9,7 @@ import DefaultUserIcon from '../../assets/default_user_icon.png';
 import PriceOracle from '../../services/PriceOracle';
 import GracefulImage from '../Giphy/GracefulImage';
 import utilities from '../../services/Utilities';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
 
 class FeedRow extends Component {
   constructor(props) {
@@ -134,25 +134,27 @@ class FeedRow extends Component {
               <FastImage
                 style={{
                   width: '100%',
-                  aspectRatio: parseInt(this.giphyEntity[appConfig.giphySizes.feed].width) / parseInt(this.giphyEntity[appConfig.giphySizes.feed].height)
+                  aspectRatio:
+                    parseInt(this.giphyEntity[appConfig.giphySizes.feed].width) /
+                    parseInt(this.giphyEntity[appConfig.giphySizes.feed].height)
                 }}
                 source={{
                   uri: this.giphyEntity[appConfig.giphySizes.feed].url,
-                  priority: FastImage.priority.high,
+                  priority: FastImage.priority.high
                 }}
               />
 
               {/*<GracefulImage*/}
-                {/*style={{*/}
-                  {/*width: parseInt(this.giphyEntity[appConfig.giphySizes.feed].width),*/}
-                  {/*height: parseInt(this.giphyEntity[appConfig.giphySizes.feed].height)*/}
-                {/*}}*/}
-                {/*source={{*/}
-                  {/*uri: this.giphyEntity[appConfig.giphySizes.feed].url,*/}
-                  {/*cache: 'force-cache'*/}
-                {/*}}*/}
-                {/*showActivityIndicator={true}*/}
-                {/*imageBackgroundColor="rgba(238,238,238,1)" //can be string or array of colors*/}
+              {/*style={{*/}
+              {/*width: parseInt(this.giphyEntity[appConfig.giphySizes.feed].width),*/}
+              {/*height: parseInt(this.giphyEntity[appConfig.giphySizes.feed].height)*/}
+              {/*}}*/}
+              {/*source={{*/}
+              {/*uri: this.giphyEntity[appConfig.giphySizes.feed].url,*/}
+              {/*cache: 'force-cache'*/}
+              {/*}}*/}
+              {/*showActivityIndicator={true}*/}
+              {/*imageBackgroundColor="rgba(238,238,238,1)" //can be string or array of colors*/}
               {/*/>*/}
             </View>
           )}
