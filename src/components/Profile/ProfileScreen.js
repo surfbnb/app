@@ -8,6 +8,7 @@ import deepGet from 'lodash/get';
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
     return {
+      headerBackTitle: null,
       headerTitle: 'Profile',
       headerRight: <LogoutComponent {...options} />
     };
