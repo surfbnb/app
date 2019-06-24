@@ -15,7 +15,7 @@ const Toast = ({ show, message }) => {
     }
   };
   return (
-    <View style={{ height: '100%' }}>
+    <View>
       {hideAfterTimeout()}
       <Modal
         animationType="fade"
