@@ -131,10 +131,8 @@ class FeedRow extends Component {
             <View style={{ marginTop: 10 }}>
               <GracefulImage
                 style={{
-                  width: '100%',
-                  aspectRatio:
-                    parseInt(this.giphyEntity[appConfig.giphySizes.feed].width) /
-                    parseInt(this.giphyEntity[appConfig.giphySizes.feed].height)
+                  width: parseInt(this.giphyEntity[appConfig.giphySizes.feed].width),
+                  height: parseInt(this.giphyEntity[appConfig.giphySizes.feed].height)
                 }}
                 source={{
                   uri: this.giphyEntity[appConfig.giphySizes.feed].url,
