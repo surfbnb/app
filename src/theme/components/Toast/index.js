@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Modal, Text } from 'react-native';
+import { View, Modal, Text, TouchableWithoutFeedback } from 'react-native';
 import { showToast, hideToast } from '../../../actions';
 import Store from '../../../store';
 
@@ -15,12 +15,33 @@ const Toast = ({ show, message }) => {
     }
   };
   return (
-    <View>
+    <View style={{ height: '100%' }}>
       {hideAfterTimeout()}
-      <Modal animationType="fade" transparent={true} visible={show} coverScreen={false} hasBackdrop={false}>
-        <View style={toastStyles.modalContentWrapper}>
-          <Text style={toastStyles.message}>{message}</Text>
-        </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={show}
+        coverScreen={false}
+        hasBackdrop={false}
+        onRequestClose={() => {
+            Store.dispatch(hideToast());
+        }}
+      >
+        <TouchableWithoutFeedback
+          onPressOut={() => {
+            Store.dispatch(hideToast());
+          }}
+        >
+          <View style={toastStyles.modalContentWrapper}>
+            <TouchableWithoutFeedback
+              onPress={() => {}}
+            >
+              <View style={toastStyles.modalContent}>
+                <Text style={toastStyles.message}>{message} </Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
