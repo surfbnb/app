@@ -127,6 +127,7 @@ export default class PepoApi {
           throw UIWhitelistedErrorCode['no_internet'];
         }
 
+        let t1 = Date.now();
         console.log(`Requesting ${this.cleanedUrl} with options:`, this.parsedParams);
 
         let response = await fetch(this.cleanedUrl, this.parsedParams),
@@ -135,7 +136,11 @@ export default class PepoApi {
 
         this._dispatchData(responseJSON);
 
-        console.log(`Response for ${this.cleanedUrl} code ${responseStatus}, JSON payload:`, responseJSON);
+        let t2 = Date.now();
+        console.log(
+          `Response for ${this.cleanedUrl} resolved in ${t2 - t1} ms, Status: ${responseStatus}, JSON payload:`,
+          responseJSON
+        );
 
         switch (responseStatus) {
           case 401:
