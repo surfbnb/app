@@ -7,25 +7,33 @@ import feed from '../../assets/user_feed.png';
 import profile from '../../assets/user_profile.png';
 import friends from '../../assets/user_friends.png';
 
-const CustomTab = ({ navigation, screenProps }) => (
+const tabNames = {
+  feedTab: 'Feed',
+  usersTab: 'Users',
+  profileTab: 'Profile'
+};
+
+function onTabPressed(navigation, tabName) {
+  try {
+    navigation.dispatch(StackActions.popToTop());
+  } catch {
+    console.log('Catch error');
+  }
+  navigation.navigate(tabName);
+}
+
+const CustomTab = ({ navigation, screenProps }) => {
+  return(
   <View style={styles.container}>
     <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('Feed');
-        try {
-          navigation.dispatch(StackActions.popToTop());
-        } catch {
-          console.log('Catch error');
-        }
-      }}
-    >
+      onPress={() => onTabPressed(navigation, tabNames.feedTab)}>
       <Image
         tintColor={navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}
         style={[styles.tabElementSkipFont, { tintColor: navigation.state.index === 0 ? '#ef5566' : '#484848' }]}
         source={feed}
       />
     </TouchableOpacity>
-    <TouchableOpacity onPress={() => navigation.navigate('Users')}>
+    <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.usersTab)}>
       <Image
         tintColor={navigation.state.index === 1 ? '#61b2d6' : '#484848'}
         style={[styles.tabElementFriendsSkipFont, { tintColor: navigation.state.index === 1 ? '#ef5566' : '#484848' }]}
@@ -33,7 +41,7 @@ const CustomTab = ({ navigation, screenProps }) => (
       />
     </TouchableOpacity>
     {/* <Text> Pepo </Text> */}
-    <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+    <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.profileTab)}>
       <Image
         tintColor={navigation.state.index === 2 ? '#61b2d6' : '#484848'}
         style={[styles.tabElementSkipFont, { tintColor: navigation.state.index === 2 ? '#ef5566' : '#484848' }]}
@@ -42,6 +50,7 @@ const CustomTab = ({ navigation, screenProps }) => (
     </TouchableOpacity>
     {/* <TouchableOpacity style={styles.overlayBtn} /> */}
   </View>
-);
 
+
+);}
 export default CustomTab;
