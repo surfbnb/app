@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { StackActions } from 'react-navigation';
+import { View, TouchableOpacity, Image } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import styles from './styles';
 import feed from '../../assets/user_feed.png';
@@ -15,7 +15,8 @@ const tabNames = {
 
 function onTabPressed(navigation, tabName) {
   try {
-    navigation.dispatch(StackActions.popToTop());
+    console.log("navigation-----" , navigation );
+    navigation._childrenNavigation[tabName].dispatch(StackActions.popToTop());
   } catch {
     console.log('Catch error');
   }
@@ -39,7 +40,6 @@ const CustomTab = ({ navigation, screenProps }) => (
         source={friends}
       />
     </TouchableOpacity>
-    {/* <Text> Pepo </Text> */}
     <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.profileTab)}>
       <Image
         tintColor={navigation.state.index === 2 ? '#61b2d6' : '#484848'}

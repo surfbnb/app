@@ -9,6 +9,7 @@ import DefaultUserIcon from '../../assets/default_user_icon.png';
 import PriceOracle from '../../services/PriceOracle';
 import GracefulImage from '../Giphy/GracefulImage';
 import utilities from '../../services/Utilities';
+
 class FeedRow extends Component {
   constructor(props) {
     super(props);
@@ -60,9 +61,10 @@ class FeedRow extends Component {
     const userId = this.fromUserId;
     if (this.props.userId == userId ) return;
     if (userId == this.getCurrentUserId) {
-      NavigationService.navigate('Profile');
+      this.props.navigation.navigate('Profile');
     } else {
-      NavigationService.navigate('UserFeedScreen', { headerText: this.fromUserName, userId: userId });
+      console.log("this.props.navigation", this.props.navigation);
+      this.props.navigation.push('UserFeedScreen', { headerText: this.fromUserName, userId: userId });
     }
   }
 
@@ -70,9 +72,10 @@ class FeedRow extends Component {
     const userId = this.toUserId;
     if (this.props.userId == userId ) return;
     if (userId == this.getCurrentUserId) {
-      NavigationService.navigate('Profile');
+      this.props.navigation.navigate('Profile');
     } else {
-      NavigationService.navigate('UserFeedScreen', { headerText: this.toUserName, userId: userId });
+      console.log("this.props.navigation", this.props.navigation);
+      this.props.navigation.push('UserFeedScreen', { headerText: this.toUserName, userId: userId });
     }
   }
 

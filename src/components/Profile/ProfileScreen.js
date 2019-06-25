@@ -54,6 +54,7 @@ class ProfileScreen extends Component {
   render() {
     return (
       <FeedList
+        navigation={this.props.navigation} 
         style={{ backgroundColor: '#f6f6f6', flex: 1 }}
         fetchUrl={this.fetchUrl}
         toRefresh={this.state.toRefresh}
