@@ -378,8 +378,8 @@ class TransactionScreen extends Component {
                 <View style={[inlineStyles.bottomButtonsWrapper, { marginBottom: 15 }]}>
                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                     <TouchableOpacity disabled={this.state.exceBtnDisabled}
-                      style={[Theme.Button.btn, inlineStyles.sendPepoBtn,
-                             this.state.exceBtnDisabled ? Theme.Button.btnDisabled : Theme.Button.btnPink]}
+                      style={[Theme.Button.btn, Theme.Button.btnPink , inlineStyles.sendPepoBtn,
+                             this.state.exceBtnDisabled ? Theme.Button.disabled :null ]}
                       onPress={() => this.excequteTransaction()}
                     >
                       <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
