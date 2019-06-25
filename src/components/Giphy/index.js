@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Keyboard
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -26,7 +27,6 @@ import appConfig from '../../constants/AppConfig';
 import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/universalCross.png';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import FormInput from '../../theme/components/FormInput';
 
 const removeSearchDuplicateGiphy = false;
 
@@ -468,7 +468,8 @@ class Giphy extends Component {
                                       height: wh
                                     }}
                                     source={{
-                                      uri: item[appConfig.giphySizes.search].url
+                                      uri: item[appConfig.giphySizes.search].url,
+                                      priority: FastImage.priority.high
                                     }}
                                     showActivityIndicator={this.state.isGifCategory ? false : true}
                                     imageBackgroundColor={[

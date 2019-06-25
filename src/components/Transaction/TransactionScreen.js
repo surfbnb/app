@@ -246,11 +246,13 @@ class TransactionScreen extends Component {
   }
 
   onBtChange(bt) {
+    if(!this.priceOracle) return;
     const usd = this.priceOracle.btToFiat(bt);
     this.setState({ btAmount: bt, btUSDAmount: usd });
   }
 
   onUSDChange(usd) {
+    if(!this.priceOracle) return;
     const bt = this.priceOracle.fiatToBt(usd);
     this.setState({ btAmount: bt, btUSDAmount: usd });
   }

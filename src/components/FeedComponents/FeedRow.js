@@ -9,6 +9,8 @@ import DefaultUserIcon from '../../assets/default_user_icon.png';
 import PriceOracle from '../../services/PriceOracle';
 import GracefulImage from '../Giphy/GracefulImage';
 import utilities from '../../services/Utilities';
+import FastImage from 'react-native-fast-image';
+
 class FeedRow extends Component {
   constructor(props) {
     super(props);
@@ -138,7 +140,7 @@ class FeedRow extends Component {
                 }}
                 source={{
                   uri: this.giphyEntity[appConfig.giphySizes.feed].url,
-                  cache: 'force-cache'
+                  priority: FastImage.priority.high
                 }}
                 showActivityIndicator={true}
                 imageBackgroundColor="rgba(238,238,238,1)" //can be string or array of colors
