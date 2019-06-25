@@ -22,38 +22,44 @@ import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 
+const FeedStack =  createStackNavigator(
+  {
+    FeedContent: Feed,
+    UserFeedScreen: UserFeedScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+); 
+
+const UserStack = createStackNavigator(
+  {
+    Users: Users,
+    TransactionScreen: TransactionScreen
+  },
+  {
+    navigationOptions: ({ navigation }) => ({
+      tabBarVisible: navigation.state.index == 1 ? false : true
+    }),
+    headerLayoutPreset: 'center'
+  }
+)
+
+const ProfileStack = createStackNavigator(
+  {
+    ProfileScreen: ProfileScreen,
+    UserFeedScreen: UserFeedScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
 const HomeScreen = createMaterialTopTabNavigator(
   {
-    Feed: createStackNavigator(
-      {
-        FeedContent: Feed,
-        UserFeedScreen: UserFeedScreen
-      },
-      {
-        headerLayoutPreset: 'center'
-      }
-    ),
-    Users: createStackNavigator(
-      {
-        Users: Users,
-        TransactionScreen: TransactionScreen
-      },
-      {
-        navigationOptions: ({ navigation }) => ({
-          tabBarVisible: navigation.state.index == 1 ? false : true
-        }),
-        headerLayoutPreset: 'center'
-      }
-    ),
-    Profile: createStackNavigator(
-      {
-        ProfileScreen: ProfileScreen,
-        UserFeedScreen: UserFeedScreen
-      },
-      {
-        headerLayoutPreset: 'center'
-      }
-    )
+    Feed: FeedStack,
+    Users: UserStack,
+    Profile: ProfileStack
   },
   {
     tabBarComponent: CustomTab,

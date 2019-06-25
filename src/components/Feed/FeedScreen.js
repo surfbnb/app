@@ -11,10 +11,11 @@ class Feed extends Component {
 
   constructor(props) {
     super(props);
+    this.props.navigation.tab = "Feed"; 
   }
 
   render() {
-    return <FeedList style={{ backgroundColor: '#f6f6f6' }} fetchUrl={'/feeds'} nestedNavigation={true}></FeedList>;
+    return <FeedList style={{ backgroundColor: '#f6f6f6' }} fetchUrl={'/feeds'}></FeedList>;
   }
 }
 

@@ -20,7 +20,7 @@ class UserList extends List {
           refreshing={this.state.refreshing}
           ListFooterComponent={this.renderFooter}
           renderItem={({ item }) => {
-            return <User id={item} navigate={this.props.navigate} />;
+            return <User id={item} />;
           }}
         />
       </View>

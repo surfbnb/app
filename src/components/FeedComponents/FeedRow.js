@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import styles from './styles';
 import Store from '../../store';
 import appConfig from '../../constants/AppConfig';
 import TimestampHandling from '../../helpers/timestampHandling';
-import NavigationService from '../../services/NavigationService';
 import DefaultUserIcon from '../../assets/default_user_icon.png';
 import PriceOracle from '../../services/PriceOracle';
 import GracefulImage from '../Giphy/GracefulImage';
@@ -59,22 +59,22 @@ class FeedRow extends Component {
   }
 
   fromUserClick() {
-    if (!this.props.nestedNavigation) return;
     const userId = this.fromUserId;
+    if (this.props.userId == userId ) return;
     if (userId == this.getCurrentUserId) {
-      NavigationService.navigate('Profile');
+      this.props.navigation.navigate('Profile');
     } else {
-      NavigationService.navigate('UserFeedScreen', { headerText: this.fromUserName, userId: userId });
+      this.props.navigation.push('UserFeedScreen', { headerText: this.fromUserName, userId: userId });
     }
   }
 
   toUserClick() {
-    if (!this.props.nestedNavigation) return;
     const userId = this.toUserId;
+    if (this.props.userId == userId ) return;
     if (userId == this.getCurrentUserId) {
-      NavigationService.navigate('Profile');
+      this.props.navigation.navigate('Profile');
     } else {
-      NavigationService.navigate('UserFeedScreen', { headerText: this.toUserName, userId: userId });
+      this.props.navigation.push('UserFeedScreen', { headerText: this.toUserName, userId: userId });
     }
   }
 
@@ -158,4 +158,4 @@ class FeedRow extends Component {
   }
 }
 
-export default FeedRow;
+export default withNavigation( FeedRow );

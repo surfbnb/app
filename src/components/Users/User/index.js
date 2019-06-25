@@ -1,14 +1,13 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import { Toast } from 'native-base';
-
 import currentUserModel from '../../../models/CurrentUser';
 import styles from './styles';
 import isEmpty from 'lodash/isEmpty';
 import default_user_icon from '../../../assets/default_user_icon.png';
 import appConfig from '../../../constants/AppConfig';
 import Store from '../../../store';
-import { showToast } from '../../../actions';
 import { ostErrors } from '../../../services/OstErrors';
 
 const isActivated = function(user) {
@@ -17,7 +16,7 @@ const isActivated = function(user) {
   return userStatus == appConfig.userStatusMap.activated;
 };
 
-const userClick = function(item, navigate) {
+const userClick = function(item, navigation) {
   let headerText = 'Transaction';
   if (item) {
     headerText = `${item.first_name} ${item.last_name}`;
@@ -29,7 +28,7 @@ const userClick = function(item, navigate) {
     });
     return;
   }
-  navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
+  navigation.navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
 };
 
 const getUser = function(id) {
@@ -43,7 +42,7 @@ const Users = (props) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          userClick(user, props.navigate);
+          userClick(user, props.navigation);
         }}
       >
         <View style={styles.container}>
@@ -63,4 +62,4 @@ const Users = (props) => {
   }
 };
 
-export default Users;
+export default withNavigation( Users )
