@@ -1,18 +1,21 @@
 import { StyleSheet } from 'react-native';
 import Colors from './../../styles/Colors';
 
-export default toastStyles = StyleSheet.create({
+export default StyleSheet.create({
   modalContentWrapper: {
-    position: 'absolute',
-    bottom: 65,
+    height: '100%'
+  },
+  modalContent: {
     backgroundColor: Colors.primary,
+    position: 'absolute',
+    justifyContent: 'center',
+    marginBottom: 10,
     width: '95%',
+    bottom: 65,
     height: 50,
     flexDirection: 'row',
     alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10,
     borderRadius: 8
   },
   message: {

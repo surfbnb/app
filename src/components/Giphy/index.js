@@ -11,8 +11,10 @@ import {
   TextInput,
   ScrollView,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  Keyboard
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -24,7 +26,7 @@ import GracefulImage from './GracefulImage';
 import appConfig from '../../constants/AppConfig';
 import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/universalCross.png';
-import FormInput from "../../theme/components/FormInput";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const removeSearchDuplicateGiphy = false;
 
@@ -382,13 +384,14 @@ class Giphy extends Component {
                 });
               }}
             >
-              <ScrollView nestedScrollEnabled={true}>
+              <KeyboardAwareScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps="always">
                 <TouchableWithoutFeedback
-                  onPressOut={() =>
+                  onPressOut={() => {
+                    Keyboard.dismiss();
                     this.setState({
                       modalOpen: false
-                    })
-                  }
+                    });
+                  }}
                 >
                   <View style={inlineStyles.modal}>
                     <TouchableWithoutFeedback>
@@ -415,10 +418,14 @@ class Giphy extends Component {
                             ) : (
                               <TouchableWithoutFeedback
                                 onPress={() => {
+                                  Keyboard.dismiss();
                                   this.showCategotyList();
                                 }}
                               >
-                                <Image source={CrossIcon} style={[inlineStyles.crossIconSkipFont, { top: 25, right: 10 }]} />
+                                <Image
+                                  source={CrossIcon}
+                                  style={[inlineStyles.crossIconSkipFont, { top: 25, right: 10 }]}
+                                />
                               </TouchableWithoutFeedback>
                             ))) ||
                             null}
@@ -461,7 +468,8 @@ class Giphy extends Component {
                                       height: wh
                                     }}
                                     source={{
-                                      uri:item[appConfig.giphySizes.search].url
+                                      uri: item[appConfig.giphySizes.search].url,
+                                      priority: FastImage.priority.high
                                     }}
                                     showActivityIndicator={this.state.isGifCategory ? false : true}
                                     imageBackgroundColor={[
@@ -502,7 +510,7 @@ class Giphy extends Component {
                     </TouchableWithoutFeedback>
                   </View>
                 </TouchableWithoutFeedback>
-              </ScrollView>
+              </KeyboardAwareScrollView>
             </Modal>
           </React.Fragment>
         )}

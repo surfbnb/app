@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import { Toast } from 'native-base';
+
 import currentUserModel from '../../../models/CurrentUser';
 import styles from './styles';
 import isEmpty from 'lodash/isEmpty';
@@ -22,7 +24,10 @@ const userClick = function(item, navigation) {
     headerText = `${item.first_name} ${item.last_name}`;
   }
   if (!currentUserModel.isUserActivated()) {
-    Store.dispatch(showToast(ostErrors.getUIErrorMessage('user_not_active')));
+    Toast.show({
+      text: ostErrors.getUIErrorMessage('user_not_active'),
+      buttonText: 'Okay'
+    });
     return;
   }
   navigation.navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
@@ -32,7 +37,7 @@ const getUser = function(id) {
   return Store.getState().user_entities[`id_${id}`] || {};
 };
 
-const Users = React.memo((props) => {
+const Users = (props) => {
   let user = getUser(props.id);
 
   if (!isEmpty(user) && isActivated(user)) {
