@@ -25,8 +25,7 @@ import PepoApi from '../../services/PepoApi';
 import PriceOracle from '../../services/PriceOracle';
 import currentUserModal from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
-import Store from '../../store';
-import { showModal, hideModal } from '../../actions';
+import { LoadingModal } from '../../theme/components/LoadingModalCover'
 import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
@@ -123,7 +122,7 @@ class TransactionScreen extends Component {
       Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
       return;
     }
-    Store.dispatch(showModal('Posting...'));
+    LoadingModal.show('Posting','This may take a while,\n we are surfing on Blockchain');
     this.setState({ feildErrorText: null });
     this.sendTransactionToSdk();
   }
@@ -173,7 +172,7 @@ class TransactionScreen extends Component {
   }
 
   onTransactionSuccess(res) {
-    Store.dispatch(hideModal());
+    LoadingModal.hide();
     this.props.navigation.goBack();
     this.props.navigation.navigate('Profile', { toRefresh: true });
   }
@@ -197,7 +196,7 @@ class TransactionScreen extends Component {
   }
 
   onError(error) {
-    Store.dispatch(hideModal());
+    LoadingModal.hide();
     const errorMsg = ostErrors.getErrorMessage(error);
     if (errorMsg) {
       this.setState({ general_error: errorMsg });

@@ -20,6 +20,7 @@ import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
+import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 
 const HomeScreen = createMaterialTopTabNavigator(
   {
@@ -110,6 +111,7 @@ const RootNavigationContainer = () => (
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
     />
+    <LoadingModalCover />
   </Root>
 );
 

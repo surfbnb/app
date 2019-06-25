@@ -5,6 +5,8 @@ import * as types from '../actions/constants';
 export const {
   showModal,
   hideModal,
+  showModalCover,
+  hideModalCover,
   showToast,
   hideToast,
   upsertUserEntities,
@@ -17,6 +19,7 @@ export const {
 
 const defaultState = {
   modal: { message: '', show: false },
+  modal_cover: { message: '', footerText: '', show: false },
   toast: { message: '', show: false },
   current_user: {},
   user_entities: {},
@@ -28,7 +31,9 @@ const defaultState = {
 export const reducer = handleActions(
   {
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
+    [showModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
     [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
+    [hideModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
     [showToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [hideToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [upsertUserEntities]: (state, action) => ({

@@ -11,11 +11,10 @@ import Theme from '../../theme/styles';
 import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
-import LoadingModal from '../../theme/components/LoadingModal';
 import Toast from '../../theme/components/Toast';
-import { showModal, hideModal } from '../../actions';
 import currentUserModal from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
+import { LoadingModal } from '../../theme/components/LoadingModalCover';
 
 const signUpLoginTestMap = {
   signup: 'Signing up...',
@@ -137,7 +136,7 @@ class AuthScreen extends Component {
       return;
     }
 
-    this.props.dispatch(showModal(this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin));
+    LoadingModal.show( this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin );
 
     const methodName = this.state.signup ? 'signUp' : 'login';
 
@@ -147,7 +146,7 @@ class AuthScreen extends Component {
           let resultType = deepGet(res, 'data.result_type'),
             userData = deepGet(res, 'data.' + resultType);
           if (!userData) {
-            this.props.dispatch(hideModal());
+            LoadingModal.hide();
             this.setState({
               general_error: ostErrors.getUIErrorMessage('user_not_found')
             });
@@ -167,7 +166,7 @@ class AuthScreen extends Component {
     currentUserModal
       .initialize()
       .then((user) => {
-        this.props.dispatch(hideModal());
+        LoadingModal.hide();
         if (!currentUserModal.isActiveUser()) {
           this.props.navigation.navigate('SetPinScreen');
         } else {
@@ -175,18 +174,18 @@ class AuthScreen extends Component {
         }
       })
       .catch((error) => {
-        this.props.dispatch(hideModal());
+        LoadingModal.hide();
         this.setState({ general_error: ostErrors.getUIErrorMessage('user_not_found') });
       });
   }
 
   setupDeviceFailed(ostWorkflowContext, error) {
-    this.props.dispatch(hideModal());
+    LoadingModal.hide();
     this.setState({ general_error: ostErrors.getErrorMessage(error) });
   }
 
   onServerError(res) {
-    this.props.dispatch(hideModal());
+    LoadingModal.hide();
     let stateObj = { server_errors: res, clearErrors: false };
     const errorData = deepGet(res, 'err.error_data'),
       errorMsg = ostErrors.getErrorMessage(res);
@@ -357,7 +356,6 @@ class AuthScreen extends Component {
               )}
               <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
             </View>
-            <LoadingModal />
             <Toast timeout={3000} />
           </View>
           <View style={styles.bottomBtnAndTxt}>

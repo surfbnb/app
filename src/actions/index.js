@@ -20,6 +20,31 @@ export const hideModal = (message = '') => ({
   }
 });
 
+export const showModalCover = (
+  message = 'Processing...',
+  footerText = 'This may take a while,\n we are surfing on Blockchain'
+) => ({
+  type: types.SHOW_MODAL_COVER,
+  payload: {
+    modal_cover: {
+      message,
+      footerText,
+      show: true
+    }
+  }
+});
+
+export const hideModalCover = (message = '', footerText = '') => ({
+  type: types.HIDE_MODAL_COVER,
+  payload: {
+    modal_cover: {
+      message,
+      footerText,
+      show: false
+    }
+  }
+});
+
 export const showToast = (message = '') => ({
   type: types.SHOW_TOAST,
   payload: {
