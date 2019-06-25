@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import currentUserModel from '../../../models/CurrentUser';
 import styles from './styles';
 import isEmpty from 'lodash/isEmpty';
@@ -15,7 +16,7 @@ const isActivated = function(user) {
   return userStatus == appConfig.userStatusMap.activated;
 };
 
-const userClick = function(item, navigate) {
+const userClick = function(item, navigation) {
   let headerText = 'Transaction';
   if (item) {
     headerText = `${item.first_name} ${item.last_name}`;
@@ -24,21 +25,21 @@ const userClick = function(item, navigate) {
     Store.dispatch(showToast(ostErrors.getUIErrorMessage('user_not_active')));
     return;
   }
-  navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
+  navigation.navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
 };
 
 const getUser = function(id) {
   return Store.getState().user_entities[`id_${id}`] || {};
 };
 
-export default Users = React.memo((props) => {
+const Users = React.memo((props) => {
   let user = getUser(props.id);
 
   if (!isEmpty(user) && isActivated(user)) {
     return (
       <TouchableOpacity
         onPress={() => {
-          userClick(user, props.navigate);
+          userClick(user, props.navigation);
         }}
       >
         <View style={styles.container}>
@@ -57,3 +58,5 @@ export default Users = React.memo((props) => {
     return <View></View>;
   }
 });
+
+export default withNavigation( Users )

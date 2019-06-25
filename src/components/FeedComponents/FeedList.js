@@ -118,7 +118,6 @@ class FeedList extends Component {
           ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
           ListFooterComponent={this.renderFooter}
           renderItem={({ item }) => <FeedRow id={item}  userId={this.props.userId}
-          navigation={this.props.navigation} 
            />}
         ></FlatList>
         {this.state.feeds.length == 0 && !this.state.refreshing && (

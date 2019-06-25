@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import styles from './styles';
 import Store from '../../store';
 import appConfig from '../../constants/AppConfig';
 import TimestampHandling from '../../helpers/timestampHandling';
-import NavigationService from '../../services/NavigationService';
 import DefaultUserIcon from '../../assets/default_user_icon.png';
 import PriceOracle from '../../services/PriceOracle';
 import GracefulImage from '../Giphy/GracefulImage';
@@ -156,4 +156,4 @@ class FeedRow extends Component {
   }
 }
 
-export default FeedRow;
+export default withNavigation( FeedRow );
