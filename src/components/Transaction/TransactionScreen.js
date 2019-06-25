@@ -283,31 +283,34 @@ class TransactionScreen extends Component {
     this.setState(this.previousState);
   }
 
+  openedKeyboard(frames) {
+    let deviceHeight = frames.endCoordinates.screenY - Header.HEIGHT,
+      stateObj;
+    if(deviceHeight > 362) {
+      stateObj = { height: deviceHeight }
+    } else {
+      stateObj = {flex: 1}
+    }
+    this.setState({
+      viewStyle: stateObj
+    });
+  }
+
+  closedKeyboard(frames) {
+    this.setState({
+      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
+    });
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraHeight={200}
-        onKeyboardWillShow={(frames) => {
-          this.setState({
-            viewStyle: { flex: 1 }
-          });
-        }}
-        onKeyboardDidShow={(frames) => {
-          this.setState({
-            viewStyle: { flex: 1 }
-          });
-        }}
-        onKeyboardWillHide={(frames) => {
-          this.setState({
-            viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
-          });
-        }}
-        onKeyboardDidHide={(frames) => {
-          this.setState({
-            viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
-          });
-        }}
+        onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
+        onKeyboardDidShow={(frames) => this.openedKeyboard(frames)}
+        onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
+        onKeyboardDidHide={(frames) => this.closedKeyboard(frames)}
         keyboardShouldPersistTaps="always"
       >
         <View style={this.state.viewStyle}>
