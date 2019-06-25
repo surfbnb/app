@@ -1,28 +1,14 @@
 import React, { Component } from 'react';
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import {
-  View,
-  Text,
-  Alert,
-  TextInput,
-  Switch,
-  TouchableOpacity,
-  Modal,
-  KeyboardAvoidingView,
-  Image,
-  Platform,
-  Dimensions
-} from 'react-native';
+import { View, Text, Alert, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Header } from 'react-navigation';
 
-import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
 import Giphy from '../Giphy';
 import Theme from '../../theme/styles';
 import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
-import PriceOracle from '../../services/PriceOracle';
 import currentUserModal from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
 import Store from '../../store';
@@ -30,14 +16,14 @@ import { showModal, hideModal } from '../../actions';
 import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
-import CircleCloseIcon from '../../assets/circle_close_icon.png';
 import EditIcon from '../../assets/edit_icon.png';
 import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
-import pricer from '../../services/Pricer';
+import InitPricePoint from '../../services/InitPricePoint';
+import EditTxModal from './EditTxModal';
 
 class TransactionScreen extends Component {
-  static navigationOptions = ({ navigation, navigationOptions }) => {
+  static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: navigation.getParam('transactionHeader'),
       headerBackImage: (
@@ -57,14 +43,11 @@ class TransactionScreen extends Component {
       isPublic: true,
       general_error: '',
       btAmount: 1,
-      btUSDAmount: null,
       isMessageVisible: false,
       switchToggleState: false,
-      transactionModal: false,
-      btAmountFocus: true,
-      btAmountErrorMsg: null,
-      feildErrorText: null,
-      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT}
+      showTxModal: false,
+      fieldErrorText: null,
+      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
     };
     this.baseState = this.state;
     this.toUser = this.props.navigation.getParam('toUser');
@@ -81,30 +64,12 @@ class TransactionScreen extends Component {
 
   componentWillMount() {
     this.defaultVals();
-    this.initPricePoint();
+    InitPricePoint.init(this.onGetPricePointSuccess, this.onGetPricePointError);
   }
 
   componentWillUnmount() {
     this.defaultVals();
     this.setState(this.baseState);
-  }
-
-  initPricePoint() {
-    this.updatePricePoint();
-  }
-
-  updatePricePoint(successCallback, errorCallback) {
-    const ostUserId = currentUserModal.getOstUserId();
-    pricer.getPriceOracleConfig(
-      ostUserId,
-      (token, pricePoints) => {
-        this.onGetPricePointSuccess(token, pricePoints);
-        successCallback && successCallback(token, pricePoints);
-      },
-      (error) => {
-        errorCallback && errorCallback(error);
-      }
-    );
   }
 
   onGetPricePointSuccess(token, pricePoints) {
@@ -118,17 +83,17 @@ class TransactionScreen extends Component {
     this.onError(error);
   }
 
-  excequteTransaction() {
-    if (!this.isValids()) {
+  excecuteTransaction() {
+    if (!this.isValid()) {
       Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
       return;
     }
     Store.dispatch(showModal('Posting...'));
-    this.setState({ feildErrorText: null });
+    this.setState({ fieldErrorText: null });
     this.sendTransactionToSdk();
   }
 
-  isValids() {
+  isValid() {
     return !!this.priceOracle;
   }
 
@@ -149,14 +114,14 @@ class TransactionScreen extends Component {
   }
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
-    this.sendTransactionToPlatfrom(ostWorkflowEntity);
+    this.sendTransactionToPlatform(ostWorkflowEntity);
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
     this.onError(error);
   }
 
-  sendTransactionToPlatfrom(ostWorkflowEntity) {
+  sendTransactionToPlatform(ostWorkflowEntity) {
     const params = this.getSendTransactionPlatformData(ostWorkflowEntity);
     new PepoApi('/ost-transactions')
       .post(params)
@@ -206,7 +171,7 @@ class TransactionScreen extends Component {
     }
     const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
     if (errorDataMsg) {
-      this.setState({ feildErrorText: errorDataMsg });
+      this.setState({ fieldErrorText: errorDataMsg });
       return;
     }
   }
@@ -236,23 +201,31 @@ class TransactionScreen extends Component {
     }
   }
 
-  onAmountModalConfrim() {
+  onAmountModalConfirm() {
     let btAmount = this.state.btAmount;
     btAmount = btAmount && Number(btAmount);
     if (btAmount <= 0) {
       this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
       return;
     }
-    this.setState({ transactionModal: false });
+    this.closeEditTxModal();
   }
 
   onAmountModalShow() {
     this.previousState = this.state;
-    this.setState({ transactionModal: true });
+    this.showEditTxModal();
   }
 
   onAmountModalClose() {
     this.setState(this.previousState);
+  }
+
+  closeEditTxModal() {
+    this.setState({ showTxModal: false });
+  }
+
+  showEditTxModal() {
+    this.setState({ showTxModal: true });
   }
 
   render() {
@@ -347,13 +320,13 @@ class TransactionScreen extends Component {
                     />
                   )}
 
-                  <Text style={Theme.Errors.errorText}> {this.state.feildErrorText}</Text>
+                  <Text style={Theme.Errors.errorText}> {this.state.fieldErrorText}</Text>
                 </View>
-                <View style={[inlineStyles.bottomButtonsWrapper, {marginBottom: 15}]}>
+                <View style={[inlineStyles.bottomButtonsWrapper, { marginBottom: 15 }]}>
                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                     <TouchableOpacity
                       style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
-                      onPress={() => this.excequteTransaction()}
+                      onPress={() => this.excecuteTransaction()}
                     >
                       <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
                         Send{' '}
@@ -376,98 +349,19 @@ class TransactionScreen extends Component {
                     </TouchableOpacity>
                   </View>
                 </View>
-
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={this.state.transactionModal}
-                  onRequestClose={() => {
-                    this.setState({ transactionModal: false });
-                  }}
-                >
-                  <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200}>
-                    <View style={{ height: Dimensions.get('window').height }}>
-                      <View style={inlineStyles.modalBackDrop}>
-                        <View style={inlineStyles.modelWrapper}>
-                          <View>
-                            <TouchableOpacity
-                              style={inlineStyles.modalCloseBtnWrapper}
-                              onPress={() => {
-                                this.onAmountModalClose();
-                              }}
-                            >
-                              <Image source={CircleCloseIcon} style={inlineStyles.crossIconSkipFont} />
-                            </TouchableOpacity>
-                          </View>
-                          <View style={inlineStyles.modalContentWrapper}>
-                            <Text style={inlineStyles.modalHeader}>Enter The Amount you want to send</Text>
-                            <View style={{ flexDirection: 'row' }}>
-                              <View style={{ flex: 0.7 }}>
-                                <FormInput
-                                  editable={true}
-                                  onChangeText={(val) => this.onBtChange(val)}
-                                  placeholder="BT"
-                                  fieldName="bt_amount"
-                                  style={Theme.TextInput.textInputStyle}
-                                  value={`${this.state.btAmount}`}
-                                  placeholderTextColor="#ababab"
-                                  errorMsg={this.state.btAmountErrorMsg}
-                                  serverErrors={this.state.server_errors}
-                                  clearErrors={this.state.clearErrors}
-                                  keyboardType="numeric"
-                                  isFocus={this.state.btAmountFocus}
-                                  blurOnSubmit={false}
-                                />
-                              </View>
-                              <View style={{ flex: 0.3 }}>
-                                <TextInput
-                                  editable={false}
-                                  style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
-                                >
-                                  <Text>PEPO</Text>
-                                </TextInput>
-                              </View>
-                            </View>
-
-                            <View style={{ flexDirection: 'row' }}>
-                              <View style={{ flex: 0.7 }}>
-                                <FormInput
-                                  editable={true}
-                                  onChangeText={(val) => this.onUSDChange(val)}
-                                  value={`${this.state.btUSDAmount}`}
-                                  placeholder="USD"
-                                  fieldName="usd_amount"
-                                  style={Theme.TextInput.textInputStyle}
-                                  placeholderTextColor="#ababab"
-                                  serverErrors={this.state.server_errors}
-                                  clearErrors={this.state.clearErrors}
-                                  keyboardType="numeric"
-                                  blurOnSubmit={true}
-                                />
-                              </View>
-                              <View style={{ flex: 0.3 }}>
-                                <TextInput
-                                  editable={false}
-                                  style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
-                                >
-                                  <Text>USD</Text>
-                                </TextInput>
-                              </View>
-                            </View>
-                            <TouchableButton
-                              TouchableStyles={[Theme.Button.btnPink, { marginTop: 10 }]}
-                              TextStyles={[Theme.Button.btnPinkText]}
-                              text="CONFIRM"
-                              onPress={() => {
-                                this.onAmountModalConfrim();
-                              }}
-                            />
-                          </View>
-                        </View>
-                      </View>
-                    </View>
-                  </KeyboardAwareScrollView>
-                </Modal>
+                <EditTxModal
+                  showTxModal={this.state.showTxModal} //Right
+                  onRequestClose={this.closeEditTxModal} //RIGht
+                  onAmountModalClose={this.onAmountModalClose} //Remove mostly
+                  btAmount={this.state.btAmount} //Needed
+                  btAmountErrorMsg={this.state.btAmountErrorMsg} //Internally keep
+                  server_errors={this.state.server_errors} //Not required
+                  clearErrors={this.state.clearErrors} // Clear on unmount
+                  btAmountFocus={this.state.btAmountFocus} //Not need from outside handle from inside
+                  onUSDChange={this.onUSDChange} //Inside
+                  btUSDAmount={this.state.btUSDAmount} //Inside
+                  onAmountModalConfirm={this.onAmountModalConfirm} //Send usd and bt value back
+                />
               </React.Fragment>
             )}
           </View>
