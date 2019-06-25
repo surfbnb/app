@@ -11,7 +11,8 @@ import {
   TextInput,
   ScrollView,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  Keyboard
 } from 'react-native';
 
 import inlineStyles from './styles';
@@ -24,6 +25,7 @@ import GracefulImage from './GracefulImage';
 import appConfig from '../../constants/AppConfig';
 import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/universalCross.png';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import FormInput from '../../theme/components/FormInput';
 
 const removeSearchDuplicateGiphy = false;
@@ -333,7 +335,7 @@ class Giphy extends Component {
           <ActivityIndicator style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
           <ImageBackground
             source={{
-              uri: this.state.selectedImage[appConfig.giphySizes.feed].url
+              uri:this.state.selectedImage[appConfig.giphySizes.feed].url
             }}
             style={{
               width: '100%',
@@ -382,13 +384,14 @@ class Giphy extends Component {
                 });
               }}
             >
-              <ScrollView nestedScrollEnabled={true}>
+              <KeyboardAwareScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps="always">
                 <TouchableWithoutFeedback
-                  onPressOut={() =>
+                  onPressOut={() => {
+                    Keyboard.dismiss();
                     this.setState({
                       modalOpen: false
-                    })
-                  }
+                    });
+                  }}
                 >
                   <View style={inlineStyles.modal}>
                     <TouchableWithoutFeedback>
@@ -415,6 +418,7 @@ class Giphy extends Component {
                             ) : (
                               <TouchableWithoutFeedback
                                 onPress={() => {
+                                  Keyboard.dismiss();
                                   this.showCategotyList();
                                 }}
                               >
@@ -464,8 +468,7 @@ class Giphy extends Component {
                                       height: wh
                                     }}
                                     source={{
-                                      uri: item[appConfig.giphySizes.search].url,
-                                      cache: 'force-cache'
+                                      uri: item[appConfig.giphySizes.search].url
                                     }}
                                     showActivityIndicator={this.state.isGifCategory ? false : true}
                                     imageBackgroundColor={[
@@ -506,7 +509,7 @@ class Giphy extends Component {
                     </TouchableWithoutFeedback>
                   </View>
                 </TouchableWithoutFeedback>
-              </ScrollView>
+              </KeyboardAwareScrollView>
             </Modal>
           </React.Fragment>
         )}

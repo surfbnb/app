@@ -306,6 +306,7 @@ class TransactionScreen extends Component {
             viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
           });
         }}
+        keyboardShouldPersistTaps="always"
       >
         <View style={this.state.viewStyle}>
           <View style={inlineStyles.container}>
@@ -410,7 +411,7 @@ class TransactionScreen extends Component {
                     this.setState({ transactionModal: false });
                   }}
                 >
-                  <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200}>
+                  <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200} keyboardShouldPersistTaps="always">
                     <View style={{ height: Dimensions.get('window').height }}>
                       <View style={inlineStyles.modalBackDrop}>
                         <View style={inlineStyles.modelWrapper}>
