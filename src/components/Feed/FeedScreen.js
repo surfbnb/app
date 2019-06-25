@@ -11,7 +11,7 @@ class Feed extends Component {
 
   constructor(props) {
     super(props);
-    this.props.navigation.tab = "Feed"; 
+    this.props.navigation.tab = 'Feed';
   }
 
   render() {

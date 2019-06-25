@@ -15,7 +15,7 @@ const tabNames = {
 
 function onTabPressed(navigation, tabName) {
   try {
-      navigation.dispatch(StackActions.popToTop({key: tabName}));
+    navigation.dispatch(StackActions.popToTop({ key: tabName }));
   } catch {
     console.log('Catch error');
   }
@@ -24,8 +24,7 @@ function onTabPressed(navigation, tabName) {
 
 const CustomTab = ({ navigation, screenProps }) => (
   <View style={styles.container}>
-    <TouchableOpacity
-      onPress={() => onTabPressed(navigation, tabNames.feedTab)}>
+    <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.feedTab)}>
       <Image
         tintColor={navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}
         style={[styles.tabElementSkipFont, { tintColor: navigation.state.index === 0 ? '#ef5566' : '#484848' }]}

@@ -24,7 +24,7 @@ const Toast = ({ show, message }) => {
         coverScreen={false}
         hasBackdrop={false}
         onRequestClose={() => {
-            Store.dispatch(hideToast());
+          Store.dispatch(hideToast());
         }}
       >
         <TouchableWithoutFeedback
@@ -33,9 +33,7 @@ const Toast = ({ show, message }) => {
           }}
         >
           <View style={toastStyles.modalContentWrapper}>
-            <TouchableWithoutFeedback
-              onPress={() => {}}
-            >
+            <TouchableWithoutFeedback onPress={() => {}}>
               <View style={toastStyles.modalContent}>
                 <Text style={toastStyles.message}>{message} </Text>
               </View>

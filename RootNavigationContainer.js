@@ -22,7 +22,7 @@ import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 
-const FeedStack =  createStackNavigator(
+const FeedStack = createStackNavigator(
   {
     FeedContent: Feed,
     UserFeedScreen: UserFeedScreen
@@ -30,7 +30,7 @@ const FeedStack =  createStackNavigator(
   {
     headerLayoutPreset: 'center'
   }
-); 
+);
 
 const UserStack = createStackNavigator(
   {
@@ -43,7 +43,7 @@ const UserStack = createStackNavigator(
     }),
     headerLayoutPreset: 'center'
   }
-)
+);
 
 const ProfileStack = createStackNavigator(
   {

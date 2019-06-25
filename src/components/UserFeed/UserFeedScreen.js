@@ -24,8 +24,14 @@ class UserFeedScreen extends Component {
   }
 
   render() {
-    return <FeedList userId={this.userId} style={{ backgroundColor: '#f6f6f6', flex: 1 }} 
-    navigation={this.props.navigation} fetchUrl={this.fetchUrl}></FeedList>;
+    return (
+      <FeedList
+        userId={this.userId}
+        style={{ backgroundColor: '#f6f6f6', flex: 1 }}
+        navigation={this.props.navigation}
+        fetchUrl={this.fetchUrl}
+      ></FeedList>
+    );
   }
 }
 

@@ -8,7 +8,7 @@ import ActivateUser from '../../services/ActivateUser';
 import inlineStyles from './styles';
 import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
-import { LoadingModal} from '../../theme/components/LoadingModalCover';
+import { LoadingModal } from '../../theme/components/LoadingModalCover';
 
 export default class ConfirmPin extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -28,7 +28,7 @@ export default class ConfirmPin extends Component {
 
   onPinChange = (pin, resetPinCallback) => {
     if (pin === this.props.navigation.getParam('pin', '')) {
-      LoadingModal.show('Activating User...')
+      LoadingModal.show('Activating User...');
       ActivateUser.activateUser(pin, this);
     } else {
       if (resetPinCallback) {

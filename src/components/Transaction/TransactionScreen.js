@@ -25,7 +25,7 @@ import PepoApi from '../../services/PepoApi';
 import PriceOracle from '../../services/PriceOracle';
 import currentUserModal from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
-import { LoadingModal } from '../../theme/components/LoadingModalCover'
+import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
@@ -34,7 +34,6 @@ import EditIcon from '../../assets/edit_icon.png';
 import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
 import pricer from '../../services/Pricer';
-
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -88,7 +87,7 @@ class TransactionScreen extends Component {
 
   componentWillUnmount() {
     this.defaultVals();
-    this.onGetPricePointSuccess = () =>{} ;
+    this.onGetPricePointSuccess = () => {};
     this.onBalance = () => {};
   }
 
@@ -111,25 +110,25 @@ class TransactionScreen extends Component {
     );
   }
 
-  getBalance(){
+  getBalance() {
     const ostUserId = currentUserModal.getOstUserId();
     OstJsonApi.getBalanceForUserId(
       ostUserId,
       (res) => {
-       this.onBalance(res);
+        this.onBalance(res);
       },
       (err) => {
-        //DO nothing 
+        //DO nothing
       }
     );
   }
 
-  onBalance( res ){
-    if(!this.priceOracle) return;
+  onBalance(res) {
+    if (!this.priceOracle) return;
     let btBalance = deepGet(res, 'balance.available_balance');
     btBalance = this.priceOracle.fromDecimal(btBalance);
     btBalance = this.priceOracle.toBt(btBalance) || 0;
-    this.setState({ balance: btBalance, exceBtnDisabled: !BigNumber(btBalance).isGreaterThan( 0 ) });
+    this.setState({ balance: btBalance, exceBtnDisabled: !BigNumber(btBalance).isGreaterThan(0) });
   }
 
   onGetPricePointSuccess(token, pricePoints) {
@@ -148,7 +147,7 @@ class TransactionScreen extends Component {
       Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
       return;
     }
-    LoadingModal.show('Posting','This may take a while,\n we are surfing on Blockchain');
+    LoadingModal.show('Posting', 'This may take a while,\n we are surfing on Blockchain');
     this.setState({ feildErrorText: null });
     this.sendTransactionToSdk();
   }
@@ -245,13 +244,13 @@ class TransactionScreen extends Component {
   }
 
   onBtChange(bt) {
-    if(!this.priceOracle) return;
+    if (!this.priceOracle) return;
     const usd = this.priceOracle.btToFiat(bt);
     this.setState({ btAmount: bt, btUSDAmount: usd });
   }
 
   onUSDChange(usd) {
-    if(!this.priceOracle) return;
+    if (!this.priceOracle) return;
     const bt = this.priceOracle.fiatToBt(usd);
     this.setState({ btAmount: bt, btUSDAmount: usd });
   }
@@ -285,10 +284,10 @@ class TransactionScreen extends Component {
   openedKeyboard(frames) {
     let deviceHeight = frames.endCoordinates.screenY - Header.HEIGHT,
       stateObj;
-    if(deviceHeight > 362) {
-      stateObj = { height: deviceHeight }
+    if (deviceHeight > 362) {
+      stateObj = { height: deviceHeight };
     } else {
-      stateObj = {flex: 1}
+      stateObj = { flex: 1 };
     }
     this.setState({
       viewStyle: stateObj
@@ -382,16 +381,23 @@ class TransactionScreen extends Component {
                 </View>
                 <View style={[inlineStyles.bottomButtonsWrapper, { marginBottom: 15 }]}>
                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                    <TouchableOpacity disabled={this.state.exceBtnDisabled}
-                      style={[Theme.Button.btn, Theme.Button.btnPink , inlineStyles.sendPepoBtn,
-                             this.state.exceBtnDisabled ? Theme.Button.disabled :null ]}
+                    <TouchableOpacity
+                      disabled={this.state.exceBtnDisabled}
+                      style={[
+                        Theme.Button.btn,
+                        Theme.Button.btnPink,
+                        inlineStyles.sendPepoBtn,
+                        this.state.exceBtnDisabled ? Theme.Button.disabled : null
+                      ]}
                       onPress={() => this.excequteTransaction()}
                     >
                       <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
-                        Send <Image
+                        Send{' '}
+                        <Image
                           style={{ width: 10, height: 11, tintColor: '#ffffff' }}
                           source={utilities.getTokenSymbolImageConfig()['image1']}
-                        ></Image> {this.state.btAmount}
+                        ></Image>{' '}
+                        {this.state.btAmount}
                       </Text>
 
                       {/*<Text style={[Theme.Button.btnPinkText]}>{this.state.btAmount}</Text>*/}
@@ -492,7 +498,9 @@ class TransactionScreen extends Component {
                                 this.onAmountModalConfrim();
                               }}
                             />
-                            <Text style={{textAlign:"center", paddingTop: 10, fontSize:13}}>Your Current Balance: P{this.state.balance}</Text>
+                            <Text style={{ textAlign: 'center', paddingTop: 10, fontSize: 13 }}>
+                              Your Current Balance: P{this.state.balance}
+                            </Text>
                           </View>
                         </View>
                       </View>

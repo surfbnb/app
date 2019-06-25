@@ -60,7 +60,7 @@ class FeedRow extends Component {
 
   fromUserClick() {
     const userId = this.fromUserId;
-    if (this.props.userId == userId ) return;
+    if (this.props.userId == userId) return;
     if (userId == this.getCurrentUserId) {
       this.props.navigation.navigate('Profile');
     } else {
@@ -70,7 +70,7 @@ class FeedRow extends Component {
 
   toUserClick() {
     const userId = this.toUserId;
-    if (this.props.userId == userId ) return;
+    if (this.props.userId == userId) return;
     if (userId == this.getCurrentUserId) {
       this.props.navigation.navigate('Profile');
     } else {
@@ -158,4 +158,4 @@ class FeedRow extends Component {
   }
 }
 
-export default withNavigation( FeedRow );
+export default withNavigation(FeedRow);

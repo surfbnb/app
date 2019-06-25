@@ -56,7 +56,7 @@ export default class PriceOracle {
   }
 
   fromDecimal(val) {
-   return PriceOracle.fromDecimal(val, this.decimals)
+    return PriceOracle.fromDecimal(val, this.decimals);
   }
 
   static fromDecimal(val, decimals) {

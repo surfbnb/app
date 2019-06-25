@@ -62,4 +62,4 @@ const Users = (props) => {
   }
 };
 
-export default withNavigation( Users )
+export default withNavigation(Users);

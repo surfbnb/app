@@ -8,7 +8,7 @@ import Loading_left from '../../../assets/Loading_left.png';
 import Loading_right from '../../../assets/Loading_right.png';
 import Colors from '../../styles/Colors';
 import Store from '../../../store';
-import {showModalCover, hideModalCover } from '../../../actions';
+import { showModalCover, hideModalCover } from '../../../actions';
 
 const mapStateToProps = ({ modal_cover }) => ({
   show: modal_cover.show,
@@ -39,30 +39,32 @@ class loadingModalCover extends React.Component {
   render() {
     return (
       <View>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={this.props.show}
-          coverScreen={false}
-          hasBackdrop={false}
-        >
-          <View style={inlineStyles.backgroundStyle}>
-            <Image
-              style={inlineStyles.loadingImage}
-              source={this.state.showLoadingImage ? Loading_right : Loading_left}
-            ></Image>
-            <Text style={inlineStyles.loadingMessage}>{this.props.message}</Text>
-            <Progress.Bar
-              indeterminate={true}
-              indeterminateAnimationDuration={1000}
-              width={200}
-              unfilledColor={Colors.white}
-              color={Colors.primary}
-              borderWidth={0}
-            />
-            <Text style={inlineStyles.footerText}>{this.props.footerText}</Text>
-          </View>
-        </Modal>
+        {this.props.show && (
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={this.props.show}
+            coverScreen={false}
+            hasBackdrop={false}
+          >
+            <View style={inlineStyles.backgroundStyle}>
+              <Image
+                style={inlineStyles.loadingImage}
+                source={this.state.showLoadingImage ? Loading_right : Loading_left}
+              />
+              <Text style={inlineStyles.loadingMessage}>{this.props.message}</Text>
+              <Progress.Bar
+                indeterminate={true}
+                indeterminateAnimationDuration={1000}
+                width={200}
+                unfilledColor={Colors.white}
+                color={Colors.primary}
+                borderWidth={0}
+              />
+              <Text style={inlineStyles.footerText}>{this.props.footerText}</Text>
+            </View>
+          </Modal>
+        )}
       </View>
     );
   }
@@ -71,7 +73,7 @@ class loadingModalCover extends React.Component {
 export const LoadingModalCover = connect(mapStateToProps)(loadingModalCover);
 export const LoadingModal = {
   show: (message, footerText) => {
-    Store.dispatch(showModalCover(message,footerText));
+    Store.dispatch(showModalCover(message, footerText));
   },
   hide: () => {
     Store.dispatch(hideModalCover());

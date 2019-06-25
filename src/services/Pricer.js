@@ -50,7 +50,7 @@ class Pricer {
     );
   }
 
-  getBalanceWithPricePoint(  ostUserId , successCallback , errorCallback ){
+  getBalanceWithPricePoint(ostUserId, successCallback, errorCallback) {
     if (!ostUserId) {
       errorCallback &&
         errorCallback({
@@ -63,8 +63,8 @@ class Pricer {
       ostUserId,
       (res) => {
         this.pricePoints = deepGet(res, 'price_point.OST');
-        let bal = deepGet(res, 'balance.available_balance')
-        successCallback && successCallback(this.pricePoints, bal );
+        let bal = deepGet(res, 'balance.available_balance');
+        successCallback && successCallback(this.pricePoints, bal);
       },
       (error) => {
         errorCallback && errorCallback(error);
@@ -86,11 +86,11 @@ class Pricer {
     });
   }
 
-  getBalanceWithPriceOracleConfig( ostUserId , successCallback , errorCallback ){
+  getBalanceWithPriceOracleConfig(ostUserId, successCallback, errorCallback) {
     this.getToken((token) => {
       this.getBalanceWithPricePoint(
         ostUserId,
-        (pricePoints, bal ) => {
+        (pricePoints, bal) => {
           successCallback && successCallback(token, pricePoints, bal);
         },
         (error) => {

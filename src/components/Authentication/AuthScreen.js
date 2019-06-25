@@ -136,7 +136,7 @@ class AuthScreen extends Component {
       return;
     }
 
-    LoadingModal.show( this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin );
+    LoadingModal.show(this.state.signup ? signUpLoginTestMap.signup : signUpLoginTestMap.signin);
 
     const methodName = this.state.signup ? 'signUp' : 'login';
 
