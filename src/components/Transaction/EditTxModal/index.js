@@ -15,6 +15,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import FormInput from '../../../theme/components/FormInput';
 import TouchableButton from '../../../theme/components/TouchableButton';
+import { ostErrors } from '../../../services/OstErrors';
 import CircleCloseIcon from '../../../assets/circle_close_icon.png';
 import Theme from '../../../theme/styles';
 import inlineStyles from '../Style';
@@ -23,16 +24,20 @@ export default class EditTxModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      btAmount: this.props.btAmount,
-      btUSDAmount: this.props.btUSDAmount,
-      clearErrors: false
+      btAmount: props.btAmount,
+      btUSDAmount: props.btUSDAmount,
+      clearErrors: false,
+      btAmountErrorMsg: null
     };
-    this.priceOracle = this.props.getPriceOracle();
+    this.priceOracle = props.getPriceOracle();
   }
 
   onBtChange(bt) {
     const usd = this.priceOracle.btToFiat(bt);
     this.setState({ btAmount: bt, btUSDAmount: usd });
+    if (bt > 0) {
+      this.setState({ btAmountErrorMsg: null, clearErrors: true });
+    }
   }
 
   onUSDChange(usd) {
@@ -40,13 +45,15 @@ export default class EditTxModal extends Component {
     this.setState({ btAmount: bt, btUSDAmount: usd });
   }
 
-  clearErrors() {
-    this.setState({ clearErrors: true });
-  }
-
-  componentDidUnMount() {
-    this.clearErrors();
-  }
+  onConfirm = () => {
+    let btAmount = this.state.btAmount;
+    btAmount = btAmount && Number(btAmount);
+    if (btAmount <= 0) {
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error'), clearErrors: false });
+      return;
+    }
+    this.props.onAmountModalConfirm(this.state.btAmount, this.state.btUSDAmount);
+  };
 
   render() {
     return (
@@ -130,7 +137,7 @@ export default class EditTxModal extends Component {
                     TextStyles={[Theme.Button.btnPinkText]}
                     text="CONFIRM"
                     onPress={() => {
-                      this.props.onAmountModalConfirm(this.state.btAmount);
+                      this.onConfirm();
                     }}
                   />
                   <Text style={{ textAlign: 'center', paddingTop: 10, fontSize: 13 }}>

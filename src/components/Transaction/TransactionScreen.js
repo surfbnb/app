@@ -47,6 +47,7 @@ class TransactionScreen extends Component {
       isPublic: true,
       general_error: '',
       btAmount: 1,
+      btUSDAmount: 0,
       isMessageVisible: false,
       switchToggleState: false,
       showTxModal: false,
@@ -117,9 +118,9 @@ class TransactionScreen extends Component {
     this.setState({ balance: btBalance, exceBtnDisabled: !BigNumber(btBalance).isGreaterThan(0) });
   }
 
-  getPriceOracle() {
+  getPriceOracle = () => {
     return this.priceOracle;
-  }
+  };
 
   onGetPricePointSuccess(token, pricePoints) {
     let btUSDAmount = null;
@@ -240,32 +241,27 @@ class TransactionScreen extends Component {
     }
   }
 
-  onAmountModalConfirm(btAmt) {
-    let btAmount = btAmt;
-    btAmount = btAmount && Number(btAmount);
-    if (btAmount <= 0) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
-      return;
-    }
-    this.closeEditTxModal();
-  }
-
-  onAmountModalShow() {
+  onShowAmountModal = () => {
     this.previousState = this.state;
-    this.showEditTxModal();
-  }
-
-  onAmountModalClose() {
-    this.setState(this.previousState);
-  }
-
-  closeEditTxModal() {
-    this.setState({ showTxModal: false });
-  }
-
-  showEditTxModal() {
     this.setState({ showTxModal: true });
-  }
+  };
+
+  onAmountModalClose = () => {
+    this.setState(this.previousState);
+    this.hideEditTxModal();
+  };
+
+  onAmountModalConfirm = (btAmt, btUSDAmt) => {
+    this.setState({
+      btAmount: btAmt,
+      btUSDAmount: btUSDAmt
+    });
+    this.hideEditTxModal();
+  };
+
+  hideEditTxModal = () => {
+    this.setState({ showTxModal: false });
+  };
 
   render() {
     return (
@@ -369,7 +365,8 @@ class TransactionScreen extends Component {
                       style={[
                         Theme.Button.btn,
                         inlineStyles.sendPepoBtn,
-                        this.state.exceBtnDisabled ? Theme.Button.btnDisabled : Theme.Button.btnPink
+                        Theme.Button.btnPink,
+                        this.state.exceBtnDisabled ? Theme.Button.disabled : null
                       ]}
                       onPress={() => this.excecuteTransaction()}
                     >
@@ -387,7 +384,7 @@ class TransactionScreen extends Component {
                     <TouchableOpacity
                       style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
                       onPress={() => {
-                        this.onAmountModalShow();
+                        this.onShowAmountModal();
                       }}
                     >
                       <Image style={[{ width: 20, height: 20 }, { tintColor: '#ef5566' }]} source={EditIcon}></Image>
@@ -397,8 +394,9 @@ class TransactionScreen extends Component {
 
                 <EditTxModal
                   showTxModal={this.state.showTxModal}
-                  onModalClose={this.closeEditTxModal}
+                  onModalClose={this.onAmountModalClose}
                   btAmount={this.state.btAmount}
+                  btUSDAmount={this.state.btUSDAmount}
                   onAmountModalConfirm={this.onAmountModalConfirm}
                   balance={this.state.balance}
                   getPriceOracle={this.getPriceOracle}
