@@ -10,6 +10,7 @@ class Users extends Component {
   };
   constructor(props) {
     super(props);
+    this.props.navigation.tab = "Users"; 
   }
 
   render() {
