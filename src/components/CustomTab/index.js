@@ -8,15 +8,21 @@ import profile from '../../assets/user_profile.png';
 import friends from '../../assets/user_friends.png';
 
 const tabNames = {
-  feedTab: 'Feed',
+  feedTab: 'FeedContent',
   usersTab: 'Users',
-  profileTab: 'Profile'
+  profileTab: 'ProfileScreen'
 };
 
 function onTabPressed(navigation, tabName) {
   try {
-    console.log("navigation-----" , navigation );
-    navigation._childrenNavigation[tabName].dispatch(StackActions.popToTop());
+    console.log('navigation-----', navigation.getChildNavigation(tabName));
+    navigation.dispatch(
+      StackActions.reset({
+        index: navigation.state.index,
+        actions: [NavigationActions.navigate({ routeName: tabName })],
+        key: tabName
+      })
+    );
   } catch {
     console.log('Catch error');
   }
@@ -25,8 +31,7 @@ function onTabPressed(navigation, tabName) {
 
 const CustomTab = ({ navigation, screenProps }) => (
   <View style={styles.container}>
-    <TouchableOpacity
-      onPress={() => onTabPressed(navigation, tabNames.feedTab)}>
+    <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.feedTab)}>
       <Image
         tintColor={navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}
         style={[styles.tabElementSkipFont, { tintColor: navigation.state.index === 0 ? '#ef5566' : '#484848' }]}
