@@ -58,7 +58,7 @@ export default class EditTxModal extends Component {
           this.props.onModalClose();
         }}
       >
-        <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200}>
+        <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200} keyboardShouldPersistTaps="always">
           <View style={{ height: Dimensions.get('window').height }}>
             <View style={inlineStyles.modalBackDrop}>
               <View style={inlineStyles.modelWrapper}>
