@@ -2,14 +2,12 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Toast } from 'native-base';
-
 import currentUserModel from '../../../models/CurrentUser';
 import styles from './styles';
 import isEmpty from 'lodash/isEmpty';
 import default_user_icon from '../../../assets/default_user_icon.png';
 import appConfig from '../../../constants/AppConfig';
 import Store from '../../../store';
-import { showToast } from '../../../actions';
 import { ostErrors } from '../../../services/OstErrors';
 
 const isActivated = function(user) {
@@ -62,6 +60,6 @@ const Users = (props) => {
   } else {
     return <View></View>;
   }
-});
+};
 
 export default withNavigation( Users )
