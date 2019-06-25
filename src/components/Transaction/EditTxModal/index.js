@@ -8,6 +8,7 @@ import inlineStyles from '../Style';
 export default class EditTxModal extends Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   render() {

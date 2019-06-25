@@ -361,6 +361,8 @@ class TransactionScreen extends Component {
                   onUSDChange={this.onUSDChange} //Inside
                   btUSDAmount={this.state.btUSDAmount} //Inside
                   onAmountModalConfirm={this.onAmountModalConfirm} //Send usd and bt value back
+                  //send balance
+                  //getPriceOracle
                 />
               </React.Fragment>
             )}
