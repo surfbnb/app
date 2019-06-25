@@ -244,7 +244,6 @@ class AuthScreen extends Component {
                     errorHandler={(fieldName) => {
                       this.serverErrorHandler(fieldName);
                     }}
-                    keyboardShouldPersistTaps="always"
                   />
 
                   <FormInput
