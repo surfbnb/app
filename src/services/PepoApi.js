@@ -4,6 +4,7 @@ import qs from 'qs';
 import NetInfo from '@react-native-community/netinfo';
 import Package from '../../package';
 import { Platform } from 'react-native';
+import { Toast } from 'native-base';
 
 import Store from '../store';
 import {
@@ -123,7 +124,10 @@ export default class PepoApi {
         let netInfo = await NetInfo.fetch();
         if (!netInfo.isConnected) {
           console.log(`Error requesting ${this.cleanedUrl}. ${ostErrors.getUIErrorMessage('no_internet')}`);
-          Store.dispatch(showToast(ostErrors.getUIErrorMessage('no_internet')));
+          Toast.show({
+            text: ostErrors.getUIErrorMessage('no_internet'),
+            buttonText: 'Okay'
+          });
           throw UIWhitelistedErrorCode['no_internet'];
         }
 
@@ -134,13 +138,13 @@ export default class PepoApi {
           responseStatus = parseInt(response.status),
           responseJSON = await response.json();
 
-        this._dispatchData(responseJSON);
-
         let t2 = Date.now();
         console.log(
           `Response for ${this.cleanedUrl} resolved in ${t2 - t1} ms, Status: ${responseStatus}, JSON payload:`,
           responseJSON
         );
+
+        this._dispatchData(responseJSON);
 
         switch (responseStatus) {
           case 401:
@@ -152,7 +156,10 @@ export default class PepoApi {
             break;
           case 500:
             Store.dispatch(hideModal());
-            Store.dispatch(showToast(ostErrors.getUIErrorMessage('general_error')));
+            Toast.show({
+              text: ostErrors.getUIErrorMessage('general_error'),
+              buttonText: 'Okay'
+            });
             break;
         }
 

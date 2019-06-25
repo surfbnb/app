@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
+import { Root } from 'native-base';
 import {
   createMaterialTopTabNavigator,
   createStackNavigator,
@@ -103,11 +104,13 @@ const AppContainer = createAppContainer(
 );
 
 const RootNavigationContainer = () => (
-  <AppContainer
-    ref={(navigatorRef) => {
-      NavigationService.setTopLevelNavigator(navigatorRef);
-    }}
-  />
+  <Root>
+    <AppContainer
+      ref={(navigatorRef) => {
+        NavigationService.setTopLevelNavigator(navigatorRef);
+      }}
+    />
+  </Root>
 );
 
 export default RootNavigationContainer;
