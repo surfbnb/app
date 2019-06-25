@@ -23,13 +23,23 @@ import inlineStyles from '../Style';
 export default class EditTxModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      btAmount: props.btAmount,
-      btUSDAmount: props.btUSDAmount,
+    this.state = this.getState();
+    this.priceOracle = props.getPriceOracle();
+  }
+
+  getState() {
+    return {
+      btAmount: this.props.btAmount,
+      btUSDAmount: this.props.btUSDAmount,
       clearErrors: false,
       btAmountErrorMsg: null
     };
-    this.priceOracle = props.getPriceOracle();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.showTxModal != this.props.showTxModal && this.props.showTxModal) {
+      this.setState(this.getState());
+    }
   }
 
   onBtChange(bt) {
@@ -56,6 +66,7 @@ export default class EditTxModal extends Component {
   };
 
   render() {
+    console.log('I am hereeeeeeeee in render');
     return (
       <Modal
         animationType="slide"
