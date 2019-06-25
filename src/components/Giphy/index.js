@@ -11,7 +11,8 @@ import {
   TextInput,
   ScrollView,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  Keyboard
 } from 'react-native';
 
 import inlineStyles from './styles';
@@ -24,6 +25,7 @@ import GracefulImage from './GracefulImage';
 import appConfig from '../../constants/AppConfig';
 import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/universalCross.png';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import FormInput from '../../theme/components/FormInput';
 
 const removeSearchDuplicateGiphy = false;
@@ -382,13 +384,14 @@ class Giphy extends Component {
                 });
               }}
             >
-              <ScrollView nestedScrollEnabled={true}>
+              <KeyboardAwareScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps="always">
                 <TouchableWithoutFeedback
-                  onPressOut={() =>
+                  onPressOut={() => {
+                    Keyboard.dismiss();
                     this.setState({
                       modalOpen: false
-                    })
-                  }
+                    });
+                  }}
                 >
                   <View style={inlineStyles.modal}>
                     <TouchableWithoutFeedback>
@@ -415,6 +418,7 @@ class Giphy extends Component {
                             ) : (
                               <TouchableWithoutFeedback
                                 onPress={() => {
+                                  Keyboard.dismiss();
                                   this.showCategotyList();
                                 }}
                               >
@@ -506,7 +510,7 @@ class Giphy extends Component {
                     </TouchableWithoutFeedback>
                   </View>
                 </TouchableWithoutFeedback>
-              </ScrollView>
+              </KeyboardAwareScrollView>
             </Modal>
           </React.Fragment>
         )}

@@ -292,6 +292,7 @@ class TransactionScreen extends Component {
             viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
           });
         }}
+        keyboardShouldPersistTaps="always"
       >
         <View style={this.state.viewStyle}>
           <View style={inlineStyles.container}>
