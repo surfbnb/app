@@ -18,13 +18,14 @@ class UserFeedScreen extends Component {
 
   constructor(props) {
     super(props);
-    const userId = this.props.navigation && this.props.navigation.getParam('userId');
-    if (!userId) return;
-    this.fetchUrl = `/users/${userId}/feeds`;
+    this.userId = this.props.navigation && this.props.navigation.getParam('userId');
+    if (!this.userId) return;
+    this.fetchUrl = `/users/${this.userId}/feeds`;
   }
 
   render() {
-    return <FeedList style={{ backgroundColor: '#f6f6f6', flex: 1 }} fetchUrl={this.fetchUrl}></FeedList>;
+    return <FeedList userId={this.userId} style={{ backgroundColor: '#f6f6f6', flex: 1 }} 
+    navigation={this.props.navigation} fetchUrl={this.fetchUrl}></FeedList>;
   }
 }
 
