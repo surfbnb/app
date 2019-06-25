@@ -15,7 +15,8 @@ class Feed extends Component {
   }
 
   render() {
-    return <FeedList style={{ backgroundColor: '#f6f6f6' }} fetchUrl={'/feeds'} navigation={this.props.navigation} ></FeedList>;
+    return <FeedList style={{ backgroundColor: '#f6f6f6' }} fetchUrl={'/feeds'}
+           navigation={this.props.navigation} ></FeedList>;
   }
 }
 

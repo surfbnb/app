@@ -13,18 +13,13 @@ const tabNames = {
   profileTab: 'Profile'
 };
 
-let previousTab = null  ;
-
 function onTabPressed(navigation, tabName) {
   try {
-    if( previousTab == tabName ){
       navigation.dispatch(StackActions.popToTop({key: tabName}));
-    }
   } catch {
     console.log('Catch error');
   }
   navigation.navigate(tabName);
-  previousTab = tabName ;
 }
 
 const CustomTab = ({ navigation, screenProps }) => (

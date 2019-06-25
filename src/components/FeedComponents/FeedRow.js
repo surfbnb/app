@@ -63,7 +63,6 @@ class FeedRow extends Component {
     if (userId == this.getCurrentUserId) {
       this.props.navigation.navigate('Profile');
     } else {
-      console.log("this.props.navigation", this.props.navigation);
       this.props.navigation.push('UserFeedScreen', { headerText: this.fromUserName, userId: userId });
     }
   }
@@ -74,7 +73,6 @@ class FeedRow extends Component {
     if (userId == this.getCurrentUserId) {
       this.props.navigation.navigate('Profile');
     } else {
-      console.log("this.props.navigation", this.props.navigation);
       this.props.navigation.push('UserFeedScreen', { headerText: this.toUserName, userId: userId });
     }
   }
