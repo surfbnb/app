@@ -45,12 +45,7 @@ export default class PriceOracle {
   }
 
   toBt(bt) {
-    if (!bt) {
-      return '';
-    }
-    bt = String(bt);
-    bt = BigNumber(bt);
-    return bt.toFixed(btPrecession);
+    return PriceOracle.toBt(bt);
   }
 
   toDecimal(val) {
@@ -61,10 +56,7 @@ export default class PriceOracle {
   }
 
   fromDecimal(val) {
-    if (!val) return '';
-    val = BigNumber(val);
-    let exp = BigNumber(10).exponentiatedBy(this.decimals);
-    return val.dividedBy(exp).toString(10);
+   return PriceOracle.fromDecimal(val, this.decimals)
   }
 
   static fromDecimal(val, decimals) {

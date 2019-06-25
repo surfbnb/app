@@ -8,13 +8,13 @@ import {
   Switch,
   TouchableOpacity,
   Modal,
-  KeyboardAvoidingView,
   Image,
   Platform,
   Dimensions
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Header } from 'react-navigation';
+import BigNumber from 'bignumber.js';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
@@ -36,6 +36,7 @@ import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
 import pricer from '../../services/Pricer';
 
+
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
@@ -50,6 +51,8 @@ class TransactionScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      balance: 0,
+      exceBtnDisabled: true,
       isLoading: false,
       message: null,
       clearErrors: false,
@@ -86,11 +89,13 @@ class TransactionScreen extends Component {
 
   componentWillUnmount() {
     this.defaultVals();
-    this.setState(this.baseState);
+    this.onGetPricePointSuccess = () =>{} ;
+    this.onBalance = () => {};
   }
 
   initPricePoint() {
     this.updatePricePoint();
+    this.getBalance();
   }
 
   updatePricePoint(successCallback, errorCallback) {
@@ -105,6 +110,27 @@ class TransactionScreen extends Component {
         errorCallback && errorCallback(error);
       }
     );
+  }
+
+  getBalance(){
+    const ostUserId = currentUserModal.getOstUserId();
+    OstJsonApi.getBalanceForUserId(
+      ostUserId,
+      (res) => {
+       this.onBalance(res);
+      },
+      (err) => {
+        //DO nothing 
+      }
+    );
+  }
+
+  onBalance( res ){
+    if(!this.priceOracle) return;
+    let btBalance = deepGet(res, 'balance.available_balance');
+    btBalance = this.priceOracle.fromDecimal(btBalance);
+    btBalance = this.priceOracle.toBt(btBalance) || 0;
+    this.setState({ balance: btBalance, exceBtnDisabled: !BigNumber(btBalance).isGreaterThan( 0 ) });
   }
 
   onGetPricePointSuccess(token, pricePoints) {
@@ -351,17 +377,16 @@ class TransactionScreen extends Component {
                 </View>
                 <View style={[inlineStyles.bottomButtonsWrapper, { marginBottom: 15 }]}>
                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                    <TouchableOpacity
-                      style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
+                    <TouchableOpacity disabled={this.state.exceBtnDisabled}
+                      style={[Theme.Button.btn, inlineStyles.sendPepoBtn,
+                             this.state.exceBtnDisabled ? Theme.Button.btnDisabled : Theme.Button.btnPink]}
                       onPress={() => this.excequteTransaction()}
                     >
                       <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
-                        Send{' '}
-                        <Image
+                        Send <Image
                           style={{ width: 10, height: 11, tintColor: '#ffffff' }}
                           source={utilities.getTokenSymbolImageConfig()['image1']}
-                        ></Image>{' '}
-                        {this.state.btAmount}
+                        ></Image> {this.state.btAmount}
                       </Text>
 
                       {/*<Text style={[Theme.Button.btnPinkText]}>{this.state.btAmount}</Text>*/}
@@ -462,6 +487,7 @@ class TransactionScreen extends Component {
                                 this.onAmountModalConfrim();
                               }}
                             />
+                            <Text style={{textAlign:"center", paddingTop: 10, fontSize:13}}>Your Current Balance: P{this.state.balance}</Text>
                           </View>
                         </View>
                       </View>
