@@ -35,6 +35,9 @@ let styles = {
   },
   btnPinkText: {
     color: Colors.white
+  },
+  btnDisabled: {
+    backgroundColor: Colors.lightGrey
   }
 };
 

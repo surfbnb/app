@@ -1,14 +1,51 @@
-import { Component } from 'react';
-import { TextInput, Modal } from 'react-native';
+import React, { Component } from 'react';
+import {
+  View,
+  Text,
+  Alert,
+  TextInput,
+  Switch,
+  TouchableOpacity,
+  Image,
+  Platform,
+  Dimensions,
+  Modal
+} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import FormInput from '../../../theme/components/FormInput';
 import TouchableButton from '../../../theme/components/TouchableButton';
 import CircleCloseIcon from '../../../assets/circle_close_icon.png';
+import Theme from '../../../theme/styles';
 import inlineStyles from '../Style';
 
 export default class EditTxModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      btAmount: this.props.btAmount,
+      btUSDAmount: this.props.btUSDAmount,
+      clearErrors: false
+    };
+    this.priceOracle = this.props.getPriceOracle();
+  }
+
+  onBtChange(bt) {
+    const usd = this.priceOracle.btToFiat(bt);
+    this.setState({ btAmount: bt, btUSDAmount: usd });
+  }
+
+  onUSDChange(usd) {
+    const bt = this.priceOracle.fiatToBt(usd);
+    this.setState({ btAmount: bt, btUSDAmount: usd });
+  }
+
+  clearErrors() {
+    this.setState({ clearErrors: true });
+  }
+
+  componentDidUnMount() {
+    this.clearErrors();
   }
 
   render() {
@@ -16,9 +53,9 @@ export default class EditTxModal extends Component {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={props.showTxModal}
+        visible={this.props.showTxModal}
         onRequestClose={() => {
-          props.onRequestClose();
+          this.props.onModalClose();
         }}
       >
         <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200}>
@@ -29,7 +66,7 @@ export default class EditTxModal extends Component {
                   <TouchableOpacity
                     style={inlineStyles.modalCloseBtnWrapper}
                     onPress={() => {
-                      this.onAmountModalClose();
+                      this.props.onModalClose();
                     }}
                   >
                     <Image source={CircleCloseIcon} style={inlineStyles.crossIconSkipFont} />
@@ -45,13 +82,12 @@ export default class EditTxModal extends Component {
                         placeholder="BT"
                         fieldName="bt_amount"
                         style={Theme.TextInput.textInputStyle}
-                        value={`${props.btAmount}`}
+                        value={`${this.state.btAmount}`}
                         placeholderTextColor="#ababab"
-                        errorMsg={props.btAmountErrorMsg}
-                        serverErrors={props.server_errors}
-                        clearErrors={props.clearErrors}
+                        errorMsg={this.state.btAmountErrorMsg}
+                        clearErrors={this.state.clearErrors}
                         keyboardType="numeric"
-                        isFocus={props.btAmountFocus}
+                        isFocus={true}
                         blurOnSubmit={false}
                       />
                     </View>
@@ -69,14 +105,13 @@ export default class EditTxModal extends Component {
                     <View style={{ flex: 0.7 }}>
                       <FormInput
                         editable={true}
-                        onChangeText={(val) => props.onUSDChange(val)}
-                        value={`${props.btUSDAmount}`}
+                        onChangeText={(val) => this.state.onUSDChange(val)}
+                        value={`${this.state.btUSDAmount}`}
                         placeholder="USD"
                         fieldName="usd_amount"
                         style={Theme.TextInput.textInputStyle}
                         placeholderTextColor="#ababab"
-                        serverErrors={props.server_errors}
-                        clearErrors={props.clearErrors}
+                        clearErrors={this.state.clearErrors}
                         keyboardType="numeric"
                         blurOnSubmit={true}
                       />
@@ -95,9 +130,12 @@ export default class EditTxModal extends Component {
                     TextStyles={[Theme.Button.btnPinkText]}
                     text="CONFIRM"
                     onPress={() => {
-                      props.onAmountModalConfirm();
+                      this.props.onAmountModalConfirm(this.state.btAmount);
                     }}
                   />
+                  <Text style={{ textAlign: 'center', paddingTop: 10, fontSize: 13 }}>
+                    Your Current Balance: P{this.props.balance}
+                  </Text>
                 </View>
               </View>
             </View>

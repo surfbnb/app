@@ -25,60 +25,17 @@
 		270223CFEF014067B45C1388 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 695C1EFE72E34F80A174D50D /* Lato-BlackItalic.ttf */; };
 		45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2697F42945424A4984DF2EDE /* Lato-LightItalic.ttf */; };
 		4B98366522BA0F0600B9E6D4 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
-		4B9839ED22BD00B400B9E6D4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		4B9839F022BD00B400B9E6D4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		4B9839F822BD00B400B9E6D4 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
-		4B9839F922BD00B400B9E6D4 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
-		4B9839FA22BD00B400B9E6D4 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
-		4B9839FB22BD00B400B9E6D4 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		4B9839FC22BD00B400B9E6D4 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		4B9839FD22BD00B400B9E6D4 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
-		4B9839FE22BD00B400B9E6D4 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
-		4B9839FF22BD00B400B9E6D4 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
-		4B983A0022BD00B400B9E6D4 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
-		4B983A0122BD00B400B9E6D4 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
-		4B983A0222BD00B400B9E6D4 /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
-		4B983A0322BD00B400B9E6D4 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		4B983A0422BD00B400B9E6D4 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
-		4B983A0522BD00B400B9E6D4 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
-		4B983A0622BD00B400B9E6D4 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B821CF48A2A44371B21E0DEE /* libRNGestureHandler.a */; };
-		4B983A0722BD00B400B9E6D4 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4929A6B2014895B983D9A0 /* libRNCAsyncStorage.a */; };
-		4B983A0822BD00B400B9E6D4 /* libRNCNetInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E217B6CB9E824C9E9399D1F9 /* libRNCNetInfo.a */; };
-		4B983A0A22BD00B400B9E6D4 /* OstWalletSdk.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0050FDA322A823E300C2634F /* OstWalletSdk.plist */; };
-		4B983A0C22BD00B400B9E6D4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
-		4B983A0D22BD00B400B9E6D4 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E75C3359937D4B81B96AFAA8 /* Lato-Black.ttf */; };
-		4B983A0E22BD00B400B9E6D4 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 695C1EFE72E34F80A174D50D /* Lato-BlackItalic.ttf */; };
-		4B983A0F22BD00B400B9E6D4 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7AD85F48C1E4E04AB39DA01 /* Lato-Bold.ttf */; };
-		4B983A1022BD00B400B9E6D4 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FE8DDCCADC94030AEEB5D8D /* Lato-BoldItalic.ttf */; };
-		4B983A1122BD00B400B9E6D4 /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF841003911544D1B506D1B5 /* Lato-Hairline.ttf */; };
-		4B983A1222BD00B400B9E6D4 /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31DCA738643B4C8C8514EDE8 /* Lato-HairlineItalic.ttf */; };
-		4B983A1322BD00B400B9E6D4 /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B5D2C7327F94E9EA0DF2A30 /* Lato-Italic.ttf */; };
-		4B983A1422BD00B400B9E6D4 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A20954163BBA4DA493E99FCE /* Lato-Light.ttf */; };
-		4B983A1522BD00B400B9E6D4 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2697F42945424A4984DF2EDE /* Lato-LightItalic.ttf */; };
-		4B983A1622BD00B400B9E6D4 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 789B7BE072654BAB9FD268A5 /* Lato-Regular.ttf */; };
 		4B983A9B22BD013500B9E6D4 /* BaseSdkInteract.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8622BD013500B9E6D4 /* BaseSdkInteract.m */; };
-		4B983A9C22BD013500B9E6D4 /* BaseSdkInteract.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8622BD013500B9E6D4 /* BaseSdkInteract.m */; };
 		4B983A9D22BD013500B9E6D4 /* OstPinAcceptWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8722BD013500B9E6D4 /* OstPinAcceptWrap.m */; };
-		4B983A9E22BD013500B9E6D4 /* OstPinAcceptWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8722BD013500B9E6D4 /* OstPinAcceptWrap.m */; };
 		4B983A9F22BD013500B9E6D4 /* OstJsonApiCallbackImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8822BD013500B9E6D4 /* OstJsonApiCallbackImpl.m */; };
-		4B983AA022BD013500B9E6D4 /* OstJsonApiCallbackImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8822BD013500B9E6D4 /* OstJsonApiCallbackImpl.m */; };
 		4B983AA122BD013500B9E6D4 /* OstVerifyDataWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8922BD013500B9E6D4 /* OstVerifyDataWrap.m */; };
-		4B983AA222BD013500B9E6D4 /* OstVerifyDataWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8922BD013500B9E6D4 /* OstVerifyDataWrap.m */; };
 		4B983AA322BD013500B9E6D4 /* OstDeviceRegisteredWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8A22BD013500B9E6D4 /* OstDeviceRegisteredWrap.m */; };
-		4B983AA422BD013500B9E6D4 /* OstDeviceRegisteredWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8A22BD013500B9E6D4 /* OstDeviceRegisteredWrap.m */; };
 		4B983AA522BD013500B9E6D4 /* OstRNErrorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8F22BD013500B9E6D4 /* OstRNErrorUtils.m */; };
-		4B983AA622BD013500B9E6D4 /* OstRNErrorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A8F22BD013500B9E6D4 /* OstRNErrorUtils.m */; };
 		4B983AA722BD013500B9E6D4 /* OstRNSdkCallbackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9122BD013500B9E6D4 /* OstRNSdkCallbackManager.m */; };
-		4B983AA822BD013500B9E6D4 /* OstRNSdkCallbackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9122BD013500B9E6D4 /* OstRNSdkCallbackManager.m */; };
 		4B983AA922BD013500B9E6D4 /* OstMessageBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9222BD013500B9E6D4 /* OstMessageBus.m */; };
-		4B983AAA22BD013500B9E6D4 /* OstMessageBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9222BD013500B9E6D4 /* OstMessageBus.m */; };
 		4B983AAB22BD013500B9E6D4 /* OstWalletRnSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9622BD013500B9E6D4 /* OstWalletRnSdk.m */; };
-		4B983AAC22BD013500B9E6D4 /* OstWalletRnSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9622BD013500B9E6D4 /* OstWalletRnSdk.m */; };
 		4B983AAD22BD013500B9E6D4 /* OstWorkFlowCallbackImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9822BD013500B9E6D4 /* OstWorkFlowCallbackImpl.m */; };
-		4B983AAE22BD013500B9E6D4 /* OstWorkFlowCallbackImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9822BD013500B9E6D4 /* OstWorkFlowCallbackImpl.m */; };
 		4B983AAF22BD013500B9E6D4 /* OstWalletRnSdkApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9A22BD013500B9E6D4 /* OstWalletRnSdkApi.m */; };
-		4B983AB022BD013500B9E6D4 /* OstWalletRnSdkApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B983A9A22BD013500B9E6D4 /* OstWalletRnSdkApi.m */; };
-		4B983AB622BD149700B9E6D4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		4B983AB722BD153800B9E6D4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		778F37FDF5B54A96AA548538 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B821CF48A2A44371B21E0DEE /* libRNGestureHandler.a */; };
 		7CF11B015E3845FC8E8CBCC4 /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF841003911544D1B506D1B5 /* Lato-Hairline.ttf */; };
@@ -420,8 +377,6 @@
 		31DCA738643B4C8C8514EDE8 /* Lato-HairlineItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-HairlineItalic.ttf"; path = "../src/assets/fonts/Lato-HairlineItalic.ttf"; sourceTree = "<group>"; };
 		3B5D2C7327F94E9EA0DF2A30 /* Lato-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Italic.ttf"; path = "../src/assets/fonts/Lato-Italic.ttf"; sourceTree = "<group>"; };
 		3FE8DDCCADC94030AEEB5D8D /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BoldItalic.ttf"; path = "../src/assets/fonts/Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
-		4B983A1C22BD00B400B9E6D4 /* Pepo2-production.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pepo2-production.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4B983A1D22BD00B400B9E6D4 /* Pepo2-production-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Pepo2-production-Info.plist"; path = "/Users/aniketayachit/STFoundation/pepo-react/ios/Pepo2-production-Info.plist"; sourceTree = "<absolute>"; };
 		4B983A8522BD013500B9E6D4 /* OstDeviceRegisteredWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OstDeviceRegisteredWrap.h; sourceTree = "<group>"; };
 		4B983A8622BD013500B9E6D4 /* BaseSdkInteract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseSdkInteract.m; sourceTree = "<group>"; };
 		4B983A8722BD013500B9E6D4 /* OstPinAcceptWrap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OstPinAcceptWrap.m; sourceTree = "<group>"; };
@@ -485,30 +440,6 @@
 				778F37FDF5B54A96AA548538 /* libRNGestureHandler.a in Frameworks */,
 				DD7F324CF6F64145A03322D9 /* libRNCAsyncStorage.a in Frameworks */,
 				E0DF1B5506604BF48B9E5B24 /* libRNCNetInfo.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4B9839F722BD00B400B9E6D4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4B9839F822BD00B400B9E6D4 /* OstWalletSdk.framework in Frameworks */,
-				4B9839F922BD00B400B9E6D4 /* JavaScriptCore.framework in Frameworks */,
-				4B9839FA22BD00B400B9E6D4 /* libRCTBlob.a in Frameworks */,
-				4B9839FB22BD00B400B9E6D4 /* libRCTAnimation.a in Frameworks */,
-				4B9839FC22BD00B400B9E6D4 /* libReact.a in Frameworks */,
-				4B9839FD22BD00B400B9E6D4 /* libRCTActionSheet.a in Frameworks */,
-				4B9839FE22BD00B400B9E6D4 /* libRCTGeolocation.a in Frameworks */,
-				4B9839FF22BD00B400B9E6D4 /* libRCTImage.a in Frameworks */,
-				4B983A0022BD00B400B9E6D4 /* libRCTLinking.a in Frameworks */,
-				4B983A0122BD00B400B9E6D4 /* libRCTNetwork.a in Frameworks */,
-				4B983A0222BD00B400B9E6D4 /* libRCTSettings.a in Frameworks */,
-				4B983A0322BD00B400B9E6D4 /* libRCTText.a in Frameworks */,
-				4B983A0422BD00B400B9E6D4 /* libRCTVibration.a in Frameworks */,
-				4B983A0522BD00B400B9E6D4 /* libRCTWebSocket.a in Frameworks */,
-				4B983A0622BD00B400B9E6D4 /* libRNGestureHandler.a in Frameworks */,
-				4B983A0722BD00B400B9E6D4 /* libRNCAsyncStorage.a in Frameworks */,
-				4B983A0822BD00B400B9E6D4 /* libRNCNetInfo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,7 +572,6 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				4B983A1D22BD00B400B9E6D4 /* Pepo2-production-Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -806,7 +736,6 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* Pepo2.app */,
-				4B983A1C22BD00B400B9E6D4 /* Pepo2-production.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -842,25 +771,6 @@
 			productReference = 13B07F961A680F5B00A75B9A /* Pepo2.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4B9839E822BD00B400B9E6D4 /* Pepo2-production */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4B983A1922BD00B400B9E6D4 /* Build configuration list for PBXNativeTarget "Pepo2-production" */;
-			buildPhases = (
-				4B9839E922BD00B400B9E6D4 /* Sources */,
-				4B9839F722BD00B400B9E6D4 /* Frameworks */,
-				4B983A0922BD00B400B9E6D4 /* Resources */,
-				4B983A1722BD00B400B9E6D4 /* Bundle React Native code and images */,
-				4B983A1822BD00B400B9E6D4 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pepo2-production";
-			productName = "Hello World";
-			productReference = 4B983A1C22BD00B400B9E6D4 /* Pepo2-production.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -871,10 +781,6 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = N83K86W6P4;
-						ProvisioningStyle = Automatic;
-					};
-					4B9839E822BD00B400B9E6D4 = {
 						DevelopmentTeam = N83K86W6P4;
 						ProvisioningStyle = Automatic;
 					};
@@ -957,7 +863,6 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Pepo2 */,
-				4B9839E822BD00B400B9E6D4 /* Pepo2-production */,
 			);
 		};
 /* End PBXProject section */
@@ -1280,26 +1185,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4B983A0922BD00B400B9E6D4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4B983A0A22BD00B400B9E6D4 /* OstWalletSdk.plist in Resources */,
-				4B983A0C22BD00B400B9E6D4 /* LaunchScreen.xib in Resources */,
-				4B983A0D22BD00B400B9E6D4 /* Lato-Black.ttf in Resources */,
-				4B983AB622BD149700B9E6D4 /* Images.xcassets in Resources */,
-				4B983A0E22BD00B400B9E6D4 /* Lato-BlackItalic.ttf in Resources */,
-				4B983A0F22BD00B400B9E6D4 /* Lato-Bold.ttf in Resources */,
-				4B983A1022BD00B400B9E6D4 /* Lato-BoldItalic.ttf in Resources */,
-				4B983A1122BD00B400B9E6D4 /* Lato-Hairline.ttf in Resources */,
-				4B983A1222BD00B400B9E6D4 /* Lato-HairlineItalic.ttf in Resources */,
-				4B983A1322BD00B400B9E6D4 /* Lato-Italic.ttf in Resources */,
-				4B983A1422BD00B400B9E6D4 /* Lato-Light.ttf in Resources */,
-				4B983A1522BD00B400B9E6D4 /* Lato-LightItalic.ttf in Resources */,
-				4B983A1622BD00B400B9E6D4 /* Lato-Regular.ttf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1338,41 +1223,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		4B983A1722BD00B400B9E6D4 /* Bundle React Native code and images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native code and images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
-		};
-		4B983A1822BD00B400B9E6D4 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/BigInt.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/CryptoEthereumSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/CryptoSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/EthereumKit.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/FMDB.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SipHash.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/OstWalletSdk.framework",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1393,26 +1243,6 @@
 				4B983A9F22BD013500B9E6D4 /* OstJsonApiCallbackImpl.m in Sources */,
 				4B983AA122BD013500B9E6D4 /* OstVerifyDataWrap.m in Sources */,
 				4B983AA922BD013500B9E6D4 /* OstMessageBus.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4B9839E922BD00B400B9E6D4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4B983A9E22BD013500B9E6D4 /* OstPinAcceptWrap.m in Sources */,
-				4B983AAC22BD013500B9E6D4 /* OstWalletRnSdk.m in Sources */,
-				4B983A9C22BD013500B9E6D4 /* BaseSdkInteract.m in Sources */,
-				4B9839ED22BD00B400B9E6D4 /* AppDelegate.m in Sources */,
-				4B983AA822BD013500B9E6D4 /* OstRNSdkCallbackManager.m in Sources */,
-				4B983AB022BD013500B9E6D4 /* OstWalletRnSdkApi.m in Sources */,
-				4B9839F022BD00B400B9E6D4 /* main.m in Sources */,
-				4B983AA422BD013500B9E6D4 /* OstDeviceRegisteredWrap.m in Sources */,
-				4B983AA622BD013500B9E6D4 /* OstRNErrorUtils.m in Sources */,
-				4B983AAE22BD013500B9E6D4 /* OstWorkFlowCallbackImpl.m in Sources */,
-				4B983AA022BD013500B9E6D4 /* OstJsonApiCallbackImpl.m in Sources */,
-				4B983AA222BD013500B9E6D4 /* OstVerifyDataWrap.m in Sources */,
-				4B983AAA22BD013500B9E6D4 /* OstMessageBus.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1503,83 +1333,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.staging;
 				PRODUCT_NAME = Pepo2;
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Release;
-		};
-		4B983A1A22BD00B400B9E6D4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = N83K86W6P4;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
-					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
-				);
-				INFOPLIST_FILE = "$(SRCROOT)/Pepo2-production-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Pepo2\"",
-					"\"$(SRCROOT)/Pepo2\"",
-				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.production;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Debug;
-		};
-		4B983A1B22BD00B400B9E6D4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N83K86W6P4;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
-					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
-				);
-				INFOPLIST_FILE = "$(SRCROOT)/Pepo2-production-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Pepo2\"",
-					"\"$(SRCROOT)/Pepo2\"",
-				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.production;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1692,15 +1445,6 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4B983A1922BD00B400B9E6D4 /* Build configuration list for PBXNativeTarget "Pepo2-production" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4B983A1A22BD00B400B9E6D4 /* Debug */,
-				4B983A1B22BD00B400B9E6D4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

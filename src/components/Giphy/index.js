@@ -24,7 +24,7 @@ import GracefulImage from './GracefulImage';
 import appConfig from '../../constants/AppConfig';
 import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/universalCross.png';
-import FormInput from "../../theme/components/FormInput";
+import FormInput from '../../theme/components/FormInput';
 
 const removeSearchDuplicateGiphy = false;
 
@@ -333,7 +333,7 @@ class Giphy extends Component {
           <ActivityIndicator style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
           <ImageBackground
             source={{
-              uri:this.state.selectedImage[appConfig.giphySizes.feed].url
+              uri: this.state.selectedImage[appConfig.giphySizes.feed].url
             }}
             style={{
               width: '100%',
@@ -418,7 +418,10 @@ class Giphy extends Component {
                                   this.showCategotyList();
                                 }}
                               >
-                                <Image source={CrossIcon} style={[inlineStyles.crossIconSkipFont, { top: 25, right: 10 }]} />
+                                <Image
+                                  source={CrossIcon}
+                                  style={[inlineStyles.crossIconSkipFont, { top: 25, right: 10 }]}
+                                />
                               </TouchableWithoutFeedback>
                             ))) ||
                             null}
@@ -461,7 +464,8 @@ class Giphy extends Component {
                                       height: wh
                                     }}
                                     source={{
-                                      uri:item[appConfig.giphySizes.search].url
+                                      uri: item[appConfig.giphySizes.search].url,
+                                      cache: 'force-cache'
                                     }}
                                     showActivityIndicator={this.state.isGifCategory ? false : true}
                                     imageBackgroundColor={[

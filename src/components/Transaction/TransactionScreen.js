@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Alert, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Header } from 'react-navigation';
+import BigNumber from 'bignumber.js';
 
 import FormInput from '../../theme/components/FormInput';
 import Giphy from '../Giphy';
@@ -19,8 +20,9 @@ import inlineStyles from './Style';
 import EditIcon from '../../assets/edit_icon.png';
 import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
-import InitPricePoint from '../../services/InitPricePoint';
 import EditTxModal from './EditTxModal';
+import PriceOracle from '../../services/PriceOracle';
+import pricer from '../../services/Pricer';
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -36,6 +38,8 @@ class TransactionScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      balance: 0,
+      exceBtnDisabled: true,
       isLoading: false,
       message: null,
       clearErrors: false,
@@ -64,12 +68,57 @@ class TransactionScreen extends Component {
 
   componentWillMount() {
     this.defaultVals();
-    InitPricePoint.init(this.onGetPricePointSuccess, this.onGetPricePointError);
+    this.initPricePoint();
   }
 
   componentWillUnmount() {
     this.defaultVals();
-    this.setState(this.baseState);
+    this.onGetPricePointSuccess = () => {};
+    this.onBalance = () => {};
+  }
+
+  initPricePoint() {
+    this.updatePricePoint();
+    this.getBalance();
+  }
+
+  updatePricePoint(successCallback, errorCallback) {
+    const ostUserId = currentUserModal.getOstUserId();
+    pricer.getPriceOracleConfig(
+      ostUserId,
+      (token, pricePoints) => {
+        this.onGetPricePointSuccess(token, pricePoints);
+        successCallback && successCallback(token, pricePoints);
+      },
+      (error) => {
+        errorCallback && errorCallback(error);
+      }
+    );
+  }
+
+  getBalance() {
+    const ostUserId = currentUserModal.getOstUserId();
+    OstJsonApi.getBalanceForUserId(
+      ostUserId,
+      (res) => {
+        this.onBalance(res);
+      },
+      (err) => {
+        //DO nothing
+      }
+    );
+  }
+
+  onBalance(res) {
+    if (!this.priceOracle) return;
+    let btBalance = deepGet(res, 'balance.available_balance');
+    btBalance = this.priceOracle.fromDecimal(btBalance);
+    btBalance = this.priceOracle.toBt(btBalance) || 0;
+    this.setState({ balance: btBalance, exceBtnDisabled: !BigNumber(btBalance).isGreaterThan(0) });
+  }
+
+  getPriceOracle() {
+    return this.priceOracle;
   }
 
   onGetPricePointSuccess(token, pricePoints) {
@@ -184,16 +233,6 @@ class TransactionScreen extends Component {
     this.gify = gify;
   }
 
-  onBtChange(bt) {
-    const usd = this.priceOracle.btToFiat(bt);
-    this.setState({ btAmount: bt, btUSDAmount: usd });
-  }
-
-  onUSDChange(usd) {
-    const bt = this.priceOracle.fiatToBt(usd);
-    this.setState({ btAmount: bt, btUSDAmount: usd });
-  }
-
   onMessageBtnPress() {
     this.setState({ isMessageVisible: !this.state.isMessageVisible });
     if (this.state.isMessageVisible) {
@@ -201,8 +240,8 @@ class TransactionScreen extends Component {
     }
   }
 
-  onAmountModalConfirm() {
-    let btAmount = this.state.btAmount;
+  onAmountModalConfirm(btAmt) {
+    let btAmount = btAmt;
     btAmount = btAmount && Number(btAmount);
     if (btAmount <= 0) {
       this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
@@ -325,7 +364,12 @@ class TransactionScreen extends Component {
                 <View style={[inlineStyles.bottomButtonsWrapper, { marginBottom: 15 }]}>
                   <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                     <TouchableOpacity
-                      style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.sendPepoBtn]}
+                      disabled={this.state.exceBtnDisabled}
+                      style={[
+                        Theme.Button.btn,
+                        inlineStyles.sendPepoBtn,
+                        this.state.exceBtnDisabled ? Theme.Button.btnDisabled : Theme.Button.btnPink
+                      ]}
                       onPress={() => this.excecuteTransaction()}
                     >
                       <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
@@ -349,20 +393,14 @@ class TransactionScreen extends Component {
                     </TouchableOpacity>
                   </View>
                 </View>
+
                 <EditTxModal
-                  showTxModal={this.state.showTxModal} //Right
-                  onRequestClose={this.closeEditTxModal} //RIGht
-                  onAmountModalClose={this.onAmountModalClose} //Remove mostly
-                  btAmount={this.state.btAmount} //Needed
-                  btAmountErrorMsg={this.state.btAmountErrorMsg} //Internally keep
-                  server_errors={this.state.server_errors} //Not required
-                  clearErrors={this.state.clearErrors} // Clear on unmount
-                  btAmountFocus={this.state.btAmountFocus} //Not need from outside handle from inside
-                  onUSDChange={this.onUSDChange} //Inside
-                  btUSDAmount={this.state.btUSDAmount} //Inside
-                  onAmountModalConfirm={this.onAmountModalConfirm} //Send usd and bt value back
-                  //send balance
-                  //getPriceOracle
+                  showTxModal={this.state.showTxModal}
+                  onModalClose={this.closeEditTxModal}
+                  btAmount={this.state.btAmount}
+                  onAmountModalConfirm={this.onAmountModalConfirm}
+                  balance={this.state.balance}
+                  getPriceOracle={this.getPriceOracle}
                 />
               </React.Fragment>
             )}
