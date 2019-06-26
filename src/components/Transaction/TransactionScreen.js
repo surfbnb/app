@@ -129,8 +129,10 @@ class TransactionScreen extends Component {
     balance = this.priceOracle.fromDecimal(balance);
     balance = this.priceOracle.toBt(balance) || 0;
     let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
-    this.previousState.balance = balance;
-    this.previousState.exceBtnDisabled = exceBtnDisabled;
+    if (this.previousState) {
+      this.previousState.balance = balance;
+      this.previousState.exceBtnDisabled = exceBtnDisabled;
+    }
     this.setState({ balance, exceBtnDisabled });
   }
 
