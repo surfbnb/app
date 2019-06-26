@@ -306,9 +306,9 @@ class TransactionScreen extends Component {
         enableOnAndroid={true}
         extraHeight={200}
         onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
-        onKeyboardDidShow={(frames) => this.openedKeyboard(frames)}
+        onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
         onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
-        onKeyboardDidHide={(frames) => this.closedKeyboard(frames)}
+        onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
         keyboardShouldPersistTaps="always"
       >
         <View style={this.state.viewStyle}>
@@ -370,7 +370,7 @@ class TransactionScreen extends Component {
                       style={[Theme.TextInput.textInputStyle, { backgroundColor: '#ffffff', marginTop: 20 }]}
                       value={this.state.message}
                       returnKeyType="done"
-                      returnKeyLabel="done"
+                      returnKeyLabel="Done"
                       serverErrors={this.state.server_errors}
                       clearErrors={this.state.clearErrors}
                       placeholderTextColor="#ababab"
