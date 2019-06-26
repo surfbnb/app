@@ -12,19 +12,24 @@ let stylesMap = {
     alignItems: 'center',
     borderColor: 'rgba(0, 0, 0, 0.25)',
     borderWidth: 1,
+    borderBottomWidth: 0,
     elevation: 8
   },
   tabElementSkipFont: {
     alignSelf: 'center',
-    marginBottom: 3,
+    marginHorizontal: 20,
+    marginVertical: 10,
     height: 23,
-    width: 23
+    width: 23,
+    // padding: 30
   },
   tabElementFriendsSkipFont: {
     alignSelf: 'center',
-    marginBottom: 3,
+    marginHorizontal: 20,
+    marginVertical: 10,
     height: 22,
-    width: 35
+    width: 35,
+    // padding: 30
   }
 };
 
