@@ -263,9 +263,9 @@ class TransactionScreen extends Component {
   }
 
   onAmountModalConfrim() {
-    let btAmount = this.state.btAmount;
+    let btAmount = this.priceOracle.toBt(this.state.btAmount);
     btAmount = btAmount && Number(btAmount);
-    if (btAmount <= 0) {
+    if (btAmount <= 0 || btAmount > this.state.balance) {
       this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
       return;
     }
