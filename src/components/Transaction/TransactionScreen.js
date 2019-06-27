@@ -284,6 +284,7 @@ class TransactionScreen extends Component {
 
   onAmountModalClose() {
     this.setState(this.previousState);
+    // this.setState({ transactionModal: false });
   }
 
   openedKeyboard(frames) {

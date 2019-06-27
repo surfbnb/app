@@ -112,7 +112,7 @@ class FeedList extends Component {
           onEndReached={() => this.getNext()}
           onRefresh={() => this.refresh()}
           keyExtractor={(item, index) => `id_${item}`}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={5}
           refreshing={this.state.refreshing}
           ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
           ListFooterComponent={this.renderFooter}
