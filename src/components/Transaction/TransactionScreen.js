@@ -125,10 +125,15 @@ class TransactionScreen extends Component {
 
   onBalance(res) {
     if (!this.priceOracle) return;
-    let btBalance = deepGet(res, 'balance.available_balance');
-    btBalance = this.priceOracle.fromDecimal(btBalance);
-    btBalance = this.priceOracle.toBt(btBalance) || 0;
-    this.setState({ balance: btBalance, exceBtnDisabled: !BigNumber(btBalance).isGreaterThan(0) });
+    let balance = deepGet(res, 'balance.available_balance');
+    balance = this.priceOracle.fromDecimal(balance);
+    balance = this.priceOracle.toBt(balance) || 0;
+    let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
+    if (this.previousState) {
+      this.previousState.balance = balance;
+      this.previousState.exceBtnDisabled = exceBtnDisabled;
+    }
+    this.setState({ balance, exceBtnDisabled });
   }
 
   onGetPricePointSuccess(token, pricePoints) {

@@ -55,7 +55,7 @@ class loadingModalCover extends React.Component {
               <Text style={inlineStyles.loadingMessage}>{this.props.message}</Text>
               <Progress.Bar
                 indeterminate={true}
-                indeterminateAnimationDuration={1000}
+                indeterminateAnimationDuration={500}
                 width={200}
                 unfilledColor={Colors.white}
                 color={Colors.primary}
