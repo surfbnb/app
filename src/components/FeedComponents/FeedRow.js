@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import styles from './styles';
@@ -11,7 +11,7 @@ import GracefulImage from '../Giphy/GracefulImage';
 import utilities from '../../services/Utilities';
 import FastImage from 'react-native-fast-image';
 
-class FeedRow extends Component {
+class FeedRow extends PureComponent {
   constructor(props) {
     super(props);
   }
