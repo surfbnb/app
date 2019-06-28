@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  Alert,
   TextInput,
-  Switch,
   TouchableOpacity,
   Image,
-  Platform,
   Dimensions,
   Modal
 } from 'react-native';
@@ -24,14 +21,12 @@ export default class EditTxModal extends Component {
   constructor(props) {
     super(props);
     this.state = this.getState();
-    this.priceOracle = props.getPriceOracle();
   }
 
   getState() {
     return {
       btAmount: this.props.btAmount,
       btUSDAmount: this.props.btUSDAmount,
-      clearErrors: false,
       btAmountErrorMsg: null
     };
   }
@@ -43,30 +38,31 @@ export default class EditTxModal extends Component {
   }
 
   onBtChange(bt) {
-    const usd = this.priceOracle.btToFiat(bt);
-    this.setState({ btAmount: bt, btUSDAmount: usd });
+    const priceOracle = this.props.getPriceOracle() ; 
+    if(!priceOracle) return ; 
+    this.setState({ btAmount: bt, btUSDAmount: priceOracle.btToFiat(bt) });
     if (bt > 0) {
-      this.setState({ btAmountErrorMsg: null, clearErrors: true });
+      this.setState({ btAmountErrorMsg: null });
     }
   }
 
   onUSDChange(usd) {
-    const bt = this.priceOracle.fiatToBt(usd);
-    this.setState({ btAmount: bt, btUSDAmount: usd });
+    const priceOracle = this.props.getPriceOracle() ; 
+    if(!priceOracle) return ; 
+    this.setState({ btAmount: priceOracle.fiatToBt(usd), btUSDAmount: usd });
   }
 
   onConfirm = () => {
     let btAmount = this.state.btAmount;
     btAmount = btAmount && Number(btAmount);
-    if (btAmount <= 0) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error'), clearErrors: false });
+    if (btAmount <= 0 || btAmount > this.props.balance) {
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
       return;
     }
     this.props.onAmountModalConfirm(this.state.btAmount, this.state.btUSDAmount);
   };
 
   render() {
-    console.log('I am hereeeeeeeee in render');
     return (
       <Modal
         animationType="slide"
@@ -103,7 +99,6 @@ export default class EditTxModal extends Component {
                         value={`${this.state.btAmount}`}
                         placeholderTextColor="#ababab"
                         errorMsg={this.state.btAmountErrorMsg}
-                        clearErrors={this.state.clearErrors}
                         keyboardType="numeric"
                         isFocus={true}
                         blurOnSubmit={false}
@@ -129,7 +124,6 @@ export default class EditTxModal extends Component {
                         fieldName="usd_amount"
                         style={Theme.TextInput.textInputStyle}
                         placeholderTextColor="#ababab"
-                        clearErrors={this.state.clearErrors}
                         keyboardType="numeric"
                         blurOnSubmit={true}
                       />

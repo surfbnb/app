@@ -41,7 +41,6 @@ class TransactionScreen extends Component {
       exceBtnDisabled: true,
       isLoading: false,
       message: null,
-      clearErrors: false,
       server_errors: null,
       isPublic: true,
       general_error: '',
@@ -58,12 +57,10 @@ class TransactionScreen extends Component {
   }
 
   defaultVals() {
-    //TODO lets see how to optimise this
     this.meta = null;
     this.gify = null;
     this.priceOracle = null;
     this.workflow = null;
-    this.previousState = null;
   }
 
   componentWillMount() {
@@ -91,6 +88,7 @@ class TransactionScreen extends Component {
         successCallback && successCallback(token, pricePoints);
       },
       (error) => {
+        this.onError( error );
         errorCallback && errorCallback(error);
       }
     );
@@ -104,7 +102,7 @@ class TransactionScreen extends Component {
         this.onBalance(res);
       },
       (err) => {
-        //DO nothing
+        this.onError( err );
       }
     );
   }
@@ -115,10 +113,6 @@ class TransactionScreen extends Component {
     balance = this.priceOracle.fromDecimal(balance);
     balance = this.priceOracle.toBt(balance) || 0;
     let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
-    if (this.previousState) {
-      this.previousState.balance = balance;
-      this.previousState.exceBtnDisabled = exceBtnDisabled;
-    }
     this.setState({ balance, exceBtnDisabled });
   }
 
@@ -126,15 +120,11 @@ class TransactionScreen extends Component {
     return this.priceOracle;
   };
 
-  onGetPricePointSuccess(token, pricePoints) {
+  onGetPricePointSuccess(token, pricePoints) {  
     let btUSDAmount = null;
     this.priceOracle = new PriceOracle(token, pricePoints);
     btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
     this.setState({ btUSDAmount: btUSDAmount });
-  }
-
-  onGetPricePointError(error) {
-    this.onError(error);
   }
 
   excecuteTransaction() {
@@ -230,10 +220,6 @@ class TransactionScreen extends Component {
     }
   }
 
-  clearErrors() {
-    this.setState({ clearErrors: false, server_errors: null });
-  }
-
   onGifySelect(gify) {
     this.gify = gify;
   }
@@ -246,12 +232,10 @@ class TransactionScreen extends Component {
   }
 
   onShowAmountModal = () => {
-    this.previousState = this.state;
     this.setState({ showTxModal: true });
   };
 
   onAmountModalClose = () => {
-    this.setState(this.previousState);
     this.hideEditTxModal();
   };
 
@@ -358,7 +342,6 @@ class TransactionScreen extends Component {
                       returnKeyType="done"
                       returnKeyLabel="Done"
                       serverErrors={this.state.server_errors}
-                      clearErrors={this.state.clearErrors}
                       placeholderTextColor="#ababab"
                     />
                   )}

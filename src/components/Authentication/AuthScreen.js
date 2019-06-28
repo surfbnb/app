@@ -33,7 +33,6 @@ class AuthScreen extends Component {
       password_error: null,
       user_name_error: null,
       server_errors: {},
-      clearErrors: true,
       errorMsg: ''
     };
     this.state = {
@@ -45,7 +44,6 @@ class AuthScreen extends Component {
       signup: false,
       isLoginIn: false,
       server_errors: {},
-      clearErrors: false,
       ...this.defaults
     };
 
@@ -132,7 +130,6 @@ class AuthScreen extends Component {
     this.clearError();
 
     if (!this.isValidInputs()) {
-      this.setState({ clearErrors: false });
       return;
     }
 
@@ -186,7 +183,7 @@ class AuthScreen extends Component {
 
   onServerError(res) {
     LoadingModal.hide();
-    let stateObj = { server_errors: res, clearErrors: false };
+    let stateObj = { server_errors: res};
     const errorData = deepGet(res, 'err.error_data'),
       errorMsg = ostErrors.getErrorMessage(res);
     if (!(errorData && errorData.length)) {
@@ -231,7 +228,6 @@ class AuthScreen extends Component {
                     placeholderTextColor="#ababab"
                     errorMsg={this.state.first_name_error}
                     serverErrors={this.state.server_errors}
-                    clearErrors={this.state.clearErrors}
                     onSubmitEditing={() => {
                       this.onSubmitEditing(this.tabIndex.firstName);
                     }}
@@ -258,7 +254,6 @@ class AuthScreen extends Component {
                     placeholderTextColor="#ababab"
                     errorMsg={this.state.last_name_error}
                     serverErrors={this.state.server_errors}
-                    clearErrors={this.state.clearErrors}
                     onSubmitEditing={() => {
                       this.onSubmitEditing(this.tabIndex.lastName);
                     }}
@@ -288,7 +283,6 @@ class AuthScreen extends Component {
                 autoCapitalize="none"
                 placeholderTextColor="#ababab"
                 errorMsg={this.state.user_name_error}
-                clearErrors={this.state.clearErrors}
                 serverErrors={this.state.server_errors}
                 onSubmitEditing={() => {
                   this.onSubmitEditing(this.tabIndex.userName);
@@ -318,7 +312,6 @@ class AuthScreen extends Component {
                 returnKeyLabel="Done"
                 errorMsg={this.state.password_error}
                 serverErrors={this.state.server_errors}
-                clearErrors={this.state.clearErrors}
                 onSubmitEditing={() => {
                   this.onSubmitEditing(this.tabIndex.password);
                 }}
