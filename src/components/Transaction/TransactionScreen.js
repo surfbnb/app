@@ -133,7 +133,7 @@ class TransactionScreen extends Component {
       return;
     }
     LoadingModal.show('Posting', 'This may take a while,\n we are surfing on Blockchain');
-    this.setState({ feildErrorText: null });
+    this.setState({ fieldErrorText: null });
     this.sendTransactionToSdk();
   }
 
