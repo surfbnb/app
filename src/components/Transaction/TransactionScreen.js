@@ -270,25 +270,6 @@ class TransactionScreen extends Component {
     });
   }
 
-  openedKeyboard(frames) {
-    let deviceHeight = frames.endCoordinates.screenY - Header.HEIGHT,
-      stateObj;
-    if (deviceHeight > 362) {
-      stateObj = { height: deviceHeight };
-    } else {
-      stateObj = { flex: 1 };
-    }
-    this.setState({
-      viewStyle: stateObj
-    });
-  }
-
-  closedKeyboard(frames) {
-    this.setState({
-      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
-    });
-  }
-
   render() {
     return (
       <KeyboardAwareScrollView

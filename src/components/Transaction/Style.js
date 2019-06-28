@@ -70,7 +70,8 @@ let stylesMap = {
   nonEditableTextInput: {
     marginLeft: 10,
     textAlign: 'center',
-    paddingRight: 15
+    paddingLeft: 0,
+    paddingRight: 0
   }
 };
 

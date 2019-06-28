@@ -1,11 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { Root } from 'native-base';
 import {
   createMaterialTopTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
-  createAppContainer
+  createAppContainer,
+  SafeAreaView
 } from 'react-navigation';
 
 import NavigationService from './src/services/NavigationService';
@@ -112,12 +113,14 @@ const AppContainer = createAppContainer(
 
 const RootNavigationContainer = () => (
   <Root>
-    <AppContainer
-      ref={(navigatorRef) => {
-        NavigationService.setTopLevelNavigator(navigatorRef);
-      }}
-    />
-    <LoadingModalCover />
+    <SafeAreaView forceInset={{ top: 'never'}} style={{flex: 1, backgroundColor: '#fff'}}>
+      <AppContainer
+        ref={(navigatorRef) => {
+          NavigationService.setTopLevelNavigator(navigatorRef);
+        }}
+      />
+      <LoadingModalCover />
+    </SafeAreaView>
   </Root>
 );
 
