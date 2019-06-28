@@ -22,6 +22,7 @@ class ProfileScreen extends Component {
     };
     this.fetchUrl = `/users/${currentUserModel.getUserId()}/feeds`;
     this.eventSubscription = null;
+    this.props.navigation.tab = 'Profile';
   }
 
   componentDidMount() {

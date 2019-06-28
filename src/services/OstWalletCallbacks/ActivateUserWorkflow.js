@@ -1,7 +1,6 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { Toast } from 'native-base';
 import currentUserModal from '../../models/CurrentUser';
-import { showToast } from '../../actions';
-import Store from '../../store';
 import deepGet from 'lodash/get';
 
 const initiatePolling = (expectedUserId) => {
@@ -28,7 +27,10 @@ const initiatePolling = (expectedUserId) => {
             const airDropStatus = user && user.signup_airdrop_status;
             if (airDropStatus == 1) {
               stopPolling = true;
-              Store.dispatch(showToast('User Activated! Airdrop is initiated.'));
+              Toast.show({
+                text: 'User Activated! Airdrop is initiated.',
+                buttonText: 'Okay'
+              });
             }
           })
           .catch((error) => {

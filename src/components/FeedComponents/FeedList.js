@@ -29,6 +29,15 @@ class FeedList extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.beforeNext = () => {};
+    this.onNext = () => {};
+    this.onNextError = () => {};
+    this.beforeRefresh = () => {};
+    this.onRefresh = () => {};
+    this.onRefreshError = () => {};
+  }
+
   initList() {
     this.refresh();
   }
@@ -104,11 +113,10 @@ class FeedList extends Component {
           onRefresh={() => this.refresh()}
           keyExtractor={(item, index) => `id_${item}`}
           onEndReachedThreshold={0.5}
-          initialNumToRender={20}
           refreshing={this.state.refreshing}
           ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
           ListFooterComponent={this.renderFooter}
-          renderItem={({ item }) => <FeedRow id={item} nestedNavigation={this.props.nestedNavigation ? true : false} />}
+          renderItem={({ item }) => <FeedRow id={item} userId={this.props.userId} />}
         ></FlatList>
         {this.state.feeds.length == 0 && !this.state.refreshing && (
           <View style={inlineStyles.emptyFeed}>

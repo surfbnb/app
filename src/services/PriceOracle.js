@@ -14,18 +14,19 @@ export default class PriceOracle {
   }
 
   btToFiat(bt) {
-    if (!bt || !this.usdPricePoint) {
+    if (!bt || !this.usdPricePoint || isNaN(bt)) {
       return '';
     }
+
     bt = BigNumber(bt);
     let fiatBN = BigNumber(this.usdPricePoint);
-    oneBtToFiat = fiatBN.dividedBy(this.conversionFactor);
+    let oneBtToFiat = fiatBN.dividedBy(this.conversionFactor);
     let result = oneBtToFiat.multipliedBy(bt);
     return this.toFiat(result);
   }
 
   toFiat(fiat) {
-    if (!fiat) {
+    if (!fiat || isNaN(fiat)) {
       return '';
     }
     fiat = String(fiat);
@@ -34,7 +35,7 @@ export default class PriceOracle {
   }
 
   fiatToBt(fiat) {
-    if (!fiat || !this.usdPricePoint) {
+    if (!fiat || !this.usdPricePoint || isNaN(fiat)) {
       return '';
     }
     fiat = BigNumber(fiat);
@@ -56,7 +57,7 @@ export default class PriceOracle {
   }
 
   fromDecimal(val) {
-   return PriceOracle.fromDecimal(val, this.decimals)
+    return PriceOracle.fromDecimal(val, this.decimals);
   }
 
   static fromDecimal(val, decimals) {
@@ -68,10 +69,10 @@ export default class PriceOracle {
   }
 
   static toBt(bt, precession) {
-    precession = precession || btPrecession;
-    if (!bt) {
+    if (!bt || isNaN(bt)) {
       return '';
     }
+    precession = precession || btPrecession;
     bt = String(bt);
     bt = BigNumber(bt);
     return bt.decimalPlaces(precession, 1).toString(10);

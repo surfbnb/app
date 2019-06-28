@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Keyboard
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import inlineStyles from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -469,7 +470,7 @@ class Giphy extends Component {
                                     }}
                                     source={{
                                       uri: item[appConfig.giphySizes.search].url,
-                                      cache: 'force-cache'
+                                      priority: FastImage.priority.high
                                     }}
                                     showActivityIndicator={this.state.isGifCategory ? false : true}
                                     imageBackgroundColor={[

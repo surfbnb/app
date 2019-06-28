@@ -12,8 +12,7 @@ import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
 import currentUserModal from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
-import Store from '../../store';
-import { showModal, hideModal } from '../../actions';
+import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
@@ -112,10 +111,15 @@ class TransactionScreen extends Component {
 
   onBalance(res) {
     if (!this.priceOracle) return;
-    let btBalance = deepGet(res, 'balance.available_balance');
-    btBalance = this.priceOracle.fromDecimal(btBalance);
-    btBalance = this.priceOracle.toBt(btBalance) || 0;
-    this.setState({ balance: btBalance, exceBtnDisabled: !BigNumber(btBalance).isGreaterThan(0) });
+    let balance = deepGet(res, 'balance.available_balance');
+    balance = this.priceOracle.fromDecimal(balance);
+    balance = this.priceOracle.toBt(balance) || 0;
+    let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
+    if (this.previousState) {
+      this.previousState.balance = balance;
+      this.previousState.exceBtnDisabled = exceBtnDisabled;
+    }
+    this.setState({ balance, exceBtnDisabled });
   }
 
   getPriceOracle = () => {
@@ -138,8 +142,8 @@ class TransactionScreen extends Component {
       Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
       return;
     }
-    Store.dispatch(showModal('Posting...'));
-    this.setState({ fieldErrorText: null });
+    LoadingModal.show('Posting', 'This may take a while,\n we are surfing on Blockchain');
+    this.setState({ feildErrorText: null });
     this.sendTransactionToSdk();
   }
 
@@ -188,7 +192,7 @@ class TransactionScreen extends Component {
   }
 
   onTransactionSuccess(res) {
-    Store.dispatch(hideModal());
+    LoadingModal.hide();
     this.props.navigation.goBack();
     this.props.navigation.navigate('Profile', { toRefresh: true });
   }
@@ -212,7 +216,7 @@ class TransactionScreen extends Component {
   }
 
   onError(error) {
-    Store.dispatch(hideModal());
+    LoadingModal.hide();
     const errorMsg = ostErrors.getErrorMessage(error);
     if (errorMsg) {
       this.setState({ general_error: errorMsg });
@@ -263,31 +267,34 @@ class TransactionScreen extends Component {
     this.setState({ showTxModal: false });
   };
 
+  openedKeyboard(frames) {
+    let deviceHeight = frames.endCoordinates.screenY - Header.HEIGHT,
+      stateObj;
+    if (deviceHeight > 362) {
+      stateObj = { height: deviceHeight };
+    } else {
+      stateObj = { flex: 1 };
+    }
+    this.setState({
+      viewStyle: stateObj
+    });
+  }
+
+  closedKeyboard(frames) {
+    this.setState({
+      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
+    });
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraHeight={200}
-        onKeyboardWillShow={(frames) => {
-          this.setState({
-            viewStyle: { flex: 1 }
-          });
-        }}
-        onKeyboardDidShow={(frames) => {
-          this.setState({
-            viewStyle: { flex: 1 }
-          });
-        }}
-        onKeyboardWillHide={(frames) => {
-          this.setState({
-            viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
-          });
-        }}
-        onKeyboardDidHide={(frames) => {
-          this.setState({
-            viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
-          });
-        }}
+        onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
+        onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
+        onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
+        onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
         keyboardShouldPersistTaps="always"
       >
         <View style={this.state.viewStyle}>
@@ -349,7 +356,7 @@ class TransactionScreen extends Component {
                       style={[Theme.TextInput.textInputStyle, { backgroundColor: '#ffffff', marginTop: 20 }]}
                       value={this.state.message}
                       returnKeyType="done"
-                      returnKeyLabel="done"
+                      returnKeyLabel="Done"
                       serverErrors={this.state.server_errors}
                       clearErrors={this.state.clearErrors}
                       placeholderTextColor="#ababab"
@@ -364,8 +371,8 @@ class TransactionScreen extends Component {
                       disabled={this.state.exceBtnDisabled}
                       style={[
                         Theme.Button.btn,
-                        inlineStyles.sendPepoBtn,
                         Theme.Button.btnPink,
+                        inlineStyles.sendPepoBtn,
                         this.state.exceBtnDisabled ? Theme.Button.disabled : null
                       ]}
                       onPress={() => this.excecuteTransaction()}

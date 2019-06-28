@@ -10,10 +10,11 @@ class Users extends Component {
   };
   constructor(props) {
     super(props);
+    this.props.navigation.tab = 'Users';
   }
 
   render() {
-    return <UserList fetchUrl="/users" navigate={this.props.navigation.navigate} />;
+    return <UserList fetchUrl="/users" />;
   }
 }
 

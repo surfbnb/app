@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
+
 import styles from './styles';
 import currentUserModal from '../../models/CurrentUser';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { PLATFROM_API_ENDPOINT } from '../../constants';
+import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
+import { LoadingModal } from '../../theme/components/LoadingModalCover';
 
 let t1, t2;
 
@@ -16,8 +18,9 @@ export default class AuthLoading extends Component {
 
   // Fetch the token from storage then navigate to our appropriate place
   init = async () => {
+    LoadingModal.show('Syncing...');
     t1 = Date.now();
-    OstWalletSdk.initialize(PLATFROM_API_ENDPOINT, this.onSdkInitialized);
+    OstWalletSdk.initialize(PLATFORM_API_ENDPOINT, this.onSdkInitialized);
   };
 
   onSdkInitialized = (error, success) => {
@@ -26,6 +29,7 @@ export default class AuthLoading extends Component {
     currentUserModal
       .initialize()
       .then((user) => {
+        LoadingModal.hide();
         if (!user) {
           this.props.navigation.navigate('AuthScreen');
           return;

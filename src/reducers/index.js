@@ -1,31 +1,29 @@
 import { createActions, handleActions } from 'redux-actions';
 import assignIn from 'lodash/assignIn';
 import * as types from '../actions/constants';
-import deepGet from 'lodash/get';
 
 export const {
   showModal,
   hideModal,
+  showModalCover,
+  hideModalCover,
   showToast,
   hideToast,
   upsertUserEntities,
   updateCurrentUser,
   logoutUser,
   upsertFeedEntities,
-  addPublicFeedList,
   upsertTransactionEntities,
   upsertGiffyEntities
 } = createActions(...Object.keys(types));
 
 const defaultState = {
   modal: { message: '', show: false },
+  modal_cover: { message: '', footerText: '', show: false },
   toast: { message: '', show: false },
   current_user: {},
   user_entities: {},
-  user_list: [],
   feed_entities: {},
-  public_feed_list: [],
-  user_feed_list: {},
   transaction_entities: {},
   giffy_entities: {}
 };
@@ -33,7 +31,9 @@ const defaultState = {
 export const reducer = handleActions(
   {
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
+    [showModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
     [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
+    [hideModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
     [showToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [hideToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [upsertUserEntities]: (state, action) => ({
@@ -47,10 +47,6 @@ export const reducer = handleActions(
     [upsertFeedEntities]: (state, action) => ({
       ...state,
       feed_entities: assignIn({}, state.feed_entities, action.payload.feed_entities)
-    }),
-    [addPublicFeedList]: (state, action) => ({
-      ...state,
-      public_feed_list: [...state.public_feed_list, ...action.payload.public_feed_list]
     }),
     [upsertTransactionEntities]: (state, action) => ({
       ...state,
