@@ -1,40 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { FlatList, View, Image, Text } from 'react-native';
 import FeedRow from '../FeedComponents/FeedRow';
 import EmptyFeedIcon from '../../assets/empty_feed_icon.png';
 import inlineStyles from './styles';
 import flatlistHOC from "../CommonComponents/flatlistHOC";
 
-class FeedList extends Component {
-  constructor(props) {
-    super(props);
-  }
-  
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
+const FeedList = (props) => (
+    <View style={{ flex: 1 }}>
         <FlatList
-          style={[this.props.style]}
-          data={this.props.list}
-          onEndReached={() => this.props.getNext()}
-          onRefresh={() => this.props.refresh()}
+          style={[props.style]}
+          data={props.list}
+          onEndReached={() => props.getNext()}
+          onRefresh={() => props.refresh()}
           keyExtractor={(item, index) => `id_${item}`}
-          refreshing={this.props.refreshing}
+          refreshing={props.refreshing}
           onEndReachedThreshold={5}
-          ListHeaderComponent={this.props.ListHeaderComponent ? this.props.ListHeaderComponent : <View></View>}
-          ListFooterComponent={this.props.renderFooter}
-          renderItem={({ item }) => <FeedRow id={item} userId={this.props.userId} />}
+          ListHeaderComponent={props.ListHeaderComponent ? props.ListHeaderComponent : <View></View>}
+          ListFooterComponent={props.renderFooter}
+          renderItem={({ item }) => <FeedRow id={item} userId={props.userId} />}
         ></FlatList>
-        {this.props.list.length == 0 && !this.props.refreshing && (
+        {props.list.length == 0 && !props.refreshing && (
           <View style={inlineStyles.emptyFeed}>
             <Image style={[inlineStyles.emptyFeedIconSkipFont]} source={EmptyFeedIcon}></Image>
             <Text style={inlineStyles.emptyFeedText}>Empty Feed.</Text>
             <Text style={inlineStyles.emptyFeedText}>Pepo your friends now</Text>
           </View>
         )}
-      </View>
-    );
-  }
-}
+    </View>
+);
 
 export default flatlistHOC( FeedList );
