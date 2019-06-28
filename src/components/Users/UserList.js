@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, FlatList } from 'react-native';
 import User from './User';
-import List from '../CommonComponents/List';
-class UserList extends List {
+import flatlistHOC from "../CommonComponents/flatlistHOC";
+
+class UserList  extends Component{
   constructor(props) {
     super(props);
   }
@@ -11,14 +12,14 @@ class UserList extends List {
     return (
       <View style={{ flex: 1 }}>
         <FlatList
-          data={this.state.list}
-          onEndReached={() => this.getNext()}
-          onRefresh={() => this.refresh()}
+          data={this.props.list}
+          onEndReached={() => this.props.getNext()}
+          onRefresh={() => this.props.refresh()}
           keyExtractor={(item, index) => `id_${item}`}
           onEndReachedThreshold={0.5}
           initialNumToRender={20}
-          refreshing={this.state.refreshing}
-          ListFooterComponent={this.renderFooter}
+          refreshing={this.props.refreshing}
+          ListFooterComponent={this.props.renderFooter}
           renderItem={({ item }) => {
             return <User id={item} />;
           }}
@@ -28,4 +29,4 @@ class UserList extends List {
   }
 }
 
-export default UserList;
+export default flatlistHOC( UserList );
