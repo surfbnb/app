@@ -11,7 +11,6 @@ const UserList = (props) => (
           onRefresh={() => props.refresh()}
           keyExtractor={(item, index) => `id_${item}`}
           onEndReachedThreshold={0.5}
-          initialNumToRender={20}
           refreshing={props.refreshing}
           ListFooterComponent={props.renderFooter}
           renderItem={({ item }) => {
