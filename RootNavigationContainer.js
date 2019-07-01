@@ -5,8 +5,7 @@ import {
   createMaterialTopTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
-  createAppContainer,
-  SafeAreaView
+  createAppContainer
 } from 'react-navigation';
 
 import NavigationService from './src/services/NavigationService';
@@ -113,14 +112,12 @@ const AppContainer = createAppContainer(
 
 const RootNavigationContainer = () => (
   <Root>
-    <SafeAreaView forceInset={{ top: 'never'}} style={{flex: 1, backgroundColor: '#fff'}}>
-      <AppContainer
-        ref={(navigatorRef) => {
-          NavigationService.setTopLevelNavigator(navigatorRef);
-        }}
-      />
-      <LoadingModalCover />
-    </SafeAreaView>
+    <AppContainer
+      ref={(navigatorRef) => {
+        NavigationService.setTopLevelNavigator(navigatorRef);
+      }}
+    />
+    <LoadingModalCover />
   </Root>
 );
 

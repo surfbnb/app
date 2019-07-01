@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Header } from 'react-navigation';
+import {Header, SafeAreaView} from 'react-navigation';
 import BigNumber from 'bignumber.js';
 
 import FormInput from '../../theme/components/FormInput';
@@ -22,6 +23,9 @@ import { ostErrors } from '../../services/OstErrors';
 import EditTxModal from './EditTxModal';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
+import styles from "../CustomTab/styles";
+
+const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true])
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -50,7 +54,7 @@ class TransactionScreen extends Component {
       switchToggleState: false,
       showTxModal: false,
       fieldErrorText: null,
-      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
+      viewStyle: { height: Dimensions.get('window').height - safeAreaHeight }
     };
     this.baseState = this.state;
     this.toUser = this.props.navigation.getParam('toUser');
@@ -66,6 +70,10 @@ class TransactionScreen extends Component {
   componentWillMount() {
     this.defaultVals();
     this.initPricePoint();
+    console.log('getStatusBarHeight', getStatusBarHeight([true]));
+    console.log('headerHeight', Header.HEIGHT);
+    console.log('height', Dimensions.get('window').height);
+    console.log('screen height', Dimensions.get('screen').height);
   }
 
   componentWillUnmount() {
@@ -252,7 +260,7 @@ class TransactionScreen extends Component {
   };
 
   openedKeyboard(frames) {
-    let deviceHeight = frames.endCoordinates.screenY - Header.HEIGHT,
+    let deviceHeight = frames.endCoordinates.screenY -  Header.HEIGHT - getStatusBarHeight(),
       stateObj;
     if (deviceHeight > 362) {
       stateObj = { height: deviceHeight };
@@ -266,7 +274,7 @@ class TransactionScreen extends Component {
 
   closedKeyboard(frames) {
     this.setState({
-      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
+      viewStyle: { height: Dimensions.get('window').height - safeAreaHeight }
     });
   }
 
@@ -275,12 +283,14 @@ class TransactionScreen extends Component {
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraHeight={200}
+        style={{backgroundColor: '#f6f6f6'}}
         onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
         onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
         onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
         onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
         keyboardShouldPersistTaps="always"
       >
+        <SafeAreaView forceInset={{ top: 'never'}}>
         <View style={this.state.viewStyle}>
           <View style={inlineStyles.container}>
             {!this.state.isLoading && (
@@ -348,8 +358,8 @@ class TransactionScreen extends Component {
 
                   <Text style={Theme.Errors.errorText}> {this.state.fieldErrorText}</Text>
                 </View>
-                <View style={[inlineStyles.bottomButtonsWrapper, { marginBottom: 15 }]}>
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <View>
+                  <View style={{ flexDirection: 'row'}}>
                     <TouchableOpacity
                       disabled={this.state.exceBtnDisabled}
                       style={[
@@ -395,6 +405,7 @@ class TransactionScreen extends Component {
             )}
           </View>
         </View>
+        </SafeAreaView>
       </KeyboardAwareScrollView>
     );
   }
