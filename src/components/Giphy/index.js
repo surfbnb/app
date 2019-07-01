@@ -28,6 +28,9 @@ import { FetchServices } from '../../services/FetchServices';
 import CircleCloseIcon from '../../assets/universalCross.png';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import FormInput from '../../theme/components/FormInput';
+
+
 const removeSearchDuplicateGiphy = false;
 
 class Giphy extends Component {

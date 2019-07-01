@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { Root } from 'native-base';
 import {
   createMaterialTopTabNavigator,

@@ -1,11 +1,13 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: Platform.OS == 'ios' ? 0 : 20,
     backgroundColor: Colors.whiteSmoke,
     justifyContent: 'space-between'
   },
@@ -70,7 +72,8 @@ let stylesMap = {
   nonEditableTextInput: {
     marginLeft: 10,
     textAlign: 'center',
-    paddingRight: 15
+    paddingLeft: 0,
+    paddingRight: 0
   }
 };
 
