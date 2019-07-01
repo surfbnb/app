@@ -71,7 +71,8 @@ const HomeScreen = createMaterialTopTabNavigator(
       headerStyle: {
         backgroundColor: Colors.white
       }
-    }
+    },
+    lazy: true
   }
 );
 
