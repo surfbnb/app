@@ -38,13 +38,9 @@ export default class Videos extends Component {
             <View  >
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                     <FlatList
-
-                        // decelerationRate={"fast"}
-                        // snapToAlignment={"center"}
-                        // snapToInterval={Dimensions.get('screen').height}
-
+                        snapToAlignment={"center"}
                         pagingEnabled={true}
-                      
+                        decelerationRate={"fast"}
                         ref={(ref) => { this.flatListRef = ref }}
                         data={colorData}
                         keyExtractor={(item, index) => `id_${index}`}
