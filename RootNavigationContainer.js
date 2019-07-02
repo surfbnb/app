@@ -20,7 +20,17 @@ import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
+import HomeScreen from './src/components/Home/HomeScreen'
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
+
+const HomeStack = createStackNavigator(
+  {
+    HomeScreen: HomeScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+)
 
 const FeedStack = createStackNavigator(
   {
@@ -55,8 +65,9 @@ const ProfileStack = createStackNavigator(
   }
 );
 
-const HomeScreen = createMaterialTopTabNavigator(
+const CustomTabStack = createMaterialTopTabNavigator(
   {
+    Home: HomeStack,
     Feed: FeedStack,
     Users: UserStack,
     Profile: ProfileStack
@@ -102,7 +113,7 @@ const AppContainer = createAppContainer(
     {
       AuthLoading,
       AuthScreen,
-      HomeScreen,
+      CustomTabStack,
       PinStack
     },
     {
