@@ -15,6 +15,8 @@
 } from 'react-native';
   import FastImage from 'react-native-fast-image';
 
+  import deepGet from "lodash/get";
+
   import inlineStyles from './styles';
   import CrossIcon from '../../assets/cross_icon.png';
   import Theme from '../../theme/styles';
@@ -33,7 +35,7 @@
   class Giphy extends Component {
 
 
-    static navigationOptions = ({ navigation, navigationOptions }) => {
+    static navigationOptions = ({navigation, navigationOptions}) => {
       return {
         header: null
       };
@@ -48,7 +50,8 @@
         gifsDataToShow: [],
         selectedImage: {},
         isRefreshing: false,
-        isLoadingMore: false
+        isLoadingMore: false,
+        bottomPadding: 0
       };
 
       this.screenWidth = Dimensions.get('window').width;
@@ -56,7 +59,7 @@
       this.viewContexts = {};
       this.currentViewContext = null;
       this.searchTimeout = 0;
-      this.onGifySelect =  props.navigation.getParam("onGifySelect");
+      this.onGifySelect = props.navigation.getParam("onGifySelect");
     }
 
     isShowingCategory() {
@@ -74,7 +77,7 @@
     getTrendingViewContext(baseUrl, searchTerm) {
       let id = 'TRENDING_' + baseUrl + '_' + searchTerm;
       if (!this.viewContexts[id]) {
-        this.viewContexts[id] = new FetchServices(baseUrl, {}, id, { removeDuplicate: removeSearchDuplicateGiphy });
+        this.viewContexts[id] = new FetchServices(baseUrl, {}, id, {removeDuplicate: removeSearchDuplicateGiphy});
       }
       return this.viewContexts[id];
     }
@@ -83,7 +86,7 @@
       let baseUrl = '/gifs/search';
       let id = 'SEARCH_' + baseUrl + '_' + searchTerm;
       if (!this.viewContexts[id]) {
-        this.viewContexts[id] = new FetchServices(baseUrl, { query: searchTerm }, id, {
+        this.viewContexts[id] = new FetchServices(baseUrl, {query: searchTerm}, id, {
           removeDuplicate: removeSearchDuplicateGiphy
         });
       }
@@ -92,6 +95,32 @@
 
     componentDidMount() {
       this.showCategotyList();
+
+      this.keyboardDidShowListener = Keyboard.addListener(
+        'keyboardWillShow',
+        this._keyboardWillShow.bind(this),
+      );
+      this.keyboardDidHideListener = Keyboard.addListener(
+        'keyboardWillHide',
+        this._keyboardWillHide.bind(this),
+      );
+    }
+
+    componentWillUnmount() {
+      this.keyboardDidShowListener.remove();
+      this.keyboardDidHideListener.remove();
+    }
+
+    _keyboardWillShow(e) {
+      this.setState({
+        bottomPadding: deepGet(e, "endCoordinates.height") || 350
+      })
+    }
+
+    _keyboardWillHide(e) {
+      this.setState({
+        bottomPadding: 0
+      })
     }
 
     // region - Category List
@@ -102,6 +131,7 @@
       let viewContext = this.getCategoryListViewContext();
       this.showViewContext(viewContext);
     }
+
     // endregion
 
     // region - Search Term
@@ -125,6 +155,7 @@
       let viewContext = this.getSearchViewContext(searchTerm);
       this.showViewContext(viewContext);
     }
+
     // endregion
 
     // region - Show selected category/trending.
@@ -140,6 +171,7 @@
         gifSearchQuery: searchTerm
       });
     }
+
     // endregion
 
     // region - show view context.
@@ -198,7 +230,7 @@
         return;
       }
       console.log('Should show data for viewContext.id:', viewContext.id, 'results.length:', results.length);
-      this.setState({ gifsDataToShow: results, isGifCategory: isGifCategory });
+      this.setState({gifsDataToShow: results, isGifCategory: isGifCategory});
 
       // Note: This is right place to set state that shows 'No Results' view.
       // And remove 'loading' view if needed.
@@ -209,10 +241,11 @@
       // iOS is know to crash when updating list views while scrolling.
       setTimeout(() => {
         if (this.listRef) {
-          this.listRef.scrollToOffset({ x: 0, y: 0, animated: true });
+          this.listRef.scrollToOffset({x: 0, y: 0, animated: true});
         }
       }, 100);
     }
+
     // endregion
 
     loadMore() {
@@ -246,7 +279,7 @@
           }
           let existingResults = this.state.gifsDataToShow || [];
           let newResults = existingResults.concat(resultsToAppend);
-          this.setState({ gifsDataToShow: newResults });
+          this.setState({gifsDataToShow: newResults});
         })
         .catch((err) => {
           console.log('loadMore: Something went wrong. fetch threw an error');
@@ -258,10 +291,11 @@
           });
         });
     }
+
     renderFooter() {
       //it will show indicator at the bottom of the list when data is loading otherwise it returns null
       if (!this.state.isLoadingMore) return null;
-      return <ActivityIndicator style={{ color: '#000' }} />;
+      return <ActivityIndicator style={{color: '#000'}}/>;
     }
 
     handleGiphyPress(data) {
@@ -288,7 +322,7 @@
       console.log('imgLoadEnd received.');
     }
 
-    isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
       const paddingToBottom = 20;
       return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
     };
@@ -337,22 +371,22 @@
           }}
         >
           <View
-          animationType="slide"
-          transparent={true}
-          style= {inlineStyles.modal}
+            animationType="slide"
+            transparent={true}
+            style={inlineStyles.modal}
           >
 
             <TouchableWithoutFeedback>
-              <View style={[inlineStyles.modalInner]}>
+              <View style={[inlineStyles.modalInner, {paddingBottom: this.state.bottomPadding}]}>
 
-                <View style={{ position: 'relative' }}>
+                <View style={{position: 'relative'}}>
                   <TextInput
                     editable={true}
                     onChangeText={(gifSearchQuery) => this.serchTermChanged(gifSearchQuery)}
                     ref="gif_category_search_query"
                     textContentType="none"
                     value={this.state.gifSearchQuery}
-                    style={[Theme.TextInput.textInputStyle, { marginBottom: 10, position: 'relative' }]}
+                    style={[Theme.TextInput.textInputStyle, {marginBottom: 10, position: 'relative'}]}
                     placeholder="Search Giphy"
                     returnKeyType="next"
                     returnKeyLabel="next"
@@ -363,7 +397,7 @@
                   />
                   {(showCloseIcon &&
                     (this.state.isRefreshing ? (
-                      <ActivityIndicator style={[inlineStyles.crossIconSkipFont, { top: 25, right: 20 }]} />
+                      <ActivityIndicator style={[inlineStyles.crossIconSkipFont, {top: 25, right: 20}]}/>
                     ) : (
                       <TouchableWithoutFeedback
                         onPress={() => {
@@ -373,7 +407,7 @@
                       >
                         <Image
                           source={CrossIcon}
-                          style={[inlineStyles.crossIconSkipFont, { top: 25, right: 10 }]}
+                          style={[inlineStyles.crossIconSkipFont, {top: 25, right: 10}]}
                         />
                       </TouchableWithoutFeedback>
                     ))) ||
@@ -399,7 +433,7 @@
                   // }}
                   onEndReachedThreshold={0.7}
                   data={gifsData}
-                  renderItem={({ item }) => {
+                  renderItem={({item}) => {
                     return (
                       <TouchableWithoutFeedback key={item.id} onPress={() => this.handleGiphyPress(item)}>
                         <View
@@ -463,151 +497,5 @@
         </TouchableWithoutFeedback>
       )
     }
-
-
-    render1() {
-      let gifsData = this.state.gifsDataToShow,
-        imageSelector,
-        colWidth = (this.screenWidth - 62) / 3,
-        screenWidth = this.screenWidth - 40,
-        itemWidth = 200,
-        ratio = colWidth / itemWidth,
-        wh = itemWidth * ratio,
-        showCloseIcon = this.state.gifSearchQuery ? true : false;
-
-      return (
-        <View
-          animationType="slide"
-          transparent={true}
-          style={{backgroundColor: 'red', opacity:1}}
-        >
-          <KeyboardAwareScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps="always">
-            <TouchableWithoutFeedback
-                    onPressOut={() => {
-                      Keyboard.dismiss();
-                    }}
-                  >
-                    <View style={inlineStyles.modal}>
-                      <TouchableWithoutFeedback>
-                        <View style={inlineStyles.modalInner}>
-                          <View style={{ position: 'relative' }}>
-                            <TextInput
-                              editable={true}
-                              onChangeText={(gifSearchQuery) => this.serchTermChanged(gifSearchQuery)}
-                              ref="gif_category_search_query"
-                              textContentType="none"
-                              value={this.state.gifSearchQuery}
-                              style={[Theme.TextInput.textInputStyle, { marginBottom: 10, position: 'relative' }]}
-                              placeholder="Search Giphy"
-                              returnKeyType="next"
-                              returnKeyLabel="next"
-                              placeholderTextColor="#ababab"
-                              errorHandler={(fieldName) => {
-                                this.ServerErrorHandler(fieldName);
-                              }}
-                            />
-                            {(showCloseIcon &&
-                              (this.state.isRefreshing ? (
-                                <ActivityIndicator style={[inlineStyles.crossIconSkipFont, { top: 25, right: 20 }]} />
-                              ) : (
-                                <TouchableWithoutFeedback
-                                  onPress={() => {
-                                    Keyboard.dismiss();
-                                    this.showCategotyList();
-                                  }}
-                                >
-                                  <Image
-                                    source={CrossIcon}
-                                    style={[inlineStyles.crossIconSkipFont, { top: 25, right: 10 }]}
-                                  />
-                                </TouchableWithoutFeedback>
-                              ))) ||
-                              null}
-                          </View>
-
-                          <FlatList
-                            nestedScrollEnabled={true}
-                            ref={(ref) => {
-                              this.listRef = ref;
-                            }}
-                            contentContainerStyle={{
-                              // flexWrap: 'wrap',
-                              // flexDirection: 'row',
-                              marginRight: 4
-                            }}
-                            onEndReached={() => {
-                              this.loadMore();
-                            }}
-                            // refreshing={this.state.isRefreshing}
-                            // onRefresh={() => {
-                            //   this.refreshFlatList();
-                            // }}
-                            onEndReachedThreshold={0.7}
-                            data={gifsData}
-                            renderItem={({ item }) => {
-                              return (
-                                <TouchableWithoutFeedback key={item.id} onPress={() => this.handleGiphyPress(item)}>
-                                  <View
-                                    style={[
-                                      {
-                                        margin: 3,
-                                        borderRadius: 4,
-                                        overflow: 'hidden'
-                                      }
-                                    ]}
-                                  >
-                                    <GracefulImage
-                                      style={{
-                                        width: wh,
-                                        height: wh
-                                      }}
-                                      source={{
-                                        uri: item[appConfig.giphySizes.search].url,
-                                        priority: FastImage.priority.high
-                                      }}
-                                      showActivityIndicator={this.state.isGifCategory ? false : true}
-                                      imageBackgroundColor={[
-                                        'rgb(255,140,140)',
-                                        'rgb(253,244,128)',
-                                        'rgb(5,217,200)',
-                                        'rgb(59,188,255)',
-                                        'rgb(242,212,121)',
-                                        'rgb(164,251,158)',
-                                        'rgb(251,162,255)',
-                                        'rgb(55,108,180)',
-                                        'rgb(141,121,242)'
-                                      ]} //can be string or array of colors
-                                    />
-                                    {this.state.isGifCategory && (
-                                      <View
-                                        style={[
-                                          inlineStyles.overlay,
-                                          {
-                                            backgroundColor: 'rgba(0,0,0,0.5)',
-                                            height: wh,
-                                            width: wh
-                                          }
-                                        ]}
-                                      >
-                                        <Text style={inlineStyles.overlayText}>{item.name}</Text>
-                                      </View>
-                                    )}
-                                  </View>
-                                </TouchableWithoutFeedback>
-                              );
-                            }}
-                            numColumns={3}
-                            keyExtractor={(item, index) => index}
-                            ListFooterComponent={this.renderFooter.bind(this)}
-                          />
-                        </View>
-                      </TouchableWithoutFeedback>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </KeyboardAwareScrollView>
-              </View>
-      );
-    }
   }
-
   export default Giphy;
