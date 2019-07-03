@@ -2,34 +2,28 @@
 
   import {
   View,
-  Text,
-  Modal,
   Image,
-  ImageBackground,
   TouchableWithoutFeedback,
   Dimensions,
   TextInput,
   FlatList,
   ActivityIndicator,
-  Keyboard, Platform
+  Keyboard
 } from 'react-native';
-  import FastImage from 'react-native-fast-image';
-
+ 
   import deepGet from "lodash/get";
 
   import inlineStyles from './styles';
   import CrossIcon from '../../assets/cross_icon.png';
   import Theme from '../../theme/styles';
   import { CategoryViewContext, CATEGORY_VC_ID } from './view_contexts';
-  import GracefulImage from './GracefulImage';
-  import appConfig from '../../constants/AppConfig';
   import { FetchServices } from '../../services/FetchServices';
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
   import {keyboardAvoidingView} from 'react-native';
   import {Header, SafeAreaView} from 'react-navigation';
-
   import FormInput from '../../theme/components/FormInput';
   import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
+  import GiphyBlock from "./GiphyBlock";
 
 
   const bottomSpace = getBottomSpace([true])
@@ -41,13 +35,11 @@
 
   class Giphy extends Component {
 
-
     static navigationOptions = ({navigation, navigationOptions}) => {
       return {
         header: null
       };
     };
-
 
     constructor(props) {
       super(props);
@@ -62,7 +54,6 @@
       };
 
       this.screenWidth = Dimensions.get('window').width;
-      this.handleGiphyPress.bind(this);
       this.viewContexts = {};
       this.currentViewContext = null;
       this.searchTimeout = 0;
@@ -377,28 +368,13 @@
     render() {
 
       let gifsData = this.state.gifsDataToShow,
-        colWidth = (this.screenWidth - 62) / 3,
-        screenWidth = this.screenWidth - 40,
-        itemWidth = 200,
-        ratio = colWidth / itemWidth,
-        wh = itemWidth * ratio,
         showCloseIcon = this.state.gifSearchQuery ? true : false;
 
       return (
-        <TouchableWithoutFeedback
-          onPressOut={() => {
-            this.props.navigation.goBack();
-          }}
-        >
-          <View
-            animationType="slide"
-            transparent={true}
-            style={inlineStyles.modal}
-          >
-
+        <TouchableWithoutFeedback onPressOut={() => {this.props.navigation.goBack(); }} >
+          <View animationType="slide"   transparent={true}  style={inlineStyles.modal} >
             <TouchableWithoutFeedback>
               <View style={[inlineStyles.modalInner, {paddingBottom: this.state.bottomPadding}]}>
-
                 <View style={{position: 'relative'}}>
                   <TextInput
                     editable={true}
@@ -413,106 +389,33 @@
                     placeholderTextColor="#ababab"
                     errorHandler={(fieldName) => {
                       this.ServerErrorHandler(fieldName);
-                    }}
-                  />
+                    }}/>
                   {(showCloseIcon &&
                     (this.state.isRefreshing ? (
                       <ActivityIndicator style={[inlineStyles.crossIconSkipFont, {top: 25, right: 20}]}/>
                     ) : (
-                      <TouchableWithoutFeedback
-                        onPress={() => {
-                          Keyboard.dismiss();
-                          this.showCategotyList();
-                        }}
-                      >
-                        <Image
-                          source={CrossIcon}
-                          style={[inlineStyles.crossIconSkipFont, {top: 25, right: 10}]}
-                        />
+                      <TouchableWithoutFeedback onPress={() => {  Keyboard.dismiss(); this.showCategotyList();}}>
+                        <Image source={CrossIcon}  style={[inlineStyles.crossIconSkipFont, {top: 25, right: 10}]} />
                       </TouchableWithoutFeedback>
-                    ))) ||
-                  null}
+                    ))) ||  null}
                 </View>
-
                 <FlatList
                   nestedScrollEnabled={true}
-                  ref={(ref) => {
-                    this.listRef = ref;
-                  }}
-                  contentContainerStyle={{
-                    // flexWrap: 'wrap',
-                    // flexDirection: 'row',
-                    marginRight: 4
-                  }}
-                  onEndReached={() => {
-                    this.loadMore();
-                  }}
-                  // refreshing={this.state.isRefreshing}
-                  // onRefresh={() => {
-                  //   this.refreshFlatList();
-                  // }}
+                  ref={(ref) => {this.listRef = ref;}}
+                  contentContainerStyle={{ marginRight: 4}}
+                  onEndReached={() => { this.loadMore(); }}
                   onEndReachedThreshold={0.7}
                   data={gifsData}
-                  renderItem={({item}) => {
-                    return (
-                      <TouchableWithoutFeedback key={item.id} onPress={() => this.handleGiphyPress(item)}>
-                        <View
-                          style={[
-                            {
-                              margin: 3,
-                              borderRadius: 4,
-                              overflow: 'hidden'
-                            }
-                          ]}
-                        >
-                          <GracefulImage
-                            style={{
-                              width: wh,
-                              height: wh
-                            }}
-                            source={{
-                              uri: item[appConfig.giphySizes.search].url,
-                              priority: FastImage.priority.high
-                            }}
-                            showActivityIndicator={this.state.isGifCategory ? false : true}
-                            imageBackgroundColor={[
-                              'rgb(255,140,140)',
-                              'rgb(253,244,128)',
-                              'rgb(5,217,200)',
-                              'rgb(59,188,255)',
-                              'rgb(242,212,121)',
-                              'rgb(164,251,158)',
-                              'rgb(251,162,255)',
-                              'rgb(55,108,180)',
-                              'rgb(141,121,242)'
-                            ]} //can be string or array of colors
-                          />
-                          {this.state.isGifCategory && (
-                            <View
-                              style={[
-                                inlineStyles.overlay,
-                                {
-                                  backgroundColor: 'rgba(0,0,0,0.5)',
-                                  height: wh,
-                                  width: wh
-                                }
-                              ]}
-                            >
-                              <Text style={inlineStyles.overlayText}>{item.name}</Text>
-                            </View>
-                          )}
-                        </View>
-                      </TouchableWithoutFeedback>
-                    );
-                  }}
+                  renderItem={({item}) => {return (<GiphyBlock item={item} 
+                     gifsDataToShow={this.state.gifsDataToShow}
+                     isGifCategory={this.state.isGifCategory}
+                     handleGiphyPress={(selectedGiphy) => { this.handleGiphyPress(selectedGiphy) }} />) }}
                   numColumns={3}
                   keyExtractor={(item, index) => index}
-                  ListFooterComponent={this.renderFooter.bind(this)}
+                  ListFooterComponent={ () =>  this.renderFooter()  }
                 />
-
               </View>
             </TouchableWithoutFeedback>
-
           </View>
         </TouchableWithoutFeedback>
       )

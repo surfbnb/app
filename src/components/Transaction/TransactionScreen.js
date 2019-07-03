@@ -7,7 +7,6 @@ import {Header, SafeAreaView} from 'react-navigation';
 import BigNumber from 'bignumber.js';
 
 import FormInput from '../../theme/components/FormInput';
-import Giphy from '../Giphy';
 import Theme from '../../theme/styles';
 import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
