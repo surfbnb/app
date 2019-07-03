@@ -98,6 +98,7 @@ class TransactionScreen extends Component {
 
   getBalance() {
     //TODO catfood wherever fetched balance , update via Redux
+    //TODO priceOracle price point update after every 10 mins 
     const ostUserId = currentUserModal.getOstUserId();
     OstJsonApi.getBalanceForUserId(
       ostUserId,
