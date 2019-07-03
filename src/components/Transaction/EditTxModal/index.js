@@ -128,7 +128,7 @@ export default class EditTxModal extends Component {
 
   render(){
     return(
-      <TouchableWithoutFeedback onPressOut={() => {this.props.navigation.goBack(); }} >
+      <TouchableWithoutFeedback onPressOut={() => { this.closeModal(); }} >
       <View animationType="slide"
             transparent={true}
             style={inlineStyles.modalBackDrop}
