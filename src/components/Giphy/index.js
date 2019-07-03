@@ -25,10 +25,17 @@
   import appConfig from '../../constants/AppConfig';
   import { FetchServices } from '../../services/FetchServices';
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-  import {keyboardAvoidingView} from 'react-native'
+  import {keyboardAvoidingView} from 'react-native';
+  import {Header, SafeAreaView} from 'react-navigation';
 
   import FormInput from '../../theme/components/FormInput';
+  import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
 
+
+  const bottomSpace = getBottomSpace([true])
+    , extraPadding = 10
+    , safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding
+  ;
 
   const removeSearchDuplicateGiphy = false;
 
@@ -51,7 +58,7 @@
         selectedImage: {},
         isRefreshing: false,
         isLoadingMore: false,
-        bottomPadding: 0
+        bottomPadding: safeAreaBottomSpace
       };
 
       this.screenWidth = Dimensions.get('window').width;
@@ -98,12 +105,22 @@
 
       this.keyboardDidShowListener = Keyboard.addListener(
         'keyboardWillShow',
-        this._keyboardWillShow.bind(this),
+        this._keyboardShown.bind(this),
       );
       this.keyboardDidHideListener = Keyboard.addListener(
         'keyboardWillHide',
-        this._keyboardWillHide.bind(this),
+        this._keyboardHidden.bind(this),
       );
+
+      this.keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        this._keyboardShown.bind(this),
+      );
+      this.keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        this._keyboardHidden.bind(this),
+      );
+
     }
 
     componentWillUnmount() {
@@ -111,15 +128,18 @@
       this.keyboardDidHideListener.remove();
     }
 
-    _keyboardWillShow(e) {
+    _keyboardShown(e) {
+
+      let bottomPaddingValue = deepGet(e, "endCoordinates.height") || 350;
+
       this.setState({
-        bottomPadding: deepGet(e, "endCoordinates.height") || 350
+        bottomPadding: bottomPaddingValue + extraPadding
       })
     }
 
-    _keyboardWillHide(e) {
+    _keyboardHidden(e) {
       this.setState({
-        bottomPadding: 0
+        bottomPadding: safeAreaBottomSpace
       })
     }
 
