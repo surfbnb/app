@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { View, FlatList, Text, Dimensions, StyleSheet, StatusBar , ScrollView} from 'react-native';
 
-
-
 const colorData = [
     'rgb(255,140,140)',
     'rgb(253,244,128)',
@@ -27,21 +25,16 @@ export default class Videos extends Component {
 
     constructor(){
         super();
-        this.index = 0 ;
-        this.flatListRef = null;
-        this.scrolling = false ; 
-        this.offset = 0;
     }
 
     render() {
         return (
-            <View  >
+            <View>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                     <FlatList
                         snapToAlignment={"center"}
                         pagingEnabled={true}
                         decelerationRate={"fast"}
-                        ref={(ref) => { this.flatListRef = ref }}
                         data={colorData}
                         keyExtractor={(item, index) => `id_${index}`}
                         style={styles.fullScreen}
