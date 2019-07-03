@@ -86,8 +86,15 @@
       return this.viewContexts[id];
     }
 
-    componentDidMount() {
-      this.showCategotyList();
+    componentWillMount() {
+      this.keyboardWillShowListener = Keyboard.addListener(
+        'keyboardWillShow',
+        this._keyboardShown.bind(this),
+      );
+      this.keyboardWillHideListener = Keyboard.addListener(
+        'keyboardWillHide',
+        this._keyboardHidden.bind(this),
+      );
 
       this.keyboardDidShowListener = Keyboard.addListener(
         'keyboardDidShow',
@@ -97,22 +104,38 @@
         'keyboardDidHide',
         this._keyboardHidden.bind(this),
       );
+    }
 
+    componentDidMount() {
+      this.showCategotyList();
     }
 
     componentWillUnmount() {
       this.keyboardDidShowListener.remove();
       this.keyboardDidHideListener.remove();
+      this.keyboardWillShowListener.remove();
+      this.keyboardWillHideListener.remove();
     }
 
     _keyboardShown(e) {
       let bottomPaddingValue = deepGet(e, "endCoordinates.height") || 350;
+
+      bottomPaddingValue += extraPadding;
+
+      if (this.state.bottomPadding == bottomPaddingValue ) {
+        return
+      }
+
       this.setState({
-        bottomPadding: bottomPaddingValue + extraPadding
+        bottomPadding: bottomPaddingValue
       })
     }
 
     _keyboardHidden(e) {
+
+      if (this.state.bottomPadding == safeAreaBottomSpace ) {
+        return
+      }
       this.setState({
         bottomPadding: safeAreaBottomSpace
       })

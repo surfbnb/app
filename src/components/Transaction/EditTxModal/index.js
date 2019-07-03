@@ -77,12 +77,18 @@ export default class EditTxModal extends Component {
 
   _keyboardShown(e) {
     let bottomPaddingValue = deepGet(e, "endCoordinates.height") || 350;
+    bottomPaddingValue +=  extraPadding;
+
+    if (this.state.bottomPadding == bottomPaddingValue) {return}
+
     this.setState({
-      bottomPadding: bottomPaddingValue + extraPadding
+      bottomPadding: bottomPaddingValue
     })
   }
 
   _keyboardHidden(e) {
+
+    if (this.state.bottomPadding == safeAreaBottomSpace) {return}
     this.setState({
       bottomPadding: safeAreaBottomSpace,
     })
@@ -122,6 +128,7 @@ export default class EditTxModal extends Component {
 
   render(){
     return(
+      <TouchableWithoutFeedback onPressOut={() => {this.props.navigation.goBack(); }} >
       <View animationType="slide"
             transparent={true}
             style={inlineStyles.modalBackDrop}
@@ -198,6 +205,7 @@ export default class EditTxModal extends Component {
           </TouchableWithoutFeedback>
         </View>
       </View>
+      </TouchableWithoutFeedback>
     )
   }
 }
