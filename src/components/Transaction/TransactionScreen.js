@@ -62,7 +62,6 @@ class TransactionScreen extends Component {
 
   defaultVals() {
     this.meta = null;
-    this.gify = null;
     this.priceOracle = null;
     this.workflow = null;
   }
@@ -70,10 +69,6 @@ class TransactionScreen extends Component {
   componentWillMount() {
     this.defaultVals();
     this.initPricePoint();
-    console.log('getStatusBarHeight', getStatusBarHeight([true]));
-    console.log('headerHeight', Header.HEIGHT);
-    console.log('height', Dimensions.get('window').height);
-    console.log('screen height', Dimensions.get('screen').height);
   }
 
   componentWillUnmount() {
@@ -283,8 +278,6 @@ class TransactionScreen extends Component {
   resetGiphy(){
     this.setState({ selectedGiphy: null});
   }
-
-
 
   render() {
     return (
