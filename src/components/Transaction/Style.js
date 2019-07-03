@@ -74,7 +74,42 @@ let stylesMap = {
     textAlign: 'center',
     paddingLeft: 0,
     paddingRight: 0
-  }
+  },
+
+
+
+
+  giphyPicker: {
+    // marginBottom: 20,
+    borderWidth: 1,
+    backgroundColor: Colors.white,
+    borderColor: Colors.zambezi,
+    borderStyle: 'dashed',
+    padding: 20,
+    borderRadius: 1
+  },
+  plusIconSkipFont: {
+    width: 42,
+    height: 42,
+    alignSelf: 'center'
+  },
+  giphyPickerText: {
+    textAlign: 'center',
+    color: Colors.darkGray,
+    fontSize: 20,
+    fontWeight: '300',
+    marginTop: 10,
+    fontFamily: 'Lato-Italic'
+  },
+  crossIconSkipFont: {
+    width: 20,
+    height: 20,
+    position: 'absolute',
+    right: 10,
+    paddingVertical: 10,
+    paddingLeft: 20,
+    top: 20
+  },
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

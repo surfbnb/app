@@ -27,7 +27,7 @@ let stylesMap = {
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: Dimensions.get('window').height * 0.9
+    height: Dimensions.get('window').height * 0.8
   },
   giphyPicker: {
     // marginBottom: 20,
