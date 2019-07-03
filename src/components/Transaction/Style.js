@@ -39,8 +39,7 @@ let stylesMap = {
     flex: 1
   },
   modelWrapper: {
-    bottom: 10,
-    position: 'absolute'
+    // position: 'absolute'
   },
   modalCloseBtnWrapper: {
     height: 40,

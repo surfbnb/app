@@ -131,7 +131,7 @@ export default class EditTxModal extends Component {
       <TouchableWithoutFeedback onPressOut={() => { this.closeModal(); }} >
       <View animationType="slide"
             transparent={true}
-            style={inlineStyles.modalBackDrop}
+            style={[inlineStyles.modalBackDrop , { justifyContent : this.state.bottomPadding > safeAreaBottomSpace ? "flex-end": "center"  }]}
       >
 
         <View style={[inlineStyles.modelWrapper, {paddingBottom: this.state.bottomPadding}]}>
