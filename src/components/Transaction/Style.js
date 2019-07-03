@@ -60,7 +60,7 @@ let stylesMap = {
     borderRadius: 3,
     width: Dimensions.get('window').width - 20,
     backgroundColor: Colors.white,
-    justifyContent: 'center',
+    alignSelf: 'center',
     padding: 20
   },
   modalHeader: {
@@ -101,15 +101,15 @@ let stylesMap = {
     marginTop: 10,
     fontFamily: 'Lato-Italic'
   },
-  crossIconSkipFont: {
-    width: 20,
-    height: 20,
-    position: 'absolute',
-    right: 10,
-    paddingVertical: 10,
-    paddingLeft: 20,
-    top: 20
-  },
+  // crossIconSkipFont: {
+  //   width: 20,
+  //   height: 20,
+  //   position: 'absolute',
+  //   right: 10,
+  //   paddingVertical: 10,
+  //   paddingLeft: 20,
+  //   top: 20
+  // },
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

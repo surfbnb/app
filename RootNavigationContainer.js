@@ -22,6 +22,7 @@ import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from "./src/components/Giphy";
+import EditTx from "./src/components/Transaction/EditTxModal";
 import  deepGet from "lodash/get";
 
 const FeedStack = createStackNavigator(
@@ -45,7 +46,8 @@ const UserTransactionStack = createStackNavigator(
 const UserStack = createStackNavigator(
   {
     UserTransaction: UserTransactionStack,
-    Giphy: Giphy
+    Giphy: Giphy,
+    EditTx: EditTx
   },
   {
     headerLayoutPreset: 'center',

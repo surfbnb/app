@@ -98,6 +98,7 @@ class TransactionScreen extends Component {
   }
 
   getBalance() {
+    //TODO catfood wherever fetched balance , update via Redux
     const ostUserId = currentUserModal.getOstUserId();
     OstJsonApi.getBalanceForUserId(
       ostUserId,
@@ -229,25 +230,12 @@ class TransactionScreen extends Component {
       this.setState({ message: '' });
     }
   }
-  
-  onShowAmountModal = () => {
-    this.setState({ showTxModal: true });
-  };
-
-  onAmountModalClose = () => {
-    this.hideEditTxModal();
-  };
 
   onAmountModalConfirm = (btAmt, btUSDAmt) => {
     this.setState({
       btAmount: btAmt,
       btUSDAmount: btUSDAmt
     });
-    this.hideEditTxModal();
-  };
-
-  hideEditTxModal = () => {
-    this.setState({ showTxModal: false });
   };
 
   openedKeyboard(frames) {
@@ -273,6 +261,16 @@ class TransactionScreen extends Component {
     this.props.navigation.navigate('Giphy', { onGifySelect: ( gifsData )=> {
        this.setState({ selectedGiphy: gifsData});
     }})
+  }
+
+  openEditTx(){
+    this.props.navigation.navigate('EditTx', {
+      btAmount: this.state.btAmount,
+      btUSDAmount: this.state.btUSDAmount,
+      balance: this.state.balance,
+      getPriceOracle: this.getPriceOracle,
+      onAmountModalConfirm: this.onAmountModalConfirm
+    })
   }
 
   resetGiphy(){
@@ -380,23 +378,14 @@ class TransactionScreen extends Component {
                     <TouchableOpacity
                       style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
                       onPress={() => {
-                        this.onShowAmountModal();
+                        this.openEditTx();
                       }}
                     >
                       <Image style={[{ width: 20, height: 20 }, { tintColor: '#ef5566' }]} source={EditIcon}></Image>
                     </TouchableOpacity>
                   </View>
                 </View>
-                
-                <EditTxModal
-                  showTxModal={this.state.showTxModal}
-                  onModalClose={this.onAmountModalClose}
-                  btAmount={this.state.btAmount}
-                  btUSDAmount={this.state.btUSDAmount}
-                  onAmountModalConfirm={this.onAmountModalConfirm}
-                  balance={this.state.balance}
-                  getPriceOracle={this.getPriceOracle}
-                />
+
               </React.Fragment>
             )}
           </View>
