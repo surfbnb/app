@@ -18,13 +18,8 @@
   import Theme from '../../theme/styles';
   import { CategoryViewContext, CATEGORY_VC_ID } from './view_contexts';
   import { FetchServices } from '../../services/FetchServices';
-  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-  import {keyboardAvoidingView} from 'react-native';
-  import {Header, SafeAreaView} from 'react-navigation';
-  import FormInput from '../../theme/components/FormInput';
   import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
   import GiphyBlock from "./GiphyBlock";
-
 
   const bottomSpace = getBottomSpace([true])
     , extraPadding = 10
@@ -111,9 +106,7 @@
     }
 
     _keyboardShown(e) {
-
       let bottomPaddingValue = deepGet(e, "endCoordinates.height") || 350;
-
       this.setState({
         bottomPadding: bottomPaddingValue + extraPadding
       })
