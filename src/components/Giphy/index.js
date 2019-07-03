@@ -95,15 +95,6 @@
       this.showCategotyList();
 
       this.keyboardDidShowListener = Keyboard.addListener(
-        'keyboardWillShow',
-        this._keyboardShown.bind(this),
-      );
-      this.keyboardDidHideListener = Keyboard.addListener(
-        'keyboardWillHide',
-        this._keyboardHidden.bind(this),
-      );
-
-      this.keyboardDidShowListener = Keyboard.addListener(
         'keyboardDidShow',
         this._keyboardShown.bind(this),
       );
