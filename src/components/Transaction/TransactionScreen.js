@@ -79,7 +79,6 @@ class TransactionScreen extends Component {
 
   initPricePoint() {
     this.updatePricePoint();
-    this.getBalance();
   }
 
   updatePricePoint(successCallback, errorCallback) {
@@ -127,6 +126,7 @@ class TransactionScreen extends Component {
   onGetPricePointSuccess(token, pricePoints) {  
     let btUSDAmount = null;
     this.priceOracle = new PriceOracle(token, pricePoints);
+    this.getBalance();
     btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
     this.setState({ btUSDAmount: btUSDAmount });
   }
