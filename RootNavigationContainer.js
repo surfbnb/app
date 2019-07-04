@@ -40,6 +40,9 @@ const UserTransactionStack = createStackNavigator(
   {
     UsersScreen:  Users ,
     TransactionScreen : TransactionScreen,
+  },
+  {
+    headerLayoutPreset: 'center'
   }
 );
 
