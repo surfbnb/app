@@ -6,9 +6,7 @@ import deepGet from 'lodash/get';
 class FormInput extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      errorMsg: this.props.errorMsg
-    };
+    this.state = { errorMsg: null };
   }
 
   validate() {
@@ -61,11 +59,11 @@ class FormInput extends Component {
           }}
           style={[
             this.props.style,
-            !this.props.clearErrors && (this.state.errorMsg || this.props.errorMsg) ? Theme.Errors.errorBorder : {}
+            (this.state.errorMsg || this.props.errorMsg) ? Theme.Errors.errorBorder : {}
           ]}
         />
         <Text style={Theme.Errors.errorText}>
-          {!this.props.clearErrors ? this.props.errorMsg || this.state.errorMsg || '' : ''}{' '}
+          { this.props.errorMsg || this.state.errorMsg }
         </Text>
       </View>
     );

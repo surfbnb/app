@@ -20,14 +20,16 @@ let stylesMap = {
     marginHorizontal: 20,
     marginVertical: 10,
     height: 23,
-    width: 23
+    width: 23,
+    // padding: 30
   },
   tabElementFriendsSkipFont: {
     alignSelf: 'center',
     marginHorizontal: 20,
     marginVertical: 10,
     height: 22,
-    width: 35
+    width: 35,
+    // padding: 30
   }
 };
 

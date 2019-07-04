@@ -1,11 +1,13 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: Platform.OS == 'ios' ? 0 : 20,
     backgroundColor: Colors.whiteSmoke,
     justifyContent: 'space-between'
   },
@@ -37,8 +39,7 @@ let stylesMap = {
     flex: 1
   },
   modelWrapper: {
-    bottom: 10,
-    position: 'absolute'
+    // position: 'absolute'
   },
   modalCloseBtnWrapper: {
     height: 40,
@@ -58,7 +59,7 @@ let stylesMap = {
     borderRadius: 3,
     width: Dimensions.get('window').width - 20,
     backgroundColor: Colors.white,
-    justifyContent: 'center',
+    alignSelf: 'center',
     padding: 20
   },
   modalHeader: {
@@ -70,8 +71,44 @@ let stylesMap = {
   nonEditableTextInput: {
     marginLeft: 10,
     textAlign: 'center',
-    paddingRight: 15
-  }
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+
+
+
+
+  giphyPicker: {
+    // marginBottom: 20,
+    borderWidth: 1,
+    backgroundColor: Colors.white,
+    borderColor: Colors.zambezi,
+    borderStyle: 'dashed',
+    padding: 20,
+    borderRadius: 1
+  },
+  plusIconSkipFont: {
+    width: 42,
+    height: 42,
+    alignSelf: 'center'
+  },
+  giphyPickerText: {
+    textAlign: 'center',
+    color: Colors.darkGray,
+    fontSize: 20,
+    fontWeight: '300',
+    marginTop: 10,
+    fontFamily: 'Lato-Italic'
+  },
+  // crossIconSkipFont: {
+  //   width: 20,
+  //   height: 20,
+  //   position: 'absolute',
+  //   right: 10,
+  //   paddingVertical: 10,
+  //   paddingLeft: 20,
+  //   top: 20
+  // },
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

@@ -1,44 +1,35 @@
 import React, { Component } from 'react';
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import {
-  View,
-  Text,
-  Alert,
-  TextInput,
-  Switch,
-  TouchableOpacity,
-  Modal,
-  Image,
-  Platform,
-  Dimensions
-} from 'react-native';
+import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Header } from 'react-navigation';
+import {Header, SafeAreaView} from 'react-navigation';
 import BigNumber from 'bignumber.js';
 
-import TouchableButton from '../../theme/components/TouchableButton';
 import FormInput from '../../theme/components/FormInput';
-import Giphy from '../Giphy';
 import Theme from '../../theme/styles';
 import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
-import PriceOracle from '../../services/PriceOracle';
 import currentUserModal from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
-import CircleCloseIcon from '../../assets/circle_close_icon.png';
 import EditIcon from '../../assets/edit_icon.png';
 import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
+import EditTxModal from './EditTxModal';
+import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
+import GiphySelect from "./GiphySelect";
+
+const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
 class TransactionScreen extends Component {
-  static navigationOptions = ({ navigation, navigationOptions }) => {
+  static navigationOptions = ({ navigation }) => {
     return {
-      headerTitle: navigation.getParam('transactionHeader'),
+      title: navigation.getParam('transactionHeader'),
       headerBackImage: (
         <View style={{ paddingRight: 30, paddingVertical: 30, paddingLeft: Platform.OS === 'ios' ? 20 : 0 }}>
           <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
@@ -53,31 +44,26 @@ class TransactionScreen extends Component {
       exceBtnDisabled: true,
       isLoading: false,
       message: null,
-      clearErrors: false,
       server_errors: null,
       isPublic: true,
       general_error: '',
       btAmount: 1,
-      btUSDAmount: null,
+      btUSDAmount: 0,
       isMessageVisible: false,
       switchToggleState: false,
-      transactionModal: false,
-      btAmountFocus: true,
-      btAmountErrorMsg: null,
-      feildErrorText: null,
-      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
+      showTxModal: false,
+      fieldErrorText: null,
+      viewStyle: { height: Dimensions.get('window').height - safeAreaHeight },
+      selectedGiphy: null
     };
     this.baseState = this.state;
     this.toUser = this.props.navigation.getParam('toUser');
   }
 
   defaultVals() {
-    //TODO lets see how to optimise this
     this.meta = null;
-    this.gify = null;
     this.priceOracle = null;
     this.workflow = null;
-    this.previousState = null;
   }
 
   componentWillMount() {
@@ -93,7 +79,6 @@ class TransactionScreen extends Component {
 
   initPricePoint() {
     this.updatePricePoint();
-    this.getBalance();
   }
 
   updatePricePoint(successCallback, errorCallback) {
@@ -105,12 +90,15 @@ class TransactionScreen extends Component {
         successCallback && successCallback(token, pricePoints);
       },
       (error) => {
+        this.onError( error );
         errorCallback && errorCallback(error);
       }
     );
   }
 
   getBalance() {
+    //TODO catfood wherever fetched balance , update via Redux
+    //TODO priceOracle price point update after every 10 mins 
     const ostUserId = currentUserModal.getOstUserId();
     OstJsonApi.getBalanceForUserId(
       ostUserId,
@@ -118,7 +106,7 @@ class TransactionScreen extends Component {
         this.onBalance(res);
       },
       (err) => {
-        //DO nothing
+        this.onError( err );
       }
     );
   }
@@ -129,35 +117,32 @@ class TransactionScreen extends Component {
     balance = this.priceOracle.fromDecimal(balance);
     balance = this.priceOracle.toBt(balance) || 0;
     let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
-    if (this.previousState) {
-      this.previousState.balance = balance;
-      this.previousState.exceBtnDisabled = exceBtnDisabled;
-    }
     this.setState({ balance, exceBtnDisabled });
   }
 
-  onGetPricePointSuccess(token, pricePoints) {
+  getPriceOracle = () => {
+    return this.priceOracle;
+  };
+
+  onGetPricePointSuccess(token, pricePoints) {  
     let btUSDAmount = null;
     this.priceOracle = new PriceOracle(token, pricePoints);
+    this.getBalance();
     btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
     this.setState({ btUSDAmount: btUSDAmount });
   }
 
-  onGetPricePointError(error) {
-    this.onError(error);
-  }
-
-  excequteTransaction() {
-    if (!this.isValids()) {
+  excecuteTransaction() {
+    if (!this.isValid()) {
       Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
       return;
     }
     LoadingModal.show('Posting', 'This may take a while,\n we are surfing on Blockchain');
-    this.setState({ feildErrorText: null });
+    this.setState({ fieldErrorText: null });
     this.sendTransactionToSdk();
   }
 
-  isValids() {
+  isValid() {
     return !!this.priceOracle;
   }
 
@@ -178,14 +163,14 @@ class TransactionScreen extends Component {
   }
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
-    this.sendTransactionToPlatfrom(ostWorkflowEntity);
+    this.sendTransactionToPlatform(ostWorkflowEntity);
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
     this.onError(error);
   }
 
-  sendTransactionToPlatfrom(ostWorkflowEntity) {
+  sendTransactionToPlatform(ostWorkflowEntity) {
     const params = this.getSendTransactionPlatformData(ostWorkflowEntity);
     new PepoApi('/ost-transactions')
       .post(params)
@@ -214,7 +199,7 @@ class TransactionScreen extends Component {
       privacy_type: this.getPrivacyType(),
       meta: {
         text: this.state.message,
-        giphy: this.gify
+        giphy: this.state.selectedGiphy
       }
     };
   }
@@ -235,29 +220,9 @@ class TransactionScreen extends Component {
     }
     const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
     if (errorDataMsg) {
-      this.setState({ feildErrorText: errorDataMsg });
+      this.setState({ fieldErrorText: errorDataMsg });
       return;
     }
-  }
-
-  clearErrors() {
-    this.setState({ clearErrors: false, server_errors: null });
-  }
-
-  onGifySelect(gify) {
-    this.gify = gify;
-  }
-
-  onBtChange(bt) {
-    if (!this.priceOracle) return;
-    const usd = this.priceOracle.btToFiat(bt);
-    this.setState({ btAmount: bt, btUSDAmount: usd });
-  }
-
-  onUSDChange(usd) {
-    if (!this.priceOracle) return;
-    const bt = this.priceOracle.fiatToBt(usd);
-    this.setState({ btAmount: bt, btUSDAmount: usd });
   }
 
   onMessageBtnPress() {
@@ -267,27 +232,15 @@ class TransactionScreen extends Component {
     }
   }
 
-  onAmountModalConfrim() {
-    let btAmount = this.priceOracle.toBt(this.state.btAmount);
-    btAmount = btAmount && Number(btAmount);
-    if (btAmount <= 0 || btAmount > this.state.balance) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
-      return;
-    }
-    this.setState({ transactionModal: false });
-  }
-
-  onAmountModalShow() {
-    this.previousState = this.state;
-    this.setState({ transactionModal: true });
-  }
-
-  onAmountModalClose() {
-    this.setState(this.previousState);
-  }
+  onAmountModalConfirm = (btAmt, btUSDAmt) => {
+    this.setState({
+      btAmount: btAmt,
+      btUSDAmount: btUSDAmt
+    });
+  };
 
   openedKeyboard(frames) {
-    let deviceHeight = frames.endCoordinates.screenY - Header.HEIGHT,
+    let deviceHeight = frames.endCoordinates.screenY -  Header.HEIGHT - getStatusBarHeight(),
       stateObj;
     if (deviceHeight > 362) {
       stateObj = { height: deviceHeight };
@@ -301,8 +254,28 @@ class TransactionScreen extends Component {
 
   closedKeyboard(frames) {
     this.setState({
-      viewStyle: { height: Dimensions.get('window').height - Header.HEIGHT }
+      viewStyle: { height: Dimensions.get('window').height - safeAreaHeight }
     });
+  }
+
+  openGiphy() {
+    this.props.navigation.navigate('Giphy', { onGifySelect: ( gifsData )=> {
+       this.setState({ selectedGiphy: gifsData});
+    }})
+  }
+
+  openEditTx(){
+    this.props.navigation.navigate('EditTx', {
+      btAmount: this.state.btAmount,
+      btUSDAmount: this.state.btUSDAmount,
+      balance: this.state.balance,
+      getPriceOracle: this.getPriceOracle,
+      onAmountModalConfirm: this.onAmountModalConfirm
+    })
+  }
+
+  resetGiphy(){
+    this.setState({ selectedGiphy: null});
   }
 
   render() {
@@ -310,23 +283,20 @@ class TransactionScreen extends Component {
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraHeight={200}
+        style={{backgroundColor: '#f6f6f6'}}
         onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
         onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
         onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
         onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
         keyboardShouldPersistTaps="always"
       >
+        <SafeAreaView forceInset={{ top: 'never'}}>
         <View style={this.state.viewStyle}>
           <View style={inlineStyles.container}>
             {!this.state.isLoading && (
               <React.Fragment>
                 <View>
-                  <Giphy
-                    onGifySelect={(gify) => {
-                      this.onGifySelect(gify);
-                    }}
-                  />
-
+                  <GiphySelect selectedGiphy={this.state.selectedGiphy} resetGiphy={() => { this.resetGiphy() }} openGiphy={()=> {this.openGiphy() }} />
                   <View
                     style={{
                       flexDirection: 'row',
@@ -377,15 +347,14 @@ class TransactionScreen extends Component {
                       returnKeyType="done"
                       returnKeyLabel="Done"
                       serverErrors={this.state.server_errors}
-                      clearErrors={this.state.clearErrors}
                       placeholderTextColor="#ababab"
                     />
                   )}
 
-                  <Text style={Theme.Errors.errorText}> {this.state.feildErrorText}</Text>
+                  <Text style={Theme.Errors.errorText}> {this.state.fieldErrorText}</Text>
                 </View>
-                <View style={[inlineStyles.bottomButtonsWrapper, { marginBottom: 15 }]}>
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <View>
+                  <View style={{ flexDirection: 'row'}}>
                     <TouchableOpacity
                       disabled={this.state.exceBtnDisabled}
                       style={[
@@ -394,7 +363,7 @@ class TransactionScreen extends Component {
                         inlineStyles.sendPepoBtn,
                         this.state.exceBtnDisabled ? Theme.Button.disabled : null
                       ]}
-                      onPress={() => this.excequteTransaction()}
+                      onPress={() => this.excecuteTransaction()}
                     >
                       <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
                         Send{' '}
@@ -410,7 +379,7 @@ class TransactionScreen extends Component {
                     <TouchableOpacity
                       style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
                       onPress={() => {
-                        this.onAmountModalShow();
+                        this.openEditTx();
                       }}
                     >
                       <Image style={[{ width: 20, height: 20 }, { tintColor: '#ef5566' }]} source={EditIcon}></Image>
@@ -418,104 +387,11 @@ class TransactionScreen extends Component {
                   </View>
                 </View>
 
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={this.state.transactionModal}
-                  onRequestClose={() => {
-                    this.setState({ transactionModal: false });
-                  }}
-                >
-                  <KeyboardAwareScrollView enableOnAndroid={true} extraHeight={200} keyboardShouldPersistTaps="always">
-                    <View style={{ height: Dimensions.get('window').height }}>
-                      <View style={inlineStyles.modalBackDrop}>
-                        <View style={inlineStyles.modelWrapper}>
-                          <View>
-                            <TouchableOpacity
-                              style={inlineStyles.modalCloseBtnWrapper}
-                              onPress={() => {
-                                this.onAmountModalClose();
-                              }}
-                            >
-                              <Image source={CircleCloseIcon} style={inlineStyles.crossIconSkipFont} />
-                            </TouchableOpacity>
-                          </View>
-                          <View style={inlineStyles.modalContentWrapper}>
-                            <Text style={inlineStyles.modalHeader}>Enter The Amount you want to send</Text>
-                            <View style={{ flexDirection: 'row' }}>
-                              <View style={{ flex: 0.7 }}>
-                                <FormInput
-                                  editable={true}
-                                  onChangeText={(val) => this.onBtChange(val)}
-                                  placeholder="BT"
-                                  fieldName="bt_amount"
-                                  style={Theme.TextInput.textInputStyle}
-                                  value={`${this.state.btAmount}`}
-                                  placeholderTextColor="#ababab"
-                                  errorMsg={this.state.btAmountErrorMsg}
-                                  serverErrors={this.state.server_errors}
-                                  clearErrors={this.state.clearErrors}
-                                  keyboardType="numeric"
-                                  isFocus={this.state.btAmountFocus}
-                                  blurOnSubmit={false}
-                                />
-                              </View>
-                              <View style={{ flex: 0.3 }}>
-                                <TextInput
-                                  editable={false}
-                                  style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
-                                >
-                                  <Text>PEPO</Text>
-                                </TextInput>
-                              </View>
-                            </View>
-
-                            <View style={{ flexDirection: 'row' }}>
-                              <View style={{ flex: 0.7 }}>
-                                <FormInput
-                                  editable={true}
-                                  onChangeText={(val) => this.onUSDChange(val)}
-                                  value={`${this.state.btUSDAmount}`}
-                                  placeholder="USD"
-                                  fieldName="usd_amount"
-                                  style={Theme.TextInput.textInputStyle}
-                                  placeholderTextColor="#ababab"
-                                  serverErrors={this.state.server_errors}
-                                  clearErrors={this.state.clearErrors}
-                                  keyboardType="numeric"
-                                  blurOnSubmit={true}
-                                />
-                              </View>
-                              <View style={{ flex: 0.3 }}>
-                                <TextInput
-                                  editable={false}
-                                  style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}
-                                >
-                                  <Text>USD</Text>
-                                </TextInput>
-                              </View>
-                            </View>
-                            <TouchableButton
-                              TouchableStyles={[Theme.Button.btnPink, { marginTop: 10 }]}
-                              TextStyles={[Theme.Button.btnPinkText]}
-                              text="CONFIRM"
-                              onPress={() => {
-                                this.onAmountModalConfrim();
-                              }}
-                            />
-                            <Text style={{ textAlign: 'center', paddingTop: 10, fontSize: 13 }}>
-                              Your Current Balance: P{this.state.balance}
-                            </Text>
-                          </View>
-                        </View>
-                      </View>
-                    </View>
-                  </KeyboardAwareScrollView>
-                </Modal>
               </React.Fragment>
             )}
           </View>
         </View>
+        </SafeAreaView>
       </KeyboardAwareScrollView>
     );
   }
