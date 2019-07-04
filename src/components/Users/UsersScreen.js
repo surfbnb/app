@@ -5,7 +5,7 @@ class Users extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       headerTitle: 'Friends',
-      headerBackTitle: null
+      headerBackTitle: null,
     };
   };
   constructor(props) {

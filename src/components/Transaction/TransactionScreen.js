@@ -7,7 +7,6 @@ import {Header, SafeAreaView} from 'react-navigation';
 import BigNumber from 'bignumber.js';
 
 import FormInput from '../../theme/components/FormInput';
-import Giphy from '../Giphy';
 import Theme from '../../theme/styles';
 import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
@@ -23,14 +22,14 @@ import { ostErrors } from '../../services/OstErrors';
 import EditTxModal from './EditTxModal';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
-import styles from "../CustomTab/styles";
+import GiphySelect from "./GiphySelect";
 
-const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true])
+const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      headerTitle: navigation.getParam('transactionHeader'),
+      title: navigation.getParam('transactionHeader'),
       headerBackImage: (
         <View style={{ paddingRight: 30, paddingVertical: 30, paddingLeft: Platform.OS === 'ios' ? 20 : 0 }}>
           <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
@@ -54,7 +53,8 @@ class TransactionScreen extends Component {
       switchToggleState: false,
       showTxModal: false,
       fieldErrorText: null,
-      viewStyle: { height: Dimensions.get('window').height - safeAreaHeight }
+      viewStyle: { height: Dimensions.get('window').height - safeAreaHeight },
+      selectedGiphy: null
     };
     this.baseState = this.state;
     this.toUser = this.props.navigation.getParam('toUser');
@@ -62,7 +62,6 @@ class TransactionScreen extends Component {
 
   defaultVals() {
     this.meta = null;
-    this.gify = null;
     this.priceOracle = null;
     this.workflow = null;
   }
@@ -70,10 +69,6 @@ class TransactionScreen extends Component {
   componentWillMount() {
     this.defaultVals();
     this.initPricePoint();
-    console.log('getStatusBarHeight', getStatusBarHeight([true]));
-    console.log('headerHeight', Header.HEIGHT);
-    console.log('height', Dimensions.get('window').height);
-    console.log('screen height', Dimensions.get('screen').height);
   }
 
   componentWillUnmount() {
@@ -84,7 +79,6 @@ class TransactionScreen extends Component {
 
   initPricePoint() {
     this.updatePricePoint();
-    this.getBalance();
   }
 
   updatePricePoint(successCallback, errorCallback) {
@@ -103,6 +97,8 @@ class TransactionScreen extends Component {
   }
 
   getBalance() {
+    //TODO catfood wherever fetched balance , update via Redux
+    //TODO priceOracle price point update after every 10 mins 
     const ostUserId = currentUserModal.getOstUserId();
     OstJsonApi.getBalanceForUserId(
       ostUserId,
@@ -131,6 +127,7 @@ class TransactionScreen extends Component {
   onGetPricePointSuccess(token, pricePoints) {  
     let btUSDAmount = null;
     this.priceOracle = new PriceOracle(token, pricePoints);
+    this.getBalance();
     btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
     this.setState({ btUSDAmount: btUSDAmount });
   }
@@ -202,7 +199,7 @@ class TransactionScreen extends Component {
       privacy_type: this.getPrivacyType(),
       meta: {
         text: this.state.message,
-        giphy: this.gify
+        giphy: this.state.selectedGiphy
       }
     };
   }
@@ -228,35 +225,18 @@ class TransactionScreen extends Component {
     }
   }
 
-  onGifySelect(gify) {
-    this.gify = gify;
-  }
-  
   onMessageBtnPress() {
     this.setState({ isMessageVisible: !this.state.isMessageVisible });
     if (this.state.isMessageVisible) {
       this.setState({ message: '' });
     }
   }
-  
-  onShowAmountModal = () => {
-    this.setState({ showTxModal: true });
-  };
-
-  onAmountModalClose = () => {
-    this.hideEditTxModal();
-  };
 
   onAmountModalConfirm = (btAmt, btUSDAmt) => {
     this.setState({
       btAmount: btAmt,
       btUSDAmount: btUSDAmt
     });
-    this.hideEditTxModal();
-  };
-
-  hideEditTxModal = () => {
-    this.setState({ showTxModal: false });
   };
 
   openedKeyboard(frames) {
@@ -278,6 +258,26 @@ class TransactionScreen extends Component {
     });
   }
 
+  openGiphy() {
+    this.props.navigation.navigate('Giphy', { onGifySelect: ( gifsData )=> {
+       this.setState({ selectedGiphy: gifsData});
+    }})
+  }
+
+  openEditTx(){
+    this.props.navigation.navigate('EditTx', {
+      btAmount: this.state.btAmount,
+      btUSDAmount: this.state.btUSDAmount,
+      balance: this.state.balance,
+      getPriceOracle: this.getPriceOracle,
+      onAmountModalConfirm: this.onAmountModalConfirm
+    })
+  }
+
+  resetGiphy(){
+    this.setState({ selectedGiphy: null});
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView
@@ -296,12 +296,7 @@ class TransactionScreen extends Component {
             {!this.state.isLoading && (
               <React.Fragment>
                 <View>
-                  <Giphy
-                    onGifySelect={(gify) => {
-                      this.onGifySelect(gify);
-                    }}
-                  />
-
+                  <GiphySelect selectedGiphy={this.state.selectedGiphy} resetGiphy={() => { this.resetGiphy() }} openGiphy={()=> {this.openGiphy() }} />
                   <View
                     style={{
                       flexDirection: 'row',
@@ -384,23 +379,14 @@ class TransactionScreen extends Component {
                     <TouchableOpacity
                       style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
                       onPress={() => {
-                        this.onShowAmountModal();
+                        this.openEditTx();
                       }}
                     >
                       <Image style={[{ width: 20, height: 20 }, { tintColor: '#ef5566' }]} source={EditIcon}></Image>
                     </TouchableOpacity>
                   </View>
                 </View>
-                
-                <EditTxModal
-                  showTxModal={this.state.showTxModal}
-                  onModalClose={this.onAmountModalClose}
-                  btAmount={this.state.btAmount}
-                  btUSDAmount={this.state.btUSDAmount}
-                  onAmountModalConfirm={this.onAmountModalConfirm}
-                  balance={this.state.balance}
-                  getPriceOracle={this.getPriceOracle}
-                />
+
               </React.Fragment>
             )}
           </View>
