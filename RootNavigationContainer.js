@@ -25,7 +25,8 @@ import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 
 const HomeStack = createStackNavigator(
   {
-    HomeScreen: HomeScreen
+    HomeScreen: HomeScreen,
+    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center'

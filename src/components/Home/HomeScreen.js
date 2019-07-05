@@ -26,17 +26,20 @@ export default class Videos extends Component {
     }
 
     componentDidMount(){
+        let loadingTimeOut ; 
+
         this.didFocusSubscription =   this.props.navigation.addListener(
             'didFocus',
             payload => {
-              this.onMomentumScrollEnd();
+                this.onMomentumScrollEnd();
             }
         );
 
         this.willBlurSubscription =   this.props.navigation.addListener(
             'willBlur',
             payload => {
-               this.setState( { activeIndex : -9999 } );
+               clearInterval(loadingTimeOut);
+               this.setState( { activeIndex : -1 } );
             }
         );
     }
