@@ -33,6 +33,7 @@ class VideoWrapper extends PureComponent {
     }
 
     render(){
+        
         return (
             <View>
               <TouchableWithoutFeedback onPress={()=> this.setState({ paused : !this.state.paused })}>
@@ -40,7 +41,7 @@ class VideoWrapper extends PureComponent {
                     style={inlineStyles.fullHeight}
                     paused={ this.isPaused() }
                     resizeMode={"contain"}
-                    source={{uri: this.props.videoUrl}}  
+                    source={this.props.doSrc ? {uri: this.props.videoUrl} : {}}
                     repeat={true}/>
                </TouchableWithoutFeedback> 
                <TouchableButton

@@ -8,6 +8,7 @@ import TikTokDummyData from './videoDummydata';
 const videoData =  TikTokDummyData.body.itemListData; 
 
 let currentIndex = 0 ; 
+const maxVideosThreshold = 5;
 
 export default class Videos extends Component {
 
@@ -74,6 +75,7 @@ export default class Videos extends Component {
                             onMomentumScrollEnd={ (e) => {this.onMomentumScrollEnd(e)} }
                             renderItem={({ item , index }) => <Video 
                                         isActive={ index === this.state.activeIndex }
+                                        doSrc={ true || Math.abs(index - this.state.activeIndex) < maxVideosThreshold }
                                         videoUrl={item.itemInfos.video.urls[0]} 
                                         />}
                         />
