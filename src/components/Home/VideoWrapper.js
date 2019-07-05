@@ -29,7 +29,9 @@ class VideoWrapper extends PureComponent {
     }
 
     exTransaction(e){
-        this.props.navigation.push('TransactionScreen');
+        this.setState({paused: true},  ()=>{
+            this.props.navigation.push('TransactionScreen');
+        });
     }
 
     render(){
