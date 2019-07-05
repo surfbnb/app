@@ -32,7 +32,9 @@ export default class Videos extends Component {
         this.didFocusSubscription =   this.props.navigation.addListener(
             'didFocus',
             payload => {
-                this.onMomentumScrollEnd();
+                setTimeout(()=>{
+                    this.onMomentumScrollEnd();
+                }, 300 )   
             }
         );
 
