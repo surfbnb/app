@@ -1,4 +1,3 @@
-import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import { Dimensions  } from 'react-native';
 
 let stylesMap = {
@@ -14,4 +13,4 @@ let stylesMap = {
 
 };
   
-  export default styles = DefaultStyleGenerator.generate(stylesMap);
+  export default stylesMap;

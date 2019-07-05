@@ -17,12 +17,33 @@ export default class Videos extends Component {
         };
      };
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             activeIndex : 0  
         }
         this.flatList = null;
+    }
+
+    componentDidMount(){
+        this.didFocusSubscription =   this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+              this.onMomentumScrollEnd();
+            }
+        );
+
+        this.willBlurSubscription =   this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+               this.setState( { activeIndex : -9999 } );
+            }
+        );
+    }
+
+    componentWillUnmount(){
+        this.didFocusSubscription.remove(); 
+        this.willBlurSubscription.remove(); 
     }
 
     onViewableItemsChanged( data ){
