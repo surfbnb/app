@@ -7,4 +7,8 @@ target 'Pepo2' do
 
   # Pods for Pepo2
 pod 'react-native-fast-image', :path => '../node_modules/react-native-fast-image'
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
+
+
 end

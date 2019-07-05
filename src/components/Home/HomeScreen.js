@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, Dimensions, StyleSheet, StatusBar , ScrollView} from 'react-native';
+import { View, FlatList, StatusBar } from 'react-native';
+import deepGet from "lodash/get";
+import Video from "./VideoWrapper";
+import inlineStyles from "./styles";
 
-const colorData = [
-    'rgb(255,140,140)',
-    'rgb(253,244,128)',
-    'rgb(5,217,200)',
-    'rgb(59,188,255)',
-    'rgb(242,212,121)',
-    'rgb(164,251,158)',
-    'rgb(251,162,255)',
-    'rgb(55,108,180)',
-    'rgb(141,121,242)',
-    'rgb(255,140,140)',
-    'rgb(253,244,128)'
-]
+import TikTokDummyData from './videoDummydata';
+const videoData =  TikTokDummyData.body.itemListData; 
+
+let currentIndex = 0 ; 
 
 export default class Videos extends Component {
 
@@ -25,33 +19,41 @@ export default class Videos extends Component {
 
     constructor(){
         super();
+        this.state = {
+            activeIndex : 0  
+        }
+        this.flatList = null;
+    }
+
+    onViewableItemsChanged( data ){
+        currentIndex =  deepGet( data , "viewableItems[0].index") ; 
+    }
+
+    onMomentumScrollEnd( ){
+        if(this.state.activeIndex == currentIndex )return; 
+        this.setState( { activeIndex : currentIndex } );
     }
 
     render() {
         return (
-            <View>
+            <View style={{ backgroundColor: "black"}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
-                    <FlatList
-                        snapToAlignment={"center"}
-                        pagingEnabled={true}
-                        decelerationRate={"fast"}
-                        data={colorData}
-                        keyExtractor={(item, index) => `id_${index}`}
-                        style={styles.fullScreen}
-                        renderItem={({ item }) => <View style={[{...styles.fullHeight}, {backgroundColor: item}]}  />}
-                    />
+                        <FlatList
+                            ref={(ref) => { this.flatList = ref }}
+                            snapToAlignment={"center"}
+                            pagingEnabled={true}
+                            decelerationRate={"fast"}
+                            data={videoData}
+                            keyExtractor={(item, index) => `id_${index}`}
+                            style={inlineStyles.fullScreen}
+                            onViewableItemsChanged={this.onViewableItemsChanged}
+                            onMomentumScrollEnd={ (e) => {this.onMomentumScrollEnd(e)} }
+                            renderItem={({ item , index }) => <Video 
+                                        isActive={ index === this.state.activeIndex }
+                                        videoUrl={item.itemInfos.video.urls[0]} 
+                                        />}
+                        />
              </View>
         )
     }
 }
-
-let styles = StyleSheet.create({
-    fullScreen: {
-        width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').height,
-    },
-    fullHeight: {
-        width: '100%',
-        height: Dimensions.get('screen').height
-    }
-});
