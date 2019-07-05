@@ -33,7 +33,7 @@ export default class Videos extends Component {
             'didFocus',
             payload => {
                 setTimeout(()=>{
-                    this.onMomentumScrollEnd();
+                    this.setActiveIndex();
                 }, 300 )   
             }
         );
@@ -56,7 +56,7 @@ export default class Videos extends Component {
         currentIndex =  deepGet( data , "viewableItems[0].index") ; 
     }
 
-    onMomentumScrollEnd( ){
+    setActiveIndex( ){
         if(this.state.activeIndex == currentIndex )return; 
         this.setState( { activeIndex : currentIndex } );
     }
@@ -74,7 +74,7 @@ export default class Videos extends Component {
                             keyExtractor={(item, index) => `id_${index}`}
                             style={inlineStyles.fullScreen}
                             onViewableItemsChanged={this.onViewableItemsChanged}
-                            onMomentumScrollEnd={ (e) => {this.onMomentumScrollEnd(e)} }
+                            onMomentumScrollEnd={ (e) => {this.setActiveIndex(e)} }
                             renderItem={({ item , index }) => <Video 
                                         isActive={ index === this.state.activeIndex }
                                         doSrc={ true || Math.abs(index - this.state.activeIndex) < maxVideosThreshold }
