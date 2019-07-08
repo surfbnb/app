@@ -4,6 +4,7 @@ import { StackActions, NavigationActions, SafeAreaView } from 'react-navigation'
 
 import styles from './styles';
 import feed from '../../assets/user_feed.png';
+import global from '../../assets/user_global.png';
 import profile from '../../assets/user_profile.png';
 import friends from '../../assets/user_friends.png';
 
@@ -27,27 +28,32 @@ const CustomTab = ({ navigation, screenProps }) => (
   <View>
     <SafeAreaView forceInset={{ top: 'never'}} style={styles.container}>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.homeTab)}>
-          <Text style={[styles.tabElementSkipFont, { color: navigation.state.index === 0 ? '#ef5566' : '#484848' }]}>
-            H
-          </Text>
+        <Image
+          tintColor={navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}
+          style={[styles.tabElementSkipFont, { tintColor: navigation.state.index === 0 ? '#ef5566' : '#484848' }]}
+          source={global}
+        />
+          {/*<Text style={[styles.tabElementSkipFont, { color: navigation.state.index === 0 ? '#ef5566' : '#484848' }]}>*/}
+            {/*H*/}
+          {/*</Text>*/}
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.feedTab)}>
         <Image
-          tintColor={navigation.state.index === 0 ? '#61b2d6' : 'rgb(72,72,72)'}
-          style={[styles.tabElementSkipFont, { tintColor: navigation.state.index === 1 ? '#ef5566' : '#484848' }]}
+          tintColor={navigation.state.index === 1 ? '#61b2d6' : 'rgb(72,72,72)'}
+          style={[{height: 24, width: 28}, { tintColor: navigation.state.index === 1 ? '#ef5566' : '#484848' }]}
           source={feed}
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.usersTab)}>
         <Image
-          tintColor={navigation.state.index === 1 ? '#61b2d6' : '#484848'}
+          tintColor={navigation.state.index === 2 ? '#61b2d6' : '#484848'}
           style={[styles.tabElementFriendsSkipFont, { tintColor: navigation.state.index === 2 ? '#ef5566' : '#484848' }]}
           source={friends}
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.profileTab)}>
         <Image
-          tintColor={navigation.state.index === 2 ? '#61b2d6' : '#484848'}
+          tintColor={navigation.state.index === 3 ? '#61b2d6' : '#484848'}
           style={[styles.tabElementSkipFont, { tintColor: navigation.state.index === 3 ? '#ef5566' : '#484848' }]}
           source={profile}
         />

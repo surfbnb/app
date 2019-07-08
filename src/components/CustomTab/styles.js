@@ -1,11 +1,12 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
+import { CUSTOM_TAB_Height } from '../../theme/constants';
 
 let stylesMap = {
   container: {
     flex: 0,
     width: '100%',
-    height: 50,
+    height: CUSTOM_TAB_Height,
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: 'rgba(255, 255, 255, 0.85)',

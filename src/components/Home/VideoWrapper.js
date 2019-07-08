@@ -45,13 +45,13 @@ class VideoWrapper extends PureComponent {
                     resizeMode={"cover"}
                     source={this.props.doSrc ? {uri: this.props.videoUrl} : {}}
                     repeat={true}/>
-               </TouchableWithoutFeedback> 
-               <TouchableButton
+               </TouchableWithoutFeedback>
+              <TouchableButton
                 TouchableStyles={[Theme.Button.btnPink, {position: "absolute",  bottom:100 , right: 0}]}
                 TextStyles={[Theme.Button.btnPinkText]}
                 text="Transaction"
                 onPress={(e) => {this.exTransaction(e)}}
-                ></TouchableButton>
+              ></TouchableButton>
               <BottomStatus/>
            </View>
         )
