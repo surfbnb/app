@@ -8,7 +8,7 @@ let stylesMap = {
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: Colors.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     alignItems: 'center',
     borderColor: 'rgba(0, 0, 0, 0.25)',
     borderWidth: 1,

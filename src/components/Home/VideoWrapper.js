@@ -4,6 +4,7 @@ import TouchableButton from '../../theme/components/TouchableButton';
 import { withNavigation } from 'react-navigation';
 import Theme from '../../theme/styles';
 import Video from 'react-native-video';
+import BottomStatus from "./BottomStatus";
 
 import inlineStyles from "./styles"; 
 
@@ -41,7 +42,7 @@ class VideoWrapper extends PureComponent {
                     <Video
                     style={inlineStyles.fullHeight}
                     paused={ this.isPaused() }
-                    resizeMode={"contain"}
+                    resizeMode={"cover"}
                     source={this.props.doSrc ? {uri: this.props.videoUrl} : {}}
                     repeat={true}/>
                </TouchableWithoutFeedback> 
@@ -51,6 +52,7 @@ class VideoWrapper extends PureComponent {
                 text="Transaction"
                 onPress={(e) => {this.exTransaction(e)}}
                 ></TouchableButton>
+              <BottomStatus/>
            </View>
         )
     }
