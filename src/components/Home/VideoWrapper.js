@@ -34,8 +34,7 @@ class VideoWrapper extends PureComponent {
         });
     }
 
-    render(){
-        
+    render(){   
         return (
             <View>
               <TouchableWithoutFeedback onPress={()=> this.setState({ paused : !this.state.paused })}>
