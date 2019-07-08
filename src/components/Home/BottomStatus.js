@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react';
 import {View, Text, Image, TouchableOpacity, Alert} from "react-native";
 // import TouchableButton from '../../theme/components/TouchableButton';
-import Theme from '../../theme/styles';
 
 import inlineStyles from "./styles";
 import {withNavigation} from "react-navigation";
-import styles from "../CustomTab/styles";
 import tx_icon from "../../assets/tx_icon.png";
 import pepo_tx_icon from "../../assets/pepo_tx_icon.png";
 

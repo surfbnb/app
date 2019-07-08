@@ -4,6 +4,7 @@ import { withNavigation } from 'react-navigation';
 import Theme from '../../theme/styles';
 import Video from 'react-native-video';
 import BottomStatus from "./BottomStatus";
+import TopStatus from "./TopStatus";
 
 import inlineStyles from "./styles"; 
 
@@ -37,9 +38,10 @@ class VideoWrapper extends PureComponent {
     render(){   
         return (
             <View>
+              <TopStatus/>
               <TouchableWithoutFeedback onPress={()=> this.setState({ paused : !this.state.paused })}>
                     <Video
-                    style={inlineStyles.fullHeight}
+                    style={inlineStyles.fullHeightSkipFont}
                     paused={ this.isPaused() }
                     resizeMode={"cover"}
                     source={this.props.doSrc ? {uri: this.props.videoUrl} : {}}
