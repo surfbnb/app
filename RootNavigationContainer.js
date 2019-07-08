@@ -26,15 +26,35 @@ import Giphy from "./src/components/Giphy";
 import EditTx from "./src/components/Transaction/EditTxModal";
 import  deepGet from "lodash/get";
 
-const HomeStack = createStackNavigator(
+const transactionScreenParentStackConfig =  {
+  headerLayoutPreset: 'center',
+  headerMode: 'none',
+  mode: 'modal',
+  navigationOptions: ({ navigation }) => {
+    return {
+      tabBarVisible: deepGet(navigation , "state.routes[0].index") == 0 ? true : false
+    }
+  }
+}
+
+const HomeTransactionStack = createStackNavigator(
   {
-    HomeScreen: HomeScreen,
-    TransactionScreen: TransactionScreen
+    HomeScreen:  HomeScreen ,
+    TransactionScreen : TransactionScreen,
   },
   {
     headerLayoutPreset: 'center'
   }
-)
+);
+
+const HomeStack = createStackNavigator(
+  {
+    HomeTransaction: HomeTransactionStack,
+    Giphy: Giphy,
+    EditTx: EditTx
+  },
+  {...transactionScreenParentStackConfig}
+);
 
 const FeedStack = createStackNavigator(
   {
@@ -63,16 +83,7 @@ const UserStack = createStackNavigator(
     Giphy: Giphy,
     EditTx: EditTx
   },
-  {
-    headerLayoutPreset: 'center',
-    headerMode: 'none',
-    mode: 'modal',
-    navigationOptions: ({ navigation }) => {
-      return {
-        tabBarVisible: deepGet(navigation , "state.routes[0].index") == 0 ? true : false
-      }
-    }
-  }
+  {...transactionScreenParentStackConfig}
 );
 
 const ProfileStack = createStackNavigator(

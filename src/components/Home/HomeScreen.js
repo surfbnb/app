@@ -14,7 +14,8 @@ export default class Videos extends Component {
 
     static navigationOptions = ({ navigation, navigationOptions }) => {
         return {
-            header: null
+            header: null,
+            headerBackTitle: null
         };
      };
 
