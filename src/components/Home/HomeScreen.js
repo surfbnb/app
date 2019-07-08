@@ -64,7 +64,7 @@ export default class Videos extends Component {
 
     render() {
         return (
-            <View style={{ backgroundColor: "red"}}>
+            <View style={{ backgroundColor: "#fff"}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                         <FlatList
                             ref={(ref) => { this.flatList = ref }}

@@ -12,18 +12,20 @@ let stylesMap = {
         height: Dimensions.get('screen').height
     },
     pepoElem: {
-        alignSelf: 'flex-end', marginBottom: 15, marginRight: 20
+        alignSelf: 'flex-end',
+        marginBottom: 15,
+        marginRight: 20
     },
     pepoTxCount:{
         fontSize: 18,
-        color: 'white',
+        color: Colors.white,
         alignSelf: 'center',
         marginTop: 5
     },
     txElem: {
         marginBottom: 20,
         alignSelf: 'flex-end',
-        marginRight: 20,
+        marginRight: 20
     },
     bottomContainer: {
         width: '100%',
@@ -39,12 +41,13 @@ let stylesMap = {
         paddingHorizontal: 15
     },
     bottomBgTxt:{
-        color: 'white'
+        color: Colors.white
     },
     topContainer:{
         position: 'absolute',
         top: 50,
-        right: 20
+        right: 20,
+        zIndex: 1
     },
     topBg:{
         backgroundColor: 'rgba(255, 255, 255, 0.45)',
@@ -54,12 +57,12 @@ let stylesMap = {
         paddingRight: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: '#e0e0e0',
+        borderColor: Colors.gainsboro,
         borderWidth: 0.5,
         borderRadius: 1
     },
     topBgTxt:{
-        color: '#3e404b',
+        color: Colors.paynesGrey,
         fontSize: 14
     },
     topBgPosSkipFont: {

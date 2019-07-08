@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import {View, Text, Image, TouchableOpacity, Alert} from "react-native";
-// import TouchableButton from '../../theme/components/TouchableButton';
 
 import inlineStyles from "./styles";
 import {withNavigation} from "react-navigation";
@@ -32,12 +31,7 @@ class BottomStatus extends PureComponent {
   render(){
     return (
       <View style={ inlineStyles.bottomContainer }>
-        {/*<TouchableButton*/}
-          {/*TouchableStyles={[Theme.Button.btnPink]}*/}
-          {/*TextStyles={[Theme.Button.btnPinkText]}*/}
-          {/*text="Transaction"*/}
-          {/*onPress={(e) => {this.exTransaction(e)}}*/}
-        {/*></TouchableButton>*/}
+
         <View style={inlineStyles.pepoElem}>
           <TouchableOpacity onPress={(e) => {this.showAlert(e)}}>
             <Image
@@ -47,14 +41,16 @@ class BottomStatus extends PureComponent {
           </TouchableOpacity>
           <Text style={inlineStyles.pepoTxCount}>304</Text>
         </View>
-        <View style={inlineStyles.txElem}>
-          <TouchableOpacity onPress={(e) => {this.exTransaction(e)}}>
-            <Image
-              style={{ height: 57, width: 57}}
-              source={tx_icon}
-            />
-          </TouchableOpacity>
-        </View>
+
+        <TouchableOpacity onPress={(e) => {this.exTransaction(e)}}
+                          style={inlineStyles.txElem}
+        >
+          <Image
+            style={{ height: 57, width: 57}}
+            source={tx_icon}
+          />
+        </TouchableOpacity>
+
         <View style={inlineStyles.bottomBg}>
           <View style={{flex: 0.7, flexWrap: 'wrap'}}>
             <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>@Annik</Text>
@@ -65,6 +61,7 @@ class BottomStatus extends PureComponent {
             <Text style={inlineStyles.bottomBgTxt}>$ 2K Supporters</Text>
           </View>
         </View>
+
       </View>
     )
   }
