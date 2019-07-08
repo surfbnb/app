@@ -22,6 +22,9 @@ import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
 import HomeScreen from './src/components/Home/HomeScreen'
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
+import Giphy from "./src/components/Giphy";
+import EditTx from "./src/components/Transaction/EditTxModal";
+import  deepGet from "lodash/get";
 
 const HomeStack = createStackNavigator(
   {
@@ -43,16 +46,32 @@ const FeedStack = createStackNavigator(
   }
 );
 
-const UserStack = createStackNavigator(
+
+const UserTransactionStack = createStackNavigator(
   {
-    Users: Users,
-    TransactionScreen: TransactionScreen
+    UsersScreen:  Users ,
+    TransactionScreen : TransactionScreen,
   },
   {
-    navigationOptions: ({ navigation }) => ({
-      tabBarVisible: navigation.state.index == 1 ? false : true
-    }),
     headerLayoutPreset: 'center'
+  }
+);
+
+const UserStack = createStackNavigator(
+  {
+    UserTransaction: UserTransactionStack,
+    Giphy: Giphy,
+    EditTx: EditTx
+  },
+  {
+    headerLayoutPreset: 'center',
+    headerMode: 'none',
+    mode: 'modal',
+    navigationOptions: ({ navigation }) => {
+      return {
+        tabBarVisible: deepGet(navigation , "state.routes[0].index") == 0 ? true : false
+      }
+    }
   }
 );
 
