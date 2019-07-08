@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import {TouchableWithoutFeedback, View} from "react-native";
-import TouchableButton from '../../theme/components/TouchableButton';
 import { withNavigation } from 'react-navigation';
 import Theme from '../../theme/styles';
 import Video from 'react-native-video';
@@ -46,12 +45,6 @@ class VideoWrapper extends PureComponent {
                     source={this.props.doSrc ? {uri: this.props.videoUrl} : {}}
                     repeat={true}/>
                </TouchableWithoutFeedback>
-              <TouchableButton
-                TouchableStyles={[Theme.Button.btnPink, {position: "absolute",  bottom:150 , right: 0}]}
-                TextStyles={[Theme.Button.btnPinkText]}
-                text="Transaction"
-                onPress={(e) => {this.exTransaction(e)}}
-              ></TouchableButton>
               <BottomStatus/>
            </View>
         )
