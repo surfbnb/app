@@ -47,7 +47,7 @@ class VideoWrapper extends PureComponent {
                     repeat={true}/>
                </TouchableWithoutFeedback>
               <TouchableButton
-                TouchableStyles={[Theme.Button.btnPink, {position: "absolute",  bottom:100 , right: 0}]}
+                TouchableStyles={[Theme.Button.btnPink, {position: "absolute",  bottom:150 , right: 0}]}
                 TextStyles={[Theme.Button.btnPinkText]}
                 text="Transaction"
                 onPress={(e) => {this.exTransaction(e)}}
