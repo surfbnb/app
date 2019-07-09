@@ -13,30 +13,41 @@ let stylesMap = {
         width: '100%',
         height: Dimensions.get('screen').height
     },
-    pepoElem: {
-        alignSelf: 'flex-end',
-        marginBottom: 15,
-        marginRight: 20
+    touchablesBtns: {
+      width: '20%',
+      alignItems: 'center',
+      alignSelf: 'flex-end'
+    },
+    pepoElemBtn: {
+      backgroundColor: Colors.white,
+      height : 50,
+      marginBottom: 5,
+      width: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 25,
+      borderStyle: 'solid',
+      borderWidth: 2,
+      borderColor: Colors.wildWatermelon
     },
     pepoTxCount:{
         fontSize: 18,
         color: Colors.white,
         alignSelf: 'center',
-        marginTop: 5
+        marginTop: 3,
+      marginBottom: 15
     },
     txElem: {
         marginBottom: 20,
-        alignSelf: 'flex-end',
-        marginRight: 20
     },
     bottomContainer: {
         width: '100%',
         position: 'absolute',
-          ...ifIphoneX({
+        ...ifIphoneX({
             bottom: getBottomSpace([true]) + CUSTOM_TAB_Height
-          }, {
+        }, {
             bottom: CUSTOM_TAB_Height
-          }),
+        }),
     },
     bottomBg: {
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -75,7 +86,21 @@ let stylesMap = {
     topBgPosSkipFont: {
         position: 'absolute',
         left: -9
-    }
+    },
+  clappedBubble: {
+    backgroundColor: Colors.wildWatermelon,
+    height: 53,
+    width: 53,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 30
+  },
+  btnText: {
+    color: Colors.white
+  }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

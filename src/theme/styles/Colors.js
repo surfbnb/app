@@ -11,5 +11,6 @@ export default {
   lightGrey: '#D5D5D5',
   zambezi: '#606060',
   gainsboro: '#e0e0e0',
-  paynesGrey: '#3e404b'
+  paynesGrey: '#3e404b',
+  wildWatermelon: '#FF5363'
 };

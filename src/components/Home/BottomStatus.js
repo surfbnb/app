@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import {View, Text, Image, TouchableOpacity, Alert} from "react-native";
+import {View, Text, Image, TouchableOpacity, Alert, Animated} from "react-native";
 
 import inlineStyles from "./styles";
 import {withNavigation} from "react-navigation";
 import tx_icon from "../../assets/tx_icon.png";
-import pepo_tx_icon from "../../assets/pepo_tx_icon.png";
+import pepo_tx_icon from "../../assets/pepo-tx-icon.png";
 
 
 class BottomStatus extends PureComponent {
@@ -14,6 +14,25 @@ class BottomStatus extends PureComponent {
     this.state = {
       paused : false
     }
+  }
+
+  componentWillMount() {
+    this.yPos = new Animated.Value(0);
+    this.opacit = new Animated.Value(0);
+  }
+  componentDidMount() {
+    Animated.parallel([
+      Animated.timing(this.yPos, {
+        toValue: -100,
+        duration: 500,
+        useNativeDriver: true
+      }),
+      Animated.timing(this.opacit,{
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true
+      })
+    ]).start();
   }
 
   exTransaction(e){
@@ -29,27 +48,37 @@ class BottomStatus extends PureComponent {
   }
 
   render(){
+    let bubbleAnimatedStyle = {
+      transform: [{ translateY: this.yPos }],
+      opacity: this.opacit,
+    };
     return (
       <View style={ inlineStyles.bottomContainer } pointerEvents="none" >
 
-        <View style={inlineStyles.pepoElem}>
-          <TouchableOpacity onPress={(e) => {this.showAlert(e)}}>
+        <View style={ inlineStyles.touchablesBtns }>
+          <TouchableOpacity style={inlineStyles.pepoElemBtn}>
             <Image
-              style={{height: 53, width: 53}}
+              style={{height: 19, width: 19}}
               source={pepo_tx_icon}
             />
+            {/*<Animated.View*/}
+            {/*style={[inlineStyles.clappedBubble]}*/}
+            {/*pointerEvents="auto"*/}
+            {/*>*/}
+            {/*<Text style={inlineStyles.btnText}>BTN</Text>*/}
+            {/*</Animated.View>*/}
           </TouchableOpacity>
           <Text style={inlineStyles.pepoTxCount}>304</Text>
-        </View>
 
-        <TouchableOpacity onPress={(e) => {this.exTransaction(e)}}
-                          style={inlineStyles.txElem}
-        >
-          <Image
-            style={{ height: 57, width: 57}}
-            source={tx_icon}
-          />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={(e) => {this.exTransaction(e)}}
+                            style={inlineStyles.txElem}
+          >
+            <Image
+              style={{ height: 57, width: 57}}
+              source={tx_icon}
+            />
+          </TouchableOpacity>
+        </View>
 
         <View style={inlineStyles.bottomBg}>
           <View style={{flex: 0.7, flexWrap: 'wrap'}}>
