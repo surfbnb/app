@@ -30,7 +30,7 @@ class BottomStatus extends PureComponent {
 
   render(){
     return (
-      <View style={ inlineStyles.bottomContainer }>
+      <View style={ inlineStyles.bottomContainer } pointerEvents="none" >
 
         <View style={inlineStyles.pepoElem}>
           <TouchableOpacity onPress={(e) => {this.showAlert(e)}}>
