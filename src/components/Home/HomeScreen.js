@@ -5,6 +5,7 @@ import Video from "./VideoWrapper";
 import inlineStyles from "./styles";
 
 import TikTokDummyData from './videoDummydata';
+import TopStatus from "./TopStatus";
 const videoData =  TikTokDummyData.body.itemListData; 
 
 let currentIndex = 0 ; 
@@ -66,6 +67,7 @@ export default class Videos extends Component {
         return (
             <View style={{ backgroundColor: "#fff"}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
+                <TopStatus/>
                         <FlatList
                             ref={(ref) => { this.flatList = ref }}
                             snapToAlignment={"center"}
