@@ -51,19 +51,20 @@ let stylesMap = {
     },
     topBg:{
         backgroundColor: 'rgba(255, 255, 255, 0.45)',
-        paddingVertical: 6,
+        paddingVertical: 8,
         flexDirection: 'row',
-        paddingLeft: 20,
+        paddingLeft: 12,
         paddingRight: 10,
         justifyContent: 'center',
         alignItems: 'center',
         borderColor: Colors.gainsboro,
         borderWidth: 0.5,
-        borderRadius: 1
+        borderRadius: 2
     },
     topBgTxt:{
         color: Colors.paynesGrey,
-        fontSize: 14
+        fontSize: 14,
+        marginLeft: 5
     },
     topBgPosSkipFont: {
         position: 'absolute',
