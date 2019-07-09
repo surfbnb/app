@@ -1,6 +1,8 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import { Dimensions } from 'react-native';
 import Colors from '../../theme/styles/Colors';
+import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
+import {CUSTOM_TAB_Height} from "../../theme/constants";
 
 let stylesMap = {
     fullScreen: {
@@ -30,7 +32,11 @@ let stylesMap = {
     bottomContainer: {
         width: '100%',
         position: 'absolute',
-        bottom: 50
+          ...ifIphoneX({
+            bottom: getBottomSpace([true]) + CUSTOM_TAB_Height
+          }, {
+            bottom: CUSTOM_TAB_Height
+          }),
     },
     bottomBg: {
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
