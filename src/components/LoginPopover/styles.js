@@ -1,12 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+import Colors from '../../theme/styles/Colors';
 
 export default StyleSheet.create({
   backgroundStyle: {
-    backgroundColor: '#fff',
-    flex: 0.5,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: 30,
-    marginTop: 200
+    justifyContent: 'center',
+    // height: Dimensions.get('screen').height/2,
+    position: 'absolute',
+    bottom: 0,
+    width: '100%'
   }
 });

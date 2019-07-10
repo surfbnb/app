@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Modal, Text, Image, TouchableHighlight } from 'react-native';
+import { View, Modal, Text, Image, TouchableHighlight, Dimensions } from 'react-native';
 import TouchableButton from '../../theme/components/TouchableButton';
 
 import inlineStyles from './styles';
@@ -25,8 +25,8 @@ class loginPopover extends React.Component {
       <View>
         {this.props.show && (
           <Modal
-            animationType="fade"
-            transparent={false}
+            animationType="slideUp"
+            transparent={true}
             visible={this.props.show}
             coverScreen={false}
             hasBackdrop={true}
