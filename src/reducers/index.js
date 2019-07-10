@@ -16,7 +16,16 @@ export const {
   logoutUser,
   upsertFeedEntities,
   upsertTransactionEntities,
-  upsertGiffyEntities
+  upsertGiffyEntities,
+  upsertTagEntities,
+  upsertLinkEntities,
+  upsertUserProfileEntities,
+  upsertUserStatEntities,
+  upsertVideoEntities,
+  upsertVideoStatEntities,
+  upsertImageEntities,
+  upsertHomeFeedEntities,
+  updateBalance
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -28,7 +37,19 @@ const defaultState = {
   feed_entities: {},
   transaction_entities: {},
   giffy_entities: {},
+<<<<<<< HEAD
   login_popover: { show: false }
+=======
+  tag_entities:{},
+  user_profile_entities: {},
+  user_stat_entities: {},
+  link_entities: {},
+  video_entities: {},
+  video_stat_entities: {},
+  image_entities: {},
+  home_feed_entities: {},
+  balance: "0"
+>>>>>>> Home Feed List
 };
 
 export const reducer = handleActions(
@@ -60,6 +81,42 @@ export const reducer = handleActions(
     [upsertGiffyEntities]: (state, action) => ({
       ...state,
       giffy_entities: assignIn({}, state.giffy_entities, action.payload.giffy_entities)
+    }),
+    [upsertTagEntities]: (state, action) => ({
+      ...state,
+      tag_entities: assignIn({}, state.tag_entities, action.payload.tag_entities)
+    }),
+    [upsertUserProfileEntities]: (state, action) => ({
+      ...state,
+      user_profile_entities: assignIn({}, state.user_profile_entities, action.payload.user_profile_entities)
+    }),
+    [upsertUserStatEntities]: (state, action) => ({
+      ...state,
+      user_stat_entities: assignIn({}, state.user_stat_entities, action.payload.user_stat_entities)
+    }),
+    [upsertLinkEntities]: (state, action) => ({
+      ...state,
+      link_entities: assignIn({}, state.link_entities, action.payload.link_entities)
+    }),
+    [upsertVideoEntities]: (state, action) => ({
+      ...state,
+      video_entities: assignIn({}, state.video_entities, action.payload.video_entities)
+    }),
+    [upsertVideoStatEntities]: (state, action) => ({
+      ...state,
+      video_stat_entities: assignIn({}, state.video_stat_entities, action.payload.video_stat_entities)
+    }),
+    [upsertImageEntities]: (state, action) => ({
+      ...state,
+      image_entities: assignIn({}, state.image_entities, action.payload.image_entities)
+    }),
+    [upsertHomeFeedEntities]: (state, action) => ({
+      ...state,
+      home_feed_entities: assignIn({}, state.home_feed_entities, action.payload.home_feed_entities)
+    }),
+    [updateBalance]: (state, action) =>({
+      ...state,
+      balance: action.payload.balance
     }),
     [logoutUser]: (state, action) => ({ ...defaultState })
   },

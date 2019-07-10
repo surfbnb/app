@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+import React , {PureComponent} from 'react';
 import {View, Text, Image} from "react-native";
+import {connect} from 'react-redux';
 
 import inlineStyles from "./styles";
 import selfAmountPlus from "../../assets/self-amount-plus-icon.png";
 import selAmountPepo from "../../assets/self-amount-pepo-icon.png";
 
+const mapStateToProps = (state) => ({ balance: state.balance });
 
-const TopStatus = function (props) {
+const TopStatus = (props) => {
   return (
     <View style={ inlineStyles.topContainer }>
       <View style={inlineStyles.topBg}>
@@ -18,11 +20,10 @@ const TopStatus = function (props) {
           style={[{height: 15, width: 15}]}
           source={selAmountPepo}
         />
-        <Text style={[inlineStyles.topBgTxt]}>456</Text>
+        <Text style={[inlineStyles.topBgTxt]}>{props.balance || 0}</Text>
       </View>
     </View>
   )
 };
 
-
-export default TopStatus;
+export default connect(mapStateToProps)(TopStatus);

@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
-import { View, FlatList, StatusBar } from 'react-native';
-import deepGet from "lodash/get";
-import Video from "./VideoWrapper";
-import inlineStyles from "./styles";
-
-import TikTokDummyData from './videoDummydata';
+import { View, StatusBar } from 'react-native';
 import TopStatus from "./TopStatus";
-const videoData =  TikTokDummyData.body.itemListData; 
-
-let currentIndex = 0 ; 
-const maxVideosThreshold = 5;
+import VideoList from "./VideoList";
 
 export default class Videos extends Component {
 
@@ -22,45 +14,6 @@ export default class Videos extends Component {
 
     constructor(props){
         super(props);
-        this.state = {
-            activeIndex : 0  
-        }
-        this.flatList = null;
-    }
-
-    componentDidMount(){
-        let loadingTimeOut ; 
-
-        this.didFocusSubscription =   this.props.navigation.addListener(
-            'didFocus',
-            payload => {
-                setTimeout(()=>{
-                    this.setActiveIndex();
-                }, 300 )   
-            }
-        );
-
-        this.willBlurSubscription =   this.props.navigation.addListener(
-            'willBlur',
-            payload => {
-               clearInterval(loadingTimeOut);
-               this.setState( { activeIndex : -1 } );
-            }
-        );
-    }
-
-    componentWillUnmount(){
-        this.didFocusSubscription.remove(); 
-        this.willBlurSubscription.remove(); 
-    }
-
-    onViewableItemsChanged( data ){
-        currentIndex =  deepGet( data , "viewableItems[0].index") ; 
-    }
-
-    setActiveIndex( ){
-        if(this.state.activeIndex == currentIndex )return; 
-        this.setState( { activeIndex : currentIndex } );
     }
 
     render() {
@@ -68,22 +21,7 @@ export default class Videos extends Component {
             <View style={{ backgroundColor: "#fff"}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                 <TopStatus/>
-                        <FlatList
-                            ref={(ref) => { this.flatList = ref }}
-                            snapToAlignment={"center"}
-                            pagingEnabled={true}
-                            decelerationRate={"fast"}
-                            data={videoData}
-                            keyExtractor={(item, index) => `id_${index}`}
-                            style={inlineStyles.fullScreen}
-                            onViewableItemsChanged={this.onViewableItemsChanged}
-                            onMomentumScrollEnd={ (e) => {this.setActiveIndex(e)} }
-                            renderItem={({ item , index }) => <Video 
-                                        isActive={ index === this.state.activeIndex }
-                                        doSrc={ true || Math.abs(index - this.state.activeIndex) < maxVideosThreshold }
-                                        videoUrl={item.itemInfos.video.urls[0]} 
-                                        />}
-                        />
+                <VideoList fetchUrl={'/feeds'}/>
              </View>
         )
     }

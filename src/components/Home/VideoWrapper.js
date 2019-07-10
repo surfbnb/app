@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
 import {TouchableWithoutFeedback, View} from "react-native";
 import { withNavigation } from 'react-navigation';
-import Theme from '../../theme/styles';
 import Video from 'react-native-video';
-import BottomStatus from "./BottomStatus";
-
 import inlineStyles from "./styles"; 
 
+//TODO inactive app handling 
 
 class VideoWrapper extends PureComponent {
 
@@ -16,7 +14,40 @@ class VideoWrapper extends PureComponent {
         this.state = {
             paused : false
         }
+        this.wasAutoPaused = false; 
     }
+
+    componentDidMount(){
+        let loadingTimeOut ; 
+
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                setTimeout(()=>{
+                    if( this.props.isActive && this.wasAutoPaused ){
+                        this.setState({paused : false});
+                    }
+                }, 300 )   
+            }
+        );
+
+        this.willBlurSubscription =   this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+               clearInterval(loadingTimeOut);
+               if(!this.isPaused()){
+                  this.setState({paused : true})
+                  this.wasAutoPaused = true ; 
+               }
+            }
+        );
+    }
+
+    componentWillUnmount(){
+        this.didFocusSubscription.remove(); 
+        this.willBlurSubscription.remove(); 
+    }
+
 
     isPaused(){
         return !this.props.isActive || this.state.paused;
@@ -28,28 +59,21 @@ class VideoWrapper extends PureComponent {
         }
     }
 
-    exTransaction(e){
-        this.setState({paused: true},  ()=>{
-            this.props.navigation.push('TransactionScreen');
-        });
-    }
-
     render(){   
+        //TODO render is doRender
+        console.log("Video component render");
         return (
-            <View>
-              <TouchableWithoutFeedback onPress={()=> this.setState({ paused : !this.state.paused })}>
-                    <Video
-                    style={inlineStyles.fullHeightSkipFont}
-                    paused={ this.isPaused() }
-                    resizeMode={"cover"}
-                    source={this.props.doSrc ? {uri: this.props.videoUrl} : {}}
-                    repeat={true}/>
-               </TouchableWithoutFeedback>
-              <BottomStatus/>
-           </View>
+            <TouchableWithoutFeedback onPress={()=> this.setState({ paused : !this.state.paused })}>
+                <Video
+                style={inlineStyles.fullHeightSkipFont}
+                paused={ this.isPaused() }
+                resizeMode={"cover"}
+                source={ {uri: this.props.videoUrl} } 
+                repeat={true}/>
+            </TouchableWithoutFeedback>
         )
     }
 
 }
 
-export default  withNavigation( VideoWrapper )  ; 
+export default withNavigation( VideoWrapper )  ; 

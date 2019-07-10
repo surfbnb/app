@@ -13,7 +13,14 @@ import {
   upsertTransactionEntities,
   upsertGiffyEntities,
   upsertFeedEntities,
-  showToast
+  upsertTagEntities,
+  upsertUserProfileEntities,
+  upsertUserStatEntities,
+  upsertLinkEntities,
+  upsertVideoEntities,
+  upsertVideoStatEntities,
+  upsertImageEntities,
+  upsertHomeFeedEntities
 } from '../actions';
 import { API_ROOT } from '../constants/index';
 import CurrentUser from '../models/CurrentUser';
@@ -90,6 +97,17 @@ export default class PepoApi {
         Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data['ost_transaction'])));
         Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data['gifs'])));
         Store.dispatch(upsertFeedEntities(this._getEntities(resultData)));
+        break;
+      case 'feeds': 
+        Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
+        Store.dispatch(upsertTagEntities(this._getEntitiesFromObj(data['tags'])));
+        Store.dispatch(upsertUserProfileEntities(this._getEntitiesFromObj(data['user_profiles'])));
+        Store.dispatch(upsertUserStatEntities(this._getEntitiesFromObj(data['user_stats'])));
+        Store.dispatch(upsertLinkEntities(this._getEntitiesFromObj(data['links'])));
+        Store.dispatch(upsertVideoEntities(this._getEntitiesFromObj(data['videos'])));
+        Store.dispatch(upsertVideoStatEntities(this._getEntitiesFromObj(data['video_details'])));
+        Store.dispatch(upsertImageEntities(this._getEntitiesFromObj(data['images'])));
+        Store.dispatch(upsertHomeFeedEntities(this._getEntities(resultData)));
         break;
     }
   }

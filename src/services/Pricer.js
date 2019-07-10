@@ -1,6 +1,10 @@
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
 import { TOKEN_ID } from '../constants';
+import currentUserModel from "../models/CurrentUser"
+import {ostError, ostErrors} from "./OstErrors"; 
+import {updateBalance} from "../actions";
+import Store from '../store';
 
 class Pricer {
   constructor() {
@@ -42,7 +46,7 @@ class Pricer {
       ostUserId,
       (res) => {
         this.pricePoints = deepGet(res, 'price_point.OST');
-        isCb && successCallback && successCallback(this.pricePoints);
+        isCb && successCallback && successCallback(this.pricePoints, res);
       },
       (error) => {
         isCb && errorCallback && errorCallback(error);
@@ -50,26 +54,27 @@ class Pricer {
     );
   }
 
-  getBalanceWithPricePoint(ostUserId, successCallback, errorCallback) {
-    if (!ostUserId) {
-      errorCallback &&
-        errorCallback({
-          success: false,
-          msg: 'No user found'
-        });
+  getBalance( successCallback ,  errorCallback ) {
+    if( !currentUserModel.isUserActivated() ){
+      errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")}); 
       return;
     }
-    OstJsonApi.getBalanceWithPricePointForUserId(
-      ostUserId,
+
+    OstJsonApi.getBalanceForUserId(
+      userId,
       (res) => {
-        this.pricePoints = deepGet(res, 'price_point.OST');
         let bal = deepGet(res, 'balance.available_balance');
-        successCallback && successCallback(this.pricePoints, bal);
+        this.onBalance( bal );
+        successCallback( bal , res); 
       },
-      (error) => {
-        errorCallback && errorCallback(error);
+      (err) => {
+        errorCallback(error);
       }
     );
+  }
+
+  onBalance(bal){
+    Store.dispatch(updateBalance(bal));
   }
 
   getPriceOracleConfig(ostUserId, successCallback, errorCallback) {

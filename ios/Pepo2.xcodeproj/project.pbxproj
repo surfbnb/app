@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0007FB5222CF3B0B006378A8 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0007FB3622CF3AF4006378A8 /* libRCTVideo.a */; };
 		0050FDA422A823E300C2634F /* OstWalletSdk.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0050FDA322A823E300C2634F /* OstWalletSdk.plist */; };

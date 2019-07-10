@@ -101,6 +101,29 @@ export const upsertTransactionEntities = (data) => ({
 
 export const upsertGiffyEntities = (data) => ({ type: types.UPSERT_GIFFY_ENTITIES, payload: { giffy_entities: data } });
 
+export const upsertTagEntities = (data) => ({ type: types.UPSERT_TAG_ENTITIES, payload: { tag_entities: data } });
+
+export const upsertUserProfileEntities = (data) =>({ type : types.UPSERT_USER_PROFILE_ENTITIES ,  payload:{ user_profile_entities : data }});
+
+export const upsertUserStatEntities = (data) => ({type: types.UPSERT_USER_STAT_ENTITIES  , payload: {user_stat_entities: data} });
+
+export const upsertLinkEntities = (data) => ({type : types.UPSERT_LINK_ENTITIES ,  payload: {link_entities : data}});
+
+export const upsertVideoEntities = (data) => ({type : types.UPSERT_VIDEO_ENTITIES ,  payload: {video_entities : data}});
+
+export const upsertVideoStatEntities = (data) => ({type : types.UPSERT_VIDEO_STAT_ENTITIES ,  payload: {video_stat_entities : data}});
+
+export const upsertHomeFeedEntities = (data) => ({type : types.UPSERT_HOME_FEED_ENTITIES ,  payload: {home_feed_entities : data}});
+
+export const upsertImageEntities = (data) => ({type : types.UPSERT_IMAGE_ENTITIES ,  payload: {image_entities : data}});
+
+export const updateBalance = (balance = "0" )=>({
+  type: types.UPDATE_BALANCE,
+  payload: {
+    balance: balance
+  }
+});
+
 export const logoutUser = () => ({ type: types.LOGOUT_USER });
 
 export const genericEvent = (eventName, payload) => ({

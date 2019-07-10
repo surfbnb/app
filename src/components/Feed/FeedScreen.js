@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {View} from "react-native";
 import FeedList from '../FeedComponents/FeedList';
 
 class Feed extends Component {
@@ -15,7 +16,8 @@ class Feed extends Component {
   }
 
   render() {
-    return <FeedList style={{ backgroundColor: '#f6f6f6' }} fetchUrl={'/feeds'}></FeedList>;
+    return <View></View>
+    // return <FeedList style={{ backgroundColor: '#f6f6f6' }} fetchUrl={'/feeds'}></FeedList>;
   }
 }
 
