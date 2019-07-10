@@ -1,60 +1,35 @@
 import React, { PureComponent } from 'react';
-import {View, Text, Image, TouchableOpacity, Alert, Animated} from "react-native";
+import {View, Text, Image, TouchableOpacity, Alert} from "react-native";
 
 import inlineStyles from "./styles";
 import {withNavigation} from "react-navigation";
 import tx_icon from "../../assets/tx_icon.png";
 import pepo_tx_icon from "../../assets/pepo-tx-icon.png";
-import ClapBubble from "./ClapBubble";
+import currentUserModel from "../../models/CurrentUser";
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
+import Pricer from "../../services/Pricer"; 
+import PriceOracle from "../../services/PriceOracle";
 
 class BottomStatus extends PureComponent {
 
   constructor(props){
     super(props);
-    this.state = {
-      paused : false
+  }
+
+  navigateToTransaction = (e) => {
+    if( currentUserModel.isUserActivated() ){
+      this.props.navigation.push('TransactionScreen');
     }
   }
 
-  componentWillMount() {
-    this.yPos = new Animated.Value(0);
-    this.opacit = new Animated.Value(0);
-  }
-  componentDidMount() {
-    Animated.parallel([
-      Animated.timing(this.yPos, {
-        toValue: -100,
-        duration: 500,
-        useNativeDriver: true
-      }),
-      Animated.timing(this.opacit,{
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true
-      })
-    ]).start();
-  }
-
-  exTransaction(e){
-    this.setState({paused: true},  ()=>{
-      this.props.navigation.push('TransactionScreen');
-    });
-  }
-
-  showAlert(e){
-    Alert.alert(
-      'YET TO BE IMFLEMENTED!'
-    )
+  navigateToUserProfile = (e) => {
+    Alert.alert("", "Navigate to Userprofile page once profile page implemented");
   }
 
   render(){
-    let bubbleAnimatedStyle = {
-      transform: [{ translateY: this.yPos }],
-      opacity: this.opacit,
-    };
     return (
-      <View style={ inlineStyles.bottomContainer } pointerEvents="none" >
+      <View style={ inlineStyles.bottomContainer } >
 
         <View style={ inlineStyles.touchablesBtns }>
           <View>
@@ -64,11 +39,9 @@ class BottomStatus extends PureComponent {
                 source={pepo_tx_icon}
               />
             </TouchableOpacity>
-            <ClapBubble/>
           </View>
-          <Text style={inlineStyles.pepoTxCount}>304</Text>
-
-          <TouchableOpacity onPress={(e) => {this.exTransaction(e)}}
+          {this.props.totalBt && <Text style={inlineStyles.pepoTxCount}>{PriceOracle.fromDecimal( this.props.totalBt)}</Text> } 
+          <TouchableOpacity onPress={this.navigateToTransaction}
                             style={inlineStyles.txElem}
           >
             <Image
@@ -78,16 +51,25 @@ class BottomStatus extends PureComponent {
           </TouchableOpacity>
         </View>
 
+      <TouchableWithoutFeedback onPress={this.navigateToUserProfile}>
         <View style={inlineStyles.bottomBg}>
           <View style={{flex: 0.7, flexWrap: 'wrap'}}>
-            <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>@Annik</Text>
-            <Text style={[{paddingRight: 20, fontSize: 13}, inlineStyles.bottomBgTxt]}>Based out of NYC, I Play bass with ‘City of suns’.  You can find us at Atla - East Village every Saturday. #Podcaster #Artist #Musician</Text>
+            <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>
+              {`@${this.props.userName}`}
+            </Text>
+            {this.props.bio &&  
+               <Text style={[{paddingRight: 20, fontSize: 13}, inlineStyles.bottomBgTxt]}>
+                {this.props.bio}
+              </Text>
+            }
           </View>
           <View style={{flex: 0.3}}>
-            <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>$ 5K Raised</Text>
-            <Text style={inlineStyles.bottomBgTxt}>$ 2K Supporters</Text>
+            {this.props.totalBt && 
+              <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>${`${ PriceOracle.fromDecimal( this.props.totalBt)} Raised`}</Text> }
+            {this.props.supporters && <Text style={inlineStyles.bottomBgTxt}>{`${this.props.supporters} Supporters`}</Text>}
           </View>
         </View>
+      </TouchableWithoutFeedback>  
 
       </View>
     )

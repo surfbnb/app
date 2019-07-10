@@ -166,6 +166,7 @@ class CurrentUserModel {
   }
 
   isUserActivated() {
+    //TODO emit tost event 
     const userStatusMap = appConfig.userStatusMap;
     return this.__getUserStatus() == userStatusMap.activated;
   }

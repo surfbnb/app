@@ -60,31 +60,19 @@ class VideoWrapper extends PureComponent {
         }
     }
 
-    onLoad = () => {
-        console.log(".......loaded........");
-        this.setState({loaded : true});
-    }
-
     render(){   
         console.log("Video component render " , this.props.videoImgUrl);
         return (
             <TouchableWithoutFeedback onPress={()=> this.setState({ paused : !this.state.paused })}>
-               <React.Fragment> 
-                    {/* {!this.state.loaded &&
-                        <Image style={inlineStyles.fullHeightSkipFont} source={{uri: this.props.videoImgUrl}}></Image>  
-                    }
-                    {this.state.loaded &&  */}
-                        <Video
-                            poster={this.props.videoImgUrl}
-                            posterResizeMode={"cover"}
-                            style={inlineStyles.fullHeightSkipFont}
-                            paused={ this.isPaused() }
-                            resizeMode={"cover"}
-                            source={ {uri: this.props.videoUrl} } 
-                            onLoad={this.onLoad}
-                            repeat={true}/>
-                    {/* } */}
-                </React.Fragment>    
+                <Video
+                    poster={this.props.videoImgUrl}
+                    posterResizeMode={"cover"}
+                    style={inlineStyles.fullHeightSkipFont}
+                    paused={ this.isPaused() }
+                    resizeMode={"cover"}
+                    source={ {uri: this.props.videoUrl} } 
+                    onLoad={this.onLoad}
+                    repeat={true}/> 
             </TouchableWithoutFeedback>
         )
     }
