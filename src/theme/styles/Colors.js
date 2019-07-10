@@ -12,5 +12,6 @@ export default {
   zambezi: '#606060',
   gainsboro: '#e0e0e0',
   paynesGrey: '#3e404b',
-  wildWatermelon: '#FF5363'
+  wildWatermelon: '#FF5363',
+  black: '#101010'
 };
