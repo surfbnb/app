@@ -7,6 +7,8 @@ export const {
   hideModal,
   showModalCover,
   hideModalCover,
+  showLoginPopover,
+  hideLoginPopover,
   showToast,
   hideToast,
   upsertUserEntities,
@@ -25,15 +27,18 @@ const defaultState = {
   user_entities: {},
   feed_entities: {},
   transaction_entities: {},
-  giffy_entities: {}
+  giffy_entities: {},
+  login_popover: { show: false }
 };
 
 export const reducer = handleActions(
   {
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [showModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
+    [showLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
     [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [hideModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
+    [hideLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
     [showToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [hideToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [upsertUserEntities]: (state, action) => ({

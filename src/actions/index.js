@@ -45,6 +45,24 @@ export const hideModalCover = (message = '', footerText = '') => ({
   }
 });
 
+export const showLoginPopover = () => ({
+  type: types.SHOW_LOGIN_POPOVER,
+  payload: {
+    login_popover: {
+      show: true
+    }
+  }
+});
+
+export const hideLoginPopover = () => ({
+  type: types.HIDE_LOGIN_POPOVER,
+  payload: {
+    login_popover: {
+      show: false
+    }
+  }
+});
+
 export const showToast = (message = '') => ({
   type: types.SHOW_TOAST,
   payload: {

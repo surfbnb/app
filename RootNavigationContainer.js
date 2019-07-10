@@ -25,6 +25,8 @@ import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from './src/components/Giphy';
 import EditTx from './src/components/Transaction/EditTxModal';
 import UserActivatingScreen from './src/components/UserActivating';
+import { LoginPopover } from './src/components/LoginPopover';
+
 import deepGet from 'lodash/get';
 
 const transactionScreenParentStackConfig = {
@@ -162,6 +164,7 @@ const RootNavigationContainer = () => (
       }}
     />
     <LoadingModalCover />
+    <LoginPopover />
   </Root>
 );
 

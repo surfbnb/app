@@ -5,6 +5,7 @@ import Store from '../store';
 import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
+import { LoginPopoverActions } from '../components/LoginPopover';
 
 class CurrentUserModel {
   constructor() {
@@ -128,7 +129,7 @@ class CurrentUserModel {
       .post()
       .catch((error) => {})
       .then((res) => {
-        NavigationService.navigate('AuthScreen', params);
+        NavigationService.navigate('HomeScreen', params);
       });
   }
 
@@ -150,6 +151,14 @@ class CurrentUserModel {
   // Simple getter/setter methods.
   getUserId() {
     return this.userId;
+  }
+
+  checkActiveUser() {
+    let returnVal = this.isActiveUser();
+    if (!returnVal) {
+      LoginPopoverActions.show();
+    }
+    return returnVal;
   }
 
   isActiveUser() {
