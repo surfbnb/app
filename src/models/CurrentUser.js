@@ -165,8 +165,8 @@ class CurrentUserModel {
     return this.isUserActivated() || this.isUserActivating();
   }
 
-  isUserActivated() {
-    //TODO emit tost event 
+  isUserActivated( dontEmit ) {
+    //TODO Preshita flag based emit tost event 
     const userStatusMap = appConfig.userStatusMap;
     return this.__getUserStatus() == userStatusMap.activated;
   }
