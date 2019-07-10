@@ -21,7 +21,7 @@ let stylesMap = {
     pepoElemBtn: {
       backgroundColor: Colors.white,
       height : 50,
-      marginBottom: 5,
+      // marginBottom: 5,
       width: 50,
       alignItems: 'center',
       justifyContent: 'center',
@@ -89,14 +89,15 @@ let stylesMap = {
     },
   clappedBubble: {
     backgroundColor: Colors.wildWatermelon,
-    height: 53,
-    width: 53,
+    height: 50,
+    width: 50,
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    // bottom: 0,
+    // right: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 30
+    borderRadius: 30,
+    zIndex: -1
   },
   btnText: {
     color: Colors.white

@@ -5,6 +5,7 @@ import inlineStyles from "./styles";
 import {withNavigation} from "react-navigation";
 import tx_icon from "../../assets/tx_icon.png";
 import pepo_tx_icon from "../../assets/pepo-tx-icon.png";
+import ClapBubble from "./ClapBubble";
 
 
 class BottomStatus extends PureComponent {
@@ -56,18 +57,15 @@ class BottomStatus extends PureComponent {
       <View style={ inlineStyles.bottomContainer } pointerEvents="none" >
 
         <View style={ inlineStyles.touchablesBtns }>
-          <TouchableOpacity style={inlineStyles.pepoElemBtn}>
-            <Image
-              style={{height: 19, width: 19}}
-              source={pepo_tx_icon}
-            />
-            {/*<Animated.View*/}
-            {/*style={[inlineStyles.clappedBubble]}*/}
-            {/*pointerEvents="auto"*/}
-            {/*>*/}
-            {/*<Text style={inlineStyles.btnText}>BTN</Text>*/}
-            {/*</Animated.View>*/}
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity style={inlineStyles.pepoElemBtn}>
+              <Image
+                style={{height: 19, width: 19}}
+                source={pepo_tx_icon}
+              />
+            </TouchableOpacity>
+            <ClapBubble/>
+          </View>
           <Text style={inlineStyles.pepoTxCount}>304</Text>
 
           <TouchableOpacity onPress={(e) => {this.exTransaction(e)}}
