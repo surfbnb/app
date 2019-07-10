@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {TouchableWithoutFeedback, View} from "react-native";
+import {TouchableWithoutFeedback, Image} from "react-native";
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
 import inlineStyles from "./styles"; 
@@ -12,7 +12,8 @@ class VideoWrapper extends PureComponent {
         super(props);
         this.player = null;
         this.state = {
-            paused : false
+            paused : false,
+            loaded: false
         }
         this.wasAutoPaused = false; 
     }
@@ -59,17 +60,31 @@ class VideoWrapper extends PureComponent {
         }
     }
 
+    onLoad = () => {
+        console.log(".......loaded........");
+        this.setState({loaded : true});
+    }
+
     render(){   
-        //TODO render is doRender
-        console.log("Video component render");
+        console.log("Video component render " , this.props.videoImgUrl);
         return (
             <TouchableWithoutFeedback onPress={()=> this.setState({ paused : !this.state.paused })}>
-                <Video
-                style={inlineStyles.fullHeightSkipFont}
-                paused={ this.isPaused() }
-                resizeMode={"cover"}
-                source={ {uri: this.props.videoUrl} } 
-                repeat={true}/>
+               <React.Fragment> 
+                    {/* {!this.state.loaded &&
+                        <Image style={inlineStyles.fullHeightSkipFont} source={{uri: this.props.videoImgUrl}}></Image>  
+                    }
+                    {this.state.loaded &&  */}
+                        <Video
+                            poster={this.props.videoImgUrl}
+                            posterResizeMode={"cover"}
+                            style={inlineStyles.fullHeightSkipFont}
+                            paused={ this.isPaused() }
+                            resizeMode={"cover"}
+                            source={ {uri: this.props.videoUrl} } 
+                            onLoad={this.onLoad}
+                            repeat={true}/>
+                    {/* } */}
+                </React.Fragment>    
             </TouchableWithoutFeedback>
         )
     }

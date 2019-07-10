@@ -108,6 +108,7 @@ export default class PepoApi {
         Store.dispatch(upsertVideoStatEntities(this._getEntitiesFromObj(data['video_details'])));
         Store.dispatch(upsertImageEntities(this._getEntitiesFromObj(data['images'])));
         Store.dispatch(upsertHomeFeedEntities(this._getEntities(resultData)));
+        //TODO add 2 new entities 
         break;
     }
   }
