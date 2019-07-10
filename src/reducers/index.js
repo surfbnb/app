@@ -37,9 +37,6 @@ const defaultState = {
   feed_entities: {},
   transaction_entities: {},
   giffy_entities: {},
-<<<<<<< HEAD
-  login_popover: { show: false }
-=======
   tag_entities:{},
   user_profile_entities: {},
   user_stat_entities: {},
@@ -48,8 +45,8 @@ const defaultState = {
   video_stat_entities: {},
   image_entities: {},
   home_feed_entities: {},
+  login_popover: { show: false },
   balance: "0"
->>>>>>> Home Feed List
 };
 
 export const reducer = handleActions(
