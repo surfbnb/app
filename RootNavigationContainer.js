@@ -20,27 +20,28 @@ import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
-import HomeScreen from './src/components/Home/HomeScreen'
+import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
-import Giphy from "./src/components/Giphy";
-import EditTx from "./src/components/Transaction/EditTxModal";
-import  deepGet from "lodash/get";
+import Giphy from './src/components/Giphy';
+import EditTx from './src/components/Transaction/EditTxModal';
+import UserActivatingScreen from './src/components/UserActivating';
+import deepGet from 'lodash/get';
 
-const transactionScreenParentStackConfig =  {
+const transactionScreenParentStackConfig = {
   headerLayoutPreset: 'center',
   headerMode: 'none',
   mode: 'modal',
   navigationOptions: ({ navigation }) => {
     return {
-      tabBarVisible: deepGet(navigation , "state.routes[0].index") == 0 ? true : false
-    }
+      tabBarVisible: deepGet(navigation, 'state.routes[0].index') == 0 ? true : false
+    };
   }
-}
+};
 
 const HomeTransactionStack = createStackNavigator(
   {
-    HomeScreen:  HomeScreen ,
-    TransactionScreen : TransactionScreen,
+    HomeScreen: HomeScreen,
+    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -53,7 +54,7 @@ const HomeStack = createStackNavigator(
     Giphy: Giphy,
     EditTx: EditTx
   },
-  {...transactionScreenParentStackConfig}
+  { ...transactionScreenParentStackConfig }
 );
 
 const FeedStack = createStackNavigator(
@@ -66,11 +67,10 @@ const FeedStack = createStackNavigator(
   }
 );
 
-
 const UserTransactionStack = createStackNavigator(
   {
-    UsersScreen:  Users ,
-    TransactionScreen : TransactionScreen,
+    UsersScreen: Users,
+    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -83,7 +83,7 @@ const UserStack = createStackNavigator(
     Giphy: Giphy,
     EditTx: EditTx
   },
-  {...transactionScreenParentStackConfig}
+  { ...transactionScreenParentStackConfig }
 );
 
 const ProfileStack = createStackNavigator(
@@ -145,7 +145,8 @@ const AppContainer = createAppContainer(
       AuthLoading,
       AuthScreen,
       CustomTabStack,
-      PinStack
+      PinStack,
+      UserActivatingScreen
     },
     {
       initialRouteName: 'AuthLoading'

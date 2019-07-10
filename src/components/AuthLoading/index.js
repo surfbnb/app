@@ -30,12 +30,8 @@ export default class AuthLoading extends Component {
       .initialize()
       .then((user) => {
         LoadingModal.hide();
-        if (!user) {
-          this.props.navigation.navigate('AuthScreen');
-          return;
-        }
-        if (!currentUserModal.isActiveUser(user)) {
-          this.props.navigation.navigate('SetPinScreen');
+        if (user && !currentUserModal.isActiveUser(user)) {
+          this.props.navigation.navigate('UserActivatingScreen');
         } else {
           this.props.navigation.navigate('HomeScreen');
         }
