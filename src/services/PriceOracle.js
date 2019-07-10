@@ -61,6 +61,7 @@ export default class PriceOracle {
   }
 
   static fromDecimal(val, decimals) {
+    console.log("decimals", decimals);
     decimals = decimals || 18;
     if (!val) return '';
     val = BigNumber(val);

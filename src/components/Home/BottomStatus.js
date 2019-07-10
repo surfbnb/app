@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import {View, Text, Image, TouchableOpacity, Alert} from "react-native";
+import deepGet from "lodash/get";
 
 import inlineStyles from "./styles";
 import {withNavigation} from "react-navigation";
@@ -10,6 +11,8 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import Pricer from "../../services/Pricer"; 
 import PriceOracle from "../../services/PriceOracle";
+
+const getDecimal = () => deepGet(Pricer , "token.decimals") ;
 
 class BottomStatus extends PureComponent {
 
@@ -40,7 +43,7 @@ class BottomStatus extends PureComponent {
               />
             </TouchableOpacity>
           </View>
-          {this.props.totalBt && <Text style={inlineStyles.pepoTxCount}>{PriceOracle.fromDecimal( this.props.totalBt)}</Text> } 
+          {this.props.totalBt && <Text style={inlineStyles.pepoTxCount}>{PriceOracle.fromDecimal( this.props.totalBt , getDecimal())}</Text> } 
           <TouchableOpacity onPress={this.navigateToTransaction}
                             style={inlineStyles.txElem}
           >
@@ -65,7 +68,7 @@ class BottomStatus extends PureComponent {
           </View>
           <View style={{flex: 0.3}}>
             {this.props.totalBt && 
-              <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>${`${ PriceOracle.fromDecimal( this.props.totalBt)} Raised`}</Text> }
+              <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>${`${ PriceOracle.fromDecimal( this.props.totalBt , getDecimal())} Raised`}</Text> }
             {this.props.supporters && <Text style={inlineStyles.bottomBgTxt}>{`${this.props.supporters} Supporters`}</Text>}
           </View>
         </View>

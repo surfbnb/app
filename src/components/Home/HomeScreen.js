@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StatusBar } from 'react-native';
 import TopStatus from "./TopStatus";
 import VideoList from "./VideoList";
+import Pricer from "../../services/Pricer";
 
 export default class Videos extends Component {
 
@@ -14,6 +15,7 @@ export default class Videos extends Component {
 
     constructor(props){
         super(props);
+        Pricer.getToken();
     }
 
     render() {

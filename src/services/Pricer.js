@@ -2,11 +2,12 @@ import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native
 import deepGet from 'lodash/get';
 import { TOKEN_ID } from '../constants';
 import currentUserModel from "../models/CurrentUser"
-import {ostError, ostErrors} from "./OstErrors"; 
+import {ostErrors} from "./OstErrors"; 
 import {updateBalance} from "../actions";
 import Store from '../store';
 
 class Pricer {
+
   constructor() {
     this.token = null;
     this.pricePoints = null;
