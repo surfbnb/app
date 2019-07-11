@@ -17,7 +17,6 @@ export default class PriceOracle {
     if (!bt || !this.usdPricePoint || isNaN(bt)) {
       return '';
     }
-
     bt = BigNumber(bt);
     let fiatBN = BigNumber(this.usdPricePoint);
     let oneBtToFiat = fiatBN.dividedBy(this.conversionFactor);

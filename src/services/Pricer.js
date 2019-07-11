@@ -57,7 +57,7 @@ class Pricer {
 
   getBalance( successCallback ,  errorCallback ) {
     if( !currentUserModel.isUserActivated() ){
-      errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")}); 
+      errorCallback && errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")}); 
       return;
     }
 
@@ -66,10 +66,10 @@ class Pricer {
       (res) => {
         let bal = deepGet(res, 'balance.available_balance');
         this.onBalance( bal );
-        successCallback( bal , res); 
+        successCallback && successCallback( bal , res); 
       },
       (err) => {
-        errorCallback(error);
+        errorCallback && errorCallback(error);
       }
     );
   }

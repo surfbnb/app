@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {View } from "react-native";
 import VideoWrapper from "./VideoWrapper";
 import deepGet from "lodash/get";
@@ -6,7 +6,7 @@ import Store from '../../store';
 
 import BottomStatus from "./BottomStatus"
 
-class HomeFeedRow extends Component {
+class HomeFeedRow extends PureComponent {
 
     constructor(props){
         super(props);

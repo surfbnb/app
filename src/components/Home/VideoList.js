@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {  FlatList , AppState} from 'react-native';
+import {  FlatList } from 'react-native';
 import deepGet from "lodash/get";
 import flatlistHOC from "../CommonComponents/flatlistHOC";
 import HomeFeedRow from "./HomeFeedRow";
@@ -18,7 +18,6 @@ class VideoList extends PureComponent {
         this.state = {
             activeIndex : 0  
         }
-        Pricer.getToken(); 
     }
 
     onViewableItemsChanged( data ){
@@ -42,10 +41,15 @@ class VideoList extends PureComponent {
             />
     )};    
 
+    onMomentumScrollEndCallback = () => {
+        this.setActiveIndex();
+    }
+
     render(){
         console.log("_renderItem videolist" );
         return(
             <FlatList
+                extraData={this.state}
                 snapToAlignment={"center"}
                 pagingEnabled={true}
                 decelerationRate={"fast"}
@@ -57,7 +61,7 @@ class VideoList extends PureComponent {
                 onEndReachedThreshold={5}
                 style={inlineStyles.fullScreen}
                 onViewableItemsChanged={this.onViewableItemsChanged}
-                onMomentumScrollEnd={ (e) => {this.setActiveIndex(e)} } 
+                onMomentumScrollEnd={ this.onMomentumScrollEndCallback } 
                 onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
                 renderItem={this._renderItem}
             />

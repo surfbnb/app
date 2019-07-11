@@ -15,7 +15,10 @@ export default class Videos extends Component {
 
     constructor(props){
         super(props);
-        Pricer.getToken();
+    }
+
+    onRefresh = () => {
+        Pricer.getBalance();
     }
 
     render() {
@@ -23,7 +26,7 @@ export default class Videos extends Component {
             <View style={{ backgroundColor: "#fff"}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                 <TopStatus/>
-                <VideoList fetchUrl={'/feeds'}/>
+                <VideoList fetchUrl={'/feeds'} onRefresh={this.onRefresh} />
              </View>
         )
     }

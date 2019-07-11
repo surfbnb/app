@@ -1,6 +1,7 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { Toast } from 'native-base';
 import currentUserModal from '../../models/CurrentUser';
+import Pricer from "../Pricer";
 import deepGet from 'lodash/get';
 
 const initiatePolling = (expectedUserId) => {
@@ -31,6 +32,7 @@ const initiatePolling = (expectedUserId) => {
                 text: 'User Activated! Airdrop is initiated.',
                 buttonText: 'Okay'
               });
+              Pricer.getBalance();
             }
           })
           .catch((error) => {

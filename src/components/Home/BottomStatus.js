@@ -31,6 +31,7 @@ class BottomStatus extends PureComponent {
   }
 
   render(){
+    console.log("Bottom status rerender")
     return (
       <View style={ inlineStyles.bottomContainer } pointerEvents={'box-none'}>
 
