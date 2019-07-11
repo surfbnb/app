@@ -158,9 +158,9 @@ class CurrentUserModel {
   }
 
   checkActiveUser() {
-    if (!this.getUser()) {
+    if (!this.getOstUserId()) {
       LoginPopoverActions.show();
-      return false ; 
+      return false;
     }
     return true;
   }
@@ -169,8 +169,8 @@ class CurrentUserModel {
     return this.isUserActivated() || this.isUserActivating();
   }
 
-  isUserActivated( dontEmit ) {
-    //TODO Preshita flag based emit tost event 
+  isUserActivated(dontEmit) {
+    //TODO Preshita flag based emit tost event
     const userStatusMap = appConfig.userStatusMap;
     return this.__getUserStatus() == userStatusMap.activated;
   }
