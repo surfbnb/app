@@ -13,5 +13,6 @@ export default {
   gainsboro: '#e0e0e0',
   paynesGrey: '#3e404b',
   wildWatermelon: '#FF5363',
-  black: '#101010'
+  black: '#101010',
+  softBlue: '#55acee'
 };
