@@ -7,6 +7,7 @@ import inlineStyles from './styles';
 import Theme from '../../theme/styles';
 import Store from '../../store';
 import { showLoginPopover, hideLoginPopover } from '../../actions';
+import TwitterAuthService from '../../services/TwitterAuthService';
 
 const mapStateToProps = ({ login_popover }) => ({
   show: login_popover.show
@@ -15,10 +16,11 @@ const mapStateToProps = ({ login_popover }) => ({
 class loginPopover extends React.Component {
   constructor(props) {
     super(props);
-    Store.dispatch(hideLoginPopover());
   }
 
-  onSignUp() {}
+  onSignUp = ()=>{
+    TwitterAuthService.signUp();
+  };
 
   render() {
     return (
@@ -43,10 +45,9 @@ class loginPopover extends React.Component {
                 TouchableStyles={[Theme.Button.btnPink, { marginTop: 10 }]}
                 TextStyles={[Theme.Button.btnPinkText]}
                 text="Connect with Twitter"
-                onPress={() => {
-                  this.onSignUp();
-                }}
+                onPress={this.onSignUp}
               />
+
             </View>
           </Modal>
         )}

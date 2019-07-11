@@ -123,6 +123,10 @@ class CurrentUserModel {
     return this._signin('/auth/sign-up', params);
   }
 
+  twitterConnect(params) {
+    return this._signin('/auth/twitter-login', params);
+  }
+
   logout(params) {
     this.clearCurrentUser();
     new PepoApi('/auth/logout')
@@ -154,7 +158,7 @@ class CurrentUserModel {
   }
 
   checkActiveUser() {
-    let returnVal = this.isActiveUser();
+    const returnVal = this.isActiveUser();
     if (!returnVal) {
       LoginPopoverActions.show();
     }

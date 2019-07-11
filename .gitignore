@@ -60,5 +60,5 @@ buck-out/
 #iOS / Carthage
 *Carthage/
 *Cartfile.resolved
- ios/Pepo2.xcodeproj/project.pbxproj
- ios/Pods
+ios/Pepo2.xcodeproj/project.pbxproj
+ios/Pods
