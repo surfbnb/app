@@ -61,3 +61,4 @@ buck-out/
 *Carthage/
 *Cartfile.resolved
  ios/Pepo2.xcodeproj/project.pbxproj
+ ios/Pods
