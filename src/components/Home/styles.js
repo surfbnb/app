@@ -6,12 +6,12 @@ import {CUSTOM_TAB_Height} from "../../theme/constants";
 
 let stylesMap = {
     fullScreen: {
-        width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').height
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height
     },
     fullHeightSkipFont: {
         width: '100%',
-        height: Dimensions.get('screen').height
+        height: Dimensions.get('window').height
     },
     touchablesBtns: {
       width: '20%',

@@ -27,7 +27,7 @@ class loginPopover extends React.Component {
       <View>
         {this.props.show && (
           <Modal
-            animationType="slideUp"
+            animationType="slide"
             transparent={true}
             visible={this.props.show}
             coverScreen={false}
