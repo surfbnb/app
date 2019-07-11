@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, PixelRatio } from 'react-native';
 import Colors from '../../theme/styles/Colors';
 import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 
@@ -7,8 +7,13 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     alignItems: 'center',
     justifyContent: 'center',
+    ...ifIphoneX({
+      height: Dimensions.get('screen').height/2,
+    }, {
+      height: PixelRatio.get() === 2 ? Dimensions.get('screen').height - 200 : Dimensions.get('screen').height/2
+    }),
     // height: Dimensions.get('screen').height/2,
-    height: Dimensions.get('screen').height/2,
+    // height: Dimensions.get('screen').height/2,
     position: 'absolute',
     width: '100%',
     borderTopRightRadius: 15,

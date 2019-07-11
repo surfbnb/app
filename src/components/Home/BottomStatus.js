@@ -32,11 +32,11 @@ class BottomStatus extends PureComponent {
 
   render(){
     return (
-      <View style={ inlineStyles.bottomContainer } >
+      <View style={ inlineStyles.bottomContainer } pointerEvents={'box-none'}>
 
         <View style={ inlineStyles.touchablesBtns }>
           <View>
-            <TouchableOpacity style={inlineStyles.pepoElemBtn}>
+            <TouchableOpacity style={inlineStyles.pepoElemBtn} pointerEvents={'auto'}>
               <Image
                 style={{height: 19, width: 19}}
                 source={pepo_tx_icon}
@@ -44,7 +44,8 @@ class BottomStatus extends PureComponent {
             </TouchableOpacity>
           </View>
           {this.props.totalBt && <Text style={inlineStyles.pepoTxCount}>{PriceOracle.fromDecimal( this.props.totalBt , getDecimal())}</Text> } 
-          <TouchableOpacity onPress={this.navigateToTransaction}
+          <TouchableOpacity pointerEvents={'auto'}
+                            onPress={this.navigateToTransaction}
                             style={inlineStyles.txElem}
           >
             <Image
@@ -54,7 +55,7 @@ class BottomStatus extends PureComponent {
           </TouchableOpacity>
         </View>
 
-      <TouchableWithoutFeedback onPress={this.navigateToUserProfile}>
+      <TouchableWithoutFeedback onPress={this.navigateToUserProfile} pointerEvents={'auto'}>
         <View style={inlineStyles.bottomBg}>
           <View style={{flex: 0.7, flexWrap: 'wrap'}}>
             <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>
