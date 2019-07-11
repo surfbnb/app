@@ -19,7 +19,6 @@ import inlineStyles from './Style';
 import EditIcon from '../../assets/edit_icon.png';
 import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
-import EditTxModal from './EditTxModal';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
 import GiphySelect from "./GiphySelect";
@@ -97,8 +96,6 @@ class TransactionScreen extends Component {
   }
 
   getBalance() {
-    //TODO catfood wherever fetched balance , update via Redux
-    //TODO priceOracle price point update after every 10 mins 
     const ostUserId = currentUserModal.getOstUserId();
     OstJsonApi.getBalanceForUserId(
       ostUserId,

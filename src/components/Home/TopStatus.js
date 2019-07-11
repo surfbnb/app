@@ -1,4 +1,3 @@
-import React , {PureComponent} from 'react';
 import {View, Text, Image} from "react-native";
 import {connect} from 'react-redux';
 
@@ -9,7 +8,6 @@ import currentUserModel from "../../models/CurrentUser";
 import Pricer from "../../services/Pricer";
 import PriceOracle from "../../services/PriceOracle";
 import deepGet from "lodash/get";
-
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -22,7 +20,7 @@ const getBalance = (props) => {
 }
 
 const TopStatus = (props) => {
-  return currentUserModel.isActiveUser() && (
+  return currentUserModel.getOstUserId() && (
     <View style={ inlineStyles.topContainer }>
       <View style={inlineStyles.topBg}>
         <Image

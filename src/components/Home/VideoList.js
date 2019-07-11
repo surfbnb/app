@@ -5,8 +5,6 @@ import flatlistHOC from "../CommonComponents/flatlistHOC";
 import HomeFeedRow from "./HomeFeedRow";
 import inlineStyles from "./styles";
 
-import Pricer from "../../services/Pricer";
-
 
 let currentIndex = 0 ; 
 const maxVideosThreshold = 5;
