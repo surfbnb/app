@@ -21,7 +21,7 @@ class BottomStatus extends PureComponent {
   }
 
   navigateToTransaction = (e) => {
-    if( currentUserModel.isUserActivated() ){
+    if( currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() ){
       this.props.navigation.push('TransactionScreen');
     }
   }

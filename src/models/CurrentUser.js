@@ -158,11 +158,11 @@ class CurrentUserModel {
   }
 
   checkActiveUser() {
-    const returnVal = this.isActiveUser();
-    if (!returnVal) {
+    if (!this.getUser()) {
       LoginPopoverActions.show();
+      return false ; 
     }
-    return returnVal;
+    return true;
   }
 
   isActiveUser() {
