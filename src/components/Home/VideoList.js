@@ -64,6 +64,7 @@ class VideoList extends PureComponent {
                 onMomentumScrollEnd={ this.onMomentumScrollEndCallback } 
                 onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
                 renderItem={this._renderItem}
+                showsVerticalScrollIndicator={false}
             />
         );
     }

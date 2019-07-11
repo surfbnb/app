@@ -8,12 +8,10 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     ...ifIphoneX({
-      height: Dimensions.get('screen').height/2,
+      height: Dimensions.get('screen').height / 2,
     }, {
       height: PixelRatio.get() === 2 ? Dimensions.get('screen').height - 200 : Dimensions.get('screen').height/2
     }),
-    // height: Dimensions.get('screen').height/2,
-    // height: Dimensions.get('screen').height/2,
     position: 'absolute',
     width: '100%',
     borderTopRightRadius: 15,
@@ -23,6 +21,10 @@ export default StyleSheet.create({
     }, {
       bottom: 0
     }),
+  },
+  parent:{
+    height: Dimensions.get('screen').height,
+    width: Dimensions.get('screen').width,
   },
   desc: {
     color: Colors.dark,
