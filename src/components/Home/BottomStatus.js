@@ -8,9 +8,11 @@ import tx_icon from "../../assets/tx_icon.png";
 import pepo_tx_icon from "../../assets/pepo-tx-icon.png";
 import currentUserModel from "../../models/CurrentUser";
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import supportersIcon from "../../assets/supporters-icon.png";
 
 import Pricer from "../../services/Pricer"; 
 import PriceOracle from "../../services/PriceOracle";
+import loggedOutLogo from "../../assets/logged-out-logo.png";
 
 const getDecimal = () => deepGet(Pricer , "token.decimals") ;
 
@@ -71,7 +73,10 @@ class BottomStatus extends PureComponent {
           <View style={{flex: 0.3}}>
             {this.props.totalBt && 
               <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>${`${ PriceOracle.fromDecimal( this.props.totalBt , getDecimal())} Raised`}</Text> }
-            {this.props.supporters && <Text style={inlineStyles.bottomBgTxt}>{`${this.props.supporters} Supporters`}</Text>}
+            {this.props.supporters && <Text style={inlineStyles.bottomBgTxt}>
+              <Image source={supportersIcon} style={{width: 9, height: 8, marginRight: 3}} />
+              {`${this.props.supporters} Supporters`}
+              </Text>}
           </View>
         </View>
       </TouchableWithoutFeedback>  
