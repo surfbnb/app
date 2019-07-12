@@ -15,7 +15,7 @@ import ClapButton from "./ClapButton";
 
 const animDuration = 1000;
 
-class PepoButton extends React.PureComponent {
+class PepoButton extends React.Component {
   constructor(props) {
     super(props);
 
