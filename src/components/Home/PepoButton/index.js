@@ -66,7 +66,9 @@ class PepoButton extends React.Component {
       <ClapBubble
         key={countNum}
         count={countNum}
-        animationComplete={this.animationComplete.bind(this)}
+        animDuration={animDuration}
+        animationComplete={this.animationComplete.bind(this)
+        }
       />
     ));
   }

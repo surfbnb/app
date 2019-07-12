@@ -79,7 +79,7 @@ class BottomStatus extends PureComponent {
                 this.props.supporters &&
                 <View style={[inlineStyles.bottomBgTxt, {flexDirection: 'row', alignItems: 'center'}]} >
                 <Image source={supportersIcon} style={{width: 12, height: 10, marginRight: 3}} />
-                <Text style={[inlineStyles.bottomBgTxt, {flex: 1}]} ellipsizeMode={'tail'} numberOfLines={1}>{`${this.props.supporters}K Supporters`}</Text>
+                <Text style={[inlineStyles.bottomBgTxt, {flex: 1}]} ellipsizeMode={'tail'} numberOfLines={1}>{`${this.props.supporters} Supporters`}</Text>
                 </View>
               }
             </View>
