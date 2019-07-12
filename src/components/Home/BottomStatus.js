@@ -55,25 +55,14 @@ class BottomStatus extends PureComponent {
                 <Text style={[{ paddingRight: 20, fontSize: 13 }, inlineStyles.bottomBgTxt]}>{this.props.bio}</Text>
               )}
             </View>
-            <View style={{ flex: 0.3 }}>
-              {this.props.totalBt && (
-                <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt]}>
-                  ${`${PriceOracle.fromDecimal(this.props.totalBt, getDecimal())} Raised`}
-                </Text>
-              )}
-              {this.props.supporters && (
-                <Text style={inlineStyles.bottomBgTxt}>{`${this.props.supporters} Supporters`}</Text>
-              )}
-            </View>
-          </View>
-
-          <View style={{flex: 0.3}}>
+            <View style={{flex: 0.3}}>
             {this.props.totalBt && 
               <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>${`${ PriceOracle.fromDecimal( this.props.totalBt , getDecimal())} Raised`}</Text> }
             {this.props.supporters && <Text style={inlineStyles.bottomBgTxt}>
               <Image source={supportersIcon} style={{width: 9, height: 8, marginRight: 3}} />
               {`${this.props.supporters} Supporters`}
               </Text>}
+          </View>
           </View>
       </TouchableWithoutFeedback>
       </View>
