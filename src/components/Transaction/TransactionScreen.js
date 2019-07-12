@@ -108,9 +108,8 @@ class TransactionScreen extends Component {
     });
   }
 
-  onBalance(res) {
+  onBalance(balance , res) {
     if (!this.priceOracle) return;
-    let balance = deepGet(res, 'balance.available_balance');
     balance = this.priceOracle.fromDecimal(balance);
     balance = this.priceOracle.toBt(balance) || 0;
     let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
