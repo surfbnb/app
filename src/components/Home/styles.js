@@ -19,16 +19,12 @@ let stylesMap = {
       alignSelf: 'flex-end'
     },
     pepoElemBtn: {
-      backgroundColor: Colors.white,
       height : 50,
-      // marginBottom: 5,
       width: 50,
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 25,
-      borderStyle: 'solid',
-      borderWidth: 2,
-      borderColor: Colors.wildWatermelon
+      elevation: 3
     },
     pepoTxCount:{
         fontSize: 18,

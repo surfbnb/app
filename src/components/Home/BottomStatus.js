@@ -12,7 +12,7 @@ import supportersIcon from "../../assets/supporters-icon.png";
 
 import Pricer from "../../services/Pricer"; 
 import PriceOracle from "../../services/PriceOracle";
-import loggedOutLogo from "../../assets/logged-out-logo.png";
+import PepoButton from "./PepoButton";
 
 const getDecimal = () => deepGet(Pricer , "token.decimals") ;
 
@@ -38,14 +38,7 @@ class BottomStatus extends PureComponent {
       <View style={ inlineStyles.bottomContainer } pointerEvents={'box-none'}>
 
         <View style={ inlineStyles.touchablesBtns }>
-          <View>
-            <TouchableOpacity style={inlineStyles.pepoElemBtn} pointerEvents={'auto'}>
-              <Image
-                style={{height: 19, width: 19}}
-                source={pepo_tx_icon}
-              />
-            </TouchableOpacity>
-          </View>
+          <PepoButton/>
           {this.props.totalBt && <Text style={inlineStyles.pepoTxCount}>{PriceOracle.fromDecimal( this.props.totalBt , getDecimal())}</Text> } 
           <TouchableOpacity pointerEvents={'auto'}
                             onPress={this.navigateToTransaction}
