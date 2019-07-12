@@ -49,19 +49,26 @@ class BottomStatus extends PureComponent {
 
         <TouchableWithoutFeedback onPress={this.navigateToUserProfile} pointerEvents={'auto'}>
           <View style={inlineStyles.bottomBg}>
-            <View style={{ flex: 0.7 }}>
+            <View style={{ flex: 0.7}}>
               <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt]}>{`@${this.props.userName}`}</Text>
               {this.props.bio && (
-                <Text style={[{ paddingRight: 20, fontSize: 13, flexWrap: 'wrap', flex: 1 }, inlineStyles.bottomBgTxt]} ellipsizeMode={'tail'} numberOfLines={3}>{this.props.bio}</Text>
+                <Text style={[{ paddingRight: 20, fontSize: 13, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]} ellipsizeMode={'tail'} numberOfLines={3}>{this.props.bio}</Text>
               )}
             </View>
             <View style={{flex: 0.3}}>
-            {this.props.totalBt && 
-              <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>${`${ PriceOracle.fromDecimal( this.props.totalBt , getDecimal())} Raised`}</Text> }
-            {this.props.supporters && <Text style={inlineStyles.bottomBgTxt}>
-              <Image source={supportersIcon} style={{width: 9, height: 9, marginRight: 3}} />
-              {`${this.props.supporters} Supporters`}
-              </Text>}
+            {
+              this.props.totalBt &&
+              <View style={{marginBottom: 5, flexDirection: 'row', alignItems: 'center' }} ellipsizeMode={'tail'} numberOfLines={1}>
+                <Text style={[{width: 12, textAlign: 'center', marginRight: 3}, inlineStyles.bottomBgTxt]}>$</Text>
+                <Text style={[inlineStyles.bottomBgTxt, {flex: 1}]} ellipsizeMode={'tail'} numberOfLines={1}>{`${ PriceOracle.fromDecimal( this.props.totalBt , getDecimal())}K Raised`}</Text>
+              </View>
+            }
+            {
+              this.props.supporters &&
+              <View style={[inlineStyles.bottomBgTxt, {flexDirection: 'row', alignItems: 'center'}]} >
+                <Image source={supportersIcon} style={{width: 12, height: 10, marginRight: 3}} />
+                <Text style={[inlineStyles.bottomBgTxt, {flex: 1}]} ellipsizeMode={'tail'} numberOfLines={1}>{`${this.props.supporters}K Supporters`}</Text>
+              </View>}
           </View>
           </View>
       </TouchableWithoutFeedback>
