@@ -83,6 +83,8 @@ export const upsertTransactionEntities = (data) => ({
 
 export const upsertGiffyEntities = (data) => ({ type: types.UPSERT_GIFFY_ENTITIES, payload: { giffy_entities: data } });
 
+export const upsertRecordedMediaS3Url = (data) => ({type: types.UPSERT_RECORDED_MEDIA_S3_URL, payload: {recorded_media_s3_entities: data}})
+
 export const logoutUser = () => ({ type: types.LOGOUT_USER });
 
 export const genericEvent = (eventName, payload) => ({

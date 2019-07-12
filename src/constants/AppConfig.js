@@ -34,5 +34,10 @@ export default {
   giphySizes: {
     search: 'preview_gif',
     feed: 'downsized'
+  },
+
+  fileUploadTypes: {
+    video: 'videos',
+    image: 'images'
   }
 };

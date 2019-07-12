@@ -24,7 +24,8 @@ import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from "./src/components/Giphy";
 import EditTx from "./src/components/Transaction/EditTxModal";
 import  deepGet from "lodash/get";
-
+import VideoRecorder from './src/components/VideoRecorder';
+import PreviewRecordedVideo from './src/components/PreviewRecordedVideo'
 const FeedStack = createStackNavigator(
   {
     FeedContent: Feed,
@@ -119,13 +120,16 @@ const PinStack = createStackNavigator(
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
-      AuthLoading,
+      //AuthLoading,
+      VideoRecorder,  
       AuthScreen,
       HomeScreen,
-      PinStack
+      PinStack,
+      PreviewRecordedVideo
+
     },
     {
-      initialRouteName: 'AuthLoading'
+      initialRouteName: 'VideoRecorder'
     }
   )
 );
