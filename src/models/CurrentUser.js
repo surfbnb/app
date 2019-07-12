@@ -6,6 +6,9 @@ import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
 import { LoginPopoverActions } from '../components/LoginPopover';
+import { Toast } from 'native-base';
+import { ostErrors } from '../services/OstErrors';
+import TwitterAuthService from '../services/TwitterAuthService';
 
 class CurrentUserModel {
   constructor() {
@@ -106,7 +109,7 @@ class CurrentUserModel {
     try {
       userId = userId || this.userId;
       this.userId = null;
-      this.ost_user_id = null;
+      this.ostUserId = null;
       Store.dispatch(logoutUser());
       await utilities.removeItem(this._getCurrentUserIdKey());
       await utilities.removeItem(this._getASKey(userId));
@@ -135,6 +138,7 @@ class CurrentUserModel {
       .then((res) => {
         NavigationService.navigate('HomeScreen', params);
       });
+    TwitterAuthService.logout();
   }
 
   _signin(apiUrl, params) {
@@ -169,10 +173,16 @@ class CurrentUserModel {
     return this.isUserActivated() || this.isUserActivating();
   }
 
-  isUserActivated(dontEmit) {
-    //TODO Preshita flag based emit tost event
-    const userStatusMap = appConfig.userStatusMap;
-    return this.__getUserStatus() == userStatusMap.activated;
+  isUserActivated(emit) {
+    const userStatusMap = appConfig.userStatusMap,
+      returnVal = this.__getUserStatus() == userStatusMap.activated;
+    if (!returnVal && emit) {
+      Toast.show({
+        text: ostErrors.getUIErrorMessage('user_not_active'),
+        buttonText: 'Okay'
+      });
+    }
+    return returnVal;
   }
 
   isUserActivating() {
