@@ -5,7 +5,6 @@ import deepGet from 'lodash/get';
 import inlineStyles from './styles';
 import { withNavigation } from 'react-navigation';
 import tx_icon from '../../assets/tx_icon.png';
-import pepo_tx_icon from '../../assets/pepo-tx-icon.png';
 import currentUserModel from '../../models/CurrentUser';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import supportersIcon from "../../assets/supporters-icon.png";
@@ -26,7 +25,7 @@ class BottomStatus extends PureComponent {
     }
   };
 
-  excequteTransaction = (e) =>{
+  excequteTransaction = ( btAmount ) =>{
     if (currentUserModel.checkActiveUser() && currentUserModel.isUserActivated(true)) {
       Alert.alert('', 'Execute transactions');
     }
@@ -41,10 +40,8 @@ class BottomStatus extends PureComponent {
     return (
       <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
         <View style={inlineStyles.touchablesBtns}>
-          <PepoButton/>
-          {this.props.totalBt && (
-            <Text style={inlineStyles.pepoTxCount}>{PriceOracle.fromDecimal(this.props.totalBt, getDecimal())}</Text>
-          )}
+          <PepoButton totalBt={PriceOracle.fromDecimal(this.props.totalBt, getDecimal())} 
+                      excequteTransaction={this.excequteTransaction} />
           <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransaction} style={inlineStyles.txElem}>
             <Image style={{ height: 57, width: 57 }} source={tx_icon} />
           </TouchableOpacity>

@@ -17,7 +17,7 @@ const tabNames = {
 };
 
 function onTabPressed(navigation, tabName) {
-  if (!currentUserModal.checkActiveUser()) return;
+ if (!currentUserModal.checkActiveUser()) return;
   try {
     navigation.dispatch(StackActions.popToTop({ key: tabName }));
   } catch {

@@ -8,7 +8,6 @@ import appConfig from '../constants/AppConfig';
 import { LoginPopoverActions } from '../components/LoginPopover';
 import { Toast } from 'native-base';
 import { ostErrors } from '../services/OstErrors';
-import TwitterAuthService from '../services/TwitterAuthService';
 
 class CurrentUserModel {
   constructor() {
@@ -138,7 +137,6 @@ class CurrentUserModel {
       .then((res) => {
         NavigationService.navigate('HomeScreen', params);
       });
-    TwitterAuthService.logout();
   }
 
   _signin(apiUrl, params) {

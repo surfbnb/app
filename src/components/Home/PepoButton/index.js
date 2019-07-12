@@ -11,11 +11,11 @@ import {
 import ClapBubble from "./ClapBubble";
 import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
 import inlineStyles from '../styles'
-import ClapButton from "./ClapButton"
+import ClapButton from "./ClapButton";
 
 const animDuration = 1000;
 
-class PepoButton extends React.Component {
+class PepoButton extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -46,6 +46,7 @@ class PepoButton extends React.Component {
     if (this.keepclap) {
       clearInterval(this.keepclap);
     }
+    this.props.excequteTransaction && this.props.excequteTransaction( ) ;
   }
 
   animationComplete(countNum) {
@@ -82,6 +83,7 @@ class PepoButton extends React.Component {
               <ClapButton animDuration={animDuration} isClapping={this.state.isClapping}/>
             </View>
           </TouchableWithoutFeedback>
+          <Text style={inlineStyles.pepoTxCount}>{this.props.totalBt || 0}</Text>
         </View>
       </View>
     );
