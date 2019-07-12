@@ -28,10 +28,10 @@ let stylesMap = {
       elevation: 3
     },
     pepoTxCount:{
-        fontSize: 18,
-        color: Colors.white,
-        alignSelf: 'center',
-        marginTop: 3,
+      fontSize: 18,
+      color: Colors.white,
+      alignSelf: 'center',
+      marginTop: 3,
       marginBottom: 15
     },
     txElem: {
@@ -48,11 +48,13 @@ let stylesMap = {
     },
     bottomBg: {
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
-        maxHeight: 150,
+        // maxHeight: 150,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 15,
-        paddingHorizontal: 15
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        maxHeight: Dimensions.get('window').height * .15,
+        minHeight: Dimensions.get('window').height * .1
     },
     bottomBgTxt:{
         color: Colors.white

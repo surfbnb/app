@@ -49,10 +49,10 @@ class BottomStatus extends PureComponent {
 
         <TouchableWithoutFeedback onPress={this.navigateToUserProfile} pointerEvents={'auto'}>
           <View style={inlineStyles.bottomBg}>
-            <View style={{ flex: 0.7, flexWrap: 'wrap' }}>
+            <View style={{ flex: 0.7 }}>
               <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt]}>{`@${this.props.userName}`}</Text>
               {this.props.bio && (
-                <Text style={[{ paddingRight: 20, fontSize: 13 }, inlineStyles.bottomBgTxt]}>{this.props.bio}</Text>
+                <Text style={[{ paddingRight: 20, fontSize: 13, flexWrap: 'wrap', flex: 1 }, inlineStyles.bottomBgTxt]} ellipsizeMode={'tail'} numberOfLines={3}>{this.props.bio}</Text>
               )}
             </View>
             <View style={{flex: 0.3}}>
