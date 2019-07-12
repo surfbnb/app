@@ -77,9 +77,9 @@ export default class ClapButton extends React.Component{
       <View>
         <Animated.Image
           style={[{
-            height: 60,
-            width: 60,
-            borderRadius : 30,
+            height: 50,
+            width: 50,
+            borderRadius :25,
             borderWidth : 3,
             borderColor: Colors.primary,
             zIndex:100,
@@ -97,10 +97,10 @@ export default class ClapButton extends React.Component{
         <Animated.View
           style={[
             {
-              height:60,
-              width:60,
+              height:50,
+              width:50,
               position:'absolute',
-              borderRadius : 70,
+              borderRadius : 25,
               borderWidth :  2,
               borderColor: Colors.primary,
               opacity: this.timedClap ? interpolatedRingOpacity : 0,
