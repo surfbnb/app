@@ -12,23 +12,21 @@ class VideoWrapper extends PureComponent {
         super(props);
         this.player = null;
         this.state = {
-            paused : false,
-            loaded: false
+            paused : false
         }
-        this.wasAutoPaused = false; 
-        this.wasUserPaused = false; 
+        this.isUserPaused = false; 
+        this.pausedOnNavigation = false;
     }
 
     componentDidMount(){
-        let loadingTimeOut ; 
-
         this.didFocusSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                loadingTimeOut = clearInterval(loadingTimeOut);
-                loadingTimeOut = setTimeout(()=>{
-                    if( this.props.isActive && !this.wasUserPaused ){
-                        this.setState({paused : false});
+             clearTimeout(this.loadingTimeOut);    
+             this.loadingTimeOut = setTimeout(()=> {
+                    this.pausedOnNavigation = false;
+                    if( !this.isUserPaused ){
+                        this.playVideo();
                     }
                 }, 300 )   
             }
@@ -37,10 +35,9 @@ class VideoWrapper extends PureComponent {
         this.willBlurSubscription =   this.props.navigation.addListener(
             'willBlur',
             payload => {
-               clearInterval(loadingTimeOut);
-               if(!this.isPaused()){
-                  this.setState({paused : true}); 
-               }
+                clearTimeout(this.loadingTimeOut);    
+                this.pausedOnNavigation = true;
+                this.pauseVideo();
             }
         );
 
@@ -60,20 +57,26 @@ class VideoWrapper extends PureComponent {
         if ( this._handleAppStateChange ) {
             AppState.removeEventListener('change', this._handleAppStateChange);
         }
-    }
-
-    appActiveStateChanged(nextAppState) {
-        let appState = nextAppState.toLowerCase();
-        if ( "active" === appState && this.props.isActive && !this.wasUserPaused ) {
-           this.setState({paused: false}); 
-        } else if ("inactive" === appState && !this.isPaused() ) {
-            this.setState({paused: true}); 
-        }
+        clearTimeout(this.loadingTimeOut);   
+        clearTimeout(this.activeStateTimeout);    
     }
 
 
     isPaused(){
         return !this.props.isActive || this.state.paused;
+    }
+
+    playVideo() {
+        if ( this.props.isActive && this.state.paused ) {
+            this.setState({paused: false});
+        }
+    }
+
+    pauseVideo( isUserPaused ) {
+        this.setState({paused: true});
+        if( isUserPaused !== undefined ){
+            this.isUserPaused = isUserPaused ;  
+         }
     }
 
     componentDidUpdate(){
@@ -82,15 +85,28 @@ class VideoWrapper extends PureComponent {
         }
     }
 
-    onUserClick = () => {
-        this.setState({ paused : !this.state.paused })
-        this.wasUserPaused = !this.wasUserPaused; 
+    appActiveStateChanged(nextAppState) {
+        let appState = nextAppState.toLowerCase();
+        if ( "active" === appState && !this.isUserPaused && !this.pausedOnNavigation ) {
+            this.playVideo();
+        } else if ("inactive" === appState ) {
+             this.pauseVideo();
+        }
     }
+
+    onPausePlayBtnClicked = () => {
+        if ( this.state.paused ) {
+            this.isUserPaused = false ;
+            this.playVideo();
+        } else {
+            this.pauseVideo( true );
+        }
+    };
 
     render(){   
         console.log("Video component render " , this.props.videoImgUrl);
         return (
-            <TouchableWithoutFeedback onPress={this.onUserClick}>
+            <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked }>
                 <Video
                     poster={this.props.videoImgUrl}
                     posterResizeMode={"cover"}
