@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Easing,
   Animated
 } from "react-native";
 
@@ -30,16 +31,19 @@ export default class ClapBubble extends React.Component {
       Animated.timing(this.state.yPosition, {
         toValue: -150,
         duration: this.props.animDuration,
+        easing:Easing.ease,
         useNativeDriver: true
       }),
       Animated.timing(this.state.xPosition, {
         toValue,
         duration: this.props.animDuration,
+        easing:Easing.ease,
         useNativeDriver: true
       }),
       Animated.timing(this.state.opacity, {
         toValue: 0,
         duration: this.props.animDuration,
+        easing:Easing.ease,
         useNativeDriver: true
       })
     ]).start(() => {
