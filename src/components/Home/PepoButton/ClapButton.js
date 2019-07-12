@@ -53,6 +53,7 @@ export default class ClapButton extends React.Component{
 
   render(){
     if(this.props.isClapping){
+      this.firstClap = this.props.isClapping;
       this.timedClap = this.props.isClapping;
       setTimeout(()=>{
         this.timedClap = false
@@ -80,7 +81,7 @@ export default class ClapButton extends React.Component{
             height: 50,
             width: 50,
             borderRadius :25,
-            borderWidth : 3,
+            borderWidth : this.firstClap?3:0,
             borderColor: Colors.primary,
             zIndex:100,
             ...this.timedClap ? {transform : [
