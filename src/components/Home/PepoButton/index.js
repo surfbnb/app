@@ -83,7 +83,7 @@ class PepoButton extends React.Component {
               <ClapButton animDuration={animDuration} isClapping={this.state.isClapping}/>
             </View>
           </TouchableWithoutFeedback>
-          <Text style={inlineStyles.pepoTxCount}>{this.props.totalBt || 0}</Text>
+          <Text style={inlineStyles.pepoTxCount}>{this.state.count || 0}</Text>
         </View>
       </View>
     );

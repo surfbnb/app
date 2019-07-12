@@ -16,13 +16,14 @@ class TransactionPepoButton extends PureComponent {
     constructor(props){
         super(props); 
         this.state = {
-          isDisabled : false
+          isDisabled : true
         }
     }
 
     excequteTransaction = ( btAmount ) =>{
         //TODO disabled all 
-       // this.sendTransactionToSdk( btAmount );
+        if(!btAmount) return;
+        this.sendTransactionToSdk( btAmount );
     };
 
     componentDidMount(){
@@ -107,21 +108,18 @@ class TransactionPepoButton extends PureComponent {
       }
 
       onTransactionIconWrapperClick = () => {
-        if(currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() ){
-          this.state({isDisabled : false});
-        }
+        currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() 
       }
 
     render(){
        return ( 
-        // <TouchableWithoutFeedback onPress={this.onTransactionIconWrapperClick}> 
-        //     <View>
-                  <PepoButton totalBt={utilities.getToBt(this.props.totalBt)} 
-                              //disabled={this.isDisabled}
+        <TouchableWithoutFeedback onPress={this.onTransactionIconWrapperClick}> 
+            <View>
+                  <PepoButton count={utilities.getToBt(this.props.totalBt)} 
+                              disabled={this.state.isDisabled}
                               excequteTransaction={this.excequteTransaction} /> 
-        //     </View>                  
-        //  </TouchableWithoutFeedback>                     
-
+           </View>                  
+        </TouchableWithoutFeedback>                     
        )
     }
 
