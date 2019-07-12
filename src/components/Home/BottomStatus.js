@@ -7,7 +7,7 @@ import { withNavigation } from 'react-navigation';
 import tx_icon from '../../assets/tx_icon.png';
 import currentUserModel from '../../models/CurrentUser';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import supportersIcon from "../../assets/supporters-icon.png";
+import supportersIcon from "../../assets/supporters-icon-1.png";
 import Pricer from '../../services/Pricer';
 import PriceOracle from '../../services/PriceOracle';
 import PepoButton from "./PepoButton";
@@ -59,7 +59,7 @@ class BottomStatus extends PureComponent {
             {this.props.totalBt && 
               <Text style={[{marginBottom: 5}, inlineStyles.bottomBgTxt]}>${`${ PriceOracle.fromDecimal( this.props.totalBt , getDecimal())} Raised`}</Text> }
             {this.props.supporters && <Text style={inlineStyles.bottomBgTxt}>
-              <Image source={supportersIcon} style={{width: 9, height: 8, marginRight: 3}} />
+              <Image source={supportersIcon} style={{width: 9, height: 9, marginRight: 3}} />
               {`${this.props.supporters} Supporters`}
               </Text>}
           </View>
