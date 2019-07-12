@@ -25,6 +25,12 @@ class BottomStatus extends PureComponent {
     }
   };
 
+  excequteTransaction = (e) =>{
+    if (currentUserModel.checkActiveUser() && currentUserModel.isUserActivated(true)) {
+      Alert.alert('', 'Execute transactions');
+    }
+  }
+
   navigateToUserProfile = (e) => {
     Alert.alert('', 'Navigate to Userprofile page once profile page implemented');
   };
