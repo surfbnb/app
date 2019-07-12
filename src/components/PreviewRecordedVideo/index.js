@@ -4,7 +4,9 @@ import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/play_icon.png';
 import tickIcon from '../../assets/tick_icon.png';
-import UploadToS3 from '../../services/UploadToS3';
+import CameraManager from '../../services/CameraManager';
+import RNThumbnail from 'react-native-thumbnail';
+import FfmpegProcesser from '../../services/FfmpegProcesser';
 
 const PROGRESS_FACTOR = 0.01;
 
@@ -18,18 +20,32 @@ class PreviewRecordedVideo extends Component {
       progress: 0
     };
     this.cachedVideoUri = this.props.navigation.getParam('videoUrl');
-
   }
+
+  componentDidMount() {
+    //this.startCompression();
+  }
+
   previewOnProgress(params) {
     console.log('paramsssss', params);
     this.setState({ progress: params.currentTime / params.seekableDuration });
   }
 
-  uploadToS3() {
-    let uploadToS3 = new UploadToS3({file: { uri: this.cachedVideoUri,
-        type: "video/mp4",
-        name: "video.mp4"},  fileType: 'video' });
-        uploadToS3.perform();
+  async videoProcessing() {
+    let cameraManager = new CameraManager(
+      { uri: this.cachedVideoUri, type: 'video/mp4', name: `video_${Date.now()}.mp4` },
+      'video'
+    );
+    this.videoS3Url = await cameraManager.compressAndUploadVideo();
+    this.thumbnailUrl = await this.fetchAndUploadThumbnail();
+    console.log(this.videoS3Url, this.thumbnailUrl);
+  }
+
+  async fetchAndUploadThumbnail() {
+    let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
+    console.log(thumbnailPath, 'thumbnailPath');
+    let cameraManager = new CameraManager({ uri: thumbnailPath.path, type: 'image/png', name: `image_${Date.now()}.png` });
+    return await cameraManager.uploadImage('video-thumbnail');
   }
 
   render() {
@@ -62,7 +78,7 @@ class PreviewRecordedVideo extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              this.uploadToS3();
+              this.videoProcessing();
             }}
           >
             <Image style={styles.tickIcon} source={tickIcon} />
@@ -135,21 +151,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0
   },
-  playIcon: {
-    width: 65,
-    height: 65,
-    padding: 15,
-    paddingHorizontal: 20,
-    alignSelf: 'center'
-    // margin: 20
-  },
-  tickIcon: {
-    width: 45,
-    height: 45,
-    padding: 15,
-    paddingHorizontal: 20,
-    alignSelf: 'flex-end'
-  },
   progressBar: {
     position: 'absolute',
     top: 40,
@@ -165,9 +166,22 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     bottom: 40,
-    justifyContent: 'center',
     flexDirection: 'row',
-    width: '100%'
+    width: '50%',
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  playIcon: {
+    width: 65,
+    height: 65,
+    paddingHorizontal: 20,
+    marginLeft: -32.5
+  },
+  tickIcon: {
+    width: 45,
+    height: 45,
+    marginRight: 20
   }
 });
 

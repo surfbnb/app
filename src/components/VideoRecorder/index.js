@@ -4,7 +4,7 @@ import { RNCamera } from "react-native-camera";
 import captureIcon from "../../assets/capture_icon.png";
 import stopIcon from '../../assets/stop_icon.png';
 import ProgressBar from "react-native-progress/Bar";
-import RNThumbnail from "react-native-thumbnail";
+
 
 const PROGRESS_FACTOR = 0.01;
 
@@ -108,8 +108,7 @@ class VideoRecorder extends Component {
 
   stopRecording(){
     // naviagate from here to other page
-    this.camera && this.camera.stopRecording();
-        
+    this.camera && this.camera.stopRecording();        
   }
 
 
@@ -190,9 +189,7 @@ class VideoRecorder extends Component {
       console.log("data-------------", data);
 
       this.props.navigation.navigate('PreviewRecordedVideo', {videoUrl: data.uri })
-      
-
-      // upload to S3 
+    
 
   };
 }
