@@ -8,13 +8,12 @@ import Store from '../store';
 import { hideLoginPopover } from '../actions';
 import NavigationService from './NavigationService';
 import { Toast } from 'native-base';
-import { TWITTER_COMSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../constants/index';
+import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../constants';
 
 const { RNTwitterSignIn } = NativeModules;
 
 class TwitterAuthService {
   signUp() {
-    Store.dispatch(hideLoginPopover());
     const oThis = this;
     this._signIn()
       .then((loginData) => {
@@ -54,7 +53,9 @@ class TwitterAuthService {
           text: ostErrors.getErrorMessage(error),
           buttonText: 'Okay'
         });
-      });
+      }).finally( () => {
+         Store.dispatch(hideLoginPopover());
+    })
   }
 
   getParams(loginData) {
@@ -93,7 +94,7 @@ class TwitterAuthService {
   }
 
   _signIn() {
-    RNTwitterSignIn.init(TWITTER_COMSUMER_KEY, TWITTER_CONSUMER_SECRET);
+    RNTwitterSignIn.init(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
     return RNTwitterSignIn.logIn();
   }
 
