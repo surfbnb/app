@@ -11,16 +11,16 @@ import {
 import ClapBubble from "./ClapBubble";
 import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
 import inlineStyles from '../styles'
-import Colors from "../../../theme/styles/Colors"
 import ClapButton from "./ClapButton"
 
-const animDuration = 500
-export default class Index extends React.Component {
+const animDuration = 1000;
+
+class PepoButton extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      count: 0,
+      count: this.props.count,
       claps: [],
       isClapping: false,
       scaleValue : new Animated.Value(0)
@@ -36,14 +36,12 @@ export default class Index extends React.Component {
   }
 
   keepClapping = () => {
-    console.log('keepClapping');
     this.setState({ isClapping: true });
     this.clap();
     this.keepclap = setInterval(() => this.clap(), animDuration);
   }
 
   stopClapping = () => {
-    console.log('stopClapping');
     this.setState({ isClapping: false });
     if (this.keepclap) {
       clearInterval(this.keepclap);
@@ -77,10 +75,11 @@ export default class Index extends React.Component {
         {this.renderClaps()}
         <View style={inlineStyles.pepoElemBtn}>
           <TouchableWithoutFeedback
+            disabled={this.props.disabled}
             onPressIn={this.keepClapping}
             onPressOut={this.stopClapping}>
             <View>
-              <ClapButton isClapping={this.state.isClapping}/>
+              <ClapButton animDuration={animDuration} isClapping={this.state.isClapping}/>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -88,3 +87,10 @@ export default class Index extends React.Component {
     );
   }
 }
+
+PepoButton.defaultProps = {
+  disabled: false,
+  count: 0
+};
+
+export default PepoButton;

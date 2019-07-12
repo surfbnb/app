@@ -21,6 +21,7 @@ let stylesMap = {
     pepoElemBtn: {
       height : 50,
       width: 50,
+      marginBottom:10,
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 25,

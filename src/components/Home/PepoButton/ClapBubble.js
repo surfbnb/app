@@ -8,10 +8,8 @@ import {
   Animated
 } from "react-native";
 
-import Colors from "../../../theme/styles/Colors"
 import Heart from "../../../assets/heartImage.png"
 
-const animDuration = 1000
 export default class ClapBubble extends React.Component {
   constructor(props) {
     super(props);
@@ -31,28 +29,28 @@ export default class ClapBubble extends React.Component {
     Animated.parallel([
       Animated.timing(this.state.yPosition, {
         toValue: -150,
-        duration: animDuration,
+        duration: this.props.animDuration,
         useNativeDriver: true
       }),
       Animated.timing(this.state.xPosition, {
         toValue,
-        duration: animDuration,
+        duration: this.props.animDuration,
         useNativeDriver: true
       }),
       Animated.timing(this.state.opacity, {
         toValue: 0,
-        duration: animDuration,
+        duration: this.props.animDuration,
         useNativeDriver: true
       })
     ]).start(() => {
       setTimeout(() => {
         this.props.animationComplete(this.props.count);
-      }, animDuration);
+      }, this.props.animDuration);
     });
   }
   render() {
     const RotateData = this.state.opacity.interpolate({
-      inputRange: [0,0.8, 1],
+      inputRange: [0, 0.8, 1],
       outputRange: ['-90deg','-90deg', '0deg'],
     });
     let animationStyle = {
@@ -62,7 +60,7 @@ export default class ClapBubble extends React.Component {
     return (
       <Animated.View style={[animationStyle, styles.clapbubble]}>
         {/*<Text style={styles.clapText}>+ {this.props.count}</Text>*/}
-        <Image style={{height: 40,width: 40,}} source={Heart}></Image>
+        <Image style={{height: 40,width: 40}} source={Heart}></Image>
       </Animated.View>
     );
   }
