@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import {TouchableWithoutFeedback , View } from "react-native";
 import currentUserModel from '../../models/CurrentUser';
 import PepoButton from "./PepoButton";
 import appConfig from '../../constants/AppConfig';
@@ -8,21 +9,29 @@ import pricer from "../../services/Pricer";
 import PriceOracle from "../../services/PriceOracle";
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import reduxGetter from "../../services/ReduxGetters";
+import { withNavigation } from 'react-navigation';
 
 class TransactionPepoButton extends PureComponent {
 
     constructor(props){
         super(props); 
+        this.state = {
+          isDisabled : false
+        }
     }
 
     excequteTransaction = ( btAmount ) =>{
         //TODO disabled all 
-        this.sendTransactionToSdk( btAmount );
+       // this.sendTransactionToSdk( btAmount );
     };
 
-    isDisabled = () => {
-        return this.props.disabled || !currentUserModel.isUserActivated() ;
-    };
+    componentDidMount(){
+      if( this.props.disabled || !currentUserModel.isUserActivated()  ){
+        this.setState({isDisabled: true});
+      }else{
+        this.setState({isDisabled: false});
+      }
+    }
 
     onExcequteTransaction = () => {
         currentUserModel.checkActiveUser() && currentUserModel.isUserActivated(true); 
@@ -33,9 +42,9 @@ class TransactionPepoButton extends PureComponent {
     }
 
     sendTransactionToSdk( btAmount ) {
-        const user = currentUserModal.getUser();
+        const user = currentUserModel.getUser();
         const option = { wait_for_finalization: false };
-        const btInDecimal = PriceOracle.toDecimal(btAmount , Pricer.getDecimal());
+        const btInDecimal = PriceOracle.toDecimal(btAmount , pricer.getDecimal());
         this.workflow = new ExecuteTransactionWorkflow(this);
         OstWalletSdk.executeTransaction(
           user.ost_user_id,
@@ -97,12 +106,25 @@ class TransactionPepoButton extends PureComponent {
         };
       }
 
+      onTransactionIconWrapperClick = () => {
+        if(currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() ){
+          this.state({isDisabled : false});
+        }
+      }
+
     render(){
-       return ( <PepoButton totalBt={utilities.getToBt(this.props.totalBt)} 
-                            disabled={this.isDisabled}
-                            excequteTransaction={this.excequteTransaction} /> );
+       return ( 
+        // <TouchableWithoutFeedback onPress={this.onTransactionIconWrapperClick}> 
+        //     <View>
+                  <PepoButton totalBt={utilities.getToBt(this.props.totalBt)} 
+                              //disabled={this.isDisabled}
+                              excequteTransaction={this.excequteTransaction} /> 
+        //     </View>                  
+        //  </TouchableWithoutFeedback>                     
+
+       )
     }
 
 }
 
-export default TransactionPepoButton;
+export default withNavigation( TransactionPepoButton );

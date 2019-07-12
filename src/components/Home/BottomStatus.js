@@ -8,9 +8,6 @@ import currentUserModel from '../../models/CurrentUser';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import supportersIcon from "../../assets/supporters-icon-1.png";
-import Pricer from '../../services/Pricer';
-import PriceOracle from '../../services/PriceOracle';
-import PepoButton from "./PepoButton";
 import utilities from "../../services/Utilities";
 import reduxGetter from "../../services/ReduxGetters";
 import TransactionPepoButton from "./TransactionPepoButton"
@@ -31,11 +28,13 @@ class BottomStatus extends PureComponent {
   }
 
   navigateToTransactionScreen = (e) => {
+    if(  currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() ){
       this.props.navigation.push('TransactionScreen' ,
-       { transactionHeader: this.props.name, 
-        toUser: reduxGetter.getUser( reduxGetter.getHomeFeedUserId(this.props.feedId)), 
-        videoId :reduxGetter.getHomeFeedVideoId(this.props.feedId)
-      });
+      { transactionHeader: this.props.name, 
+       toUser: reduxGetter.getUser( reduxGetter.getHomeFeedUserId(this.props.feedId)), 
+       videoId :reduxGetter.getHomeFeedVideoId(this.props.feedId)
+     });
+    }  
   };
 
   navigateToUserProfile = (e) => {
@@ -48,17 +47,17 @@ class BottomStatus extends PureComponent {
     console.log('Bottom status rerender');
     return (
       <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-        <TouchableWithoutFeedback onPress={this.onTransactionIconsWrapperClick}>
+        {/* <TouchableWithoutFeedback onPress={this.onTransactionIconsWrapperClick}> */}
           <View style={inlineStyles.touchablesBtns}>
             <TransactionPepoButton totalBt={this.props.totalBt} 
                                    userId={reduxGetter.getHomeFeedUserId(this.props.feedId)}
                                    videoId={reduxGetter.getHomeFeedVideoId(this.props.feedId)}  />            
             <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen} 
-                              disabled={this.isAdvanceTransactionOptionDisabled} style={inlineStyles.txElem}>
+                               style={inlineStyles.txElem}>
               <Image style={{ height: 57, width: 57 }} source={tx_icon} />
             </TouchableOpacity>
           </View>
-        </TouchableWithoutFeedback>
+        {/* </TouchableWithoutFeedback> */}
 
         <TouchableWithoutFeedback onPress={this.navigateToUserProfile} pointerEvents={'auto'}>
           <View style={inlineStyles.bottomBg}>
