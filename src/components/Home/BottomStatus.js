@@ -73,7 +73,7 @@ class BottomStatus extends PureComponent {
                 this.props.totalBt &&
                 <View style={{marginBottom: 5, flexDirection: 'row', alignItems: 'center' }} ellipsizeMode={'tail'} numberOfLines={1}>
                   <Text style={[{width: 12, textAlign: 'center', marginRight: 3}, inlineStyles.bottomBgTxt]}>$</Text>
-                  <Text style={[inlineStyles.bottomBgTxt, {flex: 1}]} ellipsizeMode={'tail'} numberOfLines={1}>{`${ PriceOracle.fromDecimal( this.props.totalBt , getDecimal())}K Raised`}</Text>
+                  <Text style={[inlineStyles.bottomBgTxt, {flex: 1}]} ellipsizeMode={'tail'} numberOfLines={1}>{`${ utilities.getToBt( this.props.totalBt )} Raised`}</Text>
                 </View>
               }
               {
