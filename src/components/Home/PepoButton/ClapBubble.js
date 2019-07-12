@@ -9,8 +9,9 @@ import {
 } from "react-native";
 
 import Colors from "../../../theme/styles/Colors"
-import Heart from "../../../assets/heart.png"
+import Heart from "../../../assets/heartImage.png"
 
+const animDuration = 1000
 export default class ClapBubble extends React.Component {
   constructor(props) {
     super(props);
@@ -30,29 +31,29 @@ export default class ClapBubble extends React.Component {
     Animated.parallel([
       Animated.timing(this.state.yPosition, {
         toValue: -150,
-        duration: 500,
+        duration: animDuration,
         useNativeDriver: true
       }),
       Animated.timing(this.state.xPosition, {
         toValue,
-        duration: 500,
+        duration: animDuration,
         useNativeDriver: true
       }),
       Animated.timing(this.state.opacity, {
         toValue: 0,
-        duration: 500,
+        duration: animDuration,
         useNativeDriver: true
       })
     ]).start(() => {
       setTimeout(() => {
         this.props.animationComplete(this.props.count);
-      }, 500);
+      }, animDuration);
     });
   }
   render() {
     const RotateData = this.state.opacity.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['-45deg', '0deg'],
+      inputRange: [0,0.8, 1],
+      outputRange: ['-90deg','-90deg', '0deg'],
     });
     let animationStyle = {
       transform: [{ translateY: this.state.yPosition }, {translateX: this.state.xPosition}, { rotate: RotateData }],
@@ -60,8 +61,8 @@ export default class ClapBubble extends React.Component {
     };
     return (
       <Animated.View style={[animationStyle, styles.clapbubble]}>
-        <Text style={styles.clapText}>+ {this.props.count}</Text>
-        {/*<Image source={Heart}></Image>*/}
+        {/*<Text style={styles.clapText}>+ {this.props.count}</Text>*/}
+        <Image style={{height: 40,width: 40,}} source={Heart}></Image>
       </Animated.View>
     );
   }
@@ -69,7 +70,7 @@ export default class ClapBubble extends React.Component {
 const styles = StyleSheet.create({
   clapbubble: {
     elevation: 4,
-    backgroundColor:Colors.primary ,
+    // backgroundColor:Colors.primary ,
     height: 40,
     width: 40,
     borderRadius: 20,

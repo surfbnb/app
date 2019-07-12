@@ -14,6 +14,7 @@ import inlineStyles from '../styles'
 import Colors from "../../../theme/styles/Colors"
 import ClapButton from "./ClapButton"
 
+const animDuration = 500
 export default class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +30,7 @@ export default class Index extends React.Component {
   componentDidMount(){
     Animated.timing(this.state.scaleValue, {
       toValue : 1,
-      duration: 500,
+      duration: animDuration,
       useNativeDriver: true
     }).start()
   }
@@ -38,7 +39,7 @@ export default class Index extends React.Component {
     console.log('keepClapping');
     this.setState({ isClapping: true });
     this.clap();
-    this.keepclap = setInterval(() => this.clap(), 500);
+    this.keepclap = setInterval(() => this.clap(), animDuration);
   }
 
   stopClapping = () => {
