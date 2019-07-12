@@ -12,7 +12,8 @@ export default {
   },
 
   metaProperties: {
-    type: 'user_to_user'
+    type: 'user_to_user',
+    name: "profile"
   },
 
   executeTransactionPrivacyType: {

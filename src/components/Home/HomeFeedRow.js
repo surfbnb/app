@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import {View } from "react-native";
 import VideoWrapper from "./VideoWrapper";
-import deepGet from "lodash/get";
-import Store from '../../store';
+import reduxGetter from "../../services/ReduxGetters";
 
 import BottomStatus from "./BottomStatus"
 
@@ -12,58 +11,56 @@ class HomeFeedRow extends PureComponent {
         super(props);
     }
 
+    get userId(){
+        return reduxGetter.getHomeFeedUserId( this.props.feedId ); 
+    }
+
+    get videoId(){
+       return reduxGetter.getHomeFeedVideoId( this.props.feedId );
+    }
+
     get videoUrl ()  {
-        let videoId = deepGet( Store.getState() ,  `home_feed_entities.id_${this.props.feedId}.payload.video_id` ) ;
-        return deepGet(  Store.getState() , `video_entities.id_${videoId}.resolutions.original.url`) || "";
+        return reduxGetter.getVideoUrl(this.videoId);
     }
 
     get videoImgUrl(){
-        let videoId = deepGet( Store.getState() ,  `home_feed_entities.id_${this.props.feedId}.payload.video_id` ) ,
-            posterImageId = deepGet( Store.getState() ,  `video_entities.id_${videoId}.poster_image_id` )
-        ;
-        return deepGet(  Store.getState() , `image_entities.id_${posterImageId}.resolutions.750w.url`) || "";
+        return reduxGetter.getVideoImgUrl( this.videoId );
     }
 
     get userName(){
-        let userId = deepGet( Store.getState() ,  `home_feed_entities.id_${this.props.feedId}.payload.user_id` ) ; 
-        return deepGet( Store.getState() ,  `user_entities.id_${userId}.username` );
+        return reduxGetter.getUserName( this.userId );
     }
 
     get name(){
-        let userId = deepGet( Store.getState() ,  `home_feed_entities.id_${this.props.feedId}.payload.user_id` ) ; 
-        return deepGet( Store.getState() ,  `user_entities.id_${userId}.name` );
+        return reduxGetter.getName( this.userId );
     }
 
     get bio(){
-        let userId = deepGet( Store.getState() ,  `home_feed_entities.id_${this.props.feedId}.payload.user_id` ) ; 
-        return deepGet( Store.getState() ,  `user_profile_entities.id_${userId}.bio.text` );
+        return reduxGetter.getBio( this.userId );
     }
 
     get supporters(){
-        let videoId = deepGet( Store.getState() ,  `home_feed_entities.id_${this.props.feedId}.payload.video_id` );
-        return deepGet( Store.getState() ,  `video_stat_entities.id_${videoId}.total_contributed_by` );
+        return reduxGetter.getVideoSupporters( this.videoId );
     }
 
     get totalBt(){
-        let videoId = deepGet( Store.getState() ,  `home_feed_entities.id_${this.props.feedId}.payload.video_id` );
-        return deepGet( Store.getState() ,  `video_stat_entities.id_${videoId}.total_amount_raised_in_wei` );
+        return reduxGetter.getVideoBt( this.videoId );
     }
 
     render() {
-        console.log("render HomeFeedRow" , this.userName , this.name , this.bio , this.supporters, this.totalBt);
-
+        console.log("render HomeFeedRow");
         return  (
             <View>
                { this.props.doRender && 
                     <VideoWrapper   isActive={ this.props.isActive }
                                     videoUrl={ this.videoUrl }
                                     videoImgUrl={this.videoImgUrl} />   }           
-                <BottomStatus feedId={ this.props.feedId }
-                            userName={this.userName}
-                            name={this.name}
-                            bio={this.bio}  
-                            supporters={this.supporters}
-                            totalBt={this.totalBt}
+                <BottomStatus   feedId={ this.props.feedId }
+                                userName={this.userName}
+                                name={this.name}
+                                bio={this.bio}  
+                                supporters={this.supporters}
+                                totalBt={this.totalBt}
                             />            
             </View>                                  
         )

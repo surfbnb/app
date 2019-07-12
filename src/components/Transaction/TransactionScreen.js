@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { View, Text, Alert, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
 import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {Header, SafeAreaView} from 'react-navigation';
 import BigNumber from 'bignumber.js';
+import clone from "lodash/clone";
 
 import FormInput from '../../theme/components/FormInput';
 import Theme from '../../theme/styles';
@@ -57,6 +58,8 @@ class TransactionScreen extends Component {
     };
     this.baseState = this.state;
     this.toUser = this.props.navigation.getParam('toUser');
+    //Imp : Make sure if transaction is happning againts Profile dont send video Id
+    this.videoId = this.props.navigation.getParam('videoId');
   }
 
   defaultVals() {
@@ -96,16 +99,13 @@ class TransactionScreen extends Component {
   }
 
   getBalance() {
-    const ostUserId = currentUserModal.getOstUserId();
-    OstJsonApi.getBalanceForUserId(
-      ostUserId,
+    pricer.getBalance( 
       (res) => {
-        this.onBalance(res);
+      this.onBalance(res);
       },
       (err) => {
         this.onError( err );
-      }
-    );
+    });
   }
 
   onBalance(res) {
@@ -153,10 +153,19 @@ class TransactionScreen extends Component {
       [this.toUser.ost_token_holder_address],
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
-      appConfig.metaProperties,
+      this.getSdkMetaProperties(),
       this.workflow,
       option
     );
+  }
+
+  getSdkMetaProperties(){
+    const metaProperties = clone( appConfig.metaProperties ); 
+    if(this.videoId){
+      metaProperties["name"] = "video"; 
+      metaProperties["details"] = JSON.stringify({"vi" : this.videoId});
+    }
+    return metaProperties; 
   }
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
@@ -184,9 +193,9 @@ class TransactionScreen extends Component {
   }
 
   onTransactionSuccess(res) {
+    pricer.getBalance(); //Dont call this.getBalance here, call getBalance;
     LoadingModal.hide();
     this.props.navigation.goBack();
-    this.props.navigation.navigate('Profile', { toRefresh: true });
   }
 
   getSendTransactionPlatformData(ostWorkflowEntity) {
@@ -196,7 +205,8 @@ class TransactionScreen extends Component {
       privacy_type: this.getPrivacyType(),
       meta: {
         text: this.state.message,
-        giphy: this.state.selectedGiphy
+        giphy: this.state.selectedGiphy,
+        vi: this.videoId
       }
     };
   }

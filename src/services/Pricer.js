@@ -29,6 +29,10 @@ class Pricer {
     });
   }
 
+  getDecimal(){
+    return this.token && this.token.decimals; 
+  }
+
   getPricePoints(ostUserId, successCallback, errorCallback) {
     let isCb = true;
     if (!ostUserId) {
@@ -62,7 +66,7 @@ class Pricer {
     }
 
     OstJsonApi.getBalanceForUserId(
-      userId,
+      currentUserModel.getOstUserId(),
       (res) => {
         let bal = deepGet(res, 'balance.available_balance');
         this.onBalance( bal );
