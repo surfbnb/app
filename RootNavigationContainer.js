@@ -24,7 +24,7 @@ import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from "./src/components/Giphy";
 import EditTx from "./src/components/Transaction/EditTxModal";
 import  deepGet from "lodash/get";
-import VideoRecorder from './src/components/VideoRecorder';
+import CaptureVideo from './src/components/CaptureVideo';
 import PreviewRecordedVideo from './src/components/PreviewRecordedVideo'
 const FeedStack = createStackNavigator(
   {
@@ -121,7 +121,7 @@ const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       //AuthLoading,
-      VideoRecorder,  
+      CaptureVideo,  
       AuthScreen,
       HomeScreen,
       PinStack,
@@ -129,7 +129,7 @@ const AppContainer = createAppContainer(
 
     },
     {
-      initialRouteName: 'VideoRecorder'
+      initialRouteName: 'CaptureVideo'
     }
   )
 );

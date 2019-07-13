@@ -15,7 +15,7 @@ export const {
   upsertFeedEntities,
   upsertTransactionEntities,
   upsertGiffyEntities,
-  upsertRecordedMediaEntities
+  upsertRecordedVideo
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -26,7 +26,8 @@ const defaultState = {
   user_entities: {},
   feed_entities: {},
   transaction_entities: {},
-  giffy_entities: {}
+  giffy_entities: {},
+  recorded_video: {}
 };
 
 export const reducer = handleActions(
@@ -57,8 +58,9 @@ export const reducer = handleActions(
       ...state,
       giffy_entities: assignIn({}, state.giffy_entities, action.payload.giffy_entities)
     }),
-    [upsertRecordedMediaEntities]: (state, action) => ({
-    ...state, recorded_media_entities :   assignIn({},  state.recorded_media_entities, action.payload.recorded_media_entities )        
+    [upsertRecordedVideo]: (state, action) => ({
+      ...state,
+      recorded_video: assignIn({}, state.recorded_video, action.payload.recorded_video)
     }),
     [logoutUser]: (state, action) => ({ ...defaultState })
   },

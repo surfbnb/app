@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View, Image, Text } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text } from 'react-native';
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/play_icon.png';
@@ -7,8 +7,15 @@ import tickIcon from '../../assets/tick_icon.png';
 import CameraManager from '../../services/CameraManager';
 import RNThumbnail from 'react-native-thumbnail';
 import FfmpegProcesser from '../../services/FfmpegProcesser';
+import { ActionSheet } from 'native-base';
+import styles from './styles';
 
 const PROGRESS_FACTOR = 0.01;
+
+const ACTION_SHEET_BUTTONS = ['Reshoot', 'Close Camera', 'Cancel'];
+const ACTION_SHEET_CANCEL_INDEX = 2;
+const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
+const ACTION_SHEET_RESHOOT_INDEX = 0;
 
 class PreviewRecordedVideo extends Component {
   // static navigationOptions = {
@@ -19,7 +26,8 @@ class PreviewRecordedVideo extends Component {
     this.state = {
       progress: 0
     };
-    this.cachedVideoUri = this.props.navigation.getParam('videoUrl');
+    this.cachedVideoUri = this.props.cachedvideoUrl;
+    this.cancleVideoHandling = this.cancleVideoHandling.bind(this);
   }
 
   componentDidMount() {
@@ -27,7 +35,6 @@ class PreviewRecordedVideo extends Component {
   }
 
   previewOnProgress(params) {
-    console.log('paramsssss', params);
     this.setState({ progress: params.currentTime / params.seekableDuration });
   }
 
@@ -44,20 +51,67 @@ class PreviewRecordedVideo extends Component {
   async fetchAndUploadThumbnail() {
     let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
     console.log(thumbnailPath, 'thumbnailPath');
-    let cameraManager = new CameraManager({ uri: thumbnailPath.path, type: 'image/png', name: `image_${Date.now()}.png` });
+    let cameraManager = new CameraManager({
+      uri: thumbnailPath.path,
+      type: 'image/png',
+      name: `image_${Date.now()}.png`
+    });
     return await cameraManager.uploadImage('video-thumbnail');
   }
 
+  handleProgress = (progress) => {
+    this.setState({
+      progress: progress.currentTime / this.state.duration
+    });
+  };
+
+  handleLoad = (meta) => {
+    this.setState({
+      duration: meta.duration
+    });
+  };
+
+  handleEnd() {
+    this.setState({
+      progress: 1
+    });
+  }
+
+  cancleVideoHandling() {
+    console.log('cancleVideoHandling here');
+    ActionSheet.show(
+      {
+        options: ACTION_SHEET_BUTTONS,
+        cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
+        destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX
+      },
+      (buttonIndex) => {
+        console.log('This is Button index', buttonIndex);
+        if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
+          // This will take to VideoRecorder component
+          this.props.toggleView();
+        } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
+          //navigate to previous page
+        }
+      }
+    );
+  }
+
   render() {
-    console.log(this.cachedVideoUri, "this.props.navigation.getParam('videoUrl')");
     return (
       <View style={styles.container}>
         <Video
           source={{ uri: this.cachedVideoUri }}
           style={styles.previewVideo}
           fullscreen={true}
-          onProgress={(params) => {
-            this.previewOnProgress(params);
+          onLoad={(meta) => {
+            this.handleLoad(meta);
+          }}
+          onProgress={(progress) => {
+            this.handleProgress(progress);
+          }}
+          onEnd={() => {
+            this.handleEnd();
           }}
           ref={(component) => (this._video = component)}
         ></Video>
@@ -68,6 +122,11 @@ class PreviewRecordedVideo extends Component {
           indeterminate={false}
           style={styles.progressBar}
         />
+        <TouchableWithoutFeedback
+          onPressIn={this.cancleVideoHandling}
+        >
+          <View style={styles.cancelButton}><Text style={styles.cancelText}>X</Text></View>
+        </TouchableWithoutFeedback>
         <View style={styles.bottomControls}>
           <TouchableOpacity
             onPress={() => {
@@ -89,6 +148,7 @@ class PreviewRecordedVideo extends Component {
   }
 
   replay() {
+    this.setState({ progress: 0 });
     this._video && this._video.seek(0);
   }
 
@@ -101,89 +161,7 @@ class PreviewRecordedVideo extends Component {
       }
     }, 300);
   }
-
-  // stopRecording = () => {
-  //   this.isRecording = false;
-  //   clearInterval(this.progressInterval);
-  //   this.camera && this.camera.stopRecording();
-  // };
-
-  navigateToViewRecording = (data) => {
-    if (this.state.focusedScreen && data) {
-      console.log(data.uri);
-      this.props.navigation.navigate('ViewRecording', {
-        uri: data.uri
-        //thumbnail: result.path
-      });
-      // RNThumbnail.get(data.uri)
-      //   .then(result => {
-      //     console.log(result.path); // thumbnail path
-      //     console.log("I am hereee in RNThumbnail");
-      //     this.props.navigation.navigate("ViewRecording", {
-      //       uri: data.uri,
-      //       thumbnail: result.path
-      //     });
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
-    }
-  };
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: 'black',
-    alignSelf: 'stretch'
-  },
-  previewVideo: {
-    // flex: 1,
-    // justifyContent: "space-between",
-    // alignItems: "center",
-    // paddingVertical: 35
-
-    overflow: 'hidden',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
-  },
-  progressBar: {
-    position: 'absolute',
-    top: 40,
-    borderRadius: 3.5,
-    borderColor: '#fff',
-    borderWidth: 0.5,
-    height: 7,
-    width: '90%',
-    marginLeft: 10,
-    marginRight: 10
-  },
-  bottomControls: {
-    flex: 1,
-    position: 'absolute',
-    bottom: 40,
-    flexDirection: 'row',
-    width: '50%',
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  playIcon: {
-    width: 65,
-    height: 65,
-    paddingHorizontal: 20,
-    marginLeft: -32.5
-  },
-  tickIcon: {
-    width: 45,
-    height: 45,
-    marginRight: 20
-  }
-});
 
 //make this component available to the app
 export default PreviewRecordedVideo;
