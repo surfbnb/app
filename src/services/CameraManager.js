@@ -18,7 +18,7 @@ const androidRecordAudioPermissionOptions = {
   buttonNegative: 'Cancel'
 };
 
-const storageKeys = {
+export const storageKeys = {
   RAW_VIDEO: 'raw-video',
   COMPRESSED_VIDEO: 'compressed-video',
   S3_VIDEO: 's3-video',
@@ -28,7 +28,8 @@ const storageKeys = {
 
   PROFILE_RAW_IMAGE: 'profile-raw-image',
   PROFILE_CROPPED_IMAGE: 'profile-cropped-image',
-  S3_PROFILE_IMAGE: 's3-profile-image'
+  S3_PROFILE_IMAGE: 's3-profile-image',
+  ENABLE_START_UPLOAD: 'enable-start-upload'
 };
 
 class CameraManager {
@@ -64,6 +65,18 @@ class CameraManager {
       })
     );
     await this._saveInAsyncStorage(storageKeys['VIDEO_THUMBNAIL_IMAGE'], this.videoThumbnailImage);
+  }
+
+  async enableStartUploadFlag(){
+    Store.dispatch(
+      upsertRecordedVideo({
+        enable_start_upload: true
+      })
+    );
+
+    await this._saveInAsyncStorage(storageKeys['ENABLE_START_UPLOAD'], true);
+
+
   }
 
   async uploadVideoThumbnailImage(file) {
@@ -129,6 +142,8 @@ class CameraManager {
     await utilities.removeItem(currentUser._getASKey(this.currentUser.id, entity));
   }
 
+  
+
   // async getVideUri() {
   //   //TODO: change currentUser.id to actual user
   //   let resp = await utilities.getItem(currentUser._getASKey(this.currentUser.id, 'recorded-video'));
@@ -143,7 +158,8 @@ class CameraManager {
         compressed_video: undefined,
         s3_video: undefined,
         video_thumbnail_image: undefined,
-        s3_video_thumbnail_image: undefined
+        s3_video_thumbnail_image: undefined,
+        enable_start_upload: undefined
       })
     );
 

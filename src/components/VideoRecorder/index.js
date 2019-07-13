@@ -34,7 +34,7 @@ class VideoRecorder extends Component {
           ratio="16:9"
           zoom={0}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
-          videoStabilizationMode={RNCamera.Constants.VideoStabilization['auto']}
+          //videoStabilizationMode={RNCamera.Constants.VideoStabilization['auto']}
           notAuthorizedView={
             <View>
               <Text>The camera is not authorized!</Text>
@@ -124,7 +124,7 @@ class VideoRecorder extends Component {
       base64: true,
       maxDuration: 30,
       muted: false,
-      codec: RNCamera.Constants.VideoCodec['H264'],
+      //codec: RNCamera.Constants.VideoCodec['H264'],
       orientation: 'portrait'
     };
     this.initProgressBar();

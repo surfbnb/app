@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text } from 'react-native';
 import Video from 'react-native-video';
+import Store from '../store';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/play_icon.png';
 import tickIcon from '../../assets/tick_icon.png';
@@ -46,6 +47,10 @@ class PreviewRecordedVideo extends Component {
     this.videoS3Url = await cameraManager.compressAndUploadVideo();
     this.thumbnailUrl = await this.fetchAndUploadThumbnail();
     console.log(this.videoS3Url, this.thumbnailUrl);
+  }
+
+  enableStartUploadFlag(){
+    
   }
 
   async fetchAndUploadThumbnail() {
@@ -136,8 +141,8 @@ class PreviewRecordedVideo extends Component {
             <Image style={styles.playIcon} source={playIcon} />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {
-              this.videoProcessing();
+            onPress={async () => {
+              await CameraManager.enableStartUploadFlag();
             }}
           >
             <Image style={styles.tickIcon} source={tickIcon} />
