@@ -2,26 +2,24 @@ import * as React from "react";
 import {
   Text,
   View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
   Animated,
   TouchableWithoutFeedback
 } from "react-native";
 import ClapBubble from "./ClapBubble";
-import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
 import inlineStyles from '../styles'
 import ClapButton from "./ClapButton";
 
 const animDuration = 1000;
+const maxThreshold = 10;
 
 class PepoButton extends React.Component {
   constructor(props) {
     super(props);
-
+    this.currentClapCount = 0;
     this.state = {
       count: this.props.count,
-      claps: [],
+      disabled: this.props.disabled,
+      claps: {},
       isClapping: false,
       scaleValue : new Animated.Value(0)
     };
@@ -35,54 +33,98 @@ class PepoButton extends React.Component {
     }).start()
   }
 
+  componentWillReceiveProps( nextProps ){
+    let newState;
+    if( nextProps.count != this.state.count ){
+      newState = newState || {};
+      newState.count = nextProps.count;
+    }
+
+    if ( nextProps.disabled != this.state.disabled ) {
+      newState = newState || {};
+      newState.disabled = nextProps.disabled;
+    }
+    
+    newState && this.setState(newState);
+  }
+
   keepClapping = () => {
-    this.setState({ isClapping: true });
+    this.setState({ isClapping: true});
     this.clap();
-    this.keepclap = setInterval(() => this.clap(), animDuration);
+    this.keepclap = setInterval(() => {
+      this.clap();
+    }, animDuration);
   }
 
   stopClapping = () => {
-    this.setState({ isClapping: false });
     if (this.keepclap) {
       clearInterval(this.keepclap);
     }
-    this.props.excequteTransaction && this.props.excequteTransaction( ) ;
+    this.setState({ isClapping: false ,  disabled : true }, () => {
+      this.props.onPressOut && this.props.onPressOut( this.currentClapCount, this.state.count ) ;
+      this.currentClapCount = 0;  
+    });
   }
 
   animationComplete(countNum) {
     let claps = this.state.claps;
-    claps.splice(claps.indexOf(countNum), 1);
-    this.setState({ claps });
+    delete claps[ countNum ];
+    this.setState({ claps: claps });
   }
+
   clap() {
+    if(this.currentClapCount >= this.getMaxThreshold() ){
+      this.props.onMaxReached && this.props.onMaxReached( this.currentClapCount ); 
+      this.state.isClapping =  false;
+      return; 
+    }
     let count = this.state.count;
     let claps = this.state.claps;
     count++;
-    claps.push(count);
+    this.currentClapCount++;
+    console.log("adding count", count);
+    claps[ count ] = true;
     this.setState({ count });
   }
   renderClaps() {
-    return this.state.claps.map(countNum => (
+    console.log("state.claps", this.state.claps);
+    let claps = Object.keys( this.state.claps ); 
+    return claps.map(countNum => {
+      let _id =   this.props.id + "_" +countNum;
+      console.log("Rendering", countNum, "_id", _id);    
+      return (
       <ClapBubble
-        key={countNum}
+        key={_id}
         count={countNum}
         animDuration={animDuration}
         animationComplete={this.animationComplete.bind(this)
         }
-      />
-    ));
+      />);
+    });
   }
+
+  getMaxThreshold(){
+    if( this.props.maxCount && this.props.maxCount > maxThreshold ){
+      return maxThreshold ; 
+    }else{
+      return this.props.maxCount ;  
+    }
+  }
+
   render() {
     return (
       <View>
         {this.renderClaps()}
         <View style={inlineStyles.pepoElemBtn}>
           <TouchableWithoutFeedback
-            disabled={this.props.disabled}
+            disabled={this.state.disabled}
             onPressIn={this.keepClapping}
             onPressOut={this.stopClapping}>
             <View>
-              <ClapButton animDuration={animDuration} isClapping={this.state.isClapping}/>
+              <ClapButton disabled={this.state.disabled}
+                          id={this.props.id+"_clap_btn"}
+                          animDuration={animDuration}
+                          isClapping={this.state.isClapping}/>
             </View>
           </TouchableWithoutFeedback>
           <Text style={inlineStyles.pepoTxCount}>{this.state.count || 0}</Text>

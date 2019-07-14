@@ -60,12 +60,19 @@ export default class PriceOracle {
   }
 
   static fromDecimal(val, decimals) {
-    console.log("decimals", decimals);
     decimals = decimals || 18;
     if (!val) return '';
     val = BigNumber(val);
     let exp = BigNumber(10).exponentiatedBy(decimals);
     return val.dividedBy(exp).toString(10);
+  }
+
+  static toDecimal(val, decimals) {
+    if (!val) return '';
+    decimals = decimals || 18 ;
+    val = BigNumber(val);
+    let exp = BigNumber(10).exponentiatedBy(decimals);
+    return val.multipliedBy(exp).toString(10);
   }
 
   static toBt(bt, precession) {

@@ -40,7 +40,11 @@ export default {
     return appConfig['tokenSymbols'][symbol];
   },
 
-  getToBt( bt ){
+  getFromDecimal( bt ){
     return PriceOracle.fromDecimal(bt, pricer.getDecimal());
+  },
+
+  getToDecimal( bt ){
+    return PriceOracle.toDecimal(bt, pricer.getDecimal());
   }
 };

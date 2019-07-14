@@ -25,7 +25,8 @@ export const {
   upsertVideoStatEntities,
   upsertImageEntities,
   upsertHomeFeedEntities,
-  updateBalance
+  updateBalance,
+  updateExecuteTransactionStatus
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -46,6 +47,7 @@ const defaultState = {
   image_entities: {},
   home_feed_entities: {},
   login_popover: { show: false },
+  executeTransactionDisabledStatus: false,
   balance: "0"
 };
 
@@ -114,6 +116,10 @@ export const reducer = handleActions(
     [updateBalance]: (state, action) =>({
       ...state,
       balance: action.payload.balance
+    }),
+    [updateExecuteTransactionStatus]: (state, action) =>({
+      ...state,
+      executeTransactionDisabledStatus: action.payload.executeTransactionDisabledStatus
     }),
     [logoutUser]: (state, action) => ({ ...defaultState })
   },

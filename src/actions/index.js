@@ -124,6 +124,13 @@ export const updateBalance = (balance = "0" )=>({
   }
 });
 
+export const updateExecuteTransactionStatus = ( status = false )=>({
+  type: types.UPDATE_EXECUTE_TRANSACTION_STATUS,
+  payload: {
+    executeTransactionDisabledStatus: status
+  }
+});
+
 export const logoutUser = () => ({ type: types.LOGOUT_USER });
 
 export const genericEvent = (eventName, payload) => ({

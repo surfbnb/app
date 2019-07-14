@@ -17,6 +17,13 @@ class BottomStatus extends PureComponent {
 
   constructor(props) {
     super(props);
+    this.state = {
+      raisedAmount : this.btToFiat( this.props.totalBt )
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({ raisedAmount : this.btToFiat(  nextProps.totalBt )});
   }
 
   onTransactionIconsWrapperClick = () => {
@@ -43,13 +50,29 @@ class BottomStatus extends PureComponent {
     }
   };
 
+  onLocalUpdate = ( btAmount  ) => {
+    this.setState({raisedAmount: this.btToFiat(btAmount)}); 
+  }
+
+  onLocalReset = ( btAmount ) => {
+    this.setState({raisedAmount: this.btToFiat(btAmount)}); 
+  }
+
+  btToFiat(btAmount) {
+    //TODO: convert by amount to fiat. 
+    return btAmount;
+  }
+
   render() {
     console.log('Bottom status rerender');
     return (
       <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-        {/* <TouchableWithoutFeedback onPress={this.onTransactionIconsWrapperClick}> */}
+         
           <View style={inlineStyles.touchablesBtns}>
             <TransactionPepoButton totalBt={this.props.totalBt} 
+                                   onLocalUpdate={this.onLocalUpdate}
+                                   onLocalReset={this.onLocalReset}
+                                   feedId={this.props.feedId}
                                    userId={reduxGetter.getHomeFeedUserId(this.props.feedId)}
                                    videoId={reduxGetter.getHomeFeedVideoId(this.props.feedId)}  />            
             <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen} 
@@ -57,7 +80,6 @@ class BottomStatus extends PureComponent {
               <Image style={{ height: 57, width: 57 }} source={tx_icon} />
             </TouchableOpacity>
           </View>
-        {/* </TouchableWithoutFeedback> */}
 
         <TouchableWithoutFeedback onPress={this.navigateToUserProfile} pointerEvents={'auto'}>
           <View style={inlineStyles.bottomBg}>
@@ -69,10 +91,10 @@ class BottomStatus extends PureComponent {
             </View>
             <View style={{flex: 0.3}}>
               {
-                this.props.totalBt &&
+                this.state.raisedAmount &&
                 <View style={{marginBottom: 5, flexDirection: 'row', alignItems: 'center' }} ellipsizeMode={'tail'} numberOfLines={1}>
                   <Text style={[{width: 12, textAlign: 'center', marginRight: 3}, inlineStyles.bottomBgTxt]}>$</Text>
-                  <Text style={[inlineStyles.bottomBgTxt, {flex: 1}]} ellipsizeMode={'tail'} numberOfLines={1}>{`${ utilities.getToBt( this.props.totalBt )} Raised`}</Text>
+                  <Text style={[inlineStyles.bottomBgTxt, {flex: 1}]} ellipsizeMode={'tail'} numberOfLines={1}>{`${ this.state.raisedAmount } Raised`}</Text>
                 </View>
               }
               {

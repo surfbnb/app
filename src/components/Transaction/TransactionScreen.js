@@ -26,6 +26,8 @@ import GiphySelect from "./GiphySelect";
 
 const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
+//TODO bt balance and supporter updated,  Fetch or Delegate or Redux
+
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -83,6 +85,7 @@ class TransactionScreen extends Component {
     this.updatePricePoint();
   }
 
+  //TODO price points from redux
   updatePricePoint(successCallback, errorCallback) {
     const ostUserId = currentUserModal.getOstUserId();
     pricer.getPriceOracleConfig(
@@ -98,6 +101,7 @@ class TransactionScreen extends Component {
     );
   }
 
+  //TODO bind with redux when priceoracle u get
   getBalance() {
     pricer.getBalance( 
       (res) => {
@@ -168,10 +172,12 @@ class TransactionScreen extends Component {
   }
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
+    pricer.getBalance(); 
     this.sendTransactionToPlatform(ostWorkflowEntity);
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
+    pricer.getBalance(); 
     this.onError(error);
   }
 
@@ -192,7 +198,6 @@ class TransactionScreen extends Component {
   }
 
   onTransactionSuccess(res) {
-    pricer.getBalance(); //Dont call this.getBalance here, call getBalance;
     LoadingModal.hide();
     this.props.navigation.goBack();
   }

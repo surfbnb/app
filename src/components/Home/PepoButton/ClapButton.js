@@ -1,16 +1,10 @@
 import * as React from "react";
 import {
-  Text,
   View,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
   Animated,
-  Easing,
-  TouchableWithoutFeedback
+  Easing
 } from "react-native";
 import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
-import inlineStyles from '../styles'
 import Colors from "../../../theme/styles/Colors"
 
 const animDuration = 1000;
@@ -20,7 +14,6 @@ export default class ClapButton extends React.Component{
     super();
     this.state = {
       scaleValue : new Animated.Value(0),
-
     }
     this.timedClap = props.isClapping;
   }
@@ -74,9 +67,12 @@ export default class ClapButton extends React.Component{
       outputRange : [0, 1.2, 1.3]
     });
 
+    console.log("clap button render call ----" ,Date.now() );
+
     return(
       <View>
         <Animated.Image
+          id={this.props.id+"_animated_image1"}
           style={[{
             height: 50,
             width: 50,
@@ -96,6 +92,7 @@ export default class ClapButton extends React.Component{
           source={pepo_tx_img}
         />
         <Animated.View
+          id={this.props.id+"_animated_image2"}
           style={[
             {
               height:50,

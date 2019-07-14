@@ -1,41 +1,49 @@
 import React, { PureComponent } from 'react';
 import {TouchableWithoutFeedback , View } from "react-native";
+import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import clone from "lodash/clone";
+import {connect} from 'react-redux';
 import currentUserModel from '../../models/CurrentUser';
 import PepoButton from "./PepoButton";
 import appConfig from '../../constants/AppConfig';
 import utilities from "../../services/Utilities";
 import PepoApi from '../../services/PepoApi';
 import pricer from "../../services/Pricer";
-import PriceOracle from "../../services/PriceOracle";
+import Store from "../../store";
+import {updateExecuteTransactionStatus , updateBalance} from "../../actions";
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import reduxGetter from "../../services/ReduxGetters";
-import { withNavigation } from 'react-navigation';
+
+const mapStateToProps = (state) => ({ balance: state.balance ,  disabled: state.executeTransactionDisabledStatus  });
 
 class TransactionPepoButton extends PureComponent {
 
     constructor(props){
         super(props); 
+        let totalBt = utilities.getFromDecimal(  this.props.totalBt ) ;
+        totalBt = totalBt && Number( totalBt ) || 0 
+        console.log("totalBt-------" , totalBt , this.props.totalBt);
         this.state = {
-          isDisabled : true
+          totalBt : totalBt
         }
     }
 
-    excequteTransaction = ( btAmount ) =>{
-        //TODO disabled all 
-        if(!btAmount) return;
-        this.sendTransactionToSdk( btAmount );
-    };
-
-    componentDidMount(){
-      if( this.props.disabled || !currentUserModel.isUserActivated()  ){
-        this.setState({isDisabled: true});
-      }else{
-        this.setState({isDisabled: false});
-      }
+    isDisabled = () => {
+      console.log("!this.isBalance()", !this.isBalance(),"this.isDisabledWithoutColor()", this.isDisabledWithoutColor(), "!!this.props.disabled", !!this.props.disabled);
+      console.log("isDisabled" , !this.isBalance() || this.isDisabledWithoutColor() || !!this.props.disabled);
+      return !this.isBalance() || this.isDisabledWithoutColor() || !!this.props.disabled ; 
     }
 
-    onExcequteTransaction = () => {
-        currentUserModel.checkActiveUser() && currentUserModel.isUserActivated(true); 
+    isDisabledWithoutColor = () => {
+      return !currentUserModel.isUserActivated() ; 
+    }
+    
+    isBalance = () => {
+      return this.getBalanceToNumber() >= 1 ? true : false ; 
+    }
+
+    getBalanceToNumber = () =>{
+      return this.props.balance &&  Number( utilities.getFromDecimal( this.props.balance ) ) || 0 ;
     }
 
     get toUser(){
@@ -45,7 +53,7 @@ class TransactionPepoButton extends PureComponent {
     sendTransactionToSdk( btAmount ) {
         const user = currentUserModel.getUser();
         const option = { wait_for_finalization: false };
-        const btInDecimal = PriceOracle.toDecimal(btAmount , pricer.getDecimal());
+        const btInDecimal =  utilities.getToDecimal(btAmount);
         this.workflow = new ExecuteTransactionWorkflow(this);
         OstWalletSdk.executeTransaction(
           user.ost_user_id,
@@ -58,66 +66,141 @@ class TransactionPepoButton extends PureComponent {
         );
       }
     
-      getSdkMetaProperties(){
-        const metaProperties = clone( appConfig.metaProperties ); 
-        if(this.props.videoId){
-          metaProperties["name"] = "video"; 
-          metaProperties["details"] = JSON.stringify({"vi" : this.props.videoId});
+    getSdkMetaProperties(){
+      const metaProperties = clone( appConfig.metaProperties ); 
+      if(this.props.videoId){
+        metaProperties["name"] = "video"; 
+        metaProperties["details"] = JSON.stringify({"vi" : this.props.videoId});
+      }
+      return metaProperties; 
+    }
+    
+    onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
+      this.reduxUpdate(false);
+      pricer.getBalance();
+      this.sendTransactionToPlatform(ostWorkflowEntity);
+    }
+  
+    onFlowInterrupt(ostWorkflowContext, error) {
+      this.onSdkError( error , ostWorkflowContext) ; 
+    }
+  
+    sendTransactionToPlatform(ostWorkflowEntity) {
+      const params = this.getSendTransactionPlatformData(ostWorkflowEntity);
+      new PepoApi('/ost-transactions')
+        .post(params)
+        .then((res) => {
+          if (res && res.success) {
+            this.onTransactionSuccess(); 
+          } else {
+            this.onTransactionError();
+          }
+        })
+        .catch((error) => {
+          this.onTransactionError();
+        });
+    }
+  
+    onTransactionSuccess(res) {
+      //Ignore dont do anything 
+    }
+
+    onTransactionError(){
+      //TODO Retry , in future. 
+    }
+    
+    onSdkError( error , ostWorkflowContext ){
+      //TODO show toast 
+      console.log("onSdkError======", Date.now() , "ostWorkflowContext" , JSON.stringify(ostWorkflowContext));
+       setTimeout(() => {
+        this.onLocalReset(false);
+        pricer.getBalance();
+       }, 1000 )
+    }
+
+    getSendTransactionPlatformData(ostWorkflowEntity) {
+      return {
+        ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
+        ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
+        meta: {
+          vi: this.props.videoId
         }
-        return metaProperties; 
+      };
+    }
+
+    onTransactionIconWrapperClick = () => {
+      currentUserModel.checkActiveUser() && currentUserModel.isUserActivated(true);
+    }
+
+    reduxUpdate( isTXBtnDisabled , balance ){
+      if( isTXBtnDisabled !== undefined ){
+        Store.dispatch(updateExecuteTransactionStatus(isTXBtnDisabled));
       }
-    
-      onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
-        this.sendTransactionToPlatform(ostWorkflowEntity);
-      }
-    
-      onFlowInterrupt(ostWorkflowContext, error) {
-        this.error( error ) ; 
-      }
-    
-      sendTransactionToPlatform(ostWorkflowEntity) {
-        const params = this.getSendTransactionPlatformData(ostWorkflowEntity);
-        new PepoApi('/ost-transactions')
-          .post(params)
-          .then((res) => {
-            if (res && res.success) {
-              this.onTransactionSuccess(res);
-            } else {
-              this.onError(res);
-            }
-          })
-          .catch((error) => {
-            this.onError(error);
-          });
-      }
-    
-      onTransactionSuccess(res) {
-        pricer.getBalance(); //Dont call this.getBalance here, call getBalance;
-      }
-      
-      onError( error ){
-        //Revert everything via redux
-        //And show toast 
+      if( balance !== undefined ){
+        balance = utilities.getToDecimal( balance );
+        Store.dispatch(updateBalance(balance));
+      }  
+    }
+
+    onPressOut = ( btAmount , totalBt ) => {
+        this.onLocalUpdate( btAmount , totalBt );
+        this.sendTransactionToSdk( btAmount );
+    }
+
+    onLocalUpdate( btAmount , totalBt ){
+
+      let expectedTotal = this.state.totalBt + btAmount;
+      console.log("btAmount----" , btAmount , "totalBt----",  totalBt);
+      if ( expectedTotal != totalBt ) {
+        console.log("---------------- PROBLEM ----------------");
+        console.log("expectedTotal", expectedTotal, "child's total:", totalBt, "btAmount", btAmount, "current total:", this.state.totalBt);
       }
 
-      getSendTransactionPlatformData(ostWorkflowEntity) {
-        return {
-          ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
-          ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')
-        };
-      }
+      this.btAmount =  btAmount ; 
+      this.state.totalBt = expectedTotal ; 
+      this.reduxUpdate( true ,  this.getBalanceToUpdate( btAmount ));
+      this.props.onLocalUpdate && this.props.onLocalUpdate( expectedTotal ); 
+    }
 
-      onTransactionIconWrapperClick = () => {
-        currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() 
+    onLocalReset( ){
+      console.log("onLocalReset======", Date.now() );
+      const resetBtAmout = this.state.totalBt - this.btAmount; 
+      this.setState({totalBt : resetBtAmout} , () => {
+        this.reduxUpdate(false);
+      }); 
+     this.props.onLocalReset && this.props.onLocalReset( resetBtAmout ); 
+    }
+
+    getBalanceToUpdate( updateAmount , isRevert ){
+      if(!updateAmount) return  ; 
+      let balance = utilities.getFromDecimal( this.props.balance );
+      balance = balance && Number( balance ) || 0 ;
+      updateAmount =  updateAmount && Number( updateAmount ) || 0 ;
+      if( isRevert ){
+        console.log("balance---" , balance + updateAmount );
+       return  balance + updateAmount ; 
+      }else {
+        console.log("balance---" , balance - updateAmount );
+        return balance - updateAmount ; 
       }
+    }
+    
+    onMaxReached = () => {
+      //TODO what to do here 
+    }
 
     render(){
+
        return ( 
         <TouchableWithoutFeedback onPress={this.onTransactionIconWrapperClick}> 
             <View>
-                  <PepoButton count={utilities.getToBt(this.props.totalBt)} 
-                              disabled={this.state.isDisabled}
-                              excequteTransaction={this.excequteTransaction} /> 
+                <PepoButton count={ this.state.totalBt } 
+                            id={this.props.feedId}
+                            disabled={this.isDisabled()}
+                            isDisabledWithoutColor={this.isDisabledWithoutColor}
+                            maxCount={this.getBalanceToNumber()} //TODO 
+                            onMaxReached={this.onMaxReached}
+                            onPressOut={this.onPressOut} /> 
            </View>                  
         </TouchableWithoutFeedback>                     
        )
@@ -125,4 +208,4 @@ class TransactionPepoButton extends PureComponent {
 
 }
 
-export default withNavigation( TransactionPepoButton );
+export default connect(mapStateToProps)(TransactionPepoButton) ;

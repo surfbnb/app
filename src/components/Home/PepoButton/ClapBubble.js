@@ -47,6 +47,7 @@ export default class ClapBubble extends React.Component {
         useNativeDriver: true
       })
     ]).start(() => {
+      console.log("Setting timeout for", this.props.count);
       setTimeout(() => {
         this.props.animationComplete(this.props.count);
       }, this.props.animDuration);
