@@ -4,7 +4,7 @@ import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/play_icon.png';
 import tickIcon from '../../assets/tick_icon.png';
-import CameraManager from '../../services/CameraManager';
+import cameraManager from '../../services/CameraManager';
 import RNThumbnail from 'react-native-thumbnail';
 import FfmpegProcesser from '../../services/FfmpegProcesser';
 import { ActionSheet } from 'native-base';
@@ -31,36 +31,28 @@ class PreviewRecordedVideo extends Component {
   }
 
   componentDidMount() {
-    //this.startCompression();
-  }
-
-  previewOnProgress(params) {
-    this.setState({ progress: params.currentTime / params.seekableDuration });
+    this.videoProcessing();
   }
 
   async videoProcessing() {
-    let cameraManager = new CameraManager(
-      { uri: this.cachedVideoUri, type: 'video/mp4', name: `video_${Date.now()}.mp4` },
-      'video'
-    );
-    this.videoS3Url = await cameraManager.compressAndUploadVideo();
+    let fileExt = cameraManager.getFileExtension(this.cachedVideoUri);
+    await cameraManager.video({
+      uri: this.cachedVideoUri,
+      type: `video/${fileExt}`,
+      name: `video_${Date.now()}.${fileExt}`
+    });
+    await cameraManager.compressVideo();    
     this.thumbnailUrl = await this.fetchAndUploadThumbnail();
     console.log(this.videoS3Url, this.thumbnailUrl);
   }
 
-  enableStartUploadFlag(){
-    
-  }
-
   async fetchAndUploadThumbnail() {
-    let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
-    console.log(thumbnailPath, 'thumbnailPath');
-    let cameraManager = new CameraManager({
+    let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);    
+    await cameraManager.thambnailHanling({
       uri: thumbnailPath.path,
       type: 'image/png',
       name: `image_${Date.now()}.png`
-    });
-    return await cameraManager.uploadImage('video-thumbnail');
+    }); 
   }
 
   handleProgress = (progress) => {
@@ -81,8 +73,7 @@ class PreviewRecordedVideo extends Component {
     });
   }
 
-  cancleVideoHandling() {
-    console.log('cancleVideoHandling here');
+  cancleVideoHandling() {    
     ActionSheet.show(
       {
         options: ACTION_SHEET_BUTTONS,
@@ -126,10 +117,10 @@ class PreviewRecordedVideo extends Component {
           indeterminate={false}
           style={styles.progressBar}
         />
-        <TouchableWithoutFeedback
-          onPressIn={this.cancleVideoHandling}
-        >
-          <View style={styles.cancelButton}><Text style={styles.cancelText}>X</Text></View>
+        <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
+          <View style={styles.cancelButton}>
+            <Text style={styles.cancelText}>X</Text>
+          </View>
         </TouchableWithoutFeedback>
         <View style={styles.bottomControls}>
           <TouchableOpacity

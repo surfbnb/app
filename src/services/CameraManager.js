@@ -3,6 +3,7 @@ import Store from '../store';
 import { upsertRecordedVideo } from '../actions';
 import utilities from './Utilities';
 import currentUser from '../models/CurrentUser';
+import FfmpegProcesser from './FfmpegProcesser';
 
 const androidCameraPermissionOptions = {
   title: 'Permission to use camera',
@@ -38,7 +39,7 @@ class CameraManager {
     this.rawVideo = null;
     this.compressedVideo = null;
     this.s3Video = null;
-    this.videoThumbnailImage = null;
+    this.videoThumbnailImageFile = null;
     this.s3VideoThumbnailImage = null;
     this.profileRawImage = null;
     this.profileCroppedImage = null;
@@ -57,17 +58,18 @@ class CameraManager {
     await this._saveInAsyncStorage(storageKeys['RAW_VIDEO'], this.rawVideo);
   }
 
-  async videoThumbnailImage(file) {
-    this.videoThumbnailImage = file;
+  async thambnailHanling(file) {
+    this.videoThumbnailImageFile = file;
     Store.dispatch(
       upsertRecordedVideo({
-        video_thumbnail_image: this.videoThumbnailImage
+        video_thumbnail_image: this.videoThumbnailImageFile
       })
     );
-    await this._saveInAsyncStorage(storageKeys['VIDEO_THUMBNAIL_IMAGE'], this.videoThumbnailImage);
+    await this._saveInAsyncStorage(storageKeys['VIDEO_THUMBNAIL_IMAGE'], this.videoThumbnailImageFile);
+    await this.uploadVideoThumbnailImage(file);
   }
 
-  async enableStartUploadFlag(){
+  async enableStartUploadFlag() {
     Store.dispatch(
       upsertRecordedVideo({
         enable_start_upload: true
@@ -75,8 +77,11 @@ class CameraManager {
     );
 
     await this._saveInAsyncStorage(storageKeys['ENABLE_START_UPLOAD'], true);
+  }
 
-
+  getFileExtension(file) {
+    let splittedFileName = file.split('.');
+    return splittedFileName[splittedFileName.length - 1];
   }
 
   async uploadVideoThumbnailImage(file) {
@@ -91,12 +96,9 @@ class CameraManager {
     return s3VideoThumbnailImage;
   }
 
-  async compressVideo(file) {
-    /*
-      todo: Compress video here use this.rawVideo for compression
-      this.compressedVideo = ??;
-      */
-    this.compressedVideo = file;
+  async compressVideo() {
+    let ffmpegProcesser = new FfmpegProcesser(this.rawVideo);
+    this.compressedVideo = await ffmpegProcesser.compress();
     Store.dispatch(
       upsertRecordedVideo({
         compressed_video: this.compressedVideo
@@ -142,8 +144,6 @@ class CameraManager {
     await utilities.removeItem(currentUser._getASKey(this.currentUser.id, entity));
   }
 
-  
-
   // async getVideUri() {
   //   //TODO: change currentUser.id to actual user
   //   let resp = await utilities.getItem(currentUser._getASKey(this.currentUser.id, 'recorded-video'));
@@ -167,8 +167,6 @@ class CameraManager {
       await this._removeFromAsyncStorage(storageKeys[key]);
     }
   }
-
-  
 }
 export default new CameraManager();
 //export { cameraManager: new CameraManager() , androidCameraPermissionOptions, androidRecordAudioPermissionOptions };
