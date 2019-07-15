@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import inlineStyles from './styles';
 
@@ -65,5 +65,3 @@ export default class PinInput extends Component {
     );
   }
 }
-
-//TODO remove this comment

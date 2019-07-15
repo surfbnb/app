@@ -35,7 +35,11 @@ let styles = {
   },
   btnPinkText: {
     color: Colors.white
-  }
+  },
+  btnSoftBlue: {
+    backgroundColor: Colors.softBlue,
+    borderColor: Colors.softBlue
+  },
 };
 
 export default Buttons = DefaultStyleGenerator.generate(styles);
