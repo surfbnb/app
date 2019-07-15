@@ -8,6 +8,7 @@ import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
 import pepo_tx_img_disabled from "../../../assets/Pepo-tx-disabled.png"
 import Colors from "../../../theme/styles/Colors"
 
+
 const animDuration = 1000;
 export default class ClapButton extends React.Component{
 
@@ -68,6 +69,8 @@ export default class ClapButton extends React.Component{
       outputRange : [0, 1.2, 1.3]
     });
 
+    console.log("this.props.isSupported", this.props.isSupported);
+
     return(
       <View>
         <Animated.Image
@@ -77,7 +80,7 @@ export default class ClapButton extends React.Component{
             width: 50,
             borderRadius :25,
             borderWidth : this.firstClap?3:0,
-            borderColor: Colors.primary,
+            borderColor: this.props.isSupported ?  Colors.primary : Colors.white,
             zIndex:100,
             ...this.timedClap ? {transform : [
               {
