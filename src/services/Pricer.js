@@ -5,6 +5,7 @@ import currentUserModel from "../models/CurrentUser"
 import {ostErrors} from "./OstErrors"; 
 import {updateBalance} from "../actions";
 import Store from '../store';
+import PriceOracle from './PriceOracle';
 
 class Pricer {
 
@@ -108,6 +109,11 @@ class Pricer {
         }
       );
     });
+  }
+
+  getPriceOracle(){
+    const pricePoint = Store.getState()["price_points"] || {}; 
+    return new PriceOracle( this.token , pricePoint["OST"] );
   }
 }
 

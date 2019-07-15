@@ -67,8 +67,6 @@ export default class ClapButton extends React.Component{
       outputRange : [0, 1.2, 1.3]
     });
 
-    console.log("clap button render call ----" ,Date.now() );
-
     return(
       <View>
         <Animated.Image

@@ -117,6 +117,12 @@ export const upsertHomeFeedEntities = (data) => ({type : types.UPSERT_HOME_FEED_
 
 export const upsertImageEntities = (data) => ({type : types.UPSERT_IMAGE_ENTITIES ,  payload: {image_entities : data}});
 
+export const upsertVideoContributionEntities = (data) => ({type : types.UPSERT_VIDEO_CONTRIBUTION_ENTITIES ,  payload: {video_contribution_entities : data}});
+
+export const upsertUserContributionEntities = (data) => ({type : types.UPSERT_USER_CONTRIBUTION_ENTITIES ,  payload: {user_contribution_entities : data}});
+
+export const updatePricePoints = (data) => ({type : types.UPDATE_PRICE_POINTS ,  payload: {price_points : data}}); 
+
 export const updateBalance = (balance = "0" )=>({
   type: types.UPDATE_BALANCE,
   payload: {

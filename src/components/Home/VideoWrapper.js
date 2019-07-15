@@ -4,8 +4,6 @@ import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
 import inlineStyles from "./styles"; 
 
-//TODO inactive app handling 
-
 class VideoWrapper extends PureComponent {
 
     constructor(props){

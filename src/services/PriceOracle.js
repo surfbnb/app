@@ -13,7 +13,7 @@ export default class PriceOracle {
     this.usdPricePoint = pricePoints['USD'];
   }
 
-  btToFiat(bt) {
+  btToFiat(bt , precession) {
     if (!bt || !this.usdPricePoint || isNaN(bt)) {
       return '';
     }
@@ -21,16 +21,17 @@ export default class PriceOracle {
     let fiatBN = BigNumber(this.usdPricePoint);
     let oneBtToFiat = fiatBN.dividedBy(this.conversionFactor);
     let result = oneBtToFiat.multipliedBy(bt);
-    return this.toFiat(result);
+    return this.toFiat(result , precession );
   }
 
-  toFiat(fiat) {
+  toFiat(fiat , precession ) {
     if (!fiat || isNaN(fiat)) {
       return '';
     }
+    precession =  precession || usdPrecession ;
     fiat = String(fiat);
     fiat = BigNumber(fiat);
-    return fiat.toFixed(usdPrecession);
+    return fiat.toFixed(precession);
   }
 
   fiatToBt(fiat) {
@@ -60,16 +61,14 @@ export default class PriceOracle {
   }
 
   static fromDecimal(val, decimals) {
-    decimals = decimals || 18;
-    if (!val) return '';
+    if (!val || !decimals) return '';
     val = BigNumber(val);
     let exp = BigNumber(10).exponentiatedBy(decimals);
     return val.dividedBy(exp).toString(10);
   }
 
   static toDecimal(val, decimals) {
-    if (!val) return '';
-    decimals = decimals || 18 ;
+    if (!val || !decimals ) return '';
     val = BigNumber(val);
     let exp = BigNumber(10).exponentiatedBy(decimals);
     return val.multipliedBy(exp).toString(10);

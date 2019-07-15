@@ -8,9 +8,10 @@ import {
 import ClapBubble from "./ClapBubble";
 import inlineStyles from '../styles'
 import ClapButton from "./ClapButton";
+import appConfig from "../../../constants/AppConfig";
 
 const animDuration = 1000;
-const maxThreshold = 10;
+const maxThreshold = appConfig.maxBtAllowedInSingleTransfer;
 
 class PepoButton extends React.Component {
   constructor(props) {
@@ -82,16 +83,13 @@ class PepoButton extends React.Component {
     let claps = this.state.claps;
     count++;
     this.currentClapCount++;
-    console.log("adding count", count);
     claps[ count ] = true;
     this.setState({ count });
   }
   renderClaps() {
-    console.log("state.claps", this.state.claps);
     let claps = Object.keys( this.state.claps ); 
     return claps.map(countNum => {
-      let _id =   this.props.id + "_" +countNum;
-      console.log("Rendering", countNum, "_id", _id);    
+      let _id =   this.props.id + "_" +countNum;   
       return (
       <ClapBubble
         key={_id}

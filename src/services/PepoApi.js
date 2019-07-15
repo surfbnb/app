@@ -20,7 +20,10 @@ import {
   upsertVideoEntities,
   upsertVideoStatEntities,
   upsertImageEntities,
-  upsertHomeFeedEntities
+  upsertHomeFeedEntities,
+  upsertUserContributionEntities,
+  upsertVideoContributionEntities,
+  updatePricePoints
 } from '../actions';
 import { API_ROOT } from '../constants/index';
 import CurrentUser from '../models/CurrentUser';
@@ -87,6 +90,57 @@ export default class PepoApi {
     }
     const data = DeepGet(responseJSON, 'data'),
       resultData = DeepGet(responseJSON, `data.${resultType}`);
+
+    if( data['ost_transaction'] ){
+      Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data['ost_transaction'])));
+    }
+
+    if( data['gifs'] ){
+      Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data['gifs'])));
+    }
+    
+    if( data['tags'] ){
+      Store.dispatch(upsertTagEntities(this._getEntitiesFromObj(data['tags'])));
+    }
+
+    if( data['user_profiles'] ){
+      Store.dispatch(upsertUserProfileEntities(this._getEntitiesFromObj(data['user_profiles'])));
+    }
+
+    if( data['user_stats'] ){
+      Store.dispatch(upsertUserStatEntities(this._getEntitiesFromObj(data['user_stats'])));
+    }
+    
+    if( data['links'] ){
+      Store.dispatch(upsertLinkEntities(this._getEntitiesFromObj(data['links'])));
+    }
+
+    if( data['videos'] ){
+      Store.dispatch(upsertVideoEntities(this._getEntitiesFromObj(data['videos'])));
+    }
+   
+    if( data['video_details'] ){
+      Store.dispatch(upsertVideoStatEntities(this._getEntitiesFromObj(data['video_details'])));
+    }
+    
+    if( data['images'] ){
+      Store.dispatch(upsertImageEntities(this._getEntitiesFromObj(data['images'])));
+    }
+
+    if( data["current_user_video_contributions"] ){
+      Store.dispatch(upsertVideoContributionEntities(this._getEntitiesFromObj(data['current_user_video_contributions'])));
+    }
+
+    if( data["current_user_user_contributions"] ){
+      Store.dispatch(upsertUserContributionEntities(this._getEntitiesFromObj(data['current_user_user_contributions'])));
+    }
+
+    //TODO remove price point hardcoding
+    data["price_point"] = {"OST": { "USD": 0.0287037823,"decimals": 18}}
+    if( data["price_point"] ){
+      Store.dispatch(updatePricePoints( data["price_point"] ));
+    }
+    
     switch (resultType) {
       case 'users':
         Store.dispatch(upsertUserEntities(this._getEntities(resultData)));
@@ -94,21 +148,11 @@ export default class PepoApi {
       case 'public_feed':
       case 'user_feed':
         Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
-        Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data['ost_transaction'])));
-        Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data['gifs'])));
         Store.dispatch(upsertFeedEntities(this._getEntities(resultData)));
         break;
       case 'feeds': 
         Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
-        Store.dispatch(upsertTagEntities(this._getEntitiesFromObj(data['tags'])));
-        Store.dispatch(upsertUserProfileEntities(this._getEntitiesFromObj(data['user_profiles'])));
-        Store.dispatch(upsertUserStatEntities(this._getEntitiesFromObj(data['user_stats'])));
-        Store.dispatch(upsertLinkEntities(this._getEntitiesFromObj(data['links'])));
-        Store.dispatch(upsertVideoEntities(this._getEntitiesFromObj(data['videos'])));
-        Store.dispatch(upsertVideoStatEntities(this._getEntitiesFromObj(data['video_details'])));
-        Store.dispatch(upsertImageEntities(this._getEntitiesFromObj(data['images'])));
         Store.dispatch(upsertHomeFeedEntities(this._getEntities(resultData)));
-        //TODO add 2 new entities 
         break;
     }
   }

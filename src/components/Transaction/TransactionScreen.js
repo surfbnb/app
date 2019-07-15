@@ -24,14 +24,15 @@ import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
 import GiphySelect from "./GiphySelect";
 
-const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
+import reduxGetter from "../../services/ReduxGetters";
 
-//TODO bt balance and supporter updated,  Fetch or Delegate or Redux
+
+const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('transactionHeader'),
+      title: reduxGetter.getName( navigation.getParam('toUserId') ) ,
       headerBackImage: (
         <View style={{ paddingRight: 30, paddingVertical: 30, paddingLeft: Platform.OS === 'ios' ? 20 : 0 }}>
           <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
@@ -59,20 +60,21 @@ class TransactionScreen extends Component {
       selectedGiphy: null
     };
     this.baseState = this.state;
-    this.toUser = this.props.navigation.getParam('toUser');
-    //Imp : Make sure if transaction is happning againts Profile dont send video Id
+    this.toUser = reduxGetter.getUser( this.props.navigation.getParam('toUserId') ) ;
+    //Imp : Make sure if transaction is mappning againts Profile dont send video Id
     this.videoId = this.props.navigation.getParam('videoId');
+    this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate')
   }
 
   defaultVals() {
     this.meta = null;
-    this.priceOracle = null;
     this.workflow = null;
   }
 
   componentWillMount() {
     this.defaultVals();
-    this.initPricePoint();
+    this.getBalance();
+
   }
 
   componentWillUnmount() {
@@ -81,27 +83,6 @@ class TransactionScreen extends Component {
     this.onBalance = () => {};
   }
 
-  initPricePoint() {
-    this.updatePricePoint();
-  }
-
-  //TODO price points from redux
-  updatePricePoint(successCallback, errorCallback) {
-    const ostUserId = currentUserModal.getOstUserId();
-    pricer.getPriceOracleConfig(
-      ostUserId,
-      (token, pricePoints) => {
-        this.onGetPricePointSuccess(token, pricePoints);
-        successCallback && successCallback(token, pricePoints);
-      },
-      (error) => {
-        this.onError( error );
-        errorCallback && errorCallback(error);
-      }
-    );
-  }
-
-  //TODO bind with redux when priceoracle u get
   getBalance() {
     pricer.getBalance( 
       (res) => {
@@ -112,44 +93,24 @@ class TransactionScreen extends Component {
     });
   }
 
+  //TODO , NOT SURE if bug comes this also will have to connected via redux.
   onBalance(balance , res) {
-    if (!this.priceOracle) return;
-    balance = this.priceOracle.fromDecimal(balance);
-    balance = this.priceOracle.toBt(balance) || 0;
+    balance = utilities.getFromDecimal(balance);
+    balance = PriceOracle.toBt(balance) || 0;
     let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
     this.setState({ balance, exceBtnDisabled });
   }
 
-  getPriceOracle = () => {
-    return this.priceOracle;
-  };
-
-  onGetPricePointSuccess(token, pricePoints) {  
-    let btUSDAmount = null;
-    this.priceOracle = new PriceOracle(token, pricePoints);
-    this.getBalance();
-    btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
-    this.setState({ btUSDAmount: btUSDAmount });
-  }
-
   excecuteTransaction() {
-    if (!this.isValid()) {
-      Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
-      return;
-    }
     LoadingModal.show('Posting', 'This may take a while,\n we are surfing on Blockchain');
     this.setState({ fieldErrorText: null });
     this.sendTransactionToSdk();
   }
 
-  isValid() {
-    return !!this.priceOracle;
-  }
-
   sendTransactionToSdk() {
     const user = currentUserModal.getUser();
     const option = { wait_for_finalization: false };
-    const btInDecimal = this.priceOracle.toDecimal(this.state.btAmount);
+    const btInDecimal = utilities.getToDecimal(this.state.btAmount);
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
       user.ost_user_id,
@@ -172,6 +133,7 @@ class TransactionScreen extends Component {
   }
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
+    this.requestAcknowledgeDelegate && this.requestAcknowledgeDelegate(ostWorkflowContext , ostWorkflowEntity) ;
     pricer.getBalance(); 
     this.sendTransactionToPlatform(ostWorkflowEntity);
   }
@@ -278,9 +240,7 @@ class TransactionScreen extends Component {
   openEditTx(){
     this.props.navigation.navigate('EditTx', {
       btAmount: this.state.btAmount,
-      btUSDAmount: this.state.btUSDAmount,
       balance: this.state.balance,
-      getPriceOracle: this.getPriceOracle,
       onAmountModalConfirm: this.onAmountModalConfirm
     })
   }

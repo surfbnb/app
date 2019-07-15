@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import {TouchableWithoutFeedback , View } from "react-native";
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { Toast } from 'native-base';
+
 import clone from "lodash/clone";
 import {connect} from 'react-redux';
 import currentUserModel from '../../models/CurrentUser';
@@ -13,6 +15,7 @@ import Store from "../../store";
 import {updateExecuteTransactionStatus , updateBalance} from "../../actions";
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import reduxGetter from "../../services/ReduxGetters";
+import { ostErrors } from '../../services/OstErrors';
 
 const mapStateToProps = (state) => ({ balance: state.balance ,  disabled: state.executeTransactionDisabledStatus  });
 
@@ -20,17 +23,18 @@ class TransactionPepoButton extends PureComponent {
 
     constructor(props){
         super(props); 
-        let totalBt = utilities.getFromDecimal(  this.props.totalBt ) ;
-        totalBt = totalBt && Number( totalBt ) || 0 
-        console.log("totalBt-------" , totalBt , this.props.totalBt);
         this.state = {
-          totalBt : totalBt
+          totalBt : Number(  this.props.totalBt )
         }
     }
 
+    componentWillUpdate(nextProps ,  nextState){
+      if(this.state.totalBt != nextProps.totalBt ){
+        this.state.totalBt = nextProps.totalBt;
+      }
+    }
+
     isDisabled = () => {
-      console.log("!this.isBalance()", !this.isBalance(),"this.isDisabledWithoutColor()", this.isDisabledWithoutColor(), "!!this.props.disabled", !!this.props.disabled);
-      console.log("isDisabled" , !this.isBalance() || this.isDisabledWithoutColor() || !!this.props.disabled);
       return !this.isBalance() || this.isDisabledWithoutColor() || !!this.props.disabled ; 
     }
 
@@ -110,11 +114,12 @@ class TransactionPepoButton extends PureComponent {
     }
     
     onSdkError( error , ostWorkflowContext ){
-      //TODO show toast 
-      console.log("onSdkError======", Date.now() , "ostWorkflowContext" , JSON.stringify(ostWorkflowContext));
        setTimeout(() => {
         this.onLocalReset(false);
         pricer.getBalance();
+        Toast.show({
+          text: ostErrors.getErrorMessage( error )
+        });
        }, 1000 )
     }
 
@@ -148,22 +153,14 @@ class TransactionPepoButton extends PureComponent {
     }
 
     onLocalUpdate( btAmount , totalBt ){
-
-      let expectedTotal = this.state.totalBt + btAmount;
-      console.log("btAmount----" , btAmount , "totalBt----",  totalBt);
-      if ( expectedTotal != totalBt ) {
-        console.log("---------------- PROBLEM ----------------");
-        console.log("expectedTotal", expectedTotal, "child's total:", totalBt, "btAmount", btAmount, "current total:", this.state.totalBt);
-      }
-
       this.btAmount =  btAmount ; 
+      let expectedTotal = this.state.totalBt + btAmount;
       this.state.totalBt = expectedTotal ; 
       this.reduxUpdate( true ,  this.getBalanceToUpdate( btAmount ));
       this.props.onLocalUpdate && this.props.onLocalUpdate( expectedTotal ); 
     }
 
     onLocalReset( ){
-      console.log("onLocalReset======", Date.now() );
       const resetBtAmout = this.state.totalBt - this.btAmount; 
       this.setState({totalBt : resetBtAmout} , () => {
         this.reduxUpdate(false);
@@ -177,16 +174,16 @@ class TransactionPepoButton extends PureComponent {
       balance = balance && Number( balance ) || 0 ;
       updateAmount =  updateAmount && Number( updateAmount ) || 0 ;
       if( isRevert ){
-        console.log("balance---" , balance + updateAmount );
        return  balance + updateAmount ; 
       }else {
-        console.log("balance---" , balance - updateAmount );
         return balance - updateAmount ; 
       }
     }
     
-    onMaxReached = () => {
-      //TODO what to do here 
+    onMaxReached = () => {    
+      Toast.show({
+        text: ostErrors.getUIErrorMessage( "maxAllowedBt" )
+      });
     }
 
     render(){
@@ -198,7 +195,7 @@ class TransactionPepoButton extends PureComponent {
                             id={this.props.feedId}
                             disabled={this.isDisabled()}
                             isDisabledWithoutColor={this.isDisabledWithoutColor}
-                            maxCount={this.getBalanceToNumber()} //TODO 
+                            maxCount={this.getBalanceToNumber()}
                             onMaxReached={this.onMaxReached}
                             onPressOut={this.onPressOut} /> 
            </View>                  

@@ -44,6 +44,10 @@ class ReduxGetters {
         return deepGet( Store.getState() ,  `video_stat_entities.id_${id}.total_amount_raised_in_wei` );
     }
 
+    isVideoSupported(id){
+        return !!deepGet( Store.getState() ,  `video_contribution_entities.id_${id}` );
+    }   
+
 }
 
 export default new ReduxGetters();
