@@ -3,34 +3,7 @@ import Store from '../store';
 import { upsertRecordedVideo } from '../actions';
 import utilities from './Utilities';
 import currentUser from '../models/CurrentUser';
-
-const androidCameraPermissionOptions = {
-  title: 'Permission to use camera',
-  message: 'We need your permission to use your camera',
-  buttonPositive: 'Ok',
-  buttonNegative: 'Cancel'
-};
-
-const androidRecordAudioPermissionOptions = {
-  title: 'Permission to use audio recording',
-  message: 'We need your permission to use your audio',
-  buttonPositive: 'Ok',
-  buttonNegative: 'Cancel'
-};
-
-export const storageKeys = {
-  RAW_VIDEO: 'raw-video',
-  COMPRESSED_VIDEO: 'compressed-video',
-  S3_VIDEO: 's3-video',
-
-  VIDEO_THUMBNAIL_IMAGE: 'video-thumbnail-image',
-  S3_VIDEO_THUMBNAIL_IMAGE: 's3-video-thumbnail-image',
-
-  PROFILE_RAW_IMAGE: 'profile-raw-image',
-  PROFILE_CROPPED_IMAGE: 'profile-cropped-image',
-  S3_PROFILE_IMAGE: 's3-profile-image',
-  ENABLE_START_UPLOAD: 'enable-start-upload'
-};
+import appConfig from '../constants/AppConfig';
 
 class CameraManager {
   constructor() {
@@ -46,15 +19,14 @@ class CameraManager {
     this._getCurrentUser();
   }
 
-  async video(file) {
+  async initVideo(file) {
     this.rawVideo = file;
-    // save compressed video to redux
     Store.dispatch(
       upsertRecordedVideo({
         raw_video: this.rawVideo
       })
     );
-    await this._saveInAsyncStorage(storageKeys['RAW_VIDEO'], this.rawVideo);
+    await this._saveInAsyncStorage(appConfig.storageKeys['RAW_VIDEO'], this.rawVideo);
   }
 
   async videoThumbnailImage(file) {
@@ -64,7 +36,7 @@ class CameraManager {
         video_thumbnail_image: this.videoThumbnailImage
       })
     );
-    await this._saveInAsyncStorage(storageKeys['VIDEO_THUMBNAIL_IMAGE'], this.videoThumbnailImage);
+    await this._saveInAsyncStorage(appConfig.storageKeys['VIDEO_THUMBNAIL_IMAGE'], this.videoThumbnailImage);
   }
 
   async enableStartUploadFlag(){
@@ -74,7 +46,7 @@ class CameraManager {
       })
     );
 
-    await this._saveInAsyncStorage(storageKeys['ENABLE_START_UPLOAD'], true);
+    await this._saveInAsyncStorage(appConfig.storageKeys['ENABLE_START_UPLOAD'], true);
 
 
   }
@@ -87,7 +59,7 @@ class CameraManager {
         s3_video_thumbnail_image: s3VideoThumbnailImage
       })
     );
-    await this._saveInAsyncStorage(storageKeys['S3_VIDEO_THUMBNAIL_IMAGE'], s3VideoThumbnailImage);
+    await this._saveInAsyncStorage(appConfig.storageKeys['S3_VIDEO_THUMBNAIL_IMAGE'], s3VideoThumbnailImage);
     return s3VideoThumbnailImage;
   }
 
@@ -102,7 +74,7 @@ class CameraManager {
         compressed_video: this.compressedVideo
       })
     );
-    await this._saveInAsyncStorage(storageKeys['COMPRESSED_VIDEO'], this.compressedVideo);
+    await this._saveInAsyncStorage(appConfig.storageKeys['COMPRESSED_VIDEO'], this.compressedVideo);
     return this.compressedVideo;
   }
 
@@ -118,7 +90,7 @@ class CameraManager {
         s3_video: s3Video
       })
     );
-    await this._saveInAsyncStorage(storageKeys['S3_VIDEO'], s3Video);
+    await this._saveInAsyncStorage(appConfig.storageKeys['S3_VIDEO'], s3Video);
     // save s3 uri in redux
     return s3Video;
   }
@@ -142,7 +114,7 @@ class CameraManager {
     await utilities.removeItem(currentUser._getASKey(this.currentUser.id, entity));
   }
 
-  
+
 
   // async getVideUri() {
   //   //TODO: change currentUser.id to actual user
@@ -163,12 +135,12 @@ class CameraManager {
       })
     );
 
-    for (key in storageKeys) {
-      await this._removeFromAsyncStorage(storageKeys[key]);
+    for (var key in appConfig.storageKeys) {
+      await this._removeFromAsyncStorage(appConfig.storageKeys[key]);
     }
   }
 
-  
+
 }
+
 export default new CameraManager();
-//export { cameraManager: new CameraManager() , androidCameraPermissionOptions, androidRecordAudioPermissionOptions };

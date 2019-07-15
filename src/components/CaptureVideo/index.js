@@ -43,7 +43,6 @@ class CaptureVideo extends Component {
   }
 
   render() {
-    console.log('I am here render of previewRecordedVideo');
     return this.getCurrentView();
   }
 }

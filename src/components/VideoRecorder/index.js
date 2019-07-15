@@ -9,9 +9,6 @@ import styles from './styles';
 const PROGRESS_FACTOR = 0.01;
 
 class VideoRecorder extends Component {
-  // static navigationOptions = {
-  //   header: null
-  // };
   constructor(props) {
     super(props);
     this.state = {

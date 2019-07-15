@@ -18,9 +18,6 @@ const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 
 class PreviewRecordedVideo extends Component {
-  // static navigationOptions = {
-  //   header: null
-  // };
   constructor(props) {
     super(props);
     this.state = {
@@ -31,32 +28,31 @@ class PreviewRecordedVideo extends Component {
   }
 
   componentDidMount() {
-    //this.startCompression();
-    this.videoProcessing();
+    this.processVideo();
   }
 
-  previewOnProgress(params) {
-    this.setState({ progress: params.currentTime / params.seekableDuration });
-  }
-
-  async videoProcessing() {
-    let file = { uri: this.cachedVideoUri, type: 'video/mp4', name: `video_${Date.now()}.mp4` };
-    await CameraManager.video(file);
-    await compressVideo.compressVideo(file);
+  async processVideo() {
+    let file = {
+        uri: this.cachedVideoUri,
+        type: 'video/mp4',
+        name: `video_${Date.now()}.mp4`
+    };
+    await CameraManager.initVideo(file);
+    await CameraManager.compressVideo(file);
     // this.thumbnailUrl = await this.fetchAndUploadThumbnail();
     // console.log(this.videoS3Url, this.thumbnailUrl);
   }
 
-  async fetchAndUploadThumbnail() {
-    let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
-    console.log(thumbnailPath, 'thumbnailPath');
-    let cameraManager = new CameraManager({
-      uri: thumbnailPath.path,
-      type: 'image/png',
-      name: `image_${Date.now()}.png`
-    });
-    return await cameraManager.uploadImage('video-thumbnail');
-  }
+  // async fetchAndUploadThumbnail() {
+  //   let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
+  //   console.log(thumbnailPath, 'thumbnailPath');
+  //   let cameraManager = new CameraManager({
+  //     uri: thumbnailPath.path,
+  //     type: 'image/png',
+  //     name: `image_${Date.now()}.png`
+  //   });
+  //   return await cameraManager.uploadImage('video-thumbnail');
+  // }
 
   handleProgress = (progress) => {
     this.setState({

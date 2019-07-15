@@ -26,6 +26,8 @@ import EditTx from "./src/components/Transaction/EditTxModal";
 import  deepGet from "lodash/get";
 import CaptureVideo from './src/components/CaptureVideo';
 import PreviewRecordedVideo from './src/components/PreviewRecordedVideo'
+import CameraWorker from './src/services/CameraWorker'
+
 const FeedStack = createStackNavigator(
   {
     FeedContent: Feed,
@@ -121,7 +123,7 @@ const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       //AuthLoading,
-      CaptureVideo,  
+      CaptureVideo,
       AuthScreen,
       HomeScreen,
       PinStack,
@@ -142,6 +144,7 @@ const RootNavigationContainer = () => (
       }}
     />
     <LoadingModalCover />
+    <CameraWorker />
   </Root>
 );
 
