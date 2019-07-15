@@ -4,6 +4,7 @@ import { upsertRecordedVideo } from '../actions';
 import utilities from './Utilities';
 import currentUser from '../models/CurrentUser';
 import appConfig from '../constants/AppConfig';
+import FfmpegProcesser from './FfmpegProcesser';
 
 class CameraManager {
   constructor() {
@@ -11,7 +12,7 @@ class CameraManager {
     this.rawVideo = null;
     this.compressedVideo = null;
     this.s3Video = null;
-    this.videoThumbnailImage = null;
+    this.videoThumbnailImageFile = null;
     this.s3VideoThumbnailImage = null;
     this.profileRawImage = null;
     this.profileCroppedImage = null;
@@ -29,17 +30,17 @@ class CameraManager {
     await this._saveInAsyncStorage(appConfig.storageKeys['RAW_VIDEO'], this.rawVideo);
   }
 
-  async videoThumbnailImage(file) {
-    this.videoThumbnailImage = file;
+  async thambnailHanling(file) {
+    this.videoThumbnailImageFile = file;
     Store.dispatch(
       upsertRecordedVideo({
-        video_thumbnail_image: this.videoThumbnailImage
+        video_thumbnail_image: this.videoThumbnailImageFile
       })
     );
-    await this._saveInAsyncStorage(appConfig.storageKeys['VIDEO_THUMBNAIL_IMAGE'], this.videoThumbnailImage);
+    await this._saveInAsyncStorage(appConfig.storageKeys['VIDEO_THUMBNAIL_IMAGE'], this.videoThumbnailImageFile);
   }
 
-  async enableStartUploadFlag(){
+  async enableStartUploadFlag() {
     Store.dispatch(
       upsertRecordedVideo({
         enable_start_upload: true
@@ -48,7 +49,9 @@ class CameraManager {
 
     await this._saveInAsyncStorage(appConfig.storageKeys['ENABLE_START_UPLOAD'], true);
 
-
+  getFileExtension(file) {
+    let splittedFileName = file.split('.');
+    return splittedFileName[splittedFileName.length - 1];
   }
 
   async uploadVideoThumbnailImage(file) {
@@ -63,12 +66,9 @@ class CameraManager {
     return s3VideoThumbnailImage;
   }
 
-  async compressVideo(file) {
-    /*
-      todo: Compress video here use this.rawVideo for compression
-      this.compressedVideo = ??;
-      */
-    this.compressedVideo = file;
+  async compressVideo() {
+    let ffmpegProcesser = new FfmpegProcesser(this.rawVideo);
+    this.compressedVideo = await ffmpegProcesser.compress();
     Store.dispatch(
       upsertRecordedVideo({
         compressed_video: this.compressedVideo

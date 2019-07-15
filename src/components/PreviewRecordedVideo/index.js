@@ -4,7 +4,7 @@ import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/play_icon.png';
 import tickIcon from '../../assets/tick_icon.png';
-import CameraManager from '../../services/CameraManager';
+import cameraManager from '../../services/CameraManager';
 import RNThumbnail from 'react-native-thumbnail';
 import FfmpegProcesser from '../../services/FfmpegProcesser';
 import { ActionSheet } from 'native-base';
@@ -28,31 +28,30 @@ class PreviewRecordedVideo extends Component {
   }
 
   componentDidMount() {
-    this.processVideo();
+    this.videoProcessing();
   }
 
-  async processVideo() {
-    let file = {
-        uri: this.cachedVideoUri,
-        type: 'video/mp4',
-        name: `video_${Date.now()}.mp4`
-    };
-    await CameraManager.initVideo(file);
-    await CameraManager.compressVideo(file);
-    // this.thumbnailUrl = await this.fetchAndUploadThumbnail();
-    // console.log(this.videoS3Url, this.thumbnailUrl);
+  async videoProcessing() {
+    let fileExt = cameraManager.getFileExtension(this.cachedVideoUri);
+    await cameraManager.initVideo({
+      uri: this.cachedVideoUri,
+      type: `video/${fileExt}`,
+      name: `video_${Date.now()}.${fileExt}`
+    });
+    await cameraManager.compressVideo();
+    this.thumbnailUrl = await this.fetchAndUploadThumbnail();
   }
 
-  // async fetchAndUploadThumbnail() {
-  //   let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
-  //   console.log(thumbnailPath, 'thumbnailPath');
-  //   let cameraManager = new CameraManager({
-  //     uri: thumbnailPath.path,
-  //     type: 'image/png',
-  //     name: `image_${Date.now()}.png`
-  //   });
-  //   return await cameraManager.uploadImage('video-thumbnail');
-  // }
+  async fetchAndUploadThumbnail() {
+    console.log('I am here in fetchAndUploadThumbnail', this.cachedVideoUri);
+    //let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
+    // console.log('I am here in fetchAndUploadThumbnail', thumbnailPath);
+    // await cameraManager.thambnailHanling({
+    //   uri: thumbnailPath.path,
+    //   type: 'image/png',
+    //   name: `image_${Date.now()}.png`
+    // });
+  }
 
   handleProgress = (progress) => {
     this.setState({
@@ -73,7 +72,6 @@ class PreviewRecordedVideo extends Component {
   }
 
   cancleVideoHandling() {
-    console.log('cancleVideoHandling here');
     ActionSheet.show(
         {
           options: ACTION_SHEET_BUTTONS,
@@ -94,51 +92,51 @@ class PreviewRecordedVideo extends Component {
 
   render() {
     return (
-        <View style={styles.container}>
-          <Video
-              source={{ uri: this.cachedVideoUri }}
-              style={styles.previewVideo}
-              fullscreen={true}
-              onLoad={(meta) => {
-                this.handleLoad(meta);
-              }}
-              onProgress={(progress) => {
-                this.handleProgress(progress);
-              }}
-              onEnd={() => {
-                this.handleEnd();
-              }}
-              ref={(component) => (this._video = component)}
-          ></Video>
-          <ProgressBar
-              width={null}
-              color="#EF5566"
-              progress={this.state.progress}
-              indeterminate={false}
-              style={styles.progressBar}
-          />
-          <TouchableWithoutFeedback
-              onPressIn={this.cancleVideoHandling}
-          >
-            <View style={styles.cancelButton}><Text style={styles.cancelText}>X</Text></View>
-          </TouchableWithoutFeedback>
-          <View style={styles.bottomControls}>
-            <TouchableOpacity
-                onPress={() => {
-                  this.replay();
-                }}
-            >
-              <Image style={styles.playIcon} source={playIcon} />
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={async () => {
-                  await CameraManager.enableStartUploadFlag();
-                }}
-            >
-              <Image style={styles.tickIcon} source={tickIcon} />
-            </TouchableOpacity>
+      <View style={styles.container}>
+        <Video
+          source={{ uri: this.cachedVideoUri }}
+          style={styles.previewVideo}
+          fullscreen={true}
+          onLoad={(meta) => {
+            this.handleLoad(meta);
+          }}
+          onProgress={(progress) => {
+            this.handleProgress(progress);
+          }}
+          onEnd={() => {
+            this.handleEnd();
+          }}
+          ref={(component) => (this._video = component)}
+        ></Video>
+        <ProgressBar
+          width={null}
+          color="#EF5566"
+          progress={this.state.progress}
+          indeterminate={false}
+          style={styles.progressBar}
+        />
+        <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
+          <View style={styles.cancelButton}>
+            <Text style={styles.cancelText}>X</Text>
           </View>
+        </TouchableWithoutFeedback>
+        <View style={styles.bottomControls}>
+          <TouchableOpacity
+            onPress={() => {
+              this.replay();
+            }}
+          >
+            <Image style={styles.playIcon} source={playIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={async () => {
+              await CameraManager.enableStartUploadFlag();
+            }}
+          >
+            <Image style={styles.tickIcon} source={tickIcon} />
+          </TouchableOpacity>
         </View>
+      </View>
     );
   }
 

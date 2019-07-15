@@ -2,6 +2,7 @@ package com.pepo2;
 
 import android.app.Application;
 
+import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
 import com.brentvatne.react.ReactVideoPackage;
 import me.hauvo.thumbnail.RNThumbnailPackage;
@@ -38,7 +39,8 @@ public class MainApplication extends Application implements ReactApplication {
             new NetInfoPackage(),
             new OstWalletRnSdkPackage(),
             new AsyncStoragePackage(),
-            new RNGestureHandlerPackage()
+            new RNGestureHandlerPackage(),
+            new RNFFmpegPackage()
       );
     }
 
