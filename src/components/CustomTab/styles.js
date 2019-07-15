@@ -14,7 +14,7 @@ let stylesMap = {
     borderColor: 'rgba(0, 0, 0, 0.25)',
     borderWidth: 1,
     borderBottomWidth: 0,
-    elevation: 8
+    // elevation: 8
   },
   tabElementSkipFont: {
     alignSelf: 'center',
