@@ -10,6 +10,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <TwitterKit/TWTRKit.h>
 
 @implementation AppDelegate
 
@@ -28,6 +29,9 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
+  return [[Twitter sharedInstance] application:app openURL:url options:options];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

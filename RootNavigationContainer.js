@@ -20,10 +20,44 @@ import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
+import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
-import Giphy from "./src/components/Giphy";
-import EditTx from "./src/components/Transaction/EditTxModal";
-import  deepGet from "lodash/get";
+import Giphy from './src/components/Giphy';
+import EditTx from './src/components/Transaction/EditTxModal';
+import UserActivatingScreen from './src/components/UserActivating';
+import { LoginPopover } from './src/components/LoginPopover';
+
+import deepGet from 'lodash/get';
+
+const transactionScreenParentStackConfig = {
+  headerLayoutPreset: 'center',
+  headerMode: 'none',
+  mode: 'modal',
+  navigationOptions: ({ navigation }) => {
+    return {
+      tabBarVisible: deepGet(navigation, 'state.routes[0].index') == 0 ? true : false
+    };
+  }
+};
+
+const HomeTransactionStack = createStackNavigator(
+  {
+    HomeScreen: HomeScreen,
+    TransactionScreen: TransactionScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
+const HomeStack = createStackNavigator(
+  {
+    HomeTransaction: HomeTransactionStack,
+    Giphy: Giphy,
+    EditTx: EditTx
+  },
+  { ...transactionScreenParentStackConfig }
+);
 
 const FeedStack = createStackNavigator(
   {
@@ -35,11 +69,10 @@ const FeedStack = createStackNavigator(
   }
 );
 
-
 const UserTransactionStack = createStackNavigator(
   {
-    UsersScreen:  Users ,
-    TransactionScreen : TransactionScreen,
+    UsersScreen: Users,
+    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -52,16 +85,7 @@ const UserStack = createStackNavigator(
     Giphy: Giphy,
     EditTx: EditTx
   },
-  {
-    headerLayoutPreset: 'center',
-    headerMode: 'none',
-    mode: 'modal',
-    navigationOptions: ({ navigation }) => {
-      return {
-        tabBarVisible: deepGet(navigation , "state.routes[0].index") == 0 ? true : false
-      }
-    }
-  }
+  { ...transactionScreenParentStackConfig }
 );
 
 const ProfileStack = createStackNavigator(
@@ -74,8 +98,9 @@ const ProfileStack = createStackNavigator(
   }
 );
 
-const HomeScreen = createMaterialTopTabNavigator(
+const CustomTabStack = createMaterialTopTabNavigator(
   {
+    Home: HomeStack,
     Feed: FeedStack,
     Users: UserStack,
     Profile: ProfileStack
@@ -121,8 +146,9 @@ const AppContainer = createAppContainer(
     {
       AuthLoading,
       AuthScreen,
-      HomeScreen,
-      PinStack
+      CustomTabStack,
+      PinStack,
+      UserActivatingScreen
     },
     {
       initialRouteName: 'AuthLoading'
@@ -138,6 +164,7 @@ const RootNavigationContainer = () => (
       }}
     />
     <LoadingModalCover />
+    <LoginPopover />
   </Root>
 );
 

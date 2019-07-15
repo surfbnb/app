@@ -17,7 +17,8 @@ const UIErros = {
   general_error_ex: 'Oops, Please try again.',
   bt_amount_error: 'Please enter valid amount.',
   user_not_active: 'Please wait for your user activation.',
-  no_internet: 'No Internet, please try again later.'
+  no_internet: 'No Internet, please try again later.',
+  maxAllowedBt: `Max allowed Pepo coin transfer reached`
 };
 
 const UIWhitelistedErrorCode = {
@@ -25,7 +26,7 @@ const UIWhitelistedErrorCode = {
 };
 
 class OstErrors {
-  getErrorMessage(ostError, generalErrorKey) {
+  getErrorMessage(ostError, generalErrorKey  ) {
     if (this.isWhiteListedErrorCode(ostError)) return null;
 
     generalErrorKey = generalErrorKey || 'GENERAL_ERROR';
@@ -36,7 +37,8 @@ class OstErrors {
     if (ostError && ostError.getErrorCode) {
       let errorCode = ostError.getErrorCode();
       let errorMessage = sdkErrors[errorCode] || sdkErrors[generalErrorKey];
-      return errorMessage + ' ' + errorCode;
+      //return errorMessage + ' ' + errorCode;
+      return errorMessage;
     }
 
     const errorData = deepGet(ostError, 'err.error_data');
