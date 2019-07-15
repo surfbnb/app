@@ -5,6 +5,7 @@ import {
   Easing
 } from "react-native";
 import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
+import pepo_tx_img_disabled from "../../../assets/Pepo-tx-disabled.png"
 import Colors from "../../../theme/styles/Colors"
 
 const animDuration = 1000;
@@ -87,7 +88,7 @@ export default class ClapButton extends React.Component{
               }
             ]} : {}
           }]}
-          source={pepo_tx_img}
+          source={this.props.disabled ? pepo_tx_img_disabled : pepo_tx_img}
         />
         <Animated.View
           id={this.props.id+"_animated_image2"}
