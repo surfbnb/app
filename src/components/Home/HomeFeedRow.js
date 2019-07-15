@@ -84,8 +84,8 @@ class HomeFeedRow extends PureComponent {
 
     refetchFeed = () => {
         this.state.refreshed = true; // change silently 
-        new PepoApi('/homeFeed')  //TODO confrim and respectively for Pepo api switch case
-        .post({feedId : this.props.feedId})
+        new PepoApi(`/feed/${this.props.feedId}`) 
+        .get()
         .then((res) => {
           this.onRefresh();
         })

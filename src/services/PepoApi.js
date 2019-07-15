@@ -154,6 +154,9 @@ export default class PepoApi {
         Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
         Store.dispatch(upsertHomeFeedEntities(this._getEntities(resultData)));
         break;
+      case "feed":
+          Store.dispatch(upsertHomeFeedEntities(this._getEntitiesFromObj(resultData)));
+        break;  
     }
   }
 
