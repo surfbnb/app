@@ -37,7 +37,7 @@ export default class UserInfo extends React.Component{
     return(
       <View style={{alignItems:'center',margin:20}}>
         <View style={inlineStyle.infoHeaderWrapper}>
-          <Image style={inlineStyle.profileImage} source={this.props.profilePicture || profilePicture}></Image>
+          <Image  source={ this.props.profilePicture || profilePicture}></Image>
           <Text style={inlineStyle.userName}>{this.props.userName}</Text>
         </View>
         {this.editButton()}
@@ -53,11 +53,11 @@ export default class UserInfo extends React.Component{
 
         <View style={inlineStyle.numericInfoWrapper}>
           <View style={{marginHorizontal:10}}>
-            <Text style={inlineStyle.numericInfo}>{this.props.supporting || 100}</Text>
+            <Text style={inlineStyle.numericInfo}>{this.props.supporting || 0 }</Text>
             <Text>Supporting</Text>
           </View>
           <View style={{marginHorizontal:10}}>
-            <Text style={inlineStyle.numericInfo}>{this.props.supporters || 100}</Text>
+            <Text style={inlineStyle.numericInfo}>{this.props.supporters || 0 }</Text>
             <Text>Supporters</Text>
           </View>
           <View style={{marginHorizontal:10}} >
