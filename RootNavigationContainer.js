@@ -26,6 +26,7 @@ import Giphy from './src/components/Giphy';
 import EditTx from './src/components/Transaction/EditTxModal';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
+import UsersProfileScreen from "./src/components/UsersProfile";
 
 import deepGet from 'lodash/get';
 
@@ -40,10 +41,21 @@ const transactionScreenParentStackConfig = {
   }
 };
 
+const UserTransactionStack = createStackNavigator(
+  {
+    UsersScreen: Users,
+    TransactionScreen: TransactionScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
 const HomeTransactionStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
-    TransactionScreen: TransactionScreen
+    TransactionScreen: TransactionScreen,
+    UsersProfileScreen: UsersProfileScreen,
   },
   {
     headerLayoutPreset: 'center'
@@ -52,27 +64,18 @@ const HomeTransactionStack = createStackNavigator(
 
 const HomeStack = createStackNavigator(
   {
-    HomeTransaction: HomeTransactionStack,
+    HomeTransactionStack: HomeTransactionStack,
     Giphy: Giphy,
     EditTx: EditTx
   },
   { ...transactionScreenParentStackConfig }
 );
 
+
 const FeedStack = createStackNavigator(
   {
     FeedContent: Feed,
     UserFeedScreen: UserFeedScreen
-  },
-  {
-    headerLayoutPreset: 'center'
-  }
-);
-
-const UserTransactionStack = createStackNavigator(
-  {
-    UsersScreen: Users,
-    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center'
