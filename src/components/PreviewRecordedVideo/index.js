@@ -32,6 +32,7 @@ class PreviewRecordedVideo extends Component {
 
   componentDidMount() {
     //this.startCompression();
+    this.videoProcessing();
   }
 
   previewOnProgress(params) {
@@ -39,17 +40,11 @@ class PreviewRecordedVideo extends Component {
   }
 
   async videoProcessing() {
-    let cameraManager = new CameraManager(
-      { uri: this.cachedVideoUri, type: 'video/mp4', name: `video_${Date.now()}.mp4` },
-      'video'
-    );
-    this.videoS3Url = await cameraManager.compressAndUploadVideo();
-    this.thumbnailUrl = await this.fetchAndUploadThumbnail();
-    console.log(this.videoS3Url, this.thumbnailUrl);
-  }
-
-  enableStartUploadFlag(){
-    
+    let file = { uri: this.cachedVideoUri, type: 'video/mp4', name: `video_${Date.now()}.mp4` };
+    await CameraManager.video(file);
+    await compressVideo.compressVideo(file);
+    // this.thumbnailUrl = await this.fetchAndUploadThumbnail();
+    // console.log(this.videoS3Url, this.thumbnailUrl);
   }
 
   async fetchAndUploadThumbnail() {
@@ -84,70 +79,70 @@ class PreviewRecordedVideo extends Component {
   cancleVideoHandling() {
     console.log('cancleVideoHandling here');
     ActionSheet.show(
-      {
-        options: ACTION_SHEET_BUTTONS,
-        cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
-        destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX
-      },
-      (buttonIndex) => {
-        console.log('This is Button index', buttonIndex);
-        if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
-          // This will take to VideoRecorder component
-          this.props.toggleView();
-        } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
-          //navigate to previous page
+        {
+          options: ACTION_SHEET_BUTTONS,
+          cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
+          destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX
+        },
+        (buttonIndex) => {
+          console.log('This is Button index', buttonIndex);
+          if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
+            // This will take to VideoRecorder component
+            this.props.toggleView();
+          } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
+            //navigate to previous page
+          }
         }
-      }
     );
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Video
-          source={{ uri: this.cachedVideoUri }}
-          style={styles.previewVideo}
-          fullscreen={true}
-          onLoad={(meta) => {
-            this.handleLoad(meta);
-          }}
-          onProgress={(progress) => {
-            this.handleProgress(progress);
-          }}
-          onEnd={() => {
-            this.handleEnd();
-          }}
-          ref={(component) => (this._video = component)}
-        ></Video>
-        <ProgressBar
-          width={null}
-          color="#EF5566"
-          progress={this.state.progress}
-          indeterminate={false}
-          style={styles.progressBar}
-        />
-        <TouchableWithoutFeedback
-          onPressIn={this.cancleVideoHandling}
-        >
-          <View style={styles.cancelButton}><Text style={styles.cancelText}>X</Text></View>
-        </TouchableWithoutFeedback>
-        <View style={styles.bottomControls}>
-          <TouchableOpacity
-            onPress={() => {
-              this.replay();
-            }}
+        <View style={styles.container}>
+          <Video
+              source={{ uri: this.cachedVideoUri }}
+              style={styles.previewVideo}
+              fullscreen={true}
+              onLoad={(meta) => {
+                this.handleLoad(meta);
+              }}
+              onProgress={(progress) => {
+                this.handleProgress(progress);
+              }}
+              onEnd={() => {
+                this.handleEnd();
+              }}
+              ref={(component) => (this._video = component)}
+          ></Video>
+          <ProgressBar
+              width={null}
+              color="#EF5566"
+              progress={this.state.progress}
+              indeterminate={false}
+              style={styles.progressBar}
+          />
+          <TouchableWithoutFeedback
+              onPressIn={this.cancleVideoHandling}
           >
-            <Image style={styles.playIcon} source={playIcon} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={async () => {
-              await CameraManager.enableStartUploadFlag();
-            }}
-          >
-            <Image style={styles.tickIcon} source={tickIcon} />
-          </TouchableOpacity>
+            <View style={styles.cancelButton}><Text style={styles.cancelText}>X</Text></View>
+          </TouchableWithoutFeedback>
+          <View style={styles.bottomControls}>
+            <TouchableOpacity
+                onPress={() => {
+                  this.replay();
+                }}
+            >
+              <Image style={styles.playIcon} source={playIcon} />
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={async () => {
+                  await CameraManager.enableStartUploadFlag();
+                }}
+            >
+              <Image style={styles.tickIcon} source={tickIcon} />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
     );
   }
 
