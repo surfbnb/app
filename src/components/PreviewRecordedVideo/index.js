@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text } from 'react-native';
 import Video from 'react-native-video';
-import Store from '../store';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/play_icon.png';
 import tickIcon from '../../assets/tick_icon.png';
