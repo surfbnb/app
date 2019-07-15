@@ -9,6 +9,7 @@ import { hideLoginPopover } from '../actions';
 import NavigationService from './NavigationService';
 import { Toast } from 'native-base';
 import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../constants';
+import Pricer from './Pricer';
 
 const { RNTwitterSignIn } = NativeModules;
 
@@ -35,6 +36,7 @@ class TwitterAuthService {
                   });
                   return;
                 }
+                Pricer.getBalance();
                 InitWalletSdk.initializeDevice(oThis);
               } else {
                 this.onServerError(res);
