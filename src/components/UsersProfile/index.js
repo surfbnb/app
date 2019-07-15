@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View , Text } from 'react-native';
+import UserInfo from '../../components/CommonComponents/UserInfo'
 
 export default class UsersProfile extends Component {
 
@@ -10,7 +11,7 @@ export default class UsersProfile extends Component {
     render() {
         return (
             <View style={{ backgroundColor: "#fff"}}>
-                <Text> HEllo is userprofile screen</Text>
+                <UserInfo/>
              </View>
         )
     }
