@@ -120,6 +120,7 @@ class PepoButton extends React.Component {
             onPressOut={this.stopClapping}>
             <View>
               <ClapButton disabled={this.state.disabled}
+                          isSupported={this.props.isSupported}
                           id={this.props.id+"_clap_btn"}
                           animDuration={animDuration}
                           isClapping={this.state.isClapping}/>

@@ -123,6 +123,7 @@ class HomeFeedRow extends PureComponent {
                     
                     <View style={inlineStyles.touchablesBtns}>
                         <TransactionPepoButton  totalBt={this.state.totalBt} 
+                                                isSupported={this.state.isSupported}
                                                 onLocalUpdate={this.onLocalUpdate}
                                                 onLocalReset={this.onLocalReset}
                                                 feedId={this.props.feedId}
