@@ -23,7 +23,7 @@ export default class FfmpegProcesser {
       // rc = 0, means successful compression
       let compressFinishedAt = Date.now()    
       console.log("compression finished successfully at:", compressFinishedAt);
-      console.log("Time for compression", compressFinishedAt-compressStartedAt);
+      console.log("Time for compression", compressFinishedAt - compressStartedAt);
       
       return this.outputPath; 
     } else {

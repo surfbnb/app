@@ -41,18 +41,19 @@ class PreviewRecordedVideo extends Component {
       type: `video/${fileExt}`,
       name: `video_${Date.now()}.${fileExt}`
     });
-    await cameraManager.compressVideo();    
+    await cameraManager.compressVideo();
     this.thumbnailUrl = await this.fetchAndUploadThumbnail();
-    console.log(this.videoS3Url, this.thumbnailUrl);
   }
 
   async fetchAndUploadThumbnail() {
-    let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);    
-    await cameraManager.thambnailHanling({
-      uri: thumbnailPath.path,
-      type: 'image/png',
-      name: `image_${Date.now()}.png`
-    }); 
+    console.log('I am here in fetchAndUploadThumbnail', this.cachedVideoUri);
+    //let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
+    // console.log('I am here in fetchAndUploadThumbnail', thumbnailPath);
+    // await cameraManager.thambnailHanling({
+    //   uri: thumbnailPath.path,
+    //   type: 'image/png',
+    //   name: `image_${Date.now()}.png`
+    // });
   }
 
   handleProgress = (progress) => {
@@ -73,7 +74,7 @@ class PreviewRecordedVideo extends Component {
     });
   }
 
-  cancleVideoHandling() {    
+  cancleVideoHandling() {
     ActionSheet.show(
       {
         options: ACTION_SHEET_BUTTONS,
