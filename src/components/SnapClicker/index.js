@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import inlineStyles from './styles';
+import img_capture from '../../assets/image-capture-icon.png';
+import CrossIcon from '../../assets/cross_icon.png';
 
 import { RNCamera } from 'react-native-camera';
 
@@ -16,14 +19,18 @@ class SnapClicker extends Component {
     console.log('i am clicked!!');
   };
 
+  componentWillUnmount() {
+    this.camera = null;
+  }
+
   render() {
     return (
-      <View style={styles.container}>
+      <View style={inlineStyles.container}>
         <RNCamera
           ref={(ref) => {
             this.camera = ref;
           }}
-          style={styles.preview}
+          style={inlineStyles.previewSkipFont}
           type={RNCamera.Constants.Type.front}
           ratio="16:9"
           zoom={0}
@@ -51,21 +58,22 @@ class SnapClicker extends Component {
             buttonNegative: 'Cancel'
           }}
         >
-          <View
-            style={{
-              flex: 0,
-              flexDirection: 'row',
-              justifyContent: 'center'
+          <TouchableOpacity
+            onPress={() => {
+              this.captureImage();
             }}
           >
-            {/* action button comes here */}
-            <Button
-              title="Click me!"
-              onPress={() => {
-                this.captureImage();
-              }}
-            />
-          </View>
+            <Image style={styles.crossIconSkipFont} source={CrossIcon} />
+          </TouchableOpacity>
+          {/* action button comes here */}
+          <TouchableOpacity
+            onPress={() => {
+              this.captureImage();
+            }}
+            style={inlineStyles.captureBtn}
+          >
+            <Image style={styles.imgCaptureButtonSkipFont} source={img_capture} />
+          </TouchableOpacity>
         </RNCamera>
       </View>
     );
