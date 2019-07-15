@@ -21,11 +21,14 @@ import Colors from './src/theme/styles/Colors';
 import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
-import Giphy from "./src/components/Giphy";
-import EditTx from "./src/components/Transaction/EditTxModal";
-import  deepGet from "lodash/get";
+import Giphy from './src/components/Giphy';
+import EditTx from './src/components/Transaction/EditTxModal';
+import deepGet from 'lodash/get';
 import CaptureVideo from './src/components/CaptureVideo';
-import PreviewRecordedVideo from './src/components/PreviewRecordedVideo'
+import PreviewRecordedVideo from './src/components/PreviewRecordedVideo';
+import ProfileImagePicker from './src/components/ProfileImagePicker';
+import CaptureImage from './src/components/CaptureImage';
+
 const FeedStack = createStackNavigator(
   {
     FeedContent: Feed,
@@ -36,11 +39,10 @@ const FeedStack = createStackNavigator(
   }
 );
 
-
 const UserTransactionStack = createStackNavigator(
   {
-    UsersScreen:  Users ,
-    TransactionScreen : TransactionScreen,
+    UsersScreen: Users,
+    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -59,8 +61,8 @@ const UserStack = createStackNavigator(
     mode: 'modal',
     navigationOptions: ({ navigation }) => {
       return {
-        tabBarVisible: deepGet(navigation , "state.routes[0].index") == 0 ? true : false
-      }
+        tabBarVisible: deepGet(navigation, 'state.routes[0].index') == 0 ? true : false
+      };
     }
   }
 );
@@ -121,15 +123,15 @@ const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       //AuthLoading,
-      CaptureVideo,  
+      ProfileImagePicker,
+      CaptureVideo,
       AuthScreen,
       HomeScreen,
       PinStack,
-      PreviewRecordedVideo
-
+      CaptureImageScreen: CaptureImage
     },
     {
-      initialRouteName: 'CaptureVideo'
+      initialRouteName: 'ProfileImagePicker'
     }
   )
 );
