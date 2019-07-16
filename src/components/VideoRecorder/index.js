@@ -117,7 +117,7 @@ class VideoRecorder extends Component {
     if (!this.camera) return;
     this.setState({ isRecording: true });
     const options = {
-      quality: RNCamera.Constants.VideoQuality['480p'],
+      quality: RNCamera.Constants.VideoQuality['720p'],
       base64: true,
       maxDuration: 30,
       muted: false,

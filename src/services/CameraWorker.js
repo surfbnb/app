@@ -14,6 +14,7 @@ import PepoApi from './PepoApi';
 const VIDEO_WIDTH = 720;
 const VIDEO_HEIGHT = 1280;
 
+
 const recordedVideoStates = ['raw_video', 'compressed_video', 's3_video', 'cover_image', 's3_cover_image'];
 
 const recordedVideoActions = ['do_upload', 'do_discard'];
@@ -56,7 +57,7 @@ class CameraWorker extends PureComponent {
 
   async processVideo() {
     // Early exit
-    if (Object.keys(this.props.current_user).length === 0 || Object.keys(this.props.recorded_video).length === 0) {
+    if (/*Object.keys(this.props.current_user).length === 0 || */ Object.keys(this.props.recorded_video).length === 0) {
       console.log('processVideo :: Nothing to process');
       return;
     }
@@ -123,17 +124,21 @@ class CameraWorker extends PureComponent {
       );
 
       let coverImage = await this.ffmpegProcesser.getVideoThumbnail();
-      Store.dispatch(
-        upsertRecordedVideo({
-          cover_image: coverImage
-        })
-      );
+        Store.dispatch(
+          upsertRecordedVideo({
+            cover_image: coverImage
+          })
+        );
     }
   }
 
   async uploadVideo() {
+    console.log('================ Upload VIdeo has been started ================');  
     if (this.props.recorded_video.compressed_video && !this.props.recorded_video.s3_video) {
       let s3Video = await this._uploadToS3(this.props.recorded_video.compressed_video, 'video');
+
+      console.log('================ Upload VIdeo has been compeleted ================', s3Video);  
+
       Store.dispatch(
         upsertRecordedVideo({
           s3_video: s3Video
@@ -143,8 +148,10 @@ class CameraWorker extends PureComponent {
   }
 
   async uploadCoverImage() {
+    console.log('================ uploadCoverImage has been started ================');  
     if (this.props.recorded_video.cover_image && !this.props.recorded_video.s3_cover_image) {
       let s3CoverImage = await this._uploadToS3(this.props.recorded_video.cover_image, 'image');
+      console.log('================ uploadCoverImage has been compeleted ================', s3CoverImage);    
       Store.dispatch(
         upsertRecordedVideo({
           s3_cover_image: s3CoverImage
@@ -159,38 +166,40 @@ class CameraWorker extends PureComponent {
   }
 
   async postVideoWithCoverImage() {
-    if (this.props.recorded_video.s3_video && this.props.recorded_video.s3_cover_image && !this.postToPepoApi) {
-      this.postToPepoApi = true;
-      let videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);
+    if (this.props.recorded_video.s3_video && this.props.recorded_video.s3_cover_image && ! this.postToPepoApi) {
+      this.postToPepoApi = true;  
+      let videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);  
       let videoSize = videoInfo.size;
-      let imageInfo = await RNFS.stat(this.props.recorded_video.cover_image);
-      let imageSize = imageInfo.size;
+      let imageInfo = await RNFS.stat(this.props.recorded_video.cover_image);  
+      let imageSize = imageInfo.size; 
 
       let payload = {
-        s3_fan_video_url: this.props.recorded_video.s3_video,
-        s3_video_poster_image_url: this.props.recorded_video.s3_cover_image,
+        video_url: this.props.recorded_video.s3_video,
+        poster_image_url: this.props.recorded_video.s3_cover_image,
         video_width: VIDEO_WIDTH,
         video_height: VIDEO_HEIGHT,
         image_width: VIDEO_WIDTH,
-        image_height: VIDEO_HEIGHT,
+        image_height : VIDEO_HEIGHT,
         video_size: videoSize,
         image_size: imageSize
-      };
+      }
 
-      new PepoApi(`/users/${this.props.current_user.id}/fan-video`)
-        .post(payload)
-        .then((responseData) => {
-          if (responseData.success && responseData.data) {
-            console.log('responseData.data', responseData.data);
-          }
-        })
-        .catch(() => {
-                  
-        });
+      new PepoApi(`/users/${1234}/fan-video`)
+      .post(payload)
+      .then((responseData) => {
+        if (responseData.success && responseData.data) {
+          console.log('responseData.data', responseData.data)
+        } 
+      })
+      .catch(() => {
+        // cancel workflow.
+        ostDeviceRegistered.cancelFlow();
+      });
     }
   }
 
   getCurrentUserRecordedVideoKey() {
+    return `user-recorded_video`;
     if (this.props.current_user.id) {
       return `user-${this.props.current_user.id}-recorded_video`;
     }
