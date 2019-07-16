@@ -56,6 +56,7 @@ class ImageGallery extends Component {
           <View style={{ flex: 0.6, backgroundColor: 'red' }}></View>
           <View style={{flex: 0.4, backgroundColor: 'blue', paddingRight: 3, paddingTop: 3}}>
             <FlatList
+              showsVerticalScrollIndicator={false}
               ref={(ref) => {this.listRef = ref;}}
               contentContainerStyle={{  }}
               data={this.state.photos}
