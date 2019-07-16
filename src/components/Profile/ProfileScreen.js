@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import  {View} from "react-native";
 import currentUserModel from '../../models/CurrentUser';
 import FeedList from '../FeedComponents/FeedList';
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
 import deepGet from 'lodash/get';
+
+import EmptyCoverImage from './EmptyCoverImage'
 
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
@@ -54,21 +57,10 @@ class ProfileScreen extends Component {
 
   render() {
     return (
-      <FeedList
-        style={{ backgroundColor: '#f6f6f6', flex: 1 }}
-        fetchUrl={this.fetchUrl}
-        toRefresh={this.state.toRefresh}
-        ListHeaderComponent={<BalanceHeader toRefresh={this.state.refreshBalance} />}
-        beforeRefresh={() => {
-          this.beforeRefresh();
-        }}
-        onRefresh={(res) => {
-          this.onRefresh(res);
-        }}
-        onRefreshError={(error) => {
-          this.onRefreshError(error);
-        }}
-      ></FeedList>
+      <View style={{margin:20,flex:1}}>
+        <BalanceHeader toRefresh={this.state.refreshBalance} />
+        <EmptyCoverImage/>
+      </View>
     );
   }
 }
