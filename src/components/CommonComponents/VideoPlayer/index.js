@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import {View,Image,TouchableWithoutFeedback} from 'react-native';
 import VideoWrapper from "../../Home/VideoWrapper";
 import { withNavigation } from 'react-navigation';
+
+import closeIcon from '../../../assets/cross_icon.png';
+import inlineStyles from './styles'
 
 class VideoPlayer extends Component {
 
@@ -21,8 +25,15 @@ class VideoPlayer extends Component {
 
     render() {
         return (
+          <View>
             <VideoWrapper   isActive={ true }
-                             videoId={this.videoId}/>
+                            videoId={this.videoId}/>
+            <TouchableWithoutFeedback onPress={()=>this.props.navigation.goBack()}>
+              <Image style={inlineStyles.closeIconSkipFont} source={closeIcon} onPress></Image>
+            </TouchableWithoutFeedback>
+
+          </View>
+
         )
     }
 }

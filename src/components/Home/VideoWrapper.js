@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {TouchableWithoutFeedback, AppState, View,Image} from "react-native";
+import {TouchableWithoutFeedback, AppState, View,Image,Dimensions} from "react-native";
 import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
@@ -125,7 +125,7 @@ class VideoWrapper extends PureComponent {
                     source={ {uri: this.props.videoUrl} } 
                     repeat={this.props.repeat || true}/>
                   {this.isPaused() &&(
-                    <Image style={{position:'absolute',height:25,width:25,top:'45%',left:'45%'}} source={playIcon}></Image>
+                    <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>
                   )}
                 </View>
             </TouchableWithoutFeedback>

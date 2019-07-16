@@ -8,8 +8,10 @@ import { Toast } from 'native-base';
 import UserInfo from '../../components/CommonComponents/UserInfo';
 import { ostErrors } from "../../services/OstErrors";
 import currentUserModel from "../../models/CurrentUser";
+import playIcon from '../../assets/play_icon.png'
 
 import tx_icon from '../../assets/tx_icon.png';
+import inlineStyles from './styles'
 
  //TODO Shraddha move to common place,  Get in touch with Thahir. Not a good practices
 import iconStyle from "../Home/styles";
@@ -84,13 +86,18 @@ export default class UsersProfile extends Component {
         this.props.navigation.push("VideoPlayer" , { videoId : this.videoId} );
     }
 
+
+
     render() {
         return (
             <ScrollView style={{ backgroundColor: "#fff"}}>
               {this.isLoading()}
               <TouchableWithoutFeedback onPress={this.showVideo}>
-                <Image style={{width : "100%" , height: Dimensions.get('screen').height * 0.65 }}  source={{uri: this.getImage()}} />
-              </TouchableWithoutFeedback>  
+                <View>
+                  <Image style={{width : "100%" , height: Dimensions.get('screen').height * 0.65 }}  source={{uri: this.getImage()}} />
+                  <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>
+                </View>
+              </TouchableWithoutFeedback>
               <UserInfo userId={this.userId}/>
              <View style={[iconStyle.touchablesBtns , {position:"absolute" , top: "75%"}]}>
                     <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen}
