@@ -98,7 +98,8 @@ class ReduxGetters {
 
     getImage(id  , state ){
         state =  state || Store.getState() ; 
-        return deepGet( state ,  `image_entities.id_${id}.resolutions.750w.url` );
+        return deepGet( state ,  `image_entities.id_${id}.resolutions.750w.url` ) || 
+         deepGet( state ,  `image_entities.id_${id}.resolutions.original.url` );
     }
 
 }
