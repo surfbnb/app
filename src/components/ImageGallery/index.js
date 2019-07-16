@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Button, ScrollView, Image, Text } from 'react-native';
+import {View, Button, Image, Text, FlatList} from 'react-native';
 
 import inlineStyles from './styles';
 import ImageBrowser from '../../services/ImageBrowser';
@@ -11,6 +11,7 @@ class ImageGallery extends Component {
       photos: null
     };
     ImageBrowser.init();
+    this.listRef = null;
   }
 
   componentDidMount() {
@@ -30,30 +31,34 @@ class ImageGallery extends Component {
       });
   };
 
+  _renderItem({item, index}){
+    return(
+      <Image
+        key={index}
+        style={{
+          width: 300,
+          height: 100
+        }}
+        resize="contain"
+        source={{ uri: item.node.image.uri }}
+      />
+    )
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ flex: 0.6 }}></View>
-        <ScrollView style={{ flex: 0.4 }}>
-          {this.state.photos ? (
-            this.state.photos.map((p, i) => {
-              return (
-                <Image
-                  key={i}
-                  style={{
-                    width: 300,
-                    height: 100
-                  }}
-                  source={{ uri: p.node.image.uri }}
-                />
-              );
-            })
-          ) : (
-            <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center' }}>
-              <Text>Loading images...</Text>
-            </View>
-          )}
-        </ScrollView>
+        <View style={{ flex: 0.6, backgroundColor: 'red' }}></View>
+        <View style={{flex: 0.4, backgroundColor: 'blue'}}>
+          <FlatList
+            ref={(ref) => {this.listRef = ref;}}
+            contentContainerStyle={{ }}
+            data={this.state.photos}
+            renderItem={this._renderItem}
+            numColumns={3}
+            keyExtractor={(item, index) => index}
+          />
+        </View>
       </View>
     );
   }
