@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View , Text , ActivityIndicator } from 'react-native';
+import { View , Text , ActivityIndicator} from 'react-native';
 import reduxGetter from "../../services/ReduxGetters";
 import PepoApi from "../../services/PepoApi";
 import BackArrow from "../CommonComponents/BackArrow";
@@ -8,6 +8,8 @@ import VideoWrapper from "../Home/VideoWrapper";
 import UserInfo from '../../components/CommonComponents/UserInfo';
 import { ostErrors } from "../../services/OstErrors";
 import { ScrollView } from 'react-native-gesture-handler';
+import inlineStyles from './styles';
+
 
 export default class UsersProfile extends Component {
 
@@ -58,15 +60,15 @@ export default class UsersProfile extends Component {
         return (
             <ScrollView style={{ backgroundColor: "#fff"}}>
               {this.isLoading()}
-              <VideoWrapper  isActive={ true }
-                             isPaused={ true }
-                             ignoreScroll={true}
-                             style={{}}
-                             videoId={this.videoId}
-                             videoUrl={ this.videoUrl }
-                             videoImgUrl={this.videoImgUrl} />
-              <UserInfo userId={this.userId}/>
-             </ScrollView>
+                  <VideoWrapper  isActive={ true }
+                                 isPaused={ true }
+                                 ignoreScroll={true}
+                                 style={inlineStyles.videoWrapperSkipFont}
+                                 videoId={this.videoId}
+                                 videoUrl={ this.videoUrl }
+                                 videoImgUrl={this.videoImgUrl} />
+                  <UserInfo userId={this.userId}/>
+            </ScrollView>
         )
     }
 }

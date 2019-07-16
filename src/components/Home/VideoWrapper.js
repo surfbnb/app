@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import {TouchableWithoutFeedback, AppState} from "react-native";
+import {TouchableWithoutFeedback, AppState, View,Image} from "react-native";
 import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
 import inlineStyles from "./styles"; 
-import reduxGetter from "../../services/ReduxGetters"
+import reduxGetter from "../../services/ReduxGetters";
+import playIcon from '../../assets/play_icon.png';
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -114,6 +115,7 @@ class VideoWrapper extends PureComponent {
         console.log("Video component render " , this.props.videoImgUrl);
         return (
             <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked }>
+                <View>
                 <Video
                     poster={this.props.videoImgUrl}
                     posterResizeMode={ this.props.posterResizeMode ||  "cover"}
@@ -121,7 +123,11 @@ class VideoWrapper extends PureComponent {
                     paused={ this.isPaused() }
                     resizeMode={ this.props.resizeMode ||  "cover"}
                     source={ {uri: this.props.videoUrl} } 
-                    repeat={this.props.repeat || true}/> 
+                    repeat={this.props.repeat || true}/>
+                  {this.isPaused() &&(
+                    <Image style={{position:'absolute',height:25,width:25,top:'45%',left:'45%'}} source={playIcon}></Image>
+                  )}
+                </View>
             </TouchableWithoutFeedback>
         )
     }
