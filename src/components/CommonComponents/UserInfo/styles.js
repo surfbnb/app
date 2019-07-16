@@ -35,9 +35,9 @@ let stylesMap = {
     justifyContent:'center',
     marginVertical:10
   },
-  profileImage:{
-    height:20,
-    width:20
+  profileImageSkipFont:{
+    height:25,
+    width:25
   },
   userName: {
     fontWeight: 'bold',

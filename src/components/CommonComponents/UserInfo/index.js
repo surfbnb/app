@@ -56,7 +56,7 @@ class UserInfo extends React.PureComponent {
       <View style={{margin:20}}>
 
         <View style={inlineStyle.infoHeaderWrapper}>
-          <Image source={ this.props.profilePicture || profilePicture}></Image>
+          <Image style={inlineStyle.profileImageSkipFont} source={ this.props.profilePicture || profilePicture}></Image>
           <Text style={inlineStyle.userName}>{this.props.userName}</Text>
         </View>
         {this.editButton()}
