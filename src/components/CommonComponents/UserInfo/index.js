@@ -60,24 +60,28 @@ class UserInfo extends React.PureComponent {
           <Text style={inlineStyle.userName}>{this.props.userName}</Text>
         </View>
         {this.editButton()}
-
+        {this.props.bio && (
         <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>
-        <Text style={{color:Colors.summerSky}} onPress={()=>{Linking.openURL(this.props.link)}}>
-          {this.props.link}
-        </Text>
+        )}
+        {this.props.link && (
+          <Text style={[{color:Colors.summerSky,textAlign:'center'}]} onPress={()=>{Linking.openURL(this.props.link)}}>
+            {this.props.link}
+          </Text>
+        )}
+
 
         <View style={inlineStyle.numericInfoWrapper}>
           <View style={{marginHorizontal:10}}>
             <Text style={inlineStyle.numericInfo}>{this.props.supporting || 0 }</Text>
-            <Text>Supporting</Text>
+            <Text style={inlineStyle.numericInfoText}>Supporting</Text>
           </View>
           <View style={{marginHorizontal:10}}>
             <Text style={inlineStyle.numericInfo}>{this.props.supporters || 0 }</Text>
-            <Text>Supporters</Text>
+            <Text style={inlineStyle.numericInfoText}>Supporters</Text>
           </View>
           <View style={{marginHorizontal:10}} >
-            <Text style={inlineStyle.numericInfo}>${this.btToFiat(this.props.btAmount)}</Text>
-            <Text>Raised</Text>
+            <Text style={inlineStyle.numericInfo}>${this.btToFiat(this.props.btAmount) || 0}</Text>
+            <Text style={inlineStyle.numericInfoText}>Raised</Text>
           </View>
         </View>
       </View>
