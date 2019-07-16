@@ -26,12 +26,11 @@ class ProfileImagePicker extends React.Component {
   };
 
   openCamera = () => {
-    console.log('camera is opened');
     this.props.navigation.navigate('CaptureImageScreen');
   };
 
   openGallery = () => {
-    console.log('gallery is opened');
+    this.props.navigation.navigate('ImageGalleryScreen');
   };
 
   render() {

@@ -25,9 +25,9 @@ import Giphy from './src/components/Giphy';
 import EditTx from './src/components/Transaction/EditTxModal';
 import deepGet from 'lodash/get';
 import CaptureVideo from './src/components/CaptureVideo';
-import PreviewRecordedVideo from './src/components/PreviewRecordedVideo';
 import ProfileImagePicker from './src/components/ProfileImagePicker';
 import CaptureImage from './src/components/CaptureImage';
+import ImageGallery from './src/components/ImageGallery';
 
 const FeedStack = createStackNavigator(
   {
@@ -128,7 +128,8 @@ const AppContainer = createAppContainer(
       AuthScreen,
       HomeScreen,
       PinStack,
-      CaptureImageScreen: CaptureImage
+      CaptureImageScreen: CaptureImage,
+      ImageGalleryScreen: ImageGallery
     },
     {
       initialRouteName: 'ProfileImagePicker'
