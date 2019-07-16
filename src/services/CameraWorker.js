@@ -2,10 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Store from '../store';
 import { upsertRecordedVideo } from '../actions';
-import CameraManager from '../services/CameraManager';
 import utilities from './Utilities';
-import appConfig from '../constants/AppConfig';
-import AsyncStorage from "@react-native-community/async-storage";
 
 const recordedVideoStates = [
     'raw_video',
@@ -38,11 +35,11 @@ class CameraWorker extends PureComponent {
         }
 
         // Need to sync
-        if(this._getCurrentUserRecordedVideoKey()){
+        if(this.getCurrentUserRecordedVideoKey()){
             utilities
-                .getItem(this._getCurrentUserRecordedVideoKey())
+                .getItem(this.getCurrentUserRecordedVideoKey())
                 .then((data) => {
-                    upsertRecordedVideo(JSON.stringify(data));
+                    Store.dispatch(upsertRecordedVideo(JSON.stringify(data)));
                     this.ReduxSyncedByWorker = true;
                     console.log('syncAsyncToRedux :: Data synced from Async to recorded_video');
                 });
@@ -60,12 +57,12 @@ class CameraWorker extends PureComponent {
         }
 
         // Need to sync
-        if(this._getCurrentUserRecordedVideoKey()){
+        if(this.getCurrentUserRecordedVideoKey()){
             let dataToSave = recordedVideoStates.map(value => {
                 return this.props.current_user[value];
             });
             utilities
-                .saveItem(this._getCurrentUserRecordedVideoKey(), dataToSave)
+                .saveItem(this.getCurrentUserRecordedVideoKey(), dataToSave)
                 .then(() => {
                     console.log('syncReduxToAsync :: Data synced from recorded_video to Async');
                 });
@@ -123,7 +120,7 @@ class CameraWorker extends PureComponent {
 
     }
 
-    _getCurrentUserRecordedVideoKey(){
+    getCurrentUserRecordedVideoKey(){
         if(this.props.current_user.id){
             return `user-${this._getCurrentUserId()}-recorded_video`;
         }
