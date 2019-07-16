@@ -14,22 +14,37 @@ class CaptureImage extends Component {
 
   getView() {
     if (this.state.imageCaptured) {
-      return <ImageCropper imageURI={this.state.imageURI} onCrop={this.getCroppedImage} />;
+      return <ImageCropper imageURI={this.state.imageURI} onCrop={this.getCroppedImage} onClose={this.closeCropper} />;
     } else {
       return this.getCameraView();
     }
   }
 
-  getCroppedImage() {}
+  closeCamera = () => {
+    this.navigateBack();
+  };
 
-  toggleView() {
-    this.setState({
-      imageCaptured: !this.state.imageCaptured
-    });
+  closeCropper = () => {
+    this.navigateBack();
+  };
+
+  navigateBack() {
+    this.props.navigation.navigate('ProfileImagePicker');
   }
 
+  getCroppedImage(imageUri) {}
+
+  toggleView = (imageURI = '') => {
+    if (imageURI) {
+      this.setState({
+        imageCaptured: !this.state.imageCaptured,
+        imageURI
+      });
+    }
+  };
+
   getCameraView() {
-    return <SnapClicker onSnap={this.toggleView} />;
+    return <SnapClicker onSnap={this.toggleView} onClose={this.closeCamera} />;
   }
 
   render() {

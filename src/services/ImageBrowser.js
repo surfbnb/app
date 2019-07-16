@@ -1,17 +1,19 @@
 import { CameraRoll, PermissionsAndroid, Platform } from 'react-native';
 
-const ImageBrowser = {
-  _page_info: null,
-  _photos: null,
+class ImageBrowser {
+  constructor() {
+    this._page_info = null;
+    this._photos = null;
+  }
 
   init() {
-    this._photos = null;
+    this._photos = [];
     this._page_info = {
       has_next_page: true,
       start_cursor: '',
       end_cursor: ''
     };
-  },
+  }
 
   async _requestExternalStorageRead() {
     try {
@@ -23,7 +25,7 @@ const ImageBrowser = {
     } catch (err) {
       console.log('Permission not granted!');
     }
-  },
+  }
 
   async _fetchPhotos() {
     let params = {
@@ -42,7 +44,14 @@ const ImageBrowser = {
     } catch (err) {
       alert('Fetch photos failed!', err);
     }
-  },
+  }
+
+  _onSuccess(result) {
+    if (!result) return;
+    this._photos = result.edges;
+    this._page_info = result.page_info;
+    console.log('this._page_info', this._page_info);
+  }
 
   async _getPhotosAsync() {
     if (Platform.OS === 'android') {
@@ -53,24 +62,16 @@ const ImageBrowser = {
     } else if (Platform.OS === 'ios') {
       await this._fetchPhotos();
     }
-    console.log('i m here');
-  },
-
-  _onSuccess(result) {
-    if (!result) return;
-    this._photos = result.edges;
-    this._page_info = result.page_info;
-    console.log('page info', this._page_info);
-  },
+  }
 
   hasNextPage() {
-    return this._page_info.hasNextPage;
-  },
+    return this._page_info.has_next_page;
+  }
 
   async getPhotos() {
     await this._getPhotosAsync();
     return this._photos;
   }
-};
+}
 
-export default ImageBrowser;
+export default new ImageBrowser();

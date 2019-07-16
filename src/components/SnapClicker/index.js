@@ -9,14 +9,24 @@ import { RNCamera } from 'react-native-camera';
 class SnapClicker extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      imageURI: ''
-    };
     this.camera = null;
   }
 
-  captureImage = () => {
-    console.log('i am clicked!!');
+  captureImage = async () => {
+    if (this.camera) {
+      const options = {
+        quality: 0.5,
+        base64: true,
+        mirrorImage: true
+      };
+      const data = await this.camera.takePictureAsync(options);
+      let obj = {
+        uri: data.uri,
+        type: 'image/jpeg',
+        name: 'image.jpg'
+      };
+      this.props.onSnap(obj.uri);
+    }
   };
 
   componentWillUnmount() {
@@ -58,20 +68,11 @@ class SnapClicker extends Component {
             buttonNegative: 'Cancel'
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              this.captureImage();
-            }}
-          >
+          <TouchableOpacity onPress={this.props.onClose}>
             <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon} />
           </TouchableOpacity>
           {/* action button comes here */}
-          <TouchableOpacity
-            onPress={() => {
-              this.captureImage();
-            }}
-            style={inlineStyles.captureBtn}
-          >
+          <TouchableOpacity onPress={this.captureImage} style={inlineStyles.captureBtn}>
             <Image style={inlineStyles.imgCaptureButtonSkipFont} source={img_capture} />
           </TouchableOpacity>
         </RNCamera>
