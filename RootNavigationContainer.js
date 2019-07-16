@@ -23,6 +23,7 @@ import ProfileScreen from './src/components/Profile/ProfileScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from './src/components/Giphy';
+import VideoPlayer from "./src/components/CommonComponents/VideoPlayer";
 import EditTx from './src/components/Transaction/EditTxModal';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
@@ -66,7 +67,8 @@ const HomeStack = createStackNavigator(
   {
     HomeTransactionStack: HomeTransactionStack,
     Giphy: Giphy,
-    EditTx: EditTx
+    EditTx: EditTx,
+    VideoPlayer: VideoPlayer
   },
   { ...transactionScreenParentStackConfig }
 );

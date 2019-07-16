@@ -91,6 +91,16 @@ class ReduxGetters {
         return deepGet( state ,  `user_profile_entities.id_${id}.cover_video_id` );
     }
 
+    getUserCoverImageId(id , state ){
+        state =  state || Store.getState() ; 
+        return deepGet( state ,  `user_profile_entities.id_${id}.cover_image_id` );
+    }
+
+    getImage(id  , state ){
+        state =  state || Store.getState() ; 
+        return deepGet( state ,  `image_entities.id_${id}.resolutions.750w.url` );
+    }
+
 }
 
 export default new ReduxGetters();
