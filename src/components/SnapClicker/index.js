@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import inlineStyles from './styles';
 import img_capture from '../../assets/image-capture-icon.png';
 import CrossIcon from '../../assets/cross_icon.png';
@@ -63,7 +63,7 @@ class SnapClicker extends Component {
               this.captureImage();
             }}
           >
-            <Image style={styles.crossIconSkipFont} source={CrossIcon} />
+            <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon} />
           </TouchableOpacity>
           {/* action button comes here */}
           <TouchableOpacity
@@ -72,7 +72,7 @@ class SnapClicker extends Component {
             }}
             style={inlineStyles.captureBtn}
           >
-            <Image style={styles.imgCaptureButtonSkipFont} source={img_capture} />
+            <Image style={inlineStyles.imgCaptureButtonSkipFont} source={img_capture} />
           </TouchableOpacity>
         </RNCamera>
       </View>

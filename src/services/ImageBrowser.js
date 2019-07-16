@@ -5,7 +5,7 @@ const ImageBrowser = {
   _photos: null,
 
   init() {
-    this.photos = null;
+    this._photos = null;
     this._page_info = {
       has_next_page: true,
       start_cursor: '',
@@ -13,56 +13,63 @@ const ImageBrowser = {
     };
   },
 
-  async _requestExternalStoreageRead() {
+  async _requestExternalStorageRead() {
     try {
       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
         title: '“Pepo” Wants to access to photo library',
         message: 'Please allow access to photo library to select your profile picture'
       });
-
-      return granted == PermissionsAndroid.RESULTS.GRANTED;
+      return Promise.resolve(granted == PermissionsAndroid.RESULTS.GRANTED);
     } catch (err) {
       console.log('Permission not granted!');
     }
   },
 
   async _fetchPhotos() {
-    let result = null;
+    let params = {
+      first: 9,
+      assetType: 'Photos'
+    };
+    if (this._page_info && this._page_info.end_cursor) {
+      params.after = this._page_info.end_cursor;
+    }
+    if (Platform.OS === 'ios') {
+      param.groupTypes = 'All';
+    }
     try {
-      result = await CameraRoll.getPhotos({
-        first: 9,
-        assetType: 'Photos',
-        groupTypes: 'All'
-      });
+      const result = await CameraRoll.getPhotos(params);
       this._onSuccess(result);
-    } catch {
-      alert('Fetch photos failed!');
+    } catch (err) {
+      alert('Fetch photos failed!', err);
     }
   },
 
   async _getPhotosAsync() {
     if (Platform.OS === 'android') {
-      if (await this._requestExternalStoreageRead()) {
+      const hasPermission = await this._requestExternalStorageRead();
+      if (hasPermission) {
         await this._fetchPhotos();
       }
     } else if (Platform.OS === 'ios') {
       await this._fetchPhotos();
     }
+    console.log('i m here');
   },
 
   _onSuccess(result) {
     if (!result) return;
-    this.photos = result.edges;
-    this.page_info = result.page_info;
+    this._photos = result.edges;
+    this._page_info = result.page_info;
+    console.log('page info', this._page_info);
   },
 
   hasNextPage() {
-    return this.page_info.hasNextPage;
+    return this._page_info.hasNextPage;
   },
 
   async getPhotos() {
     await this._getPhotosAsync();
-    return this.photos;
+    return this._photos;
   }
 };
 

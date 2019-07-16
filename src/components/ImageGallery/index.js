@@ -49,8 +49,8 @@ class ImageGallery extends Component {
               );
             })
           ) : (
-            <View>
-              <Text>No images found!!</Text>
+            <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center' }}>
+              <Text>Loading images...</Text>
             </View>
           )}
         </ScrollView>
