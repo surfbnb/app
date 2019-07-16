@@ -106,12 +106,12 @@ class CameraManager {
 
   async _saveInAsyncStorage(entity, data) {
     let dataToSave = typeof data === 'string' ? data : JSON.stringify(data);
-    console.log(`_saveInAsyncStorage entity: ${entity}, dataToSave: ${dataToSave}`);
-    await utilities.saveItem(currentUser._getASKey(this.currentUser.id, entity), dataToSave);
+    console.log(`_saveInAsyncStorage entity: user-1-${entity}, dataToSave: ${dataToSave}`);
+    await utilities.saveItem(`user-1-${entity}`, dataToSave);
   }
 
   async _removeFromAsyncStorage(entity) {
-    await utilities.removeItem(currentUser._getASKey(this.currentUser.id, entity));
+    await utilities.removeItem(`user-1-${entity}`);
   }
 
 
