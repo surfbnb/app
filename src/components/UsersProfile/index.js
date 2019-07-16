@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View , Text , ActivityIndicator} from 'react-native';
+import { View , TouchableOpacity , ActivityIndicator , Image , ScrollView} from 'react-native';
 import reduxGetter from "../../services/ReduxGetters";
 import PepoApi from "../../services/PepoApi";
 import BackArrow from "../CommonComponents/BackArrow";
@@ -7,9 +7,12 @@ import { Toast } from 'native-base';
 import VideoWrapper from "../Home/VideoWrapper";
 import UserInfo from '../../components/CommonComponents/UserInfo';
 import { ostErrors } from "../../services/OstErrors";
-import { ScrollView } from 'react-native-gesture-handler';
-import inlineStyles from './styles';
+import currentUserModel from "../../models/CurrentUser";
 
+import tx_icon from '../../assets/tx_icon.png';
+
+ //TODO Shraddha move to common place,  Get in touch with Thahir. Not a good practices
+import iconStyle from "../Home/styles";import inlineStyles from './styles';
 
 export default class UsersProfile extends Component {
 
@@ -30,6 +33,16 @@ export default class UsersProfile extends Component {
     }
 
     componentDidMount(){
+        this.fetchUser();
+    }
+
+    isLoading(){
+        if( this.state.loading ){
+            return ( <ActivityIndicator /> );
+        }
+    }
+
+    fetchUser = () => {
         new PepoApi(`/users/${this.userId}/profile`)
         .get()
         .then((res) =>{
@@ -50,9 +63,13 @@ export default class UsersProfile extends Component {
         })
     }
 
-    isLoading(){
-        if( this.state.loading ){
-            return ( <ActivityIndicator /> );
+    navigateToTransactionScreen = () => {
+        if(  currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() ){
+            this.props.navigation.push('TransactionScreen' ,
+                {   toUserId: this.userId,
+                    requestAcknowledgeDelegate: this.fetchUser
+                }
+            );
         }
     }
 
@@ -60,15 +77,21 @@ export default class UsersProfile extends Component {
         return (
             <ScrollView style={{ backgroundColor: "#fff"}}>
               {this.isLoading()}
-                  <VideoWrapper  isActive={ true }
-                                 isPaused={ true }
-                                 ignoreScroll={true}
-                                 style={inlineStyles.videoWrapperSkipFont}
-                                 videoId={this.videoId}
-                                 videoUrl={ this.videoUrl }
-                                 videoImgUrl={this.videoImgUrl} />
-                  <UserInfo userId={this.userId}/>
-            </ScrollView>
+              <VideoWrapper  isActive={ true }
+                             isPaused={ true }
+                             ignoreScroll={true}
+                             style={inlineStyles.videoWrapperSkipFont}
+                             videoId={this.videoId}
+                             videoUrl={ this.videoUrl }
+                             videoImgUrl={this.videoImgUrl} />
+              <UserInfo userId={this.userId}/>
+             <View style={[iconStyle.touchablesBtns , {position:"absolute" , top: "50%"}]}>
+                    <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen}
+                                    style={iconStyle.txElem}>
+                        <Image style={{ height: 57, width: 57 }} source={tx_icon} />
+                    </TouchableOpacity>
+              </View>
+             </ScrollView>
         )
     }
 }
