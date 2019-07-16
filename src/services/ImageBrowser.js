@@ -34,7 +34,7 @@ const ImageBrowser = {
       params.after = this._page_info.end_cursor;
     }
     if (Platform.OS === 'ios') {
-      param.groupTypes = 'All';
+      params.groupTypes = 'All';
     }
     try {
       const result = await CameraRoll.getPhotos(params);
