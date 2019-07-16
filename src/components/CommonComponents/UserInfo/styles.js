@@ -46,7 +46,9 @@ let stylesMap = {
   },
   bioSection:{
     textAlign:'center',
-    marginVertical:10
+    marginVertical:10,
+    color : Colors.greyLite,
+    fontWeight :'normal'
   },
   numericInfoWrapper:{
     flexDirection:'row',
@@ -57,6 +59,10 @@ let stylesMap = {
     color:Colors.dark,
     fontWeight:'bold',
     textAlign:'center'
+  },
+  numericInfoText:{
+    color : Colors.greyLite,
+    fontWeight :'normal'
   }
 
 };
