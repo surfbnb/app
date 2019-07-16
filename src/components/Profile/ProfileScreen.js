@@ -4,6 +4,7 @@ import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
 
 import EmptyCoverImage from './EmptyCoverImage'
+import ProfileEdit from "./ProfileEdit";
 
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
@@ -23,6 +24,7 @@ class ProfileScreen extends Component {
       <View style={{margin:20,flex:1}}>
         <BalanceHeader  />
         <EmptyCoverImage/>
+        <ProfileEdit/>
       </View>
     );
   }
