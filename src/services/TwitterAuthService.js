@@ -86,7 +86,6 @@ class TwitterAuthService {
     } else {
       NavigationService.navigate('HomeScreen');
     }
-    currentUserModal.initialize();
   }
 
   setupDeviceFailed(ostWorkflowContext, error) {
