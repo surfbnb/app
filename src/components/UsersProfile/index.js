@@ -7,6 +7,7 @@ import { Toast } from 'native-base';
 import VideoWrapper from "../Home/VideoWrapper";
 import UserInfo from '../../components/CommonComponents/UserInfo';
 import { ostErrors } from "../../services/OstErrors";
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class UsersProfile extends Component {
 
@@ -55,16 +56,17 @@ export default class UsersProfile extends Component {
 
     render() {
         return (
-            <View style={{ backgroundColor: "#fff"}}>
+            <ScrollView style={{ backgroundColor: "#fff"}}>
               {this.isLoading()}
-              {/* <VideoWrapper  isActive={ true }
+              <VideoWrapper  isActive={ true }
                              isPaused={ true }
+                             ignoreScroll={true}
                              style={{}}
                              videoId={this.videoId}
                              videoUrl={ this.videoUrl }
-                             videoImgUrl={this.videoImgUrl} /> */}
+                             videoImgUrl={this.videoImgUrl} />
               <UserInfo userId={this.userId}/>
-             </View>
+             </ScrollView>
         )
     }
 }

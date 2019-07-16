@@ -32,14 +32,6 @@ class HomeFeedRow extends PureComponent {
        return reduxGetter.getHomeFeedVideoId( this.props.feedId );
     }
 
-    get videoUrl ()  {
-        return reduxGetter.getVideoUrl(this.videoId);
-    }
-
-    get videoImgUrl(){
-        return reduxGetter.getVideoImgUrl( this.videoId );
-    }
-
     get userName(){
         return reduxGetter.getUserName( this.userId );
     }
@@ -116,9 +108,7 @@ class HomeFeedRow extends PureComponent {
                
                { this.props.doRender && 
                     <VideoWrapper   videoId={this.videoId}
-                                    isActive={ this.props.isActive }
-                                    videoUrl={ this.videoUrl }
-                                    videoImgUrl={this.videoImgUrl} />   }        
+                                    isActive={ this.props.isActive }/>   }        
 
                 <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
                     

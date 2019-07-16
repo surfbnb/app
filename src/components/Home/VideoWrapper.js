@@ -4,12 +4,12 @@ import { connect } from 'react-redux'
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
 import inlineStyles from "./styles"; 
-
+import reduxGetter from "../../services/ReduxGetters"
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        videoImgUrl: reduxGetter.getUserName( ownProps.userId ,state ),
-        videoUrl: reduxGetter.getName( ownProps.userId , state ),
+        videoImgUrl: reduxGetter.getVideoImgUrl( ownProps.videoId ,state ),
+        videoUrl: reduxGetter.getVideoUrl( ownProps.videoId , state ),
     }
   }
   
@@ -32,7 +32,7 @@ class VideoWrapper extends PureComponent {
              clearTimeout(this.loadingTimeOut);    
              this.loadingTimeOut = setTimeout(()=> {
                     this.pausedOnNavigation = false;
-                    if( !this.isUserPaused ){
+                    if( !this.isUserPaused &&  this.props.ignoreScroll == undefined ){
                         this.playVideo();
                     }
                 }, 300 )   
@@ -128,4 +128,4 @@ class VideoWrapper extends PureComponent {
 
 }
 
-export default withNavigation( VideoWrapper )  ; 
+export default connect(mapStateToProps)(withNavigation( VideoWrapper )) ;

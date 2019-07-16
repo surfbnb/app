@@ -1,6 +1,7 @@
+
+
 import { NativeModules } from 'react-native';
 import { LoadingModal } from '../theme/components/LoadingModalCover';
-import currentUserModal from '../models/CurrentUser';
 import deepGet from 'lodash/get';
 import { ostErrors } from './OstErrors';
 import InitWalletSdk from './InitWalletSdk';
@@ -12,6 +13,11 @@ import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../constants';
 import Pricer from './Pricer';
 
 const { RNTwitterSignIn } = NativeModules;
+
+let currentUserModal;
+import('../models/CurrentUser').then((imports) => {
+  currentUserModal = imports.default;
+});
 
 class TwitterAuthService {
   signUp() {

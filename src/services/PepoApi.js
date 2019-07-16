@@ -26,9 +26,13 @@ import {
   updatePricePoints
 } from '../actions';
 import { API_ROOT } from '../constants/index';
-import CurrentUser from '../models/CurrentUser';
 
 import { ostErrors, UIWhitelistedErrorCode } from './OstErrors';
+
+let CurrentUser;
+import('../models/CurrentUser').then((imports) => {
+  CurrentUser = imports.default;
+});
 
 export default class PepoApi {
   constructor(url, params = {}) {
