@@ -20,7 +20,7 @@ import { ostErrors } from '../../services/OstErrors';
 
 const mapStateToProps = (state) => ({ balance: state.balance ,  disabled: state.executeTransactionDisabledStatus  });
 
-class TransactionPepoButton extends React.Component {
+class TransactionPepoButton extends PureComponent {
 
     constructor(props){
         super(props); 

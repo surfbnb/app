@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import  {View} from "react-native";
-import currentUserModel from '../../models/CurrentUser';
-import FeedList from '../FeedComponents/FeedList';
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
-import deepGet from 'lodash/get';
 
 import EmptyCoverImage from './EmptyCoverImage'
 
@@ -19,46 +16,12 @@ class ProfileScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      toRefresh: false,
-      refreshBalance: false
-    };
-    this.fetchUrl = `/users/${currentUserModel.getUserId()}/feeds`;
-    this.eventSubscription = null;
-    this.props.navigation.tab = 'Profile';
-  }
-
-  componentDidMount() {
-    this.eventSubscription =
-      this.props.navigation &&
-      this.props.navigation.addListener('didFocus', (payload) => {
-        let toRefresh = deepGet(payload, 'action.params.toRefresh');
-        toRefresh && this.setState({ toRefresh: toRefresh });
-      });
-  }
-
-  componentWillUnmount() {
-    this.eventSubscription && this.eventSubscription.remove();
-  }
-
-  beforeRefresh() {
-    if (!this.state.refreshBalance) {
-      this.setState({ refreshBalance: true });
-    }
-  }
-
-  onRefresh() {
-    this.setState({ toRefresh: false, refreshBalance: false });
-  }
-
-  onRefreshError() {
-    this.setState({ toRefresh: false, refreshBalance: false });
   }
 
   render() {
     return (
       <View style={{margin:20,flex:1}}>
-        <BalanceHeader toRefresh={this.state.refreshBalance} />
+        <BalanceHeader  />
         <EmptyCoverImage/>
       </View>
     );
