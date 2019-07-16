@@ -1,4 +1,4 @@
-import { CameraRoll, PermissionsAndroid } from 'react-native';
+import { CameraRoll, PermissionsAndroid, Platform } from 'react-native';
 
 const ImageBrowser = {
   _page_info: null,
@@ -13,7 +13,7 @@ const ImageBrowser = {
     };
   },
 
-  async requestExternalStoreageRead() {
+  async _requestExternalStoreageRead() {
     try {
       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
         title: '“Pepo” Wants to access to photo library',
@@ -26,17 +26,32 @@ const ImageBrowser = {
     }
   },
 
-  async _getPhotosAsync() {
-    if (await this.requestExternalStoreageRead()) {
-      const result = await CameraRoll.getPhotos({
+  async _fetchPhotos() {
+    let result = null;
+    try {
+      result = await CameraRoll.getPhotos({
         first: 9,
-        assetType: 'Photos'
+        assetType: 'Photos',
+        groupTypes: 'All'
       });
-      this.onSuccess(result);
+      this._onSuccess(result);
+    } catch {
+      alert('Fetch photos failed!');
     }
   },
 
-  onSuccess(result) {
+  async _getPhotosAsync() {
+    if (Platform.OS === 'android') {
+      if (await this._requestExternalStoreageRead()) {
+        await this._fetchPhotos();
+      }
+    } else if (Platform.OS === 'ios') {
+      await this._fetchPhotos();
+    }
+  },
+
+  _onSuccess(result) {
+    if (!result) return;
     this.photos = result.edges;
     this.page_info = result.page_info;
   },
