@@ -12,7 +12,8 @@ export default {
   },
 
   metaProperties: {
-    type: 'user_to_user'
+    type: 'user_to_user',
+    name: "profile"
   },
 
   executeTransactionPrivacyType: {
@@ -34,6 +35,9 @@ export default {
   giphySizes: {
     search: 'preview_gif',
     feed: 'downsized'
+  },
+
+  maxBtAllowedInSingleTransfer : 10
   },
 
   fileUploadTypes: {

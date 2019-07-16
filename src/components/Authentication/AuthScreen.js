@@ -165,7 +165,7 @@ class AuthScreen extends Component {
       .then((user) => {
         LoadingModal.hide();
         if (!currentUserModal.isActiveUser()) {
-          this.props.navigation.navigate('SetPinScreen');
+          this.props.navigation.navigate('UserActivatingScreen');
         } else {
           this.props.navigation.navigate('HomeScreen');
         }
@@ -183,7 +183,7 @@ class AuthScreen extends Component {
 
   onServerError(res) {
     LoadingModal.hide();
-    let stateObj = { server_errors: res};
+    let stateObj = { server_errors: res };
     const errorData = deepGet(res, 'err.error_data'),
       errorMsg = ostErrors.getErrorMessage(res);
     if (!(errorData && errorData.length)) {

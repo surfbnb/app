@@ -5,6 +5,9 @@ import Store from '../store';
 import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
+import { LoginPopoverActions } from '../components/LoginPopover';
+import { Toast } from 'native-base';
+import { ostErrors } from '../services/OstErrors';
 
 class CurrentUserModel {
   constructor() {
@@ -105,7 +108,7 @@ class CurrentUserModel {
     try {
       userId = userId || this.userId;
       this.userId = null;
-      this.ost_user_id = null;
+      this.ostUserId = null;
       Store.dispatch(logoutUser());
       await utilities.removeItem(this._getCurrentUserIdKey());
       await utilities.removeItem(this._getASKey(userId));
@@ -122,13 +125,17 @@ class CurrentUserModel {
     return this._signin('/auth/sign-up', params);
   }
 
+  twitterConnect(params) {
+    return this._signin('/auth/twitter-login', params);
+  }
+
   logout(params) {
     this.clearCurrentUser();
     new PepoApi('/auth/logout')
       .post()
       .catch((error) => {})
       .then((res) => {
-        NavigationService.navigate('AuthScreen', params);
+        NavigationService.navigate('HomeScreen', params);
       });
   }
 
@@ -152,13 +159,28 @@ class CurrentUserModel {
     return this.userId;
   }
 
+  checkActiveUser() {
+    if (!this.getOstUserId()) {
+      LoginPopoverActions.show();
+      return false;
+    }
+    return true;
+  }
+
   isActiveUser() {
     return this.isUserActivated() || this.isUserActivating();
   }
 
-  isUserActivated() {
-    const userStatusMap = appConfig.userStatusMap;
-    return this.__getUserStatus() == userStatusMap.activated;
+  isUserActivated(emit) {
+    const userStatusMap = appConfig.userStatusMap,
+      returnVal = this.__getUserStatus() == userStatusMap.activated;
+    if (!returnVal && emit) {
+      Toast.show({
+        text: ostErrors.getUIErrorMessage('user_not_active'),
+        buttonText: 'Okay'
+      });
+    }
+    return returnVal;
   }
 
   isUserActivating() {

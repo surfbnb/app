@@ -7,6 +7,7 @@ import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
+import Pricer from "../../services/Pricer";
 
 let t1, t2;
 
@@ -26,16 +27,13 @@ export default class AuthLoading extends Component {
   onSdkInitialized = (error, success) => {
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
+    Pricer.getToken(); //Init token
     currentUserModal
       .initialize()
       .then((user) => {
         LoadingModal.hide();
-        if (!user) {
-          this.props.navigation.navigate('AuthScreen');
-          return;
-        }
-        if (!currentUserModal.isActiveUser(user)) {
-          this.props.navigation.navigate('SetPinScreen');
+        if (user && !currentUserModal.isActiveUser(user)) {
+          this.props.navigation.navigate('UserActivatingScreen');
         } else {
           this.props.navigation.navigate('HomeScreen');
         }

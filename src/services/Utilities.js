@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
 import pricer from './Pricer';
+import PriceOracle from "./PriceOracle";
 import appConfig from '../constants/AppConfig';
 
 export default {
@@ -37,5 +38,13 @@ export default {
   getTokenSymbolImageConfig() {
     let symbol = pricer.getTokenSymbol();
     return appConfig['tokenSymbols'][symbol];
+  },
+
+  getFromDecimal( bt ){
+    return PriceOracle.fromDecimal(bt, pricer.getDecimal());
+  },
+
+  getToDecimal( bt ){
+    return PriceOracle.toDecimal(bt, pricer.getDecimal());
   }
 };
