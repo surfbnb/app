@@ -55,7 +55,7 @@ const defaultState = {
   user_contribution_entities: {},
   login_popover: { show: false },
   executeTransactionDisabledStatus: false,
-  recorded_video: {}
+  recorded_video: {},
   balance: "0"
 };
 

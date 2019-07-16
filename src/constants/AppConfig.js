@@ -36,9 +36,9 @@ export default {
     search: 'preview_gif',
     feed: 'downsized'
   },
-
-  maxBtAllowedInSingleTransfer : 10
-  },
+  
+  maxBtAllowedInSingleTransfer : 10,
+  
 
   fileUploadTypes: {
     video: 'videos',
