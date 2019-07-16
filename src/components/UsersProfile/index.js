@@ -4,11 +4,11 @@ import reduxGetter from "../../services/ReduxGetters";
 import PepoApi from "../../services/PepoApi";
 import BackArrow from "../CommonComponents/BackArrow";
 import { Toast } from 'native-base';
+import VideoWrapper from "../Home/VideoWrapper";
 import UserInfo from '../../components/CommonComponents/UserInfo';
 import { ostErrors } from "../../services/OstErrors";
 
 export default class UsersProfile extends Component {
-
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -19,20 +19,21 @@ export default class UsersProfile extends Component {
 
     constructor(props){
         super(props);
-        //TODO wont require once all components are connected.
+        this.userId =  this.props.navigation.getParam('userId');
+        this.videoId = reduxGetter.getUserCoverVideoId( this.userId );
         this.state = {
             loading : true
         }
     }
 
     componentDidMount(){
-        new PepoApi(`/users/${this.props.userId}/profile`)
+        new PepoApi(`/users/${this.userId}/profile`)
         .get()
         .then((res) =>{
             this.setState({ loading : false });
             if( !res ||  !res.success ){
                 Toast.show({
-                    text: ostErrors.getErrorMessage( res ) ,
+                    text: ostErrors.getErrorMessage( res ),
                     buttonText: 'OK'
                 });
             }
@@ -55,8 +56,14 @@ export default class UsersProfile extends Component {
     render() {
         return (
             <View style={{ backgroundColor: "#fff"}}>
-                {this.isLoading()}
-              <UserInfo/>
+              {this.isLoading()}
+              {/* <VideoWrapper  isActive={ true }
+                             isPaused={ true }
+                             style={{}}
+                             videoId={this.videoId}
+                             videoUrl={ this.videoUrl }
+                             videoImgUrl={this.videoImgUrl} /> */}
+              <UserInfo userId={this.userId}/>
              </View>
         )
     }

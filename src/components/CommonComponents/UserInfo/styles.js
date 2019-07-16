@@ -50,7 +50,6 @@ let stylesMap = {
   },
   numericInfoWrapper:{
     flexDirection:'row',
-    flex:1,
     justifyContent:'center',
     marginVertical:15
   },

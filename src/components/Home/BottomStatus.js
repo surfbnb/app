@@ -16,6 +16,7 @@ class BottomStatus extends PureComponent {
   }
 
   navigateToUserProfile = (e) => {
+    console.log("reduxGetter.getHomeFeedUserId(this.props.feedId)" , reduxGetter.getHomeFeedUserId(this.props.feedId));
     if (currentUserModel.checkActiveUser()) {
       this.props.navigation.push('UsersProfileScreen' ,
                                 {

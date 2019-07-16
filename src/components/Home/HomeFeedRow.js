@@ -115,7 +115,8 @@ class HomeFeedRow extends PureComponent {
             <View>
                
                { this.props.doRender && 
-                    <VideoWrapper   isActive={ this.props.isActive }
+                    <VideoWrapper   videoId={this.videoId}
+                                    isActive={ this.props.isActive }
                                     videoUrl={ this.videoUrl }
                                     videoImgUrl={this.videoImgUrl} />   }        
 
