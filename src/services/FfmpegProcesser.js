@@ -9,44 +9,84 @@ const PRESET = 'ultrafast';
 const PIX_FMT = 'yuv420p';
 
 export default class FfmpegProcesser {
-  constructor(inputFile) {
-    this.inputFileUri = inputFile.uri;
-    this._getCopressedURIPath()
+  constructor(inputFileUri) {
+    this.inputFileUri = inputFileUri;
   }
 
   async compress() {
+    this.cancel();
+    this._getOutputPath();
     let executeString = this._getExecuteString();
     let compressStartedAt = Date.now();
-    console.log("compression started at:", compressStartedAt);
+    console.log('compression started at:', compressStartedAt);
     let executeResponse = await RNFFmpeg.execute(executeString);
-    if (executeResponse.rc === 0){
+    if (executeResponse.rc === 0) {
       // rc = 0, means successful compression
-      let compressFinishedAt = Date.now()    
-      console.log("compression finished successfully at:", compressFinishedAt);
-      console.log("Time for compression", compressFinishedAt - compressStartedAt);
-      
-      return this.outputPath; 
+      let compressFinishedAt = Date.now();
+      console.log('compression finished successfully at:', compressFinishedAt);
+      console.log('Time for compression', compressFinishedAt - compressStartedAt);
+
+      return this.outputPath;
     } else {
       // compression is failed
-      console.log("Compression is failed");
+      console.log('Compression is failed');
       return this.inputFileUri;
-    }    
+    }
+  }
+
+  async getVideoThumbnail() {
+    this._getCoverOutputPath();
+    console.log('this.outputPath this.outputPath', this.outputPath);
+    let executeString = this._getVideoThumbnailString();
+    console.log(executeString);
+    let executeResponse = await RNFFmpeg.execute(executeString);
+    if (executeResponse.rc === 0) {
+      console.log('Thumb nail created ', this.outputImageFile);
+      // rc = 0, means successful compression
+      return this.outputPath;
+    } else {
+      console.log('Thumb nail failed ', this.outputImageFile);
+      // compression is failed
+      return '';
+    }
+  }
+
+  _getVideoThumbnailString() {
+    return `-i ${this.inputFileUri} -s ${COMPRESSION_SIZE} -vframes 1 ${this.outputPath}`;
+    // this.outputImageFile = `output_${Date.now()}.png`;
+    // return `-i ${this.inputFileUri} -ss 00:00:01.000 -vframes 1 ${this.outputFileName}`;
   }
 
   async getFileInformation(file) {
     return await RNFFmpeg.getMediaInformation(file);
   }
 
-  _getExecuteString() {
-    return `-i ${
-      this.inputFileUri
-    } -s ${COMPRESSION_SIZE} -crf ${CRF} -preset ${PRESET} -pix_fmt ${PIX_FMT} -vcodec h264 ${this.outputPath}`;
+  cancel() {
+    RNFFmpeg.cancel();
   }
 
-  _getCopressedURIPath() {
+  _getExecuteString() {
+    return `-i ${this.inputFileUri} -s ${COMPRESSION_SIZE} -crf ${CRF} -preset ${PRESET} -pix_fmt ${PIX_FMT} -vcodec h264 ${this.outputPath}`;
+  }
+
+  getFileExtension(file) {
+    let splittedFileName = file.split('.');
+    return splittedFileName[splittedFileName.length - 1];
+  }
+
+  _getCoverOutputPath() {
     let inputUriArr = this.inputFileUri.split('/');
     let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
-    outputPath.push(`output_${Date.now()}.mp4`);
+    this.outputFileName = `output_${Date.now()}.png`;
+    outputPath.push(this.outputFileName);
+    this.outputPath = outputPath.join('/');
+  }
+
+  _getOutputPath() {
+    let inputUriArr = this.inputFileUri.split('/');
+    let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
+    this.outputFileName = `output_${Date.now()}.mp4`;
+    outputPath.push(this.outputFileName);
     this.outputPath = outputPath.join('/');
   }
 }

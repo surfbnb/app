@@ -1,10 +1,11 @@
 import UploadToS3 from './UploadToS3';
 import Store from '../store';
-import { upsertRecordedVideo } from '../actions';
+import { clearRecordeVideo, upsertRecordedVideo } from '../actions';
 import utilities from './Utilities';
 import currentUser from '../models/CurrentUser';
 import appConfig from '../constants/AppConfig';
 import FfmpegProcesser from './FfmpegProcesser';
+import RNFS from 'react-native-fs';
 
 class CameraManager {
   constructor() {
@@ -48,6 +49,7 @@ class CameraManager {
     );
 
     await this._saveInAsyncStorage(appConfig.storageKeys['ENABLE_START_UPLOAD'], true);
+  }
 
   getFileExtension(file) {
     let splittedFileName = file.split('.');
@@ -67,8 +69,8 @@ class CameraManager {
   }
 
   async compressVideo() {
-    let ffmpegProcesser = new FfmpegProcesser(this.rawVideo);
-    this.compressedVideo = await ffmpegProcesser.compress();
+    this.ffmpegProcesser = new FfmpegProcesser(this.rawVideo);
+    this.compressedVideo = await this.ffmpegProcesser.compress();
     Store.dispatch(
       upsertRecordedVideo({
         compressed_video: this.compressedVideo
@@ -95,11 +97,6 @@ class CameraManager {
     return s3Video;
   }
 
-  async _uploadToS3(fileToUpload, fileType) {
-    let uploadToS3 = new UploadToS3(fileToUpload, fileType);
-    return await uploadToS3.perform();
-  }
-
   _getCurrentUser() {
     this.currentUser = Store.getState().current_user;
   }
@@ -114,8 +111,6 @@ class CameraManager {
     await utilities.removeItem(`user-1-${entity}`);
   }
 
-
-
   // async getVideUri() {
   //   //TODO: change currentUser.id to actual user
   //   let resp = await utilities.getItem(currentUser._getASKey(this.currentUser.id, 'recorded-video'));
@@ -124,23 +119,21 @@ class CameraManager {
 
   async cleanUp() {
     // stop ffmpge processing
-    Store.dispatch(
-      upsertRecordedVideo({
-        raw_video: undefined,
-        compressed_video: undefined,
-        s3_video: undefined,
-        video_thumbnail_image: undefined,
-        s3_video_thumbnail_image: undefined,
-        enable_start_upload: undefined
-      })
-    );
+    this.ffmpegProcesser.cancel();
 
+    // cleanup Redux
+    Store.dispatch(clearRecordeVideo());
+
+    // remove files from cache,
+    await this.removeFile(this.raw_video.uri);
+    await this.removeFile(this.compressed_video);
+    await this.removeFile(this.video_thumbnail_image);
+
+    // Cleaning up Async
     for (var key in appConfig.storageKeys) {
       await this._removeFromAsyncStorage(appConfig.storageKeys[key]);
     }
   }
-
-
 }
 
 export default new CameraManager();

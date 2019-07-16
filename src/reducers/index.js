@@ -15,7 +15,8 @@ export const {
   upsertFeedEntities,
   upsertTransactionEntities,
   upsertGiffyEntities,
-  upsertRecordedVideo
+  upsertRecordedVideo,
+  clearRecordedVideo
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -61,6 +62,10 @@ export const reducer = handleActions(
     [upsertRecordedVideo]: (state, action) => ({
       ...state,
       recorded_video: assignIn({}, state.recorded_video, action.payload.recorded_video)
+    }),
+    [clearRecordedVideo]: (state, action) => ({
+      ...state,
+      recorded_video: assignIn(defaultState.recorded_video)
     }),
     [logoutUser]: (state, action) => ({ ...defaultState })
   },

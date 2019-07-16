@@ -83,7 +83,9 @@ export const upsertTransactionEntities = (data) => ({
 
 export const upsertGiffyEntities = (data) => ({ type: types.UPSERT_GIFFY_ENTITIES, payload: { giffy_entities: data } });
 
-export const upsertRecordedVideo = (data) => ({ type: types.UPSERT_RECORDED_VIDEO, payload: { recorded_video: data } })
+export const upsertRecordedVideo = (data) => ({ type: types.UPSERT_RECORDED_VIDEO, payload: { recorded_video: data } });
+
+export const clearRecordedVideo = () => ({ type: types.CLEAR_RECORDED_VIDEO });
 
 export const logoutUser = () => ({ type: types.LOGOUT_USER });
 

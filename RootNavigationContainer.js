@@ -126,8 +126,7 @@ const AppContainer = createAppContainer(
       CaptureVideo,
       AuthScreen,
       HomeScreen,
-      PinStack,
-      PreviewRecordedVideo
+      PinStack
 
     },
     {

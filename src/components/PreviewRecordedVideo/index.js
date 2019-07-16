@@ -4,9 +4,8 @@ import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/play_icon.png';
 import tickIcon from '../../assets/tick_icon.png';
-import cameraManager from '../../services/CameraManager';
-import RNThumbnail from 'react-native-thumbnail';
-import FfmpegProcesser from '../../services/FfmpegProcesser';
+import Store from '../../store';
+import { upsertRecordedVideo } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
 
@@ -28,29 +27,11 @@ class PreviewRecordedVideo extends Component {
   }
 
   componentDidMount() {
-    this.videoProcessing();
+    Store.dispatch(upsertRecordedVideo({raw_video: this.cachedVideoUri}));
   }
 
-  async videoProcessing() {
-    let fileExt = cameraManager.getFileExtension(this.cachedVideoUri);
-    await cameraManager.initVideo({
-      uri: this.cachedVideoUri,
-      type: `video/${fileExt}`,
-      name: `video_${Date.now()}.${fileExt}`
-    });
-    await cameraManager.compressVideo();
-    this.thumbnailUrl = await this.fetchAndUploadThumbnail();
-  }
-
-  async fetchAndUploadThumbnail() {
-    console.log('I am here in fetchAndUploadThumbnail', this.cachedVideoUri);
-    //let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
-    // console.log('I am here in fetchAndUploadThumbnail', thumbnailPath);
-    // await cameraManager.thambnailHanling({
-    //   uri: thumbnailPath.path,
-    //   type: 'image/png',
-    //   name: `image_${Date.now()}.png`
-    // });
+  enableStartUploadFlag(){
+    Store.dispatch(upsertRecordedVideo({do_upload: true}));
   }
 
   handleProgress = (progress) => {
@@ -130,7 +111,7 @@ class PreviewRecordedVideo extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={async () => {
-              await CameraManager.enableStartUploadFlag();
+              this.enableStartUploadFlag();
             }}
           >
             <Image style={styles.tickIcon} source={tickIcon} />

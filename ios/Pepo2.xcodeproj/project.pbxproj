@@ -70,6 +70,7 @@
 		7729409822D74B9600C9FE35 /* OstWorkFlowCallbackImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 7729408C22D74B9600C9FE35 /* OstWorkFlowCallbackImpl.m */; };
 		7729409922D74B9600C9FE35 /* OstWalletRnSdkApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 7729408E22D74B9600C9FE35 /* OstWalletRnSdkApi.m */; };
 		7729409A22D74BBE00C9FE35 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
+		7766C64E22DD9FD000C019D8 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7766C64822DD9FB000C019D8 /* libRNFS.a */; };
 		778F37FDF5B54A96AA548538 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B821CF48A2A44371B21E0DEE /* libRNGestureHandler.a */; };
 		779F2EEC22D7CEA60076410B /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 779F2ECE22D7CE180076410B /* libRCTVideo.a */; };
 		77EDA37C22D763D20095674F /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EDA37B22D763CB0095674F /* libRNCamera.a */; };
@@ -367,6 +368,20 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		7766C64722DD9FB000C019D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F12AFB9B1ADAF8F800E0535D;
+			remoteInfo = RNFS;
+		};
+		7766C64922DD9FB000C019D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6456441F1EB8DA9100672408;
+			remoteInfo = "RNFS-tvOS";
+		};
 		779F2ECD22D7CE180076410B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */;
@@ -506,6 +521,7 @@
 		7729408C22D74B9600C9FE35 /* OstWorkFlowCallbackImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OstWorkFlowCallbackImpl.m; sourceTree = "<group>"; };
 		7729408D22D74B9600C9FE35 /* OstMessageBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OstMessageBus.h; sourceTree = "<group>"; };
 		7729408E22D74B9600C9FE35 /* OstWalletRnSdkApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OstWalletRnSdkApi.m; sourceTree = "<group>"; };
+		7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		77EDA37622D763CB0095674F /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		789B7BE072654BAB9FD268A5 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../src/assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
@@ -545,6 +561,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7766C64E22DD9FD000C019D8 /* libRNFS.a in Frameworks */,
 				00281BB422DC813400C0E079 /* libbz2.1.0.tbd in Frameworks */,
 				7729409A22D74BBE00C9FE35 /* OstWalletSdk.framework in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
@@ -870,6 +887,15 @@
 			path = sdkInteracts;
 			sourceTree = "<group>";
 		};
+		7766C61722DD9FB000C019D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7766C64822DD9FB000C019D8 /* libRNFS.a */,
+				7766C64A22DD9FB000C019D8 /* libRNFS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		779F2EB722D7CE180076410B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -915,6 +941,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */,
 				779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */,
 				77EDA37622D763CB0095674F /* RNCamera.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -1097,6 +1124,10 @@
 				{
 					ProductGroup = 0088104922BA26A8000B154C /* Products */;
 					ProjectRef = 8079D913B25E4ECBB620047A /* RNCNetInfo.xcodeproj */;
+				},
+				{
+					ProductGroup = 7766C61722DD9FB000C019D8 /* Products */;
+					ProjectRef = 7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */;
 				},
 				{
 					ProductGroup = 0050FD1022A821D700C2634F /* Products */;
@@ -1386,6 +1417,20 @@
 			fileType = archive.ar;
 			path = libRCTAnimation.a;
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7766C64822DD9FB000C019D8 /* libRNFS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFS.a;
+			remoteRef = 7766C64722DD9FB000C019D8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7766C64A22DD9FB000C019D8 /* libRNFS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFS.a;
+			remoteRef = 7766C64922DD9FB000C019D8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		779F2ECE22D7CE180076410B /* libRCTVideo.a */ = {
