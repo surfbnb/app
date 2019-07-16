@@ -4,7 +4,6 @@ import {View, Image, Text, FlatList, Dimensions} from 'react-native';
 import inlineStyles from './styles';
 import ImageBrowser from '../../services/ImageBrowser';
 import {SafeAreaView} from "react-navigation";
-import GracefulImage from '../Giphy/GracefulImage'
 
 class ImageGallery extends Component {
   constructor(props) {
@@ -34,7 +33,6 @@ class ImageGallery extends Component {
   };
 
   _renderItem({item, index}){
-    console.log(Dimensions.get('window').width);
     return(
       <Image
         key={index}
