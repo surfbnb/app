@@ -164,13 +164,13 @@ const AppContainer = createAppContainer(
 
 const RootNavigationContainer = () => (
   <Root>
+    <CameraWorker />
     <AppContainer
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
     />
     <LoadingModalCover />
-    <CameraWorker />
     <LoginPopover />
   </Root>
 );

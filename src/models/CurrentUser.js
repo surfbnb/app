@@ -135,7 +135,7 @@ class CurrentUserModel {
       .post()
       .catch((error) => {})
       .then((res) => {
-        NavigationService.navigate('HomeScreen', params);
+        NavigationService.navigate('HomeScreen', params);        
       });
   }
 

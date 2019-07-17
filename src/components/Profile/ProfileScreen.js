@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import currentUserModel from '../../models/CurrentUser';
 import FeedList from '../FeedComponents/FeedList';
+import {View, Button} from 'react-native';
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
 import deepGet from 'lodash/get';
@@ -51,9 +52,15 @@ class ProfileScreen extends Component {
   onRefreshError() {
     this.setState({ toRefresh: false, refreshBalance: false });
   }
+  navigateToVideo(){
+    this.props.navigation.navigate('CaptureVideo');
+
+  }
 
   render() {
     return (
+      <View>
+      <Button onPress={()=> {this.navigateToVideo()}} title='Record a video'></Button>
       <FeedList
         style={{ backgroundColor: '#f6f6f6', flex: 1 }}
         fetchUrl={this.fetchUrl}
@@ -69,6 +76,7 @@ class ProfileScreen extends Component {
           this.onRefreshError(error);
         }}
       ></FeedList>
+      </View>
     );
   }
 }

@@ -2,9 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import RNThumbnail from 'react-native-thumbnail';
 import RNFS from 'react-native-fs';
-
 import Store from '../store';
-import { upsertRecordedVideo, clearRecordedVideo, clearRecordeVideo } from '../actions';
+import { upsertRecordedVideo, clearRecordedVideo } from '../actions';
 import utilities from './Utilities';
 import appConfig from '../constants/AppConfig';
 import FfmpegProcesser from './FfmpegProcesser';
@@ -13,7 +12,6 @@ import PepoApi from './PepoApi';
 
 const VIDEO_WIDTH = 720;
 const VIDEO_HEIGHT = 1280;
-
 
 const recordedVideoStates = ['raw_video', 'compressed_video', 's3_video', 'cover_image', 's3_cover_image'];
 
@@ -26,10 +24,10 @@ class CameraWorker extends PureComponent {
 
   syncAsyncToRedux() {
     // Early exit
-    if (Object.keys(this.props.current_user).length === 0) {
-      console.log('syncAsyncToRedux :: Cannot sync as current_user is not yet available');
-      return;
-    }
+    // if (Object.keys(this.props.current_user).length === 0) {
+    //   console.log('syncAsyncToRedux :: Cannot sync as current_user is not yet available');
+    //   return;
+    // }
     if (Object.keys(this.props.recorded_video).length > 0) {
       console.log('syncAsyncToRedux :: No sync needed as recorded_video has data');
       return;
@@ -49,14 +47,18 @@ class CameraWorker extends PureComponent {
   syncReduxToAsync() {
     // Need to sync
     if (this.getCurrentUserRecordedVideoKey()) {
-      utilities.saveItem(this.getCurrentUserRecordedVideoKey(), this.getDataforAsync()).then(() => {
-        console.log('syncReduxToAsync :: Data synced from recorded_video to Async');
-      });
+      let data = this.getDataforAsync();
+      if (Object.keys(data).length > 0) {
+        utilities.saveItem(this.getCurrentUserRecordedVideoKey(), data).then(() => {
+          console.log('syncReduxToAsync :: Data synced from recorded_video to Async');
+        });
+      }
     }
   }
 
   async processVideo() {
     // Early exit
+    console.log('this.props.current_user.id', this.props.current_user.id);
     if (/*Object.keys(this.props.current_user).length === 0 || */ Object.keys(this.props.recorded_video).length === 0) {
       console.log('processVideo :: Nothing to process');
       return;
@@ -92,7 +94,7 @@ class CameraWorker extends PureComponent {
 
   async cleanUp() {
     // stop ffmpge processing
-    this.ffmpegProcesser.cancel();
+    this.ffmpegProcesser && this.ffmpegProcesser.cancel();
 
     // remove files from cache,
     await this.removeFile(this.props.recorded_video.raw_video);
@@ -101,7 +103,7 @@ class CameraWorker extends PureComponent {
     // Cleaning up Async
     utilities.removeItem(this.getCurrentUserRecordedVideoKey());
     // cleanup Redux
-    Store.dispatch(clearRecordeVideo());
+    Store.dispatch(clearRecordedVideo());
   }
 
   async removeFile(file) {
@@ -124,20 +126,20 @@ class CameraWorker extends PureComponent {
       );
 
       let coverImage = await this.ffmpegProcesser.getVideoThumbnail();
-        Store.dispatch(
-          upsertRecordedVideo({
-            cover_image: coverImage
-          })
-        );
+      Store.dispatch(
+        upsertRecordedVideo({
+          cover_image: coverImage
+        })
+      );
     }
   }
 
   async uploadVideo() {
-    console.log('================ Upload VIdeo has been started ================');  
+    console.log('================ Upload VIdeo has been started ================');
     if (this.props.recorded_video.compressed_video && !this.props.recorded_video.s3_video) {
       let s3Video = await this._uploadToS3(this.props.recorded_video.compressed_video, 'video');
 
-      console.log('================ Upload VIdeo has been compeleted ================', s3Video);  
+      console.log('================ Upload VIdeo has been compeleted ================', s3Video);
 
       Store.dispatch(
         upsertRecordedVideo({
@@ -148,10 +150,10 @@ class CameraWorker extends PureComponent {
   }
 
   async uploadCoverImage() {
-    console.log('================ uploadCoverImage has been started ================');  
+    console.log('================ uploadCoverImage has been started ================');
     if (this.props.recorded_video.cover_image && !this.props.recorded_video.s3_cover_image) {
       let s3CoverImage = await this._uploadToS3(this.props.recorded_video.cover_image, 'image');
-      console.log('================ uploadCoverImage has been compeleted ================', s3CoverImage);    
+      console.log('================ uploadCoverImage has been compeleted ================', s3CoverImage);
       Store.dispatch(
         upsertRecordedVideo({
           s3_cover_image: s3CoverImage
@@ -166,12 +168,12 @@ class CameraWorker extends PureComponent {
   }
 
   async postVideoWithCoverImage() {
-    if (this.props.recorded_video.s3_video && this.props.recorded_video.s3_cover_image && ! this.postToPepoApi) {
-      this.postToPepoApi = true;  
-      let videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);  
+    if (this.props.recorded_video.s3_video && this.props.recorded_video.s3_cover_image && !this.postToPepoApi) {
+      this.postToPepoApi = true;
+      let videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);
       let videoSize = videoInfo.size;
-      let imageInfo = await RNFS.stat(this.props.recorded_video.cover_image);  
-      let imageSize = imageInfo.size; 
+      let imageInfo = await RNFS.stat(this.props.recorded_video.cover_image);
+      let imageSize = imageInfo.size;
 
       let payload = {
         video_url: this.props.recorded_video.s3_video,
@@ -179,22 +181,31 @@ class CameraWorker extends PureComponent {
         video_width: VIDEO_WIDTH,
         video_height: VIDEO_HEIGHT,
         image_width: VIDEO_WIDTH,
-        image_height : VIDEO_HEIGHT,
+        image_height: VIDEO_HEIGHT,
         video_size: videoSize,
         image_size: imageSize
-      }
+      };
 
-      new PepoApi(`/users/${1234}/fan-video`)
-      .post(payload)
-      .then((responseData) => {
-        if (responseData.success && responseData.data) {
-          console.log('responseData.data', responseData.data)
-        } 
-      })
-      .catch(() => {
-        // cancel workflow.
-        ostDeviceRegistered.cancelFlow();
-      });
+      console.log(this.props.current_user.id,'this.props.current_user.id');
+
+      new PepoApi(`/users/${this.props.current_user.id}/fan-video`)
+        .post(payload)
+        .then((responseData) => {
+          if (responseData.success && responseData.data) {
+
+            Store.dispatch(
+              upsertRecordedVideo({
+                do_discard: true
+              })
+            );
+
+            console.log('responseData.data', responseData.data);
+          }
+        })
+        .catch(() => {
+          // cancel workflow.
+          ostDeviceRegistered.cancelFlow();
+        });
     }
   }
 

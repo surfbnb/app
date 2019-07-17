@@ -46,7 +46,11 @@ class ReduxGetters {
 
     isVideoSupported(id){
         return !!deepGet( Store.getState() ,  `video_contribution_entities.id_${id}` );
-    }   
+    }
+    
+    getRecordedVideo(){
+        return deepGet( Store.getState() ,  `recorded_video.raw_video` );
+    }
 
 }
 

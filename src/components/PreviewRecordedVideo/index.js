@@ -63,9 +63,14 @@ class PreviewRecordedVideo extends Component {
           console.log('This is Button index', buttonIndex);
           if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
             // This will take to VideoRecorder component
-            this.props.toggleView();
+            Store.dispatch(
+              upsertRecordedVideo({
+                do_discard: true
+              })
+            );
+            this.props.goToRecordScreen(); 
           } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
-            //navigate to previous page
+            //TODO: navigate to previous page
           }
         }
     );
