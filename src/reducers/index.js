@@ -43,6 +43,7 @@ const defaultState = {
   giffy_entities: {},
   tag_entities:{},
   user_profile_entities: {},
+  user_entities: {},
   user_stat_entities: {},
   link_entities: {},
   video_entities: {},
@@ -54,6 +55,10 @@ const defaultState = {
   login_popover: { show: false },
   executeTransactionDisabledStatus: false,
   balance: "0"
+};
+
+const loggoutState = {
+  current_user: {}
 };
 
 export const reducer = handleActions(
@@ -138,7 +143,12 @@ export const reducer = handleActions(
       ...state,
       executeTransactionDisabledStatus: action.payload.executeTransactionDisabledStatus
     }),
-    [logoutUser]: (state, action) => ({ ...defaultState })
+    [logoutUser]: (state, action) => ({ 
+      ...state,
+      current_user: {},
+      executeTransactionDisabledStatus: true,
+      balance: "0"
+    })
   },
   defaultState
 );

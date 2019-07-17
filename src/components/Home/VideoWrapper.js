@@ -11,6 +11,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         videoImgUrl: reduxGetter.getVideoImgUrl( ownProps.videoId ,state ),
         videoUrl: reduxGetter.getVideoUrl( ownProps.videoId , state ),
+        loginPopover : state.login_popover.show
     }
   }
   
@@ -71,7 +72,7 @@ class VideoWrapper extends PureComponent {
 
 
     isPaused(){
-        return !this.props.isActive || this.state.paused;
+        return !this.props.isActive || this.state.paused || this.props.loginPopover;
     }
 
     playVideo() {
