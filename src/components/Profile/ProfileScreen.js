@@ -11,6 +11,8 @@ import CoverImage from '../CommonComponents/CoverImage'
 import reduxGetter from "../../services/ReduxGetters";
 import Colors from '../../theme/styles/Colors'
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
     return {
@@ -26,12 +28,12 @@ class ProfileScreen extends Component {
     //TODO Shraddha : remove hardcoded values once tested on ios
     this.coverImageId = 1123 //reduxGetter.getUserCoverImageId(this.userId,this.state);
     this.videoId = 123//reduxGetter.getUserCoverVideoId( this.userId,this.state );
-    console.log("in Profile Screen",this.userId,this.coverImageId,this.videoId)
+    console.log("in Profile Screen",this.userId,this.coverImageId,this.videoId);
   }
 
   render() {
     return (
-      <ScrollView style={{padding:20,flex:1}}>
+      <KeyboardAwareScrollView enableOnAndroid={true} style={{padding:20,flex:1}}>
         <BalanceHeader  />
         {this.coverImageId &&(
           <View style={{borderWidth:1,borderRadius:5,marginTop:20,borderColor:Colors.dark}}>
@@ -44,7 +46,7 @@ class ProfileScreen extends Component {
         )}
         <UserInfo userId={CurrentUser.getUserId()} />
         <ProfileEdit/>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }

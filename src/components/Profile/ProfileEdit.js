@@ -22,7 +22,29 @@ const mapStateToProps = (state, ownProps) => {
 class ProfileEdit extends React.PureComponent{
   
   constructor(props){
-    super(props)
+    super(props);
+
+    this.state = {
+      current_formField: 0,
+      name: null,
+      username: null,
+      bio: null,
+      link: null,
+    };
+
+    this.tabIndex = {
+      name: 1,
+      username: 2,
+      bio: 3,
+      link: 4
+    };
+
+  }
+
+  onSubmitEditing(currentIndex) {
+    this.setState({
+      current_formField: currentIndex + 1
+    });
   }
 
   render(){
@@ -49,6 +71,13 @@ class ProfileEdit extends React.PureComponent{
           returnKeyLabel="Next"
           placeholderTextColor="#ababab"
           blurOnSubmit={false}
+          onSubmitEditing={() => {
+            this.onSubmitEditing(this.tabIndex.name);
+          }}
+          isFocus={this.state.current_formField == this.tabIndex.name}
+          onFocus={() => {
+            this.state.current_formField = this.tabIndex.name;
+          }}
         />
 
         <Text style={{}}>Username</Text>
@@ -64,6 +93,13 @@ class ProfileEdit extends React.PureComponent{
           returnKeyLabel="Next"
           placeholderTextColor="#ababab"
           blurOnSubmit={false}
+          onSubmitEditing={() => {
+            this.onSubmitEditing(this.tabIndex.username);
+          }}
+          isFocus={this.state.current_formField == this.tabIndex.username}
+          onFocus={() => {
+            this.state.current_formField = this.tabIndex.username;
+          }}
         />
 
         <Text style={{}}>Bio</Text>
@@ -81,6 +117,13 @@ class ProfileEdit extends React.PureComponent{
           placeholderTextColor="#ababab"
           blurOnSubmit={false}
           maxLength = {100}
+          onSubmitEditing={() => {
+            this.onSubmitEditing(this.tabIndex.bio);
+          }}
+          isFocus={this.state.current_formField == this.tabIndex.bio}
+          onFocus={() => {
+            this.state.current_formField = this.tabIndex.bio;
+          }}
         />
 
         <Text style={{}}>Link</Text>
@@ -96,6 +139,13 @@ class ProfileEdit extends React.PureComponent{
           returnKeyLabel="Next"
           placeholderTextColor="#ababab"
           blurOnSubmit={false}
+          onSubmitEditing={() => {
+            this.onSubmitEditing(this.tabIndex.link);
+          }}
+          isFocus={this.state.current_formField == this.tabIndex.link}
+          onFocus={() => {
+            this.state.current_formField = this.tabIndex.link;
+          }}
         />
 
         <TouchableOpacity

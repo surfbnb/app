@@ -34,7 +34,7 @@ class BalanceHeader extends PureComponent {
             <Image style={{ width: 36.6, height: 36.6 }} source={profilelWallet}></Image>
             <Text style={inlineStyles.balanceToptext}>Balance</Text>
           </View>
-          <View style={{flex: 0.5, alignItems: 'flex-end', justifyContent: 'flex-end'}}>
+          <View style={{flex: 0.5, alignItems: 'flex-end'}}>
             <Text style={inlineStyles.pepoBalance}>
               {/*<Image style={{ width: 25, height: 22 }} source={utilities.getTokenSymbolImageConfig()['image2']}></Image>{' '}*/}
               <Image style={{ width: 18, height: 18 }} source={pepoWhiteIcon}></Image>
