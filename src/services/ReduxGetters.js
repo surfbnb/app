@@ -102,6 +102,16 @@ class ReduxGetters {
          deepGet( state ,  `image_entities.id_${id}.resolutions.original.url` );
     }
 
+    getUserLink(id , state ){
+        state =  state || Store.getState() ; 
+        return deepGet( state ,  `user_profile_entities.id_${id}.link_ids[0]` );
+    }
+
+    getLink(id , state ){
+        state =  state || Store.getState() ; 
+        return deepGet( state ,  `link_entities.id_${id}.url` );
+    }
+
 }
 
 export default new ReduxGetters();

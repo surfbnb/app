@@ -1,13 +1,26 @@
 import React from 'react';
 import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
+import { connect } from 'react-redux';
+
 
 import inlineStyles from './styles';
 import Theme from "../../theme/styles";
 import profileEditIcon from "../../assets/profile-edit-icon.png";
 import default_user_icon from '../../assets/default_user_icon.png';
 import FormInput from "../../theme/components/FormInput";
+import reduxGetter from "../../services/ReduxGetters";
 
-export default class ProfileEdit extends React.Component{
+const mapStateToProps = (state, ownProps) => {
+  return {
+    userName: reduxGetter.getUserName( ownProps.userId ,state ),
+    name: reduxGetter.getName( ownProps.userId , state ),
+    bio: reduxGetter.getBio( ownProps.userId , state ),
+    link : reduxGetter.getLink( reduxGetter.getUserLink(ownProps.userId , state ) ,  state ),
+  }
+}
+
+class ProfileEdit extends React.PureComponent{
+  
   constructor(props){
     super(props)
   }
@@ -96,3 +109,5 @@ export default class ProfileEdit extends React.Component{
   }
 
 }
+
+export default connect(mapStateToProps)(ProfileEdit) ;
