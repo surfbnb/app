@@ -58,6 +58,25 @@ let stylesMap = {
     textAlign:'center',
     fontWeight:'bold',
     color:Colors.greyLite
+  },
+  editProfileContainer: {
+    height: 75,
+    width: 75,
+    borderRadius: 40
+  },
+  editProfileIconPos:{
+    backgroundColor: Colors.white,
+    height: 30,
+    width: 30,
+    position: 'absolute',
+    right: -13,
+    bottom: 2,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: Colors.wildWatermelon,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 };
 

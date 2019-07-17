@@ -3,7 +3,8 @@ import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
 
 import inlineStyles from './styles';
 import Theme from "../../theme/styles";
-import EditIcon from "../../assets/edit_icon.png";
+import profileEditIcon from "../../assets/profile-edit-icon.png";
+import default_user_icon from '../../assets/default_user_icon.png';
 import FormInput from "../../theme/components/FormInput";
 
 export default class ProfileEdit extends React.Component{
@@ -15,8 +16,14 @@ export default class ProfileEdit extends React.Component{
     return(
       <View style={{}}>
 
-        <Text style={{}}>Name</Text>
+        <View style={inlineStyles.editProfileContainer}>
+          <Image style={{width: 75,height: 75}} source={default_user_icon}></Image>
+          <View style={inlineStyles.editProfileIconPos}>
+            <Image style={{width: 13,height: 13}} source={profileEditIcon}></Image>
+          </View>
+        </View>
 
+        <Text style={{}}>Name</Text>
         <FormInput
           editable={true}
           fieldName="name"
