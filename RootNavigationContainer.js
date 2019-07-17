@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Easing, Animated } from 'react-native';
 import { Root } from 'native-base';
 import {
   createMaterialTopTabNavigator,
@@ -31,7 +31,7 @@ import UsersProfileScreen from "./src/components/UsersProfile";
 
 import deepGet from 'lodash/get';
 
-const transactionScreenParentStackConfig = {
+const modalStackConfig = {
   headerLayoutPreset: 'center',
   headerMode: 'none',
   mode: 'modal',
@@ -70,7 +70,7 @@ const HomeStack = createStackNavigator(
     EditTx: EditTx,
     VideoPlayer: VideoPlayer
   },
-  { ...transactionScreenParentStackConfig }
+  { ...modalStackConfig }
 );
 
 
@@ -90,16 +90,22 @@ const UserStack = createStackNavigator(
     Giphy: Giphy,
     EditTx: EditTx
   },
-  { ...transactionScreenParentStackConfig }
+  { ...modalStackConfig }
 );
 
 const ProfileStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
-    UserFeedScreen: UserFeedScreen
+    VideoPlayer: VideoPlayer
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    mode: 'modal',
+    navigationOptions: ({ navigation }) => {
+      return {
+        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false
+      };
+    }
   }
 );
 

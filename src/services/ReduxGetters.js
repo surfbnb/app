@@ -40,7 +40,7 @@ class ReduxGetters {
         if( CurrentUser.getUserId == id ){
             return deepGet( state,  `current_user.username` );
         }
-        return deepGet( state,  `user_entities.id_${id}.username` );
+        return deepGet( state,  `user_entities.id_${id}.user_name` );
     }
 
     getName( id , state ){
