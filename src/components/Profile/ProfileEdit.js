@@ -12,6 +12,8 @@ import FormInput from "../../theme/components/FormInput";
 import reduxGetter from "../../services/ReduxGetters";
 import { ostErrors } from '../../services/OstErrors';
 import CurrentUser  from "../../models/CurrentUser";
+import PepoApi from "../../services/PepoApi";
+import ProfilePlusIcon from '../../assets/plus_icon.png'
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -107,7 +109,8 @@ class ProfileEdit extends React.PureComponent{
     this.clearErrors();
     if( this.validateProfileInput() ){
       this.setState({ btnText : btnPostText} );
-      CurrentUser.saveProfile( this.getParams() )
+      return new PepoApi(`/users/${this.props.userId}/profile`)
+        .post( this.getParams() )
         .then( ( res ) => {
           console.log("----res----" , res);
           this.setState({ btnText : btnPreText} );
@@ -137,7 +140,7 @@ class ProfileEdit extends React.PureComponent{
         <View style={inlineStyles.editProfileContainer}>
           <Image style={{width: 75,height: 75}} source={this.getImageSrc()}></Image>
           <View style={inlineStyles.editProfileIconPos}>
-            <Image style={{width: 13,height: 13}} source={ this.props.profilePicture?default_user_icon:profileEditIcon}></Image>
+            <Image style={{width: 13,height: 13}} source={ this.props.profilePicture?profileEditIcon:ProfilePlusIcon}></Image>
           </View>
         </View>
 

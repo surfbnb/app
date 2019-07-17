@@ -194,7 +194,8 @@ class TransactionPepoButton extends PureComponent {
        return ( 
         <TouchableWithoutFeedback onPress={this.onTransactionIconWrapperClick}> 
             <View>
-                <PepoButton count={ this.state.totalBt } 
+                <PepoButton count={ this.state.totalBt }
+                            isSelected={this.props.isSupported}
                             id={this.props.feedId}
                             disabled={this.isDisabled()}
                             isDisabledWithoutColor={this.isDisabledWithoutColor}
