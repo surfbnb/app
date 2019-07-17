@@ -16,6 +16,7 @@ import inlineStyles from './styles'
  //TODO Shraddha move to common place,  Get in touch with Thahir. Not a good practices
 import iconStyle from "../Home/styles";
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import CoverImage from "../CommonComponents/CoverImage";
 
 
 export default class UsersProfile extends Component {
@@ -32,6 +33,7 @@ export default class UsersProfile extends Component {
         super(props);
         this.userId =  this.props.navigation.getParam('userId');
         this.videoId = reduxGetter.getUserCoverVideoId( this.userId );
+        this.coverImageId = reduxGetter.getUserCoverImageId(this.userId);
         this.state = {
             loading : true
         }
@@ -78,13 +80,6 @@ export default class UsersProfile extends Component {
         }
     }
 
-    getImage = () => {
-        return reduxGetter.getImage( reduxGetter.getUserCoverImageId( this.userId ) );
-    }
-
-    showVideo = () => {
-        this.props.navigation.push("VideoPlayer" , { videoId : this.videoId} );
-    }
 
 
 
@@ -92,12 +87,7 @@ export default class UsersProfile extends Component {
         return (
             <ScrollView style={{ backgroundColor: "#fff"}}>
               {this.isLoading()}
-              <TouchableWithoutFeedback onPress={this.showVideo}>
-                <View>
-                  <Image style={{width : "100%" , height: Dimensions.get('screen').height * 0.65 }}  source={{uri: this.getImage()}} />
-                  <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>
-                </View>
-              </TouchableWithoutFeedback>
+                <CoverImage coverImageId={this.coverImageId} videoId={this.videoId} navigation={this.props.navigation}/>
               <UserInfo userId={this.userId}/>
              <View style={[iconStyle.touchablesBtns , {position:"absolute" , top: "75%"}]}>
                     <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen}

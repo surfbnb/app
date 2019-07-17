@@ -6,6 +6,7 @@ import UserInfo from "../CommonComponents/UserInfo";
 import CurrentUser from "../../models/CurrentUser";
 
 import EmptyCoverImage from './EmptyCoverImage'
+import ProfileEdit from "./ProfileEdit";
 
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
@@ -26,6 +27,7 @@ class ProfileScreen extends Component {
         <BalanceHeader  />
         <EmptyCoverImage/>
         <UserInfo userId={CurrentUser.getUserId()} />
+        <ProfileEdit/>
       </View>
     );
   }
