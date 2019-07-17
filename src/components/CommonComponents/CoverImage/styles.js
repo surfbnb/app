@@ -10,8 +10,10 @@ let stylesMap = {
     position:'absolute',
     height:25,
     width:25,
-    top:Dimensions.get('window').height * 0.65 * 0.50 -12 ,
-    left:Dimensions.get('window').width * 0.50 -12
+    top: '50%',
+    left: '50%',
+    marginLeft:  -12.5,
+    marginTop: -12.5
   }
 
 };
