@@ -138,6 +138,7 @@ class HomeFeedRow extends PureComponent {
                     <BottomStatus   userName={this.userName}
                                     name={this.name}
                                     bio={this.bio}  
+                                    feedId={this.props.feedId}
                                     supporters={this.state.supporters}
                                     isSupported={this.state.isSupported}
                                     totalBt={this.state.totalBt}

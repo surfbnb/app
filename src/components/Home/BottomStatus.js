@@ -5,6 +5,7 @@ import { withNavigation } from 'react-navigation';
 import currentUserModel from '../../models/CurrentUser';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import pricer from "../../services/Pricer";
+import reduxGetter from "../../services/ReduxGetters";
 
 import supportersIcon from "../../assets/supporters-icon-1.png";
 
@@ -16,7 +17,12 @@ class BottomStatus extends PureComponent {
 
   navigateToUserProfile = (e) => {
     if (currentUserModel.checkActiveUser()) {
-      Alert.alert('', 'Navigate to Userprofile page once profile page implemented');
+      this.props.navigation.push('UsersProfileScreen' ,
+                                {
+                                   userId: reduxGetter.getHomeFeedUserId(this.props.feedId) ,  
+                                   feedId: this.props.feedId
+                                }
+     );
     }
   };
 
