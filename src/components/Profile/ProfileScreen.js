@@ -33,14 +33,13 @@ class ProfileScreen extends Component {
     }
   }
 
-  hideUserInfo(isEditValue){
+  hideUserInfo = (isEditValue) => {
     this.setState({
       isEdit : isEditValue
     });
   }
 
-  profileSaved(res){
-    console.log('Success')
+  profileSaved = (res) =>{
     this.setState({
       isEdit : false
     });
@@ -60,10 +59,10 @@ class ProfileScreen extends Component {
           <EmptyCoverImage/>
         )}
         {!this.state.isEdit &&(
-          <UserInfo userId={CurrentUser.getUserId()} hideUserInfo={this.hideUserInfo.bind(this)} profileSaved={this.profileSaved.bind(this)} />
+          <UserInfo userId={CurrentUser.getUserId()} hideUserInfo={this.hideUserInfo}  />
         )}
         {this.state.isEdit &&(
-          <ProfileEdit/>
+          <ProfileEdit userId={CurrentUser.getUserId()} profileSaved={this.profileSaved} />
         )}
       </KeyboardAwareScrollView>
     );

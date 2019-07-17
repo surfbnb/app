@@ -16,12 +16,12 @@ import CurrentUser  from "../../models/CurrentUser";
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user_name: reduxGetter.getUserName( ownProps.userId ,state ),
-    name: reduxGetter.getName( ownProps.userId , state ),
-    bio: reduxGetter.getBio( ownProps.userId , state ),
-    link : reduxGetter.getLink( reduxGetter.getUserLink(ownProps.userId , state ) ,  state ),
+    user_name: reduxGetter.getUserName( ownProps.userId ,state ) || "",
+    name: reduxGetter.getName( ownProps.userId , state )|| "",
+    bio: reduxGetter.getBio( ownProps.userId , state )|| "",
+    link : reduxGetter.getLink( reduxGetter.getUserLink(ownProps.userId , state ) ,  state )|| "",
   }
-}
+};
 
 const btnPreText = "Save Profile" ;
 const btnPostText = "Saving...";
@@ -48,7 +48,7 @@ class ProfileEdit extends React.PureComponent{
 
     this.state ={
       name      : this.props.name,
-      user_name : this.props.userName,
+      user_name : this.props.user_name,
       bio       : this.props.bio,
       link      : this.props.link,
       current_formField: 0,
@@ -100,19 +100,17 @@ class ProfileEdit extends React.PureComponent{
       this.setState({ btnText : btnPostText} );
       CurrentUser.saveProfile( this.getParams() )
         .then( ( res ) => {
+          this.setState({ btnText : btnPreText} );
           if( res && res.success ){
-            console.log("response",res);
-            this.props.profileSaved && this.props.profileSaved( res ); //TODO Pass this from outside
+            this.props.profileSaved && this.props.profileSaved( res );
             return ;
           }else {
-            console.log("response failed",response);
             this.onServerError(res);
           }
         })
-        .catch( (error ) => {})
-        .finally(() => {
+        .catch( (error ) => {
           this.setState({ btnText : btnPreText} );
-        })
+        });
     }
   }
 
@@ -231,7 +229,7 @@ class ProfileEdit extends React.PureComponent{
           onPress={this.onSubmit.bind(this)}
           style={[Theme.Button.btn, Theme.Button.btnPink]}
         >
-          <Text style={[Theme.Button.btnPinkText, {textAlign: 'center'}]}>Save Profile</Text>
+          <Text style={[Theme.Button.btnPinkText, {textAlign: 'center'}]}>{this.state.btnText}</Text>
         </TouchableOpacity>
 
         {/*//TODO error styling */}

@@ -23,7 +23,7 @@ class ReduxGetters {
 
     getUser(id ,  state ){
         state =  state || Store.getState() ; 
-        if( CurrentUser.getUserId == id ){
+        if( CurrentUser.getUserId() == id ){
             return deepGet( state , "current_user"); 
         }
         return deepGet( state , `user_entities.id_${id}`) ;
@@ -37,15 +37,15 @@ class ReduxGetters {
 
     getUserName( id , state ){
         state =  state || Store.getState() ; 
-        if( CurrentUser.getUserId == id ){
-            return deepGet( state,  `current_user.username` );
+        if( CurrentUser.getUserId() == id ){
+            return deepGet( state,  `current_user.user_name` );
         }
         return deepGet( state,  `user_entities.id_${id}.user_name` );
     }
 
     getName( id , state ){
         state =  state || Store.getState() ; 
-        if( CurrentUser.getUserId == id ){
+        if( CurrentUser.getUserId() == id ){
             return deepGet( state ,  `current_user.name` );
         }
         return deepGet( state,  `user_entities.id_${id}.name` );

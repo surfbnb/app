@@ -134,6 +134,7 @@ class CurrentUserModel {
       .post( params )
       .then((apiResponse) => {
         this._saveCurrentUser(apiResponse);
+        return apiResponse;
       })
       .catch((error) => {});
   }

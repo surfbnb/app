@@ -54,7 +54,6 @@ class UserInfo extends React.PureComponent {
   }
 
   render(){
-    console.log("render------UserInfo");
     return(
       <View style={{margin:20,alignItems:'center'}}>
 
