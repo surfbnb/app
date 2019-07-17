@@ -20,6 +20,7 @@ const mapStateToProps = (state, ownProps) => {
     name: reduxGetter.getName( ownProps.userId , state )|| "",
     bio: reduxGetter.getBio( ownProps.userId , state )|| "",
     link : reduxGetter.getLink( reduxGetter.getUserLink(ownProps.userId , state ) ,  state )|| "",
+    profilePicture: reduxGetter.getImage( reduxGetter.getProfileImageId( ownProps.userId , state), state  )
   }
 };
 
@@ -56,6 +57,14 @@ class ProfileEdit extends React.PureComponent{
     };
 
   }
+
+  getImageSrc = () => {
+    if(this.props.profilePicture){
+      return {uri : this.props.profilePicture}
+    }else {
+      return default_user_icon;
+    }
+  };
 
   onSubmitEditing(currentIndex) {
     this.setState({
@@ -100,6 +109,7 @@ class ProfileEdit extends React.PureComponent{
       this.setState({ btnText : btnPostText} );
       CurrentUser.saveProfile( this.getParams() )
         .then( ( res ) => {
+          console.log("----res----" , res);
           this.setState({ btnText : btnPreText} );
           if( res && res.success ){
             this.props.hideProfileEdit && this.props.hideProfileEdit( res );
@@ -125,9 +135,9 @@ class ProfileEdit extends React.PureComponent{
       <View style={{marginTop:20,paddingBottom:100}}>
 
         <View style={inlineStyles.editProfileContainer}>
-          <Image style={{width: 75,height: 75}} source={default_user_icon}></Image>
+          <Image style={{width: 75,height: 75}} source={this.getImageSrc()}></Image>
           <View style={inlineStyles.editProfileIconPos}>
-            <Image style={{width: 13,height: 13}} source={profileEditIcon}></Image>
+            <Image style={{width: 13,height: 13}} source={ this.props.profilePicture?default_user_icon:profileEditIcon}></Image>
           </View>
         </View>
 

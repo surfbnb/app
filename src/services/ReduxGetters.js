@@ -117,6 +117,14 @@ class ReduxGetters {
         return deepGet( state ,  `video_entities.id_${id}.uts` );
     }
 
+    getProfileImageId(id , state ){
+      state =  state || Store.getState() ;
+      if( CurrentUser.getUserId() == id ){
+        return deepGet( state ,  `current_user.profile_image_id` );
+      }
+      return deepGet( state,  `user_entities.id_${id}.profile_image_id` );
+    }
+
 }
 
 export default new ReduxGetters();
