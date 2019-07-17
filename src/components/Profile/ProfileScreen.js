@@ -28,7 +28,22 @@ class ProfileScreen extends Component {
     //TODO Shraddha : remove hardcoded values once tested on ios
     this.coverImageId = 1123 //reduxGetter.getUserCoverImageId(this.userId,this.state);
     this.videoId = 123//reduxGetter.getUserCoverVideoId( this.userId,this.state );
-    console.log("in Profile Screen",this.userId,this.coverImageId,this.videoId);
+    this.state = {
+      isEdit : false
+    }
+  }
+
+  hideUserInfo(isEditValue){
+    this.setState({
+      isEdit : isEditValue
+    });
+  }
+
+  profileSaved(res){
+    console.log('Success')
+    this.setState({
+      isEdit : false
+    });
   }
 
   render() {
@@ -44,8 +59,12 @@ class ProfileScreen extends Component {
         {!this.coverImageId &&(
           <EmptyCoverImage/>
         )}
-        <UserInfo userId={CurrentUser.getUserId()} />
-        <ProfileEdit/>
+        {!this.state.isEdit &&(
+          <UserInfo userId={CurrentUser.getUserId()} hideUserInfo={this.hideUserInfo.bind(this)} profileSaved={this.profileSaved.bind(this)} />
+        )}
+        {this.state.isEdit &&(
+          <ProfileEdit/>
+        )}
       </KeyboardAwareScrollView>
     );
   }

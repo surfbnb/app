@@ -36,6 +36,8 @@ class UserInfo extends React.PureComponent {
   }
 
   onEdit = () => {
+    this.props.hideUserInfo(true);
+    console.log("in userinfo")
     this.props.onEdit && this.props.onEdit();
   }
 
