@@ -182,7 +182,6 @@ class ProfileEdit extends React.PureComponent{
         <Text style={{}}>Bio</Text>
         <FormInput
           editable={true}
-          multiline={true}
           fieldName="bio"
           textContentType="none"
           style={[

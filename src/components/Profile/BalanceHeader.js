@@ -35,10 +35,10 @@ class BalanceHeader extends PureComponent {
             <Text style={inlineStyles.balanceToptext}>Balance</Text>
           </View>
           <View style={{flex: 0.5, alignItems: 'flex-end'}}>
-            <Text style={inlineStyles.pepoBalance}>
+            <Text>
               {/*<Image style={{ width: 25, height: 22 }} source={utilities.getTokenSymbolImageConfig()['image2']}></Image>{' '}*/}
-              <Image style={{ width: 18, height: 18 }} source={pepoWhiteIcon}></Image>
-              {this.toBt(this.props.balance)}
+              <Image style={{ width: 18, height: 18 }} source={pepoWhiteIcon}></Image>{' '}
+              <Text style={inlineStyles.pepoBalance}>{this.toBt(this.props.balance)}</Text>
             </Text>
             <Text style={inlineStyles.usdBalance}>$ {this.toFiat( this.props.balance )} </Text>
           </View>
