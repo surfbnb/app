@@ -11,14 +11,16 @@ let stylesMap = {
   },
   balanceHeader: {
     borderRadius: 10,
-    paddingVertical: 10,
-    backgroundColor: Colors.primary,
-    alignItems: 'center'
+    padding: 20,
+    backgroundColor: Colors.pinkRed,
+    flex: 1,
+    flexDirection: 'row'
   },
   balanceToptext: {
-    fontSize: 11,
+    fontSize: 22,
     color: Colors.white,
-    fontWeight: '500'
+    fontWeight: '500',
+    marginLeft: 8
   },
   pepoBalance: {
     fontSize: 28,
@@ -39,7 +41,6 @@ let stylesMap = {
     backgroundColor: Colors.white,
     borderRadius:5,
     alignItems:'center'
-
   },
   videoIconBtn:{
     marginVertical:10,
