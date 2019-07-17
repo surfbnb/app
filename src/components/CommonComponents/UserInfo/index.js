@@ -53,7 +53,7 @@ class UserInfo extends React.PureComponent {
   render(){
     console.log("render------UserInfo");
     return(
-      <View style={{margin:20}}>
+      <View style={{margin:20,alignItems:'center'}}>
 
         <View style={inlineStyle.infoHeaderWrapper}>
           <Image style={inlineStyle.profileImageSkipFont} source={ this.props.profilePicture || profilePicture}></Image>
