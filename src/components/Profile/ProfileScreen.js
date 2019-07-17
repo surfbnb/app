@@ -40,7 +40,7 @@ class ProfileScreen extends Component {
     });
   }
 
-  profileSaved = (res) =>{
+  hideProfileEdit = (res) =>{
     this.setState({
       isEdit : false
     });
@@ -72,7 +72,7 @@ class ProfileScreen extends Component {
           <UserInfo userId={CurrentUser.getUserId()} hideUserInfo={this.hideUserInfo}  />
         )}
         {this.state.isEdit &&(
-          <ProfileEdit userId={CurrentUser.getUserId()} profileSaved={this.profileSaved} />
+          <ProfileEdit userId={CurrentUser.getUserId()} hideProfileEdit={this.hideProfileEdit} />
         )}
       </KeyboardAwareScrollView>
     );

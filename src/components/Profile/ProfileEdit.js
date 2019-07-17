@@ -102,7 +102,7 @@ class ProfileEdit extends React.PureComponent{
         .then( ( res ) => {
           this.setState({ btnText : btnPreText} );
           if( res && res.success ){
-            this.props.profileSaved && this.props.profileSaved( res );
+            this.props.hideProfileEdit && this.props.hideProfileEdit( res );
             return ;
           }else {
             this.onServerError(res);
@@ -232,6 +232,12 @@ class ProfileEdit extends React.PureComponent{
           <Text style={[Theme.Button.btnPinkText, {textAlign: 'center'}]}>{this.state.btnText}</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          onPress={this.props.hideProfileEdit}
+          style={[Theme.Button.btn, Theme.Button.btnPinkSecondary,{marginTop:10}]}
+        >
+          <Text style={[Theme.Button.btnPinkSecondaryText, {textAlign: 'center'}]}>Cancel</Text>
+        </TouchableOpacity>
         {/*//TODO error styling */}
         <Text>{this.state.general_error}</Text>
 
