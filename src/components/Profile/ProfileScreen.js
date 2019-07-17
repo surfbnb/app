@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import  {View,ScrollView} from "react-native";
+import  {View,Text} from "react-native";
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
 import UserInfo from "../CommonComponents/UserInfo";
@@ -10,6 +10,7 @@ import ProfileEdit from "./ProfileEdit";
 import CoverImage from '../CommonComponents/CoverImage'
 import reduxGetter from "../../services/ReduxGetters";
 import Colors from '../../theme/styles/Colors'
+import timeStamp from "../../helpers/timestampHandling";
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -45,18 +46,27 @@ class ProfileScreen extends Component {
     });
   }
 
+  uploadVideo = () => {
+    //Mayur Your conrtoll block 
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView enableOnAndroid={true} style={{padding:20,flex:1}}>
         <BalanceHeader  />
         {this.coverImageId &&(
-          <View style={{borderWidth:1,borderRadius:5,marginTop:20,borderColor:Colors.dark}}>
-            <CoverImage height={0.50} isProfile={true} coverImageId={this.coverImageId} videoId={this.videoId} navigation={this.props.navigation}/>
-          </View>
-
+          <React.Fragment>
+            <View style={{borderWidth:1,borderRadius:5,marginTop:20,borderColor:Colors.dark}}>
+              <CoverImage height={0.50} isProfile={true} 
+                          coverImageId={this.coverImageId} 
+                          uploadVideo={this.uploadVideo}
+                          videoId={this.videoId} />          
+            </View>
+            <Text>{timeStamp.fromNow( reduxGetter.getVideoTimeStamp(this.videoId) )}</Text>  
+          </React.Fragment> 
         )}
         {!this.coverImageId &&(
-          <EmptyCoverImage/>
+          <EmptyCoverImage uploadVideo={this.uploadVideo}/>
         )}
         {!this.state.isEdit &&(
           <UserInfo userId={CurrentUser.getUserId()} hideUserInfo={this.hideUserInfo}  />

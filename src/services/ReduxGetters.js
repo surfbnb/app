@@ -112,6 +112,11 @@ class ReduxGetters {
         return deepGet( state ,  `link_entities.id_${id}.url` );
     }
 
+    getVideoTimeStamp( id , state ){
+        state =  state || Store.getState() ; 
+        return deepGet( state ,  `video_entities.id_${id}.uts` );
+    }
+
 }
 
 export default new ReduxGetters();
