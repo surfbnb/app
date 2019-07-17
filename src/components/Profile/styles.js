@@ -11,21 +11,21 @@ let stylesMap = {
   },
   balanceHeader: {
     borderRadius: 10,
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
     backgroundColor: Colors.pinkRed,
-    flex: 1,
     flexDirection: 'row'
   },
   balanceToptext: {
-    fontSize: 22,
+    fontSize: 20,
     color: Colors.white,
     fontWeight: '500',
     marginLeft: 8
   },
   pepoBalance: {
-    fontSize: 28,
+    fontSize: 22,
     color: Colors.white,
-    fontWeight: '800'
+    fontWeight: '300'
   },
   usdBalance: {
     fontSize: 16,
