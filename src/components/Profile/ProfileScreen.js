@@ -56,13 +56,13 @@ class ProfileScreen extends Component {
         <BalanceHeader  />
         {this.coverImageId &&(
           <React.Fragment>
-            <View style={{borderWidth:1,borderRadius:5,marginTop:20,borderColor:Colors.dark}}>
+            <View style={{borderWidth:1,borderRadius:5,marginTop:20,marginBottom: 10,borderColor:Colors.dark}}>
               <CoverImage height={0.50} isProfile={true} 
                           coverImageId={this.coverImageId} 
                           uploadVideo={this.uploadVideo}
                           videoId={this.videoId} />          
             </View>
-            <Text>{timeStamp.fromNow( reduxGetter.getVideoTimeStamp(this.videoId) )}</Text>  
+            <Text style={{textAlign: 'right'}}>{timeStamp.fromNow( reduxGetter.getVideoTimeStamp(this.videoId) )}</Text>
           </React.Fragment> 
         )}
         {!this.coverImageId &&(
