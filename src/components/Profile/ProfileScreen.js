@@ -46,18 +46,24 @@ class ProfileScreen extends Component {
     });
   }
 
+  uploadVideo = () => {
+    //Mayur Your conrtoll block 
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView enableOnAndroid={true} style={{padding:20,flex:1}}>
         <BalanceHeader  />
         {this.coverImageId &&(
           <View style={{borderWidth:1,borderRadius:5,marginTop:20,borderColor:Colors.dark}}>
-            <CoverImage height={0.50} isProfile={true} coverImageId={this.coverImageId} videoId={this.videoId} navigation={this.props.navigation}/>
+            <CoverImage height={0.50} isProfile={true} 
+                        coverImageId={this.coverImageId} 
+                        uploadVideo={this.uploadVideo}
+                        videoId={this.videoId} />
           </View>
-
         )}
         {!this.coverImageId &&(
-          <EmptyCoverImage/>
+          <EmptyCoverImage uploadVideo={this.uploadVideo}/>
         )}
         {!this.state.isEdit &&(
           <UserInfo userId={CurrentUser.getUserId()} hideUserInfo={this.hideUserInfo.bind(this)} profileSaved={this.profileSaved.bind(this)} />
