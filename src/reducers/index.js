@@ -39,12 +39,12 @@ const defaultState = {
   modal_cover: { message: '', footerText: '', show: false },
   toast: { message: '', show: false },
   current_user: {},
-  user_entities: {},
   feed_entities: {},
   transaction_entities: {},
   giffy_entities: {},
   tag_entities:{},
   user_profile_entities: {},
+  user_entities: {},
   user_stat_entities: {},
   link_entities: {},
   video_entities: {},
@@ -149,7 +149,13 @@ export const reducer = handleActions(
       ...state,
       recorded_video: assignIn(defaultState.recorded_video)
   }),
-    [logoutUser]: (state, action) => ({ ...defaultState })
+
+  [logoutUser]: (state, action) => ({
+      ...state,
+      current_user: {},
+      executeTransactionDisabledStatus: true,
+      balance: "0"
+  })
   },
   defaultState
 );

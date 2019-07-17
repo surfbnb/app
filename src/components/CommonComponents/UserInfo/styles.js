@@ -35,9 +35,9 @@ let stylesMap = {
     justifyContent:'center',
     marginVertical:10
   },
-  profileImage:{
-    height:20,
-    width:20
+  profileImageSkipFont:{
+    height:25,
+    width:25
   },
   userName: {
     fontWeight: 'bold',
@@ -46,11 +46,12 @@ let stylesMap = {
   },
   bioSection:{
     textAlign:'center',
-    marginVertical:10
+    marginVertical:10,
+    color : Colors.greyLite,
+    fontWeight :'normal'
   },
   numericInfoWrapper:{
     flexDirection:'row',
-    flex:1,
     justifyContent:'center',
     marginVertical:15
   },
@@ -58,6 +59,10 @@ let stylesMap = {
     color:Colors.dark,
     fontWeight:'bold',
     textAlign:'center'
+  },
+  numericInfoText:{
+    color : Colors.greyLite,
+    fontWeight :'normal'
   }
 
 };

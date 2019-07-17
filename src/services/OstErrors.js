@@ -18,7 +18,8 @@ const UIErros = {
   bt_amount_error: 'Please enter valid amount.',
   user_not_active: 'Please wait for your user activation.',
   no_internet: 'No Internet, please try again later.',
-  maxAllowedBt: `Max allowed Pepo coin transfer reached`
+  maxAllowedBt: `Max allowed Pepo coin transfer reached`,
+  name:'Name is mandatory.'
 };
 
 const UIWhitelistedErrorCode = {

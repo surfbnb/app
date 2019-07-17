@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Easing, Animated } from 'react-native';
 import { Root } from 'native-base';
 import {
   createMaterialTopTabNavigator,
@@ -23,6 +23,7 @@ import ProfileScreen from './src/components/Profile/ProfileScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from './src/components/Giphy';
+import VideoPlayer from "./src/components/CommonComponents/VideoPlayer";
 import EditTx from './src/components/Transaction/EditTxModal';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
@@ -32,7 +33,7 @@ import CaptureVideo from './src/components/CaptureVideo';
 
 import deepGet from 'lodash/get';
 
-const transactionScreenParentStackConfig = {
+const modalStackConfig = {
   headerLayoutPreset: 'center',
   headerMode: 'none',
   mode: 'modal',
@@ -68,9 +69,10 @@ const HomeStack = createStackNavigator(
   {
     HomeTransactionStack: HomeTransactionStack,
     Giphy: Giphy,
-    EditTx: EditTx
+    EditTx: EditTx,
+    VideoPlayer: VideoPlayer
   },
-  { ...transactionScreenParentStackConfig }
+  { ...modalStackConfig }
 );
 
 
@@ -90,16 +92,22 @@ const UserStack = createStackNavigator(
     Giphy: Giphy,
     EditTx: EditTx
   },
-  { ...transactionScreenParentStackConfig }
+  { ...modalStackConfig }
 );
 
 const ProfileStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
-    UserFeedScreen: UserFeedScreen
+    VideoPlayer: VideoPlayer
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    mode: 'modal',
+    navigationOptions: ({ navigation }) => {
+      return {
+        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false
+      };
+    }
   }
 );
 
