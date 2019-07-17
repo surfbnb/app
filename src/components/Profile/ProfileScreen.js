@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import  {View} from "react-native";
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
+import UserInfo from "../CommonComponents/UserInfo";
+import CurrentUser from "../../models/CurrentUser";
 
 import EmptyCoverImage from './EmptyCoverImage'
 
@@ -23,6 +25,7 @@ class ProfileScreen extends Component {
       <View style={{margin:20,flex:1}}>
         <BalanceHeader  />
         <EmptyCoverImage/>
+        <UserInfo userId={CurrentUser.getUserId()} />
       </View>
     );
   }

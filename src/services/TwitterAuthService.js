@@ -57,10 +57,7 @@ class TwitterAuthService {
       })
       .catch((error) => {
         console.log(error);
-        Toast.show({
-          text: ostErrors.getErrorMessage(error),
-          buttonText: 'Okay'
-        });
+        this.onServerError(error);
       }).finally( () => {
          Store.dispatch(hideLoginPopover());
     })
@@ -95,8 +92,8 @@ class TwitterAuthService {
   onServerError(res) {
     LoadingModal.hide();
     Toast.show({
-      text: ostErrors.getErrorMessage(res),
-      buttonText: 'Okay'
+      text: "Failed to login via Twitter.",
+      buttonText: 'Ok'
     });
   }
 

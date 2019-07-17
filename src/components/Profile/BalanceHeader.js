@@ -27,7 +27,6 @@ class BalanceHeader extends PureComponent {
 
   render() {
     return (
-      <View style={inlineStyles.balanceHeaderContainer}>
         <View style={inlineStyles.balanceHeader}>
           <Text style={inlineStyles.balanceToptext}>Your Balance</Text>
           <Text style={inlineStyles.pepoBalance}>
@@ -36,7 +35,6 @@ class BalanceHeader extends PureComponent {
           </Text>
           <Text style={inlineStyles.usdBalance}>$ {this.toFiat( this.props.balance )} </Text>
         </View>
-      </View>
     );
   }
 }
