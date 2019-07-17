@@ -61,12 +61,6 @@ class SnapClicker extends Component {
             buttonPositive: 'Ok',
             buttonNegative: 'Cancel'
           }}
-          androidRecordAudioPermissionOptions={{
-            title: 'Permission to use audio recording',
-            message: 'We need your permission to use your audio',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel'
-          }}
         >
           <TouchableOpacity onPress={this.props.onClose}>
             <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon} />

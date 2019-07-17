@@ -3,16 +3,16 @@ import { CameraRoll, PermissionsAndroid, Platform } from 'react-native';
 class ImageBrowser {
   constructor() {
     this._page_info = null;
-    this._photos = null;
+    this.init();
   }
 
   init() {
-    this._photos = [];
     this._page_info = {
       has_next_page: true,
       start_cursor: '',
       end_cursor: ''
     };
+    this.savedStartCursor = '';
   }
 
   async _requestExternalStorageRead() {
@@ -28,39 +28,41 @@ class ImageBrowser {
   }
 
   async _fetchPhotos() {
+    console.log(this.savedStartCursor, this._page_info.end_cursor);
+    if (this.savedStartCursor && this.savedStartCursor == this._page_info.end_cursor) {
+      return false;
+    }
     let params = {
       first: 9,
       assetType: 'Photos'
     };
     if (this._page_info && this._page_info.end_cursor) {
       params.after = this._page_info.end_cursor;
+      if (!this.savedStartCursor) {
+        this.savedStartCursor = this._page_info.start_cursor;
+      }
     }
     if (Platform.OS === 'ios') {
       params.groupTypes = 'All';
     }
     try {
       const result = await CameraRoll.getPhotos(params);
-      this._onSuccess(result);
+      this._page_info = result.page_info;
+      return result;
     } catch (err) {
       alert('Fetch photos failed!', err);
+      return false;
     }
-  }
-
-  _onSuccess(result) {
-    if (!result) return;
-    this._photos = result.edges;
-    this._page_info = result.page_info;
-    console.log('this._page_info', this._page_info);
   }
 
   async _getPhotosAsync() {
     if (Platform.OS === 'android') {
       const hasPermission = await this._requestExternalStorageRead();
       if (hasPermission) {
-        await this._fetchPhotos();
+        return await this._fetchPhotos();
       }
     } else if (Platform.OS === 'ios') {
-      await this._fetchPhotos();
+      return await this._fetchPhotos();
     }
   }
 
@@ -69,8 +71,8 @@ class ImageBrowser {
   }
 
   async getPhotos() {
-    await this._getPhotosAsync();
-    return this._photos;
+    const result = await this._getPhotosAsync();
+    return result && result.edges;
   }
 }
 
