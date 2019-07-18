@@ -12,7 +12,7 @@ import reduxGetter from "../../services/ReduxGetters";
 import { ostErrors } from '../../services/OstErrors';
 import PepoApi from "../../services/PepoApi";
 import ProfilePlusIcon from '../../assets/plus_icon.png'
-
+import CurrentUser from '../../models/CurrentUser';
 import {updateCurrentUser, upsertUserProfileEntities , upsertLinkEntities} from "../../actions";
 import Store from "../../store";
 import utilities from "../../services/Utilities";

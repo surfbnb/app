@@ -123,7 +123,9 @@ class PepoButton extends React.Component {
                           isSupported={this.props.isSupported}
                           id={this.props.id+"_clap_btn"}
                           animDuration={animDuration}
-                          isClapping={this.state.isClapping}/>
+                          isClapping={this.state.isClapping}
+                          isSelected={this.props.isSelected}
+              />
             </View>
           </TouchableWithoutFeedback>
           <Text style={inlineStyles.pepoTxCount}>{this.state.count || 0}</Text>
