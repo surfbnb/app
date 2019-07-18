@@ -72,6 +72,7 @@ class ImageGallery extends Component {
     this.setState({
       imageURI: uri
     });
+    this.getCroppedImage(uri);
   };
 
   getSelected = (uri) => {
@@ -121,8 +122,10 @@ class ImageGallery extends Component {
 
   async getCroppedImage(imageUri) {
     if (!imageUri) return;
-    const uploadToS3 = new UploadToS3(fileToUpload, fileType);
-    const s3Url = await uploadToS3.perform(imageUri, 'image');
+    const uploadToS3 = new UploadToS3(imageUri, 'image');
+    console.time('before upload');
+    const s3Url = await uploadToS3.perform();
+    console.time('after upload');
     console.log('image upload url', s3Url);
   }
 
@@ -133,11 +136,11 @@ class ImageGallery extends Component {
   render() {
     return (
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
-        <View style={{ flex: 0.6, backgroundColor: 'grey' }}>
+        <View style={{ flex: 0.6, backgroundColor: 'black' }}>
           {this.state.imageURI ? (
             <Image
-              style={{ flex: 1, width: parseInt(Dimensions.get('window').width), aspectRatio: 1 }}
-              source={{ uri: 'ph://54C537D7-AC80-434F-89D7-B5DEA8C6C8AB/L0/001' }}
+              style={{ width: parseInt(Dimensions.get('window').width), aspectRatio: 1 }}
+              source={{ uri: this.state.imageURI }}
             />
           ) : (
             <View />

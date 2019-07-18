@@ -36,8 +36,8 @@ class CaptureImage extends Component {
 
   async getCroppedImage(imageUri) {
     if (!imageUri) return;
-    const uploadToS3 = new UploadToS3(fileToUpload, fileType);
-    const s3Url = await uploadToS3.perform(imageUri, 'image');
+    const uploadToS3 = new UploadToS3(imageUri, 'image');
+    const s3Url = await uploadToS3.perform();
     console.log('image upload url', s3Url);
   }
 
