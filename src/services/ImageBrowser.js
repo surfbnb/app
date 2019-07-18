@@ -28,7 +28,6 @@ class ImageBrowser {
   }
 
   async _fetchPhotos() {
-    console.log(this.savedStartCursor, this._page_info.end_cursor);
     if (this.savedStartCursor && this.savedStartCursor == this._page_info.end_cursor) {
       return false;
     }
@@ -73,6 +72,10 @@ class ImageBrowser {
   async getPhotos() {
     const result = await this._getPhotosAsync();
     return result && result.edges;
+  }
+
+  savePhotoToGallery(imageUri) {
+    CameraRoll.saveToCameraRoll(imageUri, 'photo');
   }
 }
 

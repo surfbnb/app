@@ -32,10 +32,8 @@ class ImageGallery extends Component {
   };
 
   async getPhotos() {
-    console.log('my get photos...');
     await ImageBrowser.getPhotos()
       .then((photos) => {
-        console.log('fetched photos!!');
         if (!photos) return;
         let newPhotoHash = this.getPhotosHash(photos),
           oldPhotoHash = this.getPhotosHash(this.state.photos),
@@ -118,7 +116,6 @@ class ImageGallery extends Component {
   };
 
   loadMore = () => {
-    console.log('load more...');
     if (this.state.isLoading) return;
     this.getPhotos();
   };

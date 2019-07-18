@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import SnapClicker from '../SnapClicker';
 import ImageCropper from '../ImageCropper';
+import ImageBrowser from '../../services/ImageBrowser';
 
 class CaptureImage extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class CaptureImage extends Component {
         imageCaptured: !this.state.imageCaptured,
         imageURI
       });
+      ImageBrowser.savePhotoToGallery(imageURI);
     }
   };
 
