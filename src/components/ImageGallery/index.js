@@ -4,9 +4,8 @@ import { View, Image, TouchableWithoutFeedback, FlatList, Dimensions } from 'rea
 import inlineStyles from './styles';
 import ImageBrowser from '../../services/ImageBrowser';
 import { SafeAreaView } from 'react-navigation';
-import ImageCropper from '../ImageCropper';
-import utilities from '../../services/Utilities';
 import assignIn from 'lodash/assignIn';
+import UploadToS3 from '../../services/UploadToS3';
 
 class ImageGallery extends Component {
   constructor(props) {
@@ -120,7 +119,12 @@ class ImageGallery extends Component {
     this.getPhotos();
   };
 
-  getCroppedImage(imageUri) {}
+  async getCroppedImage(imageUri) {
+    if (!imageUri) return;
+    const uploadToS3 = new UploadToS3(fileToUpload, fileType);
+    const s3Url = await uploadToS3.perform(imageUri, 'image');
+    console.log('image upload url', s3Url);
+  }
 
   closeCropper = () => {
     this.props.navigation.navigate('ProfileImagePicker');

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import SnapClicker from '../SnapClicker';
 import ImageCropper from '../ImageCropper';
 import ImageBrowser from '../../services/ImageBrowser';
+import UploadToS3 from '../../services/UploadToS3';
 
 class CaptureImage extends Component {
   constructor(props) {
@@ -33,7 +34,12 @@ class CaptureImage extends Component {
     this.props.navigation.navigate('ProfileImagePicker');
   }
 
-  getCroppedImage(imageUri) {}
+  async getCroppedImage(imageUri) {
+    if (!imageUri) return;
+    const uploadToS3 = new UploadToS3(fileToUpload, fileType);
+    const s3Url = await uploadToS3.perform(imageUri, 'image');
+    console.log('image upload url', s3Url);
+  }
 
   toggleView = (imageURI = '') => {
     if (imageURI) {
