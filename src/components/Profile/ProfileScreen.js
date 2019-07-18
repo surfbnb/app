@@ -10,7 +10,7 @@ import ProfileEdit from "./ProfileEdit";
 import CoverImage from '../CommonComponents/CoverImage'
 import reduxGetter from "../../services/ReduxGetters";
 import Colors from '../../theme/styles/Colors'
-import timeStamp from "../../helpers/timestampHandling";
+import  UpdateTimeStamp from  '../CommonComponents/UpdateTimeStamp';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {Toast} from "native-base";
@@ -92,7 +92,7 @@ class ProfileScreen extends Component {
             <CoverImage height={0.50} isProfile={true}
                         wrapperStyle={{borderWidth:1,borderRadius:5,marginTop:20,marginBottom: 10,borderColor:Colors.dark}}
                         userId={this.userId} />
-            <Text style={{textAlign: 'right'}}>{timeStamp.fromNow( reduxGetter.getVideoTimeStamp(this.videoId) )}</Text>
+          <UpdateTimeStamp userId={this.userId} />
         </React.Fragment>
 
         {!this.coverImageId &&(
