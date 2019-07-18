@@ -134,14 +134,32 @@ class ImageGallery extends Component {
   };
 
   render() {
+    let {width, height} = Dimensions.get('window');
     return (
-      <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 0.6, backgroundColor: 'black' }}>
           {this.state.imageURI ? (
-            <Image
-              style={{ width: parseInt(Dimensions.get('window').width), aspectRatio: 1 }}
-              source={{ uri: this.state.imageURI }}
-            />
+            <View style={{position: 'relative'}}>
+              <Image
+                style={{ width: parseInt(Dimensions.get('window').width), aspectRatio: 1 }}
+                source={{ uri: this.state.imageURI }}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -width/2 + 30,
+                  left: -width/2 + 30,
+                  right: -width/2 + 30,
+                  bottom: -width/2 + 30,
+                  backgroundColor: 'transparent',
+
+                  borderWidth: width/2,
+                  borderRadius: width,
+                  borderColor: 'rgba(0, 0, 0, 0.99)',
+                  opacity: 0.5,
+                }}
+              />
+            </View>
           ) : (
             <View />
           )}
