@@ -14,5 +14,6 @@ export default {
   paynesGrey: '#3e404b',
   wildWatermelon: '#FF5363',
   black: '#101010',
-  softBlue: '#55acee'
+  softBlue: '#55acee',
+  pinkRed: '#ef5869'
 };

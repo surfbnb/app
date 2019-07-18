@@ -1,6 +1,7 @@
+
+
 import { NativeModules } from 'react-native';
 import { LoadingModal } from '../theme/components/LoadingModalCover';
-import currentUserModal from '../models/CurrentUser';
 import deepGet from 'lodash/get';
 import { ostErrors } from './OstErrors';
 import InitWalletSdk from './InitWalletSdk';
@@ -12,6 +13,11 @@ import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../constants';
 import Pricer from './Pricer';
 
 const { RNTwitterSignIn } = NativeModules;
+
+let currentUserModal;
+import('../models/CurrentUser').then((imports) => {
+  currentUserModal = imports.default;
+});
 
 class TwitterAuthService {
   signUp() {
@@ -51,10 +57,7 @@ class TwitterAuthService {
       })
       .catch((error) => {
         console.log(error);
-        Toast.show({
-          text: ostErrors.getErrorMessage(error),
-          buttonText: 'Okay'
-        });
+        this.onServerError(error);
       }).finally( () => {
          Store.dispatch(hideLoginPopover());
     })
@@ -80,7 +83,6 @@ class TwitterAuthService {
     } else {
       NavigationService.navigate('HomeScreen');
     }
-    currentUserModal.initialize();
   }
 
   setupDeviceFailed(ostWorkflowContext, error) {
@@ -90,8 +92,8 @@ class TwitterAuthService {
   onServerError(res) {
     LoadingModal.hide();
     Toast.show({
-      text: ostErrors.getErrorMessage(res),
-      buttonText: 'Okay'
+      text: "Failed to login via Twitter.",
+      buttonText: 'Ok'
     });
   }
 

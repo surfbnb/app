@@ -30,6 +30,8 @@ export const {
   updateExecuteTransactionStatus,
   upsertVideoContributionEntities,
   upsertUserContributionEntities,
+  upsertRecordedVideo,
+  clearRecordedVideo
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -37,12 +39,12 @@ const defaultState = {
   modal_cover: { message: '', footerText: '', show: false },
   toast: { message: '', show: false },
   current_user: {},
-  user_entities: {},
   feed_entities: {},
   transaction_entities: {},
   giffy_entities: {},
   tag_entities:{},
   user_profile_entities: {},
+  user_entities: {},
   user_stat_entities: {},
   link_entities: {},
   video_entities: {},
@@ -53,6 +55,7 @@ const defaultState = {
   user_contribution_entities: {},
   login_popover: { show: false },
   executeTransactionDisabledStatus: false,
+  recorded_video: {},
   balance: "0"
 };
 
@@ -138,7 +141,21 @@ export const reducer = handleActions(
       ...state,
       executeTransactionDisabledStatus: action.payload.executeTransactionDisabledStatus
     }),
-    [logoutUser]: (state, action) => ({ ...defaultState })
+  [upsertRecordedVideo]: (state, action) => ({
+      ...state,
+      recorded_video: assignIn({}, state.recorded_video, action.payload.recorded_video)
+  }),
+  [clearRecordedVideo]: (state, action) => ({
+      ...state,
+      recorded_video: assignIn(defaultState.recorded_video)
+  }),
+
+  [logoutUser]: (state, action) => ({
+      ...state,
+      current_user: {},
+      executeTransactionDisabledStatus: true,
+      balance: "0"
+  })
   },
   defaultState
 );

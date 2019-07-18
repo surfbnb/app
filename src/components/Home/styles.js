@@ -100,7 +100,14 @@ let stylesMap = {
   },
   btnText: {
     color: Colors.white
-  }
+  },
+  playIconSkipFont:{
+    position:'absolute',
+    height:25,
+    width:25,
+    top:Dimensions.get('window').height * 0.50 -12 ,
+    left:Dimensions.get('window').width * 0.50 -12
+    }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

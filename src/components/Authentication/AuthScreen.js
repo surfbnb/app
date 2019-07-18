@@ -167,7 +167,7 @@ class AuthScreen extends Component {
         if (!currentUserModal.isActiveUser()) {
           this.props.navigation.navigate('UserActivatingScreen');
         } else {
-          this.props.navigation.navigate('HomeScreen');
+         this.props.navigation.navigate('HomeScreen');          
         }
       })
       .catch((error) => {

@@ -17,6 +17,7 @@ import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/Execut
 import reduxGetter from "../../services/ReduxGetters";
 import { ostErrors } from '../../services/OstErrors';
 
+
 const mapStateToProps = (state) => ({ balance: state.balance ,  disabled: state.executeTransactionDisabledStatus  });
 
 class TransactionPepoButton extends PureComponent {
@@ -187,6 +188,8 @@ class TransactionPepoButton extends PureComponent {
     }
 
     render(){
+
+      console.log("====TransactionPepoButton=====");
 
        return ( 
         <TouchableWithoutFeedback onPress={this.onTransactionIconWrapperClick}> 

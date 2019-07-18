@@ -18,7 +18,7 @@ import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import EditIcon from '../../assets/edit_icon.png';
-import BackArrow from '../../assets/back-arrow.png';
+import BackArrow from "../CommonComponents/BackArrow";
 import { ostErrors } from '../../services/OstErrors';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
@@ -33,11 +33,7 @@ class TransactionScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: reduxGetter.getName( navigation.getParam('toUserId') ) ,
-      headerBackImage: (
-        <View style={{ paddingRight: 30, paddingVertical: 30, paddingLeft: Platform.OS === 'ios' ? 20 : 0 }}>
-          <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
-        </View>
-      )
+      headerBackImage: (<BackArrow/>)
     };
   };
   constructor(props) {

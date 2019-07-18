@@ -35,7 +35,7 @@ export default class AuthLoading extends Component {
         if (user && !currentUserModal.isActiveUser(user)) {
           this.props.navigation.navigate('UserActivatingScreen');
         } else {
-          this.props.navigation.navigate('HomeScreen');
+          this.props.navigation.navigate('HomeScreen');  
         }
       })
       .catch(() => {

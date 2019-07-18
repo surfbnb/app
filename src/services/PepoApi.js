@@ -26,9 +26,13 @@ import {
   updatePricePoints
 } from '../actions';
 import { API_ROOT } from '../constants/index';
-import CurrentUser from '../models/CurrentUser';
 
 import { ostErrors, UIWhitelistedErrorCode } from './OstErrors';
+
+let CurrentUser;
+import('../models/CurrentUser').then((imports) => {
+  CurrentUser = imports.default;
+});
 
 export default class PepoApi {
   constructor(url, params = {}) {
@@ -135,23 +139,18 @@ export default class PepoApi {
       Store.dispatch(upsertUserContributionEntities(this._getEntitiesFromObj(data['current_user_user_contributions'])));
     }
 
+    if( data['users'] ){
+      Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
+    }
+
     //TODO remove price point hardcoding
     data["price_point"] = {"OST": { "USD": 0.0287037823,"decimals": 18}}
     if( data["price_point"] ){
       Store.dispatch(updatePricePoints( data["price_point"] ));
     }
-    
+
     switch (resultType) {
-      case 'users':
-        Store.dispatch(upsertUserEntities(this._getEntities(resultData)));
-        break;
-      case 'public_feed':
-      case 'user_feed':
-        Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
-        Store.dispatch(upsertFeedEntities(this._getEntities(resultData)));
-        break;
       case 'feeds': 
-        Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
         Store.dispatch(upsertHomeFeedEntities(this._getEntities(resultData)));
         break;
       case "feed":

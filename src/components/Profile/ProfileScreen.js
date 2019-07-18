@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import currentUserModel from '../../models/CurrentUser';
-import FeedList from '../FeedComponents/FeedList';
+import  {View,ScrollView} from "react-native";
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
-import deepGet from 'lodash/get';
+import UserInfo from "../CommonComponents/UserInfo";
+import CurrentUser from "../../models/CurrentUser";
+
+import EmptyCoverImage from './EmptyCoverImage'
+import ProfileEdit from "./ProfileEdit";
+import CoverImage from '../CommonComponents/CoverImage'
+import reduxGetter from "../../services/ReduxGetters";
+import Colors from '../../theme/styles/Colors'
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
@@ -16,59 +24,52 @@ class ProfileScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.userId= CurrentUser.getUserId();
+    //TODO Shraddha : remove hardcoded values once tested on ios
+    this.coverImageId = reduxGetter.getUserCoverImageId(this.userId,this.state);
+    this.videoId = reduxGetter.getUserCoverVideoId( this.userId,this.state );
     this.state = {
-      toRefresh: false,
-      refreshBalance: false
-    };
-    this.fetchUrl = `/users/${currentUserModel.getUserId()}/feeds`;
-    this.eventSubscription = null;
-    this.props.navigation.tab = 'Profile';
-  }
-
-  componentDidMount() {
-    this.eventSubscription =
-      this.props.navigation &&
-      this.props.navigation.addListener('didFocus', (payload) => {
-        let toRefresh = deepGet(payload, 'action.params.toRefresh');
-        toRefresh && this.setState({ toRefresh: toRefresh });
-      });
-  }
-
-  componentWillUnmount() {
-    this.eventSubscription && this.eventSubscription.remove();
-  }
-
-  beforeRefresh() {
-    if (!this.state.refreshBalance) {
-      this.setState({ refreshBalance: true });
+      isEdit : false
     }
   }
 
-  onRefresh() {
-    this.setState({ toRefresh: false, refreshBalance: false });
+  hideUserInfo(isEditValue){
+    this.setState({
+      isEdit : isEditValue
+    });
   }
 
-  onRefreshError() {
-    this.setState({ toRefresh: false, refreshBalance: false });
+  profileSaved(res){
+    console.log('Success')
+    this.setState({
+      isEdit : false
+    });
   }
 
   render() {
     return (
-      <FeedList
-        style={{ backgroundColor: '#f6f6f6', flex: 1 }}
-        fetchUrl={this.fetchUrl}
-        toRefresh={this.state.toRefresh}
-        ListHeaderComponent={<BalanceHeader toRefresh={this.state.refreshBalance} />}
-        beforeRefresh={() => {
-          this.beforeRefresh();
-        }}
-        onRefresh={(res) => {
-          this.onRefresh(res);
-        }}
-        onRefreshError={(error) => {
-          this.onRefreshError(error);
-        }}
-      ></FeedList>
+      <KeyboardAwareScrollView enableOnAndroid={true} style={{padding:20,flex:1}}>
+        <BalanceHeader  />
+        {/* {this.coverImageId &&( */}
+          <View style={{borderWidth:1,borderRadius:5,marginTop:20,borderColor:Colors.dark}}>
+            <CoverImage height={0.50} 
+              isProfile={true} 
+              userId={this.userId}/>
+          </View>
+
+        {/* )} */}
+
+
+        {!this.coverImageId &&(
+          <EmptyCoverImage navigation={this.props.navigation} />
+        )}
+        {!this.state.isEdit &&(
+          <UserInfo userId={CurrentUser.getUserId()} hideUserInfo={this.hideUserInfo.bind(this)} profileSaved={this.profileSaved.bind(this)} />
+        )}
+        {this.state.isEdit &&(
+          <ProfileEdit/>
+        )}
+      </KeyboardAwareScrollView>
     );
   }
 }

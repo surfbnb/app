@@ -1,11 +1,15 @@
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
 import { TOKEN_ID } from '../constants';
-import currentUserModel from "../models/CurrentUser"
 import {ostErrors} from "./OstErrors"; 
 import {updateBalance} from "../actions";
 import Store from '../store';
 import PriceOracle from './PriceOracle';
+
+let currentUserModel;
+import('../models/CurrentUser').then((imports) => {
+  currentUserModel = imports.default;
+});
 
 class Pricer {
 
