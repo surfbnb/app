@@ -22,6 +22,7 @@
     "react-native-fast-image": "6.0.3",
     "react-native-gesture-handler": "1.3.0",
     "react-native-image-crop-picker": "0.24.1",
+    "react-native-image-pan-zoom": "2.1.11",
     "react-native-iphone-x-helper": "1.2.1",
     "react-native-keyboard-aware-scroll-view": "0.8.0",
     "react-native-progress": "3.6.0",
