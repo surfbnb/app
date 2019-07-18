@@ -192,6 +192,7 @@ class ProfileEdit extends React.PureComponent{
         <Text style={{}}>Bio</Text>
         <FormInput
           editable={true}
+          onChangeText={(bio) => this.setState({ bio, error: null, bio_error: null })}
           fieldName="bio"
           textContentType="none"
           style={[
@@ -211,11 +212,14 @@ class ProfileEdit extends React.PureComponent{
             this.props.navigation.push("BioScreen");
             this.state.current_formField = this.tabIndex.bio;
           }}
+          value = {this.state.bio}
+          serverErrors={this.state.serverErrors}
         />
 
         <Text style={{}}>Link</Text>
         <FormInput
           editable={true}
+          onChangeText={(link) => this.setState({ link, error: null, link_error: null })}
           fieldName="link"
           textContentType="none"
           style={[
@@ -233,6 +237,8 @@ class ProfileEdit extends React.PureComponent{
           onFocus={() => {
             this.state.current_formField = this.tabIndex.link;
           }}
+          value = {this.state.link}
+          serverErrors={this.state.serverErrors}
         />
 
         <TouchableOpacity

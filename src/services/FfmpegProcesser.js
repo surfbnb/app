@@ -1,7 +1,4 @@
-import PepoApi from './PepoApi';
-import Constants from '../../src/constants/AppConfig';
-import Store from '../store';
-import { LogLevel, RNFFmpeg } from '../libs/react-native-ffmpeg';
+import { RNFFmpeg } from '../libs/react-native-ffmpeg';
 
 const COMPRESSION_SIZE = '720X1280';
 const CRF = '24';
@@ -35,15 +32,16 @@ export default class FfmpegProcesser {
   }
 
   async getVideoThumbnail() {
+    console.log('this.coverFileOutputPath this.im in getVideoThumbnail');
     this._getCoverOutputPath();
-    console.log('this.outputPath this.outputPath', this.outputPath);
+    console.log('this.coverFileOutputPath this.coverFileOutputPath', this.coverFileOutputPath);
     let executeString = this._getVideoThumbnailString();
     console.log(executeString);
     let executeResponse = await RNFFmpeg.execute(executeString);
     if (executeResponse.rc === 0) {
       console.log('Thumb nail created ', this.outputImageFile);
       // rc = 0, means successful compression
-      return this.outputPath;
+      return this.coverFileOutputPath;
     } else {
       console.log('Thumb nail failed ', this.outputImageFile);
       // compression is failed
@@ -52,7 +50,7 @@ export default class FfmpegProcesser {
   }
 
   _getVideoThumbnailString() {
-    return `-i ${this.inputFileUri} -s ${COMPRESSION_SIZE} -vframes 1 ${this.outputPath}`;
+    return `-i ${this.inputFileUri} -s ${COMPRESSION_SIZE} -vframes 1 ${this.coverFileOutputPath}`;
     // this.outputImageFile = `output_${Date.now()}.png`;
     // return `-i ${this.inputFileUri} -ss 00:00:01.000 -vframes 1 ${this.outputFileName}`;
   }
@@ -79,7 +77,7 @@ export default class FfmpegProcesser {
     let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
     this.outputFileName = `output_${Date.now()}.png`;
     outputPath.push(this.outputFileName);
-    this.outputPath = outputPath.join('/');
+    this.coverFileOutputPath = outputPath.join('/');
   }
 
   _getOutputPath() {
