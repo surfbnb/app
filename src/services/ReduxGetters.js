@@ -96,9 +96,16 @@ class ReduxGetters {
         return deepGet( state ,  `user_profile_entities.id_${id}.cover_video_id` );
     }
 
-    getUserCoverImageId(id , state ){
+    getUserCoverImageId( id ,  state ){
         state =  state || Store.getState() ; 
         return deepGet( state ,  `user_profile_entities.id_${id}.cover_image_id` );
+    }
+
+    
+    getCurrentUserProfile(){
+        state =  state || Store.getState() ; 
+        return deepGet( state ,  `user_profile_entities.id_${id}` );
+
     }
 
     getImage(id  , state ){

@@ -3,12 +3,21 @@ import { connect } from 'react-redux';
 import RNThumbnail from 'react-native-thumbnail';
 import RNFS from 'react-native-fs';
 import Store from '../store';
-import { upsertRecordedVideo, clearRecordedVideo } from '../actions';
+import {
+  upsertRecordedVideo,
+  clearRecordedVideo,
+  upsertImageEntities,
+  upsertVideoEntities,
+  upsertUserProfileEntities
+} from '../actions';
 import utilities from './Utilities';
 import appConfig from '../constants/AppConfig';
 import FfmpegProcesser from './FfmpegProcesser';
 import UploadToS3 from './UploadToS3';
 import PepoApi from './PepoApi';
+import ReduxGetters from './ReduxGetters';
+import CurrentUser from '../models/CurrentUser';
+import createObjectForRedux from '../helpers/createObjectForRedux';
 
 const VIDEO_WIDTH = 720;
 const VIDEO_HEIGHT = 1280;
@@ -24,10 +33,10 @@ class CameraWorker extends PureComponent {
 
   syncAsyncToRedux() {
     // Early exit
-    // if (Object.keys(this.props.current_user).length === 0) {
-    //   console.log('syncAsyncToRedux :: Cannot sync as current_user is not yet available');
-    //   return;
-    // }
+    if (Object.keys(this.props.current_user).length === 0) {
+      console.log('syncAsyncToRedux :: Cannot sync as current_user is not yet available');
+      return;
+    }
     if (Object.keys(this.props.recorded_video).length > 0) {
       console.log('syncAsyncToRedux :: No sync needed as recorded_video has data');
       return;
@@ -59,7 +68,7 @@ class CameraWorker extends PureComponent {
   async processVideo() {
     // Early exit
     console.log('this.props.current_user.id', this.props.current_user.id);
-    if (/*Object.keys(this.props.current_user).length === 0 || */ Object.keys(this.props.recorded_video).length === 0) {
+    if (Object.keys(this.props.current_user).length === 0 || Object.keys(this.props.recorded_video).length === 0) {
       console.log('processVideo :: Nothing to process');
       return;
     }
@@ -118,12 +127,7 @@ class CameraWorker extends PureComponent {
   async compressVideoAndCreateThumbnail() {
     if (this.props.recorded_video.raw_video && !this.props.recorded_video.compressed_video) {
       this.ffmpegProcesser = new FfmpegProcesser(this.props.recorded_video.raw_video);
-      let compressedVideo = await this.ffmpegProcesser.compress();
-      Store.dispatch(
-        upsertRecordedVideo({
-          compressed_video: compressedVideo
-        })
-      );
+      
 
       let coverImage = await this.ffmpegProcesser.getVideoThumbnail();
       Store.dispatch(
@@ -131,10 +135,47 @@ class CameraWorker extends PureComponent {
           cover_image: coverImage
         })
       );
+
+      this.updateProfileViewVideo(coverImage, this.props.recorded_video.raw_video);
+
+      let compressedVideo = await this.ffmpegProcesser.compress();
+      Store.dispatch(
+        upsertRecordedVideo({
+          compressed_video: compressedVideo
+        })
+      );
     }
   }
 
+  updateProfileViewVideo(coverImage, video) {
+    let imageObject = createObjectForRedux.createImageObject({
+      url: coverImage,
+      height: VIDEO_HEIGHT,
+      width: VIDEO_WIDTH,
+      size: '10000'
+    });
+
+    let videoObject = createObjectForRedux.createVideoObject(
+      {
+        url: video,
+        height: VIDEO_HEIGHT,
+        width: VIDEO_WIDTH,
+        size: '10000'
+      },
+      imageObject.key
+    );
+
+    Store.dispatch(upsertImageEntities(imageObject.value));
+    Store.dispatch(upsertVideoEntities(videoObject.value));
+    Store.dispatch(
+      upsertUserProfileEntities({
+        [`id_${CurrentUser.getUserId()}`]: { cover_image_id: imageObject.key, cover_video_id: videoObject.key }
+      })
+    );
+  }
+
   async uploadVideo() {
+    const videoId = ReduxGetters.getUserCoverVideoId(CurrentUser.getUserId());
     console.log('================ Upload VIdeo has been started ================');
     if (this.props.recorded_video.compressed_video && !this.props.recorded_video.s3_video) {
       let s3Video = await this._uploadToS3(this.props.recorded_video.compressed_video, 'video');
@@ -186,31 +227,31 @@ class CameraWorker extends PureComponent {
         image_size: imageSize
       };
 
-      console.log(this.props.current_user.id,'this.props.current_user.id');
+      console.log(this.props.current_user.id, 'this.props.current_user.id');
 
       new PepoApi(`/users/${this.props.current_user.id}/fan-video`)
         .post(payload)
         .then((responseData) => {
           if (responseData.success && responseData.data) {
-
             Store.dispatch(
               upsertRecordedVideo({
                 do_discard: true
               })
             );
-
             console.log('responseData.data', responseData.data);
           }
+          this.postToPepoApi = false;
         })
         .catch(() => {
           // cancel workflow.
+          this.postToPepoApi = false;
           ostDeviceRegistered.cancelFlow();
         });
     }
   }
 
   getCurrentUserRecordedVideoKey() {
-    return `user-recorded_video`;
+    // return `user-recorded_video`;
     if (this.props.current_user.id) {
       return `user-${this.props.current_user.id}-recorded_video`;
     }

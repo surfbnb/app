@@ -26,8 +26,8 @@ class ProfileScreen extends Component {
     super(props);
     this.userId= CurrentUser.getUserId();
     //TODO Shraddha : remove hardcoded values once tested on ios
-    this.coverImageId = 1123 //reduxGetter.getUserCoverImageId(this.userId,this.state);
-    this.videoId = 123//reduxGetter.getUserCoverVideoId( this.userId,this.state );
+    this.coverImageId = reduxGetter.getUserCoverImageId(this.userId,this.state);
+    this.videoId = reduxGetter.getUserCoverVideoId( this.userId,this.state );
     this.state = {
       isEdit : false
     }
@@ -45,23 +45,23 @@ class ProfileScreen extends Component {
       isEdit : false
     });
   }
-  navigateToVideo(){
-    this.props.navigation.navigate('CaptureVideo');
-
-  }
 
   render() {
     return (
       <KeyboardAwareScrollView enableOnAndroid={true} style={{padding:20,flex:1}}>
         <BalanceHeader  />
-        {this.coverImageId &&(
+        {/* {this.coverImageId &&( */}
           <View style={{borderWidth:1,borderRadius:5,marginTop:20,borderColor:Colors.dark}}>
-            <CoverImage height={0.50} isProfile={true} coverImageId={this.coverImageId} videoId={this.videoId} navigation={this.props.navigation}/>
+            <CoverImage height={0.50} 
+              isProfile={true} 
+              userId={this.userId}/>
           </View>
 
-        )}
+        {/* )} */}
+
+
         {!this.coverImageId &&(
-          <EmptyCoverImage/>
+          <EmptyCoverImage navigation={this.props.navigation} />
         )}
         {!this.state.isEdit &&(
           <UserInfo userId={CurrentUser.getUserId()} hideUserInfo={this.hideUserInfo.bind(this)} profileSaved={this.profileSaved.bind(this)} />

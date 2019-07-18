@@ -31,6 +31,7 @@ class PreviewRecordedVideo extends Component {
   }
 
   enableStartUploadFlag(){
+    this.props.navigation.navigate('ProfileScreen');
     Store.dispatch(upsertRecordedVideo({do_upload: true}));
   }
 

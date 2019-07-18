@@ -42,6 +42,7 @@ class CaptureVideo extends Component {
             this.goToPreviewScreen(videoUri);
           }}
           actionSheetOnRecordVideo= {this.state.actionSheetOnRecordVideo}
+          navigation={this.props.navigation}
         />
       );
     } else {
@@ -49,8 +50,9 @@ class CaptureVideo extends Component {
         <PreviewRecordedVideo
           goToRecordScreen={() => {
             this.goToRecordScreen();
-          }}
+          }}          
           cachedvideoUrl={this.state.videoUri}
+          navigation={this.props.navigation}
         />
       );
     }
