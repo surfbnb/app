@@ -48,6 +48,36 @@ export default {
     return appConfig['tokenSymbols'][symbol];
   },
 
+  _getIDList(resultData, key = 'id') {
+    return resultData.map((item) => item[key]);
+  },
+
+  _getIDListFromObj(resultObj) {
+    return Object.keys(resultObj);
+  },
+
+  _getEntities(resultData, key = 'id') {
+    const entities = {};
+    resultData.forEach((item) => {
+      entities[`${key}_${item[key]}`] = item;
+    });
+    return entities;
+  },
+
+  _getEntitiesFromObj(resultObj, key = 'id') {
+    const entities = {};
+    for (let identifier in resultObj) {
+      entities[`${key}_${identifier}`] = resultObj[identifier];
+    }
+    return entities;
+  },
+
+  _getEntityFromObj( resultObj , key = "id" ){
+    const entity = {} ,  id = `${key}_${resultObj.id}` ;
+    entity[ id ] = resultObj ;
+    return entity;
+  },
+
   getFromDecimal( bt ){
     return PriceOracle.fromDecimal(bt, pricer.getDecimal());
   },

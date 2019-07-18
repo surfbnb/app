@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => {
     userName: reduxGetter.getUserName( ownProps.userId ,state ),
     name: reduxGetter.getName( ownProps.userId , state ),
     bio: reduxGetter.getBio( ownProps.userId , state ),
-    link : reduxGetter.getLink( reduxGetter.getUserLink(ownProps.userId , state ) ,  state ),
+    link : reduxGetter.getLink( reduxGetter.getUserLinkId(ownProps.userId , state ) ,  state ),
     supporters : reduxGetter.getUserSupporters( ownProps.userId , state  ),
     supporting: reduxGetter.getUsersSupporting( ownProps.userId , state  ),
     btAmount: reduxGetter.getUsersBt( ownProps.userId , state  ),
