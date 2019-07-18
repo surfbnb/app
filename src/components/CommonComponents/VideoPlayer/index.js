@@ -6,6 +6,7 @@ import { withNavigation } from 'react-navigation';
 import closeIcon from '../../../assets/cross_icon.png';
 import inlineStyles from './styles'
 
+
 class VideoPlayer extends Component {
 
     static navigationOptions = ({navigation, navigationOptions}) => {
@@ -17,6 +18,7 @@ class VideoPlayer extends Component {
     constructor(props){
         super(props);
         this.videoId =  this.props.navigation.getParam('videoId');
+        console.log("video-id" , this.videoId);
     }
 
     onCrossIconClick = () => {
