@@ -88,19 +88,15 @@ class ProfileScreen extends Component {
       <KeyboardAwareScrollView enableOnAndroid={true} style={{padding:20,flex:1}}>
         {this.isLoading()}
         <BalanceHeader  />
-
         <React.Fragment>
-          <View style={{borderWidth:1,borderRadius:5,marginTop:20,marginBottom: 10,borderColor:Colors.dark}}>
             <CoverImage height={0.50} isProfile={true}
-                        coverImageId={this.coverImageId}
-                        uploadVideo={this.uploadVideo}
-                        videoId={this.videoId} />
-          </View>
-          <Text style={{textAlign: 'right'}}>{timeStamp.fromNow( reduxGetter.getVideoTimeStamp(this.videoId) )}</Text>
+                        wrapperStyle={{borderWidth:1,borderRadius:5,marginTop:20,marginBottom: 10,borderColor:Colors.dark}}
+                        userId={this.userId} />
+            <Text style={{textAlign: 'right'}}>{timeStamp.fromNow( reduxGetter.getVideoTimeStamp(this.videoId) )}</Text>
         </React.Fragment>
 
         {!this.coverImageId &&(
-          <EmptyCoverImage uploadVideo={this.uploadVideo}/>
+          <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.userId} />
         )}
 
         {!this.state.isEdit &&(

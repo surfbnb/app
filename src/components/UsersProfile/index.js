@@ -87,7 +87,7 @@ export default class UsersProfile extends Component {
         return (
             <ScrollView style={{ backgroundColor: "#fff",flex:1}}>
               {this.isLoading()}
-              <CoverImage coverImageId={this.coverImageId} videoId={this.videoId} navigation={this.props.navigation}/>
+              <CoverImage userId={this.userId} />
               <UserInfo userId={this.userId}/>
              <View style={[iconStyle.touchablesBtns , {position:"absolute" , top: "75%"}]}>
                     <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen}
