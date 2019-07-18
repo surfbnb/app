@@ -1,8 +1,7 @@
 import React from 'react';
-import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
-import  deepGet from "lodash/get";
-
+import { withNavigation } from 'react-navigation';
 
 import inlineStyles from './styles';
 import Theme from "../../theme/styles";
@@ -11,13 +10,12 @@ import default_user_icon from '../../assets/default_user_icon.png';
 import FormInput from "../../theme/components/FormInput";
 import reduxGetter from "../../services/ReduxGetters";
 import { ostErrors } from '../../services/OstErrors';
-import CurrentUser  from "../../models/CurrentUser";
 import PepoApi from "../../services/PepoApi";
 import ProfilePlusIcon from '../../assets/plus_icon.png'
+
 import {updateCurrentUser, upsertUserProfileEntities , upsertLinkEntities} from "../../actions";
 import Store from "../../store";
 import utilities from "../../services/Utilities";
-
 const mapStateToProps = (state, ownProps) => {
   return {
     user_name: reduxGetter.getUserName( ownProps.userId ,state ) || "",
@@ -248,6 +246,7 @@ class ProfileEdit extends React.PureComponent{
           }}
           isFocus={this.state.current_formField == this.tabIndex.bio}
           onFocus={() => {
+            this.props.navigation.push("BioScreen");
             this.state.current_formField = this.tabIndex.bio;
           }}
           value = {this.state.bio}
@@ -301,4 +300,4 @@ class ProfileEdit extends React.PureComponent{
 
 }
 
-export default connect(mapStateToProps)(ProfileEdit) ;
+export default connect(mapStateToProps)( withNavigation( ProfileEdit )) ;

@@ -30,6 +30,7 @@ import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from "./src/components/UsersProfile";
 import CameraWorker from './src/services/CameraWorker';
 import CaptureVideo from './src/components/CaptureVideo';
+import BioScreen from "./src/components/Bio";
 
 import deepGet from 'lodash/get';
 
@@ -98,7 +99,8 @@ const UserStack = createStackNavigator(
 const ProfileStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
-    VideoPlayer: VideoPlayer
+    VideoPlayer: VideoPlayer,
+    BioScreen: BioScreen
   },
   {
     headerLayoutPreset: 'center',
