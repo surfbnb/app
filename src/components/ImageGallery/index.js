@@ -6,6 +6,7 @@ import ImageBrowser from '../../services/ImageBrowser';
 import { SafeAreaView } from 'react-navigation';
 import assignIn from 'lodash/assignIn';
 import UploadToS3 from '../../services/UploadToS3';
+import tickIcon from '../../assets/tick_icon.png';
 
 class ImageGallery extends Component {
   constructor(props) {
@@ -137,7 +138,7 @@ class ImageGallery extends Component {
     let {width, height} = Dimensions.get('window');
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 0.6, backgroundColor: 'black' }}>
+        <View style={{ flex: 0.6, alignItems: 'flex-end', justifyContent: 'flex-end' }}>
           {this.state.imageURI ? (
             <View style={{position: 'relative'}}>
               <Image
@@ -163,6 +164,7 @@ class ImageGallery extends Component {
           ) : (
             <View />
           )}
+          <Image source={ tickIcon } style={{width: 45, height: 45, marginRight: 22.5, marginBottom: 22.5}}/>
         </View>
         <View style={{ flex: 0.4, backgroundColor: '#fff', paddingRight: 3, paddingTop: 3 }}>
           <FlatList
