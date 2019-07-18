@@ -1,9 +1,5 @@
 import { RNFFmpeg } from '../libs/react-native-ffmpeg';
-
-const COMPRESSION_SIZE = '720X1280';
-const CRF = '24';
-const PRESET = 'ultrafast';
-const PIX_FMT = 'yuv420p';
+import AppConfig from '../constants/AppConfig';
 
 export default class FfmpegProcesser {
   constructor(inputFileUri) {
@@ -50,7 +46,7 @@ export default class FfmpegProcesser {
   }
 
   _getVideoThumbnailString() {
-    return `-i ${this.inputFileUri} -s ${COMPRESSION_SIZE} -vframes 1 ${this.coverFileOutputPath}`;
+    return `-i ${this.inputFileUri} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -vframes 1 ${this.coverFileOutputPath}`;
     // this.outputImageFile = `output_${Date.now()}.png`;
     // return `-i ${this.inputFileUri} -ss 00:00:01.000 -vframes 1 ${this.outputFileName}`;
   }
@@ -64,7 +60,7 @@ export default class FfmpegProcesser {
   }
 
   _getExecuteString() {
-    return `-i ${this.inputFileUri} -s ${COMPRESSION_SIZE} -crf ${CRF} -preset ${PRESET} -pix_fmt ${PIX_FMT} -vcodec h264 ${this.outputPath}`;
+    return `-i ${this.inputFileUri} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -crf ${AppConfig.compressionConstants.CRF} -preset ${AppConfig.compressionConstants.PRESET} -pix_fmt ${AppConfig.compressionConstants.PIX_FMT} -vcodec h264 ${this.outputPath}`;
   }
 
   getFileExtension(file) {

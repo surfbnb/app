@@ -79,8 +79,8 @@ class ProfileScreen extends Component {
     });
   };
 
-  uploadVideo = () => {
-    this.props.navigation.navigate('CaptureVideo');
+  uploadVideo = () => {    
+    this.props.navigation.push('CaptureVideo');
   };
 
   render() {
@@ -91,7 +91,7 @@ class ProfileScreen extends Component {
         <React.Fragment>
             <CoverImage height={0.50} isProfile={true}
                         wrapperStyle={{borderWidth:1,borderRadius:5,marginTop:20,marginBottom: 10,borderColor:Colors.dark}}
-                        userId={this.userId} />
+                        userId={this.userId}  uploadVideo={this.uploadVideo}  />
             <Text style={{textAlign: 'right'}}>{timeStamp.fromNow( reduxGetter.getVideoTimeStamp(this.videoId) )}</Text>
         </React.Fragment>
 

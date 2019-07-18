@@ -98,7 +98,8 @@ const UserStack = createStackNavigator(
 const ProfileStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
-    VideoPlayer: VideoPlayer
+    VideoPlayer: VideoPlayer,
+    CaptureVideo: CaptureVideo
   },
   {
     headerLayoutPreset: 'center',
@@ -161,8 +162,7 @@ const AppContainer = createAppContainer(
       AuthScreen,
       CustomTabStack,
       PinStack,
-      UserActivatingScreen,
-      CaptureVideo
+      UserActivatingScreen      
     },
     {
       initialRouteName: 'AuthLoading'
@@ -172,12 +172,13 @@ const AppContainer = createAppContainer(
 
 const RootNavigationContainer = () => (
   <Root>
-    <CameraWorker />
+    
     <AppContainer
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
     />
+    <CameraWorker />
     <LoadingModalCover />
     <LoginPopover />
   </Root>

@@ -13,7 +13,7 @@ export default {
 
   metaProperties: {
     type: 'user_to_user',
-    name: "profile"
+    name: 'profile'
   },
 
   executeTransactionPrivacyType: {
@@ -36,9 +36,8 @@ export default {
     search: 'preview_gif',
     feed: 'downsized'
   },
-  
-  maxBtAllowedInSingleTransfer : 10,
-  
+
+  maxBtAllowedInSingleTransfer: 10,
 
   fileUploadTypes: {
     video: 'videos',
@@ -57,5 +56,19 @@ export default {
     PROFILE_CROPPED_IMAGE: 'profile-cropped-image',
     S3_PROFILE_IMAGE: 's3-profile-image',
     ENABLE_START_UPLOAD: 'enable-start-upload'
+  },
+
+  cameraConstants: {
+    RATIO: '16:9',
+    VIDEO_QUALITY: '720p',
+    VIDEO_WIDTH: 720,
+    VIDEO_HEIGHT: 1280
+  },
+
+  compressionConstants: {
+    COMPRESSION_SIZE: '720X1280',
+    CRF: '24',
+    PRESET: 'ultrafast',
+    PIX_FMT: 'yuv420p'
   }
 };

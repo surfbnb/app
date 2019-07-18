@@ -31,7 +31,8 @@ export const {
   upsertVideoContributionEntities,
   upsertUserContributionEntities,
   upsertRecordedVideo,
-  clearRecordedVideo
+  clearRecordedVideo,
+  videoInProcessing
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -150,6 +151,10 @@ export const reducer = handleActions(
       recorded_video: assignIn(defaultState.recorded_video)
   }),
 
+  [videoInProcessing]: (state, action ) => ({
+    ...state,
+    video_in_processing: action.payload.video_in_processing
+  }),
   [logoutUser]: (state, action) => ({
       ...state,
       current_user: {},

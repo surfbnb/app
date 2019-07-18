@@ -102,9 +102,9 @@ class ReduxGetters {
     }
 
     
-    getCurrentUserProfile(){
+    getCurrentUserProfile(state){
         state =  state || Store.getState() ; 
-        return deepGet( state ,  `user_profile_entities.id_${id}` );
+        return deepGet( state ,  `user_profile_entities.id_${CurrentUser.getUserId()}` );
 
     }
 
