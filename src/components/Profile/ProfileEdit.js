@@ -12,16 +12,19 @@ import FormInput from "../../theme/components/FormInput";
 import reduxGetter from "../../services/ReduxGetters";
 import { ostErrors } from '../../services/OstErrors';
 import CurrentUser  from "../../models/CurrentUser";
+import PepoApi from "../../services/PepoApi";
+import ProfilePlusIcon from '../../assets/plus_icon.png'
 
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user_name: reduxGetter.getUserName( ownProps.userId ,state ),
-    name: reduxGetter.getName( ownProps.userId , state ),
-    bio: reduxGetter.getBio( ownProps.userId , state ),
-    link : reduxGetter.getLink( reduxGetter.getUserLink(ownProps.userId , state ) ,  state ),
+    user_name: reduxGetter.getUserName( ownProps.userId ,state ) || "",
+    name: reduxGetter.getName( ownProps.userId , state )|| "",
+    bio: reduxGetter.getBio( ownProps.userId , state )|| "",
+    link : reduxGetter.getLink( reduxGetter.getUserLink(ownProps.userId , state ) ,  state )|| "",
+    profilePicture: reduxGetter.getImage( reduxGetter.getProfileImageId( ownProps.userId , state), state  )
   }
-}
+};
 
 const btnPreText = "Save Profile" ;
 const btnPostText = "Saving...";
@@ -48,7 +51,7 @@ class ProfileEdit extends React.PureComponent{
 
     this.state ={
       name      : this.props.name,
-      user_name : this.props.userName,
+      user_name : this.props.user_name,
       bio       : this.props.bio,
       link      : this.props.link,
       current_formField: 0,
@@ -56,6 +59,14 @@ class ProfileEdit extends React.PureComponent{
     };
 
   }
+
+  getImageSrc = () => {
+    if(this.props.profilePicture){
+      return {uri : this.props.profilePicture}
+    }else {
+      return default_user_icon;
+    }
+  };
 
   onSubmitEditing(currentIndex) {
     this.setState({
@@ -98,21 +109,21 @@ class ProfileEdit extends React.PureComponent{
     this.clearErrors();
     if( this.validateProfileInput() ){
       this.setState({ btnText : btnPostText} );
-      CurrentUser.saveProfile( this.getParams() )
+      return new PepoApi(`/users/${this.props.userId}/profile`)
+        .post( this.getParams() )
         .then( ( res ) => {
+          console.log("----res----" , res);
+          this.setState({ btnText : btnPreText} );
           if( res && res.success ){
-            console.log("response",res);
-            this.props.profileSaved && this.props.profileSaved( res ); //TODO Pass this from outside
+            this.props.hideProfileEdit && this.props.hideProfileEdit( res );
             return ;
           }else {
-            console.log("response failed",response);
             this.onServerError(res);
           }
         })
-        .catch( (error ) => {})
-        .finally(() => {
+        .catch( (error ) => {
           this.setState({ btnText : btnPreText} );
-        })
+        });
     }
   }
 
@@ -127,9 +138,9 @@ class ProfileEdit extends React.PureComponent{
       <View style={{marginTop:20,paddingBottom:100}}>
 
         <View style={inlineStyles.editProfileContainer}>
-          <Image style={{width: 75,height: 75}} source={default_user_icon}></Image>
+          <Image style={{width: 75,height: 75}} source={this.getImageSrc()}></Image>
           <View style={inlineStyles.editProfileIconPos}>
-            <Image style={{width: 13,height: 13}} source={profileEditIcon}></Image>
+            <Image style={{width: 13,height: 13}} source={ this.props.profilePicture?profileEditIcon:ProfilePlusIcon}></Image>
           </View>
         </View>
 
@@ -184,7 +195,6 @@ class ProfileEdit extends React.PureComponent{
         <Text style={{}}>Bio</Text>
         <FormInput
           editable={true}
-          multiline={true}
           fieldName="bio"
           textContentType="none"
           style={[
@@ -231,9 +241,15 @@ class ProfileEdit extends React.PureComponent{
           onPress={this.onSubmit.bind(this)}
           style={[Theme.Button.btn, Theme.Button.btnPink]}
         >
-          <Text style={[Theme.Button.btnPinkText, {textAlign: 'center'}]}>Save Profile</Text>
+          <Text style={[Theme.Button.btnPinkText, {textAlign: 'center'}]}>{this.state.btnText}</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          onPress={this.props.hideProfileEdit}
+          style={[Theme.Button.btn, Theme.Button.btnPinkSecondary,{marginTop:10}]}
+        >
+          <Text style={[Theme.Button.btnPinkSecondaryText, {textAlign: 'center'}]}>Cancel</Text>
+        </TouchableOpacity>
         {/*//TODO error styling */}
         <Text>{this.state.general_error}</Text>
 

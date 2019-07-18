@@ -19,9 +19,10 @@ const mapStateToProps = (state, ownProps) => {
     link : reduxGetter.getLink( reduxGetter.getUserLink(ownProps.userId , state ) ,  state ),
     supporters : reduxGetter.getUserSupporters( ownProps.userId , state  ),
     supporting: reduxGetter.getUsersSupporting( ownProps.userId , state  ),
-    btAmount: reduxGetter.getUsersBt( ownProps.userId , state  )
+    btAmount: reduxGetter.getUsersBt( ownProps.userId , state  ),
+    profilePicture: reduxGetter.getImage( reduxGetter.getProfileImageId( ownProps.userId , state), state  )
   }
-}
+};
 
 class UserInfo extends React.PureComponent {
   constructor(props){
@@ -45,7 +46,7 @@ class UserInfo extends React.PureComponent {
     if(  this.props.userId == CurrentUser.getUserId() ){
      return (
        <TouchableButton onPress={this.onEdit}
-         TouchableStyles = {[Theme.Button.btnPinkSecondary,{width:100}]}
+         TouchableStyles = {[Theme.Button.btnPinkSecondary]}
          TextStyles = {[Theme.Button.btnPinkSecondaryText]}
          text="Edit Profile"
        />
@@ -53,13 +54,20 @@ class UserInfo extends React.PureComponent {
     }
   }
 
+  getImageSrc = () => {
+    if(this.props.profilePicture){
+      return {uri : this.props.profilePicture}
+    }else {
+       return profilePicture;
+    }
+  };
+
   render(){
-    console.log("render------UserInfo");
     return(
       <View style={{margin:20,alignItems:'center'}}>
 
         <View style={inlineStyle.infoHeaderWrapper}>
-          <Image style={inlineStyle.profileImageSkipFont} source={ this.props.profilePicture || profilePicture}></Image>
+          <Image style={inlineStyle.profileImageSkipFont} source={this.getImageSrc()}></Image>
           <Text style={inlineStyle.userName}>{this.props.userName}</Text>
         </View>
         {this.editButton()}

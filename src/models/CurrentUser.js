@@ -129,15 +129,6 @@ class CurrentUserModel {
     return this._signin('/auth/twitter-login', params);
   }
 
-  saveProfile( params ){
-    return new PepoApi(`/users/${this.userId}/profile`)
-      .post( params )
-      .then((apiResponse) => {
-        this._saveCurrentUser(apiResponse);
-      })
-      .catch((error) => {});
-  }
-
   logout(params) {
     this.clearCurrentUser();
     new PepoApi('/auth/logout')

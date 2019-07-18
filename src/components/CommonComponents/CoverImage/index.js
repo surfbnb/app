@@ -31,8 +31,9 @@ class CoverImage extends React.Component {
     this.props.navigation.push("VideoPlayer" , { videoId : this.props.videoId} );
   }
 
-  updateVideo(){
-    this.props.navigation.navigate('CaptureVideo');
+
+  uploadVideo = () => {
+    this.props.uploadVideo =  this.props.uploadVideo();
   }
 
   render(){
@@ -43,11 +44,11 @@ class CoverImage extends React.Component {
           <Image style={[{width : "100%" , height: Dimensions.get('screen').height * this.height }, this.props.style ]}  source={{uri: this.getImage()}} />
           <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>
           {this.isProfile &&(
-            <TouchableOpacity onPress={()=> {this.updateVideo()}} style={{position:'absolute',bottom:0,backgroundColor:'rgba(0,0,0,0.75)',width:'100%',height:50,justifyContent:'center',alignItems:'center'}}>
+            <TouchableOpacity onPress={this.uploadVideo}
+                style={{position:'absolute',bottom:0,backgroundColor:'rgba(0,0,0,0.75)',width:'100%',height:50,justifyContent:'center',alignItems:'center'}}>
               <Text style={{color:Colors.white}}>Update Video</Text>
             </TouchableOpacity>
           )}
-
         </View>
       </TouchableWithoutFeedback>
     )
@@ -55,4 +56,4 @@ class CoverImage extends React.Component {
 
 }
 
-export default connect(mapStateToProps)( withNavigation( CoverImage ) )
+export default connect(mapStateToProps)( withNavigation( CoverImage ) );

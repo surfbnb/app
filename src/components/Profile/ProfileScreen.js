@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import  {View,ScrollView} from "react-native";
+import  {View,Text , ActivityIndicator} from "react-native";
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
 import UserInfo from "../CommonComponents/UserInfo";
@@ -10,8 +10,11 @@ import ProfileEdit from "./ProfileEdit";
 import CoverImage from '../CommonComponents/CoverImage'
 import reduxGetter from "../../services/ReduxGetters";
 import Colors from '../../theme/styles/Colors'
+import timeStamp from "../../helpers/timestampHandling";
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {Toast} from "native-base";
+import PepoApi from "../../services/PepoApi";
 
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
@@ -29,45 +32,82 @@ class ProfileScreen extends Component {
     this.coverImageId = reduxGetter.getUserCoverImageId(this.userId,this.state);
     this.videoId = reduxGetter.getUserCoverVideoId( this.userId,this.state );
     this.state = {
-      isEdit : false
-    }
+      isEdit : false,
+      loading: true
+    };
+    this.fetchUser();
   }
 
-  hideUserInfo(isEditValue){
+  fetchUser = () => {
+    return new PepoApi(`/users/${this.userId}/profile`)
+      .get()
+      .then((res) =>{
+        console.log("profile" ,res);
+        if( !res ||  !res.success ){
+          Toast.show({
+            text: ostErrors.getErrorMessage( res ),
+            buttonText: 'OK'
+          });
+        }
+      })
+      .catch((error) =>{
+        Toast.show({
+          text: ostErrors.getErrorMessage( error ),
+          buttonText: 'OK'
+        });
+      })
+      .finally(()=>{
+        this.setState({ loading : false });
+      })
+  };
+
+  isLoading(){
+    if( this.state.loading ){
+      return ( <ActivityIndicator /> );
+    }
+  };
+
+  hideUserInfo = (isEditValue) => {
     this.setState({
       isEdit : isEditValue
     });
-  }
+  };
 
-  profileSaved(res){
-    console.log('Success')
+  hideProfileEdit = (res) =>{
     this.setState({
       isEdit : false
     });
-  }
+  };
+
+  uploadVideo = () => {
+    this.props.navigation.navigate('CaptureVideo');
+  };
 
   render() {
     return (
       <KeyboardAwareScrollView enableOnAndroid={true} style={{padding:20,flex:1}}>
+        {this.isLoading()}
         <BalanceHeader  />
-        {/* {this.coverImageId &&( */}
-          <View style={{borderWidth:1,borderRadius:5,marginTop:20,borderColor:Colors.dark}}>
-            <CoverImage height={0.50} 
-              isProfile={true} 
-              userId={this.userId}/>
+
+        <React.Fragment>
+          <View style={{borderWidth:1,borderRadius:5,marginTop:20,marginBottom: 10,borderColor:Colors.dark}}>
+            <CoverImage height={0.50} isProfile={true}
+                        coverImageId={this.coverImageId}
+                        uploadVideo={this.uploadVideo}
+                        videoId={this.videoId} />
           </View>
-
-        {/* )} */}
-
+          <Text style={{textAlign: 'right'}}>{timeStamp.fromNow( reduxGetter.getVideoTimeStamp(this.videoId) )}</Text>
+        </React.Fragment>
 
         {!this.coverImageId &&(
-          <EmptyCoverImage navigation={this.props.navigation} />
+          <EmptyCoverImage uploadVideo={this.uploadVideo}/>
         )}
+
         {!this.state.isEdit &&(
-          <UserInfo userId={CurrentUser.getUserId()} hideUserInfo={this.hideUserInfo.bind(this)} profileSaved={this.profileSaved.bind(this)} />
+          <UserInfo userId={this.userId} hideUserInfo={this.hideUserInfo}  />
         )}
         {this.state.isEdit &&(
-          <ProfileEdit/>
+          <ProfileEdit userId={this.userId} hideProfileEdit={this.hideProfileEdit} />
         )}
       </KeyboardAwareScrollView>
     );

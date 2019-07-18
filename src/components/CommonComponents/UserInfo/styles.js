@@ -21,9 +21,9 @@ let stylesMap = {
     fontWeight: '500'
   },
   pepoBalance: {
-    fontSize: 28,
+    fontSize: 18,
     color: Colors.white,
-    fontWeight: '800'
+    fontWeight: '300'
   },
   usdBalance: {
     fontSize: 16,
