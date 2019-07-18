@@ -24,6 +24,13 @@ const VIDEO_HEIGHT = 1280;
 
 const recordedVideoStates = ['raw_video', 'compressed_video', 's3_video', 'cover_image', 's3_cover_image'];
 
+const processingStatuses = [
+  'compression_processing',
+  'video_s3_upload_processing',
+  'cover_capture_processing',
+  'cover_s3_upload_processing'
+];
+
 const recordedVideoActions = ['do_upload', 'do_discard'];
 
 class CameraWorker extends PureComponent {
@@ -57,6 +64,7 @@ class CameraWorker extends PureComponent {
     // Need to sync
     if (this.getCurrentUserRecordedVideoKey()) {
       let data = this.getDataforAsync();
+      console.log('sync redux to async: get data from redux', data);
       if (Object.keys(data).length > 0) {
         utilities.saveItem(this.getCurrentUserRecordedVideoKey(), data).then(() => {
           console.log('syncReduxToAsync :: Data synced from recorded_video to Async');
@@ -105,6 +113,8 @@ class CameraWorker extends PureComponent {
     // stop ffmpge processing
     this.ffmpegProcesser && this.ffmpegProcesser.cancel();
 
+    console.log('clean up has called');
+
     // remove files from cache,
     await this.removeFile(this.props.recorded_video.raw_video);
     await this.removeFile(this.props.recorded_video.compressed_video);
@@ -116,6 +126,9 @@ class CameraWorker extends PureComponent {
   }
 
   async removeFile(file) {
+    if (!file) {
+      return;
+    }
     let isFileExists = await RNFS.exists(file);
     if (isFileExists) {
       await RNFS.unlink(file);
@@ -125,9 +138,13 @@ class CameraWorker extends PureComponent {
   }
 
   async compressVideoAndCreateThumbnail() {
-    if (this.props.recorded_video.raw_video && !this.props.recorded_video.compressed_video) {
-      this.ffmpegProcesser = new FfmpegProcesser(this.props.recorded_video.raw_video);
-      
+    if (this.props.recorded_video.raw_video && !this.props.recorded_video.cover_capture_processing) {
+      Store.dispatch(
+        upsertRecordedVideo({
+          cover_capture_processing: true
+        })
+      );
+      this.ffmpegProcesser = this.ffmpegProcesser || new FfmpegProcesser(this.props.recorded_video.raw_video);
 
       let coverImage = await this.ffmpegProcesser.getVideoThumbnail();
       Store.dispatch(
@@ -135,8 +152,20 @@ class CameraWorker extends PureComponent {
           cover_image: coverImage
         })
       );
-
       this.updateProfileViewVideo(coverImage, this.props.recorded_video.raw_video);
+    }
+
+    if (
+      this.props.recorded_video.raw_video &&
+      !this.props.recorded_video.compression_processing &&
+      this.props.recorded_video.cover_image
+    ) {
+      Store.dispatch(
+        upsertRecordedVideo({
+          compression_processing: true
+        })
+      );
+      this.ffmpegProcesser = this.ffmpegProcesser || new FfmpegProcesser(this.props.recorded_video.raw_video);
 
       let compressedVideo = await this.ffmpegProcesser.compress();
       Store.dispatch(
@@ -175,9 +204,14 @@ class CameraWorker extends PureComponent {
   }
 
   async uploadVideo() {
-    const videoId = ReduxGetters.getUserCoverVideoId(CurrentUser.getUserId());
     console.log('================ Upload VIdeo has been started ================');
-    if (this.props.recorded_video.compressed_video && !this.props.recorded_video.s3_video) {
+    if (this.props.recorded_video.compressed_video && !this.props.recorded_video.video_s3_upload_processing) {
+      Store.dispatch(
+        upsertRecordedVideo({
+          video_s3_upload_processing: true
+        })
+      );
+
       let s3Video = await this._uploadToS3(this.props.recorded_video.compressed_video, 'video');
 
       console.log('================ Upload VIdeo has been compeleted ================', s3Video);
@@ -192,7 +226,13 @@ class CameraWorker extends PureComponent {
 
   async uploadCoverImage() {
     console.log('================ uploadCoverImage has been started ================');
-    if (this.props.recorded_video.cover_image && !this.props.recorded_video.s3_cover_image) {
+    if (this.props.recorded_video.cover_image && !this.props.recorded_video.cover_s3_upload_processing) {
+      Store.dispatch(
+        upsertRecordedVideo({
+          cover_s3_upload_processing: true
+        })
+      );
+
       let s3CoverImage = await this._uploadToS3(this.props.recorded_video.cover_image, 'image');
       console.log('================ uploadCoverImage has been compeleted ================', s3CoverImage);
       Store.dispatch(
@@ -204,6 +244,8 @@ class CameraWorker extends PureComponent {
   }
 
   async _uploadToS3(fileToUpload, fileType) {
+    console.log('I am in _uploadToS3');
+    console.log(fileToUpload, fileType);
     let uploadToS3 = new UploadToS3(fileToUpload, fileType);
     return await uploadToS3.perform();
   }
@@ -264,6 +306,7 @@ class CameraWorker extends PureComponent {
       let currentValue = this.props.recorded_video[value];
       if (currentValue) dataforAsync[value] = currentValue;
     });
+
     return dataforAsync;
   }
 
