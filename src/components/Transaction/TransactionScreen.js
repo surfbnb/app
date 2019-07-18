@@ -123,7 +123,7 @@ class TransactionScreen extends Component {
     const metaProperties = clone( appConfig.metaProperties ); 
     if(this.videoId){
       metaProperties["name"] = "video"; 
-      metaProperties["details"] = JSON.stringify({"vi" : this.videoId});
+      metaProperties["details"] =  `vi_${this.videoId}`;
     }
     return metaProperties; 
   }

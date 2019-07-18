@@ -75,7 +75,7 @@ class TransactionPepoButton extends PureComponent {
       const metaProperties = clone( appConfig.metaProperties ); 
       if(this.props.videoId){
         metaProperties["name"] = "video"; 
-        metaProperties["details"] = JSON.stringify({"vi" : this.props.videoId});
+        metaProperties["details"] = `vi_${this.props.videoId}`;
       }
       return metaProperties; 
     }
