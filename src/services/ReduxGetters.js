@@ -29,6 +29,11 @@ class ReduxGetters {
         return deepGet( state , `user_entities.id_${id}`) ;
     }
 
+    getUserProfile( id , state ) {
+      state =  state || Store.getState() ;
+      return deepGet( state , `user_profile_entities.id_${id}`) ;
+    }
+
     getVideoImgUrl(id , state ){
         state =  state || Store.getState() ; 
         let posterImageId = deepGet( state ,  `video_entities.id_${id}.poster_image_id` );
@@ -114,7 +119,7 @@ class ReduxGetters {
          deepGet( state ,  `image_entities.id_${id}.resolutions.original.url` );
     }
 
-    getUserLink(id , state ){
+    getUserLinkId(id , state ){
         state =  state || Store.getState() ; 
         return deepGet( state ,  `user_profile_entities.id_${id}.link_ids[0]` );
     }
