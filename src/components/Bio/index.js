@@ -21,17 +21,22 @@ class BioScreen extends PureComponent {
 
     constructor(props){
         super(props);
+        const initialVal =  this.props.navigation.getParam('initialValue') || "";
         this.state ={
           data: [],
-          value: "",
+          value: initialVal,
           keyword: "",
-          count:0
-        }
+          count:initialVal.length
+        };
         this.reqTimer = 0 ;
         this.wordIndex = -1;
         this.indexWord = null;
         this.isTrackingStarted = false;
         this.onChangeTextDelegate  = this.props.navigation.getParam('onChangeTextDelegate') ;
+    }
+
+    componentDidMount(){
+
     }
 
   
@@ -195,6 +200,8 @@ class BioScreen extends PureComponent {
               placeholder={'Bio'}
               multiline = {true}
               numberOfLines = {3}
+              returnKeyType="done"
+              returnKeyLabel="Done"
             />
             <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
 
