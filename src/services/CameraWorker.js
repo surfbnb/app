@@ -64,11 +64,9 @@ class CameraWorker extends PureComponent {
   }
 
   syncReduxToAsync() {
-    // Need to sync
-    console.log('------------------------ syncReduxToAsync ------------------------ ');
+    // Need to sync    
     if (this.getCurrentUserRecordedVideoKey()) {
-      let data = this.getDataforAsync();
-      console.log('sync redux to async: get data from redux', data);
+      let data = this.getDataforAsync();      
       if (Object.keys(data).length > 0) {
         utilities.saveItem(this.getCurrentUserRecordedVideoKey(), data).then(() => {
           console.log('syncReduxToAsync :: Data synced from recorded_video to Async');
@@ -78,8 +76,7 @@ class CameraWorker extends PureComponent {
   }
 
   async processVideo() {
-    // Early exit
-    console.log('this.props.current_user.id', this.props.current_user.id);
+    // Early exit    
     if (Object.keys(this.props.current_user).length === 0 || Object.keys(this.props.recorded_video).length === 0) {
       console.log('processVideo :: Nothing to process');
       return;
@@ -116,8 +113,7 @@ class CameraWorker extends PureComponent {
   async cleanUp() {
     // stop ffmpge processing
     Store.dispatch(videoInProcessing(false));
-    this.ffmpegProcesser && this.ffmpegProcesser.cancel();
-    console.log('clean up has called');
+    this.ffmpegProcesser && this.ffmpegProcesser.cancel();    
 
     // remove files from cache,
     await this.removeFile(this.props.recorded_video.raw_video);
@@ -126,7 +122,6 @@ class CameraWorker extends PureComponent {
     // Cleaning up Async
     utilities.removeItem(this.getCurrentUserRecordedVideoKey());
     // cleanup Redux
-    this.syncedFromAsyncToRedux = false;
 
     Store.dispatch(clearRecordedVideo());
   }

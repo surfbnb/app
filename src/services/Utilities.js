@@ -13,25 +13,18 @@ export default {
         val = String(val);
       }
       await AsyncStorage.removeItem(key);
-      await AsyncStorage.setItem(key, val);
-      let res = await AsyncStorage.getItem(key);
-      console.log('saved Data successfully');
-      console.log(key, res);
+      await AsyncStorage.setItem(key, val);      
     } catch (error) {
       console.warn('AsyncStorage error: ' + error.message);
     }
   },
 
-  removeItem(key) {
-    console.log('remove item ---------------', key);
+  removeItem(key) {    
     return AsyncStorage.removeItem(key);
   },
 
   async getItem(key) {
     res = await AsyncStorage.getItem(key);
-    console.log('get is successful');
-    console.log(key, res );
-
     return AsyncStorage.getItem(key);
   },
 

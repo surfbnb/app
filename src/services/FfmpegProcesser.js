@@ -27,10 +27,8 @@ export default class FfmpegProcesser {
     }
   }
 
-  async getVideoThumbnail() {
-    console.log('this.coverFileOutputPath this.im in getVideoThumbnail');
-    this._getCoverOutputPath();
-    console.log('this.coverFileOutputPath this.coverFileOutputPath', this.coverFileOutputPath);
+  async getVideoThumbnail() {    
+    this._getCoverOutputPath();    
     let executeString = this._getVideoThumbnailString();
     console.log(executeString);
     let executeResponse = await RNFFmpeg.execute(executeString);

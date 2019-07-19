@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text } from 'react-native';
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
-import playIcon from '../../assets/play_icon.png';
+import playIcon from '../../assets/preview_play_icon.png';
 import tickIcon from '../../assets/tick_icon.png';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
@@ -72,6 +72,7 @@ class PreviewRecordedVideo extends Component {
             this.props.goToRecordScreen(); 
           } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
             //TODO: navigate to previous page
+            this.props.navigation.push('ProfileScreen');
           }
         }
     );

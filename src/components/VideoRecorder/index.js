@@ -40,12 +40,10 @@ class VideoRecorder extends Component {
       const oThis = this;
 
       // this.showActionSheet();
-      if (this.recordedVideo) {
-        console.log(' I m in recorded ');
+      if (this.recordedVideo) {        
         isFileExists = await RNFS.exists(this.recordedVideo);
       }
-      console.log(this.recordedVideo, 'this.recordedVideo');
-      console.log(isFileExists, 'isFileExists');
+          
       if (isFileExists) {
         setTimeout(function() {
           oThis.showActionSheet();
