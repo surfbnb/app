@@ -2,13 +2,11 @@ import React from 'react';
 import { View, Image, TouchableWithoutFeedback, StyleSheet, Dimensions } from 'react-native';
 
 import ImageCropper from './index';
-import tickIcon from '../../assets/tick_icon.png';
 import appConfig from '../../constants/AppConfig';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center'
+    flex: 1
   }
 });
 
@@ -25,7 +23,7 @@ export default class CropperUI extends React.Component {
     }));
   };
 
-  handlePress = async () => {
+  cropImage = async () => {
     const { cropperParams } = this.state;
     const cropSize = {
       width: appConfig.cameraCropConstants.WIDTH,
@@ -49,38 +47,36 @@ export default class CropperUI extends React.Component {
 
   render() {
     let { width, height } = Dimensions.get('window');
+    let verticalPadding = 55;
+    let horzPadding = 30;
+    let totalHorzPadding = 2 * horzPadding;
+    let x = width - totalHorzPadding;
+    let overlayDim = 3 * x;
+    let borderRadius = (3 * x) / 2;
+    let borderWidth = x;
+
     return (
       <View style={styles.container}>
-        <View style={{ position: 'relative', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+        <View style={{ position: 'relative' }}>
           <ImageCropper
             heightRatio={this.props.screenHeightRatio}
             imageUri={this.props.imageUri}
             setCropperParams={this.setCropperParams}
           />
           <View
+            pointerEvents="none"
             style={{
-              position: 'absolute'
+              position: 'absolute',
+              top: horzPadding - x,
+              left: horzPadding - x,
+              height: overlayDim,
+              width: overlayDim,
+              backgroundColor: 'transparent',
+              borderWidth: borderWidth,
+              borderRadius: borderRadius,
+              borderColor: 'rgba(0, 0, 0, 0.5)'
             }}
-          >
-            {/* <View
-              pointerEvents="box-none"
-              style={{
-                top: -width / 2 + 30,
-                left: -width / 2 + 30,
-                right: -width / 2 + 30,
-                bottom: -width / 2 + 30,
-                backgroundColor: 'transparent',
-
-                borderWidth: width / 2,
-                borderRadius: width,
-                borderColor: 'rgba(0, 0, 0, 0.99)',
-                opacity: 0.5
-              }}
-            ></View> */}
-            <TouchableWithoutFeedback onPress={this.handlePress}>
-              <Image source={tickIcon} style={{ width: 45, height: 45, marginRight: 22.5, marginBottom: 22.5 }} />
-            </TouchableWithoutFeedback>
-          </View>
+          ></View>
         </View>
       </View>
     );

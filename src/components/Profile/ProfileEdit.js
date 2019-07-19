@@ -157,7 +157,6 @@ class ProfileEdit extends React.PureComponent {
       return new PepoApi(`/users/${this.props.userId}/profile`)
         .post(this.getParams())
         .then((res) => {
-          console.log('----res----', res);
           this.setState({ btnText: btnPreText });
           if (res && res.success) {
             this.updateProfileData();
@@ -178,8 +177,8 @@ class ProfileEdit extends React.PureComponent {
   };
 
   onBioFocus = () => {
-    this.props.navigation.push('BioScreen', { onChangeTextDelegate: this.onBioChangeDelegate });
-    this.state.current_formField = this.tabIndex.link;
+    this.state.current_formField = 0;
+    this.props.navigation.push('BioScreen', { onChangeTextDelegate: this.onBioChangeDelegate,initialValue:this.state.bio });
   };
 
   onServerError(res) {

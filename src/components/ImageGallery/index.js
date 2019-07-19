@@ -7,7 +7,15 @@ import { SafeAreaView } from 'react-navigation';
 import assignIn from 'lodash/assignIn';
 import store from '../../store';
 import CropperUI from '../ImageCropper/CropperUI';
+
 import {upsertProfilePicture} from '../../actions';
+
+import ImageResizer from 'react-native-image-resizer';
+import RNFS from 'react-native-fs';
+import CurrentUser from '../../models/CurrentUser';
+import PepoApi from '../../services/PepoApi';
+import appConfig from '../../constants/AppConfig';
+import tickIcon from '../../assets/tick_icon.png';
 
 class ImageGallery extends Component {
   constructor(props) {
@@ -18,11 +26,17 @@ class ImageGallery extends Component {
       isLoading: false
     };
     this.listRef = null;
+    this.cropperRef = null;
     this.firstImageCall = true;
   }
 
   componentDidMount() {
     this.init();
+  }
+
+  componentWillUnmount() {
+    this.listRef = null;
+    this.cropperRef = null;
   }
 
   init = () => {
@@ -135,20 +149,38 @@ class ImageGallery extends Component {
     this.props.navigation.navigate('ProfileScreen');
   };
 
+  cropImage = () => {
+    if (this.cropperRef) {
+      this.cropperRef.cropImage();
+    }
+  };
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 0.6, backgroundColor: 'black' }}>
+        <View style={{ position: 'relative', flex: appConfig.cameraHeightRatio, backgroundColor: 'black' }}>
           {this.state.imageURI ? (
             <CropperUI
+              ref={(ref) => (this.cropperRef = ref)}
               imageUri={this.state.imageURI}
-              screenHeightRatio={0.6}
+              screenHeightRatio={appConfig.cameraHeightRatio}
               onCrop={this.getCroppedImage}
               onClose={this.closeCropper}
             />
           ) : (
             <View />
           )}
+          <TouchableWithoutFeedback onPress={this.cropImage}>
+            <Image
+              source={tickIcon}
+              style={{
+                position: 'absolute',
+                bottom: 22,
+                right: 22,
+                width: 45,
+                height: 45
+              }}
+            />
+          </TouchableWithoutFeedback>
         </View>
         <View style={{ flex: 0.4, backgroundColor: '#fff', paddingRight: 3, paddingTop: 3 }}>
           <FlatList
