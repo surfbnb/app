@@ -167,7 +167,6 @@ class ProfileEdit extends React.PureComponent{
 
   onBioFocus = () => {
     this.props.navigation.push("BioScreen" , {onChangeTextDelegate : this.onBioChangeDelegate });
-    this.state.current_formField = this.tabIndex.link;
   }
 
   onServerError(res){
