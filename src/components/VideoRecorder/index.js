@@ -55,7 +55,8 @@ class VideoRecorder extends Component {
   showActionSheet() {
     ActionSheet.show(
       {
-        options: ACTION_SHEET_BUTTONS
+        options: ACTION_SHEET_BUTTONS,
+        title: 'You have already recorded video'
       },
       (buttonIndex) => {
         if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
@@ -85,8 +86,7 @@ class VideoRecorder extends Component {
           type={RNCamera.Constants.Type.front}
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
-          autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
-          //videoStabilizationMode={RNCamera.Constants.VideoStabilization['auto']}
+          autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}          
           notAuthorizedView={
             <View>
               <Text>The camera is not authorized!</Text>
@@ -175,8 +175,7 @@ class VideoRecorder extends Component {
       quality: RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY],
       base64: true,
       maxDuration: 30,
-      muted: false,
-      // codec: RNCamera.Constants.VideoCodec['H264'],
+      muted: false,      
       orientation: 'portrait'
     };
     this.initProgressBar();

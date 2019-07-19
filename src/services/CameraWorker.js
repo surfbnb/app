@@ -179,8 +179,8 @@ class CameraWorker extends PureComponent {
   async compressVideo() {
     if (
       this.props.recorded_video.raw_video &&
-      !this.props.recorded_video.compression_processing &&
-      this.props.recorded_video.cover_image &&
+      !this.props.recorded_video.compression_processing &&      
+      this.props.recorded_video.cover_image && 
       !this.props.recorded_video.compressed_video
     ) {
       Store.dispatch(
