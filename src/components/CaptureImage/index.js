@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { Platform } from 'react-native';
 
 import SnapClicker from '../SnapClicker';
-import ImageCropper from '../ImageCropper';
-import ImageBrowser from '../../services/ImageBrowser';
+import CropperUI from '../ImageCropper/CropperUI';
 import UploadToS3 from '../../services/UploadToS3';
+import ImageResizer from 'react-native-image-resizer';
+import RNFS from 'react-native-fs';
 
 class CaptureImage extends Component {
   constructor(props) {
@@ -16,7 +18,14 @@ class CaptureImage extends Component {
 
   getView() {
     if (this.state.imageCaptured) {
-      return <ImageCropper imageURI={this.state.imageURI} onCrop={this.getCroppedImage} onClose={this.closeCropper} />;
+      return (
+        <CropperUI
+          imageUri={this.state.imageURI}
+          screenHeightRatio={1}
+          onCrop={this.getCroppedImage}
+          onClose={this.closeCropper}
+        />
+      );
     } else {
       return this.getCameraView();
     }
@@ -34,20 +43,38 @@ class CaptureImage extends Component {
     this.props.navigation.navigate('ProfileImagePicker');
   }
 
-  async getCroppedImage(imageUri) {
+  getCroppedImage = async (imageUri) => {
     if (!imageUri) return;
-    const uploadToS3 = new UploadToS3(imageUri, 'image');
+
+    if (Platform.OS === 'ios') {
+      const outputPath = `${RNFS.CachesDirectoryPath}/Pepo/${new Date().getTime()}.jpg`;
+      // The imageStore path here is "rct-image-store://0"
+      ImageResizer.createResizedImage(imageUri, 100, 100, 'JPEG', 25, 0, outputPath)
+        .then(async (success) => {
+          await this.uploadToS3(success.path);
+        })
+        .catch((err) => {
+          console.log('Could not get resized image', err);
+        });
+    } else {
+      await this.uploadToS3(imageUri);
+    }
+  };
+
+  uploadToS3 = async (uri) => {
+    const uploadToS3 = new UploadToS3(uri, 'image');
     const s3Url = await uploadToS3.perform();
     console.log('image upload url', s3Url);
-  }
+    this.closeCropper();
+  };
 
   toggleView = (imageURI = '') => {
+    console.log('imageURI raw', imageURI);
     if (imageURI) {
       this.setState({
         imageCaptured: !this.state.imageCaptured,
         imageURI
       });
-      ImageBrowser.savePhotoToGallery(imageURI);
     }
   };
 

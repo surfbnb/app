@@ -17,7 +17,9 @@ class SnapClicker extends Component {
       const options = {
         quality: 0.5,
         base64: true,
-        mirrorImage: true
+        mirrorImage: true,
+        forceUpOrientation: true,
+        fixOrientation: true // needed on some android devices
       };
       const data = await this.camera.takePictureAsync(options);
       let obj = {

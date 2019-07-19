@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableWithoutFeedback, FlatList, Dimensions } from 'react-native';
+import { View, Image, TouchableWithoutFeedback, FlatList, Dimensions, Platform } from 'react-native';
 
 import inlineStyles from './styles';
 import ImageBrowser from '../../services/ImageBrowser';
 import { SafeAreaView } from 'react-navigation';
 import assignIn from 'lodash/assignIn';
 import UploadToS3 from '../../services/UploadToS3';
-import tickIcon from '../../assets/tick_icon.png';
+import CropperUI from '../ImageCropper/CropperUI';
+import ImageResizer from 'react-native-image-resizer';
+import RNFS from 'react-native-fs';
 
 class ImageGallery extends Component {
   constructor(props) {
@@ -73,7 +75,6 @@ class ImageGallery extends Component {
     this.setState({
       imageURI: uri
     });
-    this.getCroppedImage(uri);
   };
 
   getSelected = (uri) => {
@@ -121,50 +122,49 @@ class ImageGallery extends Component {
     this.getPhotos();
   };
 
-  async getCroppedImage(imageUri) {
+  getCroppedImage = async (imageUri) => {
     if (!imageUri) return;
-    const uploadToS3 = new UploadToS3(imageUri, 'image');
-    console.time('before upload');
+
+    if (Platform.OS === 'ios') {
+      const outputPath = `${RNFS.CachesDirectoryPath}/Pepo/${new Date().getTime()}.jpg`;
+      // The imageStore path here is "rct-image-store://0"
+      ImageResizer.createResizedImage(imageUri, 100, 100, 'JPEG', 25, 0, outputPath)
+        .then(async (success) => {
+          await this.uploadToS3(success.path);
+        })
+        .catch((err) => {
+          console.log('Could not get resized image', err);
+        });
+    } else {
+      await this.uploadToS3(imageUri);
+    }
+  };
+
+  uploadToS3 = async (uri) => {
+    const uploadToS3 = new UploadToS3(uri, 'image');
     const s3Url = await uploadToS3.perform();
-    console.time('after upload');
     console.log('image upload url', s3Url);
-  }
+    this.closeCropper();
+  };
 
   closeCropper = () => {
     this.props.navigation.navigate('ProfileImagePicker');
   };
 
   render() {
-    let {width, height} = Dimensions.get('window');
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 0.6, alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+        <View style={{ flex: 0.6, backgroundColor: 'black' }}>
           {this.state.imageURI ? (
-            <View style={{position: 'relative'}}>
-              <Image
-                style={{ width: parseInt(Dimensions.get('window').width), aspectRatio: 1 }}
-                source={{ uri: this.state.imageURI }}
-              />
-              <View
-                style={{
-                  position: 'absolute',
-                  top: -width/2 + 30,
-                  left: -width/2 + 30,
-                  right: -width/2 + 30,
-                  bottom: -width/2 + 30,
-                  backgroundColor: 'transparent',
-
-                  borderWidth: width/2,
-                  borderRadius: width,
-                  borderColor: 'rgba(0, 0, 0, 0.99)',
-                  opacity: 0.5,
-                }}
-              />
-            </View>
+            <CropperUI
+              imageUri={this.state.imageURI}
+              screenHeightRatio={0.6}
+              onCrop={this.getCroppedImage}
+              onClose={this.closeCropper}
+            />
           ) : (
             <View />
           )}
-          <Image source={ tickIcon } style={{width: 45, height: 45, marginRight: 22.5, marginBottom: 22.5}}/>
         </View>
         <View style={{ flex: 0.4, backgroundColor: '#fff', paddingRight: 3, paddingTop: 3 }}>
           <FlatList
