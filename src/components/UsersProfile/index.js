@@ -8,14 +8,11 @@ import { Toast } from 'native-base';
 import UserInfo from '../../components/CommonComponents/UserInfo';
 import { ostErrors } from "../../services/OstErrors";
 import currentUserModel from "../../models/CurrentUser";
-import playIcon from '../../assets/play_icon.png'
 
 import tx_icon from '../../assets/tx_icon.png';
-import inlineStyles from './styles'
 
  //TODO Shraddha move to common place,  Get in touch with Thahir. Not a good practices
 import iconStyle from "../Home/styles";
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import CoverImage from "../CommonComponents/CoverImage";
 
 
@@ -79,9 +76,6 @@ export default class UsersProfile extends Component {
             );
         }
     }
-
-
-
 
     render() {
         return (
