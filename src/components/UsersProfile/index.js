@@ -7,15 +7,12 @@ import { Toast } from 'native-base';
 
 import UserInfo from '../../components/CommonComponents/UserInfo';
 import { ostErrors } from "../../services/OstErrors";
-import currentUserModel from "../../models/CurrentUser";
-import playIcon from '../../assets/play_icon.png'
+import CurrentUser from "../../models/CurrentUser";
 
 import tx_icon from '../../assets/tx_icon.png';
-import inlineStyles from './styles'
 
  //TODO Shraddha move to common place,  Get in touch with Thahir. Not a good practices
 import iconStyle from "../Home/styles";
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import CoverImage from "../CommonComponents/CoverImage";
 
 
@@ -50,6 +47,11 @@ export default class UsersProfile extends Component {
     }
 
     fetchUser = () => {
+        if( this.userId == CurrentUser.getUserId() ) {
+            this.setState({loading: false});
+            return ; 
+        };
+
         new PepoApi(`/users/${this.userId}/profile`)
         .get()
         .then((res) =>{
@@ -71,7 +73,7 @@ export default class UsersProfile extends Component {
     }
 
     navigateToTransactionScreen = () => {
-        if(  currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() ){
+        if(  CurrentUser.checkActiveUser() && CurrentUser.isUserActivated() ){
             this.props.navigation.push('TransactionScreen' ,
                 {   toUserId: this.userId,
                     requestAcknowledgeDelegate: this.fetchUser
@@ -80,15 +82,12 @@ export default class UsersProfile extends Component {
         }
     }
 
-
-
-
     render() {
         return (
             <ScrollView style={{ backgroundColor: "#fff",flex:1}}>
               {this.isLoading()}
               <CoverImage userId={this.userId} />
-              <UserInfo userId={this.userId}/>
+              <UserInfo userId={this.userId} isEdit={false}/>
              <View style={[iconStyle.touchablesBtns , {position:"absolute" ,zIndex:100, top: "75%"}]}>
                     <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen}
                                     style={iconStyle.txElem}>

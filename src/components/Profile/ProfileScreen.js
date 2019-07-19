@@ -107,7 +107,7 @@ class ProfileScreen extends Component {
 
         {!this.coverImageId && <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.userId} />}
 
-        {!this.state.isEdit && <UserInfo userId={this.userId} hideUserInfo={this.hideUserInfo} />}
+        {!this.state.isEdit && <UserInfo userId={this.userId} isEdit={true} hideUserInfo={this.hideUserInfo} />}
         {this.state.isEdit && <ProfileEdit userId={this.userId} hideProfileEdit={this.hideProfileEdit} />}
       </KeyboardAwareScrollView>
     );
