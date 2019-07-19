@@ -4,15 +4,14 @@ import Store from '../store';
 
 export default class UploadToS3 {
   constructor(fileURI, fileType) {
-    this.fileType = fileType
+    this.fileType = fileType;
     this.mappedFileType = Constants['fileUploadTypes'][fileType];
     this.file = this.getFileObject(fileURI);
-    
   }
 
   getFileObject(fileURI) {
     let fileExt = this.getFileExtension(fileURI);
-    
+
     return {
       uri: fileURI,
       type: `${this.fileType}/${fileExt}`,
@@ -25,22 +24,29 @@ export default class UploadToS3 {
     return splittedFileName[splittedFileName.length - 1];
   }
 
-  async perform() {
-    let signedUrl = await this._getSignedUrl();
-    let uploadResp = await this._upload(signedUrl);
-    if (uploadResp.status == 204) {
-      return this.uploadParams.s3_url;
-    }
-    return '';
+  perform() {
+    return new Promise(async (resolve, reject) => {
+      let signedUrl = await this.getSignedUrl();
+      if (signedUrl.success) {
+        let uploadResp = await this.upload(signedUrl);
+        if (uploadResp.status == 204) {
+          return resolve(this.uploadParams.s3_url);
+        }
+        return reject();
+      }
+      return reject();
+    });
   }
 
-  async _getSignedUrl() {    
-    let signedUrlResp = await new PepoApi('/upload-params').get({ [this.mappedFileType]: [this.file && this.file.name]});
+  async getSignedUrl() {
+    let signedUrlResp = await new PepoApi('/upload-params').get({
+      [this.mappedFileType]: [this.file && this.file.name]
+    });
     return signedUrlResp;
   }
 
-  async _upload(res) {
-    (this.uploadParams = this._getUploadParams(res)), (postFields = this.uploadParams.post_fields);
+  async upload(res) {
+    (this.uploadParams = this.getUploadParams(res)), (postFields = this.uploadParams.post_fields);
 
     postFields.push({ key: 'file', value: this.file });
 
@@ -49,26 +55,26 @@ export default class UploadToS3 {
         'Content-Type': 'multipart/form-data'
       },
       method: 'POST',
-      body: this._getFormData(this.uploadParams.post_fields)
+      body: this.getFormData(this.uploadParams.post_fields)
     };
     try {
-       resp = await fetch(this.uploadParams.post_url, options);
-    } catch(e){      
+      resp = await fetch(this.uploadParams.post_url, options);
+    } catch (e) {
       console.log(e);
-    }    
+    }
     return resp;
   }
 
-  _getUploadParams(res) {
+  getUploadParams(res) {
     let resultType = res.data['result_type'];
     return res.data[resultType][this.mappedFileType][this.file.name];
   }
 
-  _getFormData(paramsList) {
+  getFormData(paramsList) {
     let formData = new FormData();
     paramsList.forEach((param) => {
       formData.append(param['key'], param['value']);
-    });    
+    });
     return formData;
   }
 }

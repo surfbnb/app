@@ -27,12 +27,12 @@ class PreviewRecordedVideo extends Component {
   }
 
   componentDidMount() {
-    Store.dispatch(upsertRecordedVideo({raw_video: this.cachedVideoUri}));
+    Store.dispatch(upsertRecordedVideo({ raw_video: this.cachedVideoUri }));
   }
 
-  enableStartUploadFlag(){
+  enableStartUploadFlag = () => {
     this.props.navigation.goBack();
-    Store.dispatch(upsertRecordedVideo({do_upload: true}));
+    Store.dispatch(upsertRecordedVideo({ do_upload: true }));
   }
 
   handleProgress = (progress) => {
@@ -47,34 +47,34 @@ class PreviewRecordedVideo extends Component {
     });
   };
 
-  handleEnd() {
+  handleEnd = () => {
     this.setState({
       progress: 1
     });
-  }
+  };
 
   cancleVideoHandling() {
     ActionSheet.show(
-        {
-          options: ACTION_SHEET_BUTTONS,
-          cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
-          destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX
-        },
-        (buttonIndex) => {
-          console.log('This is Button index', buttonIndex);
-          if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
-            // This will take to VideoRecorder component
-            Store.dispatch(
-              upsertRecordedVideo({
-                do_discard: true
-              })
-            );
-            this.props.goToRecordScreen(); 
-          } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
-            //TODO: navigate to previous page
-            this.props.navigation.push('ProfileScreen');
-          }
+      {
+        options: ACTION_SHEET_BUTTONS,
+        cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
+        destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX
+      },
+      (buttonIndex) => {
+        console.log('This is Button index', buttonIndex);
+        if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
+          // This will take to VideoRecorder component
+          Store.dispatch(
+            upsertRecordedVideo({
+              do_discard: true
+            })
+          );
+          this.props.goToRecordScreen();
+        } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
+          //TODO: navigate to previous page
+          this.props.navigation.push('ProfileScreen');
         }
+      }
     );
   }
 
@@ -85,15 +85,9 @@ class PreviewRecordedVideo extends Component {
           source={{ uri: this.cachedVideoUri }}
           style={styles.previewVideo}
           fullscreen={true}
-          onLoad={(meta) => {
-            this.handleLoad(meta);
-          }}
-          onProgress={(progress) => {
-            this.handleProgress(progress);
-          }}
-          onEnd={() => {
-            this.handleEnd();
-          }}
+          onLoad={this.handleLoad}
+          onProgress={this.handleProgress}
+          onEnd={this.handleEnd}
           ref={(component) => (this._video = component)}
         ></Video>
         <ProgressBar
@@ -116,11 +110,7 @@ class PreviewRecordedVideo extends Component {
           >
             <Image style={styles.playIcon} source={playIcon} />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={async () => {
-              this.enableStartUploadFlag();
-            }}
-          >
+          <TouchableOpacity onPress={this.enableStartUploadFlag}>
             <Image style={styles.tickIcon} source={tickIcon} />
           </TouchableOpacity>
         </View>
