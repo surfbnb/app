@@ -75,5 +75,7 @@ export default {
   cameraCropConstants: {
     WIDTH: 480,
     HEIGHT: 480
-  }
+  },
+
+  cameraHeightRatio: 0.6
 };
