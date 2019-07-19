@@ -91,7 +91,7 @@ class TransactionScreen extends Component {
 
   //TODO , NOT SURE if bug comes this also will have to connected via redux.
   onBalance(balance , res) {
-    balance = utilities.getFromDecimal(balance);
+    balance = pricer.getFromDecimal(balance);
     balance = PriceOracle.toBt(balance) || 0;
     let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
     this.setState({ balance, exceBtnDisabled });
@@ -106,7 +106,7 @@ class TransactionScreen extends Component {
   sendTransactionToSdk() {
     const user = currentUserModal.getUser();
     const option = { wait_for_finalization: false };
-    const btInDecimal = utilities.getToDecimal(this.state.btAmount);
+    const btInDecimal = pricer.getToDecimal(this.state.btAmount);
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
       user.ost_user_id,

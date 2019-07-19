@@ -6,7 +6,7 @@ import PepoApi from "../../services/PepoApi";
 import reduxGetter from "../../services/ReduxGetters";
 import TransactionPepoButton from "./TransactionPepoButton";
 import tx_icon from '../../assets/tx_icon.png';
-import utilities from "../../services/Utilities";
+import pricer from "../../services/Pricer";
 import currentUserModel from "../../models/CurrentUser";
 
 import BottomStatus from "./BottomStatus";
@@ -49,7 +49,7 @@ class HomeFeedRow extends PureComponent {
     }
 
     get totalBt(){
-        return utilities.getFromDecimal( reduxGetter.getVideoBt( this.videoId ) );
+        return pricer.getFromDecimal( reduxGetter.getVideoBt( this.videoId ) );
     }
 
     get isVideoSupported(){
