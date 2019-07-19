@@ -23,14 +23,17 @@ import ProfileScreen from './src/components/Profile/ProfileScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from './src/components/Giphy';
-import VideoPlayer from "./src/components/CommonComponents/VideoPlayer";
+import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
 import EditTx from './src/components/Transaction/EditTxModal';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
-import UsersProfileScreen from "./src/components/UsersProfile";
+import UsersProfileScreen from './src/components/UsersProfile';
 import CameraWorker from './src/services/CameraWorker';
 import CaptureVideo from './src/components/CaptureVideo';
-import BioScreen from "./src/components/Bio";
+import PreviewRecordedVideo from './src/components/PreviewRecordedVideo';
+import CaptureImage from './src/components/CaptureImage';
+import ImageGallery from './src/components/ImageGallery';
+import BioScreen from './src/components/Bio';
 
 import deepGet from 'lodash/get';
 
@@ -59,7 +62,7 @@ const HomeTransactionStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
     TransactionScreen: TransactionScreen,
-    UsersProfileScreen: UsersProfileScreen,
+    UsersProfileScreen: UsersProfileScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -75,7 +78,6 @@ const HomeStack = createStackNavigator(
   },
   { ...modalStackConfig }
 );
-
 
 const FeedStack = createStackNavigator(
   {
@@ -102,7 +104,6 @@ const ProfileStack = createStackNavigator(
     VideoPlayer: VideoPlayer,
     CaptureVideo: CaptureVideo,
     BioScreen: BioScreen
-
   },
   {
     headerLayoutPreset: 'center',
@@ -165,7 +166,9 @@ const AppContainer = createAppContainer(
       AuthScreen,
       CustomTabStack,
       PinStack,
-      UserActivatingScreen      
+      UserActivatingScreen,
+      CaptureImageScreen: CaptureImage,
+      ImageGalleryScreen: ImageGallery
     },
     {
       initialRouteName: 'AuthLoading'
@@ -175,7 +178,6 @@ const AppContainer = createAppContainer(
 
 const RootNavigationContainer = () => (
   <Root>
-    
     <AppContainer
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);

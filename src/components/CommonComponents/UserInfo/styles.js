@@ -30,41 +30,41 @@ let stylesMap = {
     color: Colors.white,
     fontWeight: '500'
   },
-  infoHeaderWrapper:{
-    flexDirection:'row',
-    justifyContent:'center',
-    marginVertical:10
+  infoHeaderWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10
   },
-  profileImageSkipFont:{
-    height:25,
-    width:25
+  profileImageSkipFont: {
+    height: 25,
+    width: 25,
+    borderRadius: 12.5
   },
   userName: {
     fontWeight: 'bold',
     color: Colors.dark,
     marginLeft: 5
   },
-  bioSection:{
-    textAlign:'center',
-    marginVertical:10,
-    color : Colors.greyLite,
-    fontWeight :'normal'
+  bioSection: {
+    textAlign: 'center',
+    marginVertical: 10,
+    color: Colors.greyLite,
+    fontWeight: 'normal'
   },
-  numericInfoWrapper:{
-    flexDirection:'row',
-    justifyContent:'center',
-    marginVertical:15
+  numericInfoWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 15
   },
-  numericInfo:{
-    color:Colors.dark,
-    fontWeight:'bold',
-    textAlign:'center'
+  numericInfo: {
+    color: Colors.dark,
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
-  numericInfoText:{
-    color : Colors.greyLite,
-    fontWeight :'normal'
+  numericInfoText: {
+    color: Colors.greyLite,
+    fontWeight: 'normal'
   }
-
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

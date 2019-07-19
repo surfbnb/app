@@ -4,11 +4,12 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import com.goldenowl.twittersignin.TwitterSigninPackage;
+import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import me.hauvo.thumbnail.RNThumbnailPackage;
 import org.reactnative.camera.RNCameraPackage;
-import com.goldenowl.twittersignin.TwitterSigninPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
@@ -36,8 +37,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
-            new LinearGradientPackage(),
             new TwitterSigninPackage(),
+            new ImageResizerPackage(),
+            new LinearGradientPackage(),
             new ReactVideoPackage(),
             new RNThumbnailPackage(),
             new RNCameraPackage(),
