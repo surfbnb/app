@@ -24,7 +24,8 @@ class BioScreen extends PureComponent {
         this.state ={
           data: [],
           value: "",
-          keyword: ""
+          keyword: "",
+          count:0
         }
         this.reqTimer = 0 ;
         this.wordIndex = -1;
@@ -65,8 +66,11 @@ class BioScreen extends PureComponent {
     }
 
     changeValue( val ){
-      this.onChangeTextDelegate && this.onChangeTextDelegate( val );
-      this.setState({ value: val });
+      val = val || "";
+      if( val.length <= 30 ){
+        this.onChangeTextDelegate && this.onChangeTextDelegate( val );
+        this.setState({ value: val , count :val.length });
+      }
     }
 
     onChangeText = (val) => { 
@@ -192,6 +196,7 @@ class BioScreen extends PureComponent {
               multiline = {true}
               numberOfLines = {3}
             />
+            <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
 
             <FlatList
               keyboardShouldPersistTaps={"always"}

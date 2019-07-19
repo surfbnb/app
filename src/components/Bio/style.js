@@ -14,6 +14,10 @@ export default (styles = StyleSheet.create({
   },
   suggestionTextWrapper : {
     marginTop:20
+  },
+  countStyle:{
+    fontSize:10,
+    textAlign:'right'
   }
 }));
 
