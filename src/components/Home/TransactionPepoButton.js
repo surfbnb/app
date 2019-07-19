@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import {TouchableWithoutFeedback , View } from "react-native";
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { Toast } from 'native-base';
+import deepGet from "lodash/get";
 
 import clone from "lodash/clone";
 import {connect} from 'react-redux';

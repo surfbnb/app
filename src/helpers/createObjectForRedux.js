@@ -2,7 +2,7 @@ class CreateObjectForRedux {
   constructor() {}
 
   createImageObject(imageObject) {
-    let currentTs = Date.now();
+    let currentTs = `image_${Date.now()}`;
     return {
       key: currentTs,
       value: {
@@ -16,7 +16,7 @@ class CreateObjectForRedux {
     };
   }
   createVideoObject(videoObject, posterImageId) {
-    let currentTs = Date.now();
+    let currentTs = `video_${Date.now()}`;
     return {
       key: currentTs,
       value: {

@@ -11,6 +11,8 @@ import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 
+import AppConfig from '../../constants/AppConfig';
+
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -38,12 +40,10 @@ class VideoRecorder extends Component {
       const oThis = this;
 
       // this.showActionSheet();
-      if (this.recordedVideo) {
-        console.log(' I m in recorded ');
+      if (this.recordedVideo) {        
         isFileExists = await RNFS.exists(this.recordedVideo);
       }
-      console.log(this.recordedVideo, 'this.recordedVideo');
-      console.log(isFileExists, 'isFileExists');
+          
       if (isFileExists) {
         setTimeout(function() {
           oThis.showActionSheet();
@@ -83,7 +83,7 @@ class VideoRecorder extends Component {
           }}
           style={styles.preview}
           type={RNCamera.Constants.Type.front}
-          ratio="16:9"
+          ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
           //videoStabilizationMode={RNCamera.Constants.VideoStabilization['auto']}
@@ -97,7 +97,7 @@ class VideoRecorder extends Component {
               <Text>The camera is pending authorization!</Text>
             </View>
           }
-          defaultVideoQuality={RNCamera.Constants.VideoQuality['480p']}
+          defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
           defaultMuted={false}
           androidCameraPermissionOptions={{
             title: 'Permission to use camera',
@@ -172,7 +172,7 @@ class VideoRecorder extends Component {
     if (!this.camera) return;
     this.setState({ isRecording: true });
     const options = {
-      quality: RNCamera.Constants.VideoQuality['420p'],
+      quality: RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY],
       base64: true,
       maxDuration: 30,
       muted: false,

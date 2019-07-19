@@ -15,10 +15,12 @@ class CaptureVideo extends Component {
     };
   }
 
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    return {
+      header: null
+    };
+  };
 
-  toggleView(videoUri = '') {
-    
-  }
 
   goToRecordScreen(){
     this.setState({

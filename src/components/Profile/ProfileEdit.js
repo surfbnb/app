@@ -12,13 +12,16 @@ import reduxGetter from "../../services/ReduxGetters";
 import { ostErrors } from '../../services/OstErrors';
 import PepoApi from "../../services/PepoApi";
 import ProfilePlusIcon from '../../assets/plus_icon.png'
-
+import CurrentUser from '../../models/CurrentUser';
+import {updateCurrentUser, upsertUserProfileEntities , upsertLinkEntities} from "../../actions";
+import Store from "../../store";
+import utilities from "../../services/Utilities";
 const mapStateToProps = (state, ownProps) => {
   return {
     user_name: reduxGetter.getUserName( ownProps.userId ,state ) || "",
     name: reduxGetter.getName( ownProps.userId , state )|| "",
     bio: reduxGetter.getBio( ownProps.userId , state )|| "",
-    link : reduxGetter.getLink( reduxGetter.getUserLink(ownProps.userId , state ) ,  state )|| "",
+    link : reduxGetter.getLink( reduxGetter.getUserLinkId(ownProps.userId , state ) ,  state )|| "",
     profilePicture: reduxGetter.getImage( reduxGetter.getProfileImageId( ownProps.userId , state), state  )
   }
 };
@@ -102,6 +105,39 @@ class ProfileEdit extends React.PureComponent{
       };
   }
 
+  updateProfileData(){
+    const currentUserObj = CurrentUser.getUser();
+    if(this.state.name){
+      currentUserObj["name"] = this.state.name ;
+    }
+    if(this.state.user_name){
+      currentUserObj["user_name"] = this.state.user_name ;
+    }
+    Store.dispatch(updateCurrentUser( currentUserObj ));
+
+    const userProfileEntity = reduxGetter.getUserProfile( this.props.userId ) ;
+    if( !userProfileEntity ) return ;
+    if(this.state.bio){
+      const bio =  userProfileEntity["bio"] || {};
+      bio["text"] = this.state.bio;
+      userProfileEntity["bio"] = bio ;
+    }
+
+    if(this.state.link) {
+      const  linkId =  `link_${Date.now()}` ;
+      let linkObj = {
+        id : linkId,
+        url : this.state.link
+      };
+      Store.dispatch(upsertLinkEntities( utilities._getEntityFromObj( linkObj ) ));
+      let userProfileLinkIds = userProfileEntity['link_ids'] || [];
+      userProfileLinkIds.unshift(linkId)
+    }
+
+    Store.dispatch(upsertUserProfileEntities( utilities._getEntityFromObj( userProfileEntity ) ));
+
+  }
+
   onSubmit(){
     this.clearErrors();
     if( this.validateProfileInput() ){
@@ -112,6 +148,7 @@ class ProfileEdit extends React.PureComponent{
           console.log("----res----" , res);
           this.setState({ btnText : btnPreText} );
           if( res && res.success ){
+            this.updateProfileData();
             this.props.hideProfileEdit && this.props.hideProfileEdit( res );
             return ;
           }else {

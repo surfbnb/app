@@ -13,25 +13,18 @@ export default {
         val = String(val);
       }
       await AsyncStorage.removeItem(key);
-      await AsyncStorage.setItem(key, val);
-      let res = await AsyncStorage.getItem(key);
-      console.log('saved Data successfully');
-      console.log(key, res);
+      await AsyncStorage.setItem(key, val);      
     } catch (error) {
       console.warn('AsyncStorage error: ' + error.message);
     }
   },
 
-  removeItem(key) {
-    console.log('remove item ---------------', key);
+  removeItem(key) {    
     return AsyncStorage.removeItem(key);
   },
 
   async getItem(key) {
     res = await AsyncStorage.getItem(key);
-    console.log('get is successful');
-    console.log(key, res );
-
     return AsyncStorage.getItem(key);
   },
 
@@ -46,6 +39,36 @@ export default {
   getTokenSymbolImageConfig() {
     let symbol = pricer.getTokenSymbol();
     return appConfig['tokenSymbols'][symbol];
+  },
+
+  _getIDList(resultData, key = 'id') {
+    return resultData.map((item) => item[key]);
+  },
+
+  _getIDListFromObj(resultObj) {
+    return Object.keys(resultObj);
+  },
+
+  _getEntities(resultData, key = 'id') {
+    const entities = {};
+    resultData.forEach((item) => {
+      entities[`${key}_${item[key]}`] = item;
+    });
+    return entities;
+  },
+
+  _getEntitiesFromObj(resultObj, key = 'id') {
+    const entities = {};
+    for (let identifier in resultObj) {
+      entities[`${key}_${identifier}`] = resultObj[identifier];
+    }
+    return entities;
+  },
+
+  _getEntityFromObj( resultObj , key = "id" ){
+    const entity = {} ,  id = `${key}_${resultObj.id}` ;
+    entity[ id ] = resultObj ;
+    return entity;
   },
 
   getFromDecimal( bt ){

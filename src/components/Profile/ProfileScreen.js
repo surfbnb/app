@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import  {View,Text , ActivityIndicator} from "react-native";
+import { View, Text, ActivityIndicator } from 'react-native';
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
-import UserInfo from "../CommonComponents/UserInfo";
-import CurrentUser from "../../models/CurrentUser";
+import UserInfo from '../CommonComponents/UserInfo';
+import CurrentUser from '../../models/CurrentUser';
 
-import EmptyCoverImage from './EmptyCoverImage'
-import ProfileEdit from "./ProfileEdit";
-import CoverImage from '../CommonComponents/CoverImage'
-import reduxGetter from "../../services/ReduxGetters";
-import Colors from '../../theme/styles/Colors'
-import timeStamp from "../../helpers/timestampHandling";
+import EmptyCoverImage from './EmptyCoverImage';
+import ProfileEdit from './ProfileEdit';
+import CoverImage from '../CommonComponents/CoverImage';
+import reduxGetter from '../../services/ReduxGetters';
+import Colors from '../../theme/styles/Colors';
+import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import {Toast} from "native-base";
-import PepoApi from "../../services/PepoApi";
+import { Toast } from 'native-base';
+import PepoApi from '../../services/PepoApi';
 
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
@@ -27,12 +27,12 @@ class ProfileScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.userId= CurrentUser.getUserId();
+    this.userId = CurrentUser.getUserId();
     //TODO Shraddha : remove hardcoded values once tested on ios
-    this.coverImageId = reduxGetter.getUserCoverImageId(this.userId,this.state);
-    this.videoId = reduxGetter.getUserCoverVideoId( this.userId,this.state );
+    this.coverImageId = reduxGetter.getUserCoverImageId(this.userId, this.state);
+    this.videoId = reduxGetter.getUserCoverVideoId(this.userId, this.state);
     this.state = {
-      isEdit : false,
+      isEdit: false,
       loading: true
     };
     this.fetchUser();
@@ -41,70 +41,74 @@ class ProfileScreen extends Component {
   fetchUser = () => {
     return new PepoApi(`/users/${this.userId}/profile`)
       .get()
-      .then((res) =>{
-        console.log("profile" ,res);
-        if( !res ||  !res.success ){
+      .then((res) => {
+        console.log('profile', res);
+        if (!res || !res.success) {
           Toast.show({
-            text: ostErrors.getErrorMessage( res ),
+            text: ostErrors.getErrorMessage(res),
             buttonText: 'OK'
           });
         }
       })
-      .catch((error) =>{
+      .catch((error) => {
         Toast.show({
-          text: ostErrors.getErrorMessage( error ),
+          text: ostErrors.getErrorMessage(error),
           buttonText: 'OK'
         });
       })
-      .finally(()=>{
-        this.setState({ loading : false });
-      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
   };
 
-  isLoading(){
-    if( this.state.loading ){
-      return ( <ActivityIndicator /> );
+  isLoading() {
+    if (this.state.loading) {
+      return <ActivityIndicator />;
     }
-  };
+  }
 
   hideUserInfo = (isEditValue) => {
     this.setState({
-      isEdit : isEditValue
+      isEdit: isEditValue
     });
   };
 
-  hideProfileEdit = (res) =>{
+  hideProfileEdit = (res) => {
     this.setState({
-      isEdit : false
+      isEdit: false
     });
   };
 
   uploadVideo = () => {
-    this.props.navigation.navigate('CaptureVideo');
+    this.props.navigation.push('CaptureVideo');
   };
 
   render() {
     return (
-      <KeyboardAwareScrollView enableOnAndroid={true} style={{padding:20,flex:1}}>
+      <KeyboardAwareScrollView enableOnAndroid={true} style={{ padding: 20, flex: 1 }}>
         {this.isLoading()}
-        <BalanceHeader  />
+        <BalanceHeader />
         <React.Fragment>
-            <CoverImage height={0.50} isProfile={true}
-                        wrapperStyle={{borderWidth:1,borderRadius:5,marginTop:20,marginBottom: 10,borderColor:Colors.dark}}
-                        userId={this.userId} />
-            <Text style={{textAlign: 'right'}}>{timeStamp.fromNow( reduxGetter.getVideoTimeStamp(this.videoId) )}</Text>
+          <CoverImage
+            height={0.5}
+            isProfile={true}
+            wrapperStyle={{
+              borderWidth: 1,
+              borderRadius: 5,
+              marginTop: 20,
+              marginBottom: 10,
+              borderColor: Colors.dark
+            }}
+            userId={this.userId}
+            uploadVideo={this.uploadVideo}
+          />
+          <UpdateTimeStamp userId={this.userId} />
         </React.Fragment>
 
-        {!this.coverImageId &&(
-          <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.userId} />
-        )}
+        {!this.coverImageId && <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.userId} />}
 
-        {!this.state.isEdit &&(
-          <UserInfo userId={this.userId} hideUserInfo={this.hideUserInfo}  />
-        )}
-        {this.state.isEdit &&(
-          <ProfileEdit userId={this.userId} hideProfileEdit={this.hideProfileEdit} />
-        )}
+        {!this.state.isEdit && <UserInfo userId={this.userId} hideUserInfo={this.hideUserInfo} />}
+        {this.state.isEdit && <ProfileEdit userId={this.userId} hideProfileEdit={this.hideProfileEdit} />}
       </KeyboardAwareScrollView>
     );
   }

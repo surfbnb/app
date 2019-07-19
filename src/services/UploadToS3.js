@@ -53,12 +53,9 @@ export default class UploadToS3 {
     };
     try {
        resp = await fetch(this.uploadParams.post_url, options);
-    } catch(e){
-      console.log("Errororoooooo");
+    } catch(e){      
       console.log(e);
-    }
-    
-    console.log(resp, 'resp');
+    }    
     return resp;
   }
 
@@ -71,8 +68,7 @@ export default class UploadToS3 {
     let formData = new FormData();
     paramsList.forEach((param) => {
       formData.append(param['key'], param['value']);
-    });
-    console.log('formData', formData);
+    });    
     return formData;
   }
 }

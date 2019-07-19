@@ -83,7 +83,7 @@ export default class UsersProfile extends Component {
               {this.isLoading()}
               <CoverImage userId={this.userId} />
               <UserInfo userId={this.userId}/>
-             <View style={[iconStyle.touchablesBtns , {position:"absolute" , top: "75%"}]}>
+             <View style={[iconStyle.touchablesBtns , {position:"absolute" ,zIndex:100, top: "75%"}]}>
                     <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen}
                                     style={iconStyle.txElem}>
                         <Image style={{ height: 57, width: 57 }} source={tx_icon} />

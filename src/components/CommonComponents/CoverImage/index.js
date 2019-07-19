@@ -27,17 +27,16 @@ class CoverImage extends React.Component {
     return this.props.coverImageUrl;
   }
 
-  showVideo = () => {
+  showVideo = () => {    
     this.props.navigation.push("VideoPlayer" , { videoId : this.props.videoId} );
   }
 
 
-  uploadVideo = () => {
+  uploadVideo = () => {    
     this.props.uploadVideo  && this.props.uploadVideo();
   }
 
-  render(){
-    console.log("in render",this.props.coverImageUrl,this.props.coverImageId,this.props.videoId)
+  render(){    
     return this.props.coverImageUrl ? (
       <View style={[this.props.wrapperStyle]} >
         <TouchableWithoutFeedback onPress={this.showVideo}>
