@@ -3,6 +3,7 @@ import { View, Image, TouchableWithoutFeedback, StyleSheet, Dimensions } from 'r
 
 import ImageCropper from './index';
 import tickIcon from '../../assets/tick_icon.png';
+import appConfig from '../../constants/AppConfig';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,8 +28,8 @@ export default class CropperUI extends React.Component {
   handlePress = async () => {
     const { cropperParams } = this.state;
     const cropSize = {
-      width: 400,
-      height: 400
+      width: appConfig.cameraCropConstants.WIDTH,
+      height: appConfig.cameraCropConstants.WIDTH
     };
 
     try {

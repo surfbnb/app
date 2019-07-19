@@ -23,143 +23,140 @@ import ProfileScreen from './src/components/Profile/ProfileScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from './src/components/Giphy';
-import VideoPlayer from "./src/components/CommonComponents/VideoPlayer";
+import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
 import EditTx from './src/components/Transaction/EditTxModal';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
-import UsersProfileScreen from "./src/components/UsersProfile";
+import UsersProfileScreen from './src/components/UsersProfile';
 import CameraWorker from './src/services/CameraWorker';
 import CaptureVideo from './src/components/CaptureVideo';
-import PreviewRecordedVideo from './src/components/PreviewRecordedVideo'
-import ProfileImagePicker from './src/components/ProfileImagePicker';
+import PreviewRecordedVideo from './src/components/PreviewRecordedVideo';
 import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
-import BioScreen from "./src/components/Bio";
+import BioScreen from './src/components/Bio';
 
 import deepGet from 'lodash/get';
 
 const modalStackConfig = {
-    headerLayoutPreset: 'center',
-    headerMode: 'none',
-    mode: 'modal',
-    navigationOptions: ({ navigation }) => {
-        return {
-            tabBarVisible: deepGet(navigation, 'state.routes[0].index') == 0 ? true : false
-        };
-    }
+  headerLayoutPreset: 'center',
+  headerMode: 'none',
+  mode: 'modal',
+  navigationOptions: ({ navigation }) => {
+    return {
+      tabBarVisible: deepGet(navigation, 'state.routes[0].index') == 0 ? true : false
+    };
+  }
 };
 
 const UserTransactionStack = createStackNavigator(
-    {
-        UsersScreen: Users,
-        TransactionScreen: TransactionScreen
-    },
-    {
-        headerLayoutPreset: 'center'
-    }
+  {
+    UsersScreen: Users,
+    TransactionScreen: TransactionScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
 );
 
 const HomeTransactionStack = createStackNavigator(
-    {
-        HomeScreen: HomeScreen,
-        TransactionScreen: TransactionScreen,
-        UsersProfileScreen: UsersProfileScreen,
-    },
-    {
-        headerLayoutPreset: 'center'
-    }
+  {
+    HomeScreen: HomeScreen,
+    TransactionScreen: TransactionScreen,
+    UsersProfileScreen: UsersProfileScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
 );
 
 const HomeStack = createStackNavigator(
-    {
-        HomeTransactionStack: HomeTransactionStack,
-        Giphy: Giphy,
-        EditTx: EditTx,
-        VideoPlayer: VideoPlayer
-    },
-    { ...modalStackConfig }
+  {
+    HomeTransactionStack: HomeTransactionStack,
+    Giphy: Giphy,
+    EditTx: EditTx,
+    VideoPlayer: VideoPlayer
+  },
+  { ...modalStackConfig }
 );
 
-
 const FeedStack = createStackNavigator(
-    {
-        FeedContent: Feed,
-        UserFeedScreen: UserFeedScreen
-    },
-    {
-        headerLayoutPreset: 'center'
-    }
+  {
+    FeedContent: Feed,
+    UserFeedScreen: UserFeedScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
 );
 
 const UserStack = createStackNavigator(
-    {
-        UserTransaction: UserTransactionStack,
-        Giphy: Giphy,
-        EditTx: EditTx
-    },
-    { ...modalStackConfig }
+  {
+    UserTransaction: UserTransactionStack,
+    Giphy: Giphy,
+    EditTx: EditTx
+  },
+  { ...modalStackConfig }
 );
 
 const ProfileStack = createStackNavigator(
-    {
-        ProfileScreen: ProfileScreen,
-        VideoPlayer: VideoPlayer,
-        CaptureVideo: CaptureVideo,
-        BioScreen: BioScreen
-
-    },
-    {
-        headerLayoutPreset: 'center',
-        mode: 'modal',
-        navigationOptions: ({ navigation }) => {
-            return {
-                tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false
-            };
-        }
+  {
+    ProfileScreen: ProfileScreen,
+    VideoPlayer: VideoPlayer,
+    CaptureVideo: CaptureVideo,
+    BioScreen: BioScreen
+  },
+  {
+    headerLayoutPreset: 'center',
+    mode: 'modal',
+    navigationOptions: ({ navigation }) => {
+      return {
+        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false
+      };
     }
+  }
 );
 
 const CustomTabStack = createMaterialTopTabNavigator(
-    {
-        Home: HomeStack,
-        Feed: FeedStack,
-        Users: UserStack,
-        Profile: ProfileStack
+  {
+    Home: HomeStack,
+    Feed: FeedStack,
+    Users: UserStack,
+    Profile: ProfileStack
+  },
+  {
+    tabBarComponent: CustomTab,
+    tabBarPosition: 'bottom',
+    defaultNavigationOptions: {
+      headerTitleStyle: {
+        color: Colors.dark
+      },
+      headerStyle: {
+        backgroundColor: Colors.white
+      }
     },
-    {
-        tabBarComponent: CustomTab,
-        tabBarPosition: 'bottom',
-        defaultNavigationOptions: {
-            headerTitleStyle: {
-                color: Colors.dark
-            },
-            headerStyle: {
-                backgroundColor: Colors.white
-            }
-        },
-        lazy: true
-    }
+    lazy: true
+  }
 );
 
 const PinStack = createStackNavigator(
-    {
-        SetPinScreen: SetPin,
-        ConfirmPinScreen: ConfirmPin
-    },
-    {
-        headerLayoutPreset: 'center',
-        defaultNavigationOptions: {
-            headerTitleStyle: {
-                color: Colors.dark,
-                flex: 1,
-                textAlign: 'center'
-            },
-            headerStyle: {
-                backgroundColor: Colors.white
-            },
-            headerRight: <View />
-        }
+  {
+    SetPinScreen: SetPin,
+    ConfirmPinScreen: ConfirmPin
+  },
+  {
+    headerLayoutPreset: 'center',
+    defaultNavigationOptions: {
+      headerTitleStyle: {
+        color: Colors.dark,
+        flex: 1,
+        textAlign: 'center'
+      },
+      headerStyle: {
+        backgroundColor: Colors.white
+      },
+      headerRight: <View />
     }
+  }
 );
 
 const AppContainer = createAppContainer(
@@ -170,8 +167,8 @@ const AppContainer = createAppContainer(
       CustomTabStack,
       PinStack,
       UserActivatingScreen,
-        CaptureImageScreen: CaptureImage,
-        ImageGalleryScreen: ImageGallery
+      CaptureImageScreen: CaptureImage,
+      ImageGalleryScreen: ImageGallery
     },
     {
       initialRouteName: 'AuthLoading'
@@ -181,7 +178,6 @@ const AppContainer = createAppContainer(
 
 const RootNavigationContainer = () => (
   <Root>
-
     <AppContainer
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);

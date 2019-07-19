@@ -32,40 +32,40 @@ let stylesMap = {
     color: Colors.white,
     fontWeight: '500'
   },
-  emptyCoverWrapper:{
-    marginTop:20,
-    padding:20,
-    borderWidth:1,
+  emptyCoverWrapper: {
+    marginTop: 20,
+    padding: 20,
+    borderWidth: 1,
     borderColor: Colors.light,
     borderStyle: 'dashed',
     backgroundColor: Colors.white,
-    borderRadius:5,
-    alignItems:'center'
+    borderRadius: 5,
+    alignItems: 'center'
   },
-  videoIconBtn:{
-    marginVertical:10,
-    justifyContent:'center',
-    alignItems:'center',
-    borderRadius:25,
-    width:50,
-    height:50,
-    borderWidth:1,
-    borderColor:Colors.light
-    },
-  creatVideoText:{
-    color:Colors.primary
+  videoIconBtn: {
+    marginVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    borderWidth: 1,
+    borderColor: Colors.light
   },
-  updateText:{
-    textAlign:'center',
-    fontWeight:'bold',
-    color:Colors.greyLite
+  creatVideoText: {
+    color: Colors.primary
+  },
+  updateText: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: Colors.greyLite
   },
   editProfileContainer: {
     height: 75,
     width: 75,
-    borderRadius: 40
+    borderRadius: 37.5
   },
-  editProfileIconPos:{
+  editProfileIconPos: {
     backgroundColor: Colors.white,
     height: 30,
     width: 30,

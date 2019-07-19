@@ -70,5 +70,10 @@ export default {
     CRF: '24',
     PRESET: 'ultrafast',
     PIX_FMT: 'yuv420p'
+  },
+
+  cameraCropConstants: {
+    WIDTH: 480,
+    HEIGHT: 480
   }
 };
