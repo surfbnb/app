@@ -8,7 +8,6 @@ import TouchableButton from "../../../theme/components/TouchableButton";
 import Theme from '../../../theme/styles';
 import inlineStyle from './styles';
 import pricer from "../../../services/Pricer";
-import  CurrentUser from "../../../models/CurrentUser";
 import reduxGetter from "../../../services/ReduxGetters";
 
 const mapStateToProps = (state, ownProps) => {

@@ -127,12 +127,8 @@ class HomeFeedRow extends PureComponent {
                         </TouchableOpacity>
                     </View>
 
-                    <BottomStatus   userName={this.userName}
-                                    name={this.name}
-                                    bio={this.bio}  
-                                    feedId={this.props.feedId}
+                    <BottomStatus   userId={this.userId}
                                     supporters={this.state.supporters}
-                                    isSupported={this.state.isSupported}
                                     totalBt={this.state.totalBt}
                                 />          
                 </View>              
