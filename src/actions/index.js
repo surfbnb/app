@@ -141,6 +141,12 @@ export const upsertRecordedVideo = (data) => ({ type: types.UPSERT_RECORDED_VIDE
 
 export const clearRecordedVideo = () => ({ type: types.CLEAR_RECORDED_VIDEO });
 
+export const upsertProfilePicture = (data) => ({ type: types.UPSERT_PROFILE_PICTURE, payload: { profile_picture: data } });
+
+export const clearProfilePicture = () => ({ type: types.CLEAR_PROFILE_PICTURE});
+
+
+
 export const videoInProcessing = (videoInProcessing) => ({ type: types.VIDEO_IN_PROCESSING, payload: {video_in_processing: videoInProcessing} });
 
 

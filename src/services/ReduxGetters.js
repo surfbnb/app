@@ -137,7 +137,8 @@ class ReduxGetters {
     getProfileImageId(id , state ){
       state =  state || Store.getState() ;
       if( CurrentUser.getUserId() == id ){
-        return deepGet( state ,  `current_user.profile_image_id` );
+        console.log('current_user.profile_image');  
+        return deepGet( state ,  `current_user.profile_image_id`);
       }
       return deepGet( state,  `user_entities.id_${id}.profile_image_id` );
     }

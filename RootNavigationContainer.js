@@ -29,6 +29,7 @@ import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from './src/components/UsersProfile';
 import CameraWorker from './src/services/CameraWorker';
+import PictureWorker from './src/services/PictureWorker';
 import CaptureVideo from './src/components/CaptureVideo';
 import PreviewRecordedVideo from './src/components/PreviewRecordedVideo';
 import CaptureImage from './src/components/CaptureImage';
@@ -183,7 +184,9 @@ const RootNavigationContainer = () => (
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
     />
+    
     <CameraWorker />
+    <PictureWorker />
     <LoadingModalCover />
     <LoginPopover />
   </Root>
