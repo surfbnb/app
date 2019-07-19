@@ -4,7 +4,6 @@ import { withNavigation } from 'react-navigation';
 import PepoApi from "../../services/PepoApi";
 import BackArrow from "../CommonComponents/BackArrow";
 
-
 const spaceRegex = /\s/g ; 
 
 
@@ -62,29 +61,30 @@ class BioScreen extends PureComponent {
     }
 
     onChangeText = (val) => { 
-      console.log("onChangeText---- " , val );
       const location          = this.location - 1 ,
             currentIndexChar  = val.charAt(location) ,
-            isValidChar       =  !spaceRegex.test(currentIndexChar) ,
+            isValidChar       =  this.isValidChar( currentIndexChar ) ,
             wordAtIndex       = this.getWordAtIndex( val , location) ,
-            hastagRegex       = /(?:\s|^)#[A-Za-z0-9\-\.\_]+(?:\s|$)/g,
-            isHashTag         = hastagRegex.test( wordAtIndex ) 
+            isHashTag         = this.isHashTag(val);
        ;
-       console.log("onChangeText  location ---- " , location );
-       console.log("onChangeText  currentIndexChar ---- " , currentIndexChar );
-       console.log("onChangeText  isValidChar ---- " , isValidChar );
-       console.log("onChangeText  wordAtIndex ---- " , wordAtIndex );
-       console.log("onChangeText  isHashTag ---- " , isHashTag );
       if( isValidChar && isHashTag ){
           this.wordIndex = location; 
           this.indexWord = wordAtIndex; 
-          console.log("onChangeText inside location ---- " , location );
-          console.log("onChangeText inside wordAtIndex ---- " , wordAtIndex );
           this.fetchHashTags( wordAtIndex );
       } else{
         this.closeSuggestionsPanel();
       }
       this.setState({ value: val });
+    }
+
+    isHashTag( val ){
+      const hastagRegex = /(?:\s|^)#[A-Za-z0-9\-\.\_]+(?:\s|$)/g ; 
+      return hastagRegex.test( val );
+    }
+
+    isValidChar( val ){
+      const spaceRegex = /\s/g ; 
+      return !spaceRegex.test(val)
     }
 
     locationGetter = ( event )=> {
@@ -96,7 +96,9 @@ class BioScreen extends PureComponent {
     }
   
     closeSuggestionsPanel() {
-     //TODO 
+      if( this.state.data.length > 0 ){
+        this.setState({ data : []});
+      }
     }
 
     _keyExtractor = (item, index) => `id_${item.id}` ;
@@ -110,8 +112,56 @@ class BioScreen extends PureComponent {
     }
   
     onSuggestionTap( item ) {
-      //Hide panel 
-      //Replace text with the selected text
+      console.log("======item======" , item);
+      this.closeSuggestionsPanel();
+      const wordToReplace = this.getWordAtIndex(this.state.value , this.wordIndex ) ,
+            isHashTag = this.isHashTag( wordToReplace ) 
+      ;
+      console.log("======wordToReplace======" , wordToReplace);
+      console.log("======isHashTag======" , isHashTag);
+      if( isHashTag ){
+        const startIndex = this.getStartIndex( this.state.value ,  this.wordIndex ) ,
+              endIndex = this.getEndIndex( this.state.value ,  this.wordIndex ) ,
+              replaceString = ` #${item.text} `,
+              newString = this.replaceBetween( startIndex , endIndex , replaceString )
+        ;
+        console.log("====startIndex====" , startIndex );
+        console.log("====endIndex====" , endIndex );
+        console.log("====replaceString====" , replaceString );
+        console.log("====newString====" , newString );
+        this.setState({value :newString });
+      }
+    }
+
+    replaceBetween( start, end, replaceString ) {
+      return this.state.value.substring(0, start) + replaceString + this.state.value.substring(end);
+    }
+
+    getStartIndex( text ,  index ){
+      let  startIndex = index , charAtIndex = text.charAt( index )  ; 
+      ;
+      while( charAtIndex && this.isValidChar( charAtIndex ) ){
+        --startIndex ;
+        if( startIndex < 0 ){
+          startIndex =  0 ; 
+          break; 
+        }
+        charAtIndex = text.charAt( startIndex ) 
+      }
+      return startIndex ; 
+    } 
+
+    getEndIndex( text , index ){
+      let endIndex = index , charAtIndex = text.charAt( index ) ,
+          maxIndex = text.length; 
+       ; 
+      ;
+      while( charAtIndex && this.isValidChar( charAtIndex ) ){
+        ++endIndex;
+        if( endIndex >= maxIndex ) break;
+        charAtIndex = text.charAt( endIndex ) 
+      }
+      return endIndex ; 
     }
 
     render() {
