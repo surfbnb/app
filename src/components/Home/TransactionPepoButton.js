@@ -49,7 +49,7 @@ class TransactionPepoButton extends PureComponent {
     }
 
     getBalanceToNumber = () =>{
-      return this.props.balance &&  Number( utilities.getFromDecimal( this.props.balance ) ) || 0 ;
+      return this.props.balance &&  Number( pricer.getFromDecimal( this.props.balance ) ) || 0 ;
     }
 
     get toUser(){
@@ -172,7 +172,7 @@ class TransactionPepoButton extends PureComponent {
 
     getBalanceToUpdate( updateAmount , isRevert ){
       if(!updateAmount) return  ; 
-      let balance = utilities.getFromDecimal( this.props.balance );
+      let balance = pricer.getFromDecimal( this.props.balance );
       balance = balance && Number( balance ) || 0 ;
       updateAmount =  updateAmount && Number( updateAmount ) || 0 ;
       if( isRevert ){

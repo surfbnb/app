@@ -119,6 +119,14 @@ class Pricer {
     const pricePoint = Store.getState()["price_points"] || {}; 
     return new PriceOracle( this.token , pricePoint["OST"] );
   }
+
+  getFromDecimal( bt ){
+    return PriceOracle.fromDecimal(bt, this.getDecimal());
+  }
+
+  getToDecimal( bt ){
+    return PriceOracle.toDecimal(bt, this.getDecimal());
+  }
 }
 
 export default new Pricer();

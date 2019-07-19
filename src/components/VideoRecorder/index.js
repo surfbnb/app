@@ -133,7 +133,7 @@ class VideoRecorder extends Component {
     );
   }
 
-  stopRecording() {
+  stopRecording = () => {
     // naviagate from here to other page
     this.camera && this.camera.stopRecording();
   }
@@ -142,9 +142,9 @@ class VideoRecorder extends Component {
     if (this.state.isRecording) {
       return (
         <TouchableOpacity
-          onPress={() => {
-            this.stopRecording();
-          }}
+          onPress={
+            this.stopRecording
+          }
         >
           <Image style={styles.captureButton} source={stopIcon} />
         </TouchableOpacity>

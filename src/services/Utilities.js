@@ -69,13 +69,5 @@ export default {
     const entity = {} ,  id = `${key}_${resultObj.id}` ;
     entity[ id ] = resultObj ;
     return entity;
-  },
-
-  getFromDecimal( bt ){
-    return PriceOracle.fromDecimal(bt, pricer.getDecimal());
-  },
-
-  getToDecimal( bt ){
-    return PriceOracle.toDecimal(bt, pricer.getDecimal());
   }
 };
