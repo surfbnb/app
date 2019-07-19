@@ -9,6 +9,8 @@ import Theme from '../../../theme/styles';
 import inlineStyle from './styles';
 import pricer from "../../../services/Pricer";
 import reduxGetter from "../../../services/ReduxGetters";
+import FastImage from 'react-native-fast-image';
+
 
 const mapStateToProps = (state, ownProps) => {
   return {
