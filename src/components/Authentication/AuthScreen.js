@@ -12,7 +12,7 @@ import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
 import Toast from '../../theme/components/Toast';
-import currentUserModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 
@@ -137,7 +137,7 @@ class AuthScreen extends Component {
 
     const methodName = this.state.signup ? 'signUp' : 'login';
 
-    currentUserModal[methodName](this.getParams())
+    CurrentUser[methodName](this.getParams())
       .then((res) => {
         if (res.success && res.data) {
           let resultType = deepGet(res, 'data.result_type'),
@@ -160,11 +160,11 @@ class AuthScreen extends Component {
   }
 
   setupDeviceComplete() {
-    currentUserModal
+    CurrentUser
       .initialize()
       .then((user) => {
         LoadingModal.hide();
-        if (!currentUserModal.isActiveUser()) {
+        if (!CurrentUser.isActiveUser()) {
           this.props.navigation.navigate('UserActivatingScreen');
         } else {
          this.props.navigation.navigate('HomeScreen');          

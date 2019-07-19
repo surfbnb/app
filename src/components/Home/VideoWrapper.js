@@ -104,9 +104,8 @@ class VideoWrapper extends PureComponent {
   };
 
   render() {
-    console.log('Video component render ', this.props.videoUrl);
-    console.log('videoImgUrl component render ', this.props.videoImgUrl);
-    return (
+    console.log('Video component render ', this.props.videoImgUrl);
+    return  (
       <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked}>
         <View>
           <Video

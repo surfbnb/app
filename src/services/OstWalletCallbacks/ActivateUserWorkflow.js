@@ -1,6 +1,6 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { Toast } from 'native-base';
-import currentUserModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 import Pricer from "../Pricer";
 import deepGet from 'lodash/get';
 
@@ -16,11 +16,11 @@ const initiatePolling = (expectedUserId) => {
 
   const longPollUser = function() {
     setTimeout(() => {
-      currentUserModal &&
-        currentUserModal
+      CurrentUser &&
+      CurrentUser
           .sync()
           .then((user) => {
-            const currentUserId = currentUserModal.getOstUserId();
+            const currentUserId = CurrentUser.getOstUserId();
             if (currentUserId != expectedUserId) {
               stopPolling = true;
               return;
@@ -42,7 +42,7 @@ const initiatePolling = (expectedUserId) => {
     }, 10000);
   };
 
-  if (expectedUserId == currentUserModal.getOstUserId()) {
+  if (expectedUserId == CurrentUser.getOstUserId()) {
     scheduleAirdropStatusPoll();
   }
 };

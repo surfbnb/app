@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import inlineStyles from './styles';
 import { withNavigation } from 'react-navigation';
-import currentUserModel from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import pricer from "../../services/Pricer";
 import reduxGetter from "../../services/ReduxGetters";
@@ -27,7 +27,7 @@ class BottomStatus extends PureComponent {
   }
 
   navigateToUserProfile = (e) => {
-    if (currentUserModel.checkActiveUser()) {
+    if (CurrentUser.checkActiveUser()) {
       this.props.navigation.push('UsersProfileScreen' ,{ userId:this.props.userId }
      );
     }

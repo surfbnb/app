@@ -11,7 +11,7 @@ import FormInput from '../../theme/components/FormInput';
 import Theme from '../../theme/styles';
 import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
-import currentUserModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import appConfig from '../../constants/AppConfig';
@@ -104,7 +104,7 @@ class TransactionScreen extends Component {
   }
 
   sendTransactionToSdk() {
-    const user = currentUserModal.getUser();
+    const user = CurrentUser.getUser();
     const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(this.state.btAmount);
     this.workflow = new ExecuteTransactionWorkflow(this);

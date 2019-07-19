@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Toast } from 'native-base';
-import currentUserModel from '../../../models/CurrentUser';
+import CurrentUser from '../../../models/CurrentUser';
 import styles from './styles';
 import isEmpty from 'lodash/isEmpty';
 import default_user_icon from '../../../assets/default_user_icon.png';
@@ -21,7 +21,7 @@ const userClick = function(item, navigation) {
   if (item) {
     headerText = `${item.first_name} ${item.last_name}`;
   }
-  if (!currentUserModel.isUserActivated()) {
+  if (!CurrentUser.isUserActivated()) {
     Toast.show({
       text: ostErrors.getUIErrorMessage('user_not_active'),
       buttonText: 'Okay'

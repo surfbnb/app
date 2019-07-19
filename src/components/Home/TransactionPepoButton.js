@@ -3,13 +3,12 @@ import {TouchableWithoutFeedback , View } from "react-native";
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { Toast } from 'native-base';
 import deepGet from "lodash/get";
-
 import clone from "lodash/clone";
 import {connect} from 'react-redux';
-import currentUserModel from '../../models/CurrentUser';
+
+import CurrentUser from '../../models/CurrentUser';
 import PepoButton from "./PepoButton";
 import appConfig from '../../constants/AppConfig';
-import utilities from "../../services/Utilities";
 import PepoApi from '../../services/PepoApi';
 import pricer from "../../services/Pricer";
 import Store from "../../store";
@@ -37,11 +36,7 @@ class TransactionPepoButton extends PureComponent {
     }
 
     isDisabled = () => {
-      return !this.isBalance() || this.isDisabledWithoutColor() || !!this.props.disabled ; 
-    }
-
-    isDisabledWithoutColor = () => {
-      return !currentUserModel.isUserActivated() ; 
+      return !this.isBalance() || !CurrentUser.isUserActivated()  || !!this.props.disabled ; 
     }
     
     isBalance = () => {
@@ -57,9 +52,9 @@ class TransactionPepoButton extends PureComponent {
     }
 
     sendTransactionToSdk( btAmount ) {
-        const user = currentUserModel.getUser();
+        const user = CurrentUser.getUser();
         const option = { wait_for_finalization: false };
-        const btInDecimal =  utilities.getToDecimal(btAmount);
+        const btInDecimal =  pricer.getToDecimal(btAmount);
         this.workflow = new ExecuteTransactionWorkflow(this);
         OstWalletSdk.executeTransaction(
           user.ost_user_id,
@@ -136,7 +131,7 @@ class TransactionPepoButton extends PureComponent {
     }
 
     onTransactionIconWrapperClick = () => {
-      currentUserModel.checkActiveUser() && currentUserModel.isUserActivated(true);
+      CurrentUser.checkActiveUser() && CurrentUser.isUserActivated(true);
     }
 
     reduxUpdate( isTXBtnDisabled , balance ){
@@ -144,7 +139,7 @@ class TransactionPepoButton extends PureComponent {
         Store.dispatch(updateExecuteTransactionStatus(isTXBtnDisabled));
       }
       if( balance !== undefined ){
-        balance = utilities.getToDecimal( balance );
+        balance = pricer.getToDecimal( balance );
         Store.dispatch(updateBalance(balance));
       }  
     }
@@ -199,7 +194,6 @@ class TransactionPepoButton extends PureComponent {
                             isSelected={this.props.isSupported}
                             id={this.props.feedId}
                             disabled={this.isDisabled()}
-                            isDisabledWithoutColor={this.isDisabledWithoutColor}
                             maxCount={this.getBalanceToNumber()}
                             onMaxReached={this.onMaxReached}
                             onPressOut={this.onPressOut} /> 

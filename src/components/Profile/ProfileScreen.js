@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
 import UserInfo from '../CommonComponents/UserInfo';

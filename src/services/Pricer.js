@@ -6,9 +6,9 @@ import {updateBalance} from "../actions";
 import Store from '../store';
 import PriceOracle from './PriceOracle';
 
-let currentUserModel;
+let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
-  currentUserModel = imports.default;
+  CurrentUser = imports.default;
 });
 
 class Pricer {
@@ -65,13 +65,13 @@ class Pricer {
   }
 
   getBalance( successCallback ,  errorCallback ) {
-    if( !currentUserModel.isUserActivated() ){
+    if( !CurrentUser.isUserActivated() ){
       errorCallback && errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")}); 
       return;
     }
 
     OstJsonApi.getBalanceForUserId(
-      currentUserModel.getOstUserId(),
+      CurrentUser.getOstUserId(),
       (res) => {
         let bal = deepGet(res, 'balance.available_balance');
         this.onBalance( bal );

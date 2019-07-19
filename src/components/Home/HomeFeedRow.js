@@ -7,7 +7,7 @@ import reduxGetter from "../../services/ReduxGetters";
 import TransactionPepoButton from "./TransactionPepoButton";
 import tx_icon from '../../assets/tx_icon.png';
 import pricer from "../../services/Pricer";
-import currentUserModel from "../../models/CurrentUser";
+import CurrentUser from "../../models/CurrentUser";
 
 import BottomStatus from "./BottomStatus";
 import inlineStyles from './styles';
@@ -30,18 +30,6 @@ class HomeFeedRow extends PureComponent {
 
     get videoId(){
        return reduxGetter.getHomeFeedVideoId( this.props.feedId );
-    }
-
-    get userName(){
-        return reduxGetter.getUserName( this.userId );
-    }
-
-    get name(){
-        return reduxGetter.getName( this.userId );
-    }
-
-    get bio(){
-        return reduxGetter.getBio( this.userId );
     }
 
     get supporters(){
@@ -91,7 +79,7 @@ class HomeFeedRow extends PureComponent {
     
     navigateToTransactionScreen = (e) => {
         console.log("reduxGetter.getUser(this.userId)" , reduxGetter.getUser(this.userId) , this.userId);
-        if(  currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() ){
+        if(  CurrentUser.checkActiveUser() && CurrentUser.isUserActivated() ){
             this.props.navigation.push('TransactionScreen' ,
                 { toUserId: this.userId, 
                 videoId :reduxGetter.getHomeFeedVideoId(this.props.feedId),

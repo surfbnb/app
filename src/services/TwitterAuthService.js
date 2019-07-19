@@ -14,9 +14,9 @@ import Pricer from './Pricer';
 
 const { RNTwitterSignIn } = NativeModules;
 
-let currentUserModal;
+let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
-  currentUserModal = imports.default;
+  CurrentUser = imports.default;
 });
 
 class TwitterAuthService {
@@ -28,7 +28,7 @@ class TwitterAuthService {
         if (loginData) {
           let params = this.getParams(loginData);
           LoadingModal.show('Connecting...');
-          currentUserModal
+          CurrentUser
             .twitterConnect(params)
             .then((res) => {
               if (res.success && res.data) {
@@ -78,7 +78,7 @@ class TwitterAuthService {
 
   setupDeviceComplete() {
     LoadingModal.hide();
-    if (!currentUserModal.isActiveUser()) {
+    if (!CurrentUser.isActiveUser()) {
       NavigationService.navigate('UserActivatingScreen');
     } else {
       NavigationService.navigate('HomeScreen');

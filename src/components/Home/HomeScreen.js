@@ -24,7 +24,7 @@ export default class HomeScreen extends Component {
 
     render() {
         return (
-            <View style={{ backgroundColor: "#fff"}}>
+            <View style={{ backgroundColor: "#000"}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                 <TopStatus/>
                 <VideoList fetchUrl={'/feeds'} onRefresh={this.onRefresh} />
