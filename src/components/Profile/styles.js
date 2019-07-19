@@ -78,6 +78,10 @@ let stylesMap = {
     borderColor: Colors.wildWatermelon,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  profileEditIconSkipFont:{
+    height:75,
+    width:75
   }
 };
 

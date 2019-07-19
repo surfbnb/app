@@ -147,6 +147,11 @@ class ReduxGetters {
       return deepGet( state,  `video_entities.id_${id}.uts` );
     }
 
+    getVideoProcessingStatus(state){
+      state =  state || Store.getState() ;
+       return deepGet(state,'video_in_processing');
+    }
+
 }
 
 export default new ReduxGetters();

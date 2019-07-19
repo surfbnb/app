@@ -7,12 +7,15 @@ import inlineStyles from './styles';
 import playIcon from '../../../assets/play_icon.png'
 import Colors from '../../../theme/styles/Colors'
 import { withNavigation } from 'react-navigation';
+import FastImage from 'react-native-fast-image';
+import appConfig from "../../../constants/AppConfig";
 
 const mapStateToProps = (state, ownProps) => {
   return{
     coverImageId : reduxGetter.getUserCoverImageId(ownProps.userId, state) , 
     videoId : reduxGetter.getUserCoverVideoId( ownProps.userId, state ),
     coverImageUrl :  reduxGetter.getImage(  reduxGetter.getUserCoverImageId(ownProps.userId, state), state ),
+    videoInProcessing : reduxGetter.getVideoProcessingStatus(state),
   }
 }
 
@@ -41,12 +44,18 @@ class CoverImage extends React.Component {
       <View style={[this.props.wrapperStyle]} >
         <TouchableWithoutFeedback onPress={this.showVideo}>
           <View>
-            <Image style={[{width : "100%" , height: Dimensions.get('screen').height * this.height }, this.props.style ]}  source={{uri: this.getImage()}} />
+            <FastImage
+              style={[{ backgroundColor: Colors.gainsboro },{width : "100%" , height: Dimensions.get('screen').height * this.height }, this.props.style]}
+              source={{uri: this.getImage(),priority:FastImage.priority.high}}
+            />
             <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>
             {this.isProfile &&(
-              <TouchableOpacity onPress={this.uploadVideo}
-                  style={{position:'absolute',bottom:0,backgroundColor:'rgba(0,0,0,0.75)',width:'100%',height:50,justifyContent:'center',alignItems:'center'}}>
-                <Text style={{color:Colors.white}}>Update Video</Text>
+              <TouchableOpacity
+                disabled={this.props.videoInProcessing}
+                onPress={this.uploadVideo}
+
+                  style={inlineStyles.updateVideo}>
+                <Text style={{color:Colors.white}}>{this.props.videoInProcessing?'Video uploading...':'Update Video'}</Text>
               </TouchableOpacity>
             )}
           </View>

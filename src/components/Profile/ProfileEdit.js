@@ -16,6 +16,10 @@ import CurrentUser from '../../models/CurrentUser';
 import {updateCurrentUser, upsertUserProfileEntities , upsertLinkEntities} from "../../actions";
 import Store from "../../store";
 import utilities from "../../services/Utilities";
+import Colors from "../../theme/styles/Colors";
+import FastImage from 'react-native-fast-image';
+
+
 const mapStateToProps = (state, ownProps) => {
   return {
     user_name: reduxGetter.getUserName( ownProps.userId ,state ) || "",
@@ -61,12 +65,16 @@ class ProfileEdit extends React.PureComponent{
   }
 
   getImageSrc = () => {
-    if(this.props.profilePicture){
-      return {uri : this.props.profilePicture}
-    }else {
-      return default_user_icon;
+    if(this.props.profilePicture) {
+      return (<FastImage
+        style={[{backgroundColor: Colors.gainsboro},inlineStyles.profileEditIconSkipFont]}
+        source={{uri: this.props.profilePicture, priority: FastImage.priority.high}}
+      />)
     }
-  };
+    else {
+      return (<Image style={inlineStyles.profileEditIconSkipFont} source={default_user_icon}></Image>)
+    }
+  }
 
   onSubmitEditing(currentIndex) {
     this.setState({
@@ -180,7 +188,7 @@ class ProfileEdit extends React.PureComponent{
       <View style={{marginTop:20,paddingBottom:100}}>
 
         <View style={inlineStyles.editProfileContainer}>
-          <Image style={{width: 75,height: 75}} source={this.getImageSrc()}></Image>
+          {this.getImageSrc()}
           <View style={inlineStyles.editProfileIconPos}>
             <Image style={{width: 13,height: 13}} source={ this.props.profilePicture?profileEditIcon:ProfilePlusIcon}></Image>
           </View>

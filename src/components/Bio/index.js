@@ -67,7 +67,7 @@ class BioScreen extends PureComponent {
 
     changeValue( val ){
       val = val || "";
-      if( val.length <= 30 ){
+      if( val.length <= 300 ){
         this.onChangeTextDelegate && this.onChangeTextDelegate( val );
         this.setState({ value: val , count :val.length });
       }

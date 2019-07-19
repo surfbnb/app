@@ -55,9 +55,12 @@ class UserInfo extends React.PureComponent {
 
   getImageSrc = () => {
     if(this.props.profilePicture){
-      return {uri : this.props.profilePicture}
+      return ((<FastImage
+        style={[{backgroundColor: Colors.gainsboro},inlineStyle.profileImageSkipFont]}
+        source={{uri: this.props.profilePicture, priority: FastImage.priority.high}}
+      />))
     }else {
-       return profilePicture;
+       return (<Image style={inlineStyle.profileImageSkipFont} source={profilePicture}></Image>)
     }
   };
 
@@ -66,7 +69,9 @@ class UserInfo extends React.PureComponent {
       <View style={{margin:20,alignItems:'center'}}>
 
         <View style={inlineStyle.infoHeaderWrapper}>
-          <Image style={inlineStyle.profileImageSkipFont} source={this.getImageSrc()}></Image>
+          {/*<Image style={inlineStyle.profileImageSkipFont} source={this.getImageSrc()}></Image>*/}
+          {this.getImageSrc()}
+
           <Text style={inlineStyle.userName}>{this.props.userName}</Text>
         </View>
         {this.editButton()}
