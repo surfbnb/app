@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { View, Text, Alert, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
 import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {Header, SafeAreaView} from 'react-navigation';
 import BigNumber from 'bignumber.js';
+import clone from "lodash/clone";
 
 import FormInput from '../../theme/components/FormInput';
 import Theme from '../../theme/styles';
@@ -17,24 +18,22 @@ import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import EditIcon from '../../assets/edit_icon.png';
-import BackArrow from '../../assets/back-arrow.png';
+import BackArrow from "../CommonComponents/BackArrow";
 import { ostErrors } from '../../services/OstErrors';
-import EditTxModal from './EditTxModal';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
 import GiphySelect from "./GiphySelect";
+
+import reduxGetter from "../../services/ReduxGetters";
+
 
 const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('transactionHeader'),
-      headerBackImage: (
-        <View style={{ paddingRight: 30, paddingVertical: 30, paddingLeft: Platform.OS === 'ios' ? 20 : 0 }}>
-          <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
-        </View>
-      )
+      title: reduxGetter.getName( navigation.getParam('toUserId') ) ,
+      headerBackImage: (<BackArrow/>)
     };
   };
   constructor(props) {
@@ -57,18 +56,21 @@ class TransactionScreen extends Component {
       selectedGiphy: null
     };
     this.baseState = this.state;
-    this.toUser = this.props.navigation.getParam('toUser');
+    this.toUser = reduxGetter.getUser( this.props.navigation.getParam('toUserId') ) ;
+    //Imp : Make sure if transaction is mappning againts Profile dont send video Id
+    this.videoId = this.props.navigation.getParam('videoId');
+    this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate')
   }
 
   defaultVals() {
     this.meta = null;
-    this.priceOracle = null;
     this.workflow = null;
   }
 
   componentWillMount() {
     this.defaultVals();
-    this.initPricePoint();
+    this.getBalance();
+
   }
 
   componentWillUnmount() {
@@ -77,96 +79,63 @@ class TransactionScreen extends Component {
     this.onBalance = () => {};
   }
 
-  initPricePoint() {
-    this.updatePricePoint();
-  }
-
-  updatePricePoint(successCallback, errorCallback) {
-    const ostUserId = currentUserModal.getOstUserId();
-    pricer.getPriceOracleConfig(
-      ostUserId,
-      (token, pricePoints) => {
-        this.onGetPricePointSuccess(token, pricePoints);
-        successCallback && successCallback(token, pricePoints);
-      },
-      (error) => {
-        this.onError( error );
-        errorCallback && errorCallback(error);
-      }
-    );
-  }
-
   getBalance() {
-    //TODO catfood wherever fetched balance , update via Redux
-    //TODO priceOracle price point update after every 10 mins 
-    const ostUserId = currentUserModal.getOstUserId();
-    OstJsonApi.getBalanceForUserId(
-      ostUserId,
+    pricer.getBalance( 
       (res) => {
-        this.onBalance(res);
+      this.onBalance(res);
       },
       (err) => {
         this.onError( err );
-      }
-    );
+    });
   }
 
-  onBalance(res) {
-    if (!this.priceOracle) return;
-    let balance = deepGet(res, 'balance.available_balance');
-    balance = this.priceOracle.fromDecimal(balance);
-    balance = this.priceOracle.toBt(balance) || 0;
+  //TODO , NOT SURE if bug comes this also will have to connected via redux.
+  onBalance(balance , res) {
+    balance = utilities.getFromDecimal(balance);
+    balance = PriceOracle.toBt(balance) || 0;
     let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
     this.setState({ balance, exceBtnDisabled });
   }
 
-  getPriceOracle = () => {
-    return this.priceOracle;
-  };
-
-  onGetPricePointSuccess(token, pricePoints) {  
-    let btUSDAmount = null;
-    this.priceOracle = new PriceOracle(token, pricePoints);
-    this.getBalance();
-    btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
-    this.setState({ btUSDAmount: btUSDAmount });
-  }
-
   excecuteTransaction() {
-    if (!this.isValid()) {
-      Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
-      return;
-    }
     LoadingModal.show('Posting', 'This may take a while,\n we are surfing on Blockchain');
     this.setState({ fieldErrorText: null });
     this.sendTransactionToSdk();
   }
 
-  isValid() {
-    return !!this.priceOracle;
-  }
-
   sendTransactionToSdk() {
     const user = currentUserModal.getUser();
     const option = { wait_for_finalization: false };
-    const btInDecimal = this.priceOracle.toDecimal(this.state.btAmount);
+    const btInDecimal = utilities.getToDecimal(this.state.btAmount);
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
       user.ost_user_id,
       [this.toUser.ost_token_holder_address],
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
-      appConfig.metaProperties,
+      this.getSdkMetaProperties(),
       this.workflow,
       option
     );
   }
 
+  getSdkMetaProperties(){
+    const metaProperties = clone( appConfig.metaProperties ); 
+    if(this.videoId){
+      metaProperties["name"] = "video"; 
+      metaProperties["details"] =  `vi_${this.videoId}`;
+    }
+    return metaProperties; 
+  }
+
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
+    this.requestAcknowledgeDelegate && this.requestAcknowledgeDelegate(ostWorkflowContext , ostWorkflowEntity) ;
+    pricer.getBalance(); 
     this.sendTransactionToPlatform(ostWorkflowEntity);
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
+    pricer.getBalance(); 
     this.onError(error);
   }
 
@@ -189,7 +158,6 @@ class TransactionScreen extends Component {
   onTransactionSuccess(res) {
     LoadingModal.hide();
     this.props.navigation.goBack();
-    this.props.navigation.navigate('Profile', { toRefresh: true });
   }
 
   getSendTransactionPlatformData(ostWorkflowEntity) {
@@ -199,7 +167,8 @@ class TransactionScreen extends Component {
       privacy_type: this.getPrivacyType(),
       meta: {
         text: this.state.message,
-        giphy: this.state.selectedGiphy
+        giphy: this.state.selectedGiphy,
+        vi: this.videoId
       }
     };
   }
@@ -267,9 +236,7 @@ class TransactionScreen extends Component {
   openEditTx(){
     this.props.navigation.navigate('EditTx', {
       btAmount: this.state.btAmount,
-      btUSDAmount: this.state.btUSDAmount,
       balance: this.state.balance,
-      getPriceOracle: this.getPriceOracle,
       onAmountModalConfirm: this.onAmountModalConfirm
     })
   }

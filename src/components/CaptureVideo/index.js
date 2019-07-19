@@ -10,13 +10,28 @@ class CaptureVideo extends Component {
     super(props);
     this.state = {
       recordingScreen: true,
-      videoUri: ''
+      videoUri: '',
+      actionSheetOnRecordVideo: true
     };
   }
 
-  toggleView(videoUri = '') {
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    return {
+      header: null
+    };
+  };
+
+
+  goToRecordScreen(){
     this.setState({
-      recordingScreen: !this.state.recordingScreen,
+      recordingScreen: true,
+      actionSheetOnRecordVideo: false
+    });
+  }
+
+  goToPreviewScreen(videoUri){
+    this.setState({
+      recordingScreen: false,
       videoUri
     });
   }
@@ -25,25 +40,27 @@ class CaptureVideo extends Component {
     if (this.state.recordingScreen) {
       return (
         <VideoRecorder
-          toggleView={(videoUri) => {
-            this.toggleView(videoUri);
+          goToPreviewScreen={(videoUri) => {
+            this.goToPreviewScreen(videoUri);
           }}
+          actionSheetOnRecordVideo= {this.state.actionSheetOnRecordVideo}
+          navigation={this.props.navigation}
         />
       );
     } else {
       return (
         <PreviewRecordedVideo
-          toggleView={() => {
-            this.toggleView();
-          }}
+          goToRecordScreen={() => {
+            this.goToRecordScreen();
+          }}          
           cachedvideoUrl={this.state.videoUri}
+          navigation={this.props.navigation}
         />
       );
     }
   }
 
   render() {
-    console.log('I am here render of previewRecordedVideo');
     return this.getCurrentView();
   }
 }

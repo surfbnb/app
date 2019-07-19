@@ -1,8 +1,18 @@
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
 import { TOKEN_ID } from '../constants';
+import {ostErrors} from "./OstErrors"; 
+import {updateBalance} from "../actions";
+import Store from '../store';
+import PriceOracle from './PriceOracle';
+
+let currentUserModel;
+import('../models/CurrentUser').then((imports) => {
+  currentUserModel = imports.default;
+});
 
 class Pricer {
+
   constructor() {
     this.token = null;
     this.pricePoints = null;
@@ -24,6 +34,10 @@ class Pricer {
     });
   }
 
+  getDecimal(){
+    return this.token && this.token.decimals; 
+  }
+
   getPricePoints(ostUserId, successCallback, errorCallback) {
     let isCb = true;
     if (!ostUserId) {
@@ -42,7 +56,7 @@ class Pricer {
       ostUserId,
       (res) => {
         this.pricePoints = deepGet(res, 'price_point.OST');
-        isCb && successCallback && successCallback(this.pricePoints);
+        isCb && successCallback && successCallback(this.pricePoints, res);
       },
       (error) => {
         isCb && errorCallback && errorCallback(error);
@@ -50,26 +64,27 @@ class Pricer {
     );
   }
 
-  getBalanceWithPricePoint(ostUserId, successCallback, errorCallback) {
-    if (!ostUserId) {
-      errorCallback &&
-        errorCallback({
-          success: false,
-          msg: 'No user found'
-        });
+  getBalance( successCallback ,  errorCallback ) {
+    if( !currentUserModel.isUserActivated() ){
+      errorCallback && errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")}); 
       return;
     }
-    OstJsonApi.getBalanceWithPricePointForUserId(
-      ostUserId,
+
+    OstJsonApi.getBalanceForUserId(
+      currentUserModel.getOstUserId(),
       (res) => {
-        this.pricePoints = deepGet(res, 'price_point.OST');
         let bal = deepGet(res, 'balance.available_balance');
-        successCallback && successCallback(this.pricePoints, bal);
+        this.onBalance( bal );
+        successCallback && successCallback( bal , res); 
       },
-      (error) => {
+      (err) => {
         errorCallback && errorCallback(error);
       }
     );
+  }
+
+  onBalance(bal){
+    Store.dispatch(updateBalance(bal));
   }
 
   getPriceOracleConfig(ostUserId, successCallback, errorCallback) {
@@ -98,6 +113,11 @@ class Pricer {
         }
       );
     });
+  }
+
+  getPriceOracle(){
+    const pricePoint = Store.getState()["price_points"] || {}; 
+    return new PriceOracle( this.token , pricePoint["OST"] );
   }
 }
 

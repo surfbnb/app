@@ -9,5 +9,12 @@ export default {
   grey: '#888888',
   greyLite: '#848484',
   lightGrey: '#D5D5D5',
-  zambezi: '#606060'
+  zambezi: '#606060',
+  gainsboro: '#e0e0e0',
+  paynesGrey: '#3e404b',
+  wildWatermelon: '#FF5363',
+  black: '#101010',
+  softBlue: '#55acee',
+  pinkRed: '#ef5869',
+  midnightblue:'#34445b',
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Easing, Animated } from 'react-native';
 import { Root } from 'native-base';
 import {
   createMaterialTopTabNavigator,
@@ -20,131 +20,176 @@ import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
+import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from './src/components/Giphy';
+import VideoPlayer from "./src/components/CommonComponents/VideoPlayer";
 import EditTx from './src/components/Transaction/EditTxModal';
-import deepGet from 'lodash/get';
+import UserActivatingScreen from './src/components/UserActivating';
+import { LoginPopover } from './src/components/LoginPopover';
+import UsersProfileScreen from "./src/components/UsersProfile";
+import CameraWorker from './src/services/CameraWorker';
 import CaptureVideo from './src/components/CaptureVideo';
+import PreviewRecordedVideo from './src/components/PreviewRecordedVideo'
 import ProfileImagePicker from './src/components/ProfileImagePicker';
 import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
+import BioScreen from "./src/components/Bio";
 
-const FeedStack = createStackNavigator(
-  {
-    FeedContent: Feed,
-    UserFeedScreen: UserFeedScreen
-  },
-  {
-    headerLayoutPreset: 'center'
-  }
-);
+import deepGet from 'lodash/get';
 
-const UserTransactionStack = createStackNavigator(
-  {
-    UsersScreen: Users,
-    TransactionScreen: TransactionScreen
-  },
-  {
-    headerLayoutPreset: 'center'
-  }
-);
-
-const UserStack = createStackNavigator(
-  {
-    UserTransaction: UserTransactionStack,
-    Giphy: Giphy,
-    EditTx: EditTx
-  },
-  {
+const modalStackConfig = {
     headerLayoutPreset: 'center',
     headerMode: 'none',
     mode: 'modal',
     navigationOptions: ({ navigation }) => {
-      return {
-        tabBarVisible: deepGet(navigation, 'state.routes[0].index') == 0 ? true : false
-      };
+        return {
+            tabBarVisible: deepGet(navigation, 'state.routes[0].index') == 0 ? true : false
+        };
     }
-  }
+};
+
+const UserTransactionStack = createStackNavigator(
+    {
+        UsersScreen: Users,
+        TransactionScreen: TransactionScreen
+    },
+    {
+        headerLayoutPreset: 'center'
+    }
+);
+
+const HomeTransactionStack = createStackNavigator(
+    {
+        HomeScreen: HomeScreen,
+        TransactionScreen: TransactionScreen,
+        UsersProfileScreen: UsersProfileScreen,
+    },
+    {
+        headerLayoutPreset: 'center'
+    }
+);
+
+const HomeStack = createStackNavigator(
+    {
+        HomeTransactionStack: HomeTransactionStack,
+        Giphy: Giphy,
+        EditTx: EditTx,
+        VideoPlayer: VideoPlayer
+    },
+    { ...modalStackConfig }
+);
+
+
+const FeedStack = createStackNavigator(
+    {
+        FeedContent: Feed,
+        UserFeedScreen: UserFeedScreen
+    },
+    {
+        headerLayoutPreset: 'center'
+    }
+);
+
+const UserStack = createStackNavigator(
+    {
+        UserTransaction: UserTransactionStack,
+        Giphy: Giphy,
+        EditTx: EditTx
+    },
+    { ...modalStackConfig }
 );
 
 const ProfileStack = createStackNavigator(
-  {
-    ProfileScreen: ProfileScreen,
-    UserFeedScreen: UserFeedScreen
-  },
-  {
-    headerLayoutPreset: 'center'
-  }
+    {
+        ProfileScreen: ProfileScreen,
+        VideoPlayer: VideoPlayer,
+        CaptureVideo: CaptureVideo,
+        BioScreen: BioScreen
+
+    },
+    {
+        headerLayoutPreset: 'center',
+        mode: 'modal',
+        navigationOptions: ({ navigation }) => {
+            return {
+                tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false
+            };
+        }
+    }
 );
 
-const HomeScreen = createMaterialTopTabNavigator(
-  {
-    Feed: FeedStack,
-    Users: UserStack,
-    Profile: ProfileStack
-  },
-  {
-    tabBarComponent: CustomTab,
-    tabBarPosition: 'bottom',
-    defaultNavigationOptions: {
-      headerTitleStyle: {
-        color: Colors.dark
-      },
-      headerStyle: {
-        backgroundColor: Colors.white
-      }
+const CustomTabStack = createMaterialTopTabNavigator(
+    {
+        Home: HomeStack,
+        Feed: FeedStack,
+        Users: UserStack,
+        Profile: ProfileStack
     },
-    lazy: true
-  }
+    {
+        tabBarComponent: CustomTab,
+        tabBarPosition: 'bottom',
+        defaultNavigationOptions: {
+            headerTitleStyle: {
+                color: Colors.dark
+            },
+            headerStyle: {
+                backgroundColor: Colors.white
+            }
+        },
+        lazy: true
+    }
 );
 
 const PinStack = createStackNavigator(
-  {
-    SetPinScreen: SetPin,
-    ConfirmPinScreen: ConfirmPin
-  },
-  {
-    headerLayoutPreset: 'center',
-    defaultNavigationOptions: {
-      headerTitleStyle: {
-        color: Colors.dark,
-        flex: 1,
-        textAlign: 'center'
-      },
-      headerStyle: {
-        backgroundColor: Colors.white
-      },
-      headerRight: <View />
+    {
+        SetPinScreen: SetPin,
+        ConfirmPinScreen: ConfirmPin
+    },
+    {
+        headerLayoutPreset: 'center',
+        defaultNavigationOptions: {
+            headerTitleStyle: {
+                color: Colors.dark,
+                flex: 1,
+                textAlign: 'center'
+            },
+            headerStyle: {
+                backgroundColor: Colors.white
+            },
+            headerRight: <View />
+        }
     }
-  }
 );
 
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
-      //AuthLoading,
-      ProfileImagePicker,
-      CaptureVideo,
+      AuthLoading,
       AuthScreen,
-      HomeScreen,
+      CustomTabStack,
       PinStack,
-      CaptureImageScreen: CaptureImage,
-      ImageGalleryScreen: ImageGallery
+      UserActivatingScreen,
+        CaptureImageScreen: CaptureImage,
+        ImageGalleryScreen: ImageGallery
     },
     {
-      initialRouteName: 'ProfileImagePicker'
+      initialRouteName: 'AuthLoading'
     }
   )
 );
 
 const RootNavigationContainer = () => (
   <Root>
+
     <AppContainer
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
     />
+    <CameraWorker />
     <LoadingModalCover />
+    <LoginPopover />
   </Root>
 );
 

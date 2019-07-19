@@ -13,12 +13,27 @@ import {
   upsertTransactionEntities,
   upsertGiffyEntities,
   upsertFeedEntities,
-  showToast
+  upsertTagEntities,
+  upsertUserProfileEntities,
+  upsertUserStatEntities,
+  upsertLinkEntities,
+  upsertVideoEntities,
+  upsertVideoStatEntities,
+  upsertImageEntities,
+  upsertHomeFeedEntities,
+  upsertUserContributionEntities,
+  upsertVideoContributionEntities,
+  updatePricePoints,
+  updateCurrentUser
 } from '../actions';
 import { API_ROOT } from '../constants/index';
-import CurrentUser from '../models/CurrentUser';
 
 import { ostErrors, UIWhitelistedErrorCode } from './OstErrors';
+
+let CurrentUser;
+import('../models/CurrentUser').then((imports) => {
+  CurrentUser = imports.default;
+});
 
 export default class PepoApi {
   constructor(url, params = {}) {
@@ -80,17 +95,80 @@ export default class PepoApi {
     }
     const data = DeepGet(responseJSON, 'data'),
       resultData = DeepGet(responseJSON, `data.${resultType}`);
+
+    if( data['ost_transaction'] ){
+      Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data['ost_transaction'])));
+    }
+
+    if( data['gifs'] ){
+      Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data['gifs'])));
+    }
+    
+    if( data['tags'] ){
+      Store.dispatch(upsertTagEntities(this._getEntitiesFromObj(data['tags'])));
+    }
+
+    if( data['user_profiles'] ){
+      Store.dispatch(upsertUserProfileEntities(this._getEntitiesFromObj(data['user_profiles'])));
+    }
+
+    if( data['user_profile'] ){
+      Store.dispatch(upsertUserProfileEntities(this._getEntityFromObj(data['user_profile'])));
+    }
+
+    if( data['user_stats'] ){
+      Store.dispatch(upsertUserStatEntities(this._getEntitiesFromObj(data['user_stats'])));
+    }
+    
+    if( data['links'] ){
+      Store.dispatch(upsertLinkEntities(this._getEntitiesFromObj(data['links'])));
+    }
+
+    if( data['videos'] ){
+      Store.dispatch(upsertVideoEntities(this._getEntitiesFromObj(data['videos'])));
+    }
+   
+    if( data['video_details'] ){
+      Store.dispatch(upsertVideoStatEntities(this._getEntitiesFromObj(data['video_details'])));
+    }
+    
+    if( data['images'] ){
+      Store.dispatch(upsertImageEntities(this._getEntitiesFromObj(data['images'])));
+    }
+
+    if( data["current_user_video_contributions"] ){
+      Store.dispatch(upsertVideoContributionEntities(this._getEntitiesFromObj(data['current_user_video_contributions'])));
+    }
+
+    if( data["current_user_user_contributions"] ){
+      Store.dispatch(upsertUserContributionEntities(this._getEntitiesFromObj(data['current_user_user_contributions'])));
+    }
+
+    if( data["price_points"] ){
+      Store.dispatch(updatePricePoints( data["price_points"] ));
+    }
+
+    let users =  data['users'];
+    if( users ){ //This code should be removed when current user is disassociated from users
+      const currentUserId = CurrentUser.getUserId(),
+            currentUser = users[currentUserId];
+      if( currentUser ){
+        Store.dispatch(updateCurrentUser(currentUser));
+        delete users[currentUserId];
+      }
+    }
+
+    if( users && Object.keys( users ).length > 0){
+      Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(users)));
+    }
+
     switch (resultType) {
-      case 'users':
-        Store.dispatch(upsertUserEntities(this._getEntities(resultData)));
+      case 'feeds': 
+          Store.dispatch(upsertHomeFeedEntities(this._getEntities(resultData)));
         break;
-      case 'public_feed':
-      case 'user_feed':
-        Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
-        Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data['ost_transaction'])));
-        Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data['gifs'])));
-        Store.dispatch(upsertFeedEntities(this._getEntities(resultData)));
-        break;
+      case "feed":
+          Store.dispatch(upsertHomeFeedEntities(this._getEntitiesFromObj(resultData)));
+        break;  
     }
   }
 
@@ -116,6 +194,12 @@ export default class PepoApi {
       entities[`${key}_${identifier}`] = resultObj[identifier];
     }
     return entities;
+  }
+
+  _getEntityFromObj( resultObj , key = "id" ){
+    const entity = {} ,  id = `${key}_${resultObj.id}` ;
+    entity[ id ] = resultObj ;
+    return entity;
   }
 
   _perform() {

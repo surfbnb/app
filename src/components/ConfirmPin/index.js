@@ -40,7 +40,7 @@ export default class ConfirmPin extends Component {
 
   onRequestAcknowledge() {
     LoadingModal.hide();
-    this.props.navigation.navigate('HomeScreen');
+    this.props.navigation.navigate('HomeScreen');     
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {

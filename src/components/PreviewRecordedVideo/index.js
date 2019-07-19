@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text } from 'react-native';
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
-import playIcon from '../../assets/play_icon.png';
+import playIcon from '../../assets/preview_play_icon.png';
 import tickIcon from '../../assets/tick_icon.png';
-import CameraManager from '../../services/CameraManager';
-import RNThumbnail from 'react-native-thumbnail';
-import FfmpegProcesser from '../../services/FfmpegProcesser';
+import Store from '../../store';
+import { upsertRecordedVideo } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
 
@@ -18,9 +17,6 @@ const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 
 class PreviewRecordedVideo extends Component {
-  // static navigationOptions = {
-  //   header: null
-  // };
   constructor(props) {
     super(props);
     this.state = {
@@ -31,31 +27,12 @@ class PreviewRecordedVideo extends Component {
   }
 
   componentDidMount() {
-    //this.startCompression();
-    this.videoProcessing();
+    Store.dispatch(upsertRecordedVideo({raw_video: this.cachedVideoUri}));
   }
 
-  previewOnProgress(params) {
-    this.setState({ progress: params.currentTime / params.seekableDuration });
-  }
-
-  async videoProcessing() {
-    let file = { uri: this.cachedVideoUri, type: 'video/mp4', name: `video_${Date.now()}.mp4` };
-    await CameraManager.video(file);
-    await compressVideo.compressVideo(file);
-    // this.thumbnailUrl = await this.fetchAndUploadThumbnail();
-    // console.log(this.videoS3Url, this.thumbnailUrl);
-  }
-
-  async fetchAndUploadThumbnail() {
-    let thumbnailPath = await RNThumbnail.get(this.cachedVideoUri);
-    console.log(thumbnailPath, 'thumbnailPath');
-    let cameraManager = new CameraManager({
-      uri: thumbnailPath.path,
-      type: 'image/png',
-      name: `image_${Date.now()}.png`
-    });
-    return await cameraManager.uploadImage('video-thumbnail');
+  enableStartUploadFlag(){
+    this.props.navigation.goBack();
+    Store.dispatch(upsertRecordedVideo({do_upload: true}));
   }
 
   handleProgress = (progress) => {
@@ -77,7 +54,6 @@ class PreviewRecordedVideo extends Component {
   }
 
   cancleVideoHandling() {
-    console.log('cancleVideoHandling here');
     ActionSheet.show(
         {
           options: ACTION_SHEET_BUTTONS,
@@ -88,9 +64,15 @@ class PreviewRecordedVideo extends Component {
           console.log('This is Button index', buttonIndex);
           if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
             // This will take to VideoRecorder component
-            this.props.toggleView();
+            Store.dispatch(
+              upsertRecordedVideo({
+                do_discard: true
+              })
+            );
+            this.props.goToRecordScreen(); 
           } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
-            //navigate to previous page
+            //TODO: navigate to previous page
+            this.props.navigation.push('ProfileScreen');
           }
         }
     );
@@ -98,51 +80,51 @@ class PreviewRecordedVideo extends Component {
 
   render() {
     return (
-        <View style={styles.container}>
-          <Video
-              source={{ uri: this.cachedVideoUri }}
-              style={styles.previewVideo}
-              fullscreen={true}
-              onLoad={(meta) => {
-                this.handleLoad(meta);
-              }}
-              onProgress={(progress) => {
-                this.handleProgress(progress);
-              }}
-              onEnd={() => {
-                this.handleEnd();
-              }}
-              ref={(component) => (this._video = component)}
-          ></Video>
-          <ProgressBar
-              width={null}
-              color="#EF5566"
-              progress={this.state.progress}
-              indeterminate={false}
-              style={styles.progressBar}
-          />
-          <TouchableWithoutFeedback
-              onPressIn={this.cancleVideoHandling}
-          >
-            <View style={styles.cancelButton}><Text style={styles.cancelText}>X</Text></View>
-          </TouchableWithoutFeedback>
-          <View style={styles.bottomControls}>
-            <TouchableOpacity
-                onPress={() => {
-                  this.replay();
-                }}
-            >
-              <Image style={styles.playIcon} source={playIcon} />
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={async () => {
-                  await CameraManager.enableStartUploadFlag();
-                }}
-            >
-              <Image style={styles.tickIcon} source={tickIcon} />
-            </TouchableOpacity>
+      <View style={styles.container}>
+        <Video
+          source={{ uri: this.cachedVideoUri }}
+          style={styles.previewVideo}
+          fullscreen={true}
+          onLoad={(meta) => {
+            this.handleLoad(meta);
+          }}
+          onProgress={(progress) => {
+            this.handleProgress(progress);
+          }}
+          onEnd={() => {
+            this.handleEnd();
+          }}
+          ref={(component) => (this._video = component)}
+        ></Video>
+        <ProgressBar
+          width={null}
+          color="#EF5566"
+          progress={this.state.progress}
+          indeterminate={false}
+          style={styles.progressBar}
+        />
+        <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
+          <View style={styles.cancelButton}>
+            <Text style={styles.cancelText}>X</Text>
           </View>
+        </TouchableWithoutFeedback>
+        <View style={styles.bottomControls}>
+          <TouchableOpacity
+            onPress={() => {
+              this.replay();
+            }}
+          >
+            <Image style={styles.playIcon} source={playIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={async () => {
+              this.enableStartUploadFlag();
+            }}
+          >
+            <Image style={styles.tickIcon} source={tickIcon} />
+          </TouchableOpacity>
         </View>
+      </View>
     );
   }
 

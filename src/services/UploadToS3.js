@@ -4,14 +4,15 @@ import Store from '../store';
 
 export default class UploadToS3 {
   constructor(fileURI, fileType) {
-    this.fileType = fileType;
+    this.fileType = fileType
     this.mappedFileType = Constants['fileUploadTypes'][fileType];
     this.file = this.getFileObject(fileURI);
+    
   }
 
   getFileObject(fileURI) {
     let fileExt = this.getFileExtension(fileURI);
-
+    
     return {
       uri: fileURI,
       type: `${this.fileType}/${fileExt}`,
@@ -33,10 +34,8 @@ export default class UploadToS3 {
     return '';
   }
 
-  async _getSignedUrl() {
-    let signedUrlResp = await new PepoApi('/upload-params').get({
-      [this.mappedFileType]: [this.file && this.file.name]
-    });
+  async _getSignedUrl() {    
+    let signedUrlResp = await new PepoApi('/upload-params').get({ [this.mappedFileType]: [this.file && this.file.name]});
     return signedUrlResp;
   }
 
@@ -53,13 +52,10 @@ export default class UploadToS3 {
       body: this._getFormData(this.uploadParams.post_fields)
     };
     try {
-      resp = await fetch(this.uploadParams.post_url, options);
-    } catch (e) {
-      console.log('Errororoooooo');
+       resp = await fetch(this.uploadParams.post_url, options);
+    } catch(e){      
       console.log(e);
-    }
-
-    console.log(resp, 'resp');
+    }    
     return resp;
   }
 
@@ -72,8 +68,7 @@ export default class UploadToS3 {
     let formData = new FormData();
     paramsList.forEach((param) => {
       formData.append(param['key'], param['value']);
-    });
-    console.log('formData', formData);
+    });    
     return formData;
   }
 }

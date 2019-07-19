@@ -1,9 +1,25 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {ActivityIndicator} from "react-native";
 import { FetchServices } from "../../services/FetchServices";
 
-function flatlistHOC(ListComponent) {
-    return class extends Component {
+/**
+ * 
+ * @param {FlatList component } ListComponent 
+ * @param {Boolen} scrollDetectNext 
+ * Note :- scrollDetectNext send as true , its mandatory to onMomentumScrollBeginCallback on onMomentumScrollBegin 
+ * from flatlist otherwise pagination won't work
+ * 
+ * * Flatlist by defaults handles refresh , pagination ,
+ * * call pagination only on scroll and stop pagination when nextpagepayload is over
+ * 
+ * Unhandled need to check if on Pull to refresh subsequtent next page request is going when scrollDetectNext flag is true 
+ * Will have to implement onEndReachedCalledDuringMomentum mechanism there as
+ */
+
+ //TODO remove console.logs once tested for all flatlist 
+
+function flatlistHOC( ListComponent , scrollDetectNext ) {
+    return class extends PureComponent {
       constructor(props) {
         super(props);
         this.state = {
@@ -11,6 +27,7 @@ function flatlistHOC(ListComponent) {
             refreshing: false,
             loadingNext: false
           };
+        this.onEndReachedCalledDuringMomentum = !!scrollDetectNext;  
       }
   
       componentDidMount() {
@@ -63,17 +80,27 @@ function flatlistHOC(ListComponent) {
       }
     
       onRefresh(res) {
+        console.log("on refresh .........");
         this.props.onRefresh && this.props.onRefresh(res);
         this.setState({ refreshing: false, list: this.fetchServices.getIDList() });
       }
     
       onRefreshError(error) {
+        console.log("on refresh error.........");
         this.props.onRefreshError && this.props.onRefreshError(error);
-        this.setState({ refreshing: false, list: this.fetchServices.getIDList() });
+        this.setState({ refreshing: false });
       }
     
+      /**
+       * getNext monitors for 4 different checkpoints 
+       * 1. It wont call next page if allready fetching data of previous page 
+       * 2. Wont next page when pull to refresh is done
+       * 3. Will stop pagination if next page payload is not present 
+       * 4. Will start pagination only after scroll detect (Optional)
+      */
       getNext = () => {
-        if (this.state.loadingNext || this.state.refreshing) return;
+        if (this.state.loadingNext || this.state.refreshing
+           || !this.fetchServices.hasNextPage || this.onEndReachedCalledDuringMomentum ) return;
         this.beforeNext();
         this.fetchServices
           .fetch()
@@ -87,24 +114,34 @@ function flatlistHOC(ListComponent) {
     
       beforeNext() {
         console.log("next .........");
+        if( scrollDetectNext ){
+          this.onEndReachedCalledDuringMomentum = true;
+        }
         this.props.beforeNext && this.props.beforeNext();
         this.setState({ loadingNext: true });
       }
     
       onNext(res) {
+        console.log("on next .........");
         this.props.onNext && this.props.onNext(res);
         this.setState({ loadingNext: false, list: this.fetchServices.getIDList() });
       }
     
       onNextError(error) {
+        console.log("on error .........");
         this.props.onNextError && this.props.onNextError(error);
-        this.setState({ loadingNext: false, list: this.fetchServices.getIDList() });
+        this.setState({ loadingNext: false });
       }
     
       renderFooter = () => {
         if (!this.state.loadingNext) return null;
         return <ActivityIndicator />;
       };
+
+      onMomentumScrollBeginCallback(){
+        console.log("onMomentumScrollBeginCallback FlatList HOC.... ")
+        this.onEndReachedCalledDuringMomentum = false;
+      }
   
       render() {
         return <ListComponent
@@ -113,6 +150,7 @@ function flatlistHOC(ListComponent) {
                 refresh={() => this.refresh()}
                 refreshing={this.state.refreshing}
                 renderFooter={()=> this.renderFooter()}
+                onMomentumScrollBeginCallback={()=>this.onMomentumScrollBeginCallback()}
                 {...this.props} />;
       }
     };

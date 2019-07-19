@@ -17,6 +17,7 @@ import Theme from '../../../theme/styles';
 import inlineStyles from '../Style';
 import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
 import deepGet from "lodash/get";
+import Pricer from "../../../services/Pricer";
 
 
 const bottomSpace = getBottomSpace([true])
@@ -27,16 +28,17 @@ const bottomSpace = getBottomSpace([true])
 export default class EditTxModal extends Component {
   constructor(props) {
     super(props);
+    this.priceOracle = Pricer.getPriceOracle();
     this.state = this.getState();
-    this.getPriceOracle = props.navigation.getParam('getPriceOracle');
     this.onAmountModalConfirm = props.navigation.getParam('onAmountModalConfirm');
     this.balance = props.navigation.getParam('balance');
   }
 
   getState() {
+    const btAmount = this.props.navigation.getParam('btAmount') ; 
     return {
-      btAmount: this.props.navigation.getParam('btAmount'),
-      btUSDAmount: this.props.navigation.getParam('btUSDAmount'),
+      btAmount: btAmount,
+      btUSDAmount: this.priceOracle && this.priceOracle.btToFiat( btAmount ) || 0,
       btAmountErrorMsg: null,
       bottomPadding: safeAreaBottomSpace,
       btFocus: false
@@ -87,7 +89,6 @@ export default class EditTxModal extends Component {
   }
 
   _keyboardHidden(e) {
-
     if (this.state.bottomPadding == safeAreaBottomSpace) {return}
     this.setState({
       bottomPadding: safeAreaBottomSpace,
@@ -95,18 +96,16 @@ export default class EditTxModal extends Component {
   }
 
   onBtChange(bt) {
-    const priceOracle = this.getPriceOracle();
-    if(!priceOracle) return ; 
-    this.setState({ btAmount: bt, btUSDAmount: priceOracle.btToFiat(bt) });
+    if(!this.priceOracle) return ; 
+    this.setState({ btAmount: bt, btUSDAmount: this.priceOracle.btToFiat(bt) });
     if (bt > 0) {
       this.setState({ btAmountErrorMsg: null });
     }
   }
 
   onUSDChange(usd) {
-    const priceOracle = this.getPriceOracle() ;
-    if(!priceOracle) return ; 
-    this.setState({ btAmount: priceOracle.fiatToBt(usd), btUSDAmount: usd });
+    if(!this.priceOracle) return ; 
+    this.setState({ btAmount: this.priceOracle.fiatToBt(usd), btUSDAmount: usd });
   }
 
   onConfirm = () => {
