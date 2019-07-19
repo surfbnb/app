@@ -161,10 +161,18 @@ class ProfileEdit extends React.PureComponent{
     }
   }
 
+  onBioChangeDelegate = (val) => {
+    this.setState({bio: val});
+  } 
+
+  onBioFocus = () => {
+    this.props.navigation.push("BioScreen" , {onChangeTextDelegate : this.onBioChangeDelegate });
+    this.state.current_formField = this.tabIndex.link;
+  }
+
   onServerError(res){
     const errorMsg = ostErrors.getErrorMessage(res);
     this.setState({ server_errors: res  , general_error : errorMsg});
-
   }
 
   render(){
@@ -190,9 +198,6 @@ class ProfileEdit extends React.PureComponent{
           returnKeyLabel="Next"
           placeholderTextColor="#ababab"
           blurOnSubmit={false}
-          onSubmitEditing={() => {
-            this.onSubmitEditing(this.tabIndex.name);
-          }}
           isFocus={this.state.current_formField == this.tabIndex.name}
           onFocus={() => {
             this.state.current_formField = this.tabIndex.name;
@@ -229,12 +234,9 @@ class ProfileEdit extends React.PureComponent{
         <Text style={{}}>Bio</Text>
         <FormInput
           editable={true}
-          onChangeText={(bio) => this.setState({ bio, error: null, bio_error: null })}
           fieldName="bio"
           textContentType="none"
-          style={[
-            Theme.TextInput.textInputStyle,  {marginBottom: 10, height: 75, paddingVertical: 15}
-          ]}
+          style={[  Theme.TextInput.textInputStyle,  {marginBottom: 10, height: 75, paddingVertical: 15} ]}
           placeholder="Bio"
           returnKeyType="next"
           returnKeyLabel="Next"
@@ -245,10 +247,7 @@ class ProfileEdit extends React.PureComponent{
             this.onSubmitEditing(this.tabIndex.bio);
           }}
           isFocus={this.state.current_formField == this.tabIndex.bio}
-          onFocus={() => {
-            this.props.navigation.push("BioScreen");
-            this.state.current_formField = this.tabIndex.bio;
-          }}
+          onFocus={this.onBioFocus}
           value = {this.state.bio}
           serverErrors={this.state.serverErrors}
         />
