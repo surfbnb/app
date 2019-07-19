@@ -81,7 +81,8 @@ let stylesMap = {
   },
   profileEditIconSkipFont:{
     height:75,
-    width:75
+    width:75,
+    borderRadius:40
   }
 };
 
