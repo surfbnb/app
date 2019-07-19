@@ -62,8 +62,7 @@ let stylesMap = {
   },
   editProfileContainer: {
     height: 75,
-    width: 75,
-    borderRadius: 37.5
+    width: 75
   },
   editProfileIconPos: {
     backgroundColor: Colors.white,
@@ -79,10 +78,10 @@ let stylesMap = {
     alignItems: 'center',
     justifyContent: 'center'
   },
-  profileEditIconSkipFont:{
-    height:75,
-    width:75,
-    borderRadius:40
+  profileEditIconSkipFont: {
+    height: 75,
+    width: 75,
+    borderRadius: 37.5
   }
 };
 

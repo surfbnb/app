@@ -32,6 +32,7 @@
 		00470EFC22DC7C7D00FC8345 /* libvidstab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EF022DC7C7D00FC8345 /* libvidstab.framework */; };
 		00470EFD22DC7C7D00FC8345 /* xvidcore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EF122DC7C7D00FC8345 /* xvidcore.framework */; };
 		0050FDA422A823E300C2634F /* OstWalletSdk.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0050FDA322A823E300C2634F /* OstWalletSdk.plist */; };
+		00BE71A022E1F27400AD4055 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00BE717222E1F25F00AD4055 /* libRCTCameraRoll.a */; };
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
 		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
@@ -60,6 +61,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		165DB15B05EA486B9E126B28 /* libRNTwitterSignIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF6E63B1EE046558D3A515B /* libRNTwitterSignIn.a */; };
 		17D99A44BE8F48C9A715DE30 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B5F02FDAEC145A9A4F8403A /* FontAwesome5_Brands.ttf */; };
 		22FE2B7F2DE4496EB61E6F7E /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61D8EE774B704B6DAC8F8DBA /* FontAwesome5_Solid.ttf */; };
 		270223CFEF014067B45C1388 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 695C1EFE72E34F80A174D50D /* Lato-BlackItalic.ttf */; };
@@ -73,7 +75,6 @@
 		65CD6A21EC164A9A8F14A9A3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAB07333EF0A462BB5571B78 /* Zocial.ttf */; };
 		6B3FDE64B4BC42EDB8E47247 /* libRNThumbnail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E224B056D2EB485E97B8079B /* libRNThumbnail.a */; };
 		6C300736152B4242B645C0CA /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F406518F2D434EC0A78FA040 /* AntDesign.ttf */; };
-		6E0AE6D195F54E57AA12C61D /* libRNTwitterSignIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C31356669D40DD9A917495 /* libRNTwitterSignIn.a */; };
 		77280AE9DDE14F90B1ACDAF8 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4644A8D258C5493CAD1FB4CE /* SimpleLineIcons.ttf */; };
 		7729409A22D74BBE00C9FE35 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
 		7766C64E22DD9FD000C019D8 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7766C64822DD9FB000C019D8 /* libRNFS.a */; };
@@ -173,6 +174,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNCAsyncStorage;
 		};
+		00BE717122E1F25F00AD4055 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00BE716522E1F25F00AD4055 /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
+		};
 		00C302AB1ABCB8CE00DB3ED1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -207,13 +215,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 832C81801AAF6DEF007FA2F7;
 			remoteInfo = RCTVibration;
-		};
-		00C68FF422E1D49E005C9E42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 076F90F3AD1A4C6C852BD291 /* RNTwitterSignIn.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D07E57251F07806700A7160F;
-			remoteInfo = RNTwitterSignIn;
 		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -418,6 +419,13 @@
 			remoteGlobalIDString = 6456441F1EB8DA9100672408;
 			remoteInfo = "RNFS-tvOS";
 		};
+		776EEED822E1F1F400BE1922 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA9BB6AFAB7045B48A74A823 /* RNTwitterSignIn.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D07E57251F07806700A7160F;
+			remoteInfo = RNTwitterSignIn;
+		};
 		779F2ECD22D7CE180076410B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */;
@@ -506,6 +514,7 @@
 		0050FDA022A8226800C2634F /* OstWalletSdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OstWalletSdk.framework; path = Carthage/Build/iOS/OstWalletSdk.framework; sourceTree = "<group>"; };
 		0050FDA322A823E300C2634F /* OstWalletSdk.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = OstWalletSdk.plist; path = Pepo2/OstWalletSdk.plist; sourceTree = "<group>"; };
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		00BE716522E1F25F00AD4055 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGeolocation.xcodeproj; path = "../node_modules/react-native/Libraries/Geolocation/RCTGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
@@ -535,7 +544,6 @@
 		00C47A7622E1D17600F80227 /* OstWalletRnSdkApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OstWalletRnSdkApi.m; sourceTree = "<group>"; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* Pepo2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Pepo2Tests.m; sourceTree = "<group>"; };
-		076F90F3AD1A4C6C852BD291 /* RNTwitterSignIn.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNTwitterSignIn.xcodeproj; path = "../node_modules/react-native-twitter-signin/ios/RNTwitterSignIn.xcodeproj"; sourceTree = "<group>"; };
 		08D7C506430143C8AB61A4BA /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		0B5F02FDAEC145A9A4F8403A /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		0B68B9DFA408468A8A491352 /* libRNGestureHandler-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNGestureHandler-tvOS.a"; sourceTree = "<group>"; };
@@ -579,6 +587,7 @@
 		9FD60B28CE824C59AE47FEA0 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		A20954163BBA4DA493E99FCE /* Lato-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Light.ttf"; path = "../src/assets/fonts/Lato-Light.ttf"; sourceTree = "<group>"; };
 		A7AD85F48C1E4E04AB39DA01 /* Lato-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Bold.ttf"; path = "../src/assets/fonts/Lato-Bold.ttf"; sourceTree = "<group>"; };
+		AA9BB6AFAB7045B48A74A823 /* RNTwitterSignIn.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNTwitterSignIn.xcodeproj; path = "../node_modules/react-native-twitter-signin/ios/RNTwitterSignIn.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B821CF48A2A44371B21E0DEE /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		BD20DFACA44547828EDB44C2 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
@@ -587,9 +596,9 @@
 		CC7AFFBB3D9A402BBFE151B1 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		D9F6E1E6A2F74CDCB21180CD /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		DAB07333EF0A462BB5571B78 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		DBF6E63B1EE046558D3A515B /* libRNTwitterSignIn.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNTwitterSignIn.a; sourceTree = "<group>"; };
 		E217B6CB9E824C9E9399D1F9 /* libRNCNetInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCNetInfo.a; sourceTree = "<group>"; };
 		E224B056D2EB485E97B8079B /* libRNThumbnail.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNThumbnail.a; sourceTree = "<group>"; };
-		E2C31356669D40DD9A917495 /* libRNTwitterSignIn.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNTwitterSignIn.a; sourceTree = "<group>"; };
 		E2CAE8BE9DAE49359E5A9FCA /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		E5D6119C535A4F2284495006 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		E75C3359937D4B81B96AFAA8 /* Lato-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Black.ttf"; path = "../src/assets/fonts/Lato-Black.ttf"; sourceTree = "<group>"; };
@@ -650,10 +659,11 @@
 				DD7F324CF6F64145A03322D9 /* libRNCAsyncStorage.a in Frameworks */,
 				E0DF1B5506604BF48B9E5B24 /* libRNCNetInfo.a in Frameworks */,
 				2F5377BE6B4A409DAFFAE085 /* libFastImage.a in Frameworks */,
+				00BE71A022E1F27400AD4055 /* libRCTCameraRoll.a in Frameworks */,
 				6B3FDE64B4BC42EDB8E47247 /* libRNThumbnail.a in Frameworks */,
 				E5EDE66F39D640C8BC9C4788 /* libBVLinearGradient.a in Frameworks */,
 				9655D496820D4C808A4EA58C /* libRCTImageResizer.a in Frameworks */,
-				6E0AE6D195F54E57AA12C61D /* libRNTwitterSignIn.a in Frameworks */,
+				165DB15B05EA486B9E126B28 /* libRNTwitterSignIn.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,7 +690,7 @@
 				E224B056D2EB485E97B8079B /* libRNThumbnail.a */,
 				93E22828FEC842DBAFFEAC29 /* libBVLinearGradient.a */,
 				5F724538EF634C56A90BCD57 /* libRCTImageResizer.a */,
-				E2C31356669D40DD9A917495 /* libRNTwitterSignIn.a */,
+				DBF6E63B1EE046558D3A515B /* libRNTwitterSignIn.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -715,6 +725,14 @@
 			isa = PBXGroup;
 			children = (
 				009F91BC22B00D69001C00E1 /* libRNCAsyncStorage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00BE716622E1F25F00AD4055 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00BE717222E1F25F00AD4055 /* libRCTCameraRoll.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -797,14 +815,6 @@
 				00C47A6A22E1D17600F80227 /* OstVerifyDataWrap.h */,
 			);
 			path = sdkInteracts;
-			sourceTree = "<group>";
-		};
-		00C68FF122E1D49E005C9E42 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				00C68FF522E1D49E005C9E42 /* libRNTwitterSignIn.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		00E356EF1AD99517003FC87E /* Pepo2Tests */ = {
@@ -982,6 +992,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		776EEED522E1F1F400BE1922 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				776EEED922E1F1F400BE1922 /* libRNTwitterSignIn.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		779F2EB722D7CE180076410B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1027,6 +1045,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				00BE716522E1F25F00AD4055 /* RCTCameraRoll.xcodeproj */,
 				7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */,
 				779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */,
 				77EDA37622D763CB0095674F /* RNCamera.xcodeproj */,
@@ -1049,7 +1068,7 @@
 				7F7A8135DB79485B964AF4E3 /* RNThumbnail.xcodeproj */,
 				D9F6E1E6A2F74CDCB21180CD /* BVLinearGradient.xcodeproj */,
 				845CDE8555BB44DF9C86B077 /* RCTImageResizer.xcodeproj */,
-				076F90F3AD1A4C6C852BD291 /* RNTwitterSignIn.xcodeproj */,
+				AA9BB6AFAB7045B48A74A823 /* RNTwitterSignIn.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1167,6 +1186,10 @@
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
 				},
 				{
+					ProductGroup = 00BE716622E1F25F00AD4055 /* Products */;
+					ProjectRef = 00BE716522E1F25F00AD4055 /* RCTCameraRoll.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
@@ -1235,8 +1258,8 @@
 					ProjectRef = 7F7A8135DB79485B964AF4E3 /* RNThumbnail.xcodeproj */;
 				},
 				{
-					ProductGroup = 00C68FF122E1D49E005C9E42 /* Products */;
-					ProjectRef = 076F90F3AD1A4C6C852BD291 /* RNTwitterSignIn.xcodeproj */;
+					ProductGroup = 776EEED522E1F1F400BE1922 /* Products */;
+					ProjectRef = AA9BB6AFAB7045B48A74A823 /* RNTwitterSignIn.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1317,6 +1340,13 @@
 			remoteRef = 009F91BB22B00D69001C00E1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		00BE717222E1F25F00AD4055 /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = 00BE717122E1F25F00AD4055 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1350,13 +1380,6 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		00C68FF522E1D49E005C9E42 /* libRNTwitterSignIn.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNTwitterSignIn.a;
-			remoteRef = 00C68FF422E1D49E005C9E42 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
@@ -1560,6 +1583,13 @@
 			fileType = archive.ar;
 			path = libRNFS.a;
 			remoteRef = 7766C64922DD9FB000C019D8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		776EEED922E1F1F400BE1922 /* libRNTwitterSignIn.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNTwitterSignIn.a;
+			remoteRef = 776EEED822E1F1F400BE1922 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		779F2ECE22D7CE180076410B /* libRCTVideo.a */ = {
