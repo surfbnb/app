@@ -15,5 +15,6 @@ export default {
   wildWatermelon: '#FF5363',
   black: '#101010',
   softBlue: '#55acee',
-  pinkRed: '#ef5869'
+  pinkRed: '#ef5869',
+  midnightblue:'#34445b',
 };

@@ -4,7 +4,9 @@ import { withNavigation } from 'react-navigation';
 import PepoApi from "../../services/PepoApi";
 import BackArrow from "../CommonComponents/BackArrow";
 
-
+import Theme from '../../theme/styles';
+import Colors from '../../theme/styles/Colors'
+import inlineStyles from './style';
 const spaceRegex = /\s/g ; 
 
 
@@ -103,8 +105,8 @@ class BioScreen extends PureComponent {
 
     _renderItem = ({ item }) => {
       return (
-        <TouchableOpacity onPress={() => this.onSuggestionTap(item)}>
-          <Text>{item.text}</Text>
+        <TouchableOpacity style={inlineStyles.suggestionTextWrapper} onPress={() => this.onSuggestionTap(item)}>
+          <Text style={inlineStyles.suggestionText}>{`#${item.text}`}</Text>
         </TouchableOpacity>
       )
     }
@@ -116,14 +118,16 @@ class BioScreen extends PureComponent {
 
     render() {
         return (
-          <View>
+          <View style={{padding:20}}>
             <TextInput 
-              style={{marginTop : 50 , height : 100 }}
+              style={[Theme.TextInput.textInputStyle,inlineStyles.multilineTextInput]}
               onSelectionChange={this.locationGetter}
               onChangeText={this.onChangeText}
               multiline={true}
               value={this.state.value}
               placeholder={'Bio'}
+              multiline = {true}
+              numberOfLines = {4}
             />
 
             <FlatList
