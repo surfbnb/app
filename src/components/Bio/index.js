@@ -4,7 +4,10 @@ import { withNavigation } from 'react-navigation';
 import PepoApi from "../../services/PepoApi";
 import BackArrow from "../CommonComponents/BackArrow";
 
-const spaceRegex = /\s/g ; 
+import Theme from '../../theme/styles';
+import Colors from '../../theme/styles/Colors';
+import inlineStyles from './style';
+
 
 
 class BioScreen extends PureComponent {
@@ -26,18 +29,19 @@ class BioScreen extends PureComponent {
         this.reqTimer = 0 ;
         this.wordIndex = -1;
         this.indexWord = null;
+        this.isTrackingStarted = false;
+        this.onChangeTextDelegate  = this.props.navigation.getParam('onChangeTextDelegate') ;
     }
 
   
     fetchHashTags = ( keyword ) => {
       clearTimeout( this.reqTimer ) ;
+      const reqParam = keyword.substr(1); 
       this.reqTimer = setTimeout( () => {
-        new PepoApi("/tags").get( "q="+keyword.substr(1))
+        if(!reqParam) return;
+        new PepoApi("/tags").get( "q="+reqParam)
         .then(( res ) => {
-          if( res && res.data && res.data.tags ){
-            this.setState({keyword: keyword,
-              data: res.data.tags })
-          }
+          this.openSuggestionsPanel(res);
         })
         .catch((error)=> { })
       } ,  300)
@@ -60,21 +64,27 @@ class BioScreen extends PureComponent {
       return str.slice(left, right + pos);
     }
 
+    changeValue( val ){
+      this.onChangeTextDelegate && this.onChangeTextDelegate( val );
+      this.setState({ value: val });
+    }
+
     onChangeText = (val) => { 
       const location          = this.location - 1 ,
             currentIndexChar  = val.charAt(location) ,
-            isValidChar       =  this.isValidChar( currentIndexChar ) ,
+            isValidChar       = this.isValidChar( currentIndexChar ) ,
             wordAtIndex       = this.getWordAtIndex( val , location) ,
-            isHashTag         = this.isHashTag(val);
+            isHashTag         = this.isHashTag(wordAtIndex);
        ;
       if( isValidChar && isHashTag ){
           this.wordIndex = location; 
           this.indexWord = wordAtIndex; 
+          this.startTracking();
           this.fetchHashTags( wordAtIndex );
       } else{
         this.closeSuggestionsPanel();
       }
-      this.setState({ value: val });
+      this.changeValue( val );
     }
 
     isHashTag( val ){
@@ -84,52 +94,57 @@ class BioScreen extends PureComponent {
 
     isValidChar( val ){
       const spaceRegex = /\s/g ; 
-      return !spaceRegex.test(val)
+      return val && !spaceRegex.test(val)
     }
 
     locationGetter = ( event )=> {
       this.location = event && event.nativeEvent && event.nativeEvent.selection && event.nativeEvent.selection.start ;
     }
 
-    openSuggestionsPanel() {
-     //TODO 
+    openSuggestionsPanel( res ) {
+      if( !this.isTrackingStarted ) return ; 
+      if( res && res.data && res.data.tags ){
+        this.setState({ data: res.data.tags });
+      }
     }
   
     closeSuggestionsPanel() {
+      this.stopStracking(); 
       if( this.state.data.length > 0 ){
         this.setState({ data : []});
       }
+    }
+
+    startTracking(){
+      this.isTrackingStarted =  true ; 
+    }
+
+    stopStracking(){
+      this.isTrackingStarted =  false ; 
     }
 
     _keyExtractor = (item, index) => `id_${item.id}` ;
 
     _renderItem = ({ item }) => {
       return (
-        <TouchableOpacity onPress={() => this.onSuggestionTap(item)}>
-          <Text>{item.text}</Text>
+        <TouchableOpacity style={inlineStyles.suggestionTextWrapper} onPress={() => this.onSuggestionTap(item)}>
+          <Text style={inlineStyles.suggestionText}>{`#${item.text}`}</Text>
         </TouchableOpacity>
       )
     }
   
     onSuggestionTap( item ) {
-      console.log("======item======" , item);
       this.closeSuggestionsPanel();
       const wordToReplace = this.getWordAtIndex(this.state.value , this.wordIndex ) ,
             isHashTag = this.isHashTag( wordToReplace ) 
       ;
-      console.log("======wordToReplace======" , wordToReplace);
-      console.log("======isHashTag======" , isHashTag);
       if( isHashTag ){
         const startIndex = this.getStartIndex( this.state.value ,  this.wordIndex ) ,
               endIndex = this.getEndIndex( this.state.value ,  this.wordIndex ) ,
               replaceString = ` #${item.text} `,
               newString = this.replaceBetween( startIndex , endIndex , replaceString )
         ;
-        console.log("====startIndex====" , startIndex );
-        console.log("====endIndex====" , endIndex );
-        console.log("====replaceString====" , replaceString );
-        console.log("====newString====" , newString );
-        this.setState({value :newString });
+        this.changeValue( newString );
       }
     }
 
@@ -166,14 +181,16 @@ class BioScreen extends PureComponent {
 
     render() {
         return (
-          <View>
+          <View style={{padding:20}}>
             <TextInput 
-              style={{marginTop : 50 , height : 100 }}
+              style={[Theme.TextInput.textInputStyle,inlineStyles.multilineTextInput]}
               onSelectionChange={this.locationGetter}
               onChangeText={this.onChangeText}
               multiline={true}
               value={this.state.value}
               placeholder={'Bio'}
+              multiline = {true}
+              numberOfLines = {3}
             />
 
             <FlatList
