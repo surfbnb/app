@@ -36,7 +36,9 @@ class BioScreen extends PureComponent {
     }
 
     componentDidMount(){
-
+        setTimeout(()=>{
+          this.refs["bio"].focus();
+        }, 0 )
     }
 
   
@@ -202,6 +204,7 @@ class BioScreen extends PureComponent {
               numberOfLines = {3}
               returnKeyType="done"
               returnKeyLabel="Done"
+              ref="bio"
             />
             <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
 
