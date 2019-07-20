@@ -7,8 +7,6 @@ import {upsertProfilePicture} from '../../actions';
 
 import { Platform, Image, TouchableWithoutFeedback, View, SafeAreaView } from 'react-native';
 
-import SnapClicker from '../SnapClicker';
-import CropperUI from '../ImageCropper/CropperUI';
 import UploadToS3 from '../../services/UploadToS3';
 import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';

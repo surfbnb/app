@@ -73,7 +73,7 @@ class PictureWorker extends PureComponent {
           s3_upload_processing: true
         })
       );
-      // this.updateProfilePicture(this.props.profile_picture.cleaned_cropped_image);
+      this.updateProfilePicture(this.props.profile_picture.cleaned_cropped_image);
       this.uploadToS3();
     }
     if (this.props.profile_picture.s3_cropped_image && !this.props.profile_picture.saved_to_server) {
@@ -110,11 +110,7 @@ class PictureWorker extends PureComponent {
       })
       .then((res) => {
         console.log(this.props.profile_picture.s3_cropped_image, 'this.props.profile_picture.s3_cropped_image in then');
-        console.log(
-          oThis.props.profile_picture.s3_cropped_image,
-          'oThis.props.profile_picture.s3_cropped_image in then'
-        );
-        //this.updateProfilePicture(this.props.profile_picture.s3_cropped_image);
+        this.updateProfilePicture(this.props.profile_picture.s3_cropped_image);
         Store.dispatch(clearProfilePicture());
 
         console.log('Profile image saved to server', res);
