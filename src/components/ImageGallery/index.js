@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableWithoutFeedback, FlatList, Dimensions, Platform } from 'react-native';
+import { View, Image, TouchableOpacity, TouchableWithoutFeedback, FlatList, Dimensions } from 'react-native';
 
 import inlineStyles from './styles';
 import ImageBrowser from '../../services/ImageBrowser';
@@ -7,13 +7,7 @@ import { SafeAreaView } from 'react-navigation';
 import assignIn from 'lodash/assignIn';
 import store from '../../store';
 import CropperUI from '../ImageCropper/CropperUI';
-
-import {upsertProfilePicture} from '../../actions';
-
-import ImageResizer from 'react-native-image-resizer';
-import RNFS from 'react-native-fs';
-import CurrentUser from '../../models/CurrentUser';
-import PepoApi from '../../services/PepoApi';
+import { upsertProfilePicture } from '../../actions';
 import appConfig from '../../constants/AppConfig';
 import tickIcon from '../../assets/tick_icon.png';
 
@@ -49,6 +43,7 @@ class ImageGallery extends Component {
     this.setState({
       photos: []
     });
+    ImageBrowser.init();
     this.getPhotos();
   };
 
@@ -61,8 +56,7 @@ class ImageGallery extends Component {
           finalPhotoArray = Object.values(assignIn({}, oldPhotoHash, newPhotoHash));
         this.setState(
           {
-            photos: finalPhotoArray,
-            isLoading: false
+            photos: finalPhotoArray
           },
           () => {
             if (this.firstImageCall) {
@@ -76,6 +70,8 @@ class ImageGallery extends Component {
       })
       .catch((err) => {
         alert('Could not fetch photos!', err);
+      })
+      .finally(() => {
         this.setState({
           isLoading: false
         });
@@ -150,7 +146,6 @@ class ImageGallery extends Component {
     this.closeCropper();
   };
 
-  
   closeCropper = () => {
     this.props.navigation.goBack();
   };
@@ -175,18 +170,22 @@ class ImageGallery extends Component {
           ) : (
             <View />
           )}
-          <TouchableWithoutFeedback onPress={this.cropImage}>
-            <Image
-              source={tickIcon}
-              style={{
-                position: 'absolute',
-                bottom: 22,
-                right: 22,
-                width: 45,
-                height: 45
-              }}
-            />
-          </TouchableWithoutFeedback>
+          {this.state.imageURI ? (
+            <TouchableOpacity onPress={this.cropImage}>
+              <Image
+                source={tickIcon}
+                style={{
+                  position: 'absolute',
+                  bottom: 22,
+                  right: 22,
+                  width: 45,
+                  height: 45
+                }}
+              />
+            </TouchableOpacity>
+          ) : (
+            <View />
+          )}
         </View>
         <View style={{ flex: 0.4, backgroundColor: '#fff', paddingRight: 3, paddingTop: 3 }}>
           <FlatList

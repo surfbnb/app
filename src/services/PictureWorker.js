@@ -55,7 +55,7 @@ class PictureWorker extends PureComponent {
 
   processImage() {
     if (Object.keys(this.props.current_user).length === 0 || Object.keys(this.props.profile_picture).length === 0) {
-      console.log('processVideo :: Nothing to process');
+      console.log('processImage :: Nothing to process');
       return;
     }
 
