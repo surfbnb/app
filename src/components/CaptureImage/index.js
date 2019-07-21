@@ -3,18 +3,9 @@ import React, { Component } from 'react';
 import SnapClicker from '../SnapClicker';
 import CropperUI from '../ImageCropper/CropperUI';
 import store from '../../store';
-import {upsertProfilePicture} from '../../actions';
-
-import { Platform, Image, TouchableWithoutFeedback, View, SafeAreaView } from 'react-native';
-
-import UploadToS3 from '../../services/UploadToS3';
-import ImageResizer from 'react-native-image-resizer';
-import RNFS from 'react-native-fs';
-import CurrentUser from '../../models/CurrentUser';
-import PepoApi from '../../services/PepoApi';
-import appConfig from '../../constants/AppConfig';
+import { upsertProfilePicture } from '../../actions';
+import { Image, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import tickIcon from '../../assets/tick_icon.png';
-
 
 class CaptureImage extends Component {
   constructor(props) {
@@ -49,19 +40,25 @@ class CaptureImage extends Component {
               onClose={this.closeCropper}
             />
           </View>
-          <View style={{ flex: 0.4, backgroundColor: '#000000' }}>
-            <TouchableWithoutFeedback onPress={this.cropImage}>
+          <View
+            style={{
+              flex: 0.4,
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+              backgroundColor: '#000000'
+            }}
+          >
+            <TouchableOpacity onPress={this.cropImage}>
               <Image
                 source={tickIcon}
                 style={{
-                  position: 'absolute',
-                  bottom: 22,
-                  right: 22,
+                  marginBottom: 22,
+                  marginRight: 22,
                   width: 45,
                   height: 45
                 }}
               />
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
         </SafeAreaView>
       );

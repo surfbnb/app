@@ -1,4 +1,4 @@
-import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 
 let stylesMap = {
   container: {
@@ -9,7 +9,7 @@ let stylesMap = {
     justifyContent: 'space-between'
   },
   captureBtn: {
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   imgCaptureButtonSkipFont: {
     height: 76,
@@ -17,8 +17,8 @@ let stylesMap = {
     marginBottom: 20
   },
   crossIconSkipFont: {
-    height: 20,
-    width: 20,
+    height: 15,
+    width: 15,
     marginLeft: 25,
     marginTop: 25
   }

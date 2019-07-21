@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Image, TouchableWithoutFeedback, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 
 import ImageCropper from './index';
 import appConfig from '../../constants/AppConfig';
+import CrossIcon from '../../assets/cross_icon_white.png';
 
 const styles = StyleSheet.create({
   container: {
@@ -57,7 +58,7 @@ export default class CropperUI extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={{ position: 'relative' }}>
+        <View style={{ position: 'relative', flex: 1 }}>
           <ImageCropper
             heightRatio={this.props.screenHeightRatio}
             imageUri={this.props.imageUri}
@@ -77,6 +78,19 @@ export default class CropperUI extends React.Component {
               borderColor: 'rgba(0, 0, 0, 0.5)'
             }}
           ></View>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              flex: 1,
+              alignSelf: 'flex-start'
+            }}
+            onPress={this.props.onClose}
+          >
+            <Image style={{ marginTop: 10, marginLeft: 10, width: 15, height: 15 }} source={CrossIcon} />
+          </TouchableOpacity>
+          <Text style={{ position: 'absolute', flex: 1, alignSelf: 'center', marginTop: 10, color: '#ffffff' }}>
+            Crop
+          </Text>
         </View>
       </View>
     );

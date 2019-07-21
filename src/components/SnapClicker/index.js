@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import inlineStyles from './styles';
 import img_capture from '../../assets/image-capture-icon.png';
-import CrossIcon from '../../assets/cross_icon.png';
+import CrossIcon from '../../assets/cross_icon_white.png';
 
 import { RNCamera } from 'react-native-camera';
 
