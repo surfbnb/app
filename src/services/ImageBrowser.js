@@ -33,8 +33,7 @@ class ImageBrowser {
     }
     let params = {
       first: 9,
-      assetType: 'Photos',
-      groupTypes: 'All'
+      assetType: 'Photos'
     };
     if (this._page_info && this._page_info.end_cursor) {
       params.after = this._page_info.end_cursor;

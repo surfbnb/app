@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 
 import ImageCropper from './index';
 import appConfig from '../../constants/AppConfig';
@@ -48,7 +48,7 @@ export default class CropperUI extends React.Component {
 
   render() {
     let { width, height } = Dimensions.get('window');
-    let verticalPadding = 55;
+    let verticalPadding = 40;
     let horzPadding = 30;
     let totalHorzPadding = 2 * horzPadding;
     let x = width - totalHorzPadding;
@@ -57,7 +57,7 @@ export default class CropperUI extends React.Component {
     let borderWidth = x;
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={{ position: 'relative', flex: 1 }}>
           <ImageCropper
             heightRatio={this.props.screenHeightRatio}
@@ -68,7 +68,7 @@ export default class CropperUI extends React.Component {
             pointerEvents="none"
             style={{
               position: 'absolute',
-              top: horzPadding - x,
+              top: verticalPadding - x,
               left: horzPadding - x,
               height: overlayDim,
               width: overlayDim,
@@ -92,7 +92,7 @@ export default class CropperUI extends React.Component {
             Crop
           </Text>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
