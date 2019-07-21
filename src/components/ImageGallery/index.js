@@ -37,6 +37,7 @@ class ImageGallery extends Component {
     this.setState({
       photos: []
     });
+    ImageBrowser.init();
     this.getPhotos();
   };
 
@@ -49,8 +50,7 @@ class ImageGallery extends Component {
           finalPhotoArray = Object.values(assignIn({}, oldPhotoHash, newPhotoHash));
         this.setState(
           {
-            photos: finalPhotoArray,
-            isLoading: false
+            photos: finalPhotoArray
           },
           () => {
             if (this.firstImageCall) {
@@ -64,6 +64,8 @@ class ImageGallery extends Component {
       })
       .catch((err) => {
         alert('Could not fetch photos!', err);
+      })
+      .finally(() => {
         this.setState({
           isLoading: false
         });

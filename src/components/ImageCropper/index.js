@@ -23,7 +23,7 @@ class ImageCropper extends Component {
     positionY: 0,
     width: 0,
     height: 0,
-    minScale: 0.6,
+    minScale: 0,
     adjustedHeight: 0,
     loading: true
   };
@@ -66,8 +66,8 @@ class ImageCropper extends Component {
     const cropData = {
       offset,
       size: {
-        width: sizeW,
-        height: sizeH
+        width: sizeW - 35,
+        height: sizeH - 35
       },
       displaySize: {
         width: cropSize.width,
@@ -80,6 +80,10 @@ class ImageCropper extends Component {
 
   componentDidMount() {
     this.handleImageLoad();
+  }
+
+  componentWillUnmount() {
+    this.imageZoom = null;
   }
 
   componentDidUpdate(prevProps) {
