@@ -104,7 +104,9 @@ const ProfileStack = createStackNavigator(
     ProfileScreen: ProfileScreen,
     VideoPlayer: VideoPlayer,
     CaptureVideo: CaptureVideo,
-    BioScreen: BioScreen
+    BioScreen: BioScreen,
+    CaptureImageScreen: CaptureImage,
+    ImageGalleryScreen: ImageGallery
   },
   {
     headerLayoutPreset: 'center',
@@ -167,9 +169,7 @@ const AppContainer = createAppContainer(
       AuthScreen,
       CustomTabStack,
       PinStack,
-      UserActivatingScreen,
-      CaptureImageScreen: CaptureImage,
-      ImageGalleryScreen: ImageGallery
+      UserActivatingScreen
     },
     {
       initialRouteName: 'AuthLoading'

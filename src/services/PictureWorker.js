@@ -81,7 +81,6 @@ class PictureWorker extends PureComponent {
     }
   }
   updateProfilePicture(profileImage) {
-    console.log('updateProfilePicture ------', profileImage);
     let imageObject = createObjectForRedux.createImageObject({
       url: profileImage,
       height: appConfig.cameraConstants.VIDEO_HEIGHT,
@@ -110,7 +109,6 @@ class PictureWorker extends PureComponent {
       })
       .then((res) => {
         console.log(this.props.profile_picture.s3_cropped_image, 'this.props.profile_picture.s3_cropped_image in then');
-        this.updateProfilePicture(this.props.profile_picture.s3_cropped_image);
         Store.dispatch(clearProfilePicture());
 
         console.log('Profile image saved to server', res);

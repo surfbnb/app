@@ -26,6 +26,12 @@ class CaptureImage extends Component {
     this.cropperRef = null;
   }
 
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    return {
+      header: null
+    };
+  }
+
   componentWillUnmount() {
     this.cropperRef = null;
   }
@@ -79,7 +85,8 @@ class CaptureImage extends Component {
   };
 
   navigateBack() {
-    this.props.navigation.navigate('ProfileScreen');
+    //this.props.navigation.navigate('ProfileScreen');
+    this.props.navigation.goBack();
   }
 
   getCroppedImage = (imageUri) => {

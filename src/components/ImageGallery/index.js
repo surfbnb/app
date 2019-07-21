@@ -30,6 +30,12 @@ class ImageGallery extends Component {
     this.firstImageCall = true;
   }
 
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    return {
+      header: null
+    };
+  };
+
   componentDidMount() {
     this.init();
   }
@@ -146,7 +152,7 @@ class ImageGallery extends Component {
 
   
   closeCropper = () => {
-    this.props.navigation.navigate('ProfileScreen');
+    this.props.navigation.goBack();
   };
 
   cropImage = () => {

@@ -200,11 +200,11 @@ class ProfileEdit extends React.PureComponent {
   };
 
   openCamera = () => {
-    this.props.navigation.navigate('CaptureImageScreen');
+    this.props.navigation.push('CaptureImageScreen');
   };
 
   openGallery = () => {
-    this.props.navigation.navigate('ImageGalleryScreen');
+    this.props.navigation.push('ImageGalleryScreen');
   };
 
   render() {
