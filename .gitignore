@@ -60,5 +60,6 @@ buck-out/
 #iOS / Carthage
 *Carthage/
 *Cartfile.resolved
+ios/ReactNativeFFmpeg/mobile-ffmpeg-min-gpl-4.2.2.LTS-ios-framework/*
 ios/Pepo2.xcodeproj/project.pbxproj
 ios/Pods

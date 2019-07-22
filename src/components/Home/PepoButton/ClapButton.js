@@ -69,7 +69,7 @@ export default class ClapButton extends React.Component{
       outputRange : [0, 1.2, 1.3]
     });
 
-    console.log("this.props.isSupported", this.props.isSupported);
+    console.log("this.props.isSupported", this.props.isSelected);
 
     return(
       <View>
@@ -79,8 +79,8 @@ export default class ClapButton extends React.Component{
             height: 50,
             width: 50,
             borderRadius :25,
-            borderWidth : this.firstClap?3:0,
-            borderColor: this.props.isSupported ?  Colors.primary : Colors.white,
+            borderWidth : this.props.isSelected || this.props.isClapping?3:0,
+            borderColor: this.props.isSelected || this.props.isClapping?  Colors.primary : Colors.white,
             zIndex:100,
             ...this.timedClap ? {transform : [
               {

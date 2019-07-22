@@ -4,7 +4,8 @@ import TopStatus from "./TopStatus";
 import VideoList from "./VideoList";
 import Pricer from "../../services/Pricer";
 
-export default class Videos extends Component {
+
+export default class HomeScreen extends Component {
 
     static navigationOptions = ({ navigation, navigationOptions }) => {
         return {
@@ -23,7 +24,7 @@ export default class Videos extends Component {
 
     render() {
         return (
-            <View style={{ backgroundColor: "#fff"}}>
+            <View style={{ backgroundColor: "#000"}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                 <TopStatus/>
                 <VideoList fetchUrl={'/feeds'} onRefresh={this.onRefresh} />

@@ -7,7 +7,7 @@ import feed from '../../assets/user_feed.png';
 import global from '../../assets/user_global.png';
 import profile from '../../assets/user_profile.png';
 import friends from '../../assets/user_friends.png';
-import currentUserModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 
 const tabNames = {
   homeTab: 'Home',
@@ -17,7 +17,7 @@ const tabNames = {
 };
 
 function onTabPressed(navigation, tabName) {
- if (!currentUserModal.checkActiveUser()) return;
+ if (!CurrentUser.checkActiveUser()) return;
   try {
     navigation.dispatch(StackActions.popToTop({ key: tabName }));
   } catch {

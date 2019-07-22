@@ -9,7 +9,7 @@ import { LoginPopoverActions } from '../components/LoginPopover';
 import { Toast } from 'native-base';
 import { ostErrors } from '../services/OstErrors';
 
-class CurrentUserModel {
+class CurrentUser {
   constructor() {
     this.userId = null;
     this.ostUserId = null;
@@ -135,7 +135,7 @@ class CurrentUserModel {
       .post()
       .catch((error) => {})
       .then((res) => {
-        NavigationService.navigate('HomeScreen', params);
+        NavigationService.navigate('HomeScreen', params);        
       });
   }
 
@@ -207,4 +207,4 @@ class CurrentUserModel {
   }
 }
 
-export default new CurrentUserModel();
+export default new CurrentUser();

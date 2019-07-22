@@ -11,14 +11,14 @@ import FormInput from '../../theme/components/FormInput';
 import Theme from '../../theme/styles';
 import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
-import currentUserModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import EditIcon from '../../assets/edit_icon.png';
-import BackArrow from '../../assets/back-arrow.png';
+import BackArrow from "../CommonComponents/BackArrow";
 import { ostErrors } from '../../services/OstErrors';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
@@ -33,11 +33,7 @@ class TransactionScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: reduxGetter.getName( navigation.getParam('toUserId') ) ,
-      headerBackImage: (
-        <View style={{ paddingRight: 30, paddingVertical: 30, paddingLeft: Platform.OS === 'ios' ? 20 : 0 }}>
-          <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
-        </View>
-      )
+      headerBackImage: (<BackArrow/>)
     };
   };
   constructor(props) {
@@ -95,7 +91,7 @@ class TransactionScreen extends Component {
 
   //TODO , NOT SURE if bug comes this also will have to connected via redux.
   onBalance(balance , res) {
-    balance = utilities.getFromDecimal(balance);
+    balance = pricer.getFromDecimal(balance);
     balance = PriceOracle.toBt(balance) || 0;
     let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
     this.setState({ balance, exceBtnDisabled });
@@ -108,9 +104,9 @@ class TransactionScreen extends Component {
   }
 
   sendTransactionToSdk() {
-    const user = currentUserModal.getUser();
+    const user = CurrentUser.getUser();
     const option = { wait_for_finalization: false };
-    const btInDecimal = utilities.getToDecimal(this.state.btAmount);
+    const btInDecimal = pricer.getToDecimal(this.state.btAmount);
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
       user.ost_user_id,
@@ -127,7 +123,7 @@ class TransactionScreen extends Component {
     const metaProperties = clone( appConfig.metaProperties ); 
     if(this.videoId){
       metaProperties["name"] = "video"; 
-      metaProperties["details"] = JSON.stringify({"vi" : this.videoId});
+      metaProperties["details"] =  `vi_${this.videoId}`;
     }
     return metaProperties; 
   }

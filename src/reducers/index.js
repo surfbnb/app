@@ -30,6 +30,11 @@ export const {
   updateExecuteTransactionStatus,
   upsertVideoContributionEntities,
   upsertUserContributionEntities,
+  upsertRecordedVideo,
+  clearRecordedVideo,
+  videoInProcessing,
+  upsertProfilePicture,
+  clearProfilePicture
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -37,12 +42,12 @@ const defaultState = {
   modal_cover: { message: '', footerText: '', show: false },
   toast: { message: '', show: false },
   current_user: {},
-  user_entities: {},
   feed_entities: {},
   transaction_entities: {},
   giffy_entities: {},
-  tag_entities:{},
+  tag_entities: {},
   user_profile_entities: {},
+  user_entities: {},
   user_stat_entities: {},
   link_entities: {},
   video_entities: {},
@@ -53,7 +58,11 @@ const defaultState = {
   user_contribution_entities: {},
   login_popover: { show: false },
   executeTransactionDisabledStatus: false,
-  balance: "0"
+  recorded_video: {},
+  profile_picture: {},
+  balance: '0',
+  
+  
 };
 
 export const reducer = handleActions(
@@ -120,25 +129,61 @@ export const reducer = handleActions(
     }),
     [upsertVideoContributionEntities]: (state, action) => ({
       ...state,
-      video_contribution_entities: assignIn({}, state.video_contribution_entities, action.payload.video_contribution_entities)
+      video_contribution_entities: assignIn(
+        {},
+        state.video_contribution_entities,
+        action.payload.video_contribution_entities
+      )
     }),
     [upsertUserContributionEntities]: (state, action) => ({
       ...state,
-      user_contribution_entities: assignIn({}, state.user_contribution_entities, action.payload.user_contribution_entities)
+      user_contribution_entities: assignIn(
+        {},
+        state.user_contribution_entities,
+        action.payload.user_contribution_entities
+      )
     }),
-    [updateBalance]: (state, action) =>({
+    [updateBalance]: (state, action) => ({
       ...state,
       balance: action.payload.balance
     }),
-    [updatePricePoints]: (state, action) =>({
+    [updatePricePoints]: (state, action) => ({
       ...state,
       price_points: action.payload.price_points
     }),
-    [updateExecuteTransactionStatus]: (state, action) =>({
+    [updateExecuteTransactionStatus]: (state, action) => ({
       ...state,
       executeTransactionDisabledStatus: action.payload.executeTransactionDisabledStatus
     }),
-    [logoutUser]: (state, action) => ({ ...defaultState })
+    [upsertRecordedVideo]: (state, action) => ({
+      ...state,
+      recorded_video: assignIn({}, state.recorded_video, action.payload.recorded_video)
+    }),
+    [clearRecordedVideo]: (state, action) => ({
+      ...state,
+      recorded_video: assignIn(defaultState.recorded_video)
+    }),
+
+    [upsertProfilePicture]: (state, action) => ({
+      ...state,
+      profile_picture: assignIn({}, state.profile_picture, action.payload.profile_picture)
+    }),
+
+    [clearProfilePicture]: (state, action) => ({
+      ...state,
+      profile_picture: assignIn(defaultState.profile_picture)
+    }),
+
+    [videoInProcessing]: (state, action) => ({
+      ...state,
+      video_in_processing: action.payload.video_in_processing
+    }),
+    [logoutUser]: (state, action) => ({
+      ...state,
+      current_user: {},
+      executeTransactionDisabledStatus: true,
+      balance: '0'
+    })
   },
   defaultState
 );

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
 
 import styles from './styles';
-import currentUserModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
@@ -28,14 +28,14 @@ export default class AuthLoading extends Component {
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
     Pricer.getToken(); //Init token
-    currentUserModal
+    CurrentUser
       .initialize()
       .then((user) => {
         LoadingModal.hide();
-        if (user && !currentUserModal.isActiveUser(user)) {
+        if (user && !CurrentUser.isActiveUser(user)) {
           this.props.navigation.navigate('UserActivatingScreen');
         } else {
-          this.props.navigation.navigate('HomeScreen');
+          this.props.navigation.navigate('HomeScreen');  
         }
       })
       .catch(() => {

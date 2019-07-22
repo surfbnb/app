@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import inlineStyles from "./styles";
 import selfAmountPlus from "../../assets/self-amount-plus-icon.png";
 import selAmountPepo from "../../assets/self-amount-pepo-icon.png";
-import currentUserModel from "../../models/CurrentUser";
+import CurrentUser from "../../models/CurrentUser";
 import Pricer from "../../services/Pricer";
 import PriceOracle from "../../services/PriceOracle";
 import deepGet from "lodash/get";
@@ -21,7 +21,7 @@ const getBalance = (props) => {
 }
 
 const TopStatus = (props) => {
-  return currentUserModel.getOstUserId() && (
+  return CurrentUser.getOstUserId() && (
     <View style={ inlineStyles.topContainer }>
       <View style={inlineStyles.topBg}>
         <Image

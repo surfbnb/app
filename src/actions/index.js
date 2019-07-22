@@ -121,7 +121,7 @@ export const upsertVideoContributionEntities = (data) => ({type : types.UPSERT_V
 
 export const upsertUserContributionEntities = (data) => ({type : types.UPSERT_USER_CONTRIBUTION_ENTITIES ,  payload: {user_contribution_entities : data}});
 
-export const updatePricePoints = (data) => ({type : types.UPDATE_PRICE_POINTS ,  payload: {price_points : data}}); 
+export const updatePricePoints = (data) => ({type : types.UPDATE_PRICE_POINTS ,  payload: {price_points : data}});
 
 export const updateBalance = (balance = "0" )=>({
   type: types.UPDATE_BALANCE,
@@ -136,6 +136,19 @@ export const updateExecuteTransactionStatus = ( status = false )=>({
     executeTransactionDisabledStatus: status
   }
 });
+
+export const upsertRecordedVideo = (data) => ({ type: types.UPSERT_RECORDED_VIDEO, payload: { recorded_video: data } });
+
+export const clearRecordedVideo = () => ({ type: types.CLEAR_RECORDED_VIDEO });
+
+export const upsertProfilePicture = (data) => ({ type: types.UPSERT_PROFILE_PICTURE, payload: { profile_picture: data } });
+
+export const clearProfilePicture = () => ({ type: types.CLEAR_PROFILE_PICTURE});
+
+
+
+export const videoInProcessing = (videoInProcessing) => ({ type: types.VIDEO_IN_PROCESSING, payload: {video_in_processing: videoInProcessing} });
+
 
 export const logoutUser = () => ({ type: types.LOGOUT_USER });
 

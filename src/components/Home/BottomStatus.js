@@ -1,12 +1,24 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, Alert } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import { connect } from 'react-redux';
+
 import inlineStyles from './styles';
 import { withNavigation } from 'react-navigation';
-import currentUserModel from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import pricer from "../../services/Pricer";
+import reduxGetter from "../../services/ReduxGetters";
 
 import supportersIcon from "../../assets/supporters-icon-1.png";
+
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    userName: reduxGetter.getUserName( ownProps.userId ,state ),
+    name: reduxGetter.getName( ownProps.userId , state ),
+    bio: reduxGetter.getBio( ownProps.userId , state )
+  }
+};
 
 class BottomStatus extends PureComponent {
 
@@ -15,8 +27,9 @@ class BottomStatus extends PureComponent {
   }
 
   navigateToUserProfile = (e) => {
-    if (currentUserModel.checkActiveUser()) {
-      Alert.alert('', 'Navigate to Userprofile page once profile page implemented');
+    if (CurrentUser.checkActiveUser()) {
+      this.props.navigation.push('UsersProfileScreen' ,{ userId:this.props.userId }
+     );
     }
   };
 
@@ -54,4 +67,5 @@ class BottomStatus extends PureComponent {
   }
 }
 
-export default withNavigation(BottomStatus);
+
+export default connect(mapStateToProps)(withNavigation(BottomStatus)) ;

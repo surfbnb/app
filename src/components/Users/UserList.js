@@ -13,6 +13,7 @@ const UserList = (props) => (
           onEndReachedThreshold={0.5}
           refreshing={props.refreshing}
           ListFooterComponent={props.renderFooter}
+          fetchUrl={'/users'}
           renderItem={({ item }) => {
             return <User id={item} />;
           }}

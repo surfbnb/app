@@ -1,11 +1,15 @@
 import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
 import { TOKEN_ID } from '../constants';
-import currentUserModel from "../models/CurrentUser"
 import {ostErrors} from "./OstErrors"; 
 import {updateBalance} from "../actions";
 import Store from '../store';
 import PriceOracle from './PriceOracle';
+
+let CurrentUser;
+import('../models/CurrentUser').then((imports) => {
+  CurrentUser = imports.default;
+});
 
 class Pricer {
 
@@ -61,13 +65,13 @@ class Pricer {
   }
 
   getBalance( successCallback ,  errorCallback ) {
-    if( !currentUserModel.isUserActivated() ){
+    if( !CurrentUser.isUserActivated() ){
       errorCallback && errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")}); 
       return;
     }
 
     OstJsonApi.getBalanceForUserId(
-      currentUserModel.getOstUserId(),
+      CurrentUser.getOstUserId(),
       (res) => {
         let bal = deepGet(res, 'balance.available_balance');
         this.onBalance( bal );
@@ -114,6 +118,14 @@ class Pricer {
   getPriceOracle(){
     const pricePoint = Store.getState()["price_points"] || {}; 
     return new PriceOracle( this.token , pricePoint["OST"] );
+  }
+
+  getFromDecimal( bt ){
+    return PriceOracle.fromDecimal(bt, this.getDecimal());
+  }
+
+  getToDecimal( bt ){
+    return PriceOracle.toDecimal(bt, this.getDecimal());
   }
 }
 

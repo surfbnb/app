@@ -6,8 +6,8 @@ import PepoApi from "../../services/PepoApi";
 import reduxGetter from "../../services/ReduxGetters";
 import TransactionPepoButton from "./TransactionPepoButton";
 import tx_icon from '../../assets/tx_icon.png';
-import utilities from "../../services/Utilities";
-import currentUserModel from "../../models/CurrentUser";
+import pricer from "../../services/Pricer";
+import CurrentUser from "../../models/CurrentUser";
 
 import BottomStatus from "./BottomStatus";
 import inlineStyles from './styles';
@@ -32,32 +32,12 @@ class HomeFeedRow extends PureComponent {
        return reduxGetter.getHomeFeedVideoId( this.props.feedId );
     }
 
-    get videoUrl ()  {
-        return reduxGetter.getVideoUrl(this.videoId);
-    }
-
-    get videoImgUrl(){
-        return reduxGetter.getVideoImgUrl( this.videoId );
-    }
-
-    get userName(){
-        return reduxGetter.getUserName( this.userId );
-    }
-
-    get name(){
-        return reduxGetter.getName( this.userId );
-    }
-
-    get bio(){
-        return reduxGetter.getBio( this.userId );
-    }
-
     get supporters(){
         return Number( reduxGetter.getVideoSupporters( this.videoId ) ) || 0;
     }
 
     get totalBt(){
-        return utilities.getFromDecimal( reduxGetter.getVideoBt( this.videoId ) );
+        return pricer.getFromDecimal( reduxGetter.getVideoBt( this.videoId ) );
     }
 
     get isVideoSupported(){
@@ -99,7 +79,7 @@ class HomeFeedRow extends PureComponent {
     
     navigateToTransactionScreen = (e) => {
         console.log("reduxGetter.getUser(this.userId)" , reduxGetter.getUser(this.userId) , this.userId);
-        if(  currentUserModel.checkActiveUser() && currentUserModel.isUserActivated() ){
+        if(  CurrentUser.checkActiveUser() && CurrentUser.isUserActivated() ){
             this.props.navigation.push('TransactionScreen' ,
                 { toUserId: this.userId, 
                 videoId :reduxGetter.getHomeFeedVideoId(this.props.feedId),
@@ -115,9 +95,8 @@ class HomeFeedRow extends PureComponent {
             <View>
                
                { this.props.doRender && 
-                    <VideoWrapper   isActive={ this.props.isActive }
-                                    videoUrl={ this.videoUrl }
-                                    videoImgUrl={this.videoImgUrl} />   }        
+                    <VideoWrapper   videoId={this.videoId}
+                                    isActive={ this.props.isActive }/>   }        
 
                 <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
                     
@@ -126,6 +105,7 @@ class HomeFeedRow extends PureComponent {
                                                 isSupported={this.state.isSupported}
                                                 onLocalUpdate={this.onLocalUpdate}
                                                 onLocalReset={this.onLocalReset}
+                                                isSupported={this.state.isSupported}
                                                 feedId={this.props.feedId}
                                                 userId={reduxGetter.getHomeFeedUserId(this.props.feedId)}
                                                 videoId={reduxGetter.getHomeFeedVideoId(this.props.feedId)}  />            
@@ -135,11 +115,8 @@ class HomeFeedRow extends PureComponent {
                         </TouchableOpacity>
                     </View>
 
-                    <BottomStatus   userName={this.userName}
-                                    name={this.name}
-                                    bio={this.bio}  
+                    <BottomStatus   userId={this.userId}
                                     supporters={this.state.supporters}
-                                    isSupported={this.state.isSupported}
                                     totalBt={this.state.totalBt}
                                 />          
                 </View>              
