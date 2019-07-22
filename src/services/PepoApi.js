@@ -148,18 +148,8 @@ export default class PepoApi {
       Store.dispatch(updatePricePoints( data["price_points"] ));
     }
 
-    let users =  data['users'];
-    if( users ){ //This code should be removed when current user is disassociated from users
-      const currentUserId = CurrentUser.getUserId(),
-            currentUser = users[currentUserId];
-      if( currentUser ){
-        Store.dispatch(updateCurrentUser(currentUser));
-        delete users[currentUserId];
-      }
-    }
-
-    if( users && Object.keys( users ).length > 0){
-      Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(users)));
+    if( data['users'] ){
+      Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
     }
 
     switch (resultType) {

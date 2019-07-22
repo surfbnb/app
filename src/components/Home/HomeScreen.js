@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import { View, StatusBar } from 'react-native';
+import { connect } from 'react-redux';
+
+import deepGet from "lodash/get";
 import TopStatus from "./TopStatus";
 import VideoList from "./VideoList";
 import Pricer from "../../services/Pricer";
 
+const mapStateToProps = (state) => {
+    return {
+      userId: deepGet(state , "current_user.id")
+    }
+  };
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
 
     static navigationOptions = ({ navigation, navigationOptions }) => {
         return {
@@ -16,19 +24,32 @@ export default class HomeScreen extends Component {
 
     constructor(props){
         super(props);
+        this.state = {
+            toRefresh : false
+        }
     }
 
     onRefresh = () => {
+        this.setState({ toRefresh : false });
         Pricer.getBalance();
     }
 
+    componentWillUpdate(nextProps) {
+        if (this.props.userId !== nextProps.userId) {
+            this.state.toRefresh = true ;
+        }
+    }
+
     render() {
+        console.log("HomeScreen render")
         return (
             <View style={{ backgroundColor: "#000"}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                 <TopStatus/>
-                <VideoList fetchUrl={'/feeds'} onRefresh={this.onRefresh} />
+                <VideoList toRefresh={this.state.toRefresh} fetchUrl={'/feeds'} onRefresh={this.onRefresh} />
              </View>
         )
     }
 }
+
+export default connect(mapStateToProps)(HomeScreen) ;
