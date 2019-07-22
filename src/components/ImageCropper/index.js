@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Image, ImageEditor, Dimensions, View } from 'react-native';
+import { Image, ImageEditor, Dimensions, SafeAreaView } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 
 const window = Dimensions.get('window');
-const w = window.width;
-const h = window.height;
+const winWidth = window.width;
+const winHeight = window.height;
 
 const getPercentFromNumber = (percent, numberFrom) => (numberFrom / 100) * percent;
 
@@ -29,53 +29,42 @@ class ImageCropper extends Component {
   };
 
   static crop = (params) => {
-    const { imageUri, cropSize, positionX, positionY, screenSize, srcSize, fittedSize, scale } = params;
-
-    const offset = {
-      x: 0,
-      y: 0
-    };
-
-    const wScale = screenSize.w / scale;
-    const percentCropperAreaW = getPercentDiffNumberFromNumber(wScale, fittedSize.w);
-    const percentRestW = 100 - percentCropperAreaW;
-    const hiddenAreaW = getPercentFromNumber(percentRestW, fittedSize.w);
-
-    const percentCropperAreaH = getPercentDiffNumberFromNumber(wScale, fittedSize.h);
-    const percentRestH = 100 - percentCropperAreaH;
-    const hiddenAreaH = getPercentFromNumber(percentRestH, fittedSize.h);
-
-    const x = hiddenAreaW / 2 - positionX;
-    const y = hiddenAreaH / 2 - positionY;
-
-    offset.x = x <= 0 ? 0 : x;
-    offset.y = y <= 0 ? 0 : y;
-
-    const srcPercentCropperAreaW = getPercentDiffNumberFromNumber(offset.x, fittedSize.w);
-    const srcPercentCropperAreaH = getPercentDiffNumberFromNumber(offset.y, fittedSize.h);
-
-    const offsetW = getPercentFromNumber(srcPercentCropperAreaW, srcSize.w);
-    const offsetH = getPercentFromNumber(srcPercentCropperAreaH, srcSize.h);
-
-    const sizeW = getPercentFromNumber(percentCropperAreaW, srcSize.w);
-    const sizeH = getPercentFromNumber(percentCropperAreaH, srcSize.h);
-
-    offset.x = offsetW;
-    offset.y = offsetH;
-
-    const cropData = {
-      offset,
-      size: {
-        width: sizeW - 35,
-        height: sizeH - 35
-      },
-      displaySize: {
-        width: cropSize.width,
-        height: cropSize.height
-      }
-    };
-
-    return new Promise((resolve, reject) => ImageEditor.cropImage(imageUri, cropData, resolve, reject));
+    // const { imageUri, cropSize, positionX, positionY, screenSize, srcSize, fittedSize, scale } = params;
+    // const offset = {
+    //   x: 0,
+    //   y: 0
+    // };
+    // const wScale = screenSize.w / scale;
+    // const percentCropperAreaW = getPercentDiffNumberFromNumber(wScale, fittedSize.w);
+    // const percentRestW = 100 - percentCropperAreaW;
+    // const hiddenAreaW = getPercentFromNumber(percentRestW, fittedSize.w);
+    // const percentCropperAreaH = getPercentDiffNumberFromNumber(wScale, fittedSize.h);
+    // const percentRestH = 100 - percentCropperAreaH;
+    // const hiddenAreaH = getPercentFromNumber(percentRestH, fittedSize.h);
+    // const x = hiddenAreaW / 2 - positionX;
+    // const y = hiddenAreaH / 2 - positionY;
+    // offset.x = x <= 0 ? 0 : x;
+    // offset.y = y <= 0 ? 0 : y;
+    // const srcPercentCropperAreaW = getPercentDiffNumberFromNumber(offset.x, fittedSize.w);
+    // const srcPercentCropperAreaH = getPercentDiffNumberFromNumber(offset.y, fittedSize.h);
+    // const offsetW = getPercentFromNumber(srcPercentCropperAreaW, srcSize.w);
+    // const offsetH = getPercentFromNumber(srcPercentCropperAreaH, srcSize.h);
+    // const sizeW = getPercentFromNumber(percentCropperAreaW, srcSize.w);
+    // const sizeH = getPercentFromNumber(percentCropperAreaH, srcSize.h);
+    // offset.x = offsetW;
+    // offset.y = offsetH;
+    // const cropData = {
+    //   offset,
+    //   size: {
+    //     width: sizeW,
+    //     height: sizeH
+    //   },
+    //   displaySize: {
+    //     width: cropSize.width,
+    //     height: cropSize.height
+    //   }
+    // };
+    // return new Promise((resolve, reject) => ImageEditor.cropImage(imageUri, cropData, resolve, reject));
   };
 
   componentDidMount() {
@@ -93,48 +82,66 @@ class ImageCropper extends Component {
   }
 
   handleImageLoad = () => {
+    console.log('handleImageLoad called');
     const { imageUri } = this.props;
 
-    Image.getSize(imageUri, (width, height) => {
+    Image.getSize(imageUri, (imgWidth, imgHeight) => {
       const { setCropperParams } = this.props;
 
-      const srcSize = { w: width, h: height };
-      const fittedSize = { w: 0, h: 0 };
-      let scale = 1.01;
-
-      const screenSize = {
-        w,
-        h
+      const imgSize = { w: imgWidth, h: imgHeight };
+      const cropperSize = {
+        w: winWidth,
+        h: winHeight * this.props.heightRatio
       };
 
-      if (width > height) {
-        const ratio = w / height;
-        fittedSize.w = width * ratio;
-        fittedSize.h = w;
-      } else if (width < height) {
-        const ratio = w / width;
-        fittedSize.w = w;
-        fittedSize.h = height * ratio;
-      } else if (width === height) {
-        scale = 1;
-        fittedSize.w = w;
-        fittedSize.h = w;
+      let minScale = 1;
+      let maxScale = 10;
+
+      const fittedSize = { w: 0, h: 0 };
+      if (imgSize.w < cropperSize.w) {
+        let minWidthScale = cropperSize.w / imgSize.w;
+        minScale = Math.max(minScale, minWidthScale);
       }
+
+      if (imgSize.h < cropperSize.h) {
+        let minHeightScale = cropperSize.h / imgSize.h;
+        minScale = Math.max(minScale, minHeightScale);
+      }
+      const screenSize = {
+        w: winWidth,
+        h: winHeight
+      };
+
+      // if (imgWidth > imgHeight) {
+      //   const ratio = winWidth / imgHeight;
+      //   fittedSize.w = imgWidth * ratio;
+      //   fittedSize.h = winWidth;
+      // } else if (imgWidth < imgHeight) {
+      //   const ratio = winWidth / imgWidth;
+      //   fittedSize.w = winWidth;
+      //   fittedSize.h = imgHeight * ratio;
+      // } else if (imgWidth === imgHeight) {
+      //   minScale = 1;
+      //   fittedSize.w = winWidth;
+      //   fittedSize.h = winWidth;
+      // }
 
       this.setState(
         (prevState) => ({
           ...prevState,
+          cropperSize,
           screenSize,
-          srcSize,
+          srcSize: imgSize,
           fittedSize,
-          minScale: scale,
+          minScale: minScale,
+          maxScale: maxScale,
           loading: false
         }),
         () => {
           this.imageZoom.current.centerOn({
             x: 0,
             y: 0,
-            scale,
+            scale: minScale,
             duration: 0
           });
           setCropperParams(this.state);
@@ -158,30 +165,41 @@ class ImageCropper extends Component {
   };
 
   render() {
-    let { loading, fittedSize, minScale } = this.state;
+    let { loading, fittedSize, minScale, maxScale, srcSize, cropperSize } = this.state;
     let { imageUri, ...restProps } = this.props;
     let imageSrc = { uri: imageUri };
 
+    if (!loading) {
+      console.log('cropperSize', cropperSize);
+      console.log('srcSize', srcSize);
+      console.log('minScale', minScale);
+    }
+
     return !loading ? (
-      <View
+      <SafeAreaView
         style={{
           backgroundColor: 'black',
-          height: h * this.props.heightRatio
+          height: winHeight * this.props.heightRatio
         }}
       >
         <ImageZoom
           ref={this.imageZoom}
           {...restProps}
-          cropWidth={w}
-          cropHeight={h * this.props.heightRatio}
-          imageWidth={fittedSize.w}
-          imageHeight={fittedSize.h}
+          cropWidth={winWidth}
+          cropHeight={winHeight * this.props.heightRatio}
+          imageWidth={srcSize.w}
+          imageHeight={srcSize.h}
           minScale={minScale}
+          maxScale={maxScale}
           onMove={this.handleMove}
+          enableCenterFocus={true}
+          style={{
+            backgroundColor: 'red'
+          }}
         >
-          <Image style={{ width: fittedSize.w, height: fittedSize.h }} source={imageSrc} />
+          <Image style={{ width: this.state.srcSize.w, height: this.state.srcSize.h }} source={imageSrc} />
         </ImageZoom>
-      </View>
+      </SafeAreaView>
     ) : null;
   }
 }
