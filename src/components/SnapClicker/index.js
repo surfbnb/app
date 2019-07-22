@@ -64,7 +64,7 @@ class SnapClicker extends Component {
             buttonNegative: 'Cancel'
           }}
         >
-          <TouchableOpacity onPress={this.props.onClose}>
+          <TouchableOpacity style={inlineStyles.crossIconWrapper}  onPress={this.props.onClose}>
             <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon} />
           </TouchableOpacity>
           {/* action button comes here */}
