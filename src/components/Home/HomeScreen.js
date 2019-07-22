@@ -41,7 +41,7 @@ class HomeScreen extends Component {
     }
 
     render() {
-        console.log("HomeScreen render")
+        console.log("HomeScreen render") ;
         return (
             <View style={{ backgroundColor: "#000"}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />

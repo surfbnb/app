@@ -45,11 +45,13 @@ class CurrentUser {
     });
   }
 
+  getLogedinUser(){
+    return Store.getState().current_user; 
+  }
+
   getUser() {
-    const currentUser = Store.getState().current_user ,
-          user =  reduxGetter.getUser(this.userId)
-    ; 
-    return Object.assign({}, currentUser , user  ); 
+    //TODO remove OR later
+    return reduxGetter.getUser(this.userId) || this.getLogedinUser(); 
   }
 
   sync(userId) {
@@ -154,7 +156,7 @@ class CurrentUser {
     });
   }
 
-  getUserSalt(userId) {
+  getUserSalt( ) {
     return new PepoApi('/users/recovery-info').get();
   }
 
