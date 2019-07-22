@@ -66,11 +66,11 @@ let stylesMap = {
     position: 'relative'
   },
   editProfileIconTouch: {
-    height: 40,
-    width: 40,
+    height: 50,
+    width: 50,
     position: 'absolute',
     right: -15,
-    bottom: -7,
+    bottom: -13,
     justifyContent: 'center',
     alignItems: 'center'
   },
