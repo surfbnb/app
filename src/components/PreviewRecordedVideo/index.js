@@ -5,7 +5,7 @@ import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/preview_play_icon.png';
 import tickIcon from '../../assets/tick_icon.png';
 import Store from '../../store';
-import { upsertRecordedVideo } from '../../actions';
+import { upsertRecordedVideo, videoInProcessing } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
 
@@ -71,6 +71,7 @@ class PreviewRecordedVideo extends Component {
           this.props.goToRecordScreen();
         } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
           //TODO: navigate to previous page
+          Store.dispatch(videoInProcessing(false));
           this.props.navigation.goBack();
         }
       }
