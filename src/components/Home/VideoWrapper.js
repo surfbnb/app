@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { TouchableWithoutFeedback, AppState, View, Image, Dimensions } from 'react-native';
+import { TouchableWithoutFeedback, AppState, View, Image, Dimensions, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
@@ -103,6 +103,16 @@ class VideoWrapper extends PureComponent {
     }
   };
 
+  onBuffer = () =>{
+    console.log(" in buffer")
+    this.setState({buffer:true})
+  }
+
+  onLoadComplete = () =>{
+    console.log("in onLoadComplete")
+    this.setState({buffer:false})
+  }
+
   render() {
     console.log('Video component render ', this.props.videoImgUrl);
     return  (
@@ -116,8 +126,11 @@ class VideoWrapper extends PureComponent {
             resizeMode={this.props.resizeMode || 'cover'}
             source={{ uri: this.props.videoUrl }}
             repeat={this.props.repeat || true}
+            onBuffer={this.onBuffer}
+            onLoad={this.onLoadComplete}
           />
-          {this.isPaused() && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
+          {this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont}/>}
+          {this.isPaused() && !this.state.buffer && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
         </View>
       </TouchableWithoutFeedback>
     );
