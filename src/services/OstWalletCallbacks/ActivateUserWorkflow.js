@@ -19,12 +19,14 @@ const initiatePolling = (expectedUserId) => {
       CurrentUser &&
       CurrentUser
           .sync()
-          .then((user) => {
+          .then((apiResponse) => {
             const currentUserId = CurrentUser.getOstUserId();
             if (currentUserId != expectedUserId) {
               stopPolling = true;
               return;
             }
+            const resultType = deepGet(apiResponse, 'data.result_type');
+            const user = deepGet(apiResponse, `data.${resultType}`);
             const airDropStatus = user && user.signup_airdrop_status;
             if (airDropStatus == 1) {
               stopPolling = true;

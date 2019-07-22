@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, SafeAreaVi
 import ImageCropper from './index';
 import appConfig from '../../constants/AppConfig';
 import CrossIcon from '../../assets/cross_icon_white.png';
+import inlineStyles from './styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -79,14 +80,10 @@ export default class CropperUI extends React.Component {
             }}
           ></View>
           <TouchableOpacity
-            style={{
-              position: 'absolute',
-              flex: 1,
-              alignSelf: 'flex-start'
-            }}
+            style={inlineStyles.crossIconWrapper}
             onPress={this.props.onClose}
           >
-            <Image style={{ marginTop: 10, marginLeft: 10, width: 15, height: 15 }} source={CrossIcon} />
+            <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon} />
           </TouchableOpacity>
           <Text style={{ position: 'absolute', flex: 1, alignSelf: 'center', marginTop: 10, color: '#ffffff' }}>
             Crop

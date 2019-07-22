@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import inlineStyles from './Style';
 import LinearGradient from 'react-native-linear-gradient';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
 import air_drop from '../../assets/airdrop.png';
+import styles from './Style';
 
 // create a component
 export default class UserActivatingScreen extends Component {

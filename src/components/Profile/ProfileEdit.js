@@ -5,13 +5,13 @@ import { withNavigation } from 'react-navigation';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
-import profileEditIcon from '../../assets/profile-edit-icon.png';
+import profileEditIcon from '../../assets/profile_edit_icon.png';
 import default_user_icon from '../../assets/default_user_icon.png';
 import FormInput from '../../theme/components/FormInput';
 import reduxGetter from '../../services/ReduxGetters';
 import { ostErrors } from '../../services/OstErrors';
 import PepoApi from '../../services/PepoApi';
-import ProfilePlusIcon from '../../assets/plus_icon.png';
+import ProfilePlusIcon from '../../assets/red_plus_icon.png';
 import CurrentUser from '../../models/CurrentUser';
 
 import { updateCurrentUser, upsertUserProfileEntities, upsertLinkEntities } from '../../actions';
@@ -178,7 +178,10 @@ class ProfileEdit extends React.PureComponent {
 
   onBioFocus = () => {
     this.state.current_formField = 0;
-    this.props.navigation.push('BioScreen', { onChangeTextDelegate: this.onBioChangeDelegate,initialValue:this.state.bio });
+    this.props.navigation.push('BioScreen', {
+      onChangeTextDelegate: this.onBioChangeDelegate,
+      initialValue: this.state.bio
+    });
   };
 
   onServerError(res) {
@@ -212,14 +215,14 @@ class ProfileEdit extends React.PureComponent {
       <View style={{ marginTop: 20, paddingBottom: 100 }}>
         <View style={inlineStyles.editProfileContainer}>
           {this.getImageSrc()}
-          <View style={inlineStyles.editProfileIconPos}>
-            <TouchableOpacity onPress={this.showActionSheetWithOptions}>
+          <TouchableOpacity style={inlineStyles.editProfileIconTouch} onPress={this.showActionSheetWithOptions}>
+            <View style={inlineStyles.editProfileIconPos}>
               <Image
                 style={{ width: 13, height: 13 }}
                 source={this.props.profilePicture ? profileEditIcon : ProfilePlusIcon}
               ></Image>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
         </View>
 
         <Text style={{}}>Name</Text>

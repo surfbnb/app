@@ -5,7 +5,6 @@ import Colors from '../../theme/styles/Colors';
 let stylesMap = {
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: Platform.OS == 'ios' ? 0 : 20,
     backgroundColor: Colors.whiteSmoke,
@@ -27,11 +26,22 @@ let stylesMap = {
     marginRight: 10,
     alignItems: 'center'
   },
+  txBtnsBg: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    marginHorizontal:5,
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    shadowColor: 'black',
+    shadowOffset: { height: 0, width: 0 },
+  },
   dottedBtn: {
     flex: 2,
     padding: 10.5,
     alignItems: 'center',
-    backgroundColor: '#fff'
   },
   modalBackDrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
