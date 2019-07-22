@@ -62,22 +62,30 @@ let stylesMap = {
   },
   editProfileContainer: {
     height: 75,
-    width: 75
+    width: 75,
+    position: 'relative'
+  },
+  editProfileIconTouch: {
+    height: 50,
+    width: 50,
+    position: 'absolute',
+    right: -15,
+    bottom: -13,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   editProfileIconPos: {
-    backgroundColor: Colors.white,
-    height: 30,
-    width: 30,
-    position: 'absolute',
-    right: -13,
-    bottom: 2,
+    width: 26,
+    height: 26,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderStyle: 'solid',
     borderWidth: 1,
     borderRadius: 15,
     borderColor: Colors.wildWatermelon,
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: Colors.white
   },
+
   profileEditIconSkipFont: {
     height: 75,
     width: 75,

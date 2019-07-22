@@ -26,6 +26,8 @@ import GiphySelect from "./GiphySelect";
 
 import reduxGetter from "../../services/ReduxGetters";
 
+import pepo_icon from '../../assets/pepo_icon.png';
+
 
 const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
@@ -262,7 +264,7 @@ class TransactionScreen extends Component {
           <View style={inlineStyles.container}>
             {!this.state.isLoading && (
               <React.Fragment>
-                <View>
+                <View style={{paddingHorizontal: 20}}>
                   <GiphySelect selectedGiphy={this.state.selectedGiphy} resetGiphy={() => { this.resetGiphy() }} openGiphy={()=> {this.openGiphy() }} />
                   <View
                     style={{
@@ -285,21 +287,21 @@ class TransactionScreen extends Component {
                     </TouchableOpacity>
 
                     {/* This is Share publically switch */}
-                    <View style={{ justifyContent: 'flex-end' }}>
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 16, color: '#606060' }}>Make Public</Text>
-                        <Switch
-                          value={this.state.isPublic}
-                          style={inlineStyles.switchStyle}
-                          onValueChange={(isPublic) => {
-                            this.setState({ isPublic });
-                          }}
-                          ios_backgroundColor="#d3d3d3"
-                          trackColor={{ true: '#EF5566', false: Platform.OS == 'android' ? '#d3d3d3' : '#ffffff' }}
-                          thumbColor={[Platform.OS == 'android' ? '#ffffff' : '']}
-                        ></Switch>
-                      </View>
-                    </View>
+                    {/*<View style={{ justifyContent: 'flex-end' }}>*/}
+                      {/*<View style={{ flexDirection: 'row', alignItems: 'center' }}>*/}
+                        {/*<Text style={{ fontSize: 16, color: '#606060' }}>Make Public</Text>*/}
+                        {/*<Switch*/}
+                          {/*value={this.state.isPublic}*/}
+                          {/*style={inlineStyles.switchStyle}*/}
+                          {/*onValueChange={(isPublic) => {*/}
+                            {/*this.setState({ isPublic });*/}
+                          {/*}}*/}
+                          {/*ios_backgroundColor="#d3d3d3"*/}
+                          {/*trackColor={{ true: '#EF5566', false: Platform.OS == 'android' ? '#d3d3d3' : '#ffffff' }}*/}
+                          {/*thumbColor={[Platform.OS == 'android' ? '#ffffff' : '']}*/}
+                        {/*></Switch>*/}
+                      {/*</View>*/}
+                    {/*</View>*/}
                   </View>
 
                   {this.state.isMessageVisible && (
@@ -320,7 +322,10 @@ class TransactionScreen extends Component {
 
                   <Text style={Theme.Errors.errorText}> {this.state.fieldErrorText}</Text>
                 </View>
-                <View>
+                <View style={inlineStyles.txBtnsBg}>
+                  <Text style={{marginBottom: 10}}>Balance &#9654; {' '}
+                    <Image style={{ width: 10, height: 11}} source={pepo_icon}></Image> {this.state.balance}
+                  </Text>
                   <View style={{ flexDirection: 'row'}}>
                     <TouchableOpacity
                       disabled={this.state.exceBtnDisabled}
@@ -349,7 +354,7 @@ class TransactionScreen extends Component {
                         this.openEditTx();
                       }}
                     >
-                      <Image style={[{ width: 20, height: 20 }, { tintColor: '#ef5566' }]} source={EditIcon}></Image>
+                      <Image style={[{ width: 20, height: 20 }]} source={EditIcon}></Image>
                     </TouchableOpacity>
                   </View>
                 </View>

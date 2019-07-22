@@ -30,8 +30,11 @@ class VideoPlayer extends Component {
           <View>
             <VideoWrapper   isActive={ true }
                             videoId={this.videoId}/>
-            <TouchableWithoutFeedback onPressOut={()=>this.props.navigation.goBack()}>
-              <Image style={inlineStyles.closeIconSkipFont} source={closeIcon}></Image>
+            <TouchableWithoutFeedback  onPressOut={()=>this.props.navigation.goBack()}>
+                <View style={inlineStyles.closeBtWrapper}>
+                  <Image style={inlineStyles.closeIconSkipFont} source={closeIcon}></Image>
+                </View>
+
             </TouchableWithoutFeedback>
 
           </View>
