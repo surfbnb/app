@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     videoImgUrl: reduxGetter.getVideoImgUrl(ownProps.videoId, state),
     videoUrl: reduxGetter.getVideoUrl(ownProps.videoId, state),
-    loginPopover: state.login_popover.show
+    loginPopover: ownProps.isActive && state.login_popover.show
   };
 };
 

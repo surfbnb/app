@@ -1,91 +1,94 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import { Dimensions } from 'react-native';
 import Colors from '../../theme/styles/Colors';
-import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
-import {CUSTOM_TAB_Height} from "../../theme/constants";
+import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
+import { CUSTOM_TAB_Height } from '../../theme/constants';
 
 let stylesMap = {
-    fullScreen: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height
-    },
-    fullHeightSkipFont: {
-        width: '100%',
-        height: Dimensions.get('window').height
-    },
-    touchablesBtns: {
-      width: '20%',
-      alignItems: 'center',
-      alignSelf: 'flex-end'
-    },
-    pepoElemBtn: {
-      height : 50,
-      width: 50,
-      marginBottom:10,
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 25,
-      elevation: 3
-    },
-    pepoTxCount:{
-      fontSize: 18,
-      color: Colors.white,
-      alignSelf: 'center',
-      marginTop: 3,
-      marginBottom: 15
-    },
-    txElem: {
-        marginBottom: 20,
-    },
-    bottomContainer: {
-        width: '100%',
-        position: 'absolute',
-        ...ifIphoneX({
-            bottom: getBottomSpace([true]) + CUSTOM_TAB_Height
-        }, {
-            bottom: CUSTOM_TAB_Height
-        }),
-    },
-    bottomBg: {
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-        // maxHeight: 150,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        maxHeight: Dimensions.get('window').height * .15,
-        minHeight: Dimensions.get('window').height * .1
-    },
-    bottomBgTxt:{
-        color: Colors.white
-    },
-    topContainer:{
-        position: 'absolute',
-        top: 50,
-        right: 20,
-        zIndex: 1
-    },
-    topBg:{
-        backgroundColor: 'rgba(255, 255, 255, 0.45)',
-        paddingVertical: 8,
-        flexDirection: 'row',
-        paddingLeft: 12,
-        paddingRight: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: Colors.gainsboro,
-        borderWidth: 0.5,
-        borderRadius: 2
-    },
-    topBgTxt:{
-        color: Colors.paynesGrey,
-        fontSize: 14,
-        marginLeft: 5
-    },
-    topBgPosSkipFont: {
-        position: 'absolute',
-        left: -9
-    },
+  fullScreen: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
+  },
+  fullHeightSkipFont: {
+    width: '100%',
+    height: Dimensions.get('window').height
+  },
+  touchablesBtns: {
+    width: '20%',
+    alignItems: 'center',
+    alignSelf: 'flex-end'
+  },
+  pepoElemBtn: {
+    height: 50,
+    width: 50,
+    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 25
+    // elevation: 3
+  },
+  pepoTxCount: {
+    fontSize: 18,
+    color: Colors.white,
+    alignSelf: 'center',
+    marginTop: 3,
+    marginBottom: 15
+  },
+  txElem: {
+    marginBottom: 20
+  },
+  bottomContainer: {
+    width: '100%',
+    position: 'absolute',
+    ...ifIphoneX(
+      {
+        bottom: getBottomSpace([true]) + CUSTOM_TAB_Height
+      },
+      {
+        bottom: CUSTOM_TAB_Height
+      }
+    )
+  },
+  bottomBg: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    // maxHeight: 150,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    maxHeight: Dimensions.get('window').height * 0.15,
+    minHeight: Dimensions.get('window').height * 0.1
+  },
+  bottomBgTxt: {
+    color: Colors.white
+  },
+  topContainer: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 1
+  },
+  topBg: {
+    backgroundColor: 'rgba(255, 255, 255, 0.45)',
+    paddingVertical: 8,
+    flexDirection: 'row',
+    paddingLeft: 12,
+    paddingRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: Colors.gainsboro,
+    borderWidth: 0.5,
+    borderRadius: 2
+  },
+  topBgTxt: {
+    color: Colors.paynesGrey,
+    fontSize: 14,
+    marginLeft: 5
+  },
+  topBgPosSkipFont: {
+    position: 'absolute',
+    left: -9
+  },
   clappedBubble: {
     backgroundColor: Colors.wildWatermelon,
     height: 50,
@@ -101,13 +104,13 @@ let stylesMap = {
   btnText: {
     color: Colors.white
   },
-  playIconSkipFont:{
-    position:'absolute',
-    height:25,
-    width:25,
-    top:Dimensions.get('window').height * 0.50 -12 ,
-    left:Dimensions.get('window').width * 0.50 -12
-    }
+  playIconSkipFont: {
+    position: 'absolute',
+    height: 25,
+    width: 25,
+    top: Dimensions.get('window').height * 0.5 - 12,
+    left: Dimensions.get('window').width * 0.5 - 12
+  }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

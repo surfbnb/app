@@ -23,6 +23,7 @@ class ReduxGetters {
 
     getUser(id ,  state ){
         state =  state || Store.getState() ; 
+        //TODO remove OR 
         if( CurrentUser.getUserId() == id ){
             return deepGet( state , "current_user"); 
         }
@@ -42,6 +43,7 @@ class ReduxGetters {
 
     getUserName( id , state ){
         state =  state || Store.getState() ; 
+        //TODO remove OR
         if( CurrentUser.getUserId() == id ){
             return deepGet( state,  `current_user.user_name` );
         }
@@ -50,6 +52,7 @@ class ReduxGetters {
 
     getName( id , state ){
         state =  state || Store.getState() ; 
+        //TODO remove OR
         if( CurrentUser.getUserId() == id ){
             return deepGet( state ,  `current_user.name` );
         }
@@ -136,6 +139,7 @@ class ReduxGetters {
 
     getProfileImageId(id , state ){
       state =  state || Store.getState() ;
+      //TODO remove OR
       if( CurrentUser.getUserId() == id ){
         console.log('current_user.profile_image');  
         return deepGet( state ,  `current_user.profile_image_id`);

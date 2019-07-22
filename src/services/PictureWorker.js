@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import RNFS from 'react-native-fs';
 import Store from '../store';
-import { upsertProfilePicture, clearProfilePicture, updateCurrentUser, upsertImageEntities } from '../actions';
+import { upsertProfilePicture, clearProfilePicture, upsertUserEntities, upsertImageEntities } from '../actions';
 import appConfig from '../constants/AppConfig';
 import UploadToS3 from './UploadToS3';
 import ReduxGetters from './ReduxGetters';
@@ -90,9 +90,11 @@ class PictureWorker extends PureComponent {
 
     Store.dispatch(upsertImageEntities(imageObject.value));
     Store.dispatch(
-      updateCurrentUser({
-        ...ReduxGetters.getUser(this.props.current_user.id),
-        ...{ profile_image_id: imageObject.key }
+      upsertUserEntities({
+        [`id_${CurrentUser.getUserId()}`]: {
+          ...ReduxGetters.getUser(),
+          ...{ profile_image_id: imageObject.key }
+        }
       })
     );
   }
