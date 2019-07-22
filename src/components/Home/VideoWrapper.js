@@ -6,6 +6,8 @@ import Video from 'react-native-video';
 import inlineStyles from './styles';
 import reduxGetter from '../../services/ReduxGetters';
 import playIcon from '../../assets/play_icon.png';
+import CurrentUser from '../../models/CurrentUser';
+import PixelCall from '../../services/PixelCall';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -23,6 +25,9 @@ class VideoWrapper extends PureComponent {
     };
     this.isUserPaused = false;
     this.pausedOnNavigation = false;
+    this.isPixelCalledOnView = false;
+    this.isPixelCalledOnEnd = false;
+    this.minTimeConsideredForView = 4;
   }
 
   componentDidMount() {
@@ -103,9 +108,34 @@ class VideoWrapper extends PureComponent {
     }
   };
 
+  handleLoad = (params) => {
+    if (this.minTimeConsideredForView > params.duration) this.minTimeConsideredForView = params.duration;
+  };
+
+  handleProgress = (params) => {
+    if (this.isPixelCalledOnView) return;
+    if (params.currentTime >= this.minTimeConsideredForView) {
+      this.callPixelService({ event_name: 'video_viewed'});
+      this.isPixelCalledOnView = true;
+    }
+  };
+
+  handleEnd = (params) => {
+    if (this.isPixelCalledOnEnd) return;
+    this.callPixelService({ event_name: 'video_watched' });
+    this.isPixelCalledOnEnd = true;
+  };
+
+  callPixelService(params) {
+    // remove return while pixel implementation
+    return;
+    let paramsToSend = { ...{ user_id: CurrentUser.getUserId(), video_id: this.props.videoId }, ...params };
+    let pixelCall = new PixelCall(paramsToSend);
+    pixelCall.perform();
+  }
+
   render() {
-    console.log('Video component render ', this.props.videoImgUrl);
-    return  (
+    return (
       <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked}>
         <View>
           <Video
@@ -116,6 +146,9 @@ class VideoWrapper extends PureComponent {
             resizeMode={this.props.resizeMode || 'cover'}
             source={{ uri: this.props.videoUrl }}
             repeat={this.props.repeat || true}
+            onLoad={this.handleLoad}
+            onProgress={this.handleProgress}
+            onEnd={this.handleEnd}
           />
           {this.isPaused() && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
         </View>
