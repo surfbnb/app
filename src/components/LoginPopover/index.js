@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {View, Modal, Text, Image, TouchableHighlight, TouchableWithoutFeedback} from 'react-native';
+import {View, Modal, Text, Image, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import TouchableButton from '../../theme/components/TouchableButton';
 
 import inlineStyles from './styles';
@@ -41,7 +41,7 @@ class loginPopover extends React.Component {
                   <View style={inlineStyles.parent}>
                     <TouchableWithoutFeedback>
                       <View style={inlineStyles.container}>
-                        <TouchableHighlight
+                        <TouchableOpacity
                           onPress={() => Store.dispatch(hideLoginPopover())}
                           style={{
                             position: 'absolute',
@@ -49,7 +49,7 @@ class loginPopover extends React.Component {
                           }}
                         >
                           <Image source={modalCross} style={{width: 19.5, height: 19}} />
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                         <Image source={loggedOutLogo} style={{width: 261, height: 70, marginBottom: 20}} />
                         <Text style={inlineStyles.desc}>Pepo is a place to discover and support your favorite creators.</Text>
                         <Text style={inlineStyles.desc}>Please create a account to continue</Text>
