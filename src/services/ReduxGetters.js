@@ -23,10 +23,6 @@ class ReduxGetters {
 
     getUser(id ,  state ){
         state =  state || Store.getState() ; 
-        //TODO remove OR 
-        if( CurrentUser.getUserId() == id ){
-            return deepGet( state , "current_user"); 
-        }
         return deepGet( state , `user_entities.id_${id}`) ;
     }
 
@@ -43,19 +39,11 @@ class ReduxGetters {
 
     getUserName( id , state ){
         state =  state || Store.getState() ; 
-        //TODO remove OR
-        if( CurrentUser.getUserId() == id ){
-            return deepGet( state,  `current_user.user_name` );
-        }
         return deepGet( state,  `user_entities.id_${id}.user_name` );
     }
 
     getName( id , state ){
         state =  state || Store.getState() ; 
-        //TODO remove OR
-        if( CurrentUser.getUserId() == id ){
-            return deepGet( state ,  `current_user.name` );
-        }
         return deepGet( state,  `user_entities.id_${id}.name` );
     }
 
@@ -113,7 +101,6 @@ class ReduxGetters {
     getCurrentUserProfile(state){
         state =  state || Store.getState() ; 
         return deepGet( state ,  `user_profile_entities.id_${CurrentUser.getUserId()}` );
-
     }
 
     getImage(id  , state ){
@@ -139,11 +126,6 @@ class ReduxGetters {
 
     getProfileImageId(id , state ){
       state =  state || Store.getState() ;
-      //TODO remove OR
-      if( CurrentUser.getUserId() == id ){
-        console.log('current_user.profile_image');  
-        return deepGet( state ,  `current_user.profile_image_id`);
-      }
       return deepGet( state,  `user_entities.id_${id}.profile_image_id` );
     }
 

@@ -33,7 +33,7 @@ class VideoList extends PureComponent {
         return (
             <HomeFeedRow 
                 isActive={ index == this.state.activeIndex }
-                doRender={  Math.abs(index - currentIndex ) < maxVideosThreshold }
+                // doRender={  Math.abs(index - currentIndex ) < maxVideosThreshold }
                 feedId={item}     
             />
     )};    
@@ -46,6 +46,7 @@ class VideoList extends PureComponent {
         console.log("_renderItem videolist" );
         return(
             <FlatList
+                extraData={this.state}
                 snapToAlignment={"top"}
                 viewabilityConfig={{
                   itemVisiblePercentThreshold: 90
@@ -61,7 +62,7 @@ class VideoList extends PureComponent {
                 onEndReachedThreshold={maxVideosThreshold}
                 style={inlineStyles.fullScreen}
                 onViewableItemsChanged={ this.onViewableItemsChanged}
-                onMomentumScrollEnd={ () => {  this.onMomentumScrollEndCallback() }}
+                onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                 onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
                 renderItem={this._renderItem}
                 showsVerticalScrollIndicator={false}
