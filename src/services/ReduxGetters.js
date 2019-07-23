@@ -1,162 +1,157 @@
-import deepGet from "lodash/get";
+import deepGet from 'lodash/get';
 import Store from '../store';
-import CurrentUser from "../models/CurrentUser";
-
-
+import CurrentUser from '../models/CurrentUser';
 
 class ReduxGetters {
+  getHomeFeedUserId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `home_feed_entities.id_${id}.payload.user_id`);
+  }
 
-    getHomeFeedUserId( id , state ){
-        state =  state || Store.getState() ; 
-        return  deepGet( state ,  `home_feed_entities.id_${id}.payload.user_id` ); 
+  getHomeFeedVideoId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `home_feed_entities.id_${id}.payload.video_id`);
+  }
+
+  getVideoUrl(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_entities.id_${id}.resolutions.original.url`) || '';
+  }
+
+  getUser(id, state) {
+    state = state || Store.getState();
+    //TODO remove OR
+    if (CurrentUser.getUserId() == id) {
+      return deepGet(state, 'current_user');
     }
+    return deepGet(state, `user_entities.id_${id}`);
+  }
 
-    getHomeFeedVideoId( id , state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state,  `home_feed_entities.id_${id}.payload.video_id` ) ; 
+  getUserProfile(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_profile_entities.id_${id}`);
+  }
+
+  getVideoImgUrl(id, state) {
+    state = state || Store.getState();
+    let posterImageId = deepGet(state, `video_entities.id_${id}.poster_image_id`);
+    return deepGet(state, `image_entities.id_${posterImageId}.resolutions.750w.url`) || '';
+  }
+
+  getUserName(id, state) {
+    state = state || Store.getState();
+    //TODO remove OR
+    if (CurrentUser.getUserId() == id) {
+      return deepGet(state, `current_user.user_name`);
     }
+    return deepGet(state, `user_entities.id_${id}.user_name`);
+  }
 
-    getVideoUrl( id  , state ){
-        state =  state || Store.getState() ; 
-        return deepGet(  state , `video_entities.id_${id}.resolutions.original.url`) || "";
+  getName(id, state) {
+    state = state || Store.getState();
+    //TODO remove OR
+    if (CurrentUser.getUserId() == id) {
+      return deepGet(state, `current_user.name`);
     }
+    return deepGet(state, `user_entities.id_${id}.name`);
+  }
 
-    getUser(id ,  state ){
-        state =  state || Store.getState() ; 
-        //TODO remove OR 
-        if( CurrentUser.getUserId() == id ){
-            return deepGet( state , "current_user"); 
-        }
-        return deepGet( state , `user_entities.id_${id}`) ;
-    }
+  getBio(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_profile_entities.id_${id}.bio.text`);
+  }
 
-    getUserProfile( id , state ) {
-      state =  state || Store.getState() ;
-      return deepGet( state , `user_profile_entities.id_${id}`) ;
-    }
+  getVideoSupporters(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.total_contributed_by`);
+  }
 
-    getVideoImgUrl(id , state ){
-        state =  state || Store.getState() ; 
-        let posterImageId = deepGet( state ,  `video_entities.id_${id}.poster_image_id` );
-        return deepGet(  state , `image_entities.id_${posterImageId}.resolutions.750w.url`) || "";
-    }
+  getVideoBt(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.total_amount_raised_in_wei`);
+  }
 
-    getUserName( id , state ){
-        state =  state || Store.getState() ; 
-        //TODO remove OR
-        if( CurrentUser.getUserId() == id ){
-            return deepGet( state,  `current_user.user_name` );
-        }
-        return deepGet( state,  `user_entities.id_${id}.user_name` );
-    }
+  isVideoSupported(id, state) {
+    state = state || Store.getState();
+    return !!deepGet(state, `video_contribution_entities.id_${id}`);
+  }
 
-    getName( id , state ){
-        state =  state || Store.getState() ; 
-        //TODO remove OR
-        if( CurrentUser.getUserId() == id ){
-            return deepGet( state ,  `current_user.name` );
-        }
-        return deepGet( state,  `user_entities.id_${id}.name` );
-    }
+  getUserSupporters(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_stat_entities.id_${id}.total_contributed_by`);
+  }
 
-    getBio(id , state ){
-        state =  state || Store.getState() ; 
-        return deepGet(state,  `user_profile_entities.id_${id}.bio.text` );
-    }
+  getUsersSupporting(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_stat_entities.id_${id}.total_contributed_to`);
+  }
 
-    getVideoSupporters(id , state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `video_stat_entities.id_${id}.total_contributed_by` );
-    }
+  getUsersBt(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_stat_entities.id_${id}.total_amount_raised_in_wei`);
+  }
 
-    getVideoBt(id , state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `video_stat_entities.id_${id}.total_amount_raised_in_wei` );
-    }
+  getRecordedVideo() {
+    return deepGet(Store.getState(), `recorded_video.raw_video`);
+  }
 
-    isVideoSupported(id , state ){
-        state =  state || Store.getState() ; 
-        return !!deepGet( state ,  `video_contribution_entities.id_${id}` );
-    }  
-    
-    getUserSupporters( id  , state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `user_stat_entities.id_${id}.total_contributed_by` );
-    }
+  getUserCoverVideoId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_profile_entities.id_${id}.cover_video_id`);
+  }
 
-    getUsersSupporting( id , state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `user_stat_entities.id_${id}.total_contributed_to` );
-    }
+  getUserCoverImageId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_profile_entities.id_${id}.cover_image_id`);
+  }
 
-    getUsersBt(  id , state  ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `user_stat_entities.id_${id}.total_amount_raised_in_wei` );
-    }
+  getCurrentUserProfile(state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_profile_entities.id_${CurrentUser.getUserId()}`);
+  }
 
-    
-    getRecordedVideo() {
-        return deepGet(Store.getState(), `recorded_video.raw_video`);
-    }
+  getImage(id, state) {
+    state = state || Store.getState();
+    return (
+      deepGet(state, `image_entities.id_${id}.resolutions.750w.url`) ||
+      deepGet(state, `image_entities.id_${id}.resolutions.original.url`)
+    );
+  }
 
-    getUserCoverVideoId( id ,  state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `user_profile_entities.id_${id}.cover_video_id` );
-    }
+  getUserLinkId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_profile_entities.id_${id}.link_ids[0]`);
+  }
 
-    getUserCoverImageId( id ,  state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `user_profile_entities.id_${id}.cover_image_id` );
-    }
+  getLink(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `link_entities.id_${id}.url`);
+  }
 
-    
-    getCurrentUserProfile(state){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `user_profile_entities.id_${CurrentUser.getUserId()}` );
+  getVideoTimeStamp(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_entities.id_${id}.uts`);
+  }
 
-    }
+  getProfileImageId(id, state) {
+    state = state || Store.getState();
+    //TODO remove OR
+    //   if( CurrentUser.getUserId() == id ){
+    //     console.log('current_user.profile_image');
+    //     return deepGet( state ,  `current_user.profile_image_id`);
+    //   }
+    return deepGet(state, `user_entities.id_${id}.profile_image_id`);
+  }
 
-    getImage(id  , state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `image_entities.id_${id}.resolutions.750w.url` ) || 
-         deepGet( state ,  `image_entities.id_${id}.resolutions.original.url` );
-    }
+  getVideoUploadUTS(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_entities.id_${id}.uts`);
+  }
 
-    getUserLinkId(id , state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `user_profile_entities.id_${id}.link_ids[0]` );
-    }
-
-    getLink(id , state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `link_entities.id_${id}.url` );
-    }
-
-    getVideoTimeStamp( id , state ){
-        state =  state || Store.getState() ; 
-        return deepGet( state ,  `video_entities.id_${id}.uts` );
-    }
-
-    getProfileImageId(id , state ){
-      state =  state || Store.getState() ;
-      //TODO remove OR
-      if( CurrentUser.getUserId() == id ){
-        console.log('current_user.profile_image');  
-        return deepGet( state ,  `current_user.profile_image_id`);
-      }
-      return deepGet( state,  `user_entities.id_${id}.profile_image_id` );
-    }
-
-    getVideoUploadUTS(id , state){
-      state =  state || Store.getState() ;
-      return deepGet( state,  `video_entities.id_${id}.uts` );
-    }
-
-    getVideoProcessingStatus(state){
-      state =  state || Store.getState() ;
-       return deepGet(state,'video_in_processing');
-    }
-
+  getVideoProcessingStatus(state) {
+    state = state || Store.getState();
+    return deepGet(state, 'video_in_processing');
+  }
 }
 
 export default new ReduxGetters();

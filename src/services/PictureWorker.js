@@ -93,7 +93,7 @@ class PictureWorker extends PureComponent {
     Store.dispatch(
       upsertUserEntities({
         [`id_${CurrentUser.getUserId()}`]: {
-          ...ReduxGetters.getUser(),
+          ...CurrentUser.getUser(),
           ...{ profile_image_id: imageObject.key }
         }
       })
