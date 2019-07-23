@@ -111,18 +111,18 @@ class ImageCropper extends Component {
         h: winHeight * this.props.heightRatio
       };
 
-      let minScale = 1.01;
+      let minScale = 0;
       let maxScale = 10;
+      let imgFactor = 1;
 
       const fittedSize = { w: 0, h: 0 };
 
-      let minWidthScale = imgSize.w / cropperSize.w;
-      if (minWidthScale < 1) {
-        minScale = 1 / minWidthScale;
-      }
-      let minHeightScale = imgSize.h / cropperSize.h;
-      if (minHeightScale < 1) {
-        minScale = Math.max(1 / minHeightScale, 1 / minScale);
+      let minWidthScale = cropperSize.w / imgSize.w;
+      let minHeightScale = cropperSize.h / imgSize.h;
+      minScale = Math.max(minHeightScale, minWidthScale);
+      if (minScale <= 1) {
+        imgFactor = minScale / 1.01;
+        minScale = 1.01;
       }
 
       const screenSize = {
@@ -130,6 +130,9 @@ class ImageCropper extends Component {
         h: winHeight
       };
 
+      imgSize.imgFactor = imgFactor;
+      imgSize.transformedW = imgSize.w * imgFactor;
+      imgSize.transformedH = imgSize.h * imgFactor;
       this.setState(
         (prevState) => ({
           ...prevState,
@@ -183,7 +186,7 @@ class ImageCropper extends Component {
     console.log(restProps, 'restProps');
 
     return !loading ? (
-      <SafeAreaView
+      <View
         style={{
           backgroundColor: 'black',
           height: winHeight * this.props.heightRatio
@@ -193,8 +196,8 @@ class ImageCropper extends Component {
           ref={this.imageZoom}
           cropWidth={winWidth}
           cropHeight={winHeight * this.props.heightRatio}
-          imageWidth={srcSize.w}
-          imageHeight={srcSize.h}
+          imageWidth={srcSize.transformedW}
+          imageHeight={srcSize.transformedH}
           minScale={minScale}
           maxScale={maxScale}
           onMove={this.handleMove}
@@ -202,9 +205,12 @@ class ImageCropper extends Component {
             backgroundColor: 'red'
           }}
         >
-          <Image style={{ width: this.state.srcSize.w, height: this.state.srcSize.h }} source={imageSrc} />
+          <Image
+            style={{ width: this.state.srcSize.transformedW, height: this.state.srcSize.transformedH }}
+            source={imageSrc}
+          />
         </ImageZoom>
-      </SafeAreaView>
+      </View>
     ) : null;
   }
 }
