@@ -16,7 +16,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     userName: reduxGetter.getUserName( ownProps.userId ,state ),
     name: reduxGetter.getName( ownProps.userId , state ),
-    bio: reduxGetter.getBio( ownProps.userId , state )
+    bio: reduxGetter.getBio( ownProps.userId , state ),
+    videoSize :  reduxGetter.getVideoSize( ownProps.videoId , state )
   }
 };
 
@@ -44,7 +45,7 @@ class BottomStatus extends PureComponent {
         <TouchableWithoutFeedback onPress={this.navigateToUserProfile} pointerEvents={'auto'}>
           <View style={inlineStyles.bottomBg}>
             <View style={{ flex: 0.7}}>
-              <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt]}>{`@${this.props.userName}`}</Text>
+              <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt]}>{`@${this.props.userName}`} {this.props.videoSize}</Text>
               {this.props.bio ? (<Text style={[{ paddingRight: 20, fontSize: 13, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]} ellipsizeMode={'tail'} numberOfLines={3}>{this.props.bio}</Text>) : <Text/>}
             </View>
             <View style={{flex: 0.3}}>

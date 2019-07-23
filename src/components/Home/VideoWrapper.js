@@ -152,7 +152,7 @@ class VideoWrapper extends PureComponent {
             onProgress={this.onProgress}
             onEnd={this.onEnd}
           />
-          {!this.isPaused() && this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont}/>}
+          { this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont}/>}
           {this.isPaused() && !this.state.buffer && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
         </View>
       </TouchableWithoutFeedback>
