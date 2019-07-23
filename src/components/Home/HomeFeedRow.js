@@ -92,9 +92,9 @@ class HomeFeedRow extends PureComponent {
     render() {
         console.log("render HomeFeedRow");
         return  (
-            <View>
+            <View style={inlineStyles.fullScreen}>
                
-               { this.props.doRender && 
+               { this.props.doRender &&
                     <VideoWrapper   videoId={this.videoId}
                                     isActive={ this.props.isActive }/>   }        
 

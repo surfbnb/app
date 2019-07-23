@@ -105,16 +105,16 @@ class VideoWrapper extends PureComponent {
 
   onBuffer = () =>{
     console.log(" in buffer")
-    this.setState({buffer:true})
+    this.setState({buffer:true});
   }
 
   onLoadComplete = () =>{
     console.log("in onLoadComplete")
-    this.setState({buffer:false})
+    this.setState({buffer:false});
   }
 
   render() {
-    console.log('Video component render ', this.props.videoImgUrl);
+    console.log("Video Render");
     return  (
       <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked}>
         <View>
