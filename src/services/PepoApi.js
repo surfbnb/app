@@ -202,6 +202,8 @@ export default class PepoApi {
             text: ostErrors.getUIErrorMessage('no_internet'),
             buttonText: 'Okay'
           });
+
+          // Cosider using reject here.
           throw UIWhitelistedErrorCode['no_internet'];
         }
 

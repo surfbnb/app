@@ -10,6 +10,7 @@ import ReduxGetters from './ReduxGetters';
 import PepoApi from './PepoApi';
 import ImageResizer from 'react-native-image-resizer';
 import createObjectForRedux from '../helpers/createObjectForRedux';
+import CurrentUser from '../models/CurrentUser';
 
 const capturedPictureStates = ['cropped_image', 'cleaned_cropped_image', 's3_cropped_image'];
 

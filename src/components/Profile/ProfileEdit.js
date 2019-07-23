@@ -5,13 +5,13 @@ import { withNavigation } from 'react-navigation';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
-import profileEditIcon from '../../assets/profile-edit-icon.png';
+import profileEditIcon from '../../assets/profile_edit_icon.png';
 import default_user_icon from '../../assets/default_user_icon.png';
 import FormInput from '../../theme/components/FormInput';
 import reduxGetter from '../../services/ReduxGetters';
 import { ostErrors } from '../../services/OstErrors';
 import PepoApi from '../../services/PepoApi';
-import ProfilePlusIcon from '../../assets/plus_icon.png';
+import ProfilePlusIcon from '../../assets/red_plus_icon.png';
 import CurrentUser from '../../models/CurrentUser';
 
 import { updateCurrentUser, upsertUserProfileEntities, upsertLinkEntities } from '../../actions';
