@@ -18,7 +18,10 @@ import reduxGetter from "../../services/ReduxGetters";
 import { ostErrors } from '../../services/OstErrors';
 
 
-const mapStateToProps = (state) => ({ balance: state.balance ,  disabled: state.executeTransactionDisabledStatus  });
+
+const mapStateToProps = (state) => ({ balance: state.balance , 
+                                      disabled: state.executeTransactionDisabledStatus ,
+                                      isUserActivated : deepGet(state, "current_user.signup_airdrop_status") == 1 });
 
 class TransactionPepoButton extends PureComponent {
 
@@ -36,7 +39,7 @@ class TransactionPepoButton extends PureComponent {
     }
 
     isDisabled = () => {
-      return !this.isBalance() || !CurrentUser.isUserActivated()  || !!this.props.disabled ; 
+      return !this.isBalance() || !this.props.isUserActivated  || !!this.props.disabled ; 
     }
     
     isBalance = () => {

@@ -8,17 +8,16 @@ import appConfig from '../constants/AppConfig';
 import { LoginPopoverActions } from '../components/LoginPopover';
 import { Toast } from 'native-base';
 import { ostErrors } from '../services/OstErrors';
+import reduxGetter from "../services/ReduxGetters"; 
 
 class CurrentUser {
   constructor() {
     this.userId = null;
-    this.ostUserId = null;
   }
 
   initialize() {
     //Provide user js obj in  a promise.
     this.userId = null;
-    this.ostUserId = null;
     return this.currentUserIdFromAS().then((asUserId) => {
       if (!asUserId) {
         Promise.resolve(null);
@@ -40,13 +39,19 @@ class CurrentUser {
         }
 
         //We now have userObj.
-        return this.sync(userObj.id);
+        //TODO remove OR 
+        return this.sync(userObj.user_id || userObj.id);
       });
     });
   }
 
+  getLogedinUser(){
+    return Store.getState().current_user; 
+  }
+
   getUser() {
-    return Store.getState().current_user;
+    //TODO remove OR later
+    return reduxGetter.getUser(this.userId) || this.getLogedinUser(); 
   }
 
   sync(userId) {
@@ -70,10 +75,11 @@ class CurrentUser {
       return Promise.resolve(null);
     }
     let user = deepGet(apiResponse, `data.${resultType}`);
-    let userId = user.id;
+    //TODO remove OR 
+    let userId = user.user_id ||  user.id;
     if (expectedUserId) {
       // Make sure it matched.
-      if (expectedUserId != user.id) {
+      if (expectedUserId != userId) {
         // Dont save.
         return Promise.resolve();
       }
@@ -86,10 +92,10 @@ class CurrentUser {
       .then(() => {
         Store.dispatch(updateCurrentUser(user));
         this.userId = userId;
-        this.ostUserId = user.ost_user_id;
         return user;
       });
   }
+
 
   // Async storage methods.
   currentUserIdFromAS() {
@@ -150,7 +156,7 @@ class CurrentUser {
     });
   }
 
-  getUserSalt(userId) {
+  getUserSalt( ) {
     return new PepoApi('/users/recovery-info').get();
   }
 
@@ -159,28 +165,12 @@ class CurrentUser {
     return this.userId;
   }
 
-  checkActiveUser() {
-    if (!this.getOstUserId()) {
-      LoginPopoverActions.show();
-      return false;
-    }
-    return true;
+  getOstUserId() {
+    return this.getUser()["ost_user_id"] ;
   }
 
   isActiveUser() {
     return this.isUserActivated() || this.isUserActivating();
-  }
-
-  isUserActivated(emit) {
-    const userStatusMap = appConfig.userStatusMap,
-      returnVal = this.__getUserStatus() == userStatusMap.activated;
-    if (!returnVal && emit) {
-      Toast.show({
-        text: ostErrors.getUIErrorMessage('user_not_active'),
-        buttonText: 'Okay'
-      });
-    }
-    return returnVal;
   }
 
   isUserActivating() {
@@ -194,10 +184,6 @@ class CurrentUser {
     return status.toLowerCase();
   }
 
-  getOstUserId() {
-    return this.ostUserId;
-  }
-
   _getASKey(userId) {
     return 'user-' + userId;
   }
@@ -205,6 +191,29 @@ class CurrentUser {
   _getCurrentUserIdKey() {
     return 'current_user_id';
   }
+
+  // Start Move this to utilities once all branches are merged. 
+  checkActiveUser() {
+    if (!this.getOstUserId()) {
+      LoginPopoverActions.show();
+      return false;
+    }
+    return true;
+  }
+
+  isUserActivated(emit) {
+    const userStatusMap = appConfig.userStatusMap,
+      returnVal = this.__getUserStatus() == userStatusMap.activated;
+    if (!returnVal && emit) {
+      Toast.show({
+        text: ostErrors.getUIErrorMessage('user_not_active'),
+        buttonText: 'Okay'
+      });
+    }
+    return returnVal;
+  }
+  // End Move this to utilities once all branches are merged. 
+
 }
 
 export default new CurrentUser();

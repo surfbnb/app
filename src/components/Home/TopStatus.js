@@ -21,7 +21,7 @@ const getBalance = (props) => {
 }
 
 const TopStatus = (props) => {
-  return CurrentUser.getOstUserId() && (
+  return CurrentUser.getUserId() && (
     <View style={ inlineStyles.topContainer }>
       <View style={inlineStyles.topBg}>
         <Image
