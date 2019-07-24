@@ -157,7 +157,7 @@ class ImageGallery extends Component {
   };
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={inlineStyles.container}>
         <View style={{ position: 'relative', flex: appConfig.cameraHeightRatio, backgroundColor: 'black' }}>
           {this.state.imageURI ? (
             <CropperUI
@@ -199,7 +199,7 @@ class ImageGallery extends Component {
             extraData={this.state}
             onEndReached={this.loadMore}
             showsVerticalScrollIndicator={false}
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={0.8}
             data={this.state.photos}
             renderItem={this._renderItem}
             numColumns={3}
