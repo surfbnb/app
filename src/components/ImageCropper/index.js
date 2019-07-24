@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, ImageEditor, Dimensions, View } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
+import ImageSize from 'react-native-image-size';
 
 const window = Dimensions.get('window');
 const winWidth = window.width;
@@ -192,7 +193,13 @@ class ImageCropper extends Component {
   handleImageLoad = () => {
     const { imageUri } = this.props;
 
-    Image.getSize(imageUri, (imgWidth, imgHeight) => {
+    
+    //Use ImageSize instead of react-native Image.getSize because of the bug below:
+    //https://github.com/facebook/react-native/issues/22145
+
+    ImageSize.getSize(imageUri).then(sizeInfo => {
+      const imgWidth  = sizeInfo.width;
+      const imgHeight = sizeInfo.height;
       const { setCropperParams } = this.props;
 
       const imgSize = { w: imgWidth, h: imgHeight };

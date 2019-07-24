@@ -171,6 +171,7 @@ android {
 
 dependencies {
     implementation project(':@react-native-community_cameraroll')
+    implementation project(':react-native-image-size')
     implementation project(':react-native-twitter-signin')
     implementation project(':react-native-image-resizer')
     implementation project(':react-native-linear-gradient')
