@@ -28,7 +28,8 @@ class VideoPlayer extends Component {
     render() {
         return (
           <View>
-            <VideoWrapper   isActive={ true }
+            <VideoWrapper   doRender={true}
+                            isActive={ true }
                             videoId={this.videoId}/>
             <TouchableWithoutFeedback  onPressOut={()=>this.props.navigation.goBack()}>
                 <View style={inlineStyles.closeBtWrapper}>
