@@ -152,7 +152,7 @@ class VideoWrapper extends PureComponent {
             style={[inlineStyles.fullHeightSkipFont, this.props.style]}
             paused={this.isPaused()}
             resizeMode={this.props.resizeMode || 'cover'}
-            source={ this.props.doRender ? { uri: this.props.videoUrl } : null } 
+            source={{ uri: this.props.videoUrl }} 
             repeat={this.props.repeat || true}
             onLoad={this.onLoad}
             onProgress={this.onProgress}
