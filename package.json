@@ -29,6 +29,7 @@
     "react-native-iphone-x-helper": "1.2.1",
     "react-native-keyboard-aware-scroll-view": "0.8.0",
     "react-native-linear-gradient": "2.5.4",
+    "react-native-permissions": "1.2.0",
     "react-native-progress": "3.6.0",
     "react-native-smooth-pincode-input": "1.0.4",
     "react-native-thumbnail": "1.1.3",

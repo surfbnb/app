@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Platform } from 'react-native';
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
 import UserInfo from '../CommonComponents/UserInfo';
@@ -15,9 +15,7 @@ import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Toast } from 'native-base';
 import PepoApi from '../../services/PepoApi';
-import AllowAccessModal from "./AllowAccessModal";
-import CameraIcon from '../../assets/camera_icon.png'
-import Gallery_Icon from '../../assets/gallery_icon.png';
+import PermissionsApi from '../../services/PermissionsApi';
 
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
@@ -82,22 +80,47 @@ class ProfileScreen extends Component {
     });
   };
 
-  uploadVideo = () => {
-    this.props.navigation.push('CaptureVideo');
+  uploadVideo = async () => {
+    const cameraResponse = await PermissionsApi.checkPermission('camera');
+    const microphoneResponse = await PermissionsApi.checkPermission('microphone');
+    if (Platform.OS == 'android') {
+      //can ask permissions multiple times on android
+      PermissionsApi.requestPermission('camera').then((result) => {
+        const cameraResult = result;
+        PermissionsApi.requestPermission('microphone').then((result) => {
+          const microphoneResult = result;
+          //if do not ask again is selected then 'restricted' is returned and permission dialog does not appear again
+          if (
+            (cameraResult == 'authorized' || cameraResult == 'restricted') &&
+            (microphoneResult == 'authorized' || microphoneResult == 'restricted')
+          ) {
+            this.props.navigation.push('CaptureVideo');
+          }
+        });
+      });
+    } else if (Platform.OS == 'ios') {
+      if (cameraResponse == 'undetermined') {
+        //can ask only once in ios i.e first time
+        PermissionsApi.requestPermission('camera').then((result) => {
+          const cameraResult = result;
+          PermissionsApi.requestPermission('microphone').then((result) => {
+            const microphoneResult = result;
+            if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
+              this.props.navigation.push('CaptureVideo');
+            }
+          });
+        });
+      } else {
+        //redirect inside irrespective of response as enable access modal is handled inside the screen
+        this.props.navigation.push('CaptureVideo');
+      }
+    }
   };
 
   render() {
     return (
       <KeyboardAwareScrollView enableOnAndroid={true} style={{ padding: 20, flex: 1 }}>
         {this.isLoading()}
-        {/*<AllowAccessModal*/}
-          {/*modalVisibility={true}*/}
-          {/*headerText="Library"*/}
-          {/*accessText="Enable Library Access"*/}
-          {/*accessTextDesc="Please allow access to photo library to select your profile picture"*/}
-          {/*imageSrc={Gallery_Icon}*/}
-          {/*imageSrcStyle = {{ height:40,width:40}}*/}
-        {/*/>*/}
         <BalanceHeader />
         <React.Fragment>
           <CoverImage

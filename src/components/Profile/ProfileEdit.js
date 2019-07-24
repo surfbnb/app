@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, PermissionsAndroid, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
@@ -20,6 +20,10 @@ import utilities from '../../services/Utilities';
 import Colors from '../../theme/styles/Colors';
 import { ActionSheet } from 'native-base';
 import FastImage from 'react-native-fast-image';
+
+import PermissionsApi from '../../services/PermissionsApi';
+import AllowAccessModal from '../Profile/AllowAccessModal';
+import GalleryIcon from '../../assets/gallery_icon.png';
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
@@ -64,8 +68,21 @@ class ProfileEdit extends React.PureComponent {
       bio: this.props.bio,
       link: this.props.link,
       current_formField: 0,
+      showAccessModal: false,
       ...this.defaults
     };
+  }
+
+  componentDidMount() {
+    if (Platform.OS == 'ios') {
+      PermissionsApi.checkPermission('photo').then((response) => {
+        if (response == 'authorized') {
+          this.setState({
+            showAccessModal: false
+          });
+        }
+      });
+    }
   }
 
   getImageSrc = () => {
@@ -202,12 +219,44 @@ class ProfileEdit extends React.PureComponent {
     );
   };
 
-  openCamera = () => {
-    this.props.navigation.push('CaptureImageScreen');
+  openCamera = async () => {
+    let response = await PermissionsApi.checkPermission('camera');
+    if (Platform.OS == 'android') {
+      //can ask permissions multiple times on android
+      PermissionsApi.requestPermission('camera').then((result) => {
+        //if do not ask again is selected then 'restricted' is returned and permission dialog does not appear again
+        if (result == 'authorized' || result == 'restricted') {
+          this.props.navigation.push('CaptureImageScreen');
+        }
+      });
+    } else if (Platform.OS == 'ios') {
+      if (response == 'undetermined') {
+        //can ask only once in ios i.e first time
+        PermissionsApi.requestPermission('camera').then((result) => {
+          if (result == 'authorized') {
+            this.props.navigation.push('CaptureImageScreen');
+          }
+        });
+      } else {
+        //redirect inside irrespective of response as enable access modal is handled inside the screen
+        this.props.navigation.push('CaptureImageScreen');
+      }
+    }
   };
 
-  openGallery = () => {
-    this.props.navigation.push('ImageGalleryScreen');
+  openGallery = async () => {
+    let response = await PermissionsApi.checkPermission('photo');
+    PermissionsApi.requestPermission('photo').then((result) => {
+      if (result == 'authorized' || result == 'restricted') {
+        this.props.navigation.push('ImageGalleryScreen');
+      }
+    });
+    if (Platform.OS == 'ios' && response == 'denied') {
+      //show enable access modal only in case of ios as in android multiple times permission dialog can appear
+      this.setState({
+        showAccessModal: true
+      });
+    }
   };
 
   render() {
@@ -325,6 +374,15 @@ class ProfileEdit extends React.PureComponent {
         </TouchableOpacity>
         {/*//TODO error styling */}
         <Text>{this.state.general_error}</Text>
+        <AllowAccessModal
+          onClose={() => {}}
+          modalVisibility={this.state.showAccessModal}
+          headerText="Library"
+          accessText="Enable Library Access"
+          accessTextDesc="Please allow access to photo library to select your profile picture"
+          imageSrc={GalleryIcon}
+          imageSrcStyle={{ height: 40, width: 40 }}
+        />
       </View>
     );
   }
