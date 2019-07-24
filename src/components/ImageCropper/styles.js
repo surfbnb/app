@@ -22,7 +22,7 @@ let stylesMap = {
     width: 60
   },
   crossIconSkipFont: {
-    marginTop: Platform.OS == 'android' ? 50 : 0,
+    marginTop: Platform.OS == 'android' ? 20 : 0,
     marginLeft: 20,
     height: 20,
     width: 20

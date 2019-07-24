@@ -295,7 +295,7 @@ class ImageCropper extends Component {
           maxScale={maxScale}
           onMove={this.handleMove}
           style={{
-            backgroundColor: 'red'
+            backgroundColor: 'black'
           }}
         >
           <Image

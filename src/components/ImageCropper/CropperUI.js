@@ -62,7 +62,7 @@ export default class CropperUI extends React.Component {
     let borderWidth = circleWidth;
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={{ position: 'relative', flex: 1 }}>
           <ImageCropper
             heightRatio={this.props.screenHeightRatio}
@@ -90,7 +90,7 @@ export default class CropperUI extends React.Component {
             Crop
           </Text>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
