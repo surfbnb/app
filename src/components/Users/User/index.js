@@ -19,7 +19,8 @@ const isActivated = function(user) {
 const userClick = function(item, navigation) {
   let headerText = 'Transaction';
   if (item) {
-    headerText = `${item.first_name} ${item.last_name}`;
+    //headerText = `${item.first_name} ${item.last_name}`;
+    headerText = `${item.name}`;
   }
   if (!CurrentUser.isUserActivated()) {
     Toast.show({
@@ -50,7 +51,8 @@ const Users = (props) => {
             <View style={styles.txtWrapper}>
               <Image style={styles.imageStyleSkipFont} source={default_user_icon}></Image>
               <Text numberOfLines={1} style={styles.item}>
-                {user.first_name} {user.last_name}
+                {/* {user.first_name} {user.last_name} */}
+                {user.name} 
               </Text>
             </View>
           </View>
