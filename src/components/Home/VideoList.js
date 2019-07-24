@@ -7,6 +7,7 @@ import inlineStyles from "./styles";
 
 
 let currentIndex = 0 ; 
+const maxVideosThreshold =  3; 
 
 class VideoList extends PureComponent {
 
@@ -32,7 +33,7 @@ class VideoList extends PureComponent {
         return (
             <HomeFeedRow 
                 isActive={ index == this.state.activeIndex }
-                // doRender={  Math.abs(index - currentIndex ) < maxVideosThreshold }
+                doRender={  Math.abs(index - currentIndex ) < maxVideosThreshold }
                 feedId={item}     
             />
     )};    
@@ -57,7 +58,7 @@ class VideoList extends PureComponent {
                 onRefresh={this.props.refresh}
                 keyExtractor={this._keyExtractor}
                 refreshing={this.props.refreshing}
-                initialNumToRender={3}
+                initialNumToRender={maxVideosThreshold}
                 onEndReachedThreshold={7}
                 style={inlineStyles.fullScreen}
                 onViewableItemsChanged={ this.onViewableItemsChanged}

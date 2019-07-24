@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.cameraroll.CameraRollPackage;
 import com.goldenowl.twittersignin.TwitterSigninPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new CameraRollPackage(),
             new TwitterSigninPackage(),
             new ImageResizerPackage(),
             new LinearGradientPackage(),

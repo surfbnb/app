@@ -1,4 +1,5 @@
-import { CameraRoll, PermissionsAndroid, Platform } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
+import CameraRoll from '@react-native-community/cameraroll';
 
 class ImageBrowser {
   constructor() {
@@ -28,6 +29,7 @@ class ImageBrowser {
   }
 
   async _fetchPhotos() {
+    if (!this._page_info.has_next_page) return;
     if (this.savedStartCursor && this.savedStartCursor == this._page_info.end_cursor) {
       return false;
     }

@@ -94,10 +94,10 @@ class HomeFeedRow extends PureComponent {
         return  (
             <View style={inlineStyles.fullScreen}>
                
-               {/* { this.props.doRender && */}
                 <VideoWrapper   videoId={this.videoId}
+                                doRender={this.props.doRender}
                                 isActive={ this.props.isActive }/>  
-                                     {/* }         */}
+                                
 
                 <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
                     
