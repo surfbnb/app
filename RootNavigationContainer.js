@@ -35,7 +35,7 @@ import PreviewRecordedVideo from './src/components/PreviewRecordedVideo';
 import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
-
+import CurrentUser from './src/models/CurrentUser'
 import deepGet from 'lodash/get';
 
 const modalStackConfig = {
@@ -44,6 +44,7 @@ const modalStackConfig = {
   mode: 'modal',
   navigationOptions: ({ navigation }) => {
     return {
+      swipeEnabled:CurrentUser.getOstUserId()?true:false,
       tabBarVisible: deepGet(navigation, 'state.routes[0].index') == 0 ? true : false
     };
   }

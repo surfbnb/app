@@ -14,7 +14,7 @@ import PepoApi from '../../services/PepoApi';
 import ProfilePlusIcon from '../../assets/red_plus_icon.png';
 import CurrentUser from '../../models/CurrentUser';
 
-import { updateCurrentUser, upsertUserProfileEntities, upsertLinkEntities } from '../../actions';
+import { updateCurrentUser, upsertUserProfileEntities, upsertLinkEntities, upsertUserEntities } from '../../actions';
 import Store from '../../store';
 import utilities from '../../services/Utilities';
 import Colors from '../../theme/styles/Colors';
@@ -126,7 +126,7 @@ class ProfileEdit extends React.PureComponent {
     if (this.state.user_name) {
       currentUserObj['user_name'] = this.state.user_name;
     }
-    Store.dispatch(updateCurrentUser(currentUserObj));
+    Store.dispatch(upsertUserEntities(utilities._getEntityFromObj(currentUserObj)));
 
     const userProfileEntity = reduxGetter.getUserProfile(this.props.userId);
     if (!userProfileEntity) return;
