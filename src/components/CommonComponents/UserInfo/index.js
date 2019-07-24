@@ -47,7 +47,7 @@ class UserInfo extends React.PureComponent {
     if( this.props.isEdit ){
      return (
        <TouchableButton onPress={this.onEdit}
-         TouchableStyles = {[Theme.Button.btnPinkSecondary]}
+         TouchableStyles = {[Theme.Button.btnPinkSecondary, {paddingVertical: 8, paddingHorizontal: 20}]}
          TextStyles = {[Theme.Button.btnPinkSecondaryText]}
          text="Edit Profile"
        />
