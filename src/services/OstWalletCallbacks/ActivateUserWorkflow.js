@@ -25,8 +25,7 @@ const initiatePolling = (expectedUserId) => {
               stopPolling = true;
               return;
             }
-            const resultType = deepGet(apiResponse, 'data.result_type');
-            const user = deepGet(apiResponse, `data.${resultType}`);
+            const user = apiResponse;
             const airDropStatus = user && user.signup_airdrop_status;
             if (airDropStatus == 1) {
               stopPolling = true;
