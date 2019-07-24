@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
-import { Image, ImageEditor, Dimensions, SafeAreaView, View } from 'react-native';
+import { Image, ImageEditor, Dimensions, View } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 
 const window = Dimensions.get('window');
 const winWidth = window.width;
 const winHeight = window.height;
-const w = window.width;
-const h = window.height;
 
 const getPercentFromNumber = (percent, numberFrom) => (numberFrom / 100) * percent;
 
 const getPercentDiffNumberFromNumber = (number, numberFrom) => (number / numberFrom) * 100;
-
-const verticalPadding = 40;
-const horizontalPadding = 30;
 
 export { getPercentFromNumber, getPercentDiffNumberFromNumber };
 
@@ -34,49 +29,75 @@ class ImageCropper extends Component {
   };
 
   static crop = (params) => {
-    const { imageUri, cropSize, positionX, positionY, screenSize, srcSize, scale, verticalPadding, horzPadding, cropperSize } = params;
+    const {
+      imageUri,
+      cropSize,
+      positionX,
+      positionY,
+      screenSize,
+      srcSize,
+      scale,
+      verticalPadding,
+      horzPadding,
+      cropperSize
+    } = params;
     console.log(
       '---- crop method inputs:',
-      '\n imageUri', imageUri,
-      '\n cropSize', cropSize,
-      '\n positionX', positionX,
-      '\n positionY', positionY,
-      '\n screenSize', screenSize,
-      '\n srcSize', srcSize,
-      '\n scale', scale,
-      '\n verticalPadding', verticalPadding,
-      '\n horzPadding', horzPadding,
-      "\n cropperSize", cropperSize
+      '\n imageUri',
+      imageUri,
+      '\n cropSize',
+      cropSize,
+      '\n positionX',
+      positionX,
+      '\n positionY',
+      positionY,
+      '\n screenSize',
+      screenSize,
+      '\n srcSize',
+      srcSize,
+      '\n scale',
+      scale,
+      '\n verticalPadding',
+      verticalPadding,
+      '\n horzPadding',
+      horzPadding,
+      '\n cropperSize',
+      cropperSize
     );
 
     const netImageZoomFactor = srcSize.imgFactor * scale;
-    console.log("netImageZoomFactor", netImageZoomFactor);
+    console.log('netImageZoomFactor', netImageZoomFactor);
 
-
-
-
-
-    
-    const cropperWidth = winWidth - (2 * horzPadding);
-    const cropperRadius = cropperWidth/2;
+    const cropperWidth = winWidth - 2 * horzPadding;
+    const cropperRadius = cropperWidth / 2;
     const factoredCropperRadius = cropperRadius / netImageZoomFactor;
 
     const croppedImageDimension = cropperWidth / netImageZoomFactor;
-    console.log("croppedImageDimension", croppedImageDimension);
+    console.log('croppedImageDimension', croppedImageDimension);
     /* 
       Note about cropperWidth: 
         Since the cropper has to be a square cropperWidth has be used above.  
         Changing to cropperHeight will cause issues. Think about it before changing.
     */
 
-
     //Compute X Offset
-    const xOffset = ImageCropper.computeXOffSet(factoredCropperRadius, srcSize.transformedW, srcSize.w, positionX)
+    const xOffset = ImageCropper.computeXOffSet(factoredCropperRadius, srcSize.transformedW, srcSize.w, positionX);
 
     //Compute Y Offset.
     const zoomerHeight = cropperSize.h;
-    const yCenterCorrection = ImageCropper.computeVerticalAddtionalCorrection(zoomerHeight, verticalPadding, cropperRadius, netImageZoomFactor);
-    const yOffset = ImageCropper.computeYOffSet(factoredCropperRadius, srcSize.transformedH, srcSize.h, positionY, yCenterCorrection)
+    const yCenterCorrection = ImageCropper.computeVerticalAddtionalCorrection(
+      zoomerHeight,
+      verticalPadding,
+      cropperRadius,
+      netImageZoomFactor
+    );
+    const yOffset = ImageCropper.computeYOffSet(
+      factoredCropperRadius,
+      srcSize.transformedH,
+      srcSize.h,
+      positionY,
+      yCenterCorrection
+    );
 
     const cropData = {
       offset: {
@@ -91,7 +112,7 @@ class ImageCropper extends Component {
         width: cropSize.width,
         height: cropSize.height
       },
-      resizeMode: "stretch"
+      resizeMode: 'stretch'
     };
 
     return new Promise((resolve, reject) => ImageEditor.cropImage(imageUri, cropData, resolve, reject));
@@ -102,20 +123,20 @@ class ImageCropper extends Component {
       Refer below excel for computation formullas: 
       https://docs.google.com/spreadsheets/d/1X1cTbHCOnQeMcnd-3RkvYssWF9iFPTYN56JkqwG-uZc/edit?usp=sharing
     */
-    console.log("--------------- computeXOffSet -----------------");
-    console.log("factoredCropperRadius", factoredCropperRadius);
-    console.log("displayImgWidth", displayImgWidth);
-    console.log("actualImageWidth", actualImageWidth);
-    console.log("zoomerX", zoomerX);
+    console.log('--------------- computeXOffSet -----------------');
+    console.log('factoredCropperRadius', factoredCropperRadius);
+    console.log('displayImgWidth', displayImgWidth);
+    console.log('actualImageWidth', actualImageWidth);
+    console.log('zoomerX', zoomerX);
 
-    const scaledX = (zoomerX * actualImageWidth)/displayImgWidth;
-    console.log("scaledX", scaledX);
+    const scaledX = (zoomerX * actualImageWidth) / displayImgWidth;
+    console.log('scaledX', scaledX);
 
-    const offsetX = (actualImageWidth/2) - scaledX;
-    console.log("offsetX", offsetX);
+    const offsetX = actualImageWidth / 2 - scaledX;
+    console.log('offsetX', offsetX);
 
     const correctOffsetX = offsetX - factoredCropperRadius;
-    console.log("correctOffsetX", correctOffsetX);
+    console.log('correctOffsetX', correctOffsetX);
 
     return correctOffsetX;
   }
@@ -125,35 +146,34 @@ class ImageCropper extends Component {
       Refer below excel for computation formullas: 
       https://docs.google.com/spreadsheets/d/1X1cTbHCOnQeMcnd-3RkvYssWF9iFPTYN56JkqwG-uZc/edit?usp=sharing
     */
-    console.log("--------------- computeYOffSet -----------------");
-    console.log("factoredCropperRadius", factoredCropperRadius);
-    console.log("displayImgHeight", displayImgHeight);
-    console.log("actualImageHeight", actualImageHeight);
-    console.log("zoomerY", zoomerY);
+    console.log('--------------- computeYOffSet -----------------');
+    console.log('factoredCropperRadius', factoredCropperRadius);
+    console.log('displayImgHeight', displayImgHeight);
+    console.log('actualImageHeight', actualImageHeight);
+    console.log('zoomerY', zoomerY);
 
-    const scaledY = (zoomerY * actualImageHeight)/displayImgHeight;
-    console.log("scaledY", scaledY);
+    const scaledY = (zoomerY * actualImageHeight) / displayImgHeight;
+    console.log('scaledY', scaledY);
 
-    const offsetY = (actualImageHeight/2) - scaledY;
-    console.log("offsetY", offsetY);
+    const offsetY = actualImageHeight / 2 - scaledY;
+    console.log('offsetY', offsetY);
 
     let correctOffsetY = offsetY - factoredCropperRadius;
-    console.log("correctOffsetY", correctOffsetY);
+    console.log('correctOffsetY', correctOffsetY);
 
     // Additional Corrections because the center of croper does not match the center of zoomer.
-    console.log("additionalCorrection", additionalCorrection);
+    console.log('additionalCorrection', additionalCorrection);
     correctOffsetY = correctOffsetY - additionalCorrection;
 
-    console.log("correctOffsetY after additional correction", correctOffsetY);
+    console.log('correctOffsetY after additional correction', correctOffsetY);
 
     return correctOffsetY;
   }
 
   static computeVerticalAddtionalCorrection(zoomerHeight, verticalPadding, cropperRadius, netImageZoomFactor) {
-    let verticalCorrection = (zoomerHeight/2) - (verticalPadding + cropperRadius);
-    return verticalCorrection/netImageZoomFactor;
+    let verticalCorrection = zoomerHeight / 2 - (verticalPadding + cropperRadius);
+    return verticalCorrection / netImageZoomFactor;
   }
-
 
   componentDidMount() {
     this.handleImageLoad();
@@ -198,7 +218,6 @@ class ImageCropper extends Component {
         h: winHeight
       };
 
-
       /*
         The minimum scale that zoomer can support in a bug free maner is 1.01.
         Hence, we need to transform the image height width in a way such that 
@@ -207,7 +226,6 @@ class ImageCropper extends Component {
       imgSize.imgFactor = imgFactor;
       imgSize.transformedW = imgSize.w * imgFactor;
       imgSize.transformedH = imgSize.h * imgFactor;
-
 
       this.setState(
         (prevState) => ({
@@ -248,7 +266,7 @@ class ImageCropper extends Component {
   };
 
   render() {
-    let { loading,  minScale, maxScale, srcSize, cropperSize } = this.state;
+    let { loading, minScale, maxScale, srcSize, cropperSize } = this.state;
     let { imageUri, ...restProps } = this.props;
     let imageSrc = { uri: imageUri };
 
