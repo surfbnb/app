@@ -17,4 +17,5 @@ export default {
   softBlue: '#55acee',
   pinkRed: '#ef5869',
   midnightblue:'#34445b',
+  azureBlue : '#007aff',
 };
