@@ -67,8 +67,8 @@ export default {
 
   compressionConstants: {
     COMPRESSION_SIZE: '720X1280',
-    CRF: '24',
-    PRESET: 'ultrafast',
+    CRF: '28',
+    PRESET: 'superfast',
     PIX_FMT: 'yuv420p'
   },
 
