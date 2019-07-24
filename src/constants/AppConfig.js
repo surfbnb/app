@@ -1,4 +1,4 @@
-import pepo_icon from '../assets/pepo_icon.png';
+import pepo_icon from '../assets/pepo-white-icon.png';
 import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
 export default {
   userStatusMap: {

@@ -28,7 +28,6 @@ import reduxGetter from "../../services/ReduxGetters";
 
 import pepo_icon from '../../assets/pepo_icon.png';
 
-
 const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
 class TransactionScreen extends Component {
@@ -340,7 +339,7 @@ class TransactionScreen extends Component {
                       <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
                         Send{' '}
                         <Image
-                          style={{ width: 10, height: 11, tintColor: '#ffffff' }}
+                          style={{ width: 10, height: 10, tintColor: '#ffffff' }}
                           source={utilities.getTokenSymbolImageConfig()['image1']}
                         ></Image>{' '}
                         {this.state.btAmount}
