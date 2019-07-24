@@ -34,7 +34,7 @@ class ReduxGetters {
     getVideoImgUrl(id , state ){
         state =  state || Store.getState() ; 
         let posterImageId = deepGet( state ,  `video_entities.id_${id}.poster_image_id` );
-        return deepGet(  state , `image_entities.id_${posterImageId}.resolutions.750w.url`) || "";
+        return deepGet(  state , `image_entities.id_${posterImageId}.resolutions.original.url`) || "";
     }
 
     getUserName( id , state ){

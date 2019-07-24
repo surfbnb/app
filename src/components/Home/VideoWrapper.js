@@ -28,7 +28,9 @@ class VideoWrapper extends PureComponent {
     this.pausedOnNavigation = false;
     this.isPixelCalledOnView = false;
     this.isPixelCalledOnEnd = false;
+    this.player = null ;
     this.minTimeConsideredForView = 4;
+    this.source = {} ;
   }
 
   componentDidMount() {
@@ -56,6 +58,7 @@ class VideoWrapper extends PureComponent {
     };
 
     AppState.addEventListener('change', this._handleAppStateChange);
+
   }
 
   componentWillUnmount() {
@@ -143,17 +146,20 @@ class VideoWrapper extends PureComponent {
           <Video
             poster={this.props.videoImgUrl}
             posterResizeMode={this.props.posterResizeMode || 'cover'}
+            ref={player => {
+              this.player = player;
+            }}
             style={[inlineStyles.fullHeightSkipFont, this.props.style]}
             paused={this.isPaused()}
             resizeMode={this.props.resizeMode || 'cover'}
-            source={{ uri: this.props.videoUrl }}
+            source={ this.props.doRender ? { uri: this.props.videoUrl } : null } 
             repeat={this.props.repeat || true}
             onLoad={this.onLoad}
             onProgress={this.onProgress}
             onEnd={this.onEnd}
           />
           { this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont}/>}
-          {this.isPaused() && !this.state.buffer && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
+          {this.isPaused() && !this.state.buffer &&  this.isUserPaused && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
         </View>
       </TouchableWithoutFeedback>
     );
