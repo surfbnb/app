@@ -21,7 +21,7 @@ import { ostErrors } from '../../services/OstErrors';
 
 const mapStateToProps = (state) => ({ balance: state.balance , 
                                       disabled: state.executeTransactionDisabledStatus ,
-                                      isUserActivated : deepGet(state, "current_user.signup_airdrop_status") == 1 });
+                                      isUserActivated : CurrentUser.isUserActivated() });
 
 class TransactionPepoButton extends PureComponent {
 

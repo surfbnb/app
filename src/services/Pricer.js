@@ -23,8 +23,8 @@ class Pricer {
     return symbol.toLowerCase();
   }
 
-  getToken(successCallback) {
-    if (this.token) {
+  getToken(successCallback, forceRefresh) {
+    if (!forceRefresh && this.token) {
       successCallback && successCallback(this.token);
       return;
     }

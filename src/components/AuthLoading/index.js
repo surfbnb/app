@@ -25,9 +25,14 @@ export default class AuthLoading extends Component {
   };
 
   onSdkInitialized = (error, success) => {
+
+    if ( error ) {
+      Alert.alert('Please restart the app.', 'Ost Sdk Initialization failed');
+      return;
+    }
+
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
-    Pricer.getToken(); //Init token
     CurrentUser
       .initialize()
       .then((user) => {

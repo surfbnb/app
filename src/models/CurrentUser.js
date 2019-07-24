@@ -9,6 +9,8 @@ import { LoginPopoverActions } from '../components/LoginPopover';
 import { Toast } from 'native-base';
 import { ostErrors } from '../services/OstErrors';
 import reduxGetter from "../services/ReduxGetters"; 
+import InitWalletSdk from '../services/InitWalletSdk';
+import Pricer from "../services/Pricer";
 
 class CurrentUser {
   constructor() {
@@ -61,11 +63,16 @@ class CurrentUser {
     return new PepoApi('/users/current')
       .get()
       .then((apiResponse) => {
-        return this._saveCurrentUser(apiResponse, userId);
+        return this._saveCurrentUserAndSetupDevice(apiResponse, userId);
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  _saveCurrentUserAndSetupDevice(apiResponse, expectedUserId) {
+    InitWalletSdk.initializeDevice(this);
+    return this._saveCurrentUser(apiResponse, expectedUserId);
   }
 
   _saveCurrentUser(apiResponse, expectedUserId) {
@@ -148,7 +155,7 @@ class CurrentUser {
   _signin(apiUrl, params) {
     let authApi = new PepoApi(apiUrl);
     return authApi.post(JSON.stringify(params)).then((apiResponse) => {
-      return this._saveCurrentUser(apiResponse)
+      return this._saveCurrentUserAndSetupDevice(apiResponse)
         .catch()
         .then(() => {
           return apiResponse;
@@ -213,6 +220,15 @@ class CurrentUser {
     return returnVal;
   }
   // End Move this to utilities once all branches are merged. 
+
+  setupDeviceComplete() { 
+    Pricer.getToken(null, true); //Init token
+  }
+
+  setupDeviceFailed(ostWorkflowContext, error) { 
+    console.log("----- IMPORTANT :: SETUP DEVICE FAILED -----");
+    Pricer.getToken(null, true); //Init token
+  }
 
 }
 
