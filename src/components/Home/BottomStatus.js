@@ -63,6 +63,7 @@ class BottomStatus extends PureComponent {
               }
             </View>
           </View>
+          <View style={{height: 50,backgroundColor: 'rgba(0, 0, 0, 0.6)'}}></View>
         </TouchableWithoutFeedback>
     );
   }

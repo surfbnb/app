@@ -15,6 +15,9 @@ import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Toast } from 'native-base';
 import PepoApi from '../../services/PepoApi';
+import AllowAccessModal from "./AllowAccessModal";
+import CameraIcon from '../../assets/camera_icon.png'
+import Gallery_Icon from '../../assets/gallery_icon.png';
 
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
@@ -87,6 +90,14 @@ class ProfileScreen extends Component {
     return (
       <KeyboardAwareScrollView enableOnAndroid={true} style={{ padding: 20, flex: 1 }}>
         {this.isLoading()}
+        {/*<AllowAccessModal*/}
+          {/*modalVisibility={true}*/}
+          {/*headerText="Library"*/}
+          {/*accessText="Enable Library Access"*/}
+          {/*accessTextDesc="Please allow access to photo library to select your profile picture"*/}
+          {/*imageSrc={Gallery_Icon}*/}
+          {/*imageSrcStyle = {{ height:40,width:40}}*/}
+        {/*/>*/}
         <BalanceHeader />
         <React.Fragment>
           <CoverImage

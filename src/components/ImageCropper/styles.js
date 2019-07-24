@@ -1,5 +1,5 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
-import {getBottomSpace, ifIphoneX} from "react-native-iphone-x-helper";
+import { Platform } from 'react-native';
 
 let stylesMap = {
   container: {
@@ -14,24 +14,18 @@ let stylesMap = {
     width: 76,
     marginBottom: 20
   },
-  crossIconWrapper:{
+  crossIconWrapper: {
     position: 'absolute',
-    top:10,
-    left:0,
-    height:60,
-    width:60,
-  }
-  ,
+    top: 10,
+    left: 0,
+    height: 60,
+    width: 60
+  },
   crossIconSkipFont: {
-    ...ifIphoneX({
-      marginTop:50,
-      marginLeft:20,
-    }, {
-      marginTop:25,
-      marginLeft:20,
-    }),
-    height:20,
-    width:20
+    marginTop: Platform.OS == 'android' ? 20 : 0,
+    marginLeft: 20,
+    height: 20,
+    width: 20
   }
 };
 

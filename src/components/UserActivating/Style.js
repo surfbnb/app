@@ -3,10 +3,10 @@ import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   container: {
-    flex: 1,
     backgroundColor: Colors.white,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: 50
   },
   title: {
     color: Colors.wildWatermelon,
