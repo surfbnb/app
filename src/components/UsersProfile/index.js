@@ -86,15 +86,17 @@ export default class UsersProfile extends Component {
         return (
           <SafeAreaView forceInset={{ top: 'never' }} style={{flex: 1}}>
             <ScrollView style={{ backgroundColor: "#fff",flex:1}}>
-              {this.isLoading()}
-              <CoverImage userId={this.userId} />
-              <UserInfo userId={this.userId} isEdit={false}/>
-             <View style={[iconStyle.touchablesBtns , {position:"absolute" ,zIndex:100, top: "75%"}]}>
-                    <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen}
+              <View style={{position: 'relative'}}>
+                {this.isLoading()}
+                <CoverImage userId={this.userId}/>
+                <View style={[iconStyle.touchablesBtns , {position:"absolute" ,zIndex:100, top: "75%"}]}>
+                  <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen}
                                     style={iconStyle.txElem}>
-                        <Image style={{ height: 57, width: 57 }} source={tx_icon} />
-                    </TouchableOpacity>
+                    <Image style={{ height: 57, width: 57 }} source={tx_icon} />
+                  </TouchableOpacity>
+                </View>
               </View>
+              <UserInfo userId={this.userId} isEdit={false}/>
              </ScrollView>
           </SafeAreaView>
         )
