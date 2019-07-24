@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View , TouchableOpacity , ActivityIndicator , Image , ScrollView , Dimensions} from 'react-native';
+import {View, TouchableOpacity, ActivityIndicator, Image, ScrollView, Dimensions, SafeAreaView} from 'react-native';
 import reduxGetter from "../../services/ReduxGetters";
 import PepoApi from "../../services/PepoApi";
 import BackArrow from "../CommonComponents/BackArrow";
@@ -84,6 +84,7 @@ export default class UsersProfile extends Component {
 
     render() {
         return (
+          <SafeAreaView forceInset={{ top: 'never' }} style={{flex: 1}}>
             <ScrollView style={{ backgroundColor: "#fff",flex:1}}>
               {this.isLoading()}
               <CoverImage userId={this.userId} />
@@ -95,6 +96,7 @@ export default class UsersProfile extends Component {
                     </TouchableOpacity>
               </View>
              </ScrollView>
+          </SafeAreaView>
         )
     }
 }
