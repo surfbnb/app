@@ -292,6 +292,7 @@ class ProfileEdit extends React.PureComponent {
           }}
           value={this.state.name}
           errorMsg={this.state.name_error}
+          serverErrors={this.state.server_errors}
         />
 
         <Text style={{}}>Username</Text>
@@ -315,7 +316,7 @@ class ProfileEdit extends React.PureComponent {
           }}
           value={this.state.user_name}
           errorMsg={this.state.user_name_error}
-          serverErrors={this.state.serverErrors}
+          serverErrors={this.state.server_errors}
         />
 
         <Text style={{}}>Bio</Text>
@@ -336,7 +337,7 @@ class ProfileEdit extends React.PureComponent {
           isFocus={this.state.current_formField == this.tabIndex.bio}
           onFocus={this.onBioFocus}
           value={this.state.bio}
-          serverErrors={this.state.serverErrors}
+          serverErrors={this.state.server_errors}
         />
 
         <Text style={{}}>Link</Text>
@@ -359,7 +360,7 @@ class ProfileEdit extends React.PureComponent {
             this.state.current_formField = this.tabIndex.link;
           }}
           value={this.state.link}
-          serverErrors={this.state.serverErrors}
+          serverErrors={this.state.server_errors}
         />
 
         <TouchableOpacity onPress={this.onSubmit.bind(this)} style={[Theme.Button.btn, Theme.Button.btnPink]}>
