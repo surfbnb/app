@@ -21,7 +21,8 @@ class VideoWrapper extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      paused: this.props.isPaused || false
+      paused: this.props.isPaused || false,
+      buffer: true
     };
     this.isUserPaused = false;
     this.pausedOnNavigation = false;
@@ -108,17 +109,12 @@ class VideoWrapper extends PureComponent {
     }
   };
 
-  handleLoad = (params) => {
-    this.setState({buffer:false});
+  onLoad = (params) => {
+    if(this.state.buffer) { this.setState({buffer:false}); }
     if (this.minTimeConsideredForView > params.duration) this.minTimeConsideredForView = params.duration;
   };
 
-  onBuffer = () =>{
-    console.log(" in buffer")
-    this.setState({buffer:true});
-  };
-
-  handleProgress = (params) => {
+  onProgress = (params) => {
     if (this.isPixelCalledOnView) return;
     if (params.currentTime >= this.minTimeConsideredForView) {
       this.callPixelService({ event_name: 'video_viewed'});
@@ -126,7 +122,7 @@ class VideoWrapper extends PureComponent {
     }
   };
 
-  handleEnd = (params) => {
+  onEnd = (params) => {
     if (this.isPixelCalledOnEnd) return;
     this.callPixelService({ event_name: 'video_watched' });
     this.isPixelCalledOnEnd = true;
@@ -152,12 +148,11 @@ class VideoWrapper extends PureComponent {
             resizeMode={this.props.resizeMode || 'cover'}
             source={{ uri: this.props.videoUrl }}
             repeat={this.props.repeat || true}
-            onLoad={this.handleLoad}
-            onBuffer={this.onBuffer}
-            onProgress={this.handleProgress}
-            onEnd={this.handleEnd}
+            onLoad={this.onLoad}
+            onProgress={this.onProgress}
+            onEnd={this.onEnd}
           />
-          {this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont}/>}
+          { this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont}/>}
           {this.isPaused() && !this.state.buffer && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
         </View>
       </TouchableWithoutFeedback>
