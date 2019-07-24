@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { TouchableWithoutFeedback, AppState, View, Image, Dimensions } from 'react-native';
+import { TouchableWithoutFeedback, AppState, View, Image, Dimensions, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
@@ -21,7 +21,8 @@ class VideoWrapper extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      paused: this.props.isPaused || false
+      paused: this.props.isPaused || false,
+      buffer: true
     };
     this.isUserPaused = false;
     this.pausedOnNavigation = false;
@@ -108,11 +109,12 @@ class VideoWrapper extends PureComponent {
     }
   };
 
-  handleLoad = (params) => {
+  onLoad = (params) => {
+    if(this.state.buffer) { this.setState({buffer:false}); }
     if (this.minTimeConsideredForView > params.duration) this.minTimeConsideredForView = params.duration;
   };
 
-  handleProgress = (params) => {
+  onProgress = (params) => {
     if (this.isPixelCalledOnView) return;
     if (params.currentTime >= this.minTimeConsideredForView) {
       this.callPixelService({ event_name: 'video_viewed'});
@@ -120,7 +122,7 @@ class VideoWrapper extends PureComponent {
     }
   };
 
-  handleEnd = (params) => {
+  onEnd = (params) => {
     if (this.isPixelCalledOnEnd) return;
     this.callPixelService({ event_name: 'video_watched' });
     this.isPixelCalledOnEnd = true;
@@ -146,11 +148,12 @@ class VideoWrapper extends PureComponent {
             resizeMode={this.props.resizeMode || 'cover'}
             source={{ uri: this.props.videoUrl }}
             repeat={this.props.repeat || true}
-            onLoad={this.handleLoad}
-            onProgress={this.handleProgress}
-            onEnd={this.handleEnd}
+            onLoad={this.onLoad}
+            onProgress={this.onProgress}
+            onEnd={this.onEnd}
           />
-          {this.isPaused() && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
+          { this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont}/>}
+          {this.isPaused() && !this.state.buffer && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
         </View>
       </TouchableWithoutFeedback>
     );

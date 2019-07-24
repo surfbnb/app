@@ -1,5 +1,4 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { API_ROOT } from './../../constants';
 import PepoApi from '../PepoApi';
 
 class SetupDeviceWorkflow extends OstWalletWorkFlowCallback {

@@ -7,7 +7,6 @@ import inlineStyles from "./styles";
 
 
 let currentIndex = 0 ; 
-const maxVideosThreshold = 5;
 
 class VideoList extends PureComponent {
 
@@ -19,22 +18,21 @@ class VideoList extends PureComponent {
     }
 
     onViewableItemsChanged( data ){
-        currentIndex =  deepGet( data , "viewableItems[0].index") ; 
+        currentIndex =  deepGet( data , "viewableItems[0].index") ;
     }
 
     setActiveIndex() {
-        if( this.state.activeIndex == currentIndex )return; 
+        if( this.state.activeIndex == currentIndex )return;
         this.setState( { activeIndex : currentIndex } );
     }
 
     _keyExtractor = (item, index) => `id_${item}` ;
 
     _renderItem = ({item, index}) => {
-        console.log("_renderItem", item , index );
         return (
             <HomeFeedRow 
-                isActive={ index === this.state.activeIndex }
-                doRender={  Math.abs(index - currentIndex ) < maxVideosThreshold }
+                isActive={ index == this.state.activeIndex }
+                // doRender={  Math.abs(index - currentIndex ) < maxVideosThreshold }
                 feedId={item}     
             />
     )};    
@@ -48,7 +46,10 @@ class VideoList extends PureComponent {
         return(
             <FlatList
                 extraData={this.state}
-                snapToAlignment={"center"}
+                snapToAlignment={"top"}
+                viewabilityConfig={{
+                  itemVisiblePercentThreshold: 90
+                }}
                 pagingEnabled={true}
                 decelerationRate={"fast"}
                 data={this.props.list}
@@ -56,10 +57,11 @@ class VideoList extends PureComponent {
                 onRefresh={this.props.refresh}
                 keyExtractor={this._keyExtractor}
                 refreshing={this.props.refreshing}
-                onEndReachedThreshold={5}
+                initialNumToRender={3}
+                onEndReachedThreshold={7}
                 style={inlineStyles.fullScreen}
-                onViewableItemsChanged={this.onViewableItemsChanged}
-                onMomentumScrollEnd={ this.onMomentumScrollEndCallback } 
+                onViewableItemsChanged={ this.onViewableItemsChanged}
+                onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                 onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
                 renderItem={this._renderItem}
                 showsVerticalScrollIndicator={false}

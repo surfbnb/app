@@ -42,10 +42,10 @@ let stylesMap = {
     position: 'absolute',
     ...ifIphoneX(
       {
-        bottom: getBottomSpace([true]) + CUSTOM_TAB_Height
+        bottom: getBottomSpace([true])
       },
       {
-        bottom: CUSTOM_TAB_Height
+        bottom: 0
       }
     )
   },

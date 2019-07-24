@@ -92,11 +92,12 @@ class HomeFeedRow extends PureComponent {
     render() {
         console.log("render HomeFeedRow");
         return  (
-            <View>
+            <View style={inlineStyles.fullScreen}>
                
-               { this.props.doRender && 
-                    <VideoWrapper   videoId={this.videoId}
-                                    isActive={ this.props.isActive }/>   }        
+               {/* { this.props.doRender && */}
+                <VideoWrapper   videoId={this.videoId}
+                                isActive={ this.props.isActive }/>  
+                                     {/* }         */}
 
                 <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
                     
@@ -107,8 +108,8 @@ class HomeFeedRow extends PureComponent {
                                                 onLocalReset={this.onLocalReset}
                                                 isSupported={this.state.isSupported}
                                                 feedId={this.props.feedId}
-                                                userId={reduxGetter.getHomeFeedUserId(this.props.feedId)}
-                                                videoId={reduxGetter.getHomeFeedVideoId(this.props.feedId)}  />            
+                                                userId={this.userId}
+                                                videoId={this.videoId}  />            
                         <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen} 
                                         style={inlineStyles.txElem}>
                             <Image style={{ height: 57, width: 57 }} source={tx_icon} />
@@ -117,6 +118,7 @@ class HomeFeedRow extends PureComponent {
 
                     <BottomStatus   userId={this.userId}
                                     supporters={this.state.supporters}
+                                    videoId={this.videoId} 
                                     totalBt={this.state.totalBt}
                                 />          
                 </View>              
