@@ -70,7 +70,8 @@ class loadingModalCover extends React.Component {
     let animationStyle = {
       transform: [
         {rotate: rotateData},
-        {scale: scaleData}
+        {scale: scaleData},
+        {perspective: 1000}
       ],
     };
     return (
