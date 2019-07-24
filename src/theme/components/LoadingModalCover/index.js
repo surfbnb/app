@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Modal, Text, Image } from 'react-native';
+import {View, Modal, Text, Image, Animated, Easing} from 'react-native';
 import * as Progress from 'react-native-progress';
 
 import inlineStyles from './styles';
 import Loading_left from '../../../assets/Loading_left.png';
 import Loading_right from '../../../assets/Loading_right.png';
+import pepoTxIcon from "../../../assets/pepo-white-icon.png";
 import Colors from '../../styles/Colors';
 import Store from '../../../store';
 import { showModalCover, hideModalCover } from '../../../actions';
@@ -20,11 +21,32 @@ class loadingModalCover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showLoadingImage: false
+      showLoadingImage: false,
+      rotate: new Animated.Value(0),
+      scale: new Animated.Value(0)
     };
   }
 
+  animatewa(){
+    Animated.sequence([
+      Animated.delay(800),
+      Animated.timing(this.state.rotate, {
+        toValue: 1,
+        easing:Easing.elastic(1.5),
+        useNativeDriver: true
+      }),
+      Animated.loop(
+        Animated.timing(this.state.scale, {
+          duration: 1200,
+          easing:Easing.inOut(Easing.ease),
+          useNativeDriver: true
+        })
+      )
+    ]).start();
+  };
+
   componentDidMount() {
+    this.animatewa();
     this.timerIDLoadingImage = setInterval(() => {
       this.props.show &&
         this.setState({
@@ -37,6 +59,20 @@ class loadingModalCover extends React.Component {
     clearInterval(this.timerIDLoadingImage);
   }
   render() {
+    const rotateData = this.state.rotate.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg','-135deg'],
+    });
+    const scaleData = this.state.scale.interpolate({
+      inputRange: [0, 0.5, 1],
+      outputRange: [1, 1.1, 1],
+    });
+    let animationStyle = {
+      transform: [
+        {rotate: rotateData},
+        {scale: scaleData}
+      ],
+    };
     return (
       <View>
         {this.props.show && (
@@ -48,10 +84,15 @@ class loadingModalCover extends React.Component {
             hasBackdrop={false}
           >
             <View style={inlineStyles.backgroundStyle}>
-              <Image
-                style={inlineStyles.loadingImage}
-                source={this.state.showLoadingImage ? Loading_right : Loading_left}
-              />
+              {/*<Image*/}
+                {/*style={inlineStyles.loadingImage}*/}
+                {/*source={this.state.showLoadingImage ? Loading_right : Loading_left}*/}
+              {/*/>*/}
+              {/*<View style={{backgroundColor: 'red', height: 60, width: 60, alignItems: 'center', justifyContent: 'center'}}>*/}
+                <Animated.Image
+                  style={[ animationStyle, {width: 40, height: 40, marginBottom: 30}]}
+                  source={this.state.showLoadingImage ? pepoTxIcon : pepoTxIcon }/>
+              {/*</View>*/}
               <Text style={inlineStyles.loadingMessage}>{this.props.message}</Text>
               <Progress.Bar
                 indeterminate={true}
