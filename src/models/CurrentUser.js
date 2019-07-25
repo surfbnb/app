@@ -41,8 +41,7 @@ class CurrentUser {
         }
 
         //We now have userObj.
-        //TODO remove OR
-        return this.sync(userObj.user_id || userObj.id, true);
+        return this.sync(userObj.user_id ,  true );
       });
     });
   }
@@ -52,8 +51,7 @@ class CurrentUser {
   }
 
   getUser() {
-    //TODO remove OR later
-    return reduxGetter.getUser(this.userId) || this.getLogedinUser();
+    return reduxGetter.getUser(this.userId);
   }
 
   sync(userId, setupDevice) {
@@ -77,8 +75,7 @@ class CurrentUser {
       return Promise.resolve(null);
     }
     let user = deepGet(apiResponse, `data.${resultType}`);
-    //TODO remove OR
-    let userId = user.user_id || user.id;
+    let userId = user.user_id;
     if (expectedUserId) {
       // Make sure it matched.
       if (expectedUserId != userId) {
@@ -116,7 +113,6 @@ class CurrentUser {
     try {
       userId = userId || this.userId;
       this.userId = null;
-      this.ostUserId = null;
       Store.dispatch(logoutUser());
       await utilities.removeItem(this._getCurrentUserIdKey());
       await utilities.removeItem(this._getASKey(userId));
@@ -168,7 +164,8 @@ class CurrentUser {
   }
 
   getOstUserId() {
-    return this.getUser()['ost_user_id'];
+    const user = this.getUser() || {}; 
+    return user["ost_user_id"] ;
   }
 
   isActiveUser() {
@@ -215,15 +212,13 @@ class CurrentUser {
     return returnVal;
   }
   // End Move this to utilities once all branches are merged.
-
-  setupDeviceComplete() {
-    Pricer.getToken(null, true); //Init token
-  }
-
+  
   setupDeviceFailed(ostWorkflowContext, error) {
     console.log('----- IMPORTANT :: SETUP DEVICE FAILED -----');
-    Pricer.getToken(null, true); //Init token
   }
+  
+  setupDeviceComplete() {}
+  
 }
 
 export default new CurrentUser();

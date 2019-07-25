@@ -27,6 +27,7 @@ export const {
   upsertHomeFeedEntities,
   updateBalance,
   updatePricePoints,
+  updateToken,
   updateExecuteTransactionStatus,
   upsertVideoContributionEntities,
   upsertUserContributionEntities,
@@ -60,9 +61,8 @@ const defaultState = {
   executeTransactionDisabledStatus: false,
   recorded_video: {},
   profile_picture: {},
-  balance: '0',
-  
-  
+  token: { decimals: 18},
+  balance: '0'
 };
 
 export const reducer = handleActions(
@@ -150,6 +150,10 @@ export const reducer = handleActions(
     [updatePricePoints]: (state, action) => ({
       ...state,
       price_points: action.payload.price_points
+    }),
+    [updateToken]: (state , action) => ({
+      ...state,
+      token: action.payload.token
     }),
     [updateExecuteTransactionStatus]: (state, action) => ({
       ...state,

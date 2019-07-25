@@ -15,6 +15,20 @@ class InitWalletSdk {
   setupDevice = (setupDeviceDelegate) => {
     OstWalletSdk.setupDevice(CurrentUser.getOstUserId(), TOKEN_ID, new SetupDeviceWorkflow(setupDeviceDelegate));
   };
+
+  promisifiedSetupDevice() {
+    return new Promise((resolve, reject)=> {
+      let setupDeviceDelegate = {
+        setupDeviceComplete: (ostWorkflowContext, ostContextEntity) => {
+          resolve(ostContextEntity);
+        },
+        setupDeviceFailed: (ostWorkflowContext, error) => {
+          reject(error)
+        }
+      };
+      OstWalletSdk.setupDevice(CurrentUser.getOstUserId(), TOKEN_ID, new SetupDeviceWorkflow(setupDeviceDelegate));
+    })
+  }
 }
 
 export default new InitWalletSdk();

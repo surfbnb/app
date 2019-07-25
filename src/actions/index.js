@@ -123,6 +123,8 @@ export const upsertUserContributionEntities = (data) => ({type : types.UPSERT_US
 
 export const updatePricePoints = (data) => ({type : types.UPDATE_PRICE_POINTS ,  payload: {price_points : data}});
 
+export const updateToken = (data) => ({type : types.UPDATE_TOKEN ,  payload: {token : data}});
+
 export const updateBalance = (balance = "0" )=>({
   type: types.UPDATE_BALANCE,
   payload: {
