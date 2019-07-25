@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, PermissionsAndroid, Platform } from 'react-native';
+import { View, Text, Image, TouchableOpacity, PermissionsAndroid, Platform, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
+// import { NavigationEvents } from 'react-navigation';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
@@ -195,6 +196,26 @@ class ProfileEdit extends React.PureComponent {
     }
   }
 
+  onCancel = () => {
+    if(this.props.name != this.state.name || this.props.user_name != this.state.user_name || this.props.bio != this.state.bio || this.props.bio != this.state.bio ){
+      Alert.alert(
+        'Discard changes?',
+        'You will lose all the changes if you go back now.',
+        [
+          {text: 'Keep Editing', onPress: () => {}},
+          {text: 'Discard', onPress: () => { this.onDiscard() }},
+        ],
+        {cancelable: false},
+      );
+    }else {
+      this.props.hideProfileEdit();
+    }
+  };
+
+  onDiscard(){
+    this.props.hideProfileEdit();
+  }
+
   onBioChangeDelegate = (val) => {
     this.setState({ bio: val });
   };
@@ -374,7 +395,7 @@ class ProfileEdit extends React.PureComponent {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={this.props.hideProfileEdit}
+          onPress={this.onCancel}
           style={[Theme.Button.btn, Theme.Button.btnPinkSecondary, { marginTop: 10 }]}
         >
           <Text style={[Theme.Button.btnPinkSecondaryText, { textAlign: 'center' }]}>Cancel</Text>
