@@ -22,7 +22,7 @@ export default {
   },
 
   transactionStatus: {
-    published: 'PUBLISHED'
+    done: 'DONE'
   },
 
   tokenSymbols: {
@@ -34,7 +34,7 @@ export default {
 
   giphySizes: {
     search: 'preview_gif',
-    feed: 'downsized'
+    activity: 'downsized'
   },
 
   maxBtAllowedInSingleTransfer: 10,

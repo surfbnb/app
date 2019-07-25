@@ -1,17 +1,34 @@
-import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
-import Colors from '../../theme/styles/Colors';
+import { StyleSheet, Dimensions } from 'react-native';
 
-let stylesMap = {
+export default inlineStyles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
-    alignItems: 'center',
     flex: 1,
-    justifyContent: 'center'
+    backgroundColor: '#f6f6f6'
+    // paddingLeft: 10,
+    // paddingRight: 10
   },
-  link: {
-    color: 'rgb(22,141,193)',
-    fontSize: 20
-  }
-};
+  buttonContainer: {        
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 44,
+    // backgroundColor: '#FFB6C1',    
+    flexDirection: 'row'    
+  },
+  button: {     
+    width: Dimensions.get('window').width / 2,
+    borderLeftColor: 'red',
+    borderLeftWidth: 2,
+    height: '100%'
 
-export default styles = DefaultStyleGenerator.generate(stylesMap);
+    
+  },
+  buttonView: {
+    width: Dimensions.get('window').width ,
+    backgroundColor: 'yellow'
+  },
+  buttonViewBlue: {    
+    width: Dimensions.get('window').width ,
+    backgroundColor: 'orange'
+  }
+
+});

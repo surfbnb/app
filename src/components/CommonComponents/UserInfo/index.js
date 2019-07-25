@@ -86,7 +86,6 @@ class UserInfo extends React.PureComponent {
           </Text>
         )}
 
-
         <View style={inlineStyle.numericInfoWrapper}>
           <View style={{marginHorizontal:10}}>
             <Text style={inlineStyle.numericInfo}>{this.props.supporting || 0 }</Text>
