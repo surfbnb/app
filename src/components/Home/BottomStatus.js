@@ -49,11 +49,11 @@ class BottomStatus extends PureComponent {
               {this.props.bio ? (<Text style={[{ paddingRight: 20, fontSize: 13, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]} ellipsizeMode={'tail'} numberOfLines={3}>{this.props.bio}</Text>) : <Text/>}
             </View>
             <View style={{flex: 0.3}}>
-              {this.props.totalBt ?
+              {
                 <View style={{marginBottom: 5, flexDirection: 'row', alignItems: 'center' }} ellipsizeMode={'tail'} numberOfLines={1}>
                   <Text style={[{width: 12, textAlign: 'center', marginRight: 3}, inlineStyles.bottomBgTxt]}>$</Text>
                   <Text style={[inlineStyles.bottomBgTxt, {flex: 1}]} ellipsizeMode={'tail'} numberOfLines={1}>{`${ this.btToFiat( this.props.totalBt) } Raised`}</Text>
-                </View> : <View/>
+                </View>
               }
               {
                 <View style={[inlineStyles.bottomBgTxt, {flexDirection: 'row', alignItems: 'center'}]} >
