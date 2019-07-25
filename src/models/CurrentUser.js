@@ -8,9 +8,9 @@ import appConfig from '../constants/AppConfig';
 import { LoginPopoverActions } from '../components/LoginPopover';
 import { Toast } from 'native-base';
 import { ostErrors } from '../services/OstErrors';
-import reduxGetter from "../services/ReduxGetters"; 
+import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
-import Pricer from "../services/Pricer";
+import Pricer from '../services/Pricer';
 
 class CurrentUser {
   constructor() {
@@ -41,35 +41,34 @@ class CurrentUser {
         }
 
         //We now have userObj.
-        //TODO remove OR 
-        return this.sync(userObj.user_id || userObj.id ,  true );
+        //TODO remove OR
+        return this.sync(userObj.user_id || userObj.id, true);
       });
     });
   }
 
-  getLogedinUser(){
-    return Store.getState().current_user; 
+  getLogedinUser() {
+    return Store.getState().current_user;
   }
 
   getUser() {
     //TODO remove OR later
-    return reduxGetter.getUser(this.userId) || this.getLogedinUser(); 
+    return reduxGetter.getUser(this.userId) || this.getLogedinUser();
   }
 
-  sync(userId , setupDevice ) {
+  sync(userId, setupDevice) {
     //Sync user with server. Return user js obj in a promise.
     userId = userId || this.userId;
     if (!userId) return Promise.resolve();
     return new PepoApi('/users/current')
       .get()
       .then((apiResponse) => {
-         return this._saveCurrentUser(apiResponse, userId , setupDevice);
+        return this._saveCurrentUser(apiResponse, userId, setupDevice);
       })
       .catch((err) => {
         console.log(err);
       });
   }
-
 
   _saveCurrentUser(apiResponse, expectedUserId, setupDevice) {
     const resultType = deepGet(apiResponse, 'data.result_type');
@@ -78,8 +77,8 @@ class CurrentUser {
       return Promise.resolve(null);
     }
     let user = deepGet(apiResponse, `data.${resultType}`);
-    //TODO remove OR 
-    let userId = user.user_id ||  user.id;
+    //TODO remove OR
+    let userId = user.user_id || user.id;
     if (expectedUserId) {
       // Make sure it matched.
       if (expectedUserId != userId) {
@@ -99,7 +98,6 @@ class CurrentUser {
         return user;
       });
   }
-
 
   // Async storage methods.
   currentUserIdFromAS() {
@@ -139,13 +137,13 @@ class CurrentUser {
     return this._signin('/auth/twitter-login', params);
   }
 
-  logout(params) {
-    this.clearCurrentUser();
+  async logout(params) {
+    await this.clearCurrentUser();
     new PepoApi('/auth/logout')
       .post()
       .catch((error) => {})
       .then((res) => {
-        NavigationService.navigate('HomeScreen', params);        
+        NavigationService.navigate('HomeScreen', params);
       });
   }
 
@@ -160,7 +158,7 @@ class CurrentUser {
     });
   }
 
-  getUserSalt( ) {
+  getUserSalt() {
     return new PepoApi('/users/recovery-info').get();
   }
 
@@ -170,7 +168,7 @@ class CurrentUser {
   }
 
   getOstUserId() {
-    return this.getUser()["ost_user_id"] ;
+    return this.getUser()['ost_user_id'];
   }
 
   isActiveUser() {
@@ -196,7 +194,7 @@ class CurrentUser {
     return 'current_user_id';
   }
 
-  // Start Move this to utilities once all branches are merged. 
+  // Start Move this to utilities once all branches are merged.
   checkActiveUser() {
     if (!this.getOstUserId()) {
       LoginPopoverActions.show();
@@ -216,17 +214,16 @@ class CurrentUser {
     }
     return returnVal;
   }
-  // End Move this to utilities once all branches are merged. 
+  // End Move this to utilities once all branches are merged.
 
-  setupDeviceComplete() { 
+  setupDeviceComplete() {
     Pricer.getToken(null, true); //Init token
   }
 
-  setupDeviceFailed(ostWorkflowContext, error) { 
-    console.log("----- IMPORTANT :: SETUP DEVICE FAILED -----");
+  setupDeviceFailed(ostWorkflowContext, error) {
+    console.log('----- IMPORTANT :: SETUP DEVICE FAILED -----');
     Pricer.getToken(null, true); //Init token
   }
-
 }
 
 export default new CurrentUser();
