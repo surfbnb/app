@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {View, Modal, Text, Image, Animated, Easing} from 'react-native';
+import {View, Modal, Text, Image, Animated, Easing, Platform} from 'react-native';
 import * as Progress from 'react-native-progress';
 
 import inlineStyles from './styles';
@@ -23,7 +23,7 @@ class loadingModalCover extends React.Component {
     this.state = {
       showLoadingImage: false,
       rotate: new Animated.Value(0),
-      scale: new Animated.Value(0)
+      scale: new Animated.Value(0.1)
     };
   }
 
@@ -64,14 +64,13 @@ class loadingModalCover extends React.Component {
       outputRange: ['0deg','-135deg'],
     });
     const scaleData = this.state.scale.interpolate({
-      inputRange: [0, 0.5, 1],
-      outputRange: [1, 1.1, 1],
+      inputRange: [0.11, 0.5, 1],
+      outputRange: [1, Platform.OS == 'ios' ? 1.15 : 1.3, 1]
     });
     let animationStyle = {
       transform: [
-        {rotate: rotateData},
         {scale: scaleData},
-        {perspective: 1000}
+        {rotate: rotateData}
       ],
     };
     return (
