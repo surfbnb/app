@@ -106,7 +106,6 @@ class HomeFeedRow extends PureComponent {
                                                 isSupported={this.state.isSupported}
                                                 onLocalUpdate={this.onLocalUpdate}
                                                 onLocalReset={this.onLocalReset}
-                                                isSupported={this.state.isSupported}
                                                 feedId={this.props.feedId}
                                                 userId={this.userId}
                                                 videoId={this.videoId}  />
