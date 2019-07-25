@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 
-import deepGet from "lodash/get";
 import TopStatus from "./TopStatus";
 import VideoList from "./VideoList";
 import Pricer from "../../services/Pricer";

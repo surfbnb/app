@@ -200,7 +200,7 @@ export default class PepoApi {
           console.log(`Error requesting ${this.cleanedUrl}. ${ostErrors.getUIErrorMessage('no_internet')}`);
           Toast.show({
             text: ostErrors.getUIErrorMessage('no_internet'),
-            buttonText: 'Okay'
+            buttonText: 'Ok'
           });
 
           // Cosider using reject here.

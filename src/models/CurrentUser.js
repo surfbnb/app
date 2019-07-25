@@ -152,7 +152,7 @@ class CurrentUser {
   _signin(apiUrl, params) {
     let authApi = new PepoApi(apiUrl);
     return authApi.post(JSON.stringify(params)).then((apiResponse) => {
-      return this._saveCurrentUser(apiResponse,  null ,  true)
+      return this._saveCurrentUser(apiResponse)
         .catch()
         .then(() => {
           return apiResponse;
