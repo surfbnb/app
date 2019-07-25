@@ -62,10 +62,7 @@ class SupportingList extends Component {
     this.props.onRefresh && this.props.onRefresh(res);
     this.setState({
       refreshing: false,
-      supportingList: [
-        ...this.state.supportingList,
-        ...this.fetchServices.getIDList()        
-      ]
+      supportingList: [...this.state.supportingList, ...this.fetchServices.getIDList()]
     });
   }
 
@@ -75,10 +72,7 @@ class SupportingList extends Component {
     let updatedStateObj = {};
     updatedStateObj.loadingNext = false;
     if (this.state.currentFetch == SUPPORTING) {
-      updatedStateObj['supportingList'] = [
-        ...this.state.supportingList,
-        ...this.fetchServices.getIDList()        
-      ];
+      updatedStateObj['supportingList'] = [...this.state.supportingList, ...this.fetchServices.getIDList()];
     } else if (this.state.currentFetch == SUGGESTIONS) {
       updatedStateObj['suggestionsList'] = [...this.state.suggestionsList, ...this.fetchServices.getIDList()];
     }
@@ -156,12 +150,19 @@ class SupportingList extends Component {
     return dataSource;
   }
 
+  renderNoContent = (section) => {
+    if(section.data.length == 0){
+       return <Text> I dont have content </Text>
+    }
+    return null
+ }
+
   render() {
     return (
       <SectionList
         style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
         sections={this.getDataSource()}
-        ListEmptyComponent={<Text> Hey I am empty </Text>}
+        renderSectionFooter={({section}) => this.renderNoContent(section)}
         renderSectionHeader={this._renderSectionHeader}
         renderItem={this._renderItem}
         keyExtractor={(item) => item}
