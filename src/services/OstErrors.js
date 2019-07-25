@@ -9,6 +9,7 @@ const sdkErrors = {
 
 const UIErros = {
   user_name: 'User name is mandatory.',
+  user_name_min_max: 'User name can be minimum 1 characters and maximum 15 characters.',
   password: 'Please enter password of minimum 8 characters.',
   first_name: 'First name is mandatory.',
   last_name: 'Last name is mandatory',

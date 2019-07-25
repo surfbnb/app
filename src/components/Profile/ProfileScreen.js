@@ -21,7 +21,7 @@ class ProfileScreen extends Component {
   static navigationOptions = (options) => {
     return {
       headerBackTitle: null,
-      headerTitle: 'Profile',
+      headerTitle: reduxGetter.getName( CurrentUser.getUserId() ),
       headerRight: <LogoutComponent {...options} />
     };
   };
