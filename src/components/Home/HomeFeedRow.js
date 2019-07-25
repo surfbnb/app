@@ -37,7 +37,7 @@ class HomeFeedRow extends PureComponent {
     }
 
     get totalBt(){
-        return pricer.getFromDecimal( reduxGetter.getVideoBt( this.videoId ) );
+        return pricer.getToBT(  pricer.getFromDecimal( reduxGetter.getVideoBt( this.videoId ) ), 2 ) ;
     }
 
     get isVideoSupported(){
