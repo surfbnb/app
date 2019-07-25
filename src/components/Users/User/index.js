@@ -21,19 +21,7 @@ const isActivated = function(user) {
 };
 
 const userClick = function(item, navigation) {
-  let headerText = 'Transaction';
-  if (item) {
-    //headerText = `${item.first_name} ${item.last_name}`;
-    headerText = `${item.name}`;
-  }
-  if (!CurrentUser.isUserActivated()) {
-    Toast.show({
-      text: ostErrors.getUIErrorMessage('user_not_active'),
-      buttonText: 'Okay'
-    });
-    return;
-  }
-  navigation.navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
+  navigation.push('UsersProfileScreen' ,{ userId:item.id });
 };
 
 const getUser = function(id) {
@@ -42,25 +30,15 @@ const getUser = function(id) {
 
 
 getImageSrc = (user) => {
-  console.log(reduxGetter.getImage(user.profile_image_id), 'ppppppppppp');
-
-  if(user.profile_image_id && reduxGetter.getImage(user.profile_image_id)){
-    let image = reduxGetter.getImage(user.profile_image_id);
-    let cleanedImage = image.replace('https', 'http');
-    console.log(cleanedImage);
-
-    return ((<FastImage
-      style={[{backgroundColor: Colors.gainsboro}, styles.profileImageSkipFont]}
-      source={{uri: cleanedImage, priority: FastImage.priority.high}}
-    />))
-  }else {
-     return (<Image style={styles.imageStyleSkipFont} source={default_user_icon}></Image>)
-  }
+    let imageSrc =  default_user_icon ; 
+    if(user.profile_image_id && reduxGetter.getImage(user.profile_image_id)){
+      imageSrc = { uri : reduxGetter.getImage(user.profile_image_id) } ;     
+    }
+  return (<Image style={styles.imageStyleSkipFont} source={imageSrc}></Image>);
 }
 
 const Users = (props) => {
   let user = getUser(props.id);
-
   if (!isEmpty(user) && isActivated(user)) {
     return (
       <TouchableOpacity
@@ -71,10 +49,8 @@ const Users = (props) => {
         <View style={styles.container}>
           <View style={styles.userContainer}>
             <View style={styles.txtWrapper}>
-              {this.getImageSrc(user)}
-              
+              {getImageSrc(user)}
               <Text numberOfLines={1} style={styles.item}>
-                {/* {user.first_name} {user.last_name} */}
                 {user.name} 
               </Text>
             </View>

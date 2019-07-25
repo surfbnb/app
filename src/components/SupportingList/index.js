@@ -37,9 +37,6 @@ class SupportingList extends Component {
     this.refreshSupportingData();
   };
 
-
-  
-
   cleanInstanceVariable() {
     this.fetchServiceSupporting = new FetchServices(GET_SUPPORTING_URL);
     this.fetchServiceSuggestions = new FetchServices(GET_SUGGESTIONS_URL);
@@ -52,7 +49,6 @@ class SupportingList extends Component {
   }
 
   refreshSupportingData = () => {
-    
     this.beforeRefreshSupportings();
     this.fetchServiceSupporting
       .refresh()
@@ -136,9 +132,8 @@ class SupportingList extends Component {
   };
 
   getNextSuggestions = () => {
-    console.log('getNextSuggestions');
     if (this.state.loadingNextSuggestions || this.state.refreshing || !this.fetchServiceSuggestions.hasNextPage) return;
-    console.log('getNextSuggestions here');
+
     this.beforeNextSuggestions();
     this.fetchServiceSuggestions
       .fetch()
@@ -190,7 +185,7 @@ class SupportingList extends Component {
   getDataSource() {
     let dataSource = [
       {
-        title: 'Supporting',
+        title: '',
         data: this.state.supportingList
       }
     ];
@@ -211,7 +206,11 @@ class SupportingList extends Component {
   };
 
   renderSectionHeader = (section) => {
-    return <Text> {section.section.title} </Text>;
+    return (
+      <View style={{padding: 12}}>
+        <Text> {section.section.title} </Text>
+      </View>
+    );
   };
 
   // onEndReached = (...args)=>{
@@ -227,7 +226,7 @@ class SupportingList extends Component {
         renderSectionFooter={({ section }) => this.renderNoContent(section)}
         renderSectionHeader={this.renderSectionHeader}
         renderItem={this._renderItem}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => `id_${item}`}
         refreshing={this.state.refreshing}
         onRefresh={this.refresh}
         onEndReachedThreshold={0.1}
