@@ -24,7 +24,7 @@ class Users extends Component {
   }
 
 
-  toggleScreen = () => {    
+  toggleScreen = () => {
     let newActiveIndex =  1 - this.state.activeIndex;
     this.setState({ activeIndex : newActiveIndex });
     this.userFlatList.scrollToIndex({ index: newActiveIndex });
@@ -38,7 +38,7 @@ class Users extends Component {
       );
     } else if (index == SUPPORTER_INDEX) {
       return (
-        <SupportersList fetchUrl={'/users/contribution-to'} />
+        <SupportersList fetchUrl={'/users/contribution-by'} />
       );
     }
   };

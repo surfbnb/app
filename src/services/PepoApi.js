@@ -95,73 +95,87 @@ export default class PepoApi {
     const data = DeepGet(responseJSON, 'data'),
       resultData = DeepGet(responseJSON, `data.${resultType}`);
 
-    if( data['ost_transaction'] ){
-      Store.dispatch(upsertTransactionEntities(this._getEntitiesFromObj(data['ost_transaction'])));
+    if (data['ost_transaction']) {
+      Store.dispatch(upsertTransactionEntities(this._getEntities(data['ost_transaction'])));
     }
 
-    if( data['gifs'] ){
-      Store.dispatch(upsertGiffyEntities(this._getEntitiesFromObj(data['gifs'])));
-    }
-    
-    if( data['tags'] ){
-      Store.dispatch(upsertTagEntities(this._getEntitiesFromObj(data['tags'])));
+    if (data['gifs']) {
+      Store.dispatch(upsertGiffyEntities(this._getEntities(data['gifs'])));
     }
 
-    if( data['user_profiles'] ){
-      Store.dispatch(upsertUserProfileEntities(this._getEntitiesFromObj(data['user_profiles'])));
+    if (data['tags']) {
+      Store.dispatch(upsertTagEntities(this._getEntities(data['tags'])));
     }
 
-    if( data['user_profile'] ){
+    if (data['user_profiles']) {
+      Store.dispatch(upsertUserProfileEntities(this._getEntities(data['user_profiles'])));
+    }
+
+    if (data['user_profile']) {
       Store.dispatch(upsertUserProfileEntities(this._getEntityFromObj(data['user_profile'])));
     }
 
-    if( data['user_stats'] ){
-      Store.dispatch(upsertUserStatEntities(this._getEntitiesFromObj(data['user_stats'])));
-    }
-    
-    if( data['links'] ){
-      Store.dispatch(upsertLinkEntities(this._getEntitiesFromObj(data['links'])));
+    if (data['user_stats']) {
+      Store.dispatch(upsertUserStatEntities(this._getEntities(data['user_stats'])));
     }
 
-    if( data['videos'] ){
-      Store.dispatch(upsertVideoEntities(this._getEntitiesFromObj(data['videos'])));
-    }
-   
-    if( data['video_details'] ){
-      Store.dispatch(upsertVideoStatEntities(this._getEntitiesFromObj(data['video_details'])));
-    }
-    
-    if( data['images'] ){
-      Store.dispatch(upsertImageEntities(this._getEntitiesFromObj(data['images'])));
+    if (data['links']) {
+      Store.dispatch(upsertLinkEntities(this._getEntities(data['links'])));
     }
 
-    if( data["current_user_video_contributions"] ){
-      Store.dispatch(upsertVideoContributionEntities(this._getEntitiesFromObj(data['current_user_video_contributions'])));
+    if (data['videos']) {
+      Store.dispatch(upsertVideoEntities(this._getEntities(data['videos'])));
     }
 
-    if( data["current_user_user_contributions"] ){
-      Store.dispatch(upsertUserContributionEntities(this._getEntitiesFromObj(data['current_user_user_contributions'])));
+    if (data['video_details']) {
+      Store.dispatch(upsertVideoStatEntities(this._getEntities(data['video_details'])));
     }
 
-    if( data["price_points"] ){
-      Store.dispatch(updatePricePoints( data["price_points"] ));
+    if (data['images']) {
+      Store.dispatch(upsertImageEntities(this._getEntities(data['images'])));
+    }
+
+    if (data['current_user_video_contributions']) {
+      Store.dispatch(
+        upsertVideoContributionEntities(this._getEntities(data['current_user_video_contributions']))
+      );
+    }
+
+    if (data['current_user_user_contributions']) {
+      Store.dispatch(upsertUserContributionEntities(this._getEntities(data['current_user_user_contributions'])));
+    }
+
+    if (data['price_points']) {
+      Store.dispatch(updatePricePoints(data['price_points']));
     }
 
     if( data["token"] ){
       Store.dispatch(updateToken( data["token"] ));
     }
 
-    if( data['users'] ){
-      Store.dispatch(upsertUserEntities(this._getEntitiesFromObj(data['users'])));
+    if (data['users']) {
+      Store.dispatch(upsertUserEntities(this._getEntities(data['users'])));
+    }
+
+    if (data['contribution_to_users']) {
+      Store.dispatch(upsertUserEntities(this._getEntities(data['contribution_to_users'])));
+    }
+
+    if (data['contribution_by_users']) {
+      Store.dispatch(upsertUserEntities(this._getEntities(data['contribution_by_users'])));
+    }
+
+    if (data['contribution_suggestions']) {
+      Store.dispatch(upsertUserEntities(this._getEntities(data['contribution_suggestions'])));
     }
 
     switch (resultType) {
-      case 'feeds': 
-          Store.dispatch(upsertHomeFeedEntities(this._getEntities(resultData)));
+      case 'feeds':
+        Store.dispatch(upsertHomeFeedEntities(this._getEntities(resultData)));
         break;
-      case "feed":
-          Store.dispatch(upsertHomeFeedEntities(this._getEntitiesFromObj(resultData)));
-        break;  
+      case 'feed':
+        Store.dispatch(upsertHomeFeedEntities(this._getEntities(resultData)));
+        break;
     }
   }
 
@@ -173,7 +187,14 @@ export default class PepoApi {
     return Object.keys(resultObj);
   }
 
-  _getEntities(resultData, key = 'id') {
+  _getEntities(entities, key = 'id') {
+    if ( entities instanceof Array ) {
+      return this._getEntitiesFromArray(entities, key);
+    }
+    return this._getEntitiesFromObj(entities, key);
+  }
+
+  _getEntitiesFromArray(resultData, key = 'id') {
     const entities = {};
     resultData.forEach((item) => {
       entities[`${key}_${item[key]}`] = item;
@@ -184,14 +205,16 @@ export default class PepoApi {
   _getEntitiesFromObj(resultObj, key = 'id') {
     const entities = {};
     for (let identifier in resultObj) {
+
       entities[`${key}_${identifier}`] = resultObj[identifier];
     }
     return entities;
   }
 
-  _getEntityFromObj( resultObj , key = "id" ){
-    const entity = {} ,  id = `${key}_${resultObj.id}` ;
-    entity[ id ] = resultObj ;
+  _getEntityFromObj(resultObj, key = 'id') {
+    const entity = {},
+      id = `${key}_${resultObj.id}`;
+    entity[id] = resultObj;
     return entity;
   }
 

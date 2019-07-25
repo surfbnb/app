@@ -1,89 +1,175 @@
 import React, { Component } from 'react';
 import deepGet from 'lodash/get';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
-import { Text, Dimensions, SectionList } from 'react-native';
+import { Text, Dimensions, SectionList, View } from 'react-native';
 import { FetchServices } from '../../services/FetchServices';
 import User from '../Users/User';
 
-let currentIndex = 0;
-
 const SUPPORTING = 'SUPPORTING';
-const SUGGESTIONS = 'SUPPORTING';
+const SUGGESTIONS = 'SUGGESTIONS';
 const scrollDetectNext = true;
+const GET_SUPPORTING_URL = '/users/contribution-to';
+const GET_SUGGESTIONS_URL = '/users/contribution-suggestion';
 
 class SupportingList extends Component {
   constructor(props) {
     super(props);
+    this.fetchServiceSupporting = new FetchServices(GET_SUPPORTING_URL);
+    this.fetchServiceSuggestions = new FetchServices(GET_SUGGESTIONS_URL);
+
     this.state = {
       refreshing: false,
-      loadingNext: false,
-      activeIndex: 0,
+      loadingNextSuggestions: false,
+      loadingNextSupporting: false,
       supportingList: [],
-      suggestionsList: [],
-      currentFetch: SUPPORTING
+      suggestionsList: []
     };
+    this.currentFetching = SUPPORTING;
   }
+
   componentDidMount() {
-    if (this.props.fetchUrl) {
-      this.initList(new FetchServices(this.props.fetchUrl));
-    }
+    this.refresh();
   }
 
-  initList(fetchServices) {
-    this.refresh(fetchServices);
-  }
-
-  refresh(fetchServices) {
+  refresh = () => {
     if (this.state.refreshing) return;
-    if (fetchServices) {
-      this.fetchServices = fetchServices;
-    } else {
-      this.fetchServices = this.fetchServices.clone();
-    }
-    this.beforeRefresh();
-    this.fetchServices
-      .refresh()
-      .then((res) => {
-        this.onRefresh(res);
-      })
-      .catch((error) => {
-        this.onRefreshError(error);
-      });
-  }
+    this.cleanInstanceVariable();
+    this.refreshSupportingData();
+  };
 
-  beforeRefresh() {
-    console.log('beforeRefresh .........');
-    this.props.beforeRefresh && this.props.beforeRefresh();
-    this.setState({ refreshing: true });
-  }
 
-  onRefresh(res) {
-    console.log('on refresh .........', res, this.fetchServices.getIDList());
-    this.props.onRefresh && this.props.onRefresh(res);
+  
+
+  cleanInstanceVariable() {
+    this.fetchServiceSupporting = new FetchServices(GET_SUPPORTING_URL);
+    this.fetchServiceSuggestions = new FetchServices(GET_SUGGESTIONS_URL);
+    this.currentFetching = SUPPORTING;
     this.setState({
-      refreshing: false,
-      supportingList: [
-        ...this.state.supportingList,
-        ...this.fetchServices.getIDList()        
-      ]
+      loadingNextSuggestions: false,
+      loadingNextSupporting: false,
+      refreshing: false
     });
   }
 
-  onNext(res) {
-    console.log('on next .........');
-    this.props.onNext && this.props.onNext(res);
-    let updatedStateObj = {};
-    updatedStateObj.loadingNext = false;
-    if (this.state.currentFetch == SUPPORTING) {
-      updatedStateObj['supportingList'] = [
-        ...this.state.supportingList,
-        ...this.fetchServices.getIDList()        
-      ];
-    } else if (this.state.currentFetch == SUGGESTIONS) {
-      updatedStateObj['suggestionsList'] = [...this.state.suggestionsList, ...this.fetchServices.getIDList()];
-    }
-    this.setState(updatedStateObj);
+  refreshSupportingData = () => {
+    
+    this.beforeRefreshSupportings();
+    this.fetchServiceSupporting
+      .refresh()
+      .then((res) => {
+        this.onRefreshSupportings(res);
+      })
+      .catch((error) => {
+        this.onRefreshSupportingError(error);
+      });
+  };
+
+  beforeRefreshSupportings() {
+    this.setState({ refreshing: true });
   }
+
+  onRefreshSupportings = () => {
+    if (!this.fetchServiceSupporting.hasNextPage) {
+      this.currentFetching = SUGGESTIONS;
+      this.getSuggestionsData();
+    }
+    this.setState({ refreshing: false, supportingList: this.fetchServiceSupporting.getIDList() });
+  };
+
+  onRefreshSupportingError = () => {
+    this.setState({ refreshing: false });
+  };
+
+  getSuggestionsData = () => {
+    this.beforeRefreshSuggestions();
+    this.fetchServiceSuggestions
+      .refresh()
+      .then((res) => {
+        this.onRefreshSuggestions(res);
+      })
+      .catch((error) => {
+        this.onRefreshSuggestionsError(error);
+      });
+  };
+
+  beforeRefreshSuggestions = () => {
+    this.setState({ refreshing: true });
+  };
+
+  onRefreshSuggestions = () => {
+    this.setState({ refreshing: false, suggestionsList: this.fetchServiceSuggestions.getIDList() });
+  };
+
+  onRefreshSuggestionsError = () => {
+    this.setState({ refreshing: false });
+  };
+
+  getNextSupporting = () => {
+    console.log('getNextSupporting');
+    if (this.state.loadingNextSupporting || this.state.refreshing || !this.fetchServiceSupporting.hasNextPage) return;
+    console.log('getNextSupporting here');
+    this.beforeNextSupporting();
+
+    this.fetchServices
+      .fetch()
+      .then((res) => {
+        this.onGetNextSupporting(res);
+      })
+      .catch((error) => {
+        this.onNextErrorSupporting(error);
+      });
+  };
+
+  beforeNextSupporting = () => {
+    this.setState({ loadingNextSupporting: true });
+  };
+
+  onGetNextSupporting = () => {
+    if (!this.fetchServiceSupporting.hasNextPage) {
+      this.currentFetching = SUGGESTIONS;
+    }
+    this.setState({ loadingNextSupporting: false, supportingList: this.fetchServiceSupporting.getIDList() });
+  };
+
+  onNextErrorSupporting = () => {
+    this.setState({ loadingNextSupporting: false });
+  };
+
+  getNextSuggestions = () => {
+    console.log('getNextSuggestions');
+    if (this.state.loadingNextSuggestions || this.state.refreshing || !this.fetchServiceSuggestions.hasNextPage) return;
+    console.log('getNextSuggestions here');
+    this.beforeNextSuggestions();
+    this.fetchServiceSuggestions
+      .fetch()
+      .then((res) => {
+        this.onGetNextSuggestions(res);
+      })
+      .catch((error) => {
+        this.onNextErrorSuggestions(error);
+      });
+  };
+
+  beforeNextSuggestions = () => {
+    this.setState({ loadingNextSuggestions: true });
+  };
+
+  onGetNextSuggestions = () => {
+    this.setState({ loadingNextSuggestions: false, suggestionsList: this.fetchServiceSuggestions.getIDList() });
+  };
+
+  onNextErrorSuggestions = () => {
+    this.setState({ loadingNextSuggestions: false });
+  };
+
+  getNext = () => {
+    console.log('getNext', this.currentFetching);
+    if (this.currentFetching == SUPPORTING) {
+      this.getNextSupporting();
+    } else if (this.currentFetching == SUGGESTIONS) {
+      this.getNextSuggestions();
+    }
+  };
 
   onRefreshError(error) {
     console.log('on refresh error.........', error);
@@ -95,49 +181,10 @@ class SupportingList extends Component {
     currentIndex = deepGet(data, 'viewableItems[0].index');
   }
 
-  setActiveIndex() {
-    if (this.state.activeIndex == currentIndex) return;
-    this.setState({ activeIndex: currentIndex });
-  }
-
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
     return <User id={item} />;
-  };
-
-  beforeNext() {
-    console.log('next .........');
-    if (scrollDetectNext) {
-      this.onEndReachedCalledDuringMomentum = true;
-    }
-    this.props.beforeNext && this.props.beforeNext();
-    this.setState({ loadingNext: true });
-  }
-
-  getNext = () => {
-    console.log(this.fetchServices.hasNextPage, 'this.fetchServices.hasNextPage');
-    console.log(this.state.currentFetch, 'this.state.currentFetch');
-    console.log(this.state.refreshing, 'this.state.refreshing');
-    console.log(this.state.loadingNext, 'this.state.loadingNext');
-
-    if (this.state.loadingNext || this.state.refreshing) return;
-    if (!this.fetchServices.hasNextPage && this.state.currentFetch == SUGGESTIONS) return;
-    if (!this.fetchServices.hasNextPage && this.state.currentFetch == SUPPORTING) {
-      this.fetchServices = new FetchServices('/users/contribution-by');
-      this.setState({
-        currentFetch: SUGGESTIONS
-      });
-    }
-    this.beforeNext();
-    this.fetchServices
-      .fetch()
-      .then((res) => {
-        this.onNext(res);
-      })
-      .catch((error) => {
-        this.onNextError(error);
-      });
   };
 
   getDataSource() {
@@ -147,7 +194,7 @@ class SupportingList extends Component {
         data: this.state.supportingList
       }
     ];
-    if (this.state.currentFetch == SUGGESTIONS) {
+    if (this.currentFetching == SUGGESTIONS) {
       dataSource.push({
         title: 'Suggestions',
         data: this.state.suggestionsList
@@ -156,18 +203,39 @@ class SupportingList extends Component {
     return dataSource;
   }
 
+  renderNoContent = (section) => {
+    if (section.data.length == 0) {
+      return <Text> You are currently do not have any {section.title}</Text>;
+    }
+    return null;
+  };
+
+  renderSectionHeader = (section) => {
+    return <Text> {section.section.title} </Text>;
+  };
+
+  // onEndReached = (...args)=>{
+  //   console.log('On onEndReached', args);
+  // }
+
   render() {
+    console.log(this.getDataSource(), 'getDataSource');
     return (
       <SectionList
         style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
         sections={this.getDataSource()}
-        ListEmptyComponent={<Text> Hey I am empty </Text>}
-        renderSectionHeader={this._renderSectionHeader}
+        renderSectionFooter={({ section }) => this.renderNoContent(section)}
+        renderSectionHeader={this.renderSectionHeader}
         renderItem={this._renderItem}
         keyExtractor={(item) => item}
         refreshing={this.state.refreshing}
-        // onEndReachedThreshold={0.9}
+        onRefresh={this.refresh}
+        onEndReachedThreshold={0.1}
+        // onScroll={this.getNext}
         onEndReached={this.getNext}
+        onMomentumScrollBegin={() => {
+          this.onEndReachedCalledDuringMomentum = false;
+        }}
       />
     );
   }

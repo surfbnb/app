@@ -29,8 +29,11 @@ class BottomStatus extends PureComponent {
 
   navigateToUserProfile = (e) => {
     if (CurrentUser.checkActiveUser()) {
-      this.props.navigation.push('UsersProfileScreen' ,{ userId:this.props.userId }
-     );
+      if( this.props.userId == CurrentUser.getUserId() ) {
+        this.props.navigation.navigate("Profile");
+      }else {
+        this.props.navigation.push('UsersProfileScreen' ,{ userId:this.props.userId });
+      }
     }
   };
 

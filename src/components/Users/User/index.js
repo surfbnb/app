@@ -9,6 +9,10 @@ import default_user_icon from '../../../assets/default_user_icon.png';
 import appConfig from '../../../constants/AppConfig';
 import Store from '../../../store';
 import { ostErrors } from '../../../services/OstErrors';
+import reduxGetter from '../../../services/ReduxGetters';
+import FastImage from 'react-native-fast-image';
+import Colors from '../../../theme/styles/Colors'
+
 
 const isActivated = function(user) {
   let userStatus = (user && user['ost_status']) || '';
@@ -36,6 +40,24 @@ const getUser = function(id) {
   return Store.getState().user_entities[`id_${id}`] || {};
 };
 
+
+getImageSrc = (user) => {
+  console.log(reduxGetter.getImage(user.profile_image_id), 'ppppppppppp');
+
+  if(user.profile_image_id && reduxGetter.getImage(user.profile_image_id)){
+    let image = reduxGetter.getImage(user.profile_image_id);
+    let cleanedImage = image.replace('https', 'http');
+    console.log(cleanedImage);
+
+    return ((<FastImage
+      style={[{backgroundColor: Colors.gainsboro}, styles.profileImageSkipFont]}
+      source={{uri: cleanedImage, priority: FastImage.priority.high}}
+    />))
+  }else {
+     return (<Image style={styles.imageStyleSkipFont} source={default_user_icon}></Image>)
+  }
+}
+
 const Users = (props) => {
   let user = getUser(props.id);
 
@@ -49,7 +71,8 @@ const Users = (props) => {
         <View style={styles.container}>
           <View style={styles.userContainer}>
             <View style={styles.txtWrapper}>
-              <Image style={styles.imageStyleSkipFont} source={default_user_icon}></Image>
+              {this.getImageSrc(user)}
+              
               <Text numberOfLines={1} style={styles.item}>
                 {/* {user.first_name} {user.last_name} */}
                 {user.name} 
