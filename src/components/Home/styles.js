@@ -70,15 +70,16 @@ let stylesMap = {
   },
   topBg: {
     backgroundColor: 'rgba(255, 255, 255, 0.45)',
-    paddingVertical: 8,
+    paddingVertical: 5,
     flexDirection: 'row',
     paddingLeft: 12,
-    paddingRight: 10,
+    paddingRight: 8,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: Colors.gainsboro,
     borderWidth: 0.5,
-    borderRadius: 2
+    borderRadius: 2,
+    minWidth: 60
   },
   topBgTxt: {
     color: Colors.paynesGrey,
