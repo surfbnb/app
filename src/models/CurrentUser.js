@@ -42,7 +42,7 @@ class CurrentUser {
 
         //We now have userObj.
         //TODO remove OR 
-        return this.sync(userObj.user_id || userObj.id);
+        return this.sync(userObj.user_id || userObj.id ,  true );
       });
     });
   }
@@ -56,14 +56,17 @@ class CurrentUser {
     return reduxGetter.getUser(this.userId) || this.getLogedinUser(); 
   }
 
-  sync(userId) {
+  sync(userId , setupDevice ) {
     //Sync user with server. Return user js obj in a promise.
     userId = userId || this.userId;
     if (!userId) return Promise.resolve();
     return new PepoApi('/users/current')
       .get()
       .then((apiResponse) => {
-        return this._saveCurrentUserAndSetupDevice(apiResponse, userId);
+        if( setupDevice ){
+          return this._saveCurrentUserAndSetupDevice(apiResponse, userId);
+        }
+        return this._saveCurrentUser( apiResponse, userId );
       })
       .catch((err) => {
         console.log(err);
