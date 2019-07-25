@@ -3,7 +3,7 @@ import { View, Text, Modal, Image, TouchableOpacity, Linking } from 'react-nativ
 
 import inlineStyles from './styles';
 import crossIcon from '../../assets/cross_icon.png';
-import PermissionsApi from '../../services/PermissionsApi';
+import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 
 export default class AllowAccessModal extends PureComponent {
   constructor(props) {

@@ -33,7 +33,7 @@ class PreviewRecordedVideo extends Component {
   enableStartUploadFlag = () => {
     this.props.navigation.goBack();
     Store.dispatch(upsertRecordedVideo({ do_upload: true }));
-  }
+  };
 
   handleProgress = (progress) => {
     this.setState({
@@ -60,7 +60,7 @@ class PreviewRecordedVideo extends Component {
         cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
         destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX
       },
-      (buttonIndex) => {        
+      (buttonIndex) => {
         if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
           // This will take to VideoRecorder component
           Store.dispatch(
@@ -70,6 +70,11 @@ class PreviewRecordedVideo extends Component {
           );
           this.props.goToRecordScreen();
         } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
+          Store.dispatch(
+            upsertRecordedVideo({
+              do_discard: true
+            })
+          );
           //TODO: navigate to previous page
           Store.dispatch(videoInProcessing(false));
           this.props.navigation.goBack();
