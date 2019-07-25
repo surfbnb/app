@@ -7,20 +7,22 @@ export default inlineStyles = StyleSheet.create({
     // paddingLeft: 10,
     // paddingRight: 10
   },
-  buttonContainer: {        
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 44,
-    // backgroundColor: '#FFB6C1',    
-    flexDirection: 'row'    
+  buttonContainer: {
+    // height: 50,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(159, 192, 207, 0.2)'
   },
   button: {     
-    width: Dimensions.get('window').width / 2,
-    borderLeftColor: 'red',
-    borderLeftWidth: 2,
-    height: '100%'
-
-    
+    width: Dimensions.get('window').width / 2 ,
+    // borderLeftColor: 'red',
+    // borderLeftWidth: 2,
+    // height: 50,
+    // alignSelf: 'center',
+    alignItems: 'center',
+    // justifyContent: 'center',
+    paddingVertical: 2
   },
   buttonView: {
     width: Dimensions.get('window').width ,

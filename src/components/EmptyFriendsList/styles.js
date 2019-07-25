@@ -12,8 +12,7 @@ export default styles = StyleSheet.create({
     height:70,
     paddingHorizontal:20,
     paddingVertical:50,
-
-
+    marginHorizontal: 15
   },
   emptyListConatinerText:{
     color:Colors.greyLite,
