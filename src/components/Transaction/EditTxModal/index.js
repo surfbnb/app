@@ -18,6 +18,7 @@ import inlineStyles from '../Style';
 import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
 import deepGet from "lodash/get";
 import Pricer from "../../../services/Pricer";
+import pepo_icon from "../../../assets/pepo-blue-icon.png";
 
 
 const bottomSpace = getBottomSpace([true])
@@ -197,8 +198,8 @@ export default class EditTxModal extends Component {
                 this.onConfirm();
               }}
             />
-            <Text style={{ textAlign: 'center', paddingTop: 10, fontSize: 13 }}>
-              Your Current Balance: P{this.balance}
+            <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13}}>
+              Your Current Balance: <Image style={{ width: 10, height: 10}} source={pepo_icon}></Image> {this.state.balance}{this.balance}
             </Text>
           </View>
           </TouchableWithoutFeedback>

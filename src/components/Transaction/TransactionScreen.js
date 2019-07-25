@@ -26,7 +26,7 @@ import GiphySelect from "./GiphySelect";
 
 import reduxGetter from "../../services/ReduxGetters";
 
-import pepo_icon from '../../assets/pepo_icon.png';
+import pepo_icon from '../../assets/pepo-blue-icon.png';
 
 const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
@@ -322,8 +322,8 @@ class TransactionScreen extends Component {
                   <Text style={Theme.Errors.errorText}> {this.state.fieldErrorText}</Text>
                 </View>
                 <View style={inlineStyles.txBtnsBg}>
-                  <Text style={{marginBottom: 10}}>Balance &#9654; {' '}
-                    <Image style={{ width: 10, height: 11}} source={pepo_icon}></Image> {this.state.balance}
+                  <Text style={{marginBottom: 10}}>Balance &#9654;{' '}
+                    <Image style={{ width: 10, height: 10}} source={pepo_icon}></Image> {this.state.balance}
                   </Text>
                   <View style={{ flexDirection: 'row'}}>
                     <TouchableOpacity
