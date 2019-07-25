@@ -322,7 +322,7 @@ class TransactionScreen extends Component {
                   <Text style={Theme.Errors.errorText}> {this.state.fieldErrorText}</Text>
                 </View>
                 <View style={inlineStyles.txBtnsBg}>
-                  <Text style={{marginBottom: 10}}>Balance &#9654;{' '}
+                  <Text style={{marginBottom: 10, color: '#34445b'}}>Balance &#9654;{' '}
                     <Image style={{ width: 10, height: 10}} source={pepo_icon}></Image> {this.state.balance}
                   </Text>
                   <View style={{ flexDirection: 'row'}}>
