@@ -5,11 +5,11 @@ const btPrecession = 5;
 
 export default class PriceOracle {
   constructor(token, pricePoints) {
-    if (!token || !token.conversion_factor || !token.decimals || !pricePoints) {
+    if (!token || !token.conversion_factor || !pricePoints) {
       return null;
     }
     this.conversionFactor = token.conversion_factor;
-    this.decimals = token.decimals;
+    this.decimals = token.decimal || 18;
     this.usdPricePoint = pricePoints['USD'];
   }
 
