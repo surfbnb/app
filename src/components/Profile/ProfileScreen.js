@@ -7,7 +7,7 @@ import CurrentUser from '../../models/CurrentUser';
 
 import EmptyCoverImage from './EmptyCoverImage';
 import ProfileEdit from './ProfileEdit';
-import CoverImage from '../CommonComponents/CoverImage';
+import UserProfileCoverImage from './UserProfileCoverImage';
 import reduxGetter from '../../services/ReduxGetters';
 import Colors from '../../theme/styles/Colors';
 import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
@@ -21,7 +21,7 @@ class ProfileScreen extends Component {
   static navigationOptions = (options) => {
     return {
       headerBackTitle: null,
-      headerTitle: reduxGetter.getName( CurrentUser.getUserId() ),
+      headerTitle: reduxGetter.getName(CurrentUser.getUserId()),
       headerRight: <LogoutComponent {...options} />
     };
   };
@@ -123,19 +123,7 @@ class ProfileScreen extends Component {
         {this.isLoading()}
         <BalanceHeader />
         <React.Fragment>
-          <CoverImage
-            height={0.5}
-            isProfile={true}
-            wrapperStyle={{
-              borderWidth: 1,
-              borderRadius: 5,
-              marginTop: 20,
-              marginBottom: 10,
-              borderColor: Colors.dark
-            }}
-            userId={this.userId}
-            uploadVideo={this.uploadVideo}
-          />
+          <UserProfileCoverImage userId={this.userId} uploadVideo={this.uploadVideo} />
           <UpdateTimeStamp userId={this.userId} />
         </React.Fragment>
 
