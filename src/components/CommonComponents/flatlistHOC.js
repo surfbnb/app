@@ -16,7 +16,6 @@ import { FetchServices } from "../../services/FetchServices";
  * Will have to implement onEndReachedCalledDuringMomentum mechanism there as
  */
 
- //TODO remove console.logs once tested for all flatlist 
 
 function flatlistHOC( ListComponent , scrollDetectNext ) {
     return class extends PureComponent {
@@ -74,19 +73,16 @@ function flatlistHOC( ListComponent , scrollDetectNext ) {
       }
     
       beforeRefresh() {
-        console.log("refresh .........");
         this.props.beforeRefresh && this.props.beforeRefresh();
         this.setState({ refreshing: true });
       }
     
       onRefresh(res) {
-        console.log("on refresh .........");
         this.props.onRefresh && this.props.onRefresh(res);
         this.setState({ refreshing: false, list: this.fetchServices.getIDList() });
       }
     
       onRefreshError(error) {
-        console.log("on refresh error.........");
         this.props.onRefreshError && this.props.onRefreshError(error);
         this.setState({ refreshing: false });
       }
@@ -113,7 +109,6 @@ function flatlistHOC( ListComponent , scrollDetectNext ) {
       };
     
       beforeNext() {
-        console.log("next .........");
         if( scrollDetectNext ){
           this.onEndReachedCalledDuringMomentum = true;
         }
@@ -122,13 +117,11 @@ function flatlistHOC( ListComponent , scrollDetectNext ) {
       }
     
       onNext(res) {
-        console.log("on next .........");
         this.props.onNext && this.props.onNext(res);
         this.setState({ loadingNext: false, list: this.fetchServices.getIDList() });
       }
     
       onNextError(error) {
-        console.log("on error .........");
         this.props.onNextError && this.props.onNextError(error);
         this.setState({ loadingNext: false });
       }
