@@ -65,6 +65,10 @@ class Pricer {
     return PriceOracle.toDecimal(bt, this.getDecimal());
   }
 
+  getToBT( bt , precession ){
+    return PriceOracle.toBt(bt, precession);
+  }
+
 
   /**Unused state */
 

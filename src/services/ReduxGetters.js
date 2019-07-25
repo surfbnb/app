@@ -154,6 +154,51 @@ class ReduxGetters {
         return state["token"]; 
     }
 
+    getActivityTransactionId(id ,  state ){
+        state =  state || Store.getState() ;
+        return deepGet( state,  `activities_entities.id_${id}.payload.ost_transaction_id` );
+    }
+
+    getActivityGiffyId(id ,  state ){
+        state =  state || Store.getState() ;
+        return deepGet( state,  `activities_entities.id_${id}.payload.gif_id` );
+    }
+
+    getGiffy(id , state ){
+        state =  state || Store.getState() ;
+        return deepGet( state,  `giffy_entities.id_${id}` );
+    }
+
+    getActivityMessage(id,  state ){
+        state =  state || Store.getState() ;
+        return deepGet( state,  `activities_entities.id_${id}.payload.text` );
+    }
+
+    getActivityTransactionStatus( id  , state ){
+        state =  state || Store.getState() ;
+        return deepGet( state,  `activities_entities.id_${id}.status` );
+    }
+
+    getActivityTransactionTimeStamp(id , state){
+        state =  state || Store.getState() ;
+        return deepGet( state,  `activities_entities.id_${id}.uts` );
+    }
+
+    getTransactionFromUserId(id, state ){
+        state =  state || Store.getState() ;
+        return deepGet( state,  `transaction_entities.id_${id}.from_user_id` );
+    }
+
+    getTransactionToUserId(id, state ){
+        state =  state || Store.getState() ;
+        return deepGet( state,  `transaction_entities.id_${id}.to_user_ids[0]` );
+    }
+
+    getTransactionAmount(id, state ){
+        state =  state || Store.getState() ;
+        return deepGet( state,  `transaction_entities.id_${id}.amounts[0]` );
+    }
+
 }
 
 export default new ReduxGetters();

@@ -4,6 +4,7 @@ import flatlistHOC from '../CommonComponents/flatlistHOC';
 import { Text, Dimensions, SectionList, View } from 'react-native';
 import { FetchServices } from '../../services/FetchServices';
 import User from '../Users/User';
+import EmptyList from "../EmptyFriendsList/EmptyList";
 
 const SUPPORTING = 'SUPPORTING';
 const SUGGESTIONS = 'SUGGESTIONS';
@@ -200,7 +201,7 @@ class SupportingList extends Component {
 
   renderNoContent = (section) => {
     if (section.data.length == 0) {
-      return <Text> You are currently do not have any {section.title}</Text>;
+      return <EmptyList displayText={`You are currently do not have any ${section.title}`} />
     }
     return null;
   };

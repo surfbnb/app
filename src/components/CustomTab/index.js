@@ -11,7 +11,7 @@ import CurrentUser from '../../models/CurrentUser';
 
 const tabNames = {
   homeTab: 'Home',
-  feedTab: 'Feed',
+  activitiesTab: 'Activities',
   usersTab: 'Users',
   profileTab: 'Profile'
 };
@@ -38,7 +38,7 @@ const CustomTab = ({ navigation, screenProps }) => (
       {/*H*/}
       {/*</Text>*/}
     </TouchableOpacity>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.feedTab)}>
+    <TouchableOpacity onPress={() => onTabPressed(navigation, tabNames.activitiesTab)}>
       <Image
         tintColor={navigation.state.index === 1 ? '#61b2d6' : 'rgb(72,72,72)'}
         style={[{ height: 24, width: 28 }, { tintColor: navigation.state.index === 1 ? '#ef5566' : '#484848' }]}
