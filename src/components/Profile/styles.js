@@ -10,9 +10,9 @@ let stylesMap = {
     paddingTop: 20
   },
   balanceHeader: {
-    borderRadius: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
+    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
     backgroundColor: Colors.pinkRed,
     flexDirection: 'row'
   },

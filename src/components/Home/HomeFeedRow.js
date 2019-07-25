@@ -37,7 +37,7 @@ class HomeFeedRow extends PureComponent {
     }
 
     get totalBt(){
-        return pricer.getFromDecimal( reduxGetter.getVideoBt( this.videoId ) );
+        return pricer.getToBT(  pricer.getFromDecimal( reduxGetter.getVideoBt( this.videoId ) ), 2 ) ;
     }
 
     get isVideoSupported(){
@@ -78,7 +78,7 @@ class HomeFeedRow extends PureComponent {
     }
     
     navigateToTransactionScreen = (e) => {
-        console.log("reduxGetter.getUser(this.userId)" , reduxGetter.getUser(this.userId) , this.userId);
+        if( this.userId == CurrentUser.getUserId() )return ;
         if(  CurrentUser.checkActiveUser() && CurrentUser.isUserActivated() ){
             this.props.navigation.push('TransactionScreen' ,
                 { toUserId: this.userId, 
@@ -106,13 +106,12 @@ class HomeFeedRow extends PureComponent {
                                                 isSupported={this.state.isSupported}
                                                 onLocalUpdate={this.onLocalUpdate}
                                                 onLocalReset={this.onLocalReset}
-                                                isSupported={this.state.isSupported}
                                                 feedId={this.props.feedId}
                                                 userId={this.userId}
-                                                videoId={this.videoId}  />            
-                        <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen} 
-                                        style={inlineStyles.txElem}>
-                            <Image style={{ height: 57, width: 57 }} source={tx_icon} />
+                                                videoId={this.videoId}  />
+                        <TouchableOpacity pointerEvents={'auto'} onPress={this.navigateToTransactionScreen}
+                                          style={inlineStyles.txElem}>
+                          <Image style={{ height: 57, width: 57 }} source={tx_icon} />
                         </TouchableOpacity>
                     </View>
 

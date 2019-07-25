@@ -36,8 +36,7 @@ class SupportersList extends PureComponent {
         this.setActiveIndex();
     }
 
-    render(){
-        console.log("_renderItem videolist" );
+    render(){        
         return(
             <FlatList
                 extraData={this.state}

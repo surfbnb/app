@@ -5,8 +5,6 @@ import { Text, Dimensions, SectionList, View } from 'react-native';
 import { FetchServices } from '../../services/FetchServices';
 import User from '../Users/User';
 
-let currentIndex = 0;
-
 const SUPPORTING = 'SUPPORTING';
 const SUGGESTIONS = 'SUGGESTIONS';
 const scrollDetectNext = true;
@@ -26,7 +24,7 @@ class SupportingList extends Component {
       supportingList: [],
       suggestionsList: []
     };
-    this.currentFetching = SUPPORTING;    
+    this.currentFetching = SUPPORTING;
   }
 
   componentDidMount() {
@@ -34,12 +32,15 @@ class SupportingList extends Component {
   }
 
   refresh = () => {
-    if (this.state.refreshing) return;    
+    if (this.state.refreshing) return;
     this.cleanInstanceVariable();
     this.refreshSupportingData();
   };
 
-  cleanInstanceVariable(){
+
+  
+
+  cleanInstanceVariable() {
     this.fetchServiceSupporting = new FetchServices(GET_SUPPORTING_URL);
     this.fetchServiceSuggestions = new FetchServices(GET_SUGGESTIONS_URL);
     this.currentFetching = SUPPORTING;
@@ -47,10 +48,11 @@ class SupportingList extends Component {
       loadingNextSuggestions: false,
       loadingNextSupporting: false,
       refreshing: false
-    })
+    });
   }
 
-  refreshSupportingData = () => {    
+  refreshSupportingData = () => {
+    
     this.beforeRefreshSupportings();
     this.fetchServiceSupporting
       .refresh()
@@ -62,20 +64,18 @@ class SupportingList extends Component {
       });
   };
 
-
-  beforeRefreshSupportings() {    
+  beforeRefreshSupportings() {
     this.setState({ refreshing: true });
   }
 
   onRefreshSupportings = () => {
-    if (!this.fetchServiceSupporting.hasNextPage){
+    if (!this.fetchServiceSupporting.hasNextPage) {
       this.currentFetching = SUGGESTIONS;
       this.getSuggestionsData();
     }
     this.setState({ refreshing: false, supportingList: this.fetchServiceSupporting.getIDList() });
-  }
-  
- 
+  };
+
   onRefreshSupportingError = () => {
     this.setState({ refreshing: false });
   };
@@ -96,94 +96,80 @@ class SupportingList extends Component {
     this.setState({ refreshing: true });
   };
 
-
-  onRefreshSuggestions = () => {    
-    this.setState({ refreshing: false, suggestionsList: this.fetchServiceSuggestions.getIDList()});
+  onRefreshSuggestions = () => {
+    this.setState({ refreshing: false, suggestionsList: this.fetchServiceSuggestions.getIDList() });
   };
 
   onRefreshSuggestionsError = () => {
     this.setState({ refreshing: false });
   };
 
-
   getNextSupporting = () => {
     console.log('getNextSupporting');
-    if (this.state.loadingNextSupporting || this.state.refreshing
-      || !this.fetchServiceSupporting.hasNextPage ) return;
-      console.log('getNextSupporting here');
-   this.beforeNextSupporting();
-   
-   this.fetchServices
-     .fetch()
-     .then((res) => {
-       this.onGetNextSupporting(res);
-     })
-     .catch((error) => {
-       this.onNextErrorSupporting(error);
-     });
-  }
+    if (this.state.loadingNextSupporting || this.state.refreshing || !this.fetchServiceSupporting.hasNextPage) return;
+    console.log('getNextSupporting here');
+    this.beforeNextSupporting();
 
+    this.fetchServices
+      .fetch()
+      .then((res) => {
+        this.onGetNextSupporting(res);
+      })
+      .catch((error) => {
+        this.onNextErrorSupporting(error);
+      });
+  };
 
   beforeNextSupporting = () => {
-    this.setState({loadingNextSupporting:true});
-
-  }
+    this.setState({ loadingNextSupporting: true });
+  };
 
   onGetNextSupporting = () => {
-    if (!this.fetchServiceSupporting.hasNextPage){
+    if (!this.fetchServiceSupporting.hasNextPage) {
       this.currentFetching = SUGGESTIONS;
     }
     this.setState({ loadingNextSupporting: false, supportingList: this.fetchServiceSupporting.getIDList() });
-
-  }
+  };
 
   onNextErrorSupporting = () => {
-    this.setState({ loadingNextSupporting: false})
-  }
-
+    this.setState({ loadingNextSupporting: false });
+  };
 
   getNextSuggestions = () => {
     console.log('getNextSuggestions');
-    if (this.state.loadingNextSuggestions || this.state.refreshing
-      || !this.fetchServiceSuggestions.hasNextPage ) return;
-      console.log('getNextSuggestions here');
-   this.beforeNextSuggestions();
-   this.fetchServiceSuggestions
-     .fetch()
-     .then((res) => {
-       this.onGetNextSuggestions(res);
-     })
-     .catch((error) => {
-       this.onNextErrorSuggestions(error);
-     });
+    if (this.state.loadingNextSuggestions || this.state.refreshing || !this.fetchServiceSuggestions.hasNextPage) return;
+    console.log('getNextSuggestions here');
+    this.beforeNextSuggestions();
+    this.fetchServiceSuggestions
+      .fetch()
+      .then((res) => {
+        this.onGetNextSuggestions(res);
+      })
+      .catch((error) => {
+        this.onNextErrorSuggestions(error);
+      });
+  };
 
-  }
+  beforeNextSuggestions = () => {
+    this.setState({ loadingNextSuggestions: true });
+  };
 
-
-  beforeNextSuggestions = ()=> {
-    this.setState({loadingNextSuggestions:true});
-
-  }
-
-  onGetNextSuggestions  = ()=> {
+  onGetNextSuggestions = () => {
     this.setState({ loadingNextSuggestions: false, suggestionsList: this.fetchServiceSuggestions.getIDList() });
+  };
 
-  }
+  onNextErrorSuggestions = () => {
+    this.setState({ loadingNextSuggestions: false });
+  };
 
-  onNextErrorSuggestions = ()=> {
-    this.setState({ loadingNextSuggestions: false})
-
-  }
-  
-
-  getNext = () => {    
+  getNext = () => {
     console.log('getNext', this.currentFetching);
     if (this.currentFetching == SUPPORTING) {
       this.getNextSupporting();
     } else if (this.currentFetching == SUGGESTIONS) {
       this.getNextSuggestions();
     }
-  }
+  };
 
   onRefreshError(error) {
     console.log('on refresh error.........', error);
@@ -198,12 +184,10 @@ class SupportingList extends Component {
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
-    return (        
-        <User id={item} />              
-    );
+    return <User id={item} />;
   };
 
-  getDataSource() {   
+  getDataSource() {
     let dataSource = [
       {
         title: 'Supporting',
@@ -230,8 +214,12 @@ class SupportingList extends Component {
     return <Text> {section.section.title} </Text>;
   };
 
+  // onEndReached = (...args)=>{
+  //   console.log('On onEndReached', args);
+  // }
+
   render() {
-    console.log(this.getDataSource(), 'getDataSource')
+    console.log(this.getDataSource(), 'getDataSource');
     return (
       <SectionList
         style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
@@ -242,8 +230,9 @@ class SupportingList extends Component {
         keyExtractor={(item) => item}
         refreshing={this.state.refreshing}
         onRefresh={this.refresh}
-        // onEndReachedThreshold={8}
-        onScroll={this.getNext}
+        onEndReachedThreshold={0.1}
+        // onScroll={this.getNext}
+        onEndReached={this.getNext}
         onMomentumScrollBegin={() => {
           this.onEndReachedCalledDuringMomentum = false;
         }}
