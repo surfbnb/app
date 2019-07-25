@@ -12,7 +12,6 @@ import {
   upsertUserEntities,
   upsertTransactionEntities,
   upsertGiffyEntities,
-  upsertFeedEntities,
   upsertTagEntities,
   upsertUserProfileEntities,
   upsertUserStatEntities,
@@ -24,7 +23,7 @@ import {
   upsertUserContributionEntities,
   upsertVideoContributionEntities,
   updatePricePoints,
-  updateCurrentUser
+  updateToken
 } from '../actions';
 import { API_ROOT } from '../constants/index';
 
@@ -146,6 +145,10 @@ export default class PepoApi {
 
     if( data["price_points"] ){
       Store.dispatch(updatePricePoints( data["price_points"] ));
+    }
+
+    if( data["token"] ){
+      Store.dispatch(updateToken( data["token"] ));
     }
 
     if( data['users'] ){

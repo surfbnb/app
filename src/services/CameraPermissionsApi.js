@@ -1,6 +1,6 @@
 import Permissions from 'react-native-permissions';
 
-class PermissionsApi {
+class CameraPermissionsApi {
   async checkPermission(permissionTypes) {
     return await Permissions.check(permissionTypes);
   }
@@ -19,4 +19,4 @@ class PermissionsApi {
   }
 }
 
-export default new PermissionsApi();
+export default new CameraPermissionsApi();

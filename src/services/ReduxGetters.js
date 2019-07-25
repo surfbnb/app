@@ -144,6 +144,16 @@ class ReduxGetters {
        return deepGet(state,'video_in_processing');
     }
 
+    getPricePoint( state ){
+        state =  state || Store.getState() ;
+        return state["price_points"]; 
+    }
+
+    getToken( state ){
+        state =  state || Store.getState() ;
+        return state["token"]; 
+    }
+
 }
 
 export default new ReduxGetters();

@@ -1,10 +1,10 @@
-import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
-import { TOKEN_ID } from '../constants';
 import {ostErrors} from "./OstErrors"; 
 import {updateBalance} from "../actions";
 import Store from '../store';
 import PriceOracle from './PriceOracle';
+import ReduxGetter from "./ReduxGetters";
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -23,6 +23,51 @@ class Pricer {
     return symbol.toLowerCase();
   }
 
+  getDecimal(){
+    const token = ReduxGetter.getToken() || {};
+    return token.decimal;  
+  }
+
+  getBalance( successCallback ,  errorCallback ) {
+    if( !CurrentUser.isUserActivated() ){
+      errorCallback && errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")}); 
+      return;
+    }
+
+    OstJsonApi.getBalanceForUserId(
+      CurrentUser.getOstUserId(),
+      (res) => {
+        let bal = deepGet(res, 'balance.available_balance');
+        this.onBalance( bal );
+        successCallback && successCallback( bal , res); 
+      },
+      (err) => {
+        errorCallback && errorCallback(error);
+      }
+    );
+  }
+
+  onBalance(bal){
+    Store.dispatch(updateBalance(bal));
+  }
+
+  getPriceOracle() {
+    const pricePoint = ReduxGetter.getPricePoint(); 
+    const token = ReduxGetter.getToken(); 
+    return new PriceOracle( token  , pricePoint["OST"] );
+  }
+
+  getFromDecimal( bt ){
+    return PriceOracle.fromDecimal(bt, this.getDecimal());
+  }
+
+  getToDecimal( bt ){
+    return PriceOracle.toDecimal(bt, this.getDecimal());
+  }
+
+
+  /**Unused state */
+
   getToken(successCallback, forceRefresh) {
     if (!forceRefresh && this.token) {
       successCallback && successCallback(this.token);
@@ -32,10 +77,6 @@ class Pricer {
       this.token = token;
       successCallback && successCallback(token);
     });
-  }
-
-  getDecimal(){
-    return this.token && this.token.decimals; 
   }
 
   getPricePoints(ostUserId, successCallback, errorCallback) {
@@ -62,29 +103,6 @@ class Pricer {
         isCb && errorCallback && errorCallback(error);
       }
     );
-  }
-
-  getBalance( successCallback ,  errorCallback ) {
-    if( !CurrentUser.isUserActivated() ){
-      errorCallback && errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")}); 
-      return;
-    }
-
-    OstJsonApi.getBalanceForUserId(
-      CurrentUser.getOstUserId(),
-      (res) => {
-        let bal = deepGet(res, 'balance.available_balance');
-        this.onBalance( bal );
-        successCallback && successCallback( bal , res); 
-      },
-      (err) => {
-        errorCallback && errorCallback(error);
-      }
-    );
-  }
-
-  onBalance(bal){
-    Store.dispatch(updateBalance(bal));
   }
 
   getPriceOracleConfig(ostUserId, successCallback, errorCallback) {
@@ -115,18 +133,7 @@ class Pricer {
     });
   }
 
-  getPriceOracle(){
-    const pricePoint = Store.getState()["price_points"] || {}; 
-    return new PriceOracle( this.token , pricePoint["OST"] );
-  }
-
-  getFromDecimal( bt ){
-    return PriceOracle.fromDecimal(bt, this.getDecimal());
-  }
-
-  getToDecimal( bt ){
-    return PriceOracle.toDecimal(bt, this.getDecimal());
-  }
+  /** Unused End */
 }
 
 export default new Pricer();

@@ -15,13 +15,13 @@ import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Toast } from 'native-base';
 import PepoApi from '../../services/PepoApi';
-import PermissionsApi from '../../services/PermissionsApi';
+import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 
 class ProfileScreen extends Component {
   static navigationOptions = (options) => {
     return {
       headerBackTitle: null,
-      headerTitle: 'Profile',
+      headerTitle: reduxGetter.getName( CurrentUser.getUserId() ),
       headerRight: <LogoutComponent {...options} />
     };
   };
@@ -81,13 +81,13 @@ class ProfileScreen extends Component {
   };
 
   uploadVideo = async () => {
-    const cameraResponse = await PermissionsApi.checkPermission('camera');
-    const microphoneResponse = await PermissionsApi.checkPermission('microphone');
+    const cameraResponse = await CameraPermissionsApi.checkPermission('camera');
+    const microphoneResponse = await CameraPermissionsApi.checkPermission('microphone');
     if (Platform.OS == 'android') {
       //can ask permissions multiple times on android
-      PermissionsApi.requestPermission('camera').then((result) => {
+      CameraPermissionsApi.requestPermission('camera').then((result) => {
         const cameraResult = result;
-        PermissionsApi.requestPermission('microphone').then((result) => {
+        CameraPermissionsApi.requestPermission('microphone').then((result) => {
           const microphoneResult = result;
           //if do not ask again is selected then 'restricted' is returned and permission dialog does not appear again
           if (
@@ -101,9 +101,9 @@ class ProfileScreen extends Component {
     } else if (Platform.OS == 'ios') {
       if (cameraResponse == 'undetermined') {
         //can ask only once in ios i.e first time
-        PermissionsApi.requestPermission('camera').then((result) => {
+        CameraPermissionsApi.requestPermission('camera').then((result) => {
           const cameraResult = result;
-          PermissionsApi.requestPermission('microphone').then((result) => {
+          CameraPermissionsApi.requestPermission('microphone').then((result) => {
             const microphoneResult = result;
             if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
               this.props.navigation.push('CaptureVideo');

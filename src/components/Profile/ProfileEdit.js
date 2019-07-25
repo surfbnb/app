@@ -22,7 +22,7 @@ import Colors from '../../theme/styles/Colors';
 import { ActionSheet } from 'native-base';
 import FastImage from 'react-native-fast-image';
 
-import PermissionsApi from '../../services/PermissionsApi';
+import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 import AllowAccessModal from '../Profile/AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
 
@@ -76,7 +76,7 @@ class ProfileEdit extends React.PureComponent {
 
   componentDidMount() {
     if (Platform.OS == 'ios') {
-      PermissionsApi.checkPermission('photo').then((response) => {
+      CameraPermissionsApi.checkPermission('photo').then((response) => {
         if (response == 'authorized') {
           this.setState({
             showAccessModal: false
@@ -247,10 +247,10 @@ class ProfileEdit extends React.PureComponent {
   };
 
   openCamera = async () => {
-    let response = await PermissionsApi.checkPermission('camera');
+    let response = await CameraPermissionsApi.checkPermission('camera');
     if (Platform.OS == 'android') {
       //can ask permissions multiple times on android
-      PermissionsApi.requestPermission('camera').then((result) => {
+      CameraPermissionsApi.requestPermission('camera').then((result) => {
         //if do not ask again is selected then 'restricted' is returned and permission dialog does not appear again
         if (result == 'authorized' || result == 'restricted') {
           this.props.navigation.push('CaptureImageScreen');
@@ -259,7 +259,7 @@ class ProfileEdit extends React.PureComponent {
     } else if (Platform.OS == 'ios') {
       if (response == 'undetermined') {
         //can ask only once in ios i.e first time
-        PermissionsApi.requestPermission('camera').then((result) => {
+        CameraPermissionsApi.requestPermission('camera').then((result) => {
           if (result == 'authorized') {
             this.props.navigation.push('CaptureImageScreen');
           }
@@ -272,8 +272,8 @@ class ProfileEdit extends React.PureComponent {
   };
 
   openGallery = async () => {
-    let response = await PermissionsApi.checkPermission('photo');
-    PermissionsApi.requestPermission('photo').then((result) => {
+    let response = await CameraPermissionsApi.checkPermission('photo');
+    CameraPermissionsApi.requestPermission('photo').then((result) => {
       if (result == 'authorized' || result == 'restricted') {
         this.props.navigation.push('ImageGalleryScreen');
       }

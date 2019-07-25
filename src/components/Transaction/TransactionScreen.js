@@ -348,7 +348,8 @@ class TransactionScreen extends Component {
                       {/*<Text style={[Theme.Button.btnPinkText]}>{this.state.btAmount}</Text>*/}
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
+                      disabled={this.state.exceBtnDisabled}
+                      style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn, this.state.exceBtnDisabled ? Theme.Button.disabled : null]}
                       onPress={() => {
                         this.openEditTx();
                       }}
