@@ -47,11 +47,6 @@ export default class UsersProfile extends Component {
     }
 
     fetchUser = () => {
-        if( this.userId == CurrentUser.getUserId() ) {
-            this.setState({loading: false});
-            return ; 
-        };
-
         new PepoApi(`/users/${this.userId}/profile`)
         .get()
         .then((res) =>{
