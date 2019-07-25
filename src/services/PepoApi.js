@@ -12,6 +12,7 @@ import {
   upsertUserEntities,
   upsertTransactionEntities,
   upsertGiffyEntities,
+  upsertActivitiesEntities,
   upsertTagEntities,
   upsertUserProfileEntities,
   upsertUserStatEntities,
@@ -167,6 +168,14 @@ export default class PepoApi {
 
     if (data['contribution_suggestions']) {
       Store.dispatch(upsertUserEntities(this._getEntities(data['contribution_suggestions'])));
+    }
+
+    if( data['public_activity'] ){
+      Store.dispatch(upsertActivitiesEntities(this._getEntities(data['public_activity'])));
+    }
+
+    if( data['user_activity'] ){
+      Store.dispatch(upsertActivitiesEntities(this._getEntities(data['user_activity'])));
     }
 
     switch (resultType) {
