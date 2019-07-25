@@ -6,10 +6,11 @@ import deepGet from "lodash/get";
 import TopStatus from "./TopStatus";
 import VideoList from "./VideoList";
 import Pricer from "../../services/Pricer";
+import CurrentUser from "../../models/CurrentUser";
 
 const mapStateToProps = (state) => {
     return {
-      userId: deepGet(state , "current_user.id")
+      userId: CurrentUser.getUserId()
     }
   };
 
