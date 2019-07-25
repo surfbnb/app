@@ -63,22 +63,15 @@ class CurrentUser {
     return new PepoApi('/users/current')
       .get()
       .then((apiResponse) => {
-        if( setupDevice ){
-          return this._saveCurrentUserAndSetupDevice(apiResponse, userId);
-        }
-        return this._saveCurrentUser( apiResponse, userId );
+         return this._saveCurrentUser(apiResponse, userId , setupDevice);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  _saveCurrentUserAndSetupDevice(apiResponse, expectedUserId) {
-    InitWalletSdk.initializeDevice(this);
-    return this._saveCurrentUser(apiResponse, expectedUserId);
-  }
 
-  _saveCurrentUser(apiResponse, expectedUserId) {
+  _saveCurrentUser(apiResponse, expectedUserId, setupDevice) {
     const resultType = deepGet(apiResponse, 'data.result_type');
     if (!resultType) {
       // Api did not give logged-in user.
@@ -102,6 +95,7 @@ class CurrentUser {
       .then(() => {
         Store.dispatch(updateCurrentUser(user));
         this.userId = userId;
+        setupDevice && InitWalletSdk.initializeDevice(this);
         return user;
       });
   }
@@ -158,7 +152,7 @@ class CurrentUser {
   _signin(apiUrl, params) {
     let authApi = new PepoApi(apiUrl);
     return authApi.post(JSON.stringify(params)).then((apiResponse) => {
-      return this._saveCurrentUserAndSetupDevice(apiResponse)
+      return this._saveCurrentUser(apiResponse,  null ,  true)
         .catch()
         .then(() => {
           return apiResponse;
