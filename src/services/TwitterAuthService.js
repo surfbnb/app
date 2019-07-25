@@ -86,7 +86,7 @@ class TwitterAuthService {
   }
 
   setupDeviceFailed(ostWorkflowContext, error) {
-    this.onServerError(error);
+   // this.onServerError(error);
   }
 
   onServerError(res) {
