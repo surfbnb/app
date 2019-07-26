@@ -11,7 +11,8 @@ const YOU = 1;
 class Activities extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      header: null
+      header: null,
+      headerBackTitle: null
     };
   };
 

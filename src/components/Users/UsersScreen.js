@@ -11,7 +11,8 @@ const SUPPORTER_INDEX = 1;
 class Users extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      header: null
+      header: null,
+      headerBackTitle: null
     };
   };
   constructor(props) {
