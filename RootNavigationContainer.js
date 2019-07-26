@@ -37,33 +37,38 @@ import CurrentUser from './src/models/CurrentUser'
 import deepGet from 'lodash/get';
 
 
+const getRouteName = ( navigation ) => {
+  if(!navigation) return null ;
+  let routeName =  deepGet(navigation , "state.routeName"); 
+  let stateIndex  =  deepGet(navigation , "state.index")  ;
+  let routes = deepGet(navigation , `state.routes[${stateIndex}]`) ;
+  if( routes ){
+    routeName = routes && routes['routeName'] || routeName ;
+    stateIndex = routes && routes.index; 
+    routeName = deepGet(routes , `routes[${stateIndex}].routeName`) || routeName;
+  }
+  return routeName ; 
+}
+
+
 const modalStackConfig = {
   headerLayoutPreset: 'center',
   headerMode: 'none',
   mode: 'modal',
   navigationOptions: ({ navigation }) => {
+    const routeName = getRouteName( navigation );
     return {
       swipeEnabled:CurrentUser.getOstUserId()?true:false,
-      tabBarVisible: deepGet(navigation, 'state.routes[0].index') == 0 ? true : false
+      tabBarVisible: routeName != "TransactionScreen" ? true : false
     };
   }
-};
-
-const UserTransactionStack = createStackNavigator(
-  {
-    UsersScreen: Users,
-    UsersProfileScreen: UsersProfileScreen
-  },
-  {
-    headerLayoutPreset: 'center'
-  }
-);
+}
 
 const HomeTransactionStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
-    TransactionScreen: TransactionScreen,
-    UsersProfileScreen: UsersProfileScreen
+    UsersProfileScreen: UsersProfileScreen,
+    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -77,13 +82,35 @@ const HomeStack = createStackNavigator(
     EditTx: EditTx,
     VideoPlayer: VideoPlayer
   },
-  { ...modalStackConfig }
+  {...modalStackConfig}
+);
+
+const ActivityTransactionStack = createStackNavigator(
+  {
+    Activities: Activities,
+    UsersProfileScreen: UsersProfileScreen,
+    TransactionScreen: TransactionScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
 );
 
 const ActivityStack = createStackNavigator(
   {
-    Activities: Activities,
-    UsersProfileScreen: UsersProfileScreen
+    ActivityTransactionStack: ActivityTransactionStack,
+    Giphy: Giphy,
+    EditTx: EditTx,
+    VideoPlayer: VideoPlayer
+  },
+  {...modalStackConfig}
+);
+
+const UserTransactionStack = createStackNavigator(
+  {
+    UsersScreen: Users,
+    UsersProfileScreen: UsersProfileScreen,
+    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -92,11 +119,12 @@ const ActivityStack = createStackNavigator(
 
 const UserStack = createStackNavigator(
   {
-    UserTransaction: UserTransactionStack,
+    UserTransactionStack: UserTransactionStack,
     Giphy: Giphy,
-    EditTx: EditTx
+    EditTx: EditTx,
+    VideoPlayer: VideoPlayer
   },
-  { ...modalStackConfig }
+  {...modalStackConfig}
 );
 
 const ProfileStack = createStackNavigator(

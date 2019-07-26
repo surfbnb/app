@@ -25,6 +25,7 @@ import FastImage from 'react-native-fast-image';
 import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 import AllowAccessModal from '../Profile/AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
@@ -120,7 +121,7 @@ class ProfileEdit extends React.PureComponent {
       });
       isValid = false;
     }
-    if (this.state.user_name.length >15 || this.state.user_name.length < 1) {
+    if (this.state.user_name.length > 15 || this.state.user_name.length < 1) {
       this.setState({
         user_name_error: ostErrors.getUIErrorMessage('user_name_min_max')
       });
@@ -197,22 +198,32 @@ class ProfileEdit extends React.PureComponent {
   }
 
   onCancel = () => {
-    if(this.props.name != this.state.name || this.props.user_name != this.state.user_name || this.props.bio != this.state.bio || this.props.bio != this.state.bio ){
+    if (
+      this.props.name != this.state.name ||
+      this.props.user_name != this.state.user_name ||
+      this.props.bio != this.state.bio ||
+      this.props.bio != this.state.bio
+    ) {
       Alert.alert(
         'Discard changes?',
         'You will lose all the changes if you go back now.',
         [
-          {text: 'Keep Editing', onPress: () => {}},
-          {text: 'Discard', onPress: () => { this.onDiscard() }},
+          { text: 'Keep Editing', onPress: () => {} },
+          {
+            text: 'Discard',
+            onPress: () => {
+              this.onDiscard();
+            }
+          }
         ],
-        {cancelable: false},
+        { cancelable: false }
       );
-    }else {
+    } else {
       this.props.hideProfileEdit();
     }
   };
 
-  onDiscard(){
+  onDiscard() {
     this.props.hideProfileEdit();
   }
 
@@ -362,7 +373,7 @@ class ProfileEdit extends React.PureComponent {
             this.onSubmitEditing(this.tabIndex.bio);
           }}
           isFocus={this.state.current_formField == this.tabIndex.bio}
-          onFocus={this.onBioFocus}
+          onFocus={multipleClickHandler(() => this.onBioFocus())}
           value={this.state.bio}
           serverErrors={this.state.server_errors}
         />

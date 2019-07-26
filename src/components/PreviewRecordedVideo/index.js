@@ -8,6 +8,8 @@ import Store from '../../store';
 import { upsertRecordedVideo, videoInProcessing } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
+import { withNavigationFocus } from 'react-navigation';
+
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Close Camera', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
 const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
@@ -33,7 +35,10 @@ class PreviewRecordedVideo extends Component {
   }
 
   handleBackButtonClick = () => {
-    Store.dispatch(upsertRecordedVideo({ do_discard: true }));
+    if (this.props.isFocused) {
+      this.cancleVideoHandling();
+      return true;
+    }
   };
 
   enableStartUploadFlag = () => {
@@ -92,46 +97,46 @@ class PreviewRecordedVideo extends Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Video
-          source={{ uri: this.cachedVideoUri }}
-          style={styles.previewVideo}
-          fullscreen={true}
-          onLoad={this.handleLoad}
-          onProgress={this.handleProgress}
-          onEnd={this.handleEnd}
-          ref={(component) => (this._video = component)}
-        ></Video>
-        <ProgressBar
-          width={null}
-          color="#EF5566"
-          progress={this.state.progress}
-          indeterminate={false}
-          style={styles.progressBar}
-        />
-        <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
-          <View style={styles.cancelButton}>
-            <Text style={styles.cancelText}>X</Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <View style={styles.bottomControls}>
-          {this.state.progress == 1 ? (
-            <TouchableOpacity
-              onPress={() => {
-                this.replay();
-              }}
-            >
-              <Image style={styles.playIcon} source={playIcon} />
-            </TouchableOpacity>
-          ) : (
-            <View style={styles.playIcon} />
-          )}
+        <View style={styles.container}>
+          <Video
+            source={{ uri: this.cachedVideoUri }}
+            style={styles.previewVideo}
+            fullscreen={true}
+            onLoad={this.handleLoad}
+            onProgress={this.handleProgress}
+            onEnd={this.handleEnd}
+            ref={(component) => (this._video = component)}
+          ></Video>
+          <ProgressBar
+            width={null}
+            color="#EF5566"
+            progress={this.state.progress}
+            indeterminate={false}
+            style={styles.progressBar}
+          />
+          <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
+            <View style={styles.cancelButton}>
+              <Text style={styles.cancelText}>X</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <View style={styles.bottomControls}>
+            {this.state.progress == 1 ? (
+              <TouchableOpacity
+                onPress={() => {
+                  this.replay();
+                }}
+              >
+                <Image style={styles.playIcon} source={playIcon} />
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.playIcon} />
+            )}
 
-          <TouchableOpacity onPress={this.enableStartUploadFlag}>
-            <Image style={styles.tickIcon} source={tickIcon} />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={this.enableStartUploadFlag}>
+              <Image style={styles.tickIcon} source={tickIcon} />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
       </SafeAreaView>
     );
   }
@@ -143,4 +148,4 @@ class PreviewRecordedVideo extends Component {
 }
 
 //make this component available to the app
-export default PreviewRecordedVideo;
+export default withNavigationFocus(PreviewRecordedVideo);
