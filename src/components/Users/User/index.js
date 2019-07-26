@@ -11,8 +11,8 @@ import Store from '../../../store';
 import { ostErrors } from '../../../services/OstErrors';
 import reduxGetter from '../../../services/ReduxGetters';
 import FastImage from 'react-native-fast-image';
-import Colors from '../../../theme/styles/Colors'
-
+import Colors from '../../../theme/styles/Colors';
+import multipleClickHandler from '../../../services/MultipleClickHandler';
 
 const isActivated = function(user) {
   let userStatus = (user && user['ost_status']) || '';
@@ -21,37 +21,36 @@ const isActivated = function(user) {
 };
 
 const userClick = function(item, navigation) {
-  navigation.push('UsersProfileScreen' ,{ userId:item.id });
+  navigation.push('UsersProfileScreen', { userId: item.id });
 };
 
 const getUser = function(id) {
   return Store.getState().user_entities[`id_${id}`] || {};
 };
 
-
 getImageSrc = (user) => {
-    let imageSrc =  default_user_icon ; 
-    if(user.profile_image_id && reduxGetter.getImage(user.profile_image_id)){
-      imageSrc = { uri : reduxGetter.getImage(user.profile_image_id) } ;     
-    }
-  return (<Image style={styles.imageStyleSkipFont} source={imageSrc}></Image>);
-}
+  let imageSrc = default_user_icon;
+  if (user.profile_image_id && reduxGetter.getImage(user.profile_image_id)) {
+    imageSrc = { uri: reduxGetter.getImage(user.profile_image_id) };
+  }
+  return <Image style={styles.imageStyleSkipFont} source={imageSrc}></Image>;
+};
 
 const Users = (props) => {
   let user = getUser(props.id);
   if (!isEmpty(user) && isActivated(user)) {
     return (
       <TouchableOpacity
-        onPress={() => {
+        onPress={multipleClickHandler(() => {
           userClick(user, props.navigation);
-        }}
+        })}
       >
         <View style={styles.container}>
           <View style={styles.userContainer}>
             <View style={styles.txtWrapper}>
               {getImageSrc(user)}
               <Text numberOfLines={1} style={styles.item}>
-                {user.name.length > 40 ? `${user.name.substring(0,40)}...` : user.name } 
+                {user.name.length > 40 ? `${user.name.substring(0, 40)}...` : user.name}
               </Text>
             </View>
           </View>

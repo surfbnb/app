@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableWithoutFeedback , SafeAreaView , Dimensions} from 'react-native';
+import { View, Text, FlatList, TouchableWithoutFeedback , SafeAreaView , Dimensions, Animated} from 'react-native';
 import ActivityList from '../ActivitiesComponents/ActivityList';
 import CurrentUser from '../../models/CurrentUser';
 import styles from "./styles";
@@ -19,9 +19,22 @@ class Activities extends Component {
   constructor(props) {
     super(props);
     this.state = {      
-      activeIndex: ALL
+      activeIndex: ALL,
+      animatedMargin: new Animated.Value(0)
     };
   }
+
+  flScrolled = (scrollEvent) => {
+    let nativeEvent = scrollEvent.nativeEvent;
+    Animated.timing(this.state.animatedMargin, { toValue: nativeEvent.contentOffset.x / 2, duration: 0.1 }).start();
+    if (Dimensions.get('window').width == nativeEvent.contentOffset.x) {
+      this.setState({ activeIndex: YOU });
+      this.activityList.scrollToIndex({ index: YOU });
+    } else if (nativeEvent.contentOffset.x == 0) {
+      this.setState({ activeIndex: ALL });
+      this.activityList.scrollToIndex({ index: ALL });
+    }
+  };
 
   toggleScreen = () => {    
     let newActiveIndex =  1 - this.state.activeIndex;
@@ -39,9 +52,7 @@ class Activities extends Component {
     }
   };
 
- onViewableItemsChanged = () => {
-   console.log("onViewableItemsChanged========");
- }
+
 
   render() {
     return( 
@@ -52,8 +63,9 @@ class Activities extends Component {
             <TouchableWithoutFeedback onPress={this.toggleScreen}>
               <View
                 style={[
-                  styles.button, {borderRightColor: 'rgba(72, 72, 72, 0.1)', borderRightWidth: 1},
-                  this.state.activeIndex == ALL ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderRightColor: 'transparent' } : {}
+                  styles.button,
+                  { borderRightColor: 'rgba(72, 72, 72, 0.1)', borderRightWidth: 1 },
+                  this.state.activeIndex == ALL ? {  color: '#ef5869' } : {}
                 ]}
               >
                 <Text style={[this.state.activeIndex == ALL && { color: '#ef5869'} ]}>You might like</Text>
@@ -62,24 +74,26 @@ class Activities extends Component {
             <TouchableWithoutFeedback onPress={this.toggleScreen}>
               <View
                 style={[
-                  styles.button, {borderLeftColor: 'rgba(72, 72, 72, 0.1)', borderLeftWidth: 1},
-                  this.state.activeIndex == YOU ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderLeftColor: 'transparent' } : {}
+                  styles.button,
+                  { borderLeftColor: 'rgba(72, 72, 72, 0.1)', borderLeftWidth: 1 },
+                  this.state.activeIndex == YOU ? { color: '#ef5869'} : {}
                 ]}
               >
                 <Text style={[this.state.activeIndex == YOU && { color: '#ef5869'} ]}> Activity </Text>
               </View>
             </TouchableWithoutFeedback>
           </View>
+          <Animated.View style={[styles.bottomSliderStyle, { marginLeft: this.state.animatedMargin }]}></Animated.View>
           <FlatList
             ref={(list) => (this.activityList = list)}
             style={{ width: '100%', flex: 1, flexDirection: 'row' }}
             horizontal={true}
             pagingEnabled={true}
             data={[0, 1]}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 90 }}
-            onViewableItemsChanged={this.onViewableItemsChanged}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 90 }}            
             keyExtractor={this._keyExtractor}
-            renderItem={this._renderItem}     
+            renderItem={this._renderItem}
+            onScroll={this.flScrolled}     
           />
         </View>
       </SafeAreaView>

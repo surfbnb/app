@@ -10,21 +10,26 @@ import Pricer from '../../services/Pricer';
 import GracefulImage from '../Giphy/GracefulImage';
 import utilities from '../../services/Utilities';
 import FastImage from 'react-native-fast-image';
-import reduxGetter from "../../services/ReduxGetters";
+import reduxGetter from '../../services/ReduxGetters';
 import CurrentUser from '../../models/CurrentUser';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    fromUserId: reduxGetter.getTransactionFromUserId(reduxGetter.getActivityTransactionId( ownProps.id)),
-    toUserId:reduxGetter.getTransactionToUserId(reduxGetter.getActivityTransactionId( ownProps.id)),
-    fromUserName: reduxGetter.getUserName(reduxGetter.getTransactionFromUserId(reduxGetter.getActivityTransactionId( ownProps.id))),
-    toUserName: reduxGetter.getUserName(reduxGetter.getTransactionToUserId(reduxGetter.getActivityTransactionId( ownProps.id))),
-    status:  reduxGetter.getActivityTransactionStatus( ownProps.id ),
-    timeStamp: reduxGetter.getActivityTransactionTimeStamp( ownProps.id ),
-    btAmount: reduxGetter.getTransactionAmount( reduxGetter.getActivityTransactionId( ownProps.id ) ),
-    giffy: reduxGetter.getGiffy( reduxGetter.getActivityGiffyId( ownProps.id )),
+    fromUserId: reduxGetter.getTransactionFromUserId(reduxGetter.getActivityTransactionId(ownProps.id)),
+    toUserId: reduxGetter.getTransactionToUserId(reduxGetter.getActivityTransactionId(ownProps.id)),
+    fromUserName: reduxGetter.getUserName(
+      reduxGetter.getTransactionFromUserId(reduxGetter.getActivityTransactionId(ownProps.id))
+    ),
+    toUserName: reduxGetter.getUserName(
+      reduxGetter.getTransactionToUserId(reduxGetter.getActivityTransactionId(ownProps.id))
+    ),
+    status: reduxGetter.getActivityTransactionStatus(ownProps.id),
+    timeStamp: reduxGetter.getActivityTransactionTimeStamp(ownProps.id),
+    btAmount: reduxGetter.getTransactionAmount(reduxGetter.getActivityTransactionId(ownProps.id)),
+    giffy: reduxGetter.getGiffy(reduxGetter.getActivityGiffyId(ownProps.id)),
     message: reduxGetter.getActivityMessage(ownProps.id)
-  }
+  };
 };
 
 class ActivityRow extends PureComponent {
@@ -33,23 +38,23 @@ class ActivityRow extends PureComponent {
   }
 
   fromUserClick() {
-    if ( this.props.fromUserId == CurrentUser.getUserId( )) {
+    if (this.props.fromUserId == CurrentUser.getUserId()) {
       this.props.navigation.navigate('Profile');
     } else {
-      this.props.navigation.push('UsersProfileScreen' ,{ userId:this.props.fromUserId });
+      this.props.navigation.push('UsersProfileScreen', { userId: this.props.fromUserId });
     }
   }
 
   toUserClick() {
-    if ( this.props.toUserId == CurrentUser.getUserId(  )) {
+    if (this.props.toUserId == CurrentUser.getUserId()) {
       this.props.navigation.navigate('Profile');
     } else {
-      this.props.navigation.push('UsersProfileScreen' ,{ userId:this.props.toUserId });
+      this.props.navigation.push('UsersProfileScreen', { userId: this.props.toUserId });
     }
   }
 
-  getBtAmount( btAmount ) {
-    return Pricer.getFromDecimal( btAmount );
+  getBtAmount(btAmount) {
+    return Pricer.getFromDecimal(btAmount);
   }
 
   render() {
@@ -66,17 +71,17 @@ class ActivityRow extends PureComponent {
                 <View style={{ flex: 1, alignSelf: 'flex-start' }}>
                   <Text style={styles.userNameText}>
                     <Text
-                      onPress={() => {
+                      onPress={multipleClickHandler(() => {
                         this.fromUserClick();
-                      }}
+                      })}
                     >
                       {this.props.fromUserName}
                     </Text>
                     <Text style={{ fontWeight: '300', fontSize: 13 }}> gave </Text>
                     <Text
-                      onPress={() => {
+                      onPress={multipleClickHandler(() => {
                         this.toUserClick();
-                      }}
+                      })}
                     >
                       {this.props.toUserName}
                     </Text>
@@ -90,7 +95,7 @@ class ActivityRow extends PureComponent {
                 <View style={styles.figure}>
                   <Text style={{ textAlign: 'center', fontSize: 12 }}>
                     <Image style={{ width: 8, height: 9 }} source={utilities.getTokenSymbolImageConfig()['image1']} />{' '}
-                    {this.getBtAmount( this.props.btAmount )}
+                    {this.getBtAmount(this.props.btAmount)}
                   </Text>
                 </View>
               </View>
@@ -113,17 +118,20 @@ class ActivityRow extends PureComponent {
                 imageBackgroundColor="rgba(238,238,238,1)" //can be string or array of colors
               />
             </View>
-          ): <View/>}
+          ) : (
+            <View />
+          )}
           {this.props.message ? (
             <View style={{ marginTop: 10 }}>
               <Text style={{ fontSize: 14, color: '#484848', fontWeight: '100' }}>{this.props.message}</Text>
             </View>
-          ) : <View/>}
+          ) : (
+            <View />
+          )}
         </View>
       </View>
     );
   }
 }
 
-export default connect(mapStateToProps)(withNavigation(ActivityRow)) ;
-
+export default connect(mapStateToProps)(withNavigation(ActivityRow));

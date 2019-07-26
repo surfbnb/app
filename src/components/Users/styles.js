@@ -9,7 +9,9 @@ export default inlineStyles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(159, 192, 207, 0.2)',
-    height: 60
+    height: 60,
+    paddingVertical: 15
+
   },
   button: {     
     width: Dimensions.get('window').width / 2,
