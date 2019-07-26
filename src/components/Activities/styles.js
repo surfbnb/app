@@ -14,7 +14,7 @@ export default inlineStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(159, 192, 207, 0.2)'
   },
-  button: {     
+  button: {
     width: Dimensions.get('window').width / 2 ,
     // borderLeftColor: 'red',
     // borderLeftWidth: 2,

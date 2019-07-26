@@ -15,10 +15,9 @@ import Users from './src/components/Users';
 import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';
 import CustomTab from './src/components/CustomTab';
-import Feed from './src/components/Feed';
+import Activities from './src/components/Activities';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
-import UserFeedScreen from './src/components/UserFeed/UserFeedScreen';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
@@ -53,7 +52,7 @@ const modalStackConfig = {
 const UserTransactionStack = createStackNavigator(
   {
     UsersScreen: Users,
-    TransactionScreen: TransactionScreen
+    UsersProfileScreen: UsersProfileScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -81,10 +80,10 @@ const HomeStack = createStackNavigator(
   { ...modalStackConfig }
 );
 
-const FeedStack = createStackNavigator(
+const ActivityStack = createStackNavigator(
   {
-    FeedContent: Feed,
-    UserFeedScreen: UserFeedScreen
+    Activities: Activities,
+    UsersProfileScreen: UsersProfileScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -123,7 +122,7 @@ const ProfileStack = createStackNavigator(
 const CustomTabStack = createMaterialTopTabNavigator(
   {
     Home: HomeStack,
-    Feed: FeedStack,
+    Activities: ActivityStack,
     Users: UserStack,
     Profile: ProfileStack
   },

@@ -19,11 +19,11 @@ const TopStatus = (props) => {
     <View style={ inlineStyles.topContainer }>
       <View style={inlineStyles.topBg}>
         <Image
-          style={[{height: 18, width: 18}, inlineStyles.topBgPosSkipFont]}
+          style={[{height: 16, width: 16}, inlineStyles.topBgPosSkipFont]}
           source={selfAmountPlus}
         />
         <Image
-          style={[{height: 15, width: 15}]}
+          style={[{height: 13, width: 13}]}
           source={selAmountPepo}
         />
         <Text style={[inlineStyles.topBgTxt]}>{getBalance(props)}</Text>

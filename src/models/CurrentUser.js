@@ -10,7 +10,6 @@ import { Toast } from 'native-base';
 import { ostErrors } from '../services/OstErrors';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
-import Pricer from '../services/Pricer';
 
 class CurrentUser {
   constructor() {

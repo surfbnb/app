@@ -9,6 +9,10 @@ import default_user_icon from '../../../assets/default_user_icon.png';
 import appConfig from '../../../constants/AppConfig';
 import Store from '../../../store';
 import { ostErrors } from '../../../services/OstErrors';
+import reduxGetter from '../../../services/ReduxGetters';
+import FastImage from 'react-native-fast-image';
+import Colors from '../../../theme/styles/Colors'
+
 
 const isActivated = function(user) {
   let userStatus = (user && user['ost_status']) || '';
@@ -17,28 +21,24 @@ const isActivated = function(user) {
 };
 
 const userClick = function(item, navigation) {
-  let headerText = 'Transaction';
-  if (item) {
-    //headerText = `${item.first_name} ${item.last_name}`;
-    headerText = `${item.name}`;
-  }
-  if (!CurrentUser.isUserActivated()) {
-    Toast.show({
-      text: ostErrors.getUIErrorMessage('user_not_active'),
-      buttonText: 'Okay'
-    });
-    return;
-  }
-  navigation.navigate('TransactionScreen', { transactionHeader: headerText, toUser: item });
+  navigation.push('UsersProfileScreen' ,{ userId:item.id });
 };
 
 const getUser = function(id) {
   return Store.getState().user_entities[`id_${id}`] || {};
 };
 
+
+getImageSrc = (user) => {
+    let imageSrc =  default_user_icon ; 
+    if(user.profile_image_id && reduxGetter.getImage(user.profile_image_id)){
+      imageSrc = { uri : reduxGetter.getImage(user.profile_image_id) } ;     
+    }
+  return (<Image style={styles.imageStyleSkipFont} source={imageSrc}></Image>);
+}
+
 const Users = (props) => {
   let user = getUser(props.id);
-
   if (!isEmpty(user) && isActivated(user)) {
     return (
       <TouchableOpacity
@@ -49,9 +49,8 @@ const Users = (props) => {
         <View style={styles.container}>
           <View style={styles.userContainer}>
             <View style={styles.txtWrapper}>
-              <Image style={styles.imageStyleSkipFont} source={default_user_icon}></Image>
+              {getImageSrc(user)}
               <Text numberOfLines={1} style={styles.item}>
-                {/* {user.first_name} {user.last_name} */}
                 {user.name} 
               </Text>
             </View>

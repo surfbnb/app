@@ -14,7 +14,7 @@ export const {
   upsertUserEntities,
   updateCurrentUser,
   logoutUser,
-  upsertFeedEntities,
+  upsertActivitiesEntities,
   upsertTransactionEntities,
   upsertGiffyEntities,
   upsertTagEntities,
@@ -43,7 +43,7 @@ const defaultState = {
   modal_cover: { message: '', footerText: '', show: false },
   toast: { message: '', show: false },
   current_user: {},
-  feed_entities: {},
+  activities_entities: {},
   transaction_entities: {},
   giffy_entities: {},
   tag_entities: {},
@@ -83,9 +83,9 @@ export const reducer = handleActions(
       ...state,
       current_user: assignIn({}, state.current_user, action.payload.current_user)
     }),
-    [upsertFeedEntities]: (state, action) => ({
+    [upsertActivitiesEntities]: (state, action) => ({
       ...state,
-      feed_entities: assignIn({}, state.feed_entities, action.payload.feed_entities)
+      activities_entities: assignIn({}, state.activities_entities, action.payload.activities_entities)
     }),
     [upsertTransactionEntities]: (state, action) => ({
       ...state,

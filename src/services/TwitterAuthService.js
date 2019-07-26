@@ -42,7 +42,6 @@ class TwitterAuthService {
                   });
                   return;
                 }
-                Pricer.getBalance();
                 InitWalletSdk.initializeDevice(oThis);
               } else {
                 this.onServerError(res);
