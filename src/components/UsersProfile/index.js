@@ -79,10 +79,11 @@ export default class UsersProfile extends Component {
     return (
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
         <ScrollView style={{ backgroundColor: '#fff', flex: 1 }}>
-          <View style={{ position: 'relative' }}>
             {this.isLoading()}
             <CoverImage userId={this.userId} />
-            <View style={[iconStyle.touchablesBtns, { position: 'absolute', zIndex: 100, top: '75%' }]}>
+          <View style={{ position: 'relative' }}>
+            <UserInfo userId={this.userId} isEdit={false} />
+            <View style={[iconStyle.touchablesBtns, { position: 'absolute', zIndex: 100, top: 10, right: 15 }]}>
               <TouchableOpacity
                 pointerEvents={'auto'}
                 onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
@@ -92,7 +93,6 @@ export default class UsersProfile extends Component {
               </TouchableOpacity>
             </View>
           </View>
-          <UserInfo userId={this.userId} isEdit={false} />
         </ScrollView>
       </SafeAreaView>
     );
