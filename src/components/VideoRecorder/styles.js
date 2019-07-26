@@ -40,5 +40,16 @@ export default styles = StyleSheet.create({
       width: '90%',
       marginLeft: 10,
       marginRight: 10
+    },
+    cancelButton: {
+      position: 'absolute',
+      top: 55,
+      height: 50,
+      width: 50,
+      left: 20
+    },
+    cancelText: {
+      color: 'white',
+      fontWeight: 'bold'
     }
   });

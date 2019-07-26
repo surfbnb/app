@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View, Image, Text, Platform } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, Text, Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
@@ -77,8 +77,14 @@ class VideoRecorder extends Component {
     );
   }
 
+
+  cancleVideoHandling = () =>{
+    this.props.navigation.goBack();
+  }
+
   cameraView() {
     return (
+      <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <RNCamera
           ref={(ref) => {
@@ -134,6 +140,11 @@ class VideoRecorder extends Component {
             indeterminate={false}
             style={styles.progressBar}
           />
+          <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
+            <View style={styles.cancelButton}>
+              <Text style={styles.cancelText}>X</Text>
+            </View>
+          </TouchableWithoutFeedback>
           <View
             style={{
               flex: 0,
@@ -145,6 +156,7 @@ class VideoRecorder extends Component {
           </View>
         </RNCamera>
       </View>
+      </SafeAreaView>
     );
   }
 
