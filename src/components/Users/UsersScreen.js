@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import UserList from './UserList';
 import { View, Text, FlatList, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
 import styles from './styles';
 import SupportingList from '../SupportingList';

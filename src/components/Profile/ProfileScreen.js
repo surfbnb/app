@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { ActivityIndicator, Platform } from 'react-native';
+import { connect } from 'react-redux';
+
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
 import UserInfo from '../CommonComponents/UserInfo';
@@ -9,7 +11,6 @@ import EmptyCoverImage from './EmptyCoverImage';
 import ProfileEdit from './ProfileEdit';
 import UserProfileCoverImage from './UserProfileCoverImage';
 import reduxGetter from '../../services/ReduxGetters';
-import Colors from '../../theme/styles/Colors';
 import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -17,21 +18,26 @@ import { Toast } from 'native-base';
 import PepoApi from '../../services/PepoApi';
 import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 
-class ProfileScreen extends Component {
+
+const mapStateToProps = (state, ownProps) => {
+  return {userId : CurrentUser.getUserId() }
+};
+
+class ProfileScreen extends PureComponent {
   static navigationOptions = (options) => {
+    const name = options.navigation.getParam("headerTitle") || reduxGetter.getName(CurrentUser.getUserId()) ; 
     return {
       headerBackTitle: null,
-      headerTitle: reduxGetter.getName(CurrentUser.getUserId()),
+      headerTitle: name ,
       headerRight: <LogoutComponent {...options} />
     };
   };
 
   constructor(props) {
     super(props);
-    this.userId = CurrentUser.getUserId();
     //TODO Shraddha : remove hardcoded values once tested on ios
-    this.coverImageId = reduxGetter.getUserCoverImageId(this.userId, this.state);
-    this.videoId = reduxGetter.getUserCoverVideoId(this.userId, this.state);
+    this.coverImageId = reduxGetter.getUserCoverImageId(this.props.userId, this.state);
+    this.videoId = reduxGetter.getUserCoverVideoId(this.props.userId, this.state);
     this.state = {
       isEdit: false,
       loading: true
@@ -39,8 +45,14 @@ class ProfileScreen extends Component {
     this.fetchUser();
   }
 
+  componentDidUpdate( prevProps ){
+    if(this.props.userId != prevProps.userId ){
+      this.props.navigation.setParams({ headerTitle:  reduxGetter.getName(CurrentUser.getUserId()) })
+    }
+  }
+
   fetchUser = () => {
-    return new PepoApi(`/users/${this.userId}/profile`)
+    return new PepoApi(`/users/${this.props.userId}/profile`)
       .get()
       .then((res) => {
         console.log('profile', res);
@@ -123,17 +135,18 @@ class ProfileScreen extends Component {
         {this.isLoading()}
         <BalanceHeader />
         <React.Fragment>
-          <UserProfileCoverImage userId={this.userId} uploadVideo={this.uploadVideo} />
-          <UpdateTimeStamp userId={this.userId} />
+          <UserProfileCoverImage userId={this.props.userId} uploadVideo={this.uploadVideo} />
+          <UpdateTimeStamp userId={this.props.userId} />
         </React.Fragment>
 
-        {!this.coverImageId && <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.userId} />}
+        {!this.coverImageId && <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.props.userId} />}
 
-        {!this.state.isEdit && <UserInfo userId={this.userId} isEdit={true} hideUserInfo={this.hideUserInfo} />}
-        {this.state.isEdit && <ProfileEdit userId={this.userId} hideProfileEdit={this.hideProfileEdit} />}
+        {!this.state.isEdit && <UserInfo userId={this.props.userId} isEdit={true} hideUserInfo={this.hideUserInfo} />}
+        {this.state.isEdit && <ProfileEdit userId={this.props.userId} hideProfileEdit={this.hideProfileEdit} />}
       </KeyboardAwareScrollView>
     );
   }
 }
 
-export default ProfileScreen;
+
+export default connect(mapStateToProps)(ProfileScreen) ;
