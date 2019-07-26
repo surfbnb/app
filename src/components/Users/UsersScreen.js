@@ -41,6 +41,8 @@ class Users extends Component {
     }
   };
 
+  _keyExtractor = (item, index) => `id_${item}` ;
+
   render() {  
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -72,11 +74,10 @@ class Users extends Component {
             style={{ width: '100%', flex: 1, flexDirection: 'row' }}
             horizontal={true}
             pagingEnabled={true}
-            data={[0, 0]}
-            viewabilityConfig={{
-              itemVisiblePercentThreshold: 70
-            }}
+            data={[0, 1]}
+            viewabilityConfig={{itemVisiblePercentThreshold: 70}}
             onViewableItemsChanged={this.toggleScreen}
+            keyExtractor={this._keyExtractor}
             renderItem={({ item, index }) => this.showInnerComponent(index)}
           />
         </View>
