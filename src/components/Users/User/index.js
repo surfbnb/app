@@ -51,7 +51,7 @@ const Users = (props) => {
             <View style={styles.txtWrapper}>
               {getImageSrc(user)}
               <Text numberOfLines={1} style={styles.item}>
-                {user.name} 
+                {user.name.length > 40 ? `${user.name.substring(0,40)}...` : user.name } 
               </Text>
             </View>
           </View>

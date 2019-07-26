@@ -9,14 +9,15 @@ export default styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent:'center',
-    paddingHorizontal:20,
-    paddingVertical:50,
-    marginHorizontal: 15
+    height: 100,
+    paddingHorizontal:20,    
+    margin: 15    
   },
   emptyListConatinerText:{
     color:Colors.greyLite,
     fontWeight:"500",
     textAlign:'center',
-    fontSize:14
+    fontSize:14,
+    alignSelf: 'center'
   }
 });
