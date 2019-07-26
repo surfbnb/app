@@ -23,7 +23,7 @@ class loginPopover extends React.Component {
 
   onSignUp = () => {
     TwitterAuthService.signUp();
-    Store.dispatch(hideLoginPopover());
+    //cannot hide popover here
   };
 
   render() {
