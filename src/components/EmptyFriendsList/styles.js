@@ -9,9 +9,9 @@ export default styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent:'center',
-    height:70,
     paddingHorizontal:20,
     paddingVertical:50,
+    marginHorizontal: 14
 
 
   },
@@ -19,6 +19,6 @@ export default styles = StyleSheet.create({
     color:Colors.greyLite,
     fontWeight:"500",
     textAlign:'center',
-    fontSize:12
+    fontSize:14
   }
 });

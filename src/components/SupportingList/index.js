@@ -3,9 +3,8 @@ import deepGet from 'lodash/get';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import { Text, Dimensions, SectionList, View } from 'react-native';
 import { FetchServices } from '../../services/FetchServices';
+import EmptyList from '../EmptyFriendsList/EmptyList';
 import User from '../Users/User';
-import EmptyList from "../EmptyFriendsList/EmptyList";
-
 const SUPPORTING = 'SUPPORTING';
 const SUGGESTIONS = 'SUGGESTIONS';
 const scrollDetectNext = true;
@@ -187,12 +186,14 @@ class SupportingList extends Component {
     let dataSource = [
       {
         title: '',
-        data: this.state.supportingList
+        key: SUPPORTING,
+        data:  this.state.supportingList
       }
     ];
     if (this.currentFetching == SUGGESTIONS) {
       dataSource.push({
         title: 'Suggestions',
+        key: SUGGESTIONS,
         data: this.state.suggestionsList
       });
     }
@@ -200,8 +201,15 @@ class SupportingList extends Component {
   }
 
   renderNoContent = (section) => {
+    console.log(section, section.key, section.key == SUGGESTIONS,  'section section');
+    let displayText = '';
+    if(section.key == SUPPORTING){
+      displayText = 'You are currently not supporting anyone'
+    } else if (section.key == SUGGESTIONS){
+      displayText = 'You are currently do not have any suggestions'
+    }
     if (section.data.length == 0) {
-      return <EmptyList displayText={`You are currently do not have any ${section.title}`} />
+      return <EmptyList displayText={displayText} />
     }
     return null;
   };
@@ -213,10 +221,6 @@ class SupportingList extends Component {
       </View>
     );
   };
-
-  // onEndReached = (...args)=>{
-  //   console.log('On onEndReached', args);
-  // }
 
   render() {
     console.log(this.getDataSource(), 'getDataSource');
