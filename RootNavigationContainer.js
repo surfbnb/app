@@ -30,12 +30,12 @@ import UsersProfileScreen from './src/components/UsersProfile';
 import CameraWorker from './src/services/CameraWorker';
 import PictureWorker from './src/services/PictureWorker';
 import CaptureVideo from './src/components/CaptureVideo';
-import PreviewRecordedVideo from './src/components/PreviewRecordedVideo';
 import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
 import CurrentUser from './src/models/CurrentUser'
 import deepGet from 'lodash/get';
+
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -102,9 +102,9 @@ const UserStack = createStackNavigator(
 const ProfileStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
+    BioScreen: BioScreen,
     VideoPlayer: VideoPlayer,
     CaptureVideo: CaptureVideo,
-    BioScreen: BioScreen,
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery
   },
@@ -112,8 +112,10 @@ const ProfileStack = createStackNavigator(
     headerLayoutPreset: 'center',
     mode: 'modal',
     navigationOptions: ({ navigation }) => {
+      const routeName = deepGet(navigation, 'state.routes[1].routeName') ; 
       return {
-        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false
+        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false,
+        swipeEnabled:  routeName == "CaptureVideo" || routeName == "CaptureImageScreen"  || routeName == "ImageGalleryScreen"? false : true
       };
     }
   }

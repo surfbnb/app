@@ -106,7 +106,7 @@ class SupportingList extends Component {
     console.log('getNextSupporting here');
     this.beforeNextSupporting();
 
-    this.fetchServices
+    this.fetchServiceSupporting
       .fetch()
       .then((res) => {
         this.onGetNextSupporting(res);
@@ -185,7 +185,7 @@ class SupportingList extends Component {
   getDataSource() {
     let dataSource = [
       {
-        title: '',
+        title: null,
         key: SUPPORTING,
         data:  this.state.supportingList
       }
@@ -215,6 +215,7 @@ class SupportingList extends Component {
   };
 
   renderSectionHeader = (section) => {
+    if (!section.section.title) return null;
     return (
       <View style={{padding: 12}}>
         <Text> {section.section.title} </Text>
@@ -234,6 +235,7 @@ class SupportingList extends Component {
         keyExtractor={(item) => `id_${item}`}
         refreshing={this.state.refreshing}
         onRefresh={this.refresh}
+        stickySectionHeadersEnabled={false}
         onEndReachedThreshold={0.1}
         // onScroll={this.getNext}
         onEndReached={this.getNext}

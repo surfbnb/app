@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text, BackHandler } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text, BackHandler, SafeAreaView } from 'react-native';
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/preview_play_icon.png';
@@ -91,6 +91,7 @@ class PreviewRecordedVideo extends Component {
 
   render() {
     return (
+      <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Video
           source={{ uri: this.cachedVideoUri }}
@@ -131,6 +132,7 @@ class PreviewRecordedVideo extends Component {
           </TouchableOpacity>
         </View>
       </View>
+      </SafeAreaView>
     );
   }
 
