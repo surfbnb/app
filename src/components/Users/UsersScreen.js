@@ -49,21 +49,21 @@ class Users extends Component {
             <TouchableWithoutFeedback onPress={this.toggleScreen}>
               <View
                 style={[
-                  styles.button,
-                  this.state.activeIndex == SUPPORTING_INDEX ? { borderBottomColor: 'red', borderBottomWidth: 2 } : {}
+                  styles.button, {borderRightColor: 'rgba(72, 72, 72, 0.1)', borderRightWidth: 1},
+                  this.state.activeIndex == SUPPORTING_INDEX ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderRightColor: 'transparent' } : {}
                 ]}
               >
-                <Text style={{ alignSelf: 'center' }}>Supporting </Text>
+                <Text style={[this.state.activeIndex == SUPPORTING_INDEX && {color: '#ef5869'} ]}>Supporting </Text>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.toggleScreen}>
               <View
                 style={[
-                  styles.button,
-                  this.state.activeIndex == SUPPORTER_INDEX ? { borderBottomColor: 'red', borderBottomWidth: 2 } : {}
+                  styles.button, {borderLeftColor: 'rgba(72, 72, 72, 0.1)', borderLeftWidth: 1},
+                  this.state.activeIndex == SUPPORTER_INDEX ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderLeftColor: 'transparent' } : {}
                 ]}
               >
-                <Text style={{ textAlign: 'center' }}> Supporters </Text>
+                <Text style={[this.state.activeIndex == SUPPORTER_INDEX && { color: '#ef5869'} ]}>Supporters</Text>
               </View>
             </TouchableWithoutFeedback>
           </View>

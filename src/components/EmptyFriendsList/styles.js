@@ -11,9 +11,7 @@ export default styles = StyleSheet.create({
     justifyContent:'center',
     paddingHorizontal:20,
     paddingVertical:50,
-    marginHorizontal: 14
-
-
+    marginHorizontal: 15
   },
   emptyListConatinerText:{
     color:Colors.greyLite,

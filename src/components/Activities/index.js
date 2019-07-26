@@ -51,21 +51,21 @@ class Activities extends Component {
             <TouchableWithoutFeedback onPress={this.toggleScreen}>
               <View
                 style={[
-                  styles.button,
-                  this.state.activeIndex == ALL ? { borderBottomColor: 'red', borderBottomWidth: 2 } : {}
+                  styles.button, {borderRightColor: 'rgba(72, 72, 72, 0.1)', borderRightWidth: 1},
+                  this.state.activeIndex == ALL ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderRightColor: 'transparent' } : {}
                 ]}
               >
-                <Text style={{ alignSelf: 'center' }}>You might like</Text>
+                <Text style={[this.state.activeIndex == ALL && { color: '#ef5869'} ]}>You might like</Text>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.toggleScreen}>
               <View
                 style={[
-                  styles.button,
-                  this.state.activeIndex == YOU ? { borderBottomColor: 'red', borderBottomWidth: 2 } : {}
+                  styles.button, {borderLeftColor: 'rgba(72, 72, 72, 0.1)', borderLeftWidth: 1},
+                  this.state.activeIndex == YOU ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderLeftColor: 'transparent' } : {}
                 ]}
               >
-                <Text style={{ textAlign: 'center' }}> Activity </Text>
+                <Text style={[this.state.activeIndex == YOU && { color: '#ef5869'} ]}> Activity </Text>
               </View>
             </TouchableWithoutFeedback>
           </View>
