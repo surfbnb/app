@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableWithoutFeedback , SafeAreaView } from 'react-native';
+import { View, Text, FlatList, TouchableWithoutFeedback , SafeAreaView , Dimensions} from 'react-native';
 import ActivityList from '../ActivitiesComponents/ActivityList';
 import CurrentUser from '../../models/CurrentUser';
 import styles from "./styles";
@@ -32,9 +32,9 @@ class Activities extends Component {
 
   _renderItem = ({item, index}) => { 
     if (index == ALL) {
-      return ( <ActivityList fetchUrl={'/activities'} />   );
+      return ( <ActivityList fetchUrl={'/activities'} style={{width: Dimensions.get('screen').width}} />   );
     } else if (index == YOU) {
-      return (  <ActivityList fetchUrl={`/users/${CurrentUser.getUserId()}/activities`} />  );
+      return (  <ActivityList fetchUrl={`/users/${CurrentUser.getUserId()}/activities`} style={{width: Dimensions.get('screen').width}} />  );
     }
   };  
 
