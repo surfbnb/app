@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, TouchableWithoutFeedback, SafeAreaView, Dimensions } from 'react-native';
 import styles from './styles';
 import SupportingList from '../SupportingList';
 import SupportersList from '../SupportersList';
@@ -36,14 +36,16 @@ class Users extends Component {
       );
     } else if (index == SUPPORTER_INDEX) {
       return (
+        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
         <SupportersList fetchUrl={'/users/contribution-by'} />
+        </View>
       );
     }
   };
 
   _keyExtractor = (item, index) => `id_${item}` ;
 
-  render() {  
+  render() {
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
@@ -69,6 +71,7 @@ class Users extends Component {
               </View>
             </TouchableWithoutFeedback>
           </View>
+
           <FlatList
             ref={(list) => (this.userFlatList = list)}
             style={{ width: '100%', flex: 1, flexDirection: 'row' }}
