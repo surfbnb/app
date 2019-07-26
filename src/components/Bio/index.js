@@ -35,9 +35,6 @@ class BioScreen extends PureComponent {
         this.onChangeTextDelegate  = this.props.navigation.getParam('onChangeTextDelegate') ;
     }
 
-
-
-  
     fetchHashTags = ( keyword ) => {
       clearTimeout( this.reqTimer ) ;
       const reqParam = keyword.substr(1); 
@@ -70,6 +67,7 @@ class BioScreen extends PureComponent {
 
     changeValue( val ){
       val = val || "";
+      val = val.trim();
       if( val.length <= 300 ){
         this.onChangeTextDelegate && this.onChangeTextDelegate( val );
         this.setState({ value: val , count :val.length });

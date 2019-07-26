@@ -50,11 +50,25 @@ const getRouteName = ( navigation ) => {
   return routeName ; 
 }
 
+
+const modalStackConfig = {
+  headerLayoutPreset: 'center',
+  headerMode: 'none',
+  mode: 'modal',
+  navigationOptions: ({ navigation }) => {
+    const routeName = getRouteName( navigation );
+    return {
+      swipeEnabled:CurrentUser.getOstUserId()?true:false,
+      tabBarVisible: routeName != "TransactionScreen" ? true : false
+    };
+  }
+}
+
 const HomeTransactionStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
-    TransactionScreen: TransactionScreen,
-    UsersProfileScreen: UsersProfileScreen
+    UsersProfileScreen: UsersProfileScreen,
+    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -68,56 +82,49 @@ const HomeStack = createStackNavigator(
     EditTx: EditTx,
     VideoPlayer: VideoPlayer
   },
+  {...modalStackConfig}
+);
+
+const ActivityTransactionStack = createStackNavigator(
   {
-    headerLayoutPreset: 'center',
-    headerMode: 'none',
-    mode: 'modal',
-    navigationOptions: ({ navigation }) => {
-      const routeName = getRouteName( navigation );
-      console.log("HomeStack navigation " , navigation );
-      return {
-        swipeEnabled:CurrentUser.getOstUserId()?true:false,
-        tabBarVisible: routeName != "TransactionScreen" ? true : false
-      };
-    }
+    Activities: Activities,
+    UsersProfileScreen: UsersProfileScreen,
+    TransactionScreen: TransactionScreen
+  },
+  {
+    headerLayoutPreset: 'center'
   }
 );
 
 const ActivityStack = createStackNavigator(
   {
-    Activities: Activities,
+    ActivityTransactionStack: ActivityTransactionStack,
+    Giphy: Giphy,
+    EditTx: EditTx,
+    VideoPlayer: VideoPlayer
+  },
+  {...modalStackConfig}
+);
+
+const UserTransactionStack = createStackNavigator(
+  {
+    UsersScreen: Users,
     UsersProfileScreen: UsersProfileScreen,
-    TransactionScreen: TransactionScreen,
+    TransactionScreen: TransactionScreen
   },
   {
-    headerLayoutPreset: 'center',
-    navigationOptions: ({ navigation }) => {
-      const routeName = getRouteName( navigation );
-      console.log("ActivityStack navigation " , routeName );
-      return {
-        tabBarVisible: routeName != "TransactionScreen" ? true : false
-      };
-    }
+    headerLayoutPreset: 'center'
   }
 );
 
 const UserStack = createStackNavigator(
   {
-    UsersScreen: Users,
-    UsersProfileScreen: UsersProfileScreen,
-    TransactionScreen: TransactionScreen,
+    UserTransactionStack: UserTransactionStack,
+    Giphy: Giphy,
+    EditTx: EditTx,
+    VideoPlayer: VideoPlayer
   },
-  {
-    headerLayoutPreset: 'center',
-    navigationOptions: ({ navigation }) => {
-      const routeName = getRouteName( navigation );
-      console.log("UserStack navigation " , routeName );
-      return {
-        swipeEnabled:CurrentUser.getOstUserId()?true:false,
-        tabBarVisible: routeName != "TransactionScreen" ? true : false
-      };
-    }
-  }
+  {...modalStackConfig}
 );
 
 const ProfileStack = createStackNavigator(
