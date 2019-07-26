@@ -13,6 +13,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     videoImgUrl: reduxGetter.getVideoImgUrl(ownProps.videoId, state),
     videoUrl: reduxGetter.getVideoUrl(ownProps.videoId, state),
+    //TODO: logic should not be decided on login popover--Ashutosh
     loginPopover: ownProps.isActive && state.login_popover.show
   };
 };
@@ -29,7 +30,7 @@ class VideoWrapper extends PureComponent {
     this.isPixelCalledOnView = false;
     this.isPixelCalledOnEnd = false;
     this.minTimeConsideredForView = 4;
-    this.source = {} ;
+    this.source = {};
   }
 
   componentDidMount() {
@@ -57,7 +58,6 @@ class VideoWrapper extends PureComponent {
     };
 
     AppState.addEventListener('change', this._handleAppStateChange);
-
   }
 
   componentWillUnmount() {
@@ -112,14 +112,16 @@ class VideoWrapper extends PureComponent {
   };
 
   onLoad = (params) => {
-    if(this.state.buffer) { this.setState({buffer:false}); }
+    if (this.state.buffer) {
+      this.setState({ buffer: false });
+    }
     if (this.minTimeConsideredForView > params.duration) this.minTimeConsideredForView = params.duration;
   };
 
   onProgress = (params) => {
     if (this.isPixelCalledOnView) return;
     if (params.currentTime >= this.minTimeConsideredForView) {
-      this.callPixelService({ event_name: 'video_viewed'});
+      this.callPixelService({ event_name: 'video_viewed' });
       this.isPixelCalledOnView = true;
     }
   };
@@ -143,21 +145,23 @@ class VideoWrapper extends PureComponent {
       <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked}>
         <View>
           {this.props.doRender && (
-              <Video
+            <Video
               poster={this.props.videoImgUrl}
               posterResizeMode={this.props.posterResizeMode || 'cover'}
               style={[inlineStyles.fullHeightSkipFont, this.props.style]}
               paused={this.isPaused()}
               resizeMode={this.props.resizeMode || 'cover'}
-              source={{ uri: this.props.videoUrl }} 
+              source={{ uri: this.props.videoUrl }}
               repeat={this.props.repeat || true}
               onLoad={this.onLoad}
               onProgress={this.onProgress}
               onEnd={this.onEnd}
             />
           )}
-          { this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont}/>}
-          {this.isPaused() && !this.state.buffer &&  this.isUserPaused && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
+          {this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont} />}
+          {this.isPaused() && !this.state.buffer && this.isUserPaused && (
+            <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>
+          )}
         </View>
       </TouchableWithoutFeedback>
     );
