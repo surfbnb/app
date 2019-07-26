@@ -33,11 +33,11 @@ class Activities extends Component {
 
   _renderItem = ({item, index}) => { 
     if (index == ALL) {
-      return ( <ActivityList fetchUrl={'/activities'} style={{width: Dimensions.get('screen').width}} />   );
+      return ( <ActivityList fetchUrl={'/activities'} style={{width: Dimensions.get('window').width}} />   );
     } else if (index == YOU) {
-      return (  <ActivityList fetchUrl={`/users/${CurrentUser.getUserId()}/activities`} style={{width: Dimensions.get('screen').width}} />  );
+      return (  <ActivityList fetchUrl={`/users/${CurrentUser.getUserId()}/activities`} style={{width: Dimensions.get('window').width}} />  );
     }
-  };  
+  };
 
  onViewableItemsChanged = () => {
    console.log("onViewableItemsChanged========");
