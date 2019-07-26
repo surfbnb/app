@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UserList from './UserList';
-import { View, Text, FlatList, TouchableWithoutFeedback, SafeAreaView, Dimensions } from 'react-native';
+import { View, Text, FlatList, TouchableWithoutFeedback, SafeAreaView, Dimensions, Animated } from 'react-native';
 import styles from './styles';
 import SupportingList from '../SupportingList';
 import SupportersList from '../SupportersList';
@@ -19,12 +19,13 @@ class Users extends Component {
     super(props);
     this.props.navigation.tab = 'Users';
     this.state = {      
-      activeIndex: SUPPORTING_INDEX
+      activeIndex: SUPPORTING_INDEX,
+      animatedMargin: new Animated.Value(0)
     };
   }
 
 
-  toggleScreen = () => {
+  toggleScreen = () => {    
     let newActiveIndex =  1 - this.state.activeIndex;
     this.setState({ activeIndex : newActiveIndex });
     this.userFlatList.scrollToIndex({ index: newActiveIndex });
@@ -44,9 +45,25 @@ class Users extends Component {
     }
   };
 
+  flScrolled = (scrollEvent) => {
+    let nativeEvent = scrollEvent.nativeEvent;
+    Animated.timing( this.state.animatedMargin, { toValue: nativeEvent.contentOffset.x/2, duration: 0.1}).start();
+    if ( Dimensions.get('window').width == nativeEvent.contentOffset.x){
+      this.setState({ activeIndex : SUPPORTER_INDEX });
+      this.userFlatList.scrollToIndex({ index: SUPPORTER_INDEX });      
+    } else if (nativeEvent.contentOffset.x == 0){
+      this.setState({ activeIndex : SUPPORTING_INDEX });
+      this.userFlatList.scrollToIndex({ index: SUPPORTING_INDEX });
+    }
+  }
+
   _keyExtractor = (item, index) => `id_${item}` ;
 
-  render() {
+  renderItem = (itemInfo) => {    
+    return this.showInnerComponent(itemInfo.index);
+  };
+
+  render() {    
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
@@ -55,23 +72,24 @@ class Users extends Component {
               <View
                 style={[
                   styles.button, {borderRightColor: 'rgba(72, 72, 72, 0.1)', borderRightWidth: 1},
-                  this.state.activeIndex == SUPPORTING_INDEX ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderRightColor: 'transparent' } : {}
+                  this.state.activeIndex == SUPPORTING_INDEX ? { color: '#ef5869', borderRightColor: 'transparent' } : {}
                 ]}
               >
                 <Text style={[this.state.activeIndex == SUPPORTING_INDEX && {color: '#ef5869'} ]}>Supporting </Text>
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={this.toggleScreen}>
+            <TouchableWithoutFeedback onPress={this.toggleScreen} >
               <View
                 style={[
                   styles.button, {borderLeftColor: 'rgba(72, 72, 72, 0.1)', borderLeftWidth: 1},
-                  this.state.activeIndex == SUPPORTER_INDEX ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderLeftColor: 'transparent' } : {}
+                  this.state.activeIndex == SUPPORTER_INDEX ? {  color: '#ef5869', borderLeftColor: 'transparent' } : {}
                 ]}
               >
                 <Text style={[this.state.activeIndex == SUPPORTER_INDEX && { color: '#ef5869'} ]}>Supporters</Text>
               </View>
             </TouchableWithoutFeedback>
           </View>
+          <Animated.View style={[styles.bottomSliderStyle, {marginLeft: this.state.animatedMargin}]}></Animated.View>
 
           <FlatList
             ref={(list) => (this.userFlatList = list)}
@@ -79,10 +97,11 @@ class Users extends Component {
             horizontal={true}
             pagingEnabled={true}
             data={[0, 1]}
-            viewabilityConfig={{itemVisiblePercentThreshold: 70}}
+            viewabilityConfig={{itemVisiblePercentThreshold: 50}}
             onViewableItemsChanged={this.toggleScreen}
             keyExtractor={this._keyExtractor}
-            renderItem={({ item, index }) => this.showInnerComponent(index)}
+            renderItem={this.renderItem}
+            onScroll={this.flScrolled}
           />
         </View>
       </SafeAreaView>

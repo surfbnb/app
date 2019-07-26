@@ -4,33 +4,24 @@ export default inlineStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f6f6f6'
-    // paddingLeft: 10,
-    // paddingRight: 10
   },
   buttonContainer: {
-    // height: 50,
     flexDirection: 'row',
-    paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(159, 192, 207, 0.2)'
+    borderBottomColor: 'rgba(159, 192, 207, 0.2)',
+    height: 60
   },
   button: {     
-    width: Dimensions.get('window').width / 2 ,
-    // borderLeftColor: 'red',
-    // borderLeftWidth: 2,
-    // height: 50,
-    // alignSelf: 'center',
+    width: Dimensions.get('window').width / 2,
+    height: "100%",
     alignItems: 'center',
-    // justifyContent: 'center',
+    justifyContent: 'center',
     paddingVertical: 2
   },
-  buttonView: {
-    width: Dimensions.get('window').width ,
-    backgroundColor: 'yellow'
-  },
-  buttonViewBlue: {    
-    width: Dimensions.get('window').width ,
-    backgroundColor: 'orange'
+  bottomSliderStyle: {
+    width: Dimensions.get('window').width / 2,    
+    height:1,
+    backgroundColor: '#ef5869'
   }
 
 });
