@@ -8,6 +8,8 @@ import Store from '../../store';
 import { upsertRecordedVideo, videoInProcessing } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
+import { withNavigationFocus } from 'react-navigation';
+
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Close Camera', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
 const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
@@ -33,7 +35,9 @@ class PreviewRecordedVideo extends Component {
   }
 
   handleBackButtonClick = () => {
-    Store.dispatch(upsertRecordedVideo({ do_discard: true }));
+    if (this.props.isFocused) {
+      Store.dispatch(upsertRecordedVideo({ do_discard: true }));
+    }
   };
 
   enableStartUploadFlag = () => {
@@ -143,4 +147,4 @@ class PreviewRecordedVideo extends Component {
 }
 
 //make this component available to the app
-export default PreviewRecordedVideo;
+export default withNavigationFocus(PreviewRecordedVideo);
