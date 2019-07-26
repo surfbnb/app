@@ -57,7 +57,7 @@ class FfmpegProcesser {
   getCoverOutputPath() {
     let inputUriArr = this.inputFileUri.split('/');
     let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
-    this.outputFileName = `output_${Date.now()}.png`;
+    this.outputFileName = `output_${Date.now()}.jpg`;
     outputPath.push(this.outputFileName);
     this.coverFileOutputPath = outputPath.join('/');
   }
