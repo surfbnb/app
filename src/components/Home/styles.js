@@ -7,11 +7,18 @@ import { CUSTOM_TAB_Height } from '../../theme/constants';
 let stylesMap = {
   fullScreen: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    ...ifIphoneX(
+      {
+        height: Dimensions.get('window').height - CUSTOM_TAB_Height - getBottomSpace([true])
+      },
+      {
+        height: Dimensions.get('window').height - CUSTOM_TAB_Height
+      }
+    )
   },
   fullHeightSkipFont: {
     width: '100%',
-    height: Dimensions.get('window').height
+    height: '100%'
   },
   touchablesBtns: {
     width: '20%',
@@ -40,15 +47,27 @@ let stylesMap = {
   bottomContainer: {
     width: '100%',
     position: 'absolute',
-    ...ifIphoneX(
-      {
-        bottom: getBottomSpace([true])
-      },
-      {
-        bottom: 0
-      }
-    )
+    bottom: 0
+    // ...ifIphoneX(
+    //   {
+    //     bottom: 0
+    //   },
+    //   {
+    //     bottom: 0
+    //   }
+    // )
   },
+  // bottomExtraSpace: {
+  //   backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  //   ...ifIphoneX(
+  //     {
+  //       height: CUSTOM_TAB_Height + getBottomSpace([true])
+  //     },
+  //     {
+  //       height: CUSTOM_TAB_Height,
+  //     }
+  //   )
+  // },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     // maxHeight: 150,
@@ -113,5 +132,6 @@ let stylesMap = {
     left: Dimensions.get('window').width * 0.5 - 12
   }
 };
+
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

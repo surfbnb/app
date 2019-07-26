@@ -21,14 +21,13 @@ class loadingModalCover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showLoadingImage: false,
       rotate: new Animated.Value(0),
       scale: new Animated.Value(0.1)
     };
   }
 
-  animatewa(){
-    Animated.sequence([
+  getAnimation(){
+    return Animated.sequence([
       Animated.delay(800),
       Animated.timing(this.state.rotate, {
         toValue: 1,
@@ -42,22 +41,9 @@ class loadingModalCover extends React.Component {
           useNativeDriver: true
         })
       )
-    ]).start();
+    ])
   };
 
-  componentDidMount() {
-    this.animatewa();
-    this.timerIDLoadingImage = setInterval(() => {
-      this.props.show &&
-        this.setState({
-          showLoadingImage: !this.state.showLoadingImage
-        });
-    }, 800);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerIDLoadingImage);
-  }
   render() {
     const rotateData = this.state.rotate.interpolate({
       inputRange: [0, 1],
@@ -73,9 +59,9 @@ class loadingModalCover extends React.Component {
         {rotate: rotateData}
       ],
     };
+    this.props.show ? this.getAnimation().start() : this.getAnimation().stop();
     return (
       <View>
-        {this.props.show && (
           <Modal
             animationType="fade"
             transparent={true}
@@ -84,15 +70,9 @@ class loadingModalCover extends React.Component {
             hasBackdrop={false}
           >
             <View style={inlineStyles.backgroundStyle}>
-              {/*<Image*/}
-                {/*style={inlineStyles.loadingImage}*/}
-                {/*source={this.state.showLoadingImage ? Loading_right : Loading_left}*/}
-              {/*/>*/}
-              {/*<View style={{backgroundColor: 'red', height: 60, width: 60, alignItems: 'center', justifyContent: 'center'}}>*/}
                 <Animated.Image
-                  style={[ animationStyle, {width: 40, height: 40, marginBottom: 30}]}
-                  source={this.state.showLoadingImage ? pepoTxIcon : pepoTxIcon }/>
-              {/*</View>*/}
+                  style={[ animationStyle, {width: 40, height: 40, marginBottom: 30} ]}
+                  source={pepoTxIcon}/>
               <Text style={inlineStyles.loadingMessage}>{this.props.message}</Text>
               <Progress.Bar
                 indeterminate={true}
@@ -105,7 +85,6 @@ class loadingModalCover extends React.Component {
               <Text style={inlineStyles.footerText}>{this.props.footerText}</Text>
             </View>
           </Modal>
-        )}
       </View>
     );
   }
