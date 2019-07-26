@@ -186,9 +186,9 @@ class BioScreen extends PureComponent {
       return endIndex ; 
     }
 
-    // submitEvent(){
-    //   this.props.navigation.goBack();
-    //   }
+    submitEvent(props){
+      props.navigation.goBack();
+      }
 
     render() {
       return (
@@ -200,7 +200,7 @@ class BioScreen extends PureComponent {
             data={this.state.data}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
-            ListHeaderComponent={<TextInputBio value={this.state.value} count={this.state.count}  locationGetter={this.locationGetter} onChangeText={this.onChangeText}/>}
+            ListHeaderComponent={<TextInputBio value={this.state.value} count={this.state.count} submitEvent={()=>{this.submitEvent(this.props)}}  locationGetter={this.locationGetter} onChangeText={this.onChangeText}/>}
             stickyHeaderIndices={[0]}
           />
         </View>
@@ -233,10 +233,10 @@ class BioScreen extends PureComponent {
             placeholder={'Bio'}
             multiline = {true}
             numberOfLines = {3}
-            returnKeyType="search"
-            returnKeyLabel="Search"
-            // blurOnSubmit={true}
-            // onSubmitEditing={()=>{this.props.submitEvent()}}
+            returnKeyType="done"
+            returnKeyLabel="Done"
+            blurOnSubmit={true}
+            onSubmitEditing={()=>{this.props.submitEvent()}}
             ref="bio"
           />
           <Text style={inlineStyles.countStyle}>{this.props.count} /300</Text>
