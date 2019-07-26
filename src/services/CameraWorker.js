@@ -101,6 +101,8 @@ class CameraWorker extends PureComponent {
     }
 
     if (this.props.recorded_video.do_upload) {
+      ! ReduxGetters.getVideoProcessingStatus() && Store.dispatch(videoInProcessing(true));
+
       console.log(
         'processVideo :: Got upload consent. Uploading video and cover image to s3 and attempting post Video with Cover Image...'
       );
@@ -150,8 +152,7 @@ class CameraWorker extends PureComponent {
       this.props.recorded_video.raw_video &&
       !this.props.recorded_video.cover_capture_processing &&
       !this.props.recorded_video.cover_image
-    ) {
-      Store.dispatch(videoInProcessing(true));
+    ) {      
       Store.dispatch(
         upsertRecordedVideo({
           cover_capture_processing: true
@@ -239,14 +240,16 @@ class CameraWorker extends PureComponent {
       );
 
       this.uploadToS3(this.props.recorded_video.compressed_video, 'video')
-        .then((s3Video) => {          
+        .then((s3Video) => {
+          console.log('uploadVideo success :: s3Video', s3Video);
           Store.dispatch(
             upsertRecordedVideo({
               s3_video: s3Video
             })
           );
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log('uploadVideo error :: s3Video', err);
           Store.dispatch(
             upsertRecordedVideo({
               video_s3_upload_processing: false
@@ -266,13 +269,15 @@ class CameraWorker extends PureComponent {
 
       this.uploadToS3(this.props.recorded_video.cover_image, 'image')
         .then((s3CoverImage) => {          
+          console.log('uploadCoverImage success :: s3CoverImage', s3CoverImage);
           Store.dispatch(
             upsertRecordedVideo({
               s3_cover_image: s3CoverImage
             })
           );
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log('uploadCoverImage error :: s3CoverImage', err);
           Store.dispatch(
             upsertRecordedVideo({
               cover_s3_upload_processing: false
