@@ -77,14 +77,14 @@ class UserInfo extends React.PureComponent {
           <Text style={inlineStyle.userName}>{this.props.userName}</Text>
         </View>
         {this.editButton()}
-        {this.props.bio && (
+        {this.props.bio ? (
         <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>
-        )}
-        {this.props.link && (
+        ) : <View/>}
+        {this.props.link ? (
           <Text style={[{color:Colors.summerSky,textAlign:'center'}]} onPress={()=>{Linking.openURL(this.props.link)}}>
             {this.props.link}
           </Text>
-        )}
+        ) : <View/>}
 
         <View style={inlineStyle.numericInfoWrapper}>
           <View style={{marginHorizontal:10}}>
