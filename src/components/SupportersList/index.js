@@ -1,68 +1,65 @@
 import React, { PureComponent } from 'react';
-import {  FlatList, Dimensions } from 'react-native';
-import deepGet from "lodash/get";
-import flatlistHOC from "../CommonComponents/flatlistHOC";
+import { FlatList, Dimensions } from 'react-native';
+import deepGet from 'lodash/get';
+import flatlistHOC from '../CommonComponents/flatlistHOC';
 import User from '../Users/User';
+import EmptyList from '../EmptyFriendsList/EmptyList';
 
-
-let currentIndex = 0 ; 
+let currentIndex = 0;
 
 class SupportersList extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeIndex: 0
+    };
+  }
 
-    constructor(props){
-        super(props);
-        this.state = {
-            activeIndex : 0  
-        }
-    }
+  onViewableItemsChanged(data) {
+    currentIndex = deepGet(data, 'viewableItems[0].index');
+  }
 
-    onViewableItemsChanged( data ){
-        currentIndex =  deepGet( data , "viewableItems[0].index");
-    }
+  setActiveIndex() {
+    if (this.state.activeIndex == currentIndex) return;
+    this.setState({ activeIndex: currentIndex });
+  }
 
-    setActiveIndex() {
-        if( this.state.activeIndex == currentIndex )return;
-        this.setState( { activeIndex : currentIndex } );
-    }
+  _keyExtractor = (item, index) => `id_${item}`;
 
-    _keyExtractor = (item, index) => `id_${item}` ;
+  _renderItem = ({ item, index }) => {
+    return <User id={item} />;
+  };
 
-    _renderItem = ({item, index}) => {
-        return (<User id={item} />);
-           
-    };    
+  onMomentumScrollEndCallback = () => {
+    this.setActiveIndex();
+  };
 
-    onMomentumScrollEndCallback = () => {
-        this.setActiveIndex();
-    }
-
-    render(){        
-        return(
-            <FlatList
-                extraData={this.state}
-                snapToAlignment={"top"}
-                viewabilityConfig={{
-                  itemVisiblePercentThreshold: 90
-                }}
-                pagingEnabled={true}
-                decelerationRate={"fast"}
-                data={this.props.list}
-                onEndReached={this.props.getNext}
-                onRefresh={this.props.refresh}
-                keyExtractor={this._keyExtractor}
-                refreshing={this.props.refreshing}
-                initialNumToRender={3}
-                onEndReachedThreshold={7}
-                style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-                onViewableItemsChanged={ this.onViewableItemsChanged}
-                onMomentumScrollEnd={this.onMomentumScrollEndCallback}
-                onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
-                renderItem={this._renderItem}
-                showsVerticalScrollIndicator={false}
-            />
-        );
-    }
-
+  render() {
+    return this.props.list.length > 0 ? (
+      <FlatList
+        extraData={this.state}
+        snapToAlignment={'top'}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 90
+        }}
+        pagingEnabled={true}
+        decelerationRate={'fast'}
+        data={this.props.list}
+        onEndReached={this.props.getNext}
+        onRefresh={this.props.refresh}
+        keyExtractor={this._keyExtractor}
+        refreshing={this.props.refreshing}
+        initialNumToRender={3}
+        onEndReachedThreshold={7}
+        style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+        onViewableItemsChanged={this.onViewableItemsChanged}
+        onMomentumScrollEnd={this.onMomentumScrollEndCallback}
+        onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
+        renderItem={this._renderItem}
+        showsVerticalScrollIndicator={false}
+      />
+    ) : <EmptyList displayText='You are currently do not have any supporters' />;
+  }
 }
 
-export default flatlistHOC( SupportersList , true );
+export default flatlistHOC(SupportersList, true);

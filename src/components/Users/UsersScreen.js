@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import UserList from './UserList';
-import { View, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, FlatList, TouchableWithoutFeedback, SafeAreaView, Dimensions } from 'react-native';
 import styles from './styles';
 import SupportingList from '../SupportingList';
 import SupportersList from '../SupportersList';
@@ -11,7 +10,7 @@ const SUPPORTER_INDEX = 1;
 class Users extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      headerTitle: 'Friends',
+      header: null,
       headerBackTitle: null
     };
   };
@@ -32,55 +31,60 @@ class Users extends Component {
 
   showInnerComponent = (index) => {
     if (index == SUPPORTING_INDEX) {
-      return (
-        
+      return (        
         <SupportingList fetchUrl={'/users/contribution-to'} />      
       );
     } else if (index == SUPPORTER_INDEX) {
       return (
+        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
         <SupportersList fetchUrl={'/users/contribution-by'} />
+        </View>
       );
     }
   };
 
-  render() {  
+  _keyExtractor = (item, index) => `id_${item}` ;
+
+  render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.buttonContainer}>
-          <TouchableWithoutFeedback onPress={this.toggleScreen}>
-            <View
-              style={[
-                styles.button,
-                this.state.activeIndex == SUPPORTING_INDEX ? { borderBottomColor: 'red', borderBottomWidth: 2 } : {}
-              ]}
-            >
-              <Text style={{ alignSelf: 'center' }}>Supporting </Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={this.toggleScreen}>
-            <View
-              style={[
-                styles.button,
-                this.state.activeIndex == SUPPORTER_INDEX ? { borderBottomColor: 'red', borderBottomWidth: 2 } : {}
-              ]}
-            >
-              <Text style={{ textAlign: 'center' }}> Supporters </Text>
-            </View>
-          </TouchableWithoutFeedback>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.container}>
+          <View style={styles.buttonContainer}>
+            <TouchableWithoutFeedback onPress={this.toggleScreen}>
+              <View
+                style={[
+                  styles.button, {borderRightColor: 'rgba(72, 72, 72, 0.1)', borderRightWidth: 1},
+                  this.state.activeIndex == SUPPORTING_INDEX ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderRightColor: 'transparent' } : {}
+                ]}
+              >
+                <Text style={[this.state.activeIndex == SUPPORTING_INDEX && {color: '#ef5869'} ]}>Supporting </Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={this.toggleScreen}>
+              <View
+                style={[
+                  styles.button, {borderLeftColor: 'rgba(72, 72, 72, 0.1)', borderLeftWidth: 1},
+                  this.state.activeIndex == SUPPORTER_INDEX ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderLeftColor: 'transparent' } : {}
+                ]}
+              >
+                <Text style={[this.state.activeIndex == SUPPORTER_INDEX && { color: '#ef5869'} ]}>Supporters</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+
+          <FlatList
+            ref={(list) => (this.userFlatList = list)}
+            style={{ width: '100%', flex: 1, flexDirection: 'row' }}
+            horizontal={true}
+            pagingEnabled={true}
+            data={[0, 1]}
+            viewabilityConfig={{itemVisiblePercentThreshold: 70}}
+            onViewableItemsChanged={this.toggleScreen}
+            keyExtractor={this._keyExtractor}
+            renderItem={({ item, index }) => this.showInnerComponent(index)}
+          />
         </View>
-        <FlatList
-          ref={(list) => (this.userFlatList = list)}
-          style={{ width: '100%', flex: 1, flexDirection: 'row' }}
-          horizontal={true}
-          pagingEnabled={true}
-          data={[0, 0]}
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 70
-          }}
-          onViewableItemsChanged={this.toggleScreen}
-          renderItem={({ item, index }) => this.showInnerComponent(index)}
-        />
-      </View>
+      </SafeAreaView>
     );
   }
 }

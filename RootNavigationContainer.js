@@ -52,7 +52,7 @@ const modalStackConfig = {
 const UserTransactionStack = createStackNavigator(
   {
     UsersScreen: Users,
-    TransactionScreen: TransactionScreen
+    UsersProfileScreen: UsersProfileScreen
   },
   {
     headerLayoutPreset: 'center'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableWithoutFeedback , SafeAreaView } from 'react-native';
+import { View, Text, FlatList, TouchableWithoutFeedback , SafeAreaView , Dimensions} from 'react-native';
 import ActivityList from '../ActivitiesComponents/ActivityList';
 import CurrentUser from '../../models/CurrentUser';
 import styles from "./styles";
@@ -11,7 +11,8 @@ const YOU = 1;
 class Activities extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      header: null
+      header: null,
+      headerBackTitle: null
     };
   };
 
@@ -32,11 +33,11 @@ class Activities extends Component {
 
   _renderItem = ({item, index}) => { 
     if (index == ALL) {
-      return ( <ActivityList fetchUrl={'/activities'} />   );
+      return ( <ActivityList fetchUrl={'/activities'} style={{width: Dimensions.get('window').width}} />   );
     } else if (index == YOU) {
-      return (  <ActivityList fetchUrl={`/users/${CurrentUser.getUserId()}/activities`} />  );
+      return (  <ActivityList fetchUrl={`/users/${CurrentUser.getUserId()}/activities`} style={{width: Dimensions.get('window').width}} />  );
     }
-  };  
+  };
 
  onViewableItemsChanged = () => {
    console.log("onViewableItemsChanged========");
@@ -51,21 +52,21 @@ class Activities extends Component {
             <TouchableWithoutFeedback onPress={this.toggleScreen}>
               <View
                 style={[
-                  styles.button,
-                  this.state.activeIndex == ALL ? { borderBottomColor: 'red', borderBottomWidth: 2 } : {}
+                  styles.button, {borderRightColor: 'rgba(72, 72, 72, 0.1)', borderRightWidth: 1},
+                  this.state.activeIndex == ALL ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderRightColor: 'transparent' } : {}
                 ]}
               >
-                <Text style={{ alignSelf: 'center' }}>You might like</Text>
+                <Text style={[this.state.activeIndex == ALL && { color: '#ef5869'} ]}>You might like</Text>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.toggleScreen}>
               <View
                 style={[
-                  styles.button,
-                  this.state.activeIndex == YOU ? { borderBottomColor: 'red', borderBottomWidth: 2 } : {}
+                  styles.button, {borderLeftColor: 'rgba(72, 72, 72, 0.1)', borderLeftWidth: 1},
+                  this.state.activeIndex == YOU ? { borderBottomColor: '#ef5869', borderBottomWidth: 1, marginBottom: -11, color: '#ef5869', borderLeftColor: 'transparent' } : {}
                 ]}
               >
-                <Text style={{ textAlign: 'center' }}> Activity </Text>
+                <Text style={[this.state.activeIndex == YOU && { color: '#ef5869'} ]}> Activity </Text>
               </View>
             </TouchableWithoutFeedback>
           </View>

@@ -3,9 +3,8 @@ import deepGet from 'lodash/get';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import { Text, Dimensions, SectionList, View } from 'react-native';
 import { FetchServices } from '../../services/FetchServices';
+import EmptyList from '../EmptyFriendsList/EmptyList';
 import User from '../Users/User';
-import EmptyList from "../EmptyFriendsList/EmptyList";
-
 const SUPPORTING = 'SUPPORTING';
 const SUGGESTIONS = 'SUGGESTIONS';
 const scrollDetectNext = true;
@@ -38,9 +37,6 @@ class SupportingList extends Component {
     this.refreshSupportingData();
   };
 
-
-  
-
   cleanInstanceVariable() {
     this.fetchServiceSupporting = new FetchServices(GET_SUPPORTING_URL);
     this.fetchServiceSuggestions = new FetchServices(GET_SUGGESTIONS_URL);
@@ -53,7 +49,6 @@ class SupportingList extends Component {
   }
 
   refreshSupportingData = () => {
-    
     this.beforeRefreshSupportings();
     this.fetchServiceSupporting
       .refresh()
@@ -137,9 +132,8 @@ class SupportingList extends Component {
   };
 
   getNextSuggestions = () => {
-    console.log('getNextSuggestions');
     if (this.state.loadingNextSuggestions || this.state.refreshing || !this.fetchServiceSuggestions.hasNextPage) return;
-    console.log('getNextSuggestions here');
+
     this.beforeNextSuggestions();
     this.fetchServiceSuggestions
       .fetch()
@@ -191,13 +185,15 @@ class SupportingList extends Component {
   getDataSource() {
     let dataSource = [
       {
-        title: 'Supporting',
-        data: this.state.supportingList
+        title: '',
+        key: SUPPORTING,
+        data:  this.state.supportingList
       }
     ];
     if (this.currentFetching == SUGGESTIONS) {
       dataSource.push({
         title: 'Suggestions',
+        key: SUGGESTIONS,
         data: this.state.suggestionsList
       });
     }
@@ -205,19 +201,26 @@ class SupportingList extends Component {
   }
 
   renderNoContent = (section) => {
+    console.log(section, section.key, section.key == SUGGESTIONS,  'section section');
+    let displayText = '';
+    if(section.key == SUPPORTING){
+      displayText = 'You are currently not supporting anyone'
+    } else if (section.key == SUGGESTIONS){
+      displayText = 'You are currently do not have any suggestions'
+    }
     if (section.data.length == 0) {
-      return <EmptyList displayText={`You are currently do not have any ${section.title}`} />
+      return <EmptyList displayText={displayText} />
     }
     return null;
   };
 
   renderSectionHeader = (section) => {
-    return <Text> {section.section.title} </Text>;
+    return (
+      <View style={{padding: 12}}>
+        <Text> {section.section.title} </Text>
+      </View>
+    );
   };
-
-  // onEndReached = (...args)=>{
-  //   console.log('On onEndReached', args);
-  // }
 
   render() {
     console.log(this.getDataSource(), 'getDataSource');
@@ -228,7 +231,7 @@ class SupportingList extends Component {
         renderSectionFooter={({ section }) => this.renderNoContent(section)}
         renderSectionHeader={this.renderSectionHeader}
         renderItem={this._renderItem}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => `id_${item}`}
         refreshing={this.state.refreshing}
         onRefresh={this.refresh}
         onEndReachedThreshold={0.1}

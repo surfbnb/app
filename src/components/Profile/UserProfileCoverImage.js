@@ -10,7 +10,8 @@ import pepoTxIcon from '../../assets/pepo-white-icon.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    videoInProcessing: reduxGetter.getVideoProcessingStatus(state)
+    videoInProcessing: reduxGetter.getVideoProcessingStatus(state),
+    coverImageUrl: reduxGetter.getImage(reduxGetter.getUserCoverImageId(ownProps.userId, state), state)
   };
 };
 
@@ -57,7 +58,7 @@ class UserProfileCoverImage extends PureComponent {
     let animationStyle = {
       transform: [{ scale: scaleData }, { rotate: rotateData }]
     };
-    return (
+    return this.props.coverImageUrl ? (
       <View style={styles.container}>
         <View style={{ position: 'relative' }}>
           <CoverImage
@@ -114,6 +115,8 @@ class UserProfileCoverImage extends PureComponent {
           <View />
         )}
       </View>
+    ) : (
+      <View />
     );
   }
 }
