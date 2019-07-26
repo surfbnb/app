@@ -154,13 +154,13 @@ class ProfileEdit extends React.PureComponent {
 
     const userProfileEntity = reduxGetter.getUserProfile(this.props.userId);
     if (!userProfileEntity) return;
-    if (this.state.bio) {
+    if (typeof this.state.bio != 'undefined') {
       const bio = userProfileEntity['bio'] || {};
       bio['text'] = this.state.bio;
       userProfileEntity['bio'] = bio;
     }
 
-    if (this.state.link) {
+    if (typeof this.state.link != 'undefined') {
       const linkId = `link_${Date.now()}`;
       let linkObj = {
         id: linkId,

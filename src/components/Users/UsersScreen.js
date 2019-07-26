@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import UserList from './UserList';
 import { View, Text, FlatList, TouchableWithoutFeedback, SafeAreaView, Dimensions, Animated } from 'react-native';
 import styles from './styles';
 import SupportingList from '../SupportingList';
@@ -25,7 +24,7 @@ class Users extends Component {
   }
 
 
-  toggleScreen = () => {    
+  toggleScreen = () => {
     let newActiveIndex =  1 - this.state.activeIndex;
     this.setState({ activeIndex : newActiveIndex });
     this.userFlatList.scrollToIndex({ index: newActiveIndex });
@@ -50,7 +49,7 @@ class Users extends Component {
     Animated.timing( this.state.animatedMargin, { toValue: nativeEvent.contentOffset.x/2, duration: 0.1}).start();
     if ( Dimensions.get('window').width == nativeEvent.contentOffset.x){
       this.setState({ activeIndex : SUPPORTER_INDEX });
-      this.userFlatList.scrollToIndex({ index: SUPPORTER_INDEX });      
+      this.userFlatList.scrollToIndex({ index: SUPPORTER_INDEX });
     } else if (nativeEvent.contentOffset.x == 0){
       this.setState({ activeIndex : SUPPORTING_INDEX });
       this.userFlatList.scrollToIndex({ index: SUPPORTING_INDEX });
@@ -59,11 +58,11 @@ class Users extends Component {
 
   _keyExtractor = (item, index) => `id_${item}` ;
 
-  renderItem = (itemInfo) => {    
+  renderItem = (itemInfo) => {
     return this.showInnerComponent(itemInfo.index);
   };
 
-  render() {    
+  render() {
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
