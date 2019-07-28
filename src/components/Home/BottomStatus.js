@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
+import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 import inlineStyles from './styles';
 import { withNavigation } from 'react-navigation';
@@ -92,7 +93,7 @@ class BottomStatus extends PureComponent {
             }
           </View>
         </View>
-        <View style={{ height: 50, backgroundColor: 'rgba(0, 0, 0, 0.6)' }}></View>
+        {/*<View style={inlineStyles.bottomExtraSpace}></View>*/}
       </TouchableWithoutFeedback>
     );
   }
