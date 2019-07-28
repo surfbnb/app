@@ -22,13 +22,19 @@ class FfmpegProcesser {
         console.log('compress: compression finished successfully at:', compressFinishedAt);
         console.log('compress: Time for compression (In ms)', compressFinishedAt - compressStartedAt);
 
-        return resolve(this.outputPath);
+        resolve(this.outputPath);
+      } else if (executeResponse.rc == 255) {
+        reject('Forcefully cancelled');
       } else {
         // compression is failed
-        console.log('Compression is failed');
-        return resolve(this.inputFileUri);
+        console.log('Compression is failed', executeResponse.rc);
+        return resolve(this.inputFileUri);        
       }
     });
+  }
+
+  cancel() {
+    RNFFmpeg.cancel();
   }
 
   getVideoThumbnail() {

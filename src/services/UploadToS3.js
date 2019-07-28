@@ -26,26 +26,39 @@ export default class UploadToS3 {
 
   perform() {
     return new Promise(async (resolve, reject) => {
-      let signedUrl = await this.getSignedUrl();
+      this.getSignedUrl().then (async (signedUrl)=>{
+      let uploadResp;
       if (signedUrl.success) {
-        let uploadResp = await this.upload(signedUrl);
+        try{
+          uploadResp = await this.upload(signedUrl);
+        } catch(e){
+          return reject();
+        }        
         if (uploadResp.status == 204) {
           return resolve(this.uploadParams.s3_url);
         }
         return reject();
       }
-      return reject();
+      }).catch(()=>{
+        return reject();
+      });
     });
   }
 
   async getSignedUrl() {
-    let signedUrlResp = await new PepoApi('/upload-params').get({
-      [this.mappedFileType]: [this.file && this.file.name]
+    return new Promise((resolve, reject)=>{
+      new PepoApi('/upload-params').get({
+        [this.mappedFileType]: [this.file && this.file.name]
+      }).then((res)=>{
+        return resolve(res);
+      }).catch(()=>{
+        return reject();
+      });
     });
-    return signedUrlResp;
   }
 
   async upload(res) {
+      let resp;
     (this.uploadParams = this.getUploadParams(res)), (postFields = this.uploadParams.post_fields);
 
     postFields.push({ key: 'file', value: this.file });
@@ -61,6 +74,7 @@ export default class UploadToS3 {
       resp = await fetch(this.uploadParams.post_url, options);
     } catch (e) {
       console.log(e);
+      throw(1);
     }
     return resp;
   }

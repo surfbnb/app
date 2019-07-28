@@ -87,6 +87,23 @@ class ReduxGetters {
         return deepGet(Store.getState(), `recorded_video.raw_video`);
     }
 
+    getRecordedVideoCurrentProcess(){
+        let processing = [];  
+        if (deepGet(Store.getState(), `recorded_video.cover_capture_processing`)){
+            processing.push('cover is capturing');
+        }
+        if (deepGet(Store.getState(), `recorded_video.cover_s3_upload_processing`)){
+            processing.push('cover is uploading');
+        }
+        if (deepGet(Store.getState(), `recorded_video.compression_processing`)){
+            processing.push('video is compressing');
+        } 
+        if (deepGet(Store.getState(), `recorded_video.video_s3_upload_processing`)){
+            processing.push('video is uploading');    
+        }
+        return processing.join(', ');
+    }
+
     getUserCoverVideoId( id ,  state ){
         state =  state || Store.getState() ; 
         return deepGet( state ,  `user_profile_entities.id_${id}.cover_video_id` );

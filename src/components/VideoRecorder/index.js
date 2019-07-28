@@ -166,19 +166,22 @@ class VideoRecorder extends Component {
   };
 
   getActionButton() {
+    let onPressCallback, source; 
     if (this.state.isRecording) {
-      return (
-        <TouchableOpacity onPress={this.stopRecording}>
-          <Image style={styles.captureButton} source={stopIcon} />
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <TouchableOpacity onPress={this.recordVideoAsync}>
-          <Image style={styles.captureButton} source={captureIcon} />
-        </TouchableOpacity>
-      );
+      onPressCallback = this.stopRecording;
+      source = stopIcon;
     }
+    else {
+      onPressCallback = this.recordVideoAsync;
+      source = captureIcon;
+    }
+    return (
+      <TouchableOpacity onPress={onPressCallback}>
+      <Image style={styles.captureButton} source={source} />
+    </TouchableOpacity>
+
+    );  
+      
   }
 
   initProgressBar() {

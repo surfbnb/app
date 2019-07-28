@@ -11,7 +11,8 @@ import pepoTxIcon from '../../assets/pepo-white-icon.png';
 const mapStateToProps = (state, ownProps) => {
   return {
     videoInProcessing: reduxGetter.getVideoProcessingStatus(state),
-    coverImageUrl: reduxGetter.getImage(reduxGetter.getUserCoverImageId(ownProps.userId, state), state)
+    coverImageUrl: reduxGetter.getImage(reduxGetter.getUserCoverImageId(ownProps.userId, state), state),
+    currentProcess: reduxGetter.getRecordedVideoCurrentProcess()
   };
 };
 
@@ -97,7 +98,7 @@ class UserProfileCoverImage extends PureComponent {
                 ]}
                 source={this.state.showLoadingImage ? pepoTxIcon : pepoTxIcon}
               />
-              <Text style={styles.loadingMessage}>Updating Video...</Text>
+              <Text style={styles.loadingMessage}>Updating Video... {this.props.currentProcess}</Text>
             </View>
           ) : (
             <View />
