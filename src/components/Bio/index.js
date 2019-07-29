@@ -67,8 +67,8 @@ class BioScreen extends PureComponent {
 
     changeValue( val ){
       val = val || "";
-      val = val.trim();
-      if( val.length <= 300 ){
+      // val = val.trim();
+      if( val.length  <= 300 ){
         this.onChangeTextDelegate && this.onChangeTextDelegate( val );
         this.setState({ value: val , count :val.length });
       }
@@ -185,6 +185,7 @@ class BioScreen extends PureComponent {
     }
 
     submitEvent(props){
+      this.onChangeTextDelegate && this.onChangeTextDelegate( this.state.value.trim() );
       props.navigation.goBack();
       }
 
