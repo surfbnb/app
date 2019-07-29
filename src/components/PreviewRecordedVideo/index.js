@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text, BackHandler, SafeAreaView } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text, BackHandler, SafeAreaView, AppState } from 'react-native';
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/preview_play_icon.png';
@@ -27,12 +27,22 @@ class PreviewRecordedVideo extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+
+    AppState.addEventListener('change', this._handleAppStateChange);
+
     Store.dispatch(upsertRecordedVideo({ raw_video: this.cachedVideoUri }));
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
+
+
+  _handleAppStateChange = (nextAppState) => {
+    if (nextAppState == 'active' && this.state.progress == 1){
+      this.replay();
+    }
+  };
 
   handleBackButtonClick = () => {
     if (this.props.isFocused) {
