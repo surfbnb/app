@@ -51,7 +51,7 @@ class FormInput extends Component {
   render() {
     let props = { ...this.props, ...{ ref: this.props.fieldName } };
     return (
-      <View>
+      <React.Fragment>
         <TextInput
           {...props}
           onChangeText={(val) => {
@@ -65,7 +65,7 @@ class FormInput extends Component {
         <Text style={Theme.Errors.errorText}>
           { this.props.errorMsg || this.state.errorMsg }
         </Text>
-      </View>
+      </React.Fragment>
     );
   }
 }
