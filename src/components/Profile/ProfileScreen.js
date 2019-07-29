@@ -18,17 +18,16 @@ import { Toast } from 'native-base';
 import PepoApi from '../../services/PepoApi';
 import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 
-
 const mapStateToProps = (state, ownProps) => {
-  return {userId : CurrentUser.getUserId() }
+  return { userId: CurrentUser.getUserId() };
 };
 
 class ProfileScreen extends PureComponent {
   static navigationOptions = (options) => {
-    const name = options.navigation.getParam("headerTitle") || reduxGetter.getName(CurrentUser.getUserId()) ; 
+    const name = options.navigation.getParam('headerTitle') || reduxGetter.getName(CurrentUser.getUserId());
     return {
       headerBackTitle: null,
-      headerTitle: name ,
+      headerTitle: name,
       headerRight: <LogoutComponent {...options} />
     };
   };
@@ -45,9 +44,9 @@ class ProfileScreen extends PureComponent {
     this.fetchUser();
   }
 
-  componentDidUpdate( prevProps ){
-    if(this.props.userId != prevProps.userId ){
-      this.props.navigation.setParams({ headerTitle:  reduxGetter.getName(CurrentUser.getUserId()) })
+  componentDidUpdate(prevProps) {
+    if (this.props.userId != prevProps.userId) {
+      this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
     }
   }
 
@@ -102,14 +101,14 @@ class ProfileScreen extends PureComponent {
         CameraPermissionsApi.requestPermission('microphone').then((result) => {
           const microphoneResult = result;
           //if do not ask again is selected then 'restricted' is returned and permission dialog does not appear again
-          if (
-            (cameraResult == 'authorized' || cameraResult == 'restricted') &&
-            (microphoneResult == 'authorized' || microphoneResult == 'restricted')
-          ) {
+          if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
             this.props.navigation.push('CaptureVideo');
           }
         });
       });
+      if (cameraResponse == 'restricted' || microphoneResponse == 'restricted') {
+        this.props.navigation.push('CaptureVideo');
+      }
     } else if (Platform.OS == 'ios') {
       if (cameraResponse == 'undetermined') {
         //can ask only once in ios i.e first time
@@ -148,5 +147,4 @@ class ProfileScreen extends PureComponent {
   }
 }
 
-
-export default connect(mapStateToProps)(ProfileScreen) ;
+export default connect(mapStateToProps)(ProfileScreen);

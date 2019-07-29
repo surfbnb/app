@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import reduxGetter from '../../services/ReduxGetters';
 import { withNavigation } from 'react-navigation';
 import pepoTxIcon from '../../assets/pepo-white-icon.png';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -107,7 +108,9 @@ class UserProfileCoverImage extends PureComponent {
         {!this.props.videoInProcessing ? (
           <TouchableOpacity
             disabled={this.props.videoInProcessing}
-            onPress={this.props.uploadVideo}
+            onPress={multipleClickHandler(() => {
+              this.props.uploadVideo();
+            })}
             style={styles.updateVideo}
           >
             <Text style={{ color: Colors.white }}>Update Video</Text>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {TouchableOpacity, View, Image, Text, Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity, View, Image, Text, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
@@ -77,27 +77,25 @@ class VideoRecorder extends Component {
     );
   }
 
-
-  cancleVideoHandling = () =>{
+  cancleVideoHandling = () => {
     this.props.navigation.goBack();
-  }
+  };
 
   cameraView() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <RNCamera
-          ref={(ref) => {
-            this.camera = ref;
-          }}
-          style={styles.preview}
-          type={RNCamera.Constants.Type.front}
-          ratio={AppConfig.cameraConstants.RATIO}
-          zoom={0}
-          autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
-          notAuthorizedView={
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-              {Platform.OS == 'ios' ? (
+        <View style={styles.container}>
+          <RNCamera
+            ref={(ref) => {
+              this.camera = ref;
+            }}
+            style={styles.preview}
+            type={RNCamera.Constants.Type.front}
+            ratio={AppConfig.cameraConstants.RATIO}
+            zoom={0}
+            autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
+            notAuthorizedView={
+              <View style={{ flex: 1, justifyContent: 'center' }}>
                 <AllowAccessModal
                   onClose={() => {
                     this.props.navigation.goBack();
@@ -108,54 +106,51 @@ class VideoRecorder extends Component {
                   accessTextDesc="Allow access to your camera and microphone to take video "
                   imageSrc={CameraIcon}
                 />
-              ) : (
-                <Text style={{ alignSelf: 'center' }}>The camera is not authorized</Text>
-              )}
-            </View>
-          }
-          pendingAuthorizationView={
-            <View>
-              <Text>The camera is pending authorization!</Text>
-            </View>
-          }
-          defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
-          defaultMuted={false}
-          androidCameraPermissionOptions={{
-            title: 'Permission to use camera',
-            message: 'We need your permission to use your camera',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel'
-          }}
-          androidRecordAudioPermissionOptions={{
-            title: 'Permission to use audio recording',
-            message: 'We need your permission to use your audio',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel'
-          }}
-        >
-          <ProgressBar
-            width={null}
-            color="#EF5566"
-            progress={this.state.progress}
-            indeterminate={false}
-            style={styles.progressBar}
-          />
-          <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
-            <View style={styles.cancelButton}>
-              <Text style={styles.cancelText}>X</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <View
-            style={{
-              flex: 0,
-              flexDirection: 'row',
-              justifyContent: 'center'
+              </View>
+            }
+            pendingAuthorizationView={
+              <View>
+                <Text>The camera is pending authorization!</Text>
+              </View>
+            }
+            defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
+            defaultMuted={false}
+            androidCameraPermissionOptions={{
+              title: 'Permission to use camera',
+              message: 'We need your permission to use your camera',
+              buttonPositive: 'Ok',
+              buttonNegative: 'Cancel'
+            }}
+            androidRecordAudioPermissionOptions={{
+              title: 'Permission to use audio recording',
+              message: 'We need your permission to use your audio',
+              buttonPositive: 'Ok',
+              buttonNegative: 'Cancel'
             }}
           >
-            {this.getActionButton()}
-          </View>
-        </RNCamera>
-      </View>
+            <ProgressBar
+              width={null}
+              color="#EF5566"
+              progress={this.state.progress}
+              indeterminate={false}
+              style={styles.progressBar}
+            />
+            <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
+              <View style={styles.cancelButton}>
+                <Text style={styles.cancelText}>X</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <View
+              style={{
+                flex: 0,
+                flexDirection: 'row',
+                justifyContent: 'center'
+              }}
+            >
+              {this.getActionButton()}
+            </View>
+          </RNCamera>
+        </View>
       </SafeAreaView>
     );
   }
@@ -166,22 +161,19 @@ class VideoRecorder extends Component {
   };
 
   getActionButton() {
-    let onPressCallback, source; 
+    let onPressCallback, source;
     if (this.state.isRecording) {
       onPressCallback = this.stopRecording;
       source = stopIcon;
-    }
-    else {
+    } else {
       onPressCallback = this.recordVideoAsync;
       source = captureIcon;
     }
     return (
       <TouchableOpacity onPress={onPressCallback}>
-      <Image style={styles.captureButton} source={source} />
-    </TouchableOpacity>
-
-    );  
-      
+        <Image style={styles.captureButton} source={source} />
+      </TouchableOpacity>
+    );
   }
 
   initProgressBar() {
