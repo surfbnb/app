@@ -111,26 +111,24 @@ class PepoButton extends React.Component {
 
   render() {
     return (
-      <View>
+      <React.Fragment>
         {this.renderClaps()}
-        <View style={inlineStyles.pepoElemBtn}>
-          <TouchableWithoutFeedback
-            disabled={this.state.disabled}
-            onPressIn={this.keepClapping}
-            onPressOut={this.stopClapping}>
-            <View>
-              <ClapButton disabled={this.state.disabled}
-                          isSupported={this.props.isSupported}
-                          id={this.props.id+"_clap_btn"}
-                          animDuration={animDuration}
-                          isClapping={this.state.isClapping}
-                          isSelected={this.props.isSelected}
-              />
-            </View>
-          </TouchableWithoutFeedback>
-          <Text style={inlineStyles.pepoTxCount}>{this.state.count || 0}</Text>
-        </View>
-      </View>
+        <TouchableWithoutFeedback
+          disabled={this.state.disabled}
+          onPressIn={this.keepClapping}
+          onPressOut={this.stopClapping}>
+          <View>
+            <ClapButton disabled={this.state.disabled}
+                        isSupported={this.props.isSupported}
+                        id={this.props.id+"_clap_btn"}
+                        animDuration={animDuration}
+                        isClapping={this.state.isClapping}
+                        isSelected={this.props.isSelected}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+        <Text style={inlineStyles.pepoTxCount}>{this.state.count || 0}</Text>
+      </React.Fragment>
     );
   }
 }

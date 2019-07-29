@@ -27,7 +27,7 @@ class VideoPlayer extends Component {
 
     render() {
         return (
-          <View>
+          <React.Fragment>
             <VideoWrapper   doRender={true}
                             isActive={ true }
                             videoId={this.videoId}/>
@@ -38,7 +38,7 @@ class VideoPlayer extends Component {
 
             </TouchableWithoutFeedback>
 
-          </View>
+          </React.Fragment>
 
         )
     }
