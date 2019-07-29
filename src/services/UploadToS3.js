@@ -34,8 +34,8 @@ export default class UploadToS3 {
         } catch(e){
           return reject();
         }        
-        if (uploadResp.status == 204) {
-          return resolve(this.uploadParams.s3_url);
+        if (uploadResp.status == 204) {          
+          return resolve(this.uploadParams.cdn_url);
         }
         return reject();
       }

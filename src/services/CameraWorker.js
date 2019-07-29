@@ -330,12 +330,18 @@ class CameraWorker extends PureComponent {
   }
 
   async postVideoWithCoverImage() {
-    if (this.props.recorded_video.s3_video && this.props.recorded_video.s3_cover_image && !this.postToPepoApi) {
+    if (this.props.recorded_video.s3_video && this.props.recorded_video.s3_cover_image && !this.props.recorded_video.pepo_api_posting && !this.postToPepoApi) {
       this.postToPepoApi = true;
       let videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);
       let videoSize = videoInfo.size;
       let imageInfo = await RNFS.stat(this.props.recorded_video.cover_image);
       let imageSize = imageInfo.size;
+
+      Store.dispatch(
+        upsertRecordedVideo({
+          pepo_api_posting: true
+        })
+      );
 
       let payload = {
         video_url: this.props.recorded_video.s3_video,
@@ -355,7 +361,8 @@ class CameraWorker extends PureComponent {
             this.updateProfileViewVideo(this.props.recorded_video.s3_cover_image, this.props.recorded_video.s3_video);
             Store.dispatch(
               upsertRecordedVideo({
-                do_discard: true
+                do_discard: true,
+                pepo_api_posting: false
               })
             );
           }
@@ -364,6 +371,11 @@ class CameraWorker extends PureComponent {
         .catch(() => {
           // cancel workflow.
           this.postToPepoApi = false;
+          Store.dispatch(
+            upsertRecordedVideo({
+              pepo_api_posting: false
+            })
+          );
         });
     }
   }
