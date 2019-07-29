@@ -1,11 +1,12 @@
 import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
+import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
   item: {
     fontSize: 15,
     flex: 1,
     fontWeight: '300',
-    color: '#34445b'
+    color: Colors.midnightblue
   },
   expressBtn: {
     marginRight: 15,

@@ -1,9 +1,11 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
+import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import Colors from '../../theme/styles/Colors';
 
-export default inlineStyles = StyleSheet.create({
+let stylesMap = {
   container: {
     flex: 1,
-    backgroundColor: '#f6f6f6'
+    backgroundColor: Colors.whiteSmoke
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -23,7 +25,9 @@ export default inlineStyles = StyleSheet.create({
   bottomSliderStyle: {
     width: Dimensions.get('window').width / 2,    
     height:1,
-    backgroundColor: '#ef5869'
+    backgroundColor: Colors.pinkRed
   }
 
-});
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);
