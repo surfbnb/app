@@ -1,10 +1,11 @@
 import { Dimensions } from 'react-native';
 import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import Colors from "../../theme/styles/Colors";
 
 let stylesMap = {
   container: {
     flex: 1,
-    backgroundColor: '#f6f6f6'
+    backgroundColor: Colors.whiteSmoke
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -21,7 +22,7 @@ let stylesMap = {
   bottomSliderStyle:{
     width: Dimensions.get('window').width / 2,    
     height:1,
-    backgroundColor: '#ef5869'
+    backgroundColor: Colors.pinkRed
   }
 };
 
