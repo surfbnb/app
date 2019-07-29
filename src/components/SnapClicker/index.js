@@ -51,20 +51,16 @@ class SnapClicker extends Component {
           captureAudio={false}
           notAuthorizedView={
             <View style={{ flex: 1, justifyContent: 'center' }}>
-              {Platform.OS == 'ios' ? (
-                <AllowAccessModal
-                  onClose={() => {
-                    this.props.navigation.goBack();
-                  }}
-                  modalVisibility={true}
-                  headerText="Camera"
-                  accessText="Enable Camera Access"
-                  accessTextDesc="Allow access to your camera to take your profile picture "
-                  imageSrc={CameraIcon}
-                />
-              ) : (
-                <Text style={{ alignSelf: 'center' }}>The camera is not authorized</Text>
-              )}
+              <AllowAccessModal
+                onClose={() => {
+                  this.props.navigation.goBack();
+                }}
+                modalVisibility={true}
+                headerText="Camera"
+                accessText="Enable Camera Access"
+                accessTextDesc="Allow access to your camera to take your profile picture "
+                imageSrc={CameraIcon}
+              />
             </View>
           }
           pendingAuthorizationView={
