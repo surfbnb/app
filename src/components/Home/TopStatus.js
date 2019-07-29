@@ -11,7 +11,8 @@ import Pricer from "../../services/Pricer";
 const mapStateToProps = (state) => ({ balance: state.balance });
 
 const getBalance = (props) => {
-   return Pricer.getFromDecimal( props.balance ) || 0 ;
+  return Pricer.getToBT(Pricer.getFromDecimal( props.balance ), 2)|| 0 ;
+   // return Pricer.getFromDecimal( props.balance ) || 0 ;
 }
 
 const TopStatus = (props) => {
