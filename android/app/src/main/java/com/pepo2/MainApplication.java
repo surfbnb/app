@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
 import com.existfragger.rnimagesize.RNImageSizePackage;
 import com.goldenowl.twittersignin.TwitterSigninPackage;
@@ -27,6 +28,8 @@ import com.rnfs.RNFSPackage;
 import java.util.Arrays;
 import java.util.List;
 
+
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -37,8 +40,10 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
+
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new AndroidOpenSettingsPackage(),
             new CameraRollPackage(),
             new RNImageSizePackage(),
             new TwitterSigninPackage(),

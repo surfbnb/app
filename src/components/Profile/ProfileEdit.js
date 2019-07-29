@@ -263,10 +263,13 @@ class ProfileEdit extends React.PureComponent {
       //can ask permissions multiple times on android
       CameraPermissionsApi.requestPermission('camera').then((result) => {
         //if do not ask again is selected then 'restricted' is returned and permission dialog does not appear again
-        if (result == 'authorized' || result == 'restricted') {
+        if (result == 'authorized') {
           this.props.navigation.push('CaptureImageScreen');
         }
       });
+      if (response == 'restricted') {
+        this.props.navigation.push('CaptureImageScreen');
+      }
     } else if (Platform.OS == 'ios') {
       if (response == 'undetermined') {
         //can ask only once in ios i.e first time
@@ -285,11 +288,11 @@ class ProfileEdit extends React.PureComponent {
   openGallery = async () => {
     let response = await CameraPermissionsApi.checkPermission('photo');
     CameraPermissionsApi.requestPermission('photo').then((result) => {
-      if (result == 'authorized' || result == 'restricted') {
+      if (result == 'authorized') {
         this.props.navigation.push('ImageGalleryScreen');
       }
     });
-    if (Platform.OS == 'ios' && response == 'denied') {
+    if ((Platform.OS == 'ios' && response == 'denied') || response == 'restricted') {
       //show enable access modal only in case of ios as in android multiple times permission dialog can appear
       this.setState({
         showAccessModal: true
@@ -414,7 +417,11 @@ class ProfileEdit extends React.PureComponent {
         {/*//TODO error styling */}
         <Text>{this.state.general_error}</Text>
         <AllowAccessModal
-          onClose={() => {}}
+          onClose={() => {
+            this.setState({
+              showAccessModal: false
+            });
+          }}
           modalVisibility={this.state.showAccessModal}
           headerText="Library"
           accessText="Enable Library Access"

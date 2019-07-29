@@ -28,7 +28,7 @@ class loginPopover extends React.Component {
 
   render() {
     return (
-      <View>
+      <React.Fragment>
         {this.props.show && (
           <Modal
             animationType="slide"
@@ -81,7 +81,7 @@ class loginPopover extends React.Component {
             </TouchableWithoutFeedback>
           </Modal>
         )}
-      </View>
+      </React.Fragment>
     );
   }
 }

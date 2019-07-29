@@ -20,8 +20,7 @@ let stylesMap = {
     top:10,
     left:0,
     height:60,
-    width:60,
-
+    width:60
   }
 };
 
