@@ -25,15 +25,16 @@ let stylesMap = {
     alignItems: 'center',
     alignSelf: 'flex-end'
   },
-  pepoElemBtn: {
-    height: 50,
-    width: 50,
-    marginBottom: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25
+  // pepoElemBtn: {
+  //   height: 50,
+  //   width: 50,
+  //   marginBottom: 10,
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   borderRadius: 25,
+  //   backgroundColor: 'red'
     // elevation: 3
-  },
+  // },
   pepoTxCount: {
     fontSize: 18,
     color: Colors.white,
@@ -109,18 +110,18 @@ let stylesMap = {
     position: 'absolute',
     left: -9
   },
-  clappedBubble: {
-    backgroundColor: Colors.wildWatermelon,
-    height: 50,
-    width: 50,
-    position: 'absolute',
+  // clappedBubble: {
+  //   backgroundColor: Colors.wildWatermelon,
+  //   height: 50,
+  //   width: 50,
+  //   position: 'absolute',
     // bottom: 0,
     // right: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 30,
-    zIndex: -1
-  },
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // borderRadius: 30,
+    // zIndex: -1
+  // },
   btnText: {
     color: Colors.white
   },

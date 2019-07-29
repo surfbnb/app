@@ -207,6 +207,8 @@ class SupportingList extends Component {
       displayText = 'You are currently not supporting anyone'
     } else if (section.key == SUGGESTIONS){
       displayText = 'You are currently do not have any suggestions'
+      return null;
+      
     }
     if (section.data.length == 0) {
       return <EmptyList displayText={displayText} />
@@ -215,7 +217,7 @@ class SupportingList extends Component {
   };
 
   renderSectionHeader = (section) => {
-    if (!section.section.title) return null;
+    if (!section.section.title || (section.section.data.length == 0 )) return null;
     return (
       <View style={{padding: 12}}>
         <Text> {section.section.title} </Text>
@@ -227,7 +229,7 @@ class SupportingList extends Component {
     console.log(this.getDataSource(), 'getDataSource');
     return (
       <SectionList
-        style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+        //style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height}}
         sections={this.getDataSource()}
         renderSectionFooter={({ section }) => this.renderNoContent(section)}
         renderSectionHeader={this.renderSectionHeader}

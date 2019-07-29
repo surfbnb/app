@@ -48,8 +48,9 @@ class BottomStatus extends PureComponent {
       <TouchableWithoutFeedback
         onPress={multipleClickHandler(() => this.navigateToUserProfile())}
         pointerEvents={'auto'}
+        style={inlineStyles.bottomBg}
       >
-        <View style={inlineStyles.bottomBg}>
+        {/*<View style={inlineStyles.bottomBg}>*/}
           <View style={{ flex: 0.7 }}>
             <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt]}>
               {`@${this.props.userName}`} {this.props.videoSize}
@@ -92,7 +93,7 @@ class BottomStatus extends PureComponent {
               </View>
             }
           </View>
-        </View>
+        {/*</View>*/}
         {/*<View style={inlineStyles.bottomExtraSpace}></View>*/}
       </TouchableWithoutFeedback>
     );

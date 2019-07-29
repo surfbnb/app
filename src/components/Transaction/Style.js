@@ -27,7 +27,7 @@ let stylesMap = {
     alignItems: 'center'
   },
   txBtnsBg: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderTopLeftRadius: 10,

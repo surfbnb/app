@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Modal, Image, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, Modal, Image, TouchableOpacity, Linking, Platform, SafeAreaView } from 'react-native';
 
 import inlineStyles from './styles';
 import crossIcon from '../../assets/cross_icon.png';
-import CameraPermissionsApi from '../../services/CameraPermissionsApi';
+import AndroidOpenSettings from 'react-native-android-open-settings';
 
 export default class AllowAccessModal extends PureComponent {
   constructor(props) {
@@ -17,7 +17,6 @@ export default class AllowAccessModal extends PureComponent {
     this.setState({
       modalVisible: visibleVal
     });
-    this.props.onClose();
   };
 
   componentDidUpdate(prevProps) {
@@ -27,15 +26,21 @@ export default class AllowAccessModal extends PureComponent {
   }
 
   enableAccess() {
-    Linking.canOpenURL('app-settings:')
-      .then((supported) => {
-        if (!supported) {
-          console.log("Can't handle settings url");
-        } else {
-          return Linking.openURL('app-settings:');
-        }
-      })
-      .catch((err) => console.error('An error occurred', err));
+    if (Platform.OS == 'android') {
+      if (AndroidOpenSettings) {
+        AndroidOpenSettings.appDetailsSettings();
+      }
+    } else {
+      Linking.canOpenURL('app-settings:')
+        .then((supported) => {
+          if (!supported) {
+            console.log("Can't handle settings url");
+          } else {
+            return Linking.openURL('app-settings:');
+          }
+        })
+        .catch((err) => console.error('An error occurred', err));
+    }
   }
 
   render() {
@@ -45,14 +50,14 @@ export default class AllowAccessModal extends PureComponent {
         transparent={false}
         visible={this.state.modalVisible}
         onRequestClose={() => {
-          this.setModalVisibility(false);
+          this.props.onClose();
         }}
       >
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
           <View style={inlineStyles.allowAccessheader}>
             <TouchableOpacity
               onPress={() => {
-                this.setModalVisibility(false);
+                this.props.onClose();
               }}
               style={inlineStyles.crossIconWrapper}
             >
@@ -67,7 +72,7 @@ export default class AllowAccessModal extends PureComponent {
               <Text style={inlineStyles.accessText}>{this.props.accessText}</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </SafeAreaView>
       </Modal>
     );
   }

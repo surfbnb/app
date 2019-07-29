@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View, Image, Text, Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import {TouchableOpacity, View, Image, Text, Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';

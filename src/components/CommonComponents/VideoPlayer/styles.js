@@ -1,5 +1,4 @@
 import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
-import { Dimensions } from 'react-native';
 import {getBottomSpace, ifIphoneX} from "react-native-iphone-x-helper";
 
 
@@ -20,8 +19,7 @@ let stylesMap = {
     top:10,
     left:0,
     height:60,
-    width:60,
-
+    width:60
   }
 };
 

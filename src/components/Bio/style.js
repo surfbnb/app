@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
 import Colors from "../../theme/styles/Colors";
+import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
 
-export default (styles = StyleSheet.create({
+let stylesMap = {
   multilineTextInput:{
     height : 100 ,
     textAlignVertical:'top',
@@ -19,7 +19,9 @@ export default (styles = StyleSheet.create({
     fontSize:10,
     textAlign:'right'
   }
-}));
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);
 
 
 

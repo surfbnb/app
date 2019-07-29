@@ -31,7 +31,11 @@ class Users extends Component {
 
   showInnerComponent = (index) => {
     if (index == SUPPORTING_INDEX) {
-      return <SupportingList fetchUrl={'/users/contribution-to'} />;
+      return (
+        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
+          <SupportingList fetchUrl={'/users/contribution-to'} />
+        </View>
+      );
     } else if (index == SUPPORTER_INDEX) {
       return (
         <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
@@ -74,7 +78,7 @@ class Users extends Component {
               >
                 <Text style={[this.state.activeIndex == SUPPORTING_INDEX && { color: '#ef5869' }]}> Supporting </Text>
               </View>
-            </TouchableWithoutFeedback>            
+            </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.toggleScreen}>
               <View
                 style={[
