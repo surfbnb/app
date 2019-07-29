@@ -1,9 +1,11 @@
-import { StyleSheet } from "react-native";
-export default styles = StyleSheet.create({
+import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import Colors from '../../theme/styles/Colors';
+
+let stylesMap = {
     container: {
       flex: 1,
       flexDirection: "column",
-      backgroundColor: "black"
+      backgroundColor: Colors.black
     },
     preview: {
       flex: 1,
@@ -22,7 +24,7 @@ export default styles = StyleSheet.create({
       alignSelf: "center",
       margin: 20,
       borderWidth: 3,
-      borderColor: "#fff"
+      borderColor: Colors.white
     },
     captureButton: {
       width: 65,
@@ -34,7 +36,7 @@ export default styles = StyleSheet.create({
     },
     progressBar: {
       borderRadius: 3.5,
-      borderColor: "#fff",
+      borderColor: Colors.white,
       borderWidth: 0.5,
       height: 7,
       width: '90%',
@@ -49,7 +51,9 @@ export default styles = StyleSheet.create({
       left: 20
     },
     cancelText: {
-      color: 'white',
+      color: Colors.white,
       fontWeight: 'bold'
     }
-  });
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);

@@ -1,9 +1,11 @@
-import { StyleSheet } from 'react-native';
-export default styles = StyleSheet.create({
+import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import Colors from '../../theme/styles/Colors';
+
+let stylesMap = {
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'black',
+    backgroundColor: Colors.black,
     alignSelf: 'stretch'
   },
   previewVideo: {
@@ -18,7 +20,7 @@ export default styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     borderRadius: 3.5,
-    borderColor: '#fff',
+    borderColor: Colors.white,
     borderWidth: 0.5,
     height: 7,
     width: '90%',
@@ -33,7 +35,7 @@ export default styles = StyleSheet.create({
     marginLeft: 20
   },
   cancelText: {
-    color: '#FFF',
+    color: Colors.white,
     fontWeight: 'bold'
   },
   bottomControls: {
@@ -57,4 +59,6 @@ export default styles = StyleSheet.create({
     height: 45,
     marginRight: 20
   }
-});
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);
