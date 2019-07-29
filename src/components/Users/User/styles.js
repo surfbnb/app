@@ -18,25 +18,11 @@ let stylesMap = {
     paddingLeft: 20,
     paddingRight: 20
   },
-  container: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  userContainer: {
-    padding: 12,
-    flexDirection: 'row',
-    flex: 1,
-    // borderBottomWidth: 1,
-    // borderBottomColor: 'rgb(233,233,233)',
-    // justifyContent: 'space-between',
-    flexWrap: 'wrap'
-  },
   txtWrapper: {
     flex: 1,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center'
-    // paddingTop: 5,
-    // paddingBottom: 5
   },
   btnWrapper: {
     flex: 0.5,

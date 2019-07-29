@@ -61,7 +61,7 @@ class loadingModalCover extends React.Component {
     };
     this.props.show ? this.getAnimation().start() : this.getAnimation().stop();
     return (
-      <View>
+      <React.Fragment>
           <Modal
             animationType="fade"
             transparent={true}
@@ -85,7 +85,7 @@ class loadingModalCover extends React.Component {
               <Text style={inlineStyles.footerText}>{this.props.footerText}</Text>
             </View>
           </Modal>
-      </View>
+      </React.Fragment>
     );
   }
 }

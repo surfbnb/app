@@ -45,20 +45,16 @@ const Users = (props) => {
           userClick(user, props.navigation);
         })}
       >
-        <View style={styles.container}>
-          <View style={styles.userContainer}>
-            <View style={styles.txtWrapper}>
-              {getImageSrc(user)}
-              <Text numberOfLines={1} style={styles.item}>
-                {user.name.length > 40 ? `${user.name.substring(0, 40)}...` : user.name}
-              </Text>
-            </View>
-          </View>
+        <View style={styles.txtWrapper}>
+          {getImageSrc(user)}
+          <Text numberOfLines={1} style={styles.item}>
+            {user.name.length > 40 ? `${user.name.substring(0, 40)}...` : user.name}
+          </Text>
         </View>
       </TouchableOpacity>
     );
   } else {
-    return <View></View>;
+    return <React.Fragment></React.Fragment>;
   }
 };
 
