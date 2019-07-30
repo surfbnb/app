@@ -16,17 +16,32 @@ const mapStateToProps = ({ login_popover }) => ({
   show: login_popover.show
 });
 
+const btnPreText = 'Connect with Twitter';
+const btnPostText = 'Connecting...';
+
 class loginPopover extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      disableLoginBtn: false,
+      btnText: btnPreText
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.show && this.props.show !== prevProps.show) {
+      this.setState({ disableLoginBtn: false, btnText: btnPreText });
+    }
   }
 
   onSignUp = () => {
+    this.setState({ disableLoginBtn: true, btnText: btnPostText });
     TwitterAuthService.signUp();
     //cannot hide popover here
   };
 
   render() {
+    console.log('disableLoginBtn', this.state.disableLoginBtn);
     return (
       <React.Fragment>
         {this.props.show && (
@@ -38,12 +53,18 @@ class loginPopover extends React.Component {
             hasBackdrop={true}
             onRequestClose={() => console.log('onRequestClose')}
           >
-            <TouchableWithoutFeedback onPressIn={() => Store.dispatch(hideLoginPopover())}>
+            <TouchableWithoutFeedback
+              onPressIn={() => {
+                Store.dispatch(hideLoginPopover());
+              }}
+            >
               <View style={inlineStyles.parent}>
                 <TouchableWithoutFeedback>
                   <View style={inlineStyles.container}>
                     <TouchableOpacity
-                      onPress={() => Store.dispatch(hideLoginPopover())}
+                      onPress={() => {
+                        Store.dispatch(hideLoginPopover());
+                      }}
                       style={{
                         position: 'absolute',
                         top: 15,
@@ -67,13 +88,15 @@ class loginPopover extends React.Component {
                           alignItems: 'center',
                           justifyContent: 'center',
                           width: '80%'
-                        }
+                        },
+                        this.state.disableLoginBtn ? Theme.Button.disabled : null
                       ]}
                       TextStyles={[Theme.Button.btnPinkText, { fontSize: 18 }]}
-                      text="Connect with Twitter"
+                      text={this.state.btnText}
                       onPress={this.onSignUp}
                       source={twitterBird}
                       imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
+                      disabled={this.state.disableLoginBtn}
                     />
                   </View>
                 </TouchableWithoutFeedback>
