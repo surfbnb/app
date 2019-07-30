@@ -51,7 +51,7 @@ class Users extends Component {
       );
     } else if (index == SUPPORTER_INDEX) {
       return (
-        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, marginBottom: 100 }}>
+        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
           <SupportersList fetchUrl={'/users/contribution-by'} />
         </View>
       );
