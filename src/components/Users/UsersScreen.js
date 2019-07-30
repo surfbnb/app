@@ -44,10 +44,6 @@ class Users extends Component {
 
   }
 
-
-
-  
-
   showInnerComponent = (index) => {
     if (index == SUPPORTING_INDEX) {
       return (
@@ -58,7 +54,7 @@ class Users extends Component {
     } else if (index == SUPPORTER_INDEX) {
       return (
         <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
-          <SupportersList fetchUrl={'/users/contribution-suggestion'} />
+          <SupportersList fetchUrl={'/users/contribution-by'} />
         </View>
       );
     }

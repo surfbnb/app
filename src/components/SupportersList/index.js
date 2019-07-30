@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Dimensions } from 'react-native';
+import { FlatList, Dimensions, View } from 'react-native';
 import deepGet from 'lodash/get';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import User from '../Users/User';
 import EmptyList from '../EmptyFriendsList/EmptyList';
-
+import Colors from '../../theme/styles/Colors';
 
 class SupportersList extends PureComponent {
   constructor(props) {
@@ -13,8 +13,6 @@ class SupportersList extends PureComponent {
       activeIndex: 0
     };
   }
-
-
 
   setActiveIndex() {
     if (this.state.activeIndex == currentIndex) return;
@@ -27,22 +25,29 @@ class SupportersList extends PureComponent {
     return <User id={item} />;
   };
 
-
-  //TODO empty list only visible when no data and not refreshing.
-  render() {
-    return this.props.list.length > 0 ? (
-      <FlatList
-
-        data={this.props.list}
-        onEndReached={this.props.getNext}
-        onRefresh={this.props.refresh}
-        keyExtractor={this._keyExtractor}
-        refreshing={this.props.refreshing}
-        onEndReachedThreshold={5}
-        ListFooterComponent={this.props.renderFooter} 
-        renderItem={this._renderItem}
-      />
-    ) : <EmptyList displayText='You are currently do not have any supporters' />;
+  render() {    
+    return (
+      <View>
+        <FlatList
+          data={this.props.list}
+          onEndReached={this.props.getNext}
+          onRefresh={this.props.refresh}
+          keyExtractor={this._keyExtractor}
+          refreshing={this.props.refreshing}
+          onEndReachedThreshold={5}
+          ListFooterComponent={this.props.renderFooter}
+          renderItem={this._renderItem}
+        />
+        {this.props.list && this.props.list.length == 0 && !this.props.refreshing &&  (
+          <View style={ {flex: 1,
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            backgroundColor: Colors.whiteSmoke}}>
+          <EmptyList displayText="You are currently do not have any supporters" />
+          </View>
+        )}
+      </View>
+    );
   }
 }
 
