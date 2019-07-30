@@ -185,7 +185,6 @@ export const reducer = handleActions(
     [logoutUser]: (state, action) => ({
       ...state,
       current_user: {},
-      executeTransactionDisabledStatus: true,
       balance: '0'
     })
   },

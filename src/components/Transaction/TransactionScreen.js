@@ -94,7 +94,7 @@ class TransactionScreen extends Component {
   onBalance(balance , res) {
     balance = pricer.getFromDecimal(balance);
     balance = PriceOracle.toBt(balance) || 0;
-    let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
+    let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0) || !utilities.isUserActivated( reduxGetter.getUserActivationStatus(this.toUser.id) );
     this.setState({ balance, exceBtnDisabled });
   }
 
@@ -165,19 +165,12 @@ class TransactionScreen extends Component {
     return {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
       ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
-      privacy_type: this.getPrivacyType(),
       meta: {
         text: this.state.message,
         giphy: this.state.selectedGiphy,
         vi: this.videoId
       }
     };
-  }
-
-  getPrivacyType() {
-    return this.state.isPublic
-      ? appConfig.executeTransactionPrivacyType.public
-      : appConfig.executeTransactionPrivacyType.private;
   }
 
   onError(error) {

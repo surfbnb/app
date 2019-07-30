@@ -48,6 +48,11 @@ class ReduxGetters {
     return deepGet(state, `user_entities.id_${id}.name`);
   }
 
+  getUserActivationStatus(id , state){
+    state = state || Store.getState();
+    return deepGet(state, `user_entities.id_${id}.ost_status`);
+  }
+
   getBio(id, state) {
     state = state || Store.getState();
     return deepGet(state, `user_profile_entities.id_${id}.bio.text`);
@@ -61,6 +66,11 @@ class ReduxGetters {
   getVideoBt(id, state) {
     state = state || Store.getState();
     return deepGet(state, `video_stat_entities.id_${id}.total_amount_raised_in_wei`);
+  }
+  
+  getVideoStats(id , state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}`);
   }
 
   isVideoSupported(id, state) {

@@ -18,7 +18,9 @@ const mapStateToProps = (state, ownProps) => {
     userName: reduxGetter.getUserName(ownProps.userId, state),
     name: reduxGetter.getName(ownProps.userId, state),
     bio: reduxGetter.getBio(ownProps.userId, state),
-    videoSize: reduxGetter.getVideoSize(ownProps.videoId, state)
+    videoSize: reduxGetter.getVideoSize(ownProps.videoId, state),
+    supporters: reduxGetter.getVideoSupporters( ownProps.videoId ),
+    totalBt: reduxGetter.getVideoBt(ownProps.videoId , state ),
   };
 };
 
@@ -39,6 +41,7 @@ class BottomStatus extends PureComponent {
 
   btToFiat(btAmount) {
     const priceOracle = pricer.getPriceOracle();
+    btAmount = priceOracle.fromDecimal( btAmount )
     return (priceOracle && priceOracle.btToFiat(btAmount, 2)) || 0;
   }
 
