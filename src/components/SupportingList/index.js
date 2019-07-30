@@ -200,8 +200,7 @@ class SupportingList extends Component {
     return dataSource;
   }
 
-  renderNoContent = (section) => {
-    console.log(section, section.key, section.key == SUGGESTIONS,  'section section');
+  renderNoContent = (section) => {    
     let displayText = '';
     if(section.key == SUPPORTING){
       displayText = 'You are currently not supporting anyone'
@@ -226,7 +225,6 @@ class SupportingList extends Component {
   };
 
   render() {
-    console.log(this.getDataSource(), 'getDataSource');
     return (
       <SectionList
         //style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height}}

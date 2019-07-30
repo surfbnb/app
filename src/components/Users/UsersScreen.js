@@ -29,15 +29,13 @@ class Users extends Component {
     this.userFlatList.scrollToIndex({ index: newActiveIndex });
   };
 
-  goToScreenSupporters = () => {
-    console.log('goToScreenSupporters');
+  goToScreenSupporters = () => {    
     if (this.state.activeIndex == SUPPORTER_INDEX ) return;
     this.setState({ activeIndex: SUPPORTER_INDEX });
     this.userFlatList.scrollToIndex({ index: SUPPORTER_INDEX });
   }
 
-  goToScreenSupporting = () => {
-    console.log('goToScreenSupporting');
+  goToScreenSupporting = () => {    
     if (this.state.activeIndex == SUPPORTING_INDEX ) return;
     this.setState({ activeIndex: SUPPORTING_INDEX });
     this.userFlatList.scrollToIndex({ index: SUPPORTING_INDEX });
@@ -53,7 +51,7 @@ class Users extends Component {
       );
     } else if (index == SUPPORTER_INDEX) {
       return (
-        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
+        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, marginBottom: 100 }}>
           <SupportersList fetchUrl={'/users/contribution-by'} />
         </View>
       );

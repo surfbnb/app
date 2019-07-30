@@ -9,14 +9,6 @@ import Colors from '../../theme/styles/Colors';
 class SupportersList extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      activeIndex: 0
-    };
-  }
-
-  setActiveIndex() {
-    if (this.state.activeIndex == currentIndex) return;
-    this.setState({ activeIndex: currentIndex });
   }
 
   _keyExtractor = (item, index) => `id_${item}`;
@@ -25,9 +17,9 @@ class SupportersList extends PureComponent {
     return <User id={item} />;
   };
 
-  render() {    
+  render() {
     return (
-      <View>
+      <View style={this.props.list.length > 0 ? { flex: 1 } : {}}>
         <FlatList
           data={this.props.list}
           onEndReached={this.props.getNext}
@@ -38,12 +30,11 @@ class SupportersList extends PureComponent {
           ListFooterComponent={this.props.renderFooter}
           renderItem={this._renderItem}
         />
-        {this.props.list && this.props.list.length == 0 && !this.props.refreshing &&  (
-          <View style={ {flex: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            backgroundColor: Colors.whiteSmoke}}>
-          <EmptyList displayText="You are currently do not have any supporters" />
+        {this.props.list && this.props.list.length == 0 && !this.props.refreshing && (
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: Colors.whiteSmoke }}
+          >
+            <EmptyList displayText="You are currently do not have any supporters" />
           </View>
         )}
       </View>
