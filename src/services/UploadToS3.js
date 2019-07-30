@@ -39,7 +39,7 @@ export default class UploadToS3 {
         }
         return reject();
       }
-      }).catch(()=>{
+      }).catch(()=> {
         return reject();
       });
     });

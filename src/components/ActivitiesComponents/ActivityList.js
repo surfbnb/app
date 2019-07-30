@@ -25,9 +25,10 @@ class ActivityList extends PureComponent {
                 refreshing={this.props.refreshing}
                 onEndReachedThreshold={5}
                 style={[this.props.style]}
-                onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
+                //onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
                 keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}               
+                renderItem={this._renderItem}      
+                ListFooterComponent={this.props.renderFooter}         
         ></FlatList>
         { this.props.list && this.props.list.length == 0 && !this.props.refreshing && (
           <View style={inlineStyles.emptyFeed}>
@@ -41,4 +42,4 @@ class ActivityList extends PureComponent {
   }
 }
 
-export default flatlistHOC( ActivityList  , true);
+export default flatlistHOC( ActivityList );

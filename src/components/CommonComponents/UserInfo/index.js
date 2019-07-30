@@ -10,11 +10,12 @@ import inlineStyle from './styles';
 import pricer from "../../../services/Pricer";
 import reduxGetter from "../../../services/ReduxGetters";
 import FastImage from 'react-native-fast-image';
+import ProfilePicture from '../../ProfilePicture';
 
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    userName: reduxGetter.getUserName( ownProps.userId ,state ),
+    userName: reduxGetter.getUserName(  ownProps.userId ,state ),
     name: reduxGetter.getName( ownProps.userId , state ),
     bio: reduxGetter.getBio( ownProps.userId , state ),
     link : reduxGetter.getLink( reduxGetter.getUserLinkId(ownProps.userId , state ) ,  state ),
@@ -71,8 +72,7 @@ class UserInfo extends React.PureComponent {
       <View style={{margin:20,alignItems:'center'}}>
 
         <View style={inlineStyle.infoHeaderWrapper}>
-          {/*<Image style={inlineStyle.profileImageSkipFont} source={this.getImageSrc()}></Image>*/}
-          {this.getImageSrc()}
+          <ProfilePicture userId={this.props.userId} style={inlineStyle.profileImageSkipFont} />
 
           <Text style={inlineStyle.userName}>{this.props.userName}</Text>
         </View>

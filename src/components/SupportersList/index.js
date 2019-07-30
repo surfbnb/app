@@ -5,7 +5,6 @@ import flatlistHOC from '../CommonComponents/flatlistHOC';
 import User from '../Users/User';
 import EmptyList from '../EmptyFriendsList/EmptyList';
 
-let currentIndex = 0;
 
 class SupportersList extends PureComponent {
   constructor(props) {
@@ -15,9 +14,7 @@ class SupportersList extends PureComponent {
     };
   }
 
-  onViewableItemsChanged(data) {
-    currentIndex = deepGet(data, 'viewableItems[0].index');
-  }
+
 
   setActiveIndex() {
     if (this.state.activeIndex == currentIndex) return;
@@ -30,36 +27,23 @@ class SupportersList extends PureComponent {
     return <User id={item} />;
   };
 
-  onMomentumScrollEndCallback = () => {
-    this.setActiveIndex();
-  };
 
+  //TODO empty list only visible when no data and not refreshing.
   render() {
     return this.props.list.length > 0 ? (
       <FlatList
-        extraData={this.state}
-        snapToAlignment={'top'}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 90
-        }}
-        pagingEnabled={true}
-        decelerationRate={'fast'}
+
         data={this.props.list}
         onEndReached={this.props.getNext}
         onRefresh={this.props.refresh}
         keyExtractor={this._keyExtractor}
         refreshing={this.props.refreshing}
-        initialNumToRender={3}
-        onEndReachedThreshold={7}
-        style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-        onViewableItemsChanged={this.onViewableItemsChanged}
-        onMomentumScrollEnd={this.onMomentumScrollEndCallback}
-        onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
+        onEndReachedThreshold={5}
+        ListFooterComponent={this.props.renderFooter} 
         renderItem={this._renderItem}
-        showsVerticalScrollIndicator={false}
       />
     ) : <EmptyList displayText='You are currently do not have any supporters' />;
   }
 }
 
-export default flatlistHOC(SupportersList, true);
+export default flatlistHOC(SupportersList);
