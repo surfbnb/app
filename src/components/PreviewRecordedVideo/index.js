@@ -9,6 +9,7 @@ import { upsertRecordedVideo, videoInProcessing } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
 import { withNavigationFocus } from 'react-navigation';
+import closeIcon from '../../assets/cross_icon.png';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Close Camera', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
@@ -110,7 +111,7 @@ class PreviewRecordedVideo extends Component {
         <View style={styles.container}>
           <Video
             source={{ uri: this.cachedVideoUri }}
-            style={styles.previewVideo}
+            style={styles.previewVideoSkipFont}
             fullscreen={true}
             onLoad={this.handleLoad}
             onProgress={this.handleProgress}
@@ -123,12 +124,15 @@ class PreviewRecordedVideo extends Component {
             progress={this.state.progress}
             indeterminate={false}
             style={styles.progressBar}
-          />
-          <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
-            <View style={styles.cancelButton}>
-              <Text style={styles.cancelText}>X</Text>
-            </View>
-          </TouchableWithoutFeedback>
+          />        
+          <TouchableWithoutFeedback  onPressIn={this.cancleVideoHandling}>
+                <View style={styles.closeBtWrapper}>
+                  <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
+                </View>
+
+            </TouchableWithoutFeedback>
+
+          
           <View style={styles.bottomControls}>
             {this.state.progress == 1 ? (
               <TouchableOpacity
@@ -136,14 +140,14 @@ class PreviewRecordedVideo extends Component {
                   this.replay();
                 }}
               >
-                <Image style={styles.playIcon} source={playIcon} />
+                <Image style={styles.playIconSkipFont} source={playIcon} />
               </TouchableOpacity>
             ) : (
               <View style={styles.playIcon} />
             )}
 
             <TouchableOpacity onPress={this.enableStartUploadFlag}>
-              <Image style={styles.tickIcon} source={tickIcon} />
+              <Image style={styles.tickIconSkipFont} source={tickIcon} />
             </TouchableOpacity>
           </View>
         </View>

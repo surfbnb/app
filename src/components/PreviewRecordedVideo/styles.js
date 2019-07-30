@@ -1,4 +1,4 @@
-import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
@@ -8,7 +8,7 @@ let stylesMap = {
     backgroundColor: Colors.black,
     alignSelf: 'stretch'
   },
-  previewVideo: {
+  previewVideoSkipFont: {
     overflow: 'hidden',
     position: 'absolute',
     top: 0,
@@ -48,16 +48,29 @@ let stylesMap = {
     alignItems: 'center',
     justifyContent: 'space-between'
   },
-  playIcon: {
+  playIconSkipFont: {
     width: 65,
     height: 65,
     paddingHorizontal: 20,
     marginLeft: -32.5
   },
-  tickIcon: {
+  tickIconSkipFont: {
     width: 45,
     height: 45,
     marginRight: 20
+  },
+  closeBtWrapper: {
+    position: 'absolute',
+    top: 10,
+    left: 0,
+    height: 60,
+    width: 60
+  },
+  closeIconSkipFont: {
+    marginTop: 44,
+    marginLeft: 20,
+    height: 20,
+    width: 20
   }
 };
 

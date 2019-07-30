@@ -7,7 +7,7 @@ let stylesMap = {
       flexDirection: "column",
       backgroundColor: Colors.black
     },
-    preview: {
+    previewSkipFont: {
       flex: 1,
       justifyContent: "space-between",
       alignItems: "center",
@@ -26,7 +26,7 @@ let stylesMap = {
       borderWidth: 3,
       borderColor: Colors.white
     },
-    captureButton: {
+    captureButtonSkipFont: {
       width: 65,
       height: 65,
       padding: 15,
@@ -53,7 +53,21 @@ let stylesMap = {
     cancelText: {
       color: Colors.white,
       fontWeight: 'bold'
-    }
+    },
+    closeBtWrapper:{
+      position:'absolute',
+      top:10,
+      left:0,
+      height:60,
+      width:60
+    },
+    closeIconSkipFont:{
+      marginTop:40,
+      marginLeft:20,
+      height:20,
+      width:20
+    },
+
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
