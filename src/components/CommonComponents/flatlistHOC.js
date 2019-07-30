@@ -95,6 +95,7 @@ function flatlistHOC( ListComponent , scrollDetectNext ) {
        * 4. Will start pagination only after scroll detect (Optional)
       */
       getNext = () => {
+        console.log("Get next called" , this.state.loadingNext ,  this.state.refreshing , !this.fetchServices.hasNextPage, this.onEndReachedCalledDuringMomentum );
         if (this.state.loadingNext || this.state.refreshing
            || !this.fetchServices.hasNextPage || this.onEndReachedCalledDuringMomentum ) return;
         this.beforeNext();

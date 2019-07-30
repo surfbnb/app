@@ -38,7 +38,8 @@ let stylesMap = {
   profileImageSkipFont: {
     height: 25,
     width: 25,
-    borderRadius: 12.5
+    borderRadius: 12.5,
+    backgroundColor: Colors.gainsboro
   },
   userName: {
     fontWeight: 'bold',

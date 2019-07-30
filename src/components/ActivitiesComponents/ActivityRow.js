@@ -13,6 +13,7 @@ import FastImage from 'react-native-fast-image';
 import reduxGetter from '../../services/ReduxGetters';
 import CurrentUser from '../../models/CurrentUser';
 import multipleClickHandler from '../../services/MultipleClickHandler';
+import ProfilePicture from '../ProfilePicture';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -28,7 +29,7 @@ const mapStateToProps = (state, ownProps) => {
     timeStamp: reduxGetter.getActivityTransactionTimeStamp(ownProps.id),
     btAmount: reduxGetter.getTransactionAmount(reduxGetter.getActivityTransactionId(ownProps.id)),
     giffy: reduxGetter.getGiffy(reduxGetter.getActivityGiffyId(ownProps.id)),
-    message: reduxGetter.getActivityMessage(ownProps.id)
+    message: reduxGetter.getActivityMessage(ownProps.id)    
   };
 };
 
@@ -63,9 +64,7 @@ class ActivityRow extends PureComponent {
         <View style={{ marginTop: 10 }}></View>
         <View style={styles.cellWrapper}>
           <View style={styles.header}>
-            <View style={{ alignSelf: 'flex-start' }}>
-              <Image source={DefaultUserIcon} style={styles.profileImgSkipFont} />
-            </View>
+            <ProfilePicture userId={this.props.fromUserId}/>
             <View style={{ flex: 1 }}>
               <View style={styles.userInfo}>
                 <View style={{ flex: 1, alignSelf: 'flex-start' }}>

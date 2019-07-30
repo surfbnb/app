@@ -13,6 +13,7 @@ import reduxGetter from '../../../services/ReduxGetters';
 import FastImage from 'react-native-fast-image';
 import Colors from '../../../theme/styles/Colors';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
+import ProfilePicture from '../../ProfilePicture';
 
 const isActivated = function(user) {
   let userStatus = (user && user['ost_status']) || '';
@@ -28,13 +29,6 @@ const getUser = function(id) {
   return Store.getState().user_entities[`id_${id}`] || {};
 };
 
-getImageSrc = (user) => {
-  let imageSrc = default_user_icon;
-  if (user.profile_image_id && reduxGetter.getImage(user.profile_image_id)) {
-    imageSrc = { uri: reduxGetter.getImage(user.profile_image_id) };
-  }
-  return <Image style={styles.imageStyleSkipFont} source={imageSrc}></Image>;
-};
 
 const Users = (props) => {
   let user = getUser(props.id);
@@ -46,7 +40,7 @@ const Users = (props) => {
         })}
       >
         <View style={styles.txtWrapper}>
-          {getImageSrc(user)}
+          <ProfilePicture userId={props.id} />
           <Text numberOfLines={1} style={styles.item}>
             {user.name.length > 40 ? `${user.name.substring(0, 40)}...` : user.name}
           </Text>

@@ -29,6 +29,19 @@ class Users extends Component {
     this.userFlatList.scrollToIndex({ index: newActiveIndex });
   };
 
+  goToScreenSupporters = () => {    
+    if (this.state.activeIndex == SUPPORTER_INDEX ) return;
+    this.setState({ activeIndex: SUPPORTER_INDEX });
+    this.userFlatList.scrollToIndex({ index: SUPPORTER_INDEX });
+  }
+
+  goToScreenSupporting = () => {    
+    if (this.state.activeIndex == SUPPORTING_INDEX ) return;
+    this.setState({ activeIndex: SUPPORTING_INDEX });
+    this.userFlatList.scrollToIndex({ index: SUPPORTING_INDEX });
+
+  }
+
   showInnerComponent = (index) => {
     if (index == SUPPORTING_INDEX) {
       return (
@@ -38,7 +51,7 @@ class Users extends Component {
       );
     } else if (index == SUPPORTER_INDEX) {
       return (
-        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
+        <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height, marginBottom: 100 }}>
           <SupportersList fetchUrl={'/users/contribution-by'} />
         </View>
       );
@@ -68,7 +81,7 @@ class Users extends Component {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <View style={styles.buttonContainer}>
-            <TouchableWithoutFeedback onPress={this.toggleScreen}>
+            <TouchableWithoutFeedback onPress={this.goToScreenSupporting}>
               <View
                 style={[
                   styles.button,
@@ -79,7 +92,7 @@ class Users extends Component {
                 <Text style={[this.state.activeIndex == SUPPORTING_INDEX && { color: '#ef5869' }]}> Supporting </Text>
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={this.toggleScreen}>
+            <TouchableWithoutFeedback onPress={this.goToScreenSupporters}>
               <View
                 style={[
                   styles.button,
