@@ -40,7 +40,7 @@ class HomeFeedRow extends PureComponent {
 
   navigateToTransactionScreen = (e) => {
     if (this.userId == CurrentUser.getUserId()) return;
-    if (CurrentUser.checkActiveUser() && CurrentUser.isUserActivated()) {
+    if (CurrentUser.checkActiveUser() && CurrentUser.isUserActivated( true )) {
       this.props.navigation.push('TransactionScreen', {
         toUserId: this.userId,
         videoId: reduxGetter.getHomeFeedVideoId(this.props.feedId),
