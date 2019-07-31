@@ -65,7 +65,7 @@ class TransactionPepoButton extends PureComponent {
 
     sendTransactionToSdk( btAmount ) {
         const user = CurrentUser.getUser();
-        const option = { wait_for_finalization: false };
+       // const option = { wait_for_finalization: false };
         const btInDecimal =  pricer.getToDecimal(btAmount);
         this.workflow = new ExecuteTransactionWorkflow(this);
         OstWalletSdk.executeTransaction(
@@ -74,8 +74,8 @@ class TransactionPepoButton extends PureComponent {
           [btInDecimal],
           appConfig.ruleTypeMap.directTransfer,
           this.getSdkMetaProperties(),
-          this.workflow,
-          option
+          this.workflow
+          //,option
         );
       }
     

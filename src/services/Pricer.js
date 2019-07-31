@@ -41,7 +41,7 @@ class Pricer {
         this.onBalance( bal );
         successCallback && successCallback( bal , res); 
       },
-      (err) => {
+      (error) => {
         errorCallback && errorCallback(error);
       }
     );

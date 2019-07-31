@@ -106,7 +106,7 @@ class TransactionScreen extends Component {
 
   sendTransactionToSdk() {
     const user = CurrentUser.getUser();
-    const option = { wait_for_finalization: false };
+    //const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(this.state.btAmount);
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
@@ -115,8 +115,8 @@ class TransactionScreen extends Component {
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
       this.getSdkMetaProperties(),
-      this.workflow,
-      option
+      this.workflow
+      //,option
     );
   }
 
@@ -277,23 +277,6 @@ class TransactionScreen extends Component {
                         {this.state.isMessageVisible ? 'Clear Message' : 'Add Message'}
                       </Text>
                     </TouchableOpacity>
-
-                    {/* This is Share publically switch */}
-                    {/*<View style={{ justifyContent: 'flex-end' }}>*/}
-                      {/*<View style={{ flexDirection: 'row', alignItems: 'center' }}>*/}
-                        {/*<Text style={{ fontSize: 16, color: '#606060' }}>Make Public</Text>*/}
-                        {/*<Switch*/}
-                          {/*value={this.state.isPublic}*/}
-                          {/*style={inlineStyles.switchStyle}*/}
-                          {/*onValueChange={(isPublic) => {*/}
-                            {/*this.setState({ isPublic });*/}
-                          {/*}}*/}
-                          {/*ios_backgroundColor="#d3d3d3"*/}
-                          {/*trackColor={{ true: '#EF5566', false: Platform.OS == 'android' ? '#d3d3d3' : '#ffffff' }}*/}
-                          {/*thumbColor={[Platform.OS == 'android' ? '#ffffff' : '']}*/}
-                        {/*></Switch>*/}
-                      {/*</View>*/}
-                    {/*</View>*/}
                   </View>
 
                   {this.state.isMessageVisible && (
