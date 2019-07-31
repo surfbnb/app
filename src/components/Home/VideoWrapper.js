@@ -6,7 +6,6 @@ import Video from 'react-native-video';
 import inlineStyles from './styles';
 import reduxGetter from '../../services/ReduxGetters';
 import playIcon from '../../assets/play_icon.png';
-import CurrentUser from '../../models/CurrentUser';
 import PixelCall from '../../services/PixelCall';
 
 const mapStateToProps = (state, ownProps) => {
