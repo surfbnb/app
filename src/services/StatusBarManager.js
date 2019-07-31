@@ -31,7 +31,7 @@ export const StatusBarManager = (action) => {
   if(!action.routeName) {
     statusBarStatus ? StatusBarShow() : StatusBarHide();
   } else {
-    let routesWithoutStatusBar = ['Home', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen'];
+    let routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen'];
     routesWithoutStatusBar.includes(action.routeName) ? StatusBarHide() : StatusBarShow();
   }
 
