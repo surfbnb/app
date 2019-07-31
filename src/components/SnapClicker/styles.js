@@ -10,7 +10,8 @@ let stylesMap = {
     justifyContent: 'space-between'
   },
   captureBtn: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginBottom: 15
   },
   imgCaptureButtonSkipFont: {
     height: 76,

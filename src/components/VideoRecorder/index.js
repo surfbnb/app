@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Image, Text, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
@@ -101,59 +101,57 @@ class VideoRecorder extends Component {
 
   cameraView() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <RNCamera
-            ref={(ref) => {
-              this.camera = ref;
-            }}
-            style={styles.previewSkipFont}
-            type={RNCamera.Constants.Type.front}
-            ratio={AppConfig.cameraConstants.RATIO}
-            zoom={0}
-            autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
-            notAuthorizedView={this.showAppSettings()}
-            pendingAuthorizationView={this.showAppSettings()}
-            defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
-            defaultMuted={false}
-            androidCameraPermissionOptions={{
-              title: 'Permission to use camera',
-              message: 'We need your permission to use your camera',
-              buttonPositive: 'Ok',
-              buttonNegative: 'Cancel'
-            }}
-            androidRecordAudioPermissionOptions={{
-              title: 'Permission to use audio recording',
-              message: 'We need your permission to use your audio',
-              buttonPositive: 'Ok',
-              buttonNegative: 'Cancel'
+      <View style={styles.container}>
+        <RNCamera
+          ref={(ref) => {
+            this.camera = ref;
+          }}
+          style={styles.previewSkipFont}
+          type={RNCamera.Constants.Type.front}
+          ratio={AppConfig.cameraConstants.RATIO}
+          zoom={0}
+          autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
+          notAuthorizedView={this.showAppSettings()}
+          pendingAuthorizationView={this.showAppSettings()}
+          defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
+          defaultMuted={false}
+          androidCameraPermissionOptions={{
+            title: 'Permission to use camera',
+            message: 'We need your permission to use your camera',
+            buttonPositive: 'Ok',
+            buttonNegative: 'Cancel'
+          }}
+          androidRecordAudioPermissionOptions={{
+            title: 'Permission to use audio recording',
+            message: 'We need your permission to use your audio',
+            buttonPositive: 'Ok',
+            buttonNegative: 'Cancel'
+          }}
+        >
+          <ProgressBar
+            width={null}
+            color="#EF5566"
+            progress={this.state.progress}
+            indeterminate={false}
+            style={styles.progressBar}
+          />
+
+          <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
+            <View style={styles.closeBtWrapper}>
+              <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
+            </View>
+          </TouchableWithoutFeedback>
+          <View
+            style={{
+              flex: 0,
+              flexDirection: 'row',
+              justifyContent: 'center'
             }}
           >
-            <ProgressBar
-              width={null}
-              color="#EF5566"
-              progress={this.state.progress}
-              indeterminate={false}
-              style={styles.progressBar}
-            />
-
-            <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
-              <View style={styles.closeBtWrapper}>
-                <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
-              </View>
-            </TouchableWithoutFeedback>
-            <View
-              style={{
-                flex: 0,
-                flexDirection: 'row',
-                justifyContent: 'center'
-              }}
-            >
-              {this.getActionButton()}
-            </View>
-          </RNCamera>
-        </View>
-      </SafeAreaView>
+            {this.getActionButton()}
+          </View>
+        </RNCamera>
+      </View>
     );
   }
 

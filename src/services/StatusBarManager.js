@@ -21,6 +21,7 @@ const StatusBarHide = () => {
 
 export const StatusBarManager = (action) => {
 
+  console.log('StatusBarManager', action);
   if(action.type === "Navigation/COMPLETE_TRANSITION") return;
 
   if(action.type === "Navigation/BACK") {
