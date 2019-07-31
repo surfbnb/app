@@ -38,9 +38,6 @@ class TransactionPepoButton extends PureComponent {
     }
 
     isDisabled = () => {
-      console.log("!this.isBalance() - " , !this.isBalance() ,  "!this.props.isCurrentUserActivated -- " , !this.props.isCurrentUserActivated  
-       , "this.props.disabled - " , this.props.disabled ,  "this.props.userId == CurrentUser.getUserId() - " , this.props.userId == CurrentUser.getUserId()
-       , "!this.props.isVideoUserActivated - " , !this.props.isVideoUserActivated);
       return !this.isBalance() || !this.props.isCurrentUserActivated  
       || this.props.disabled || this.props.userId == CurrentUser.getUserId()
       || !this.props.isVideoUserActivated ;
@@ -198,7 +195,6 @@ class TransactionPepoButton extends PureComponent {
     }
 
     render(){
-      console.log("this.props.isSupporting - " , this.props.isSupporting , "this.localSupported - " , this.localSupported )
        return ( 
         <TouchableWithoutFeedback onPress={this.onTransactionIconWrapperClick}> 
             <View>
