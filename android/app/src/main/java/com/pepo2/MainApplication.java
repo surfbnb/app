@@ -11,7 +11,6 @@ import com.goldenowl.twittersignin.TwitterSigninPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import me.hauvo.thumbnail.RNThumbnailPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
@@ -50,7 +49,6 @@ public class MainApplication extends Application implements ReactApplication {
             new ImageResizerPackage(),
             new LinearGradientPackage(),
             new ReactVideoPackage(),
-            new RNThumbnailPackage(),
             new RNCameraPackage(),
             new FastImageViewPackage(),
             new NetInfoPackage(),

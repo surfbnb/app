@@ -1,5 +1,3 @@
-
-
 import { NativeModules } from 'react-native';
 import { LoadingModal } from '../theme/components/LoadingModalCover';
 import deepGet from 'lodash/get';
@@ -10,7 +8,7 @@ import { hideLoginPopover } from '../actions';
 import NavigationService from './NavigationService';
 import { Toast } from 'native-base';
 import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../constants';
-import Pricer from './Pricer';
+import { LoginPopoverActions } from '../components/LoginPopover';
 
 const { RNTwitterSignIn } = NativeModules;
 
@@ -28,8 +26,7 @@ class TwitterAuthService {
         if (loginData) {
           let params = this.getParams(loginData);
           LoadingModal.show('Connecting...');
-          CurrentUser
-            .twitterConnect(params)
+          CurrentUser.twitterConnect(params)
             .then((res) => {
               if (res.success && res.data) {
                 let resultType = deepGet(res, 'data.result_type'),
@@ -57,9 +54,10 @@ class TwitterAuthService {
       .catch((error) => {
         console.log(error);
         this.onServerError(error);
-      }).finally( () => {
-         Store.dispatch(hideLoginPopover());
-    })
+      })
+      .finally(() => {
+        LoginPopoverActions.hide();
+      });
   }
 
   getParams(loginData) {
@@ -85,13 +83,13 @@ class TwitterAuthService {
   }
 
   setupDeviceFailed(ostWorkflowContext, error) {
-   // this.onServerError(error);
+    // this.onServerError(error);
   }
 
   onServerError(res) {
     LoadingModal.hide();
     Toast.show({
-      text: "Failed to login via Twitter.",
+      text: 'Failed to login via Twitter.',
       buttonText: 'Ok'
     });
   }

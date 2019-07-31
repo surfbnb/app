@@ -6,7 +6,6 @@ import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
 import TransactionPepoButton from './TransactionPepoButton';
 import tx_icon from '../../assets/tx_icon.png';
-import pricer from '../../services/Pricer';
 import CurrentUser from '../../models/CurrentUser';
 
 import BottomStatus from './BottomStatus';
@@ -32,54 +31,16 @@ class HomeFeedRow extends PureComponent {
     return reduxGetter.getHomeFeedVideoId(this.props.feedId);
   }
 
-  get supporters() {
-    return Number(reduxGetter.getVideoSupporters(this.videoId)) || 0;
-  }
-
-  get totalBt() {
-    return pricer.getToBT(pricer.getFromDecimal(reduxGetter.getVideoBt(this.videoId)), 2);
-  }
-
-  get isVideoSupported() {
-    return reduxGetter.isVideoSupported(this.videoId);
-  }
-
-  onLocalUpdate = (totalBt) => {
-    let newState = { totalBt: totalBt };
-    if (!this.isVideoSupported) {
-      newState['supporters'] = this.supporters + 1;
-      newState['isSupported'] = true;
-    }
-    this.setState(newState);
-  };
-
-  onLocalReset = (totalBt) => {
-    let newState = { totalBt: totalBt };
-    if (!this.isVideoSupported) {
-      newState['supporters'] = this.supporters;
-      newState['isSupported'] = false;
-    }
-    this.setState(newState);
-  };
-
   refetchFeed = () => {
-    this.state.refreshed = true; // change silently
     new PepoApi(`/feeds/${this.props.feedId}`)
       .get()
-      .then((res) => {
-        this.onRefresh();
-      })
+      .then((res) => {})
       .catch((error) => {});
   };
 
-  onRefresh() {
-    let newState = { totalBt: this.totalBt, suporters: this.supporters, refreshed: false };
-    this.setState(newState);
-  }
-
   navigateToTransactionScreen = (e) => {
     if (this.userId == CurrentUser.getUserId()) return;
-    if (CurrentUser.checkActiveUser() && CurrentUser.isUserActivated()) {
+    if (CurrentUser.checkActiveUser() && CurrentUser.isUserActivated( true )) {
       this.props.navigation.push('TransactionScreen', {
         toUserId: this.userId,
         videoId: reduxGetter.getHomeFeedVideoId(this.props.feedId),
@@ -97,10 +58,7 @@ class HomeFeedRow extends PureComponent {
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
           <View style={inlineStyles.touchablesBtns}>
             <TransactionPepoButton
-              totalBt={this.state.totalBt}
-              isSupported={this.state.isSupported}
-              onLocalUpdate={this.onLocalUpdate}
-              onLocalReset={this.onLocalReset}
+              refetchFeed={this.refetchFeed}
               feedId={this.props.feedId}
               userId={this.userId}
               videoId={this.videoId}
@@ -116,9 +74,7 @@ class HomeFeedRow extends PureComponent {
 
           <BottomStatus
             userId={this.userId}
-            supporters={this.state.supporters}
             videoId={this.videoId}
-            totalBt={this.state.totalBt}
           />
         </View>
       </View>

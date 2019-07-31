@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import RNThumbnail from 'react-native-thumbnail';
 import RNFS from 'react-native-fs';
 import Store from '../store';
 import {

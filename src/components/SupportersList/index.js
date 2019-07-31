@@ -19,7 +19,7 @@ class SupportersList extends PureComponent {
 
   render() {
     return (
-      <View style={this.props.list.length > 0 ? { flex: 1 } : {}}>
+      <View style={this.props.list.length > 0 ? { flex: 1, height: Dimensions.get('window').height - 130 } : {}}>
         <FlatList
           data={this.props.list}
           onEndReached={this.props.getNext}

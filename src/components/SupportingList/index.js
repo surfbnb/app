@@ -227,23 +227,25 @@ class SupportingList extends Component {
 
   render() {
     return (
-      <SectionList
-        //style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height}}
-        sections={this.getDataSource()}
-        renderSectionFooter={({ section }) => this.renderNoContent(section)}
-        renderSectionHeader={this.renderSectionHeader}
-        renderItem={this._renderItem}
-        keyExtractor={(item) => `id_${item}`}
-        refreshing={this.state.refreshing}
-        onRefresh={this.refresh}
-        stickySectionHeadersEnabled={false}
-        onEndReachedThreshold={0.1}
-        // onScroll={this.getNext}
-        onEndReached={this.getNext}
-        onMomentumScrollBegin={() => {
-          this.onEndReachedCalledDuringMomentum = false;
-        }}
-      />
+      <View style={{ height: Dimensions.get('window').height - 130 }}>
+        <SectionList
+          //style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height}}
+          sections={this.getDataSource()}
+          renderSectionFooter={({ section }) => this.renderNoContent(section)}
+          renderSectionHeader={this.renderSectionHeader}
+          renderItem={this._renderItem}
+          keyExtractor={(item) => `id_${item}`}
+          refreshing={this.state.refreshing}
+          onRefresh={this.refresh}
+          stickySectionHeadersEnabled={false}
+          onEndReachedThreshold={0.1}
+          // onScroll={this.getNext}
+          onEndReached={this.getNext}
+          onMomentumScrollBegin={() => {
+            this.onEndReachedCalledDuringMomentum = false;
+          }}
+        />
+      </View>
     );
   }
 }
