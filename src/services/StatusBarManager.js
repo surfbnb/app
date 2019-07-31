@@ -1,17 +1,21 @@
-import {StatusBar} from "react-native";
+import {StatusBar , Platform} from "react-native";
 import Colors from "../theme/styles/Colors";
 
 let statusBarStatus = false;
 
 const StatusBarShow = () => {
-  StatusBar.setBackgroundColor(Colors.grey);
-  StatusBar.setTranslucent(false);
+  if( Platform.OS == "android"){
+    StatusBar.setBackgroundColor(Colors.grey);
+    StatusBar.setTranslucent(false);
+  }
   statusBarStatus = true;
 };
 
 const StatusBarHide = () => {
-  StatusBar.setBackgroundColor('transparent');
-  StatusBar.setTranslucent(true);
+  if( Platform.OS == "android"){
+    StatusBar.setBackgroundColor('transparent');
+    StatusBar.setTranslucent(true);
+  }
   statusBarStatus = false;
 };
 
