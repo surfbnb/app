@@ -7,6 +7,7 @@ import {
   createSwitchNavigator,
   createAppContainer
 } from 'react-navigation';
+import deepGet from 'lodash/get';
 
 import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
@@ -34,7 +35,7 @@ import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
 import CurrentUser from './src/models/CurrentUser'
-import deepGet from 'lodash/get';
+import { StatusBarManager } from './src/services/StatusBarManager';
 
 
 const getRouteName = ( navigation ) => {
@@ -210,6 +211,7 @@ const AppContainer = createAppContainer(
 const RootNavigationContainer = () => (
   <Root>
     <AppContainer
+      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(action)}
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}

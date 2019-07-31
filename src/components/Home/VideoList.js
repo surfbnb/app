@@ -43,33 +43,33 @@ class VideoList extends PureComponent {
     this.setActiveIndex();
   };
 
-  render() {
-    console.log('_renderItem videolist');
-    return (
-      <FlatList
-        extraData={this.state}
-        snapToAlignment={'top'}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 90
-        }}
-        pagingEnabled={true}
-        decelerationRate={'fast'}
-        data={this.props.list}
-        onEndReached={this.props.getNext}
-        onRefresh={this.props.refresh}
-        keyExtractor={this._keyExtractor}
-        refreshing={this.props.refreshing}
-        initialNumToRender={maxVideosThreshold}
-        onEndReachedThreshold={7}
-        style={inlineStyles.fullScreen}
-        onViewableItemsChanged={this.onViewableItemsChanged}
-        onMomentumScrollEnd={this.onMomentumScrollEndCallback}
-        onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
-        renderItem={this._renderItem}
-        showsVerticalScrollIndicator={false}
-      />
-    );
-  }
+    render(){
+        return(
+            <FlatList
+                extraData={this.state}
+                snapToAlignment={"top"}
+                viewabilityConfig={{
+                  itemVisiblePercentThreshold: 90
+                }}
+                pagingEnabled={true}
+                decelerationRate={"fast"}
+                data={this.props.list}
+                onEndReached={this.props.getNext}
+                onRefresh={this.props.refresh}
+                keyExtractor={this._keyExtractor}
+                refreshing={this.props.refreshing}
+                initialNumToRender={maxVideosThreshold}
+                onEndReachedThreshold={7}
+                style={inlineStyles.fullScreen}
+                onViewableItemsChanged={ this.onViewableItemsChanged}
+                onMomentumScrollEnd={this.onMomentumScrollEndCallback}
+                onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
+                renderItem={this._renderItem}
+                showsVerticalScrollIndicator={false}
+            />
+        );
+    }
+
 }
 
 export default flatlistHOC(VideoList, true, true);
