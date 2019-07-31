@@ -6,7 +6,7 @@ class PixelCall {
   }
 
   perform() {
-    // implement this
+    console.log(this.data);
   }
 }
 

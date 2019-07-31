@@ -29,7 +29,7 @@ class VideoWrapper extends PureComponent {
     this.pausedOnNavigation = false;
     this.isPixelCalledOnView = false;
     this.isPixelCalledOnEnd = false;
-    this.minTimeConsideredForView = 4;
+    this.minTimeConsideredForView = 1;
     this.source = {};
   }
 
@@ -121,22 +121,27 @@ class VideoWrapper extends PureComponent {
   onProgress = (params) => {
     if (this.isPixelCalledOnView) return;
     if (params.currentTime >= this.minTimeConsideredForView) {
-      this.callPixelService({ event_name: 'video_viewed' });
+      this.callPixelService({
+        e_entity: 'video',
+        e_action: 'view',
+        video_id: this.props.videoId
+      });
       this.isPixelCalledOnView = true;
     }
   };
 
   onEnd = (params) => {
     if (this.isPixelCalledOnEnd) return;
-    this.callPixelService({ event_name: 'video_watched' });
+    this.callPixelService({
+      e_entity: 'video',
+      e_action: 'full_viewed',
+      video_id: this.props.videoId
+    });
     this.isPixelCalledOnEnd = true;
   };
 
   callPixelService(params) {
-    // remove return while pixel implementation
-    return;
-    let paramsToSend = { ...{ user_id: CurrentUser.getUserId(), video_id: this.props.videoId }, ...params };
-    let pixelCall = new PixelCall(paramsToSend);
+    let pixelCall = new PixelCall(params);
     pixelCall.perform();
   }
 
