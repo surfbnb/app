@@ -18,6 +18,7 @@ class VideoPlayer extends Component {
     constructor(props){
         super(props);
         this.videoId =  this.props.navigation.getParam('videoId');
+        this.userId =  this.props.navigation.getParam('userId');
         console.log("video-id" , this.videoId);
     }
 
@@ -30,7 +31,9 @@ class VideoPlayer extends Component {
           <React.Fragment>
             <VideoWrapper   doRender={true}
                             isActive={ true }
-                            videoId={this.videoId}/>
+                            videoId={this.videoId}
+                            userId={this.userId}
+            />
             <TouchableWithoutFeedback  onPressOut={()=>this.props.navigation.goBack()}>
                 <View style={inlineStyles.closeBtWrapper}>
                   <Image style={inlineStyles.closeIconSkipFont} source={closeIcon}></Image>

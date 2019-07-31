@@ -28,7 +28,10 @@ class CoverImage extends React.Component {
   };
 
   showVideo = () => {
-    this.props.navigation.push('VideoPlayer', { videoId: this.props.videoId });
+    this.props.navigation.push('VideoPlayer', {
+      videoId: this.props.videoId,
+      userId: this.props.userId
+    });
   };
 
   render() {

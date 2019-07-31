@@ -69,8 +69,6 @@ export default class ClapButton extends React.Component{
       outputRange : [0, 1.2, 1.3]
     });
 
-    console.log("this.props.isSupported", this.props.isSelected);
-
     return(
       <React.Fragment>
         <Animated.Image

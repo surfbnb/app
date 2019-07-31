@@ -36,7 +36,7 @@ export default class EditTxModal extends Component {
   }
 
   getState() {
-    const btAmount = this.props.navigation.getParam('btAmount') ; 
+    const btAmount = this.props.navigation.getParam('btAmount') ;
     return {
       btAmount: btAmount,
       btUSDAmount: this.priceOracle && this.priceOracle.btToFiat( btAmount ) || 0,
@@ -97,7 +97,7 @@ export default class EditTxModal extends Component {
   }
 
   onBtChange(bt) {
-    if(!this.priceOracle) return ; 
+    if(!this.priceOracle) return ;
     this.setState({ btAmount: bt, btUSDAmount: this.priceOracle.btToFiat(bt) });
     if (bt > 0) {
       this.setState({ btAmountErrorMsg: null });
@@ -105,7 +105,7 @@ export default class EditTxModal extends Component {
   }
 
   onUSDChange(usd) {
-    if(!this.priceOracle) return ; 
+    if(!this.priceOracle) return ;
     this.setState({ btAmount: this.priceOracle.fiatToBt(usd), btUSDAmount: usd });
   }
 

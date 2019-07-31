@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { TouchableWithoutFeedback, AppState, View, Image, Dimensions, ActivityIndicator } from 'react-native';
+import { TouchableWithoutFeedback, AppState, View, Image, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
@@ -123,7 +123,9 @@ class VideoWrapper extends PureComponent {
       this.callPixelService({
         e_entity: 'video',
         e_action: 'view',
-        video_id: this.props.videoId
+        video_id: parseInt(this.props.videoId),
+        profile_user_id: this.props.userId,
+        p_type: this.props.navigation.state.routeName
       });
       this.isPixelCalledOnView = true;
     }
@@ -134,7 +136,9 @@ class VideoWrapper extends PureComponent {
     this.callPixelService({
       e_entity: 'video',
       e_action: 'full_viewed',
-      video_id: this.props.videoId
+      video_id: parseInt(this.props.videoId),
+      profile_user_id: this.props.userId,
+      p_type: this.props.navigation.state.routeName
     });
     this.isPixelCalledOnEnd = true;
   };

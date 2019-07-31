@@ -5,6 +5,7 @@ import { Toast } from 'native-base';
 import deepGet from "lodash/get";
 import clone from "lodash/clone";
 import {connect} from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import CurrentUser from '../../models/CurrentUser';
 import PepoButton from "./PepoButton";
@@ -18,33 +19,31 @@ import reduxGetter from "../../services/ReduxGetters";
 import { ostErrors } from '../../services/OstErrors';
 import Pricer from '../../services/Pricer';
 import utilities from "../../services/Utilities";
+import PixelCall from '../../services/PixelCall';
 
-
-
-
-const mapStateToProps = (state , ownProps) => ({ balance: state.balance , 
+const mapStateToProps = (state , ownProps) => ({ balance: state.balance ,
                                       disabled: state.executeTransactionDisabledStatus ,
                                       isVideoUserActivated : utilities.isUserActivated( reduxGetter.getUserActivationStatus(ownProps.userId) ),
                                       supporters: reduxGetter.getVideoSupporters( ownProps.videoId ),
                                       isSupporting: reduxGetter.isVideoSupported( ownProps.videoId ),
-                                      totalBt: reduxGetter.getVideoBt(ownProps.videoId , state ), 
+                                      totalBt: reduxGetter.getVideoBt(ownProps.videoId , state ),
                                       isCurrentUserActivated : CurrentUser.isUserActivated() });
 
 class TransactionPepoButton extends PureComponent {
 
     constructor(props){
-        super(props); 
+        super(props);
         this.localSupported = this.props.isSupporting
     }
 
     isDisabled = () => {
-      return !this.isBalance() || !this.props.isCurrentUserActivated  
+      return !this.isBalance() || !this.props.isCurrentUserActivated
       || this.props.disabled || this.props.userId == CurrentUser.getUserId()
       || !this.props.isVideoUserActivated ;
     }
-    
+
     isBalance = () => {
-      return this.getBalanceToNumber() >= 1 ? true : false ; 
+      return this.getBalanceToNumber() >= 1 ? true : false ;
     }
 
     getBalanceToNumber = () =>{
@@ -57,7 +56,7 @@ class TransactionPepoButton extends PureComponent {
     }
 
     get toUser(){
-        return reduxGetter.getUser( this.props.userId ); 
+        return reduxGetter.getUser( this.props.userId );
     }
 
     sendTransactionToSdk( btAmount ) {
@@ -75,25 +74,40 @@ class TransactionPepoButton extends PureComponent {
           //,option
         );
       }
-    
+
     getSdkMetaProperties(){
-      const metaProperties = clone( appConfig.metaProperties ); 
+      const metaProperties = clone( appConfig.metaProperties );
       if(this.props.videoId){
-        metaProperties["name"] = "video"; 
+        metaProperties["name"] = "video";
         metaProperties["details"] = `vi_${this.props.videoId}`;
       }
-      return metaProperties; 
+      return metaProperties;
     }
-    
+
     onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
+        console.log('onRequestAcknowledge');
       this.syncData( 500 );
       this.sendTransactionToPlatform(ostWorkflowEntity);
+      this.callPixelService({
+        e_entity: 'video',
+        e_action: 'contribution',
+        video_id: parseInt(this.props.videoId),
+        profile_user_id: this.props.userId,
+        p_type: this.props.navigation.state.routeName,
+        amount: this.btAmount
+      });
     }
-  
+
+    callPixelService(params) {
+        let pixelCall = new PixelCall(params);
+        pixelCall.perform();
+    }
+
     onFlowInterrupt(ostWorkflowContext, error) {
-      this.onSdkError( error , ostWorkflowContext) ; 
+        console.log('onFlowInterrupt');
+      this.onSdkError( error , ostWorkflowContext) ;
     }
-  
+
     sendTransactionToPlatform(ostWorkflowEntity) {
       const params = this.getSendTransactionPlatformData(ostWorkflowEntity);
       new PepoApi('/ost-transactions')
@@ -101,7 +115,7 @@ class TransactionPepoButton extends PureComponent {
         .then((res) => {})
         .catch((error) => {});
     }
-    
+
     onSdkError( error ){
       this.syncData( 1000 );
       Toast.show({
@@ -131,19 +145,19 @@ class TransactionPepoButton extends PureComponent {
       if( balance ){
         balance = pricer.getToDecimal( balance );
         Store.dispatch(updateBalance(balance));
-      } 
+      }
 
       let videoStats = reduxGetter.getVideoStats( this.props.videoId ) ,
-          updateVideoStats = false 
+          updateVideoStats = false
       ;
 
       if( totalBt && totalBt > 0 ){
-        videoStats['total_amount_raised_in_wei'] =  Pricer.getToDecimal( totalBt ); 
+        videoStats['total_amount_raised_in_wei'] =  Pricer.getToDecimal( totalBt );
         updateVideoStats =  true ;
-      } 
+      }
 
       if( supporters && !this.props.isSupporting ){
-        videoStats['total_contributed_by'] =  supporters; 
+        videoStats['total_contributed_by'] =  supporters;
         updateVideoStats = true;
       }
 
@@ -159,25 +173,25 @@ class TransactionPepoButton extends PureComponent {
     }
 
     onLocalUpdate( btAmount  ){
-      this.btAmount =  btAmount ; 
+      this.btAmount =  btAmount ;
       let expectedTotal = this.getBtAmount() + btAmount;
       this.localSupported = true;
       this.reduxUpdate( true ,  this.getBalanceToUpdate( btAmount )  , expectedTotal , this.props.supporters + 1 );
     }
 
     getBalanceToUpdate( updateAmount , isRevert ){
-      if(!updateAmount) return  ; 
+      if(!updateAmount) return  ;
       let balance = pricer.getFromDecimal( this.props.balance );
       balance = balance && Number( balance ) || 0 ;
       updateAmount =  updateAmount && Number( updateAmount ) || 0 ;
       if( isRevert ){
-       return  balance + updateAmount ; 
+       return  balance + updateAmount ;
       }else {
-        return balance - updateAmount ; 
+        return balance - updateAmount ;
       }
     }
-    
-    onMaxReached = () => {    
+
+    onMaxReached = () => {
       Toast.show({
         text: ostErrors.getUIErrorMessage( "maxAllowedBt" )
       });
@@ -189,14 +203,14 @@ class TransactionPepoButton extends PureComponent {
       setTimeout(()=> {
         this.reduxUpdate(false);
         if(!this.props.isSupporting){
-          this.localSupported =  false; 
+          this.localSupported =  false;
         }
       }, timeOut );
     }
 
     render(){
-       return ( 
-        <TouchableWithoutFeedback onPress={this.onTransactionIconWrapperClick}> 
+       return (
+        <TouchableWithoutFeedback onPress={this.onTransactionIconWrapperClick}>
             <View>
                 <PepoButton count={ this.getBtAmount() }
                             isSelected={this.props.isSupporting || this.localSupported }
@@ -204,12 +218,12 @@ class TransactionPepoButton extends PureComponent {
                             disabled={this.isDisabled()}
                             maxCount={this.getBalanceToNumber()}
                             onMaxReached={this.onMaxReached}
-                            onPressOut={this.onPressOut} /> 
-           </View>                  
-        </TouchableWithoutFeedback>                     
+                            onPressOut={this.onPressOut} />
+           </View>
+        </TouchableWithoutFeedback>
        )
     }
 
 }
 
-export default connect(mapStateToProps)(TransactionPepoButton) ;
+export default connect(mapStateToProps)( withNavigation(TransactionPepoButton) ) ;
