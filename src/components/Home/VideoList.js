@@ -1,49 +1,49 @@
 import React, { PureComponent } from 'react';
-import {  FlatList } from 'react-native';
-import deepGet from "lodash/get";
-import flatlistHOC from "../CommonComponents/flatlistHOC";
-import HomeFeedRow from "./HomeFeedRow";
-import inlineStyles from "./styles";
+import { FlatList } from 'react-native';
+import deepGet from 'lodash/get';
+import flatlistHOC from '../CommonComponents/flatlistHOC';
+import HomeFeedRow from './HomeFeedRow';
+import inlineStyles from './styles';
 
-
-let currentIndex = 0 ; 
-const maxVideosThreshold =  3; 
+let currentIndex = 0;
+const maxVideosThreshold = 3;
 
 class VideoList extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeIndex: 0
+    };
+  }
 
-    constructor(props){
-        super(props);
-        this.state = {
-            activeIndex : 0  
-        }
-    }
+  onViewableItemsChanged(data) {
+    currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
+  }
 
-    onViewableItemsChanged( data ){
-        currentIndex =  deepGet( data , "viewableItems[0].index") ;
-    }
+  setActiveIndex() {
+    if (this.state.activeIndex == currentIndex) return;
+    console.log('setActiveIndex=====', this.state.activeIndex, currentIndex);
+    this.setState({ activeIndex: currentIndex });
+  }
 
-    setActiveIndex() {
-        if( this.state.activeIndex == currentIndex )return;
-        this.setState( { activeIndex : currentIndex } );
-    }
+  _keyExtractor = (item, index) => `id_${item}`;
 
-    _keyExtractor = (item, index) => `id_${item}` ;
+  _renderItem = ({ item, index }) => {
+    console.log('_renderItem----- index -- ' + index, 'currentIndex -- ' + currentIndex);
+    return (
+      <HomeFeedRow
+        isActive={index == this.state.activeIndex}
+        doRender={Math.abs(index - currentIndex) < maxVideosThreshold}
+        feedId={item}
+      />
+    );
+  };
 
-    _renderItem = ({item, index}) => {
-        return (
-            <HomeFeedRow 
-                isActive={ index == this.state.activeIndex }
-                doRender={  Math.abs(index - currentIndex ) < maxVideosThreshold }
-                feedId={item}     
-            />
-    )};    
-
-    onMomentumScrollEndCallback = () => {
-        this.setActiveIndex();
-    }
+  onMomentumScrollEndCallback = () => {
+    this.setActiveIndex();
+  };
 
     render(){
-        console.log("_renderItem videolist" );
         return(
             <FlatList
                 extraData={this.state}
@@ -72,4 +72,4 @@ class VideoList extends PureComponent {
 
 }
 
-export default flatlistHOC( VideoList , true );
+export default flatlistHOC(VideoList, true, true);

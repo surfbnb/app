@@ -36,6 +36,23 @@ class SnapClicker extends Component {
     this.camera = null;
   }
 
+  showAppSettings = () => {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <AllowAccessModal
+          onClose={() => {
+            this.props.navigation.goBack();
+          }}
+          modalVisibility={true}
+          headerText="Camera"
+          accessText="Enable Camera Access"
+          accessTextDesc="Allow access to your camera to take your profile picture "
+          imageSrc={CameraIcon}
+        />
+      </View>
+    );
+  };
+
   render() {
     return (
       <View style={inlineStyles.container}>
@@ -49,25 +66,8 @@ class SnapClicker extends Component {
           zoom={0}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
           captureAudio={false}
-          notAuthorizedView={
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-              <AllowAccessModal
-                onClose={() => {
-                  this.props.navigation.goBack();
-                }}
-                modalVisibility={true}
-                headerText="Camera"
-                accessText="Enable Camera Access"
-                accessTextDesc="Allow access to your camera to take your profile picture "
-                imageSrc={CameraIcon}
-              />
-            </View>
-          }
-          pendingAuthorizationView={
-            <View style={{ justifyContent: 'center' }}>
-              <Text style={{ alignSelf: 'center' }}>The camera is pending authorization!</Text>
-            </View>
-          }
+          notAuthorizedView={this.showAppSettings()}
+          pendingAuthorizationView={this.showAppSettings()}
         >
           <TouchableOpacity style={inlineStyles.crossIconWrapper} onPress={this.props.onClose}>
             <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon} />
