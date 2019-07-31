@@ -123,6 +123,7 @@ class SupportingList extends Component {
   onGetNextSupporting = () => {
     if (!this.fetchServiceSupporting.hasNextPage) {
       this.currentFetching = SUGGESTIONS;
+      this.getSuggestionsData();
     }
     this.setState({ loadingNextSupporting: false, supportingList: this.fetchServiceSupporting.getIDList() });
   };
