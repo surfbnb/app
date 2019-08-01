@@ -1,22 +1,29 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import deepGet from 'lodash/get';
-import flatlistHOC from '../CommonComponents/flatlistHOC';
+import { connect } from 'react-redux';
 import { Text, Dimensions, SectionList, View } from 'react-native';
 import { FetchServices } from '../../services/FetchServices';
 import EmptyList from '../EmptyFriendsList/EmptyList';
-import User from '../Users/User';
+import CurrentUser from '../../models/CurrentUser';
+import User from '../Users/User'; 
 const SUPPORTING = 'SUPPORTING';
 const SUGGESTIONS = 'SUGGESTIONS';
 const scrollDetectNext = true;
-const GET_SUPPORTING_URL = '/users/contribution-to';
-const GET_SUGGESTIONS_URL = '/users/contribution-suggestion';
 
-class SupportingList extends Component {
+const mapStateToProps = (state, ownProps) => {
+  return {
+    userId: CurrentUser.getUserId()
+  };
+};
+
+class SupportingList extends PureComponent {
   constructor(props) {
     super(props);
-    this.fetchServiceSupporting = new FetchServices(GET_SUPPORTING_URL);
-    this.fetchServiceSuggestions = new FetchServices(GET_SUGGESTIONS_URL);
-
+    if(this.props.userId){
+      this.fetchServiceSupporting = new FetchServices(`/users/${this.props.userId}/contribution-to`);
+      this.fetchServiceSuggestions = new FetchServices(`/users/${this.props.userId}/contribution-suggestion`);
+    }
+   
     this.state = {
       refreshing: false,
       loadingNextSuggestions: false,
@@ -31,6 +38,12 @@ class SupportingList extends Component {
     this.refresh();
   }
 
+  componentDidUpdate( preProps ) {
+    if( this.props.userId && preProps.userId != this.props.userId   ){
+      this.refresh();
+    }
+  }
+
   refresh = () => {
     if (this.state.refreshing) return;
     this.cleanInstanceVariable();
@@ -38,8 +51,10 @@ class SupportingList extends Component {
   };
 
   cleanInstanceVariable() {
-    this.fetchServiceSupporting = new FetchServices(GET_SUPPORTING_URL);
-    this.fetchServiceSuggestions = new FetchServices(GET_SUGGESTIONS_URL);
+    if(this.props.userId){
+      this.fetchServiceSupporting = new FetchServices(`/users/${this.props.userId}/contribution-to`);
+      this.fetchServiceSuggestions = new FetchServices(`/users/${this.props.userId}}/contribution-suggestion`);
+    }
     this.currentFetching = SUPPORTING;
     this.setState({
       loadingNextSuggestions: false,
@@ -50,7 +65,7 @@ class SupportingList extends Component {
 
   refreshSupportingData = () => {
     this.beforeRefreshSupportings();
-    this.fetchServiceSupporting
+    this.fetchServiceSupporting && this.fetchServiceSupporting
       .refresh()
       .then((res) => {
         this.onRefreshSupportings(res);
@@ -78,7 +93,7 @@ class SupportingList extends Component {
 
   getSuggestionsData = () => {
     this.beforeRefreshSuggestions();
-    this.fetchServiceSuggestions
+    this.fetchServiceSuggestions && this.fetchServiceSuggestions
       .refresh()
       .then((res) => {
         this.onRefreshSuggestions(res);
@@ -250,4 +265,4 @@ class SupportingList extends Component {
   }
 }
 
-export default SupportingList;
+export default connect(mapStateToProps)(SupportingList);

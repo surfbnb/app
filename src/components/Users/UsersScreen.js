@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, FlatList, TouchableWithoutFeedback, SafeAreaView, Dimensions, Animated } from 'react-native';
 import styles from './styles';
 import SupportingList from '../SupportingList';
 import SupportersList from '../SupportersList';
+import CurrentUser from '../../models/CurrentUser';
 
 const SUPPORTING_INDEX = 0;
 const SUPPORTER_INDEX = 1;
 
-class Users extends Component {
+class Users extends PureComponent {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       header: null,
@@ -39,7 +40,6 @@ class Users extends Component {
     if (this.state.activeIndex == SUPPORTING_INDEX ) return;
     this.setState({ activeIndex: SUPPORTING_INDEX });
     this.userFlatList.scrollToIndex({ index: SUPPORTING_INDEX });
-
   }
 
   showInnerComponent = (index) => {
@@ -50,14 +50,15 @@ class Users extends Component {
         </View>
       );
     } else if (index == SUPPORTER_INDEX) {
+        //No need to worry this will change in new flow
       return (
         <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height}}>
-          <SupportersList fetchUrl={'/users/contribution-by'} />
+          <SupportersList fetchUrl={`/users/${CurrentUser.getUserId()}/contribution-by`} />
         </View>
       );
     }
   };
-
+  
   flScrolled = (scrollEvent) => {
     let nativeEvent = scrollEvent.nativeEvent;
     Animated.timing(this.state.animatedMargin, { toValue: nativeEvent.contentOffset.x / 2, duration: 0.1 }).start();
