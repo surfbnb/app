@@ -85,26 +85,22 @@ class TransactionPepoButton extends PureComponent {
     }
 
     onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
-        console.log('onRequestAcknowledge');
       this.syncData( 500 );
       this.sendTransactionToPlatform(ostWorkflowEntity);
-      this.callPixelService({
+      let pixelParams = {
         e_entity: 'video',
         e_action: 'contribution',
-        video_id: parseInt(this.props.videoId),
-        profile_user_id: this.props.userId,
+        e_data_json: {
+            video_id: this.props.videoId,
+            profile_user_id: this.props.userId,
+            amount: this.btAmount
+        },
         p_type: this.props.navigation.state.routeName,
-        amount: this.btAmount
-      });
-    }
-
-    callPixelService(params) {
-        let pixelCall = new PixelCall(params);
-        pixelCall.perform();
+      };
+      PixelCall(pixelParams);
     }
 
     onFlowInterrupt(ostWorkflowContext, error) {
-        console.log('onFlowInterrupt');
       this.onSdkError( error , ostWorkflowContext) ;
     }
 

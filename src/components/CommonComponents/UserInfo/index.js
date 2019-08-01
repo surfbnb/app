@@ -1,16 +1,16 @@
 import React from 'react';
-import { View, Image, Text, Linking } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
+import { NavigationEvents } from 'react-navigation';
 
-import profilePicture from '../../../assets/default_user_icon.png';
 import Colors from '../../../theme/styles/Colors';
 import TouchableButton from '../../../theme/components/TouchableButton';
 import Theme from '../../../theme/styles';
 import inlineStyle from './styles';
 import pricer from '../../../services/Pricer';
 import reduxGetter from '../../../services/ReduxGetters';
-import FastImage from 'react-native-fast-image';
 import ProfilePicture from '../../ProfilePicture';
+import PixelCall from "../../../services/PixelCall";
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -56,9 +56,24 @@ class UserInfo extends React.PureComponent {
     }
   }
 
+  onDidFocus = payload => {
+    let pixelParams = {
+      e_entity: 'page',
+      e_action: 'view',
+      e_data_json: {
+        profile_user_id: this.props.userId
+      },
+      p_type: 'user_profile'
+    };
+    PixelCall(pixelParams);
+  };
+
   render() {
     return (
       <View style={{ margin: 20, alignItems: 'center' }}>
+        <NavigationEvents
+            onDidFocus={this.onDidFocus}
+        />
         <View style={inlineStyle.infoHeaderWrapper}>
           <ProfilePicture userId={this.props.userId} style={inlineStyle.profileImageSkipFont} />
 
