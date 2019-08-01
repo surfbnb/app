@@ -112,13 +112,24 @@ export default class EditTxModal extends Component {
   onConfirm = () => {
     let btAmount = this.state.btAmount;
     btAmount = btAmount && Number(btAmount);
-    if (btAmount <= 0 || btAmount > this.balance) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
+    if ( !this.isValidInput() ) {
       return;
     }
     this.onAmountModalConfirm(this.state.btAmount, this.state.btUSDAmount);
     this.closeModal();
   };
+
+  isValidInput(){
+    if (btAmount <= 0 || btAmount > this.balance) {
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
+      return false ; 
+    }
+    if( btAmount && String( btAmount ).indexOf(",") > -1 ){
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_decimal_error') });
+      return false ; 
+    }
+    return true ;
+  }
 
   closeModal(){
     this.setState({btFocus: false} , () =>{

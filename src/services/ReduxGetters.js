@@ -19,7 +19,8 @@ class ReduxGetters {
 
   getVideoUrl(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `video_entities.id_${id}.resolutions.original.url`) || '';
+    return deepGet(state, `video_entities.id_${id}.resolutions.576w.url`) || 
+    deepGet(state, `video_entities.id_${id}.resolutions.original.url`) ;
   }
 
   getUser(id, state) {
@@ -35,7 +36,8 @@ class ReduxGetters {
   getVideoImgUrl(id, state) {
     state = state || Store.getState();
     let posterImageId = deepGet(state, `video_entities.id_${id}.poster_image_id`);
-    return deepGet(state, `image_entities.id_${posterImageId}.resolutions.original.url`) || '';
+    return deepGet(state, `image_entities.id_${posterImageId}.resolutions.576w.url`) || 
+    deepGet(state, `image_entities.id_${posterImageId}.resolutions.original.url`) ;
   }
 
   getUserName(id, state) {
@@ -164,7 +166,8 @@ class ReduxGetters {
 
   getVideoSize(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `video_entities.id_${id}.resolutions.original.size`);
+    return deepGet(state, `video_entities.id_${id}.resolutions.576w.size`)  || 
+    deepGet(state, `video_entities.id_${id}.resolutions.original.size`);
   }
 
   getVideoProcessingStatus(state) {
