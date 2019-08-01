@@ -40,7 +40,7 @@ class FfmpegProcesser {
   getVideoThumbnail() {
     return new Promise(async (resolve, reject) => {
       this.getCoverOutputPath();
-      let executeString = `-i ${this.inputFileUri} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -vframes 1 ${this.coverFileOutputPath}`;
+      let executeString = `-i ${this.inputFileUri} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -vframes 1 -q:v 10 ${this.coverFileOutputPath}`;
       console.log(executeString);
       RNFFmpeg.cancel();
       let executeResponse = await RNFFmpeg.execute(executeString);
