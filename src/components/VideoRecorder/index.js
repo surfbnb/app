@@ -112,7 +112,11 @@ class VideoRecorder extends Component {
           zoom={0}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
           notAuthorizedView={this.showAppSettings()}
-          pendingAuthorizationView={this.showAppSettings()}
+          pendingAuthorizationView={
+            <View>
+              <Text>The camera is pending authorization!</Text>
+            </View>
+          }
           defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
           defaultMuted={false}
           androidCameraPermissionOptions={{
