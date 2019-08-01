@@ -1,5 +1,7 @@
+import { Dimensions, StatusBar } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
-import { Dimensions } from 'react-native';
 import Colors from '../../theme/styles/Colors';
 import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 import { CUSTOM_TAB_Height } from '../../theme/constants';
@@ -12,7 +14,10 @@ let stylesMap = {
         height: Dimensions.get('window').height - CUSTOM_TAB_Height - getBottomSpace([true])
       },
       {
-        height: Dimensions.get('window').height - CUSTOM_TAB_Height
+        height: DeviceInfo.hasNotch()
+          ? Dimensions.get('window').height - CUSTOM_TAB_Height + StatusBar.currentHeight
+          : Dimensions.get('window').height - CUSTOM_TAB_Height
+        // height: Dimensions.get('window').height - CUSTOM_TAB_Height
       }
     )
   },
@@ -33,7 +38,7 @@ let stylesMap = {
   //   justifyContent: 'center',
   //   borderRadius: 25,
   //   backgroundColor: 'red'
-    // elevation: 3
+  // elevation: 3
   // },
   pepoTxCount: {
     fontSize: 18,
@@ -115,12 +120,12 @@ let stylesMap = {
   //   height: 50,
   //   width: 50,
   //   position: 'absolute',
-    // bottom: 0,
-    // right: 0,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // borderRadius: 30,
-    // zIndex: -1
+  // bottom: 0,
+  // right: 0,
+  // alignItems: 'center',
+  // justifyContent: 'center',
+  // borderRadius: 30,
+  // zIndex: -1
   // },
   btnText: {
     color: Colors.white
@@ -133,6 +138,5 @@ let stylesMap = {
     left: Dimensions.get('window').width * 0.5 - 12
   }
 };
-
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
