@@ -13,6 +13,11 @@ const LogoutLink = (props) => (
   <React.Fragment>
     {props.navigation && props.navigation.state.routeName === 'ProfileScreen' && (
       <TouchableOpacity
+        style={{height: 32, width: 32,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 20
+        }}
         onPress={() => {
           ActionSheet.show(
             {
@@ -27,7 +32,7 @@ const LogoutLink = (props) => (
           );
         }}
       >
-        <Image style={{ height: 18, width: 18, marginRight: 20 }} source={Logout_icon} />
+        <Image style={{ height: 18, width: 18 }} source={Logout_icon} />
       </TouchableOpacity>
     )}
   </React.Fragment>
