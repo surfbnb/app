@@ -5,7 +5,6 @@ import assignIn from 'lodash/assignIn';
 
 import Store from '../store';
 
-const userId = Store.getState().current_user.id;
 const pixelRoot = 'https://px.pepo.com/devp101_pixel.png';
 
 const keyAliasMap = {
@@ -51,9 +50,9 @@ const staticData = {
   user_agent: DeviceInfo.getUserAgent()
 };
 
-if(userId){
-  staticData.u_id = userId;
-  staticData.e_data_json.user_id = userId;
+if(Store.getState().current_user.id){
+  staticData.u_id = Store.getState().current_user.id;
+  staticData.e_data_json.user_id = Store.getState().current_user.id;
 }
 
 const makeCompactData = params => {
