@@ -95,7 +95,7 @@ class TransactionPepoButton extends PureComponent {
             profile_user_id: this.props.userId,
             amount: this.btAmount
         },
-        p_type: this.props.navigation.state.routeName,
+        p_type: 'feed'
       };
       PixelCall(pixelParams);
     }

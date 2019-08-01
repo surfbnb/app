@@ -138,14 +138,15 @@ class TransactionScreen extends Component {
       e_data_json: {
         profile_user_id: this.toUser.id,
         amount: this.state.btAmount
-      },
-      p_type: this.props.navigation.state.routeName,
+      }
     };
     if(this.videoId){
       pixelParams.e_entity = 'video';
       pixelParams.e_data_json.video_id = this.videoId;
+      pixelParams.p_type = 'feed';
     } else {
       pixelParams.e_entity = 'user_profile';
+      pixelParams.p_type = 'user_profile';
     }
     PixelCall(pixelParams);
   }
