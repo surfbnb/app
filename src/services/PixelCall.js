@@ -35,7 +35,10 @@ const keyAliasMap = {
 };
 
 const staticData = {
-  t_version: '1.0',
+  t_version: 1.0,
+  t_gid: 'placeholder_t_gid',
+  u_service_id: 1,
+  u_session_id: 'placeholder_u_session_id',
   u_timezone: DeviceInfo.getTimezone(),
   e_timestamp: Math.round((new Date).getTime()/1000),
   device_id: DeviceInfo.getUniqueID(),
