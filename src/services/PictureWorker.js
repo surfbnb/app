@@ -11,6 +11,7 @@ import PepoApi from './PepoApi';
 import ImageResizer from 'react-native-image-resizer';
 import createObjectForRedux from '../helpers/createObjectForRedux';
 import CurrentUser from '../models/CurrentUser';
+import ImageSize from 'react-native-image-size';
 
 const capturedPictureStates = ['cropped_image', 'cleaned_cropped_image', 's3_cropped_image'];
 
@@ -101,22 +102,34 @@ class PictureWorker extends PureComponent {
   }
 
   saveToServer = () => {
-    console.log(this.props.profile_picture.s3_cropped_image, 'this.props.profile_picture.s3_cropped_image');
-    let oThis = this;
-    new PepoApi(`/users/${this.props.current_user.id}/profile-image`)
-      .post({
-        image_url: this.props.profile_picture.s3_cropped_image
-      })
-      .catch((error) => {
-        console.log('Profile image could not be saved to server', error);
-      })
-      .then((res) => {
-        console.log(this.props.profile_picture.s3_cropped_image, 'this.props.profile_picture.s3_cropped_image in then');
-        Store.dispatch(clearProfilePicture());
+    ImageSize.getSize(this.props.profile_picture.cleaned_cropped_image).then(async (sizeInfo) => {
+      const imgWidth = sizeInfo.width;
+      const imgHeight = sizeInfo.height;
+      let imageInfo = await RNFS.stat(this.props.profile_picture.cleaned_cropped_image);
+      let imageSize = imageInfo.size;
+      console.log(this.props.profile_picture.s3_cropped_image, 'this.props.profile_picture.s3_cropped_image');
+      let oThis = this;
+      new PepoApi(`/users/${this.props.current_user.id}/profile-image`)
+        .post({
+          image_url: this.props.profile_picture.s3_cropped_image,
+          width: imgWidth,
+          height: imgHeight,
+          size: imageSize
+        })
+        .catch((error) => {
+          console.log('Profile image could not be saved to server', error);
+        })
+        .then((res) => {
+          console.log(
+            this.props.profile_picture.s3_cropped_image,
+            'this.props.profile_picture.s3_cropped_image in then'
+          );
+          Store.dispatch(clearProfilePicture());
 
-        console.log('Profile image saved to server', res);
-        // this.closeCropper();
-      });
+          console.log('Profile image saved to server', res);
+          // this.closeCropper();
+        });
+    });
   };
 
   async cleanUp() {

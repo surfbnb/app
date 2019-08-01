@@ -60,7 +60,10 @@ class BottomStatus extends PureComponent {
       >
         {/*<View style={inlineStyles.bottomBg}>*/}
           <View style={{ flex: 0.7 }}>
-            <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt]}>
+            <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt]}
+                  ellipsizeMode={'tail'}
+                  numberOfLines={1}
+            >
               {`@${this.props.userName}`}
               {/* TODO remove //Temp Start*/}
               { } V - {this.props.videoSize} : {this.props.videoSizeR}  I - {this.props.videoImageSize} : {this.props.videoImageSizeR}
