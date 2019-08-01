@@ -23,10 +23,10 @@ import { ostErrors } from '../../services/OstErrors';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
 import GiphySelect from "./GiphySelect";
-
 import reduxGetter from "../../services/ReduxGetters";
-
+import PixelCall from "../../services/PixelCall";
 import pepo_icon from '../../assets/pepo-blue-icon.png';
+
 
 const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
@@ -81,7 +81,7 @@ class TransactionScreen extends Component {
   }
 
   getBalance() {
-    pricer.getBalance( 
+    pricer.getBalance(
       (res) => {
       this.onBalance(res);
       },
@@ -121,22 +121,37 @@ class TransactionScreen extends Component {
   }
 
   getSdkMetaProperties(){
-    const metaProperties = clone( appConfig.metaProperties ); 
+    const metaProperties = clone( appConfig.metaProperties );
     if(this.videoId){
-      metaProperties["name"] = "video"; 
+      metaProperties["name"] = "video";
       metaProperties["details"] =  `vi_${this.videoId}`;
     }
-    return metaProperties; 
+    return metaProperties;
   }
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
     this.requestAcknowledgeDelegate && this.requestAcknowledgeDelegate(ostWorkflowContext , ostWorkflowEntity) ;
-    pricer.getBalance(); 
+    pricer.getBalance();
     this.sendTransactionToPlatform(ostWorkflowEntity);
+    let pixelParams = {
+      e_action: 'contribution',
+      e_data_json: {
+        profile_user_id: this.toUser.id,
+        amount: this.state.btAmount
+      },
+      p_type: this.props.navigation.state.routeName,
+    };
+    if(this.videoId){
+      pixelParams.e_entity = 'video';
+      pixelParams.e_data_json.video_id = this.videoId;
+    } else {
+      pixelParams.e_entity = 'user_profile';
+    }
+    PixelCall(pixelParams);
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
-    pricer.getBalance(); 
+    pricer.getBalance();
     this.onError(error);
   }
 

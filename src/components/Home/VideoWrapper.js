@@ -120,33 +120,34 @@ class VideoWrapper extends PureComponent {
   onProgress = (params) => {
     if (this.isPixelCalledOnView) return;
     if (params.currentTime >= this.minTimeConsideredForView) {
-      this.callPixelService({
+      let pixelParams = {
         e_entity: 'video',
         e_action: 'view',
-        video_id: parseInt(this.props.videoId),
-        profile_user_id: this.props.userId,
+        e_data_json: {
+          video_id: this.props.videoId,
+          profile_user_id: this.props.userId,
+        },
         p_type: this.props.navigation.state.routeName
-      });
+      };
+      PixelCall(pixelParams);
       this.isPixelCalledOnView = true;
     }
   };
 
   onEnd = (params) => {
     if (this.isPixelCalledOnEnd) return;
-    this.callPixelService({
+    let pixelParams = {
       e_entity: 'video',
       e_action: 'full_viewed',
-      video_id: parseInt(this.props.videoId),
-      profile_user_id: this.props.userId,
+      e_data_json: {
+        video_id: this.props.videoId,
+        profile_user_id: this.props.userId,
+      },
       p_type: this.props.navigation.state.routeName
-    });
+    };
+    PixelCall(pixelParams);
     this.isPixelCalledOnEnd = true;
   };
-
-  callPixelService(params) {
-    let pixelCall = new PixelCall(params);
-    pixelCall.perform();
-  }
 
   render() {
     return (

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
 import com.existfragger.rnimagesize.RNImageSizePackage;
@@ -42,6 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
 
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNDeviceInfo(),
             new AndroidOpenSettingsPackage(),
             new CameraRollPackage(),
             new RNImageSizePackage(),
