@@ -22,14 +22,12 @@ class VideoList extends PureComponent {
 
   setActiveIndex() {
     if (this.state.activeIndex == currentIndex) return;
-    console.log('setActiveIndex=====', this.state.activeIndex, currentIndex);
     this.setState({ activeIndex: currentIndex });
   }
 
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
-    console.log('_renderItem----- index -- ' + index, 'currentIndex -- ' + currentIndex);
     return (
       <HomeFeedRow
         isActive={index == this.state.activeIndex}

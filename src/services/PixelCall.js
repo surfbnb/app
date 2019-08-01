@@ -6,6 +6,7 @@ import assignIn from 'lodash/assignIn';
 import Store from '../store';
 
 const userId = Store.getState().current_user.id;
+const pixelRoot = 'https://px.pepo.com/devp101_pixel.png';
 
 const keyAliasMap = {
   t_version: 'v',
@@ -34,7 +35,10 @@ const keyAliasMap = {
 };
 
 const staticData = {
-  t_version: '1.0',
+  t_version: 1.0,
+  t_gid: 'placeholder_t_gid',
+  u_service_id: 1,
+  u_session_id: 'placeholder_u_session_id',
   u_timezone: DeviceInfo.getTimezone(),
   e_timestamp: Math.round((new Date).getTime()/1000),
   device_id: DeviceInfo.getUniqueID(),
@@ -56,24 +60,26 @@ const makeCompactData = params => {
   let compactData = {};
   for(var key in params){
     if (params.hasOwnProperty(key)) {
-      if(typeof params[key] === 'object'){
-        compactData[keyAliasMap[key]] = JSON.stringify(params[key]);
-      } else {
-        compactData[keyAliasMap[key]] = params[key];
-      }
+      compactData[keyAliasMap[key]] = typeof params[key] === 'object' ? JSON.stringify(params[key]) : params[key];
     }
   }
-
   return compactData;
 };
 
 export default (data) => {
 
+  // Extend outer data with staticData
   let pixelData = assignIn({}, staticData, data);
-  let compactData = makeCompactData(pixelData);
-  console.log('PixelCall data: ', compactData);
 
-  fetch(`https://px.pepo.com/devp101_pixel.png?${qs.stringify(compactData)}`)
-      .then((response) => console.log('PixelCall fetch request complete!'))
-      .catch((error) => console.log('PixelCall fetch error: ', error));
+  // Compact data
+  let compactData = makeCompactData(pixelData);
+
+  // Log
+  let ts = (new Date).getTime();
+  console.log(`PixelCall (${ts}) data: `, compactData);
+
+  // Fire the fetch call
+  fetch(`${pixelRoot}?${qs.stringify(compactData)}`)
+      .then((response) => console.log(`PixelCall (${ts}) fetch request complete!`))
+      .catch((error) => console.log(`PixelCall (${ts}) fetch error: `, error));
 }

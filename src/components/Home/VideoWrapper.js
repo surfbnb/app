@@ -127,7 +127,7 @@ class VideoWrapper extends PureComponent {
           video_id: this.props.videoId,
           profile_user_id: this.props.userId,
         },
-        p_type: this.props.navigation.state.routeName
+        p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
       };
       PixelCall(pixelParams);
       this.isPixelCalledOnView = true;
@@ -143,7 +143,7 @@ class VideoWrapper extends PureComponent {
         video_id: this.props.videoId,
         profile_user_id: this.props.userId,
       },
-      p_type: this.props.navigation.state.routeName
+      p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
     };
     PixelCall(pixelParams);
     this.isPixelCalledOnEnd = true;

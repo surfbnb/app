@@ -67,7 +67,11 @@ class SnapClicker extends Component {
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
           captureAudio={false}
           notAuthorizedView={this.showAppSettings()}
-          pendingAuthorizationView={this.showAppSettings()}
+          pendingAuthorizationView={
+            <View>
+              <Text>The camera is pending authorization!</Text>
+            </View>
+          }
         >
           <TouchableOpacity style={inlineStyles.crossIconWrapper} onPress={this.props.onClose}>
             <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon} />
