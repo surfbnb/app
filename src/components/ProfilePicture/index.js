@@ -8,7 +8,7 @@ import profilePicture from '../../assets/default_user_icon.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    profilePicture: reduxGetter.getImage(reduxGetter.getProfileImageId(ownProps.userId, state), state)
+    profilePicture: reduxGetter.getProfileImage(reduxGetter.getProfileImageId(ownProps.userId, state), state)
   };
 };
 let getImageSrc = (props) => {

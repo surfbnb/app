@@ -1,5 +1,6 @@
 import deepGet from 'lodash/get';
 import Store from '../store';
+import appConfig from "../constants/AppConfig"; 
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -19,7 +20,7 @@ class ReduxGetters {
 
   getVideoUrl(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `video_entities.id_${id}.resolutions.576w.url`) || 
+    return deepGet(state, `video_entities.id_${id}.resolutions.${appConfig.videoConstant.videoWidth}.url`) || 
     deepGet(state, `video_entities.id_${id}.resolutions.original.url`) ;
   }
 
@@ -36,7 +37,7 @@ class ReduxGetters {
   getVideoImgUrl(id, state) {
     state = state || Store.getState();
     let posterImageId = deepGet(state, `video_entities.id_${id}.poster_image_id`);
-    return deepGet(state, `image_entities.id_${posterImageId}.resolutions.576w.url`) || 
+    return deepGet(state, `image_entities.id_${posterImageId}.resolutions.${appConfig.videoConstant.videoImageWidth}.url`) || 
     deepGet(state, `image_entities.id_${posterImageId}.resolutions.original.url`) ;
   }
 
@@ -133,10 +134,14 @@ class ReduxGetters {
 
   getImage(id, state) {
     state = state || Store.getState();
-    return (
-      deepGet(state, `image_entities.id_${id}.resolutions.750w.url`) ||
-      deepGet(state, `image_entities.id_${id}.resolutions.original.url`)
-    );
+    return deepGet(state, `image_entities.id_${id}.resolutions.${appConfig.videoConstant.videoImageWidth}.url`) ||
+      deepGet(state, `image_entities.id_${id}.resolutions.original.url`);
+  }
+
+  getProfileImage(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `image_entities.id_${id}.resolutions.${appConfig.profileImageConstants.imageWidth}.url`) ||
+      deepGet(state, `image_entities.id_${id}.resolutions.original.url`);
   }
 
   getUserLinkId(id, state) {

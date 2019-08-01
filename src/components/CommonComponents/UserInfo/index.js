@@ -20,8 +20,7 @@ const mapStateToProps = (state, ownProps) => {
     link: reduxGetter.getLink(reduxGetter.getUserLinkId(ownProps.userId, state), state),
     supporters: reduxGetter.getUserSupporters(ownProps.userId, state),
     supporting: reduxGetter.getUsersSupporting(ownProps.userId, state),
-    btAmount: reduxGetter.getUsersBt(ownProps.userId, state),
-    profilePicture: reduxGetter.getImage(reduxGetter.getProfileImageId(ownProps.userId, state), state)
+    btAmount: reduxGetter.getUsersBt(ownProps.userId, state)
   };
 };
 

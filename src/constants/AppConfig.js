@@ -77,5 +77,14 @@ export default {
     HEIGHT: 480
   },
 
+  videoConstant : {
+    videoWidth: "576w",
+    videoImageWidth : "576w"
+  },
+
+  profileImageConstants : {
+    imageWidth: "144w"
+  },
+
   cameraHeightRatio: 0.6
 };
