@@ -66,7 +66,7 @@ class BottomStatus extends PureComponent {
             >
               {`@${this.props.userName}`}
               {/* TODO remove //Temp Start*/}
-              { } V - {this.props.videoSize} : {this.props.videoSizeR}  I - {this.props.videoImageSize} : {this.props.videoImageSizeR}
+              { }V-{this.props.videoSize}:{this.props.videoSizeR}  I-{this.props.videoImageSize}
               {/* TODO remove //Temp End*/}
             </Text>
             {this.props.bio ? (
