@@ -79,12 +79,12 @@ export default {
 
   videoConstant : {
     videoWidth: "576w",
-    videoImageWidth : "576w"
+    videoImageWidth : "original"
   },
 
   profileImageConstants : {
     imageWidth: "144w"
   },
 
-  cameraHeightRatio: 0.6
+  cameraHeightRatio : 0.6
 };

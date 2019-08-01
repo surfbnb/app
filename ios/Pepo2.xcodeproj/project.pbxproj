@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		000C67FD22D764EA0095497C /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C67F922D764E90095497C /* TwitterKit.framework */; };
 		000C67FE22D764EA0095497C /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C67FA22D764EA0095497C /* TwitterCore.framework */; };
@@ -73,7 +74,6 @@
 		545C0AFAF8B347AF9CCA0879 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DBC00F24EAA42F9AF613D07 /* libReactNativePermissions.a */; };
 		5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F11DD15287DC4605913C28BE /* Roboto_medium.ttf */; };
 		65CD6A21EC164A9A8F14A9A3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAB07333EF0A462BB5571B78 /* Zocial.ttf */; };
-		6B3FDE64B4BC42EDB8E47247 /* libRNThumbnail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E224B056D2EB485E97B8079B /* libRNThumbnail.a */; };
 		6C300736152B4242B645C0CA /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F406518F2D434EC0A78FA040 /* AntDesign.ttf */; };
 		77280AE9DDE14F90B1ACDAF8 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4644A8D258C5493CAD1FB4CE /* SimpleLineIcons.ttf */; };
 		7729409A22D74BBE00C9FE35 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
@@ -686,7 +686,6 @@
 				DD7F324CF6F64145A03322D9 /* libRNCAsyncStorage.a in Frameworks */,
 				E0DF1B5506604BF48B9E5B24 /* libRNCNetInfo.a in Frameworks */,
 				2F5377BE6B4A409DAFFAE085 /* libFastImage.a in Frameworks */,
-				6B3FDE64B4BC42EDB8E47247 /* libRNThumbnail.a in Frameworks */,
 				002AAB6D22E6177E000E153B /* libRNCCameraRoll.a in Frameworks */,
 				E5EDE66F39D640C8BC9C4788 /* libBVLinearGradient.a in Frameworks */,
 				9655D496820D4C808A4EA58C /* libRCTImageResizer.a in Frameworks */,

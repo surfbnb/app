@@ -1,4 +1,5 @@
 import deepGet from 'lodash/get';
+import round from "lodash/round";
 import Store from '../store';
 import appConfig from "../constants/AppConfig"; 
 
@@ -169,10 +170,19 @@ class ReduxGetters {
     return deepGet(state, `video_entities.id_${id}.uts`);
   }
 
-  getVideoSize(id, state) {
+  getVideoSize(id, state , size ) {
     state = state || Store.getState();
-    return deepGet(state, `video_entities.id_${id}.resolutions.576w.size`)  || 
-    deepGet(state, `video_entities.id_${id}.resolutions.original.size`);
+    size =  size || "original" ; 
+    let byteSize = deepGet(state, `video_entities.id_${id}.resolutions.${size}.size`) ; 
+    return  byteSize && round( ( byteSize / 1024 ) / 1024  , 2) || "NA" ; 
+  }
+
+  getImageSize(id, state , size ) {
+    state = state || Store.getState();
+    size =  size || "original" ; 
+    let posterImageId = deepGet(state, `video_entities.id_${id}.poster_image_id`);
+    let byteSize = deepGet(state, `image_entities.id_${posterImageId}.resolutions.${size}.size`) ; 
+    return  byteSize && round( ( byteSize / 1024 ) / 1024  , 2) || "NA" ; 
   }
 
   getVideoProcessingStatus(state) {
