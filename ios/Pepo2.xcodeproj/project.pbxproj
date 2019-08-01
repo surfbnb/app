@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		000C67FD22D764EA0095497C /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C67F922D764E90095497C /* TwitterKit.framework */; };
 		000C67FE22D764EA0095497C /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C67FA22D764EA0095497C /* TwitterCore.framework */; };
@@ -189,6 +188,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNCAsyncStorage;
+		};
+		00A1A95E22F2DA2F0071923D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3C3B95280CE2413493668E17 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA5891D81BA9A9FC002B4DB2;
+			remoteInfo = RNDeviceInfo;
+		};
+		00A1A96022F2DA2F0071923D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3C3B95280CE2413493668E17 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
+			remoteInfo = "RNDeviceInfo-tvOS";
 		};
 		00C302AB1ABCB8CE00DB3ED1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -764,6 +777,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		00A1A95A22F2DA2F0071923D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00A1A95F22F2DA2F0071923D /* libRNDeviceInfo.a */,
+				00A1A96122F2DA2F0071923D /* libRNDeviceInfo-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		00C302A81ABCB8CE00DB3ED1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1279,6 +1301,10 @@
 					ProjectRef = 8079D913B25E4ECBB620047A /* RNCNetInfo.xcodeproj */;
 				},
 				{
+					ProductGroup = 00A1A95A22F2DA2F0071923D /* Products */;
+					ProjectRef = 3C3B95280CE2413493668E17 /* RNDeviceInfo.xcodeproj */;
+				},
+				{
 					ProductGroup = 7766C61722DD9FB000C019D8 /* Products */;
 					ProjectRef = 7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */;
 				},
@@ -1385,6 +1411,20 @@
 			fileType = archive.ar;
 			path = libRNCAsyncStorage.a;
 			remoteRef = 009F91BB22B00D69001C00E1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00A1A95F22F2DA2F0071923D /* libRNDeviceInfo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNDeviceInfo.a;
+			remoteRef = 00A1A95E22F2DA2F0071923D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00A1A96122F2DA2F0071923D /* libRNDeviceInfo-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNDeviceInfo-tvOS.a";
+			remoteRef = 00A1A96022F2DA2F0071923D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */ = {
