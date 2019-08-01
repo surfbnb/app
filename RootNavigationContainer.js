@@ -34,36 +34,34 @@ import CaptureVideo from './src/components/CaptureVideo';
 import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
-import CurrentUser from './src/models/CurrentUser'
+import CurrentUser from './src/models/CurrentUser';
 import { StatusBarManager } from './src/services/StatusBarManager';
 
-
-const getRouteName = ( navigation ) => {
-  if(!navigation) return null ;
-  let routeName =  deepGet(navigation , "state.routeName"); 
-  let stateIndex  =  deepGet(navigation , "state.index")  ;
-  let routes = deepGet(navigation , `state.routes[${stateIndex}]`) ;
-  if( routes ){
-    routeName = routes && routes['routeName'] || routeName ;
-    stateIndex = routes && routes.index; 
-    routeName = deepGet(routes , `routes[${stateIndex}].routeName`) || routeName;
+const getRouteName = (navigation) => {
+  if (!navigation) return null;
+  let routeName = deepGet(navigation, 'state.routeName');
+  let stateIndex = deepGet(navigation, 'state.index');
+  let routes = deepGet(navigation, `state.routes[${stateIndex}]`);
+  if (routes) {
+    routeName = (routes && routes['routeName']) || routeName;
+    stateIndex = routes && routes.index;
+    routeName = deepGet(routes, `routes[${stateIndex}].routeName`) || routeName;
   }
-  return routeName ; 
-}
-
+  return routeName;
+};
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
   headerMode: 'none',
   mode: 'modal',
   navigationOptions: ({ navigation }) => {
-    const routeName = getRouteName( navigation );
+    const routeName = getRouteName(navigation);
     return {
-      swipeEnabled:CurrentUser.getOstUserId()?true:false,
-      tabBarVisible: routeName != "TransactionScreen" ? true : false
+      swipeEnabled: CurrentUser.getOstUserId() ? true : false,
+      tabBarVisible: routeName == 'TransactionScreen' || routeName == 'VideoPlayer' ? false : true
     };
   }
-}
+};
 
 const HomeTransactionStack = createStackNavigator(
   {
@@ -83,12 +81,12 @@ const HomeStack = createStackNavigator(
     EditTx: EditTx,
     VideoPlayer: VideoPlayer
   },
-  {...modalStackConfig}
+  { ...modalStackConfig }
 );
 
 const ActivityTransactionStack = createStackNavigator(
   {
-    Activities: Activities,
+    ActivitiesScreen: Activities,
     UsersProfileScreen: UsersProfileScreen,
     TransactionScreen: TransactionScreen
   },
@@ -104,7 +102,7 @@ const ActivityStack = createStackNavigator(
     EditTx: EditTx,
     VideoPlayer: VideoPlayer
   },
-  {...modalStackConfig}
+  { ...modalStackConfig }
 );
 
 const UserTransactionStack = createStackNavigator(
@@ -125,7 +123,7 @@ const UserStack = createStackNavigator(
     EditTx: EditTx,
     VideoPlayer: VideoPlayer
   },
-  {...modalStackConfig}
+  { ...modalStackConfig }
 );
 
 const ProfileStack = createStackNavigator(
@@ -141,10 +139,13 @@ const ProfileStack = createStackNavigator(
     headerLayoutPreset: 'center',
     mode: 'modal',
     navigationOptions: ({ navigation }) => {
-      const routeName = deepGet(navigation, 'state.routes[1].routeName') ; 
+      const routeName = deepGet(navigation, 'state.routes[1].routeName');
       return {
         tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false,
-        swipeEnabled:  routeName == "CaptureVideo" || routeName == "CaptureImageScreen"  || routeName == "ImageGalleryScreen"? false : true
+        swipeEnabled:
+          routeName == 'CaptureVideo' || routeName == 'CaptureImageScreen' || routeName == 'ImageGalleryScreen'
+            ? false
+            : true
       };
     }
   }
@@ -216,7 +217,7 @@ const RootNavigationContainer = () => (
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
     />
-    
+
     <CameraWorker />
     <PictureWorker />
     <LoadingModalCover />
