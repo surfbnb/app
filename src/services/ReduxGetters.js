@@ -79,7 +79,9 @@ class ReduxGetters {
 
   isVideoSupported(id, state) {
     state = state || Store.getState();
-    return !!deepGet(state, `video_contribution_entities.id_${id}`);
+    let val = deepGet(state, `video_contribution_entities.id_${id}`); 
+    val =  val && Number(val);
+    return !!val;
   }
 
   getUserSupporters(id, state) {
