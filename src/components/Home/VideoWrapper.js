@@ -163,6 +163,7 @@ class VideoWrapper extends PureComponent {
               source={{ uri: this.props.videoUrl }}
               repeat={this.props.repeat || true}
               onLoad={this.onLoad}
+              ignoreSilentSwitch={"ignore"}
               onProgress={this.onProgress}
               onEnd={this.onEnd}
             />
