@@ -53,7 +53,7 @@ class SupportingList extends PureComponent {
   cleanInstanceVariable() {
     if(this.props.userId){
       this.fetchServiceSupporting = new FetchServices(`/users/${this.props.userId}/contribution-to`);
-      this.fetchServiceSuggestions = new FetchServices(`/users/${this.props.userId}}/contribution-suggestion`);
+      this.fetchServiceSuggestions = new FetchServices(`/users/${this.props.userId}/contribution-suggestion`);
     }
     this.currentFetching = SUPPORTING;
     this.setState({
