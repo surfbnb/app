@@ -18,4 +18,5 @@ export default {
   pinkRed: '#ef5869',
   midnightblue:'#34445b',
   azureBlue : '#007aff',
+  valhalla: '#2A293B'
 };
