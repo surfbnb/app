@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity, Text } from 'react-native';
 import { ActionSheet } from 'native-base';
 
 import CurrentUser from '../../models/CurrentUser';
@@ -13,7 +13,7 @@ const LogoutLink = (props) => (
   <React.Fragment>
     {props.navigation && props.navigation.state.routeName === 'ProfileScreen' && (
       <TouchableOpacity
-        style={{height: 32, width: 32,
+        style={{height: 32, width: 35,
           alignItems: 'center',
           justifyContent: 'center',
           marginRight: 20
@@ -32,7 +32,9 @@ const LogoutLink = (props) => (
           );
         }}
       >
-        <Image style={{ height: 18, width: 18 }} source={Logout_icon} />
+        <Text style={{width: 20, height: 2, borderWidth: 1}}></Text>
+        <Text style={{width: 20, height: 2, borderWidth: 1, marginVertical: 5}}></Text>
+        <Text style={{width: 20, height: 2, borderWidth: 1}}></Text>
       </TouchableOpacity>
     )}
   </React.Fragment>
