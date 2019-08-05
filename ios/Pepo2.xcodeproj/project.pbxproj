@@ -469,13 +469,6 @@
 			remoteGlobalIDString = A287971D1DE0C0A60081BDFA;
 			remoteInfo = FastImage;
 		};
-		77EDA37422D758D60095674F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7F7A8135DB79485B964AF4E3 /* RNThumbnail.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNThumbnail;
-		};
 		77EDA37A22D763CB0095674F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 77EDA37622D763CB0095674F /* RNCamera.xcodeproj */;
@@ -604,7 +597,6 @@
 		789B7BE072654BAB9FD268A5 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../src/assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7992EE0C56F44302ACD1F565 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		7F7A8135DB79485B964AF4E3 /* RNThumbnail.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNThumbnail.xcodeproj; path = "../node_modules/react-native-thumbnail/ios/RNThumbnail.xcodeproj"; sourceTree = "<group>"; };
 		8079D913B25E4ECBB620047A /* RNCNetInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCNetInfo.xcodeproj; path = "../node_modules/@react-native-community/netinfo/ios/RNCNetInfo.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		845CDE8555BB44DF9C86B077 /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
@@ -1065,14 +1057,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		77EDA37122D758D60095674F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				77EDA37522D758D60095674F /* libRNThumbnail.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		77EDA37722D763CB0095674F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1112,7 +1096,6 @@
 				E2CAE8BE9DAE49359E5A9FCA /* RNCAsyncStorage.xcodeproj */,
 				8079D913B25E4ECBB620047A /* RNCNetInfo.xcodeproj */,
 				FE776FBD854C4ABF96A4B23E /* FastImage.xcodeproj */,
-				7F7A8135DB79485B964AF4E3 /* RNThumbnail.xcodeproj */,
 				D9F6E1E6A2F74CDCB21180CD /* BVLinearGradient.xcodeproj */,
 				845CDE8555BB44DF9C86B077 /* RCTImageResizer.xcodeproj */,
 				AA9BB6AFAB7045B48A74A823 /* RNTwitterSignIn.xcodeproj */,
@@ -1310,10 +1293,6 @@
 				{
 					ProductGroup = 0050FD1022A821D700C2634F /* Products */;
 					ProjectRef = CC06FFEC4C2F4EE2B75BF27B /* RNGestureHandler.xcodeproj */;
-				},
-				{
-					ProductGroup = 77EDA37122D758D60095674F /* Products */;
-					ProjectRef = 7F7A8135DB79485B964AF4E3 /* RNThumbnail.xcodeproj */;
 				},
 				{
 					ProductGroup = 776EEED522E1F1F400BE1922 /* Products */;
@@ -1690,13 +1669,6 @@
 			fileType = archive.ar;
 			path = libFastImage.a;
 			remoteRef = 77EDA33122D74FBC0095674F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		77EDA37522D758D60095674F /* libRNThumbnail.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNThumbnail.a;
-			remoteRef = 77EDA37422D758D60095674F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		77EDA37B22D763CB0095674F /* libRNCamera.a */ = {
