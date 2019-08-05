@@ -18,6 +18,7 @@ import inlineStyles from '../Style';
 import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
 import deepGet from "lodash/get";
 import Pricer from "../../../services/Pricer";
+import pepo_icon from "../../../assets/pepo-blue-icon.png";
 
 
 const bottomSpace = getBottomSpace([true])
@@ -35,7 +36,7 @@ export default class EditTxModal extends Component {
   }
 
   getState() {
-    const btAmount = this.props.navigation.getParam('btAmount') ; 
+    const btAmount = this.props.navigation.getParam('btAmount') ;
     return {
       btAmount: btAmount,
       btUSDAmount: this.priceOracle && this.priceOracle.btToFiat( btAmount ) || 0,
@@ -96,7 +97,7 @@ export default class EditTxModal extends Component {
   }
 
   onBtChange(bt) {
-    if(!this.priceOracle) return ; 
+    if(!this.priceOracle) return ;
     this.setState({ btAmount: bt, btUSDAmount: this.priceOracle.btToFiat(bt) });
     if (bt > 0) {
       this.setState({ btAmountErrorMsg: null });
@@ -104,20 +105,32 @@ export default class EditTxModal extends Component {
   }
 
   onUSDChange(usd) {
-    if(!this.priceOracle) return ; 
+    if(!this.priceOracle) return ;
     this.setState({ btAmount: this.priceOracle.fiatToBt(usd), btUSDAmount: usd });
   }
 
   onConfirm = () => {
     let btAmount = this.state.btAmount;
-    btAmount = btAmount && Number(btAmount);
-    if (btAmount <= 0 || btAmount > this.balance) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
+    if ( !this.isValidInput( btAmount ) ) {
       return;
     }
+    btAmount = btAmount && Number(btAmount);
     this.onAmountModalConfirm(this.state.btAmount, this.state.btUSDAmount);
     this.closeModal();
   };
+
+  isValidInput( btAmount ){
+    if( btAmount && String( btAmount ).indexOf(",") > -1 ){
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_decimal_error') });
+      return false ; 
+    }
+    btAmount = btAmount && Number(btAmount);
+    if ( !btAmount ||  btAmount <= 0 || btAmount > this.balance) {
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
+      return false ; 
+    }
+    return true ;
+  }
 
   closeModal(){
     this.setState({btFocus: false} , () =>{
@@ -197,8 +210,8 @@ export default class EditTxModal extends Component {
                 this.onConfirm();
               }}
             />
-            <Text style={{ textAlign: 'center', paddingTop: 10, fontSize: 13 }}>
-              Your Current Balance: P{this.balance}
+            <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13}}>
+              Your Current Balance: <Image style={{ width: 10, height: 10}} source={pepo_icon}></Image> {this.state.balance}{this.balance}
             </Text>
           </View>
           </TouchableWithoutFeedback>

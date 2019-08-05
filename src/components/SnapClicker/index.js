@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Platform } from 'react-native';
 import inlineStyles from './styles';
 import img_capture from '../../assets/image-capture-icon.png';
 import CrossIcon from '../../assets/cross_icon_white.png';
-
+import AllowAccessModal from '../Profile/AllowAccessModal';
+import CameraIcon from '../../assets/camera_icon.png';
 import { RNCamera } from 'react-native-camera';
 
 class SnapClicker extends Component {
@@ -35,6 +36,23 @@ class SnapClicker extends Component {
     this.camera = null;
   }
 
+  showAppSettings = () => {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <AllowAccessModal
+          onClose={() => {
+            this.props.navigation.goBack();
+          }}
+          modalVisibility={true}
+          headerText="Camera"
+          accessText="Enable Camera Access"
+          accessTextDesc="Allow access to your camera to take your profile picture "
+          imageSrc={CameraIcon}
+        />
+      </View>
+    );
+  };
+
   render() {
     return (
       <View style={inlineStyles.container}>
@@ -47,24 +65,15 @@ class SnapClicker extends Component {
           ratio="16:9"
           zoom={0}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
-          notAuthorizedView={
-            <View>
-              <Text>The camera is not authorized!</Text>
-            </View>
-          }
+          captureAudio={false}
+          notAuthorizedView={this.showAppSettings()}
           pendingAuthorizationView={
             <View>
               <Text>The camera is pending authorization!</Text>
             </View>
           }
-          androidCameraPermissionOptions={{
-            title: 'Permission to use camera',
-            message: 'We need your permission to use your camera',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel'
-          }}
         >
-          <TouchableOpacity onPress={this.props.onClose}>
+          <TouchableOpacity style={inlineStyles.crossIconWrapper} onPress={this.props.onClose}>
             <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon} />
           </TouchableOpacity>
           {/* action button comes here */}

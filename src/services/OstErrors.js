@@ -9,6 +9,7 @@ const sdkErrors = {
 
 const UIErros = {
   user_name: 'User name is mandatory.',
+  user_name_min_max: 'User name can be minimum 1 characters and maximum 15 characters.',
   password: 'Please enter password of minimum 8 characters.',
   first_name: 'First name is mandatory.',
   last_name: 'Last name is mandatory',
@@ -16,6 +17,7 @@ const UIErros = {
   general_error: 'Something went wrong please try again later',
   general_error_ex: 'Oops, Please try again.',
   bt_amount_error: 'Please enter valid amount.',
+  bt_amount_decimal_error: "Only . is allowed as decimails", 
   user_not_active: 'Please wait for your user activation.',
   no_internet: 'No Internet, please try again later.',
   maxAllowedBt: `Max allowed Pepo coin transfer reached`,

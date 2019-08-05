@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Modal, Text, Image } from 'react-native';
+import {View, Modal, Text, Image, Animated, Easing, Platform} from 'react-native';
 import * as Progress from 'react-native-progress';
 
 import inlineStyles from './styles';
 import Loading_left from '../../../assets/Loading_left.png';
 import Loading_right from '../../../assets/Loading_right.png';
+import pepoTxIcon from "../../../assets/pepo-white-icon.png";
 import Colors from '../../styles/Colors';
 import Store from '../../../store';
 import { showModalCover, hideModalCover } from '../../../actions';
@@ -20,26 +21,47 @@ class loadingModalCover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showLoadingImage: false
+      rotate: new Animated.Value(0),
+      scale: new Animated.Value(0.1)
     };
   }
 
-  componentDidMount() {
-    this.timerIDLoadingImage = setInterval(() => {
-      this.props.show &&
-        this.setState({
-          showLoadingImage: !this.state.showLoadingImage
-        });
-    }, 800);
-  }
+  getAnimation(){
+    return Animated.sequence([
+      Animated.delay(800),
+      Animated.timing(this.state.rotate, {
+        toValue: 1,
+        easing:Easing.elastic(1.5),
+        useNativeDriver: true
+      }),
+      Animated.loop(
+        Animated.timing(this.state.scale, {
+          duration: 1200,
+          easing:Easing.inOut(Easing.ease),
+          useNativeDriver: true
+        })
+      )
+    ])
+  };
 
-  componentWillUnmount() {
-    clearInterval(this.timerIDLoadingImage);
-  }
   render() {
+    const rotateData = this.state.rotate.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg','-135deg'],
+    });
+    const scaleData = this.state.scale.interpolate({
+      inputRange: [0.11, 0.5, 1],
+      outputRange: [1, Platform.OS == 'ios' ? 1.15 : 1.3, 1]
+    });
+    let animationStyle = {
+      transform: [
+        {scale: scaleData},
+        {rotate: rotateData}
+      ],
+    };
+    this.props.show ? this.getAnimation().start() : this.getAnimation().stop();
     return (
-      <View>
-        {this.props.show && (
+      <React.Fragment>
           <Modal
             animationType="fade"
             transparent={true}
@@ -48,10 +70,9 @@ class loadingModalCover extends React.Component {
             hasBackdrop={false}
           >
             <View style={inlineStyles.backgroundStyle}>
-              <Image
-                style={inlineStyles.loadingImage}
-                source={this.state.showLoadingImage ? Loading_right : Loading_left}
-              />
+                <Animated.Image
+                  style={[ animationStyle, {width: 40, height: 40, marginBottom: 30} ]}
+                  source={pepoTxIcon}/>
               <Text style={inlineStyles.loadingMessage}>{this.props.message}</Text>
               <Progress.Bar
                 indeterminate={true}
@@ -64,8 +85,7 @@ class loadingModalCover extends React.Component {
               <Text style={inlineStyles.footerText}>{this.props.footerText}</Text>
             </View>
           </Modal>
-        )}
-      </View>
+      </React.Fragment>
     );
   }
 }

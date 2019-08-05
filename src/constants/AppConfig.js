@@ -1,4 +1,4 @@
-import pepo_icon from '../assets/pepo_icon.png';
+import pepo_icon from '../assets/pepo-white-icon.png';
 import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
 export default {
   userStatusMap: {
@@ -22,7 +22,7 @@ export default {
   },
 
   transactionStatus: {
-    published: 'PUBLISHED'
+    done: 'DONE'
   },
 
   tokenSymbols: {
@@ -34,7 +34,7 @@ export default {
 
   giphySizes: {
     search: 'preview_gif',
-    feed: 'downsized'
+    activity: 'downsized'
   },
 
   maxBtAllowedInSingleTransfer: 10,
@@ -67,8 +67,8 @@ export default {
 
   compressionConstants: {
     COMPRESSION_SIZE: '720X1280',
-    CRF: '24',
-    PRESET: 'ultrafast',
+    CRF: '28',
+    PRESET: 'superfast',
     PIX_FMT: 'yuv420p'
   },
 
@@ -77,5 +77,14 @@ export default {
     HEIGHT: 480
   },
 
-  cameraHeightRatio: 0.6
+  videoConstant : {
+    videoWidth: "576w",
+    videoImageWidth : "original"
+  },
+
+  profileImageConstants : {
+    imageWidth: "144w"
+  },
+
+  cameraHeightRatio : 0.6
 };

@@ -4,6 +4,7 @@ import pricer from './Pricer';
 import PriceOracle from "./PriceOracle";
 import appConfig from '../constants/AppConfig';
 
+
 export default {
   async saveItem(key, val) {
     try {
@@ -69,5 +70,10 @@ export default {
     const entity = {} ,  id = `${key}_${resultObj.id}` ;
     entity[ id ] = resultObj ;
     return entity;
+  },
+
+  isUserActivated( status ){
+    status =  status || ""
+    return status.toLowerCase() == appConfig.userStatusMap.activated; 
   }
 };

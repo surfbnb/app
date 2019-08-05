@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View, Image, Text } from 'react-native';
+import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
@@ -10,6 +10,9 @@ import RNFS from 'react-native-fs';
 import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
+import AllowAccessModal from '../Profile/AllowAccessModal';
+import CameraIcon from '../../assets/camera_icon.png';
+import closeIcon from '../../assets/cross_icon.png';
 
 import AppConfig from '../../constants/AppConfig';
 
@@ -33,17 +36,17 @@ class VideoRecorder extends Component {
     this.recordedVideo = null;
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     if (this.props.actionSheetOnRecordVideo) {
       this.recordedVideo = reduxGetters.getRecordedVideo();
       let isFileExists = false;
       const oThis = this;
 
       // this.showActionSheet();
-      if (this.recordedVideo) {        
+      if (this.recordedVideo) {
         isFileExists = await RNFS.exists(this.recordedVideo);
       }
-          
+
       if (isFileExists) {
         setTimeout(function() {
           oThis.showActionSheet();
@@ -75,6 +78,27 @@ class VideoRecorder extends Component {
     );
   }
 
+  cancleVideoHandling = () => {
+    this.props.navigation.goBack();
+  };
+
+  showAppSettings = () => {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <AllowAccessModal
+          onClose={() => {
+            this.props.navigation.goBack();
+          }}
+          modalVisibility={true}
+          headerText="Camera"
+          accessText="Enable Camera Access"
+          accessTextDesc="Allow access to your camera and microphone to take video "
+          imageSrc={CameraIcon}
+        />
+      </View>
+    );
+  };
+
   cameraView() {
     return (
       <View style={styles.container}>
@@ -82,16 +106,12 @@ class VideoRecorder extends Component {
           ref={(ref) => {
             this.camera = ref;
           }}
-          style={styles.preview}
+          style={styles.previewSkipFont}
           type={RNCamera.Constants.Type.front}
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
-          autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}          
-          notAuthorizedView={
-            <View>
-              <Text>The camera is not authorized!</Text>
-            </View>
-          }
+          autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
+          notAuthorizedView={this.showAppSettings()}
           pendingAuthorizationView={
             <View>
               <Text>The camera is pending authorization!</Text>
@@ -119,6 +139,12 @@ class VideoRecorder extends Component {
             indeterminate={false}
             style={styles.progressBar}
           />
+
+          <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
+            <View style={styles.closeBtWrapper}>
+              <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
+            </View>
+          </TouchableWithoutFeedback>
           <View
             style={{
               flex: 0,
@@ -136,26 +162,22 @@ class VideoRecorder extends Component {
   stopRecording = () => {
     // naviagate from here to other page
     this.camera && this.camera.stopRecording();
-  }
+  };
 
   getActionButton() {
+    let onPressCallback, source;
     if (this.state.isRecording) {
-      return (
-        <TouchableOpacity
-          onPress={
-            this.stopRecording
-          }
-        >
-          <Image style={styles.captureButton} source={stopIcon} />
-        </TouchableOpacity>
-      );
+      onPressCallback = this.stopRecording;
+      source = stopIcon;
     } else {
-      return (
-        <TouchableOpacity onPress={this.recordVideoAsync}>
-          <Image style={styles.captureButton} source={captureIcon} />
-        </TouchableOpacity>
-      );
+      onPressCallback = this.recordVideoAsync;
+      source = captureIcon;
     }
+    return (
+      <TouchableOpacity onPress={onPressCallback}>
+        <Image style={styles.captureButtonSkipFont} source={source} />
+      </TouchableOpacity>
+    );
   }
 
   initProgressBar() {
@@ -175,7 +197,7 @@ class VideoRecorder extends Component {
       quality: RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY],
       base64: true,
       maxDuration: 30,
-      muted: false,      
+      muted: false,
       orientation: 'portrait'
     };
     this.initProgressBar();

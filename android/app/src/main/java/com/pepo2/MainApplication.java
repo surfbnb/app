@@ -4,11 +4,14 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
+import com.reactnativecommunity.cameraroll.CameraRollPackage;
+import com.existfragger.rnimagesize.RNImageSizePackage;
 import com.goldenowl.twittersignin.TwitterSigninPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import me.hauvo.thumbnail.RNThumbnailPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
@@ -25,6 +28,8 @@ import com.rnfs.RNFSPackage;
 import java.util.Arrays;
 import java.util.List;
 
+
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -35,13 +40,17 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
+
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNDeviceInfo(),
+            new AndroidOpenSettingsPackage(),
+            new CameraRollPackage(),
+            new RNImageSizePackage(),
             new TwitterSigninPackage(),
             new ImageResizerPackage(),
             new LinearGradientPackage(),
             new ReactVideoPackage(),
-            new RNThumbnailPackage(),
             new RNCameraPackage(),
             new FastImageViewPackage(),
             new NetInfoPackage(),

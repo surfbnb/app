@@ -29,8 +29,8 @@ class GiphySelect extends  PureComponent {
         <View  style={{backgroundColor: 'rgba(238,238,238,1)'}}>
           <ActivityIndicator style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} />
           <ImageBackground
-            source={{uri: this.props.selectedGiphy[appConfig.giphySizes.feed].url}}
-            style={{ width: '100%', aspectRatio: parseInt(this.props.selectedGiphy[appConfig.giphySizes.feed].width) / parseInt(this.props.selectedGiphy[appConfig.giphySizes.feed].height), position: 'relative' }} >
+            source={{uri: this.props.selectedGiphy[appConfig.giphySizes.activity].url}}
+            style={{ width: '100%', aspectRatio: parseInt(this.props.selectedGiphy[appConfig.giphySizes.activity].width) / parseInt(this.props.selectedGiphy[appConfig.giphySizes.activity].height), position: 'relative' }} >
             <TouchableWithoutFeedback onPress={() =>  {this.props.resetGiphy()}} >
               <Image source={CircleCloseIcon} style={[inlineStyles.crossIconSkipFont, { top: 5, right: 5 }]} />
             </TouchableWithoutFeedback>

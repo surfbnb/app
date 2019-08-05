@@ -23,8 +23,9 @@ import { ostErrors } from '../../services/OstErrors';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
 import GiphySelect from "./GiphySelect";
-
 import reduxGetter from "../../services/ReduxGetters";
+import PixelCall from "../../services/PixelCall";
+import pepo_icon from '../../assets/pepo-blue-icon.png';
 
 
 const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
@@ -80,7 +81,7 @@ class TransactionScreen extends Component {
   }
 
   getBalance() {
-    pricer.getBalance( 
+    pricer.getBalance(
       (res) => {
       this.onBalance(res);
       },
@@ -93,7 +94,7 @@ class TransactionScreen extends Component {
   onBalance(balance , res) {
     balance = pricer.getFromDecimal(balance);
     balance = PriceOracle.toBt(balance) || 0;
-    let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
+    let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0) || !utilities.isUserActivated( reduxGetter.getUserActivationStatus(this.toUser.id) );
     this.setState({ balance, exceBtnDisabled });
   }
 
@@ -105,7 +106,7 @@ class TransactionScreen extends Component {
 
   sendTransactionToSdk() {
     const user = CurrentUser.getUser();
-    const option = { wait_for_finalization: false };
+    //const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(this.state.btAmount);
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
@@ -114,28 +115,44 @@ class TransactionScreen extends Component {
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
       this.getSdkMetaProperties(),
-      this.workflow,
-      option
+      this.workflow
+      //,option
     );
   }
 
   getSdkMetaProperties(){
-    const metaProperties = clone( appConfig.metaProperties ); 
+    const metaProperties = clone( appConfig.metaProperties );
     if(this.videoId){
-      metaProperties["name"] = "video"; 
+      metaProperties["name"] = "video";
       metaProperties["details"] =  `vi_${this.videoId}`;
     }
-    return metaProperties; 
+    return metaProperties;
   }
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
     this.requestAcknowledgeDelegate && this.requestAcknowledgeDelegate(ostWorkflowContext , ostWorkflowEntity) ;
-    pricer.getBalance(); 
+    pricer.getBalance();
     this.sendTransactionToPlatform(ostWorkflowEntity);
+    let pixelParams = {
+      e_action: 'contribution',
+      e_data_json: {
+        profile_user_id: this.toUser.id,
+        amount: this.state.btAmount
+      }
+    };
+    if(this.videoId){
+      pixelParams.e_entity = 'video';
+      pixelParams.e_data_json.video_id = this.videoId;
+      pixelParams.p_type = 'feed';
+    } else {
+      pixelParams.e_entity = 'user_profile';
+      pixelParams.p_type = 'user_profile';
+    }
+    PixelCall(pixelParams);
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
-    pricer.getBalance(); 
+    pricer.getBalance();
     this.onError(error);
   }
 
@@ -164,19 +181,12 @@ class TransactionScreen extends Component {
     return {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
       ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
-      privacy_type: this.getPrivacyType(),
       meta: {
         text: this.state.message,
         giphy: this.state.selectedGiphy,
         vi: this.videoId
       }
     };
-  }
-
-  getPrivacyType() {
-    return this.state.isPublic
-      ? appConfig.executeTransactionPrivacyType.public
-      : appConfig.executeTransactionPrivacyType.private;
   }
 
   onError(error) {
@@ -262,7 +272,7 @@ class TransactionScreen extends Component {
           <View style={inlineStyles.container}>
             {!this.state.isLoading && (
               <React.Fragment>
-                <View>
+                <View style={{paddingHorizontal: 20}}>
                   <GiphySelect selectedGiphy={this.state.selectedGiphy} resetGiphy={() => { this.resetGiphy() }} openGiphy={()=> {this.openGiphy() }} />
                   <View
                     style={{
@@ -283,23 +293,6 @@ class TransactionScreen extends Component {
                         {this.state.isMessageVisible ? 'Clear Message' : 'Add Message'}
                       </Text>
                     </TouchableOpacity>
-
-                    {/* This is Share publically switch */}
-                    <View style={{ justifyContent: 'flex-end' }}>
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 16, color: '#606060' }}>Make Public</Text>
-                        <Switch
-                          value={this.state.isPublic}
-                          style={inlineStyles.switchStyle}
-                          onValueChange={(isPublic) => {
-                            this.setState({ isPublic });
-                          }}
-                          ios_backgroundColor="#d3d3d3"
-                          trackColor={{ true: '#EF5566', false: Platform.OS == 'android' ? '#d3d3d3' : '#ffffff' }}
-                          thumbColor={[Platform.OS == 'android' ? '#ffffff' : '']}
-                        ></Switch>
-                      </View>
-                    </View>
                   </View>
 
                   {this.state.isMessageVisible && (
@@ -320,7 +313,10 @@ class TransactionScreen extends Component {
 
                   <Text style={Theme.Errors.errorText}> {this.state.fieldErrorText}</Text>
                 </View>
-                <View>
+                <View style={inlineStyles.txBtnsBg}>
+                  <Text style={{marginBottom: 10, color: '#34445b'}}>Balance &#9654;{' '}
+                    <Image style={{ width: 10, height: 10}} source={pepo_icon}></Image> {this.state.balance}
+                  </Text>
                   <View style={{ flexDirection: 'row'}}>
                     <TouchableOpacity
                       disabled={this.state.exceBtnDisabled}
@@ -335,7 +331,7 @@ class TransactionScreen extends Component {
                       <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
                         Send{' '}
                         <Image
-                          style={{ width: 10, height: 11, tintColor: '#ffffff' }}
+                          style={{ width: 10, height: 10, tintColor: '#ffffff' }}
                           source={utilities.getTokenSymbolImageConfig()['image1']}
                         ></Image>{' '}
                         {this.state.btAmount}
@@ -344,12 +340,13 @@ class TransactionScreen extends Component {
                       {/*<Text style={[Theme.Button.btnPinkText]}>{this.state.btAmount}</Text>*/}
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
+                      disabled={this.state.exceBtnDisabled}
+                      style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn, this.state.exceBtnDisabled ? Theme.Button.disabled : null]}
                       onPress={() => {
                         this.openEditTx();
                       }}
                     >
-                      <Image style={[{ width: 20, height: 20 }, { tintColor: '#ef5566' }]} source={EditIcon}></Image>
+                      <Image style={[{ width: 20, height: 20 }]} source={EditIcon}></Image>
                     </TouchableOpacity>
                   </View>
                 </View>

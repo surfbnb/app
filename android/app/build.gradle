@@ -170,11 +170,14 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-device-info')
+    implementation project(':react-native-android-open-settings')
+    implementation project(':@react-native-community_cameraroll')
+    implementation project(':react-native-image-size')
     implementation project(':react-native-twitter-signin')
     implementation project(':react-native-image-resizer')
     implementation project(':react-native-linear-gradient')
     implementation 'com.arthenica:mobile-ffmpeg-min-gpl:4.2.2.LTS'
-    compile project(':react-native-thumbnail')
     implementation project(':react-native-camera')
     implementation project(':react-native-video')
     implementation project(':react-native-fast-image')

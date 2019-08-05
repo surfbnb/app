@@ -14,7 +14,7 @@ export const {
   upsertUserEntities,
   updateCurrentUser,
   logoutUser,
-  upsertFeedEntities,
+  upsertActivitiesEntities,
   upsertTransactionEntities,
   upsertGiffyEntities,
   upsertTagEntities,
@@ -27,6 +27,7 @@ export const {
   upsertHomeFeedEntities,
   updateBalance,
   updatePricePoints,
+  updateToken,
   updateExecuteTransactionStatus,
   upsertVideoContributionEntities,
   upsertUserContributionEntities,
@@ -42,7 +43,7 @@ const defaultState = {
   modal_cover: { message: '', footerText: '', show: false },
   toast: { message: '', show: false },
   current_user: {},
-  feed_entities: {},
+  activities_entities: {},
   transaction_entities: {},
   giffy_entities: {},
   tag_entities: {},
@@ -60,9 +61,8 @@ const defaultState = {
   executeTransactionDisabledStatus: false,
   recorded_video: {},
   profile_picture: {},
-  balance: '0',
-  
-  
+  token: { decimals: 18},
+  balance: '0'
 };
 
 export const reducer = handleActions(
@@ -83,9 +83,9 @@ export const reducer = handleActions(
       ...state,
       current_user: assignIn({}, state.current_user, action.payload.current_user)
     }),
-    [upsertFeedEntities]: (state, action) => ({
+    [upsertActivitiesEntities]: (state, action) => ({
       ...state,
-      feed_entities: assignIn({}, state.feed_entities, action.payload.feed_entities)
+      activities_entities: assignIn({}, state.activities_entities, action.payload.activities_entities)
     }),
     [upsertTransactionEntities]: (state, action) => ({
       ...state,
@@ -151,6 +151,10 @@ export const reducer = handleActions(
       ...state,
       price_points: action.payload.price_points
     }),
+    [updateToken]: (state , action) => ({
+      ...state,
+      token: action.payload.token
+    }),
     [updateExecuteTransactionStatus]: (state, action) => ({
       ...state,
       executeTransactionDisabledStatus: action.payload.executeTransactionDisabledStatus
@@ -181,7 +185,6 @@ export const reducer = handleActions(
     [logoutUser]: (state, action) => ({
       ...state,
       current_user: {},
-      executeTransactionDisabledStatus: true,
       balance: '0'
     })
   },

@@ -35,13 +35,6 @@ class BioScreen extends PureComponent {
         this.onChangeTextDelegate  = this.props.navigation.getParam('onChangeTextDelegate') ;
     }
 
-    componentDidMount(){
-        setTimeout(()=>{
-          this.refs["bio"].focus();
-        }, 0 )
-    }
-
-  
     fetchHashTags = ( keyword ) => {
       clearTimeout( this.reqTimer ) ;
       const reqParam = keyword.substr(1); 
@@ -74,7 +67,8 @@ class BioScreen extends PureComponent {
 
     changeValue( val ){
       val = val || "";
-      if( val.length <= 300 ){
+      // val = val.trim();
+      if( val.length  <= 300 ){
         this.onChangeTextDelegate && this.onChangeTextDelegate( val );
         this.setState({ value: val , count :val.length });
       }
@@ -190,35 +184,63 @@ class BioScreen extends PureComponent {
       return endIndex ; 
     }
 
+    submitEvent(props){
+      this.onChangeTextDelegate && this.onChangeTextDelegate( this.state.value.trim() );
+      props.navigation.goBack();
+      }
+
     render() {
-        return (
-          <View style={{padding:20}}>
-            <TextInput 
-              style={[Theme.TextInput.textInputStyle,inlineStyles.multilineTextInput]}
-              onSelectionChange={this.locationGetter}
-              onChangeText={this.onChangeText}
-              multiline={true}
-              value={this.state.value}
-              placeholder={'Bio'}
-              multiline = {true}
-              numberOfLines = {3}
-              returnKeyType="done"
-              returnKeyLabel="Done"
-              ref="bio"
-            />
-            <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
-
-            <FlatList
-              keyboardShouldPersistTaps={"always"}
-              horizontal={this.props.horizontal}
-              enableEmptySections={true}
-              data={this.state.data}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderItem}
-            />
+      return (
+        <View style={{padding:20}}>
+          <FlatList
+            keyboardShouldPersistTaps={"always"}
+            horizontal={this.props.horizontal}
+            enableEmptySections={true}
+            data={this.state.data}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+            ListHeaderComponent={<TextInputBio value={this.state.value} count={this.state.count} submitEvent={()=>{this.submitEvent(this.props)}}  locationGetter={this.locationGetter} onChangeText={this.onChangeText}/>}
+            stickyHeaderIndices={[0]}
+          />
         </View>
-        )
+      )
     }
-}
+  }
+  class TextInputBio extends PureComponent {
+    constructor(props){
+      super(props)
 
-export default withNavigation( BioScreen );
+
+    }
+    componentDidMount(){
+      setTimeout(()=>{
+        this.refs["bio"].focus();
+      }, 0 )
+    }
+
+
+    render(){
+      return(
+        <View style={{backgroundColor:'white'}}>
+          <TextInput
+            style={[Theme.TextInput.textInputStyle,inlineStyles.multilineTextInput]}
+            onSelectionChange={this.props.locationGetter}
+            onChangeText={(value)=>{this.props.onChangeText(value)}}
+            multiline={true}
+            autoFocus={true}
+            value={this.props.value}
+            placeholder={'Bio'}
+            multiline = {true}
+            numberOfLines = {3}
+            returnKeyType="done"
+            returnKeyLabel="Done"
+            blurOnSubmit={true}
+            onSubmitEditing={()=>{this.props.submitEvent()}}
+            ref="bio"
+          />
+          <Text style={inlineStyles.countStyle}>{this.props.count} /300</Text>
+        </View>
+      )
+    }
+  }
+  export default withNavigation( BioScreen );

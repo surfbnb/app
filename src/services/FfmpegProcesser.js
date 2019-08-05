@@ -22,19 +22,25 @@ class FfmpegProcesser {
         console.log('compress: compression finished successfully at:', compressFinishedAt);
         console.log('compress: Time for compression (In ms)', compressFinishedAt - compressStartedAt);
 
-        return resolve(this.outputPath);
+        resolve(this.outputPath);
+      } else if (executeResponse.rc == 255) {
+        reject('Forcefully cancelled');
       } else {
         // compression is failed
-        console.log('Compression is failed');
-        return resolve(this.inputFileUri);
+        console.log('Compression is failed', executeResponse.rc);
+        return resolve(this.inputFileUri);        
       }
     });
+  }
+
+  cancel() {
+    RNFFmpeg.cancel();
   }
 
   getVideoThumbnail() {
     return new Promise(async (resolve, reject) => {
       this.getCoverOutputPath();
-      let executeString = `-i ${this.inputFileUri} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -vframes 1 ${this.coverFileOutputPath}`;
+      let executeString = `-i ${this.inputFileUri} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -vframes 1 -q:v 10 ${this.coverFileOutputPath}`;
       console.log(executeString);
       RNFFmpeg.cancel();
       let executeResponse = await RNFFmpeg.execute(executeString);
@@ -57,7 +63,7 @@ class FfmpegProcesser {
   getCoverOutputPath() {
     let inputUriArr = this.inputFileUri.split('/');
     let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
-    this.outputFileName = `output_${Date.now()}.png`;
+    this.outputFileName = `output_${Date.now()}.jpg`;
     outputPath.push(this.outputFileName);
     this.coverFileOutputPath = outputPath.join('/');
   }

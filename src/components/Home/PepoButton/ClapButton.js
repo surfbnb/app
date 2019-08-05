@@ -69,10 +69,8 @@ export default class ClapButton extends React.Component{
       outputRange : [0, 1.2, 1.3]
     });
 
-    console.log("this.props.isSupported", this.props.isSelected);
-
     return(
-      <View>
+      <React.Fragment>
         <Animated.Image
           id={this.props.id+"_animated_image1"}
           style={[{
@@ -115,7 +113,7 @@ export default class ClapButton extends React.Component{
 
         </Animated.View>
 
-      </View>
+      </React.Fragment>
     )
   }
 }

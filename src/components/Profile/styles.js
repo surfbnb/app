@@ -10,9 +10,9 @@ let stylesMap = {
     paddingTop: 20
   },
   balanceHeader: {
-    borderRadius: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
+    borderRadius: 5,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
     backgroundColor: Colors.pinkRed,
     flexDirection: 'row'
   },
@@ -62,26 +62,79 @@ let stylesMap = {
   },
   editProfileContainer: {
     height: 75,
-    width: 75
+    width: 75,
+    position: 'relative'
+  },
+  editProfileIconTouch: {
+    height: 50,
+    width: 50,
+    position: 'absolute',
+    right: -15,
+    bottom: -13,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   editProfileIconPos: {
-    backgroundColor: Colors.white,
-    height: 30,
-    width: 30,
-    position: 'absolute',
-    right: -13,
-    bottom: 2,
+    width: 26,
+    height: 26,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderStyle: 'solid',
     borderWidth: 1,
     borderRadius: 15,
     borderColor: Colors.wildWatermelon,
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: Colors.white
   },
+
   profileEditIconSkipFont: {
     height: 75,
     width: 75,
     borderRadius: 37.5
+  },
+  accessText:{
+    fontSize:18,
+    color:Colors.azureBlue
+  },
+  accessTextDesc:{
+    fontSize:15,
+    textAlign:'center',
+    fontWeight:'500',
+    marginVertical:20
+  },
+  imageDimSkipFont:{
+    height:40,
+    width:50
+  },
+  accessAllowContent:{
+    alignItems:'center',
+    // justifyContent:'center',
+    flex:1,
+    marginTop:'25%',
+    marginHorizontal:30
+  },
+  crossIconDimSkipFont:{
+    height:10,
+    width:10
+  },
+  crossIconWrapper:{
+    position:'absolute',
+    top:0,
+    left:0,
+    padding:20
+  },
+  allowAccessheader:{
+    justifyContent:'center',
+    alignItems:'center',
+    borderBottomColor:Colors.lightGrey,
+    borderBottomWidth:1,
+    flexDirection:'row',
+    width:'100%',
+    height:50
+  },
+  headerText:{
+    fontSize:15,
+    textAlign:'center',
+    fontWeight:'500',
   }
 };
 

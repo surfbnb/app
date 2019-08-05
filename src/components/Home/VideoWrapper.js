@@ -1,17 +1,19 @@
 import React, { PureComponent } from 'react';
-import { TouchableWithoutFeedback, AppState, View, Image, Dimensions } from 'react-native';
+import { TouchableWithoutFeedback, AppState, View, Image, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
 import inlineStyles from './styles';
 import reduxGetter from '../../services/ReduxGetters';
 import playIcon from '../../assets/play_icon.png';
+import PixelCall from '../../services/PixelCall';
 
 const mapStateToProps = (state, ownProps) => {
   return {
     videoImgUrl: reduxGetter.getVideoImgUrl(ownProps.videoId, state),
     videoUrl: reduxGetter.getVideoUrl(ownProps.videoId, state),
-    loginPopover: state.login_popover.show
+    //TODO: logic should not be decided on login popover--Ashutosh
+    loginPopover: ownProps.isActive && state.login_popover.show
   };
 };
 
@@ -19,10 +21,15 @@ class VideoWrapper extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      paused: this.props.isPaused || false
+      paused: this.props.isPaused || false,
+      buffer: true
     };
     this.isUserPaused = false;
     this.pausedOnNavigation = false;
+    this.isPixelCalledOnView = false;
+    this.isPixelCalledOnEnd = false;
+    this.minTimeConsideredForView = 1;
+    this.source = {};
   }
 
   componentDidMount() {
@@ -103,21 +110,68 @@ class VideoWrapper extends PureComponent {
     }
   };
 
+  onLoad = (params) => {
+    if (this.state.buffer) {
+      this.setState({ buffer: false });
+    }
+    if (this.minTimeConsideredForView > params.duration) this.minTimeConsideredForView = params.duration;
+  };
+
+  onProgress = (params) => {
+    if (this.isPixelCalledOnView) return;
+    if (params.currentTime >= this.minTimeConsideredForView) {
+      let pixelParams = {
+        e_entity: 'video',
+        e_action: 'view',
+        e_data_json: {
+          video_id: this.props.videoId,
+          profile_user_id: this.props.userId,
+        },
+        p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
+      };
+      PixelCall(pixelParams);
+      this.isPixelCalledOnView = true;
+    }
+  };
+
+  onEnd = (params) => {
+    if (this.isPixelCalledOnEnd) return;
+    let pixelParams = {
+      e_entity: 'video',
+      e_action: 'full_viewed',
+      e_data_json: {
+        video_id: this.props.videoId,
+        profile_user_id: this.props.userId,
+      },
+      p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
+    };
+    PixelCall(pixelParams);
+    this.isPixelCalledOnEnd = true;
+  };
+
   render() {
-    console.log('Video component render ', this.props.videoImgUrl);
-    return  (
+    return (
       <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked}>
         <View>
-          <Video
-            poster={this.props.videoImgUrl}
-            posterResizeMode={this.props.posterResizeMode || 'cover'}
-            style={[inlineStyles.fullHeightSkipFont, this.props.style]}
-            paused={this.isPaused()}
-            resizeMode={this.props.resizeMode || 'cover'}
-            source={{ uri: this.props.videoUrl }}
-            repeat={this.props.repeat || true}
-          />
-          {this.isPaused() && <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>}
+          {this.props.doRender && (
+            <Video
+              poster={this.props.videoImgUrl}
+              posterResizeMode={this.props.posterResizeMode || 'cover'}
+              style={[inlineStyles.fullHeightSkipFont, this.props.style]}
+              paused={this.isPaused()}
+              resizeMode={this.props.resizeMode || 'cover'}
+              source={{ uri: this.props.videoUrl }}
+              repeat={this.props.repeat || true}
+              onLoad={this.onLoad}
+              ignoreSilentSwitch={"ignore"}
+              onProgress={this.onProgress}
+              onEnd={this.onEnd}
+            />
+          )}
+          {this.state.buffer && <ActivityIndicator style={inlineStyles.playIconSkipFont} />}
+          {this.isPaused() && !this.state.buffer && this.isUserPaused && (
+            <Image style={inlineStyles.playIconSkipFont} source={playIcon}></Image>
+          )}
         </View>
       </TouchableWithoutFeedback>
     );

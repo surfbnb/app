@@ -92,7 +92,7 @@ export const updateCurrentUser = (current_user) => ({
 
 export const upsertUserEntities = (data) => ({ type: types.UPSERT_USER_ENTITIES, payload: { user_entities: data } });
 
-export const upsertFeedEntities = (data) => ({ type: types.UPSERT_FEED_ENTITIES, payload: { feed_entities: data } });
+export const upsertActivitiesEntities = (data) => ({ type: types.UPSERT_ACTIVITIES_ENTITIES, payload: { activities_entities: data } });
 
 export const upsertTransactionEntities = (data) => ({
   type: types.UPSERT_TRANSACTION_ENTITIES,
@@ -122,6 +122,8 @@ export const upsertVideoContributionEntities = (data) => ({type : types.UPSERT_V
 export const upsertUserContributionEntities = (data) => ({type : types.UPSERT_USER_CONTRIBUTION_ENTITIES ,  payload: {user_contribution_entities : data}});
 
 export const updatePricePoints = (data) => ({type : types.UPDATE_PRICE_POINTS ,  payload: {price_points : data}});
+
+export const updateToken = (data) => ({type : types.UPDATE_TOKEN ,  payload: {token : data}});
 
 export const updateBalance = (balance = "0" )=>({
   type: types.UPDATE_BALANCE,

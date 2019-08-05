@@ -19,12 +19,13 @@ const initiatePolling = (expectedUserId) => {
       CurrentUser &&
       CurrentUser
           .sync()
-          .then((user) => {
+          .then((apiResponse) => {
             const currentUserId = CurrentUser.getOstUserId();
             if (currentUserId != expectedUserId) {
               stopPolling = true;
               return;
             }
+            const user = apiResponse;
             const airDropStatus = user && user.signup_airdrop_status;
             if (airDropStatus == 1) {
               stopPolling = true;

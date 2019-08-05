@@ -2,9 +2,9 @@ import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { TOKEN_ID } from '../constants';
 import SetupDeviceWorkflow from './OstWalletCallbacks/SetupDeviceWorkflow';
 
-let currenUserModel;
+let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
-  currenUserModel = imports.default;
+  CurrentUser = imports.default;
 });
 
 class InitWalletSdk {
@@ -13,8 +13,22 @@ class InitWalletSdk {
   };
 
   setupDevice = (setupDeviceDelegate) => {
-    OstWalletSdk.setupDevice(currenUserModel.getOstUserId(), TOKEN_ID, new SetupDeviceWorkflow(setupDeviceDelegate));
+    OstWalletSdk.setupDevice(CurrentUser.getOstUserId(), TOKEN_ID, new SetupDeviceWorkflow(setupDeviceDelegate));
   };
+
+  promisifiedSetupDevice() {
+    return new Promise((resolve, reject)=> {
+      let setupDeviceDelegate = {
+        setupDeviceComplete: (ostWorkflowContext, ostContextEntity) => {
+          resolve(ostContextEntity);
+        },
+        setupDeviceFailed: (ostWorkflowContext, error) => {
+          reject(error)
+        }
+      };
+      OstWalletSdk.setupDevice(CurrentUser.getOstUserId(), TOKEN_ID, new SetupDeviceWorkflow(setupDeviceDelegate));
+    })
+  }
 }
 
 export default new InitWalletSdk();

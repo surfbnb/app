@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
+import { Toast } from 'native-base';
 
 import styles from './styles';
 import CurrentUser from '../../models/CurrentUser';
@@ -7,7 +8,6 @@ import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
-import Pricer from "../../services/Pricer";
 
 let t1, t2;
 
@@ -25,9 +25,16 @@ export default class AuthLoading extends Component {
   };
 
   onSdkInitialized = (error, success) => {
+
+    if ( error ) {
+      Toast.show({
+        text: "Ost Sdk Initialization failed, Please restart your app.",
+        buttonText: 'Ok'
+      });
+    }
+
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
-    Pricer.getToken(); //Init token
     CurrentUser
       .initialize()
       .then((user) => {

@@ -1,4 +1,6 @@
-import { CameraRoll, PermissionsAndroid, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import CameraRoll from '@react-native-community/cameraroll';
+import CameraPermissionsApi from '../services/CameraPermissionsApi';
 
 class ImageBrowser {
   constructor() {
@@ -15,19 +17,8 @@ class ImageBrowser {
     this.savedStartCursor = '';
   }
 
-  async _requestExternalStorageRead() {
-    try {
-      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, {
-        title: '“Pepo” Wants to access to photo library',
-        message: 'Please allow access to photo library to select your profile picture'
-      });
-      return Promise.resolve(granted == PermissionsAndroid.RESULTS.GRANTED);
-    } catch (err) {
-      console.log('Permission not granted!');
-    }
-  }
-
   async _fetchPhotos() {
+    if (!this._page_info.has_next_page) return;
     if (this.savedStartCursor && this.savedStartCursor == this._page_info.end_cursor) {
       return false;
     }
@@ -55,12 +46,8 @@ class ImageBrowser {
   }
 
   async _getPhotosAsync() {
-    if (Platform.OS === 'android') {
-      const hasPermission = await this._requestExternalStorageRead();
-      if (hasPermission) {
-        return await this._fetchPhotos();
-      }
-    } else if (Platform.OS === 'ios') {
+    const permission = await CameraPermissionsApi.checkPermission('photo');
+    if (permission == 'authorized') {
       return await this._fetchPhotos();
     }
   }

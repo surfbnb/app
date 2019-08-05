@@ -4,12 +4,19 @@ import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, SafeAreaVi
 import ImageCropper from './index';
 import appConfig from '../../constants/AppConfig';
 import CrossIcon from '../../assets/cross_icon_white.png';
+import inlineStyles from './styles';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
   }
 });
+
+const verticalPadding = 40;
+const horzPadding = 30;
+const { width, height } = Dimensions.get('window');
+const totalHorzPadding = 2 * horzPadding;
+const circleWidth = width - totalHorzPadding;
 
 export default class CropperUI extends React.Component {
   state = {
@@ -35,7 +42,10 @@ export default class CropperUI extends React.Component {
       const result = await ImageCropper.crop({
         ...cropperParams,
         imageUri: this.props.imageUri,
-        cropSize
+        cropSize,
+        verticalPadding,
+        horzPadding,
+        circleWidth
       });
       this.setState((prevState) => ({
         ...prevState
@@ -47,14 +57,9 @@ export default class CropperUI extends React.Component {
   };
 
   render() {
-    let { width, height } = Dimensions.get('window');
-    let verticalPadding = 40;
-    let horzPadding = 30;
-    let totalHorzPadding = 2 * horzPadding;
-    let x = width - totalHorzPadding;
-    let overlayDim = 3 * x;
-    let borderRadius = (3 * x) / 2;
-    let borderWidth = x;
+    let overlayDim = 3 * circleWidth;
+    let borderRadius = (3 * circleWidth) / 2;
+    let borderWidth = circleWidth;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -68,8 +73,8 @@ export default class CropperUI extends React.Component {
             pointerEvents="none"
             style={{
               position: 'absolute',
-              top: verticalPadding - x,
-              left: horzPadding - x,
+              top: verticalPadding - circleWidth,
+              left: horzPadding - circleWidth,
               height: overlayDim,
               width: overlayDim,
               backgroundColor: 'transparent',
@@ -78,15 +83,8 @@ export default class CropperUI extends React.Component {
               borderColor: 'rgba(0, 0, 0, 0.5)'
             }}
           ></View>
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              flex: 1,
-              alignSelf: 'flex-start'
-            }}
-            onPress={this.props.onClose}
-          >
-            <Image style={{ marginTop: 10, marginLeft: 10, width: 15, height: 15 }} source={CrossIcon} />
+          <TouchableOpacity style={inlineStyles.crossIconWrapper} onPress={this.props.onClose}>
+            <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon} />
           </TouchableOpacity>
           <Text style={{ position: 'absolute', flex: 1, alignSelf: 'center', marginTop: 10, color: '#ffffff' }}>
             Crop

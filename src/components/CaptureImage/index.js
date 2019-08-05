@@ -17,11 +17,11 @@ class CaptureImage extends Component {
     this.cropperRef = null;
   }
 
-  static navigationOptions = ({navigation, navigationOptions}) => {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       header: null
     };
-  }
+  };
 
   componentWillUnmount() {
     this.cropperRef = null;
@@ -106,7 +106,7 @@ class CaptureImage extends Component {
   };
 
   getCameraView() {
-    return <SnapClicker onSnap={this.toggleView} onClose={this.closeCamera} />;
+    return <SnapClicker navigation={this.props.navigation} onSnap={this.toggleView} onClose={this.closeCamera} />;
   }
 
   render() {

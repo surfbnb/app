@@ -24,7 +24,7 @@ class ImageGallery extends Component {
     this.firstImageCall = true;
   }
 
-  static navigationOptions = ({navigation, navigationOptions}) => {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       header: null
     };
@@ -157,7 +157,7 @@ class ImageGallery extends Component {
   };
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={inlineStyles.container}>
         <View style={{ position: 'relative', flex: appConfig.cameraHeightRatio, backgroundColor: 'black' }}>
           {this.state.imageURI ? (
             <CropperUI
@@ -170,22 +170,26 @@ class ImageGallery extends Component {
           ) : (
             <View />
           )}
-          {this.state.imageURI ? (
-            <TouchableOpacity onPress={this.cropImage}>
-              <Image
-                source={tickIcon}
-                style={{
-                  position: 'absolute',
-                  bottom: 22,
-                  right: 22,
-                  width: 45,
-                  height: 45
-                }}
-              />
-            </TouchableOpacity>
-          ) : (
-            <View />
-          )}
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              bottom: 22,
+              right: 22,
+              width: 45,
+              height: 45
+            }}
+            onPress={this.cropImage}
+          >
+            <Image
+              source={tickIcon}
+              style={{
+                top: 0,
+                left: 0,
+                width: 45,
+                height: 45
+              }}
+            />
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 0.4, backgroundColor: '#fff', paddingRight: 3, paddingTop: 3 }}>
           <FlatList
@@ -195,7 +199,7 @@ class ImageGallery extends Component {
             extraData={this.state}
             onEndReached={this.loadMore}
             showsVerticalScrollIndicator={false}
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={0.8}
             data={this.state.photos}
             renderItem={this._renderItem}
             numColumns={3}
