@@ -3,8 +3,7 @@ import {View, Text, Image} from "react-native";
 import {connect} from 'react-redux';
 
 import inlineStyles from "./styles";
-import selfAmountPlus from "../../assets/self-amount-plus-icon.png";
-import selAmountPepo from "../../assets/self-amount-pepo-icon.png";
+import selfAmountWallet from "../../assets/self-amount-wallet.png";
 import CurrentUser from "../../models/CurrentUser";
 import Pricer from "../../services/Pricer";
 
@@ -20,12 +19,8 @@ const TopStatus = (props) => {
     <View style={ inlineStyles.topContainer }>
       <View style={inlineStyles.topBg}>
         <Image
-          style={[{height: 16, width: 16}, inlineStyles.topBgPosSkipFont]}
-          source={selfAmountPlus}
-        />
-        <Image
-          style={[{height: 13, width: 13}]}
-          source={selAmountPepo}
+          style={[{height: 11.55, width: 11.55}]}
+          source={selfAmountWallet}
         />
         <Text style={[inlineStyles.topBgTxt]}>{getBalance(props)}</Text>
       </View>

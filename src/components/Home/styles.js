@@ -116,26 +116,25 @@ let stylesMap = {
   topContainer: {
     position: 'absolute',
     top: 50,
-    right: 20,
+    right: 0,
     zIndex: 1
   },
   topBg: {
-    backgroundColor: 'rgba(255, 255, 255, 0.45)',
-    paddingVertical: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     flexDirection: 'row',
-    paddingLeft: 12,
-    paddingRight: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: Colors.gainsboro,
-    borderWidth: 0.5,
-    borderRadius: 2,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
     minWidth: 60
   },
   topBgTxt: {
-    color: Colors.paynesGrey,
+    color: '#ff5566',
     fontSize: 14,
-    marginLeft: 5
+    marginLeft: 6,
+    fontFamily: 'AvenirNext-DemiBold'
   },
   topBgPosSkipFont: {
     position: 'absolute',
