@@ -1,5 +1,6 @@
 import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../../theme/styles/Colors';
+import { Dimensions } from 'react-native';
 
 let stylesMap = {
   balanceHeaderContainer: {
@@ -54,17 +55,25 @@ let stylesMap = {
   },
   numericInfoWrapper: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 15
+    width: Dimensions.get('window').width - 40
   },
-  numericInfo: {
-    color: Colors.dark,
-    fontWeight: 'bold',
-    textAlign: 'center'
+  // numericInfo: {
+  //   color: Colors.white
+  // },
+  numericInnerWrapper:{
+    borderTopLeftRadius: 15,
+    borderLeftWidth: 1,
+    borderColor: '#fff',
+    alignItems: 'flex-start',
+    paddingLeft: 20,
+    justifyContent: 'center',
+    paddingVertical: 15,
+    color: Colors.white,
+    flex: 1
   },
   numericInfoText: {
-    color: Colors.greyLite,
-    fontWeight: 'normal'
+    color: Colors.white,
+    fontFamily: 'AvenirNext-DemiBold'
   }
 };
 

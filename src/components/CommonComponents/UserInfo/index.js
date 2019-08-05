@@ -11,6 +11,7 @@ import pricer from '../../../services/Pricer';
 import reduxGetter from '../../../services/ReduxGetters';
 import ProfilePicture from '../../ProfilePicture';
 import PixelCall from "../../../services/PixelCall";
+import LinearGradient from "react-native-linear-gradient";
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -47,9 +48,9 @@ class UserInfo extends React.PureComponent {
       return (
         <TouchableButton
           onPress={this.onEdit}
-          TouchableStyles={[Theme.Button.btnPinkSecondary, { paddingVertical: 8, paddingHorizontal: 20 }]}
+          TouchableStyles={[Theme.Button.btnPinkSecondary, { paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
           TextStyles={[Theme.Button.btnPinkSecondaryText]}
-          text="Edit Profile"
+          text="Edit Your Profile"
         />
       );
     }
@@ -93,20 +94,28 @@ class UserInfo extends React.PureComponent {
           <View />
         )}
 
-        <View style={inlineStyle.numericInfoWrapper}>
-          <View style={{ marginHorizontal: 10 }}>
-            <Text style={inlineStyle.numericInfo}>{this.props.supporting || 0}</Text>
-            <Text style={inlineStyle.numericInfoText}>Supporting</Text>
+        <LinearGradient
+          colors={['#ff7499', '#ff7499', '#ff5566']}
+          locations={[0, 0.25, 1]}
+          style={{ marginTop: 30, borderTopLeftRadius: 30, borderBottomRightRadius: 30}}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        >
+          <View style={inlineStyle.numericInfoWrapper}>
+            <View style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
+              <Text style={inlineStyle.numericInfoText}>{this.props.supporting || 0}</Text>
+              <Text style={inlineStyle.numericInfoText}>SUPPORTING</Text>
+            </View>
+            <View style={[inlineStyle.numericInnerWrapper]}>
+              <Text style={inlineStyle.numericInfoText}>{this.props.supporters || 0}</Text>
+              <Text style={inlineStyle.numericInfoText}>SUPPORTERS</Text>
+            </View>
+            <View style={[inlineStyle.numericInnerWrapper]}>
+              <Text style={inlineStyle.numericInfoText}>${this.btToFiat(this.props.btAmount) || 0}</Text>
+              <Text style={inlineStyle.numericInfoText}>RAISED</Text>
+            </View>
           </View>
-          <View style={{ marginHorizontal: 10 }}>
-            <Text style={inlineStyle.numericInfo}>{this.props.supporters || 0}</Text>
-            <Text style={inlineStyle.numericInfoText}>Supporters</Text>
-          </View>
-          <View style={{ marginHorizontal: 10 }}>
-            <Text style={inlineStyle.numericInfo}>${this.btToFiat(this.props.btAmount) || 0}</Text>
-            <Text style={inlineStyle.numericInfoText}>Raised</Text>
-          </View>
-        </View>
+        </LinearGradient>
       </View>
     );
   }
