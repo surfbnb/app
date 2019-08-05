@@ -60,7 +60,7 @@ class BottomStatus extends PureComponent {
       >
         {/*<View style={inlineStyles.bottomBg}>*/}
           <View style={{ flex: 0.7 }}>
-            <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt]}
+            <Text style={[{ marginBottom: 5 }, inlineStyles.bottomBgTxt, inlineStyles.handle]}
                   ellipsizeMode={'tail'}
                   numberOfLines={1}
             >

@@ -89,6 +89,10 @@ let stylesMap = {
   bottomBgTxt: {
     color: Colors.white
   },
+  handle: {
+    fontSize: 16,
+    fontFamily: 'AvenirNext-DemiBold'
+  },
   topContainer: {
     position: 'absolute',
     top: 50,
