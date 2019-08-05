@@ -1,6 +1,7 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { Toast } from 'native-base';
-import currentUserModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
+import Pricer from "../Pricer";
 import deepGet from 'lodash/get';
 
 const initiatePolling = (expectedUserId) => {
@@ -15,15 +16,16 @@ const initiatePolling = (expectedUserId) => {
 
   const longPollUser = function() {
     setTimeout(() => {
-      currentUserModal &&
-        currentUserModal
+      CurrentUser &&
+      CurrentUser
           .sync()
-          .then((user) => {
-            const currentUserId = currentUserModal.getOstUserId();
+          .then((apiResponse) => {
+            const currentUserId = CurrentUser.getOstUserId();
             if (currentUserId != expectedUserId) {
               stopPolling = true;
               return;
             }
+            const user = apiResponse;
             const airDropStatus = user && user.signup_airdrop_status;
             if (airDropStatus == 1) {
               stopPolling = true;
@@ -31,6 +33,7 @@ const initiatePolling = (expectedUserId) => {
                 text: 'User Activated! Airdrop is initiated.',
                 buttonText: 'Okay'
               });
+              Pricer.getBalance();
             }
           })
           .catch((error) => {
@@ -40,7 +43,7 @@ const initiatePolling = (expectedUserId) => {
     }, 10000);
   };
 
-  if (expectedUserId == currentUserModal.getOstUserId()) {
+  if (expectedUserId == CurrentUser.getOstUserId()) {
     scheduleAirdropStatusPoll();
   }
 };

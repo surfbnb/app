@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
+import { Toast } from 'native-base';
 
 import styles from './styles';
-import currentUserModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
@@ -24,20 +25,24 @@ export default class AuthLoading extends Component {
   };
 
   onSdkInitialized = (error, success) => {
+
+    if ( error ) {
+      Toast.show({
+        text: "Ost Sdk Initialization failed, Please restart your app.",
+        buttonText: 'Ok'
+      });
+    }
+
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
-    currentUserModal
+    CurrentUser
       .initialize()
       .then((user) => {
         LoadingModal.hide();
-        if (!user) {
-          this.props.navigation.navigate('AuthScreen');
-          return;
-        }
-        if (!currentUserModal.isActiveUser(user)) {
-          this.props.navigation.navigate('SetPinScreen');
+        if (user && !CurrentUser.isActiveUser(user)) {
+          this.props.navigation.navigate('UserActivatingScreen');
         } else {
-          this.props.navigation.navigate('HomeScreen');
+          this.props.navigation.navigate('HomeScreen');  
         }
       })
       .catch(() => {

@@ -1,4 +1,4 @@
-import pepo_icon from '../assets/pepo_icon.png';
+import pepo_icon from '../assets/pepo-white-icon.png';
 import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
 export default {
   userStatusMap: {
@@ -12,7 +12,8 @@ export default {
   },
 
   metaProperties: {
-    type: 'user_to_user'
+    type: 'user_to_user',
+    name: 'profile'
   },
 
   executeTransactionPrivacyType: {
@@ -21,7 +22,7 @@ export default {
   },
 
   transactionStatus: {
-    published: 'PUBLISHED'
+    done: 'DONE'
   },
 
   tokenSymbols: {
@@ -33,6 +34,57 @@ export default {
 
   giphySizes: {
     search: 'preview_gif',
-    feed: 'downsized'
-  }
+    activity: 'downsized'
+  },
+
+  maxBtAllowedInSingleTransfer: 10,
+
+  fileUploadTypes: {
+    video: 'videos',
+    image: 'images'
+  },
+
+  storageKeys: {
+    RAW_VIDEO: 'raw-video',
+    COMPRESSED_VIDEO: 'compressed-video',
+    S3_VIDEO: 's3-video',
+
+    VIDEO_THUMBNAIL_IMAGE: 'video-thumbnail-image',
+    S3_VIDEO_THUMBNAIL_IMAGE: 's3-video-thumbnail-image',
+
+    PROFILE_RAW_IMAGE: 'profile-raw-image',
+    PROFILE_CROPPED_IMAGE: 'profile-cropped-image',
+    S3_PROFILE_IMAGE: 's3-profile-image',
+    ENABLE_START_UPLOAD: 'enable-start-upload'
+  },
+
+  cameraConstants: {
+    RATIO: '16:9',
+    VIDEO_QUALITY: '720p',
+    VIDEO_WIDTH: 720,
+    VIDEO_HEIGHT: 1280
+  },
+
+  compressionConstants: {
+    COMPRESSION_SIZE: '720X1280',
+    CRF: '28',
+    PRESET: 'superfast',
+    PIX_FMT: 'yuv420p'
+  },
+
+  cameraCropConstants: {
+    WIDTH: 480,
+    HEIGHT: 480
+  },
+
+  videoConstant : {
+    videoWidth: "576w",
+    videoImageWidth : "original"
+  },
+
+  profileImageConstants : {
+    imageWidth: "144w"
+  },
+
+  cameraHeightRatio : 0.6
 };

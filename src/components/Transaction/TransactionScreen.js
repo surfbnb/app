@@ -1,40 +1,40 @@
 import React, { Component } from 'react';
-import { OstWalletSdk, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Alert, TextInput, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
+import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { View, Text, Alert, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
 import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {Header, SafeAreaView} from 'react-navigation';
 import BigNumber from 'bignumber.js';
+import clone from "lodash/clone";
 
 import FormInput from '../../theme/components/FormInput';
 import Theme from '../../theme/styles';
 import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
-import currentUserModal from '../../models/CurrentUser';
+import CurrentUser from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import EditIcon from '../../assets/edit_icon.png';
-import BackArrow from '../../assets/back-arrow.png';
+import BackArrow from "../CommonComponents/BackArrow";
 import { ostErrors } from '../../services/OstErrors';
-import EditTxModal from './EditTxModal';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
 import GiphySelect from "./GiphySelect";
+import reduxGetter from "../../services/ReduxGetters";
+import PixelCall from "../../services/PixelCall";
+import pepo_icon from '../../assets/pepo-blue-icon.png';
+
 
 const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('transactionHeader'),
-      headerBackImage: (
-        <View style={{ paddingRight: 30, paddingVertical: 30, paddingLeft: Platform.OS === 'ios' ? 20 : 0 }}>
-          <Image source={BackArrow} style={{ width: 10, height: 18, paddingLeft: 8 }} />
-        </View>
-      )
+      title: reduxGetter.getName( navigation.getParam('toUserId') ) ,
+      headerBackImage: (<BackArrow/>)
     };
   };
   constructor(props) {
@@ -57,18 +57,21 @@ class TransactionScreen extends Component {
       selectedGiphy: null
     };
     this.baseState = this.state;
-    this.toUser = this.props.navigation.getParam('toUser');
+    this.toUser = reduxGetter.getUser( this.props.navigation.getParam('toUserId') ) ;
+    //Imp : Make sure if transaction is mappning againts Profile dont send video Id
+    this.videoId = this.props.navigation.getParam('videoId');
+    this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate')
   }
 
   defaultVals() {
     this.meta = null;
-    this.priceOracle = null;
     this.workflow = null;
   }
 
   componentWillMount() {
     this.defaultVals();
-    this.initPricePoint();
+    this.getBalance();
+
   }
 
   componentWillUnmount() {
@@ -77,96 +80,79 @@ class TransactionScreen extends Component {
     this.onBalance = () => {};
   }
 
-  initPricePoint() {
-    this.updatePricePoint();
-  }
-
-  updatePricePoint(successCallback, errorCallback) {
-    const ostUserId = currentUserModal.getOstUserId();
-    pricer.getPriceOracleConfig(
-      ostUserId,
-      (token, pricePoints) => {
-        this.onGetPricePointSuccess(token, pricePoints);
-        successCallback && successCallback(token, pricePoints);
-      },
-      (error) => {
-        this.onError( error );
-        errorCallback && errorCallback(error);
-      }
-    );
-  }
-
   getBalance() {
-    //TODO catfood wherever fetched balance , update via Redux
-    //TODO priceOracle price point update after every 10 mins 
-    const ostUserId = currentUserModal.getOstUserId();
-    OstJsonApi.getBalanceForUserId(
-      ostUserId,
+    pricer.getBalance(
       (res) => {
-        this.onBalance(res);
+      this.onBalance(res);
       },
       (err) => {
         this.onError( err );
-      }
-    );
+    });
   }
 
-  onBalance(res) {
-    if (!this.priceOracle) return;
-    let balance = deepGet(res, 'balance.available_balance');
-    balance = this.priceOracle.fromDecimal(balance);
-    balance = this.priceOracle.toBt(balance) || 0;
-    let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0);
+  //TODO , NOT SURE if bug comes this also will have to connected via redux.
+  onBalance(balance , res) {
+    balance = pricer.getFromDecimal(balance);
+    balance = PriceOracle.toBt(balance) || 0;
+    let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0) || !utilities.isUserActivated( reduxGetter.getUserActivationStatus(this.toUser.id) );
     this.setState({ balance, exceBtnDisabled });
   }
 
-  getPriceOracle = () => {
-    return this.priceOracle;
-  };
-
-  onGetPricePointSuccess(token, pricePoints) {  
-    let btUSDAmount = null;
-    this.priceOracle = new PriceOracle(token, pricePoints);
-    this.getBalance();
-    btUSDAmount = this.priceOracle.btToFiat(this.state.btAmount);
-    this.setState({ btUSDAmount: btUSDAmount });
-  }
-
   excecuteTransaction() {
-    if (!this.isValid()) {
-      Alert.alert('', ostErrors.getUIErrorMessage('general_error_ex'));
-      return;
-    }
     LoadingModal.show('Posting', 'This may take a while,\n we are surfing on Blockchain');
     this.setState({ fieldErrorText: null });
     this.sendTransactionToSdk();
   }
 
-  isValid() {
-    return !!this.priceOracle;
-  }
-
   sendTransactionToSdk() {
-    const user = currentUserModal.getUser();
-    const option = { wait_for_finalization: false };
-    const btInDecimal = this.priceOracle.toDecimal(this.state.btAmount);
+    const user = CurrentUser.getUser();
+    //const option = { wait_for_finalization: false };
+    const btInDecimal = pricer.getToDecimal(this.state.btAmount);
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
       user.ost_user_id,
       [this.toUser.ost_token_holder_address],
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
-      appConfig.metaProperties,
-      this.workflow,
-      option
+      this.getSdkMetaProperties(),
+      this.workflow
+      //,option
     );
   }
 
+  getSdkMetaProperties(){
+    const metaProperties = clone( appConfig.metaProperties );
+    if(this.videoId){
+      metaProperties["name"] = "video";
+      metaProperties["details"] =  `vi_${this.videoId}`;
+    }
+    return metaProperties;
+  }
+
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
+    this.requestAcknowledgeDelegate && this.requestAcknowledgeDelegate(ostWorkflowContext , ostWorkflowEntity) ;
+    pricer.getBalance();
     this.sendTransactionToPlatform(ostWorkflowEntity);
+    let pixelParams = {
+      e_action: 'contribution',
+      e_data_json: {
+        profile_user_id: this.toUser.id,
+        amount: this.state.btAmount
+      }
+    };
+    if(this.videoId){
+      pixelParams.e_entity = 'video';
+      pixelParams.e_data_json.video_id = this.videoId;
+      pixelParams.p_type = 'feed';
+    } else {
+      pixelParams.e_entity = 'user_profile';
+      pixelParams.p_type = 'user_profile';
+    }
+    PixelCall(pixelParams);
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
+    pricer.getBalance();
     this.onError(error);
   }
 
@@ -189,25 +175,18 @@ class TransactionScreen extends Component {
   onTransactionSuccess(res) {
     LoadingModal.hide();
     this.props.navigation.goBack();
-    this.props.navigation.navigate('Profile', { toRefresh: true });
   }
 
   getSendTransactionPlatformData(ostWorkflowEntity) {
     return {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
       ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
-      privacy_type: this.getPrivacyType(),
       meta: {
         text: this.state.message,
-        giphy: this.state.selectedGiphy
+        giphy: this.state.selectedGiphy,
+        vi: this.videoId
       }
     };
-  }
-
-  getPrivacyType() {
-    return this.state.isPublic
-      ? appConfig.executeTransactionPrivacyType.public
-      : appConfig.executeTransactionPrivacyType.private;
   }
 
   onError(error) {
@@ -267,9 +246,7 @@ class TransactionScreen extends Component {
   openEditTx(){
     this.props.navigation.navigate('EditTx', {
       btAmount: this.state.btAmount,
-      btUSDAmount: this.state.btUSDAmount,
       balance: this.state.balance,
-      getPriceOracle: this.getPriceOracle,
       onAmountModalConfirm: this.onAmountModalConfirm
     })
   }
@@ -295,7 +272,7 @@ class TransactionScreen extends Component {
           <View style={inlineStyles.container}>
             {!this.state.isLoading && (
               <React.Fragment>
-                <View>
+                <View style={{paddingHorizontal: 20}}>
                   <GiphySelect selectedGiphy={this.state.selectedGiphy} resetGiphy={() => { this.resetGiphy() }} openGiphy={()=> {this.openGiphy() }} />
                   <View
                     style={{
@@ -316,23 +293,6 @@ class TransactionScreen extends Component {
                         {this.state.isMessageVisible ? 'Clear Message' : 'Add Message'}
                       </Text>
                     </TouchableOpacity>
-
-                    {/* This is Share publically switch */}
-                    <View style={{ justifyContent: 'flex-end' }}>
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 16, color: '#606060' }}>Make Public</Text>
-                        <Switch
-                          value={this.state.isPublic}
-                          style={inlineStyles.switchStyle}
-                          onValueChange={(isPublic) => {
-                            this.setState({ isPublic });
-                          }}
-                          ios_backgroundColor="#d3d3d3"
-                          trackColor={{ true: '#EF5566', false: Platform.OS == 'android' ? '#d3d3d3' : '#ffffff' }}
-                          thumbColor={[Platform.OS == 'android' ? '#ffffff' : '']}
-                        ></Switch>
-                      </View>
-                    </View>
                   </View>
 
                   {this.state.isMessageVisible && (
@@ -353,7 +313,10 @@ class TransactionScreen extends Component {
 
                   <Text style={Theme.Errors.errorText}> {this.state.fieldErrorText}</Text>
                 </View>
-                <View>
+                <View style={inlineStyles.txBtnsBg}>
+                  <Text style={{marginBottom: 10, color: '#34445b'}}>Balance &#9654;{' '}
+                    <Image style={{ width: 10, height: 10}} source={pepo_icon}></Image> {this.state.balance}
+                  </Text>
                   <View style={{ flexDirection: 'row'}}>
                     <TouchableOpacity
                       disabled={this.state.exceBtnDisabled}
@@ -368,7 +331,7 @@ class TransactionScreen extends Component {
                       <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
                         Send{' '}
                         <Image
-                          style={{ width: 10, height: 11, tintColor: '#ffffff' }}
+                          style={{ width: 10, height: 10, tintColor: '#ffffff' }}
                           source={utilities.getTokenSymbolImageConfig()['image1']}
                         ></Image>{' '}
                         {this.state.btAmount}
@@ -377,12 +340,13 @@ class TransactionScreen extends Component {
                       {/*<Text style={[Theme.Button.btnPinkText]}>{this.state.btAmount}</Text>*/}
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn]}
+                      disabled={this.state.exceBtnDisabled}
+                      style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn, this.state.exceBtnDisabled ? Theme.Button.disabled : null]}
                       onPress={() => {
                         this.openEditTx();
                       }}
                     >
-                      <Image style={[{ width: 20, height: 20 }, { tintColor: '#ef5566' }]} source={EditIcon}></Image>
+                      <Image style={[{ width: 20, height: 20 }]} source={EditIcon}></Image>
                     </TouchableOpacity>
                   </View>
                 </View>

@@ -35,6 +35,17 @@ let styles = {
   },
   btnPinkText: {
     color: Colors.white
+  },
+  btnSoftBlue: {
+    backgroundColor: Colors.softBlue,
+    borderColor: Colors.softBlue
+  },
+  btnPinkSecondary:{
+    backgroundColor: Colors.white,
+    borderColor: Colors.primary
+  },
+  btnPinkSecondaryText: {
+    color: Colors.primary
   }
 };
 
