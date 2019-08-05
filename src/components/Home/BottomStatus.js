@@ -53,34 +53,61 @@ class BottomStatus extends PureComponent {
   render() {
     console.log('Bottom status rerender');
     return (
-      <TouchableWithoutFeedback
-        onPress={multipleClickHandler(() => this.navigateToUserProfile())}
-        pointerEvents={'auto'}
-        style={inlineStyles.bottomBg}
-      >
-        <View style={{ flex: 1, paddingVertical: 12 }}>
-          <Text style={[inlineStyles.handle]}
+      <React.Fragment>
+        <TouchableWithoutFeedback
+          onPress={multipleClickHandler(() => this.navigateToUserProfile())}
+          pointerEvents={'auto'}
+          style={inlineStyles.bottomBg}
+        >
+          <View style={{ flex: 1, paddingVertical: 12 }}>
+            <Text style={[inlineStyles.handle]}
+                  ellipsizeMode={'tail'}
+                  numberOfLines={1}
+            >
+              {`@${this.props.userName}`}
+              {/* TODO remove //Temp Start*/}
+              { }V-{this.props.videoSize}:{this.props.videoSizeR}  I-{this.props.videoImageSize}
+              {/* TODO remove //Temp End*/}
+            </Text>
+            {this.props.bio ? (
+              <Text
+                style={[{ fontSize: 14, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]}
+                ellipsizeMode={'tail'}
+                numberOfLines={3}
+              >
+                {this.props.bio}
+              </Text>
+            ) : (
+              <Text />
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+        <View style={[inlineStyles.raisedSupported]}>
+          {
+            <View
+              ellipsizeMode={'tail'}
+              numberOfLines={1}
+            >
+              {/*<Text style={[{ width: 12, textAlign: 'center', marginRight: 3 }, inlineStyles.bottomBgTxt]}>$</Text>*/}
+              <Text
+                style={[inlineStyles.raisedSupportedTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
-          >
-            {`@${this.props.userName}`}
-            {/* TODO remove //Temp Start*/}
-            { }V-{this.props.videoSize}:{this.props.videoSizeR}  I-{this.props.videoImageSize}
-            {/* TODO remove //Temp End*/}
-          </Text>
-          {this.props.bio ? (
-            <Text
-              style={[{ fontSize: 14, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]}
-              ellipsizeMode={'tail'}
-              numberOfLines={3}
-            >
-              {this.props.bio}
-            </Text>
-          ) : (
-            <Text />
-          )}
+              >${`${this.btToFiat(this.props.totalBt)}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>RAISED</Text></Text>
+            </View>
+          }
+          {
+            <View>
+              {/*<Image source={supportersIcon} style={{ width: 12, height: 10, marginRight: 3 }} />*/}
+              <Text
+                style={[inlineStyles.raisedSupportedTxt]}
+                ellipsizeMode={'tail'}
+                numberOfLines={1}
+              >{`${this.props.supporters}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>SUPPORTERS</Text></Text>
+            </View>
+          }
         </View>
-      </TouchableWithoutFeedback>
+      </React.Fragment>
     );
   }
 }
