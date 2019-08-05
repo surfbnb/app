@@ -50,7 +50,7 @@ let stylesMap = {
   bioSection: {
     textAlign: 'center',
     marginVertical: 10,
-    color: Colors.greyLite,
+    color: Colors.valhalla,
     fontWeight: 'normal'
   },
   numericInfoWrapper: {
