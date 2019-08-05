@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, PermissionsAndroid, Platform, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, AppState, Platform, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 // import { NavigationEvents } from 'react-navigation';
@@ -25,6 +25,7 @@ import FastImage from 'react-native-fast-image';
 import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 import AllowAccessModal from '../Profile/AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
+import CameraIcon from '../../assets/camera_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
@@ -70,21 +71,10 @@ class ProfileEdit extends React.PureComponent {
       bio: this.props.bio,
       link: this.props.link,
       current_formField: 0,
-      showAccessModal: false,
+      showGalleryAccessModal: false,
+      showCameraAccessModal: false,
       ...this.defaults
     };
-  }
-
-  componentDidMount() {
-    if (Platform.OS == 'ios') {
-      CameraPermissionsApi.checkPermission('photo').then((response) => {
-        if (response == 'authorized') {
-          this.setState({
-            showAccessModal: false
-          });
-        }
-      });
-    }
   }
 
   getImageSrc = () => {
@@ -259,29 +249,15 @@ class ProfileEdit extends React.PureComponent {
 
   openCamera = async () => {
     let response = await CameraPermissionsApi.checkPermission('camera');
-    if (Platform.OS == 'android') {
-      //can ask permissions multiple times on android
-      CameraPermissionsApi.requestPermission('camera').then((result) => {
-        //if do not ask again is selected then 'restricted' is returned and permission dialog does not appear again
-        if (result == 'authorized') {
-          this.props.navigation.push('CaptureImageScreen');
-        }
+    CameraPermissionsApi.requestPermission('camera').then((result) => {
+      if (result == 'authorized') {
+        this.props.navigation.push('CaptureImageScreen');
+      }
+    });
+    if ((Platform.OS == 'ios' && response == 'denied') || response == 'restricted') {
+      this.setState({
+        showCameraAccessModal: true
       });
-      if (response == 'restricted') {
-        this.props.navigation.push('CaptureImageScreen');
-      }
-    } else if (Platform.OS == 'ios') {
-      if (response == 'undetermined') {
-        //can ask only once in ios i.e first time
-        CameraPermissionsApi.requestPermission('camera').then((result) => {
-          if (result == 'authorized') {
-            this.props.navigation.push('CaptureImageScreen');
-          }
-        });
-      } else {
-        //redirect inside irrespective of response as enable access modal is handled inside the screen
-        this.props.navigation.push('CaptureImageScreen');
-      }
     }
   };
 
@@ -293,9 +269,8 @@ class ProfileEdit extends React.PureComponent {
       }
     });
     if ((Platform.OS == 'ios' && response == 'denied') || response == 'restricted') {
-      //show enable access modal only in case of ios as in android multiple times permission dialog can appear
       this.setState({
-        showAccessModal: true
+        showGalleryAccessModal: true
       });
     }
   };
@@ -419,15 +394,27 @@ class ProfileEdit extends React.PureComponent {
         <AllowAccessModal
           onClose={() => {
             this.setState({
-              showAccessModal: false
+              showGalleryAccessModal: false
             });
           }}
-          modalVisibility={this.state.showAccessModal}
+          modalVisibility={this.state.showGalleryAccessModal}
           headerText="Library"
           accessText="Enable Library Access"
           accessTextDesc="Please allow access to photo library to select your profile picture"
           imageSrc={GalleryIcon}
           imageSrcStyle={{ height: 40, width: 40 }}
+        />
+        <AllowAccessModal
+          onClose={() => {
+            this.setState({
+              showCameraAccessModal: false
+            });
+          }}
+          modalVisibility={this.state.showCameraAccessModal}
+          headerText="Camera"
+          accessText="Enable Camera Access"
+          accessTextDesc="Allow access to your camera and microphone to take video "
+          imageSrc={CameraIcon}
         />
       </View>
     );

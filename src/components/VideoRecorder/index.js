@@ -10,8 +10,6 @@ import RNFS from 'react-native-fs';
 import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
-import AllowAccessModal from '../Profile/AllowAccessModal';
-import CameraIcon from '../../assets/camera_icon.png';
 import closeIcon from '../../assets/cross_icon.png';
 
 import AppConfig from '../../constants/AppConfig';
@@ -82,23 +80,6 @@ class VideoRecorder extends Component {
     this.props.navigation.goBack();
   };
 
-  showAppSettings = () => {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <AllowAccessModal
-          onClose={() => {
-            this.props.navigation.goBack();
-          }}
-          modalVisibility={true}
-          headerText="Camera"
-          accessText="Enable Camera Access"
-          accessTextDesc="Allow access to your camera and microphone to take video "
-          imageSrc={CameraIcon}
-        />
-      </View>
-    );
-  };
-
   cameraView() {
     return (
       <View style={styles.container}>
@@ -111,7 +92,11 @@ class VideoRecorder extends Component {
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
-          notAuthorizedView={this.showAppSettings()}
+          notAuthorizedView={
+            <View>
+              <Text>The camera is not authorized!</Text>
+            </View>
+          }
           pendingAuthorizationView={
             <View>
               <Text>The camera is pending authorization!</Text>
@@ -119,18 +104,6 @@ class VideoRecorder extends Component {
           }
           defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
           defaultMuted={false}
-          androidCameraPermissionOptions={{
-            title: 'Permission to use camera',
-            message: 'We need your permission to use your camera',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel'
-          }}
-          androidRecordAudioPermissionOptions={{
-            title: 'Permission to use audio recording',
-            message: 'We need your permission to use your audio',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel'
-          }}
         >
           <ProgressBar
             width={null}

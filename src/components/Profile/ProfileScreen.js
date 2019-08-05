@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ActivityIndicator, Platform } from 'react-native';
+import { ActivityIndicator, Platform, AppState } from 'react-native';
 import { connect } from 'react-redux';
 
 import BalanceHeader from '../Profile/BalanceHeader';
@@ -17,6 +17,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Toast } from 'native-base';
 import PepoApi from '../../services/PepoApi';
 import CameraPermissionsApi from '../../services/CameraPermissionsApi';
+import AllowAccessModal from '../Profile/AllowAccessModal';
+import CameraIcon from '../../assets/camera_icon.png';
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -39,7 +41,8 @@ class ProfileScreen extends PureComponent {
     this.videoId = reduxGetter.getUserCoverVideoId(this.props.userId, this.state);
     this.state = {
       isEdit: false,
-      loading: true
+      loading: true,
+      showAccessModal: false
     };
     this.fetchUser();
   }
@@ -97,37 +100,24 @@ class ProfileScreen extends PureComponent {
   uploadVideo = async () => {
     const cameraResponse = await CameraPermissionsApi.checkPermission('camera');
     const microphoneResponse = await CameraPermissionsApi.checkPermission('microphone');
-    if (Platform.OS == 'android') {
-      //can ask permissions multiple times on android
-      CameraPermissionsApi.requestPermission('camera').then((result) => {
-        const cameraResult = result;
-        CameraPermissionsApi.requestPermission('microphone').then((result) => {
-          const microphoneResult = result;
-          //if do not ask again is selected then 'restricted' is returned and permission dialog does not appear again
-          if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
-            this.props.navigation.push('CaptureVideo');
-          }
-        });
+    CameraPermissionsApi.requestPermission('camera').then((result) => {
+      const cameraResult = result;
+      CameraPermissionsApi.requestPermission('microphone').then((result) => {
+        const microphoneResult = result;
+        if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
+          this.props.navigation.push('CaptureVideo');
+        }
       });
-      if (cameraResponse == 'restricted' || microphoneResponse == 'restricted') {
-        this.props.navigation.push('CaptureVideo');
-      }
-    } else if (Platform.OS == 'ios') {
-      if (cameraResponse == 'undetermined') {
-        //can ask only once in ios i.e first time
-        CameraPermissionsApi.requestPermission('camera').then((result) => {
-          const cameraResult = result;
-          CameraPermissionsApi.requestPermission('microphone').then((result) => {
-            const microphoneResult = result;
-            if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
-              this.props.navigation.push('CaptureVideo');
-            }
-          });
-        });
-      } else {
-        //redirect inside irrespective of response as enable access modal is handled inside the screen
-        this.props.navigation.push('CaptureVideo');
-      }
+    });
+    //if do not ask again is selected in android then 'restricted' is returned and permission dialog does not appear again
+    if (
+      cameraResponse == 'restricted' ||
+      microphoneResponse == 'restricted' ||
+      (Platform.OS == 'ios' && (cameraResponse == 'denied' || microphoneResponse == 'denied'))
+    ) {
+      this.setState({
+        showAccessModal: true
+      });
     }
   };
 
@@ -145,6 +135,18 @@ class ProfileScreen extends PureComponent {
 
         {!this.state.isEdit && <UserInfo userId={this.props.userId} isEdit={true} hideUserInfo={this.hideUserInfo} />}
         {this.state.isEdit && <ProfileEdit userId={this.props.userId} hideProfileEdit={this.hideProfileEdit} />}
+        <AllowAccessModal
+          onClose={() => {
+            this.setState({
+              showAccessModal: false
+            });
+          }}
+          modalVisibility={this.state.showAccessModal}
+          headerText="Camera"
+          accessText="Enable Camera Access"
+          accessTextDesc="Allow access to your camera and microphone to take video "
+          imageSrc={CameraIcon}
+        />
       </KeyboardAwareScrollView>
     );
   }
