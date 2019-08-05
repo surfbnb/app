@@ -98,8 +98,6 @@ class ProfileScreen extends PureComponent {
   };
 
   uploadVideo = async () => {
-    const cameraResponse = await CameraPermissionsApi.checkPermission('camera');
-    const microphoneResponse = await CameraPermissionsApi.checkPermission('microphone');
     CameraPermissionsApi.requestPermission('camera').then((result) => {
       const cameraResult = result;
       CameraPermissionsApi.requestPermission('microphone').then((result) => {
@@ -107,18 +105,18 @@ class ProfileScreen extends PureComponent {
         if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
           this.props.navigation.push('CaptureVideo');
         }
+        //if do not ask again is selected in android then 'restricted' is returned and permission dialog does not appear again
+        else if (
+          cameraResult == 'restricted' ||
+          microphoneResult == 'restricted' ||
+          (Platform.OS == 'ios' && (cameraResult == 'denied' || microphoneResult == 'denied'))
+        ) {
+          this.setState({
+            showAccessModal: true
+          });
+        }
       });
     });
-    //if do not ask again is selected in android then 'restricted' is returned and permission dialog does not appear again
-    if (
-      cameraResponse == 'restricted' ||
-      microphoneResponse == 'restricted' ||
-      (Platform.OS == 'ios' && (cameraResponse == 'denied' || microphoneResponse == 'denied'))
-    ) {
-      this.setState({
-        showAccessModal: true
-      });
-    }
   };
 
   render() {

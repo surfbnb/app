@@ -248,31 +248,27 @@ class ProfileEdit extends React.PureComponent {
   };
 
   openCamera = async () => {
-    let response = await CameraPermissionsApi.checkPermission('camera');
     CameraPermissionsApi.requestPermission('camera').then((result) => {
       if (result == 'authorized') {
         this.props.navigation.push('CaptureImageScreen');
+      } else if ((Platform.OS == 'ios' && result == 'denied') || result == 'restricted') {
+        this.setState({
+          showCameraAccessModal: true
+        });
       }
     });
-    if ((Platform.OS == 'ios' && response == 'denied') || response == 'restricted') {
-      this.setState({
-        showCameraAccessModal: true
-      });
-    }
   };
 
   openGallery = async () => {
-    let response = await CameraPermissionsApi.checkPermission('photo');
     CameraPermissionsApi.requestPermission('photo').then((result) => {
       if (result == 'authorized') {
         this.props.navigation.push('ImageGalleryScreen');
+      } else if ((Platform.OS == 'ios' && result == 'denied') || result == 'restricted') {
+        this.setState({
+          showGalleryAccessModal: true
+        });
       }
     });
-    if ((Platform.OS == 'ios' && response == 'denied') || response == 'restricted') {
-      this.setState({
-        showGalleryAccessModal: true
-      });
-    }
   };
 
   render() {
