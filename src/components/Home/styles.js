@@ -78,40 +78,22 @@ let stylesMap = {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     // maxHeight: 150,
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
+    alignItems: 'flex-start',
     paddingHorizontal: 15,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    // height: 80
     maxHeight: Dimensions.get('window').height * 0.15,
     minHeight: Dimensions.get('window').height * 0.1
   },
-  bottomBgTxt: {
-    color: Colors.white,
-    fontSize: 14,
-    fontFamily: 'AvenirNext-Regular'
-  },
-  raisedSupportedTxt: {
-    color: Colors.white,
-    fontSize: 14,
-    fontFamily: 'AvenirNext-DemiBold'
-  },
   handle: {
-    fontSize: 16,
+    fontSize: 15,
+    // marginBottom: 3,
+    color: Colors.white,
     fontFamily: 'AvenirNext-DemiBold'
   },
-  raisedSupported: {
-    position: 'absolute',
-    backgroundColor: '#ff5566',
-    borderTopLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    bottom: 0,
-    right: 0,
-    paddingHorizontal: 5,
-    width: 150,
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center'
+  bottomBgTxt: {
+    color: Colors.white
   },
   topContainer: {
     position: 'absolute',
