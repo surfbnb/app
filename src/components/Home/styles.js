@@ -87,11 +87,31 @@ let stylesMap = {
     minHeight: Dimensions.get('window').height * 0.1
   },
   bottomBgTxt: {
-    color: Colors.white
+    color: Colors.white,
+    fontSize: 14,
+    fontFamily: 'AvenirNext-Regular'
+  },
+  raisedSupportedTxt: {
+    color: Colors.white,
+    fontSize: 14,
+    fontFamily: 'AvenirNext-DemiBold'
   },
   handle: {
     fontSize: 16,
     fontFamily: 'AvenirNext-DemiBold'
+  },
+  raisedSupported: {
+    position: 'absolute',
+    backgroundColor: '#ff5566',
+    borderTopLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    bottom: 0,
+    right: 0,
+    paddingHorizontal: 5,
+    width: 150,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   topContainer: {
     position: 'absolute',
