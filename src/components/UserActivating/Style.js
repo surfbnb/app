@@ -8,24 +8,9 @@ let stylesMap = {
     alignItems: 'center',
     paddingTop: 50
   },
-  title: {
-    color: Colors.wildWatermelon,
-    fontSize: 26,
-    letterSpacing: -0.3
-  },
-  subTitle: {
-    color: Colors.black,
-    fontSize: 20,
-    marginTop: 10
-  },
-  coinsCount: {
-    color: Colors.wildWatermelon,
-    fontSize: 20,
-    marginTop: 5
-  },
   descTxt: {
-    color: Colors.black,
-    fontSize: 18
+    color: Colors.valhalla,
+    fontSize: 16
   },
 };
 

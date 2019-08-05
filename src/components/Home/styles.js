@@ -81,11 +81,17 @@ let stylesMap = {
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 15,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     maxHeight: Dimensions.get('window').height * 0.15,
     minHeight: Dimensions.get('window').height * 0.1
   },
   bottomBgTxt: {
     color: Colors.white
+  },
+  handle: {
+    fontSize: 16,
+    fontFamily: 'AvenirNext-DemiBold'
   },
   topContainer: {
     position: 'absolute',

@@ -34,7 +34,8 @@ let styles = {
     borderColor: Colors.primary
   },
   btnPinkText: {
-    color: Colors.white
+    color: Colors.white,
+    fontFamily: 'AvenirNext-DemiBold'
   },
   btnSoftBlue: {
     backgroundColor: Colors.softBlue,
@@ -49,4 +50,4 @@ let styles = {
   }
 };
 
-export default Buttons = DefaultStyleGenerator.generate(styles);
+export default styles = DefaultStyleGenerator.generate(styles);
