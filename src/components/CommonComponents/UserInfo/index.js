@@ -38,24 +38,6 @@ class UserInfo extends React.PureComponent {
     return priceOracle.btToFiat(btAmount, 2);
   }
 
-  onEdit = () => {
-    this.props.hideUserInfo(true);
-    console.log('in userinfo');
-    this.props.onEdit && this.props.onEdit();
-  };
-
-  editButton() {
-    if (this.props.isEdit) {
-      return (
-        <TouchableButton
-          onPress={this.onEdit}
-          TouchableStyles={[Theme.Button.btnPinkSecondary, { paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
-          TextStyles={[Theme.Button.btnPinkSecondaryText]}
-          text="Edit Your Profile"
-        />
-      );
-    }
-  }
 
   onDidFocus = payload => {
     let pixelParams = {
@@ -77,10 +59,10 @@ class UserInfo extends React.PureComponent {
         />
         <View style={inlineStyle.infoHeaderWrapper}>
           <ProfilePicture userId={this.props.userId} style={[inlineStyle.profileImageSkipFont, {alignSelf: 'center'}]} />
-          {this.props.children}
+          {this.props.header}
         </View>
         <Text style={inlineStyle.userName}>@{this.props.userName}</Text>
-        {this.editButton()}
+        {this.props.editButton}
         {this.props.bio ? <Text style={inlineStyle.bioSection}>{this.props.bio}</Text> : <View />}
         {this.props.link ? (
           <Text
@@ -117,6 +99,8 @@ class UserInfo extends React.PureComponent {
             </View>
           </View>
         </LinearGradient>
+
+
       </View>
     );
   }

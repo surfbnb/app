@@ -21,6 +21,8 @@ import AllowAccessModal from '../Profile/AllowAccessModal';
 import CameraIcon from '../../assets/camera_icon.png';
 
 import UserProfileFlatList from "../CommonComponents/UserProfileFlatList"
+import TouchableButton from "../../theme/components/TouchableButton";
+import Theme from "../../theme/styles";
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -77,14 +79,24 @@ class ProfileScreen extends PureComponent {
   
   onPullToRefresh = () => {
     this.fetchUser(); 
-  } 
+  }
+
+  onEdit = () => {
+    //TODO
+  }
 
 
   _headerComponent(){
     return (
-      <UserInfo userId={this.props.userId} isEdit={true} >
-        <BalanceHeader />
-      </UserInfo>  
+      <UserInfo userId={this.props.userId} header = {<BalanceHeader />}
+                editButton={
+                  <TouchableButton
+                    onPress={this.onEdit}
+                    TouchableStyles={[Theme.Button.btnPinkSecondary, { paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
+                    TextStyles={[Theme.Button.btnPinkSecondaryText]}
+                    text="Edit Your Profile"
+                  />
+                }  />
     )
   }
 
