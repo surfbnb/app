@@ -23,10 +23,11 @@ import { ActionSheet } from 'native-base';
 import FastImage from 'react-native-fast-image';
 
 import CameraPermissionsApi from '../../services/CameraPermissionsApi';
-import AllowAccessModal from '../Profile/AllowAccessModal';
+import AllowAccessModal from './AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
 import CameraIcon from '../../assets/camera_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
+import BackArrow from "../CommonComponents/BackArrow";
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
@@ -35,11 +36,11 @@ const CANCEL_INDEX = 2;
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user_name: reduxGetter.getUserName(ownProps.userId, state) || '',
-    name: reduxGetter.getName(ownProps.userId, state) || '',
-    bio: reduxGetter.getBio(ownProps.userId, state) || '',
-    link: reduxGetter.getLink(reduxGetter.getUserLinkId(ownProps.userId, state), state) || '',
-    profilePicture: reduxGetter.getImage(reduxGetter.getProfileImageId(ownProps.userId, state), state)
+    user_name: reduxGetter.getUserName( CurrentUser.getUserId(), state) || '',
+    name: reduxGetter.getName(CurrentUser.getUserId(), state) || '',
+    bio: reduxGetter.getBio(CurrentUser.getUserId(), state) || '',
+    link: reduxGetter.getLink(reduxGetter.getUserLinkId(CurrentUser.getUserId(), state), state) || '',
+    profilePicture: reduxGetter.getImage(reduxGetter.getProfileImageId(CurrentUser.getUserId(), state), state)
   };
 };
 
@@ -47,6 +48,15 @@ const btnPreText = 'Save Profile';
 const btnPostText = 'Saving...';
 
 class ProfileEdit extends React.PureComponent {
+
+  static navigationOptions = (options) => {
+    return {
+      headerBackTitle: null,
+      headerBackImage: (<BackArrow/>),
+      headerTitle: reduxGetter.getName(CurrentUser.getUserId())
+    };
+  };
+
   constructor(props) {
     super(props);
 
@@ -163,6 +173,8 @@ class ProfileEdit extends React.PureComponent {
     }
 
     Store.dispatch(upsertUserProfileEntities(utilities._getEntityFromObj(userProfileEntity)));
+
+    this.props.navigation.goBack();
   }
 
   onSubmit() {
@@ -175,7 +187,6 @@ class ProfileEdit extends React.PureComponent {
           this.setState({ btnText: btnPreText });
           if (res && res.success) {
             this.updateProfileData();
-            this.props.hideProfileEdit && this.props.hideProfileEdit(res);
             return;
           } else {
             this.onServerError(res);

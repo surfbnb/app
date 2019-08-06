@@ -1,11 +1,15 @@
 import React, { PureComponent } from 'react';
 import {View , TouchableWithoutFeedback , FlatList , ActivityIndicator , Text} from "react-native";
+import {SafeAreaView} from "react-navigation";
 import FastImage from 'react-native-fast-image';
 import reduxGetters from "../../../services/ReduxGetters"; 
 
 import AppConfig from "../../../constants/AppConfig"; 
 import Pricer from '../../../services/Pricer';
 import Pagination from "../../../services/Pagination";
+import PepoApi from "../../../services/PepoApi";
+
+import { Toast } from 'native-base';
 
 class UserProfileFlatList extends PureComponent {
     constructor(props){
@@ -27,7 +31,32 @@ class UserProfileFlatList extends PureComponent {
         } )
     }
 
+    fetchUser = () => {
+        return new PepoApi(`/users/${this.props.userId}/profile`)
+          .get()
+          .then((res) => {
+            if (!res || !res.success) {
+              Toast.show({
+                text: ostErrors.getErrorMessage(res),
+                buttonText: 'OK'
+              });
+            }
+          })
+          .catch((error) => {
+            Toast.show({
+              text: ostErrors.getErrorMessage(error),
+              buttonText: 'OK'
+            });
+          })
+          .finally(() => {});
+      };
+      
+      onPullToRefresh = () => {
+        this.fetchUser(); 
+      } 
+
     componentDidMount(){
+        this.fetchUser();
         this.videoHistoryPagination.initPagination();
     }
 
@@ -41,7 +70,7 @@ class UserProfileFlatList extends PureComponent {
     }
 
     beforeRefresh = ( ) => {
-        this.props.onPullToRefresh && this.props.onPullToRefresh();
+        this.onPullToRefresh();
         this.setState({ refreshing : true }); 
     }
 
@@ -77,9 +106,9 @@ class UserProfileFlatList extends PureComponent {
 
     _renderItem = ({ item, index }) => {
       const videoId = reduxGetters.getUserVideoId(item) 
-            imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ; 
+            imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;     
       return imageUrl ? (
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={this.onVideoClick}>
             <View style={{width:"30%" , flex:1 , backgroundColor: "red"}} >  
                 <FastImage style={{width:"100%", aspectRatio:9/16}}
                             source={{
@@ -97,19 +126,25 @@ class UserProfileFlatList extends PureComponent {
         return <ActivityIndicator />;
      };
 
+    onVideoClick = () => {
+        
+    }
+
     render(){
         return(
-            <FlatList
-                ListHeaderComponent={this.props.listHeaderComponent}
-                data={this.state.list}
-                onEndReached={this.getNext}
-                onRefresh={this.refresh}
-                keyExtractor={this._keyExtractor}
-                refreshing={this.state.refreshing}
-                onEndReachedThreshold={9}
-                renderItem={this._renderItem}
-                ListFooterComponent={this.renderFooter}
-             />
+            <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
+                <FlatList
+                    ListHeaderComponent={this.props.listHeaderComponent}
+                    data={this.state.list}
+                    onEndReached={this.getNext}
+                    onRefresh={this.refresh}
+                    keyExtractor={this._keyExtractor}
+                    refreshing={this.state.refreshing}
+                    onEndReachedThreshold={9}
+                    renderItem={this._renderItem}
+                    ListFooterComponent={this.renderFooter}
+                />
+            </SafeAreaView>    
         );
     }
     
