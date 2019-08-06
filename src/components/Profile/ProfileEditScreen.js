@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, AppState, Platform, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-// import { NavigationEvents } from 'react-navigation';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
@@ -15,7 +14,7 @@ import PepoApi from '../../services/PepoApi';
 import ProfilePlusIcon from '../../assets/red_plus_icon.png';
 import CurrentUser from '../../models/CurrentUser';
 
-import { updateCurrentUser, upsertUserProfileEntities, upsertLinkEntities, upsertUserEntities } from '../../actions';
+import { upsertUserProfileEntities, upsertLinkEntities, upsertUserEntities } from '../../actions';
 import Store from '../../store';
 import utilities from '../../services/Utilities';
 import Colors from '../../theme/styles/Colors';
@@ -153,7 +152,7 @@ class ProfileEdit extends React.PureComponent {
     }
     Store.dispatch(upsertUserEntities(utilities._getEntityFromObj(currentUserObj)));
 
-    const userProfileEntity = reduxGetter.getUserProfile(this.props.userId);
+    const userProfileEntity = reduxGetter.getUserProfile(CurrentUser.getUserId());
     if (!userProfileEntity) return;
     if (typeof this.state.bio != 'undefined') {
       const bio = userProfileEntity['bio'] || {};
@@ -181,7 +180,7 @@ class ProfileEdit extends React.PureComponent {
     this.clearErrors();
     if (this.validateProfileInput()) {
       this.setState({ btnText: btnPostText });
-      return new PepoApi(`/users/${this.props.userId}/profile`)
+      return new PepoApi(`/users/${CurrentUser.getUserId()}/profile`)
         .post(this.getParams())
         .then((res) => {
           this.setState({ btnText: btnPreText });
@@ -203,7 +202,7 @@ class ProfileEdit extends React.PureComponent {
       this.props.name != this.state.name ||
       this.props.user_name != this.state.user_name ||
       this.props.bio != this.state.bio ||
-      this.props.bio != this.state.bio
+      this.props.link != this.state.link
     ) {
       Alert.alert(
         'Discard changes?',
@@ -213,20 +212,16 @@ class ProfileEdit extends React.PureComponent {
           {
             text: 'Discard',
             onPress: () => {
-              this.onDiscard();
+              this.props.navigation.goBack();
             }
           }
         ],
         { cancelable: false }
       );
     } else {
-      this.props.hideProfileEdit();
+      this.props.navigation.goBack();
     }
   };
-
-  onDiscard() {
-    this.props.hideProfileEdit();
-  }
 
   onBioChangeDelegate = (val) => {
     this.setState({ bio: val });
