@@ -76,8 +76,7 @@ class UserInfo extends React.PureComponent {
         />
         <View style={inlineStyle.infoHeaderWrapper}>
           <ProfilePicture userId={this.props.userId} style={inlineStyle.profileImageSkipFont} />
-
-          <Text style={inlineStyle.userName}>{this.props.userName}</Text>
+          <Text style={inlineStyle.userName}>@{this.props.userName}</Text>
         </View>
         {this.editButton()}
         {this.props.bio ? <Text style={inlineStyle.bioSection}>{this.props.bio}</Text> : <View />}

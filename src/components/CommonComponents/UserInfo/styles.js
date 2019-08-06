@@ -43,13 +43,13 @@ let stylesMap = {
     backgroundColor: Colors.gainsboro
   },
   userName: {
-    fontWeight: 'bold',
-    color: Colors.dark,
-    marginLeft: 5
+    color: Colors.valhalla,
+    fontFamily: 'AvenirNext-DemiBold',
+    marginVertical: 10
   },
   bioSection: {
     textAlign: 'center',
-    marginVertical: 10,
+    marginTop: 20,
     color: Colors.valhalla,
     fontWeight: 'normal'
   },
