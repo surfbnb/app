@@ -6,10 +6,9 @@ import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
 import { LoginPopoverActions } from '../components/LoginPopover';
-import { Toast } from 'native-base';
-import { ostErrors } from '../services/OstErrors';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
+import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
 
 class CurrentUser {
   constructor() {
@@ -40,7 +39,7 @@ class CurrentUser {
         }
 
         //We now have userObj.
-        return this.sync(userObj.user_id ,  true );
+        return this.sync(userObj.user_id, true);
       });
     });
   }
@@ -163,8 +162,8 @@ class CurrentUser {
   }
 
   getOstUserId() {
-    const user = this.getUser() || {}; 
-    return user["ost_user_id"] ;
+    const user = this.getUser() || {};
+    return user['ost_user_id'];
   }
 
   isActiveUser() {
@@ -203,21 +202,17 @@ class CurrentUser {
     const userStatusMap = appConfig.userStatusMap,
       returnVal = this.__getUserStatus() == userStatusMap.activated;
     if (!returnVal && emit) {
-      Toast.show({
-        text: ostErrors.getUIErrorMessage('user_not_active'),
-        buttonText: 'Okay'
-      });
+      FlyerEventEmitter.emit('onShowProfileFlyer', { id: 1 });
     }
     return returnVal;
   }
   // End Move this to utilities once all branches are merged.
-  
+
   setupDeviceFailed(ostWorkflowContext, error) {
     console.log('----- IMPORTANT :: SETUP DEVICE FAILED -----');
   }
-  
+
   setupDeviceComplete() {}
-  
 }
 
 export default new CurrentUser();
