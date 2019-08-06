@@ -34,8 +34,8 @@ let stylesMap = {
   infoHeaderWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: 'red',
     alignItems: 'center',
+    // alignItems: 'center',
     width: '100%'
     // marginVertical: 10
   },
@@ -53,8 +53,8 @@ let stylesMap = {
   bioSection: {
     textAlign: 'center',
     marginTop: 20,
+    paddingHorizontal: 30,
     color: Colors.valhalla,
-    fontWeight: 'normal'
   },
   numericInfoWrapper: {
     flexDirection: 'row',

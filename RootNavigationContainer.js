@@ -20,6 +20,7 @@ import Activities from './src/components/Activities';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
+import ProfileEdit from './src/components/Profile/ProfileEditScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from './src/components/Giphy';
@@ -128,6 +129,7 @@ const UserStack = createStackNavigator(
 const ProfileStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
+    ProfileEdit: ProfileEdit,
     BioScreen: BioScreen,
     VideoPlayer: VideoPlayer,
     CaptureImageScreen: CaptureImage,
@@ -153,7 +155,6 @@ const CustomTabStack = createMaterialTopTabNavigator(
   {
     Home: HomeStack,
     Activities: ActivityStack,
-    CaptureVideo : CaptureVideo, 
     Users: UserStack,
     Profile: ProfileStack
   },

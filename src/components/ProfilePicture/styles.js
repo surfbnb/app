@@ -2,9 +2,9 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 
 let stylesMap = {
   profileImageSkipFont: {
-    height: 80,
-    width: 80,
-    borderRadius: 40
+    height: 30,
+    width: 30,
+    borderRadius: 15
   }
 };
 
