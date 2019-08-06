@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Text } from 'react-native';
 import reduxGetter from '../../services/ReduxGetters';
 import BackArrow from '../CommonComponents/BackArrow';
 
@@ -32,7 +33,17 @@ export default class UsersProfile extends Component {
 
   _headerComponent(){
     return (
-      <UserInfo userId={this.userId} />
+      <React.Fragment>
+        <UserInfo userId={this.userId} />
+        <Text style={{textAlign: 'center',
+                      borderColor: 'rgb(218, 223, 220)',
+                      borderWidth: 1,
+                      color: '#2a293b',
+                      fontSize: 18,
+                      fontFamily: 'AvenirNext-Regular',
+                      paddingVertical: 10,
+                      marginTop: 30}}>Updates</Text>
+      </React.Fragment>
     )
   }
 
