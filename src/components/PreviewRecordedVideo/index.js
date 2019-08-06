@@ -53,7 +53,7 @@ class PreviewRecordedVideo extends Component {
   };
 
   enableStartUploadFlag = () => {
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('Home');
     Store.dispatch(upsertRecordedVideo({ do_upload: true }));
   };
 
@@ -99,7 +99,8 @@ class PreviewRecordedVideo extends Component {
           );
           //TODO: navigate to previous page
           Store.dispatch(videoInProcessing(false));
-          this.props.navigation.goBack();
+          // this.props.navigation.goBack();
+          this.props.navigation.navigate('Home');
         }
       }
     );

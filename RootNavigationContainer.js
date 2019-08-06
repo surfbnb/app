@@ -57,7 +57,6 @@ const modalStackConfig = {
   navigationOptions: ({ navigation }) => {
     const routeName = getRouteName(navigation);
     return {
-      swipeEnabled: CurrentUser.getOstUserId() ? true : false,
       tabBarVisible: routeName == 'TransactionScreen' || routeName == 'VideoPlayer' ? false : true
     };
   }
@@ -131,7 +130,6 @@ const ProfileStack = createStackNavigator(
     ProfileScreen: ProfileScreen,
     BioScreen: BioScreen,
     VideoPlayer: VideoPlayer,
-    CaptureVideo: CaptureVideo,
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery
   },
@@ -155,6 +153,7 @@ const CustomTabStack = createMaterialTopTabNavigator(
   {
     Home: HomeStack,
     Activities: ActivityStack,
+    CaptureVideo : CaptureVideo, 
     Users: UserStack,
     Profile: ProfileStack
   },
@@ -169,7 +168,8 @@ const CustomTabStack = createMaterialTopTabNavigator(
         backgroundColor: Colors.white
       }
     },
-    lazy: true
+    lazy: true,
+    swipeEnabled: false
   }
 );
 
@@ -217,7 +217,7 @@ const RootNavigationContainer = () => (
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
     />
-
+    <CaptureVideo />
     <CameraWorker />
     <PictureWorker />
     <LoadingModalCover />

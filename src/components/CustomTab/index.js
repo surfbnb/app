@@ -21,14 +21,19 @@ const tabConfig = {
     index: 1
   },
   tab3: {
-    rootStack: 'Users',
-    childStack: 'UsersScreen',
+    rootStack: 'CaptureVideo',
+    childStack: 'CaptureVideo',
     index: 2
   },
   tab4: {
+    rootStack: 'Users',
+    childStack: 'UsersScreen',
+    index: 3
+  },
+  tab5: {
     rootStack: 'Profile',
     childStack: 'ProfileScreen',
-    index: 3
+    index: 4
   }
 };
 
@@ -42,6 +47,7 @@ function getLastChildRoutename(state) {
     routes = state.routes;
   if (!routes || recursiveMaxCount > 10) {
     recursiveMaxCount = 0;
+    console.log('state.routeName', state.routeName);
     return state.routeName;
   }
   recursiveMaxCount++;
@@ -51,7 +57,9 @@ function getLastChildRoutename(state) {
 
 function onTabPressed(navigation, tab) {
   if (!CurrentUser.checkActiveUser()) return;
+  console.log(previousTabIndex,tab.index, 'previousTabIndex != tab.index');
   if (previousTabIndex != tab.index) {
+    console.log('Navigating to', tab.rootStack);
     navigation.navigate(tab.rootStack);
   } else {
     try {
@@ -87,22 +95,32 @@ const CustomTab = ({ navigation, screenProps }) => (
         source={feed}
       />
     </TouchableOpacity>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab3)}>
+        <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab3)}>
       <Image
-        tintColor={navigation.state.index === tabConfig.tab3.index ? '#61b2d6' : '#484848'}
+        tintColor={navigation.state.index === tabConfig.tab3.index ? '#61b2d6' : 'rgb(72,72,72)'}
         style={[
-          styles.tabElementFriendsSkipFont,
+          styles.tabElementSkipFont,
           { tintColor: navigation.state.index === tabConfig.tab3.index ? '#ef5566' : '#484848' }
         ]}
-        source={friends}
+        source={global}
       />
     </TouchableOpacity>
     <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab4)}>
       <Image
         tintColor={navigation.state.index === tabConfig.tab4.index ? '#61b2d6' : '#484848'}
         style={[
-          styles.tabElementSkipFont,
+          styles.tabElementFriendsSkipFont,
           { tintColor: navigation.state.index === tabConfig.tab4.index ? '#ef5566' : '#484848' }
+        ]}
+        source={friends}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab5)}>
+      <Image
+        tintColor={navigation.state.index === tabConfig.tab5.index ? '#61b2d6' : '#484848'}
+        style={[
+          styles.tabElementSkipFont,
+          { tintColor: navigation.state.index === tabConfig.tab5.index ? '#ef5566' : '#484848' }
         ]}
         source={profile}
       />

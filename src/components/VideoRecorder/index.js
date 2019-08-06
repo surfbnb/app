@@ -77,7 +77,8 @@ class VideoRecorder extends Component {
   }
 
   cancleVideoHandling = () => {
-    this.props.navigation.goBack();
+    // this.props.navigation.goBack();
+    this.props.navigation.navigate('Home');
   };
 
   cameraView() {

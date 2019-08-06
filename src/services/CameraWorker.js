@@ -74,6 +74,13 @@ class CameraWorker extends PureComponent {
     }
   }
 
+  shouldComponentUpdate(nextProps){
+    if(nextProps.recorded_video.cover_image_id != this.props.recorded_video.cover_image_id || nextProps.recorded_video.video_image_id != this.props.recorded_video.video_image_id){
+      return false;
+    }
+    return true;
+  }
+
   async processVideo() {
     // Early exit
     if (Object.keys(this.props.current_user).length === 0 || Object.keys(this.props.recorded_video).length === 0) {
@@ -113,7 +120,7 @@ class CameraWorker extends PureComponent {
   }
 
   updateProfileViewRawVideo() {
-    if (this.props.recorded_video.cover_image && !this.props.recorded_video.video_s3_upload_processing) {
+    if (this.props.recorded_video.cover_image && !this.props.recorded_video.video_s3_upload_processing) { 
       this.updateProfileViewVideo(this.props.recorded_video.cover_image, this.props.recorded_video.raw_video);
     }
   }
@@ -224,7 +231,7 @@ class CameraWorker extends PureComponent {
     });
   }
 
-  updateProfileViewVideo(coverImage, video) {
+  updateProfileViewVideo(coverImage, video) {    
     let imageObject = createObjectForRedux.createImageObject({
       url: coverImage,
       height: appConfig.cameraConstants.VIDEO_HEIGHT,
@@ -243,14 +250,15 @@ class CameraWorker extends PureComponent {
     );
 
     Store.dispatch(upsertImageEntities(imageObject.value));
-    Store.dispatch(upsertVideoEntities(videoObject.value));
+    Store.dispatch(upsertVideoEntities(videoObject.value));    
     Store.dispatch(
-      upsertUserProfileEntities({
-        [`id_${CurrentUser.getUserId()}`]: {
-          ...ReduxGetters.getCurrentUserProfile(),
-          ...{ cover_image_id: imageObject.key, cover_video_id: videoObject.key }
-        }
-      })
+      // upsertUserProfileEntities({
+      //   [`id_${CurrentUser.getUserId()}`]: {
+      //     ...ReduxGetters.getCurrentUserProfile(),
+      //     ...{ cover_image_id: imageObject.key, cover_video_id: videoObject.key }
+      //   }
+      // })
+      upsertRecordedVideo({cover_image_id: imageObject.key, cover_video_id: videoObject.key})
     );
   }
 
@@ -356,7 +364,7 @@ class CameraWorker extends PureComponent {
       new PepoApi(`/users/${this.props.current_user.id}/fan-video`)
         .post(payload)
         .then((responseData) => {
-          if (responseData.success && responseData.data) {
+          if (responseData.success && responseData.data) {            
             this.updateProfileViewVideo(this.props.recorded_video.s3_cover_image, this.props.recorded_video.s3_video);
             Store.dispatch(
               upsertRecordedVideo({

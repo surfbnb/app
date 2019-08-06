@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Modal} from 'react-native';
 import VideoRecorder from '../VideoRecorder';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
 
@@ -11,25 +12,26 @@ class CaptureVideo extends Component {
     this.state = {
       recordingScreen: true,
       videoUri: '',
-      actionSheetOnRecordVideo: true
+      actionSheetOnRecordVideo: true,
+      modalVisible: true
     };
   }
 
-  static navigationOptions = ({navigation, navigationOptions}) => {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      header: null
+      header: null,
+      tabBarVisible: false
     };
   };
 
-
-  goToRecordScreen(){
+  goToRecordScreen() {
     this.setState({
       recordingScreen: true,
       actionSheetOnRecordVideo: false
     });
   }
 
-  goToPreviewScreen(videoUri){
+  goToPreviewScreen(videoUri) {
     this.setState({
       recordingScreen: false,
       videoUri
@@ -43,7 +45,7 @@ class CaptureVideo extends Component {
           goToPreviewScreen={(videoUri) => {
             this.goToPreviewScreen(videoUri);
           }}
-          actionSheetOnRecordVideo= {this.state.actionSheetOnRecordVideo}
+          actionSheetOnRecordVideo={this.state.actionSheetOnRecordVideo}
           navigation={this.props.navigation}
         />
       );
@@ -52,7 +54,7 @@ class CaptureVideo extends Component {
         <PreviewRecordedVideo
           goToRecordScreen={() => {
             this.goToRecordScreen();
-          }}          
+          }}
           cachedvideoUrl={this.state.videoUri}
           navigation={this.props.navigation}
         />
@@ -61,7 +63,15 @@ class CaptureVideo extends Component {
   }
 
   render() {
-    return this.getCurrentView();
+    return <Modal
+    animationType="slide"
+    transparent={false}
+    visible={this.state.modalVisible}
+    onRequestClose={() => {
+      console.log('Modal has been closed.');
+    }}
+    >
+    {this.getCurrentView()}</Modal>;
   }
 }
 
