@@ -7,11 +7,11 @@ import LogoutComponent from '../LogoutLink';
 import UserInfo from '../CommonComponents/UserInfo';
 import CurrentUser from '../../models/CurrentUser';
 
-import EmptyCoverImage from './EmptyCoverImage';
+// import EmptyCoverImage from './EmptyCoverImage';
 import ProfileEdit from './ProfileEdit';
-import UserProfileCoverImage from './UserProfileCoverImage';
+// import UserProfileCoverImage from './UserProfileCoverImage';
 import reduxGetter from '../../services/ReduxGetters';
-import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
+// import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Toast } from 'native-base';
@@ -123,11 +123,11 @@ class ProfileScreen extends PureComponent {
     return (
       <KeyboardAwareScrollView enableOnAndroid={true} style={{ padding: 20, flex: 1 }}>
         {this.isLoading()}
-        <BalanceHeader />
-        <React.Fragment>
-          <UserProfileCoverImage userId={this.props.userId} uploadVideo={this.uploadVideo} />
-          <UpdateTimeStamp userId={this.props.userId} />
-        </React.Fragment>
+
+        {/*<React.Fragment>*/}
+          {/*<UserProfileCoverImage userId={this.props.userId} uploadVideo={this.uploadVideo} />*/}
+          {/*<UpdateTimeStamp userId={this.props.userId} />*/}
+        {/*</React.Fragment>*/}
 
         {/*{!this.coverImageId && <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.props.userId} />}*/}
 

@@ -12,6 +12,7 @@ import reduxGetter from '../../../services/ReduxGetters';
 import ProfilePicture from '../../ProfilePicture';
 import PixelCall from "../../../services/PixelCall";
 import LinearGradient from "react-native-linear-gradient";
+import BalanceHeader from "../../Profile/BalanceHeader";
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -70,14 +71,15 @@ class UserInfo extends React.PureComponent {
 
   render() {
     return (
-      <View style={{ margin: 20, alignItems: 'center' }}>
+      <View style={{alignItems: 'center', backgroundColor: 'blue' }}>
         <NavigationEvents
             onDidFocus={this.onDidFocus}
         />
         <View style={inlineStyle.infoHeaderWrapper}>
-          <ProfilePicture userId={this.props.userId} style={inlineStyle.profileImageSkipFont} />
-          <Text style={inlineStyle.userName}>@{this.props.userName}</Text>
+          <ProfilePicture userId={this.props.userId} style={[inlineStyle.profileImageSkipFont, {alignSelf: 'center'}]} />
+          <BalanceHeader style={{position: 'absolute', right: 30, alignSelf: 'flex-end'}}/>
         </View>
+        <Text style={inlineStyle.userName}>@{this.props.userName}</Text>
         {this.editButton()}
         {this.props.bio ? <Text style={inlineStyle.bioSection}>{this.props.bio}</Text> : <View />}
         {this.props.link ? (

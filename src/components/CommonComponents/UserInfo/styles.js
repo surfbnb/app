@@ -32,9 +32,12 @@ let stylesMap = {
   //   fontWeight: '500'
   // },
   infoHeaderWrapper: {
-    // flexDirection: 'row',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: 'red',
     alignItems: 'center',
-    marginVertical: 10
+    width: '100%'
+    // marginVertical: 10
   },
   userProfileImageSkipFont: {
     height: 100,
