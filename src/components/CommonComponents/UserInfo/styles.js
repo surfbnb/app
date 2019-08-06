@@ -3,43 +3,43 @@ import Colors from '../../../theme/styles/Colors';
 import { Dimensions } from 'react-native';
 
 let stylesMap = {
-  balanceHeaderContainer: {
-    flex: 1,
-    backgroundColor: Colors.whiteSmoke,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 20
-  },
-  balanceHeader: {
-    borderRadius: 10,
-    paddingVertical: 10,
-    backgroundColor: Colors.primary,
-    alignItems: 'center'
-  },
-  balanceToptext: {
-    fontSize: 11,
-    color: Colors.white,
-    fontWeight: '500'
-  },
-  pepoBalance: {
-    fontSize: 18,
-    color: Colors.white,
-    fontWeight: '300'
-  },
-  usdBalance: {
-    fontSize: 16,
-    color: Colors.white,
-    fontWeight: '500'
-  },
+  // balanceHeaderContainer: {
+  //   flex: 1,
+  //   backgroundColor: Colors.whiteSmoke,
+  //   justifyContent: 'center',
+  //   paddingHorizontal: 20,
+  //   paddingTop: 20
+  // },
+  // balanceHeader: {
+  //   borderRadius: 10,
+  //   paddingVertical: 10,
+  //   backgroundColor: Colors.primary,
+  //   alignItems: 'center'
+  // },
+  // balanceToptext: {
+  //   fontSize: 11,
+  //   color: Colors.white,
+  //   fontWeight: '500'
+  // },
+  // pepoBalance: {
+  //   fontSize: 18,
+  //   color: Colors.white,
+  //   fontWeight: '300'
+  // },
+  // usdBalance: {
+  //   fontSize: 16,
+  //   color: Colors.white,
+  //   fontWeight: '500'
+  // },
   infoHeaderWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    // flexDirection: 'row',
+    alignItems: 'center',
     marginVertical: 10
   },
-  profileImageSkipFont: {
-    height: 25,
-    width: 25,
-    borderRadius: 12.5,
+  userProfileImageSkipFont: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
     backgroundColor: Colors.gainsboro
   },
   userName: {

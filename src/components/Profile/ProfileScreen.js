@@ -129,7 +129,7 @@ class ProfileScreen extends PureComponent {
           <UpdateTimeStamp userId={this.props.userId} />
         </React.Fragment>
 
-        {!this.coverImageId && <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.props.userId} />}
+        {/*{!this.coverImageId && <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.props.userId} />}*/}
 
         {!this.state.isEdit && <UserInfo userId={this.props.userId} isEdit={true} hideUserInfo={this.hideUserInfo} />}
         {this.state.isEdit && <ProfileEdit userId={this.props.userId} hideProfileEdit={this.hideProfileEdit} />}

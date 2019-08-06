@@ -3,7 +3,6 @@ import { Image, TouchableOpacity, Text } from 'react-native';
 import { ActionSheet } from 'native-base';
 
 import CurrentUser from '../../models/CurrentUser';
-import Logout_icon from '../../assets/logout_icon.png';
 
 const BUTTONS = ['Logout', 'Cancel'];
 const DESTRUCTIVE_INDEX = 0;
