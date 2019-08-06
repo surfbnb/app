@@ -38,7 +38,7 @@ class BalanceHeader extends PureComponent {
           <LinearGradient
             colors={['#ff7499', '#ff5566']}
             locations={[0, 1]}
-            style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20, paddingVertical: 8, paddingHorizontal: 15, width: 120, alignItems: 'center'}}
+            style={{ borderTopLeftRadius: 20, borderBottomRightRadius: 20, paddingVertical: 8, width: 110, alignItems: 'center'}}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >

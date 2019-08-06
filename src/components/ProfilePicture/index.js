@@ -19,7 +19,7 @@ let getImageSrc = (props) => {
     src = profilePicture;
   }
 
-  return <FastImage style={[{ backgroundColor: Colors.gainsboro }, inlineStyle.profileImageSkipFont]} source={src} />;
+  return <FastImage style={[{ backgroundColor: Colors.gainsboro} , inlineStyle.profileImageSkipFont, props.style]} source={src} />;
 };
 
 export default connect(mapStateToProps)(getImageSrc);

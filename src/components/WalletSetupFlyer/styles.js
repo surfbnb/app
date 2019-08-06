@@ -1,10 +1,13 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 
 let stylesMap = {
-  profileImageSkipFont: {
-    height: 30,
-    width: 30,
-    borderRadius: 15
+  container: {
+    flexDirection: 'row',
+    width: 46,
+    height: 46,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative'
   }
 };
 
