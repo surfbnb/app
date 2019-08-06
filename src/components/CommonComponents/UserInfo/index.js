@@ -58,7 +58,7 @@ class UserInfo extends React.PureComponent {
             onDidFocus={this.onDidFocus}
         />
         <View style={inlineStyle.infoHeaderWrapper}>
-          <ProfilePicture userId={this.props.userId} style={[inlineStyle.profileImageSkipFont]} />
+          <ProfilePicture userId={this.props.userId} style={[inlineStyle.profileImageSkipFont, {width: 80, height: 80, borderRadius: 40}]} />
           <View style={{position: 'absolute', right: 20}}>
             {this.props.header}
           </View>
