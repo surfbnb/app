@@ -82,10 +82,9 @@ class ProfileScreen extends PureComponent {
 
   _headerComponent(){
     return (
-      <View>
+      <UserInfo userId={this.props.userId} isEdit={true} >
         <BalanceHeader />
-        <UserInfo userId={this.props.userId} isEdit={true}/>
-      </View>
+      </UserInfo>  
     )
   }
 

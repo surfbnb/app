@@ -77,7 +77,7 @@ class UserInfo extends React.PureComponent {
         />
         <View style={inlineStyle.infoHeaderWrapper}>
           <ProfilePicture userId={this.props.userId} style={[inlineStyle.profileImageSkipFont, {alignSelf: 'center'}]} />
-          <BalanceHeader style={{position: 'absolute', right: 30, alignSelf: 'flex-end'}}/>
+          {this.props.children}
         </View>
         <Text style={inlineStyle.userName}>@{this.props.userName}</Text>
         {this.editButton()}
