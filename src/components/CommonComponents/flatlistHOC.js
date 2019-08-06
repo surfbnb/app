@@ -21,7 +21,7 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
     constructor(props) {
       super(props);
       this.state = {
-        list: [],
+        list: this.props.list || [],
         refreshing: false,
         loadingNext: false
       };
@@ -58,8 +58,9 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
       if (fetchServices) {
         this.fetchServices = fetchServices;
       } else {
-        this.fetchServices = this.fetchServices.clone();
+        this.fetchServices = this.fetchServices && this.fetchServices.clone();
       }
+      if(! this.fetchServices) return;
       this.beforeRefresh();
       this.fetchServices
         .refresh()

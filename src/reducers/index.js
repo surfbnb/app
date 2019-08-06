@@ -35,7 +35,8 @@ export const {
   clearRecordedVideo,
   videoInProcessing,
   upsertProfilePicture,
-  clearProfilePicture
+  clearProfilePicture,
+  upsertUserVideoEntities
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -126,6 +127,10 @@ export const reducer = handleActions(
     [upsertHomeFeedEntities]: (state, action) => ({
       ...state,
       home_feed_entities: assignIn({}, state.home_feed_entities, action.payload.home_feed_entities)
+    }),
+    [upsertUserVideoEntities]: (state, action) => ({
+      ...state,
+      user_video_entities: assignIn({}, state.user_video_entities, action.payload.user_video_entities)
     }),
     [upsertVideoContributionEntities]: (state, action) => ({
       ...state,

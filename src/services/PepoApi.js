@@ -23,6 +23,7 @@ import {
   upsertHomeFeedEntities,
   upsertUserContributionEntities,
   upsertVideoContributionEntities,
+  upsertUserVideoEntities,
   updatePricePoints,
   updateToken
 } from '../actions';
@@ -176,6 +177,10 @@ export default class PepoApi {
 
     if( data['user_activity'] ){
       Store.dispatch(upsertActivitiesEntities(this._getEntities(data['user_activity'])));
+    }
+
+    if( data['user_videos'] ){
+      Store.dispatch(upsertUserVideoEntities(this._getEntities(data['user_videos'])));
     }
 
     switch (resultType) {

@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
-const usdPrecession = 5;
-const btPrecession = 5;
+const usdPrecession = 2;
+const btPrecession = 2;
 
 export default class PriceOracle {
   constructor(token, pricePoints) {

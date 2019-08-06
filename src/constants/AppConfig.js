@@ -86,5 +86,9 @@ export default {
     imageWidth: "144w"
   },
 
+  userVideos: {
+    userScreenCoverImageWidth: "288w"
+  },
+
   cameraHeightRatio : 0.6
 };

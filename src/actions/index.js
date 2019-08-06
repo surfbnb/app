@@ -115,6 +115,8 @@ export const upsertVideoStatEntities = (data) => ({type : types.UPSERT_VIDEO_STA
 
 export const upsertHomeFeedEntities = (data) => ({type : types.UPSERT_HOME_FEED_ENTITIES ,  payload: {home_feed_entities : data}});
 
+export const upsertUserVideoEntities = (data) => ({type : types.UPSERT_USER_VIDEO_ENTITIES ,  payload: {user_video_entities : data}});
+
 export const upsertImageEntities = (data) => ({type : types.UPSERT_IMAGE_ENTITIES ,  payload: {image_entities : data}});
 
 export const upsertVideoContributionEntities = (data) => ({type : types.UPSERT_VIDEO_CONTRIBUTION_ENTITIES ,  payload: {video_contribution_entities : data}});
