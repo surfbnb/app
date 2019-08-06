@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import BalanceHeader from '../Profile/BalanceHeader';
@@ -11,6 +12,8 @@ import reduxGetter from '../../services/ReduxGetters';
 import UserProfileFlatList from "../CommonComponents/UserProfileFlatList"
 import TouchableButton from "../../theme/components/TouchableButton";
 import Theme from "../../theme/styles";
+import inlineStyle from "../CommonComponents/UserInfo/styles";
+import inlineStyles from './styles';
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -43,14 +46,17 @@ class ProfileScreen extends PureComponent {
 
   _headerComponent(){
     return (
-      <UserInfo userId={this.props.userId} header = {<BalanceHeader />}
-                editButton={
-                  <TouchableButton
-                    onPress={this.onEdit}
-                    TouchableStyles={[Theme.Button.btnPinkSecondary, { paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
-                    TextStyles={[Theme.Button.btnPinkSecondaryText]}
-                    text="Edit Your Profile"
-                  /> } />
+      <React.Fragment>
+        <UserInfo userId={this.props.userId} header = {<BalanceHeader />}
+                  editButton={
+                    <TouchableButton
+                      onPress={this.onEdit}
+                      TouchableStyles={[Theme.Button.btnPinkSecondary, { paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
+                      TextStyles={[Theme.Button.btnPinkSecondaryText]}
+                      text="Edit Your Profile"
+                    /> } />
+        <Text style={inlineStyles.updates}>Videos</Text>
+      </React.Fragment>
     )
   }
 

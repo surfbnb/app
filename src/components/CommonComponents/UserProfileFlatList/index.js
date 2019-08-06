@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {View , TouchableWithoutFeedback , FlatList , ActivityIndicator , Text} from "react-native";
+import {View , TouchableWithoutFeedback , FlatList , ActivityIndicator , Text, Dimensions} from "react-native";
 import {SafeAreaView} from "react-navigation";
 import FastImage from 'react-native-fast-image';
 import reduxGetters from "../../../services/ReduxGetters"; 
@@ -105,19 +105,19 @@ class UserProfileFlatList extends PureComponent {
     _keyExtractor = (item, index) => `id_${item}`;
 
     _renderItem = ({ item, index }) => {
-      const videoId = reduxGetters.getUserVideoId(item) 
+      const videoId = reduxGetters.getUserVideoId(item),
             imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;     
       return imageUrl ? (
-          <TouchableWithoutFeedback onPress={this.onVideoClick}>
-            <View style={{width:"30%" , flex:1 , backgroundColor: "red"}} >  
-                <FastImage style={{width:"100%", aspectRatio:9/16}}
-                            source={{
-                            uri: imageUrl,
-                            priority: FastImage.priority.high
-                          }}/>
-                <Text>{this.getVideoBtAmount(videoId)}</Text>  
-             </View>            
-          </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={this.onVideoClick}>
+          <React.Fragment>
+              <FastImage style={{width: Dimensions.get('window').width / 3, aspectRatio:9/16, margin: 1}}
+                         source={{
+                          uri: imageUrl,
+                          priority: FastImage.priority.high
+                         }}/>
+              <Text style={{position: 'absolute', color: 'red', zIndex: 1}}>{this.getVideoBtAmount(videoId)}</Text>
+           </React.Fragment>
+        </TouchableWithoutFeedback>
       ) : <View/>;
     };
 
@@ -143,6 +143,7 @@ class UserProfileFlatList extends PureComponent {
                     onEndReachedThreshold={9}
                     renderItem={this._renderItem}
                     ListFooterComponent={this.renderFooter}
+                    numColumns={3}
                 />
             </SafeAreaView>    
         );

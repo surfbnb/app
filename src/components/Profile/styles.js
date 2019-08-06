@@ -60,6 +60,16 @@ let stylesMap = {
   //   fontWeight: 'bold',
   //   color: Colors.greyLite
   // },
+  updates: {
+    textAlign: 'center',
+    borderColor: 'rgb(218, 223, 220)',
+    borderWidth: 1,
+    color: '#2a293b',
+    fontSize: 18,
+    fontFamily: 'AvenirNext-Regular',
+    paddingVertical: 10,
+    marginTop: 30
+  },
   editProfileContainer: {
     height: 75,
     width: 75,
