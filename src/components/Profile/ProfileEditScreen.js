@@ -385,12 +385,12 @@ class ProfileEdit extends React.PureComponent {
           <Text style={[Theme.Button.btnPinkText, { textAlign: 'center' }]}>{this.state.btnText}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={this.onCancel}
           style={[Theme.Button.btn, Theme.Button.btnPinkSecondary, { marginTop: 10 }]}
         >
           <Text style={[Theme.Button.btnPinkSecondaryText, { textAlign: 'center' }]}>Cancel</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/*//TODO error styling */}
         <Text>{this.state.general_error}</Text>
         <AllowAccessModal
