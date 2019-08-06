@@ -6,8 +6,6 @@ import TopStatus from './TopStatus';
 import VideoList from './VideoList';
 import Pricer from '../../services/Pricer';
 import CurrentUser from '../../models/CurrentUser';
-// import InfoSlider from '../CommonComponents/infoSliderHOC';
-// import RightInfoSlider from '../CommonComponents/RightInfoSlider';
 
 const mapStateToProps = (state) => {
   return {
@@ -47,8 +45,6 @@ class HomeScreen extends Component {
       <View style={{ backgroundColor: '#000' }}>
         <StatusBar translucent={true} backgroundColor={'transparent'} />
         <TopStatus />
-        {/*<InfoSlider componentHeight={46} componentWidth={46} sliderWidth={170} />        */}
-        {/*<RightInfoSlider componentHeight={46} componentWidth={46} sliderWidth={170} />*/}
         <VideoList toRefresh={this.state.toRefresh} fetchUrl={'/feeds'} onRefresh={this.onRefresh} />
       </View>
     );

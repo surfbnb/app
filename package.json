@@ -12,6 +12,7 @@
     "@react-native-community/cameraroll": "1.1.1",
     "@react-native-community/netinfo": "3.2.1",
     "bignumber.js": "8.1.1",
+    "eventemitter3": "4.0.0",
     "lodash": "4.17.11",
     "metro-react-native-babel-preset": "0.54.1",
     "moment": "2.4.0",
