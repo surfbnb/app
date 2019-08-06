@@ -62,52 +62,52 @@ function onTabPressed(navigation, tab) {
       console.log('Catch error');
     }
   }
-  previousTabIndex = tab.index;
 }
 
-const CustomTab = ({ navigation, screenProps }) => (
-  <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab1)}>
-      <Image
-        tintColor={navigation.state.index === tabConfig.tab1.index ? '#61b2d6' : 'rgb(72,72,72)'}
-        style={[
-          styles.tabElementSkipFont,
-          { tintColor: navigation.state.index === tabConfig.tab1.index ? '#ef5566' : '#484848' }
-        ]}
-        source={global}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab2)}>
-      <Image
-        tintColor={navigation.state.index === tabConfig.tab2.index ? '#61b2d6' : 'rgb(72,72,72)'}
-        style={[
-          { height: 24, width: 28 },
-          { tintColor: navigation.state.index === tabConfig.tab2.index ? '#ef5566' : '#484848' }
-        ]}
-        source={feed}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab3)}>
-      <Image
-        tintColor={navigation.state.index === tabConfig.tab3.index ? '#61b2d6' : '#484848'}
-        style={[
-          styles.tabElementFriendsSkipFont,
-          { tintColor: navigation.state.index === tabConfig.tab3.index ? '#ef5566' : '#484848' }
-        ]}
-        source={friends}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab4)}>
-      <Image
-        tintColor={navigation.state.index === tabConfig.tab4.index ? '#61b2d6' : '#484848'}
-        style={[
-          styles.tabElementSkipFont,
-          { tintColor: navigation.state.index === tabConfig.tab4.index ? '#ef5566' : '#484848' }
-        ]}
-        source={profile}
-      />
-    </TouchableOpacity>
-  </SafeAreaView>
-);
+const CustomTab = ({ navigation, screenProps }) => {
+  previousTabIndex = navigation.state.index 
+   return ( <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab1)}>
+        <Image
+          tintColor={navigation.state.index === tabConfig.tab1.index ? '#61b2d6' : 'rgb(72,72,72)'}
+          style={[
+            styles.tabElementSkipFont,
+            { tintColor: navigation.state.index === tabConfig.tab1.index ? '#ef5566' : '#484848' }
+          ]}
+          source={global}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab2)}>
+        <Image
+          tintColor={navigation.state.index === tabConfig.tab2.index ? '#61b2d6' : 'rgb(72,72,72)'}
+          style={[
+            { height: 24, width: 28 },
+            { tintColor: navigation.state.index === tabConfig.tab2.index ? '#ef5566' : '#484848' }
+          ]}
+          source={feed}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab3)}>
+        <Image
+          tintColor={navigation.state.index === tabConfig.tab3.index ? '#61b2d6' : '#484848'}
+          style={[
+            styles.tabElementFriendsSkipFont,
+            { tintColor: navigation.state.index === tabConfig.tab3.index ? '#ef5566' : '#484848' }
+          ]}
+          source={friends}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab4)}>
+        <Image
+          tintColor={navigation.state.index === tabConfig.tab4.index ? '#61b2d6' : '#484848'}
+          style={[
+            styles.tabElementSkipFont,
+            { tintColor: navigation.state.index === tabConfig.tab4.index ? '#ef5566' : '#484848' }
+          ]}
+          source={profile}
+        />
+      </TouchableOpacity>
+    </SafeAreaView>)
+ };
 
 export default CustomTab;

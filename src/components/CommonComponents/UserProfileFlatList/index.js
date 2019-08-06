@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {View , TouchableWithoutFeedback , FlatList , ActivityIndicator , Text} from "react-native";
-import {SafeAreaView} from "react-navigation";
+import {SafeAreaView, withNavigation} from "react-navigation";
 import FastImage from 'react-native-fast-image';
 import reduxGetters from "../../../services/ReduxGetters"; 
 
@@ -108,7 +108,7 @@ class UserProfileFlatList extends PureComponent {
       const videoId = reduxGetters.getUserVideoId(item) 
             imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;     
       return imageUrl ? (
-          <TouchableWithoutFeedback onPress={this.onVideoClick}>
+          <TouchableWithoutFeedback onPress={() => { this.onVideoClick( item, index ) }}>
             <View style={{width:"30%" , flex:1 , backgroundColor: "red"}} >  
                 <FastImage style={{width:"100%", aspectRatio:9/16}}
                             source={{
@@ -126,8 +126,12 @@ class UserProfileFlatList extends PureComponent {
         return <ActivityIndicator />;
      };
 
-    onVideoClick = () => {
-        
+    onVideoClick = ( item, index  ) => {
+        this.props.navigation.push("UserVideoHistory", {
+          videoHistoryPagination : this.videoHistoryPagination,
+          currentIndex: index,
+          userId: this.props.userId
+        });
     }
 
     render(){
@@ -151,4 +155,4 @@ class UserProfileFlatList extends PureComponent {
 }
 
 
-export default UserProfileFlatList;
+export default withNavigation( UserProfileFlatList );
