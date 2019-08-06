@@ -109,14 +109,14 @@ class UserProfileFlatList extends PureComponent {
             imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;     
       return imageUrl ? (
         <TouchableWithoutFeedback onPress={() => { this.onVideoClick( item, index ) }}>
-          <React.Fragment>
+          <View>
               <FastImage style={{width: Dimensions.get('window').width / 3, aspectRatio:9/16, margin: 1}}
                          source={{
                           uri: imageUrl,
                           priority: FastImage.priority.high
                          }}/>
               <Text style={{position: 'absolute', color: 'red', zIndex: 1}}>{this.getVideoBtAmount(videoId)}</Text>
-           </React.Fragment>
+           </View>
         </TouchableWithoutFeedback>
       ) : <View/>;
     };
