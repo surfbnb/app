@@ -138,15 +138,6 @@ const ProfileStack = createStackNavigator(
   }
 );
 
-const NotificationStack = createStackNavigator(
-    {
-        ProfileScreen: ProfileScreen
-    },
-    {
-        headerLayoutPreset: 'center'
-    }
-);
-
 const CustomTabStack = createBottomTabNavigator(
   {
     Home: HomeStack,
