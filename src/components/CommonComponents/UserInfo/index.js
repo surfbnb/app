@@ -80,7 +80,7 @@ class UserInfo extends React.PureComponent {
         {this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>}
         {this.props.link &&
           <Text
-            style={[{ color: Colors.summerSky, textAlign: 'center' }]}
+            style={[{ color: Colors.summerSky, textAlign: 'center', marginTop: 10 }]}
             onPress={() => {
               Linking.openURL(this.props.link);
             }}
