@@ -32,17 +32,16 @@ const tabConfig = {
     tab3: {
         rootStack: 'CaptureVideo',
         childStack: 'CaptureVideo',
-        index: 2
     },
     tab4: {
         rootStack: 'Users',
         childStack: 'UsersScreen',
-        index: 3
+        index: 2
     },
     tab5: {
         rootStack: 'Profile',
         childStack: 'ProfileScreen',
-        index: 4
+        index: 3
     }
 };
 
@@ -77,11 +76,8 @@ function getLastChildRoutename(state) {
 function onTabPressed(navigation, tab) {
     if (!CurrentUser.checkActiveUser()) return;
     console.log(previousTabIndex, tab.index, 'previousTabIndex != tab.index');
-    if (tab.index == 2) {
-        // special handling for capture video
-        previousTabIndex = tab.index;
+    if (tab.rootStack ==  "CaptureVideo" ) {
         handleVideoUploadModal();
-
         return;
     }
 
@@ -95,15 +91,13 @@ function onTabPressed(navigation, tab) {
             }
         } catch {
             console.log('Catch error');
-
         }
     }
+    previousTabIndex = tab.index
 }
 
 
 const CustomTab = ({ navigation, screenProps }) => {
-
-  previousTabIndex = navigation.state.index
    return ( <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab1)}>
         <Image
@@ -123,16 +117,16 @@ const CustomTab = ({ navigation, screenProps }) => {
          source={videoNs}
        />
      </TouchableOpacity>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab3)}>
-        <Image
-          style={[styles.tabElementSkipFont]}
-          source={navigation.state.index === tabConfig.tab3.index ? activitySelected : activityNs}
-        />
-      </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab4)}>
         <Image
           style={[styles.tabElementSkipFont]}
-          source={navigation.state.index === tabConfig.tab4.index ? profileSelected : profileNs}
+          source={navigation.state.index === tabConfig.tab4.index ? activitySelected : activityNs}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab5)}>
+        <Image
+          style={[styles.tabElementSkipFont]}
+          source={navigation.state.index === tabConfig.tab5.index ? profileSelected : profileNs}
         />
       </TouchableOpacity>
     </SafeAreaView>)

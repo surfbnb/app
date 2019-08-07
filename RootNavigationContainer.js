@@ -151,8 +151,6 @@ const ProfileStack = createStackNavigator(
   {
     MyProfileStack: MyProfileStack,
     CaptureImageScreen: CaptureImage,
-    VideoPlayer: VideoPlayer,
-    // CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery
   },
   {
@@ -171,8 +169,7 @@ const CustomTabStack = createMaterialTopTabNavigator(
   {
     Home: HomeStack,
     Activities: ActivityStack,
-    CaptureImageScreen: CaptureImage,
-    //Users: UserStack,
+    Users: UserStack,
     Profile: ProfileStack
   },
   {
