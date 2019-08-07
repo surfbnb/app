@@ -75,7 +75,7 @@ class UserProfileFlatList extends PureComponent {
     }
 
     getVideoBtAmount(videoId){
-        Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
+      return Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
     }
 
     beforeRefresh = ( ) => {
@@ -144,11 +144,20 @@ class UserProfileFlatList extends PureComponent {
         });
     }
 
+    listHeaderComponent = () => {
+      return (
+        <React.Fragment>
+          {this.props.listHeaderComponent}
+          {this.state.list.length > 0 && this.props.listHeaderSubComponent }
+        </React.Fragment>
+      )
+    }
+
     render(){
         return(
             <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
                 <FlatList
-                    ListHeaderComponent={this.props.listHeaderComponent}
+                    ListHeaderComponent={this.listHeaderComponent()}
                     data={this.state.list}
                     onEndReached={this.getNext}
                     onRefresh={this.refresh}

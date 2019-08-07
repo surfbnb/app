@@ -46,23 +46,25 @@ class ProfileScreen extends PureComponent {
 
   _headerComponent(){
     return (
-      <React.Fragment>
-        <UserInfo userId={this.props.userId} header = {<BalanceHeader />}
-                  editButton={
-                    <TouchableButton
-                      onPress={this.onEdit}
-                      TouchableStyles={[Theme.Button.btnPinkSecondary, { marginTop: 10, paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
-                      TextStyles={[Theme.Button.btnPinkSecondaryText]}
-                      text="Edit Your Profile"
-                    /> } />
-        <Text style={inlineStyles.updates}>Videos</Text>
-      </React.Fragment>
+      <UserInfo userId={this.props.userId} header = {<BalanceHeader />}
+                editButton={
+                  <TouchableButton
+                    onPress={this.onEdit}
+                    TouchableStyles={[Theme.Button.btnPinkSecondary, { marginTop: 10, paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
+                    TextStyles={[Theme.Button.btnPinkSecondaryText]}
+                    text="Edit Your Profile"
+                  /> } />
     )
+  }
+
+  _subHeader(){
+    return (  <Text style={inlineStyles.updates}>Videos</Text> ) ; 
   }
 
   render() {
     return (
       <UserProfileFlatList listHeaderComponent = {this._headerComponent()}
+                           listHeaderSubComponent={this._subHeader()}
                            userId={this.props.userId} />
     );
   }

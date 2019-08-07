@@ -33,26 +33,29 @@ export default class UsersProfile extends Component {
     }
   };
 
+  fetchUser = () => {
+    //TODO 
+  }
+
   _headerComponent(){
     return (
-      <React.Fragment>
         <UserInfo userId={this.userId} />
-        <Text style={{textAlign: 'center',
-                      borderColor: 'rgb(218, 223, 220)',
-                      borderWidth: 1,
-                      color: '#2a293b',
-                      fontSize: 18,
-                      fontFamily: 'AvenirNext-Regular',
-                      paddingVertical: 10,
-                      marginTop: 30}}>Updates</Text>
-      </React.Fragment>
     )
+  }
+
+  _subHeader(){
+    return (   <Text style={{textAlign: 'center', borderColor: 'rgb(218, 223, 220)', borderWidth: 1,color: '#2a293b',
+                            fontSize: 18,
+                            fontFamily: 'AvenirNext-Regular',
+                            paddingVertical: 10,
+                            marginTop: 30}}>Updates</Text> ) ; 
   }
 
   render() {
     return (
       <React.Fragment>
         <UserProfileFlatList listHeaderComponent = {this._headerComponent()}
+                             listHeaderSubComponent={this._subHeader()}
                              userId={this.userId}
         />
         <TouchableOpacity
