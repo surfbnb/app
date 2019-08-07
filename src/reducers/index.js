@@ -62,8 +62,8 @@ const defaultState = {
   executeTransactionDisabledStatus: false,
   recorded_video: {},
   profile_picture: {},
-  token: { decimals: 18},
-  balance: '0'
+  token: { decimals: 18 },
+  balance: null
 };
 
 export const reducer = handleActions(
@@ -156,7 +156,7 @@ export const reducer = handleActions(
       ...state,
       price_points: action.payload.price_points
     }),
-    [updateToken]: (state , action) => ({
+    [updateToken]: (state, action) => ({
       ...state,
       token: action.payload.token
     }),

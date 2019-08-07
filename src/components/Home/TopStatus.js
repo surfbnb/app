@@ -17,7 +17,7 @@ const getBalance = (props) => {
 const TopStatus = (props) => {
   return (
     CurrentUser.getUserId() &&
-    (CurrentUser.isUserActivating() ? (
+    (getBalance(props) == null ? (
       <WalletSetupFlyer
         componentHeight={46}
         componentWidth={46}
