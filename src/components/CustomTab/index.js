@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text } from 'react-native';
 import { StackActions, NavigationActions, SafeAreaView } from 'react-navigation';
+import reduxGetters from '../../services/ReduxGetters';
+import { captureVideoEventEmitter } from '../CaptureVideo';
+import { FlyerEventEmitter } from '../CommonComponents/FlyerHOC';
 
 import styles from './styles';
 import feed from '../../assets/user_feed.png';
@@ -51,6 +54,17 @@ let previousTabIndex = 0;
 
 let recursiveMaxCount = 0;
 
+handleVideoUploadModal = () => {
+  if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
+    FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
+  } else if (reduxGetters.getVideoProcessingStatus() == true) {
+    //show toast here
+    console.log('handleVideoUploadModal: show toast');
+  } else {
+    captureVideoEventEmitter.emit('show');
+  }
+};
+
 function getLastChildRoutename(state) {
     if (!state) return null;
     let index = state.index,
@@ -66,7 +80,17 @@ function getLastChildRoutename(state) {
 
 function onTabPressed(navigation, tab) {
     if (!CurrentUser.checkActiveUser()) return;
+    console.log(previousTabIndex, tab.index, 'previousTabIndex != tab.index');
+    if (tab.index == 2) {
+        // special handling for capture video
+        previousTabIndex = tab.index;
+        handleVideoUploadModal();
+
+        return;
+    }
+
     if (previousTabIndex != tab.index) {
+        console.log('Navigating to', tab.rootStack);
         navigation.navigate(tab.rootStack);
     } else {
         try {
@@ -75,12 +99,14 @@ function onTabPressed(navigation, tab) {
             }
         } catch {
             console.log('Catch error');
+
         }
     }
 }
 
+
 const CustomTab = ({ navigation, screenProps }) => {
-    previousTabIndex = navigation.state.index
+    previousTabIndex = navigation.state.index;
     return ( <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
         <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab1)}>
             <Image
@@ -102,7 +128,7 @@ const CustomTab = ({ navigation, screenProps }) => {
                 source={navigation.state.index === tabConfig.tab2.index ? searchNs : searchSelected}
             />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab3)}>
             <Image
                 // tintColor={navigation.state.index === tabConfig.tab2.index ? '#61b2d6' : 'rgb(72,72,72)'}
                 style={[
@@ -134,5 +160,6 @@ const CustomTab = ({ navigation, screenProps }) => {
         </TouchableOpacity>
     </SafeAreaView>)
 };
+
 
 export default CustomTab;

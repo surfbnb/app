@@ -11,15 +11,13 @@ import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/cross_icon.png';
+import {captureVideoEventEmitter} from '../CaptureVideo';
 
 import AppConfig from '../../constants/AppConfig';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
-const ACTION_SHEET_CANCEL_INDEX = 2;
-const ACTION_SHEET_DESCTRUCTIVE_INDEX = 0;
-
 const PROGRESS_FACTOR = 0.01;
 
 class VideoRecorder extends Component {
@@ -78,7 +76,9 @@ class VideoRecorder extends Component {
 
   cancleVideoHandling = () => {
     // this.props.navigation.goBack();
-    this.props.navigation.navigate('Home');
+    console.log('cancleVideoHandling');
+    captureVideoEventEmitter.emit('hide');
+    
   };
 
   cameraView() {

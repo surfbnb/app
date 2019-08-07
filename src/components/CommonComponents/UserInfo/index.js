@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
-
+import {withNavigation} from 'react-navigation';
 import Colors from '../../../theme/styles/Colors';
 import TouchableButton from '../../../theme/components/TouchableButton';
 import Theme from '../../../theme/styles';
@@ -12,6 +12,9 @@ import reduxGetter from '../../../services/ReduxGetters';
 import ProfilePicture from '../../ProfilePicture';
 import PixelCall from "../../../services/PixelCall";
 import LinearGradient from "react-native-linear-gradient";
+import BalanceHeader from "../../Profile/BalanceHeader";
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -50,6 +53,16 @@ class UserInfo extends React.PureComponent {
     PixelCall(pixelParams);
   };
 
+  GoToSupporting = () => {
+    this.props.navigation.push('SupportingList', { fetchUrl: `/users/${this.props.userId}/contribution-to`});
+  }
+
+
+
+  GoToSupporters = () => {
+    this.props.navigation.push('SupportingList', { fetchUrl: `/users/${this.props.userId}/contribution-by`});
+  }
+
   render() {
     return (
       <View style={{alignItems: 'center', paddingTop: 30}}>
@@ -86,14 +99,20 @@ class UserInfo extends React.PureComponent {
           end={{ x: 1, y: 0 }}
         >
           <View style={inlineStyle.numericInfoWrapper}>
+            <TouchableWithoutFeedback onPress={this.GoToSupporting}>
             <View style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
               <Text style={inlineStyle.numericInfoText}>{this.props.supporting || 0}</Text>
               <Text style={inlineStyle.numericInfoText}>SUPPORTING</Text>
             </View>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={this.GoToSupporters}>
             <View style={[inlineStyle.numericInnerWrapper]}>
               <Text style={inlineStyle.numericInfoText}>{this.props.supporters || 0}</Text>
               <Text style={inlineStyle.numericInfoText}>SUPPORTERS</Text>
             </View>
+            </TouchableWithoutFeedback>
+
             <View style={[inlineStyle.numericInnerWrapper]}>
               <Text style={inlineStyle.numericInfoText}>${this.btToFiat(this.props.btAmount) || 0}</Text>
               <Text style={inlineStyle.numericInfoText}>RAISED</Text>
@@ -107,4 +126,4 @@ class UserInfo extends React.PureComponent {
   }
 }
 
-export default connect(mapStateToProps)(UserInfo);
+export default connect(mapStateToProps)(withNavigation(UserInfo));

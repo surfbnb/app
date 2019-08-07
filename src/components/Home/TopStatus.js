@@ -28,6 +28,7 @@ const TopStatus = (props) => {
         extend={true}
         id={1}
       />
+
     ) : (
       <View style={inlineStyles.topContainer}>
         <View style={inlineStyles.topBg}>

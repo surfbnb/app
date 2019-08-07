@@ -29,6 +29,8 @@ import EditTx from './src/components/Transaction/EditTxModal';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from './src/components/UsersProfile';
+import SupportingList from './src/components/SupportingList';
+import SupportersList from './src/components/SupportersList';
 import CameraWorker from './src/services/CameraWorker';
 import PictureWorker from './src/services/PictureWorker';
 import UserVideoHistory from './src/components/UserVideoHistory';
@@ -36,6 +38,7 @@ import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
 import CurrentUser from './src/models/CurrentUser';
+import CaptureVideo from './src/components/CaptureVideo';
 import { StatusBarManager } from './src/services/StatusBarManager';
 
 const getRouteName = (navigation) => {
@@ -66,7 +69,7 @@ const modalStackConfig = {
 const HomeTransactionStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
-    UsersProfileScreen: UsersProfileScreen,
+    
     TransactionScreen: TransactionScreen
   },
   {
@@ -88,6 +91,8 @@ const ActivityTransactionStack = createStackNavigator(
   {
     ActivitiesScreen: Activities,
     UsersProfileScreen: UsersProfileScreen,
+    SupportingList: SupportingList,
+    SupportersList: SupportersList,
     TransactionScreen: TransactionScreen
   },
   {
@@ -109,6 +114,8 @@ const UserTransactionStack = createStackNavigator(
   {
     UsersScreen: Users,
     UsersProfileScreen: UsersProfileScreen,
+    SupportingList: SupportingList,
+    SupportersList: SupportersList,
     TransactionScreen: TransactionScreen
   },
   {
@@ -129,6 +136,8 @@ const UserStack = createStackNavigator(
 const MyProfileStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
+    SupportingList: SupportingList,
+    SupportersList: SupportersList,
     ProfileEdit: ProfileEdit,
     BioScreen: BioScreen,
     UserVideoHistory: UserVideoHistory
@@ -142,6 +151,8 @@ const ProfileStack = createStackNavigator(
   {
     MyProfileStack: MyProfileStack,
     CaptureImageScreen: CaptureImage,
+    VideoPlayer: VideoPlayer,
+    // CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery
   },
   {
@@ -160,7 +171,8 @@ const CustomTabStack = createMaterialTopTabNavigator(
   {
     Home: HomeStack,
     Activities: ActivityStack,
-    Users: UserStack,
+    CaptureImageScreen: CaptureImage,
+    //Users: UserStack,
     Profile: ProfileStack
   },
   {

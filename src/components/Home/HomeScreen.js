@@ -6,6 +6,8 @@ import TopStatus from './TopStatus';
 import VideoList from './VideoList';
 import Pricer from '../../services/Pricer';
 import CurrentUser from '../../models/CurrentUser';
+import VideoLoadingFlyer from '../CommonComponents/VideoLoadingFlyer';
+import { videoUploaderComponent } from '../../services/CameraWorker';
 
 const mapStateToProps = (state) => {
   return {
@@ -24,13 +26,31 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toRefresh: false
+      toRefresh: false,
+      videoUploaderVisible: false
     };
   }
 
   onRefresh = () => {
     this.setState({ toRefresh: false });
     Pricer.getBalance();
+  };
+
+  componentDidMount = () => {
+    videoUploaderComponent.on('show', this.showVideoUploader);
+    videoUploaderComponent.on('hide', this.hideVideoUploader);
+  };
+
+  showVideoUploader = () => {
+    this.setState({
+      videoUploaderVisible: true
+    });
+  };
+
+  hideVideoUploader = () => {
+    this.setState({
+      videoUploaderVisible: false
+    });
   };
 
   componentWillUpdate(nextProps) {
@@ -45,6 +65,19 @@ class HomeScreen extends Component {
       <View style={{ backgroundColor: '#000' }}>
         <StatusBar translucent={true} backgroundColor={'transparent'} />
         <TopStatus />
+        {this.state.videoUploaderVisible && (
+          <View style={{top: 40, zIndex: 1}}>
+            <VideoLoadingFlyer
+              componentHeight={46}
+              componentWidth={46}
+              sliderWidth={150}
+              displayText="Uploading Video"
+              extendDirection="right"
+              extend={true}
+              id={2}
+            />
+          </View>
+         )}
         <VideoList toRefresh={this.state.toRefresh} fetchUrl={'/feeds'} onRefresh={this.onRefresh} />
       </View>
     );
