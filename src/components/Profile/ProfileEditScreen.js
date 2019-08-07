@@ -27,6 +27,7 @@ import GalleryIcon from '../../assets/gallery_icon.png';
 import CameraIcon from '../../assets/camera_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import BackArrow from "../CommonComponents/BackArrow";
+import LinearGradient from "react-native-linear-gradient";
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
@@ -279,7 +280,7 @@ class ProfileEdit extends React.PureComponent {
 
   render() {
     return (
-      <View style={{ marginTop: 20, paddingBottom: 100 }}>
+      <View style={{ marginTop: 10, padding: 15 }}>
         <View style={inlineStyles.editProfileContainer}>
           {this.getImageSrc()}
           <TouchableOpacity style={inlineStyles.editProfileIconTouch} onPress={this.showActionSheetWithOptions}>
@@ -292,7 +293,7 @@ class ProfileEdit extends React.PureComponent {
           </TouchableOpacity>
         </View>
 
-        <Text style={{}}>Name</Text>
+        <Text style={[Theme.TextInput.labelStyle]}>Name</Text>
         <FormInput
           editable={true}
           onChangeText={(name) => this.setState({ name, error: null, name_error: null })}
@@ -313,7 +314,7 @@ class ProfileEdit extends React.PureComponent {
           serverErrors={this.state.server_errors}
         />
 
-        <Text style={{}}>Username</Text>
+        <Text style={[Theme.TextInput.labelStyle]}>Username</Text>
         <FormInput
           editable={true}
           onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
@@ -337,12 +338,12 @@ class ProfileEdit extends React.PureComponent {
           serverErrors={this.state.server_errors}
         />
 
-        <Text style={{}}>Bio</Text>
+        <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
         <FormInput
           editable={true}
           fieldName="bio"
           textContentType="none"
-          style={[Theme.TextInput.textInputStyle, { marginBottom: 10, height: 75, paddingVertical: 15 }]}
+          style={[Theme.TextInput.textInputStyle, { height: 75, paddingVertical: 15 }]}
           placeholder="Bio"
           returnKeyType="next"
           returnKeyLabel="Next"
@@ -358,7 +359,7 @@ class ProfileEdit extends React.PureComponent {
           serverErrors={this.state.server_errors}
         />
 
-        <Text style={{}}>Link</Text>
+        <Text style={[Theme.TextInput.labelStyle]}>Link</Text>
         <FormInput
           editable={true}
           onChangeText={(link) => this.setState({ link, error: null, link_error: null })}
@@ -381,9 +382,17 @@ class ProfileEdit extends React.PureComponent {
           serverErrors={this.state.server_errors}
         />
 
-        <TouchableOpacity onPress={this.onSubmit.bind(this)} style={[Theme.Button.btn, Theme.Button.btnPink]}>
-          <Text style={[Theme.Button.btnPinkText, { textAlign: 'center' }]}>{this.state.btnText}</Text>
-        </TouchableOpacity>
+        <LinearGradient
+          colors={['#ff7499', '#ff5566']}
+          locations={[0, 1]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{marginTop: 25, borderRadius: 3}}
+        >
+          <TouchableOpacity onPress={this.onSubmit.bind(this)} style={[Theme.Button.btn, {borderWidth: 0}]}>
+            <Text style={[Theme.Button.btnPinkText, { textAlign: 'center' }]}>{this.state.btnText}</Text>
+          </TouchableOpacity>
+        </LinearGradient>
 
         {/* <TouchableOpacity
           onPress={this.onCancel}

@@ -16,7 +16,8 @@ export default {
   black: '#101010',
   softBlue: '#55acee',
   pinkRed: '#ef5869',
-  midnightblue:'#34445b',
+  midNightblue:'#34445b',
   azureBlue : '#007aff',
-  valhalla: '#2A293B'
+  valhalla: '#2A293B',
+  seaMist: '#ccd3cd'
 };
