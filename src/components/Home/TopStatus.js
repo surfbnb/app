@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 
-import inlineStyles from './styles';
-import selfAmountWallet from '../../assets/self-amount-wallet.png';
 import CurrentUser from '../../models/CurrentUser';
 import Pricer from '../../services/Pricer';
 import WalletSetupFlyer from '../WalletSetupFlyer';
+import WalletBalanceFlyer from '../WalletBalanceFlyer';
+import Colors from '../../theme/styles/Colors';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -28,14 +27,8 @@ const TopStatus = (props) => {
         extend={true}
         id={1}
       />
-
     ) : (
-      <View style={inlineStyles.topContainer}>
-        <View style={inlineStyles.topBg}>
-          <Image style={[{ height: 11.55, width: 11.55 }]} source={selfAmountWallet} />
-          <Text style={[inlineStyles.topBgTxt]}>{getBalance(props)}</Text>
-        </View>
-      </View>
+      <WalletBalanceFlyer balance={getBalance(props)} id={2} />
     ))
   );
 };

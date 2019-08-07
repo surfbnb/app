@@ -78,33 +78,6 @@ let stylesMap = {
     fontSize: 14,
     fontFamily: 'AvenirNext-DemiBold'
   },
-  topContainer: {
-    position: 'absolute',
-    top: 50,
-    right: 0,
-    zIndex: 1
-  },
-  topBg: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
-    minWidth: 60
-  },
-  topBgTxt: {
-    color: '#ff5566',
-    fontSize: 14,
-    marginLeft: 6,
-    fontFamily: 'AvenirNext-DemiBold'
-  },
-  topBgPosSkipFont: {
-    position: 'absolute',
-    left: -9
-  },
   btnText: {
     color: Colors.white
   },
