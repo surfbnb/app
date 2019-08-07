@@ -1,5 +1,14 @@
 import React, { PureComponent } from 'react';
-import {View , TouchableWithoutFeedback , FlatList , ActivityIndicator , Text , Dimensions} from "react-native";
+import {
+  View,
+  TouchableWithoutFeedback,
+  FlatList,
+  ActivityIndicator,
+  Text,
+  Dimensions,
+  Image,
+  TouchableOpacity
+} from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 import FastImage from 'react-native-fast-image';
 import reduxGetters from "../../../services/ReduxGetters"; 
@@ -66,7 +75,7 @@ class UserProfileFlatList extends PureComponent {
     }
 
     getVideoBtAmount(videoId){
-        Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ; 
+        Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
     }
 
     beforeRefresh = ( ) => {
@@ -110,13 +119,13 @@ class UserProfileFlatList extends PureComponent {
       return imageUrl ? (
         <TouchableWithoutFeedback onPress={() => { this.onVideoClick( item, index ) }}>
           <View>
-              <FastImage style={{width: Dimensions.get('window').width / 3, aspectRatio:9/16, margin: 1}}
-                         source={{
-                          uri: imageUrl,
-                          priority: FastImage.priority.high
-                         }}/>
-              <Text style={{position: 'absolute', color: 'red', zIndex: 1}}>{this.getVideoBtAmount(videoId)}</Text>
-           </View>
+            <FastImage style={{width: Dimensions.get('window').width / 3, aspectRatio:9/16, margin: 1}}
+                       source={{
+                        uri: imageUrl,
+                        priority: FastImage.priority.high
+                       }}/>
+            <Text style={{color:'red', fontSize: 30}}>{this.getVideoBtAmount(videoId)}</Text>
+          </View>
         </TouchableWithoutFeedback>
       ) : <View/>;
     };

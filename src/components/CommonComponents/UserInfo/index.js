@@ -77,8 +77,8 @@ class UserInfo extends React.PureComponent {
         </View>
         <Text style={inlineStyle.userName}>@{this.props.userName}</Text>
         {this.props.editButton}
-        {this.props.bio ? <Text style={inlineStyle.bioSection}>{this.props.bio}</Text> : <View />}
-        {this.props.link ? (
+        {this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>}
+        {this.props.link &&
           <Text
             style={[{ color: Colors.summerSky, textAlign: 'center' }]}
             onPress={() => {
@@ -87,14 +87,12 @@ class UserInfo extends React.PureComponent {
           >
             {this.props.link}
           </Text>
-        ) : (
-          <View />
-        )}
+        }
 
         <LinearGradient
           colors={['#ff7499', '#ff7499', '#ff5566']}
           locations={[0, 0.25, 1]}
-          style={{ marginTop: 30, borderTopLeftRadius: 30, borderBottomRightRadius: 30}}
+          style={{ marginTop: 20, borderTopLeftRadius: 30, borderBottomRightRadius: 30}}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >

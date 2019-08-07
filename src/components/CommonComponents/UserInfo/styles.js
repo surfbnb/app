@@ -48,7 +48,7 @@ let stylesMap = {
   userName: {
     color: Colors.valhalla,
     fontFamily: 'AvenirNext-DemiBold',
-    marginVertical: 10
+    marginTop: 10
   },
   bioSection: {
     textAlign: 'center',

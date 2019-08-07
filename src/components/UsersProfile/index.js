@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, TouchableOpacity, Image } from 'react-native';
 import reduxGetter from '../../services/ReduxGetters';
 import BackArrow from '../CommonComponents/BackArrow';
 
 import UserInfo from '../../components/CommonComponents/UserInfo';
 import CurrentUser from '../../models/CurrentUser';
 import UserProfileFlatList from "../../components/CommonComponents/UserProfileFlatList";
+import multipleClickHandler from "../../services/MultipleClickHandler";
+import tx_icon from "../../assets/tx_icon.png";
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -49,9 +51,18 @@ export default class UsersProfile extends Component {
 
   render() {
     return (
-      <UserProfileFlatList listHeaderComponent = {this._headerComponent()}
-                           userId={this.userId} 
-      />
+      <React.Fragment>
+        <UserProfileFlatList listHeaderComponent = {this._headerComponent()}
+                             userId={this.userId}
+        />
+        <TouchableOpacity
+          pointerEvents={'auto'}
+          onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
+          style={{position: 'absolute', right: 20, bottom: 30}}
+        >
+          <Image style={{ height: 57, width: 57 }} source={tx_icon} />
+        </TouchableOpacity>
+      </React.Fragment>
     );
   }
 }
