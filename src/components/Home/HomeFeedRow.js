@@ -65,7 +65,7 @@ class HomeFeedRow extends PureComponent {
          
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
             <View style={{minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end'}}>
-              <TransactionPepoButton resyncDataDelegate={this.resyncDataDelegate} userId={this.userId} videoId={this.videoId}/>
+              <TransactionPepoButton resyncDataDelegate={this.refetchFeed} userId={this.userId} videoId={this.videoId}/>
               <TouchableOpacity pointerEvents={'auto'} onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
                                 style={inlineStyles.txElem} >
                 <Image style={{ height: 57, width: 57 }} source={tx_icon} />

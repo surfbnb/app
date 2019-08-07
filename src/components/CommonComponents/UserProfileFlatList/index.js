@@ -5,9 +5,7 @@ import {
   FlatList,
   ActivityIndicator,
   Text,
-  Dimensions,
-  Image,
-  TouchableOpacity
+  Dimensions
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 import FastImage from 'react-native-fast-image';
@@ -16,9 +14,7 @@ import reduxGetters from "../../../services/ReduxGetters";
 import AppConfig from "../../../constants/AppConfig"; 
 import Pricer from '../../../services/Pricer';
 import Pagination from "../../../services/Pagination";
-import PepoApi from "../../../services/PepoApi";
-
-import { Toast } from 'native-base';
+import {fetchUser} from "../../../helpers/helpers";
 
 class UserProfileFlatList extends PureComponent {
     constructor(props){
@@ -39,33 +35,13 @@ class UserProfileFlatList extends PureComponent {
             onNextError: this.onNextError
         } )
     }
-
-    fetchUser = () => {
-        return new PepoApi(`/users/${this.props.userId}/profile`)
-          .get()
-          .then((res) => {
-            if (!res || !res.success) {
-              Toast.show({
-                text: ostErrors.getErrorMessage(res),
-                buttonText: 'OK'
-              });
-            }
-          })
-          .catch((error) => {
-            Toast.show({
-              text: ostErrors.getErrorMessage(error),
-              buttonText: 'OK'
-            });
-          })
-          .finally(() => {});
-      };
       
-      onPullToRefresh = () => {
-        this.fetchUser(); 
-      } 
+    onPullToRefresh = () => {
+      fetchUser(this.props.userId); 
+    } 
 
     componentDidMount(){
-        this.fetchUser();
+        fetchUser(this.props.userId);
         this.videoHistoryPagination.initPagination();
     }
 

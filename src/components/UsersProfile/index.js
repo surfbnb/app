@@ -9,6 +9,8 @@ import UserProfileFlatList from "../../components/CommonComponents/UserProfileFl
 import multipleClickHandler from "../../services/MultipleClickHandler";
 import tx_icon from "../../assets/tx_icon.png";
 
+import {fetchUser} from "../../helpers/helpers";
+
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -24,7 +26,6 @@ export default class UsersProfile extends Component {
   }
 
   navigateToTransactionScreen = () => {
-    //TODO implement 
     if (CurrentUser.checkActiveUser() && CurrentUser.isUserActivated()) {
       this.props.navigation.push('TransactionScreen', {
         toUserId: this.userId,
@@ -34,7 +35,7 @@ export default class UsersProfile extends Component {
   };
 
   fetchUser = () => {
-    //TODO 
+    fetchUser( this.userId );
   }
 
   _headerComponent(){
@@ -44,7 +45,7 @@ export default class UsersProfile extends Component {
   }
 
   _subHeader(){
-    return (   <Text style={{textAlign: 'center', borderColor: 'rgb(218, 223, 220)', borderWidth: 1,color: '#2a293b',
+    return ( <Text style={{textAlign: 'center', borderColor: 'rgb(218, 223, 220)', borderWidth: 1,color: '#2a293b',
                             fontSize: 18,
                             fontFamily: 'AvenirNext-Regular',
                             paddingVertical: 10,

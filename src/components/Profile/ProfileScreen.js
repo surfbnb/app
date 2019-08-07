@@ -12,7 +12,6 @@ import reduxGetter from '../../services/ReduxGetters';
 import UserProfileFlatList from "../CommonComponents/UserProfileFlatList"
 import TouchableButton from "../../theme/components/TouchableButton";
 import Theme from "../../theme/styles";
-import inlineStyle from "../CommonComponents/UserInfo/styles";
 import inlineStyles from './styles';
 
 const mapStateToProps = (state, ownProps) => {

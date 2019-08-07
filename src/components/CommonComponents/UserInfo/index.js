@@ -77,8 +77,8 @@ class UserInfo extends React.PureComponent {
         </View>
         <Text style={inlineStyle.userName}>@{this.props.userName}</Text>
         {this.props.editButton}
-        {this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>}
-        {this.props.link &&
+        {!!this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text> }
+        {!!this.props.link &&
           <Text
             style={[{ color: Colors.summerSky, textAlign: 'center', marginTop: 10 }]}
             onPress={() => {
