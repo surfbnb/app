@@ -5,9 +5,7 @@ import {
   FlatList,
   ActivityIndicator,
   Text,
-  Dimensions,
-  Image,
-  TouchableOpacity
+  Dimensions, Image
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 import FastImage from 'react-native-fast-image';
@@ -18,7 +16,12 @@ import Pricer from '../../../services/Pricer';
 import Pagination from "../../../services/Pagination";
 import PepoApi from "../../../services/PepoApi";
 
+import inlineStyles from './style';
+
 import { Toast } from 'native-base';
+
+import pepoWhiteIcon from '../../../assets/pepo-white-icon.png'
+
 
 class UserProfileFlatList extends PureComponent {
     constructor(props){
@@ -75,7 +78,7 @@ class UserProfileFlatList extends PureComponent {
     }
 
     getVideoBtAmount(videoId){
-        Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
+      return Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
     }
 
     beforeRefresh = ( ) => {
@@ -124,7 +127,10 @@ class UserProfileFlatList extends PureComponent {
                         uri: imageUrl,
                         priority: FastImage.priority.high
                        }}/>
-            <Text style={{color:'red', fontSize: 30}}>{this.getVideoBtAmount(videoId)}</Text>
+            <View style={inlineStyles.videoStatsContainer}>
+              <Image style={{height: 16, width: 16}} source={pepoWhiteIcon} />
+              <Text style={inlineStyles.videoStatsTxt}>{this.getVideoBtAmount(videoId)}</Text>
+            </View>
           </View>
         </TouchableWithoutFeedback>
       ) : <View/>;
@@ -144,11 +150,20 @@ class UserProfileFlatList extends PureComponent {
         });
     }
 
+    listHeaderComponent = () => {
+      return (
+        <React.Fragment>
+          {this.props.listHeaderComponent}
+          {this.state.list.length > 0 && this.props.listHeaderSubComponent }
+        </React.Fragment>
+      )
+    }
+
     render(){
         return(
             <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
                 <FlatList
-                    ListHeaderComponent={this.props.listHeaderComponent}
+                    ListHeaderComponent={this.listHeaderComponent()}
                     data={this.state.list}
                     onEndReached={this.getNext}
                     onRefresh={this.refresh}

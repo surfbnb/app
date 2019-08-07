@@ -6,7 +6,7 @@ let stylesMap = {
     fontSize: 15,
     flex: 1,
     fontWeight: '300',
-    color: Colors.midnightblue,
+    color: Colors.midNightblue,
     marginLeft: 10
   },
   expressBtn: {
