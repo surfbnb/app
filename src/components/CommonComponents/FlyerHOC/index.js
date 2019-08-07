@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { View, TouchableWithoutFeedback, Animated, Text } from 'react-native';
-
 import EventEmitter from 'eventemitter3';
+
+import styles from './styles';
 
 export const FlyerEventEmitter = new EventEmitter();
 
@@ -14,9 +15,9 @@ function flyerHOC(BaseComponent) {
         animatedWidth: new Animated.Value(0),
         extensionVisible: false
       };
-      this.opacity = this.state.animatedWidth.interpolate({
+      this.contentOpacity = this.state.animatedWidth.interpolate({
         inputRange: [0, this.props.sliderWidth - 20, this.props.sliderWidth],
-        outputRange: [0, 0.05, 0.6],
+        outputRange: ['rgba(0,0,0,0)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,1)'],
         extrapolate: 'clamp'
       });
       this.defaultStyles = {
@@ -97,68 +98,60 @@ function flyerHOC(BaseComponent) {
       return (
         <View
           style={[
-            { flexDirection: 'row', position: 'absolute', zIndex: 1 },
+            styles.container,
+            { width: this.state.componentWidth, height: this.props.componentHeight },
             this.props.containerStyle || this.defaultStyles.containerStyle
           ]}
+          pointerEvents="box-none"
         >
-          {this.props.extend ? (
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-              {this.props.extendDirection == 'right' ? (
-                <BaseComponent handlePress={this.handlePress} {...this.props} />
-              ) : (
-                <View />
-              )}
-              <Animated.View
-                style={[
-                  {
-                    height: this.props.componentHeight,
-                    zIndex: -1,
-                    backgroundColor: 'white',
-                    opacity: this.opacity,
-                    justifyContent: 'center'
-                  },
-                  { width: this.state.animatedWidth },
-                  this.props.extendDirection == 'left'
-                    ? this.extensionStyles.extensionStyleLeft
-                    : this.extensionStyles.extensionStyleRight
-                ]}
-              >
-                <View style={{ flexDirection: 'row' }}>
-                  {this.props.extendDirection == 'left' ? (
-                    <TouchableWithoutFeedback onPress={this.hideFlyer}>
-                      <Text style={{ marginLeft: 10 }}>X</Text>
-                    </TouchableWithoutFeedback>
-                  ) : (
-                    <View />
-                  )}
-                  <Text
-                    style={
-                      this.props.extendDirection == 'left'
-                        ? this.extensionStyles.displayTextStyleLeft
-                        : this.extensionStyles.displayTextStyleRight
-                    }
-                  >
-                    {this.props.displayText}
-                  </Text>
-                  <Text style={this.props.highlightedTextStyle}>{this.props.highlightedText}</Text>
-                  {this.props.extendDirection == 'right' ? (
-                    <TouchableWithoutFeedback onPress={this.hideFlyer}>
-                      <Text style={{ marginLeft: 10 }}>X</Text>
-                    </TouchableWithoutFeedback>
-                  ) : (
-                    <View />
-                  )}
-                </View>
-              </Animated.View>
-              {this.props.extendDirection == 'left' ? (
-                <BaseComponent handlePress={this.handlePress} {...this.props} />
-              ) : (
-                <View />
-              )}
-            </View>
-          ) : (
-            <BaseComponent {...this.props} />
-          )}
+          <TouchableWithoutFeedback onPress={this.handlePress}>
+            {this.props.extend ? (
+              <View style={styles.extensionWrapper}>
+                {this.props.extendDirection == 'right' ? <BaseComponent {...this.props} /> : <View />}
+                <Animated.View
+                  style={[
+                    styles.extension,
+                    { width: this.state.animatedWidth, height: this.props.componentHeight },
+                    this.props.extendDirection == 'left'
+                      ? this.extensionStyles.extensionStyleLeft
+                      : this.extensionStyles.extensionStyleRight
+                  ]}
+                >
+                  <View style={{ flexDirection: 'row' }}>
+                    {this.props.extendDirection == 'left' ? (
+                      <TouchableWithoutFeedback onPress={this.hideFlyer}>
+                        <Animated.Text style={[styles.crossIcon, { color: this.contentOpacity }]}>X</Animated.Text>
+                      </TouchableWithoutFeedback>
+                    ) : (
+                      <View />
+                    )}
+                    <Animated.Text
+                      style={[
+                        styles.text,
+                        { color: this.contentOpacity },
+                        this.props.extendDirection == 'left'
+                          ? this.extensionStyles.displayTextStyleLeft
+                          : this.extensionStyles.displayTextStyleRight
+                      ]}
+                    >
+                      {this.props.displayText}
+                    </Animated.Text>
+                    <Text style={this.props.highlightedTextStyle}>{this.props.highlightedText}</Text>
+                    {this.props.extendDirection == 'right' ? (
+                      <TouchableWithoutFeedback onPress={this.hideFlyer}>
+                        <Animated.Text style={[styles.crossIcon, { color: this.contentOpacity }]}>X</Animated.Text>
+                      </TouchableWithoutFeedback>
+                    ) : (
+                      <View />
+                    )}
+                  </View>
+                </Animated.View>
+                {this.props.extendDirection == 'left' ? <BaseComponent {...this.props} /> : <View />}
+              </View>
+            ) : (
+              <BaseComponent {...this.props} />
+            )}
+          </TouchableWithoutFeedback>
         </View>
       );
     }
