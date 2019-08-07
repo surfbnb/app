@@ -269,6 +269,18 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `transaction_entities.id_${id}.amounts[0]`);
   }
+  
+  getUserContributionToStats(fromUserId, toUserId, state ){
+    state = state || Store.getState();
+    return deepGet(state, `user_contribution_to_stats.id_${fromUserId}[${toUserId}]['total_amount']`);
+  } 
+
+  getUserContributionByStats(fromUserId, toUserId , state ){
+    state = state || Store.getState();
+    return deepGet(state, `user_contribution_by_stats.id_${toUserId}[${fromUserId}]['total_amount']`);
+  } 
+
+
 }
 
 export default new ReduxGetters();

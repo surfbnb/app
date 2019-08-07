@@ -1,5 +1,6 @@
 import { createActions, handleActions } from 'redux-actions';
 import assignIn from 'lodash/assignIn';
+import merge from 'lodash/merge';
 import * as types from '../actions/constants';
 
 export const {
@@ -36,7 +37,9 @@ export const {
   videoInProcessing,
   upsertProfilePicture,
   clearProfilePicture,
-  upsertUserVideoEntities
+  upsertUserVideoEntities,
+  upsertUserContributionToStats,
+  upsertUserContributionByStats
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -191,6 +194,22 @@ export const reducer = handleActions(
       ...state,
       current_user: {},
       balance: '0'
+    }),
+    [upsertUserContributionByStats]: (state, action) => ({
+      ...state,
+      user_contribution_by_stats: merge(
+        {},
+        state.user_contribution_by_stats,
+        action.payload.user_contribution_by_stats
+      )
+    }),
+    [upsertUserContributionToStats]: (state, action) => ({
+      ...state,
+      user_contribution_to_stats: merge(
+        {},
+        state.user_contribution_to_stats,
+        action.payload.user_contribution_to_stats
+      )
     })
   },
   defaultState

@@ -47,15 +47,15 @@ let previousTabIndex = 0;
 
 function onTabPressed(navigation, tab) {
     if (!CurrentUser.checkActiveUser()) return;
-  
-    if (tab.rootStack ==  "CaptureVideo" ) {
+
+    if (tab.rootStack === "CaptureVideo" ) {
         utilities.handleVideoUploadModal();
         return;
     }
 
     if( tab.navigationIndex == undefined || tab.navigationIndex == null ) return ;
 
-    if (previousTabIndex != tab.navigationIndex) {
+    if (previousTabIndex !== tab.navigationIndex) {
         navigation.navigate(tab.rootStack);
     } else {
         try {

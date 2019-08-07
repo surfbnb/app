@@ -5,8 +5,8 @@ import { Platform } from 'react-native';
 let styles = {
   textInputStyle: {
     borderColor: Colors.seaMist,
-    borderWidth: 1.5,
-    borderRadius: 5,
+    borderWidth: 1.2,
+    borderRadius: 3,
     fontSize: 17,
     fontWeight: '300',
     padding: 5,

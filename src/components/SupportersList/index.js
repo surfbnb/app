@@ -1,25 +1,31 @@
 import React, { PureComponent } from 'react';
 import { FlatList, Dimensions, View } from 'react-native';
-import deepGet from 'lodash/get';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import User from '../Users/User';
+import Pricer from "../../services/Pricer";
+import reduxGetters from "../../services/ReduxGetters";
 import EmptyList from '../EmptyFriendsList/EmptyList';
 import Colors from '../../theme/styles/Colors';
 
 class SupportersList extends PureComponent {
+
   constructor(props) {
     super(props);
+  }
+
+  getBtAmount(fromUser , toUserId){
+    return Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getUserContributionByStats(fromUser , toUserId ) ) ) ;
   }
 
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
-    return <User id={item} />;
+    return  <User userId={item} amount={this.getBtAmount(item , this.props.userId)} />;
   };
 
   render() {
     return (
-      <View style={this.props.list.length > 0 ? { flex: 1, height: Dimensions.get('window').height - 130 } : {}}>
+      <View>
         <FlatList
           data={this.props.list}
           onEndReached={this.props.getNext}
@@ -42,4 +48,4 @@ class SupportersList extends PureComponent {
   }
 }
 
-export default flatlistHOC(SupportersList);
+export default flatlistHOC(  SupportersList );

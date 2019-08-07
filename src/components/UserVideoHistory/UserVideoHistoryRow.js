@@ -51,13 +51,13 @@ class UserVideoHistoryRow extends PureComponent {
           <View style={inlineStyles.touchablesBtns}>
 
             {!this.isCurrentUser() && (
-                <React.Fragment>
-                     <TransactionPepoButton resyncDataDelegate={this.refetchVideo} userId={this.props.userId} videoId={this.props.videoId} />
-                     <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem}
-                        onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}>
-                        <Image style={{ height: 57, width: 57 }} source={tx_icon} />
-                    </TouchableOpacity>
-                </React.Fragment>    
+              <View style={{minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end'}}>
+                 <TransactionPepoButton resyncDataDelegate={this.refetchVideo} userId={this.props.userId} videoId={this.props.videoId} />
+                 <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem}
+                    onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}>
+                    <Image style={{ height: 57, width: 57 }} source={tx_icon} />
+                </TouchableOpacity>
+              </View>
             )}
 
             <VideoAmountStat  videoId={this.props.videoId} />

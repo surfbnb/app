@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Dimensions, Easing, Animated } from 'react-native';
+import { View } from 'react-native';
 import { Root } from 'native-base';
 import {
-  createMaterialTopTabNavigator,
+  createBottomTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
+  createDrawerNavigator,
   createAppContainer
 } from 'react-navigation';
 import deepGet from 'lodash/get';
@@ -24,8 +25,8 @@ import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from './src/components/UsersProfile';
-import SupportingList from './src/components/SupportingList';
-import SupportersList from './src/components/SupportersList';
+import SupportingListWrapper from './src/components/SupportingList/SupportingListWrapper';
+import SupportersListWrapper from './src/components/SupportersList/SupportersListWrapper';
 import CameraWorker from './src/services/CameraWorker';
 import PictureWorker from './src/services/PictureWorker';
 import UserVideoHistory from './src/components/UserVideoHistory';
@@ -33,8 +34,11 @@ import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
 import CaptureVideo from './src/components/CaptureVideo';
-import NotificationScreen from "./src/components/Notification";
+import NotificationScreen from './src/components/Notification';
 import { StatusBarManager } from './src/services/StatusBarManager';
+import CustomDrawerContent from './src/components/CustomDrawerContent';
+import CurrentUser from './src/models/CurrentUser';
+import reduxGetter from './src/services/ReduxGetters';
 
 const getRouteName = (navigation) => {
   if (!navigation) return null;
@@ -66,8 +70,8 @@ const HomePushStack = createStackNavigator(
     HomeScreen: HomeScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    SupportingList: SupportingList,
-    SupportersList: SupportersList
+    SupportingListWrapper: SupportingListWrapper,
+    SupportersListWrapper: SupportersListWrapper
   },
   {
     headerLayoutPreset: 'center'
@@ -76,7 +80,7 @@ const HomePushStack = createStackNavigator(
 
 const HomeStack = createStackNavigator(
   {
-    HomePushStack: HomePushStack ,
+    HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen
   },
   { ...modalStackConfig }
@@ -84,18 +88,18 @@ const HomeStack = createStackNavigator(
 
 const NotificationPushStack = createStackNavigator(
   {
-    NotificationScreen:NotificationScreen,
+    NotificationScreen: NotificationScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    SupportingList: SupportingList,
-    SupportersList: SupportersList
+    SupportingListWrapper: SupportingListWrapper,
+    SupportersListWrapper: SupportersListWrapper
   },
   {
     headerLayoutPreset: 'center'
   }
 );
 
-const NotificationStack =createStackNavigator(
+const NotificationStack = createStackNavigator(
   {
     NotificationPushStack: NotificationPushStack,
     TransactionScreen: TransactionScreen
@@ -103,13 +107,12 @@ const NotificationStack =createStackNavigator(
   { ...modalStackConfig }
 );
 
-
 const ProfilePushStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    SupportingList: SupportingList,
-    SupportersList: SupportersList,
+    SupportingListWrapper: SupportingListWrapper,
+    SupportersListWrapper: SupportersListWrapper,
     UsersProfileScreen: UsersProfileScreen,
     ProfileEdit: ProfileEdit,
     BioScreen: BioScreen
@@ -132,13 +135,13 @@ const ProfileStack = createStackNavigator(
     mode: 'modal',
     navigationOptions: ({ navigation }) => {
       return {
-        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false
+        tabBarVisible: deepGet(navigation, 'state.index') === 0
       };
     }
   }
 );
 
-const CustomTabStack = createMaterialTopTabNavigator(
+const CustomTabStack = createBottomTabNavigator(
   {
     Home: HomeStack,
     Notification: NotificationStack,
@@ -155,8 +158,7 @@ const CustomTabStack = createMaterialTopTabNavigator(
         backgroundColor: Colors.white
       }
     },
-    lazy: true,
-    swipeEnabled: false
+    lazy: true
   }
 );
 
@@ -181,14 +183,26 @@ const PinStack = createStackNavigator(
   }
 );
 
+const DrawerNavigator = createDrawerNavigator(
+  {
+    CustomTabStack: CustomTabStack
+  },
+  {
+    drawerPosition: 'right',
+    drawerBackgroundColor: 'rgba(255,255,255,1)',
+    overlayColor: 'transparent',
+    contentComponent: CustomDrawerContent
+  }
+);
+
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading,
       AuthScreen,
-      CustomTabStack,
       PinStack,
-      UserActivatingScreen
+      UserActivatingScreen,
+      DrawerNavigator
     },
     {
       initialRouteName: 'AuthLoading'

@@ -36,6 +36,32 @@ let stylesMap = {
     borderRadius: 20,
     height: 40,
     width: 40
+  },
+
+  numericInnerWrapper:{
+    borderTopLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    borderWidth: 1,
+    // borderColor: '#fff',
+    alignItems: 'flex-start',
+    width: 100,
+    paddingLeft: 10,
+    justifyContent: 'center',
+    paddingVertical: 10,
+    color: Colors.white,
+    borderColor: Colors.pinkRed,
+    flexDirection: 'row'
+    // flex: 0.5    
+  },
+  numericInfoText: {
+    color: Colors.pinkRed,
+    fontFamily: 'AvenirNext-DemiBold',
+    marginLeft: 8
+  },
+  imageIconSkipFont: {
+    width: 15,
+    height: 15
+
   }
 };
 
