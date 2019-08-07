@@ -5,6 +5,7 @@ import {
   createBottomTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
+  createDrawerNavigator,
   createAppContainer
 } from 'react-navigation';
 import deepGet from 'lodash/get';
@@ -33,8 +34,11 @@ import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
 import CaptureVideo from './src/components/CaptureVideo';
-import NotificationScreen from "./src/components/Notification";
+import NotificationScreen from './src/components/Notification';
 import { StatusBarManager } from './src/services/StatusBarManager';
+import CustomDrawerContent from './src/components/CustomDrawerContent';
+import CurrentUser from './src/models/CurrentUser';
+import reduxGetter from './src/services/ReduxGetters';
 
 const getRouteName = (navigation) => {
   if (!navigation) return null;
@@ -76,7 +80,7 @@ const HomePushStack = createStackNavigator(
 
 const HomeStack = createStackNavigator(
   {
-    HomePushStack: HomePushStack ,
+    HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen
   },
   { ...modalStackConfig }
@@ -84,7 +88,7 @@ const HomeStack = createStackNavigator(
 
 const NotificationPushStack = createStackNavigator(
   {
-    NotificationScreen:NotificationScreen,
+    NotificationScreen: NotificationScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     SupportingList: SupportingList,
@@ -95,14 +99,13 @@ const NotificationPushStack = createStackNavigator(
   }
 );
 
-const NotificationStack =createStackNavigator(
+const NotificationStack = createStackNavigator(
   {
     NotificationPushStack: NotificationPushStack,
     TransactionScreen: TransactionScreen
   },
   { ...modalStackConfig }
 );
-
 
 const ProfilePushStack = createStackNavigator(
   {
@@ -180,14 +183,26 @@ const PinStack = createStackNavigator(
   }
 );
 
+const DrawerNavigator = createDrawerNavigator(
+  {
+    CustomTabStack: CustomTabStack
+  },
+  {
+    drawerPosition: 'right',
+    drawerBackgroundColor: 'rgba(255,255,255,1)',
+    overlayColor: 'transparent',
+    contentComponent: CustomDrawerContent
+  }
+);
+
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading,
       AuthScreen,
-      CustomTabStack,
       PinStack,
-      UserActivatingScreen
+      UserActivatingScreen,
+      DrawerNavigator
     },
     {
       initialRouteName: 'AuthLoading'
