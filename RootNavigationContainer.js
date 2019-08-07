@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { Root } from 'native-base';
 import {
   createBottomTabNavigator,
@@ -189,8 +189,9 @@ const DrawerNavigator = createDrawerNavigator(
   },
   {
     drawerPosition: 'right',
-    drawerBackgroundColor: 'rgba(255,255,255,1)',
-    overlayColor: 'transparent',
+    drawerBackgroundColor: '#fff',
+    overlayColor: 'rgba(0, 0, 0, 0.8)',
+    drawerWidth: Dimensions.get('window').width - Dimensions.get('window').width / 4,
     contentComponent: CustomDrawerContent
   }
 );

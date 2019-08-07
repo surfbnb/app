@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Text, View, Image } from 'react-native';
 import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
 import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
+import loggedOutLogo from "../../assets/drawer-logout-icon.png";
 
 function twitterDisconnect() {
   new PepoApi('/auth/twitter-disconnect')
@@ -54,10 +55,11 @@ export default CustomDrawerContent = (props) => (
             alignItems: 'center',
             borderBottomColor: Colors.seaMist,
             borderBottomWidth: 1,
-            paddingVertical: 20
+            paddingVertical: 15,
+            paddingHorizontal: 15
           }}
         >
-          <View style={styles.itemIcon}></View>
+          <Image style={{ height: 24, width: 25.3 }} source={loggedOutLogo} />
           <Text style={styles.item}>Logout</Text>
         </View>
       </TouchableOpacity>
@@ -77,14 +79,15 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   item: {
-    fontSize: 17
+    fontSize: 18,
+    marginLeft: 10
   },
-  itemIcon: {
-    backgroundColor: Colors.primary,
-    opacity: 0.5,
-    borderRadius: 15,
-    width: 30,
-    height: 30,
-    marginHorizontal: 10
-  }
+  // itemIcon: {
+  //   backgroundColor: Colors.primary,
+  //   opacity: 0.5,
+  //   borderRadius: 15,
+  //   width: 30,
+  //   height: 30,
+  //   marginHorizontal: 10
+  // }
 });
