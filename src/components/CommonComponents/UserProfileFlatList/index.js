@@ -5,9 +5,7 @@ import {
   FlatList,
   ActivityIndicator,
   Text,
-  Dimensions,
-  Image,
-  TouchableOpacity
+  Dimensions, Image
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 import FastImage from 'react-native-fast-image';
@@ -19,6 +17,9 @@ import Pagination from "../../../services/Pagination";
 import PepoApi from "../../../services/PepoApi";
 
 import { Toast } from 'native-base';
+
+import pepoWhiteIcon from '../../../assets/pepo-white-icon.png'
+
 
 class UserProfileFlatList extends PureComponent {
     constructor(props){
@@ -124,7 +125,12 @@ class UserProfileFlatList extends PureComponent {
                         uri: imageUrl,
                         priority: FastImage.priority.high
                        }}/>
-            <Text style={{color:'red', fontSize: 30}}>{this.getVideoBtAmount(videoId)}</Text>
+            <View style={{position: 'absolute',bottom: 5, left: 5, flexDirection: 'row', alignItems: 'center'}}>
+              <Image style={{height: 16, width: 16}} source={pepoWhiteIcon} />
+              <Text style={
+                {color:'#fff', fontSize: 20, fontFamily: 'AvenirNext-Regular', marginLeft: 2}
+              }>{this.getVideoBtAmount(videoId)}</Text>
+            </View>
           </View>
         </TouchableWithoutFeedback>
       ) : <View/>;
