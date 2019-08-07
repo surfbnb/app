@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image , TouchableWithoutFeedback} from 'react-native';
 import { withNavigation } from 'react-navigation';
+
 import VideoWrapper from './VideoWrapper';
 import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
@@ -9,6 +10,8 @@ import tx_icon from '../../assets/tx_icon.png';
 import CurrentUser from '../../models/CurrentUser';
 
 import BottomStatus from './BottomStatus';
+import VideoAmountStat from "../CommonComponents/VideoAmoutStat";
+
 import inlineStyles from './styles';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
@@ -43,29 +46,34 @@ class HomeFeedRow extends PureComponent {
     }
   };
 
+  navigateToUserProfile = (e) => {
+    if (CurrentUser.checkActiveUser()) {
+      if (this.props.userId == CurrentUser.getUserId()) {
+        this.props.navigation.navigate('Profile');
+      } else {
+        this.props.navigation.push('UsersProfileScreen', { userId: this.userId });
+      }
+    }
+  };
+
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
         <VideoWrapper userId={this.userId} videoId={this.videoId} doRender={this.props.doRender} isActive={this.props.isActive} />
 
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
+         
           <View style={inlineStyles.touchablesBtns}>
-            <TransactionPepoButton
-              refetchFeed={this.refetchFeed}
-              feedId={this.props.feedId}
-              userId={this.userId}
-              videoId={this.videoId}
-            />
-            <TouchableOpacity
-              pointerEvents={'auto'}
-              onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
-              style={inlineStyles.txElem}
-            >
+            <TransactionPepoButton resyncDataDelegate={this.resyncDataDelegate} userId={this.userId} videoId={this.videoId}/>
+            <TouchableOpacity pointerEvents={'auto'} onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
+              style={inlineStyles.txElem} >
               <Image style={{ height: 57, width: 57 }} source={tx_icon} />
             </TouchableOpacity>
+            <VideoAmountStat  videoId={this.videoId} />
           </View>
 
-          <BottomStatus userId={this.userId} videoId={this.videoId} />
+          <BottomStatus userId={this.userId} videoId={this.videoId} onWrapperClick={this.navigateToUserProfile}/>
+      
         </View>
       </View>
     );

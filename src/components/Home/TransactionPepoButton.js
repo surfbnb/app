@@ -194,7 +194,7 @@ class TransactionPepoButton extends PureComponent {
     }
 
     syncData( timeOut ){
-      this.props.refetchFeed && this.props.refetchFeed();
+      this.props.resyncDataDelegate && this.props.resyncDataDelegate();
       pricer.getBalance();
       setTimeout(()=> {
         this.reduxUpdate(false);
@@ -210,7 +210,7 @@ class TransactionPepoButton extends PureComponent {
             <View>
                 <PepoButton count={ this.getBtAmount() }
                             isSelected={this.props.isSupporting || this.localSupported }
-                            id={this.props.feedId}
+                            id={this.props.videoId}
                             disabled={this.isDisabled()}
                             maxCount={this.getBalanceToNumber()}
                             onMaxReached={this.onMaxReached}

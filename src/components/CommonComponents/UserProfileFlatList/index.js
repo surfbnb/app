@@ -136,6 +136,7 @@ class UserProfileFlatList extends PureComponent {
      };
 
     onVideoClick = ( item, index  ) => {
+        console.log("onVideoClick===" , index);
         this.props.navigation.push("UserVideoHistory", {
           videoHistoryPagination : this.videoHistoryPagination,
           currentIndex: index,
