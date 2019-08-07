@@ -104,7 +104,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.pepo.production"
+        applicationId "com.pepo.staging"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 76
@@ -191,7 +191,7 @@ dependencies {
     implementation "com.facebook.fresco:animated-gif:1.10.0"
     implementation 'com.facebook.fresco:animated-webp:1.10.0'
     implementation 'com.facebook.fresco:webpsupport:1.10.0'
-    compile project(':react-native-fs')
+    implementation project(':react-native-fs')
 }
 
 // Run this once to be able to run the application with BUCK
