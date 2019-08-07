@@ -92,7 +92,7 @@ class UserVideoHistoryScreen extends PureComponent{
     
     render(){
         return(
-            <FlatList
+            <FlatList  
                 extraData={this.state.activeIndex}
                 snapToAlignment={"top"}
                 viewabilityConfig={{itemVisiblePercentThreshold: 90}}
