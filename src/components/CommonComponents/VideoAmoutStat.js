@@ -45,7 +45,10 @@ class VideoAmountStat extends PureComponent {
             </View>
             }
             {
-            <View>
+            <View
+                ellipsizeMode={'tail'}
+                numberOfLines={1}
+            >
                 <Text
                 style={[inlineStyles.raisedSupportedTxt]}
                 ellipsizeMode={'tail'}
