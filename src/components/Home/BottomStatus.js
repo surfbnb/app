@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import inlineStyles from './styles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -13,12 +14,14 @@ const mapStateToProps = (state, ownProps) => {
     userName: reduxGetter.getUserName(ownProps.userId, state),
     name: reduxGetter.getName(ownProps.userId, state),
     bio: reduxGetter.getBio(ownProps.userId, state),
-    //Temp Code 
+    //Temp Code
     videoSize: reduxGetter.getVideoSize(ownProps.videoId, state ),
     videoSizeR: reduxGetter.getVideoSize(ownProps.videoId, state , "576w"),
     videoImageSize : reduxGetter.getImageSize(ownProps.videoId, state ),
     videoImageSizeR : reduxGetter.getImageSize(ownProps.videoId, state , "576w"),
-    //Temp code 
+    //Temp code
+    supporters: reduxGetter.getVideoSupporters( ownProps.videoId ),
+    totalBt: reduxGetter.getVideoBt(ownProps.videoId , state ),
   };
 };
 
@@ -65,4 +68,4 @@ class BottomStatus extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps)(BottomStatus);
+export default connect(mapStateToProps)(withNavigation(BottomStatus));

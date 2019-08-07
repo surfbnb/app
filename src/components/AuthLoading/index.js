@@ -42,7 +42,7 @@ export default class AuthLoading extends Component {
         if (user && !CurrentUser.isActiveUser(user)) {
           this.props.navigation.navigate('UserActivatingScreen');
         } else {
-          this.props.navigation.navigate('HomeScreen');  
+          this.props.navigation.navigate('HomeScreen');
         }
       })
       .catch(() => {
@@ -54,7 +54,6 @@ export default class AuthLoading extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ActivityIndicator />
         <StatusBar barStyle="default" />
       </View>
     );

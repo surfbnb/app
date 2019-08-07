@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Dimensions, Easing, Animated } from 'react-native';
+import { View } from 'react-native';
 import { Root } from 'native-base';
 import {
-  createMaterialTopTabNavigator,
+  createBottomTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
   createAppContainer
@@ -132,13 +132,22 @@ const ProfileStack = createStackNavigator(
     mode: 'modal',
     navigationOptions: ({ navigation }) => {
       return {
-        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false
+        tabBarVisible: deepGet(navigation, 'state.index') === 0
       };
     }
   }
 );
 
-const CustomTabStack = createMaterialTopTabNavigator(
+const NotificationStack = createStackNavigator(
+    {
+        ProfileScreen: ProfileScreen
+    },
+    {
+        headerLayoutPreset: 'center'
+    }
+);
+
+const CustomTabStack = createBottomTabNavigator(
   {
     Home: HomeStack,
     Notification: NotificationStack,
@@ -155,8 +164,7 @@ const CustomTabStack = createMaterialTopTabNavigator(
         backgroundColor: Colors.white
       }
     },
-    lazy: true,
-    swipeEnabled: false
+    lazy: true
   }
 );
 
