@@ -32,8 +32,8 @@ const tabConfig = {
         navigationIndex: null
     },
     tab4: {
-        rootStack: 'Users',
-        childStack: 'UsersScreen',
+        rootStack: 'Notification',
+        childStack: 'NotificationScreen',
         navigationIndex: 1
     },
     tab5: {

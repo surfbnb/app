@@ -12,7 +12,6 @@ import deepGet from 'lodash/get';
 import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
 import AuthScreen from './src/components/Authentication';
-import Users from './src/components/Users';
 import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';
 import CustomTab from './src/components/CustomTab';
@@ -22,9 +21,6 @@ import ProfileScreen from './src/components/Profile/ProfileScreen';
 import ProfileEdit from './src/components/Profile/ProfileEditScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
-import Giphy from './src/components/Giphy';
-import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
-import EditTx from './src/components/Transaction/EditTxModal';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from './src/components/UsersProfile';
@@ -37,6 +33,7 @@ import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
 import CaptureVideo from './src/components/CaptureVideo';
+import NotificationScreen from "./src/components/Notification";
 import { StatusBarManager } from './src/services/StatusBarManager';
 
 const getRouteName = (navigation) => {
@@ -55,20 +52,22 @@ const getRouteName = (navigation) => {
 const modalStackConfig = {
   headerLayoutPreset: 'center',
   headerMode: 'none',
-  mode: 'modal',
-  navigationOptions: ({ navigation }) => {
-    const routeName = getRouteName(navigation);
-    return {
-      tabBarVisible: routeName == 'TransactionScreen' || routeName == 'VideoPlayer' ? false : true
-    };
-  }
+  mode: 'modal'
+  // navigationOptions: ({ navigation }) => {
+  //   const routeName = getRouteName(navigation);
+  //   return {
+  //     tabBarVisible: routeName == 'TransactionScreen' ? false : true
+  //   };
+  // }
 };
 
-const HomeTransactionStack = createStackNavigator(
+const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
-    
-    TransactionScreen: TransactionScreen
+    UsersProfileScreen: UsersProfileScreen,
+    UserVideoHistory: UserVideoHistory,
+    SupportingList: SupportingList,
+    SupportersList: SupportersList
   },
   {
     headerLayoutPreset: 'center'
@@ -77,46 +76,43 @@ const HomeTransactionStack = createStackNavigator(
 
 const HomeStack = createStackNavigator(
   {
-    HomeTransactionStack: HomeTransactionStack,
-    Giphy: Giphy,
-    EditTx: EditTx,
-    VideoPlayer: VideoPlayer
+    HomePushStack: HomePushStack ,
+    TransactionScreen: TransactionScreen
   },
   { ...modalStackConfig }
 );
 
-
-const UserTransactionStack = createStackNavigator(
+const NotificationPushStack = createStackNavigator(
   {
-    UsersScreen: Users,
+    NotificationScreen:NotificationScreen,
     UsersProfileScreen: UsersProfileScreen,
+    UserVideoHistory: UserVideoHistory,
     SupportingList: SupportingList,
-    SupportersList: SupportersList,
-    TransactionScreen: TransactionScreen
+    SupportersList: SupportersList
   },
   {
     headerLayoutPreset: 'center'
   }
 );
 
-const UserStack = createStackNavigator(
+const NotificationStack =createStackNavigator(
   {
-    UserTransactionStack: UserTransactionStack,
-    Giphy: Giphy,
-    EditTx: EditTx,
-    VideoPlayer: VideoPlayer
+    NotificationPushStack: NotificationPushStack,
+    TransactionScreen: TransactionScreen
   },
   { ...modalStackConfig }
 );
 
-const MyProfileStack = createStackNavigator(
+
+const ProfilePushStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
+    UserVideoHistory: UserVideoHistory,
     SupportingList: SupportingList,
     SupportersList: SupportersList,
+    UsersProfileScreen: UsersProfileScreen,
     ProfileEdit: ProfileEdit,
-    BioScreen: BioScreen,
-    UserVideoHistory: UserVideoHistory
+    BioScreen: BioScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -125,9 +121,10 @@ const MyProfileStack = createStackNavigator(
 
 const ProfileStack = createStackNavigator(
   {
-    MyProfileStack: MyProfileStack,
+    ProfilePushStack: ProfilePushStack,
     CaptureImageScreen: CaptureImage,
-    ImageGalleryScreen: ImageGallery
+    ImageGalleryScreen: ImageGallery,
+    TransactionScreen: TransactionScreen
   },
   {
     headerLayoutPreset: 'center',
@@ -144,7 +141,7 @@ const ProfileStack = createStackNavigator(
 const CustomTabStack = createMaterialTopTabNavigator(
   {
     Home: HomeStack,
-    Users: UserStack,
+    Notification: NotificationStack,
     Profile: ProfileStack
   },
   {
