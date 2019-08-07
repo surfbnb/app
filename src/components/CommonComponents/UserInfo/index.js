@@ -4,15 +4,12 @@ import { connect } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import {withNavigation} from 'react-navigation';
 import Colors from '../../../theme/styles/Colors';
-import TouchableButton from '../../../theme/components/TouchableButton';
-import Theme from '../../../theme/styles';
 import inlineStyle from './styles';
 import pricer from '../../../services/Pricer';
 import reduxGetter from '../../../services/ReduxGetters';
 import ProfilePicture from '../../ProfilePicture';
 import PixelCall from "../../../services/PixelCall";
 import LinearGradient from "react-native-linear-gradient";
-import BalanceHeader from "../../Profile/BalanceHeader";
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
@@ -53,14 +50,15 @@ class UserInfo extends React.PureComponent {
     PixelCall(pixelParams);
   };
 
+  //TODO @Mayur compute fetch url from inside
   GoToSupporting = () => {
-    this.props.navigation.push('SupportingList', { fetchUrl: `/users/${this.props.userId}/contribution-to`});
+    this.props.navigation.push('SupportingListWrapper',{ userId: this.props.userId});
   }
 
 
-
+//TODO @Mayur compute fetch url from inside
   GoToSupporters = () => {
-    this.props.navigation.push('SupportingList', { fetchUrl: `/users/${this.props.userId}/contribution-by`});
+    this.props.navigation.push('SupportersListWrapper', {userId: this.props.userId});
   }
 
   render() {

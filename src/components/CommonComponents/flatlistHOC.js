@@ -29,11 +29,8 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
     }
 
     componentDidMount() {
-      let fetchUrl = this.props.fetchUrl;    
-      if (fetchUrl) {
-        this.initList(new FetchServices(fetchUrl));
-      } else if (this.props.navigation && this.props.navigation.getParam('fetchUrl')){
-        this.initList(new FetchServices(this.props.navigation.getParam('fetchUrl')));  
+      if (this.props.fetchUrl) {
+        this.initList(new FetchServices(this.props.fetchUrl));
       }
     }
 

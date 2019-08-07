@@ -24,8 +24,8 @@ import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from './src/components/UsersProfile';
-import SupportingList from './src/components/SupportingList';
-import SupportersList from './src/components/SupportersList';
+import SupportingListWrapper from './src/components/SupportingList/SupportingListWrapper';
+import SupportersListWrapper from './src/components/SupportersList/SupportersListWrapper';
 import CameraWorker from './src/services/CameraWorker';
 import PictureWorker from './src/services/PictureWorker';
 import UserVideoHistory from './src/components/UserVideoHistory';
@@ -66,8 +66,8 @@ const HomePushStack = createStackNavigator(
     HomeScreen: HomeScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    SupportingList: SupportingList,
-    SupportersList: SupportersList
+    SupportingListWrapper: SupportingListWrapper,
+    SupportersListWrapper: SupportersListWrapper
   },
   {
     headerLayoutPreset: 'center'
@@ -87,8 +87,8 @@ const NotificationPushStack = createStackNavigator(
     NotificationScreen:NotificationScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    SupportingList: SupportingList,
-    SupportersList: SupportersList
+    SupportingListWrapper: SupportingListWrapper,
+    SupportersListWrapper: SupportersListWrapper
   },
   {
     headerLayoutPreset: 'center'
@@ -108,8 +108,8 @@ const ProfilePushStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    SupportingList: SupportingList,
-    SupportersList: SupportersList,
+    SupportingListWrapper: SupportingListWrapper,
+    SupportersListWrapper: SupportersListWrapper,
     UsersProfileScreen: UsersProfileScreen,
     ProfileEdit: ProfileEdit,
     BioScreen: BioScreen
