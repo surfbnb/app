@@ -1,9 +1,13 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
 import pricer from './Pricer';
-import PriceOracle from "./PriceOracle";
+import reduxGetters from "./ReduxGetters";
 import appConfig from '../constants/AppConfig';
 
+import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
+import { captureVideoEventEmitter } from '../components/CaptureVideo';
+
+let recursiveMaxCount = 0 ; 
 
 export default {
   async saveItem(key, val) {
@@ -75,5 +79,29 @@ export default {
   isUserActivated( status ){
     status =  status || ""
     return status.toLowerCase() == appConfig.userStatusMap.activated; 
+  },
+
+  getLastChildRoutename(state) {
+    if (!state) return null;
+    let index = state.index,
+        routes = state.routes;
+    if (!routes || recursiveMaxCount > 10) {
+        recursiveMaxCount = 0;
+        return state.routeName;
+    }
+    recursiveMaxCount++;
+    return this.getLastChildRoutename(routes[index]);
+  },
+
+  handleVideoUploadModal( previousTabIndex ){
+    if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
+      FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
+    } else if (reduxGetters.getVideoProcessingStatus() == true) {
+      //show toast here
+      console.log('handleVideoUploadModal: show toast');
+    } else {
+      captureVideoEventEmitter.emit('show');
+    }
   }
+
 };

@@ -16,7 +16,6 @@ import Users from './src/components/Users';
 import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';
 import CustomTab from './src/components/CustomTab';
-import Activities from './src/components/Activities';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
@@ -37,7 +36,6 @@ import UserVideoHistory from './src/components/UserVideoHistory';
 import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
-import CurrentUser from './src/models/CurrentUser';
 import CaptureVideo from './src/components/CaptureVideo';
 import { StatusBarManager } from './src/services/StatusBarManager';
 
@@ -87,28 +85,6 @@ const HomeStack = createStackNavigator(
   { ...modalStackConfig }
 );
 
-const ActivityTransactionStack = createStackNavigator(
-  {
-    ActivitiesScreen: Activities,
-    UsersProfileScreen: UsersProfileScreen,
-    SupportingList: SupportingList,
-    SupportersList: SupportersList,
-    TransactionScreen: TransactionScreen
-  },
-  {
-    headerLayoutPreset: 'center'
-  }
-);
-
-const ActivityStack = createStackNavigator(
-  {
-    ActivityTransactionStack: ActivityTransactionStack,
-    Giphy: Giphy,
-    EditTx: EditTx,
-    VideoPlayer: VideoPlayer
-  },
-  { ...modalStackConfig }
-);
 
 const UserTransactionStack = createStackNavigator(
   {
@@ -168,7 +144,6 @@ const ProfileStack = createStackNavigator(
 const CustomTabStack = createMaterialTopTabNavigator(
   {
     Home: HomeStack,
-    Activities: ActivityStack,
     Users: UserStack,
     Profile: ProfileStack
   },
