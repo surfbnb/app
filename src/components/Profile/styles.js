@@ -73,7 +73,8 @@ let stylesMap = {
   editProfileContainer: {
     height: 75,
     width: 75,
-    position: 'relative'
+    position: 'relative',
+    marginBottom: 20
   },
   editProfileIconTouch: {
     height: 50,
