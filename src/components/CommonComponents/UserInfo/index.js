@@ -12,7 +12,6 @@ import reduxGetter from '../../../services/ReduxGetters';
 import ProfilePicture from '../../ProfilePicture';
 import PixelCall from "../../../services/PixelCall";
 import LinearGradient from "react-native-linear-gradient";
-import BalanceHeader from "../../Profile/BalanceHeader";
 
 const mapStateToProps = (state, ownProps) => {
   return {

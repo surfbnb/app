@@ -15,12 +15,6 @@ import multipleClickHandler from '../../services/MultipleClickHandler';
 class HomeFeedRow extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      refreshed: false,
-      totalBt: this.totalBt,
-      supporters: this.supporters,
-      isSupported: this.isVideoSupported
-    };
   }
 
   get userId() {
@@ -76,6 +70,7 @@ class HomeFeedRow extends PureComponent {
       </View>
     );
   }
+  
 }
 
 export default withNavigation(HomeFeedRow);

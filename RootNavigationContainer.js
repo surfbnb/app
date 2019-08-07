@@ -20,6 +20,7 @@ import Activities from './src/components/Activities';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
 import Colors from './src/theme/styles/Colors';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
+import ProfileEdit from './src/components/Profile/ProfileEditScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import Giphy from './src/components/Giphy';
@@ -30,7 +31,7 @@ import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from './src/components/UsersProfile';
 import CameraWorker from './src/services/CameraWorker';
 import PictureWorker from './src/services/PictureWorker';
-import CaptureVideo from './src/components/CaptureVideo';
+import UserVideoHistory from './src/components/UserVideoHistory';
 import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
@@ -126,26 +127,31 @@ const UserStack = createStackNavigator(
   { ...modalStackConfig }
 );
 
-const ProfileStack = createStackNavigator(
+const MyProfileStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
+    ProfileEdit: ProfileEdit,
     BioScreen: BioScreen,
-    VideoPlayer: VideoPlayer,
-    CaptureVideo: CaptureVideo,
+    UserVideoHistory: UserVideoHistory
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
+const ProfileStack = createStackNavigator(
+  {
+    MyProfileStack: MyProfileStack,
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery
   },
   {
     headerLayoutPreset: 'center',
+    headerMode: 'none',
     mode: 'modal',
     navigationOptions: ({ navigation }) => {
-      const routeName = deepGet(navigation, 'state.routes[1].routeName');
       return {
-        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false,
-        swipeEnabled:
-          routeName == 'CaptureVideo' || routeName == 'CaptureImageScreen' || routeName == 'ImageGalleryScreen'
-            ? false
-            : true
+        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false
       };
     }
   }

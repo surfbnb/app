@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, AppState, Platform, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-// import { NavigationEvents } from 'react-navigation';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
@@ -15,7 +14,7 @@ import PepoApi from '../../services/PepoApi';
 import ProfilePlusIcon from '../../assets/red_plus_icon.png';
 import CurrentUser from '../../models/CurrentUser';
 
-import { updateCurrentUser, upsertUserProfileEntities, upsertLinkEntities, upsertUserEntities } from '../../actions';
+import { upsertUserProfileEntities, upsertLinkEntities, upsertUserEntities } from '../../actions';
 import Store from '../../store';
 import utilities from '../../services/Utilities';
 import Colors from '../../theme/styles/Colors';
@@ -23,10 +22,11 @@ import { ActionSheet } from 'native-base';
 import FastImage from 'react-native-fast-image';
 
 import CameraPermissionsApi from '../../services/CameraPermissionsApi';
-import AllowAccessModal from '../Profile/AllowAccessModal';
+import AllowAccessModal from './AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
 import CameraIcon from '../../assets/camera_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
+import BackArrow from "../CommonComponents/BackArrow";
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
@@ -35,11 +35,11 @@ const CANCEL_INDEX = 2;
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user_name: reduxGetter.getUserName(ownProps.userId, state) || '',
-    name: reduxGetter.getName(ownProps.userId, state) || '',
-    bio: reduxGetter.getBio(ownProps.userId, state) || '',
-    link: reduxGetter.getLink(reduxGetter.getUserLinkId(ownProps.userId, state), state) || '',
-    profilePicture: reduxGetter.getImage(reduxGetter.getProfileImageId(ownProps.userId, state), state)
+    user_name: reduxGetter.getUserName( CurrentUser.getUserId(), state) || '',
+    name: reduxGetter.getName(CurrentUser.getUserId(), state) || '',
+    bio: reduxGetter.getBio(CurrentUser.getUserId(), state) || '',
+    link: reduxGetter.getLink(reduxGetter.getUserLinkId(CurrentUser.getUserId(), state), state) || '',
+    profilePicture: reduxGetter.getImage(reduxGetter.getProfileImageId(CurrentUser.getUserId(), state), state)
   };
 };
 
@@ -47,6 +47,15 @@ const btnPreText = 'Save Profile';
 const btnPostText = 'Saving...';
 
 class ProfileEdit extends React.PureComponent {
+
+  static navigationOptions = (options) => {
+    return {
+      headerBackTitle: null,
+      headerBackImage: (<BackArrow/>),
+      headerTitle: reduxGetter.getName(CurrentUser.getUserId())
+    };
+  };
+
   constructor(props) {
     super(props);
 
@@ -143,7 +152,7 @@ class ProfileEdit extends React.PureComponent {
     }
     Store.dispatch(upsertUserEntities(utilities._getEntityFromObj(currentUserObj)));
 
-    const userProfileEntity = reduxGetter.getUserProfile(this.props.userId);
+    const userProfileEntity = reduxGetter.getUserProfile(CurrentUser.getUserId());
     if (!userProfileEntity) return;
     if (typeof this.state.bio != 'undefined') {
       const bio = userProfileEntity['bio'] || {};
@@ -163,19 +172,20 @@ class ProfileEdit extends React.PureComponent {
     }
 
     Store.dispatch(upsertUserProfileEntities(utilities._getEntityFromObj(userProfileEntity)));
+
+    this.props.navigation.goBack();
   }
 
   onSubmit() {
     this.clearErrors();
     if (this.validateProfileInput()) {
       this.setState({ btnText: btnPostText });
-      return new PepoApi(`/users/${this.props.userId}/profile`)
+      return new PepoApi(`/users/${CurrentUser.getUserId()}/profile`)
         .post(this.getParams())
         .then((res) => {
           this.setState({ btnText: btnPreText });
           if (res && res.success) {
             this.updateProfileData();
-            this.props.hideProfileEdit && this.props.hideProfileEdit(res);
             return;
           } else {
             this.onServerError(res);
@@ -192,7 +202,7 @@ class ProfileEdit extends React.PureComponent {
       this.props.name != this.state.name ||
       this.props.user_name != this.state.user_name ||
       this.props.bio != this.state.bio ||
-      this.props.bio != this.state.bio
+      this.props.link != this.state.link
     ) {
       Alert.alert(
         'Discard changes?',
@@ -202,20 +212,16 @@ class ProfileEdit extends React.PureComponent {
           {
             text: 'Discard',
             onPress: () => {
-              this.onDiscard();
+              this.props.navigation.goBack();
             }
           }
         ],
         { cancelable: false }
       );
     } else {
-      this.props.hideProfileEdit();
+      this.props.navigation.goBack();
     }
   };
-
-  onDiscard() {
-    this.props.hideProfileEdit();
-  }
 
   onBioChangeDelegate = (val) => {
     this.setState({ bio: val });
@@ -379,12 +385,12 @@ class ProfileEdit extends React.PureComponent {
           <Text style={[Theme.Button.btnPinkText, { textAlign: 'center' }]}>{this.state.btnText}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={this.onCancel}
           style={[Theme.Button.btn, Theme.Button.btnPinkSecondary, { marginTop: 10 }]}
         >
           <Text style={[Theme.Button.btnPinkSecondaryText, { textAlign: 'center' }]}>Cancel</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/*//TODO error styling */}
         <Text>{this.state.general_error}</Text>
         <AllowAccessModal

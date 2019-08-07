@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {View ,  ActivityIndicator, Platform, AppState } from 'react-native';
+import { Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import BalanceHeader from '../Profile/BalanceHeader';
@@ -7,22 +7,13 @@ import LogoutComponent from '../LogoutLink';
 import UserInfo from '../CommonComponents/UserInfo';
 import CurrentUser from '../../models/CurrentUser';
 
-// import EmptyCoverImage from './EmptyCoverImage';
-import ProfileEdit from './ProfileEdit';
-// import UserProfileCoverImage from './UserProfileCoverImage';
 import reduxGetter from '../../services/ReduxGetters';
-// import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
-
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Toast } from 'native-base';
-import PepoApi from '../../services/PepoApi';
-import CameraPermissionsApi from '../../services/CameraPermissionsApi';
-import AllowAccessModal from '../Profile/AllowAccessModal';
-import CameraIcon from '../../assets/camera_icon.png';
 
 import UserProfileFlatList from "../CommonComponents/UserProfileFlatList"
 import TouchableButton from "../../theme/components/TouchableButton";
 import Theme from "../../theme/styles";
+import inlineStyle from "../CommonComponents/UserInfo/styles";
+import inlineStyles from './styles';
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -40,7 +31,6 @@ class ProfileScreen extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.fetchUser();
   }
 
   componentDidUpdate(prevProps) {
@@ -49,63 +39,31 @@ class ProfileScreen extends PureComponent {
       //TODO Stack pop. 
     }
   }
-
-  fetchUser = () => {
-    return new PepoApi(`/users/${this.props.userId}/profile`)
-      .get()
-      .then((res) => {
-        if (!res || !res.success) {
-          Toast.show({
-            text: ostErrors.getErrorMessage(res),
-            buttonText: 'OK'
-          });
-        }
-      })
-      .catch((error) => {
-        Toast.show({
-          text: ostErrors.getErrorMessage(error),
-          buttonText: 'OK'
-        });
-      })
-      .finally(() => {});
-  };
-
-  isLoading() {
-    if (this.state.loading) {
-      return <ActivityIndicator />;
-    }
-  }
   
-  
-  onPullToRefresh = () => {
-    this.fetchUser(); 
-  }
-
   onEdit = () => {
-    //TODO
+    this.props.navigation.push('ProfileEdit');
   }
-
 
   _headerComponent(){
     return (
-      <UserInfo userId={this.props.userId} header = {<BalanceHeader />}
-                editButton={
-                  <TouchableButton
-                    onPress={this.onEdit}
-                    TouchableStyles={[Theme.Button.btnPinkSecondary, { paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
-                    TextStyles={[Theme.Button.btnPinkSecondaryText]}
-                    text="Edit Your Profile"
-                  />
-                }  />
+      <React.Fragment>
+        <UserInfo userId={this.props.userId} header = {<BalanceHeader />}
+                  editButton={
+                    <TouchableButton
+                      onPress={this.onEdit}
+                      TouchableStyles={[Theme.Button.btnPinkSecondary, { paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
+                      TextStyles={[Theme.Button.btnPinkSecondaryText]}
+                      text="Edit Your Profile"
+                    /> } />
+        <Text style={inlineStyles.updates}>Videos</Text>
+      </React.Fragment>
     )
   }
 
   render() {
     return (
-      <UserProfileFlatList beforeRefresh = {this.onPullToRefresh}
-                           listHeaderComponent = {this._headerComponent()}
-                           userId={this.props.userId} 
-      />
+      <UserProfileFlatList listHeaderComponent = {this._headerComponent()}
+                           userId={this.props.userId} />
     );
   }
 }
