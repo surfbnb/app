@@ -13,7 +13,7 @@ const BundleConstants = {
         API_ROOT: 'https://sandboxpepo.com/api/v1',
         PLATFORM_API_ENDPOINT: 'https://api.ost.com/testnet/v2',
         TRACKER_ENDPOINT: 'https://px.pepo.com/ps501_pixel.png',
-        TOKEN_ID: '1435',
+        TOKEN_ID: '1506',
         TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
         TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0'
     },
@@ -21,7 +21,7 @@ const BundleConstants = {
         API_ROOT: 'https://sandboxpepo.com/api/v1',
         PLATFORM_API_ENDPOINT: 'https://api.ost.com/testnet/v2',
         TRACKER_ENDPOINT: 'https://px.pepo.com/ps501_pixel.png',
-        TOKEN_ID: '1435',
+        TOKEN_ID: '1506',
         TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
         TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0'
     }
