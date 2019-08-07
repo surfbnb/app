@@ -2,10 +2,8 @@ import {Platform, Dimensions} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import qs from 'qs';
 import assignIn from 'lodash/assignIn';
-
 import Store from '../store';
-
-const pixelRoot = 'https://px.pepo.com/devp101_pixel.png';
+import { TRACKER_ENDPOINT } from '../constants/index';
 
 const keyAliasMap = {
   t_version: 'v',
@@ -75,10 +73,10 @@ export default (data) => {
 
   // Log
   let ts = (new Date).getTime();
-  console.log(`PixelCall (${ts}) data: `, compactData);
+  console.log(`PixelCall (${ts}) URL: ${TRACKER_ENDPOINT}, data: `, compactData);
 
   // Fire the fetch call
-  fetch(`${pixelRoot}?${qs.stringify(compactData)}`)
+  fetch(`${TRACKER_ENDPOINT}?${qs.stringify(compactData)}`)
       .then((response) => console.log(`PixelCall (${ts}) fetch request complete!`))
       .catch((error) => console.log(`PixelCall (${ts}) fetch error: `, error));
 }
