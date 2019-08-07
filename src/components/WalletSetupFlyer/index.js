@@ -14,25 +14,23 @@ class WalletSetupFlyer extends Component {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={this.props.handlePress}>
-        <View style={styles.container}>
-          <View
-            style={{
-              width: 46,
-              height: 46,
-              backgroundColor: Colors.white,
-              opacity: 0.9,
-              borderRadius: 23,
-              position: 'absolute',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <ProgressCircle size={53} color={Colors.primary} duration={3000} direction="clockwise"></ProgressCircle>
-          </View>
-          <Image source={WalletIcon} style={{ width: 15, height: 15, position: 'absolute' }} />
+      <View style={styles.container}>
+        <View
+          style={{
+            width: 46,
+            height: 46,
+            backgroundColor: Colors.white,
+            opacity: 0.9,
+            borderRadius: 23,
+            position: 'absolute',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <ProgressCircle size={53} color={Colors.primary} duration={3000} direction="clockwise"></ProgressCircle>
         </View>
-      </TouchableWithoutFeedback>
+        <Image source={WalletIcon} style={{ width: 15, height: 15, position: 'absolute' }} />
+      </View>
     );
   }
 }
