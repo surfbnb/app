@@ -3,7 +3,6 @@ import { View, TouchableOpacity, Image, Text } from 'react-native';
 import { StackActions, NavigationActions, SafeAreaView } from 'react-navigation';
 
 import styles from './styles';
-import feed from '../../assets/user_feed.png';
 import homeNs from '../../assets/user-home-icon.png';
 import homeSelected from '../../assets/user-home-icon-selected.png';
 import profileNs from '../../assets/user-profile-icon.png';
@@ -14,9 +13,6 @@ import activityNs from '../../assets/user-activity-icon.png';
 import activitySelected from '../../assets/user-activity-icon-selected.png';
 import videoNs from '../../assets/user-video-capture-icon.png';
 import videoSelected from '../../assets/user-video-capture-icon-selected.png';
-import global from '../../assets/user_global.png';
-import profile from '../../assets/user_profile.png';
-import friends from '../../assets/user_friends.png';
 import CurrentUser from '../../models/CurrentUser';
 
 const tabConfig = {
@@ -79,52 +75,32 @@ const CustomTab = ({ navigation, screenProps }) => {
    return ( <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab1)}>
         <Image
-          // tintColor={navigation.state.index === tabConfig.tab1.index ? '#61b2d6' : 'rgb(72,72,72)'}
-          style={[
-            styles.tabElementSkipFont
-            // { tintColor: navigation.state.index === tabConfig.tab1.index ? '#ef5566' : '#484848' }
-          ]}
-          source={navigation.state.index === tabConfig.tab1.index ? homeNs : homeSelected}
+          style={[styles.tabElementSkipFont]}
+          source={navigation.state.index === tabConfig.tab1.index ? homeSelected : homeNs}
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab2)}>
         <Image
-          // tintColor={navigation.state.index === tabConfig.tab2.index ? '#61b2d6' : 'rgb(72,72,72)'}
-          style={[
-            styles.tabElementSkipFont
-            // { tintColor: navigation.state.index === tabConfig.tab2.index ? '#ef5566' : '#484848' }
-          ]}
-          source={navigation.state.index === tabConfig.tab2.index ? searchNs : searchSelected}
+          style={[styles.tabElementSkipFont]}
+          source={navigation.state.index === tabConfig.tab2.index ? searchSelected : searchNs}
         />
       </TouchableOpacity>
      <TouchableOpacity>
        <Image
-         // tintColor={navigation.state.index === tabConfig.tab2.index ? '#61b2d6' : 'rgb(72,72,72)'}
-         style={[
-           styles.tabElementSkipFont
-           // { tintColor: navigation.state.index === tabConfig.tab2.index ? '#ef5566' : '#484848' }
-         ]}
+         style={[styles.tabElementSkipFont]}
          source={videoNs}
        />
      </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab3)}>
         <Image
-          // tintColor={navigation.state.index === tabConfig.tab3.index ? '#61b2d6' : '#484848'}
-          style={[
-            styles.tabElementSkipFont
-            // { tintColor: navigation.state.index === tabConfig.tab3.index ? '#ef5566' : '#484848' }
-          ]}
-          source={navigation.state.index === tabConfig.tab3.index ? activityNs : activitySelected}
+          style={[styles.tabElementSkipFont]}
+          source={navigation.state.index === tabConfig.tab3.index ? activitySelected : activityNs}
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab4)}>
         <Image
-          // tintColor={navigation.state.index === tabConfig.tab4.index ? '#61b2d6' : '#484848'}
-          style={[
-            styles.tabElementSkipFont
-            // { tintColor: navigation.state.index === tabConfig.tab4.index ? '#ef5566' : '#484848' }
-          ]}
-          source={navigation.state.index === tabConfig.tab4.index ? profileNs : profileSelected}
+          style={[styles.tabElementSkipFont]}
+          source={navigation.state.index === tabConfig.tab4.index ? profileSelected : profileNs}
         />
       </TouchableOpacity>
     </SafeAreaView>)

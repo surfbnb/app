@@ -51,7 +51,7 @@ class ProfileScreen extends PureComponent {
                   editButton={
                     <TouchableButton
                       onPress={this.onEdit}
-                      TouchableStyles={[Theme.Button.btnPinkSecondary, { paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
+                      TouchableStyles={[Theme.Button.btnPinkSecondary, { marginTop: 10, paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }]}
                       TextStyles={[Theme.Button.btnPinkSecondaryText]}
                       text="Edit Your Profile"
                     /> } />
