@@ -35,7 +35,7 @@ class ProfileScreen extends PureComponent {
   componentDidUpdate(prevProps) {
     if (this.props.userId != prevProps.userId) {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
-      //TODO Stack pop. 
+      this.props.navigation.goBack(null); 
     }
   }
   

@@ -18,11 +18,7 @@ import Pagination from "../../../services/Pagination";
 
 import {fetchUser} from "../../../helpers/helpers";
 
-import PepoApi from "../../../services/PepoApi";
-
 import inlineStyles from './style';
-
-import { Toast } from 'native-base';
 
 
 import pepoWhiteIcon from '../../../assets/pepo-white-icon.png'
@@ -38,14 +34,8 @@ class UserProfileFlatList extends PureComponent {
             loadingNext: false
         }
 
-        this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory() , {
-            beforeRefresh : this.beforeRefresh, 
-            onRefresh : this.onRefresh, 
-            onRefreshError: this.onRefreshError , 
-            beforeNext: this.beforeNext,
-            onNext: this.onNext,
-            onNextError: this.onNextError
-        } )
+        this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory() );
+        this.paginationEvent = this.videoHistoryPagination.event;
     }
       
     onPullToRefresh = () => {
@@ -55,6 +45,21 @@ class UserProfileFlatList extends PureComponent {
     componentDidMount(){
         fetchUser(this.props.userId);
         this.videoHistoryPagination.initPagination();
+        this.paginationEvent.on("beforeRefresh" , this.beforeRefresh );
+        this.paginationEvent.on("onRefresh" , this.onRefresh );
+        this.paginationEvent.on("onRefreshError" , this.onRefreshError );
+        this.paginationEvent.on("beforeNext" , this.beforeNext );
+        this.paginationEvent.on("onNext" , this.onNext );
+        this.paginationEvent.on("onNextError" , this.onNextError );
+    }
+
+    componentWillUnmount(){
+        this.paginationEvent.removeListener('beforeRefresh');
+        this.paginationEvent.removeListener('onRefresh');
+        this.paginationEvent.removeListener('onRefreshError');
+        this.paginationEvent.removeListener('beforeNext');
+        this.paginationEvent.removeListener('onNext');
+        this.paginationEvent.removeListener('onNextError');
     }
 
     _fetchUrlVideoHistory(){

@@ -1,12 +1,11 @@
 import React , {PureComponent} from "react"; 
-import {View, Text , FlatList} from "react-native";
+import {FlatList} from "react-native";
 import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
 import Pricer from "../../services/Pricer";
 
 import UserVideoHistoryRow from "./UserVideoHistoryRow";
 
-import inlineStyles from './styles';
 
 const maxVideosThreshold = 3;
 
@@ -21,53 +20,65 @@ class UserVideoHistoryScreen extends PureComponent{
     constructor(props){
         super(props); 
         this.videoHistoryPagination = this.props.navigation.getParam("videoHistoryPagination"); 
-        this.currentIndex =  this.props.navigation.getParam("currentIndex") || 0;
-        this.userId =  this.props.navigation.getParam("userId") || 0;
+        this.paginationEvent = this.videoHistoryPagination.event ; 
+        this.currentIndex =  this.props.navigation.getParam("currentIndex");
+        this.userId =  this.props.navigation.getParam("userId") ;
 
-        console.log("this.videoHistoryPagination.list", this.videoHistoryPagination.list);
         this.state = {
             list : this.videoHistoryPagination.list,
-            refreshing : false, //TODO ask
-            loadingNext: false, //TODO ask
+            refreshing : false, 
+            loadingNext: false,
             activeIndex: this.currentIndex,
             pagingEnabled: false
         }
     }
 
     componentDidMount(){
-        setTimeout(()=>{
-            this.setState({pagingEnabled: true});
-        },10)
+        this.paginationEvent.on("beforeRefresh" , this.beforeRefresh );
+        this.paginationEvent.on("onRefresh" , this.onRefresh );
+        this.paginationEvent.on("onRefreshError" , this.onRefreshError );
+        this.paginationEvent.on("beforeNext" , this.beforeNext );
+        this.paginationEvent.on("onNext" , this.onNext );
+        this.paginationEvent.on("onNextError" , this.onNextError );
+    }
+
+    componentWillUnmount(){
+        this.paginationEvent.removeListener('beforeRefresh');
+        this.paginationEvent.removeListener('onRefresh');
+        this.paginationEvent.removeListener('onRefreshError');
+        this.paginationEvent.removeListener('beforeNext');
+        this.paginationEvent.removeListener('onNext');
+        this.paginationEvent.removeListener('onNextError');
     }
 
     getVideoBtAmount(videoId){
         return Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ; 
     }
 
-    //TODO
-    // beforeRefresh = ( ) => {
-    //     this.setState({ refreshing : true }); 
-    // }
+    
+    beforeRefresh = ( ) => {
+        this.setState({ refreshing : true }); 
+    }
 
-    // onRefresh = ( res ) => {
-    //     this.setState({ refreshing : false ,  list : this.videoHistoryPagination.list }); 
-    // }
+    onRefresh = ( res ) => {
+        this.setState({ refreshing : false ,  list : this.videoHistoryPagination.list }); 
+    }
 
-    // onRefreshError = ( error ) => {
-    //     this.setState({ refreshing : false });
-    // }
+    onRefreshError = ( error ) => {
+        this.setState({ refreshing : false });
+    }
 
-    // beforeNext =() => {
-    //     this.setState({ loadingNext : true }); 
-    // }
+    beforeNext =() => {
+        this.setState({ loadingNext : true }); 
+    }
 
-    // onNext = ( res  ) => {
-    //     this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.list }); 
-    // }
+    onNext = ( res  ) => {
+        this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.list }); 
+    }
 
-    // onNextError = ( error ) => {
-    //     this.setState({ loadingNext : false }); 
-    // }
+    onNextError = ( error ) => {
+        this.setState({ loadingNext : false }); 
+    }
 
     getNext = () => {
       this.videoHistoryPagination.getNext();
@@ -82,7 +93,6 @@ class UserVideoHistoryScreen extends PureComponent{
     };
 
     _renderItem = ({ item, index }) => {
-        // console.log("_renderItem called for index", index, "item", item);
         const videoId = reduxGetters.getUserVideoId(item) ;
         return  <UserVideoHistoryRow    isActive={index == this.state.activeIndex}
                                         doRender={Math.abs(index - this.currentIndex) < maxVideosThreshold}
@@ -106,28 +116,18 @@ class UserVideoHistoryScreen extends PureComponent{
         console.log("======onScrollToIndexFailed=====" , info );  
     }
 
-    temp = (data, index) => {
-        let x =  {
-            length: inlineStyles.fullScreen.height, 
-            offset: inlineStyles.fullScreen.height * index, 
-            index
-        };
-        console.log("x", x, "index", index);
-        return x;
-    };
-
     render(){
         return(
             <FlatList  
                 snapToAlignment={"top"}
                 viewabilityConfig={{ waitForInteraction: true, itemVisiblePercentThreshold: 90}}
-                pagingEnabled={this.state.pagingEnabled}
+                pagingEnabled={true}
                 decelerationRate={"fast"}
                 data={this.state.list}
                 onEndReached={this.getNext}
+                onRefresh={this.refresh}
                 keyExtractor={this._keyExtractor}
                 refreshing={this.state.refreshing}
-                initialNumToRender={maxVideosThreshold}
                 initialScrollIndex={this.state.activeIndex}
                 onEndReachedThreshold={7}
                 onScrollToIndexFailed={this.onScrollToIndexFailed}
