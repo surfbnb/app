@@ -144,7 +144,7 @@ function flyerHOC(BaseComponent) {
                     {this.props.extendDirection == 'right' ? (
                       <TouchableWithoutFeedback onPress={this.hideFlyer} style={{alignItems: 'center', width: 19.5, height: 19}}>
                         <Animated.View style={[styles.crossIcon, { color: this.contentOpacity, alignSelf: 'center' }]}>
-                          <Image style={{ width: 19.5, height: 19 }} source={modalCross}/>
+                          <Image style={{ width: 12.6, height: 12.6 }} source={modalCross}/>
                         </Animated.View>
                       </TouchableWithoutFeedback>
                     ) : (
