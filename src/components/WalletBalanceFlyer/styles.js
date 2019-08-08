@@ -7,7 +7,6 @@ let stylesMap = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    minWidth: 60,
     height: 46,
     borderTopLeftRadius: 23,
     borderBottomLeftRadius: 23,
@@ -16,17 +15,31 @@ let stylesMap = {
     top: 50,
     right: 0
   },
+  innerTopBg:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   topBgTxt: {
     color: '#2a293b',
     fontSize: 14,
     marginLeft: 6,
     fontFamily: 'AvenirNext-DemiBold'
   },
+  crossIconClickSpace: {
+    width: 22,
+    height: 22,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  topUp: {
+    color: '#ff5566',
+    fontFamily: 'AvenirNext-DemiBold',
+    fontSize: 14
+  },
   crossIcon: {
-    // marginLeft: 10,
     width: 13,
-    height: 12.6,
-    // alignSelf: 'center'
+    height: 12.6
   }
 };
 

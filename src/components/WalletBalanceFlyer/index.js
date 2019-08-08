@@ -49,16 +49,16 @@ class WalletBalanceFlyer extends Component {
         <View style={[ styles.topBg ]}>
           {!!this.props.balance <= 0 &&
             <Animated.View style={{flexDirection: 'row', alignItems: 'center', width: this.state.animatedWidth, opacity: contentOpacity}}>
-              <TouchableWithoutFeedback onPress={this.hideFlyer} style={{width: 22, height: 22, alignItems: 'center', justifyContent: 'center'}}>
+              <TouchableWithoutFeedback onPress={this.hideFlyer}>
                 <Image style={[styles.crossIcon]} source={modalCross}/>
               </TouchableWithoutFeedback>
               <Text>{' '}Low Balance please{' '}</Text>
-              <Text style={{color: '#ff5566', fontFamily: 'AvenirNext-DemiBold', fontSize: 14}}>Topup</Text>
+              <Text style={styles.topUp}>Topup</Text>
             </Animated.View>
           }
           <TouchableWithoutFeedback onPress={this.handlePress}>
             <View
-              style={{ height: 46, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minWidth: this.props.balance <= 0 ? 60 : ''  }}
+              style={[styles.innerTopBg, { minWidth: this.props.balance <= 0 ? 50 : 'auto'  }]}
             >
               <Image style={{ height: 11.55, width: 11.55 }} source={selfAmountWallet} />
               <Text style={styles.topBgTxt}>
