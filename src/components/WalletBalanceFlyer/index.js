@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, Animated } from 'react-native';
+import { View, Image, Text, Animated, Easing } from 'react-native';
 
 import styles from './styles';
 import selfAmountWallet from '../../assets/self-amount-wallet.png';
@@ -10,18 +10,14 @@ class WalletBalanceFlyer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      animatedWidth: new Animated.Value(60),
+      animatedWidth: new Animated.Value(0),
       extensionVisible: false
     };
-    this.contentOpacity = this.state.animatedWidth.interpolate({
-      inputRange: [0, 210, 230],
-      outputRange: [0, 0.1, 1],
-      extrapolate: 'clamp'
-    });
   }
 
   showFlyer = () => {
-    Animated.timing(this.state.animatedWidth, { toValue: 230, duration: 300 }).start(() => {
+    this.state.animatedWidth.setValue(0);
+    Animated.timing(this.state.animatedWidth, { toValue: 210, duration: 300, easing: Easing.linear }).start(() => {
       this.setState({
         extensionVisible: true
       });
@@ -29,7 +25,7 @@ class WalletBalanceFlyer extends Component {
   };
 
   hideFlyer = () => {
-    Animated.timing(this.state.animatedWidth, { toValue: 0, duration: 300 }).start(() => {
+    Animated.timing(this.state.animatedWidth, { toValue: 0, duration: 300,  easing: Easing.linear }).start(() => {
       this.setState({
         extensionVisible: false
       });
@@ -45,22 +41,24 @@ class WalletBalanceFlyer extends Component {
   };
 
   render() {
+    const contentOpacity = this.state.animatedWidth.interpolate({
+      inputRange: [0, 190, 210],
+      outputRange: [0, 0.1, 1]
+    });
     return (
         <View style={[ styles.topBg ]}>
           {!!this.props.balance <= 0 &&
-            <Animated.View style={{flexDirection: 'row', width: this.state.animatedWidth, opacity: this.contentOpacity}}>
-              <TouchableWithoutFeedback onPress={this.hideFlyer} style={{alignItems: 'center', width: 19.5, height: 19}}>
-                <React.Fragment>
-                  <Image style={styles.crossIcon} source={modalCross}/>
-                </React.Fragment>
+            <Animated.View style={{flexDirection: 'row', alignItems: 'center', width: this.state.animatedWidth, opacity: contentOpacity}}>
+              <TouchableWithoutFeedback onPress={this.hideFlyer} style={{width: 22, height: 22, alignItems: 'center', justifyContent: 'center'}}>
+                <Image style={[styles.crossIcon]} source={modalCross}/>
               </TouchableWithoutFeedback>
-              <Text style={{marginLeft: 10}}>Low Balance please</Text>
-              <Text style={{marginLeft: 5}}>Topup</Text>
+              <Text>{' '}Low Balance please{' '}</Text>
+              <Text style={{color: '#ff5566', fontFamily: 'AvenirNext-DemiBold', fontSize: 14}}>Topup</Text>
             </Animated.View>
           }
           <TouchableWithoutFeedback onPress={this.handlePress}>
             <View
-              style={{ height: 46, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}
+              style={{ height: 46, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minWidth: this.props.balance <= 0 ? 60 : ''  }}
             >
               <Image style={{ height: 11.55, width: 11.55 }} source={selfAmountWallet} />
               <Text style={styles.topBgTxt}>

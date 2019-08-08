@@ -3,7 +3,7 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 let stylesMap = {
   topBg: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    // paddingHorizontal: 12,
+    paddingHorizontal: 8,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -23,10 +23,10 @@ let stylesMap = {
     fontFamily: 'AvenirNext-DemiBold'
   },
   crossIcon: {
-    marginLeft: 10,
-    width: 12.6,
+    // marginLeft: 10,
+    width: 13,
     height: 12.6,
-    alignSelf: 'center'
+    // alignSelf: 'center'
   }
 };
 
