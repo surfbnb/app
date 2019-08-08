@@ -1,11 +1,13 @@
 import React , {PureComponent} from "react"; 
-import {FlatList} from "react-native";
+import {View , FlatList} from "react-native";
 import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
 import Pricer from "../../services/Pricer";
+import Pagination from "../../services/Pagination";
 
 import UserVideoHistoryRow from "./UserVideoHistoryRow";
 
+import inlineStyles from "./styles";
 
 const maxVideosThreshold = 3;
 
@@ -19,13 +21,13 @@ class UserVideoHistoryScreen extends PureComponent{
 
     constructor(props){
         super(props); 
-        this.videoHistoryPagination = this.props.navigation.getParam("videoHistoryPagination"); 
-        this.paginationEvent = this.videoHistoryPagination.event ; 
-        this.currentIndex =  this.props.navigation.getParam("currentIndex");
         this.userId =  this.props.navigation.getParam("userId") ;
-
+        this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory() );
+        this.paginationEvent = this.videoHistoryPagination.event;
+        this.currentIndex =  0 ;// this.props.navigation.getParam("currentIndex");
+       
         this.state = {
-            list : this.videoHistoryPagination.list,
+            list : this.props.navigation.getParam("initialList") || [],
             refreshing : false, 
             loadingNext: false,
             activeIndex: this.currentIndex,
@@ -33,13 +35,19 @@ class UserVideoHistoryScreen extends PureComponent{
         }
     }
 
+    _fetchUrlVideoHistory(){
+        return `/users/${this.userId}/video-history` ; 
+    }
+
     componentDidMount(){
-        this.paginationEvent.on("beforeRefresh" , this.beforeRefresh );
-        this.paginationEvent.on("onRefresh" , this.onRefresh );
-        this.paginationEvent.on("onRefreshError" , this.onRefreshError );
-        this.paginationEvent.on("beforeNext" , this.beforeNext );
-        this.paginationEvent.on("onNext" , this.onNext );
-        this.paginationEvent.on("onNextError" , this.onNextError );
+        this.paginationEvent.on("beforeRefresh" ,  this.beforeRefresh.bind(this) );
+        this.paginationEvent.on("onRefresh" , this.onRefresh.bind(this) );
+        this.paginationEvent.on("onRefreshError" , this.onRefreshError.bind(this)  );
+        this.paginationEvent.on("beforeNext" ,  this.beforeNext.bind(this) );
+        this.paginationEvent.on("onNext" , this.onNext.bind(this) );
+        this.paginationEvent.on("onNextError" , this.onNextError.bind(this) );
+        this.videoHistoryPagination.initPagination();
+        this.setState({ pagingEnabled: true});
     }
 
     componentWillUnmount(){
@@ -93,6 +101,7 @@ class UserVideoHistoryScreen extends PureComponent{
     };
 
     _renderItem = ({ item, index }) => {
+        console.log("_renderItem = index = " , index  );
         const videoId = reduxGetters.getUserVideoId(item) ;
         return  <UserVideoHistoryRow    isActive={index == this.state.activeIndex}
                                         doRender={Math.abs(index - this.currentIndex) < maxVideosThreshold}
@@ -116,26 +125,35 @@ class UserVideoHistoryScreen extends PureComponent{
         console.log("======onScrollToIndexFailed=====" , info );  
     }
 
-    render(){
+    getItemLayout= (data, index) => {
+        const layoutConfig = {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ; 
+        console.log("getItemLayout = index = layoutConfig = " , index , layoutConfig );
+        return layoutConfig ;
+    }
+       
+    render() {
         return(
-            <FlatList  
-                snapToAlignment={"top"}
-                viewabilityConfig={{ waitForInteraction: true, itemVisiblePercentThreshold: 90}}
-                pagingEnabled={true}
-                decelerationRate={"fast"}
-                data={this.state.list}
-                onEndReached={this.getNext}
-                onRefresh={this.refresh}
-                keyExtractor={this._keyExtractor}
-                refreshing={this.state.refreshing}
-                initialScrollIndex={this.state.activeIndex}
-                onEndReachedThreshold={7}
-                onScrollToIndexFailed={this.onScrollToIndexFailed}
-                onViewableItemsChanged={this.onViewableItemsChanged}
-                onMomentumScrollEnd={this.onMomentumScrollEndCallback}
-                renderItem={this._renderItem}
-                showsVerticalScrollIndicator={false}
-            />
+                <FlatList  
+                    snapToAlignment={"top"}
+                    viewabilityConfig={{itemVisiblePercentThreshold: 90}}
+                    pagingEnabled={this.state.pagingEnabled}
+                    decelerationRate={"normal"}
+                    data={this.state.list}
+                    onEndReached={this.getNext}
+                    onRefresh={this.refresh}
+                    keyExtractor={this._keyExtractor}
+                    refreshing={this.state.refreshing}
+                    onEndReachedThreshold={7}
+                    onViewableItemsChanged={this.onViewableItemsChanged}
+                    onMomentumScrollEnd={this.onMomentumScrollEndCallback}
+                    renderItem={this._renderItem}
+                    style={inlineStyles.fullScreen}
+                    showsVerticalScrollIndicator={false}
+
+                    //initialScrollIndex={this.state.activeIndex}
+                    //getItemLayout={this.getItemLayout}
+                    //onScrollToIndexFailed={this.onScrollToIndexFailed}
+                />
         );
     }
 

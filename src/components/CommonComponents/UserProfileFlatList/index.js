@@ -37,20 +37,16 @@ class UserProfileFlatList extends PureComponent {
         this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory() );
         this.paginationEvent = this.videoHistoryPagination.event;
     }
-      
-    onPullToRefresh = () => {
-      fetchUser(this.props.userId); 
-    } 
 
     componentDidMount(){
+        this.paginationEvent.on("beforeRefresh" , this.beforeRefresh.bind(this) );
+        this.paginationEvent.on("onRefresh" ,  this.onRefresh.bind(this) );
+        this.paginationEvent.on("onRefreshError" , this.onRefreshError.bind(this));
+        this.paginationEvent.on("beforeNext" ,   this.beforeNext.bind(this));
+        this.paginationEvent.on("onNext" , this.onNext.bind(this) );
+        this.paginationEvent.on("onNextError" , this.onNextError.bind(this));
         fetchUser(this.props.userId);
         this.videoHistoryPagination.initPagination();
-        this.paginationEvent.on("beforeRefresh" , this.beforeRefresh );
-        this.paginationEvent.on("onRefresh" , this.onRefresh );
-        this.paginationEvent.on("onRefreshError" , this.onRefreshError );
-        this.paginationEvent.on("beforeNext" , this.beforeNext );
-        this.paginationEvent.on("onNext" , this.onNext );
-        this.paginationEvent.on("onNextError" , this.onNextError );
     }
 
     componentWillUnmount(){
@@ -63,7 +59,6 @@ class UserProfileFlatList extends PureComponent {
     }
 
     _fetchUrlVideoHistory(){
-        if(!this.props.userId){  return null }
         return `/users/${this.props.userId}/video-history` ; 
     }
 
@@ -71,13 +66,17 @@ class UserProfileFlatList extends PureComponent {
       return Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
     }
 
+    onPullToRefresh = () => {
+      fetchUser(this.props.userId); 
+    } 
+
     beforeRefresh = ( ) => {
         this.onPullToRefresh();
         this.setState({ refreshing : true }); 
     }
 
     onRefresh = ( res ) => {
-        this.setState({ refreshing : false ,  list : this.videoHistoryPagination.list }); 
+        this.setState({ refreshing : false , list : this.videoHistoryPagination.list }); 
     }
 
     onRefreshError = ( error ) => {
@@ -134,7 +133,7 @@ class UserProfileFlatList extends PureComponent {
     onVideoClick = ( item, index  ) => {
         console.log("onVideoClick===" , index);
         this.props.navigation.push("UserVideoHistory", {
-          videoHistoryPagination : this.videoHistoryPagination,
+          initialList : this.state.list,
           currentIndex: index,
           userId: this.props.userId
         });

@@ -17,8 +17,9 @@ class Pagination {
     }
 
     initPagination() {
-      if(!this.fetchUrl) return ; 
-      this.refresh( new FetchServices(this.fetchUrl) );
+      if(!this.fetchUrl) return ;
+      this.fetchServices = new FetchServices(this.fetchUrl); 
+      this.refresh( this.fetchServices );
     }
 
     refresh(fetchServices) {
