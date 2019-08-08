@@ -17,7 +17,6 @@ let stylesMap = {
         height: (DeviceInfo.hasNotch() || StatusBar.currentHeight > 24)
           ? Dimensions.get('window').height - CUSTOM_TAB_Height + StatusBar.currentHeight
           : Dimensions.get('window').height - CUSTOM_TAB_Height
-        // height: Dimensions.get('window').height - CUSTOM_TAB_Height
       }
     )
   },
@@ -27,7 +26,7 @@ let stylesMap = {
   },
   touchablesBtns: {
     alignSelf: 'flex-end',
-    marginBottom: -30,
+    marginBottom: -29,
     zIndex: 1
   },
   pepoTxCount: {
@@ -69,7 +68,7 @@ let stylesMap = {
     borderBottomRightRadius: 20,
     paddingHorizontal: 5,
     width: 130,
-    height: 60,
+    height: 58,
     alignItems: 'center',
     justifyContent: 'center'
   },

@@ -195,7 +195,7 @@ const DrawerNavigator = createDrawerNavigator(
     drawerPosition: 'right',
     drawerBackgroundColor: '#fff',
     overlayColor: 'rgba(0, 0, 0, 0.8)',
-    drawerWidth: Dimensions.get('window').width - Dimensions.get('window').width / 4,
+    drawerWidth: Dimensions.get('window').width - Dimensions.get('window').width / 5,
     contentComponent: CustomDrawerContent,
     drawerLockMode: 'locked-closed'
   }
