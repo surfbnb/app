@@ -15,13 +15,13 @@ import FfmpegProcesser from './FfmpegProcesser';
 import UploadToS3 from './UploadToS3';
 import PepoApi from './PepoApi';
 import ReduxGetters from './ReduxGetters';
-import EventEmitter from 'eventemitter3';
+import videoUploaderComponent from './CameraWorkerEventEmitter';
 
 import CurrentUser from '../models/CurrentUser';
 import createObjectForRedux from '../helpers/createObjectForRedux';
 const recordedVideoStates = ['raw_video', 'compressed_video', 's3_video', 'cover_image', 's3_cover_image'];
 
-export const videoUploaderComponent = new EventEmitter();
+
 
 const processingStatuses = [
   'compression_processing',
@@ -124,6 +124,7 @@ class CameraWorker extends PureComponent {
 
   async cleanUp() {
     // stop ffmpge processing
+    videoUploaderComponent.emit('hide');
     Store.dispatch(videoInProcessing(false));
     FfmpegProcesser.cancel();
     // remove files from cache,
@@ -133,8 +134,8 @@ class CameraWorker extends PureComponent {
     // Cleaning up Async
     utilities.removeItem(this.getCurrentUserRecordedVideoKey());
     // cleanup Redux
-
     Store.dispatch(clearRecordedVideo());
+    
   }
 
   async removeFile(file) {
@@ -360,14 +361,11 @@ class CameraWorker extends PureComponent {
                 do_discard: true,
                 pepo_api_posting: false
               })
-            );            
-            videoUploaderComponent.emit('hide');
+            );                        
           }
           this.postToPepoApi = false;
         })
-        .catch(() => {
-          // cancel workflow.
-          videoUploaderComponent.emit('hide');
+        .catch(() => {                  
           this.postToPepoApi = false;
           Store.dispatch(
             upsertRecordedVideo({

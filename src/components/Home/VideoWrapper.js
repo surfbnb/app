@@ -7,6 +7,7 @@ import inlineStyles from './styles';
 import reduxGetter from '../../services/ReduxGetters';
 import playIcon from '../../assets/play_icon.png';
 import PixelCall from '../../services/PixelCall';
+import captureVideoEventEmitter from '../CaptureVideo/caputureVideoEventEmitter';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -33,6 +34,8 @@ class VideoWrapper extends PureComponent {
   }
 
   componentDidMount() {
+    captureVideoEventEmitter.on('show', this.captureVideoShow);
+    captureVideoEventEmitter.on('hide', this.captureVideoHide);
     this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
       clearTimeout(this.loadingTimeOut);
       this.loadingTimeOut = setTimeout(() => {
@@ -57,6 +60,21 @@ class VideoWrapper extends PureComponent {
     };
 
     AppState.addEventListener('change', this._handleAppStateChange);
+  }
+
+
+
+  componentWillUnmount() {
+    captureVideoEventEmitter.removeListener('show');
+    captureVideoEventEmitter.removeListener('hide');    
+  }
+
+  captureVideoShow = () => {
+    this.pauseVideo();
+  }
+
+  captureVideoHide = () => {
+    ! this.isUserPaused && this.playVideo();
   }
 
   componentWillUnmount() {

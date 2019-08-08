@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Image, TouchableWithoutFeedback } from 'react-native';
 
 import styles from './styles';
-import WalletIcon from '../../../assets/profile-flyer-wallet.png';
+import VideoIcon from '../../../assets/icon-video.png';
 import flyerHOC from '../../CommonComponents/FlyerHOC';
 import ProgressCircle from 'react-native-progress/CircleSnail';
 import Colors from '../../../theme/styles/Colors';
@@ -30,7 +30,7 @@ class VideoLoadingFlyer extends Component {
       >
         <ProgressCircle size={53} color={Colors.primary} duration={3000} direction="clockwise"></ProgressCircle>
       </View>
-      <Image source={WalletIcon} style={{ width: 15, height: 15, position: 'absolute' }} />
+      <Image source={VideoIcon} style={{ width: 25, height: 15, position: 'absolute' }} />
     </View>
     );
   }
