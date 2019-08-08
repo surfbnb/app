@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableWithoutFeedback, Animated, Text } from 'react-native';
+import { View, TouchableWithoutFeedback, Animated, Text, Image } from 'react-native';
 import EventEmitter from 'eventemitter3';
 
 import styles from './styles';
+
+import modalCross from '../../../assets/modal-cross-icon.png';
 
 export const FlyerEventEmitter = new EventEmitter();
 
@@ -119,8 +121,10 @@ function flyerHOC(BaseComponent) {
                 >
                   <View style={{ flexDirection: 'row' }}>
                     {this.props.extendDirection == 'left' ? (
-                      <TouchableWithoutFeedback onPress={this.hideFlyer}>
-                        <Animated.Text style={[styles.crossIcon, { color: this.contentOpacity }]}>X</Animated.Text>
+                      <TouchableWithoutFeedback onPress={this.hideFlyer} style={{alignItems: 'center', width: 19.5, height: 19}}>
+                        <Animated.View style={[styles.crossIcon, { color: this.contentOpacity, alignSelf: 'center'}]}>
+                          <Image style={{ width: 12.6, height: 12.6 }} source={modalCross}/>
+                        </Animated.View>
                       </TouchableWithoutFeedback>
                     ) : (
                       <View />
@@ -138,8 +142,10 @@ function flyerHOC(BaseComponent) {
                     </Animated.Text>
                     <Text style={this.props.highlightedTextStyle}>{this.props.highlightedText}</Text>
                     {this.props.extendDirection == 'right' ? (
-                      <TouchableWithoutFeedback onPress={this.hideFlyer}>
-                        <Animated.Text style={[styles.crossIcon, { color: this.contentOpacity }]}>X</Animated.Text>
+                      <TouchableWithoutFeedback onPress={this.hideFlyer} style={{alignItems: 'center', width: 19.5, height: 19}}>
+                        <Animated.View style={[styles.crossIcon, { color: this.contentOpacity, alignSelf: 'center' }]}>
+                          <Image style={{ width: 12.6, height: 12.6 }} source={modalCross}/>
+                        </Animated.View>
                       </TouchableWithoutFeedback>
                     ) : (
                       <View />

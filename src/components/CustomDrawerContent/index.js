@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Text, View, Image } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
 import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
-import loggedOutLogo from "../../assets/drawer-logout-icon.png";
+import loggedOutIcon from "../../assets/drawer-logout-icon.png";
+import twitterDisconnectIcon from "../../assets/drawer-twitter-icon.png";
 
 function twitterDisconnect() {
   new PepoApi('/auth/twitter-disconnect')
@@ -24,7 +26,7 @@ function twitterDisconnect() {
 
 export default CustomDrawerContent = (props) => (
   <ScrollView style={styles.container}>
-    <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+    <SafeAreaView forceInset={{ top: 'always' }}>
       <View
         style={{
           paddingVertical: 11,
@@ -34,32 +36,15 @@ export default CustomDrawerContent = (props) => (
       >
         <Text style={styles.headerText}>{reduxGetter.getName(CurrentUser.getUserId())}</Text>
       </View>
-      {/* <TouchableOpacity onPress={twitterDisconnect}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderBottomColor: Colors.seaMist,
-            borderBottomWidth: 1,
-            paddingVertical: 20
-          }}
-        >
-          <View style={styles.itemIcon}></View>
+       <TouchableOpacity onPress={twitterDisconnect}>
+         <View style={styles.itemParent}>
+          <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
           <Text style={styles.item}>Twitter Disconnect</Text>
         </View>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <TouchableOpacity onPress={CurrentUser.logout.bind(CurrentUser)}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderBottomColor: Colors.seaMist,
-            borderBottomWidth: 1,
-            paddingVertical: 15,
-            paddingHorizontal: 15
-          }}
-        >
-          <Image style={{ height: 24, width: 25.3 }} source={loggedOutLogo} />
+        <View style={styles.itemParent}>
+          <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
           <Text style={styles.item}>Logout</Text>
         </View>
       </TouchableOpacity>
@@ -78,16 +63,16 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center'
   },
-  item: {
-    fontSize: 18,
-    marginLeft: 10
+  itemParent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomColor: Colors.seaMist,
+    borderBottomWidth: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 15
   },
-  // itemIcon: {
-  //   backgroundColor: Colors.primary,
-  //   opacity: 0.5,
-  //   borderRadius: 15,
-  //   width: 30,
-  //   height: 30,
-  //   marginHorizontal: 10
-  // }
+  item: {
+    fontSize: 16,
+    marginLeft: 10
+  }
 });

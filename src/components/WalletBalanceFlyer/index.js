@@ -4,6 +4,7 @@ import { View, Image, Text, Animated } from 'react-native';
 import styles from './styles';
 import selfAmountWallet from '../../assets/self-amount-wallet.png';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import modalCross from "../../assets/modal-cross-icon.png";
 
 class WalletBalanceFlyer extends Component {
   constructor(props) {
@@ -51,13 +52,15 @@ class WalletBalanceFlyer extends Component {
   render() {
     return this.props.balance <= 0 ? (
       <Animated.View style={[styles.topBg, { width: this.state.animatedWidth }]}>
-        {/* <View style={{ flexDirection: 'row', width: 100 }}>
-          <TouchableWithoutFeedback onPress={this.hideFlyer}>
-            <Animated.Text style={[styles.crossIcon]}>X</Animated.Text>
+        <View style={{ flexDirection: 'row', width: 100 }}>
+          <TouchableWithoutFeedback onPress={this.hideFlyer} style={{alignItems: 'center', width: 19.5, height: 19}}>
+            <Animated.View style={[styles.crossIcon, { color: this.contentOpacity, alignSelf: 'center' }]}>
+              <Image style={{ width: 12.6, height: 12.6 }} source={modalCross}/>
+            </Animated.View>
           </TouchableWithoutFeedback>
           <Animated.Text style={{ marginLeft: 10 }}>Low Balance please</Animated.Text>
           <Animated.Text style={{ marginLeft: 5 }}>Topup</Animated.Text>
-        </View> */}
+        </View>
         <TouchableWithoutFeedback onPress={this.handlePress}>
           <View
             style={{ minWidth: 50, height: 46, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}

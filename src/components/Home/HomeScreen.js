@@ -7,7 +7,7 @@ import VideoList from './VideoList';
 import Pricer from '../../services/Pricer';
 import CurrentUser from '../../models/CurrentUser';
 import VideoLoadingFlyer from '../CommonComponents/VideoLoadingFlyer';
-import { videoUploaderComponent } from '../../services/CameraWorker';
+import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 
 const mapStateToProps = (state) => {
   return {
@@ -39,6 +39,11 @@ class HomeScreen extends Component {
   componentDidMount = () => {
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
+  };
+
+  componentDidMount = () => {
+    videoUploaderComponent.removeListener('show');
+    videoUploaderComponent.removeListener('hide');
   };
 
   showVideoUploader = () => {

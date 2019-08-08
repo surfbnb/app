@@ -5,7 +5,7 @@ import reduxGetters from "./ReduxGetters";
 import appConfig from '../constants/AppConfig';
 
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
-import { captureVideoEventEmitter } from '../components/CaptureVideo';
+import  captureVideoEventEmitter  from '../components/CaptureVideo/caputureVideoEventEmitter';
 
 let recursiveMaxCount = 0 ; 
 

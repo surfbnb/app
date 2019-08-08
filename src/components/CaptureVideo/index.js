@@ -3,9 +3,7 @@ import { Modal } from 'react-native';
 import VideoRecorder from '../VideoRecorder';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
 import NavigationService from '../../services/NavigationService';
-import EventEmitter from 'eventemitter3';
-
-export const captureVideoEventEmitter = new EventEmitter();
+import captureVideoEventEmitter from './caputureVideoEventEmitter';
 
 class CaptureVideo extends Component {
   // static navigationOptions = {
@@ -26,9 +24,16 @@ class CaptureVideo extends Component {
     captureVideoEventEmitter.on('hide', this.hideModal);
   };
 
-  hideModal = () => {    
+
+
+  componentWillUnmount() {
+    captureVideoEventEmitter.removeListener('show');
+    captureVideoEventEmitter.removeListener('hide');    
+  }
+
+  hideModal = (params) => {        
     this.setState({ modalVisible: false });
-    NavigationService.navigate('HomeScreen');
+    params.uploading && NavigationService.navigate('HomeScreen');
   };
 
   showModal = () => {

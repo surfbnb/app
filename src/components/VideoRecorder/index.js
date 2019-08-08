@@ -11,7 +11,7 @@ import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/cross_icon.png';
-import {captureVideoEventEmitter} from '../CaptureVideo';
+import captureVideoEventEmitter from '../CaptureVideo/caputureVideoEventEmitter';
 
 import AppConfig from '../../constants/AppConfig';
 
@@ -74,11 +74,8 @@ class VideoRecorder extends Component {
     );
   }
 
-  cancleVideoHandling = () => {
-    // this.props.navigation.goBack();
-    console.log('cancleVideoHandling');
-    captureVideoEventEmitter.emit('hide');
-    
+  cancleVideoHandling = () => {    
+    captureVideoEventEmitter.emit('hide', {uploading:false});
   };
 
   cameraView() {

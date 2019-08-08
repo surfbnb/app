@@ -11,9 +11,9 @@ let stylesMap = {
     justifyContent: 'space-around',
     backgroundColor: 'rgba(255, 255, 255, 0.85)',
     alignItems: 'center',
-    borderColor: 'rgba(0, 0, 0, 0.25)',
-    borderWidth: 1,
-    borderBottomWidth: 0,
+    // borderColor: 'rgba(0, 0, 0, 0.25)',
+    // borderWidth: 1,
+    // borderBottomWidth: 0,
     // elevation: 8
   },
   tabElementSkipFont: {
