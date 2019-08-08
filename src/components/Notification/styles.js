@@ -28,18 +28,13 @@ let stylesMap = {
     borderTopLeftRadius: 15,
     borderBottomRightRadius: 15,
     borderWidth: 1,
-    // borderColor: '#fff',
-    // alignItems: 'flex-start',
-    width: 80,
-    paddingLeft: 10,
-    justifyContent: 'center',
-    paddingVertical: 10,
+    alignItems: 'center',
+    marginLeft: 'auto',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     color: Colors.white,
     borderColor: Colors.pinkRed,
-    flexDirection: 'row',
-    right: 10,
-    position: 'absolute'
-    // flex: 0.5
+    flexDirection: 'row'
   },
   numericInfoText: {
     color: Colors.pinkRed,
