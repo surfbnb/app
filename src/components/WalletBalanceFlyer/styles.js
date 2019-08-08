@@ -3,7 +3,7 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 let stylesMap = {
   topBg: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    paddingHorizontal: 12,
+    // paddingHorizontal: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -17,13 +17,16 @@ let stylesMap = {
     right: 0
   },
   topBgTxt: {
-    color: '#ff5566',
+    color: '#2a293b',
     fontSize: 14,
     marginLeft: 6,
     fontFamily: 'AvenirNext-DemiBold'
   },
   crossIcon: {
-    marginLeft: 10
+    marginLeft: 10,
+    width: 12.6,
+    height: 12.6,
+    alignSelf: 'center'
   }
 };
 

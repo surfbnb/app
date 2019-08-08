@@ -14,7 +14,7 @@ let stylesMap = {
         height: Dimensions.get('window').height - CUSTOM_TAB_Height - getBottomSpace([true])
       },
       {
-        height: DeviceInfo.hasNotch()
+        height: (DeviceInfo.hasNotch() || StatusBar.currentHeight > 24)
           ? Dimensions.get('window').height - CUSTOM_TAB_Height + StatusBar.currentHeight
           : Dimensions.get('window').height - CUSTOM_TAB_Height
         // height: Dimensions.get('window').height - CUSTOM_TAB_Height
