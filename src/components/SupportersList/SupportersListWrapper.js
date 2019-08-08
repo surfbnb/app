@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
 import SupportersList from './index';
+import BackArrow from "../CommonComponents/BackArrow";
 
 class SupportersListWrapper extends PureComponent {
   
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
-      headerTitle: 'Supporters'
+      headerTitle: 'Supporters',
+      headerBackTitle: null,
+      headerBackImage: <BackArrow />
     };
   };
 
