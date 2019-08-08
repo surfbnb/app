@@ -13,12 +13,10 @@ class Pagination {
       this.fetchUrl = fetchUrl ; 
 
       this.event = new EventEmitter();
-
+      this.fetchServices = new FetchServices(this.fetchUrl); 
     }
 
     initPagination() {
-      if(!this.fetchUrl) return ;
-      this.fetchServices = new FetchServices(this.fetchUrl); 
       this.refresh( this.fetchServices );
     }
 
