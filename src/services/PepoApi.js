@@ -27,7 +27,8 @@ import {
   updatePricePoints,
   updateToken,
   upsertUserContributionByStats,
-  upsertUserContributionToStats
+  upsertUserContributionToStats,
+  upsertUserNotifications
 } from '../actions';
 import { API_ROOT } from '../constants/index';
 
@@ -191,6 +192,10 @@ export default class PepoApi {
 
     if( data['user_videos'] ){
       Store.dispatch(upsertUserVideoEntities(this._getEntities(data['user_videos'])));
+    }
+
+    if (data['user_notifications']){
+      Store.dispatch(upsertUserNotifications(this._getEntities(data['user_notifications'])));
     }
 
     switch (resultType) {

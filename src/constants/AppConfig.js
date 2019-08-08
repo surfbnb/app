@@ -90,5 +90,12 @@ export default {
     userScreenCoverImageWidth: "288w"
   },
 
-  cameraHeightRatio : 0.6
+  cameraHeightRatio : 0.6,
+
+  notificationConstants : {
+    profileTxSendKind : "PROFILE_TX_SEND_SUCCESS",
+    profileTxReceiveKind : "PROFILE_TX_RECEIVE_SUCCESS",
+    videoAddKind: "VIDEO_ADD"
+
+  }
 };

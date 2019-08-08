@@ -39,7 +39,8 @@ export const {
   clearProfilePicture,
   upsertUserVideoEntities,
   upsertUserContributionToStats,
-  upsertUserContributionByStats
+  upsertUserContributionByStats,
+  upsertUserNotifications
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -197,19 +198,15 @@ export const reducer = handleActions(
     }),
     [upsertUserContributionByStats]: (state, action) => ({
       ...state,
-      user_contribution_by_stats: merge(
-        {},
-        state.user_contribution_by_stats,
-        action.payload.user_contribution_by_stats
-      )
+      user_contribution_by_stats: merge({}, state.user_contribution_by_stats, action.payload.user_contribution_by_stats)
     }),
     [upsertUserContributionToStats]: (state, action) => ({
       ...state,
-      user_contribution_to_stats: merge(
-        {},
-        state.user_contribution_to_stats,
-        action.payload.user_contribution_to_stats
-      )
+      user_contribution_to_stats: merge({}, state.user_contribution_to_stats, action.payload.user_contribution_to_stats)
+    }),
+    [upsertUserNotifications]: (state, action) => ({
+      ...state,
+      user_notifications: assignIn({}, state.user_notifications, action.payload.user_notifications)
     })
   },
   defaultState
