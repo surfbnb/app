@@ -7,7 +7,7 @@ let stylesMap = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 46,
+    height: 40,
     borderTopLeftRadius: 23,
     borderBottomLeftRadius: 23,
     zIndex: 1,
@@ -24,6 +24,7 @@ let stylesMap = {
     color: '#2a293b',
     fontSize: 14,
     marginLeft: 6,
+    alignSelf: 'center',
     fontFamily: 'AvenirNext-DemiBold'
   },
   crossIconClickSpace: {
