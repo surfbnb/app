@@ -49,7 +49,7 @@ function onTabPressed(navigation, tab) {
     if (!CurrentUser.checkActiveUser()) return;
 
     if (tab.rootStack === "CaptureVideo" ) {
-        utilities.handleVideoUploadModal();
+        utilities.handleVideoUploadModal(previousTabIndex);
         return;
     }
 

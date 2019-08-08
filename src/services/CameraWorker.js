@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from 'react';
+import React, {  PureComponent } from 'react';
 import { connect } from 'react-redux';
 import RNFS from 'react-native-fs';
 import Store from '../store';
@@ -32,7 +32,7 @@ const processingStatuses = [
 
 const recordedVideoActions = ['do_upload', 'do_discard'];
 
-class CameraWorker extends Component {
+class CameraWorker extends PureComponent {
   constructor() {
     super();
     this.syncedFromAsyncToRedux = false;
@@ -77,12 +77,6 @@ class CameraWorker extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps){
-    if(nextProps.recorded_video.cover_image_id != this.props.recorded_video.cover_image_id || nextProps.recorded_video.video_image_id != this.props.recorded_video.video_image_id){
-      return false;
-    }
-    return true;
-  }
 
   async processVideo() {
     // Early exit
@@ -124,7 +118,7 @@ class CameraWorker extends Component {
 
   updateProfileViewRawVideo() {
     if (this.props.recorded_video.cover_image && !this.props.recorded_video.video_s3_upload_processing) { 
-      this.updateProfileViewVideo(this.props.recorded_video.cover_image, this.props.recorded_video.raw_video);
+      // this.updateProfileViewVideo(this.props.recorded_video.cover_image, this.props.recorded_video.raw_video);
     }
   }
 
@@ -253,16 +247,8 @@ class CameraWorker extends Component {
     );
 
     Store.dispatch(upsertImageEntities(imageObject.value));
-    Store.dispatch(upsertVideoEntities(videoObject.value));    
-    Store.dispatch(
-      upsertUserProfileEntities({
-        [`id_${CurrentUser.getUserId()}`]: {
-          ...ReduxGetters.getCurrentUserProfile(),
-          ...{ cover_image_id: imageObject.key, cover_video_id: videoObject.key }
-        }
-      })
-      // upsertRecordedVideo({cover_image_id: imageObject.key, cover_video_id: videoObject.key})
-    );
+    Store.dispatch(upsertVideoEntities(videoObject.value));
+
   }
 
   async uploadVideo() {
@@ -366,11 +352,8 @@ class CameraWorker extends Component {
       new PepoApi(`/users/${this.props.current_user.id}/fan-video`)
         .post(payload)
         .then((responseData) => {
-          if (responseData.success && responseData.data) {            
-            this.updateProfileViewVideo(this.props.recorded_video.s3_cover_image, this.props.recorded_video.s3_video);
-            Toast.show({
-              text: 'Video uploaded Successfully'
-            });
+          if (responseData.success && responseData.data) {
+          // this.updateProfileViewVideo(this.props.recorded_video.s3_cover_image, this.props.recorded_video.s3_video);
             console.log('Video uploaded Successfully');
             Store.dispatch(
               upsertRecordedVideo({

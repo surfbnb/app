@@ -66,18 +66,20 @@ class HomeScreen extends Component {
         <StatusBar translucent={true} backgroundColor={'transparent'} />
         <TopStatus />
         {this.state.videoUploaderVisible && (
-          <View style={{top: 40, zIndex: 1}}>
-            <VideoLoadingFlyer
-              componentHeight={46}
-              componentWidth={46}
-              sliderWidth={150}
-              displayText="Uploading Video"
-              extendDirection="right"
-              extend={true}
-              id={2}
-            />
-          </View>
-         )}
+        <VideoLoadingFlyer
+          componentHeight={46}
+          componentWidth={46}
+          sliderWidth={180}
+          containerStyle={{ top: 50, left: 10 }}
+          displayText="Uploading Video"
+          extendDirection="right"
+          extend={true}
+          id={2}
+        />
+      )}
+
+
+
         <VideoList toRefresh={this.state.toRefresh} fetchUrl={'/feeds'} onRefresh={this.onRefresh} />
       </View>
     );
