@@ -8,6 +8,8 @@ import Colors from '../../theme/styles/Colors';
 import loggedOutIcon from '../../assets/drawer-logout-icon.png';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
 
+import BackArrow from '../../assets/back-arrow.png';
+
 function twitterDisconnect() {
   new PepoApi('/auth/twitter-disconnect')
     .post()
@@ -22,7 +24,8 @@ function twitterDisconnect() {
         alert('Twitter Disconnect failed', res);
       }
     });
-}
+};
+
 let userName;
 export default CustomDrawerContent = (props) => {
   let currentUserName = reduxGetter.getName(CurrentUser.getUserId());
@@ -34,9 +37,19 @@ export default CustomDrawerContent = (props) => {
           style={{
             paddingVertical: 11,
             borderBottomColor: Colors.seaMist,
-            borderBottomWidth: 1
+            borderBottomWidth: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 8,
+            justifyContent: 'center'
           }}
         >
+          <TouchableOpacity
+            onPress={{}}
+            style={{height: 30, width: 30, alignItems: 'center', justifyContent: 'center'}}
+          >
+            <Image style={{ height: 25.5, width: 14.5 }} source={BackArrow} />
+          </TouchableOpacity>
           <Text style={styles.headerText}>{userName}</Text>
         </View>
         <TouchableOpacity onPress={twitterDisconnect}>
@@ -65,6 +78,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontWeight: '600',
     fontSize: 17,
+    flex: 1,
     textAlign: 'center'
   },
   itemParent: {
