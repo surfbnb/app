@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Linking } from 'react-native';
+import { View, Text, Linking, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import {withNavigation} from 'react-navigation';
@@ -10,7 +10,6 @@ import reduxGetter from '../../../services/ReduxGetters';
 import ProfilePicture from '../../ProfilePicture';
 import PixelCall from "../../../services/PixelCall";
 import LinearGradient from "react-native-linear-gradient";
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -64,6 +63,7 @@ class UserInfo extends React.PureComponent {
   render() {
     return (
       <View style={{alignItems: 'center', paddingTop: 30}}>
+
         <NavigationEvents
             onDidFocus={this.onDidFocus}
         />
@@ -95,27 +95,22 @@ class UserInfo extends React.PureComponent {
           end={{ x: 1, y: 0 }}
         >
           <View style={inlineStyle.numericInfoWrapper}>
-            <TouchableWithoutFeedback onPress={this.GoToSupporting}>
-            <View style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
+            <TouchableOpacity onPress={this.GoToSupporting} style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
               <Text style={inlineStyle.numericInfoText}>{this.props.supporting || 0}</Text>
               <Text style={inlineStyle.numericInfoText}>SUPPORTING</Text>
-            </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
 
-            <TouchableWithoutFeedback onPress={this.GoToSupporters}>
-            <View style={[inlineStyle.numericInnerWrapper]}>
+            <TouchableOpacity onPress={this.GoToSupporters} style={[inlineStyle.numericInnerWrapper]}>
               <Text style={inlineStyle.numericInfoText}>{this.props.supporters || 0}</Text>
               <Text style={inlineStyle.numericInfoText}>SUPPORTERS</Text>
-            </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
 
-            <View style={[inlineStyle.numericInnerWrapper]}>
+            <View style={[inlineStyle.numericInnerWrapper]} style={[inlineStyle.numericInnerWrapper]}>
               <Text style={inlineStyle.numericInfoText}>${this.btToFiat(this.props.btAmount) || 0}</Text>
               <Text style={inlineStyle.numericInfoText}>RAISED</Text>
             </View>
           </View>
         </LinearGradient>
-
 
       </View>
     );
