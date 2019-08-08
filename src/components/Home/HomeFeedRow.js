@@ -48,8 +48,8 @@ class HomeFeedRow extends PureComponent {
 
   navigateToUserProfile = (e) => {
     if (CurrentUser.checkActiveUser()) {
-      if (this.props.userId == CurrentUser.getUserId()) {
-        this.props.navigation.navigate('Profile');
+      if (this.userId == CurrentUser.getUserId()) {
+        this.props.navigation.navigate('ProfileScreen');
       } else {
         this.props.navigation.push('UsersProfileScreen', { userId: this.userId });
       }
