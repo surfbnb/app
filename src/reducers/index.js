@@ -193,7 +193,7 @@ export const reducer = handleActions(
     [logoutUser]: (state, action) => ({
       ...state,
       current_user: {},
-      balance: '0'
+      balance: null
     }),
     [upsertUserContributionByStats]: (state, action) => ({
       ...state,

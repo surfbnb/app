@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, Alert, Switch, TouchableOpacity, Image, Platform, Dimensions } from 'react-native';
-import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import {Header, SafeAreaView} from 'react-navigation';
+import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
+import { getStatusBarHeight, getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
+import { Header } from 'react-navigation';
 import BigNumber from 'bignumber.js';
-import clone from "lodash/clone";
+import clone from 'lodash/clone';
 
 import FormInput from '../../theme/components/FormInput';
+import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
+import pepo_icon from '../../assets/pepo-blue-icon.png';
 import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
 import CurrentUser from '../../models/CurrentUser';
@@ -17,26 +18,20 @@ import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
-import EditIcon from '../../assets/edit_icon.png';
-import BackArrow from "../CommonComponents/BackArrow";
 import { ostErrors } from '../../services/OstErrors';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
-import GiphySelect from "./GiphySelect";
-import reduxGetter from "../../services/ReduxGetters";
-import PixelCall from "../../services/PixelCall";
-import pepo_icon from '../../assets/pepo-blue-icon.png';
-
+import reduxGetter from '../../services/ReduxGetters';
+import PixelCall from '../../services/PixelCall';
+import modalCross from '../../assets/modal-cross-icon.png';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
+const bottomSpace = getBottomSpace([true]),
+  extraPadding = 10,
+  safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
 
 class TransactionScreen extends Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: reduxGetter.getName( navigation.getParam('toUserId') ) ,
-      headerBackImage: (<BackArrow/>)
-    };
-  };
   constructor(props) {
     super(props);
     this.state = {
@@ -53,14 +48,95 @@ class TransactionScreen extends Component {
       switchToggleState: false,
       showTxModal: false,
       fieldErrorText: null,
-      viewStyle: { height: Dimensions.get('window').height - safeAreaHeight },
       selectedGiphy: null
     };
     this.baseState = this.state;
-    this.toUser = reduxGetter.getUser( this.props.navigation.getParam('toUserId') ) ;
+    this.toUser = reduxGetter.getUser(this.props.navigation.getParam('toUserId'));
     //Imp : Make sure if transaction is mappning againts Profile dont send video Id
     this.videoId = this.props.navigation.getParam('videoId');
-    this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate')
+    this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate');
+    this.priceOracle = pricer.getPriceOracle();
+    this.state = this.getState();
+    this.balance = props.navigation.getParam('balance');
+  }
+
+  getState() {
+    const btAmount = this.props.navigation.getParam('btAmount');
+    return {
+      btAmount: btAmount,
+      btUSDAmount: (this.priceOracle && this.priceOracle.btToFiat(btAmount)) || 0,
+      btAmountErrorMsg: null,
+      bottomPadding: safeAreaBottomSpace,
+      btFocus: false
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ btFocus: true });
+  }
+
+  _keyboardShown(e) {
+    let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;
+    bottomPaddingValue += extraPadding;
+
+    if (this.state.bottomPadding == bottomPaddingValue) {
+      return;
+    }
+
+    this.setState({
+      bottomPadding: bottomPaddingValue
+    });
+  }
+
+  _keyboardHidden(e) {
+    if (this.state.bottomPadding == safeAreaBottomSpace) {
+      return;
+    }
+    this.setState({
+      bottomPadding: safeAreaBottomSpace
+    });
+  }
+
+  onBtChange(bt) {
+    if (!this.priceOracle) return;
+    this.setState({ btAmount: bt, btUSDAmount: this.priceOracle.btToFiat(bt) });
+    if (bt > 0) {
+      this.setState({ btAmountErrorMsg: null });
+    }
+  }
+
+  onUSDChange(usd) {
+    if (!this.priceOracle) return;
+    this.setState({ btAmount: this.priceOracle.fiatToBt(usd), btUSDAmount: usd });
+  }
+
+  onConfirm = () => {
+    let btAmount = this.state.btAmount;
+    if (!this.isValidInput(btAmount)) {
+      return;
+    }
+    btAmount = btAmount && Number(btAmount);
+    this.onAmountModalConfirm(this.state.btAmount, this.state.btUSDAmount);
+    this.closeModal();
+  };
+
+  isValidInput(btAmount) {
+    if (btAmount && String(btAmount).indexOf(',') > -1) {
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_decimal_error') });
+      return false;
+    }
+    btAmount = btAmount && Number(btAmount);
+    if (!btAmount || btAmount <= 0 || btAmount > this.balance) {
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
+      return false;
+    }
+    return true;
+  }
+
+  closeModal() {
+    this.setState({ btFocus: false }, () => {
+      this.props.navigation.goBack();
+    });
   }
 
   defaultVals() {
@@ -71,30 +147,41 @@ class TransactionScreen extends Component {
   componentWillMount() {
     this.defaultVals();
     this.getBalance();
+    this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
+    this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
 
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
   }
 
   componentWillUnmount() {
     this.defaultVals();
     this.onGetPricePointSuccess = () => {};
     this.onBalance = () => {};
+    this.keyboardWillShowListener.remove();
+    this.keyboardWillHideListener.remove();
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
   }
 
   getBalance() {
     pricer.getBalance(
       (res) => {
-      this.onBalance(res);
+        this.onBalance(res);
       },
       (err) => {
-        this.onError( err );
-    });
+        this.onError(err);
+      }
+    );
   }
 
   //TODO , NOT SURE if bug comes this also will have to connected via redux.
-  onBalance(balance , res) {
+  onBalance(balance, res) {
     balance = pricer.getFromDecimal(balance);
     balance = PriceOracle.toBt(balance) || 0;
-    let exceBtnDisabled = !BigNumber(balance).isGreaterThan(0) || !utilities.isUserActivated( reduxGetter.getUserActivationStatus(this.toUser.id) );
+    let exceBtnDisabled =
+      !BigNumber(balance).isGreaterThan(0) ||
+      !utilities.isUserActivated(reduxGetter.getUserActivationStatus(this.toUser.id));
     this.setState({ balance, exceBtnDisabled });
   }
 
@@ -120,17 +207,17 @@ class TransactionScreen extends Component {
     );
   }
 
-  getSdkMetaProperties(){
-    const metaProperties = clone( appConfig.metaProperties );
-    if(this.videoId){
-      metaProperties["name"] = "video";
-      metaProperties["details"] =  `vi_${this.videoId}`;
+  getSdkMetaProperties() {
+    const metaProperties = clone(appConfig.metaProperties);
+    if (this.videoId) {
+      metaProperties['name'] = 'video';
+      metaProperties['details'] = `vi_${this.videoId}`;
     }
     return metaProperties;
   }
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
-    this.requestAcknowledgeDelegate && this.requestAcknowledgeDelegate(ostWorkflowContext , ostWorkflowEntity) ;
+    this.requestAcknowledgeDelegate && this.requestAcknowledgeDelegate(ostWorkflowContext, ostWorkflowEntity);
     pricer.getBalance();
     this.sendTransactionToPlatform(ostWorkflowEntity);
     let pixelParams = {
@@ -140,7 +227,7 @@ class TransactionScreen extends Component {
         amount: this.state.btAmount
       }
     };
-    if(this.videoId){
+    if (this.videoId) {
       pixelParams.e_entity = 'video';
       pixelParams.e_data_json.video_id = this.videoId;
       pixelParams.p_type = 'feed';
@@ -204,13 +291,6 @@ class TransactionScreen extends Component {
     }
   }
 
-  onMessageBtnPress() {
-    this.setState({ isMessageVisible: !this.state.isMessageVisible });
-    if (this.state.isMessageVisible) {
-      this.setState({ message: '' });
-    }
-  }
-
   onAmountModalConfirm = (btAmt, btUSDAmt) => {
     this.setState({
       btAmount: btAmt,
@@ -218,145 +298,82 @@ class TransactionScreen extends Component {
     });
   };
 
-  openedKeyboard(frames) {
-    let deviceHeight = frames.endCoordinates.screenY -  Header.HEIGHT - getStatusBarHeight(),
-      stateObj;
-    if (deviceHeight > 362) {
-      stateObj = { height: deviceHeight };
-    } else {
-      stateObj = { flex: 1 };
-    }
-    this.setState({
-      viewStyle: stateObj
-    });
-  }
-
-  closedKeyboard(frames) {
-    this.setState({
-      viewStyle: { height: Dimensions.get('window').height - safeAreaHeight }
-    });
-  }
-
-  openGiphy() {
-    this.props.navigation.navigate('Giphy', { onGifySelect: ( gifsData )=> {
-       this.setState({ selectedGiphy: gifsData});
-    }})
-  }
-
-  openEditTx(){
-    this.props.navigation.navigate('EditTx', {
-      btAmount: this.state.btAmount,
-      balance: this.state.balance,
-      onAmountModalConfirm: this.onAmountModalConfirm
-    })
-  }
-
-  resetGiphy(){
-    this.setState({ selectedGiphy: null});
-  }
-
   render() {
     return (
-      <KeyboardAwareScrollView
-        enableOnAndroid={true}
-        extraHeight={200}
-        style={{backgroundColor: '#f6f6f6'}}
-        onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
-        onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
-        onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
-        onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
-        keyboardShouldPersistTaps="always"
-      >
-        <SafeAreaView forceInset={{ top: 'never'}}>
-        <View style={this.state.viewStyle}>
-          <View style={inlineStyles.container}>
-            {!this.state.isLoading && (
-              <React.Fragment>
-                <View style={{paddingHorizontal: 20}}>
-                  <GiphySelect selectedGiphy={this.state.selectedGiphy} resetGiphy={() => { this.resetGiphy() }} openGiphy={()=> {this.openGiphy() }} />
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginTop: 20,
-                      alignItems: 'center'
-                    }}
-                  >
-                    {/*{  This is add message button }*/}
-                    <TouchableOpacity
-                      style={{}}
-                      onPress={() => {
-                        this.onMessageBtnPress();
-                      }}
-                    >
-                      <Text style={inlineStyles.addMessageTextStyle}>
-                        {this.state.isMessageVisible ? 'Clear Message' : 'Add Message'}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  {this.state.isMessageVisible && (
-                    <FormInput
-                      autoFocus={true}
-                      editable={true}
-                      onChangeText={(message) => this.setState({ message: message })}
-                      placeholder="Message"
-                      fieldName="message"
-                      style={[Theme.TextInput.textInputStyle, { backgroundColor: '#ffffff', marginTop: 20 }]}
-                      value={this.state.message}
-                      returnKeyType="done"
-                      returnKeyLabel="Done"
-                      serverErrors={this.state.server_errors}
-                      placeholderTextColor="#ababab"
-                    />
-                  )}
-
-                  <Text style={Theme.Errors.errorText}> {this.state.fieldErrorText}</Text>
-                </View>
-                <View style={inlineStyles.txBtnsBg}>
-                  <Text style={{marginBottom: 10, color: '#34445b'}}>Balance &#9654;{' '}
-                    <Image style={{ width: 10, height: 10}} source={pepo_icon}></Image> {this.state.balance}
-                  </Text>
-                  <View style={{ flexDirection: 'row'}}>
-                    <TouchableOpacity
-                      disabled={this.state.exceBtnDisabled}
-                      style={[
-                        Theme.Button.btn,
-                        Theme.Button.btnPink,
-                        inlineStyles.sendPepoBtn,
-                        this.state.exceBtnDisabled ? Theme.Button.disabled : null
-                      ]}
-                      onPress={() => this.excecuteTransaction()}
-                    >
-                      <Text style={[Theme.Button.btnPinkText, { fontWeight: '500' }]}>
-                        Send{' '}
-                        <Image
-                          style={{ width: 10, height: 10, tintColor: '#ffffff' }}
-                          source={utilities.getTokenSymbolImageConfig()['image1']}
-                        ></Image>{' '}
-                        {this.state.btAmount}
-                      </Text>
-
-                      {/*<Text style={[Theme.Button.btnPinkText]}>{this.state.btAmount}</Text>*/}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      disabled={this.state.exceBtnDisabled}
-                      style={[Theme.Button.btn, Theme.Button.btnPink, inlineStyles.dottedBtn, this.state.exceBtnDisabled ? Theme.Button.disabled : null]}
-                      onPress={() => {
-                        this.openEditTx();
-                      }}
-                    >
-                      <Image style={[{ width: 20, height: 20 }]} source={EditIcon}></Image>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-
-              </React.Fragment>
-            )}
-          </View>
+      <View style={inlineStyles.container}>
+        <View style={inlineStyles.headerWrapper}>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.goBack();
+            }}
+            style={{
+              position: 'absolute',
+              left: 15
+            }}
+          >
+            <Image source={modalCross} style={{ width: 19.5, height: 19 }} />
+          </TouchableOpacity>
+          <Text style={inlineStyles.modalHeader}>Send Pepo’s</Text>
         </View>
-        </SafeAreaView>
-      </KeyboardAwareScrollView>
+        <View style={{ padding: 20 }}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 0.7 }}>
+              <FormInput
+                editable={true}
+                onChangeText={(val) => this.onBtChange(val)}
+                placeholder="BT"
+                fieldName="bt_amount"
+                style={Theme.TextInput.textInputStyle}
+                value={`${this.state.btAmount}`}
+                placeholderTextColor="#ababab"
+                errorMsg={this.state.btAmountErrorMsg}
+                keyboardType="numeric"
+                isFocus={false}
+                blurOnSubmit={true}
+              />
+            </View>
+            <View style={{ flex: 0.3 }}>
+              <TextInput editable={false} style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}>
+                <Text>PEPO</Text>
+              </TextInput>
+            </View>
+          </View>
+
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 0.7 }}>
+              <FormInput
+                editable={true}
+                onChangeText={(val) => this.onUSDChange(val)}
+                value={`${this.state.btUSDAmount}`}
+                placeholder="USD"
+                fieldName="usd_amount"
+                style={Theme.TextInput.textInputStyle}
+                placeholderTextColor="#ababab"
+                keyboardType="numeric"
+                blurOnSubmit={true}
+              />
+            </View>
+            <View style={{ flex: 0.3 }}>
+              <TextInput editable={false} style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}>
+                <Text>USD</Text>
+              </TextInput>
+            </View>
+          </View>
+          <TouchableButton
+            TouchableStyles={[Theme.Button.btnPink, { marginTop: 10 }]}
+            TextStyles={[Theme.Button.btnPinkText]}
+            text="CONFIRM"
+            onPress={() => {
+              this.onConfirm();
+            }}
+          />
+          <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>
+            Your Current Balance: <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}
+            {this.state.balance}
+            {this.balance}
+          </Text>
+        </View>
+      </View>
     );
   }
 }

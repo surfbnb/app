@@ -56,13 +56,13 @@ const getRouteName = (navigation) => {
 const modalStackConfig = {
   headerLayoutPreset: 'center',
   headerMode: 'none',
-  mode: 'modal'
-  // navigationOptions: ({ navigation }) => {
-  //   const routeName = getRouteName(navigation);
-  //   return {
-  //     tabBarVisible: routeName == 'TransactionScreen' ? false : true
-  //   };
-  // }
+  mode: 'modal',
+  navigationOptions: ({ navigation }) => {
+    const routeName = getRouteName(navigation);
+    return {
+      tabBarVisible: routeName == 'TransactionScreen' ? false : true
+    };
+  }
 };
 
 const HomePushStack = createStackNavigator(
@@ -83,7 +83,11 @@ const HomeStack = createStackNavigator(
     HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen
   },
-  { ...modalStackConfig }
+  {
+    ...modalStackConfig,
+    transparentCard: true,
+    cardStyle: { backgroundColor: 'rgba(0,0,0,0.5)' }
+  }
 );
 
 const NotificationPushStack = createStackNavigator(
@@ -192,7 +196,8 @@ const DrawerNavigator = createDrawerNavigator(
     drawerBackgroundColor: '#fff',
     overlayColor: 'rgba(0, 0, 0, 0.8)',
     drawerWidth: Dimensions.get('window').width - Dimensions.get('window').width / 4,
-    contentComponent: CustomDrawerContent
+    contentComponent: CustomDrawerContent,
+    drawerLockMode: 'locked-closed'
   }
 );
 

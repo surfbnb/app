@@ -5,8 +5,8 @@ import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
 import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
-import loggedOutIcon from "../../assets/drawer-logout-icon.png";
-import twitterDisconnectIcon from "../../assets/drawer-twitter-icon.png";
+import loggedOutIcon from '../../assets/drawer-logout-icon.png';
+import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
 
 function twitterDisconnect() {
   new PepoApi('/auth/twitter-disconnect')
@@ -23,34 +23,38 @@ function twitterDisconnect() {
       }
     });
 }
-
-export default CustomDrawerContent = (props) => (
-  <ScrollView style={styles.container}>
-    <SafeAreaView forceInset={{ top: 'always' }}>
-      <View
-        style={{
-          paddingVertical: 11,
-          borderBottomColor: Colors.seaMist,
-          borderBottomWidth: 1
-        }}
-      >
-        <Text style={styles.headerText}>{reduxGetter.getName(CurrentUser.getUserId())}</Text>
-      </View>
-       <TouchableOpacity onPress={twitterDisconnect}>
-         <View style={styles.itemParent}>
-          <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
-          <Text style={styles.item}>Twitter Disconnect</Text>
+let userName;
+export default CustomDrawerContent = (props) => {
+  let currentUserName = reduxGetter.getName(CurrentUser.getUserId());
+  userName = currentUserName || userName;
+  return (
+    <ScrollView style={styles.container}>
+      <SafeAreaView forceInset={{ top: 'always' }}>
+        <View
+          style={{
+            paddingVertical: 11,
+            borderBottomColor: Colors.seaMist,
+            borderBottomWidth: 1
+          }}
+        >
+          <Text style={styles.headerText}>{userName}</Text>
         </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={CurrentUser.logout.bind(CurrentUser)}>
-        <View style={styles.itemParent}>
-          <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
-          <Text style={styles.item}>Logout</Text>
-        </View>
-      </TouchableOpacity>
-    </SafeAreaView>
-  </ScrollView>
-);
+        <TouchableOpacity onPress={twitterDisconnect}>
+          <View style={styles.itemParent}>
+            <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
+            <Text style={styles.item}>Twitter Disconnect</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={CurrentUser.logout.bind(CurrentUser)}>
+          <View style={styles.itemParent}>
+            <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+            <Text style={styles.item}>Logout</Text>
+          </View>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
