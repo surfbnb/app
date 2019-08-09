@@ -27,22 +27,21 @@ import pepoWhiteIcon from '../../../assets/pepo-white-icon.png'
 class UserProfileFlatList extends PureComponent {
     constructor(props){
         super(props);
-
-        this.state = {
-            list : [] ,
-            refreshing : false, 
-            loadingNext: false
-        }
-
         this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory() );
         this.paginationEvent = this.videoHistoryPagination.event;
+
+        this.state = {
+          list :  this.videoHistoryPagination.getList(),
+          refreshing : false, 
+          loadingNext: false
+        }
     }
 
     componentDidMount(){
-        this.paginationEvent.on("beforeRefresh" , this.beforeRefresh.bind(this) );
+        this.paginationEvent.on("onBeforeRefresh" , this.beforeRefresh.bind(this) );
         this.paginationEvent.on("onRefresh" ,  this.onRefresh.bind(this) );
         this.paginationEvent.on("onRefreshError" , this.onRefreshError.bind(this));
-        this.paginationEvent.on("beforeNext" ,   this.beforeNext.bind(this));
+        this.paginationEvent.on("onBeforeNext" , this.beforeNext.bind(this));
         this.paginationEvent.on("onNext" , this.onNext.bind(this) );
         this.paginationEvent.on("onNextError" , this.onNextError.bind(this));
         fetchUser(this.props.userId);
@@ -50,10 +49,10 @@ class UserProfileFlatList extends PureComponent {
     }
 
     componentWillUnmount(){
-        this.paginationEvent.removeListener('beforeRefresh');
+        this.paginationEvent.removeListener('onBeforeRefresh');
         this.paginationEvent.removeListener('onRefresh');
         this.paginationEvent.removeListener('onRefreshError');
-        this.paginationEvent.removeListener('beforeNext');
+        this.paginationEvent.removeListener('onBeforeNext');
         this.paginationEvent.removeListener('onNext');
         this.paginationEvent.removeListener('onNextError');
     }
@@ -76,7 +75,7 @@ class UserProfileFlatList extends PureComponent {
     }
 
     onRefresh = ( res ) => {
-        this.setState({ refreshing : false , list : this.videoHistoryPagination.list }); 
+        this.setState({ refreshing : false , list : this.videoHistoryPagination.getList() }); 
     }
 
     onRefreshError = ( error ) => {
@@ -88,7 +87,7 @@ class UserProfileFlatList extends PureComponent {
     }
 
     onNext = ( res  ) => {
-        this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.list }); 
+        this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.getList() }); 
     }
 
     onNextError = ( error ) => {
@@ -131,9 +130,9 @@ class UserProfileFlatList extends PureComponent {
      };
 
     onVideoClick = ( item, index  ) => {
-        console.log("onVideoClick===" , index);
+        const clonedInstance = this.videoHistoryPagination.fetchServices.cloneInstance();
         this.props.navigation.push("UserVideoHistory", {
-          initialList : this.state.list,
+          fetchServices : clonedInstance,
           currentIndex: index,
           userId: this.props.userId
         });

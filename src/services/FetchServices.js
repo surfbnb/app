@@ -148,6 +148,10 @@ class FetchServices {
     let Constructor = this.constructor;
     return new Constructor(this.url, this.extraParams, this.id, this.options);
   }
+
+  cloneInstance(){
+    return  Object.assign( Object.create( Object.getPrototypeOf(this)), this);
+  }
 }
 
 export { FetchServices, VCErrors };
