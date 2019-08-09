@@ -7,15 +7,37 @@ export default class TimestampHandling {
       // 1000 milliseconds
       return 'just now';
     }
-    return moment(tsInMilliSeconds).fromNow();
+    TimestampHandling.setDefaultLocale();
+    return moment(tsInMilliSeconds).fromNow(true);
   }
   static shortenedFromNow(tsInSeconds){
-    let timeString = TimestampHandling.fromNow(tsInSeconds)
-    if (timeString =='just now'){
-      return 'just'
-    }
-    let splittedTimeString = timeString.split(' ');
-
-    return `${splittedTimeString[0]}${splittedTimeString[1][0]}`;
+    let tsInMilliSeconds = tsInSeconds * 1000;      
+    TimestampHandling.updateLocaleForShortTimeFormat(); 
+    return moment(tsInMilliSeconds).fromNow(true);      
   }
+
+  static updateLocaleForShortTimeFormat(){
+    moment.updateLocale('en', {
+      relativeTime : {          
+          s  : '%ds',
+          ss : '%ds',
+          m:  "%dm",
+          mm: "%dm",
+          h:  "%dh",
+          hh: "%dh",
+          d:  "%dd",
+          dd: "%dd",
+          M:  "%dM",
+          MM: "%dM",
+          y:  "%dy",
+          yy: "%dy"
+      }
+  });
+  }
+
+  static setDefaultLocale(){
+    moment.updateLocale('en',null);
+  } 
+
+
 }
