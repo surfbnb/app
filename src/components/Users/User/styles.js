@@ -5,8 +5,8 @@ let stylesMap = {
   item: {
     fontSize: 15,
     flex: 1,
-    fontWeight: '300',
-    color: Colors.midNightblue,
+    fontFamily: 'AvenirNext-Medium',
+    color: Colors.valhalla,
     marginLeft: 10
   },
   expressBtn: {
