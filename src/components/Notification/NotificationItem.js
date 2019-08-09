@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import styles from './styles';
 import Pricer from '../../services/Pricer';
@@ -12,7 +12,7 @@ import PepoIcon from '../../assets/pepo-tx-icon.png';
 import { connect } from 'react-redux';
 import AppConfig from '../../../src/constants/AppConfig';
 import TimestampHandling from '../../helpers/timestampHandling';
-
+import playIcon from '../../assets/play_icon.png';
 // const userClick = function(userId, navigation) {
 //   if (userId == CurrentUser.getUserId()) {
 //     navigation.navigate('ProfileScreen');
@@ -45,20 +45,30 @@ class NotificationItem extends Component {
   handleRowClick = () => {
     if (this.props.goTo && this.props.goTo.pn == 'p') {
       this.goToProfilePage(this.props.goTo.v.puid);
+    } else if (this.props.goTo && this.props.goTo.pn == 'cb') {
+      this.goToSupporters(this.props.goTo.v.puid);
+    } else if (this.props.goTo && this.props.goTo.pn == 'v') {
+      this.goToVideo(this.props.goTo.v.vid);
     }
+  };
+
+  goToVideo = (vId) => {
+    this.props.navigation.push('VideoPlayer', {
+      videoId: vId
+    });
+  };
+
+  goToSupporters = (profileId) => {
+    this.props.navigation.push('SupportersListWrapper', { userId: profileId });
   };
 
   sortNumber(a, b) {
     return a - b;
   }
 
-  componentDidMount() {
-    //   this.getHeading();
-  }
-
-  goTo = (goToObj) => {
-    if (goToObj.kind == 'users') {
-      this.goToProfilePage(goToObj.id);
+  includesTextNavigate = (includesObject) => {
+    if (includesObject.kind == 'users') {
+      this.goToProfilePage(includesObject.id);
     }
   };
 
@@ -69,8 +79,6 @@ class NotificationItem extends Component {
       this.props.navigation.push('UsersProfileScreen', { userId: id });
     }
   };
-
-  rowGoTo = () => {};
 
   getHeading = () => {
     let heading = this.props.heading,
@@ -101,7 +109,7 @@ class NotificationItem extends Component {
         return (
           <TouchableOpacity
             onPress={() => {
-              this.goTo(heading.includes[item]);
+              this.includesTextNavigate(heading.includes[item]);
             }}
             key={i}
           >
@@ -124,14 +132,16 @@ class NotificationItem extends Component {
   };
 
   showVideoComponent = () => {
-    return;
+    let imageUrl = reduxGetter.getVideoImgUrl(this.props.payload.videoId);
+    return (
+      <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
+        <Image style={styles.playIconSkipFont} source={playIcon}></Image>
+      </ImageBackground>
+    );
   };
 
   notificationInfo = () => {
-    if (
-      this.props.kind == AppConfig.notificationConstants.profileTxReceiveKind ||
-      this.props.kind == AppConfig.notificationConstants.profileTxSendKind
-    ) {
+    if (AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)) {
       return this.showAmountComponent();
     } else if (this.props.kind == AppConfig.notificationConstants.videoAddKind) {
       return this.showVideoComponent();
@@ -140,15 +150,37 @@ class NotificationItem extends Component {
     }
   };
 
+  showSayThanks = () => {
+    if (this.props.payload.thank_you_flag === 0) {
+      return (
+        <View style={styles.sayThanksButton}>
+          <Text style={styles.sayThanksText}>Say Thanks</Text>
+        </View>
+      );
+    }
+  };
+
+  showAppreciationText = () => {
+    if (this.props.kind == AppConfig.notificationConstants.AppreciationKind && this.props.payload.thank_you_text) {
+      return <Text style={{ marginLeft: 10, marginTop: 2 }}>"{this.props.payload.thank_you_text}"</Text>;
+    }
+  };
+
   render() {
     return (
       <TouchableOpacity onPress={this.handleRowClick}>
         <View style={styles.txtWrapper}>
           <ProfilePicture pictureId={this.props.pictureId} />
-          <View style={styles.item}>{this.getHeading()}</View>
-          <Text style={styles.timeStamp}>{TimestampHandling.shortenedFromNow(this.props.timeStamp)}</Text>
+          <View style={{ flexDirection: 'column' }}>
+            <View style={styles.item}>{this.getHeading()}</View>
+            {this.showAppreciationText()}
+          </View>
+          <Text style={styles.timeStamp}>
+            {this.props.timeStamp && TimestampHandling.shortenedFromNow(this.props.timeStamp)}
+          </Text>
           {this.notificationInfo()}
         </View>
+        {this.showSayThanks()}
       </TouchableOpacity>
     );
   }

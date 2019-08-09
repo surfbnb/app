@@ -7,7 +7,8 @@ let stylesMap = {
     // flex: 1,
     // fontWeight: '300',
     //color: Colors.midNightblue,
-    marginHorizontal: 10,
+    marginLeft: 10,
+    marginRight: 4,
     flexDirection: 'row'
   },
 
@@ -49,11 +50,31 @@ let stylesMap = {
     color: '#b1b1b1',
     fontFamily: 'AvenirNext-Regular',
     fontSize: 14,
-    //font-weight: normal;
-    // height: 38,
-    letterSpacing: -0.68,
-    width: 32
-  }
+    letterSpacing: -0.68
+  },
+
+  posterImageSkipFont: {
+    aspectRatio: 3 / 4,
+    width: 40,
+    marginLeft: 'auto',
+    justifyContent: 'center'
+  },
+  playIconSkipFont: {
+    height: 14,
+    width: 14,
+    alignSelf: 'center'
+  },
+  sayThanksButton: {
+    width: 120,
+    height: 35,
+    borderRadius: 20,
+    borderWidth: 2,
+    marginLeft: 40,
+    marginTop: -4,
+    borderColor: '#34445b',
+    justifyContent: 'center'
+  },
+  sayThanksText: { alignSelf: 'center', color:  '#34445b', fontWeight: "400" }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
