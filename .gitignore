@@ -61,5 +61,6 @@ buck-out/
 *Carthage/
 *Cartfile.resolved
 ios/ReactNativeFFmpeg/mobile-ffmpeg-min-gpl-4.2.2.LTS-ios-framework/*
+ios/Crashlytics/com.crashlytics.ios-manual/*
 ios/Pepo2.xcodeproj/project.pbxproj
 ios/Pods
