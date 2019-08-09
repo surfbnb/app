@@ -74,7 +74,7 @@ class VideoWrapper extends PureComponent {
   }
 
   captureVideoHide = () => {
-    ! this.isUserPaused && this.playVideo();
+    !this.isUserPaused && !this.pausedOnNavigation && this.playVideo();
   }
 
   componentWillUnmount() {
