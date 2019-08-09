@@ -24,7 +24,7 @@ function twitterDisconnect() {
         alert('Twitter Disconnect failed', res);
       }
     });
-};
+}
 
 let userName;
 export default CustomDrawerContent = (props) => {
@@ -45,8 +45,8 @@ export default CustomDrawerContent = (props) => {
           }}
         >
           <TouchableOpacity
-            onPress={{}}
-            style={{height: 30, width: 30, alignItems: 'center', justifyContent: 'center'}}
+            onPress={props.navigation.closeDrawer}
+            style={{ height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}
           >
             <Image style={{ height: 25.5, width: 14.5 }} source={BackArrow} />
           </TouchableOpacity>

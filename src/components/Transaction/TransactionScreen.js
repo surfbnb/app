@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
-import { getStatusBarHeight, getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
-import { Header } from 'react-navigation';
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import BigNumber from 'bignumber.js';
 import clone from 'lodash/clone';
 
@@ -24,9 +23,7 @@ import pricer from '../../services/Pricer';
 import reduxGetter from '../../services/ReduxGetters';
 import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const safeAreaHeight = Header.HEIGHT + getStatusBarHeight([true]) + getBottomSpace([true]);
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
   safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
@@ -34,41 +31,22 @@ const bottomSpace = getBottomSpace([true]),
 class TransactionScreen extends Component {
   constructor(props) {
     super(props);
+    this.priceOracle = pricer.getPriceOracle();
     this.state = {
       balance: 0,
       exceBtnDisabled: true,
-      isLoading: false,
-      message: null,
-      server_errors: null,
-      isPublic: true,
       general_error: '',
       btAmount: 1,
-      btUSDAmount: 0,
-      isMessageVisible: false,
-      switchToggleState: false,
-      showTxModal: false,
       fieldErrorText: null,
-      selectedGiphy: null
-    };
-    this.baseState = this.state;
-    this.toUser = reduxGetter.getUser(this.props.navigation.getParam('toUserId'));
-    //Imp : Make sure if transaction is mappning againts Profile dont send video Id
-    this.videoId = this.props.navigation.getParam('videoId');
-    this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate');
-    this.priceOracle = pricer.getPriceOracle();
-    this.state = this.getState();
-    this.balance = props.navigation.getParam('balance');
-  }
-
-  getState() {
-    const btAmount = this.props.navigation.getParam('btAmount');
-    return {
-      btAmount: btAmount,
-      btUSDAmount: (this.priceOracle && this.priceOracle.btToFiat(btAmount)) || 0,
+      btUSDAmount: (this.priceOracle && this.priceOracle.btToFiat(1)) || 0,
       btAmountErrorMsg: null,
       bottomPadding: safeAreaBottomSpace,
       btFocus: false
     };
+    this.toUser = reduxGetter.getUser(this.props.navigation.getParam('toUserId'));
+    //Imp : Make sure if transaction is mappning againts Profile dont send video Id
+    this.videoId = this.props.navigation.getParam('videoId');
+    this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate');
   }
 
   componentDidMount() {
@@ -126,7 +104,7 @@ class TransactionScreen extends Component {
       return false;
     }
     btAmount = btAmount && Number(btAmount);
-    if (!btAmount || btAmount <= 0 || btAmount > this.balance) {
+    if (!btAmount || btAmount <= 0 || btAmount > this.state.balance) {
       this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
       return false;
     }
@@ -178,7 +156,7 @@ class TransactionScreen extends Component {
   //TODO , NOT SURE if bug comes this also will have to connected via redux.
   onBalance(balance, res) {
     balance = pricer.getFromDecimal(balance);
-    balance = PriceOracle.toBt(balance) || 0;
+    balance = Number(PriceOracle.toBt(balance)) || 0;
     let exceBtnDisabled =
       !BigNumber(balance).isGreaterThan(0) ||
       !utilities.isUserActivated(reduxGetter.getUserActivationStatus(this.toUser.id));
@@ -269,8 +247,6 @@ class TransactionScreen extends Component {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
       ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
       meta: {
-        text: this.state.message,
-        giphy: this.state.selectedGiphy,
         vi: this.videoId
       }
     };
@@ -300,7 +276,7 @@ class TransactionScreen extends Component {
 
   render() {
     return (
-      <View style={inlineStyles.container}>
+      <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
         <View style={inlineStyles.headerWrapper}>
           <TouchableOpacity
             onPress={() => {
@@ -328,7 +304,7 @@ class TransactionScreen extends Component {
                 placeholderTextColor="#ababab"
                 errorMsg={this.state.btAmountErrorMsg}
                 keyboardType="numeric"
-                isFocus={false}
+                isFocus={this.state.btFocus}
                 blurOnSubmit={true}
               />
             </View>
@@ -360,6 +336,7 @@ class TransactionScreen extends Component {
             </View>
           </View>
           <TouchableButton
+            disabled={this.state.exceBtnDisabled}
             TouchableStyles={[Theme.Button.btnPink, { marginTop: 10 }]}
             TextStyles={[Theme.Button.btnPinkText]}
             text="CONFIRM"
@@ -370,7 +347,6 @@ class TransactionScreen extends Component {
           <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>
             Your Current Balance: <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}
             {this.state.balance}
-            {this.balance}
           </Text>
         </View>
       </View>

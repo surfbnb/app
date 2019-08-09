@@ -11,8 +11,8 @@ let stylesMap = {
     paddingBottom: 50,
     position: 'absolute',
     width: '100%',
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
     ...ifIphoneX(
       {
         bottom: getBottomSpace([true])
