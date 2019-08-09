@@ -1,8 +1,8 @@
 import * as React from "react";
 import {
-  View,
   Animated,
-  Easing
+  Easing,
+  View
 } from "react-native";
 import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
 import pepo_tx_img_disabled from "../../../assets/Pepo-tx-disabled.png"
@@ -22,7 +22,7 @@ export default class ClapButton extends React.Component{
 
 
   AnimateFunction(){
-    Animated.loop(
+    return Animated.loop(
       Animated.sequence([
         Animated.timing(this.state.scaleValue, {
           toValue: 1,
@@ -39,11 +39,11 @@ export default class ClapButton extends React.Component{
       {
         iterations: -1
       }
-    ).start();
+    );
   }
 
   componentDidMount(){
-    this.AnimateFunction();
+    //this.AnimateFunction().start();
   }
 
   render(){
@@ -70,7 +70,7 @@ export default class ClapButton extends React.Component{
     });
 
     return(
-      <React.Fragment>
+      <View>
         <Animated.Image
           id={this.props.id+"_animated_image1"}
           style={[{
@@ -113,7 +113,7 @@ export default class ClapButton extends React.Component{
 
         </Animated.View>
 
-      </React.Fragment>
+      </View>
     )
   }
 }

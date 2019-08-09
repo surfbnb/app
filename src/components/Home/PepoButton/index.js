@@ -51,6 +51,7 @@ class PepoButton extends React.Component {
 
   keepClapping = () => {
     this.setState({ isClapping: true});
+    this.clapBtnRef && this.clapBtnRef.AnimateFunction().start();
     this.clap();
     this.keepclap = setInterval(() => {
       this.clap();
@@ -63,6 +64,7 @@ class PepoButton extends React.Component {
     }
     this.setState({ isClapping: false ,  disabled : true }, () => {
       this.props.onPressOut && this.props.onPressOut( this.currentClapCount, this.state.count ) ;
+      this.clapBtnRef && this.clapBtnRef.AnimateFunction().stop();
       this.currentClapCount = 0;  
     });
   }
@@ -118,7 +120,8 @@ class PepoButton extends React.Component {
           onPressIn={this.keepClapping}
           onPressOut={this.stopClapping}>
           <View>
-            <ClapButton disabled={this.state.disabled}
+            <ClapButton ref={(ref)=> {this.clapBtnRef =  ref}}
+                        disabled={this.state.disabled}
                         isSupported={this.props.isSupported}
                         id={this.props.id+"_clap_btn"}
                         animDuration={animDuration}

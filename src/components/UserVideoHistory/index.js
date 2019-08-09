@@ -24,14 +24,13 @@ class UserVideoHistoryScreen extends PureComponent{
         this.userId =  this.props.navigation.getParam("userId") ;
         this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory() );
         this.paginationEvent = this.videoHistoryPagination.event;
-        this.currentIndex =  0 ;// this.props.navigation.getParam("currentIndex");
+        this.currentIndex = this.props.navigation.getParam("currentIndex");
        
         this.state = {
             list : this.props.navigation.getParam("initialList") || [],
-            refreshing : false, 
-            loadingNext: false,
             activeIndex: this.currentIndex,
-            pagingEnabled: false
+            refreshing : false, 
+            loadingNext: false
         }
     }
 
@@ -47,7 +46,6 @@ class UserVideoHistoryScreen extends PureComponent{
         this.paginationEvent.on("onNext" , this.onNext.bind(this) );
         this.paginationEvent.on("onNextError" , this.onNextError.bind(this) );
         this.videoHistoryPagination.initPagination();
-        this.setState({ pagingEnabled: true});
     }
 
     componentWillUnmount(){
@@ -104,7 +102,7 @@ class UserVideoHistoryScreen extends PureComponent{
         console.log("_renderItem = index = " , index  );
         const videoId = reduxGetters.getUserVideoId(item) ;
         return  <UserVideoHistoryRow    isActive={index == this.state.activeIndex}
-                                        doRender={Math.abs(index - this.currentIndex) < maxVideosThreshold}
+                                        doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                         userId={this.userId} videoId={videoId}  /> ;
     };
 
@@ -126,23 +124,22 @@ class UserVideoHistoryScreen extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-        const layoutConfig = {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ; 
-        console.log("getItemLayout = index = layoutConfig = " , index , layoutConfig );
-        return layoutConfig ;
+        return  {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ; 
     }
        
     render() {
         return(
                 <FlatList  
                     snapToAlignment={"top"}
-                    viewabilityConfig={{itemVisiblePercentThreshold: 90}}
-                    pagingEnabled={this.state.pagingEnabled}
+                    viewabilityConfig={{waitForInteraction: true, itemVisiblePercentThreshold: 90}}
+                    pagingEnabled={true}
                     decelerationRate={"normal"}
                     data={this.state.list}
-                    onEndReached={this.getNext}
-                    onRefresh={this.refresh}
+                    // onEndReached={this.getNext}
+                    // onRefresh={this.refresh}
+                    // refreshing={this.state.refreshing}
                     keyExtractor={this._keyExtractor}
-                    refreshing={this.state.refreshing}
+                   
                     onEndReachedThreshold={7}
                     onViewableItemsChanged={this.onViewableItemsChanged}
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
@@ -150,9 +147,9 @@ class UserVideoHistoryScreen extends PureComponent{
                     style={inlineStyles.fullScreen}
                     showsVerticalScrollIndicator={false}
 
-                    //initialScrollIndex={this.state.activeIndex}
-                    //getItemLayout={this.getItemLayout}
-                    //onScrollToIndexFailed={this.onScrollToIndexFailed}
+                    initialScrollIndex={this.state.activeIndex}
+                    getItemLayout={this.getItemLayout}
+                    onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
         );
     }
