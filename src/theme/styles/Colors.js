@@ -6,6 +6,7 @@ export default {
   whiteSmoke: '#f6f6f6',
   summerSky: '#3296D0',
   darkGray: '#ABABAB',
+  darkGray2: '#B1B1B1',
   grey: '#888888',
   greyLite: '#848484',
   lightGrey: '#D5D5D5',
@@ -20,5 +21,6 @@ export default {
   azureBlue : '#007aff',
   valhalla: '#2A293B',
   seaMist: '#ccd3cd',
-  whisper: '#ECECEC'
+  whisper: '#ECECEC',
+  rhino: "#34445b"
 };

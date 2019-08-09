@@ -47,7 +47,7 @@ let stylesMap = {
     height: 15
   },
   timeStamp: {
-    color: '#b1b1b1',
+    color: Colors.darkGray2,
     fontFamily: 'AvenirNext-Regular',
     fontSize: 14,
     letterSpacing: -0.68
@@ -68,13 +68,17 @@ let stylesMap = {
     width: 120,
     height: 35,
     borderRadius: 20,
-    borderWidth: 2,
-    marginLeft: 40,
-    marginTop: -4,
-    borderColor: '#34445b',
+    borderWidth: 1,
+    marginLeft: 50,
+    // marginTop: -4,
+    borderColor: Colors.rhino,
     justifyContent: 'center'
   },
-  sayThanksText: { alignSelf: 'center', color:  '#34445b', fontWeight: "400" }
+  sayThanksText: {
+    alignSelf: 'center',
+    color: Colors.rhino,
+    fontFamily: "AvenirNext-Medium"
+  }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
