@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, BackHandler } from 'react-native';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import BigNumber from 'bignumber.js';
 import clone from 'lodash/clone';
