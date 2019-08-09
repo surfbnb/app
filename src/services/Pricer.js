@@ -5,6 +5,7 @@ import {updateBalance} from "../actions";
 import Store from '../store';
 import PriceOracle from './PriceOracle';
 import ReduxGetter from "./ReduxGetters";
+import numeral from "numeral";
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -69,6 +70,10 @@ class Pricer {
     return PriceOracle.toBt(bt, precession);
   }
 
+  toDisplayAmount(amount) {
+    if(isNaN(amount)) return amount;
+    return numeral(amount).format('0.0a');
+  }
 
   /**Unused state */
 

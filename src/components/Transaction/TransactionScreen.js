@@ -8,8 +8,8 @@ import clone from 'lodash/clone';
 import FormInput from '../../theme/components/FormInput';
 import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
-import pepo_icon from '../../assets/pepo-blue-icon.png';
 import tx_success from '../../assets/transaction_success.png';
+import pepo_icon from '../../assets/pepo-tx-icon.png';
 import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
 import CurrentUser from '../../models/CurrentUser';
@@ -23,6 +23,7 @@ import pricer from '../../services/Pricer';
 import reduxGetter from '../../services/ReduxGetters';
 import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
+import LinearGradient from "react-native-linear-gradient";
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -326,14 +327,15 @@ class TransactionScreen extends Component {
             }}
             style={{
               position: 'absolute',
-              left: 15,
-              width: 60,
-              height: 60,
+              left: 10,
+              width: 38,
+              height: 38,
+              alignItems: 'center',
               justifyContent: 'center'
             }}
             disabled={this.state.closeDisabled}
           >
-            <Image source={modalCross} style={{ width: 19.5, height: 19 }} />
+            <Image source={modalCross} style={{ width: 13, height: 12.6 }} />
           </TouchableOpacity>
           <Text style={inlineStyles.modalHeader}>{this.state.headerText}</Text>
         </View>
@@ -383,15 +385,23 @@ class TransactionScreen extends Component {
                 </TextInput>
               </View>
             </View>
-            <TouchableButton
-              disabled={this.state.exceBtnDisabled}
-              TouchableStyles={[Theme.Button.btnPink, { marginTop: 10 }]}
-              TextStyles={[Theme.Button.btnPinkText]}
-              text={this.state.confirmBtnText}
-              onPress={() => {
-                this.onConfirm();
-              }}
-            />
+            <LinearGradient
+              colors={['#ff7499', '#ff5566']}
+              locations={[0, 1]}
+              style={{ marginHorizontal: 35, borderRadius: 3}}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
+              <TouchableButton
+                disabled={this.state.exceBtnDisabled}
+                TouchableStyles={[Theme.Button.btnPink]}
+                TextStyles={[Theme.Button.btnPinkText]}
+                text={this.state.confirmBtnText}
+                onPress={() => {
+                  this.onConfirm();
+                }}
+              />
+            </LinearGradient>
             <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>
               Your Current Balance: <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}
               {this.state.balance}

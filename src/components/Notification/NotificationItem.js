@@ -5,14 +5,12 @@ import styles from './styles';
 import Pricer from '../../services/Pricer';
 import reduxGetter from '../../services/ReduxGetters';
 import CurrentUser from '../../models/CurrentUser';
-import utilities from '../../services/Utilities';
-import multipleClickHandler from '../../services/MultipleClickHandler';
 import ProfilePicture from '../ProfilePicture';
 import PepoIcon from '../../assets/pepo-tx-icon.png';
 import PepoPinkIcon from '../../assets/heart.png';
 import { connect } from 'react-redux';
 import AppConfig from '../../../src/constants/AppConfig';
-import TimestampHandling from '../../helpers/timestampHandling';
+import {shortenedFromNow} from '../../helpers/timestampHandling';
 import playIcon from '../../assets/play_icon.png';
 
 const mapStateToProps = (state, ownProps) => {
@@ -32,7 +30,7 @@ class NotificationItem extends Component {
   }
 
   getBtAmount() {
-    return Pricer.getToBT(Pricer.getFromDecimal(this.props.payload.amount));
+    return Pricer.toDisplayAmount(Pricer.getFromDecimal(this.props.payload.amount));
   }
 
   handleRowClick = () => {
@@ -97,22 +95,17 @@ class NotificationItem extends Component {
       lastIndex = element;
     });
 
-    return stringArray.map((item, i) => {
-      if (heading.includes[item]) {
-        return (
-          <TouchableOpacity
-            onPress={() => {
-              this.includesTextNavigate(heading.includes[item]);
-            }}
-            key={i}
-          >
-            <Text style={{ fontWeight: '600' }}>{item}</Text>
-          </TouchableOpacity>
-        );
-      } else {
-        return <Text key={i}>{item}</Text>;
-      }
-    });
+    return stringArray.map((item, i) => heading.includes[item] ? (
+        <TouchableOpacity
+          onPress={() => {
+            this.includesTextNavigate(heading.includes[item]);
+          }}
+          key={i}
+        >
+          <Text style={{ fontWeight: '600' }}>{item}</Text>
+        </TouchableOpacity>
+      ) : (<Text key={i}>{item}</Text>)
+    );
   };
 
   showAmountComponent = () => {
@@ -138,8 +131,6 @@ class NotificationItem extends Component {
       return this.showAmountComponent();
     } else if (this.props.kind == AppConfig.notificationConstants.videoAddKind) {
       return this.showVideoComponent();
-    } else {
-      return <React.Fragment />;
     }
   };
 
@@ -148,12 +139,12 @@ class NotificationItem extends Component {
   }
 
   showSayThanks = () => {
-    if (this.props.payload.thank_you_flag === 0) {
+    if (this.props.payload.thank_you_flag === 1) {
       return (
         <TouchableOpacity onPress={this.sayThanks}>
-        <View style={styles.sayThanksButton}>
-          <Text style={styles.sayThanksText}>Say Thanks</Text>
-        </View>
+            <View style={styles.sayThanksButton}>
+                <Text style={styles.sayThanksText}>Say Thanks</Text>
+            </View>
         </TouchableOpacity>  
       );
     }
@@ -161,7 +152,7 @@ class NotificationItem extends Component {
 
   showAppreciationText = () => {
     if (this.props.kind == AppConfig.notificationConstants.AppreciationKind && this.props.payload.thank_you_text) {
-      return <Text style={{ marginLeft: 10, marginTop: 2 }}>"{this.props.payload.thank_you_text}"</Text>;
+      return <Text style={{ marginLeft: 10, marginTop: 2 }}>&quot;{this.props.payload.thank_you_text}&quot;</Text>;
     }
   };
 
@@ -175,7 +166,7 @@ class NotificationItem extends Component {
             {this.showAppreciationText()}
           </View>
           <Text style={styles.timeStamp}>
-            {this.props.timeStamp && TimestampHandling.shortenedFromNow(this.props.timeStamp)}
+            {this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}
           </Text>
           {this.notificationInfo()}
         </View>

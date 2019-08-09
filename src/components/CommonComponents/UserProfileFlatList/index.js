@@ -62,7 +62,7 @@ class UserProfileFlatList extends PureComponent {
     }
 
     getVideoBtAmount(videoId){
-      return Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
+      return Pricer.toDisplayAmount( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
     }
 
     onPullToRefresh = () => {
