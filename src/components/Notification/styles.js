@@ -79,7 +79,7 @@ let stylesMap = {
     color: Colors.rhino,
     fontFamily: "AvenirNext-Medium"
   },
-   systemNotificationIconSkipFont: {
+  systemNotificationIconSkipFont: {
         height: 30,
         width: 30,
         borderRadius: 15
