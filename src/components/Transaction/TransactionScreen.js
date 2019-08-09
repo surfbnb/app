@@ -88,7 +88,11 @@ class TransactionScreen extends Component {
   onBtChange(bt) {
     if (!this.priceOracle) return;
     this.setState({ btAmount: bt, btUSDAmount: this.priceOracle.btToFiat(bt) });
-    if (bt > 0) {
+    this.clearFieldErrors();
+  }
+
+  clearFieldErrors() {
+    if (this.state.btAmount > 0) {
       this.setState({ btAmountErrorMsg: null });
     }
   }
@@ -96,6 +100,7 @@ class TransactionScreen extends Component {
   onUSDChange(usd) {
     if (!this.priceOracle) return;
     this.setState({ btAmount: this.priceOracle.fiatToBt(usd), btUSDAmount: usd });
+    this.clearFieldErrors();
   }
 
   onConfirm = () => {
@@ -151,7 +156,11 @@ class TransactionScreen extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
-  handleBackButtonClick = () => {};
+  handleBackButtonClick = () => {
+    if (this.state.closeDisabled) {
+      return true;
+    }
+  };
 
   getBalance() {
     pricer.getBalance(
@@ -264,16 +273,23 @@ class TransactionScreen extends Component {
       //Revert all disabled states
       //Change navigation header
       this.setState({
-        btFocus: false,
-        usdFocus: false,
-        exceBtnDisabled: false,
-        confirmBtnText: 'CONFIRM',
-        inputFieldsEditable: true,
         headerText: 'Sent',
         showSuccess: true,
-        closeDisabled: false
+        general_error: ''
       });
+      this.resetState();
     }, 300);
+  }
+
+  resetState() {
+    this.setState({
+      btFocus: false,
+      usdFocus: false,
+      exceBtnDisabled: false,
+      confirmBtnText: 'CONFIRM',
+      inputFieldsEditable: true,
+      closeDisabled: false
+    });
   }
 
   getSendTransactionPlatformData(ostWorkflowEntity) {
@@ -291,6 +307,7 @@ class TransactionScreen extends Component {
     if (errorMsg) {
       //TODO map to UI
       this.setState({ general_error: errorMsg });
+      this.resetState();
       return;
     }
     const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
@@ -388,6 +405,9 @@ class TransactionScreen extends Component {
             <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>
               Your Current Balance: <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}
               {this.state.balance}
+            </Text>
+            <Text style={[{ textAlign: 'center', marginTop: 10 }, Theme.Errors.errorText]}>
+              {this.state.general_error}
             </Text>
           </View>
         )}

@@ -3,7 +3,7 @@ import deepGet from 'lodash/get';
 const sdkErrors = {
   USER_NOT_ACTIVATED: 'User is not activated.',
   SESSION_NOT_FOUND: 'Please check your spending limit.',
-  DEVICE_UNAUTHORIZED: 'Devices is unauthorized.',
+  DEVICE_UNAUTHORIZED: 'Device is unauthorized.',
   GENERAL_ERROR: 'Something went wrong please try again later.'
 };
 
@@ -17,11 +17,11 @@ const UIErros = {
   general_error: 'Something went wrong please try again later',
   general_error_ex: 'Oops, Please try again.',
   bt_amount_error: 'Please enter valid amount.',
-  bt_amount_decimal_error: "Only . is allowed as decimails", 
+  bt_amount_decimal_error: 'Only . is allowed as decimails',
   user_not_active: 'Please wait for your user activation.',
   no_internet: 'No Internet, please try again later.',
   maxAllowedBt: `Max allowed Pepo coin transfer reached`,
-  name:'Name is mandatory.'
+  name: 'Name is mandatory.'
 };
 
 const UIWhitelistedErrorCode = {
@@ -29,7 +29,7 @@ const UIWhitelistedErrorCode = {
 };
 
 class OstErrors {
-  getErrorMessage(ostError, generalErrorKey  ) {
+  getErrorMessage(ostError, generalErrorKey) {
     if (this.isWhiteListedErrorCode(ostError)) return null;
 
     generalErrorKey = generalErrorKey || 'GENERAL_ERROR';
