@@ -5,7 +5,7 @@ import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 let stylesMap = {
   container: {
-    backgroundColor: Colors.whiteSmoke,
+    backgroundColor: Colors.white,
     alignSelf: 'center',
     justifyContent: 'center',
     paddingBottom: 50,
@@ -37,8 +37,9 @@ let stylesMap = {
   },
   modalHeader: {
     textAlign: 'center',
-    color: Colors.dark,
-    fontSize: 16
+    color: Colors.valhalla,
+    fontSize: 16,
+    paddingVertical: 5
   },
   nonEditableTextInput: {
     marginLeft: 10,
