@@ -10,13 +10,13 @@ import {
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 import FastImage from 'react-native-fast-image';
-import reduxGetters from "../../../services/ReduxGetters"; 
 
+import reduxGetters from "../../../services/ReduxGetters"; 
 import AppConfig from "../../../constants/AppConfig"; 
 import Pricer from '../../../services/Pricer';
 import Pagination from "../../../services/Pagination";
-
 import {fetchUser} from "../../../helpers/helpers";
+import multipleClickHandler from '../../../services/MultipleClickHandler';
 
 import inlineStyles from './style';
 
@@ -108,7 +108,7 @@ class UserProfileFlatList extends PureComponent {
       const videoId = reduxGetters.getUserVideoId(item),
             imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;     
       return imageUrl ? (
-        <TouchableWithoutFeedback onPress={() => { this.onVideoClick( item, index ) }}>
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.onVideoClick( item, index ); } )}>
           <View>
             <FastImage style={{width: Dimensions.get('window').width / 3, aspectRatio:9/16, margin: 1}}
                        source={{
