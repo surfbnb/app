@@ -175,6 +175,11 @@ class CurrentUser {
     return this.__getUserStatus() == userStatusMap.activating;
   }
 
+  isAirDropped() {
+    const currentUser = this.getLogedinUser() || {};
+    return currentUser['signup_airdrop_status'] == 1;
+  }
+
   __getUserStatus() {
     const user = this.getUser();
     let status = deepGet(user, 'ost_status') || '';

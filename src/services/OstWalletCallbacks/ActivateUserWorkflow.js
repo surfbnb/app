@@ -1,7 +1,7 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { Toast } from 'native-base';
 import CurrentUser from '../../models/CurrentUser';
-import Pricer from "../Pricer";
+import Pricer from '../Pricer';
 import deepGet from 'lodash/get';
 
 const initiatePolling = (expectedUserId) => {
@@ -17,8 +17,7 @@ const initiatePolling = (expectedUserId) => {
   const longPollUser = function() {
     setTimeout(() => {
       CurrentUser &&
-      CurrentUser
-          .sync()
+        CurrentUser.sync()
           .then((apiResponse) => {
             const currentUserId = CurrentUser.getOstUserId();
             if (currentUserId != expectedUserId) {

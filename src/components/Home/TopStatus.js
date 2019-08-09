@@ -5,18 +5,16 @@ import CurrentUser from '../../models/CurrentUser';
 import Pricer from '../../services/Pricer';
 import WalletSetupFlyer from '../WalletSetupFlyer';
 import WalletBalanceFlyer from '../WalletBalanceFlyer';
-import Colors from '../../theme/styles/Colors';
 
-const mapStateToProps = (state) => ({ balance: state.balance });
-
-const getBalance = (props) => {
-  return Pricer.getToBT(Pricer.getFromDecimal(props.balance), 2) || 0;
-};
+const mapStateToProps = (state) => ({
+  balance: state.balance,
+  current_user_ost_status: CurrentUser.__getUserStatus()
+});
 
 const TopStatus = (props) => {
   return (
     CurrentUser.getUserId() &&
-    (props.balance == null ? (
+    (!CurrentUser.isUserActivated() && props.balance == null ? (
       <WalletSetupFlyer
         componentHeight={46}
         componentWidth={46}
@@ -28,7 +26,7 @@ const TopStatus = (props) => {
         id={1}
       />
     ) : (
-      <WalletBalanceFlyer balance={getBalance(props)} id={2} />
+      <WalletBalanceFlyer {...props} id={2} />
     ))
   );
 };

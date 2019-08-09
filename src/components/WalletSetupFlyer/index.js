@@ -27,7 +27,7 @@ class WalletSetupFlyer extends Component {
             alignItems: 'center'
           }}
         >
-          <ProgressCircle size={53} color={Colors.primary} duration={3000} direction="clockwise"></ProgressCircle>
+          <ProgressCircle size={53} color={Colors.primary} duration={1000} direction="clockwise"></ProgressCircle>
         </View>
         <Image source={WalletIcon} style={{ width: 15, height: 15, position: 'absolute' }} />
       </View>

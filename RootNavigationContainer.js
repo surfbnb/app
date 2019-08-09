@@ -66,6 +66,36 @@ const modalStackConfig = {
   }
 };
 
+const txModalConfig = {
+  transparentCard: true,
+  cardStyle: { backgroundColor: 'rgba(0,0,0,0.5)' },
+  gesturesEnabled: false,
+  transitionConfig: () => ({
+    transitionSpec: {
+      duration: 300,
+      easing: Easing.out(Easing.poly(4)),
+      timing: Animated.timing
+    },
+    screenInterpolator: (sceneProps) => {
+      const { layout, position, scene } = sceneProps;
+      const { index } = scene;
+
+      const height = layout.initHeight;
+      const translateY = position.interpolate({
+        inputRange: [index - 1, index, index + 1],
+        outputRange: [height, 0, 0]
+      });
+
+      const opacity = position.interpolate({
+        inputRange: [index - 1, index - 0.99, index],
+        outputRange: [0, 1, 1]
+      });
+
+      return { opacity, transform: [{ translateY }] };
+    }
+  })
+};
+
 const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
@@ -86,32 +116,7 @@ const HomeStack = createStackNavigator(
   },
   {
     ...modalStackConfig,
-    transparentCard: true,
-    cardStyle: { backgroundColor: 'rgba(0,0,0,0.5)' },
-    transitionConfig: () => ({
-      transitionSpec: {
-        duration: 300,
-        easing: Easing.out(Easing.poly(4)),
-        timing: Animated.timing
-      },
-      screenInterpolator: (sceneProps) => {
-        const { layout, position, scene } = sceneProps;
-        const { index } = scene;
-
-        const height = layout.initHeight;
-        const translateY = position.interpolate({
-          inputRange: [index - 1, index, index + 1],
-          outputRange: [height, 0, 0]
-        });
-
-        const opacity = position.interpolate({
-          inputRange: [index - 1, index - 0.99, index],
-          outputRange: [0, 1, 1]
-        });
-
-        return { opacity, transform: [{ translateY }] };
-      }
-    })
+    ...txModalConfig
   }
 );
 
@@ -134,7 +139,7 @@ const NotificationStack = createStackNavigator(
     NotificationPushStack: NotificationPushStack,
     TransactionScreen: TransactionScreen
   },
-  { ...modalStackConfig }
+  { ...modalStackConfig, ...txModalConfig }
 );
 
 const ProfilePushStack = createStackNavigator(
@@ -167,7 +172,8 @@ const ProfileStack = createStackNavigator(
       return {
         tabBarVisible: deepGet(navigation, 'state.index') === 0
       };
-    }
+    },
+    ...txModalConfig
   }
 );
 

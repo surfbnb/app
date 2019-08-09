@@ -5,7 +5,7 @@ import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 let stylesMap = {
   container: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.whiteSmoke,
     alignSelf: 'center',
     justifyContent: 'center',
     paddingBottom: 50,
@@ -23,6 +23,9 @@ let stylesMap = {
     )
   },
   headerWrapper: {
+    backgroundColor: Colors.white,
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderColor: Colors.seaMist,
