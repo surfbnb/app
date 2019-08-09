@@ -56,10 +56,6 @@ class UserVideoHistoryScreen extends PureComponent{
         this.paginationEvent.removeListener('onNext');
         this.paginationEvent.removeListener('onNextError');
     }
-
-    getVideoBtAmount(videoId){
-        return Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ; 
-    }
     
     beforeRefresh = ( ) => {
         this.setState({ refreshing : true }); 

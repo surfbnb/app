@@ -32,7 +32,7 @@ class NotificationItem extends Component {
   }
 
   getBtAmount() {
-    return Pricer.getToBT(Pricer.getFromDecimal(this.props.payload.amount));
+    return Pricer.toDisplayAmount(Pricer.getFromDecimal(this.props.payload.amount));
   }
 
   handleRowClick = () => {

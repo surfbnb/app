@@ -9,6 +9,7 @@ import multipleClickHandler from '../../../services/MultipleClickHandler';
 import ProfilePicture from '../../ProfilePicture';
 import PepoIcon from '../../../assets/pepo-tx-icon.png';
 import { connect } from 'react-redux';
+import Pricer from "../../../services/Pricer"
 
 const userClick = function(userId, navigation) {
   if( userId == CurrentUser.getUserId() ){
@@ -40,7 +41,7 @@ const Users = (props) => {
           </Text>
           <View style={[styles.numericInnerWrapper]}>
               <Image source={PepoIcon} style={styles.imageIconSkipFont} />
-              <Text style={styles.numericInfoText}>{props.amount}</Text>
+              <Text style={styles.numericInfoText}>{Pricer.toDisplayAmount(props.amount)}</Text>
             </View>
         </View>
       </TouchableOpacity>
