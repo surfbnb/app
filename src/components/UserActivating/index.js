@@ -39,7 +39,7 @@ export default class UserActivatingScreen extends Component {
             <Text style={[styles.descTxt, {marginTop: 3}]}>claim Pepo Coins</Text>
             <LinearGradient
               colors={['#ff7499', '#ff5566']}
-              locations={[0, 0.8, 1]}
+              locations={[0, 1]}
               style={{ marginTop: 30, marginHorizontal: 35, borderRadius: 3}}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
