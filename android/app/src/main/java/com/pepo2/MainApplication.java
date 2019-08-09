@@ -12,9 +12,7 @@ import com.existfragger.rnimagesize.RNImageSizePackage;
 import com.goldenowl.twittersignin.TwitterSigninPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
-import com.brentvatne.react.ReactVideoPackage;
 import org.reactnative.camera.RNCameraPackage;
-import com.brentvatne.react.ReactVideoPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.ostwalletrnsdk.OstWalletRnSdkPackage;
@@ -44,7 +42,6 @@ public class MainApplication extends Application implements ReactApplication {
 
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
-            new ReactVideoPackage(),
             new RNDeviceInfo(),
             new AndroidOpenSettingsPackage(),
             new CameraRollPackage(),

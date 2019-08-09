@@ -170,7 +170,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-video')
     implementation project(':react-native-device-info')
     implementation project(':react-native-android-open-settings')
     implementation project(':@react-native-community_cameraroll')
