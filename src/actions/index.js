@@ -203,3 +203,12 @@ export const genericEvent = (eventName, payload) => ({
   eventName: eventName,
   payload
 });
+
+export const upsertUserNotifications = (data) => ({
+  type: types.UPSERT_USER_NOTIFICATIONS,
+  payload: { user_notifications: data }
+});
+
+
+
+

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import {View, TouchableOpacity, Image} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import VideoWrapper from '../Home/VideoWrapper';
 import PepoApi from '../../services/PepoApi';
@@ -12,6 +12,7 @@ import VideoAmountStat from "../CommonComponents/VideoAmoutStat";
 
 import inlineStyles from './styles';
 import multipleClickHandler from '../../services/MultipleClickHandler';
+import historyBack from "../../assets/user-video-history-back-icon.png";
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
@@ -37,8 +38,16 @@ class UserVideoHistoryRow extends PureComponent {
   };
 
   isCurrentUser(){
-      return this.props.userId == CurrentUser.getUserId();
-  }
+    return this.props.userId == CurrentUser.getUserId();
+  };
+
+  closeVideo = () => {
+    this.navigateBack();
+  };
+
+  navigateBack() {
+    this.props.navigation.goBack();
+  };
 
   render() {
     return (
@@ -66,6 +75,9 @@ class UserVideoHistoryRow extends PureComponent {
 
           <BottomStatus userId={this.props.userId} videoId={this.props.videoId} />
         </View>
+        <TouchableOpacity onPress={this.closeVideo} style={{width: 27, height: 45, position: 'absolute', top: 54, left: 20, alignItems: 'center', justifyContent: 'center'}}>
+            <Image style={{ width: 18, height: 30 }} source={historyBack}/>
+        </TouchableOpacity>
       </View>
     );
   }

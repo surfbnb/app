@@ -9,6 +9,8 @@ import UserVideoHistoryRow from "./UserVideoHistoryRow";
 
 import inlineStyles from "./styles";
 
+import modalCross from '../../assets/modal-cross-icon.png';
+
 const maxVideosThreshold = 3;
 
 class UserVideoHistoryScreen extends PureComponent{
