@@ -148,7 +148,7 @@ class NotificationItem extends Component {
   }
 
   showSayThanks = () => {
-    if (this.props.payload.thank_you_flag === 0) {
+    if (this.props.payload.thank_you_flag === 1) {
       return (
         <TouchableOpacity onPress={this.sayThanks}>
         <View style={styles.sayThanksButton}>
