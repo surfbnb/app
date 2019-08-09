@@ -10,6 +10,7 @@ import reduxGetter from '../../../services/ReduxGetters';
 import ProfilePicture from '../../ProfilePicture';
 import PixelCall from "../../../services/PixelCall";
 import LinearGradient from "react-native-linear-gradient";
+import multipleClickHandler from "../../../services/MultipleClickHandler";
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -49,14 +50,12 @@ class UserInfo extends React.PureComponent {
     PixelCall(pixelParams);
   };
 
-  //TODO @Mayur compute fetch url from inside
-  GoToSupporting = () => {
+  goToSupporting = () => {
     this.props.navigation.push('SupportingListWrapper',{ userId: this.props.userId});
   }
 
 
-//TODO @Mayur compute fetch url from inside
-  GoToSupporters = () => {
+  goToSupporters = () => {
     this.props.navigation.push('SupportersListWrapper', {userId: this.props.userId});
   }
 
@@ -95,12 +94,14 @@ class UserInfo extends React.PureComponent {
           end={{ x: 1, y: 0 }}
         >
           <View style={inlineStyle.numericInfoWrapper}>
-            <TouchableOpacity onPress={this.GoToSupporting} style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
+            <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporting() } )}
+              style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
               <Text style={inlineStyle.numericInfoText}>{this.props.supporting || 0}</Text>
               <Text style={inlineStyle.numericInfoText}>SUPPORTING</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={this.GoToSupporters} style={[inlineStyle.numericInnerWrapper]}>
+            <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporters() } )}
+             style={[inlineStyle.numericInnerWrapper]}>
               <Text style={inlineStyle.numericInfoText}>{this.props.supporters || 0}</Text>
               <Text style={inlineStyle.numericInfoText}>SUPPORTERS</Text>
             </TouchableOpacity>

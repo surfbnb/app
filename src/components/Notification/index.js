@@ -16,6 +16,7 @@ class NotificationScreen extends Component {
   static navigationOptions = (options) => {
     return {
       headerTitle: 'Activity',
+      headerBackTitle: null,
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
