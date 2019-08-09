@@ -9,17 +9,11 @@ import utilities from '../../services/Utilities';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import ProfilePicture from '../ProfilePicture';
 import PepoIcon from '../../assets/pepo-tx-icon.png';
+import PepoPinkIcon from '../../assets/heart.png';
 import { connect } from 'react-redux';
 import AppConfig from '../../../src/constants/AppConfig';
 import TimestampHandling from '../../helpers/timestampHandling';
 import playIcon from '../../assets/play_icon.png';
-// const userClick = function(userId, navigation) {
-//   if (userId == CurrentUser.getUserId()) {
-//     navigation.navigate('ProfileScreen');
-//   } else {
-//     navigation.push('UsersProfileScreen', { userId: userId });
-//   }
-// };
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -28,8 +22,7 @@ const mapStateToProps = (state, ownProps) => {
     kind: reduxGetter.getNotificationKind(ownProps.notificationId, state),
     payload: reduxGetter.getNotificationPayload(ownProps.notificationId, state),
     timeStamp: reduxGetter.getNotificationTimestamp(ownProps.notificationId, state),
-    goTo: reduxGetter.getNotificationGoTo(ownProps.notificationId, state)
-    //isActivated : utilities.isUserActivated( reduxGetter.getUserActivationStatus(ownProps.userId))
+    goTo: reduxGetter.getNotificationGoTo(ownProps.notificationId, state) 
   };
 };
 
@@ -150,12 +143,18 @@ class NotificationItem extends Component {
     }
   };
 
+  sayThanks = () => {
+      console.log('sayThanks');
+  }
+
   showSayThanks = () => {
     if (this.props.payload.thank_you_flag === 0) {
       return (
+        <TouchableOpacity onPress={this.sayThanks}>
         <View style={styles.sayThanksButton}>
           <Text style={styles.sayThanksText}>Say Thanks</Text>
         </View>
+        </TouchableOpacity>  
       );
     }
   };
@@ -170,7 +169,7 @@ class NotificationItem extends Component {
     return (
       <TouchableOpacity onPress={this.handleRowClick}>
         <View style={styles.txtWrapper}>
-          <ProfilePicture pictureId={this.props.pictureId} />
+        {this.props.kind == AppConfig.notificationConstants.systemNotification ?  (<Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />) : (<ProfilePicture pictureId={this.props.pictureId} />)} 
           <View style={{ flexDirection: 'column' }}>
             <View style={styles.item}>{this.getHeading()}</View>
             {this.showAppreciationText()}

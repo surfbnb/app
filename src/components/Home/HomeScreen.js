@@ -41,7 +41,7 @@ class HomeScreen extends Component {
     videoUploaderComponent.on('hide', this.hideVideoUploader);
   };
 
-  componentDidMount = () => {
+  componentWillUnmount = () => {
     videoUploaderComponent.removeListener('show');
     videoUploaderComponent.removeListener('hide');
   };

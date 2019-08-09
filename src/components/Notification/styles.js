@@ -78,7 +78,12 @@ let stylesMap = {
     alignSelf: 'center',
     color: Colors.rhino,
     fontFamily: "AvenirNext-Medium"
-  }
+  },
+   systemNotificationIconSkipFont: {
+        height: 30,
+        width: 30,
+        borderRadius: 15
+    }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
