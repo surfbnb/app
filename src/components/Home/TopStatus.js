@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import CurrentUser from '../../models/CurrentUser';
-import Pricer from '../../services/Pricer';
 import WalletSetupFlyer from '../WalletSetupFlyer';
 import WalletBalanceFlyer from '../WalletBalanceFlyer';
 
