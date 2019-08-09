@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   itemParent: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomColor: Colors.seaMist,
+    borderBottomColor: Colors.whisper,
     borderBottomWidth: 1,
     paddingVertical: 15,
     paddingHorizontal: 15

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import SupportersList from './index';
 import BackArrow from "../CommonComponents/BackArrow";
+import Colors from "../../theme/styles/Colors";
 
 class SupportersListWrapper extends PureComponent {
   
@@ -8,6 +9,16 @@ class SupportersListWrapper extends PureComponent {
     return {
       headerTitle: 'Supporters',
       headerBackTitle: null,
+      headerStyle: {
+        backgroundColor: Colors.white,
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: {
+          width:0, height: 1
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
       headerBackImage: <BackArrow />
     };
   };

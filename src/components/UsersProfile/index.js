@@ -10,12 +10,23 @@ import multipleClickHandler from "../../services/MultipleClickHandler";
 import tx_icon from "../../assets/tx_icon.png";
 
 import {fetchUser} from "../../helpers/helpers";
+import Colors from "../../theme/styles/Colors";
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: reduxGetter.getName(navigation.getParam('userId')),
       headerBackTitle: null,
+      headerStyle: {
+        backgroundColor: Colors.white,
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: {
+          width:0, height: 1
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
       headerBackImage: <BackArrow />
     };
   };

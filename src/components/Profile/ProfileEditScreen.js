@@ -53,6 +53,16 @@ class ProfileEdit extends React.PureComponent {
     return {
       headerBackTitle: null,
       headerBackImage: (<BackArrow/>),
+      headerStyle: {
+        backgroundColor: Colors.white,
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: {
+          width:0, height: 1
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
       headerTitle: reduxGetter.getName(CurrentUser.getUserId())
     };
   };

@@ -19,5 +19,6 @@ export default {
   midNightblue:'#34445b',
   azureBlue : '#007aff',
   valhalla: '#2A293B',
-  seaMist: '#ccd3cd'
+  seaMist: '#ccd3cd',
+  whisper: '#ECECEC'
 };

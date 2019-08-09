@@ -110,7 +110,7 @@ class UserProfileFlatList extends PureComponent {
       return imageUrl ? (
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.onVideoClick( item, index ); } )}>
           <View>
-            <FastImage style={{width: Dimensions.get('window').width / 3, aspectRatio:9/16, margin: 1}}
+            <FastImage style={{width: (Dimensions.get('window').width - 6) / 3, aspectRatio:9/16, margin: 1}}
                        source={{
                         uri: imageUrl,
                         priority: FastImage.priority.high

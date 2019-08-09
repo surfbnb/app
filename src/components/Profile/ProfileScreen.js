@@ -13,6 +13,7 @@ import UserProfileFlatList from "../CommonComponents/UserProfileFlatList"
 import TouchableButton from "../../theme/components/TouchableButton";
 import Theme from "../../theme/styles";
 import inlineStyles from './styles';
+import Colors from "../../theme/styles/Colors";
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -24,6 +25,16 @@ class ProfileScreen extends PureComponent {
     return {
       headerBackTitle: null,
       headerTitle: name,
+      headerStyle: {
+        backgroundColor: Colors.white,
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: {
+          width:0, height: 1
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
       headerRight: <LogoutComponent {...options} />
     };
   };
