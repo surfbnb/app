@@ -38,7 +38,7 @@ let stylesMap = {
     fontFamily: 'AvenirNext-DemiBold',
     fontSize: 14
   },
-  crossIcon: {
+  crossIconSkipFont: {
     width: 13,
     height: 12.6
   }
