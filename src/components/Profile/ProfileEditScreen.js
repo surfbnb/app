@@ -28,6 +28,7 @@ import CameraIcon from '../../assets/camera_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import BackArrow from "../CommonComponents/BackArrow";
 import LinearGradient from "react-native-linear-gradient";
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
@@ -49,10 +50,21 @@ const btnPostText = 'Saving...';
 
 class ProfileEdit extends React.PureComponent {
 
-  static navigationOptions = (options) => {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       headerBackTitle: null,
-      headerBackImage: (<BackArrow/>),
+      headerLeft: <TouchableWithoutFeedback 
+                          onPress={ () => {
+                              const onCancel = navigation.getParam("onCancel"); 
+                              if( onCancel ){
+                                onCancel();
+                              }else{
+                                navigation.goBack();
+                              }
+                            } 
+                          } >
+                        <BackArrow />
+                  </TouchableWithoutFeedback>,
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
@@ -95,6 +107,12 @@ class ProfileEdit extends React.PureComponent {
       showCameraAccessModal: false,
       ...this.defaults
     };
+  }
+
+  componentDidMount(){
+    this.props.navigation.setParams({
+      onCancel: this.onCancel,
+    });
   }
 
   getImageSrc = () => {
