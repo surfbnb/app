@@ -2,7 +2,6 @@ import React , {PureComponent} from "react";
 import {FlatList} from "react-native";
 import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
-import Pricer from "../../services/Pricer";
 import Pagination from "../../services/Pagination";
 
 import UserVideoHistoryRow from "./UserVideoHistoryRow";
@@ -104,7 +103,7 @@ class UserVideoHistoryScreen extends PureComponent{
     };
 
     onViewableItemsChanged = (data) => {
-        this.currentIndex = deepGet(data, 'viewableItems[0].index') ||  this.currentIndex;
+        this.currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
     }
     
     setActiveIndex() {

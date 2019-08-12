@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, Image, TouchableOpacity, AppState, Platform, Alert, ScrollView} from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
@@ -308,7 +309,7 @@ class ProfileEdit extends React.PureComponent {
 
   render() {
     return (
-        <ScrollView
+        <KeyboardAwareScrollView enableOnAndroid={true}
           contentContainerStyle=
             {{
               marginTop: 10, padding: 15, paddingBottom: 50
@@ -453,7 +454,7 @@ class ProfileEdit extends React.PureComponent {
             accessTextDesc="Allow access to your camera and microphone to take video "
             imageSrc={CameraIcon}
           />
-        </ScrollView>
+        </KeyboardAwareScrollView>
     );
   }
 }
