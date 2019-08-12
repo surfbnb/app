@@ -2,11 +2,7 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
-  item: {
-    // fontSize: 15,
-    // flex: 1,
-    // fontWeight: '300',
-    //color: Colors.midNightblue,
+  item: {    
     marginLeft: 10,
     marginRight: 4,
     flexDirection: 'row'
@@ -77,13 +73,26 @@ let stylesMap = {
   sayThanksText: {
     alignSelf: 'center',
     color: Colors.rhino,
-    fontFamily: "AvenirNext-Medium"
+    fontFamily: 'AvenirNext-Medium'
   },
   systemNotificationIconSkipFont: {
-        height: 30,
-        width: 30,
-        borderRadius: 15
-    }
+    height: 30,
+    width: 30,
+    borderRadius: 15
+  },
+  sectionHeaderTitle: {
+    color: '#34445b',
+    fontFamily: 'AvenirNext-DemiBold',
+    fontSize: 18,
+    fontWeight: '600'
+  },
+
+  sectionHeaderView: {
+    borderTopColor: '#eee',
+    borderTopWidth: 1,
+    marginHorizontal: 15,
+    paddingTop: 15
+  }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
