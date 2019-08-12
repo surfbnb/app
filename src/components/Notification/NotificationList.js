@@ -44,9 +44,13 @@ class NotificationList extends PureComponent {
     }
   };
 
+  getEmptyComponent = () => {
+    return !this.props.refreshing && <EmptyList displayText="Currently you don't have any notifications." />;
+  };
+
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={this.props.list}
           onEndReached={this.props.getNext}
@@ -54,16 +58,10 @@ class NotificationList extends PureComponent {
           keyExtractor={this._keyExtractor}
           refreshing={this.props.refreshing}
           onEndReachedThreshold={5}
+          ListEmptyComponent={this.getEmptyComponent}
           ListFooterComponent={this.props.renderFooter}
           renderItem={this._renderItem}
         />
-        {this.props.list && this.props.list.length == 0 && !this.props.refreshing && (
-          <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: Colors.whiteSmoke }}
-          >
-            <EmptyList displayText="Currently you do not have any notification." />
-          </View>
-        )}
       </View>
     );
   }

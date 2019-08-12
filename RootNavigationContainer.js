@@ -26,8 +26,8 @@ import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from './src/components/UsersProfile';
-import SupportingListWrapper from './src/components/SupportingList/SupportingListWrapper';
-import SupportersListWrapper from './src/components/SupportersList/SupportersListWrapper';
+import SupportingListScreen from './src/components/SupportingList';
+import SupportersListScreen from './src/components/SupportersList';
 import CameraWorker from './src/services/CameraWorker';
 import PictureWorker from './src/services/PictureWorker';
 import UserVideoHistory from './src/components/UserVideoHistory';
@@ -102,8 +102,8 @@ const HomePushStack = createStackNavigator(
     HomeScreen: HomeScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    SupportingListWrapper: SupportingListWrapper,
-    SupportersListWrapper: SupportersListWrapper
+    SupportingListScreen: SupportingListScreen,
+    SupportersListScreen: SupportersListScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -127,8 +127,8 @@ const NotificationPushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoPlayer: VideoPlayer,
-    SupportingListWrapper: SupportingListWrapper,
-    SupportersListWrapper: SupportersListWrapper
+    SupportingListScreen: SupportingListScreen,
+    SupportersListScreen: SupportersListScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -148,8 +148,8 @@ const ProfilePushStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    SupportingListWrapper: SupportingListWrapper,
-    SupportersListWrapper: SupportersListWrapper,
+    SupportingListScreen: SupportingListScreen,
+    SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
     ProfileEdit: ProfileEdit,
     BioScreen: BioScreen

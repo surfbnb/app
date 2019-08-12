@@ -1,51 +1,39 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Dimensions, View } from 'react-native';
-import flatlistHOC from '../CommonComponents/flatlistHOC';
-import Pricer from "../../services/Pricer";
-import reduxGetters from "../../services/ReduxGetters";
-import User from '../Users/User';
-import EmptyList from '../EmptyFriendsList/EmptyList';
-import Colors from '../../theme/styles/Colors';
+import BackArrow from "../CommonComponents/BackArrow";
+import Colors from "../../theme/styles/Colors";
+import SupportingList from './SupportingListComponent';
 
-class SupportingList extends PureComponent {
+class SupportingListScreen extends PureComponent {
+  
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      headerTitle: 'Supporting',
+      headerBackTitle: null,
+      headerStyle: {
+        backgroundColor: Colors.white,
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: {
+          width:0, height: 1
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
+      headerBackImage: <BackArrow />
+    };
+  };
 
   constructor(props) {
     super(props);
+    this.userId = this.props.navigation.getParam('userId') ;
+    this.fetchUrl = `/users/${this.userId}/contribution-to`; 
   }
-
-  getBtAmount(fromUser , toUserId){
-    return Pricer.getToBT( Pricer.getFromDecimal( reduxGetters.getUserContributionToStats(fromUser ,toUserId ) ) ) ;
-  }
-  
-  _keyExtractor = (item, index) => `id_${item}`;
-
-  _renderItem = ({ item, index }) => {
-    return <User  userId={item}  amount={this.getBtAmount(this.props.userId , item)}/>;
-  };
 
   render() {
     return (
-      <View>
-        <FlatList
-          data={this.props.list}
-          onEndReached={this.props.getNext}
-          onRefresh={this.props.refresh}
-          keyExtractor={this._keyExtractor}
-          refreshing={this.props.refreshing}
-          onEndReachedThreshold={5}
-          ListFooterComponent={this.props.renderFooter}
-          renderItem={this._renderItem}
-        />
-        {this.props.list && this.props.list.length == 0 && !this.props.refreshing && (
-          <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: Colors.whiteSmoke }}
-          >
-            <EmptyList displayText="You are currently not supporting to anyone" />
-          </View>
-        )}
-      </View>
+        <SupportingList fetchUrl={this.fetchUrl} userId ={this.userId} />
     );
   }
 }
 
-export default flatlistHOC(SupportingList);
+export default SupportingListScreen;
