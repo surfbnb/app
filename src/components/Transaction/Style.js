@@ -41,7 +41,7 @@ let stylesMap = {
     fontSize: 16,
     paddingVertical: 5
   },
-  nonEditableTextInput: {
+  editableTextInput: {
     marginLeft: 10,
     textAlign: 'center',
     paddingLeft: 0,

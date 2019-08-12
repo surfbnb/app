@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, BackHandler } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Keyboard,
+  BackHandler,
+  TouchableWithoutFeedback
+} from 'react-native';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import BigNumber from 'bignumber.js';
 import clone from 'lodash/clone';
@@ -307,6 +316,7 @@ class TransactionScreen extends Component {
     return {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
       ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
+      //getting invalid meta in case of transaction from profile screen
       meta: {
         vi: this.videoId
       }
@@ -329,110 +339,130 @@ class TransactionScreen extends Component {
 
   render() {
     return (
-      <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
-        <View style={inlineStyles.headerWrapper}>
-          <TouchableOpacity
-            onPress={() => {
-              this.closeModal();
-            }}
-            style={inlineStyles.crossIconWrapper}
-            disabled={this.state.closeDisabled}
-          >
-            <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
-          </TouchableOpacity>
-          <Text style={inlineStyles.modalHeader}>{this.state.headerText}</Text>
-        </View>
-        {!this.state.showSuccess && (
-          <View style={{ padding: 20 }}>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flex: 0.7 }}>
-                <FormInput
-                  editable={this.state.inputFieldsEditable}
-                  onChangeText={(val) => this.onBtChange(val)}
-                  placeholder="BT"
-                  fieldName="bt_amount"
-                  style={Theme.TextInput.textInputStyle}
-                  value={`${this.state.btAmount}`}
-                  placeholderTextColor="#ababab"
-                  errorMsg={this.state.btAmountErrorMsg}
-                  keyboardType="numeric"
-                  isFocus={this.state.btFocus}
-                  blurOnSubmit={true}
-                />
+      <TouchableWithoutFeedback
+        onPressOut={() => {
+          if (!this.state.closeDisabled) {
+            this.closeModal();
+          }
+        }}
+      >
+        <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+          <TouchableWithoutFeedback>
+            <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
+              <View style={inlineStyles.headerWrapper}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.closeModal();
+                  }}
+                  style={inlineStyles.crossIconWrapper}
+                  disabled={this.state.closeDisabled}
+                >
+                  <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
+                </TouchableOpacity>
+                <Text style={inlineStyles.modalHeader}>{this.state.headerText}</Text>
               </View>
-              <View style={{ flex: 0.3 }}>
-                <TextInput editable={false} style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}>
-                  <Text>PEPO</Text>
-                </TextInput>
-              </View>
-            </View>
+              {!this.state.showSuccess && (
+                <View style={{ padding: 20 }}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flex: 0.7 }}>
+                      <FormInput
+                        editable={this.state.inputFieldsEditable}
+                        onChangeText={(val) => this.onBtChange(val)}
+                        placeholder="BT"
+                        fieldName="bt_amount"
+                        style={Theme.TextInput.textInputStyle}
+                        value={`${this.state.btAmount}`}
+                        placeholderTextColor="#ababab"
+                        errorMsg={this.state.btAmountErrorMsg}
+                        keyboardType="numeric"
+                        isFocus={this.state.btFocus}
+                        blurOnSubmit={true}
+                      />
+                    </View>
+                    <View style={{ flex: 0.3 }}>
+                      <TextInput
+                        editable={false}
+                        style={[Theme.TextInput.textInputStyle, inlineStyles.editableTextInput]}
+                      >
+                        <Text>PEPO</Text>
+                      </TextInput>
+                    </View>
+                  </View>
 
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flex: 0.7 }}>
-                <FormInput
-                  editable={this.state.inputFieldsEditable}
-                  onChangeText={(val) => this.onUSDChange(val)}
-                  value={`${this.state.btUSDAmount}`}
-                  placeholder="USD"
-                  fieldName="usd_amount"
-                  style={Theme.TextInput.textInputStyle}
-                  placeholderTextColor="#ababab"
-                  keyboardType="numeric"
-                  blurOnSubmit={true}
-                  isFocus={this.state.usdFocus}
-                  onFocus={() =>
-                    this.setState({
-                      usdFocus: true
-                    })
-                  }
-                  onBlur={() =>
-                    this.setState({
-                      usdFocus: false
-                    })
-                  }
-                />
-              </View>
-              <View style={{ flex: 0.3 }}>
-                <TextInput editable={false} style={[Theme.TextInput.textInputStyle, inlineStyles.nonEditableTextInput]}>
-                  <Text>USD</Text>
-                </TextInput>
-              </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flex: 0.7 }}>
+                      <FormInput
+                        editable={this.state.inputFieldsEditable}
+                        onChangeText={(val) => this.onUSDChange(val)}
+                        value={`${this.state.btUSDAmount}`}
+                        placeholder="USD"
+                        fieldName="usd_amount"
+                        style={Theme.TextInput.textInputStyle}
+                        placeholderTextColor="#ababab"
+                        keyboardType="numeric"
+                        blurOnSubmit={true}
+                        isFocus={this.state.usdFocus}
+                        onFocus={() =>
+                          this.setState({
+                            usdFocus: true
+                          })
+                        }
+                        onBlur={() =>
+                          this.setState({
+                            usdFocus: false
+                          })
+                        }
+                      />
+                    </View>
+                    <View style={{ flex: 0.3 }}>
+                      <TextInput
+                        editable={false}
+                        style={[Theme.TextInput.textInputStyle, inlineStyles.editableTextInput]}
+                      >
+                        <Text>USD</Text>
+                      </TextInput>
+                    </View>
+                  </View>
+                  <LinearGradient
+                    colors={['#ff7499', '#ff5566']}
+                    locations={[0, 1]}
+                    style={{ marginHorizontal: 35, borderRadius: 3 }}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                  >
+                    <TouchableButton
+                      disabled={this.state.exceBtnDisabled}
+                      TouchableStyles={[Theme.Button.btnPink]}
+                      TextStyles={[Theme.Button.btnPinkText]}
+                      text={this.state.confirmBtnText}
+                      onPress={() => {
+                        this.onConfirm();
+                      }}
+                    />
+                  </LinearGradient>
+                  <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>
+                    Your Current Balance: <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}
+                    {this.state.balance}
+                  </Text>
+                  <Text style={[{ textAlign: 'center', marginTop: 10 }, Theme.Errors.errorText]}>
+                    {this.state.general_error}
+                  </Text>
+                </View>
+              )}
+              {this.state.showSuccess && (
+                <View
+                  style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 30, paddingHorizontal: 50 }}
+                >
+                  <Image source={tx_success} style={{ width: 200, height: 200 }}></Image>
+                  <Text style={{ textAlign: 'center' }}>
+                    Success, you have sent {this.toUser.name} {this.state.btAmount} Pepo’s
+                  </Text>
+                </View>
+              )}
             </View>
-            <LinearGradient
-              colors={['#ff7499', '#ff5566']}
-              locations={[0, 1]}
-              style={{ marginHorizontal: 35, borderRadius: 3 }}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-            >
-              <TouchableButton
-                disabled={this.state.exceBtnDisabled}
-                TouchableStyles={[Theme.Button.btnPink]}
-                TextStyles={[Theme.Button.btnPinkText]}
-                text={this.state.confirmBtnText}
-                onPress={() => {
-                  this.onConfirm();
-                }}
-              />
-            </LinearGradient>
-            <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>
-              Your Current Balance: <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}
-              {this.state.balance}
-            </Text>
-            <Text style={[{ textAlign: 'center', marginTop: 10 }, Theme.Errors.errorText]}>
-              {this.state.general_error}
-            </Text>
-          </View>
-        )}
-        {this.state.showSuccess && (
-          <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 30, paddingHorizontal: 50 }}>
-            <Image source={tx_success} style={{ width: 200, height: 200 }}></Image>
-            <Text style={{ textAlign: 'center' }}>
-              Success, you have sent {this.toUser.name} {this.state.btAmount} Pepo’s
-            </Text>
-          </View>
-        )}
-      </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
