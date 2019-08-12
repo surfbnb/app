@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Image } from 'react-native';
+import ProgressCircle from 'react-native-progress/CircleSnail';
 
 import styles from './styles';
 import VideoIcon from '../../../assets/icon-video.png';
 import flyerHOC from '../../CommonComponents/FlyerHOC';
-import ProgressCircle from 'react-native-progress/CircleSnail';
 import Colors from '../../../theme/styles/Colors';
 
 class VideoLoadingFlyer extends Component {
@@ -27,7 +27,7 @@ class VideoLoadingFlyer extends Component {
             alignItems: 'center'
           }}
         >
-          <ProgressCircle size={53} color={Colors.primary} duration={1000} direction="clockwise"></ProgressCircle>
+          <ProgressCircle size={53} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
         </View>
         <Image source={VideoIcon} style={{ width: 25, height: 15, position: 'absolute' }} />
       </View>

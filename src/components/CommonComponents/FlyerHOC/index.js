@@ -74,7 +74,11 @@ function flyerHOC(BaseComponent) {
     }
 
     showFlyer = () => {
-      Animated.timing(this.state.animatedWidth, { toValue: this.props.sliderWidth || 60, duration: 300 }).start(() => {
+      Animated.timing(this.state.animatedWidth, {
+        toValue: this.props.sliderWidth || 60,
+        duration: 300,
+        useNativeDriver: true
+      }).start(() => {
         this.setState({
           extensionVisible: true
         });
@@ -84,7 +88,11 @@ function flyerHOC(BaseComponent) {
     };
 
     hideFlyer = () => {
-      Animated.timing(this.state.animatedWidth, { toValue: 0, duration: 300 }).start(() => {
+      Animated.timing(this.state.animatedWidth, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true
+      }).start(() => {
         this.setState({
           extensionVisible: false
         });
@@ -112,18 +120,18 @@ function flyerHOC(BaseComponent) {
           <TouchableWithoutFeedback onPress={this.handlePress}>
             {this.props.extend ? (
               <View style={styles.extensionWrapper}>
-                {this.props.extendDirection == 'right' ? <BaseComponent {...this.props} /> : <View />}
+                {this.props.extendDirection === 'right' ? <BaseComponent {...this.props} /> : <View />}
                 <Animated.View
                   style={[
                     styles.extension,
                     { width: this.state.animatedWidth, height: this.props.componentHeight },
-                    this.props.extendDirection == 'left'
+                    this.props.extendDirection === 'left'
                       ? this.extensionStyles.extensionStyleLeft
                       : this.extensionStyles.extensionStyleRight
                   ]}
                 >
                   <View style={{ flexDirection: 'row' }}>
-                    {this.props.extendDirection == 'left' ? (
+                    {this.props.extendDirection === 'left' ? (
                       <TouchableWithoutFeedback
                         onPress={this.hideFlyer}
                         style={{ alignItems: 'center', width: 19.5, height: 19 }}
@@ -141,7 +149,7 @@ function flyerHOC(BaseComponent) {
                       style={[
                         styles.text,
                         { opacity: this.contentOpacity },
-                        this.props.extendDirection == 'left'
+                        this.props.extendDirection === 'left'
                           ? this.extensionStyles.displayTextStyleLeft
                           : this.extensionStyles.displayTextStyleRight
                       ]}
@@ -149,7 +157,7 @@ function flyerHOC(BaseComponent) {
                       {this.props.displayText}
                     </Animated.Text>
                     <Text style={this.props.highlightedTextStyle}>{this.props.highlightedText}</Text>
-                    {this.props.extendDirection == 'right' ? (
+                    {this.props.extendDirection === 'right' ? (
                       <TouchableWithoutFeedback
                         onPress={this.hideFlyer}
                         style={{ alignItems: 'center', width: 19.5, height: 19 }}
@@ -165,7 +173,7 @@ function flyerHOC(BaseComponent) {
                     )}
                   </View>
                 </Animated.View>
-                {this.props.extendDirection == 'left' ? <BaseComponent {...this.props} /> : <View />}
+                {this.props.extendDirection === 'left' ? <BaseComponent {...this.props} /> : <View />}
               </View>
             ) : (
               <BaseComponent {...this.props} />
