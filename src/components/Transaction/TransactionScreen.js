@@ -314,15 +314,15 @@ class TransactionScreen extends Component {
   }
 
   onError(error) {
+    this.resetState();
     const errorMsg = ostErrors.getErrorMessage(error);
     if (errorMsg) {
       this.setState({ general_error: errorMsg });
-      this.resetState();
       return;
     }
     const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
     if (errorDataMsg) {
-      this.setState({ fieldErrorText: errorDataMsg });
+      this.setState({ general_error: errorDataMsg });
       return;
     }
   }
