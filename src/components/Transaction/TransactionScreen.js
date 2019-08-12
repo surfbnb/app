@@ -23,7 +23,7 @@ import pricer from '../../services/Pricer';
 import reduxGetter from '../../services/ReduxGetters';
 import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
-import LinearGradient from "react-native-linear-gradient";
+import LinearGradient from 'react-native-linear-gradient';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -328,9 +328,9 @@ class TransactionScreen extends Component {
             style={{
               position: 'absolute',
               left: 10,
-              width: 38,
-              height: 38,
-              alignItems: 'center',
+              width: 50,
+              height: 50,
+              // alignItems: 'center',
               justifyContent: 'center'
             }}
             disabled={this.state.closeDisabled}
@@ -377,6 +377,7 @@ class TransactionScreen extends Component {
                   keyboardType="numeric"
                   blurOnSubmit={true}
                   isFocus={this.state.usdFocus}
+                  ref="usdInput"
                 />
               </View>
               <View style={{ flex: 0.3 }}>
@@ -388,7 +389,7 @@ class TransactionScreen extends Component {
             <LinearGradient
               colors={['#ff7499', '#ff5566']}
               locations={[0, 1]}
-              style={{ marginHorizontal: 35, borderRadius: 3}}
+              style={{ marginHorizontal: 35, borderRadius: 3 }}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             >
