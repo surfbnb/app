@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, TouchableWithoutFeedback, Animated, Text, Image } from 'react-native';
 import EventEmitter from 'eventemitter3';
+import { WalletBalanceFlyerEventEmitter } from '../../WalletBalanceFlyer';
 
 import styles from './styles';
 
@@ -79,6 +80,7 @@ function flyerHOC(BaseComponent) {
         });
       });
       FlyerEventEmitter.emit('onToggleProfileFlyer', this.id);
+      WalletBalanceFlyerEventEmitter.emit('onHideBalanceFlyer');
     };
 
     hideFlyer = () => {

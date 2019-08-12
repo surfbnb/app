@@ -7,6 +7,10 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import modalCross from '../../assets/modal-cross-icon.png';
 import CurrentUser from '../../models/CurrentUser';
 import Pricer from '../../services/Pricer';
+import { FlyerEventEmitter } from '../CommonComponents/FlyerHOC';
+import EventEmitter from 'eventemitter3';
+
+export const WalletBalanceFlyerEventEmitter = new EventEmitter();
 
 const getBalance = (balance) => {
   return Pricer.getToBT(Pricer.getFromDecimal(balance), 2) || 0;
@@ -21,7 +25,20 @@ class WalletBalanceFlyer extends Component {
     };
   }
 
+  componentDidMount() {
+    WalletBalanceFlyerEventEmitter.on('onHideBalanceFlyer', this.handleToggle.bind(this));
+  }
+
+  componentWillUnmount() {
+    WalletBalanceFlyerEventEmitter.removeListener('onHideBalanceFlyer');
+  }
+
+  handleToggle = () => {
+    this.hideFlyer();
+  };
+
   showFlyer = () => {
+    FlyerEventEmitter.emit('onToggleProfileFlyer');
     this.state.animatedWidth.setValue(0);
     Animated.timing(this.state.animatedWidth, { toValue: 210, duration: 300, easing: Easing.linear }).start(() => {
       this.setState({
