@@ -119,11 +119,12 @@ class NotificationItem extends Component {
 
   sayThanks = () => {
     console.log('sayThanks');
-    //this.props.navigation.navigate('SayThanksScreen');
+    //this.props.navigation.navigate('SayThanksScreen', {pictureId: this.props.pictureId, });
   };
 
   showSayThanks = () => {
-    if (this.props.payload.thank_you_flag === 1) {
+    return
+    if (this.props.payload.thank_you_flag === 0 ) {
       return (
         <TouchableOpacity onPress={this.sayThanks}>
           <View style={styles.sayThanksButton}>

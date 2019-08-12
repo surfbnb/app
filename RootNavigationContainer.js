@@ -17,7 +17,7 @@ import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';
 import CustomTab from './src/components/CustomTab';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
-//import SayThanksScreen from './src/components/SayThanks';
+import SayThanksScreen from './src/components/SayThanks';
 import Colors from './src/theme/styles/Colors';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
 import ProfileEdit from './src/components/Profile/ProfileEditScreen';
@@ -138,8 +138,8 @@ const NotificationPushStack = createStackNavigator(
 const NotificationStack = createStackNavigator(
   {
     NotificationPushStack: NotificationPushStack,
-    TransactionScreen: TransactionScreen
-    //SayThanksScreen: SayThanksScreen
+    TransactionScreen: TransactionScreen,
+    SayThanksScreen: SayThanksScreen
   },
   { ...modalStackConfig, ...txModalConfig }
 );
