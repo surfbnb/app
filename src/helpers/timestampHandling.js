@@ -20,7 +20,7 @@ const updateLocaleForShortTimeFormat = () => {
 }
 
 export const shortenedFromNow = (tsInSeconds) => {
-  let tsInMilliSeconds = tsInSeconds * 1000;      
+  let tsInMilliSeconds = tsInSeconds;
   updateLocaleForShortTimeFormat(); 
   return moment(tsInMilliSeconds).fromNow(true);   
 }
