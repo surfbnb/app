@@ -1,12 +1,14 @@
 import React , {PureComponent} from "react"; 
-import {FlatList} from "react-native";
+import {FlatList , View} from "react-native";
 import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
 
 import UserVideoHistoryRow from "./UserVideoHistoryRow";
+import TopStatus from "../../components/Home/TopStatus";
 
 import inlineStyles from "./styles";
+import CurrentUser from "../../models/CurrentUser";
 
 const maxVideosThreshold = 3;
 
@@ -125,10 +127,16 @@ class UserVideoHistoryScreen extends PureComponent{
     getItemLayout= (data, index) => {
        return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ; 
     }
+
+    isCurrentUser(){
+        return this.userId == CurrentUser.getUserId(); 
+    }
        
     render() {
 
         return(
+            <View style={{flex: 1}}>
+                {!this.isCurrentUser() &&  <TopStatus />} 
                 <FlatList  
                     snapToAlignment={"top"}
                     viewabilityConfig={{waitForInteraction: true, itemVisiblePercentThreshold: 90}}
@@ -152,6 +160,7 @@ class UserVideoHistoryScreen extends PureComponent{
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
+             </View>   
         );
     }
 

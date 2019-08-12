@@ -47,7 +47,7 @@ class BalanceHeader extends PureComponent {
               <Image style={{ width: 20, height: 20}} source={pepoWhiteIcon}></Image>{' '}
               <Text style={inlineStyles.pepoBalance}>{this.toBt(this.props.balance) || 0.00}</Text>
             </Text>
-            <Text style={inlineStyles.usdBalance}>$ {this.toFiat( this.props.balance ) || 0.00} </Text>
+            <Text style={inlineStyles.usdBalance}>${this.toFiat( this.props.balance ) || 0.00} </Text>
           {/*</View>*/}
           </LinearGradient>
         </React.Fragment>

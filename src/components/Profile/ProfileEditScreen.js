@@ -354,6 +354,7 @@ class ProfileEdit extends React.PureComponent {
           <Text style={[Theme.TextInput.labelStyle]}>Username</Text>
           <FormInput
             editable={true}
+            autoCapitalize="none"
             onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
             fieldName="user_name"
             textContentType="none"
@@ -399,6 +400,7 @@ class ProfileEdit extends React.PureComponent {
           <Text style={[Theme.TextInput.labelStyle]}>Link</Text>
           <FormInput
             editable={true}
+            autoCapitalize="none"
             onChangeText={(link) => this.setState({ link, error: null, link_error: null })}
             fieldName="link"
             textContentType="none"

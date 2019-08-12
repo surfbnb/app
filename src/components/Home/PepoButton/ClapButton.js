@@ -42,22 +42,18 @@ export default class ClapButton extends React.Component{
     );
   }
 
-  componentDidMount(){
-    //this.AnimateFunction().start();
-  }
-
   render(){
     if(this.props.isClapping){
       this.firstClap = this.props.isClapping;
       this.timedClap = this.props.isClapping;
+      this.AnimateFunction().start();
+      //Vibration.vibrate();
       setTimeout(()=>{
         this.timedClap = false
       },95)
+    } else {
+      this.AnimateFunction().stop();
     }
-    let interpolateScaleIn = this.state.scaleValue.interpolate({
-      inputRange : [0, 0.5, 1],
-      outputRange : [1, 0.90, 1]
-    });
 
     let interpolatedRingOpacity = this.state.scaleValue.interpolate({
       inputRange: [0, 1],
@@ -77,7 +73,7 @@ export default class ClapButton extends React.Component{
             height: 50,
             width: 50,
             borderRadius :25,
-            borderWidth : this.props.isSelected || this.props.isClapping?3:0,
+            borderWidth : this.props.isSelected || this.props.isClapping? 3 : 0,
             borderColor: this.props.isSelected || this.props.isClapping?  Colors.primary : Colors.white,
             zIndex:100,
             ...this.timedClap ? {transform : [
