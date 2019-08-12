@@ -343,6 +343,9 @@ class ProfileEdit extends React.PureComponent {
             onFocus={() => {
               this.state.current_formField = this.tabIndex.name;
             }}
+            onSubmitEditing={() => {
+              this.onSubmitEditing(this.tabIndex.name);
+            }}
             value={this.state.name}
             errorMsg={this.state.name_error}
             serverErrors={this.state.server_errors}
