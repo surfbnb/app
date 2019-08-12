@@ -46,7 +46,15 @@ let stylesMap = {
     textAlign: 'center',
     paddingLeft: 0,
     paddingRight: 0
-  }
+  },
+  crossIconWrapper: {
+    position: 'absolute',
+    left: 10,
+    width: 50,
+    height: 50,
+    justifyContent: 'center'
+  },
+  crossIconSkipFont: { width: 13, height: 12.6 }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

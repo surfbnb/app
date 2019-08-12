@@ -30,8 +30,17 @@ const bottomSpace = getBottomSpace([true]),
   safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
 
 const validMinAmount = 1;
+const HEADER_TITLE = 'Send Pepo’s';
+const SUCCESS_HEADER_TITLE = 'Sent';
+const SUBMIT_BTN_TXT = 'CONFIRM';
+const SUBMIT_PROCESSING_TXT = 'CONFIRMING...';
 
 class TransactionScreen extends Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      gesturesEnabled: false
+    };
+  };
   constructor(props) {
     super(props);
     this.priceOracle = pricer.getPriceOracle();
@@ -48,8 +57,8 @@ class TransactionScreen extends Component {
       usdFocus: false,
       inputFieldsEditable: true,
       closeDisabled: false,
-      confirmBtnText: 'CONFIRM',
-      headerText: 'Send Pepo’s',
+      confirmBtnText: SUBMIT_BTN_TXT,
+      headerText: HEADER_TITLE,
       showSuccess: false
     };
     this.toUser = reduxGetter.getUser(this.props.navigation.getParam('toUserId'));
@@ -65,6 +74,9 @@ class TransactionScreen extends Component {
 
   _keyboardShown(e) {
     let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;
+    if (this.state.usdFocus) {
+      bottomPaddingValue = bottomPaddingValue - 50;
+    }
     bottomPaddingValue += extraPadding;
 
     if (this.state.bottomPadding == bottomPaddingValue) {
@@ -149,6 +161,8 @@ class TransactionScreen extends Component {
     this.defaultVals();
     this.onGetPricePointSuccess = () => {};
     this.onBalance = () => {};
+    this.onTransactionSuccess = () => {};
+    this.onError = () => {};
     this.keyboardWillShowListener.remove();
     this.keyboardWillHideListener.remove();
     this.keyboardDidShowListener.remove();
@@ -189,7 +203,7 @@ class TransactionScreen extends Component {
       exceBtnDisabled: true,
       inputFieldsEditable: false,
       backDropClickDisabled: true,
-      confirmBtnText: 'CONFIRMING...',
+      confirmBtnText: SUBMIT_PROCESSING_TXT,
       closeDisabled: true
     });
     this.sendTransactionToSdk();
@@ -269,11 +283,8 @@ class TransactionScreen extends Component {
 
   onTransactionSuccess(res) {
     setTimeout(() => {
-      //TODO Create success screen , and bt or usd focus off
-      //Revert all disabled states
-      //Change navigation header
       this.setState({
-        headerText: 'Sent',
+        headerText: SUCCESS_HEADER_TITLE,
         showSuccess: true,
         general_error: ''
       });
@@ -305,7 +316,6 @@ class TransactionScreen extends Component {
   onError(error) {
     const errorMsg = ostErrors.getErrorMessage(error);
     if (errorMsg) {
-      //TODO map to UI
       this.setState({ general_error: errorMsg });
       this.resetState();
       return;
@@ -325,17 +335,10 @@ class TransactionScreen extends Component {
             onPress={() => {
               this.closeModal();
             }}
-            style={{
-              position: 'absolute',
-              left: 10,
-              width: 50,
-              height: 50,
-              // alignItems: 'center',
-              justifyContent: 'center'
-            }}
+            style={inlineStyles.crossIconWrapper}
             disabled={this.state.closeDisabled}
           >
-            <Image source={modalCross} style={{ width: 13, height: 12.6 }} />
+            <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
           </TouchableOpacity>
           <Text style={inlineStyles.modalHeader}>{this.state.headerText}</Text>
         </View>
@@ -377,7 +380,16 @@ class TransactionScreen extends Component {
                   keyboardType="numeric"
                   blurOnSubmit={true}
                   isFocus={this.state.usdFocus}
-                  ref="usdInput"
+                  onFocus={() =>
+                    this.setState({
+                      usdFocus: true
+                    })
+                  }
+                  onBlur={() =>
+                    this.setState({
+                      usdFocus: false
+                    })
+                  }
                 />
               </View>
               <View style={{ flex: 0.3 }}>
