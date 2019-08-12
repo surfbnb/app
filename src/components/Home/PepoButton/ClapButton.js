@@ -2,7 +2,8 @@ import * as React from "react";
 import {
   Animated,
   Easing,
-  View
+  View,
+  Vibration
 } from "react-native";
 import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
 import pepo_tx_img_disabled from "../../../assets/Pepo-tx-disabled.png"
@@ -47,7 +48,7 @@ export default class ClapButton extends React.Component{
       this.firstClap = this.props.isClapping;
       this.timedClap = this.props.isClapping;
       this.AnimateFunction().start();
-      //Vibration.vibrate();
+      Vibration.vibrate();
       setTimeout(()=>{
         this.timedClap = false
       },95)
