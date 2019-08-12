@@ -18,13 +18,13 @@ class BalanceHeader extends PureComponent {
   toBt( val ){
     const priceOracle =  pricer.getPriceOracle() ; 
     val = priceOracle.fromDecimal( val )  ; 
-    return priceOracle.toBt( val );
+    return pricer.toDisplayAmount( priceOracle.toBt( val ) );
   }
 
   toFiat( val ){
     const priceOracle =  pricer.getPriceOracle() ; 
     val = priceOracle.fromDecimal( val ); 
-    return priceOracle.btToFiat( val );
+    return pricer.toDisplayAmount( priceOracle.btToFiat( val ));
   }
 
   render() {
