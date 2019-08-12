@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import {connect} from 'react-redux';
-import { View, Text, Image } from 'react-native';
+import { Text, Image } from 'react-native';
 import pricer from '../../services/Pricer';
 import inlineStyles from './styles';
-import utilities from '../../services/Utilities';
 import pepoWhiteIcon from '../../assets/pepo-white-icon.png'
 import LinearGradient from "react-native-linear-gradient";
 
