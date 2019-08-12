@@ -22,7 +22,7 @@ export default class NavigateTo {
   };
 
   goToSupporters = (profileId) => {
-    this.navigation.push('SupportersListWrapper', { userId: profileId });
+    this.navigation.push('SupportersListScreen', { userId: profileId });
   };
 
   goToProfilePage = (id) => {

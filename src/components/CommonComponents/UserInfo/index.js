@@ -51,12 +51,12 @@ class UserInfo extends React.PureComponent {
   };
 
   goToSupporting = () => {
-    this.props.navigation.push('SupportingListWrapper',{ userId: this.props.userId});
+    this.props.navigation.push('SupportingListScreen',{ userId: this.props.userId});
   }
 
 
   goToSupporters = () => {
-    this.props.navigation.push('SupportersListWrapper', {userId: this.props.userId});
+    this.props.navigation.push('SupportersListScreen', {userId: this.props.userId});
   }
 
   render() {
