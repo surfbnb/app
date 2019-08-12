@@ -6,6 +6,9 @@ import Package from '../../package';
 import { Platform } from 'react-native';
 import { Toast } from 'native-base';
 
+// Used require to support all platforms
+const RCTNetworking = require("RCTNetworking");
+
 import Store from '../store';
 import {
   hideModal,
@@ -279,7 +282,7 @@ export default class PepoApi {
 
         switch (responseStatus) {
           case 401:
-            CurrentUser.logout(responseJSON);
+            await CurrentUser.logout(responseJSON);
             Store.dispatch(hideModal());
             break;
           case 404:

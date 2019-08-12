@@ -10,6 +10,9 @@ import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
 
+// Used require to support all platforms
+const RCTNetworking = require("RCTNetworking");
+
 class CurrentUser {
   constructor() {
     this.userId = null;
@@ -137,7 +140,7 @@ class CurrentUser {
       .post()
       .catch((error) => {})
       .then((res) => {
-        NavigationService.navigate('HomeScreen', params);
+        RCTNetworking.clearCookies(() => NavigationService.navigate('HomeScreen', params));
       });
   }
 

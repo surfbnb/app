@@ -27,7 +27,7 @@ function twitterDisconnect() {
 }
 
 let userName;
-export default CustomDrawerContent = (props) => {
+export default (props) => {
   let currentUserName = reduxGetter.getName(CurrentUser.getUserId());
   userName = currentUserName || userName;
   return (

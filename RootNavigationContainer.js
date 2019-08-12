@@ -39,8 +39,6 @@ import NotificationScreen from './src/components/Notification';
 import { StatusBarManager } from './src/services/StatusBarManager';
 import CustomDrawerContent from './src/components/CustomDrawerContent';
 import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
-import CurrentUser from './src/models/CurrentUser';
-import reduxGetter from './src/services/ReduxGetters';
 
 const getRouteName = (navigation) => {
   if (!navigation) return null;
