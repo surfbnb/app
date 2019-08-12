@@ -35,7 +35,7 @@ class NotificationScreen extends Component {
   }
 
   render() {
-    return <NotificationList fetchUrl={`/users/${this.props.userId}/notifications`} />;
+    return <NotificationList fetchUrl={`/notifications`} />;
   }
 }
 
