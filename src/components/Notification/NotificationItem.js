@@ -4,13 +4,13 @@ import { withNavigation } from 'react-navigation';
 import styles from './styles';
 import Pricer from '../../services/Pricer';
 import reduxGetter from '../../services/ReduxGetters';
-import CurrentUser from '../../models/CurrentUser';
 import ProfilePicture from '../ProfilePicture';
 import PepoIcon from '../../assets/pepo-tx-icon.png';
 import PepoPinkIcon from '../../assets/heart.png';
 import { connect } from 'react-redux';
 import AppConfig from '../../../src/constants/AppConfig';
-import {shortenedFromNow} from '../../helpers/timestampHandling';
+import { shortenedFromNow } from '../../helpers/timestampHandling';
+import NavigateTo from '../../helpers/navigateTo';
 import playIcon from '../../assets/play_icon.png';
 
 const mapStateToProps = (state, ownProps) => {
@@ -20,7 +20,7 @@ const mapStateToProps = (state, ownProps) => {
     kind: reduxGetter.getNotificationKind(ownProps.notificationId, state),
     payload: reduxGetter.getNotificationPayload(ownProps.notificationId, state),
     timeStamp: reduxGetter.getNotificationTimestamp(ownProps.notificationId, state),
-    goTo: reduxGetter.getNotificationGoTo(ownProps.notificationId, state) 
+    goTo: reduxGetter.getNotificationGoTo(ownProps.notificationId, state)
   };
 };
 
@@ -34,24 +34,10 @@ class NotificationItem extends Component {
   }
 
   handleRowClick = () => {
-    if (this.props.goTo && this.props.goTo.pn == 'p') {
-      this.goToProfilePage(this.props.goTo.v.puid);
-    } else if (this.props.goTo && this.props.goTo.pn == 'cb') {
-      this.goToSupporters(this.props.goTo.v.puid);
-    } else if (this.props.goTo && this.props.goTo.pn == 'v') {
-      this.goToVideo(this.props.goTo.v.vid);
-    }
+    this.props.goTo && new NavigateTo(this.props.navigation).navigate(this.props.goTo);  
   };
 
-  goToVideo = (vId) => {
-    this.props.navigation.push('VideoPlayer', {
-      videoId: vId
-    });
-  };
-
-  goToSupporters = (profileId) => {
-    this.props.navigation.push('SupportersListWrapper', { userId: profileId });
-  };
+ 
 
   sortNumber(a, b) {
     return a - b;
@@ -59,17 +45,11 @@ class NotificationItem extends Component {
 
   includesTextNavigate = (includesObject) => {
     if (includesObject.kind == 'users') {
-      this.goToProfilePage(includesObject.id);
+      new NavigateTo(this.props.navigation).goToProfilePage(includesObject.id);        
     }
   };
 
-  goToProfilePage = (id) => {
-    if (id == CurrentUser.getUserId()) {
-      this.props.navigation.navigate('ProfileScreen');
-    } else {
-      this.props.navigation.push('UsersProfileScreen', { userId: id });
-    }
-  };
+  
 
   getHeading = () => {
     let heading = this.props.heading,
@@ -95,7 +75,8 @@ class NotificationItem extends Component {
       lastIndex = element;
     });
 
-    return stringArray.map((item, i) => heading.includes[item] ? (
+    return stringArray.map((item, i) =>
+      heading.includes[item] ? (
         <TouchableOpacity
           onPress={() => {
             this.includesTextNavigate(heading.includes[item]);
@@ -104,7 +85,9 @@ class NotificationItem extends Component {
         >
           <Text style={{ fontWeight: '600' }}>{item}</Text>
         </TouchableOpacity>
-      ) : (<Text key={i}>{item}</Text>)
+      ) : (
+        <Text key={i}>{item}</Text>
+      )
     );
   };
 
@@ -135,18 +118,25 @@ class NotificationItem extends Component {
   };
 
   sayThanks = () => {
-      console.log('sayThanks');
-  }
+    console.log('sayThanks');
+    //this.props.navigation.navigate('SayThanksScreen');
+  };
 
   showSayThanks = () => {
     if (this.props.payload.thank_you_flag === 1) {
       return (
         <TouchableOpacity onPress={this.sayThanks}>
-            <View style={styles.sayThanksButton}>
-                <Text style={styles.sayThanksText}>Say Thanks</Text>
-            </View>
-        </TouchableOpacity>  
+          <View style={styles.sayThanksButton}>
+            <Text style={styles.sayThanksText}>Say Thanks</Text>
+          </View>
+        </TouchableOpacity>
       );
+    }
+  };
+
+  showHeader = () => {
+    if (this.props.header) {
+      return <View style={styles.sectionHeaderView}><Text style={styles.sectionHeaderTitle}>{this.props.header}</Text></View>;
     }
   };
 
@@ -158,20 +148,25 @@ class NotificationItem extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this.handleRowClick}>
-        <View style={styles.txtWrapper}>
-        {this.props.kind == AppConfig.notificationConstants.systemNotification ?  (<Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />) : (<ProfilePicture pictureId={this.props.pictureId} />)} 
-          <View style={{ flexDirection: 'column' }}>
-            <View style={styles.item}>{this.getHeading()}</View>
-            {this.showAppreciationText()}
+      <React.Fragment>
+        {this.showHeader()}
+        <TouchableOpacity onPress={this.handleRowClick}>
+          <View style={styles.txtWrapper}>
+            {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
+              <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
+            ) : (
+              <ProfilePicture pictureId={this.props.pictureId} />
+            )}
+            <View style={{ flexDirection: 'column' }}>
+              <View style={styles.item}>{this.getHeading()}</View>
+              {this.showAppreciationText()}
+            </View>
+            <Text style={styles.timeStamp}>{this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}</Text>
+            {this.notificationInfo()}
           </View>
-          <Text style={styles.timeStamp}>
-            {this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}
-          </Text>
-          {this.notificationInfo()}
-        </View>
-        {this.showSayThanks()}
-      </TouchableOpacity>
+          {this.showSayThanks()}
+        </TouchableOpacity>
+      </React.Fragment>
     );
   }
 }
