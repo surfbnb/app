@@ -31,7 +31,7 @@ class VideoList extends PureComponent {
     return (
       <HomeFeedRow
         isActive={index == this.state.activeIndex}
-        doRender={Math.abs(index - currentIndex) < maxVideosThreshold}
+        doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
         feedId={item}
       />
     );
