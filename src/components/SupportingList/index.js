@@ -23,9 +23,15 @@ class SupportingList extends PureComponent {
     return <User  userId={item}  amount={this.getBtAmount(this.props.userId , item)}/>;
   };
 
+  getEmptyComponent = () => {
+    return !this.props.refreshing && (
+        <EmptyList displayText="You are currently not supporting to anyone" />
+    )
+  }
+
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={this.props.list}
           onEndReached={this.props.getNext}
@@ -34,15 +40,9 @@ class SupportingList extends PureComponent {
           refreshing={this.props.refreshing}
           onEndReachedThreshold={5}
           ListFooterComponent={this.props.renderFooter}
+          ListEmptyComponent={this.getEmptyComponent}
           renderItem={this._renderItem}
-        />
-        {this.props.list && this.props.list.length == 0 && !this.props.refreshing && (
-          <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: Colors.whiteSmoke }}
-          >
-            <EmptyList displayText="You are currently not supporting to anyone" />
-          </View>
-        )}
+        />  
       </View>
     );
   }
