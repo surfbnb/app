@@ -313,14 +313,15 @@ class TransactionScreen extends Component {
   }
 
   getSendTransactionPlatformData(ostWorkflowEntity) {
-    return {
+    let params = {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
-      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
-      //getting invalid meta in case of transaction from profile screen
-      meta: {
-        vi: this.videoId
-      }
+      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')
     };
+    if (this.videoId) {
+      params['meta'] = {};
+      params['meta']['vi'] = this.videoId;
+    }
+    return params;
   }
 
   onError(error) {
