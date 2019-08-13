@@ -264,7 +264,8 @@ class CameraWorker extends PureComponent {
         upsertRecordedVideo({
           video_s3_upload_processing: true
         })
-      );      
+      );
+      videoUploaderComponent.emit('show');        
       this.uploadToS3(this.props.recorded_video.compressed_video, 'video')
         .then((s3Video) => {
           console.log('uploadVideo success :: s3Video', s3Video);
