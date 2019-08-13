@@ -45,7 +45,7 @@ class NotificationList extends PureComponent {
   };
 
   getEmptyComponent = () => {
-    return !this.props.refreshing && <EmptyList displayText="Currently you don't have any notifications." />;
+    return !this.props.refreshing && <EmptyList displayText="Currently you don't have any activities." />;
   };
 
   render() {

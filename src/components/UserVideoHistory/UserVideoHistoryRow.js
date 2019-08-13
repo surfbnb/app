@@ -12,7 +12,7 @@ import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 
 import inlineStyles from './styles';
 import multipleClickHandler from '../../services/MultipleClickHandler';
-import historyBack from '../../assets/user-video-history-back-icon.png';
+
 import utilities from '../../services/Utilities';
 
 class UserVideoHistoryRow extends PureComponent {
@@ -42,14 +42,6 @@ class UserVideoHistoryRow extends PureComponent {
     return this.props.userId == CurrentUser.getUserId();
   }
 
-  closeVideo = () => {
-    this.navigateBack();
-  };
-
-  navigateBack() {
-    this.props.navigation.goBack();
-  }
-
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
@@ -60,44 +52,32 @@ class UserVideoHistoryRow extends PureComponent {
           isActive={this.props.isActive}
         />
 
-        <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-          <View style={inlineStyles.touchablesBtns}>
-            {!this.isCurrentUser() && (
-              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <TransactionPepoButton
-                  resyncDataDelegate={this.refetchVideo}
-                  userId={this.props.userId}
-                  videoId={this.props.videoId}
-                />
-                <TouchableOpacity
-                  pointerEvents={'auto'}
-                  style={inlineStyles.txElem}
-                  onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
-                >
-                  <Image style={{ height: 57, width: 57 }} source={tx_icon} />
-                </TouchableOpacity>
+        {!!this.props.videoId && !!this.props.userId &&
+           (<View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
+              <View style={inlineStyles.touchablesBtns}>
+                {!this.isCurrentUser() && (
+                  <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                    <TransactionPepoButton
+                      resyncDataDelegate={this.refetchVideo}
+                      userId={this.props.userId}
+                      videoId={this.props.videoId}
+                    />
+                    <TouchableOpacity
+                      pointerEvents={'auto'}
+                      style={inlineStyles.txElem}
+                      onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
+                    >
+                      <Image style={{ height: 57, width: 57 }} source={tx_icon} />
+                    </TouchableOpacity>
+                  </View>
+                )}
+
+                <VideoAmountStat videoId={this.props.videoId} />
               </View>
-            )}
 
-            <VideoAmountStat videoId={this.props.videoId} />
-          </View>
+              <BottomStatus userId={this.props.userId} videoId={this.props.videoId} />
+        </View>)}
 
-          <BottomStatus userId={this.props.userId} videoId={this.props.videoId} />
-        </View>
-        <TouchableOpacity
-          onPress={this.closeVideo}
-          style={{
-            width: 27,
-            height: 45,
-            position: 'absolute',
-            top: 54,
-            left: 20,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <Image style={{ width: 18, height: 30 }} source={historyBack} />
-        </TouchableOpacity>
       </View>
     );
   }

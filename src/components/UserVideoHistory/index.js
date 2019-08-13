@@ -1,5 +1,5 @@
 import React , {PureComponent} from "react"; 
-import {FlatList , View} from "react-native";
+import {FlatList , View , TouchableOpacity, Image} from "react-native";
 import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
@@ -9,6 +9,8 @@ import TopStatus from "../../components/Home/TopStatus";
 
 import inlineStyles from "./styles";
 import CurrentUser from "../../models/CurrentUser";
+
+import historyBack from '../../assets/user-video-history-back-icon.png';
 
 const maxVideosThreshold = 3;
 
@@ -131,7 +133,15 @@ class UserVideoHistoryScreen extends PureComponent{
     isCurrentUser(){
         return this.userId == CurrentUser.getUserId(); 
     }
-       
+
+    closeVideo = () => {
+        this.navigateBack();
+      };
+    
+    navigateBack() {
+        this.props.navigation.goBack();
+    }
+    
     render() {
 
         return(
@@ -160,6 +170,20 @@ class UserVideoHistoryScreen extends PureComponent{
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
+                <TouchableOpacity
+                    onPress={this.closeVideo}
+                    style={{
+                        width: 27,
+                        height: 45,
+                        position: 'absolute',
+                        top: 54,
+                        left: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                    >
+                    <Image style={{ width: 18, height: 30 }} source={historyBack} />
+                 </TouchableOpacity>
              </View>   
         );
     }
