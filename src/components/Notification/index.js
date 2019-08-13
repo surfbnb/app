@@ -3,7 +3,8 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import CurrentUser from '../../models/CurrentUser';
 import NotificationList from './NotificationList';
-import Colors from "../../theme/styles/Colors";
+import Colors from '../../theme/styles/Colors';
+import NavigationEmitter from '../../helpers/TabNavigationEvent';
 
 const mapStateToProps = (state) => {
   return {
@@ -12,7 +13,6 @@ const mapStateToProps = (state) => {
 };
 
 class NotificationScreen extends Component {
-  
   static navigationOptions = (options) => {
     return {
       headerTitle: 'Activity',
@@ -22,16 +22,25 @@ class NotificationScreen extends Component {
         borderBottomWidth: 0,
         shadowColor: '#000',
         shadowOffset: {
-          width:0, height: 1
+          width: 0,
+          height: 1
         },
         shadowOpacity: 0.1,
         shadowRadius: 3
-      },
+      }
     };
   };
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    NavigationEmitter.on('onRefresh', (screen) => console.log('NavigationEmitter emitted NotificationScreen', screen));
+  }
+
+  componentWillUnmount() {
+    NavigationEmitter.removeListener('onRefresh');
   }
 
   render() {

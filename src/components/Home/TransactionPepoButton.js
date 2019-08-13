@@ -136,7 +136,7 @@ class TransactionPepoButton extends PureComponent {
   }
 
   onTransactionIconWrapperClick = () => {
-    CurrentUser.checkActiveUser() && CurrentUser.isUserActivated(true);
+    utilities.checkActiveUser() && CurrentUser.isUserActivated(true);
   };
 
   reduxUpdate(isTXBtnDisabled, balance, totalBt, supporters) {

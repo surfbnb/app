@@ -129,6 +129,9 @@ class TransactionScreen extends Component {
     if (!this.isValidInput(btAmount)) {
       return;
     }
+    this.setState({
+      general_error: ''
+    });
     this.excecuteTransaction();
   };
 

@@ -8,6 +8,8 @@ import Pricer from '../../services/Pricer';
 import CurrentUser from '../../models/CurrentUser';
 import VideoLoadingFlyer from '../CommonComponents/VideoLoadingFlyer';
 import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
+import NavigationEmitter from '../../helpers/TabNavigationEvent';
+import appConfig from '../../constants/AppConfig';
 
 const mapStateToProps = (state) => {
   return {
@@ -39,11 +41,19 @@ class HomeScreen extends Component {
   componentDidMount = () => {
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
+    NavigationEmitter.on('onRefresh', (screen) => {
+      if (screen == appConfig.tabConfig.tab1.childStack) {
+        //FlatList scroll to top
+        //Flatlist ref refresh
+        //Pricer.getBalance();
+      }
+    });
   };
 
   componentWillUnmount = () => {
     videoUploaderComponent.removeListener('show');
     videoUploaderComponent.removeListener('hide');
+    NavigationEmitter.removeListener('onRefresh');
   };
 
   showVideoUploader = () => {
@@ -71,19 +81,17 @@ class HomeScreen extends Component {
         <StatusBar translucent={true} backgroundColor={'transparent'} />
         <TopStatus />
         {this.state.videoUploaderVisible && (
-        <VideoLoadingFlyer
-          componentHeight={46}
-          componentWidth={46}
-          sliderWidth={180}
-          containerStyle={{ top: 50, left: 10 }}
-          displayText="Uploading Video"
-          extendDirection="right"
-          extend={true}
-          id={2}
-        />
-      )}
-
-
+          <VideoLoadingFlyer
+            componentHeight={46}
+            componentWidth={46}
+            sliderWidth={180}
+            containerStyle={{ top: 50, left: 10 }}
+            displayText="Uploading Video"
+            extendDirection="right"
+            extend={true}
+            id={2}
+          />
+        )}
 
         <VideoList toRefresh={this.state.toRefresh} fetchUrl={'/feeds'} onRefresh={this.onRefresh} />
       </View>

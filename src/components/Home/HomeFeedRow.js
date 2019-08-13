@@ -14,6 +14,7 @@ import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 
 import inlineStyles from './styles';
 import multipleClickHandler from '../../services/MultipleClickHandler';
+import utilities from '../../services/Utilities';
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -36,7 +37,7 @@ class HomeFeedRow extends PureComponent {
   };
 
   navigateToTransactionScreen = (e) => {
-    if (CurrentUser.checkActiveUser() && CurrentUser.isUserActivated(true)) {
+    if (utilities.checkActiveUser() && CurrentUser.isUserActivated(true)) {
       this.props.navigation.push('TransactionScreen', {
         toUserId: this.userId,
         videoId: reduxGetter.getHomeFeedVideoId(this.props.feedId),
@@ -50,7 +51,7 @@ class HomeFeedRow extends PureComponent {
   }
 
   navigateToUserProfile = (e) => {
-    if (CurrentUser.checkActiveUser()) {
+    if (utilities.checkActiveUser()) {
       if (this.userId == CurrentUser.getUserId()) {
         this.props.navigation.navigate('ProfileScreen');
       } else {

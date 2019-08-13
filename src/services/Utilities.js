@@ -1,13 +1,15 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
 import pricer from './Pricer';
-import reduxGetters from "./ReduxGetters";
+import reduxGetters from './ReduxGetters';
 import appConfig from '../constants/AppConfig';
 
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
-import  captureVideoEventEmitter  from '../components/CaptureVideo/caputureVideoEventEmitter';
+import captureVideoEventEmitter from '../components/CaptureVideo/caputureVideoEventEmitter';
+import CurrentUser from '../models/CurrentUser';
+import { LoginPopoverActions } from '../components/LoginPopover';
 
-let recursiveMaxCount = 0 ; 
+let recursiveMaxCount = 0;
 
 export default {
   async saveItem(key, val) {
@@ -18,13 +20,13 @@ export default {
         val = String(val);
       }
       await AsyncStorage.removeItem(key);
-      await AsyncStorage.setItem(key, val);      
+      await AsyncStorage.setItem(key, val);
     } catch (error) {
       console.warn('AsyncStorage error: ' + error.message);
     }
   },
 
-  removeItem(key) {    
+  removeItem(key) {
     return AsyncStorage.removeItem(key);
   },
 
@@ -70,30 +72,31 @@ export default {
     return entities;
   },
 
-  _getEntityFromObj( resultObj , key = "id" ){
-    const entity = {} ,  id = `${key}_${resultObj.id}` ;
-    entity[ id ] = resultObj ;
+  _getEntityFromObj(resultObj, key = 'id') {
+    const entity = {},
+      id = `${key}_${resultObj.id}`;
+    entity[id] = resultObj;
     return entity;
   },
 
-  isUserActivated( status ){
-    status =  status || ""
-    return status.toLowerCase() == appConfig.userStatusMap.activated; 
+  isUserActivated(status) {
+    status = status || '';
+    return status.toLowerCase() == appConfig.userStatusMap.activated;
   },
 
   getLastChildRoutename(state) {
     if (!state) return null;
     let index = state.index,
-        routes = state.routes;
+      routes = state.routes;
     if (!routes || recursiveMaxCount > 10) {
-        recursiveMaxCount = 0;
-        return state.routeName;
+      recursiveMaxCount = 0;
+      return state.routeName;
     }
     recursiveMaxCount++;
     return this.getLastChildRoutename(routes[index]);
   },
 
-  handleVideoUploadModal( previousTabIndex ){
+  handleVideoUploadModal(previousTabIndex) {
     if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
     } else if (reduxGetters.getVideoProcessingStatus() == true) {
@@ -102,6 +105,13 @@ export default {
     } else {
       captureVideoEventEmitter.emit('show');
     }
-  }
+  },
 
+  checkActiveUser(showPopover = true) {
+    if (!CurrentUser.getOstUserId() && showPopover) {
+      LoginPopoverActions.show();
+      return false;
+    }
+    return true;
+  }
 };

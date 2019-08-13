@@ -1,5 +1,5 @@
-import React  from 'react';
-import {  TouchableOpacity, Image } from 'react-native';
+import React from 'react';
+import { TouchableOpacity, Image } from 'react-native';
 import { StackActions, SafeAreaView } from 'react-navigation';
 
 import styles from './styles';
@@ -12,98 +12,83 @@ import searchSelected from '../../assets/user-search-icon-selected.png';
 import activityNs from '../../assets/user-activity-icon.png';
 import activitySelected from '../../assets/user-activity-icon-selected.png';
 import videoNs from '../../assets/user-video-capture-icon.png';
+import utilities from '../../services/Utilities';
+import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import CurrentUser from '../../models/CurrentUser';
-import utilities from "../../services/Utilities";
-
-const tabConfig = {
-    tab1: {
-        rootStack: 'Home',
-        childStack: 'HomeScreen',
-        navigationIndex: 0
-    },
-    tab2: {
-        rootStack: 'Search',
-        childStack: 'SearchScreen',
-        navigationIndex: null
-    },
-    tab3: {
-        rootStack: 'CaptureVideo',
-        childStack: 'CaptureVideo',
-        navigationIndex: null
-    },
-    tab4: {
-        rootStack: 'Notification',
-        childStack: 'NotificationScreen',
-        navigationIndex: 1
-    },
-    tab5: {
-        rootStack: 'Profile',
-        childStack: 'ProfileScreen',
-        navigationIndex: 2
-    }
-};
+import { LoginPopoverActions } from '../../components/LoginPopover';
+import appConfig from '../../constants/AppConfig';
 
 let previousTabIndex = 0;
 
 function onTabPressed(navigation, tab) {
-    if (!CurrentUser.checkActiveUser()) return;
-
-    if (tab.rootStack === "CaptureVideo" ) {
-        utilities.handleVideoUploadModal(previousTabIndex);
-        return;
-    }
-
-    if( tab.navigationIndex == undefined || tab.navigationIndex == null ) return ;
-
-    if (previousTabIndex !== tab.navigationIndex) {
-        navigation.navigate(tab.rootStack);
-    } else {
-        try {
-            if (utilities.getLastChildRoutename(navigation.state) !== tab.childStack) {
-                navigation.dispatch(StackActions.popToTop());
-            }
-        } catch {
-            console.log('Catch error');
-        }
-    }
+  if (CurrentUser.getOstUserId()) {
+    loginInFlow(navigation, tab);
+  } else {
+    logoutFlow(navigation, tab);
+  }
 }
 
+function loginInFlow(navigation, tab) {
+  let currentTabIndex = tab.navigationIndex;
+  if (tab.rootStack === 'CaptureVideo') {
+    utilities.handleVideoUploadModal(previousTabIndex);
+    return;
+  }
+  if (currentTabIndex == undefined || currentTabIndex == null) return;
+  if (previousTabIndex !== currentTabIndex) {
+    navigation.navigate(tab.rootStack);
+  } else if (utilities.getLastChildRoutename(navigation.state) !== tab.childStack) {
+    try {
+      navigation.dispatch(StackActions.popToTop());
+    } catch {
+      console.log('Catch error');
+    }
+  } else {
+    NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
+  }
+}
+
+function logoutFlow(navigation, tab) {
+  if (tab.navigationIndex == appConfig.tabConfig.tab1.navigationIndex) {
+    NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
+  } else {
+    LoginPopoverActions.show();
+  }
+}
 
 const CustomTab = ({ navigation, screenProps }) => {
-  previousTabIndex = navigation.state.index
-   return ( <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab1)}>
+  previousTabIndex = navigation.state.index;
+  return (
+    <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab1)}>
         <Image
           style={[styles.tabElementSkipFont]}
-          source={navigation.state.index === tabConfig.tab1.navigationIndex ? homeSelected : homeNs}
+          source={navigation.state.index === appConfig.tabConfig.tab1.navigationIndex ? homeSelected : homeNs}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab2)}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab2)}>
         <Image
           style={[styles.tabElementSkipFont]}
-          source={navigation.state.index === tabConfig.tab2.navigationIndex ? searchSelected : searchNs}
+          source={navigation.state.index === appConfig.tabConfig.tab2.navigationIndex ? searchSelected : searchNs}
         />
       </TouchableOpacity>
-     <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab3)}>
-       <Image
-         style={[styles.tabElementSkipFont]}
-         source={videoNs}
-       />
-     </TouchableOpacity>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab4)}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab3)}>
+        <Image style={[styles.tabElementSkipFont]} source={videoNs} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab4)}>
         <Image
           style={[styles.tabElementSkipFont]}
-          source={navigation.state.index === tabConfig.tab4.navigationIndex ? activitySelected : activityNs}
+          source={navigation.state.index === appConfig.tabConfig.tab4.navigationIndex ? activitySelected : activityNs}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab5)}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab5)}>
         <Image
           style={[styles.tabElementSkipFont]}
-          source={navigation.state.index === tabConfig.tab5.navigationIndex ? profileSelected : profileNs}
+          source={navigation.state.index === appConfig.tabConfig.tab5.navigationIndex ? profileSelected : profileNs}
         />
       </TouchableOpacity>
-    </SafeAreaView>)
+    </SafeAreaView>
+  );
 };
-
 
 export default CustomTab;

@@ -108,7 +108,7 @@ export default {
     videoTxReceiveKind: VIDEO_TX_RECEIVE_SUCCESS,
     videoAddKind: VIDEO_ADD,
     AppreciationKind: CONTRIBUTION_THANKS,
-    systemNotification:  SYSTEM_NOTIFICATION,
+    systemNotification: SYSTEM_NOTIFICATION,
     showCoinComponentArray: [
       PROFILE_TX_SEND_SUCCESS,
       PROFILE_TX_RECEIVE_SUCCESS,
@@ -124,5 +124,33 @@ export default {
       CONTRIBUTION_THANKS,
       SYSTEM_NOTIFICATION
     ]
+  },
+
+  tabConfig: {
+    tab1: {
+      rootStack: 'Home',
+      childStack: 'HomeScreen',
+      navigationIndex: 0
+    },
+    tab2: {
+      rootStack: 'Search',
+      childStack: 'SearchScreen',
+      navigationIndex: null
+    },
+    tab3: {
+      rootStack: 'CaptureVideo',
+      childStack: 'CaptureVideo',
+      navigationIndex: null
+    },
+    tab4: {
+      rootStack: 'Notification',
+      childStack: 'NotificationScreen',
+      navigationIndex: 1
+    },
+    tab5: {
+      rootStack: 'Profile',
+      childStack: 'ProfileScreen',
+      navigationIndex: 2
+    }
   }
 };

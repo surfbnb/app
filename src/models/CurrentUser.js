@@ -5,7 +5,6 @@ import Store from '../store';
 import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
-import { LoginPopoverActions } from '../components/LoginPopover';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
@@ -195,15 +194,6 @@ class CurrentUser {
 
   _getCurrentUserIdKey() {
     return 'current_user_id';
-  }
-
-  // Start Move this to utilities once all branches are merged.
-  checkActiveUser() {
-    if (!this.getOstUserId()) {
-      LoginPopoverActions.show();
-      return false;
-    }
-    return true;
   }
 
   isUserActivated(emit) {

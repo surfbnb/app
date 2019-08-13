@@ -5,12 +5,13 @@ import BackArrow from '../CommonComponents/BackArrow';
 
 import UserInfo from '../../components/CommonComponents/UserInfo';
 import CurrentUser from '../../models/CurrentUser';
-import UserProfileFlatList from "../../components/CommonComponents/UserProfileFlatList";
-import multipleClickHandler from "../../services/MultipleClickHandler";
-import tx_icon from "../../assets/tx_icon.png";
+import UserProfileFlatList from '../../components/CommonComponents/UserProfileFlatList';
+import multipleClickHandler from '../../services/MultipleClickHandler';
+import tx_icon from '../../assets/tx_icon.png';
 
-import {fetchUser} from "../../helpers/helpers";
-import Colors from "../../theme/styles/Colors";
+import { fetchUser } from '../../helpers/helpers';
+import Colors from '../../theme/styles/Colors';
+import utilities from '../../services/Utilities';
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -22,7 +23,8 @@ export default class UsersProfile extends Component {
         borderBottomWidth: 0,
         shadowColor: '#000',
         shadowOffset: {
-          width:0, height: 1
+          width: 0,
+          height: 1
         },
         shadowOpacity: 0.1,
         shadowRadius: 3
@@ -37,7 +39,7 @@ export default class UsersProfile extends Component {
   }
 
   navigateToTransactionScreen = () => {
-    if (CurrentUser.checkActiveUser() && CurrentUser.isUserActivated()) {
+    if (utilities.checkActiveUser() && CurrentUser.isUserActivated()) {
       this.props.navigation.push('TransactionScreen', {
         toUserId: this.userId,
         requestAcknowledgeDelegate: this.fetchUser
@@ -46,34 +48,44 @@ export default class UsersProfile extends Component {
   };
 
   fetchUser = () => {
-    fetchUser( this.userId );
+    fetchUser(this.userId);
+  };
+
+  _headerComponent() {
+    return <UserInfo userId={this.userId} />;
   }
 
-  _headerComponent(){
+  _subHeader() {
     return (
-        <UserInfo userId={this.userId} />
-    )
-  }
-
-  _subHeader(){
-    return ( <Text style={{textAlign: 'center', borderColor: 'rgb(218, 223, 220)', borderWidth: 1,color: '#2a293b',
-                            fontSize: 18,
-                            fontFamily: 'AvenirNext-Regular',
-                            paddingVertical: 10,
-                            marginTop: 30}}>Updates</Text> ) ; 
+      <Text
+        style={{
+          textAlign: 'center',
+          borderColor: 'rgb(218, 223, 220)',
+          borderWidth: 1,
+          color: '#2a293b',
+          fontSize: 18,
+          fontFamily: 'AvenirNext-Regular',
+          paddingVertical: 10,
+          marginTop: 30
+        }}
+      >
+        Updates
+      </Text>
+    );
   }
 
   render() {
     return (
       <React.Fragment>
-        <UserProfileFlatList listHeaderComponent = {this._headerComponent()}
-                             listHeaderSubComponent={this._subHeader()}
-                             userId={this.userId}
+        <UserProfileFlatList
+          listHeaderComponent={this._headerComponent()}
+          listHeaderSubComponent={this._subHeader()}
+          userId={this.userId}
         />
         <TouchableOpacity
           pointerEvents={'auto'}
           onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
-          style={{position: 'absolute', right: 20, bottom: 30}}
+          style={{ position: 'absolute', right: 20, bottom: 30 }}
         >
           <Image style={{ height: 57, width: 57 }} source={tx_icon} />
         </TouchableOpacity>
