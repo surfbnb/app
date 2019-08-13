@@ -14,12 +14,6 @@ const mapStateToProps = (state, ownProps) => {
     userName: reduxGetter.getUserName(ownProps.userId, state),
     name: reduxGetter.getName(ownProps.userId, state),
     bio: reduxGetter.getBio(ownProps.userId, state),
-    //Temp Code
-    videoSize: reduxGetter.getVideoSize(ownProps.videoId, state ),
-    videoSizeR: reduxGetter.getVideoSize(ownProps.videoId, state , "576w"),
-    videoImageSize : reduxGetter.getImageSize(ownProps.videoId, state ),
-    videoImageSizeR : reduxGetter.getImageSize(ownProps.videoId, state , "576w"),
-    //Temp code
     supporters: reduxGetter.getVideoSupporters( ownProps.videoId ),
     totalBt: reduxGetter.getVideoBt(ownProps.videoId , state ),
   };
@@ -47,9 +41,6 @@ class BottomStatus extends PureComponent {
                   numberOfLines={1}
             >
               {`@${this.props.userName}`}
-              {/* TODO remove //Temp Start*/}
-              {/* { }V-{this.props.videoSize}:{this.props.videoSizeR}  I-{this.props.videoImageSize} */}
-              {/* TODO remove //Temp End*/}
             </Text>
             {this.props.bio ? (
               <Text
