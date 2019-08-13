@@ -122,7 +122,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.pepo.production"
+        applicationId "com.pepo.staging"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 76
