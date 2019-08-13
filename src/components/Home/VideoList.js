@@ -41,6 +41,10 @@ class VideoList extends PureComponent {
     this.setActiveIndex();
   };
 
+  onScrollToTop = () => {
+    this.setActiveIndex();
+  }
+
     render(){
         return(
             <FlatList
@@ -64,6 +68,7 @@ class VideoList extends PureComponent {
                 onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
                 renderItem={this._renderItem}
                 showsVerticalScrollIndicator={false}
+                onScrollToTop={this.onScrollToTop}
             />
         );
     }

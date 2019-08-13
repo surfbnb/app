@@ -141,7 +141,11 @@ class UserVideoHistoryScreen extends PureComponent{
     navigateBack() {
         this.props.navigation.goBack();
     }
-    
+
+    onScrollToTop = () => {
+       this.setActiveIndex();
+    }
+
     render() {
 
         return(
@@ -149,7 +153,7 @@ class UserVideoHistoryScreen extends PureComponent{
                 {!this.isCurrentUser() &&  <TopStatus />} 
                 <FlatList  
                     snapToAlignment={"top"}
-                    viewabilityConfig={{waitForInteraction: true, itemVisiblePercentThreshold: 90}}
+                    viewabilityConfig={{itemVisiblePercentThreshold: 90}}
                     pagingEnabled={true}
                     decelerationRate={"normal"}
                     data={this.state.list}
@@ -165,6 +169,7 @@ class UserVideoHistoryScreen extends PureComponent{
                     renderItem={this._renderItem}
                     style={[inlineStyles.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
+                    onScrollToTop={this.onScrollToTop}
 
                     initialScrollIndex={this.state.activeIndex}
                     getItemLayout={this.getItemLayout}
