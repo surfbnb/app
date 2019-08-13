@@ -19,7 +19,7 @@ class NotificationList extends PureComponent {
   _renderItem = ({ item, index }) => {
     let timeStamp = reduxGetter.getNotificationTimestamp(item);
     this.newHeader = this.getHeader(timeStamp);
-    let header = this.newHeader != this.lastHeader ? this.newHeader : '';
+    let header = this.newHeader != this.lastHeader || index == 0 ? this.newHeader : '';
     this.lastHeader = this.newHeader;
     return <Notification notificationId={item} header={header} />;
   };
