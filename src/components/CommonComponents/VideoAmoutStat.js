@@ -25,7 +25,7 @@ class VideoAmountStat extends PureComponent {
     btToFiat(btAmount) {
         const priceOracle = pricer.getPriceOracle();
         btAmount = priceOracle.fromDecimal( btAmount )
-        return (priceOracle && priceOracle.btToFiat(btAmount, 2)) || 0;
+        return  (priceOracle && priceOracle.btToFiat(btAmount, 2)) || 0;
     }
     
     render() {
@@ -41,7 +41,7 @@ class VideoAmountStat extends PureComponent {
                 style={[inlineStyles.raisedSupportedTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
-                >${`${this.btToFiat(this.props.totalBt)}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>RAISED</Text></Text>
+                >${`${ pricer.toDisplayAmount(this.btToFiat(this.props.totalBt))}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>RAISED</Text></Text>
             </View>
             }
             {
@@ -53,7 +53,7 @@ class VideoAmountStat extends PureComponent {
                 style={[inlineStyles.raisedSupportedTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
-                >{`${this.props.supporters}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>SUPPORTERS</Text></Text>
+                >{`${pricer.toDisplayAmount(this.props.supporters)}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>SUPPORTERS</Text></Text>
             </View>
             }
         </View>

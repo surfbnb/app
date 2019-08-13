@@ -72,7 +72,7 @@ class Pricer {
 
   toDisplayAmount(amount) {
     if(isNaN(amount)) return amount;
-    return numeral(amount).format('0[.]00a');
+    return numeral(amount).format('0[.]00a') || 0;
   }
 
 }

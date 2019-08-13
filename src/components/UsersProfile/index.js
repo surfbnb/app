@@ -69,7 +69,7 @@ export default class UsersProfile extends Component {
           marginTop: 30
         }}
       >
-        Updates
+        Videos
       </Text>
     );
   }

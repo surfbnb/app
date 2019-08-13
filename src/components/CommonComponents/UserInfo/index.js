@@ -11,6 +11,7 @@ import ProfilePicture from '../../ProfilePicture';
 import PixelCall from "../../../services/PixelCall";
 import LinearGradient from "react-native-linear-gradient";
 import multipleClickHandler from "../../../services/MultipleClickHandler";
+import Pricer from '../../../services/Pricer';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -96,18 +97,18 @@ class UserInfo extends React.PureComponent {
           <View style={inlineStyle.numericInfoWrapper}>
             <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporting() } )}
               style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
-              <Text style={inlineStyle.numericInfoText}>{this.props.supporting || 0}</Text>
+              <Text style={inlineStyle.numericInfoText}>{ Pricer.toDisplayAmount( this.props.supporting ) }</Text>
               <Text style={inlineStyle.numericInfoText}>SUPPORTING</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporters() } )}
              style={[inlineStyle.numericInnerWrapper]}>
-              <Text style={inlineStyle.numericInfoText}>{this.props.supporters || 0}</Text>
+              <Text style={inlineStyle.numericInfoText}>{ Pricer.toDisplayAmount(this.props.supporters)}</Text>
               <Text style={inlineStyle.numericInfoText}>SUPPORTERS</Text>
             </TouchableOpacity>
 
             <View style={[inlineStyle.numericInnerWrapper]} style={[inlineStyle.numericInnerWrapper]}>
-              <Text style={inlineStyle.numericInfoText}>${this.btToFiat(this.props.btAmount) || 0}</Text>
+              <Text style={inlineStyle.numericInfoText}>${  Pricer.toDisplayAmount(this.btToFiat(this.props.btAmount)) }</Text>
               <Text style={inlineStyle.numericInfoText}>RAISED</Text>
             </View>
           </View>
