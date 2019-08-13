@@ -11,7 +11,7 @@ let stylesMap = {
   },
   videoStatsTxt: {
     color: Colors.white,
-    fontSize: 20,
+    fontSize: 16,
     fontFamily: 'AvenirNext-Regular',
     marginLeft: 2
   }
