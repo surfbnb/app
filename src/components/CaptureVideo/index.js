@@ -2,43 +2,20 @@ import React, { Component } from 'react';
 import { Modal } from 'react-native';
 import VideoRecorder from '../VideoRecorder';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
-import NavigationService from '../../services/NavigationService';
-import captureVideoEventEmitter from './caputureVideoEventEmitter';
 
 class CaptureVideo extends Component {
-  // static navigationOptions = {
-  //   header: null
-  // };
+  static navigationOptions = {
+    header: null
+  };
   constructor(props) {
     super(props);
     this.state = {
       recordingScreen: true,
       videoUri: '',
       actionSheetOnRecordVideo: true,
-      modalVisible: false
+      modalVisible: true
     };
   }
-
-  componentDidMount = () => {
-    captureVideoEventEmitter.on('show', this.showModal);
-    captureVideoEventEmitter.on('hide', this.hideModal);
-  };
-
-
-
-  componentWillUnmount() {
-    captureVideoEventEmitter.removeListener('show');
-    captureVideoEventEmitter.removeListener('hide');    
-  }
-
-  hideModal = (params) => {        
-    this.setState({ modalVisible: false });
-    params.uploading && NavigationService.navigate('HomeScreen');
-  };
-
-  showModal = () => {
-    this.setState({ recordingScreen: true, modalVisible: true });
-  };
 
   goToRecordScreen() {
     this.setState({
@@ -56,7 +33,7 @@ class CaptureVideo extends Component {
 
   modalRequestClose = () => {
     if(this.state.recordingScreen){
-      this.videoRecorder.cancleVideoHandling();
+     this.props.navigation.goBack();
     } else {
       this.previewVideo.cancleVideoHandling();
     }

@@ -11,7 +11,7 @@ import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/cross_icon.png';
-import captureVideoEventEmitter from '../CaptureVideo/caputureVideoEventEmitter';
+import { withNavigation } from 'react-navigation';
 
 import AppConfig from '../../constants/AppConfig';
 
@@ -75,7 +75,7 @@ class VideoRecorder extends Component {
   }
 
   cancleVideoHandling = () => {    
-    captureVideoEventEmitter.emit('hide', {uploading:false});
+    this.props.navigation.goBack();
   };
 
   cameraView() {
@@ -163,7 +163,7 @@ class VideoRecorder extends Component {
 
   recordVideoAsync = async () => {
     if (!this.camera) return;
-    this.setState({ isRecording: true });
+    this.recordVideoStateChage();
     const options = {
       quality: RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY],
       base64: true,
@@ -178,8 +178,13 @@ class VideoRecorder extends Component {
     this.props.goToPreviewScreen(data.uri);
   };
 
+  recordVideoStateChage(){
+    this.setState({ isRecording: true });
+  }
+
   componentWillUnmount() {
     clearInterval(this.progressInterval);
+    this.recordVideoStateChage = () => {}; 
   }
 
   render() {
@@ -188,4 +193,4 @@ class VideoRecorder extends Component {
 }
 
 //make this component available to the app
-export default VideoRecorder;
+export default withNavigation( VideoRecorder);

@@ -31,7 +31,7 @@ function onTabPressed(navigation, tab) {
 function loginInFlow(navigation, tab) {
   let currentTabIndex = tab.navigationIndex;
   if (tab.rootStack === 'CaptureVideo') {
-    utilities.handleVideoUploadModal(previousTabIndex);
+    utilities.handleVideoUploadModal(previousTabIndex , navigation);
     return;
   }
   if (currentTabIndex == undefined || currentTabIndex == null) return;

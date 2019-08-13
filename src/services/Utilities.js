@@ -5,10 +5,9 @@ import reduxGetters from './ReduxGetters';
 import appConfig from '../constants/AppConfig';
 
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
-import captureVideoEventEmitter from '../components/CaptureVideo/caputureVideoEventEmitter';
 import CurrentUser from '../models/CurrentUser';
 import { LoginPopoverActions } from '../components/LoginPopover';
-
+import { Toast } from 'native-base';
 let recursiveMaxCount = 0;
 
 export default {
@@ -96,14 +95,15 @@ export default {
     return this.getLastChildRoutename(routes[index]);
   },
 
-  handleVideoUploadModal(previousTabIndex) {
+  handleVideoUploadModal(previousTabIndex , navigation) {
     if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
     } else if (reduxGetters.getVideoProcessingStatus() == true) {
-      //show toast here
-      console.log('handleVideoUploadModal: show toast');
+      Toast.show({
+        text: "Video uploading in progress."
+      });
     } else {
-      captureVideoEventEmitter.emit('show');
+      navigation.navigate('CaptureVideo');
     }
   },
 

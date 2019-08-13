@@ -8,8 +8,8 @@ import Store from '../../store';
 import { upsertRecordedVideo, videoInProcessing } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
-import captureVideoEventEmitter from '../CaptureVideo/caputureVideoEventEmitter';
 import closeIcon from '../../assets/cross_icon.png';
+import { withNavigation } from 'react-navigation';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Close Camera', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
@@ -53,8 +53,8 @@ class PreviewRecordedVideo extends Component {
   };
 
   enableStartUploadFlag = () => {
-    // this.props.navigation.navigate('Home');
-    captureVideoEventEmitter.emit('hide', {uploading:true});
+    this.props.navigation.goBack();
+    this.props.navigation.navigate('HomeScreen');
     Store.dispatch(upsertRecordedVideo({ do_upload: true }));
   };
 
@@ -93,7 +93,7 @@ class PreviewRecordedVideo extends Component {
           );
           this.props.goToRecordScreen();
         } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {          
-          captureVideoEventEmitter.emit('hide', {uploading:false});          
+          this.props.navigation.goBack();
           Store.dispatch(
             upsertRecordedVideo({
               do_discard: true
@@ -163,4 +163,4 @@ class PreviewRecordedVideo extends Component {
 }
 
 //make this component available to the app
-export default PreviewRecordedVideo;
+export default withNavigation (PreviewRecordedVideo);

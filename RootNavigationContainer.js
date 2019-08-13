@@ -111,7 +111,8 @@ const HomePushStack = createStackNavigator(
 const HomeStack = createStackNavigator(
   {
     HomePushStack: HomePushStack,
-    TransactionScreen: TransactionScreen
+    TransactionScreen: TransactionScreen,
+    CaptureVideo: CaptureVideo
   },
   {
     ...modalStackConfig,
@@ -137,7 +138,8 @@ const NotificationStack = createStackNavigator(
   {
     NotificationPushStack: NotificationPushStack,
     TransactionScreen: TransactionScreen,
-    SayThanksScreen: SayThanksScreen
+    SayThanksScreen: SayThanksScreen,
+    CaptureVideo: CaptureVideo
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -162,7 +164,8 @@ const ProfileStack = createStackNavigator(
     ProfilePushStack: ProfilePushStack,
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery,
-    TransactionScreen: TransactionScreen
+    TransactionScreen: TransactionScreen,
+    CaptureVideo: CaptureVideo
   },
   {
     headerLayoutPreset: 'center',
@@ -256,7 +259,6 @@ const RootNavigationContainer = () => (
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
     />
-    <CaptureVideo />
     <CameraWorker />
     <PictureWorker />
     <LoadingModalCover />
