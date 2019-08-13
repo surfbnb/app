@@ -15,6 +15,7 @@ import Theme from '../../theme/styles';
 import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
+import Pricer from '../../services/Pricer';
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -64,6 +65,10 @@ class ProfileScreen extends PureComponent {
     this.props.navigation.push('ProfileEdit');
   };
 
+  fetchBalance = () => {
+    Pricer.getBalance();
+  }
+
   _headerComponent() {
     return (
       <UserInfo
@@ -93,6 +98,7 @@ class ProfileScreen extends PureComponent {
       <UserProfileFlatList
         listHeaderComponent={this._headerComponent()}
         listHeaderSubComponent={this._subHeader()}
+        beforeRefresh={this.fetchBalance}
         userId={this.props.userId}
       />
     );

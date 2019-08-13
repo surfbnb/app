@@ -70,6 +70,7 @@ class UserProfileFlatList extends PureComponent {
     } 
 
     beforeRefresh = ( ) => {
+        this.props.beforeRefresh && this.props.beforeRefresh();
         this.onPullToRefresh();
         this.setState({ refreshing : true }); 
     }
