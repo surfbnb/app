@@ -66,7 +66,7 @@ let stylesMap = {
     borderRadius: 20,
     borderWidth: 1,
     marginLeft: 50,
-    // marginTop: -4,
+    marginBottom: 10,
     borderColor: Colors.rhino,
     justifyContent: 'center'
   },

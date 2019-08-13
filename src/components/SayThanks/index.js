@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image, Keyboard, BackHandler } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Keyboard, BackHandler, Dimensions , ActivityIndicator, TouchableWithoutFeedback} from 'react-native';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
-import tx_success from '../../assets/transaction_success.png';
-import pepo_icon from '../../assets/pepo-tx-icon.png';
+import reduxGetter from '../../services/ReduxGetters';
 import deepGet from 'lodash/get';
 import inlineStyles from './Style';
 import modalCross from '../../assets/modal-cross-icon.png';
-
+import sendMessageIcon from '../../assets/tx_icon.png';
+import ProfilePicture from '../ProfilePicture';
+import FormInput from '../../theme/components/FormInput';
+import PepoApi from '../../services/PepoApi';
+import Theme from '../../theme/styles';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -14,9 +17,13 @@ const bottomSpace = getBottomSpace([true]),
 
 class SayThanks extends Component {
   constructor(props) {
-    super(props);    
+    super(props);
     this.state = {
-      closeDisabled: false      
+      closeDisabled: false,
+      thanksMessage: '',
+      server_errors: {},
+      thanksError: '',
+      posting: false
     };
   }
 
@@ -30,9 +37,7 @@ class SayThanks extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
-  defaultVals(){
-
-  }
+  defaultVals() {}
 
   componentWillUnmount() {
     this.keyboardWillShowListener.remove();
@@ -43,8 +48,11 @@ class SayThanks extends Component {
   }
 
   _keyboardShown(e) {
-    let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;
-    bottomPaddingValue += extraPadding;
+    console.log('_keyboardShown', e);
+    console.log(deepGet(e, 'endCoordinates.height'), '_keyboardShown', extraPadding);
+    console.log(Dimensions.get('screen').height);
+    let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;    
+    bottomPaddingValue -= 50 ;
 
     if (this.state.bottomPadding == bottomPaddingValue) {
       return;
@@ -65,7 +73,7 @@ class SayThanks extends Component {
   }
 
   closeModal() {
-    this.setState({ btFocus: false, usdFocus: false }, () => {
+    this.setState({ thanksMessage: '' }, () => {
       this.props.navigation.goBack();
     });
   }
@@ -76,10 +84,52 @@ class SayThanks extends Component {
     }
   };
 
+  changeMessage = (val) => {
+    this.setState({ thanksMessage: val });
+  };
+
+  sendMessage = () => {
+    this.setState({server_errors: {}, thanksError: ''});
+    if(this.state.thanksMessage.trim().length == 0){
+      this.setState({thanksError: 'Message can not be empty'});
+      return;
+    }
+    this.setState({posting:true});
+    return new PepoApi(`/users/thank-you`)
+      .post({ notification_id: this.props.navigation.getParam('notificationId'), text: this.state.thanksMessage })
+      .then((res) => {
+        this.setState({posting:false});
+        if (res && res.success) {
+          this.closeModal();
+          this.props.navigation.getParam('sendMessageSuccess')();
+        } else {
+          this.setState({server_errors: res});
+        }
+      })
+      .catch((error) => {
+        this.setState({posting:false});
+      });
+  };
+
   render() {
+
     return (
+      <TouchableWithoutFeedback
+      onPressOut={() => {
+          console.log('HEY')
+          if (!this.state.closeDisabled) {
+            this.closeModal();
+          }
+        }}
+      > 
+      <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+        <TouchableWithoutFeedback>
       <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
-        <View style={inlineStyles.headerWrapper}>                        
+        <View style={inlineStyles.headerWrapper}>
+          <ProfilePicture style={{ marginLeft: 10 }} userId={this.props.navigation.getParam('userId')} />
+          <Text style={inlineStyles.modalHeader}>
+            {reduxGetter.getUserName(this.props.navigation.getParam('userId'))}
+          </Text>
           <TouchableOpacity
             onPress={() => {
               this.closeModal();
@@ -96,9 +146,33 @@ class SayThanks extends Component {
           >
             <Image source={modalCross} style={{ width: 13, height: 12.6 }} />
           </TouchableOpacity>
-          <Text style={inlineStyles.modalHeader}>headerText</Text>
+        </View>
+        <View style={{flexDirection:'row'}}>
+        <View style={{  margin: 10, width: '80%', height: 65 }}>
+          <FormInput
+            onChangeText={this.changeMessage}
+            placeholder="Thanks for supporting me!"
+            fieldName="text"
+            style={[Theme.TextInput.textInputStyle]}
+            style={{ flex: 1, borderColor: '#eee', borderWidth: 1, borderRadius: 10, height: 46, padding: 10, flexDirection: 'column' }}
+            value={`${this.state.thanksMessage}`}
+            isFocus={true}
+            serverErrors={this.state.server_errors}
+            errorMsg={this.state.thanksError}
+            placeholderTextColor="#ababab"
+          />
+          </View>
+          <TouchableOpacity onPress={this.sendMessage}>
+            <Image style={{ height: 40, width: 40, marginLeft: 5, marginTop: 14 }} source={sendMessageIcon} />
+          </TouchableOpacity>        
+        </View>
+        <View style={{height:15}}>
+        {this.state.posting && (<ActivityIndicator size="small" color="#168dc1" />)}
         </View>
       </View>
+      </TouchableWithoutFeedback>
+      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

@@ -31,8 +31,8 @@ class NotificationList extends PureComponent {
     }
   }
 
-  getHeader = (timeStamp) => {
-    console.log(Date.now() / 1000 - timeStamp);
+  getHeader = (timeStampInMs) => {
+    let timeStamp = timeStampInMs / 1000;    
     if (Date.now() / 1000 - timeStamp > 30 * 86400) {
       return 'Earlier';
     } else if (Date.now() / 1000 - timeStamp > 7 * 86400) {

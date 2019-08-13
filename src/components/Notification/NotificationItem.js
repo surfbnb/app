@@ -27,6 +27,7 @@ const mapStateToProps = (state, ownProps) => {
 class NotificationItem extends Component {
   constructor(props) {
     super(props);
+    this.state = {showSayThanks: true}
   }
 
   getBtAmount() {
@@ -36,6 +37,12 @@ class NotificationItem extends Component {
   handleRowClick = () => {
     this.props.goTo && new NavigateTo(this.props.navigation).navigate(this.props.goTo);  
   };
+
+  sendMessageSuccess = () => {
+    this.setState({
+      showSayThanks: false
+    });
+  }
 
  
 
@@ -83,7 +90,7 @@ class NotificationItem extends Component {
           }}
           key={i}
         >
-          <Text style={{ fontWeight: '600' }}>{item}</Text>
+          <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] || {item}}</Text>
         </TouchableOpacity>
       ) : (
         <Text key={i}>{item}</Text>
@@ -101,7 +108,7 @@ class NotificationItem extends Component {
   };
 
   showVideoComponent = () => {
-    let imageUrl = reduxGetter.getVideoImgUrl(this.props.payload.videoId);
+    let imageUrl = reduxGetter.getVideoImgUrl(this.props.payload.video_id);    
     return (
       <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
         <Image style={styles.playIconSkipFont} source={playIcon}></Image>
@@ -118,13 +125,12 @@ class NotificationItem extends Component {
   };
 
   sayThanks = () => {
-    console.log('sayThanks');
-    //this.props.navigation.navigate('SayThanksScreen', {pictureId: this.props.pictureId, });
+    this.props.navigation.navigate('SayThanksScreen', {userId: this.props.payload.thank_you_user_id, notificationId: this.props.notificationId,
+      sendMessageSuccess: this.sendMessageSuccess
+    });
   };
-
-  showSayThanks = () => {
-    return
-    if (this.props.payload.thank_you_flag === 0 ) {
+  showSayThanks = () => {    
+    if (this.props.payload.thank_you_flag === 0 && this.state.showSayThanks) {
       return (
         <TouchableOpacity onPress={this.sayThanks}>
           <View style={styles.sayThanksButton}>

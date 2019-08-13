@@ -12,14 +12,15 @@ let stylesMap = {
     width: '100%',
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    ...ifIphoneX(
-      {
-        bottom: getBottomSpace([true])
-      },
-      {
-        bottom: 0
-      }
-    )
+    bottom: 0
+    // ...ifIphoneX(
+    //   {
+    //     bottom: getBottomSpace([true])
+    //   },
+    //   {
+    //     bottom: 0
+    //   }
+    // )
   },
   headerWrapper: {
     backgroundColor: Colors.white,
@@ -27,16 +28,16 @@ let stylesMap = {
     borderTopLeftRadius: 25,
     flexDirection: 'row',    
     paddingHorizontal: 10,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingVertical: 20,
+    
     position: 'relative'
   },
   modalHeader: {
-    textAlign: 'center',
+    //textAlign: 'center',
     color: Colors.valhalla,
     fontSize: 16,
-    paddingVertical: 5
+    paddingVertical: 5,
+    marginLeft: 10
   }
 };
 
