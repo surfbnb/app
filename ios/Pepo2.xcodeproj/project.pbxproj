@@ -69,6 +69,11 @@
 		45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2697F42945424A4984DF2EDE /* Lato-LightItalic.ttf */; };
 		4720B1815AA646A98064A0C8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBEB5D26FF5447979A63766E /* EvilIcons.ttf */; };
 		4B983AB722BD153800B9E6D4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		4BDACD0B23018F0100CF8294 /* libRNTwitterSignIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 776EEED922E1F1F400BE1922 /* libRNTwitterSignIn.a */; };
+		4BDACD6323019EE600CF8294 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005F9BA822E1CA9600A4B00D /* libRCTImageResizer.a */; };
+		4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C73F122E880BD00FE1B04 /* libReactNativePermissions.a */; };
+		4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7734F2CD22DE373E004D7152 /* libBVLinearGradient.a */; };
+		4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EDA33222D74FBC0095674F /* libFastImage.a */; };
 		5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F11DD15287DC4605913C28BE /* Roboto_medium.ttf */; };
 		65CD6A21EC164A9A8F14A9A3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAB07333EF0A462BB5571B78 /* Zocial.ttf */; };
 		6C300736152B4242B645C0CA /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F406518F2D434EC0A78FA040 /* AntDesign.ttf */; };
@@ -637,6 +642,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */,
+				4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */,
+				4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */,
+				4BDACD6323019EE600CF8294 /* libRCTImageResizer.a in Frameworks */,
+				4BDACD0B23018F0100CF8294 /* libRNTwitterSignIn.a in Frameworks */,
 				77C415E222FD8B53008F0F63 /* libRNGestureHandler.a in Frameworks */,
 				77C415E122FD8B00008F0F63 /* libRNDeviceInfo.a in Frameworks */,
 				77C415E022FD8ACE008F0F63 /* libRNCNetInfo.a in Frameworks */,
