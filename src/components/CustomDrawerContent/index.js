@@ -35,12 +35,12 @@ export default (props) => {
       <SafeAreaView forceInset={{ top: 'always' }}>
         <View
           style={{
-            paddingVertical: 11,
+            paddingVertical: 10,
             borderBottomColor: Colors.seaMist,
             borderBottomWidth: 1,
             flexDirection: 'row',
             alignItems: 'center',
-            paddingHorizontal: 8,
+            paddingHorizontal: 5,
             justifyContent: 'center'
           }}
         >
@@ -48,7 +48,7 @@ export default (props) => {
             onPress={props.navigation.closeDrawer}
             style={{ height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}
           >
-            <Image style={{ height: 25.5, width: 14.5 }} source={BackArrow} />
+            <Image style={{ width: 10, height: 18 }} source={BackArrow} />
           </TouchableOpacity>
           <Text style={styles.headerText}>{userName}</Text>
         </View>
@@ -61,7 +61,7 @@ export default (props) => {
         <TouchableOpacity onPress={CurrentUser.logout.bind(CurrentUser)}>
           <View style={styles.itemParent}>
             <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
-            <Text style={styles.item}>Logout</Text>
+            <Text style={styles.item}>Log out</Text>
           </View>
         </TouchableOpacity>
       </SafeAreaView>
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   },
   item: {
     fontSize: 16,
-    marginLeft: 10
+    marginLeft: 10,
+    fontFamily: 'AvenirNext-Regular'
   }
 });

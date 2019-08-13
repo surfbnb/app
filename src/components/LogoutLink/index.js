@@ -7,7 +7,7 @@ const LogoutLink = (props) => (
       <TouchableOpacity
         style={{ height: 32, width: 35, alignItems: 'center', justifyContent: 'center', marginRight: 20 }}
         onPress={props.navigation.openDrawer}
-        activeOpacity={.7}
+        activeOpacity={.2}
       >
         <Text style={{ width: 20, height: 2, borderWidth: 1 }}></Text>
         <Text style={{ width: 20, height: 2, borderWidth: 1, marginVertical: 5 }}></Text>
