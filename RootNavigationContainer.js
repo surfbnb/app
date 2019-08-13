@@ -39,28 +39,18 @@ import NotificationScreen from './src/components/Notification';
 import { StatusBarManager } from './src/services/StatusBarManager';
 import CustomDrawerContent from './src/components/CustomDrawerContent';
 import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
+import utilities from "./src/services/Utilities"
 
-const getRouteName = (navigation) => {
-  if (!navigation) return null;
-  let routeName = deepGet(navigation, 'state.routeName');
-  let stateIndex = deepGet(navigation, 'state.index');
-  let routes = deepGet(navigation, `state.routes[${stateIndex}]`);
-  if (routes) {
-    routeName = (routes && routes['routeName']) || routeName;
-    stateIndex = routes && routes.index;
-    routeName = deepGet(routes, `routes[${stateIndex}].routeName`) || routeName;
-  }
-  return routeName;
-};
+const customTabHiddenRoutes = ["TransactionScreen", "CaptureVideo"];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
   headerMode: 'none',
   mode: 'modal',
   navigationOptions: ({ navigation }) => {
-    const routeName = getRouteName(navigation);
+    const routeName = utilities.getLastChildRoutename(navigation.state);
     return {
-      tabBarVisible: routeName == 'TransactionScreen' ? false : true
+      tabBarVisible: !customTabHiddenRoutes.includes(routeName)
     };
   }
 };
