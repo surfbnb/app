@@ -45,6 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
 
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new ReactVideoPackage(),
             new FabricPackage(),
             new RNDeviceInfo(),
             new AndroidOpenSettingsPackage(),
@@ -53,7 +54,6 @@ public class MainApplication extends Application implements ReactApplication {
             new TwitterSigninPackage(),
             new ImageResizerPackage(),
             new LinearGradientPackage(),
-            new ReactVideoPackage(),
             new RNCameraPackage(),
             new FastImageViewPackage(),
             new NetInfoPackage(),

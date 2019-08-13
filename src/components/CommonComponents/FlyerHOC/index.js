@@ -76,8 +76,7 @@ function flyerHOC(BaseComponent) {
     showFlyer = () => {
       Animated.timing(this.state.animatedWidth, {
         toValue: this.props.sliderWidth || 60,
-        duration: 300,
-        useNativeDriver: true
+        duration: 300
       }).start(() => {
         this.setState({
           extensionVisible: true
@@ -90,8 +89,7 @@ function flyerHOC(BaseComponent) {
     hideFlyer = () => {
       Animated.timing(this.state.animatedWidth, {
         toValue: 0,
-        duration: 300,
-        useNativeDriver: true
+        duration: 300
       }).start(() => {
         this.setState({
           extensionVisible: false

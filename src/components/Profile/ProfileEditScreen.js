@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity, AppState, Platform, Alert, ScrollView} from 'react-native';
+import {View, Text, Image, TouchableOpacity, BackHandler, Platform, Alert, Keyboard} from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -86,8 +86,8 @@ class ProfileEdit extends React.PureComponent {
     this.tabIndex = {
       name: 1,
       username: 2,
-      bio: 3,
-      link: 4
+      link: 3,
+      bio: 4,
     };
 
     this.defaults = {
@@ -114,6 +114,11 @@ class ProfileEdit extends React.PureComponent {
     this.props.navigation.setParams({
       onCancel: this.onCancel,
     });
+    BackHandler.addEventListener('hardwareBackPress',  this.onCancel );
+  }
+
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.onCancel);
   }
 
   getImageSrc = () => {
@@ -248,8 +253,10 @@ class ProfileEdit extends React.PureComponent {
         ],
         { cancelable: false }
       );
+      return true; 
     } else {
       this.props.navigation.goBack();
+      return false;
     }
   };
 
@@ -376,6 +383,28 @@ class ProfileEdit extends React.PureComponent {
             serverErrors={this.state.server_errors}
           />
 
+          <Text style={[Theme.TextInput.labelStyle]}>Link</Text>
+          <FormInput
+            editable={true}
+            autoCapitalize="none"
+            onChangeText={(link) => this.setState({ link, error: null, link_error: null })}
+            fieldName="link"
+            textContentType="none"
+            style={[Theme.TextInput.textInputStyle]}
+            placeholder="Link"
+            returnKeyType="done"
+            returnKeyLabel="Done"
+            placeholderTextColor="#ababab"
+            blurOnSubmit={false}
+            onSubmitEditing={() => {  this.onSubmitEditing(-1); Keyboard.dismiss() }}
+            isFocus={this.state.current_formField == this.tabIndex.link}
+            onFocus={() => {
+              this.state.current_formField = this.tabIndex.link;
+            }}
+            value={this.state.link}
+            serverErrors={this.state.server_errors}
+          />
+
           <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
           <FormInput
             editable={true}
@@ -388,36 +417,12 @@ class ProfileEdit extends React.PureComponent {
             placeholderTextColor="#ababab"
             blurOnSubmit={false}
             maxLength={100}
-            onSubmitEditing={() => {
-              this.onSubmitEditing(this.tabIndex.bio);
-            }}
+            // onSubmitEditing={() => {
+            //   this.onSubmitEditing(this.tabIndex.bio);
+            // }}
             isFocus={this.state.current_formField == this.tabIndex.bio}
             onFocus={multipleClickHandler(() => this.onBioFocus())}
             value={this.state.bio}
-            serverErrors={this.state.server_errors}
-          />
-
-          <Text style={[Theme.TextInput.labelStyle]}>Link</Text>
-          <FormInput
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={(link) => this.setState({ link, error: null, link_error: null })}
-            fieldName="link"
-            textContentType="none"
-            style={[Theme.TextInput.textInputStyle]}
-            placeholder="Link"
-            returnKeyType="next"
-            returnKeyLabel="Next"
-            placeholderTextColor="#ababab"
-            blurOnSubmit={false}
-            onSubmitEditing={() => {
-              this.onSubmitEditing(this.tabIndex.link);
-            }}
-            isFocus={this.state.current_formField == this.tabIndex.link}
-            onFocus={() => {
-              this.state.current_formField = this.tabIndex.link;
-            }}
-            value={this.state.link}
             serverErrors={this.state.server_errors}
           />
 

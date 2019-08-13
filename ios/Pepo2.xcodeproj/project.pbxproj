@@ -656,7 +656,7 @@
 		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
-            files = (
+			files = (
 				4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */,
 				4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */,
 				4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */,
