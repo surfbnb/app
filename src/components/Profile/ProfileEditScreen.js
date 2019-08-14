@@ -253,11 +253,10 @@ class ProfileEdit extends React.PureComponent {
         ],
         { cancelable: false }
       );
-      return true; 
     } else {
       this.props.navigation.goBack();
-      return false;
     }
+    return true; 
   };
 
   onBioChangeDelegate = (val) => {
