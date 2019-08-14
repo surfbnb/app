@@ -14,6 +14,7 @@ class VideoList extends PureComponent {
     this.state = {
       activeIndex: 0
     };
+    this.flatlistRef = null;
   }
 
   onViewableItemsChanged(data) {
@@ -43,36 +44,36 @@ class VideoList extends PureComponent {
 
   onScrollToTop = () => {
     this.setActiveIndex();
+  };
+
+  render() {
+    return (
+      <FlatList
+        extraData={this.state}
+        snapToAlignment={'top'}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 90
+        }}
+        pagingEnabled={true}
+        decelerationRate={'fast'}
+        data={this.props.list}
+        onEndReached={this.props.getNext}
+        onRefresh={this.props.refresh}
+        keyExtractor={this._keyExtractor}
+        refreshing={this.props.refreshing}
+        initialNumToRender={maxVideosThreshold}
+        onEndReachedThreshold={7}
+        style={inlineStyles.fullScreen}
+        onViewableItemsChanged={this.onViewableItemsChanged}
+        onMomentumScrollEnd={this.onMomentumScrollEndCallback}
+        onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
+        renderItem={this._renderItem}
+        showsVerticalScrollIndicator={false}
+        onScrollToTop={this.onScrollToTop}
+        ref={(ref) => (this.flatlistRef = ref)}
+      />
+    );
   }
-
-    render(){
-        return(
-            <FlatList
-                extraData={this.state}
-                snapToAlignment={"top"}
-                viewabilityConfig={{
-                  itemVisiblePercentThreshold: 90
-                }}
-                pagingEnabled={true}
-                decelerationRate={"fast"}
-                data={this.props.list}
-                onEndReached={this.props.getNext}
-                onRefresh={this.props.refresh}
-                keyExtractor={this._keyExtractor}
-                refreshing={this.props.refreshing}
-                initialNumToRender={maxVideosThreshold}
-                onEndReachedThreshold={7}
-                style={inlineStyles.fullScreen}
-                onViewableItemsChanged={ this.onViewableItemsChanged}
-                onMomentumScrollEnd={this.onMomentumScrollEndCallback}
-                onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
-                renderItem={this._renderItem}
-                showsVerticalScrollIndicator={false}
-                onScrollToTop={this.onScrollToTop}
-            />
-        );
-    }
-
 }
 
 export default flatlistHOC(VideoList, true, true);

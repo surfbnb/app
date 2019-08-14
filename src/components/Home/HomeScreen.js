@@ -33,6 +33,7 @@ class HomeScreen extends Component {
       toRefresh: false,
       videoUploaderVisible: false
     };
+    this.listRef = null;
   }
 
   onRefresh = () => {
@@ -50,6 +51,7 @@ class HomeScreen extends Component {
         //Pricer.getBalance();
       }
     });
+    console.log(this.listRef.videoListHOCRef.flatlistRef, 'flatlistref');
   };
 
   componentWillUnmount = () => {
@@ -95,7 +97,14 @@ class HomeScreen extends Component {
           />
         )}
 
-        <VideoList toRefresh={this.state.toRefresh} fetchUrl={'/feeds'} onRefresh={this.onRefresh} />
+        <VideoList
+          ref={(ref) => {
+            this.listRef = ref;
+          }}
+          toRefresh={this.state.toRefresh}
+          fetchUrl={'/feeds'}
+          onRefresh={this.onRefresh}
+        />
       </View>
     );
   }
