@@ -5,14 +5,16 @@ let stylesMap = {
   item: {    
     marginLeft: 10,
     marginRight: 4,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
 
   txtWrapper: {
     flex: 1,
     padding: 12,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   imageStyleSkipFont: {
     marginRight: 10,
@@ -46,7 +48,8 @@ let stylesMap = {
     color: Colors.darkGray2,
     fontFamily: 'AvenirNext-Regular',
     fontSize: 14,
-    letterSpacing: -0.68
+    marginLeft: 5,
+    letterSpacing: -0.68    
   },
 
   posterImageSkipFont: {

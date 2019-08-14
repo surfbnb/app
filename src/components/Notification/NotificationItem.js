@@ -163,18 +163,26 @@ class NotificationItem extends Component {
         <TouchableWithoutFeedback onPress={this.handleRowClick}>
           <View>
           <View style={styles.txtWrapper}>
+            <View style={{width: '10%'}}>
             {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
               <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
             ) : (
               <ProfilePicture pictureId={this.props.pictureId} />
             )}
+            </View>
+            <View style={{width: '76%', flexDirection: 'row'}}>
             <View style={{ flexDirection: 'column'}}>
-              <View style={styles.item}>{this.getHeading()}</View>
+              <View style={styles.item}>{this.getHeading()}
+              <Text style={styles.timeStamp}>{this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}</Text>
+              </View>
               {this.showAppreciationText()}
               {this.showIfFailed()}
             </View>
-            <Text style={styles.timeStamp}>{this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}</Text>
+            
+            </View>
+            <View style={{width: '14%'}}>
             {this.notificationInfo()}
+            </View>
           </View>
           {this.showSayThanks()}
           </View>
