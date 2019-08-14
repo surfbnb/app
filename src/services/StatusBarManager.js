@@ -3,12 +3,13 @@ import Colors from "../theme/styles/Colors";
 
 const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory'];
 const typesToIgnore = ['Navigation/COMPLETE_TRANSITION', 'Navigation/MARK_DRAWER_SETTLING', 'Navigation/MARK_DRAWER_IDLE', 'Navigation/DRAWER_CLOSED'];
+const typesToComparePrevious = ['Navigation/BACK', 'Navigation/POP_TO_TOP'];
 
 let statusBarStatus = false;
 let previousStatusBarStatus = false;
 
 const StatusBarShow = () => {
-  if( Platform.OS == "android"){
+  if( Platform.OS === "android"){
     StatusBar.setBackgroundColor(Colors.grey);
     StatusBar.setTranslucent(false);
   }
@@ -17,7 +18,7 @@ const StatusBarShow = () => {
 };
 
 const StatusBarHide = () => {
-  if( Platform.OS == "android"){
+  if( Platform.OS === "android"){
     StatusBar.setBackgroundColor('transparent');
     StatusBar.setTranslucent(true);
   }
@@ -31,7 +32,7 @@ export const StatusBarManager = (action) => {
 
   console.log('StatusBarManager action ::', action);
 
-  if(action.type === 'Navigation/BACK' || action.type === 'Navigation/POP_TO_TOP') {
+  if(typesToComparePrevious.includes(action.type)){
     if( previousStatusBarStatus !== statusBarStatus ){
       statusBarStatus ? StatusBarHide() : StatusBarShow();
     }
