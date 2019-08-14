@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { Toast } from 'native-base';
+import Toast from '../NotificationToast';
 import deepGet from 'lodash/get';
 import clone from 'lodash/clone';
 import { connect } from 'react-redux';
@@ -121,7 +121,8 @@ class TransactionPepoButton extends PureComponent {
   onSdkError(error) {
     this.syncData(1000);
     Toast.show({
-      text: ostErrors.getErrorMessage(error)
+      text: ostErrors.getErrorMessage(error),
+      icon: 'error'
     });
   }
 
@@ -192,7 +193,8 @@ class TransactionPepoButton extends PureComponent {
 
   onMaxReached = () => {
     Toast.show({
-      text: ostErrors.getUIErrorMessage('maxAllowedBt')
+      text: ostErrors.getUIErrorMessage('maxAllowedBt'),
+      icon: 'error'
     });
   };
 

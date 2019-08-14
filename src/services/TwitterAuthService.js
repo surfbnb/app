@@ -3,10 +3,8 @@ import { LoadingModal } from '../theme/components/LoadingModalCover';
 import deepGet from 'lodash/get';
 import { ostErrors } from './OstErrors';
 import InitWalletSdk from './InitWalletSdk';
-import Store from '../store';
-import { hideLoginPopover } from '../actions';
 import NavigationService from './NavigationService';
-import { Toast } from 'native-base';
+import Toast from '../components/NotificationToast';
 import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../constants';
 import { LoginPopoverActions } from '../components/LoginPopover';
 
@@ -35,7 +33,7 @@ class TwitterAuthService {
                   LoadingModal.hide();
                   Toast.show({
                     text: ostErrors.getErrorMessage(res),
-                    buttonText: 'Okay'
+                    icon: 'error'
                   });
                   return;
                 }
@@ -90,7 +88,7 @@ class TwitterAuthService {
     LoadingModal.hide();
     Toast.show({
       text: 'Failed to login via Twitter.',
-      buttonText: 'Ok'
+      icon: 'error'
     });
   }
 

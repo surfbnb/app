@@ -1,5 +1,5 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
-import { Toast } from 'native-base';
+import Toast from '../../components/NotificationToast';
 import CurrentUser from '../../models/CurrentUser';
 import Pricer from '../Pricer';
 import deepGet from 'lodash/get';
@@ -30,7 +30,7 @@ const initiatePolling = (expectedUserId) => {
               stopPolling = true;
               Toast.show({
                 text: 'User Activated! Airdrop is initiated.',
-                buttonText: 'Okay'
+                icon: 'success'
               });
               Pricer.getBalance();
             }

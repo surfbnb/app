@@ -4,10 +4,10 @@ import qs from 'qs';
 import NetInfo from '@react-native-community/netinfo';
 import Package from '../../package';
 import { Platform } from 'react-native';
-import { Toast } from 'native-base';
+import Toast from '../components/NotificationToast';
 
 // Used require to support all platforms
-const RCTNetworking = require("RCTNetworking");
+const RCTNetworking = require('RCTNetworking');
 
 import Store from '../store';
 import {
@@ -144,9 +144,7 @@ export default class PepoApi {
     }
 
     if (data['current_user_video_contributions']) {
-      Store.dispatch(
-        upsertVideoContributionEntities(this._getEntities(data['current_user_video_contributions']))
-      );
+      Store.dispatch(upsertVideoContributionEntities(this._getEntities(data['current_user_video_contributions'])));
     }
 
     if (data['current_user_user_contributions']) {
@@ -157,8 +155,8 @@ export default class PepoApi {
       Store.dispatch(updatePricePoints(data['price_points']));
     }
 
-    if( data["token"] ){
-      Store.dispatch(updateToken( data["token"] ));
+    if (data['token']) {
+      Store.dispatch(updateToken(data['token']));
     }
 
     if (data['users']) {
@@ -185,19 +183,19 @@ export default class PepoApi {
       Store.dispatch(upsertUserEntities(this._getEntities(data['contribution_suggestions'])));
     }
 
-    if( data['public_activity'] ){
+    if (data['public_activity']) {
       Store.dispatch(upsertActivitiesEntities(this._getEntities(data['public_activity'])));
     }
 
-    if( data['user_activity'] ){
+    if (data['user_activity']) {
       Store.dispatch(upsertActivitiesEntities(this._getEntities(data['user_activity'])));
     }
 
-    if( data['user_videos'] ){
+    if (data['user_videos']) {
       Store.dispatch(upsertUserVideoEntities(this._getEntities(data['user_videos'])));
     }
 
-    if (data['user_notifications']){
+    if (data['user_notifications']) {
       Store.dispatch(upsertUserNotifications(this._getEntities(data['user_notifications'])));
     }
 
@@ -220,7 +218,7 @@ export default class PepoApi {
   }
 
   _getEntities(entities, key = 'id') {
-    if ( entities instanceof Array ) {
+    if (entities instanceof Array) {
       return this._getEntitiesFromArray(entities, key);
     }
     return this._getEntitiesFromObj(entities, key);
@@ -237,7 +235,6 @@ export default class PepoApi {
   _getEntitiesFromObj(resultObj, key = 'id') {
     const entities = {};
     for (let identifier in resultObj) {
-
       entities[`${key}_${identifier}`] = resultObj[identifier];
     }
     return entities;
@@ -258,7 +255,7 @@ export default class PepoApi {
           console.log(`Error requesting ${this.cleanedUrl}. ${ostErrors.getUIErrorMessage('no_internet')}`);
           Toast.show({
             text: ostErrors.getUIErrorMessage('no_internet'),
-            buttonText: 'Ok'
+            icon: 'error'
           });
 
           // Cosider using reject here.
@@ -292,7 +289,7 @@ export default class PepoApi {
             Store.dispatch(hideModal());
             Toast.show({
               text: ostErrors.getUIErrorMessage('general_error'),
-              buttonText: 'Okay'
+              icon: 'error'
             });
             break;
         }

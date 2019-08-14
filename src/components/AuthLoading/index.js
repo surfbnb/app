@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
-import { Toast } from 'native-base';
+import Toast from '../NotificationToast';
 
 import styles from './styles';
 import CurrentUser from '../../models/CurrentUser';
@@ -25,18 +25,16 @@ export default class AuthLoading extends Component {
   };
 
   onSdkInitialized = (error, success) => {
-
-    if ( error ) {
+    if (error) {
       Toast.show({
-        text: "Ost Sdk Initialization failed, Please restart your app.",
-        buttonText: 'Ok'
+        text: 'Ost Sdk Initialization failed, Please restart your app.',
+        icon: 'error'
       });
     }
 
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
-    CurrentUser
-      .initialize()
+    CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();
         if (user && !CurrentUser.isActiveUser(user)) {

@@ -7,7 +7,7 @@ import appConfig from '../constants/AppConfig';
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
 import CurrentUser from '../models/CurrentUser';
 import { LoginPopoverActions } from '../components/LoginPopover';
-import { Toast } from 'native-base';
+import Toast from '../components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
 let recursiveMaxCount = 0;

@@ -5,6 +5,8 @@ import EventEmitter from 'eventemitter3';
 import Colors from '../../theme/styles/Colors';
 import styles from './styles';
 import modalCross from '../../assets/modal-cross-icon.png';
+import toastSuccess from '../../assets/toast_success.png';
+import toastError from '../../assets/toast_error.png';
 
 const toastEventEmitter = new EventEmitter();
 const duration = 500;
@@ -15,7 +17,7 @@ export class NotificationToastComponent extends Component {
     this.state = {
       showToast: false,
       config: {
-        message: 'This is a notification!',
+        text: '',
         showClose: true,
         icon: null,
         imageUri: null,
@@ -47,11 +49,11 @@ export class NotificationToastComponent extends Component {
         toValue: 1,
         duration,
         useNativeDriver: true
-      }).start(delay && this.hideToast(delay));
+      }).start(this.hideToast(delay));
     });
   }
 
-  hideToast = (delay = 0) => {
+  hideToast = (delay = 3000) => {
     this.timerID = setTimeout(() => {
       Animated.timing(this.animateOpacityValue, {
         toValue: 0,
@@ -104,19 +106,41 @@ export class NotificationToastComponent extends Component {
               ></Image>
             </TouchableOpacity>
           )}
+          {this.state.config.icon && (
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                left: 20,
+                width: 30,
+                height: 30,
+                zIndex: 1
+              }}
+            >
+              {this.state.config.icon == 'success' && (
+                <Image source={toastSuccess} style={{ width: 30, height: 30 }}></Image>
+              )}
+              {this.state.config.icon == 'error' && (
+                <Image source={toastError} style={{ width: 30, height: 30 }}></Image>
+              )}
+            </TouchableOpacity>
+          )}
           <Text
             numberOfLines={2}
             style={[
               styles.toastBoxInsideText,
-              { color: Colors.black, paddingLeft: this.state.config.imageUri ? 45 : 0, paddingRight: 15 }
+              {
+                color: Colors.black,
+                paddingLeft: this.state.config.imageUri || this.state.config.icon ? 45 : 0,
+                paddingRight: 15
+              }
             ]}
           >
-            {this.state.config.message}
+            {this.state.config.text}
           </Text>
           {this.state.config.showClose && (
             <TouchableOpacity
               onPress={() => {
-                this.hideToast();
+                this.hideToast(0);
               }}
               style={{
                 position: 'absolute',
@@ -138,11 +162,11 @@ export class NotificationToastComponent extends Component {
   }
 }
 
-export const NotificationToast = {
-  showToast: (config, delay) => {
+export default {
+  show: (config, delay) => {
     toastEventEmitter.emit('showToast', config, delay);
   },
-  hideToast: () => {
+  hide: () => {
     toastEventEmitter.emit('hideToast');
   }
 };
