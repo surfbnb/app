@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, Image, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import styles from './styles';
 import Pricer from '../../services/Pricer';
@@ -35,7 +35,7 @@ class NotificationItem extends Component {
   }
 
   handleRowClick = () => {
-    this.props.goTo && new NavigateTo(this.props.navigation).navigate(this.props.goTo);  
+    this.props.goTo && new NavigateTo(this.props.navigation).navigate(this.props.goTo);
   };
 
   sendMessageSuccess = () => {
@@ -44,19 +44,17 @@ class NotificationItem extends Component {
     });
   }
 
- 
-
   sortNumber(a, b) {
     return a - b;
   }
 
   includesTextNavigate = (includesObject) => {
-    if (includesObject.kind == 'users') {
-      new NavigateTo(this.props.navigation).goToProfilePage(includesObject.id);        
+    if (includesObject.kind === 'users') {
+      new NavigateTo(this.props.navigation).goToProfilePage(includesObject.id);
     }
   };
 
-  
+
 
   getHeading = () => {
     let heading = this.props.heading,
@@ -84,14 +82,14 @@ class NotificationItem extends Component {
 
     return stringArray.map((item, i) =>
       heading.includes[item] ? (
-        <TouchableOpacity
+        <TouchableWithoutFeedback
           onPress={() => {
             this.includesTextNavigate(heading.includes[item]);
           }}
           key={i}
         >
           <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] || {item}}</Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       ) : (
         <Text key={i}>{item}</Text>
       )
@@ -108,10 +106,10 @@ class NotificationItem extends Component {
   };
 
   showVideoComponent = () => {
-    let imageUrl = reduxGetter.getVideoImgUrl(this.props.payload.video_id);    
+    let imageUrl = reduxGetter.getVideoImgUrl(this.props.payload.video_id);
     return (
       <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
-        <Image style={styles.playIconSkipFont} source={playIcon}></Image>
+        <Image style={styles.playIconSkipFont} source={playIcon} />
       </ImageBackground>
     );
   };
@@ -129,14 +127,14 @@ class NotificationItem extends Component {
       sendMessageSuccess: this.sendMessageSuccess
     });
   };
-  showSayThanks = () => {    
+  showSayThanks = () => {
     if (this.props.payload.thank_you_flag === 0 && this.state.showSayThanks) {
       return (
-        <TouchableOpacity onPress={this.sayThanks}>
+        <TouchableWithoutFeedback onPress={this.sayThanks}>
           <View style={styles.sayThanksButton}>
             <Text style={styles.sayThanksText}>Say Thanks</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       );
     }
   };
@@ -162,7 +160,7 @@ class NotificationItem extends Component {
     return (
       <React.Fragment>
         {this.showHeader()}
-        <TouchableOpacity onPress={this.handleRowClick}>
+        <TouchableWithoutFeedback onPress={this.handleRowClick}>
           <View style={styles.txtWrapper}>
             {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
               <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
@@ -177,8 +175,8 @@ class NotificationItem extends Component {
             <Text style={styles.timeStamp}>{this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}</Text>
             {this.notificationInfo()}
           </View>
-          {this.showSayThanks()}          
-        </TouchableOpacity>
+          {this.showSayThanks()}
+        </TouchableWithoutFeedback>
       </React.Fragment>
     );
   }
