@@ -405,25 +405,23 @@ class ProfileEdit extends React.PureComponent {
           />
 
           <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
-          <FormInput
-            editable={true}
-            fieldName="bio"
-            textContentType="none"
-            style={[Theme.TextInput.textInputStyle, { height: 75, paddingVertical: 15 }]}
-            placeholder="Bio"
-            returnKeyType="next"
-            returnKeyLabel="Next"
-            placeholderTextColor="#ababab"
-            blurOnSubmit={false}
-            maxLength={100}
-            // onSubmitEditing={() => {
-            //   this.onSubmitEditing(this.tabIndex.bio);
-            // }}
-            isFocus={this.state.current_formField == this.tabIndex.bio}
-            onFocus={multipleClickHandler(() => this.onBioFocus())}
-            value={this.state.bio}
-            serverErrors={this.state.server_errors}
-          />
+          <TouchableWithoutFeedback  onPress={multipleClickHandler(() => this.onBioFocus())}>
+            <FormInput
+              editable={false}
+              fieldName="bio"
+              textContentType="none"
+              style={[Theme.TextInput.textInputStyle, { height: 75, paddingVertical: 15 }]}
+              placeholder="Bio"
+              returnKeyType="next"
+              returnKeyLabel="Next"
+              placeholderTextColor="#ababab"
+              blurOnSubmit={false}
+              maxLength={100}
+              isFocus={this.state.current_formField == this.tabIndex.bio}
+              value={this.state.bio}
+              serverErrors={this.state.server_errors}
+            />
+          </TouchableWithoutFeedback>  
 
           <LinearGradient
             colors={['#ff7499', '#ff5566']}
