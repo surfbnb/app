@@ -41,6 +41,7 @@ import CustomDrawerContent from './src/components/CustomDrawerContent';
 import AllowAccessModalScreen from './src/components/AllowAccessModalScreen';
 import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
 import utilities from './src/services/Utilities';
+import { NotificationToastComponent } from './src/components/NotificationToast';
 
 const customTabHiddenRoutes = ['TransactionScreen', 'CaptureVideo'];
 
@@ -255,6 +256,7 @@ const RootNavigationContainer = () => (
     <LoadingModalCover />
     <LoginPopover />
     <AllowAccessModalScreen />
+    <NotificationToastComponent />
   </Root>
 );
 
