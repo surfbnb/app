@@ -54,17 +54,17 @@ class ProfileEdit extends React.PureComponent {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       headerBackTitle: null,
-      headerLeft: <TouchableWithoutFeedback 
+      headerLeft: <TouchableWithoutFeedback
                           onPress={ () => {
-                              const onCancel = navigation.getParam("onCancel"); 
+                              const onCancel = navigation.getParam("onCancel");
                               if( onCancel ){
                                 onCancel();
                               }else{
                                 navigation.goBack();
                               }
-                            } 
+                            }
                           } >
-                        <BackArrow />
+                        <BackArrow forcePaddingLeft={true} />
                   </TouchableWithoutFeedback>,
       headerStyle: {
         backgroundColor: Colors.white,
