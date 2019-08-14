@@ -48,7 +48,7 @@ export default class ClapButton extends React.Component{
       this.firstClap = this.props.isClapping;
       this.timedClap = this.props.isClapping;
       this.AnimateFunction().start();
-      Vibration.vibrate();
+      Vibration.vibrate([1,1]);
       setTimeout(()=>{
         this.timedClap = false
       },95)
