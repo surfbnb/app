@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback, View, Image, Text, BackHandler, SafeAreaView, AppState } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, View, Image, BackHandler, AppState } from 'react-native';
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/preview_play_icon.png';
@@ -45,8 +45,8 @@ class PreviewRecordedVideo extends Component {
     }
   };
 
-  handleBackButtonClick = () => {
-    if (this.props.isFocused) {
+  handleBackButtonClick = () => {    
+    if (this.props.navigation.isFocused()) {
       this.cancleVideoHandling();
       return true;
     }
@@ -151,8 +151,7 @@ class PreviewRecordedVideo extends Component {
               <Image style={styles.tickIconSkipFont} source={tickIcon} />
             </TouchableOpacity>
           </View>
-        </View>
-      // </SafeAreaView>
+        </View>      
     );
   }
 
