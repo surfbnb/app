@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Animated, TouchableOpacity, Image } from 'react-native';
+import { Text, Animated, TouchableOpacity, Image, View } from 'react-native';
 import EventEmitter from 'eventemitter3';
 
 import Colors from '../../theme/styles/Colors';
@@ -107,12 +107,14 @@ export class NotificationToastComponent extends Component {
             </TouchableOpacity>
           )}
           {this.state.config.icon && (
-            <TouchableOpacity
+            <View
               style={{
                 position: 'absolute',
-                left: 20,
+                left: 15,
                 width: 30,
                 height: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
                 zIndex: 1
               }}
             >
@@ -122,7 +124,7 @@ export class NotificationToastComponent extends Component {
               {this.state.config.icon == 'error' && (
                 <Image source={toastError} style={{ width: 30, height: 30 }}></Image>
               )}
-            </TouchableOpacity>
+            </View>
           )}
           <Text
             numberOfLines={2}
