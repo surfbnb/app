@@ -10,12 +10,10 @@ import VideoLoadingFlyer from '../CommonComponents/VideoLoadingFlyer';
 import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import appConfig from '../../constants/AppConfig';
-import ReduxGetters from '../../services/ReduxGetters';
 
 const mapStateToProps = (state) => {
   return {
-    userId: CurrentUser.getUserId(),
-    uploadingState: ReduxGetters.getRecordedVideoCurrentProcess()
+    userId: CurrentUser.getUserId()    
   };
 };
 
@@ -90,7 +88,7 @@ class HomeScreen extends Component {
             componentWidth={46}
             sliderWidth={240}
             containerStyle={{ top: 50, left: 10 }}
-            displayText={`Uploading Video:${this.props.uploadingState}`}
+            displayText= "Uploading Video"
             extendDirection="right"
             extend={true}
             id={2}

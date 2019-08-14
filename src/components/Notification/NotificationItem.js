@@ -153,6 +153,11 @@ class NotificationItem extends Component {
     }
   };
 
+  showIfFailed = () => {
+    return;
+    return <Text style={{ marginLeft: 10, marginTop: 2, fontSize: 10 }}> failed </Text>
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -164,14 +169,15 @@ class NotificationItem extends Component {
             ) : (
               <ProfilePicture pictureId={this.props.pictureId} />
             )}
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: 'column'}}>
               <View style={styles.item}>{this.getHeading()}</View>
               {this.showAppreciationText()}
+              {this.showIfFailed()}
             </View>
             <Text style={styles.timeStamp}>{this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}</Text>
             {this.notificationInfo()}
           </View>
-          {this.showSayThanks()}
+          {this.showSayThanks()}          
         </TouchableOpacity>
       </React.Fragment>
     );

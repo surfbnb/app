@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import pricer from './Pricer';
 import reduxGetters from './ReduxGetters';
 import appConfig from '../constants/AppConfig';
@@ -8,7 +8,31 @@ import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
 import CurrentUser from '../models/CurrentUser';
 import { LoginPopoverActions } from '../components/LoginPopover';
 import { Toast } from 'native-base';
+import CameraPermissionsApi from '../services/CameraPermissionsApi';
+import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
 let recursiveMaxCount = 0;
+
+let checkVideoPermission = function(navigation) {
+  CameraPermissionsApi.requestPermission('camera').then((cameraResult) => {
+    CameraPermissionsApi.requestPermission('microphone').then((microphoneResult) => {
+      if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
+        console.log('checkVideoPermission:cameraResult', cameraResult);
+        console.log('checkVideoPermission:microphoneResult', microphoneResult);
+        navigation.navigate('CaptureVideo');
+      } else if (
+        (Platform.OS == 'ios' && (cameraResult == 'denied' || microphoneResult == 'denied')) ||
+        cameraResult == 'restricted' ||
+        microphoneResult == 'restricted'
+      ) {
+        allowAcessModalEventEmitter.emit('show');
+
+        // this.setState({
+        //   showCameraAccessModal: true
+        // });
+      }
+    });
+  });
+};
 
 export default {
   async saveItem(key, val) {
@@ -95,15 +119,15 @@ export default {
     return this.getLastChildRoutename(routes[index]);
   },
 
-  handleVideoUploadModal(previousTabIndex , navigation) {
+  handleVideoUploadModal(previousTabIndex, navigation) {
     if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
     } else if (reduxGetters.getVideoProcessingStatus() == true) {
       Toast.show({
-        text: "Video uploading in progress."
+        text: 'Video uploading in progress.'
       });
     } else {
-      navigation.navigate('CaptureVideo');
+      checkVideoPermission(navigation);
     }
   },
 
