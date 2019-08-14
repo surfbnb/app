@@ -27,7 +27,7 @@ const mapStateToProps = (state, ownProps) => {
 class NotificationItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {showSayThanks: true}
+    this.state = { showSayThanks: true };
   }
 
   getBtAmount() {
@@ -42,7 +42,7 @@ class NotificationItem extends Component {
     this.setState({
       showSayThanks: false
     });
-  }
+  };
 
   sortNumber(a, b) {
     return a - b;
@@ -53,8 +53,6 @@ class NotificationItem extends Component {
       new NavigateTo(this.props.navigation).goToProfilePage(includesObject.id);
     }
   };
-
-
 
   getHeading = () => {
     let heading = this.props.heading,
@@ -80,20 +78,22 @@ class NotificationItem extends Component {
       lastIndex = element;
     });
 
-    return stringArray.map((item, i) =>
-      heading.includes[item] ? (
+    return stringArray.map((item, i) => {      
+      return heading.includes[item] ? (
         <TouchableWithoutFeedback
           onPress={() => {
             this.includesTextNavigate(heading.includes[item]);
           }}
           key={i}
         >
-          <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] || {item}}</Text>
+          <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] || item}</Text>
         </TouchableWithoutFeedback>
       ) : (
-        <Text key={i}>{item}</Text>
-      )
-    );
+        item.split(' ').map((element, id) => {          
+          return <Text key={id}>{` ${element}`}</Text>;
+        })
+      );
+    });
   };
 
   showAmountComponent = () => {
@@ -123,7 +123,9 @@ class NotificationItem extends Component {
   };
 
   sayThanks = () => {
-    this.props.navigation.navigate('SayThanksScreen', {userId: this.props.payload.thank_you_user_id, notificationId: this.props.notificationId,
+    this.props.navigation.navigate('SayThanksScreen', {
+      userId: this.props.payload.thank_you_user_id,
+      notificationId: this.props.notificationId,
       sendMessageSuccess: this.sendMessageSuccess
     });
   };
@@ -141,7 +143,11 @@ class NotificationItem extends Component {
 
   showHeader = () => {
     if (this.props.header) {
-      return <View style={styles.sectionHeaderView}><Text style={styles.sectionHeaderTitle}>{this.props.header}</Text></View>;
+      return (
+        <View style={styles.sectionHeaderView}>
+          <Text style={styles.sectionHeaderTitle}>{this.props.header}</Text>
+        </View>
+      );
     }
   };
 
@@ -153,8 +159,8 @@ class NotificationItem extends Component {
 
   showIfFailed = () => {
     return;
-    return <Text style={{ marginLeft: 10, marginTop: 2, fontSize: 10 }}> failed </Text>
-  }
+    return <Text style={{ marginLeft: 10, marginTop: 2, fontSize: 10 }}> failed </Text>;
+  };
 
   render() {
     return (
@@ -162,29 +168,29 @@ class NotificationItem extends Component {
         {this.showHeader()}
         <TouchableWithoutFeedback onPress={this.handleRowClick}>
           <View>
-          <View style={styles.txtWrapper}>
-            <View style={{width: '10%'}}>
-            {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
-              <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
-            ) : (
-              <ProfilePicture pictureId={this.props.pictureId} />
-            )}
-            </View>
-            <View style={{width: '76%', flexDirection: 'row'}}>
-            <View style={{ flexDirection: 'column'}}>
-              <View style={styles.item}>{this.getHeading()}
-              <Text style={styles.timeStamp}>{this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}</Text>
+            <View style={styles.txtWrapper}>
+              <View style={{ width: '10%' }}>
+                {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
+                  <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
+                ) : (
+                  <ProfilePicture pictureId={this.props.pictureId} />
+                )}
               </View>
-              {this.showAppreciationText()}
-              {this.showIfFailed()}
+              <View style={{ width: '76%', flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'column' }}>
+                  <View style={styles.item}>
+                    {this.getHeading()}
+                    <Text style={styles.timeStamp}>
+                      {this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}
+                    </Text>
+                  </View>
+                  {this.showAppreciationText()}
+                  {this.showIfFailed()}
+                </View>
+              </View>
+              <View style={{ width: '14%' }}>{this.notificationInfo()}</View>
             </View>
-            
-            </View>
-            <View style={{width: '14%'}}>
-            {this.notificationInfo()}
-            </View>
-          </View>
-          {this.showSayThanks()}
+            {this.showSayThanks()}
           </View>
         </TouchableWithoutFeedback>
       </React.Fragment>
