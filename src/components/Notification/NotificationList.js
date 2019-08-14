@@ -12,6 +12,7 @@ class NotificationList extends PureComponent {
     super(props);
     this.lastHeader = null;
     this.newHeader = null;
+    this.flatlistRef = null;
   }
 
   _keyExtractor = (item, index) => `id_${item}`;
@@ -52,6 +53,7 @@ class NotificationList extends PureComponent {
     return (
       <View style={{ flex: 1 }}>
         <FlatList
+          ref={(ref)=> {this.flatlistRef = ref}}
           data={this.props.list}
           onEndReached={this.props.getNext}
           onRefresh={this.props.refresh}

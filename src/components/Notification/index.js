@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import deepGet from "lodash/get";
 import CurrentUser from '../../models/CurrentUser';
 import NotificationList from './NotificationList';
 import Colors from '../../theme/styles/Colors';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
+
+import appConfig from "../../constants/AppConfig";
 
 const mapStateToProps = (state) => {
   return {
@@ -33,10 +35,22 @@ class NotificationScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.listRef = null ; 
   }
 
   componentDidMount() {
-    NavigationEmitter.on('onRefresh', (screen) => console.log('NavigationEmitter emitted NotificationScreen', screen));
+    NavigationEmitter.on('onRefresh', (screen) => {
+      if (screen.screenName == appConfig.tabConfig.tab4.childStack) {
+       this.refresh();
+      }
+    });
+  }
+
+  refresh = () => {
+    const flatlistProps = deepGet(this, "listRef.flatListHocRef.props");
+          flatListRef = deepGet(this, "listRef.flatListHocRef.flatlistRef"); 
+    flatListRef && flatListRef.scrollToIndex({index:0});
+    flatlistProps.refresh();
   }
 
   componentWillUnmount() {
@@ -44,7 +58,7 @@ class NotificationScreen extends Component {
   }
 
   render() {
-    return <NotificationList fetchUrl={`/notifications`} />;
+    return <NotificationList ref={(ref)=>{ this.listRef = ref }}  fetchUrl={`/notifications`} />;
   }
 }
 

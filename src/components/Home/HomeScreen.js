@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
+import deepGet from "lodash/get";
 
 import TopStatus from './TopStatus';
 import VideoList from './VideoList';
@@ -30,28 +31,31 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toRefresh: false,
       videoUploaderVisible: false
     };
     this.listRef = null;
   }
 
-  onRefresh = () => {
-    this.setState({ toRefresh: false });
-    Pricer.getBalance();
-  };
+  refresh = (timeOut) => {
+    timeOut = timeOut || 0;
+    const flatlistProps = deepGet(this, "listRef.flatListHocRef.props");
+          flatListRef = deepGet(this, "listRef.flatListHocRef.flatlistRef"); 
+    flatListRef && flatListRef.scrollToIndex({index:0});
+    setTimeout(()=> {
+      flatlistProps.refresh();
+      Pricer.getBalance();
+    } ,  timeOut)
+  }
 
   componentDidMount = () => {
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
     NavigationEmitter.on('onRefresh', (screen) => {
-      if (screen == appConfig.tabConfig.tab1.childStack) {
-        //FlatList scroll to top
-        //Flatlist ref refresh
-        //Pricer.getBalance();
+      if (screen.screenName == appConfig.tabConfig.tab1.childStack) {
+       this.refresh();
       }
     });
-    console.log(this.listRef.videoListHOCRef.flatlistRef, 'flatlistref');
+    Pricer.getBalance();
   };
 
   componentWillUnmount = () => {
@@ -73,9 +77,8 @@ class HomeScreen extends Component {
   };
 
   componentWillUpdate(nextProps) {
-    console.log(' this.props.navigation.state.refresh', this.props.navigation.getParam('refresh'));
     if (this.props.userId !== nextProps.userId || this.props.navigation.state.refresh) {
-      this.state.toRefresh = true;
+      this.refresh(500);
     }
   }
 

@@ -35,6 +35,7 @@ class UserProfileFlatList extends PureComponent {
           refreshing : false, 
           loadingNext: false
         }
+        this.listRef = null ;
     }
 
     componentDidMount(){
@@ -44,6 +45,12 @@ class UserProfileFlatList extends PureComponent {
         this.paginationEvent.on("onBeforeNext" , this.beforeNext.bind(this));
         this.paginationEvent.on("onNext" , this.onNext.bind(this) );
         this.paginationEvent.on("onNextError" , this.onNextError.bind(this));
+        if( this.props.refreshEvent) {
+          this.props.refreshEvent.on("refresh" , ()=> {
+            this.listRef.scrollToOffset({offset: 0});
+            this.refresh();
+          });
+        }
         fetchUser(this.props.userId);
         this.videoHistoryPagination.initPagination();
     }
@@ -55,6 +62,9 @@ class UserProfileFlatList extends PureComponent {
         this.paginationEvent.removeListener('onBeforeNext');
         this.paginationEvent.removeListener('onNext');
         this.paginationEvent.removeListener('onNextError');
+        if( this.props.refreshEvent) {
+          this.props.refreshEvent.removeListener("refresh");
+        }
     }
 
     _fetchUrlVideoHistory(){
@@ -152,6 +162,7 @@ class UserProfileFlatList extends PureComponent {
         return(
             <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
                 <FlatList
+                    ref={(ref)=>  {this.listRef = ref } }
                     ListHeaderComponent={this.listHeaderComponent()}
                     data={this.state.list}
                     onEndReached={this.getNext}
@@ -168,6 +179,5 @@ class UserProfileFlatList extends PureComponent {
     }
     
 }
-
 
 export default withNavigation( UserProfileFlatList );

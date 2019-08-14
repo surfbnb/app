@@ -26,7 +26,7 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
         loadingNext: false
       };
       this.onEndReachedCalledDuringMomentum = !!scrollDetectNext;
-      this.videoListHOCRef = null;
+      this.flatListHocRef = null;
     }
 
     componentDidMount() {
@@ -145,7 +145,7 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
     render() {
       return (
         <ListComponent
-          ref={(ref) => (this.videoListHOCRef = ref)}
+          ref={(ref) => (this.flatListHocRef = ref)}
           list={this.state.list}
           getNext={this.getNext}
           refresh={this.refresh}

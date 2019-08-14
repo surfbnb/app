@@ -16,6 +16,9 @@ import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import Pricer from '../../services/Pricer';
+import appConfig from "../../constants/AppConfig"
+
+import EventEmitter from "eventemitter3";
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -44,10 +47,15 @@ class ProfileScreen extends PureComponent {
 
   constructor(props) {
     super(props);
+    this.refreshEvent = new EventEmitter();
   }
 
   componentDidMount() {
-    NavigationEmitter.on('onRefresh', (screen) => console.log('NavigationEmitter emitted ProfileScreen', screen));
+    NavigationEmitter.on('onRefresh', (screen) => {
+      if (screen.screenName == appConfig.tabConfig.tab5.childStack) {
+        this.refresh();
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -59,6 +67,10 @@ class ProfileScreen extends PureComponent {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
       this.props.navigation.goBack(null);
     }
+  }
+
+  refresh(){
+    this.refreshEvent.emit("refresh"); 
   }
 
   onEdit = () => {
@@ -96,6 +108,8 @@ class ProfileScreen extends PureComponent {
   render() {
     return (
       <UserProfileFlatList
+        refreshEvent={this.refreshEvent}
+        ref={(ref)=>{this.flatlistRef =  ref;}}
         listHeaderComponent={this._headerComponent()}
         listHeaderSubComponent={this._subHeader()}
         beforeRefresh={this.fetchBalance}

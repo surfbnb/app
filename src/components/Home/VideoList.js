@@ -76,4 +76,4 @@ class VideoList extends PureComponent {
   }
 }
 
-export default flatlistHOC(VideoList, true, true);
+export default flatlistHOC(VideoList, true);
