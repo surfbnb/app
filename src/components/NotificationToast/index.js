@@ -6,5 +6,6 @@ export default () => (<View style={{
     height: 20,
     backgroundColor: 'red',
     position: 'absolute',
-    bottom: -20
+    top: 30,
+    zIndex: 999
 }}><Text>ABC</Text></View>);

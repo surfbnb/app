@@ -108,7 +108,7 @@ class PreviewRecordedVideo extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      
         <View style={styles.container}>
           <Video
             source={{ uri: this.cachedVideoUri }}
@@ -152,7 +152,7 @@ class PreviewRecordedVideo extends Component {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+      // </SafeAreaView>
     );
   }
 

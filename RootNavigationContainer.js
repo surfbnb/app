@@ -38,10 +38,11 @@ import CaptureVideo from './src/components/CaptureVideo';
 import NotificationScreen from './src/components/Notification';
 import { StatusBarManager } from './src/services/StatusBarManager';
 import CustomDrawerContent from './src/components/CustomDrawerContent';
+import AllowAccessModalScreen from './src/components/AllowAccessModalScreen';
 import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
-import utilities from "./src/services/Utilities"
+import utilities from './src/services/Utilities';
 
-const customTabHiddenRoutes = ["TransactionScreen", "CaptureVideo"];
+const customTabHiddenRoutes = ['TransactionScreen', 'CaptureVideo'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -253,6 +254,7 @@ const RootNavigationContainer = () => (
     <PictureWorker />
     <LoadingModalCover />
     <LoginPopover />
+    <AllowAccessModalScreen />
   </Root>
 );
 

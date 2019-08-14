@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image, Alert } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
@@ -14,14 +14,14 @@ function twitterDisconnect() {
   new PepoApi('/auth/twitter-disconnect')
     .post()
     .catch((error) => {
-      alert('Twitter Disconnect failed', error);
+      Alert.alert('Twitter Disconnect failed', error);
     })
-    .then((res) => {
+    .then(async (res) => {
       console.log('Twitter disconnect', res);
       if (res && res.success) {
-        CurrentUser.logout();
+        await CurrentUser.logout();
       } else {
-        alert('Twitter Disconnect failed', res);
+        Alert.alert('Twitter Disconnect failed', res);
       }
     });
 }
