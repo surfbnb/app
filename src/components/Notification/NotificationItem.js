@@ -161,6 +161,7 @@ class NotificationItem extends Component {
       <React.Fragment>
         {this.showHeader()}
         <TouchableWithoutFeedback onPress={this.handleRowClick}>
+          <View>
           <View style={styles.txtWrapper}>
             {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
               <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
@@ -176,6 +177,7 @@ class NotificationItem extends Component {
             {this.notificationInfo()}
           </View>
           {this.showSayThanks()}
+          </View>
         </TouchableWithoutFeedback>
       </React.Fragment>
     );
