@@ -19,7 +19,7 @@ import appConfig from "../../constants/AppConfig"
 
 import EventEmitter from "eventemitter3";
 import profileEditIcon from "../../assets/profile_edit_icon.png";
-import {Image, TouchableOpacity, View} from "react-native";
+import {Image, Text, TouchableOpacity, View} from "react-native";
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -99,12 +99,17 @@ class ProfileScreen extends PureComponent {
     );
   }
 
+  _subHeader() {
+    return <Text style={{color: 'transparent'}}>Videos</Text>;
+  }
+
   render() {
     return (
       <UserProfileFlatList
         refreshEvent={this.refreshEvent}
         ref={(ref)=>{this.flatlistRef =  ref;}}
         listHeaderComponent={this._headerComponent()}
+        listHeaderSubComponent={this._subHeader()}
         beforeRefresh={this.fetchBalance}
         userId={this.props.userId}
       />

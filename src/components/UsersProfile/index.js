@@ -56,11 +56,16 @@ export default class UsersProfile extends Component {
     return <UserInfo userId={this.userId}/>;
   }
 
+  _subHeader() {
+    return <Text style={{color: 'transparent'}}>Videos</Text>;
+  }
+
   render() {
     return (
       <React.Fragment>
         <UserProfileFlatList
           listHeaderComponent={this._headerComponent()}
+          listHeaderSubComponent={this._subHeader()}
           userId={this.userId}
         />
         <TouchableOpacity
