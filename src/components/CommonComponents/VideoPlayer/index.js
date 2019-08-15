@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import {View,Image,TouchableWithoutFeedback} from 'react-native';
+import {View,Image,TouchableOpacity} from 'react-native';
 import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
 import { withNavigation } from 'react-navigation';
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
 
-import closeIcon from '../../../assets/cross_icon.png';
 import inlineStyles from './styles'
+import historyBack from "../../../assets/user-video-history-back-icon.png";
 
 
 class VideoPlayer extends Component {
@@ -52,11 +52,22 @@ class VideoPlayer extends Component {
         return (
           <React.Fragment>
             <VideoRowComponent doRender={true}  isActive={ true }  videoId={this.videoId} userId={this.state.userId}/>
-            <TouchableWithoutFeedback  onPressOut={()=>this.props.navigation.goBack()}>
+            <TouchableOpacity  onPressOut={()=>this.props.navigation.goBack()}
+                                       style={{
+                                         width: 29,
+                                         height: 34,
+                                         position: 'absolute',
+                                         top: 55,
+                                         left: 15,
+                                         alignItems: 'center',
+                                         justifyContent: 'center'
+                                       }}
+            >
                 <View style={inlineStyles.closeBtWrapper}>
-                  <Image style={inlineStyles.closeIconSkipFont} source={closeIcon}></Image>
+                  <Image style={{ width: 19.3, height: 29.3 }} source={historyBack} />
+                  {/*<Image style={inlineStyles.closeIconSkipFont} source={closeIcon}></Image>*/}
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </React.Fragment>
         )
     }

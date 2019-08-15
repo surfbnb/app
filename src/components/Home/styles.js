@@ -26,7 +26,7 @@ let stylesMap = {
   },
   touchablesBtns: {
     alignSelf: 'flex-end',
-    marginBottom: -29,
+    marginBottom: -25,
     zIndex: 1
   },
   pepoTxCount: {

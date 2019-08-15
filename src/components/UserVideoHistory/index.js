@@ -178,16 +178,16 @@ class UserVideoHistoryScreen extends PureComponent{
                 <TouchableOpacity
                     onPress={this.closeVideo}
                     style={{
-                        width: 27,
-                        height: 45,
+                        width: 29,
+                        height: 34,
                         position: 'absolute',
-                        top: 54,
-                        left: 20,
+                        top: 55,
+                        left: 15,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
                     >
-                    <Image style={{ width: 18, height: 30 }} source={historyBack} />
+                    <Image style={{ width: 19.3, height: 29.3 }} source={historyBack} />
                  </TouchableOpacity>
              </View>   
         );
