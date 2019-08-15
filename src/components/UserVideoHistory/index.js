@@ -175,20 +175,9 @@ class UserVideoHistoryScreen extends PureComponent{
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
-                <TouchableOpacity
-                    onPress={this.closeVideo}
-                    style={{
-                        width: 29,
-                        height: 34,
-                        position: 'absolute',
-                        top: 55,
-                        left: 15,
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                    >
-                    <Image style={{ width: 19.3, height: 29.3 }} source={historyBack} />
-                 </TouchableOpacity>
+                <TouchableOpacity onPress={this.closeVideo} style={inlineStyles.historyBackSkipFont}>
+                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
+                </TouchableOpacity>
              </View>   
         );
     }

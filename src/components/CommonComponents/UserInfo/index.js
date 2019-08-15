@@ -63,10 +63,10 @@ class UserInfo extends React.PureComponent {
   dividerLine = () => {
     return <LinearGradient
       colors={['#ffdbf9', '#ffdbf9', '#ff5566']}
-      locations={[0, 0.25, 1]}
+      locations={[0, 0.35, 1]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
-      style={{height: 1, flex: 0.2, alignSelf: 'center', transform: [{ rotate: '90deg' }]}}
+      style={{height: 1.5, flex: 0.25, alignSelf: 'center', transform: [{ rotate: '90deg' }]}}
     >
     </LinearGradient>;
   }
@@ -86,7 +86,7 @@ class UserInfo extends React.PureComponent {
         </View>
         <View style={inlineStyle.numericInfoWrapper}>
           <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporting() } )}
-                            style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
+                            style={[inlineStyle.numericInnerWrapper]}>
             <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>{ Pricer.toDisplayAmount( this.props.supporting ) }</Text>
             <Text style={inlineStyle.numericInfoText}>Supporting</Text>
           </TouchableOpacity>

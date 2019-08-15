@@ -5,6 +5,7 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 import { CUSTOM_TAB_Height } from '../../theme/constants';
+import historyBack from "../../assets/user-video-history-back-icon.png";
 
 let stylesMap = {
   fullScreen: {
@@ -86,6 +87,19 @@ let stylesMap = {
     width: 25,
     top: Dimensions.get('window').height * 0.5 - 12,
     left: Dimensions.get('window').width * 0.5 - 12
+  },
+  historyBackSkipFont:{
+    ...ifIphoneX({
+      top: 55,
+    }, {
+      top: 25,
+    }),
+    width: 29,
+    height: 34,
+    position: 'absolute',
+    left: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 };
 

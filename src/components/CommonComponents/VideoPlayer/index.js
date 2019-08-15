@@ -51,22 +51,9 @@ class VideoPlayer extends Component {
     render() {
         return (
           <React.Fragment>
-            <VideoRowComponent doRender={true}  isActive={ true }  videoId={this.videoId} userId={this.state.userId}/>
-            <TouchableOpacity  onPressOut={()=>this.props.navigation.goBack()}
-                                       style={{
-                                         width: 29,
-                                         height: 34,
-                                         position: 'absolute',
-                                         top: 55,
-                                         left: 15,
-                                         alignItems: 'center',
-                                         justifyContent: 'center'
-                                       }}
-            >
-                <View style={inlineStyles.closeBtWrapper}>
-                  <Image style={{ width: 19.3, height: 29.3 }} source={historyBack} />
-                  {/*<Image style={inlineStyles.closeIconSkipFont} source={closeIcon}></Image>*/}
-                </View>
+            <VideoRowComponent doRender={true} isActive={ true } videoId={this.videoId} userId={this.state.userId}/>
+            <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
+              <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
             </TouchableOpacity>
           </React.Fragment>
         )

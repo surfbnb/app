@@ -3,23 +3,18 @@ import {getBottomSpace, ifIphoneX} from "react-native-iphone-x-helper";
 
 
 let stylesMap = {
-  closeIconSkipFont:{
+  historyBackSkipFont:{
     ...ifIphoneX({
-      marginTop:50,
-      marginLeft:20,
+      top: 55,
     }, {
-      marginTop:25,
-      marginLeft:20,
+      top: 25,
     }),
-    height:20,
-    width:20
-  },
-  closeBtWrapper:{
-    position:'absolute',
-    top:10,
-    left:0,
-    height:60,
-    width:60
+    width: 29,
+    height: 34,
+    position: 'absolute',
+    left: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 };
 
