@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import BalanceHeader from '../Profile/BalanceHeader';
@@ -19,6 +18,8 @@ import Pricer from '../../services/Pricer';
 import appConfig from "../../constants/AppConfig"
 
 import EventEmitter from "eventemitter3";
+import profileEditIcon from "../../assets/profile_edit_icon.png";
+import {Image, TouchableOpacity, View} from "react-native";
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -87,22 +88,15 @@ class ProfileScreen extends PureComponent {
         userId={this.props.userId}
         header={<BalanceHeader />}
         editButton={
-          <TouchableButton
+          <TouchableOpacity
             onPress={this.onEdit}
-            TouchableStyles={[
-              Theme.Button.btnPinkSecondary,
-              { marginTop: 10, paddingVertical: 8, paddingHorizontal: 20, borderRadius: 50 }
-            ]}
-            TextStyles={[Theme.Button.btnPinkSecondaryText]}
-            text="Edit Your Profile"
-          />
+            style={[inlineStyles.editProfileIconPos]}
+          >
+            <Image style={{ width: 13, height: 13 }} source={profileEditIcon}></Image>
+          </TouchableOpacity>
         }
       />
     );
-  }
-
-  _subHeader() {
-    return <Text style={inlineStyles.updates}>Videos</Text>;
   }
 
   render() {
@@ -111,7 +105,6 @@ class ProfileScreen extends PureComponent {
         refreshEvent={this.refreshEvent}
         ref={(ref)=>{this.flatlistRef =  ref;}}
         listHeaderComponent={this._headerComponent()}
-        listHeaderSubComponent={this._subHeader()}
         beforeRefresh={this.fetchBalance}
         userId={this.props.userId}
       />

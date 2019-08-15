@@ -4,10 +4,19 @@ import { Dimensions } from 'react-native';
 
 let stylesMap = {
   infoHeaderWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%'
+    flexDirection: 'row',
+    width: Dimensions.get('window').width - 40,
+    backgroundColor: Colors.white,
+    borderTopLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    shadowColor: Colors.black,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    shadowOffset: {width: 0, height: 0},
+    paddingVertical: 8,
+    paddingHorizontal: 12
   },
   userProfileImageSkipFont: {
     height: 100,
@@ -17,31 +26,35 @@ let stylesMap = {
   },
   userName: {
     color: Colors.valhalla,
-    fontFamily: 'AvenirNext-DemiBold',
-    marginTop: 10
+    marginRight: 8,
+    fontFamily: 'AvenirNext-DemiBold'
   },
   bioSection: {
     textAlign: 'center',
     marginTop: 20,
     paddingHorizontal: 30,
     color: Colors.valhalla,
+    fontSize: 14
   },
   numericInfoWrapper: {
     flexDirection: 'row',
     width: Dimensions.get('window').width - 40
   },
   numericInnerWrapper:{
-    borderTopLeftRadius: 15,
     borderLeftWidth: 1,
-    borderColor: '#fff',
-    alignItems: 'flex-start',
+    borderColor: '#ff5566',
+    alignItems: 'center',
     justifyContent: 'center',
-    padding: 15,
-    color: Colors.white
+    paddingHorizontal: 15,
+    color: Colors.valhalla,
+    flex: 1
+  },
+  numericInfoTextBold: {
+    fontFamily: 'AvenirNext-DemiBold'
   },
   numericInfoText: {
-    color: Colors.white,
-    fontFamily: 'AvenirNext-DemiBold'
+    color: Colors.valhalla,
+    fontFamily: 'AvenirNext-Regular'
   }
 };
 

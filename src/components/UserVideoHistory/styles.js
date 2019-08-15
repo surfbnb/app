@@ -26,7 +26,7 @@ let stylesMap = {
   },
   touchablesBtns: {
     alignSelf: 'flex-end',
-    marginBottom: -29,
+    marginBottom: -25,
     zIndex: 1
   },
   pepoTxCount: {
@@ -52,7 +52,7 @@ let stylesMap = {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: Dimensions.get('window').height * 0.15,
-    minHeight: Dimensions.get('window').height * 0.1
+    minHeight: Dimensions.get('window').height * 0.07
   },
   handle: {
     fontSize: 15,

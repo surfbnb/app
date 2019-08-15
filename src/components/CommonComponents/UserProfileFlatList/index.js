@@ -22,6 +22,7 @@ import inlineStyles from './style';
 
 
 import pepoWhiteIcon from '../../../assets/pepo-white-icon.png'
+import LinearGradient from "react-native-linear-gradient";
 
 
 class UserProfileFlatList extends PureComponent {
@@ -119,17 +120,29 @@ class UserProfileFlatList extends PureComponent {
       const videoId = reduxGetters.getUserVideoId(item),
             imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;     
       return imageUrl ? (
-        <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.onVideoClick( item, index ); } )}>
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.onVideoClick( item, index ); } )}
+        >
           <View>
-            <FastImage style={{width: (Dimensions.get('window').width - 6) / 3, aspectRatio:9/16, margin: 1}}
+
+            <FastImage style={{ width: (Dimensions.get('window').width - 6) / 3, aspectRatio:9/16, margin: 1}}
                        source={{
                         uri: imageUrl,
                         priority: FastImage.priority.high
                        }}/>
-            <View style={inlineStyles.videoStatsContainer}>
-              <Image style={{height: 16, width: 16}} source={pepoWhiteIcon} />
-              <Text style={inlineStyles.videoStatsTxt}>{this.getVideoBtAmount(videoId)}</Text>
-            </View>
+
+            <LinearGradient
+              colors={['transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']}
+              locations={[0, 0.5, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', bottom: 0, left: 0}}
+            >
+              <View style={inlineStyles.videoStatsContainer}>
+                <Image style={{height: 15, width: 15}} source={pepoWhiteIcon} />
+                <Text style={inlineStyles.videoStatsTxt}>{this.getVideoBtAmount(videoId)}</Text>
+              </View>
+            </LinearGradient>
+
           </View>
         </TouchableWithoutFeedback>
       ) : <View/>;

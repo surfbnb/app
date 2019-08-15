@@ -68,13 +68,31 @@ class UserInfo extends React.PureComponent {
             onDidFocus={this.onDidFocus}
         />
         <View style={inlineStyle.infoHeaderWrapper}>
-          <ProfilePicture userId={this.props.userId} style={[inlineStyle.profileImageSkipFont, {width: 80, height: 80, borderRadius: 40}]} />
-          <View style={{position: 'absolute', right: 20}}>
-            {this.props.header}
+          {this.props.header}
+        </View>
+        <ProfilePicture userId={this.props.userId} style={[inlineStyle.profileImageSkipFont, {width: 80, height: 80, borderRadius: 40}]} />
+        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+          <Text style={inlineStyle.userName}>{this.props.userName}</Text>
+          {this.props.editButton}
+        </View>
+        <View style={inlineStyle.numericInfoWrapper}>
+          <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporting() } )}
+                            style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
+            <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>{ Pricer.toDisplayAmount( this.props.supporting ) }</Text>
+            <Text style={inlineStyle.numericInfoText}>Supporting</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporters() } )}
+                            style={[inlineStyle.numericInnerWrapper]}>
+            <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>{ Pricer.toDisplayAmount(this.props.supporters)}</Text>
+            <Text style={inlineStyle.numericInfoText}>Supporters</Text>
+          </TouchableOpacity>
+
+          <View style={[inlineStyle.numericInnerWrapper]} style={[inlineStyle.numericInnerWrapper]}>
+            <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>${  Pricer.toDisplayAmount(this.btToFiat(this.props.btAmount)) }</Text>
+            <Text style={inlineStyle.numericInfoText}>Raised</Text>
           </View>
         </View>
-        <Text style={inlineStyle.userName}>@{this.props.userName}</Text>
-        {this.props.editButton}
         {!!this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text> }
         {!!this.props.link &&
           <Text
@@ -86,33 +104,6 @@ class UserInfo extends React.PureComponent {
             {this.props.link}
           </Text>
         }
-
-        <LinearGradient
-          colors={['#ff7499', '#ff7499', '#ff5566']}
-          locations={[0, 0.25, 1]}
-          style={{ marginTop: 20, borderTopLeftRadius: 30, borderBottomRightRadius: 30}}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
-          <View style={inlineStyle.numericInfoWrapper}>
-            <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporting() } )}
-              style={[inlineStyle.numericInnerWrapper, {borderLeftWidth: 0}]}>
-              <Text style={inlineStyle.numericInfoText}>{ Pricer.toDisplayAmount( this.props.supporting ) }</Text>
-              <Text style={inlineStyle.numericInfoText}>SUPPORTING</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporters() } )}
-             style={[inlineStyle.numericInnerWrapper]}>
-              <Text style={inlineStyle.numericInfoText}>{ Pricer.toDisplayAmount(this.props.supporters)}</Text>
-              <Text style={inlineStyle.numericInfoText}>SUPPORTERS</Text>
-            </TouchableOpacity>
-
-            <View style={[inlineStyle.numericInnerWrapper]} style={[inlineStyle.numericInnerWrapper]}>
-              <Text style={inlineStyle.numericInfoText}>${  Pricer.toDisplayAmount(this.btToFiat(this.props.btAmount)) }</Text>
-              <Text style={inlineStyle.numericInfoText}>RAISED</Text>
-            </View>
-          </View>
-        </LinearGradient>
 
       </View>
     );

@@ -3,11 +3,10 @@ import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
   videoStatsContainer: {
-    position: 'absolute',
-    bottom: 5,
-    left: 5,
+    padding: 5,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   videoStatsTxt: {
     color: Colors.white,
