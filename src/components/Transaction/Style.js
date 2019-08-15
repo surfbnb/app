@@ -49,7 +49,7 @@ let stylesMap = {
   },
   crossIconWrapper: {
     position: 'absolute',
-    left: 10,
+    left: 15,
     width: 50,
     height: 50,
     justifyContent: 'center'

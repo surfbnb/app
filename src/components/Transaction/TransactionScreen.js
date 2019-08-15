@@ -41,8 +41,8 @@ const bottomSpace = getBottomSpace([true]),
 const validMinAmount = 1;
 const HEADER_TITLE = 'Send Pepo’s';
 const SUCCESS_HEADER_TITLE = 'Sent';
-const SUBMIT_BTN_TXT = 'CONFIRM';
-const SUBMIT_PROCESSING_TXT = 'CONFIRMING...';
+const SUBMIT_BTN_TXT = 'Confirm';
+const SUBMIT_PROCESSING_TXT = 'Confirming...';
 
 class TransactionScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -427,23 +427,19 @@ class TransactionScreen extends Component {
                       </TextInput>
                     </View>
                   </View>
+
                   <LinearGradient
                     colors={['#ff7499', '#ff5566']}
                     locations={[0, 1]}
-                    style={{ marginHorizontal: 35, borderRadius: 3 }}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
+                    style={{marginTop: 25, borderRadius: 3}}
                   >
-                    <TouchableButton
-                      disabled={this.state.exceBtnDisabled}
-                      TouchableStyles={[Theme.Button.btnPink]}
-                      TextStyles={[Theme.Button.btnPinkText]}
-                      text={this.state.confirmBtnText}
-                      onPress={() => {
-                        this.onConfirm();
-                      }}
-                    />
+                    <TouchableOpacity onPress={() => {this.onConfirm()}} style={[Theme.Button.btn, {borderWidth: 0}]}>
+                      <Text style={[Theme.Button.btnPinkText, {fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center'}]}>{this.state.confirmBtnText}</Text>
+                    </TouchableOpacity>
                   </LinearGradient>
+
                   <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 13 }}>
                     Your Current Balance: <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}
                     {this.state.balance}

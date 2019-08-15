@@ -12,6 +12,7 @@ import tx_icon from '../../assets/tx_icon.png';
 import { fetchUser } from '../../helpers/helpers';
 import Colors from '../../theme/styles/Colors';
 import utilities from '../../services/Utilities';
+import BalanceHeader from "../Profile/BalanceHeader";
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -52,7 +53,7 @@ export default class UsersProfile extends Component {
   };
 
   _headerComponent() {
-    return <UserInfo userId={this.userId} />;
+    return <UserInfo userId={this.userId}/>;
   }
 
   render() {

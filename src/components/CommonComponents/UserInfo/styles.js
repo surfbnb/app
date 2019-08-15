@@ -16,7 +16,8 @@ let stylesMap = {
     shadowRadius: 3,
     shadowOffset: {width: 0, height: 0},
     paddingVertical: 8,
-    paddingHorizontal: 12
+    paddingHorizontal: 15,
+    marginBottom: 20
   },
   userProfileImageSkipFont: {
     height: 100,
@@ -37,15 +38,16 @@ let stylesMap = {
     fontSize: 14
   },
   numericInfoWrapper: {
+    marginTop: 20,
     flexDirection: 'row',
-    width: Dimensions.get('window').width - 40
+    width: Dimensions.get('window').width - 30
   },
   numericInnerWrapper:{
-    borderLeftWidth: 1,
-    borderColor: '#ff5566',
+    // borderLeftWidth: 1,
+    // borderColor: '#ff5566',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
     color: Colors.valhalla,
     flex: 1
   },
@@ -53,6 +55,7 @@ let stylesMap = {
     fontFamily: 'AvenirNext-DemiBold'
   },
   numericInfoText: {
+    fontSize: 14,
     color: Colors.valhalla,
     fontFamily: 'AvenirNext-Regular'
   }

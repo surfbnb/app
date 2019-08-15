@@ -7,6 +7,8 @@ import inlineStyles from './styles';
 import pepoTxIcon from '../../assets/pepo-tx-icon.png'
 import topUpIcon from '../../assets/top-up-icon.png'
 import redeemIcon from '../../assets/redeem-icon.png'
+import inlineStyle from "../CommonComponents/UserInfo/styles";
+import LinearGradient from "react-native-linear-gradient";
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -30,13 +32,22 @@ class BalanceHeader extends PureComponent {
 
   render() {
     return (
-      <React.Fragment>
+      <View style={inlineStyle.infoHeaderWrapper}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+          <View style={{backgroundColor: 'white'}}>
             <Image style={{ width: 50, height: 50 }} source={topUpIcon}></Image>
             <Text style={inlineStyles.redeemBalance}>Top Up</Text>
           </View>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+          <React.Fragment>
+            <LinearGradient
+              colors={['#dadfdc', '#dadfdc']}
+              locations={[0, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{height: 20, width: 1, marginHorizontal: 8, marginTop: '50%', transform: [{ translateY: -35 }]}}
+            ></LinearGradient>
+          </React.Fragment>
+          <View style={{backgroundColor: 'white'}}>
             <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
             <Text style={inlineStyles.redeemBalance}>Redeem</Text>
           </View>
@@ -48,7 +59,7 @@ class BalanceHeader extends PureComponent {
           </Text>
           <Text style={inlineStyles.usdBalance}>${this.toFiat( this.props.balance ) || 0.00} </Text>
         </View>
-      </React.Fragment>
+      </View>
     );
   }
 }

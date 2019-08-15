@@ -60,6 +60,17 @@ class UserInfo extends React.PureComponent {
     this.props.navigation.push('SupportersListScreen', {userId: this.props.userId});
   }
 
+  dividerLine = () => {
+    return <LinearGradient
+      colors={['#ffdbf9', '#ffdbf9', '#ff5566']}
+      locations={[0, 0.25, 1]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      style={{height: 1, flex: 0.2, alignSelf: 'center', transform: [{ rotate: '90deg' }]}}
+    >
+    </LinearGradient>;
+  }
+
   render() {
     return (
       <View style={{alignItems: 'center', paddingTop: 30}}>
@@ -67,9 +78,7 @@ class UserInfo extends React.PureComponent {
         <NavigationEvents
             onDidFocus={this.onDidFocus}
         />
-        <View style={inlineStyle.infoHeaderWrapper}>
-          {this.props.header}
-        </View>
+        {this.props.header}
         <ProfilePicture userId={this.props.userId} style={[inlineStyle.profileImageSkipFont, {width: 80, height: 80, borderRadius: 40}]} />
         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
           <Text style={inlineStyle.userName}>{this.props.userName}</Text>
@@ -81,13 +90,13 @@ class UserInfo extends React.PureComponent {
             <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>{ Pricer.toDisplayAmount( this.props.supporting ) }</Text>
             <Text style={inlineStyle.numericInfoText}>Supporting</Text>
           </TouchableOpacity>
-
+          {this.dividerLine()}
           <TouchableOpacity onPress={multipleClickHandler(() => { this.goToSupporters() } )}
                             style={[inlineStyle.numericInnerWrapper]}>
             <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>{ Pricer.toDisplayAmount(this.props.supporters)}</Text>
             <Text style={inlineStyle.numericInfoText}>Supporters</Text>
           </TouchableOpacity>
-
+          {this.dividerLine()}
           <View style={[inlineStyle.numericInnerWrapper]} style={[inlineStyle.numericInnerWrapper]}>
             <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>${  Pricer.toDisplayAmount(this.btToFiat(this.props.btAmount)) }</Text>
             <Text style={inlineStyle.numericInfoText}>Raised</Text>

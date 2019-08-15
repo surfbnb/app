@@ -187,7 +187,7 @@ class UserProfileFlatList extends PureComponent {
                     ListFooterComponent={this.renderFooter}
                     numColumns={3}
                 />
-            </SafeAreaView>    
+            </SafeAreaView>
         );
     }
     
