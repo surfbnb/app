@@ -13,11 +13,11 @@ import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import Pricer from '../../services/Pricer';
-import appConfig from "../../constants/AppConfig"
+import appConfig from '../../constants/AppConfig';
 
-import EventEmitter from "eventemitter3";
-import profileEditIcon from "../../assets/profile_edit_icon.png";
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import EventEmitter from 'eventemitter3';
+import profileEditIcon from '../../assets/profile_edit_icon.png';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
 const mapStateToProps = (state, ownProps) => {
@@ -56,10 +56,14 @@ class ProfileScreen extends PureComponent {
         this.refresh();
       }
     });
+    this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
+      this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
+    });
   }
 
   componentWillUnmount() {
     NavigationEmitter.removeListener('onRefresh');
+    this.didFocus.remove();
   }
 
   componentDidUpdate(prevProps) {
@@ -69,8 +73,8 @@ class ProfileScreen extends PureComponent {
     }
   }
 
-  refresh(){
-    this.refreshEvent.emit("refresh"); 
+  refresh() {
+    this.refreshEvent.emit('refresh');
   }
 
   onEdit = () => {
@@ -79,7 +83,7 @@ class ProfileScreen extends PureComponent {
 
   fetchBalance = () => {
     Pricer.getBalance();
-  }
+  };
 
   _headerComponent() {
     return (
@@ -99,14 +103,16 @@ class ProfileScreen extends PureComponent {
   }
 
   _subHeader() {
-    return <Text style={{color: 'transparent'}}>Videos</Text>;
+    return <Text style={{ color: 'transparent' }}>Videos</Text>;
   }
 
   render() {
     return (
       <UserProfileFlatList
         refreshEvent={this.refreshEvent}
-        ref={(ref)=>{this.flatlistRef =  ref;}}
+        ref={(ref) => {
+          this.flatlistRef = ref;
+        }}
         listHeaderComponent={this._headerComponent()}
         listHeaderSubComponent={this._subHeader()}
         beforeRefresh={this.fetchBalance}

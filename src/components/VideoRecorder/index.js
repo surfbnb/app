@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback, BackHandler, AppState } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
@@ -32,7 +32,13 @@ class VideoRecorder extends Component {
     this.recordedVideo = null;
   }
 
+  _handleAppStateChange = (nextAppState) => {
+    nextAppState === 'background' && this.cancleVideoHandling();
+  };
+
   async componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.cancleVideoHandling);
+    AppState.addEventListener('change', this._handleAppStateChange);
     if (this.props.actionSheetOnRecordVideo) {
       this.recordedVideo = reduxGetters.getRecordedVideo();
       let isFileExists = false;
@@ -74,7 +80,10 @@ class VideoRecorder extends Component {
     );
   }
 
-  cancleVideoHandling = () => {    
+  cancleVideoHandling = () => {
+    console.log('called by app state change: cancleVideoHandling');
+    this.discardVideo = true;
+    this.stopRecording();
     this.props.navigation.goBack();
   };
 
@@ -173,18 +182,19 @@ class VideoRecorder extends Component {
     };
     this.initProgressBar();
     const data = await this.camera.recordAsync(options);
-
+    if (this.discardVideo) return;
     // This will take from VideoRecorder to PreviewRecordedVideo component
     this.props.goToPreviewScreen(data.uri);
   };
 
-  recordVideoStateChage(){
+  recordVideoStateChage() {
     this.setState({ isRecording: true });
+    this.discardVideo = false;
   }
 
   componentWillUnmount() {
     clearInterval(this.progressInterval);
-    this.recordVideoStateChage = () => {}; 
+    this.recordVideoStateChage = () => {};
   }
 
   render() {
@@ -193,4 +203,4 @@ class VideoRecorder extends Component {
 }
 
 //make this component available to the app
-export default withNavigation( VideoRecorder);
+export default withNavigation(VideoRecorder);
