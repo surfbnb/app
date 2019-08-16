@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import deepGet from "lodash/get";
+import deepGet from 'lodash/get';
 
 import TopStatus from './TopStatus';
 import VideoList from './VideoList';
@@ -14,7 +14,7 @@ import appConfig from '../../constants/AppConfig';
 
 const mapStateToProps = (state) => {
   return {
-    userId: CurrentUser.getUserId()    
+    userId: CurrentUser.getUserId()
   };
 };
 
@@ -36,21 +36,21 @@ class HomeScreen extends Component {
 
   refresh = (timeOut) => {
     timeOut = timeOut || 0;
-    const flatlistProps = deepGet(this, "listRef.flatListHocRef.props");
-          flatListRef = deepGet(this, "listRef.flatListHocRef.flatlistRef"); 
-    flatListRef && flatListRef.scrollToIndex({index:0});
-    setTimeout(()=> {
+    const flatlistProps = deepGet(this, 'listRef.flatListHocRef.props');
+    flatListRef = deepGet(this, 'listRef.flatListHocRef.flatlistRef');
+    flatListRef && flatListRef.scrollToIndex({ index: 0 });
+    setTimeout(() => {
       flatlistProps.refresh();
       Pricer.getBalance();
-    } ,  timeOut)
-  }
+    }, timeOut);
+  };
 
   componentDidMount = () => {
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab1.childStack) {
-       this.refresh();
+        this.refresh();
       }
     });
     Pricer.getBalance();
@@ -89,9 +89,9 @@ class HomeScreen extends Component {
           <VideoLoadingFlyer
             componentHeight={46}
             componentWidth={46}
-            sliderWidth={240}
+            sliderWidth={170}
             containerStyle={{ top: 50, left: 10 }}
-            displayText= "Uploading Video"
+            displayText="Uploading Video"
             extendDirection="right"
             extend={true}
             id={2}

@@ -5,7 +5,6 @@ let stylesMap = {
   animatedToastView: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     marginHorizontal: 30,
     marginVertical: 30,
     paddingHorizontal: 10,
@@ -16,7 +15,6 @@ let stylesMap = {
     bottom: 0,
     left: 0,
     right: 0,
-    justifyContent: 'center',
     backgroundColor: Colors.white,
     height: 55,
     shadowColor: '#000',
@@ -31,7 +29,6 @@ let stylesMap = {
 
   toastBoxInsideText: {
     fontSize: 15,
-    textAlign: 'center',
     zIndex: -1
   }
 };
