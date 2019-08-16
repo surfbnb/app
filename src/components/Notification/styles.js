@@ -3,7 +3,7 @@ import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   item: {    
-    marginLeft: 10,
+    marginLeft: 4,
     marginRight: 4,
     flexDirection: 'row',
     flexWrap: 'wrap'
@@ -29,7 +29,7 @@ let stylesMap = {
     borderWidth: 1,
     alignItems: 'center',
     marginLeft: 'auto',
-    paddingHorizontal: 10,
+    paddingHorizontal: 6,
     paddingVertical: 6,
     color: Colors.white,
     borderColor: Colors.pinkRed,

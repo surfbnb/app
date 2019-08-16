@@ -164,19 +164,19 @@ class NotificationItem extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <View style={{minHeight: 25}}>
         {this.showHeader()}
         <TouchableWithoutFeedback onPress={this.handleRowClick}>
           <View>
             <View style={styles.txtWrapper}>
-              <View style={{ width: '10%' }}>
+              <View style={{ width: '8%' }}>
                 {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
                   <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
                 ) : (
                   <ProfilePicture pictureId={this.props.pictureId} />
                 )}
               </View>
-              <View style={{ width: '76%', flexDirection: 'row' }}>
+              <View style={{ width: '72%', flexDirection: 'row' }}>
                 <View style={{ flexDirection: 'column' }}>
                   <View style={styles.item}>
                     {this.getHeading()}
@@ -188,12 +188,12 @@ class NotificationItem extends Component {
                   {this.showIfFailed()}
                 </View>
               </View>
-              <View style={{ width: '14%' }}>{this.notificationInfo()}</View>
+              <View style={{ width: '20%' }}>{this.notificationInfo()}</View>
             </View>
             {this.showSayThanks()}
           </View>
         </TouchableWithoutFeedback>
-      </React.Fragment>
+      </View>
     );
   }
 }

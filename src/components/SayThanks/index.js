@@ -116,7 +116,6 @@ class SayThanks extends Component {
     return (
       <TouchableWithoutFeedback
       onPressOut={() => {
-          console.log('HEY')
           if (!this.state.closeDisabled) {
             this.closeModal();
           }
@@ -128,7 +127,7 @@ class SayThanks extends Component {
         <View style={inlineStyles.headerWrapper}>
           <ProfilePicture style={{ marginLeft: 10 }} userId={this.props.navigation.getParam('userId')} />
           <Text style={inlineStyles.modalHeader}>
-            {reduxGetter.getUserName(this.props.navigation.getParam('userId'))}
+            {reduxGetter.getName(this.props.navigation.getParam('userId'))}
           </Text>
           <TouchableOpacity
             onPress={() => {
