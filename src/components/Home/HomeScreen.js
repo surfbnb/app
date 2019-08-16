@@ -39,7 +39,7 @@ class HomeScreen extends Component {
     videoUploaderComponent.on('hide', this.hideVideoUploader);
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab1.childStack) {
-       this.refresh( true , 300);
+       this.refresh( true , 0);
       }
     });   
   };
