@@ -15,7 +15,6 @@ import BigNumber from 'bignumber.js';
 import clone from 'lodash/clone';
 
 import FormInput from '../../theme/components/FormInput';
-import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
 import tx_success from '../../assets/transaction_success.png';
 import pepo_icon from '../../assets/pepo-tx-icon.png';
@@ -83,10 +82,10 @@ class TransactionScreen extends Component {
 
   _keyboardShown(e) {
     let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;
+    bottomPaddingValue -= 60;
     if (this.state.usdFocus) {
-      bottomPaddingValue = bottomPaddingValue - 50;
+      bottomPaddingValue = bottomPaddingValue - 60;
     }
-    bottomPaddingValue += extraPadding;
 
     if (this.state.bottomPadding == bottomPaddingValue) {
       return;
@@ -451,7 +450,7 @@ class TransactionScreen extends Component {
               )}
               {this.state.showSuccess && (
                 <View
-                  style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 30, paddingHorizontal: 50 }}
+                  style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 }}
                 >
                   <Image source={tx_success} style={{ width: 200, height: 200 }}></Image>
                   <Text style={{ textAlign: 'center' }}>

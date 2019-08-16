@@ -43,7 +43,7 @@ import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
 import utilities from './src/services/Utilities';
 import { NotificationToastComponent } from './src/components/NotificationToast';
 
-const customTabHiddenRoutes = ['TransactionScreen', 'CaptureVideo'];
+const customTabHiddenRoutes = ['CaptureVideo'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',

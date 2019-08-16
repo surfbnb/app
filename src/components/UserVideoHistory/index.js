@@ -29,6 +29,8 @@ class UserVideoHistoryScreen extends PureComponent{
         this.paginationEvent = this.videoHistoryPagination.event;
         this.currentIndex = this.props.navigation.getParam("currentIndex");
         this.isScrolled = false ;
+        this.willFocusSubscription =  null ;
+        this.flatlistRef = null;
        
         this.state = {
             list : this.videoHistoryPagination.getList(),
@@ -49,6 +51,12 @@ class UserVideoHistoryScreen extends PureComponent{
         this.paginationEvent.on("onBeforeNext" ,  this.beforeNext.bind(this) );
         this.paginationEvent.on("onNext" , this.onNext.bind(this) );
         this.paginationEvent.on("onNextError" , this.onNextError.bind(this) );
+
+        //This is an hack for reset scroll for flatlist. Need to debug a bit more.
+        this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
+            const offset =  this.state.activeIndex > 0 ? inlineStyles.fullScreen.height * this.state.activeIndex :  0 ;
+            this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false})
+        });
     }
 
     componentWillUnmount(){
@@ -58,6 +66,7 @@ class UserVideoHistoryScreen extends PureComponent{
         this.paginationEvent.removeListener('onBeforeNext');
         this.paginationEvent.removeListener('onNext');
         this.paginationEvent.removeListener('onNextError');
+        this.willFocusSubscription && this.willFocusSubscription.remove()
     }
     
     beforeRefresh = ( ) => {
@@ -161,6 +170,7 @@ class UserVideoHistoryScreen extends PureComponent{
                     onRefresh={this.refresh}
                     refreshing={this.state.refreshing}
                     keyExtractor={this._keyExtractor}
+                    ref={(ref)=> {this.flatlistRef =  ref }}
                    
                     onEndReachedThreshold={7}
                     onViewableItemsChanged={this.onViewableItemsChanged}
