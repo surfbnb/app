@@ -40,7 +40,6 @@ class ActivateUser {
   }
 
   onError(res) {
-    Store.dispatch(hideModal());
     utilities.showAlert(null, ostErrors.getErrorMessage(res));
   }
 }
