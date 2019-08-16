@@ -41,16 +41,20 @@ class NotificationScreen extends Component {
   componentDidMount() {
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab4.childStack) {
-       this.refresh();
+       this.refresh(true);
       }
     });
   }
 
-  refresh = () => {
+  refresh = (isRefresh) => {
     const flatlistProps = deepGet(this, "listRef.flatListHocRef.props");
-          flatListRef = deepGet(this, "listRef.flatListHocRef.flatlistRef"); 
-    flatListRef && flatListRef.scrollToIndex({index:0});
-    flatlistProps.refresh();
+          flatListRef = deepGet(this, "listRef.flatListHocRef.flatlistRef"),
+          list = flatlistProps.list
+          ; 
+    if(list && list.length > 0 ){
+      flatListRef && flatListRef.scrollToIndex({index:0});
+    }
+    isRefresh && flatlistProps.refresh();
   }
 
   componentWillUnmount() {

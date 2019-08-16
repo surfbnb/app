@@ -8,6 +8,7 @@ import appConfig from '../constants/AppConfig';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
+import Toast from "../components/NotificationToast";
 
 // Used require to support all platforms
 const RCTNetworking = require("RCTNetworking");
@@ -134,12 +135,19 @@ class CurrentUser {
   }
 
   async logout(params) {
-    await this.clearCurrentUser();
-    new PepoApi('/auth/logout')
+    await new PepoApi('/auth/logout')
       .post()
-      .catch((error) => {})
+      .catch((error) => {
+        Toast.show({
+          text: 'Logout failed please try again.',
+          icon: 'error'
+        });
+      })
       .then((res) => {
-        RCTNetworking.clearCookies(() => NavigationService.navigate('HomeScreen', params));
+        RCTNetworking.clearCookies(async () => {
+          await this.clearCurrentUser();
+          NavigationService.navigate('HomeScreen', params)
+        });
       });
   }
 

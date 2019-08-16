@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import deepGet from 'lodash/get';
+import deepGet from "lodash/get";
 
 import TopStatus from './TopStatus';
 import VideoList from './VideoList';
@@ -14,7 +14,7 @@ import appConfig from '../../constants/AppConfig';
 
 const mapStateToProps = (state) => {
   return {
-    userId: CurrentUser.getUserId()
+    userId: CurrentUser.getUserId()    
   };
 };
 
@@ -34,27 +34,22 @@ class HomeScreen extends Component {
     this.listRef = null;
   }
 
-  refresh = (timeOut) => {
-    timeOut = timeOut || 0;
-    const flatlistProps = deepGet(this, 'listRef.flatListHocRef.props');
-    flatListRef = deepGet(this, 'listRef.flatListHocRef.flatlistRef');
-    flatListRef && flatListRef.scrollToIndex({ index: 0 });
-    setTimeout(() => {
-      flatlistProps.refresh();
-      Pricer.getBalance();
-    }, timeOut);
-  };
-
   componentDidMount = () => {
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab1.childStack) {
-        this.refresh();
+       this.refresh( true , 300);
       }
-    });
-    Pricer.getBalance();
+    });   
   };
+
+
+  componentWillUpdate(nextProps) {
+    if (this.props.userId !== nextProps.userId || this.props.navigation.state.refresh) {
+      this.refresh(true , 300);
+    }
+  }
 
   componentWillUnmount = () => {
     videoUploaderComponent.removeListener('show');
@@ -74,10 +69,26 @@ class HomeScreen extends Component {
     });
   };
 
-  componentWillUpdate(nextProps) {
-    if (this.props.userId !== nextProps.userId || this.props.navigation.state.refresh) {
-      this.refresh(500);
-    }
+  refresh = (isRefesh , timeOut) => {
+    timeOut = timeOut || 0;
+    const flatlistProps = deepGet(this, "listRef.flatListHocRef.props"),
+          flatListRef = deepGet(this, "listRef.flatListHocRef.flatlistRef") ,
+          list = flatlistProps && flatlistProps.list
+          ; 
+
+    if(list && list.length >  0 ){
+      flatListRef && flatListRef.scrollToIndex({index:0});
+    }      
+    setTimeout(()=> {
+      if(isRefesh){
+        flatlistProps.refresh();
+      }     
+    } ,  timeOut)
+  }
+
+
+  beforeRefresh= () => {
+    Pricer.getBalance();
   }
 
   render() {
@@ -89,9 +100,9 @@ class HomeScreen extends Component {
           <VideoLoadingFlyer
             componentHeight={46}
             componentWidth={46}
-            sliderWidth={170}
+            sliderWidth={240}
             containerStyle={{ top: 50, left: 10 }}
-            displayText="Uploading Video"
+            displayText= "Uploading Video"
             extendDirection="right"
             extend={true}
             id={2}
@@ -99,12 +110,9 @@ class HomeScreen extends Component {
         )}
 
         <VideoList
-          ref={(ref) => {
-            this.listRef = ref;
-          }}
-          toRefresh={this.state.toRefresh}
+          ref={(ref) => { this.listRef = ref; }}
           fetchUrl={'/feeds'}
-          onRefresh={this.onRefresh}
+          beforeRefresh={this.beforeRefresh}
         />
       </View>
     );

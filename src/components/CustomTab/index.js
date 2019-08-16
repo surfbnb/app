@@ -28,6 +28,8 @@ function onTabPressed(navigation, tab) {
   }
 }
 
+let refreshTimeOut = 0 ; 
+
 function loginInFlow(navigation, tab) {
   let currentTabIndex = tab.navigationIndex;
   if (tab.rootStack === 'CaptureVideo') {
@@ -44,13 +46,19 @@ function loginInFlow(navigation, tab) {
       console.log('Catch error');
     }
   } else {
-    NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
+    clearTimeout(refreshTimeOut)
+    refreshTimeOut = setTimeout(() => {
+      NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
+    } , 300) 
   }
 }
 
 function logoutFlow(navigation, tab) {
   if (tab.navigationIndex == appConfig.tabConfig.tab1.navigationIndex) {
-    NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
+    clearTimeout(refreshTimeOut);
+    refreshTimeOut = setTimeout(() => {
+      NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
+    }, 300)
   } else {
     LoginPopoverActions.show();
   }

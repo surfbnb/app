@@ -9,8 +9,6 @@ import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
 
 import UserProfileFlatList from '../CommonComponents/UserProfileFlatList';
-import TouchableButton from '../../theme/components/TouchableButton';
-import Theme from '../../theme/styles';
 import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
