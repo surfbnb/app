@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import escapeRegExp from 'lodash/escapeRegExp';
+
 import styles from './styles';
 import Pricer from '../../services/Pricer';
 import reduxGetter from '../../services/ReduxGetters';
@@ -66,7 +68,7 @@ class NotificationItem extends Component {
       return <Text>{text}</Text>;
     }
     for (entity in heading.includes) {
-      let entityStartedAt = text.search(entity);
+      let entityStartedAt = text.search(escapeRegExp(entity));
       let entityendedAt = entityStartedAt + entity.length;
       entityArray.push(entityStartedAt);
       entityArray.push(entityendedAt);
@@ -87,12 +89,11 @@ class NotificationItem extends Component {
         >
           <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] || item}</Text>
         </TouchableWithoutFeedback>
-      ) : (
-        item
-          .trim()
-          .split(' ')
+      ) : (        
+        item          
+        .split(/(\s+)/)
           .map((element, id) => {
-            return <Text key={id}>{` ${element}`}</Text>;
+            return <Text key={id}>{`${element}`}</Text>;
           })
       );
     });
@@ -175,7 +176,7 @@ class NotificationItem extends Component {
         >
           <View>
             <View style={styles.txtWrapper}>
-              <View style={{ width: '8%' }}>
+              <View style={{ width: '8%', marginRight: 4 }}>
                 {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
                   <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
                 ) : (
