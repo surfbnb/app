@@ -38,14 +38,13 @@ class PreviewRecordedVideo extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
-
   _handleAppStateChange = (nextAppState) => {
-    if (nextAppState == 'active' && this.state.progress == 1){
+    if (nextAppState == 'active' && this.state.progress == 1) {
       this.replay();
     }
   };
 
-  handleBackButtonClick = () => {    
+  handleBackButtonClick = () => {
     if (this.props.navigation.isFocused()) {
       this.cancleVideoHandling();
       return true;
@@ -92,15 +91,14 @@ class PreviewRecordedVideo extends Component {
             })
           );
           this.props.goToRecordScreen();
-        } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {          
+        } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
           this.props.navigation.goBack();
           Store.dispatch(
             upsertRecordedVideo({
               do_discard: true
             })
           );
-          Store.dispatch(videoInProcessing(false));                   
-
+          Store.dispatch(videoInProcessing(false));
         }
       }
     );
@@ -108,50 +106,47 @@ class PreviewRecordedVideo extends Component {
 
   render() {
     return (
-      
-        <View style={styles.container}>
-          <Video
-            source={{ uri: this.cachedVideoUri }}
-            style={styles.previewVideoSkipFont}
-            fullscreen={true}
-            onLoad={this.handleLoad}
-            onProgress={this.handleProgress}
-            onEnd={this.handleEnd}
-            ref={(component) => (this._video = component)}
-          ></Video>
-          <ProgressBar
-            width={null}
-            color="#EF5566"
-            progress={this.state.progress}
-            indeterminate={false}
-            style={styles.progressBar}
-          />        
-          <TouchableWithoutFeedback  onPressIn={this.cancleVideoHandling}>
-                <View style={styles.closeBtWrapper}>
-                  <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
-                </View>
-
-            </TouchableWithoutFeedback>
-
-          
-          <View style={styles.bottomControls}>
-            {this.state.progress == 1 ? (
-              <TouchableOpacity
-                onPress={() => {
-                  this.replay();
-                }}
-              >
-                <Image style={styles.playIconSkipFont} source={playIcon} />
-              </TouchableOpacity>
-            ) : (
-              <View style={styles.playIcon} />
-            )}
-
-            <TouchableOpacity onPress={this.enableStartUploadFlag}>
-              <Image style={styles.tickIconSkipFont} source={tickIcon} />
-            </TouchableOpacity>
+      <View style={styles.container}>
+        <Video
+          source={{ uri: this.cachedVideoUri }}
+          style={styles.previewVideoSkipFont}
+          fullscreen={true}
+          onLoad={this.handleLoad}
+          onProgress={this.handleProgress}
+          onEnd={this.handleEnd}
+          ref={(component) => (this._video = component)}
+        ></Video>
+        <ProgressBar
+          width={null}
+          color="#EF5566"
+          progress={this.state.progress}
+          indeterminate={false}
+          style={styles.progressBar}
+        />
+        <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
+          <View style={styles.closeBtWrapper}>
+            <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
           </View>
-        </View>      
+        </TouchableWithoutFeedback>
+
+        <View style={styles.bottomControls}>
+          {this.state.progress == 1 ? (
+            <TouchableOpacity
+              onPress={() => {
+                this.replay();
+              }}
+            >
+              <Image style={styles.playIconSkipFont} source={playIcon} />
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.playIcon} />
+          )}
+
+          <TouchableOpacity onPress={this.enableStartUploadFlag}>
+            <Image style={styles.tickIconSkipFont} source={tickIcon} />
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 
@@ -162,4 +157,4 @@ class PreviewRecordedVideo extends Component {
 }
 
 //make this component available to the app
-export default withNavigation (PreviewRecordedVideo);
+export default withNavigation(PreviewRecordedVideo);
