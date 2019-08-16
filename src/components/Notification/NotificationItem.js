@@ -86,10 +86,10 @@ class NotificationItem extends Component {
           }}
           key={i}
         >
-          <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] || item}</Text>
+          <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] ||item}</Text>
         </TouchableWithoutFeedback>
       ) : (
-        item.split(' ').map((element, id) => {          
+        item.trim().split(' ').map((element, id) => {          
           return <Text key={id}>{` ${element}`}</Text>;
         })
       );
