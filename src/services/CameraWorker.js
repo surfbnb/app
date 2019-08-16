@@ -358,17 +358,17 @@ class CameraWorker extends PureComponent {
           if (responseData.success && responseData.data) {
             // this.updateProfileViewVideo(this.props.recorded_video.s3_cover_image, this.props.recorded_video.s3_video);
             console.log('Video uploaded Successfully');
+            Toast.show({
+              text: 'Your video is uploaded successfully',
+              icon: 'success',
+              imageUri: this.props.recorded_video.cover_image
+            });
             Store.dispatch(
               upsertRecordedVideo({
                 do_discard: true,
                 pepo_api_posting: false
               })
             );
-            Toast.show({
-              text: 'Your video is uploaded successfully',
-              icon: 'success',
-              imageUri: this.props.recorded_video.cover_image
-            });
           }
           this.postToPepoApi = false;
         })
