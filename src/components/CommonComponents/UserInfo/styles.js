@@ -15,6 +15,7 @@ let stylesMap = {
     shadowOpacity: 0.2,
     shadowRadius: 3,
     shadowOffset: {width: 0, height: 0},
+    elevation: 5,
     paddingVertical: 8,
     paddingHorizontal: 15,
     marginBottom: 20

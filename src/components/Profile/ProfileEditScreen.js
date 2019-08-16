@@ -256,7 +256,7 @@ class ProfileEdit extends React.PureComponent {
     } else {
       this.props.navigation.goBack();
     }
-    return true; 
+    return true;
   };
 
   onBioChangeDelegate = (val) => {
@@ -421,7 +421,7 @@ class ProfileEdit extends React.PureComponent {
               value={this.state.bio}
               serverErrors={this.state.server_errors}
             />
-          </TouchableWithoutFeedback>  
+          </TouchableWithoutFeedback>
 
           <LinearGradient
             colors={['#ff7499', '#ff5566']}
