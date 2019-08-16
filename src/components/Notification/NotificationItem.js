@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import AppConfig from '../../../src/constants/AppConfig';
 import { shortenedFromNow } from '../../helpers/timestampHandling';
 import NavigateTo from '../../helpers/navigateTo';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 import playIcon from '../../assets/play_icon.png';
 
 const mapStateToProps = (state, ownProps) => {
@@ -78,20 +79,21 @@ class NotificationItem extends Component {
       lastIndex = element;
     });
 
-    return stringArray.map((item, i) => {      
+    return stringArray.map((item, i) => {
       return heading.includes[item] ? (
         <TouchableWithoutFeedback
-          onPress={() => {
-            this.includesTextNavigate(heading.includes[item]);
-          }}
+        onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}          
           key={i}
         >
-          <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] ||item}</Text>
+          <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] || item}</Text>
         </TouchableWithoutFeedback>
       ) : (
-        item.trim().split(' ').map((element, id) => {          
-          return <Text key={id}>{` ${element}`}</Text>;
-        })
+        item
+          .trim()
+          .split(' ')
+          .map((element, id) => {
+            return <Text key={id}>{` ${element}`}</Text>;
+          })
       );
     });
   };
@@ -132,7 +134,9 @@ class NotificationItem extends Component {
   showSayThanks = () => {
     if (this.props.payload.thank_you_flag === 0 && this.state.showSayThanks) {
       return (
-        <TouchableWithoutFeedback onPress={this.sayThanks}>
+        <TouchableWithoutFeedback          
+          onPress={multipleClickHandler(() =>  this.sayThanks())}
+        >
           <View style={styles.sayThanksButton}>
             <Text style={styles.sayThanksText}>Say Thanks</Text>
           </View>
@@ -164,9 +168,11 @@ class NotificationItem extends Component {
 
   render() {
     return (
-      <View style={{minHeight: 25}}>
+      <View style={{ minHeight: 25 }}>
         {/* {this.showHeader()} */}
-        <TouchableWithoutFeedback onPress={this.handleRowClick}>
+        <TouchableWithoutFeedback         
+          onPress={multipleClickHandler(() => this.handleRowClick())}
+        >
           <View>
             <View style={styles.txtWrapper}>
               <View style={{ width: '8%' }}>
