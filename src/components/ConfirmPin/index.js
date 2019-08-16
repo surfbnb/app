@@ -27,7 +27,7 @@ export default class ConfirmPin extends Component {
 
   onPinChange = (pin, resetPinCallback) => {
     if (pin === this.props.navigation.getParam('pin', '')) {
-      LoadingModal.show('Activating User...');
+      LoadingModal.show('Activating User...', 'This may take a while,\n we are surfing on Blockchain');
       ActivateUser.activateUser(pin, this);
     } else {
       if (resetPinCallback) {

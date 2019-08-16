@@ -271,11 +271,6 @@ class CameraWorker extends PureComponent {
               video_s3_upload_processing: false
             })
           );
-          Toast.show({
-            text: 'Your video is uploaded successfully',
-            icon: 'success',
-            imageUri: this.props.recorded_video.cover_image
-          });
         })
         .catch((err) => {
           console.log('uploadVideo error :: s3Video', err);
@@ -284,10 +279,6 @@ class CameraWorker extends PureComponent {
               video_s3_upload_processing: false
             })
           );
-          Toast.show({
-            text: 'Video upload failed - Try Again',
-            icon: 'error'
-          });
         });
     }
   }
@@ -373,6 +364,11 @@ class CameraWorker extends PureComponent {
                 pepo_api_posting: false
               })
             );
+            Toast.show({
+              text: 'Your video is uploaded successfully',
+              icon: 'success',
+              imageUri: this.props.recorded_video.cover_image
+            });
           }
           this.postToPepoApi = false;
         })
@@ -383,6 +379,10 @@ class CameraWorker extends PureComponent {
               pepo_api_posting: false
             })
           );
+          Toast.show({
+            text: 'Video upload failed - Try Again',
+            icon: 'error'
+          });
         });
     }
   }
