@@ -14,7 +14,7 @@ const UIErros = {
   first_name: 'First name is mandatory.',
   last_name: 'Last name is mandatory',
   user_not_found: 'User not found.',
-  general_error: 'Something went wrong please try again later',
+  general_error: 'Something went wrong. Please try again later',
   general_error_ex: 'Oops, Please try again.',
   bt_amount_error: 'Please enter valid amount.',
   bt_amount_decimal_error: 'Only . is allowed as decimails',

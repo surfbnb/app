@@ -278,6 +278,11 @@ export default class PepoApi {
         this._dispatchData(responseJSON);
 
         switch (responseStatus) {
+          case 200:
+          case 301:
+          case 302:
+          case 304:
+            break;                   
           case 401:
             await CurrentUser.logout(responseJSON);
             Store.dispatch(hideModal());
@@ -285,7 +290,7 @@ export default class PepoApi {
           case 404:
             Store.dispatch(hideModal());
             break;
-          case 500:
+          default:
             Store.dispatch(hideModal());
             Toast.show({
               text: ostErrors.getUIErrorMessage('general_error'),
