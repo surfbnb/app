@@ -18,6 +18,7 @@ import appConfig from "../../constants/AppConfig"
 import EventEmitter from "eventemitter3";
 import profileEditIcon from "../../assets/profile_edit_icon.png";
 import {Image, Text, TouchableOpacity, View} from "react-native";
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -87,7 +88,7 @@ class ProfileScreen extends PureComponent {
         header={<BalanceHeader />}
         editButton={
           <TouchableOpacity
-            onPress={this.onEdit}
+            onPress={multipleClickHandler(() => this.onEdit())}
             style={[inlineStyles.editProfileIconPos]}
           >
             <Image style={{ width: 13, height: 13 }} source={profileEditIcon}></Image>

@@ -432,10 +432,23 @@ class TransactionScreen extends Component {
                     locations={[0, 1]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
-                    style={{marginTop: 25, borderRadius: 3}}
+                    style={{ marginTop: 25, borderRadius: 3 }}
                   >
-                    <TouchableOpacity onPress={() => {this.onConfirm()}} style={[Theme.Button.btn, {borderWidth: 0}]}>
-                      <Text style={[Theme.Button.btnPinkText, {fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center'}]}>{this.state.confirmBtnText}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.onConfirm();
+                      }}
+                      disabled={this.state.exceBtnDisabled}
+                      style={[Theme.Button.btn, { borderWidth: 0 }]}
+                    >
+                      <Text
+                        style={[
+                          Theme.Button.btnPinkText,
+                          { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+                        ]}
+                      >
+                        {this.state.confirmBtnText}
+                      </Text>
                     </TouchableOpacity>
                   </LinearGradient>
 

@@ -46,6 +46,12 @@ class VideoList extends PureComponent {
     this.setActiveIndex();
   };
 
+  //This only is required for android,  as scroll to top or momentumscrollend callback are not getting iterscepted. 
+  //This code is only for Android. Need to debug it a bit more.
+  forceSetActiveIndex( index=0 ){
+    this.setState({ activeIndex: index });
+  }
+
   render() {
     return (
       <FlatList
