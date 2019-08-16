@@ -165,7 +165,7 @@ class NotificationItem extends Component {
   render() {
     return (
       <View style={{minHeight: 25}}>
-        {this.showHeader()}
+        {/* {this.showHeader()} */}
         <TouchableWithoutFeedback onPress={this.handleRowClick}>
           <View>
             <View style={styles.txtWrapper}>

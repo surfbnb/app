@@ -22,7 +22,7 @@ export const hideModal = (message = '') => ({
 
 export const showModalCover = (
   message = 'Processing...',
-  footerText = 'This may take a while,\n we are surfing on Blockchain'
+  footerText = ''
 ) => ({
   type: types.SHOW_MODAL_COVER,
   payload: {
