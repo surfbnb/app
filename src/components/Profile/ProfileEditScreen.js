@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity, BackHandler, Platform, Alert, Keyboard} from 'react-native';
+import { View, Text, Image, TouchableOpacity, BackHandler, Platform, Alert, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -27,8 +27,8 @@ import AllowAccessModal from './AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
 import CameraIcon from '../../assets/camera_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
-import BackArrow from "../CommonComponents/BackArrow";
-import LinearGradient from "react-native-linear-gradient";
+import BackArrow from '../CommonComponents/BackArrow';
+import LinearGradient from 'react-native-linear-gradient';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
@@ -38,7 +38,7 @@ const CANCEL_INDEX = 2;
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user_name: reduxGetter.getUserName( CurrentUser.getUserId(), state) || '',
+    user_name: reduxGetter.getUserName(CurrentUser.getUserId(), state) || '',
     name: reduxGetter.getName(CurrentUser.getUserId(), state) || '',
     bio: reduxGetter.getBio(CurrentUser.getUserId(), state) || '',
     link: reduxGetter.getLink(reduxGetter.getUserLinkId(CurrentUser.getUserId(), state), state) || '',
@@ -50,28 +50,30 @@ const btnPreText = 'Save Profile';
 const btnPostText = 'Saving...';
 
 class ProfileEdit extends React.PureComponent {
-
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       headerBackTitle: null,
-      headerLeft: <TouchableWithoutFeedback
-                          onPress={ () => {
-                              const onCancel = navigation.getParam("onCancel");
-                              if( onCancel ){
-                                onCancel();
-                              }else{
-                                navigation.goBack();
-                              }
-                            }
-                          } >
-                        <BackArrow forcePaddingLeft={true} />
-                  </TouchableWithoutFeedback>,
+      headerLeft: (
+        <TouchableWithoutFeedback
+          onPress={() => {
+            const onCancel = navigation.getParam('onCancel');
+            if (onCancel) {
+              onCancel();
+            } else {
+              navigation.goBack();
+            }
+          }}
+        >
+          <BackArrow forcePaddingLeft={true} />
+        </TouchableWithoutFeedback>
+      ),
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
         shadowColor: '#000',
         shadowOffset: {
-          width:0, height: 1
+          width: 0,
+          height: 1
         },
         shadowOpacity: 0.1,
         shadowRadius: 3
@@ -87,7 +89,7 @@ class ProfileEdit extends React.PureComponent {
       name: 1,
       username: 2,
       link: 3,
-      bio: 4,
+      bio: 4
     };
 
     this.defaults = {
@@ -110,14 +112,14 @@ class ProfileEdit extends React.PureComponent {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.navigation.setParams({
-      onCancel: this.onCancel,
+      onCancel: this.onCancel
     });
-    BackHandler.addEventListener('hardwareBackPress',  this.onCancel );
+    BackHandler.addEventListener('hardwareBackPress', this.onCancel);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onCancel);
   }
 
@@ -264,7 +266,9 @@ class ProfileEdit extends React.PureComponent {
   };
 
   onBioFocus = () => {
-    this.state.current_formField = 0;
+    this.setState({
+      current_formField: 0
+    });
     this.props.navigation.push('BioScreen', {
       onChangeTextDelegate: this.onBioChangeDelegate,
       initialValue: this.state.bio
@@ -315,153 +319,158 @@ class ProfileEdit extends React.PureComponent {
 
   render() {
     return (
-        <KeyboardAwareScrollView enableOnAndroid={true}
-          contentContainerStyle=
-            {{
-              marginTop: 10, padding: 15, paddingBottom: 50
-            }}
-          showsVerticalScrollIndicator={false}>
-          <View style={inlineStyles.editProfileContainer}>
-            {this.getImageSrc()}
-            <TouchableOpacity style={inlineStyles.editProfileIconTouch} onPress={this.showActionSheetWithOptions}>
-              <View style={inlineStyles.editProfileIconPos}>
-                <Image
-                  style={{ width: 13, height: 13 }}
-                  source={this.props.profilePicture ? profileEditIcon : ProfilePlusIcon}
-                ></Image>
-              </View>
-            </TouchableOpacity>
-          </View>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        contentContainerStyle={{
+          marginTop: 10,
+          padding: 15,
+          paddingBottom: 50
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={inlineStyles.editProfileContainer}>
+          {this.getImageSrc()}
+          <TouchableOpacity style={inlineStyles.editProfileIconTouch} onPress={this.showActionSheetWithOptions}>
+            <View style={inlineStyles.editProfileIconPos}>
+              <Image
+                style={{ width: 13, height: 13 }}
+                source={this.props.profilePicture ? profileEditIcon : ProfilePlusIcon}
+              ></Image>
+            </View>
+          </TouchableOpacity>
+        </View>
 
-          <Text style={[Theme.TextInput.labelStyle]}>Name</Text>
-          <FormInput
-            editable={true}
-            onChangeText={(name) => this.setState({ name, error: null, name_error: null })}
-            fieldName="name"
-            textContentType="none"
-            style={[Theme.TextInput.textInputStyle]}
-            placeholder="Name"
-            returnKeyType="next"
-            returnKeyLabel="Next"
-            placeholderTextColor="#ababab"
-            blurOnSubmit={false}
-            isFocus={this.state.current_formField == this.tabIndex.name}
-            onFocus={() => {
-              this.state.current_formField = this.tabIndex.name;
-            }}
-            onSubmitEditing={() => {
-              this.onSubmitEditing(this.tabIndex.name);
-            }}
-            value={this.state.name}
-            errorMsg={this.state.name_error}
-            serverErrors={this.state.server_errors}
-          />
+        <Text style={[Theme.TextInput.labelStyle]}>Name</Text>
+        <FormInput
+          editable={true}
+          onChangeText={(name) => this.setState({ name, error: null, name_error: null })}
+          fieldName="name"
+          textContentType="none"
+          style={[Theme.TextInput.textInputStyle]}
+          placeholder="Name"
+          returnKeyType="next"
+          returnKeyLabel="Next"
+          placeholderTextColor="#ababab"
+          blurOnSubmit={false}
+          isFocus={this.state.current_formField == this.tabIndex.name}
+          onFocus={() => {
+            this.state.current_formField = this.tabIndex.name;
+          }}
+          onSubmitEditing={() => {
+            this.onSubmitEditing(this.tabIndex.name);
+          }}
+          value={this.state.name}
+          errorMsg={this.state.name_error}
+          serverErrors={this.state.server_errors}
+        />
 
-          <Text style={[Theme.TextInput.labelStyle]}>Username</Text>
-          <FormInput
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
-            fieldName="user_name"
-            textContentType="none"
-            style={[Theme.TextInput.textInputStyle]}
-            placeholder="User Name"
-            returnKeyType="next"
-            returnKeyLabel="Next"
-            placeholderTextColor="#ababab"
-            blurOnSubmit={false}
-            onSubmitEditing={() => {
-              this.onSubmitEditing(this.tabIndex.username);
-            }}
-            isFocus={this.state.current_formField == this.tabIndex.username}
-            onFocus={() => {
-              this.state.current_formField = this.tabIndex.username;
-            }}
-            value={this.state.user_name}
-            errorMsg={this.state.user_name_error}
-            serverErrors={this.state.server_errors}
-          />
+        <Text style={[Theme.TextInput.labelStyle]}>Username</Text>
+        <FormInput
+          editable={true}
+          autoCapitalize="none"
+          onChangeText={(user_name) => this.setState({ user_name, error: null, user_name_error: null })}
+          fieldName="user_name"
+          textContentType="none"
+          style={[Theme.TextInput.textInputStyle]}
+          placeholder="User Name"
+          returnKeyType="next"
+          returnKeyLabel="Next"
+          placeholderTextColor="#ababab"
+          blurOnSubmit={false}
+          onSubmitEditing={() => {
+            this.onSubmitEditing(this.tabIndex.username);
+          }}
+          isFocus={this.state.current_formField == this.tabIndex.username}
+          onFocus={() => {
+            this.state.current_formField = this.tabIndex.username;
+          }}
+          value={this.state.user_name}
+          errorMsg={this.state.user_name_error}
+          serverErrors={this.state.server_errors}
+        />
 
-          <Text style={[Theme.TextInput.labelStyle]}>Link</Text>
-          <FormInput
-            editable={true}
-            autoCapitalize="none"
-            onChangeText={(link) => this.setState({ link, error: null, link_error: null })}
-            fieldName="link"
-            textContentType="none"
-            style={[Theme.TextInput.textInputStyle]}
-            placeholder="Link"
-            returnKeyType="done"
-            returnKeyLabel="Done"
-            placeholderTextColor="#ababab"
-            blurOnSubmit={false}
-            onSubmitEditing={() => {  this.onSubmitEditing(-1); Keyboard.dismiss() }}
-            isFocus={this.state.current_formField == this.tabIndex.link}
-            onFocus={() => {
-              this.state.current_formField = this.tabIndex.link;
-            }}
-            value={this.state.link}
-            serverErrors={this.state.server_errors}
-          />
+        <Text style={[Theme.TextInput.labelStyle]}>Link</Text>
+        <FormInput
+          editable={true}
+          autoCapitalize="none"
+          onChangeText={(link) => this.setState({ link, error: null, link_error: null })}
+          fieldName="link"
+          textContentType="none"
+          style={[Theme.TextInput.textInputStyle]}
+          placeholder="Link"
+          returnKeyType="done"
+          returnKeyLabel="Done"
+          placeholderTextColor="#ababab"
+          blurOnSubmit={false}
+          onSubmitEditing={() => {
+            this.onSubmitEditing(-1);
+            Keyboard.dismiss();
+          }}
+          isFocus={this.state.current_formField == this.tabIndex.link}
+          onFocus={() => {
+            this.state.current_formField = this.tabIndex.link;
+          }}
+          value={this.state.link}
+          serverErrors={this.state.server_errors}
+        />
 
-          <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
-          <TouchableWithoutFeedback  onPress={multipleClickHandler(() => this.onBioFocus())}>
-            <FormInput
-              editable={false}
-              fieldName="bio"
-              textContentType="none"
-              style={[Theme.TextInput.textInputStyle, { height: 75, paddingVertical: 15 }]}
-              placeholder="Bio"
-              returnKeyType="next"
-              returnKeyLabel="Next"
-              placeholderTextColor="#ababab"
-              blurOnSubmit={false}
-              maxLength={100}
-              isFocus={this.state.current_formField == this.tabIndex.bio}
-              value={this.state.bio}
-              serverErrors={this.state.server_errors}
-            />
-          </TouchableWithoutFeedback>
+        <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
+        <FormInput
+          editable={true}
+          fieldName="bio"
+          textContentType="none"
+          style={[Theme.TextInput.textInputStyle, { height: 75, paddingVertical: 15 }]}
+          placeholder="Bio"
+          returnKeyType="next"
+          returnKeyLabel="Next"
+          placeholderTextColor="#ababab"
+          blurOnSubmit={false}
+          maxLength={100}
+          isFocus={this.state.current_formField == this.tabIndex.bio}
+          value={this.state.bio}
+          serverErrors={this.state.server_errors}
+          onFocus={multipleClickHandler(() => this.onBioFocus())}
+        />
 
-          <LinearGradient
-            colors={['#ff7499', '#ff5566']}
-            locations={[0, 1]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={{marginTop: 25, borderRadius: 3}}
-          >
-            <TouchableOpacity onPress={this.onSubmit.bind(this)} style={[Theme.Button.btn, {borderWidth: 0}]}>
-              <Text style={[Theme.Button.btnPinkText, { textAlign: 'center' }]}>{this.state.btnText}</Text>
-            </TouchableOpacity>
-          </LinearGradient>
+        <LinearGradient
+          colors={['#ff7499', '#ff5566']}
+          locations={[0, 1]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{ marginTop: 25, borderRadius: 3 }}
+        >
+          <TouchableOpacity onPress={this.onSubmit.bind(this)} style={[Theme.Button.btn, { borderWidth: 0 }]}>
+            <Text style={[Theme.Button.btnPinkText, { textAlign: 'center' }]}>{this.state.btnText}</Text>
+          </TouchableOpacity>
+        </LinearGradient>
 
-          <Text>{this.state.general_error}</Text>
-          <AllowAccessModal
-            onClose={() => {
-              this.setState({
-                showGalleryAccessModal: false
-              });
-            }}
-            modalVisibility={this.state.showGalleryAccessModal}
-            headerText="Library"
-            accessText="Enable Library Access"
-            accessTextDesc="Please allow access to photo library to select your profile picture"
-            imageSrc={GalleryIcon}
-            imageSrcStyle={{ height: 40, width: 40 }}
-          />
-          <AllowAccessModal
-            onClose={() => {
-              this.setState({
-                showCameraAccessModal: false
-              });
-            }}
-            modalVisibility={this.state.showCameraAccessModal}
-            headerText="Camera"
-            accessText="Enable Camera Access"
-            accessTextDesc="Allow access to your camera and microphone to take video "
-            imageSrc={CameraIcon}
-          />
-        </KeyboardAwareScrollView>
+        <Text>{this.state.general_error}</Text>
+        <AllowAccessModal
+          onClose={() => {
+            this.setState({
+              showGalleryAccessModal: false
+            });
+          }}
+          modalVisibility={this.state.showGalleryAccessModal}
+          headerText="Library"
+          accessText="Enable Library Access"
+          accessTextDesc="Please allow access to photo library to select your profile picture"
+          imageSrc={GalleryIcon}
+          imageSrcStyle={{ height: 40, width: 40 }}
+        />
+        <AllowAccessModal
+          onClose={() => {
+            this.setState({
+              showCameraAccessModal: false
+            });
+          }}
+          modalVisibility={this.state.showCameraAccessModal}
+          headerText="Camera"
+          accessText="Enable Camera Access"
+          accessTextDesc="Allow access to your camera and microphone to take video "
+          imageSrc={CameraIcon}
+        />
+      </KeyboardAwareScrollView>
     );
   }
 }
