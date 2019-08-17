@@ -156,6 +156,10 @@ class NotificationList extends PureComponent {
     );
   };
 
+  emptyList = () => {
+    return <EmptyList displayText={"You currently do not have any activities."}></EmptyList>
+  }
+
   render() {
     return (
       <View style={{flex:1}}>
@@ -169,6 +173,7 @@ class NotificationList extends PureComponent {
           refreshing={this.state.refreshing}
           onRefresh={this.refresh}
           stickySectionHeadersEnabled={false}
+          ListEmptyComponent={this.emptyList}
           onEndReachedThreshold={0.1}
           onEndReached={this.getNext}
           onMomentumScrollBegin={() => {
