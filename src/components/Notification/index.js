@@ -53,16 +53,16 @@ class NotificationScreen extends Component {
   }
 
   refresh = (isRefresh , timeOut=0 ) => {
-    const flatlistProps = deepGet(this, "listRef.flatListHocRef.props");
-          flatListRef = deepGet(this, "listRef.flatListHocRef.flatlistRef"),
-          list = flatlistProps.list
-          ; 
+    const sectionListRef = deepGet(this, "listRef.sectionListRef"),
+          list = deepGet(sectionListRef, "props.sections");
+    
     if(list && list.length > 0 ){
-      flatListRef && flatListRef.scrollToIndex({index:0});
+      sectionListRef && sectionListRef.scrollToLocation({sectionIndex:0, itemIndex: 0});
     }
     setTimeout(()=> {
-      isRefresh && flatlistProps.refresh();
+      isRefresh && this.listRef.refresh();
     } , timeOut)
+
   }
 
   componentWillUnmount() {
@@ -70,7 +70,7 @@ class NotificationScreen extends Component {
   }
 
   render() {
-    return <NotificationList ref={(ref)=>{ this.listRef = ref }}  fetchUrl={`/notifications`} />;
+    return <NotificationList ref={(ref)=>{ this.listRef = ref }} />;
   }
 }
 

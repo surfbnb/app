@@ -109,7 +109,7 @@ class NotificationItem extends Component {
   };
 
   showVideoComponent = () => {
-    let imageUrl = reduxGetter.getVideoImgUrl(this.props.payload.video_id);
+    let imageUrl = reduxGetter.getVideoImgUrl( this.props.payload.video_id,  null , AppConfig.userVideos.userScreenCoverImageWidth);
     return (
       <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
         <Image style={styles.playIconSkipFont} source={playIcon} />
@@ -144,17 +144,7 @@ class NotificationItem extends Component {
         </TouchableWithoutFeedback>
       );
     }
-  };
-
-  showHeader = () => {
-    if (this.props.header) {
-      return (
-        <View style={styles.sectionHeaderView}>
-          <Text style={styles.sectionHeaderTitle}>{this.props.header}</Text>
-        </View>
-      );
-    }
-  };
+  }; 
 
   showAppreciationText = () => {
     if (this.props.kind == AppConfig.notificationConstants.AppreciationKind && this.props.payload.thank_you_text) {
@@ -168,9 +158,14 @@ class NotificationItem extends Component {
   };
 
   render() {
+    let headerWidth = '72%', notificationInfoWidth = '20%';
+    if(this.props.kind == AppConfig.notificationConstants.AppreciationKind){
+      headerWidth = '92%';
+       notificationInfoWidth = '0%';
+    }
+
     return (
-      <View style={{ minHeight: 25 }}>
-        {/* {this.showHeader()} */}
+      <View style={{ minHeight: 25 }}>        
         <TouchableWithoutFeedback         
           onPress={multipleClickHandler(() => this.handleRowClick())}
         >
@@ -183,7 +178,7 @@ class NotificationItem extends Component {
                   <ProfilePicture pictureId={this.props.pictureId} />
                 )}
               </View>
-              <View style={{ width: '72%', flexDirection: 'row' }}>
+              <View style={{ width: headerWidth, flexDirection: 'row' }}>
                 <View style={{ flexDirection: 'column' }}>
                   <View style={styles.item}>
                     {this.getHeading()}
@@ -195,7 +190,7 @@ class NotificationItem extends Component {
                   {this.showIfFailed()}
                 </View>
               </View>
-              <View style={{ width: '20%' }}>{this.notificationInfo()}</View>
+              <View style={{ width:notificationInfoWidth}}>{this.notificationInfo()}</View>
             </View>
             {this.showSayThanks()}
           </View>
