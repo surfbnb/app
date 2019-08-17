@@ -77,7 +77,7 @@ class NotificationList extends PureComponent {
   };
 
   createNotificationSections = () => {
-    let idList = this.fetchService.getIDList();    
+    let idList = this.fetchService.getIDList();
     let list = {};
     let outputList = [];
     for (let id of idList) {
@@ -93,7 +93,7 @@ class NotificationList extends PureComponent {
         if(list[i]){
             outputList.push(list[i]);
         }
-    }    
+    }
     return outputList;
   };
 
@@ -110,12 +110,8 @@ class NotificationList extends PureComponent {
     }
   };
 
-  onRefreshError = () => {
-    this.setState({ refreshing: false });
-  };
 
   getNext = () => {
-    console.log('i m here getNext');
     if (this.state.loadingNext || this.state.refreshing || !this.fetchService.hasNextPage) return;
     this.beforeNext();
 
@@ -142,24 +138,22 @@ class NotificationList extends PureComponent {
   };
 
   onRefreshError(error) {
-    console.log('on refresh error.........', error);
     this.props.onRefreshError && this.props.onRefreshError(error);
     this.setState({ refreshing: false });
   }
 
-  onViewableItemsChanged(data) {
-    currentIndex = deepGet(data, 'viewableItems[0].index');
-  }
+  // onViewableItemsChanged(data) {
+  //   currentIndex = deepGet(data, 'viewableItems[0].index');
+  // }
 
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
-    console.log('item', item);
     return <Notification notificationId={item} />;
   };
 
   renderSectionHeader = (section) => {
-    if (!section.section.title || section.section.data.length == 0) return null;
+    if (!section.section.title || section.section.data.length === 0) return null;
     return (
       <View style={styles.sectionHeaderView}>
         <Text style={styles.sectionHeaderTitle}>{section.section.title} </Text>
@@ -168,7 +162,6 @@ class NotificationList extends PureComponent {
   };
 
   render() {
-    console.log(this.state.notificationList, 'this.state.notificationList');
     return (
       <View>
         <SectionList
@@ -181,7 +174,7 @@ class NotificationList extends PureComponent {
           refreshing={this.state.refreshing}
           onRefresh={this.refresh}
           stickySectionHeadersEnabled={false}
-          onEndReachedThreshold={0.1}          
+          onEndReachedThreshold={0.1}
           onEndReached={this.getNext}
           onMomentumScrollBegin={() => {
             this.onEndReachedCalledDuringMomentum = false;

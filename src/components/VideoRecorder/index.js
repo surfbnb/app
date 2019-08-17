@@ -81,7 +81,6 @@ class VideoRecorder extends Component {
   }
 
   cancleVideoHandling = () => {
-    console.log('called by app state change: cancleVideoHandling');
     this.discardVideo = true;
     this.stopRecording();
     this.props.navigation.goBack();
