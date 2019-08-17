@@ -60,7 +60,7 @@ class NotificationScreen extends Component {
       sectionListRef && sectionListRef.scrollToLocation({sectionIndex:0, itemIndex: 0});
     }
     setTimeout(()=> {
-      isRefresh && this.listRef.refresh();
+      isRefresh && this.listRef && this.listRef.refresh();
     } , timeOut)
 
   }
