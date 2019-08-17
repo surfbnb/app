@@ -45,8 +45,7 @@ class NotificationList extends PureComponent {
     }
     this.setState({
       refreshing: false,
-      loadingNext: false,
-      notificationList: []
+      loadingNext: false
     });
   }
 
@@ -142,10 +141,6 @@ class NotificationList extends PureComponent {
     this.setState({ refreshing: false });
   }
 
-  // onViewableItemsChanged(data) {
-  //   currentIndex = deepGet(data, 'viewableItems[0].index');
-  // }
-
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
@@ -163,7 +158,7 @@ class NotificationList extends PureComponent {
 
   render() {
     return (
-      <View>
+      <View style={{flex:1}}>
         <SectionList
           ref={(ref)=>{this.sectionListRef= ref}}
           sections={this.state.notificationList}
