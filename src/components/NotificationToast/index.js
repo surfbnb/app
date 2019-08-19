@@ -16,13 +16,14 @@ export class NotificationToastComponent extends Component {
     super(props);
     this.state = {
       showToast: false,
-      config: {
-        text: '',
-        showClose: true,
-        icon: null,
-        imageUri: null,
-        onImageClickDelegate: null
-      }
+      config: {}
+    };
+    this.defaultConfig = {
+      text: '',
+      showClose: true,
+      icon: null,
+      imageUri: null,
+      onImageClickDelegate: null
     };
     this.animateOpacityValue = new Animated.Value(0);
   }
@@ -41,7 +42,7 @@ export class NotificationToastComponent extends Component {
   showToast(config, delay) {
     if (config) {
       this.setState({
-        config: { ...this.state.config, ...config }
+        config: { ...this.defaultConfig, ...config }
       });
     }
     this.setState({ showToast: true }, () => {

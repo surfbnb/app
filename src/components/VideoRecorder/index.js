@@ -194,6 +194,7 @@ class VideoRecorder extends Component {
   componentWillUnmount() {
     clearInterval(this.progressInterval);
     this.recordVideoStateChage = () => {};
+    AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
   render() {

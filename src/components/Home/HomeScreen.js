@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar , Platform} from 'react-native';
+import { View, StatusBar, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
 
@@ -39,7 +39,7 @@ class HomeScreen extends Component {
     videoUploaderComponent.on('hide', this.hideVideoUploader);
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab1.childStack) {
-       this.refresh( true , 0);
+        this.refresh(true, 0);
       }
     });
   };
@@ -76,7 +76,7 @@ class HomeScreen extends Component {
       list = flatlistProps && flatlistProps.list;
     if (list && list.length > 0) {
       flatListRef && flatListRef.scrollToIndex({ index: 0 });
-      Platform.OS == "android" && flatListHocRef.forceSetActiveIndex(0);
+      Platform.OS == 'android' && flatListHocRef.forceSetActiveIndex(0);
     }
     setTimeout(() => {
       if (isRefesh) {
@@ -94,7 +94,7 @@ class HomeScreen extends Component {
       <View style={{ backgroundColor: '#000' }}>
         <StatusBar translucent={true} backgroundColor={'transparent'} />
         <TopStatus />
-        {this.state.videoUploaderVisible && (
+        {this.props.userId && this.state.videoUploaderVisible && (
           <VideoLoadingFlyer
             componentHeight={46}
             componentWidth={46}
