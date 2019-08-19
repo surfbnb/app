@@ -67,17 +67,7 @@ export default class CustomDrawerContent extends Component{
     return (
         <ScrollView style={styles.container}>
           <SafeAreaView forceInset={{ top: 'always' }}>
-            <View
-                style={{
-                  paddingVertical: 10,
-                  borderBottomColor: Colors.seaMist,
-                  borderBottomWidth: 1,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingHorizontal: 5,
-                  justifyContent: 'center'
-                }}
-            >
+            <View style={styles.header}>
               <TouchableOpacity
                   onPress={this.props.navigation.closeDrawer}
                   style={{ height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}
@@ -109,7 +99,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderLeftWidth: 1,
-    borderLeftColor: Colors.seaMist
+    borderLeftColor: Colors.whisper
+  },
+  header: {
+    paddingVertical: 7,
+    borderBottomColor: Colors.whisper,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 5,
+    justifyContent: 'center'
   },
   headerText: {
     fontWeight: '600',
