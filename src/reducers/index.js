@@ -70,6 +70,13 @@ const defaultState = {
   balance: null
 };
 
+const logoutDefault = {
+  current_user: {},
+  balance: null,
+  video_contribution_entities: {},
+  user_contribution_entities: {}
+}
+
 export const reducer = handleActions(
   {
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
@@ -193,8 +200,7 @@ export const reducer = handleActions(
     }),
     [logoutUser]: (state, action) => ({
       ...state,
-      current_user: {},
-      balance: null
+      ...logoutDefault
     }),
     [upsertUserContributionByStats]: (state, action) => ({
       ...state,

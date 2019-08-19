@@ -108,7 +108,6 @@ class UserVideoHistoryScreen extends PureComponent{
     };
 
     _renderItem = ({ item, index }) => {
-        console.log("_renderItem = index = activeIndex =" , index  , this.state.activeIndex );
         const videoId = reduxGetters.getUserVideoId(item) ;
         return  <UserVideoHistoryRow    isActive={index == this.state.activeIndex}
                                         doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
