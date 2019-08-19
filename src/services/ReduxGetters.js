@@ -1,4 +1,5 @@
 import deepGet from 'lodash/get';
+import unescape from "lodash/unescape"; 
 import round from 'lodash/round';
 import Store from '../store';
 import appConfig from '../constants/AppConfig';
@@ -64,7 +65,7 @@ class ReduxGetters {
 
   getBio(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `user_profile_entities.id_${id}.bio.text`);
+    return unescape(  deepGet(state, `user_profile_entities.id_${id}.bio.text`) );
   }
 
   getVideoSupporters(id, state) {
