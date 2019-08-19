@@ -5,8 +5,8 @@ import {ifIphoneX} from "react-native-iphone-x-helper";
 let stylesMap = {
   topBg: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderTopLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderTopLeftRadius: 25,
+    borderBottomRightRadius: 25,
     paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'center',

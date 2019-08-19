@@ -64,8 +64,8 @@ let stylesMap = {
   },
   raisedSupported: {
     backgroundColor: Colors.wildWatermelon2,
-    borderTopLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderTopLeftRadius: 25,
+    borderBottomRightRadius: 25,
     paddingHorizontal: 5,
     width: 130,
     height: 40,

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableWithoutFeedback, Animated, Text, Image } from 'react-native';
+import {View, TouchableWithoutFeedback, Animated, Text, Image, Easing} from 'react-native';
 import EventEmitter from 'eventemitter3';
 import { WalletBalanceFlyerEventEmitter } from '../../WalletBalanceFlyer';
 
@@ -29,14 +29,14 @@ function flyerHOC(BaseComponent) {
       this.extensionStyles = {
         extensionStyleLeft: {
           right: -this.props.componentWidth / 2,
-          borderTopLeftRadius: 50,
-          borderBottomLeftRadius: 50
+          borderTopLeftRadius: 25,
+          // borderBottomLeftRadius: 50
         },
         displayTextStyleLeft: { paddingLeft: 10 },
         extensionStyleRight: {
           left: -this.props.componentWidth / 2,
-          borderTopRightRadius: 50,
-          borderBottomRightRadius: 50
+          borderTopRightRadius: 25,
+          // borderBottomRightRadius: 50
         },
         displayTextStyleRight: { marginLeft: 30 }
       };
@@ -76,7 +76,8 @@ function flyerHOC(BaseComponent) {
     showFlyer = () => {
       Animated.timing(this.state.animatedWidth, {
         toValue: this.props.sliderWidth || 60,
-        duration: 300
+        duration: 300,
+        easing: Easing.elastic(1)
       }).start(() => {
         this.setState({
           extensionVisible: true
