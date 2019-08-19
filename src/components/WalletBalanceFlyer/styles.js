@@ -1,19 +1,20 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
+import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   topBg: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    paddingHorizontal: 8,
+    borderTopLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 40,
-    borderTopLeftRadius: 23,
-    borderBottomLeftRadius: 23,
+    height: 36,
     zIndex: 1,
     position: 'absolute',
     top: 50,
-    right: 0
+    right: 10
   },
   innerTopBg:{
     flexDirection: 'row',
@@ -21,10 +22,9 @@ let stylesMap = {
     alignItems: 'center'
   },
   topBgTxt: {
-    color: '#2a293b',
-    fontSize: 14,
-    marginLeft: 6,
-    alignSelf: 'center',
+    color: Colors.wildWatermelon2,
+    fontSize: 13,
+    marginLeft: 4,
     fontFamily: 'AvenirNext-DemiBold'
   },
   crossIconClickSpace: {
@@ -34,7 +34,7 @@ let stylesMap = {
     justifyContent: 'center'
   },
   topUp: {
-    color: '#ff5566',
+    color: Colors.wildWatermelon2,
     fontFamily: 'AvenirNext-DemiBold',
     fontSize: 14
   },

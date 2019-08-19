@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { Text, Image } from 'react-native';
 import pricer from '../../services/Pricer';
 import inlineStyles from './styles';
-import pepoTxIcon from '../../assets/pepo-tx-icon.png'
+import selfAmountWallet from '../../assets/pepo-amount-wallet.png';
 import topUpIcon from '../../assets/top-up-icon.png'
 import redeemIcon from '../../assets/redeem-icon.png'
 import inlineStyle from "../CommonComponents/UserInfo/styles";
@@ -54,7 +54,7 @@ class BalanceHeader extends PureComponent {
         </View>
         <View>
           <Text>
-            <Image style={{ width: 20, height: 20}} source={pepoTxIcon}></Image>{' '}
+            <Image style={{ width: 18, height: 18}} source={selfAmountWallet}></Image>{' '}
             <Text style={inlineStyles.pepoBalance}>{this.toBt(this.props.balance) || 0.00}</Text>
           </Text>
           <Text style={inlineStyles.usdBalance}>${this.toFiat( this.props.balance ) || 0.00} </Text>

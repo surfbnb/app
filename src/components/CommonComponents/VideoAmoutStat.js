@@ -32,18 +32,18 @@ class VideoAmountStat extends PureComponent {
     
     return (
         <View style={[inlineStyles.raisedSupported]}>
-            {
-            <View
-                ellipsizeMode={'tail'}
-                numberOfLines={1}
-            >
-                <Text
-                style={[inlineStyles.raisedSupportedTxt]}
-                ellipsizeMode={'tail'}
-                numberOfLines={1}
-                >${`${ pricer.toDisplayAmount(this.btToFiat(this.props.totalBt))}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>RAISED</Text></Text>
-            </View>
-            }
+            {/*{*/}
+            {/*<View*/}
+                {/*ellipsizeMode={'tail'}*/}
+                {/*numberOfLines={1}*/}
+            {/*>*/}
+                {/*<Text*/}
+                {/*style={[inlineStyles.raisedSupportedTxt]}*/}
+                {/*ellipsizeMode={'tail'}*/}
+                {/*numberOfLines={1}*/}
+                {/*>${`${ pricer.toDisplayAmount(this.btToFiat(this.props.totalBt))}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>RAISED</Text></Text>*/}
+            {/*</View>*/}
+            {/*}*/}
             {
             <View
                 ellipsizeMode={'tail'}

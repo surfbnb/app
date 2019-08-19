@@ -3,13 +3,13 @@ import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   pepoBalance: {
-    fontSize: 18,
-    color: '#ff5566',
+    fontSize: 17,
+    color: Colors.wildWatermelon2,
     fontFamily: 'AvenirNext-DemiBold'
   },
   usdBalance: {
     fontSize: 14,
-    color: '#ff5566'
+    color: Colors.wildWatermelon2
   },
   redeemBalance: {
     fontSize: 12,

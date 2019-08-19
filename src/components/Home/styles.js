@@ -26,7 +26,7 @@ let stylesMap = {
   },
   touchablesBtns: {
     alignSelf: 'flex-end',
-    marginBottom: -25,
+    marginBottom: -15,
     zIndex: 1
   },
   pepoTxCount: {
@@ -50,7 +50,6 @@ let stylesMap = {
     alignItems: 'flex-start',
     paddingHorizontal: 15,
     borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
     maxHeight: Dimensions.get('window').height * 0.15,
     minHeight: Dimensions.get('window').height * 0.07
   },
@@ -63,14 +62,15 @@ let stylesMap = {
     color: Colors.white
   },
   raisedSupported: {
-    backgroundColor: '#ff5566',
+    backgroundColor: Colors.wildWatermelon2,
     borderTopLeftRadius: 20,
     borderBottomRightRadius: 20,
-    paddingHorizontal: 5,
+    paddingHorizontal: 8,
     width: 130,
-    height: 58,
+    height: 40,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginRight: 10
   },
   raisedSupportedTxt: {
     color: Colors.white,
