@@ -26,35 +26,40 @@ export default class CustomDrawerContent extends Component{
   twitterDisconnect() {
     this.setState({
       disableButtons: true
-    });
-    new PepoApi('/auth/twitter-disconnect')
-        .post()
-        .catch((error) => {
+    }, () => {
+      new PepoApi('/auth/twitter-disconnect')
+      .post()
+      .catch((error) => {
+        Toast.show({
+          text: 'Twitter Disconnect failed',
+          icon: 'error'
+        });
+        this.setState({disableButtons: false})
+      })
+      .then(async (res) => {
+        if (res && res.success) {
+          this.CurrentUserLogout();
+        } else {
           Toast.show({
             text: 'Twitter Disconnect failed',
             icon: 'error'
           });
-        })
-        .then(async (res) => {
-          if (res && res.success) {
-            await this.CurrentUserLogout();
-          } else {
-            Toast.show({
-              text: 'Twitter Disconnect failed',
-              icon: 'error'
-            });
-          }
-        })
-        .finally(() => this.setState({disableButtons: false}))
+          this.setState({disableButtons: false})
+        }
+      })
+    });
   }
 
-  async CurrentUserLogout(){
+  CurrentUserLogout(){
     this.setState({
       disableButtons: true
-    });
-    await CurrentUser.logout();
-    this.setState({
-      disableButtons: false
+    } , async () => {
+      await CurrentUser.logout();
+      setTimeout(()=> {
+        this.setState({
+          disableButtons: false
+        });
+      }, 300)
     });
   }
 
