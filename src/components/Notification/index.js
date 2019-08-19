@@ -41,7 +41,7 @@ class NotificationScreen extends Component {
   componentDidMount() {
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab4.childStack) {
-       this.refresh(true);
+       this.refresh(true , 300);
       }
     });
   }
@@ -52,25 +52,26 @@ class NotificationScreen extends Component {
     }
   }
 
-  refresh = (isRefresh , timeOut=0 ) => {
-    const sectionListRef = deepGet(this, "listRef.sectionListRef"),
-          list = deepGet(sectionListRef, "props.sections");
-    
-    if(list && list.length > 0 ){
+  refresh = (isRefesh, timeOut=0) => {
+    const sectionListHocProps = deepGet(this, 'listRef.flatListHocRef.props'),
+          sectionListRef = deepGet(this, 'listRef.flatListHocRef.sectionListRef'),
+          list = sectionListHocProps && sectionListHocProps.list;
+    if (list && list.length > 0) {
       sectionListRef && sectionListRef.scrollToLocation({sectionIndex:0, itemIndex: 0});
     }
-    setTimeout(()=> {
-      isRefresh && this.listRef && this.listRef.refresh();
-    } , timeOut)
-
-  }
+    setTimeout(() => {
+      if (isRefesh) {
+        sectionListHocProps && sectionListHocProps.refresh();
+      }
+    }, timeOut);
+  };
 
   componentWillUnmount() {
     NavigationEmitter.removeListener('onRefresh');
   }
 
   render() {
-    return <NotificationList ref={(ref)=>{ this.listRef = ref }} />;
+    return <NotificationList ref={(ref)=>{ this.listRef = ref }} fetchUrl={"/notifications"} />;
   }
 }
 

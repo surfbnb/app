@@ -1,17 +1,13 @@
 import React, { PureComponent } from 'react';
-import deepGet from 'lodash/get';
-import { connect } from 'react-redux';
-import { Text, Dimensions, SectionList, View, ActivityIndicator } from 'react-native';
-import { FetchServices } from '../../services/FetchServices';
+import { Text, SectionList, View, ActivityIndicator } from 'react-native';
 import EmptyList from '../EmptyFriendsList/EmptyList';
 import reduxGetter from '../../services/ReduxGetters';
-import CurrentUser from '../../models/CurrentUser';
 import Notification from './NotificationItem';
 import styles from './styles';
+import flatlistHOC from '../CommonComponents/flatlistHOC';
 
 
 const TODAY = 0,
-  YESTERDAY = 1,
   THIS_WEEK = 2,
   THIS_MONTH = 3,
   EARLIER = 4;
@@ -19,64 +15,11 @@ const TODAY = 0,
 class NotificationList extends PureComponent {
   constructor(props) {
     super(props);
-
-    this.fetchService = new FetchServices(`/notifications`);
-
-    this.state = {
-      refreshing: false,
-      loadingNext: false,
-      notificationList: []
-    };
+    this.sectionListRef = null ;
   }
-
-  componentDidMount() {
-    this.refresh();
-  }
-
-  refresh = () => {
-    if (this.state.refreshing) return;
-    this.cleanInstanceVariable();
-    this.refreshData();
-  };
-
-  cleanInstanceVariable() {
-    if (this.props.userId) {
-      this.fetchService = new FetchServices(`/notifications`);
-    }
-    this.setState({
-      refreshing: false,
-      loadingNext: false
-    });
-  }
-
-  refreshData = () => {
-    this.beforeRefresh();
-    this.fetchService &&
-      this.fetchService
-        .refresh()
-        .then((res) => {
-          this.onRefresh(res);
-        })
-        .catch((error) => {
-          this.onRefreshError(error);
-        });
-  };
-
-  renderFooter = () => {
-    if (!this.state.loadingNext) return null;
-    return <ActivityIndicator />;
-  };
-
-  beforeRefresh() {
-    this.setState({ refreshing: true });
-  }
-
-  onRefresh = () => {
-    this.setState({ refreshing: false, notificationList: this.createNotificationSections() });
-  };
 
   createNotificationSections = () => {
-    let idList = this.fetchService.getIDList();
+    let idList = this.props.list;
     let list = {};
     let outputList = [];
     for (let id of idList) {
@@ -109,38 +52,6 @@ class NotificationList extends PureComponent {
     }
   };
 
-
-  getNext = () => {
-    if (this.state.loadingNext || this.state.refreshing || !this.fetchService.hasNextPage) return;
-    this.beforeNext();
-
-    this.fetchService
-      .fetch()
-      .then((res) => {
-        this.onGetNext(res);
-      })
-      .catch((error) => {
-        this.onNextError(error);
-      });
-  };
-
-  beforeNext = () => {
-    this.setState({ loadingNext: true });
-  };
-
-  onGetNext = () => {
-    this.setState({ loadingNext: false, notificationList: this.createNotificationSections() });
-  };
-
-  onNextError = () => {
-    this.setState({ loadingNext: false });
-  };
-
-  onRefreshError(error) {
-    this.props.onRefreshError && this.props.onRefreshError(error);
-    this.setState({ refreshing: false });
-  }
-
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
@@ -157,7 +68,11 @@ class NotificationList extends PureComponent {
   };
 
   emptyList = () => {
-    return <EmptyList displayText={"You currently do not have any activities."}></EmptyList>
+    return  !this.props.refreshing && ( <EmptyList displayText={"You currently do not have any activities."}></EmptyList> )
+  }
+
+  getSection(){
+    return  this.createNotificationSections() ; 
   }
 
   render() {
@@ -165,24 +80,21 @@ class NotificationList extends PureComponent {
       <View style={{flex:1}}>
         <SectionList
           ref={(ref)=>{this.sectionListRef= ref}}
-          sections={this.state.notificationList}
+          sections={this.getSection()}
           renderSectionHeader={this.renderSectionHeader}
           renderItem={this._renderItem}
           keyExtractor={(item) => `id_${item}`}
-          ListFooterComponent={this.renderFooter}
-          refreshing={this.state.refreshing}
-          onRefresh={this.refresh}
+          ListFooterComponent={this.props.renderFooter}
+          refreshing={this.props.refreshing}
+          onRefresh={this.props.refresh}
           stickySectionHeadersEnabled={false}
           ListEmptyComponent={this.emptyList}
           onEndReachedThreshold={0.1}
-          onEndReached={this.getNext}
-          onMomentumScrollBegin={() => {
-            this.onEndReachedCalledDuringMomentum = false;
-          }}
+          onEndReached={this.props.getNext}
         />
       </View>
     );
   }
 }
 
-export default NotificationList;
+export default  flatlistHOC(  NotificationList  );
