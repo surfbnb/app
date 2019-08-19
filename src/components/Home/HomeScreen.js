@@ -11,6 +11,7 @@ import VideoLoadingFlyer from '../CommonComponents/VideoLoadingFlyer';
 import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import appConfig from '../../constants/AppConfig';
+import {ifIphoneX} from "react-native-iphone-x-helper";
 
 const mapStateToProps = (state) => {
   return {
@@ -99,7 +100,15 @@ class HomeScreen extends Component {
             componentHeight={46}
             componentWidth={46}
             sliderWidth={170}
-            containerStyle={{ top: 50, left: 10 }}
+            containerStyle=
+              {{
+                ...ifIphoneX({
+                  top: 60,
+                }, {
+                  top: 30,
+                }),
+                left: 10
+              }}
             displayText="Uploading Video"
             extendDirection="right"
             extend={true}

@@ -1,5 +1,6 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
+import {ifIphoneX} from "react-native-iphone-x-helper";
 
 let stylesMap = {
   topBg: {
@@ -13,7 +14,11 @@ let stylesMap = {
     height: 36,
     zIndex: 1,
     position: 'absolute',
-    top: 50,
+    ...ifIphoneX({
+      top: 60,
+    }, {
+      top: 30,
+    }),
     right: 10
   },
   innerTopBg:{
