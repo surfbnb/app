@@ -89,7 +89,7 @@ class WalletBalanceFlyer extends Component {
         )}
         <TouchableWithoutFeedback onPress={this.handlePress}>
           <View style={[styles.innerTopBg, { minWidth: getBalance(balance) <= 0 ? 50 : 'auto' }]}>
-            <Image style={{ height: 13.5, width: 13.5 }} source={selfAmountWallet} />
+            <Image style={{ height: 16, width: 16 }} source={selfAmountWallet} />
             <Text style={styles.topBgTxt}>{Pricer.toDisplayAmount(getBalance(balance))}</Text>
           </View>
         </TouchableWithoutFeedback>

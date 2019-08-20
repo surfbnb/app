@@ -13,14 +13,6 @@ let stylesMap = {
     width: '100%',
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    // ...ifIphoneX(
-    //   {
-    //     bottom: getBottomSpace([true])
-    //   },
-    //   {
-    //     bottom: 0
-    //   }
-    // )
     bottom: 0
   },
   headerWrapper: {

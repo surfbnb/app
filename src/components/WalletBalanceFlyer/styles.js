@@ -7,11 +7,11 @@ let stylesMap = {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderTopLeftRadius: 25,
     borderBottomRightRadius: 25,
-    paddingHorizontal: 10,
+    paddingHorizontal: 14,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 36,
+    height: 38,
     zIndex: 1,
     position: 'absolute',
     ...ifIphoneX({
@@ -28,7 +28,7 @@ let stylesMap = {
   },
   topBgTxt: {
     color: Colors.wildWatermelon2,
-    fontSize: 13,
+    fontSize: 14,
     marginLeft: 4,
     fontFamily: 'AvenirNext-DemiBold'
   },
