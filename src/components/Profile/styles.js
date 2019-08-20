@@ -3,7 +3,7 @@ import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   pepoBalance: {
-    fontSize: 17,
+    fontSize: 16,
     color: Colors.wildWatermelon2,
     fontFamily: 'AvenirNext-DemiBold'
   },

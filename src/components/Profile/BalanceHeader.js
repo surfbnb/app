@@ -33,31 +33,29 @@ class BalanceHeader extends PureComponent {
   render() {
     return (
       <View style={inlineStyle.infoHeaderWrapper}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View style={{backgroundColor: 'white'}}>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{alignItems: 'center'}}>
             <Image style={{ width: 50, height: 50 }} source={topUpIcon}></Image>
             <Text style={inlineStyles.redeemBalance}>Top Up</Text>
           </View>
-          <React.Fragment>
-            <LinearGradient
-              colors={['#dadfdc', '#dadfdc']}
-              locations={[0, 1]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{height: 20, width: 1, marginHorizontal: 8, marginTop: '50%', transform: [{ translateY: -35 }]}}
-            ></LinearGradient>
-          </React.Fragment>
-          <View style={{backgroundColor: 'white'}}>
+          <LinearGradient
+            colors={['#dadfdc', '#dadfdc']}
+            locations={[0, 1]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{height: 20, width: 1, marginHorizontal: 8, marginTop: 16.5}}
+          ></LinearGradient>
+          <View style={{alignItems: 'center'}}>
             <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
             <Text style={inlineStyles.redeemBalance}>Redeem</Text>
           </View>
         </View>
-        <View>
+        <View style={{alignItems: 'flex-end'}}>
           <Text>
             <Image style={{ width: 18, height: 18}} source={selfAmountWallet}></Image>{' '}
             <Text style={inlineStyles.pepoBalance}>{this.toBt(this.props.balance) || 0.00}</Text>
           </Text>
-          <Text style={inlineStyles.usdBalance}>${this.toFiat( this.props.balance ) || 0.00} </Text>
+          <Text style={inlineStyles.usdBalance}>${' '}{this.toFiat( this.props.balance ) || 0.00} </Text>
         </View>
       </View>
     );
