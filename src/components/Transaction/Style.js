@@ -51,8 +51,8 @@ let stylesMap = {
   crossIconWrapper: {
     position: 'absolute',
     left: 15,
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     justifyContent: 'center'
   },
   crossIconSkipFont: { width: 13, height: 12.6 }

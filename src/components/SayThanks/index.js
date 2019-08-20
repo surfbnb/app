@@ -136,8 +136,8 @@ class SayThanks extends Component {
                     this.closeModal();
                   }}
                   style={{
-                    width: 25,
-                    height: 25,
+                    width: 30,
+                    height: 30,
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}

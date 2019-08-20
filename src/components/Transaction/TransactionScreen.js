@@ -466,9 +466,9 @@ class TransactionScreen extends Component {
                 </View>
               )}
               {this.state.showSuccess && (
-                <View style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 }}>
-                  <Image source={tx_success} style={{ width: 200, height: 200 }}></Image>
-                  <Text style={{ textAlign: 'center' }}>
+                <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 40, backgroundColor: '#fbfbfb' }}>
+                  <Image source={tx_success} style={{ width: 164.6, height: 160, marginBottom: 20 }}></Image>
+                  <Text style={{ textAlign: 'center', fontFamily: 'AvenirNext-Regular', fontSize: 16 }}>
                     Success, you have sent {this.toUser.name} {this.state.btAmount} Pepo’s
                   </Text>
                 </View>
