@@ -37,7 +37,7 @@ class VideoRecorder extends Component {
   };
 
   async componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.cancleVideoHandling);
+    BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
     AppState.addEventListener('change', this._handleAppStateChange);
     if (this.props.actionSheetOnRecordVideo) {
       this.recordedVideo = reduxGetters.getRecordedVideo();
@@ -80,9 +80,17 @@ class VideoRecorder extends Component {
     );
   }
 
-  cancleVideoHandling = () => {
+  cancelVideo = () => {
     this.discardVideo = true;
     this.stopRecording();
+  };
+
+  _handleBackPress = () => {
+    this.cancelVideo();
+  };
+
+  cancleVideoHandling = () => {
+    this.cancelVideo();
     this.props.navigation.goBack();
   };
 
@@ -195,6 +203,7 @@ class VideoRecorder extends Component {
     clearInterval(this.progressInterval);
     this.recordVideoStateChage = () => {};
     AppState.removeEventListener('change', this._handleAppStateChange);
+    BackHandler.removeEventListener('hardwareBackPress', this._handleBackPress);
   }
 
   render() {
