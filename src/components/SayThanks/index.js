@@ -5,7 +5,7 @@ import reduxGetter from '../../services/ReduxGetters';
 import deepGet from 'lodash/get';
 import inlineStyles from './Style';
 import modalCross from '../../assets/modal-cross-icon.png';
-import sendMessageIcon from '../../assets/tx_icon.png';
+import sendMessageIcon from '../../assets/send-message-icon.png';
 import ProfilePicture from '../ProfilePicture';
 import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
@@ -121,56 +121,55 @@ class SayThanks extends Component {
           }
         }}
       > 
-      <View style={{ flex: 1, backgroundColor: 'transparent' }}>
-        <TouchableWithoutFeedback>
-      <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
-        <View style={inlineStyles.headerWrapper}>
-          <ProfilePicture style={{ marginLeft: 10 }} userId={this.props.navigation.getParam('userId')} />
-          <Text style={inlineStyles.modalHeader}>
-            {reduxGetter.getName(this.props.navigation.getParam('userId'))}
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              this.closeModal();
-            }}
-            style={{
-              position: 'absolute',
-              right: 10,
-              width: 38,
-              height: 38,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-            disabled={this.state.closeDisabled}
-          >
-            <Image source={modalCross} style={{ width: 13, height: 12.6 }} />
-          </TouchableOpacity>
+        <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+          <TouchableWithoutFeedback>
+            <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
+              <View style={inlineStyles.headerWrapper}>
+                <View style={{flexDirection: 'row'}}>
+                  <ProfilePicture userId={this.props.navigation.getParam('userId')} />
+                  <Text style={inlineStyles.modalHeader}>
+                    {reduxGetter.getName(this.props.navigation.getParam('userId'))}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.closeModal();
+                  }}
+                  style={{
+                    width: 25,
+                    height: 25,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                  disabled={this.state.closeDisabled}
+                >
+                  <Image source={modalCross} style={{ width: 17.5, height: 17 }} />
+                </TouchableOpacity>
+              </View>
+              <View style={{flexDirection:'row', alignItems: 'center', marginTop: 12}}>
+                <View style={{flex: 1}}>
+                  <FormInput
+                    onChangeText={this.changeMessage}
+                    placeholder="Thanks for supporting me!"
+                    fieldName="text"
+                    style={[Theme.TextInput.textInputStyle, {height: 50, color: '#2a293b', marginTop: 0}]}
+                    value={`${this.state.thanksMessage}`}
+                    isFocus={true}
+                    serverErrors={this.state.server_errors}
+                    errorMsg={this.state.thanksError}
+                    placeholderTextColor="#ababab"
+                  />
+                </View>
+                <TouchableOpacity onPress={this.sendMessage} style={{alignSelf: 'flex-start'}}>
+                  <Image style={{ height: 40, width: 40, marginLeft: 8, marginTop: 5, transform: [{ rotate: '-45deg' }] }} source={sendMessageIcon} />
+                </TouchableOpacity>
+              </View>
+              <View style={{height:15}}>
+                {this.state.posting && (<ActivityIndicator size="small" color="#168dc1" />)}
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-        <View style={{flexDirection:'row'}}>
-        <View style={{  margin: 10, width: '80%', height: 65 }}>
-          <FormInput
-            onChangeText={this.changeMessage}
-            placeholder="Thanks for supporting me!"
-            fieldName="text"
-            style={[Theme.TextInput.textInputStyle]}
-            style={{ flex: 1, borderColor: '#eee', borderWidth: 1, borderRadius: 10, height: 46, padding: 10, flexDirection: 'column' }}
-            value={`${this.state.thanksMessage}`}
-            isFocus={true}
-            serverErrors={this.state.server_errors}
-            errorMsg={this.state.thanksError}
-            placeholderTextColor="#ababab"
-          />
-          </View>
-          <TouchableOpacity onPress={this.sendMessage}>
-            <Image style={{ height: 40, width: 40, marginLeft: 5, marginTop: 14 }} source={sendMessageIcon} />
-          </TouchableOpacity>        
-        </View>
-        <View style={{height:15}}>
-        {this.state.posting && (<ActivityIndicator size="small" color="#168dc1" />)}
-        </View>
-      </View>
-      </TouchableWithoutFeedback>
-      </View>
       </TouchableWithoutFeedback>
     );
   }
