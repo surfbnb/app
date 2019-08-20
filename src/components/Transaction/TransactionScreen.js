@@ -38,7 +38,7 @@ const bottomSpace = getBottomSpace([true]),
   safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
 
 const validMinAmount = 1;
-const HEADER_TITLE = 'Send Pepo’s';
+const HEADER_TITLE = 'Send Pepos';
 const SUCCESS_HEADER_TITLE = 'Sent';
 const SUBMIT_BTN_TXT = 'Confirm';
 const SUBMIT_PROCESSING_TXT = 'Confirming...';
@@ -462,9 +462,7 @@ class TransactionScreen extends Component {
                 </View>
               )}
               {this.state.showSuccess && (
-                <View
-                  style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 }}
-                >
+                <View style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 50 }}>
                   <Image source={tx_success} style={{ width: 200, height: 200 }}></Image>
                   <Text style={{ textAlign: 'center' }}>
                     Success, you have sent {this.toUser.name} {this.state.btAmount} Pepo’s

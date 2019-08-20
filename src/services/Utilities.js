@@ -24,7 +24,15 @@ let checkVideoPermission = function(navigation) {
         cameraResult == 'restricted' ||
         microphoneResult == 'restricted'
       ) {
-        allowAcessModalEventEmitter.emit('show');
+        let accessText = '';
+        if ((cameraResult == 'denied' || cameraResult == 'restricted') && microphoneResult == 'authorized') {
+          accessText = 'Enable Camera Access';
+        } else if ((microphoneResult == 'denied' || microphoneResult == 'restricted') && cameraResult == 'authorized') {
+          accessText = 'Enable Microphone Access';
+        } else {
+          accessText = 'Enable Camera and Microphone Access';
+        }
+        allowAcessModalEventEmitter.emit('show', accessText);
 
         // this.setState({
         //   showCameraAccessModal: true

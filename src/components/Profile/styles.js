@@ -48,49 +48,50 @@ let stylesMap = {
     width: 75,
     borderRadius: 37.5
   },
-  accessText:{
-    fontSize:18,
-    color:Colors.azureBlue
+  accessText: {
+    fontSize: 18,
+    color: Colors.azureBlue,
+    textAlign: 'center'
   },
-  accessTextDesc:{
-    fontSize:15,
-    textAlign:'center',
-    fontWeight:'500',
-    marginVertical:20
+  accessTextDesc: {
+    fontSize: 15,
+    textAlign: 'center',
+    fontWeight: '500',
+    marginVertical: 20
   },
-  imageDimSkipFont:{
-    height:40,
-    width:50
+  imageDimSkipFont: {
+    height: 40,
+    width: 50
   },
-  accessAllowContent:{
-    alignItems:'center',
-    flex:1,
-    marginTop:'25%',
-    marginHorizontal:30
+  accessAllowContent: {
+    alignItems: 'center',
+    flex: 1,
+    marginTop: '25%',
+    marginHorizontal: 30
   },
-  crossIconDimSkipFont:{
-    height:10,
-    width:10
+  crossIconDimSkipFont: {
+    height: 10,
+    width: 10
   },
-  crossIconWrapper:{
-    position:'absolute',
-    top:0,
-    left:0,
-    padding:20
+  crossIconWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    padding: 20
   },
-  allowAccessheader:{
-    justifyContent:'center',
-    alignItems:'center',
-    borderBottomColor:Colors.lightGrey,
-    borderBottomWidth:1,
-    flexDirection:'row',
-    width:'100%',
-    height:50
+  allowAccessheader: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: Colors.lightGrey,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    width: '100%',
+    height: 50
   },
-  headerText:{
-    fontSize:15,
-    textAlign:'center',
-    fontWeight:'500',
+  headerText: {
+    fontSize: 15,
+    textAlign: 'center',
+    fontWeight: '500'
   }
 };
 

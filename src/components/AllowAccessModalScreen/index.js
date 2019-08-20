@@ -8,18 +8,18 @@ export const allowAcessModalEventEmitter = new EventEmitter();
 class AllowAccessModalScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = { showCameraAccessModal: false };
+    this.state = { showCameraAccessModal: false, accessText: '' };
   }
 
   componentDidMount = () => {
-    allowAcessModalEventEmitter.on('show', () => {
-      this.setState({ showCameraAccessModal: true });
+    allowAcessModalEventEmitter.on('show', (accessText) => {
+      this.setState({ showCameraAccessModal: true, accessText });
     });
   };
 
   componentWillUnmount = () => {
     allowAcessModalEventEmitter.removeListener('show');
-  }
+  };
 
   render() {
     return (
@@ -31,7 +31,7 @@ class AllowAccessModalScreen extends Component {
         }}
         modalVisibility={this.state.showCameraAccessModal}
         headerText="Camera"
-        accessText="Enable Camera Access"
+        accessText={this.state.accessText}
         accessTextDesc="Allow access to your camera and microphone to take video "
         imageSrc={CameraIcon}
       />

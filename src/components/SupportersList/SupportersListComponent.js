@@ -23,12 +23,7 @@ class SupportersList extends PureComponent {
   };
 
   getEmptyComponent = () => {
-    return (
-      !this.props.refreshing && (
-        
-          <EmptyList displayText="You are currently do not have any supporters" />        
-      )
-    );
+    return !this.props.refreshing && <EmptyList displayText="You will see people supporting you here" />;
   };
 
   render() {

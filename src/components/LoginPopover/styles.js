@@ -19,14 +19,15 @@ export default StyleSheet.create({
     width: '100%',
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
-    ...ifIphoneX(
-      {
-        bottom: getBottomSpace([true])
-      },
-      {
-        bottom: 0
-      }
-    )
+    // ...ifIphoneX(
+    //   {
+    //     bottom: getBottomSpace([true])
+    //   },
+    //   {
+    //     bottom: 0
+    //   }
+    // )
+    bottom: 0
   },
   parent: {
     height: Dimensions.get('window').height,

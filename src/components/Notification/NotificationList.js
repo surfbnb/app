@@ -6,7 +6,6 @@ import Notification from './NotificationItem';
 import styles from './styles';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 
-
 const TODAY = 0,
   THIS_WEEK = 2,
   THIS_MONTH = 3,
@@ -15,7 +14,7 @@ const TODAY = 0,
 class NotificationList extends PureComponent {
   constructor(props) {
     super(props);
-    this.sectionListRef = null ;
+    this.sectionListRef = null;
   }
 
   createNotificationSections = () => {
@@ -32,9 +31,9 @@ class NotificationList extends PureComponent {
       }
     }
     for (let i = 0; i < 5; i++) {
-        if(list[i]){
-            outputList.push(list[i]);
-        }
+      if (list[i]) {
+        outputList.push(list[i]);
+      }
     }
     return outputList;
   };
@@ -45,7 +44,7 @@ class NotificationList extends PureComponent {
       return { title: 'Earlier', id: EARLIER };
     } else if (Date.now() / 1000 - timeStamp > 7 * 86400) {
       return { title: 'This Month', id: THIS_MONTH };
-    } else if (Date.now() / 1000 - timeStamp > 86400) {
+    } else if (Date.now() / 1000 - timeStamp >= 79200) {
       return { title: 'This week', id: THIS_WEEK };
     } else {
       return { title: 'Today', id: TODAY };
@@ -68,18 +67,20 @@ class NotificationList extends PureComponent {
   };
 
   emptyList = () => {
-    return  !this.props.refreshing && ( <EmptyList displayText={"You currently do not have any activities."}></EmptyList> )
-  }
+    return !this.props.refreshing && <EmptyList displayText={'You currently do not have any activities.'}></EmptyList>;
+  };
 
-  getSection(){
-    return  this.createNotificationSections() ; 
+  getSection() {
+    return this.createNotificationSections();
   }
 
   render() {
     return (
-      <View style={{flex:1}}>
+      <View style={{ flex: 1 }}>
         <SectionList
-          ref={(ref)=>{this.sectionListRef= ref}}
+          ref={(ref) => {
+            this.sectionListRef = ref;
+          }}
           sections={this.getSection()}
           renderSectionHeader={this.renderSectionHeader}
           renderItem={this._renderItem}
@@ -97,4 +98,4 @@ class NotificationList extends PureComponent {
   }
 }
 
-export default  flatlistHOC(  NotificationList  );
+export default flatlistHOC(NotificationList);
