@@ -18,6 +18,7 @@ const UIErros = {
   general_error_ex: 'Oops, Please try again.',
   bt_amount_error: 'Please enter valid amount.',
   bt_amount_decimal_error: 'Only . is allowed as decimails',
+  bt_amount_decimal_allowed_error: 'Only 2 decimals are allowed',
   user_not_active: 'Please wait for your user activation.',
   no_internet: 'No Internet, please try again later.',
   maxAllowedBt: `Max allowed Pepo coin transfer reached`,

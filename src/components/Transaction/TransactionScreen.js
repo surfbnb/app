@@ -139,6 +139,10 @@ class TransactionScreen extends Component {
       this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_decimal_error') });
       return false;
     }
+    if (btAmount && String(btAmount).split('.')[1] && String(btAmount).split('.')[1].length > 2) {
+      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error') });
+      return false;
+    }
     btAmount = btAmount && Number(btAmount);
     if (!btAmount || btAmount < validMinAmount || btAmount > this.state.balance) {
       this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
