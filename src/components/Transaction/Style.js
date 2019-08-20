@@ -21,7 +21,7 @@ let stylesMap = {
     borderTopLeftRadius: 25,
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderColor: Colors.seaMist,
+    borderColor: Colors.whisper,
     paddingHorizontal: 10,
     paddingVertical: 10,
     alignItems: 'center',
