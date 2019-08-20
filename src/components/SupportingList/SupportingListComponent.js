@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Dimensions, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import Pricer from "../../services/Pricer";
 import reduxGetters from "../../services/ReduxGetters";
 import User from '../Users/User';
 import EmptyList from '../EmptyFriendsList/EmptyList';
-import Colors from '../../theme/styles/Colors';
 
 class SupportingList extends PureComponent {
 

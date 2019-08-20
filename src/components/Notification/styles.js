@@ -24,25 +24,26 @@ let stylesMap = {
   },
 
   numericInnerWrapper: {
-    borderTopLeftRadius: 15,
-    borderBottomRightRadius: 15,
+    borderTopLeftRadius: 20,
+    borderBottomRightRadius: 20,
     borderWidth: 1,
     alignItems: 'center',
     marginLeft: 'auto',
-    paddingHorizontal: 6,
-    paddingVertical: 6,
+    paddingHorizontal: 12,
+    height: 32,
+    justifyContent: 'center',
     color: Colors.white,
-    borderColor: Colors.pinkRed,
+    borderColor: Colors.wildWatermelon2,
     flexDirection: 'row'
   },
   numericInfoText: {
-    color: Colors.pinkRed,
+    color: Colors.wildWatermelon2,
     fontFamily: 'AvenirNext-DemiBold',
     marginLeft: 5
   },
   imageIconSkipFont: {
-    width: 15,
-    height: 15
+    width: 13,
+    height: 13
   },
   timeStamp: {
     color: Colors.darkGray2,
