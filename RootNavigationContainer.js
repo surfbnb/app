@@ -42,6 +42,8 @@ import AllowAccessModalScreen from './src/components/AllowAccessModalScreen';
 import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
 import utilities from './src/services/Utilities';
 import { NotificationToastComponent } from './src/components/NotificationToast';
+import SocketManager from './src/components/SocketManager';
+import SearchScreen from './src/components/Search';
 
 const customTabHiddenRoutes = ['CaptureVideo'];
 
@@ -175,6 +177,7 @@ const ProfileStack = createStackNavigator(
 const CustomTabStack = createBottomTabNavigator(
   {
     Home: HomeStack,
+    Search: SearchScreen,
     Notification: NotificationStack,
     Profile: ProfileStack
   },
@@ -257,6 +260,7 @@ const RootNavigationContainer = () => (
     <LoginPopover />
     <AllowAccessModalScreen />
     <NotificationToastComponent />
+    <SocketManager />
   </Root>
 );
 

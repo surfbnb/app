@@ -141,7 +141,7 @@ export default {
     tab2: {
       rootStack: 'Search',
       childStack: 'SearchScreen',
-      navigationIndex: null
+      navigationIndex: 1
     },
     tab3: {
       rootStack: 'CaptureVideo',
@@ -151,12 +151,12 @@ export default {
     tab4: {
       rootStack: 'Notification',
       childStack: 'NotificationScreen',
-      navigationIndex: 1
+      navigationIndex: 2
     },
     tab5: {
       rootStack: 'Profile',
       childStack: 'ProfileScreen',
-      navigationIndex: 2
+      navigationIndex: 3
     }
   }
 };
