@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import VideoRecorder from '../VideoRecorder';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
-import VideoDetails from '../VideoDetails';
+import VideoDetails from '../FanVideoDetails';
 
 class CaptureVideo extends Component {
   static navigationOptions = {

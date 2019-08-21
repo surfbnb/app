@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import styles from './styles';
 import VideoDescription from './VideoDescription';
 
-class VideoDetails extends Component {
+class FanVideoDetails extends Component {
   constructor(props) {
     super(props);
     this.initialValue = '';
@@ -27,4 +27,4 @@ class VideoDetails extends Component {
   }
 }
 
-export default VideoDetails;
+export default FanVideoDetails;
