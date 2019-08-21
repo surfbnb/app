@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Image, View, TextInput, TouchableOpacity} from 'react-native';
+import {Image, View, TextInput, TouchableOpacity, Text} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import styles from './styles';
@@ -7,6 +7,10 @@ import Theme from "../../theme/styles";
 
 import searchNs from '../../assets/user-search-icon.png';
 import CrossIcon from "../../assets/cross_icon.png";
+import AppConfig from "../../constants/AppConfig";
+import PepoPinkIcon from "../../assets/heart.png";
+import ProfilePicture from "../ProfilePicture";
+import {shortenedFromNow} from "../../helpers/timestampHandling";
 
 class SearchScreen extends Component {
   constructor(props) {
@@ -34,6 +38,13 @@ class SearchScreen extends Component {
           <TouchableOpacity style={[styles.iconsPos, {right: 0}]}>
             <Image source={CrossIcon} style={[styles.crossIconSkipFont]} />
           </TouchableOpacity>
+        </View>
+        <View style={styles.txtWrapper}>
+          <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
+          <View style={{ flexDirection: 'column', flex: 1 }}>
+            <Text style={styles.titleName} numberOfLines={1} ellipsizeMode={'tail'}>Thom Yong</Text>
+            <Text style={styles.titleHandle} numberOfLines={1} ellipsizeMode={'tail'}>@yong_thom</Text>
+          </View>
         </View>
       </SafeAreaView>
     );
