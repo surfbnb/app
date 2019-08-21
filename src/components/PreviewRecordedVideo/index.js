@@ -143,7 +143,7 @@ class PreviewRecordedVideo extends Component {
             <View style={styles.playIcon} />
           )}
 
-          <TouchableOpacity onPress={this.enableStartUploadFlag}>
+          <TouchableOpacity onPress={this.props.goToDetailsScreen}>
             <Image style={styles.tickIconSkipFont} source={tickIcon} />
           </TouchableOpacity>
         </View>

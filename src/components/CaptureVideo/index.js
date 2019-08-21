@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-native';
 import VideoRecorder from '../VideoRecorder';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
+import VideoDetails from '../VideoDetails';
 
 class CaptureVideo extends Component {
   static navigationOptions = {
@@ -31,13 +31,19 @@ class CaptureVideo extends Component {
     });
   }
 
+  goToDetailsScreen() {
+    this.setState({
+      detailsScreen: true
+    });
+  }
+
   modalRequestClose = () => {
-    if(this.state.recordingScreen){
-     this.props.navigation.goBack();
+    if (this.state.recordingScreen) {
+      this.props.navigation.goBack();
     } else {
       this.previewVideo.cancleVideoHandling();
     }
-  }
+  };
 
   getCurrentView() {
     if (this.state.recordingScreen) {
@@ -53,6 +59,8 @@ class CaptureVideo extends Component {
           navigation={this.props.navigation}
         />
       );
+    } else if (this.state.detailsScreen) {
+      return <VideoDetails videoUri={this.state.videoUri} />;
     } else {
       return (
         <PreviewRecordedVideo
@@ -61,6 +69,9 @@ class CaptureVideo extends Component {
           }}
           goToRecordScreen={() => {
             this.goToRecordScreen();
+          }}
+          goToDetailsScreen={() => {
+            this.goToDetailsScreen();
           }}
           cachedvideoUrl={this.state.videoUri}
           navigation={this.props.navigation}
