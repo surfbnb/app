@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { TextInput } from 'react-native';
 
-import TagsInput from '../CommonComponents/TagsInput';
 import styles from './styles';
 
 class VideoDescription extends PureComponent {
@@ -11,9 +10,17 @@ class VideoDescription extends PureComponent {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <Text>VideoDescription</Text>
-      </View>
+      <React.Fragment>
+        <TextInput
+          multiline= {true}
+          editable = {true}
+          autoFocus= {true}
+          placeholder= "Write something about your video"
+          style={styles.videoDescription}
+        >
+          Write something about your video
+        </TextInput>
+      </React.Fragment>
     );
   }
 }
