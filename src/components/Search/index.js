@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import {Image, View, TextInput, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import styles from './styles';
 import Theme from "../../theme/styles";
-import FormInput from "../../theme/components/FormInput";
+
+import searchNs from '../../assets/user-search-icon.png';
+import CrossIcon from "../../assets/cross_icon.png";
 
 class SearchScreen extends Component {
   constructor(props) {
@@ -15,17 +17,23 @@ class SearchScreen extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View>
-          <FormInput
+        <View style={{position: 'relative'}}>
+          <TouchableOpacity style={styles.iconsPos} activeOpacity={0.7}>
+            <Image source={searchNs} style={[styles.searchIconSkipFont]} />
+          </TouchableOpacity>
+          <TextInput
             editable={true}
+            ref="search_query"
+            textContentType="none"
+            style={[Theme.TextInput.textInputStyle, styles.textInputUi]}
             placeholder="Search People / Usernames"
-            fieldName="search"
-            style={[Theme.TextInput.textInputStyle, {borderWidth: 0, backgroundColor: 'rgba(204, 211, 205, 0.2)'}]}
-            returnKeyType="done"
-            returnKeyLabel="Done"
-            blurOnSubmit={true}
+            returnKeyType="next"
+            returnKeyLabel="next"
             placeholderTextColor="rgba(42, 41, 59, 0.4)"
           />
+          <TouchableOpacity style={[styles.iconsPos, {right: 0}]}>
+            <Image source={CrossIcon} style={[styles.crossIconSkipFont]} />
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
