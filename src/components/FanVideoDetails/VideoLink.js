@@ -3,6 +3,16 @@ import { TextInput, Image } from 'react-native';
 
 import styles from './styles';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
+import defaultLinkIcon from '../../assets/default_link_icon.png';
+
+const SOCIAL_ICONS = {
+  TWITTER: twitterDisconnectIcon,
+  DEFAULT: defaultLinkIcon
+};
+
+const WHITELISTED_DOMAINS = {
+  TWITTER: 'twitter'
+};
 
 class VideoLink extends Component {
   constructor(props) {
@@ -19,10 +29,20 @@ class VideoLink extends Component {
     this.props.onChangeLink(value);
   };
 
+  getSocialIcon = () => {
+    // let domain = this.state.value.split('/')[0];
+    // for(let domainName in WHITELISTED_DOMAINS){
+    //   if(domain.includes(WHITELISTED_DOMAINS[domainName])){
+
+    //   }
+    // }
+    return SOCIAL_ICONS.DEFAULT;
+  };
+
   render() {
     return (
       <React.Fragment>
-        <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
+        <Image style={{ height: 26, width: 26 }} source={this.getSocialIcon()} />
         <TextInput
           style={{ color: '#4a90e2', flex: 1, marginLeft: 10 }}
           numberOfLines={1}
@@ -31,9 +51,8 @@ class VideoLink extends Component {
           returnKeyLabel="Done"
           placeholder="Add link"
           onChangeText={this.onChangeValue}
-        >
-          {this.state.value}
-        </TextInput>
+          value={this.state.value}
+        />
       </React.Fragment>
     );
   }

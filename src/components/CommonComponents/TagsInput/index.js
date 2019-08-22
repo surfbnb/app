@@ -1,11 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Text, TouchableOpacity, FlatList } from 'react-native';
+import { TouchableOpacity, FlatList } from 'react-native';
 
-import inlineStyles from './styles';
 import PepoApi from '../../../services/PepoApi';
 import CustomTextInput from './CustomTextInput';
-
-const MAX_LENGTH = 500;
 
 class TagsInput extends PureComponent {
   constructor(props) {
@@ -70,13 +67,10 @@ class TagsInput extends PureComponent {
   };
 
   changeValue = (val) => {
-    let maxLength = this.props.maxLength || MAX_LENGTH;
-    if (val.length <= maxLength) {
-      this.setState({
-        value: val
-      });
-      this.props.onChangeVal(val);
-    }
+    this.setState({
+      value: val
+    });
+    this.props.onChangeVal(val);
   };
 
   isHashTag(val) {
@@ -189,6 +183,7 @@ class TagsInput extends PureComponent {
             onChangeText={this.onChangeText}
             placeholderText={this.props.placeholderText}
             autoFocus={this.props.autoFocus}
+            maxLength={this.props.maxLength}
           />
         }
         stickyHeaderIndices={[0]}
