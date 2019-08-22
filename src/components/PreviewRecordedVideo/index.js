@@ -10,6 +10,9 @@ import { ActionSheet } from 'native-base';
 import styles from './styles';
 import closeIcon from '../../assets/cross_icon.png';
 import { withNavigation } from 'react-navigation';
+import TouchableButton from "../../theme/components/TouchableButton";
+import Theme from "../../theme/styles";
+import LinearGradient from "react-native-linear-gradient";
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Close Camera', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
@@ -137,9 +140,24 @@ class PreviewRecordedVideo extends Component {
             <View style={styles.playIcon} />
           )}
 
-          <TouchableOpacity onPress={this.props.goToDetailsScreen}>
-            <Image style={styles.tickIconSkipFont} source={tickIcon} />
-          </TouchableOpacity>
+          <LinearGradient
+            colors={['#ff7499', '#ff5566']}
+            locations={[0, 1]}
+            style={{ borderRadius: 3, marginRight: 40 }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
+            <View style={{position: 'relative'}}>
+              <TouchableButton
+                TouchableStyles={[{ borderColor: 'none', borderWidth: 0 }]}
+                TextStyles={[Theme.Button.btnPinkText,{height: 22, paddingLeft: 5, fontSize: 16, fontFamily: 'AvenirNext-DemiBold'}]}
+                text="NEXT"
+                onPress={this.props.goToDetailsScreen}
+              />
+              <View style={styles.triangleRight}></View>
+            </View>
+          </LinearGradient>
+
         </View>
       </View>
     );

@@ -44,6 +44,7 @@ class FanVideoDetails extends Component {
       },
       headerLeft: (
         <TouchableOpacity
+          style={{ paddingLeft: 20 }}
           onPress={multipleClickHandler(() => {
             FanVideoDetails.saveToRedux(navigation);
             navigation.goBack();
@@ -146,7 +147,7 @@ class FanVideoDetails extends Component {
                   FanVideoDetails.saveToRedux(this.props.navigation);
                   this.props.navigation.goBack();
                 })}
-                style={{ height: 100, marginRight: 10 }}
+                style={{ height: 100 }}
               >
                 <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
                   <Image style={styles.playIconSkipFont} source={playIcon} />
@@ -154,7 +155,7 @@ class FanVideoDetails extends Component {
               </TouchableOpacity>
               <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
             </View>
-            <View style={styles.videoDescriptionItem}>
+            <View style={[styles.videoDescriptionItem,{ alignItems: 'center', paddingVertical: 5 }]}>
               <VideoLink initialValue={this.props.recordedVideo.video_link} onChangeLink={this.onChangeLink} />
             </View>
           </View>
