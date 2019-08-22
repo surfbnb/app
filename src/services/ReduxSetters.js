@@ -31,10 +31,9 @@ const knownEntitiesDispatcherMap = {
 };
 
 const dispatchEntities = (data) => {
-  for (let entity in knownEntitiesDispatcherMap) {
-    data[entity] &&
-      Actions[knownEntitiesDispatcherMap[entity]] &&
-      Store.dispatch(Actions[knownEntitiesDispatcherMap[entity]](getEntities(data[entity])));
+  if(!data) return;
+  for (let entity in data){
+    data.hasOwnProperty(entity) && Actions[knownEntitiesDispatcherMap[entity]] && Store.dispatch(Actions[knownEntitiesDispatcherMap[entity]](getEntities(data[entity])));
   }
 };
 
@@ -56,7 +55,11 @@ const getEntitiesFromArray = (resultData, key = 'id') => {
 const getEntitiesFromObj = (resultObj, key = 'id') => {
   const entities = {};
   for (let identifier in resultObj) {
-    entities[`${key}_${identifier}`] = resultObj[identifier];
+    if(isNaN(parseInt(identifier))){
+      entities[identifier] = resultObj[identifier];
+    } else {
+      entities[`${key}_${identifier}`] = resultObj[identifier];
+    }
   }
   return entities;
 };

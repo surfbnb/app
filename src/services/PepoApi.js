@@ -1,16 +1,11 @@
 import AssignIn from 'lodash/assignIn';
-import DeepGet from 'lodash/get';
 import qs from 'qs';
 import NetInfo from '@react-native-community/netinfo';
-import Package from '../../package';
 import { Platform } from 'react-native';
+
+import Package from '../../package';
 import Toast from '../components/NotificationToast';
-
-// Used require to support all platforms
-const RCTNetworking = require('RCTNetworking');
-
 import { API_ROOT } from '../constants/index';
-
 import { ostErrors, UIWhitelistedErrorCode } from './OstErrors';
 import dispatchEntities from '../services/ReduxSetters';
 
