@@ -1,29 +1,6 @@
 import * as types from './constants';
 
-export const showModal = (message = '') => ({
-  type: types.SHOW_MODAL,
-  payload: {
-    modal: {
-      message,
-      show: true
-    }
-  }
-});
-
-export const hideModal = (message = '') => ({
-  type: types.HIDE_MODAL,
-  payload: {
-    modal: {
-      message,
-      show: false
-    }
-  }
-});
-
-export const showModalCover = (
-  message = 'Processing...',
-  footerText = ''
-) => ({
+export const showModalCover = (message = 'Processing...', footerText = '') => ({
   type: types.SHOW_MODAL_COVER,
   payload: {
     modal_cover: {
@@ -63,26 +40,6 @@ export const hideLoginPopover = () => ({
   }
 });
 
-export const showToast = (message = '') => ({
-  type: types.SHOW_TOAST,
-  payload: {
-    toast: {
-      message,
-      show: true
-    }
-  }
-});
-
-export const hideToast = (message = '') => ({
-  type: types.HIDE_TOAST,
-  payload: {
-    toast: {
-      message,
-      show: false
-    }
-  }
-});
-
 export const updateCurrentUser = (current_user) => ({
   type: types.UPDATE_CURRENT_USER,
   payload: {
@@ -98,7 +55,6 @@ export const upsertUserContributionToStats = (data) => ({
     user_contribution_to_stats: data
   }
 });
-
 
 export const upsertUserContributionByStats = (data) => ({
   type: types.UPSERT_USER_CONTRIBUTION_BY_STATS,
@@ -132,6 +88,11 @@ export const upsertUserStatEntities = (data) => ({
 });
 
 export const upsertLinkEntities = (data) => ({ type: types.UPSERT_LINK_ENTITIES, payload: { link_entities: data } });
+
+export const upsertVideoDescriptionEntities = (data) => ({
+  type: types.UPSERT_VIDEO_DESCRIPTION_ENTITIES,
+  payload: { video_description_entities: data }
+});
 
 export const upsertVideoEntities = (data) => ({ type: types.UPSERT_VIDEO_ENTITIES, payload: { video_entities: data } });
 
@@ -208,7 +169,3 @@ export const upsertUserNotifications = (data) => ({
   type: types.UPSERT_USER_NOTIFICATIONS,
   payload: { user_notifications: data }
 });
-
-
-
-

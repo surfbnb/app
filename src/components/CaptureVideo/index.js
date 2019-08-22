@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import VideoRecorder from '../VideoRecorder';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
-import VideoDetails from '../FanVideoDetails';
+import FanVideoDetails from '../FanVideoDetails';
 
 class CaptureVideo extends Component {
   static navigationOptions = {
@@ -32,9 +32,7 @@ class CaptureVideo extends Component {
   }
 
   goToDetailsScreen() {
-    this.setState({
-      detailsScreen: true
-    });
+    this.props.navigation.push('FanVideoDetails');
   }
 
   modalRequestClose = () => {
@@ -59,8 +57,6 @@ class CaptureVideo extends Component {
           navigation={this.props.navigation}
         />
       );
-    } else if (this.state.detailsScreen) {
-      return <VideoDetails videoUri={this.state.videoUri} />;
     } else {
       return (
         <PreviewRecordedVideo

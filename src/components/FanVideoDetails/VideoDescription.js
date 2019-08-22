@@ -1,28 +1,49 @@
 import React, { PureComponent } from 'react';
-import { TextInput } from 'react-native';
+import { View, Text } from 'react-native';
 
-import styles from './styles';
+import inlineStyles from './styles';
+import TagsInput from '../CommonComponents/TagsInput';
 
 class VideoDescription extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      value: this.props.initialValue
+    };
   }
+
+  onChangeValue = (value) => {
+    this.setState({
+      value
+    });
+    this.props.onChangeDesc(value);
+  };
+
+  submitEvent = () => {};
+
   render() {
     return (
-      <React.Fragment>
-        <TextInput
-          multiline= {true}
-          editable = {true}
-          autoFocus= {true}
-          placeholder= "Write something about your video"
-          style={styles.videoDescription}
-        >
-          Write something about your video
-        </TextInput>
-      </React.Fragment>
+      <View style={{ flex: 1 }}>
+        <TagsInput
+          horizontal={false}
+          initialValue={this.props.initialValue}
+          onChangeVal={this.onChangeValue}
+          placeholderText="Write something about your video"
+          submitEvent={this.submitEvent}
+          searchResultRowComponent={SearchResultRowComponent}
+          textInputStyles={inlineStyles.videoDescription}
+          maxLength={300}
+          autoFocus={false}
+        />
+      </View>
     );
   }
 }
+
+const SearchResultRowComponent = (props) => (
+  <View style={inlineStyles.suggestionTextWrapper}>
+    <Text style={inlineStyles.suggestionText}>{`#${props.val}`}</Text>
+  </View>
+);
 
 export default VideoDescription;

@@ -44,6 +44,7 @@ import utilities from './src/services/Utilities';
 import { NotificationToastComponent } from './src/components/NotificationToast';
 import SocketManager from './src/components/SocketManager';
 import SearchScreen from './src/components/Search';
+import FanVideoDetails from './src/components/FanVideoDetails';
 
 const customTabHiddenRoutes = ['CaptureVideo'];
 
@@ -89,13 +90,19 @@ const txModalConfig = {
   })
 };
 
+const CaptureVideoStack = createStackNavigator({
+  CaptureVideo: CaptureVideo,
+  FanVideoDetails: FanVideoDetails
+});
+
 const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen
+    SupportersListScreen: SupportersListScreen,
+    FanVideoDetails: FanVideoDetails
   },
   {
     headerLayoutPreset: 'center'
@@ -106,7 +113,7 @@ const HomeStack = createStackNavigator(
   {
     HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen,
-    CaptureVideo: CaptureVideo
+    CaptureVideo: CaptureVideoStack
   },
   {
     ...modalStackConfig,
@@ -121,7 +128,8 @@ const NotificationPushStack = createStackNavigator(
     UserVideoHistory: UserVideoHistory,
     VideoPlayer: VideoPlayer,
     SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen
+    SupportersListScreen: SupportersListScreen,
+    FanVideoDetails: FanVideoDetails
   },
   {
     headerLayoutPreset: 'center'
@@ -133,7 +141,7 @@ const NotificationStack = createStackNavigator(
     NotificationPushStack: NotificationPushStack,
     TransactionScreen: TransactionScreen,
     SayThanksScreen: SayThanksScreen,
-    CaptureVideo: CaptureVideo
+    CaptureVideo: CaptureVideoStack
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -146,7 +154,8 @@ const ProfilePushStack = createStackNavigator(
     SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
     ProfileEdit: ProfileEdit,
-    BioScreen: BioScreen
+    BioScreen: BioScreen,
+    FanVideoDetails: FanVideoDetails
   },
   {
     headerLayoutPreset: 'center'
@@ -159,7 +168,7 @@ const ProfileStack = createStackNavigator(
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery,
     TransactionScreen: TransactionScreen,
-    CaptureVideo: CaptureVideo
+    CaptureVideo: CaptureVideoStack
   },
   {
     headerLayoutPreset: 'center',

@@ -13,9 +13,10 @@ const mapStateToProps = (state, ownProps) => {
   return {
     userName: reduxGetter.getUserName(ownProps.userId, state),
     name: reduxGetter.getName(ownProps.userId, state),
-    bio: reduxGetter.getBio(ownProps.userId, state),
-    supporters: reduxGetter.getVideoSupporters( ownProps.videoId ),
-    totalBt: reduxGetter.getVideoBt(ownProps.videoId , state ),
+    description: reduxGetter.getVideoDescription(reduxGetter.getVideoDescriptionId(ownProps.videoId, state), state),
+    link: reduxGetter.getVideoLink(reduxGetter.getVideoLinkId(ownProps.videoId, state), state),
+    supporters: reduxGetter.getVideoSupporters(ownProps.videoId),
+    totalBt: reduxGetter.getVideoBt(ownProps.videoId, state)
   };
 };
 
@@ -30,31 +31,41 @@ class BottomStatus extends PureComponent {
 
   render() {
     return (
-        <TouchableWithoutFeedback
-          onPress={multipleClickHandler(() => this.onWrapperClick())}
-          pointerEvents={'auto'}
-          style={inlineStyles.bottomBg}
-        >
-          <View style={{ flex: 1, paddingVertical: 12 }}>
-            <Text style={[inlineStyles.handle]}
-                  ellipsizeMode={'tail'}
-                  numberOfLines={1}
+      <TouchableWithoutFeedback
+        onPress={multipleClickHandler(() => this.onWrapperClick())}
+        pointerEvents={'auto'}
+        style={inlineStyles.bottomBg}
+      >
+        <View style={{ flex: 1, paddingVertical: 12 }}>
+          <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
+            {`@${this.props.userName}`}
+          </Text>
+          {this.props.description ? (
+            <Text
+              style={[{ fontSize: 14, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]}
+              ellipsizeMode={'tail'}
+              numberOfLines={3}
             >
-              {`@${this.props.userName}`}
+              {this.props.description}
             </Text>
-            {this.props.bio ? (
-              <Text
-                style={[{ fontSize: 14, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]}
-                ellipsizeMode={'tail'}
-                numberOfLines={3}
-              >
-                {this.props.bio}
-              </Text>
-            ) : (
-              <Text />
-            )}
-          </View>
-        </TouchableWithoutFeedback>
+          ) : (
+            <Text />
+          )}
+        </View>
+        <View>
+          {this.props.link ? (
+            <Text
+              style={[{ fontSize: 14, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]}
+              ellipsizeMode={'tail'}
+              numberOfLines={3}
+            >
+              {this.props.link}
+            </Text>
+          ) : (
+            <Text />
+          )}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

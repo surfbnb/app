@@ -5,14 +5,15 @@ import inlineStyles from './styles';
 import PepoApi from '../../../services/PepoApi';
 import CustomTextInput from './CustomTextInput';
 
+const MAX_LENGTH = 500;
+
 class TagsInput extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
       value: this.props.initialValue,
-      keyword: '',
-      count: this.props.initialValue.length
+      keyword: ''
     };
     this.reqTimer = 0;
     this.wordIndex = -1;
@@ -51,15 +52,6 @@ class TagsInput extends PureComponent {
     return str.slice(left, right + pos);
   }
 
-  changeValue(val) {
-    val = val || '';
-    // val = val.trim();
-    if (val.length <= 300) {
-      this.props.onChangeTextDelegate && this.props.onChangeTextDelegate(val);
-      this.setState({ value: val, count: val.length });
-    }
-  }
-
   onChangeText = (val) => {
     const location = this.location - 1,
       currentIndexChar = val.charAt(location),
@@ -75,6 +67,16 @@ class TagsInput extends PureComponent {
       this.closeSuggestionsPanel();
     }
     this.changeValue(val);
+  };
+
+  changeValue = (val) => {
+    let maxLength = this.props.maxLength || MAX_LENGTH;
+    if (val.length <= maxLength) {
+      this.setState({
+        value: val
+      });
+    }
+    this.props.onChangeVal(val);
   };
 
   isHashTag(val) {
@@ -180,13 +182,13 @@ class TagsInput extends PureComponent {
           <CustomTextInput
             textInputStyles={this.props.textInputStyles}
             value={this.state.value}
-            count={this.state.count}
             submitEvent={() => {
               this.props.submitEvent(this.state.value);
             }}
             locationGetter={this.locationGetter}
             onChangeText={this.onChangeText}
-            placeHolderText={this.props.placeholderText}
+            placeholderText={this.props.placeholderText}
+            autoFocus={this.props.autoFocus}
           />
         }
         stickyHeaderIndices={[0]}

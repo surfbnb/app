@@ -9,6 +9,7 @@ const knownEntitiesDispatcherMap = {
   user_profile: 'upsertUserProfileEntities',
   user_stats: 'upsertUserStatEntities',
   links: 'upsertLinkEntities',
+  video_descriptions: 'upsertVideoDescriptionEntities',
   videos: 'upsertVideoEntities',
   video_details: 'upsertVideoStatEntities',
   images: 'upsertImageEntities',

@@ -40,7 +40,8 @@ export const {
   upsertUserVideoEntities,
   upsertUserContributionToStats,
   upsertUserContributionByStats,
-  upsertUserNotifications
+  upsertUserNotifications,
+  upsertVideoDescriptionEntities
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -58,6 +59,7 @@ const defaultState = {
   link_entities: {},
   video_entities: {},
   video_stat_entities: {},
+  video_description_entities: {},
   image_entities: {},
   home_feed_entities: {},
   video_contribution_entities: {},
@@ -75,7 +77,7 @@ const logoutDefault = {
   balance: null,
   video_contribution_entities: {},
   user_contribution_entities: {}
-}
+};
 
 export const reducer = handleActions(
   {
@@ -130,6 +132,14 @@ export const reducer = handleActions(
     [upsertVideoStatEntities]: (state, action) => ({
       ...state,
       video_stat_entities: assignIn({}, state.video_stat_entities, action.payload.video_stat_entities)
+    }),
+    [upsertVideoDescriptionEntities]: (state, action) => ({
+      ...state,
+      video_description_entities: assignIn(
+        {},
+        state.video_description_entities,
+        action.payload.video_description_entities
+      )
     }),
     [upsertImageEntities]: (state, action) => ({
       ...state,

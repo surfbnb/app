@@ -52,12 +52,6 @@ class PreviewRecordedVideo extends Component {
     }
   };
 
-  enableStartUploadFlag = () => {
-    this.props.navigation.goBack();
-    this.props.navigation.navigate('HomeScreen');
-    Store.dispatch(upsertRecordedVideo({ do_upload: true }));
-  };
-
   handleProgress = (progress) => {
     this.setState({
       progress: progress.currentTime / this.state.duration
@@ -93,7 +87,7 @@ class PreviewRecordedVideo extends Component {
           );
           this.props.goToRecordScreen();
         } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
-          this.props.navigation.goBack();
+          this.props.navigation.goBack(null);
           Store.dispatch(
             upsertRecordedVideo({
               do_discard: true

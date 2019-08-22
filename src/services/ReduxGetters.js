@@ -1,5 +1,5 @@
 import deepGet from 'lodash/get';
-import unescape from "lodash/unescape"; 
+import unescape from 'lodash/unescape';
 import round from 'lodash/round';
 import Store from '../store';
 import appConfig from '../constants/AppConfig';
@@ -65,7 +65,7 @@ class ReduxGetters {
 
   getBio(id, state) {
     state = state || Store.getState();
-    return unescape(  deepGet(state, `user_profile_entities.id_${id}.bio.text`) );
+    return unescape(deepGet(state, `user_profile_entities.id_${id}.bio.text`));
   }
 
   getVideoSupporters(id, state) {
@@ -81,6 +81,26 @@ class ReduxGetters {
   getVideoStats(id, state) {
     state = state || Store.getState();
     return deepGet(state, `video_stat_entities.id_${id}`);
+  }
+
+  getVideoDescription(id, state) {
+    state = state || Store.getState();
+    return unescape(deepGet(state, `video_description_entities.id_${id}.text`));
+  }
+
+  getVideoDescriptionId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.description_id`);
+  }
+
+  getVideoLink(id, state) {
+    state = state || Store.getState();
+    return unescape(deepGet(state, `link_entities.id_${id}.url`));
+  }
+
+  getVideoLinkId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.link_ids[0]`);
   }
 
   isVideoSupported(id, state) {
@@ -106,7 +126,7 @@ class ReduxGetters {
   }
 
   getRecordedVideo() {
-    return deepGet(Store.getState(), `recorded_video.raw_video`);
+    return deepGet(Store.getState(), `recorded_video`);
   }
 
   getRecordedVideoCurrentProcess() {
@@ -308,7 +328,7 @@ class ReduxGetters {
     return deepGet(state, `user_notifications.id_${notificationId}.timestamp`);
   }
 
-  getNotificationGoTo(notificationId, state){
+  getNotificationGoTo(notificationId, state) {
     state = state || Store.getState();
     return deepGet(state, `user_notifications.id_${notificationId}.goto`);
   }

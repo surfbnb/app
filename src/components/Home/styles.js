@@ -14,9 +14,10 @@ let stylesMap = {
         height: Dimensions.get('window').height - CUSTOM_TAB_Height - getBottomSpace([true])
       },
       {
-        height: (DeviceInfo.hasNotch() || StatusBar.currentHeight > 24)
-          ? Dimensions.get('window').height - CUSTOM_TAB_Height + StatusBar.currentHeight
-          : Dimensions.get('window').height - CUSTOM_TAB_Height
+        height:
+          DeviceInfo.hasNotch() || StatusBar.currentHeight > 24
+            ? Dimensions.get('window').height - CUSTOM_TAB_Height + StatusBar.currentHeight
+            : Dimensions.get('window').height - CUSTOM_TAB_Height
       }
     )
   },
@@ -46,7 +47,7 @@ let stylesMap = {
   },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'flex-start',
     paddingHorizontal: 15,
     borderTopLeftRadius: 20,

@@ -2,16 +2,10 @@ import React, { PureComponent } from 'react';
 import { View, Text, TextInput } from 'react-native';
 
 import Theme from '../../../theme/styles';
-import inlineStyles from './styles';
 
 class CustomTextInput extends PureComponent {
   constructor(props) {
     super(props);
-  }
-  componentDidMount() {
-    setTimeout(() => {
-      this.refs['customInput'].focus();
-    }, 0);
   }
 
   render() {
@@ -24,7 +18,7 @@ class CustomTextInput extends PureComponent {
             this.props.onChangeText(value);
           }}
           multiline={true}
-          autoFocus={true}
+          autoFocus={this.props.autoFocus}
           value={this.props.value}
           placeholder={this.props.placeholderText}
           multiline={true}
@@ -35,9 +29,7 @@ class CustomTextInput extends PureComponent {
           onSubmitEditing={() => {
             this.props.submitEvent();
           }}
-          ref="customInput"
         />
-        <Text style={inlineStyles.countStyle}>{this.props.count} /300</Text>
       </View>
     );
   }

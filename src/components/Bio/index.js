@@ -30,11 +30,20 @@ class BioScreen extends PureComponent {
     super(props);
     this.initialVal = this.props.navigation.getParam('initialValue') || '';
     this.onChangeTextDelegate = this.props.navigation.getParam('onChangeTextDelegate');
+    this.state = {
+      count: this.initialVal.length
+    };
   }
 
   submitEvent = (value) => {
     this.onChangeTextDelegate && this.onChangeTextDelegate(value.trim());
     this.props.navigation.goBack();
+  };
+
+  onChangeVal = (val) => {
+    val = val || '';
+    this.onChangeTextDelegate && this.onChangeTextDelegate(val);
+    this.setState({ count: val.length });
   };
 
   render() {
@@ -43,12 +52,15 @@ class BioScreen extends PureComponent {
         <TagsInput
           horizontal={this.props.horizontal}
           initialValue={this.initialVal}
-          onChangeTextDelegate={this.onChangeTextDelegate}
+          onChangeVal={this.onChangeVal}
           placeholderText="Bio"
           submitEvent={this.submitEvent}
           searchResultRowComponent={SearchResultRowComponent}
           textInputStyles={inlineStyles.multilineTextInput}
+          maxLength={300}
+          autoFocus={true}
         />
+        <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
       </View>
     );
   }

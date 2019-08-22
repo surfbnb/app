@@ -344,6 +344,8 @@ class CameraWorker extends PureComponent {
       let payload = {
         video_url: this.props.recorded_video.s3_video,
         poster_image_url: this.props.recorded_video.s3_cover_image,
+        video_description: this.props.recorded_video.video_desc,
+        link: this.props.recorded_video.video_link,
         video_width: appConfig.cameraConstants.VIDEO_WIDTH,
         video_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         image_width: appConfig.cameraConstants.VIDEO_WIDTH,

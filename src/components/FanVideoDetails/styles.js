@@ -4,7 +4,7 @@ import Colors from '../../theme/styles/Colors';
 let stylesMap = {
   posterImageSkipFont: {
     aspectRatio: 3 / 4,
-    width: 80,
+    height: 100,
     justifyContent: 'center'
   },
   playIconSkipFont: {
@@ -12,19 +12,35 @@ let stylesMap = {
     width: 14,
     alignSelf: 'center'
   },
-  videoDescriptionItem:{
+  videoDescriptionItem: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderColor: '#ccd3cd',
     paddingHorizontal: 15,
-    paddingVertical: 10
+    paddingVertical: 20
   },
-  videoDescription:{
+  videoDescription: {
     color: 'rgba(42, 41, 59, 0.8)',
-    marginLeft: 20,
     flex: 1,
     flexWrap: 'wrap',
-    fontFamily: 'AvenirNext-Regular'
+    fontFamily: 'AvenirNext-Regular',
+    borderColor: 'transparent',
+    borderWidth: 0,
+    borderRadius: 0,
+    fontWeight: '300',
+    padding: 5,
+    paddingLeft: 15,
+    marginTop: 0,
+    paddingTop: 0,
+    height: 100
+  },
+  suggestionText: {
+    fontWeight: 'bold',
+    color: Colors.midNightblue,
+    fontSize: 18
+  },
+  suggestionTextWrapper: {
+    marginTop: 20
   }
 };
 

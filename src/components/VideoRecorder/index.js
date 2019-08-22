@@ -40,7 +40,7 @@ class VideoRecorder extends Component {
     BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
     AppState.addEventListener('change', this._handleAppStateChange);
     if (this.props.actionSheetOnRecordVideo) {
-      this.recordedVideo = reduxGetters.getRecordedVideo();
+      this.recordedVideo = reduxGetters.getRecordedVideo().raw_video;
       let isFileExists = false;
       const oThis = this;
 
@@ -91,7 +91,7 @@ class VideoRecorder extends Component {
 
   cancleVideoHandling = () => {
     this.cancelVideo();
-    this.props.navigation.goBack();
+    this.props.navigation.goBack(null);
   };
 
   cameraView() {
