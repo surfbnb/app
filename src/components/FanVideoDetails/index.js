@@ -16,10 +16,10 @@ import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import { Header, SafeAreaView } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper';
+import { getStatusBarHeight, getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
-const safeAreaHeight = getStatusBarHeight([true]) + getBottomSpace([true]);
+const safeAreaHeight = getStatusBarHeight() + getBottomSpace([true]);
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -66,21 +66,28 @@ class FanVideoDetails extends Component {
     this.state = {
       videoDesc: '',
       videoLink: '',
-      viewStyle: { justifyContent: 'space-between', height: Dimensions.get('window').height - safeAreaHeight }
-    };
+      viewStyle: {
+        justifyContent: 'space-between',
+        marginBottom: 20,
+        height: Dimensions.get('window').height - safeAreaHeight
+      },
+    }
   }
   openedKeyboard(frames) {
     let deviceHeight = frames.endCoordinates.screenY;
     this.setState({
       viewStyle: {
         justifyContent: 'space-between',
-        height: Dimensions.get('window').height + safeAreaHeight + Header.HEIGHT - deviceHeight
+        ...isIphoneX({
+          height: Dimensions.get('window').height + safeAreaHeight + Header.HEIGHT - deviceHeight
+        }, {
+          height: Dimensions.get('window').height - safeAreaHeight + Header.HEIGHT - deviceHeight
+        })
       }
     });
   }
 
   closedKeyboard(frames) {
-    let deviceHeight = frames.endCoordinates.screenY;
     this.setState({
       viewStyle: { justifyContent: 'space-between', height: Dimensions.get('window').height - safeAreaHeight }
     });

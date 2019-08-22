@@ -2,6 +2,9 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
+  container:{
+    backgroundColor: '#fff'
+  },
   posterImageSkipFont: {
     aspectRatio: 3 / 4,
     height: 100,
