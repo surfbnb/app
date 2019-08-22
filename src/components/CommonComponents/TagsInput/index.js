@@ -75,8 +75,8 @@ class TagsInput extends PureComponent {
       this.setState({
         value: val
       });
+      this.props.onChangeVal(val);
     }
-    this.props.onChangeVal(val);
   };
 
   isHashTag(val) {
