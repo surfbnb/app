@@ -55,10 +55,9 @@ const getEntitiesFromArray = (resultData, key = 'id') => {
 const getEntitiesFromObj = (resultObj, key = 'id') => {
   const entities = {};
   for (let identifier in resultObj) {
-    if(isNaN(parseInt(identifier))){
-      entities[identifier] = resultObj[identifier];
-    } else {
-      entities[`${key}_${identifier}`] = resultObj[identifier];
+    if(resultObj.hasOwnProperty(identifier)){
+      let key_identifier = isNaN(parseInt(identifier)) ? identifier : `${key}_${identifier}`;
+      entities[key_identifier] = resultObj[identifier];
     }
   }
   return entities;
