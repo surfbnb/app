@@ -2,12 +2,6 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
-  container: {
-    flex: 1,
-    paddingBottom: 30,
-    justifyContent: 'space-between',
-    backgroundColor: '#fff'
-  },
   posterImageSkipFont: {
     aspectRatio: 3 / 4,
     width: 80,
