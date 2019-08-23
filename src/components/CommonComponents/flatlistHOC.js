@@ -16,7 +16,7 @@ import { FetchServices } from '../../services/FetchServices';
  * Will have to implement onEndReachedCalledDuringMomentum mechanism there as
  */
 
-function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
+function flatlistHOC(ListComponent, options) {
   return class extends PureComponent {
     constructor(props) {
       super(props);
@@ -25,7 +25,7 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
         refreshing: false,
         loadingNext: false
       };
-      this.onEndReachedCalledDuringMomentum = !!scrollDetectNext;
+      this.onEndReachedCalledDuringMomentum = options && !!options.scrollDetectNext;
       this.flatListHocRef = null;
     }
 
@@ -75,13 +75,13 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
 
     beforeRefresh() {
       this.props.beforeRefresh && this.props.beforeRefresh();
-      if (this.props.toRefresh && silentRefresh) return;
+      if (this.props.toRefresh && options.silentRefresh) return;
       this.setState({ refreshing: true });
     }
 
     onRefresh(res) {
       this.props.onRefresh && this.props.onRefresh(res);
-      this.setState({ refreshing: false, list: this.fetchServices.getIDList() });
+      this.setState({ refreshing: false, list: this.fetchServices.getIDList(options.keyPath) });
     }
 
     onRefreshError(error) {
@@ -116,7 +116,7 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
     };
 
     beforeNext() {
-      if (scrollDetectNext) {
+      if (options && options.scrollDetectNext) {
         this.onEndReachedCalledDuringMomentum = true;
       }
       this.props.beforeNext && this.props.beforeNext();
@@ -125,7 +125,7 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
 
     onNext(res) {
       this.props.onNext && this.props.onNext(res);
-      this.setState({ loadingNext: false, list: this.fetchServices.getIDList() });
+      this.setState({ loadingNext: false, list: this.fetchServices.getIDList(options.keyPath) });
     }
 
     onNextError(error) {
