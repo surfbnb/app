@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { TextInput, Image, Text } from 'react-native';
+import { TextInput, Image } from 'react-native';
 
 import styles from './styles';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
 import defaultLinkIcon from '../../assets/default_link_icon.png';
-import URL from 'url';
 
 const SOCIAL_ICONS = {
   TWITTER: twitterDisconnectIcon,
@@ -41,10 +40,10 @@ class VideoLink extends Component {
   };
 
   setSocialIcon = () => {
-    let url = URL.parse(this.state.value);
-    if (!url['hostname']) return;
+    let hostName = this.state.value.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?([^:\/?\n]+)/im)[1];
+    if (!hostName) return;
     for (let domainName in WHITELISTED_DOMAINS) {
-      if (url['hostname'].includes(WHITELISTED_DOMAINS[domainName])) {
+      if (hostName.includes(WHITELISTED_DOMAINS[domainName])) {
         this.setState({
           socialIcon: SOCIAL_ICONS[domainName]
         });
