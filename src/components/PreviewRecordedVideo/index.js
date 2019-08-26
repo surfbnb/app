@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback, View, Image, BackHandler, AppState } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, View, Image, BackHandler, AppState, Text } from 'react-native';
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/preview_play_icon.png';
@@ -154,26 +154,23 @@ class PreviewRecordedVideo extends Component {
             <View style={styles.playIcon} />
           )}
 
-          <LinearGradient
-            colors={['#ff7499', '#ff5566']}
-            locations={[0, 1]}
-            style={{ borderRadius: 3, marginRight: 40 }}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          >
-            <View style={{ flexDirection: 'row', position: 'relative' }}>
-              <TouchableButton
-                TouchableStyles={[{ borderColor: 'none', borderWidth: 0 }]}
-                TextStyles={[
-                  Theme.Button.btnPinkText,
-                  { height: 22, paddingLeft: 5, fontSize: 16, fontFamily: 'AvenirNext-DemiBold' }
-                ]}
-                text="NEXT"
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20}}>
+            <LinearGradient
+              colors={['#ff7499', '#ff5566']}
+              locations={[0, 1]}
+              style={{ borderRadius: 0, borderTopLeftRadius: 3, borderBottomLeftRadius: 3, paddingLeft: 15, paddingRight: 10}}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
+              <TouchableOpacity
                 onPress={this.props.goToDetailsScreen}
-              />
-              <View style={styles.triangleRight}></View>
-            </View>
-          </LinearGradient>
+                style={{height: 44, alignItems: 'center', justifyContent: 'center'}}
+              >
+                <Text style={{color: '#fff', fontSize: 16}}>NEXT</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+            <View style={styles.triangleRight}></View>
+          </View>
         </View>
       </View>
     );

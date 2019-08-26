@@ -76,10 +76,6 @@ let stylesMap = {
   triangleRight: {
     width: 0,
     height: 0,
-    position: 'absolute',
-    // right: 0,
-    // top: '50%',
-    // left: -8,
     backgroundColor: 'transparent',
     borderStyle: 'solid',
     borderBottomWidth: 22,
@@ -87,8 +83,7 @@ let stylesMap = {
     borderLeftWidth: 16,
     borderBottomColor: 'transparent',
     borderTopColor: 'transparent',
-    borderLeftColor: '#fff'
-    // transform: [{ rotate: '90deg' }]
+    borderLeftColor: '#ff5566'
   }
 };
 
