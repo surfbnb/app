@@ -56,7 +56,7 @@ class BottomStatus extends PureComponent {
         {this.props.link ? (
           <TouchableWithoutFeedback
           >
-            <View style={{borderTopWidth: 1, borderColor: 'rgba(255, 255, 255, 0.3)', paddingHorizontal: 12}}>
+            <View style={{borderTopWidth: 0.5, borderColor: 'rgba(255, 255, 255, 0.3)', paddingHorizontal: 12}}>
               <Text
                 style={[{ fontSize: 14, paddingVertical: 4 }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}

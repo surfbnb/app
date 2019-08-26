@@ -44,13 +44,12 @@ class FanVideoDetails extends Component {
       },
       headerLeft: (
         <TouchableOpacity
-          style={{ paddingLeft: 20 }}
           onPress={multipleClickHandler(() => {
             FanVideoDetails.saveToRedux(navigation);
             navigation.goBack();
           })}
         >
-          <BackArrow />
+          <BackArrow forcePaddingLeft={true}/>
         </TouchableOpacity>
       )
     };
