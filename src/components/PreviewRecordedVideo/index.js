@@ -10,9 +10,9 @@ import { ActionSheet } from 'native-base';
 import styles from './styles';
 import closeIcon from '../../assets/cross_icon.png';
 import { withNavigation } from 'react-navigation';
-import TouchableButton from "../../theme/components/TouchableButton";
-import Theme from "../../theme/styles";
-import LinearGradient from "react-native-linear-gradient";
+import TouchableButton from '../../theme/components/TouchableButton';
+import Theme from '../../theme/styles';
+import LinearGradient from 'react-native-linear-gradient';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Close Camera', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
@@ -25,6 +25,7 @@ class PreviewRecordedVideo extends Component {
     this.state = {
       progress: 0
     };
+    this.pauseVideo = false;
     this.cachedVideoUri = this.props.cachedvideoUrl;
     this.cancleVideoHandling = this.cancleVideoHandling.bind(this);
   }
@@ -35,11 +36,22 @@ class PreviewRecordedVideo extends Component {
     AppState.addEventListener('change', this._handleAppStateChange);
 
     Store.dispatch(upsertRecordedVideo({ raw_video: this.cachedVideoUri }));
+    this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
+      if (this.pauseVideo) {
+        this.pauseVideo = false;
+        this.replay();
+      }
+    });
+    this.willBlur = this.props.navigation.addListener('willBlur', (payload) => {
+      this.pauseVideo = true;
+    });
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     AppState.removeEventListener('change', this._handleAppStateChange);
+    this.didFocus.remove();
+    this.willBlur.remove();
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -91,12 +103,13 @@ class PreviewRecordedVideo extends Component {
           this.props.goToRecordScreen();
         } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
           this.props.navigation.goBack(null);
-          Store.dispatch(
-            upsertRecordedVideo({
-              do_discard: true
-            })
-          );
-          Store.dispatch(videoInProcessing(false));
+          //TODO: Check why we were discarding video here from mayur
+          // Store.dispatch(
+          //   upsertRecordedVideo({
+          //     do_discard: true
+          //   })
+          // );
+          // Store.dispatch(videoInProcessing(false));
         }
       }
     );
@@ -113,6 +126,7 @@ class PreviewRecordedVideo extends Component {
           onProgress={this.handleProgress}
           onEnd={this.handleEnd}
           ref={(component) => (this._video = component)}
+          paused={this.pauseVideo}
         ></Video>
         <ProgressBar
           width={null}
@@ -147,17 +161,19 @@ class PreviewRecordedVideo extends Component {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >
-            <View style={{position: 'relative'}}>
+            <View style={{ flexDirection: 'row', position: 'relative' }}>
               <TouchableButton
                 TouchableStyles={[{ borderColor: 'none', borderWidth: 0 }]}
-                TextStyles={[Theme.Button.btnPinkText,{height: 22, paddingLeft: 5, fontSize: 16, fontFamily: 'AvenirNext-DemiBold'}]}
+                TextStyles={[
+                  Theme.Button.btnPinkText,
+                  { height: 22, paddingLeft: 5, fontSize: 16, fontFamily: 'AvenirNext-DemiBold' }
+                ]}
                 text="NEXT"
                 onPress={this.props.goToDetailsScreen}
               />
               <View style={styles.triangleRight}></View>
             </View>
           </LinearGradient>
-
         </View>
       </View>
     );
