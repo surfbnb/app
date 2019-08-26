@@ -47,11 +47,10 @@ let stylesMap = {
   },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    paddingHorizontal: 15,
+    // flexDirection: 'column',
+    // justifyContent: 'flex-start',
     borderTopLeftRadius: 20,
-    maxHeight: Dimensions.get('window').height * 0.15,
+    maxHeight: Dimensions.get('window').height * 0.20,
     minHeight: Dimensions.get('window').height * 0.07
   },
   handle: {
