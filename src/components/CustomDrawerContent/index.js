@@ -91,6 +91,14 @@ export default class CustomDrawerContent extends Component{
 
   updateOptions() {
     let ostUserId = CurrentUser.getOstUserId();
+    if ( null == ostUserId ) {
+      this.setState({
+        disableResetPin: true,
+        showAbortRecovery: false,
+        showRecoverDevice: false
+      });
+      return;
+    }
 
     this.hasFetchedOstUserData = false;
     this.hasFetchedDeviceData = false;
