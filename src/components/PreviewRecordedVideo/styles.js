@@ -24,8 +24,9 @@ let stylesMap = {
     borderWidth: 0.5,
     height: 7,
     width: '90%',
-    marginLeft: 10,
-    marginRight: 10
+    alignSelf: 'center'
+    // marginLeft: 10,
+    // marginRight: 10
   },
   cancelButton: {
     position: 'absolute',
@@ -39,7 +40,7 @@ let stylesMap = {
     fontWeight: 'bold'
   },
   bottomControls: {
-    flex: 1,
+    // flex: 1,
     position: 'absolute',
     bottom: 40,
     flexDirection: 'row',
@@ -72,25 +73,22 @@ let stylesMap = {
     height: 20,
     width: 20
   },
-  triangleRight:{
+  triangleRight: {
     width: 0,
     height: 0,
     position: 'absolute',
-    right: -29,
-    top: '50%',
-    marginTop: -8,
+    // right: 0,
+    // top: '50%',
+    // left: -8,
     backgroundColor: 'transparent',
     borderStyle: 'solid',
-    borderLeftWidth: 22,
-    borderRightWidth: 22,
-    borderBottomWidth: 16,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: '#ff5566',
-    transform: [
-      {rotate: '90deg'}
-    ]
-
+    borderBottomWidth: 22,
+    borderTopWidth: 22,
+    borderLeftWidth: 16,
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent',
+    borderLeftColor: '#fff'
+    // transform: [{ rotate: '90deg' }]
   }
 };
 

@@ -31,41 +31,43 @@ class BottomStatus extends PureComponent {
 
   render() {
     return (
-      <TouchableWithoutFeedback
-        onPress={multipleClickHandler(() => this.onWrapperClick())}
-        pointerEvents={'auto'}
-        style={inlineStyles.bottomBg}
-      >
-        <View style={{ flex: 1, paddingVertical: 12 }}>
-          <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
-            {`@${this.props.userName}`}
-          </Text>
-          {this.props.description ? (
-            <Text
-              style={[{ fontSize: 14, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]}
-              ellipsizeMode={'tail'}
-              numberOfLines={3}
-            >
-              {this.props.description}
+      <View style={inlineStyles.bottomBg}>
+        <TouchableWithoutFeedback
+          onPress={multipleClickHandler(() => this.onWrapperClick())}
+          pointerEvents={'auto'}
+        >
+          <View style={{paddingTop: 8, paddingBottom: 5, paddingHorizontal: 12}}>
+            <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
+              {`@${this.props.userName}`}
             </Text>
-          ) : (
-            <Text />
-          )}
-        </View>
-        <View>
-          {this.props.link ? (
-            <Text
-              style={[{ fontSize: 14, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]}
-              ellipsizeMode={'tail'}
-              numberOfLines={3}
-            >
-              {this.props.link}
-            </Text>
-          ) : (
-            <Text />
-          )}
-        </View>
-      </TouchableWithoutFeedback>
+            {this.props.description ? (
+              <Text
+                style={[{ fontSize: 14, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]}
+                ellipsizeMode={'tail'}
+                numberOfLines={3}
+              >
+                {this.props.description}
+              </Text>
+            ) : (
+              <Text />
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+        {this.props.link ? (
+          <TouchableWithoutFeedback
+          >
+            <View style={{borderTopWidth: 1, borderColor: 'rgba(255, 255, 255, 0.3)', paddingHorizontal: 12}}>
+              <Text
+                style={[{ fontSize: 14, paddingVertical: 4 }, inlineStyles.bottomBgTxt]}
+                ellipsizeMode={'tail'}
+                numberOfLines={1}
+              >
+                {this.props.link}
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        ) : <React.Fragment/>}
+      </View>
     );
   }
 }

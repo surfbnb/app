@@ -47,12 +47,11 @@ let stylesMap = {
   },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    paddingHorizontal: 15,
+    // flexDirection: 'column',
+    // justifyContent: 'flex-start',
     borderTopLeftRadius: 20,
-    maxHeight: Dimensions.get('window').height * 0.15,
-    minHeight: Dimensions.get('window').height * 0.07
+    maxHeight: Dimensions.get('window').height * 0.20,
+    minHeight: Dimensions.get('window').height * 0.05
   },
   handle: {
     fontSize: 15,
@@ -67,7 +66,7 @@ let stylesMap = {
     borderTopLeftRadius: 25,
     borderBottomRightRadius: 25,
     paddingHorizontal: 8,
-    width: 130,
+    width: 120,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',

@@ -53,7 +53,7 @@ class VideoAmountStat extends PureComponent {
                 style={[inlineStyles.raisedSupportedTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
-                >{`${pricer.toDisplayAmount(this.props.supporters)}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>SUPPORTERS</Text></Text>
+                >{`${pricer.toDisplayAmount(this.props.supporters)}`}{' '}<Text style={{letterSpacing: 0.8, fontSize: 13}}>FANS</Text></Text>
             </View>
             }
         </View>
