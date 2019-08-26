@@ -2,6 +2,9 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
+  container:{
+    backgroundColor: '#fff'
+  },
   posterImageSkipFont: {
     aspectRatio: 3 / 4,
     height: 100,
@@ -21,17 +24,17 @@ let stylesMap = {
   },
   videoDescription: {
     color: 'rgba(42, 41, 59, 0.8)',
-    flex: 1,
+    // flex: 1,
     flexWrap: 'wrap',
     fontFamily: 'AvenirNext-Regular',
     borderColor: 'transparent',
     borderWidth: 0,
     borderRadius: 0,
     fontWeight: '300',
-    padding: 5,
-    paddingLeft: 15,
+    marginLeft: 10,
     marginTop: 0,
-    paddingTop: 0,
+    padding: 0,
+    paddingLeft: 0,
     height: 100
   },
   suggestionText: {

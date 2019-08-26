@@ -1,27 +1,32 @@
 import io from 'socket.io-client';
 import PepoApi from '../services/PepoApi';
+import deepGet from "lodash/get";
+import CurrentUser from '../models/CurrentUser';
 
-const socket = io(
-  'http://stagingpepo.com:4000?auth_key_expiry_at=1565688022&payload=YzY5N2VkYzMyNDNmZGU1OTM0YmE2MDE2ZjQwMTJkYjU5MjEzZDEzMjJlMTM4MTkzNzI5NDVjMWJmNGI3YmRkYjIwNmYyOTJkNTg2MDE3NTVhYzQyODFkYWE4ZjBhNmQ4MGQ0YzkwZTBiOGY3ZWU1OGMyY2I1ZDlmZTRkZGExMGJmMTE3YmY5NmE0NjE4OTU2ODY3NDU5ZjJhMTY1NTE2OA=='
-);
+export default class PepoSocket{
 
-let init = () => {
-  new PepoApi('users/:user_id/websocket-details')
-    .get()
-    .then((res) => {
-      console.log('------success');
-    })
-    .catch((error) => {
-      console.log('------error', error);
-    });
-  socket.on('connect', function() {
-    alert('socket connected!!');
-  });
-  socket.on('connect_error', (err) => {
-    console.log('socket ------' + err);
-  });
-};
+  constructor(userId) {
+    this.userId = userId;
+    this.endPoint = null;
+    this.protocol = null;
+    this.payload = null;
+  }
 
-export default {
-  init: init
-};
+  setConnectionParams(response){
+      let resultType = deepGet(response, 'data.result_type');
+      this.endPoint = deepGet(response, `data.${resultType}.websocket_endpoint.endpoint`);
+      this.protocol = deepGet(response, `data.${resultType}.websocket_endpoint.protocol`);
+      this.authKeyExpiryAt = deepGet(response, `data.${resultType}.auth_key_expiry_at`);
+      this.payload = deepGet(response, `data.${resultType}.payload`);
+  }
+
+  connect() {
+    new PepoApi(`/users/${this.userId}/websocket-details`)
+        .get()
+        .then((response) => {
+            this.setConnectionParams(response);
+            console.log(`${this.protocol}://${this.endPoint}?auth_key_expiry_at=${this.authKeyExpiryAt}&payload=${this.payload}`);
+        })
+  }
+
+}

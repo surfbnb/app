@@ -6,7 +6,11 @@ import InitWalletSdk from './InitWalletSdk';
 import NavigationService from './NavigationService';
 import Toast from '../components/NotificationToast';
 import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../constants';
-import { LoginPopoverActions } from '../components/LoginPopover';
+
+let LoginPopoverActions = null;
+import('../components/LoginPopover').then((pack) => {
+  LoginPopoverActions = pack.LoginPopoverActions;
+});
 
 const { RNTwitterSignIn } = NativeModules;
 

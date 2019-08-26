@@ -44,7 +44,7 @@ class VideoLink extends Component {
       <React.Fragment>
         <Image style={{ height: 26, width: 26 }} source={this.getSocialIcon()} />
         <TextInput
-          style={{ color: '#4a90e2', flex: 1, marginLeft: 10 }}
+          style={{ color: '#4a90e2', flex: 1, marginLeft: 5 }}
           numberOfLines={1}
           ellipsizeMode={'tail'}
           returnKeyType="done"

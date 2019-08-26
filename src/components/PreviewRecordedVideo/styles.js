@@ -54,11 +54,11 @@ let stylesMap = {
     paddingHorizontal: 20,
     marginLeft: -32.5
   },
-  tickIconSkipFont: {
-    width: 45,
-    height: 45,
-    marginRight: 20
-  },
+  // tickIconSkipFont: {
+  //   width: 45,
+  //   height: 45,
+  //   marginRight: 20
+  // },
   closeBtWrapper: {
     position: 'absolute',
     top: 10,
@@ -71,6 +71,26 @@ let stylesMap = {
     marginLeft: 20,
     height: 20,
     width: 20
+  },
+  triangleRight:{
+    width: 0,
+    height: 0,
+    position: 'absolute',
+    right: -29,
+    top: '50%',
+    marginTop: -8,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: 22,
+    borderRightWidth: 22,
+    borderBottomWidth: 16,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: '#ff5566',
+    transform: [
+      {rotate: '90deg'}
+    ]
+
   }
 };
 
