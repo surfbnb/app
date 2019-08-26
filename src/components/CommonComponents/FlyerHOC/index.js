@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
 import {View, TouchableWithoutFeedback, Animated, Text, Image, Easing} from 'react-native';
 import EventEmitter from 'eventemitter3';
-import { WalletBalanceFlyerEventEmitter } from '../../WalletBalanceFlyer';
 
 import styles from './styles';
-
 import modalCross from '../../../assets/modal-cross-icon.png';
+
+let WalletBalanceFlyerEventEmitter = null;
+import('../../WalletBalanceFlyer').then((pack) => {
+  WalletBalanceFlyerEventEmitter = pack.WalletBalanceFlyerEventEmitter;
+});
 
 export const FlyerEventEmitter = new EventEmitter();
 

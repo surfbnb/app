@@ -1,4 +1,4 @@
-import utilities from '../services/Utilities';
+import { OstWalletUIWorkflowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import PepoApi from '../services/PepoApi';
 import deepGet from 'lodash/get';
 import Store from '../store';
@@ -7,12 +7,22 @@ import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
-import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
 import Toast from "../components/NotificationToast";
-import { OstWalletUIWorkflowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 
 // Used require to support all platforms
 const RCTNetworking = require("RCTNetworking");
+
+let utilities = null;
+import('../services/Utilities').then((pack) => {
+  console.log("pack", pack);
+  utilities = pack.default;
+  console.log("utilities", utilities);
+});
+
+let FlyerEventEmitter = null;
+import ('../components/CommonComponents/FlyerHOC').then( (pack) => {
+  FlyerEventEmitter = pack.FlyerEventEmitter;
+});
 
 class CurrentUser {
   constructor() {
@@ -190,7 +200,7 @@ class CurrentUser {
 
               if ( !userSalt ) {
                 //TODO: Figure out what to do here.
-                passphrasePrefixAccept.cancelFlow();                
+                passphrasePrefixAccept.cancelFlow();
               }
 
               // provide the passphrase to sdk.
