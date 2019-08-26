@@ -3,6 +3,11 @@ import PepoApi from '../services/PepoApi';
 import deepGet from "lodash/get";
 import CurrentUser from '../models/CurrentUser';
 
+if (!window.location) {
+    // App is running in simulator
+    window.navigator.userAgent = 'ReactNative';
+}
+
 export default class PepoSocket{
 
   constructor(userId) {
@@ -10,6 +15,7 @@ export default class PepoSocket{
     this.endPoint = null;
     this.protocol = null;
     this.payload = null;
+    this.socket = null;
   }
 
   setConnectionParams(response){
@@ -25,8 +31,35 @@ export default class PepoSocket{
         .get()
         .then((response) => {
             this.setConnectionParams(response);
-            console.log(`${this.protocol}://${this.endPoint}?auth_key_expiry_at=${this.authKeyExpiryAt}&payload=${this.payload}`);
-        })
+            console.log(`Connecting to socket :: ${this.protocol}://${this.endPoint}?auth_key_expiry_at=${this.authKeyExpiryAt}&payload=${this.payload}`);
+            const socket = io(`wss://${this.endPoint}`, {
+                query: {
+                    auth_key_expiry_at: this.authKeyExpiryAt,
+                    payload: this.payload+'abc'
+                }
+            });
+
+            //console.log(socket);
+
+            socket.on('connect', () => {
+                console.log('Connected to socket server');
+            });
+
+            socket.on('connect_error', (err) => {
+                console.log('connect_error :', err)
+            });
+
+            socket.on('disconnect', () => {
+                console.log("Disconnected Socket!")
+            });
+
+            socket.on('pepo-stream', payload => {
+                console.log('Socket payload pepo-stream:: ', payload);
+            })
+
+        });
   }
+
+
 
 }

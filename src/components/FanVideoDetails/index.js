@@ -49,7 +49,7 @@ class FanVideoDetails extends Component {
             navigation.goBack();
           })}
         >
-          <BackArrow />
+          <BackArrow forcePaddingLeft={true}/>
         </TouchableOpacity>
       )
     };
