@@ -14,9 +14,7 @@ const RCTNetworking = require("RCTNetworking");
 
 let utilities = null;
 import('../services/Utilities').then((pack) => {
-  console.log("pack", pack);
   utilities = pack.default;
-  console.log("utilities", utilities);
 });
 
 let FlyerEventEmitter = null;
