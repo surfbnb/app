@@ -2,7 +2,7 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
-  container:{
+  container: {
     backgroundColor: '#fff'
   },
   posterImageSkipFont: {
@@ -44,7 +44,8 @@ let stylesMap = {
   },
   suggestionTextWrapper: {
     marginTop: 20
-  }
+  },
+  linkText: { color: Colors.softBlue, flex: 1, marginLeft: 5 }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

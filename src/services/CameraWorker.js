@@ -20,7 +20,15 @@ import videoUploaderComponent from './CameraWorkerEventEmitter';
 import createObjectForRedux from '../helpers/createObjectForRedux';
 import Toast from '../components/NotificationToast';
 
-const recordedVideoStates = ['raw_video', 'compressed_video', 's3_video', 'cover_image', 's3_cover_image'];
+const recordedVideoStates = [
+  'raw_video',
+  'compressed_video',
+  's3_video',
+  'cover_image',
+  's3_cover_image',
+  'video_desc',
+  'video_link'
+];
 
 const processingStatuses = [
   'compression_processing',

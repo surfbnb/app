@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { TextInput, Image, Text } from 'react-native';
 
 import styles from './styles';
-import Theme from '../../theme/styles';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
 import defaultLinkIcon from '../../assets/default_link_icon.png';
 import URL from 'url';
@@ -33,6 +32,7 @@ class VideoLink extends Component {
         error: ''
       },
       () => {
+        this.props.setError(this.state.error);
         if (!this.validLink()) return;
         this.setSocialIcon();
         this.props.onChangeLink(value);
@@ -42,22 +42,35 @@ class VideoLink extends Component {
 
   setSocialIcon = () => {
     let url = URL.parse(this.state.value);
+    if (!url['hostname']) return;
     for (let domainName in WHITELISTED_DOMAINS) {
       if (url['hostname'].includes(WHITELISTED_DOMAINS[domainName])) {
-        // to check other way of checking invalid url
         this.setState({
           socialIcon: SOCIAL_ICONS[domainName]
+        });
+      } else {
+        this.setState({
+          socialIcon: SOCIAL_ICONS.DEFAULT
         });
       }
     }
   };
 
   validLink = () => {
-    let url = URL.parse(this.state.value);
-    if (!url['hostname']) {
-      this.setState({
-        error: 'Invalid link'
-      });
+    //synced with backend
+    if (
+      !this.state.value.match(
+        /^(http(s)?:\/\/)([a-zA-Z0-9-_@:%+~#=]{1,256}\.)+[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=*]*)$/i
+      )
+    ) {
+      this.setState(
+        {
+          error: 'Invalid link'
+        },
+        () => {
+          this.props.setError(this.state.error);
+        }
+      );
       return false;
     }
     return true;
@@ -68,7 +81,7 @@ class VideoLink extends Component {
       <React.Fragment>
         <Image style={{ height: 26, width: 26 }} source={this.state.socialIcon} />
         <TextInput
-          style={{ color: '#4a90e2', flex: 1, marginLeft: 5 }}
+          style={styles.linkText}
           numberOfLines={1}
           ellipsizeMode={'tail'}
           returnKeyType="done"
@@ -77,7 +90,6 @@ class VideoLink extends Component {
           onChangeText={this.onChangeValue}
           value={this.state.value}
         />
-        <Text style={Theme.Errors.errorText}>{this.state.error}</Text>
       </React.Fragment>
     );
   }

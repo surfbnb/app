@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, TouchableOpacity, Platform, Dimensions, View } from 'react-native';
+import { Image, ImageBackground, TouchableOpacity, Platform, Dimensions, View, Text } from 'react-native';
 
 import styles from './styles';
 import VideoDescription from './VideoDescription';
@@ -44,7 +44,6 @@ class FanVideoDetails extends Component {
       },
       headerLeft: (
         <TouchableOpacity
-          style={{ paddingLeft: 20 }}
           onPress={multipleClickHandler(() => {
             FanVideoDetails.saveToRedux(navigation);
             navigation.goBack();
@@ -72,18 +71,22 @@ class FanVideoDetails extends Component {
         marginBottom: 20,
         height: Dimensions.get('window').height - safeAreaHeight
       },
-    }
+      error: null
+    };
   }
   openedKeyboard(frames) {
     let deviceHeight = frames.endCoordinates.screenY;
     this.setState({
       viewStyle: {
         justifyContent: 'space-between',
-        ...isIphoneX({
-          height: Dimensions.get('window').height + safeAreaHeight + Header.HEIGHT - deviceHeight
-        }, {
-          height: Dimensions.get('window').height - safeAreaHeight + Header.HEIGHT - deviceHeight
-        })
+        ...isIphoneX(
+          {
+            height: Dimensions.get('window').height + safeAreaHeight + Header.HEIGHT - deviceHeight
+          },
+          {
+            height: Dimensions.get('window').height - safeAreaHeight + Header.HEIGHT - deviceHeight
+          }
+        )
       }
     });
   }
@@ -128,6 +131,12 @@ class FanVideoDetails extends Component {
     });
   };
 
+  setError = (error) => {
+    this.setState({
+      error
+    });
+  };
+
   render() {
     let imageUrl = this.props.recordedVideo.cover_image;
     return (
@@ -155,8 +164,12 @@ class FanVideoDetails extends Component {
               </TouchableOpacity>
               <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
             </View>
-            <View style={[styles.videoDescriptionItem,{ alignItems: 'center', paddingVertical: 5 }]}>
-              <VideoLink initialValue={this.props.recordedVideo.video_link} onChangeLink={this.onChangeLink} />
+            <View style={[styles.videoDescriptionItem, { alignItems: 'center', paddingVertical: 5 }]}>
+              <VideoLink
+                initialValue={this.props.recordedVideo.video_link}
+                onChangeLink={this.onChangeLink}
+                setError={this.setError}
+              />
             </View>
           </View>
           <LinearGradient
@@ -175,6 +188,7 @@ class FanVideoDetails extends Component {
               })}
             />
           </LinearGradient>
+          <Text style={[Theme.Errors.errorText, { alignSelf: 'center', paddingTop: 10 }]}>{this.state.error}</Text>
         </SafeAreaView>
       </KeyboardAwareScrollView>
     );
