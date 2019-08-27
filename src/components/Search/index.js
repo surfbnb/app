@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import SearchResults from './SearchResults';
 
 class SearchScreen extends Component {
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      header: null,
+      headerBackTitle: null
+    };
+  };
   constructor(props) {
     super(props);
     this.state = {
       searchParams: null,
       refresh: true,
-      resultsFound: true
+      noResultsFound: false
     };
   }
 
@@ -25,10 +31,10 @@ class SearchScreen extends Component {
   };
 
   onRefresh = (result) => {
-    let resultsFound = result && result.length > 0;
+    let noResultsFound = result && result.length === 0;
     this.setState({
       refresh: false,
-      resultsFound
+      noResultsFound
     });
   };
 
@@ -40,7 +46,7 @@ class SearchScreen extends Component {
         onRefresh={this.onRefresh}
         toRefresh={this.state.refresh}
         searchParams={this.state.searchParams}
-        resultsFound={this.state.resultsFound}
+        noResultsFound={this.state.noResultsFound}
       />
     );
   }

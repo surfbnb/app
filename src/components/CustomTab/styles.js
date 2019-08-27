@@ -14,7 +14,7 @@ let stylesMap = {
     shadowOffset: {width: 0, height: -1},
     shadowOpacity: 0.2,
     shadowRadius: 1,
-    // elevation: 1,
+    elevation: 5,
     alignItems: 'center',
     // borderColor: 'rgba(0, 0, 0, 0.25)',
     // borderWidth: 1,

@@ -23,11 +23,15 @@ class SearchResults extends Component {
     return (
       !this.props.refreshing &&
       this.props.searchParams && (
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <ActivityIndicator size="small" color={Colors.greyLite} />
-          <Text
-            style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}
-          >{`Searching for "${this.props.searchParams}"`}</Text>
+      (this.props.noResultsFound && !this.props.toRefresh ) ?
+        <View>
+          <Text style={{ alignSelf:'center', color: Colors.greyLite, fontSize: 14 }}>No results found!</Text>
+        </View>  
+        : <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <ActivityIndicator size="small" color={Colors.greyLite} />
+            <Text
+              style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}
+            >{`Searching for "${this.props.searchParams}"`}</Text>
         </View>
       )
     );

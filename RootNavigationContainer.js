@@ -101,8 +101,7 @@ const HomePushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen,
-    FanVideoDetails: FanVideoDetails
+    SupportersListScreen: SupportersListScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -128,8 +127,7 @@ const NotificationPushStack = createStackNavigator(
     UserVideoHistory: UserVideoHistory,
     VideoPlayer: VideoPlayer,
     SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen,
-    FanVideoDetails: FanVideoDetails
+    SupportersListScreen: SupportersListScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -154,8 +152,7 @@ const ProfilePushStack = createStackNavigator(
     SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
     ProfileEdit: ProfileEdit,
-    BioScreen: BioScreen,
-    FanVideoDetails: FanVideoDetails
+    BioScreen: BioScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -183,10 +180,23 @@ const ProfileStack = createStackNavigator(
   }
 );
 
+const SearchStack = createStackNavigator(
+  {
+    SearchScreen: SearchScreen,
+    UsersProfileScreen: UsersProfileScreen,
+    SupportingListScreen: SupportingListScreen,
+    SupportersListScreen: SupportersListScreen,
+    CaptureVideo: CaptureVideoStack
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
 const CustomTabStack = createBottomTabNavigator(
   {
     Home: HomeStack,
-    Search: SearchScreen,
+    Search: SearchStack,
     Notification: NotificationStack,
     Profile: ProfileStack
   },
