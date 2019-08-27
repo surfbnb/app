@@ -23,7 +23,7 @@ class SearchResults extends Component {
     return (
       !this.props.refreshing &&
       this.props.searchParams && (
-        <View style={{ paddingVertical: 40, flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <ActivityIndicator size="small" color={Colors.greyLite} />
           <Text
             style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}

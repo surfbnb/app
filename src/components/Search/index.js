@@ -6,7 +6,8 @@ class SearchScreen extends Component {
     super(props);
     this.state = {
       searchParams: null,
-      refresh: true
+      refresh: true,
+      resultsFound: true
     };
   }
 
@@ -23,9 +24,11 @@ class SearchScreen extends Component {
     });
   };
 
-  onRefresh = () => {
+  onRefresh = (result) => {
+    let resultsFound = result && result.length > 0;
     this.setState({
-      refresh: false
+      refresh: false,
+      resultsFound
     });
   };
 
@@ -37,6 +40,7 @@ class SearchScreen extends Component {
         onRefresh={this.onRefresh}
         toRefresh={this.state.refresh}
         searchParams={this.state.searchParams}
+        resultsFound={this.state.resultsFound}
       />
     );
   }
