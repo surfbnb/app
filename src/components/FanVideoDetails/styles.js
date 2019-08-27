@@ -1,9 +1,18 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
+import { Dimensions } from 'react-native';
+import { Header } from 'react-navigation';
+
+import { getStatusBarHeight, getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
+
+const safeAreaHeight = getStatusBarHeight() + getBottomSpace([true]);
 
 let stylesMap = {
   container: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    flex: 1,
+    justifyContent: 'space-between',
+    height: Dimensions.get('window').height - safeAreaHeight - Header.HEIGHT - 55
   },
   posterImageSkipFont: {
     aspectRatio: 3 / 4,

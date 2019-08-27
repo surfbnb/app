@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, TouchableOpacity, Platform, Dimensions, View, Text } from 'react-native';
+import { Image, ImageBackground, TouchableOpacity, Platform, View, Text, Keyboard } from 'react-native';
+import deepGet from 'lodash/get';
 
 import styles from './styles';
 import VideoDescription from './VideoDescription';
@@ -14,12 +15,8 @@ import reduxGetter from '../../services/ReduxGetters';
 import { connect } from 'react-redux';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
-import { Header, SafeAreaView } from 'react-navigation';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { getStatusBarHeight, getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import multipleClickHandler from '../../services/MultipleClickHandler';
-
-const safeAreaHeight = getStatusBarHeight() + getBottomSpace([true]);
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -67,34 +64,35 @@ class FanVideoDetails extends Component {
       videoDesc: '',
       videoLink: '',
       viewStyle: {
-        justifyContent: 'space-between',
-        marginBottom: 20,
-        height: Dimensions.get('window').height - safeAreaHeight - Header.HEIGHT
+        paddingBottom: 10
       },
       error: null
     };
   }
-  openedKeyboard(frames) {
-    let deviceHeight = frames.endCoordinates.screenY;
+  _keyboardShown = (e) => {
+    let keyboardHeight = deepGet(e, 'endCoordinates.height') || 350;
     this.setState({
       viewStyle: {
-        justifyContent: 'space-between',
-        ...isIphoneX(
-          {
-            height: Dimensions.get('window').height + safeAreaHeight + Header.HEIGHT - deviceHeight
-          },
-          {
-            height: Dimensions.get('window').height - safeAreaHeight + Header.HEIGHT - deviceHeight
-          }
-        )
+        //45 is calculated by custom tab height i.e 55 - paddingBottom of the view
+        paddingBottom: keyboardHeight - (45 + getBottomSpace([true]))
       }
     });
-  }
+  };
 
-  closedKeyboard(frames) {
+  _keyboardHidden = () => {
     this.setState({
-      viewStyle: { justifyContent: 'space-between', height: Dimensions.get('window').height - safeAreaHeight }
+      viewStyle: {
+        paddingBottom: 10
+      }
     });
+  };
+
+  componentWillMount() {
+    this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
+    this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
+
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
   }
 
   componentDidMount() {
@@ -102,6 +100,13 @@ class FanVideoDetails extends Component {
       videoDesc: this.props.recordedVideo.video_desc,
       videoLink: this.props.recordedVideo.video_link
     });
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowListener.remove();
+    this.keyboardWillHideListener.remove();
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
   }
 
   enableStartUploadFlag = () => {
@@ -140,59 +145,59 @@ class FanVideoDetails extends Component {
   render() {
     let imageUrl = this.props.recordedVideo.cover_image;
     return (
-      <SafeAreaView style={this.state.viewStyle}>
-        <KeyboardAwareScrollView
-          contentContainerStyle={[styles.container, this.state.viewStyle, { justifyContent: 'space-between' }]}
-          onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
-          onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
-          onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
-          onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
-          keyboardShouldPersistTaps="always"
-        >
-          <View style={{ backgroundColor: 'green' }}>
-            <View style={[styles.videoDescriptionItem]}>
-              <TouchableOpacity
-                onPress={multipleClickHandler(() => {
-                  FanVideoDetails.saveToRedux(this.props.navigation);
-                  this.props.navigation.goBack();
-                })}
-                style={{ height: 100 }}
-              >
-                <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
-                  <Image style={styles.playIconSkipFont} source={playIcon} />
-                </ImageBackground>
-              </TouchableOpacity>
-              <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
-            </View>
-            <View style={[styles.videoDescriptionItem, { alignItems: 'center', paddingVertical: 5 }]}>
-              <VideoLink
-                initialValue={this.props.recordedVideo.video_link}
-                onChangeLink={this.onChangeLink}
-                setError={this.setError}
-              />
-            </View>
-          </View>
-          <View style={{ backgroundColor: 'yellow' }}>
-            <LinearGradient
-              colors={['#ff7499', '#ff5566']}
-              locations={[0, 1]}
-              style={{ borderRadius: 3, marginHorizontal: 20 }}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
+      <View
+        style={[styles.container, this.state.viewStyle]}
+        onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
+        onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
+        onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
+        onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
+        keyboardShouldPersistTaps="always"
+        enableOnAndroid
+        eyboardOpeningTime={0}
+      >
+        <View>
+          <View style={[styles.videoDescriptionItem]}>
+            <TouchableOpacity
+              onPress={multipleClickHandler(() => {
+                FanVideoDetails.saveToRedux(this.props.navigation);
+                this.props.navigation.goBack();
+              })}
+              style={{ height: 100 }}
             >
-              <TouchableButton
-                TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
-                TextStyles={[Theme.Button.btnPinkText]}
-                text="SHARE"
-                onPress={multipleClickHandler(() => {
-                  this.enableStartUploadFlag();
-                })}
-              />
-            </LinearGradient>
-            <Text style={[Theme.Errors.errorText, { alignSelf: 'center', paddingTop: 10 }]}>{this.state.error}</Text>
+              <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
+                <Image style={styles.playIconSkipFont} source={playIcon} />
+              </ImageBackground>
+            </TouchableOpacity>
+            <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
           </View>
-        </KeyboardAwareScrollView>
-      </SafeAreaView>
+          <View style={[styles.videoDescriptionItem, { alignItems: 'center', paddingVertical: 5 }]}>
+            <VideoLink
+              initialValue={this.props.recordedVideo.video_link}
+              onChangeLink={this.onChangeLink}
+              setError={this.setError}
+            />
+          </View>
+        </View>
+        <View>
+          <LinearGradient
+            colors={['#ff7499', '#ff5566']}
+            locations={[0, 1]}
+            style={{ borderRadius: 3, marginHorizontal: 20 }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
+            <TouchableButton
+              TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
+              TextStyles={[Theme.Button.btnPinkText]}
+              text="SHARE"
+              onPress={multipleClickHandler(() => {
+                this.enableStartUploadFlag();
+              })}
+            />
+          </LinearGradient>
+          <Text style={[Theme.Errors.errorText, { alignSelf: 'center', paddingTop: 10 }]}>{this.state.error}</Text>
+        </View>
+      </View>
     );
   }
 }

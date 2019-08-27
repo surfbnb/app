@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
@@ -32,11 +32,8 @@ class BottomStatus extends PureComponent {
   render() {
     return (
       <View style={inlineStyles.bottomBg}>
-        <TouchableWithoutFeedback
-          onPress={multipleClickHandler(() => this.onWrapperClick())}
-          pointerEvents={'auto'}
-        >
-          <View style={{paddingTop: 8, paddingBottom: 5, paddingHorizontal: 12}}>
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onWrapperClick())} pointerEvents={'auto'}>
+          <View style={{ paddingTop: 8, paddingBottom: 5, paddingHorizontal: 12 }}>
             <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
               {`@${this.props.userName}`}
             </Text>
@@ -55,8 +52,10 @@ class BottomStatus extends PureComponent {
         </TouchableWithoutFeedback>
         {this.props.link ? (
           <TouchableWithoutFeedback
+            onPress={multipleClickHandler(() => Linking.openURL(this.props.link))}
+            pointerEvents={'auto'}
           >
-            <View style={{borderTopWidth: 0.5, borderColor: 'rgba(255, 255, 255, 0.3)', paddingHorizontal: 12}}>
+            <View style={{ borderTopWidth: 0.5, borderColor: 'rgba(255, 255, 255, 0.3)', paddingHorizontal: 12 }}>
               <Text
                 style={[{ fontSize: 14, paddingVertical: 4 }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}
@@ -66,7 +65,9 @@ class BottomStatus extends PureComponent {
               </Text>
             </View>
           </TouchableWithoutFeedback>
-        ) : <React.Fragment/>}
+        ) : (
+          <React.Fragment />
+        )}
       </View>
     );
   }

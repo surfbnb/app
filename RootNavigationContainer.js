@@ -180,16 +180,26 @@ const ProfileStack = createStackNavigator(
   }
 );
 
-const SearchStack = createStackNavigator(
+const SearchPushStack = createStackNavigator(
   {
     SearchScreen: SearchScreen,
     UsersProfileScreen: UsersProfileScreen,
     SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen,
-    CaptureVideo: CaptureVideoStack
+    SupportersListScreen: SupportersListScreen
   },
   {
     headerLayoutPreset: 'center'
+  }
+);
+
+const SearchStack = createStackNavigator(
+  {
+    SearchPushStack: SearchPushStack,
+    CaptureVideo: CaptureVideoStack
+  },
+  {
+    ...modalStackConfig,
+    ...txModalConfig
   }
 );
 
