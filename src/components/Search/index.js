@@ -1,52 +1,44 @@
 import React, { Component } from 'react';
-import {Image, View, TextInput, TouchableOpacity, Text, FlatList} from 'react-native';
-
-
-import styles from './styles';
-import Theme from "../../theme/styles";
-import AppConfig from "../../constants/AppConfig";
-import {shortenedFromNow} from "../../helpers/timestampHandling";
 import SearchResults from './SearchResults';
-
 
 class SearchScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchParams : ''
+      searchParams: null,
+      refresh: true
     };
-    this.setSearchParams = this.setSearchParams.bind(this);
   }
 
-  setSearchParams(params){
-    console.log('setSearchParams', params);
+  setSearchParams = (searchText) => {
+    let queryParams = '';
+    if (searchText && searchText.length >= 3) {
+      queryParams = searchText;
+    } else {
+      queryParams = null;
+    }
     this.setState({
-      searchParams : params
+      searchParams: queryParams,
+      refresh: true
     });
-    // this.callSearch();
-  }
+  };
 
-  // callSearch = () =>{
-  //   console.log(`/users/search?q=${this.state.searchParams}`);
-  //   return(
-  //     <SearchResults
-  //       fetchUrl={this.state.searchParams ? `/users/search?q=${this.state.searchParams}` : ''}
-  //       setSearchParams = {this.setSearchParams}
-  //     />
-  //   )
-  // }
-
+  onRefresh = () => {
+    this.setState({
+      refresh: false
+    });
+  };
 
   render() {
-    console.log(this.state.searchParams);
-    return(
+    return (
       <SearchResults
-        fetchUrl={this.state.searchParams ? `/users/search?q=${this.state.searchParams}` : ''}
-        setSearchParams = {this.setSearchParams}
+        fetchUrl={`/users/search?q=${this.state.searchParams}`}
+        setSearchParams={this.setSearchParams}
+        onRefresh={this.onRefresh}
+        toRefresh={this.state.refresh}
+        searchParams={this.state.searchParams}
       />
-    )
-
-
+    );
   }
 }
 

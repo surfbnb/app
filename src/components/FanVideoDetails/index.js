@@ -49,7 +49,7 @@ class FanVideoDetails extends Component {
             navigation.goBack();
           })}
         >
-          <BackArrow forcePaddingLeft={true}/>
+          <BackArrow forcePaddingLeft={true} />
         </TouchableOpacity>
       )
     };
@@ -69,7 +69,7 @@ class FanVideoDetails extends Component {
       viewStyle: {
         justifyContent: 'space-between',
         marginBottom: 20,
-        height: Dimensions.get('window').height - safeAreaHeight
+        height: Dimensions.get('window').height - safeAreaHeight - Header.HEIGHT
       },
       error: null
     };
@@ -140,16 +140,16 @@ class FanVideoDetails extends Component {
   render() {
     let imageUrl = this.props.recordedVideo.cover_image;
     return (
-      <KeyboardAwareScrollView
-        contentContainerStyle={[styles.container, this.state.viewStyle]}
-        onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
-        onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
-        onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
-        onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
-        keyboardShouldPersistTaps="always"
-      >
-        <SafeAreaView forceInset={{ top: 'always' }} style={[this.state.viewStyle]}>
-          <View>
+      <SafeAreaView style={this.state.viewStyle}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={[styles.container, this.state.viewStyle, { justifyContent: 'space-between' }]}
+          onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
+          onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
+          onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
+          onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
+          keyboardShouldPersistTaps="always"
+        >
+          <View style={{ backgroundColor: 'green' }}>
             <View style={[styles.videoDescriptionItem]}>
               <TouchableOpacity
                 onPress={multipleClickHandler(() => {
@@ -172,25 +172,27 @@ class FanVideoDetails extends Component {
               />
             </View>
           </View>
-          <LinearGradient
-            colors={['#ff7499', '#ff5566']}
-            locations={[0, 1]}
-            style={{ borderRadius: 3, marginHorizontal: 20 }}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          >
-            <TouchableButton
-              TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
-              TextStyles={[Theme.Button.btnPinkText]}
-              text="SHARE"
-              onPress={multipleClickHandler(() => {
-                this.enableStartUploadFlag();
-              })}
-            />
-          </LinearGradient>
-          <Text style={[Theme.Errors.errorText, { alignSelf: 'center', paddingTop: 10 }]}>{this.state.error}</Text>
-        </SafeAreaView>
-      </KeyboardAwareScrollView>
+          <View style={{ backgroundColor: 'yellow' }}>
+            <LinearGradient
+              colors={['#ff7499', '#ff5566']}
+              locations={[0, 1]}
+              style={{ borderRadius: 3, marginHorizontal: 20 }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
+              <TouchableButton
+                TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
+                TextStyles={[Theme.Button.btnPinkText]}
+                text="SHARE"
+                onPress={multipleClickHandler(() => {
+                  this.enableStartUploadFlag();
+                })}
+              />
+            </LinearGradient>
+            <Text style={[Theme.Errors.errorText, { alignSelf: 'center', paddingTop: 10 }]}>{this.state.error}</Text>
+          </View>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 }

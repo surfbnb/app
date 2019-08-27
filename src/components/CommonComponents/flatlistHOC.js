@@ -35,9 +35,13 @@ function flatlistHOC(ListComponent, options) {
       }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
       if (this.props.toRefresh) {
-        this.refresh();
+        if (this.props.fetchUrl != prevProps.fetchUrl) {
+          this.refresh(new FetchServices(this.props.fetchUrl));
+        } else {
+          this.refresh();
+        }
       }
     }
 

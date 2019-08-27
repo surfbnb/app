@@ -1,54 +1,59 @@
-import React , {Component} from 'react';
-import {Text,View,FlatList,Image} from 'react-native';
+import React, { Component } from 'react';
+import { FlatList, View, Text, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import styles from './styles';
-import Theme from "../../theme/styles";
 import User from './User';
-import ProfilePicture from "../ProfilePicture";
 import SearchListHeader from './SearchListHeader';
-import PepoPinkIcon from "../../assets/heart.png";
-import FlatListHoc from '../CommonComponents/flatlistHOC'
-
+import flatlistHOC from '../CommonComponents/flatlistHOC';
+import Colors from '../../theme/styles/Colors';
 
 class SearchResults extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
-  _keyEctractor = ({item,index}) => {
-    return item.id;
-  }
+  _keyExtractor = (item, index) => `id_${item}`;
 
-  _renderItem = ({item,index}) =>{
+  _renderItem = ({ item, index }) => {
+    return <User userId={item} />;
+  };
+
+  getEmptyComponent = () => {
     return (
-      <User
-        userId={item}
-      />)
+      !this.props.refreshing &&
+      this.props.searchParams && (
+        <View style={{ paddingVertical: 40, flexDirection: 'row', alignItems: 'center' }}>
+          <ActivityIndicator size="small" color={Colors.greyLite} />
+          <Text
+            style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}
+          >{`Searching for "${this.props.searchParams}"`}</Text>
+        </View>
+      )
+    );
+  };
 
-  }
-
-  render(){
-    return(
+  render() {
+    return (
       <SafeAreaView style={styles.container}>
         <FlatList
           data={this.props.list}
           onEndReached={this.props.getNext}
-          onRefresh={this.props.refresh}
+          onRefresh={this.props.onRefresh}
+          toRefresh={this.props.toRefresh}
+          keyExtractor={this._keyExtractor}
           refreshing={this.props.refreshing}
           onEndReachedThreshold={5}
           renderItem={this._renderItem}
-          ListHeaderComponent={<SearchListHeader setSearchParams={this.props.setSearchParams}/> }
+          ListEmptyComponent={this.getEmptyComponent}
+          ListHeaderComponent={<SearchListHeader setSearchParams={this.props.setSearchParams} />}
         />
-
-
       </SafeAreaView>
-
-    )
+    );
   }
-
 }
 
-export default FlatListHoc(SearchResults, {
-  keyPath: 'payload.user_id'
+export default flatlistHOC(SearchResults, {
+  keyPath: 'payload.user_id',
+  silentRefresh: true
 });

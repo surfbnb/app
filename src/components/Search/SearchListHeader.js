@@ -1,47 +1,66 @@
-import React,{Component} from 'react';
-import {Text,View,TouchableOpacity,Image,TextInput} from 'react-native';
+import React, { Component } from 'react';
+import { View, TouchableOpacity, Image, TextInput } from 'react-native';
 
-import Theme from "../../theme/styles";
-
+import Theme from '../../theme/styles';
 import searchNs from '../../assets/user-search-icon.png';
-import styles from "./styles";
-import CrossIcon from "../../assets/cross_icon.png";
+import styles from './styles';
+import CrossIcon from '../../assets/cross_icon.png';
 
-class SearchListHeader extends Component{
-  constructor(props){
+class SearchListHeader extends Component {
+  constructor(props) {
     super(props);
+    this.state = {
+      value: ''
+    };
   }
 
-  onChangeText = (text) =>{
-        if(text.length >= 3){
-          this.props.setSearchParams(text);
-        }
-  }
-  render(){
-    return(
+  onChangeText = (text) => {
+    this.props.setSearchParams(text);
+    this.setState({
+      value: text
+    });
+  };
 
-      <View style={{position: 'relative'}}>
-        <TouchableOpacity style={styles.iconsPos} activeOpacity={0.7}>
+  clearSearch = () => {
+    this.props.setSearchParams(null);
+    this.setState({
+      value: ''
+    });
+  };
+
+  render() {
+    return (
+      <View style={{ position: 'relative', justifyContent: 'center' }}>
+        <TouchableOpacity
+          style={[
+            styles.iconsPos,
+            {
+              justifyContent: 'center'
+            }
+          ]}
+          activeOpacity={0.7}
+        >
           <Image source={searchNs} style={[styles.searchIconSkipFont]} />
         </TouchableOpacity>
         <TextInput
           editable={true}
           ref="search_query"
           textContentType="none"
+          value={this.state.value}
           style={[Theme.TextInput.textInputStyle, styles.textInputUi]}
           placeholder="Search People / Usernames"
           returnKeyType="next"
           returnKeyLabel="next"
           placeholderTextColor="rgba(42, 41, 59, 0.4)"
-          onChangeText = {this.onChangeText}
+          onChangeText={this.onChangeText}
+          autocomplete="off"
         />
-        <TouchableOpacity style={[styles.iconsPos, {right: 0}]}>
+        <TouchableOpacity style={[styles.iconsPos, { right: 0, justifyContent: 'center' }]} onPress={this.clearSearch}>
           <Image source={CrossIcon} style={[styles.crossIconSkipFont]} />
         </TouchableOpacity>
       </View>
-    )
+    );
   }
-
 }
 
 export default SearchListHeader;
