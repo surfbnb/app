@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.smixx.fabric.FabricPackage;
 import com.crashlytics.android.Crashlytics;
@@ -45,6 +47,8 @@ public class MainApplication extends Application implements ReactApplication {
 
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNFirebasePackage(),
+            new RNFirebaseMessagingPackage(),
             new ReactVideoPackage(),
             new FabricPackage(),
             new RNDeviceInfo(),

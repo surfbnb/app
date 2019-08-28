@@ -45,6 +45,7 @@ import { NotificationToastComponent } from './src/components/NotificationToast';
 import SocketManager from './src/components/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
+import PushNotificationManager from './src/services/PushNotificationManager';
 
 const customTabHiddenRoutes = ['CaptureVideo'];
 
@@ -290,6 +291,7 @@ const RootNavigationContainer = () => (
     <AllowAccessModalScreen />
     <NotificationToastComponent />
     <SocketManager />
+    <PushNotificationManager />
   </Root>
 );
 

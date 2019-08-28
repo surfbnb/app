@@ -108,6 +108,7 @@
 		F2A32E0A60454BE284A285CE /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31DCA738643B4C8C8514EDE8 /* Lato-HairlineItalic.ttf */; };
 		FD1B3131FA5145A5A67CDE87 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A20954163BBA4DA493E99FCE /* Lato-Light.ttf */; };
 		FE9B0CCD60EE40268CC3C1DD /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7992EE0C56F44302ACD1F565 /* FontAwesome.ttf */; };
+		447300E3C09042CFA23D5C9F /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB47A46149204503A9909BC7 /* libRNFirebase.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -662,6 +663,8 @@
 		F3F319F40E4C450690D77546 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		F406518F2D434EC0A78FA040 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		FE776FBD854C4ABF96A4B23E /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
+		28D39F3F1C7F412BA45EDD63 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		BB47A46149204503A9909BC7 /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -720,6 +723,7 @@
 				002AAB6D22E6177E000E153B /* libRNCCameraRoll.a in Frameworks */,
 				003EBBBA22F87C73008C5DF4 /* libART.a in Frameworks */,
 				7781225922FD7EF300697E8C /* Crashlytics.framework in Frameworks */,
+				447300E3C09042CFA23D5C9F /* libRNFirebase.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1163,6 +1167,7 @@
 				3DA12082F59149FB814C82F7 /* ReactNativePermissions.xcodeproj */,
 				3C3B95280CE2413493668E17 /* RNDeviceInfo.xcodeproj */,
 				5E7E0A527AF64DDB95B586B0 /* SMXCrashlytics.xcodeproj */,
+				28D39F3F1C7F412BA45EDD63 /* RNFirebase.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1971,12 +1976,14 @@
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/Pepo2\"",
 					"\"$(SRCROOT)/Pepo2\"",
 					"\"$(SRCROOT)/Pepo2\"",
 					"\"$(SRCROOT)/Pepo2\"",
@@ -2025,12 +2032,14 @@
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/Pepo2\"",
 					"\"$(SRCROOT)/Pepo2\"",
 					"\"$(SRCROOT)/Pepo2\"",
 					"\"$(SRCROOT)/Pepo2\"",

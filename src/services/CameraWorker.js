@@ -414,10 +414,6 @@ class CameraWorker extends PureComponent {
     return dataforAsync;
   }
 
-  componentDidMount() {
-    // oThis.syncAsyncToRedux();
-  }
-
   render() {
     this.syncAsyncToRedux();
     this.syncReduxToAsync();
