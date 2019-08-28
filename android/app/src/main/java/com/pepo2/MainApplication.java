@@ -6,6 +6,7 @@ import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.smixx.fabric.FabricPackage;
 import com.crashlytics.android.Crashlytics;
@@ -49,6 +50,7 @@ public class MainApplication extends Application implements ReactApplication {
             new MainReactPackage(),
             new RNFirebasePackage(),
             new RNFirebaseMessagingPackage(),
+            new RNFirebaseNotificationsPackage(),
             new ReactVideoPackage(),
             new FabricPackage(),
             new RNDeviceInfo(),

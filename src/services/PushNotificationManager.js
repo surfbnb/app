@@ -9,10 +9,12 @@ class PushNotificationManager extends PureComponent {
 
     componentDidMount() {
         this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => this.sendToken(fcmToken));
+        this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notification) => console.log('onNotificationOpened', notification));
     }
 
     componentWillUnmount() {
         this.onTokenRefreshListener();
+        this.removeNotificationOpenedListener();
     }
 
     getToken() {
