@@ -5,8 +5,8 @@ let stylesMap = {
   item: {
     fontSize: 15,
     flex: 1,
-    fontWeight: '300',
-    color: Colors.midnightblue,
+    fontFamily: 'AvenirNext-Medium',
+    color: Colors.valhalla,
     marginLeft: 10
   },
   expressBtn: {
@@ -36,6 +36,30 @@ let stylesMap = {
     borderRadius: 20,
     height: 40,
     width: 40
+  },
+
+  numericInnerWrapper: {
+    borderTopLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    borderWidth: 1,
+    alignItems: 'center',
+    marginLeft: 'auto',
+    paddingHorizontal: 12,
+    height: 32,
+    justifyContent: 'center',
+    color: Colors.white,
+    borderColor: Colors.wildWatermelon2,
+    flexDirection: 'row'
+  },
+  numericInfoText: {
+    color: Colors.wildWatermelon2,
+    fontFamily: 'AvenirNext-DemiBold',
+    marginLeft: 8
+  },
+  imageIconSkipFont: {
+    width: 15,
+    height: 15
+
   }
 };
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback, BackHandler, AppState } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
@@ -10,18 +10,14 @@ import RNFS from 'react-native-fs';
 import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
-import AllowAccessModal from '../Profile/AllowAccessModal';
-import CameraIcon from '../../assets/camera_icon.png';
 import closeIcon from '../../assets/cross_icon.png';
+import { withNavigation } from 'react-navigation';
 
 import AppConfig from '../../constants/AppConfig';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
-const ACTION_SHEET_CANCEL_INDEX = 2;
-const ACTION_SHEET_DESCTRUCTIVE_INDEX = 0;
-
 const PROGRESS_FACTOR = 0.01;
 
 class VideoRecorder extends Component {
@@ -36,7 +32,13 @@ class VideoRecorder extends Component {
     this.recordedVideo = null;
   }
 
+  _handleAppStateChange = (nextAppState) => {
+    nextAppState === 'background' && this.cancleVideoHandling();
+  };
+
   async componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
+    AppState.addEventListener('change', this._handleAppStateChange);
     if (this.props.actionSheetOnRecordVideo) {
       this.recordedVideo = reduxGetters.getRecordedVideo();
       let isFileExists = false;
@@ -78,25 +80,18 @@ class VideoRecorder extends Component {
     );
   }
 
-  cancleVideoHandling = () => {
-    this.props.navigation.goBack();
+  cancelVideo = () => {
+    this.discardVideo = true;
+    this.stopRecording();
   };
 
-  showAppSettings = () => {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <AllowAccessModal
-          onClose={() => {
-            this.props.navigation.goBack();
-          }}
-          modalVisibility={true}
-          headerText="Camera"
-          accessText="Enable Camera Access"
-          accessTextDesc="Allow access to your camera and microphone to take video "
-          imageSrc={CameraIcon}
-        />
-      </View>
-    );
+  _handleBackPress = () => {
+    this.cancelVideo();
+  };
+
+  cancleVideoHandling = () => {
+    this.cancelVideo();
+    this.props.navigation.goBack();
   };
 
   cameraView() {
@@ -111,7 +106,11 @@ class VideoRecorder extends Component {
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
-          notAuthorizedView={this.showAppSettings()}
+          notAuthorizedView={
+            <View>
+              <Text>The camera is not authorized!</Text>
+            </View>
+          }
           pendingAuthorizationView={
             <View>
               <Text>The camera is pending authorization!</Text>
@@ -119,18 +118,6 @@ class VideoRecorder extends Component {
           }
           defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
           defaultMuted={false}
-          androidCameraPermissionOptions={{
-            title: 'Permission to use camera',
-            message: 'We need your permission to use your camera',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel'
-          }}
-          androidRecordAudioPermissionOptions={{
-            title: 'Permission to use audio recording',
-            message: 'We need your permission to use your audio',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel'
-          }}
         >
           <ProgressBar
             width={null}
@@ -192,7 +179,7 @@ class VideoRecorder extends Component {
 
   recordVideoAsync = async () => {
     if (!this.camera) return;
-    this.setState({ isRecording: true });
+    this.recordVideoStateChage();
     const options = {
       quality: RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY],
       base64: true,
@@ -202,13 +189,21 @@ class VideoRecorder extends Component {
     };
     this.initProgressBar();
     const data = await this.camera.recordAsync(options);
-
+    if (this.discardVideo) return;
     // This will take from VideoRecorder to PreviewRecordedVideo component
     this.props.goToPreviewScreen(data.uri);
   };
 
+  recordVideoStateChage() {
+    this.setState({ isRecording: true });
+    this.discardVideo = false;
+  }
+
   componentWillUnmount() {
     clearInterval(this.progressInterval);
+    this.recordVideoStateChage = () => {};
+    AppState.removeEventListener('change', this._handleAppStateChange);
+    BackHandler.removeEventListener('hardwareBackPress', this._handleBackPress);
   }
 
   render() {
@@ -217,4 +212,4 @@ class VideoRecorder extends Component {
 }
 
 //make this component available to the app
-export default VideoRecorder;
+export default withNavigation(VideoRecorder);

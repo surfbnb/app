@@ -1,7 +1,8 @@
 import deepGet from 'lodash/get';
-import round from "lodash/round";
+import unescape from "lodash/unescape"; 
+import round from 'lodash/round';
 import Store from '../store';
-import appConfig from "../constants/AppConfig"; 
+import appConfig from '../constants/AppConfig';
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -21,8 +22,10 @@ class ReduxGetters {
 
   getVideoUrl(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `video_entities.id_${id}.resolutions.${appConfig.videoConstant.videoWidth}.url`) || 
-    deepGet(state, `video_entities.id_${id}.resolutions.original.url`) ;
+    return (
+      deepGet(state, `video_entities.id_${id}.resolutions.${appConfig.videoConstant.videoWidth}.url`) ||
+      deepGet(state, `video_entities.id_${id}.resolutions.original.url`)
+    );
   }
 
   getUser(id, state) {
@@ -35,11 +38,14 @@ class ReduxGetters {
     return deepGet(state, `user_profile_entities.id_${id}`);
   }
 
-  getVideoImgUrl(id, state) {
+  getVideoImgUrl(id, state, size) {
     state = state || Store.getState();
+    size = size || appConfig.videoConstant.videoImageWidth;
     let posterImageId = deepGet(state, `video_entities.id_${id}.poster_image_id`);
-    return deepGet(state, `image_entities.id_${posterImageId}.resolutions.${appConfig.videoConstant.videoImageWidth}.url`) || 
-    deepGet(state, `image_entities.id_${posterImageId}.resolutions.original.url`) ;
+    return (
+      deepGet(state, `image_entities.id_${posterImageId}.resolutions.${size}.url`) ||
+      deepGet(state, `image_entities.id_${posterImageId}.resolutions.original.url`)
+    );
   }
 
   getUserName(id, state) {
@@ -52,14 +58,14 @@ class ReduxGetters {
     return deepGet(state, `user_entities.id_${id}.name`);
   }
 
-  getUserActivationStatus(id , state){
+  getUserActivationStatus(id, state) {
     state = state || Store.getState();
     return deepGet(state, `user_entities.id_${id}.ost_status`);
   }
 
   getBio(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `user_profile_entities.id_${id}.bio.text`);
+    return unescape(  deepGet(state, `user_profile_entities.id_${id}.bio.text`) );
   }
 
   getVideoSupporters(id, state) {
@@ -71,16 +77,16 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `video_stat_entities.id_${id}.total_amount_raised_in_wei`);
   }
-  
-  getVideoStats(id , state){
+
+  getVideoStats(id, state) {
     state = state || Store.getState();
     return deepGet(state, `video_stat_entities.id_${id}`);
   }
 
   isVideoSupported(id, state) {
     state = state || Store.getState();
-    let val = deepGet(state, `video_contribution_entities.id_${id}`); 
-    val =  val && Number(val);
+    let val = deepGet(state, `video_contribution_entities.id_${id}`);
+    val = val && Number(val);
     return !!val;
   }
 
@@ -122,12 +128,20 @@ class ReduxGetters {
 
   getUserCoverVideoId(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `user_profile_entities.id_${id}.cover_video_id`);
+    if (deepGet(state, `user_profile_entities.id_${id}.cover_video_id`)) {
+      return deepGet(state, `user_profile_entities.id_${id}.cover_video_id`);
+    } else if (deepGet(state, `recorded_video.cover_video_id`)) {
+      return deepGet(state, `recorded_video.cover_video_id`);
+    }
   }
 
   getUserCoverImageId(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `user_profile_entities.id_${id}.cover_image_id`);
+    if (deepGet(state, `user_profile_entities.id_${id}.cover_image_id`)) {
+      return deepGet(state, `user_profile_entities.id_${id}.cover_image_id`);
+    } else if (deepGet(state, `recorded_video.cover_image_id`)) {
+      return deepGet(state, `recorded_video.cover_image_id`);
+    }
   }
 
   getCurrentUserProfile(state) {
@@ -135,16 +149,28 @@ class ReduxGetters {
     return deepGet(state, `user_profile_entities.id_${CurrentUser.getUserId()}`);
   }
 
-  getImage(id, state) {
+  getImage(id, state, size) {
     state = state || Store.getState();
-    return deepGet(state, `image_entities.id_${id}.resolutions.${appConfig.videoConstant.videoImageWidth}.url`) ||
-      deepGet(state, `image_entities.id_${id}.resolutions.original.url`);
+    size = size || 'original';
+    return deepGet(state, `image_entities.id_${id}.resolutions.${size}.url`);
+  }
+
+  getUserVideoId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_video_entities.id_${id}.payload.video_id`);
+  }
+
+  getUserVideoUserId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_video_entities.id_${id}.payload.user_id`);
   }
 
   getProfileImage(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `image_entities.id_${id}.resolutions.${appConfig.profileImageConstants.imageWidth}.url`) ||
-      deepGet(state, `image_entities.id_${id}.resolutions.original.url`);
+    return (
+      deepGet(state, `image_entities.id_${id}.resolutions.${appConfig.profileImageConstants.imageWidth}.url`) ||
+      deepGet(state, `image_entities.id_${id}.resolutions.original.url`)
+    );
   }
 
   getUserLinkId(id, state) {
@@ -172,19 +198,19 @@ class ReduxGetters {
     return deepGet(state, `video_entities.id_${id}.uts`);
   }
 
-  getVideoSize(id, state , size ) {
+  getVideoSize(id, state, size) {
     state = state || Store.getState();
-    size =  size || "original" ; 
-    let byteSize = deepGet(state, `video_entities.id_${id}.resolutions.${size}.size`) ; 
-    return  byteSize && round( ( byteSize / 1024 ) / 1024  , 2) || "NA" ; 
+    size = size || 'original';
+    let byteSize = deepGet(state, `video_entities.id_${id}.resolutions.${size}.size`);
+    return (byteSize && round(byteSize / 1024 / 1024, 2)) || 'NA';
   }
 
-  getImageSize(id, state , size ) {
+  getImageSize(id, state, size) {
     state = state || Store.getState();
-    size =  size || "original" ; 
+    size = size || 'original';
     let posterImageId = deepGet(state, `video_entities.id_${id}.poster_image_id`);
-    let byteSize = deepGet(state, `image_entities.id_${posterImageId}.resolutions.${size}.size`) ; 
-    return  byteSize && round( ( byteSize / 1024 ) / 1024  , 2) || "NA" ; 
+    let byteSize = deepGet(state, `image_entities.id_${posterImageId}.resolutions.${size}.size`);
+    return (byteSize && round(byteSize / 1024 / 1024, 2)) || 'NA';
   }
 
   getVideoProcessingStatus(state) {
@@ -245,6 +271,46 @@ class ReduxGetters {
   getTransactionAmount(id, state) {
     state = state || Store.getState();
     return deepGet(state, `transaction_entities.id_${id}.amounts[0]`);
+  }
+
+  getUserContributionToStats(fromUserId, toUserId, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_contribution_to_stats.id_${fromUserId}[${toUserId}]['total_amount']`);
+  }
+
+  getUserContributionByStats(fromUserId, toUserId, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_contribution_by_stats.id_${toUserId}[${fromUserId}]['total_amount']`);
+  }
+
+  getNotificationHeading(notificationId, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_notifications.id_${notificationId}.heading`);
+  }
+
+  getNotificationPictureId(notificationId, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_notifications.id_${notificationId}.image_id`);
+  }
+
+  getNotificationKind(notificationId, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_notifications.id_${notificationId}.kind`);
+  }
+
+  getNotificationPayload(notificationId, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_notifications.id_${notificationId}.payload`);
+  }
+
+  getNotificationTimestamp(notificationId, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_notifications.id_${notificationId}.timestamp`);
+  }
+
+  getNotificationGoTo(notificationId, state){
+    state = state || Store.getState();
+    return deepGet(state, `user_notifications.id_${notificationId}.goto`);
   }
 }
 

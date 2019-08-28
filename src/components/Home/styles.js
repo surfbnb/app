@@ -14,10 +14,9 @@ let stylesMap = {
         height: Dimensions.get('window').height - CUSTOM_TAB_Height - getBottomSpace([true])
       },
       {
-        height: DeviceInfo.hasNotch()
+        height: (DeviceInfo.hasNotch() || StatusBar.currentHeight > 24)
           ? Dimensions.get('window').height - CUSTOM_TAB_Height + StatusBar.currentHeight
           : Dimensions.get('window').height - CUSTOM_TAB_Height
-        // height: Dimensions.get('window').height - CUSTOM_TAB_Height
       }
     )
   },
@@ -26,20 +25,10 @@ let stylesMap = {
     height: '100%'
   },
   touchablesBtns: {
-    width: '20%',
-    alignItems: 'center',
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
+    marginBottom: -15,
+    zIndex: 1
   },
-  // pepoElemBtn: {
-  //   height: 50,
-  //   width: 50,
-  //   marginBottom: 10,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   borderRadius: 25,
-  //   backgroundColor: 'red'
-  // elevation: 3
-  // },
   pepoTxCount: {
     fontSize: 18,
     color: Colors.white,
@@ -54,79 +43,40 @@ let stylesMap = {
     width: '100%',
     position: 'absolute',
     bottom: 0
-    // ...ifIphoneX(
-    //   {
-    //     bottom: 0
-    //   },
-    //   {
-    //     bottom: 0
-    //   }
-    // )
   },
-  // bottomExtraSpace: {
-  //   backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  //   ...ifIphoneX(
-  //     {
-  //       height: CUSTOM_TAB_Height + getBottomSpace([true])
-  //     },
-  //     {
-  //       height: CUSTOM_TAB_Height,
-  //     }
-  //   )
-  // },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    // maxHeight: 150,
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
+    alignItems: 'flex-start',
     paddingHorizontal: 15,
+    borderTopLeftRadius: 20,
     maxHeight: Dimensions.get('window').height * 0.15,
-    minHeight: Dimensions.get('window').height * 0.1
+    minHeight: Dimensions.get('window').height * 0.07
+  },
+  handle: {
+    fontSize: 15,
+    color: Colors.white,
+    fontFamily: 'AvenirNext-DemiBold'
   },
   bottomBgTxt: {
     color: Colors.white
   },
-  topContainer: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    zIndex: 1
-  },
-  topBg: {
-    backgroundColor: 'rgba(255, 255, 255, 0.45)',
-    paddingVertical: 5,
-    flexDirection: 'row',
-    paddingLeft: 12,
-    paddingRight: 8,
-    justifyContent: 'center',
+  raisedSupported: {
+    backgroundColor: Colors.wildWatermelon2,
+    borderTopLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    paddingHorizontal: 8,
+    width: 130,
+    height: 40,
     alignItems: 'center',
-    borderColor: Colors.gainsboro,
-    borderWidth: 0.5,
-    borderRadius: 2,
-    minWidth: 60
+    justifyContent: 'center',
+    marginRight: 10
   },
-  topBgTxt: {
-    color: Colors.paynesGrey,
+  raisedSupportedTxt: {
+    color: Colors.white,
     fontSize: 14,
-    marginLeft: 5
+    fontFamily: 'AvenirNext-DemiBold'
   },
-  topBgPosSkipFont: {
-    position: 'absolute',
-    left: -9
-  },
-  // clappedBubble: {
-  //   backgroundColor: Colors.wildWatermelon,
-  //   height: 50,
-  //   width: 50,
-  //   position: 'absolute',
-  // bottom: 0,
-  // right: 0,
-  // alignItems: 'center',
-  // justifyContent: 'center',
-  // borderRadius: 30,
-  // zIndex: -1
-  // },
   btnText: {
     color: Colors.white
   },

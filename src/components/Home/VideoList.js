@@ -14,6 +14,7 @@ class VideoList extends PureComponent {
     this.state = {
       activeIndex: 0
     };
+    this.flatlistRef = null;
   }
 
   onViewableItemsChanged(data) {
@@ -31,7 +32,7 @@ class VideoList extends PureComponent {
     return (
       <HomeFeedRow
         isActive={index == this.state.activeIndex}
-        doRender={Math.abs(index - currentIndex) < maxVideosThreshold}
+        doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
         feedId={item}
       />
     );
@@ -41,33 +42,44 @@ class VideoList extends PureComponent {
     this.setActiveIndex();
   };
 
-    render(){
-        return(
-            <FlatList
-                extraData={this.state}
-                snapToAlignment={"top"}
-                viewabilityConfig={{
-                  itemVisiblePercentThreshold: 90
-                }}
-                pagingEnabled={true}
-                decelerationRate={"fast"}
-                data={this.props.list}
-                onEndReached={this.props.getNext}
-                onRefresh={this.props.refresh}
-                keyExtractor={this._keyExtractor}
-                refreshing={this.props.refreshing}
-                initialNumToRender={maxVideosThreshold}
-                onEndReachedThreshold={7}
-                style={inlineStyles.fullScreen}
-                onViewableItemsChanged={ this.onViewableItemsChanged}
-                onMomentumScrollEnd={this.onMomentumScrollEndCallback}
-                onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
-                renderItem={this._renderItem}
-                showsVerticalScrollIndicator={false}
-            />
-        );
-    }
+  onScrollToTop = () => {
+    this.setActiveIndex();
+  };
 
+  //This only is required for android,  as scroll to top or momentumscrollend callback are not getting iterscepted. 
+  //This code is only for Android. Need to debug it a bit more.
+  forceSetActiveIndex( index=0 ){
+    this.setState({ activeIndex: index });
+  }
+
+  render() {
+    return (
+      <FlatList
+        extraData={this.state}
+        snapToAlignment={'top'}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 90
+        }}
+        pagingEnabled={true}
+        decelerationRate={'fast'}
+        data={this.props.list}
+        onEndReached={this.props.getNext}
+        onRefresh={this.props.refresh}
+        keyExtractor={this._keyExtractor}
+        refreshing={this.props.refreshing}
+        initialNumToRender={maxVideosThreshold}
+        onEndReachedThreshold={7}
+        style={inlineStyles.fullScreen}
+        onViewableItemsChanged={this.onViewableItemsChanged}
+        onMomentumScrollEnd={this.onMomentumScrollEndCallback}
+        onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
+        renderItem={this._renderItem}
+        showsVerticalScrollIndicator={false}
+        onScrollToTop={this.onScrollToTop}
+        ref={(ref) => (this.flatlistRef = ref)}
+      />
+    );
+  }
 }
 
-export default flatlistHOC(VideoList, true, true);
+export default flatlistHOC(VideoList, true);

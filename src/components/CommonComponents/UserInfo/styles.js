@@ -1,70 +1,64 @@
 import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../../theme/styles/Colors';
+import { Dimensions } from 'react-native';
 
 let stylesMap = {
-  balanceHeaderContainer: {
-    flex: 1,
-    backgroundColor: Colors.whiteSmoke,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 20
-  },
-  balanceHeader: {
-    borderRadius: 10,
-    paddingVertical: 10,
-    backgroundColor: Colors.primary,
-    alignItems: 'center'
-  },
-  balanceToptext: {
-    fontSize: 11,
-    color: Colors.white,
-    fontWeight: '500'
-  },
-  pepoBalance: {
-    fontSize: 18,
-    color: Colors.white,
-    fontWeight: '300'
-  },
-  usdBalance: {
-    fontSize: 16,
-    color: Colors.white,
-    fontWeight: '500'
-  },
   infoHeaderWrapper: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 10
+    width: Dimensions.get('window').width - 40,
+    backgroundColor: Colors.white,
+    borderTopLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    shadowColor: Colors.black,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    shadowOffset: {width: 0, height: 0},
+    elevation: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    marginBottom: 20
   },
-  profileImageSkipFont: {
-    height: 25,
-    width: 25,
-    borderRadius: 12.5,
+  userProfileImageSkipFont: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
     backgroundColor: Colors.gainsboro
   },
   userName: {
-    fontWeight: 'bold',
-    color: Colors.dark,
-    marginLeft: 5
+    color: Colors.valhalla,
+    marginRight: 8,
+    fontFamily: 'AvenirNext-DemiBold'
   },
   bioSection: {
     textAlign: 'center',
-    marginVertical: 10,
-    color: Colors.greyLite,
-    fontWeight: 'normal'
+    marginTop: 20,
+    paddingHorizontal: 30,
+    color: Colors.valhalla,
+    fontSize: 14
   },
   numericInfoWrapper: {
+    marginTop: 20,
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 15
+    width: Dimensions.get('window').width - 30
   },
-  numericInfo: {
-    color: Colors.dark,
-    fontWeight: 'bold',
-    textAlign: 'center'
+  numericInnerWrapper:{
+    // borderLeftWidth: 1,
+    // borderColor: '#ff5566',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // paddingHorizontal: 15,
+    color: Colors.valhalla,
+    flex: 1
+  },
+  numericInfoTextBold: {
+    fontFamily: 'AvenirNext-DemiBold'
   },
   numericInfoText: {
-    color: Colors.greyLite,
-    fontWeight: 'normal'
+    fontSize: 14,
+    color: Colors.valhalla,
+    fontFamily: 'AvenirNext-Regular'
   }
 };
 

@@ -2,68 +2,25 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
-  balanceHeaderContainer: {
-    // flex: 1,
-    backgroundColor: Colors.whiteSmoke,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 20
-  },
-  balanceHeader: {
-    borderRadius: 5,
-    paddingVertical: 12,
-    paddingHorizontal: 15,
-    backgroundColor: Colors.pinkRed,
-    flexDirection: 'row'
-  },
-  balanceToptext: {
-    fontSize: 20,
-    color: Colors.white,
-    fontWeight: '500',
-    marginLeft: 8
-  },
   pepoBalance: {
-    fontSize: 22,
-    color: Colors.white,
-    fontWeight: '300'
+    fontSize: 16,
+    color: Colors.wildWatermelon2,
+    fontFamily: 'AvenirNext-DemiBold'
   },
   usdBalance: {
-    fontSize: 16,
-    color: Colors.white,
-    fontWeight: '500'
+    fontSize: 14,
+    color: Colors.wildWatermelon2
   },
-  emptyCoverWrapper: {
-    marginTop: 20,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: Colors.light,
-    borderStyle: 'dashed',
-    backgroundColor: Colors.white,
-    borderRadius: 5,
-    alignItems: 'center'
-  },
-  videoIconBtn: {
-    marginVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 25,
-    width: 50,
-    height: 50,
-    borderWidth: 1,
-    borderColor: Colors.light
-  },
-  creatVideoText: {
-    color: Colors.primary
-  },
-  updateText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: Colors.greyLite
+  redeemBalance: {
+    fontSize: 12,
+    color: Colors.valhalla,
+    fontFamily: 'AvenirNext-Regular'
   },
   editProfileContainer: {
     height: 75,
     width: 75,
-    position: 'relative'
+    position: 'relative',
+    marginBottom: 20
   },
   editProfileIconTouch: {
     height: 50,
@@ -91,50 +48,50 @@ let stylesMap = {
     width: 75,
     borderRadius: 37.5
   },
-  accessText:{
-    fontSize:18,
-    color:Colors.azureBlue
+  accessText: {
+    fontSize: 18,
+    color: Colors.azureBlue,
+    textAlign: 'center'
   },
-  accessTextDesc:{
-    fontSize:15,
-    textAlign:'center',
-    fontWeight:'500',
-    marginVertical:20
+  accessTextDesc: {
+    fontSize: 15,
+    textAlign: 'center',
+    fontWeight: '500',
+    marginVertical: 20
   },
-  imageDimSkipFont:{
-    height:40,
-    width:50
+  imageDimSkipFont: {
+    height: 40,
+    width: 50
   },
-  accessAllowContent:{
-    alignItems:'center',
-    // justifyContent:'center',
-    flex:1,
-    marginTop:'25%',
-    marginHorizontal:30
+  accessAllowContent: {
+    alignItems: 'center',
+    flex: 1,
+    marginTop: '25%',
+    marginHorizontal: 30
   },
-  crossIconDimSkipFont:{
-    height:10,
-    width:10
+  crossIconDimSkipFont: {
+    height: 10,
+    width: 10
   },
-  crossIconWrapper:{
-    position:'absolute',
-    top:0,
-    left:0,
-    padding:20
+  crossIconWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    padding: 20
   },
-  allowAccessheader:{
-    justifyContent:'center',
-    alignItems:'center',
-    borderBottomColor:Colors.lightGrey,
-    borderBottomWidth:1,
-    flexDirection:'row',
-    width:'100%',
-    height:50
+  allowAccessheader: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: Colors.lightGrey,
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    width: '100%',
+    height: 50
   },
-  headerText:{
-    fontSize:15,
-    textAlign:'center',
-    fontWeight:'500',
+  headerText: {
+    fontSize: 15,
+    textAlign: 'center',
+    fontWeight: '500'
   }
 };
 

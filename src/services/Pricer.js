@@ -5,6 +5,7 @@ import {updateBalance} from "../actions";
 import Store from '../store';
 import PriceOracle from './PriceOracle';
 import ReduxGetter from "./ReduxGetters";
+import numeral from "numeral";
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -69,75 +70,11 @@ class Pricer {
     return PriceOracle.toBt(bt, precession);
   }
 
-
-  /**Unused state */
-
-  getToken(successCallback, forceRefresh) {
-    if (!forceRefresh && this.token) {
-      successCallback && successCallback(this.token);
-      return;
-    }
-    OstWalletSdk.getToken(TOKEN_ID, (token) => {
-      this.token = token;
-      successCallback && successCallback(token);
-    });
+  toDisplayAmount(amount) {
+    if(isNaN(amount)) return amount;
+    return numeral(amount).format('0[.]00a') || 0;
   }
 
-  getPricePoints(ostUserId, successCallback, errorCallback) {
-    let isCb = true;
-    if (!ostUserId) {
-      errorCallback &&
-        errorCallback({
-          success: false,
-          msg: 'No user found'
-        });
-      return;
-    }
-    if (this.pricePoints) {
-      successCallback && successCallback(this.pricePoints);
-      isCb = false;
-    }
-    OstJsonApi.getPricePointForUserId(
-      ostUserId,
-      (res) => {
-        this.pricePoints = deepGet(res, 'price_point.OST');
-        isCb && successCallback && successCallback(this.pricePoints, res);
-      },
-      (error) => {
-        isCb && errorCallback && errorCallback(error);
-      }
-    );
-  }
-
-  getPriceOracleConfig(ostUserId, successCallback, errorCallback) {
-    this.getToken((token) => {
-      this.getPricePoints(
-        ostUserId,
-        (pricePoints) => {
-          successCallback && successCallback(token, pricePoints);
-        },
-        (error) => {
-          errorCallback && errorCallback(error);
-        }
-      );
-    });
-  }
-
-  getBalanceWithPriceOracleConfig(ostUserId, successCallback, errorCallback) {
-    this.getToken((token) => {
-      this.getBalanceWithPricePoint(
-        ostUserId,
-        (pricePoints, bal) => {
-          successCallback && successCallback(token, pricePoints, bal);
-        },
-        (error) => {
-          errorCallback && errorCallback(error);
-        }
-      );
-    });
-  }
-
-  /** Unused End */
 }
 
 export default new Pricer();

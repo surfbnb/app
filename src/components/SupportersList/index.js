@@ -1,45 +1,39 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Dimensions, View } from 'react-native';
-import deepGet from 'lodash/get';
-import flatlistHOC from '../CommonComponents/flatlistHOC';
-import User from '../Users/User';
-import EmptyList from '../EmptyFriendsList/EmptyList';
-import Colors from '../../theme/styles/Colors';
+import SupportersList from './SupportersListComponent';
+import BackArrow from "../CommonComponents/BackArrow";
+import Colors from "../../theme/styles/Colors";
 
-class SupportersList extends PureComponent {
+class SupportersListScreen extends PureComponent {
+  
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      headerTitle: 'Supporters',
+      headerBackTitle: null,
+      headerStyle: {
+        backgroundColor: Colors.white,
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: {
+          width:0, height: 1
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
+      headerBackImage: <BackArrow />
+    };
+  };
+
   constructor(props) {
     super(props);
+    this.userId = this.props.navigation.getParam('userId') ; 
+    this.fetchUrl = `/users/${this.userId}/contribution-by`; 
   }
-
-  _keyExtractor = (item, index) => `id_${item}`;
-
-  _renderItem = ({ item, index }) => {
-    return <User id={item} />;
-  };
 
   render() {
     return (
-      <View style={this.props.list.length > 0 ? { flex: 1, height: Dimensions.get('window').height - 130 } : {}}>
-        <FlatList
-          data={this.props.list}
-          onEndReached={this.props.getNext}
-          onRefresh={this.props.refresh}
-          keyExtractor={this._keyExtractor}
-          refreshing={this.props.refreshing}
-          onEndReachedThreshold={5}
-          ListFooterComponent={this.props.renderFooter}
-          renderItem={this._renderItem}
-        />
-        {this.props.list && this.props.list.length == 0 && !this.props.refreshing && (
-          <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', backgroundColor: Colors.whiteSmoke }}
-          >
-            <EmptyList displayText="You are currently do not have any supporters" />
-          </View>
-        )}
-      </View>
+        <SupportersList fetchUrl={this.fetchUrl} userId={this.userId}/>
     );
   }
 }
 
-export default flatlistHOC(SupportersList);
+export default SupportersListScreen;

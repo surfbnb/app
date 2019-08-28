@@ -4,7 +4,10 @@ import qs from 'qs';
 import NetInfo from '@react-native-community/netinfo';
 import Package from '../../package';
 import { Platform } from 'react-native';
-import { Toast } from 'native-base';
+import Toast from '../components/NotificationToast';
+
+// Used require to support all platforms
+const RCTNetworking = require('RCTNetworking');
 
 import Store from '../store';
 import {
@@ -23,8 +26,12 @@ import {
   upsertHomeFeedEntities,
   upsertUserContributionEntities,
   upsertVideoContributionEntities,
+  upsertUserVideoEntities,
   updatePricePoints,
-  updateToken
+  updateToken,
+  upsertUserContributionByStats,
+  upsertUserContributionToStats,
+  upsertUserNotifications
 } from '../actions';
 import { API_ROOT } from '../constants/index';
 
@@ -137,9 +144,7 @@ export default class PepoApi {
     }
 
     if (data['current_user_video_contributions']) {
-      Store.dispatch(
-        upsertVideoContributionEntities(this._getEntities(data['current_user_video_contributions']))
-      );
+      Store.dispatch(upsertVideoContributionEntities(this._getEntities(data['current_user_video_contributions'])));
     }
 
     if (data['current_user_user_contributions']) {
@@ -150,8 +155,8 @@ export default class PepoApi {
       Store.dispatch(updatePricePoints(data['price_points']));
     }
 
-    if( data["token"] ){
-      Store.dispatch(updateToken( data["token"] ));
+    if (data['token']) {
+      Store.dispatch(updateToken(data['token']));
     }
 
     if (data['users']) {
@@ -166,16 +171,32 @@ export default class PepoApi {
       Store.dispatch(upsertUserEntities(this._getEntities(data['contribution_by_users'])));
     }
 
+    if (data['user_contribution_to_stats']) {
+      Store.dispatch(upsertUserContributionToStats(this._getEntities(data['user_contribution_to_stats'])));
+    }
+
+    if (data['user_contribution_by_stats']) {
+      Store.dispatch(upsertUserContributionByStats(this._getEntities(data['user_contribution_by_stats'])));
+    }
+
     if (data['contribution_suggestions']) {
       Store.dispatch(upsertUserEntities(this._getEntities(data['contribution_suggestions'])));
     }
 
-    if( data['public_activity'] ){
+    if (data['public_activity']) {
       Store.dispatch(upsertActivitiesEntities(this._getEntities(data['public_activity'])));
     }
 
-    if( data['user_activity'] ){
+    if (data['user_activity']) {
       Store.dispatch(upsertActivitiesEntities(this._getEntities(data['user_activity'])));
+    }
+
+    if (data['user_videos']) {
+      Store.dispatch(upsertUserVideoEntities(this._getEntities(data['user_videos'])));
+    }
+
+    if (data['user_notifications']) {
+      Store.dispatch(upsertUserNotifications(this._getEntities(data['user_notifications'])));
     }
 
     switch (resultType) {
@@ -197,7 +218,7 @@ export default class PepoApi {
   }
 
   _getEntities(entities, key = 'id') {
-    if ( entities instanceof Array ) {
+    if (entities instanceof Array) {
       return this._getEntitiesFromArray(entities, key);
     }
     return this._getEntitiesFromObj(entities, key);
@@ -214,7 +235,6 @@ export default class PepoApi {
   _getEntitiesFromObj(resultObj, key = 'id') {
     const entities = {};
     for (let identifier in resultObj) {
-
       entities[`${key}_${identifier}`] = resultObj[identifier];
     }
     return entities;
@@ -235,7 +255,7 @@ export default class PepoApi {
           console.log(`Error requesting ${this.cleanedUrl}. ${ostErrors.getUIErrorMessage('no_internet')}`);
           Toast.show({
             text: ostErrors.getUIErrorMessage('no_internet'),
-            buttonText: 'Ok'
+            icon: 'error'
           });
 
           // Cosider using reject here.
@@ -258,18 +278,20 @@ export default class PepoApi {
         this._dispatchData(responseJSON);
 
         switch (responseStatus) {
+          case 200:
+          case 301:
+          case 302:
+          case 304:
+          case 400:
+          case 409:
+            break;
           case 401:
-            CurrentUser.logout(responseJSON);
-            Store.dispatch(hideModal());
+            await CurrentUser.logout(responseJSON);
             break;
-          case 404:
-            Store.dispatch(hideModal());
-            break;
-          case 500:
-            Store.dispatch(hideModal());
+          default:
             Toast.show({
               text: ostErrors.getUIErrorMessage('general_error'),
-              buttonText: 'Okay'
+              icon: 'error'
             });
             break;
         }

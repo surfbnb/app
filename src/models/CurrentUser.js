@@ -5,11 +5,13 @@ import Store from '../store';
 import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
-import { LoginPopoverActions } from '../components/LoginPopover';
-import { Toast } from 'native-base';
-import { ostErrors } from '../services/OstErrors';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
+import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
+import Toast from "../components/NotificationToast";
+
+// Used require to support all platforms
+const RCTNetworking = require("RCTNetworking");
 
 class CurrentUser {
   constructor() {
@@ -40,7 +42,7 @@ class CurrentUser {
         }
 
         //We now have userObj.
-        return this.sync(userObj.user_id ,  true );
+        return this.sync(userObj.user_id, true);
       });
     });
   }
@@ -133,12 +135,19 @@ class CurrentUser {
   }
 
   async logout(params) {
-    await this.clearCurrentUser();
-    new PepoApi('/auth/logout')
+    await new PepoApi('/auth/logout')
       .post()
-      .catch((error) => {})
+      .catch((error) => {
+        Toast.show({
+          text: 'Logout failed please try again.',
+          icon: 'error'
+        });
+      })
       .then((res) => {
-        NavigationService.navigate('HomeScreen', params);
+        RCTNetworking.clearCookies(async () => {
+          await this.clearCurrentUser();
+          NavigationService.navigate('HomeScreen', params)
+        });
       });
   }
 
@@ -163,8 +172,8 @@ class CurrentUser {
   }
 
   getOstUserId() {
-    const user = this.getUser() || {}; 
-    return user["ost_user_id"] ;
+    const user = this.getUser() || {};
+    return user['ost_user_id'];
   }
 
   isActiveUser() {
@@ -174,6 +183,11 @@ class CurrentUser {
   isUserActivating() {
     const userStatusMap = appConfig.userStatusMap;
     return this.__getUserStatus() == userStatusMap.activating;
+  }
+
+  isAirDropped() {
+    const currentUser = this.getLogedinUser() || {};
+    return currentUser['signup_airdrop_status'] == 1;
   }
 
   __getUserStatus() {
@@ -190,34 +204,21 @@ class CurrentUser {
     return 'current_user_id';
   }
 
-  // Start Move this to utilities once all branches are merged.
-  checkActiveUser() {
-    if (!this.getOstUserId()) {
-      LoginPopoverActions.show();
-      return false;
-    }
-    return true;
-  }
-
   isUserActivated(emit) {
     const userStatusMap = appConfig.userStatusMap,
       returnVal = this.__getUserStatus() == userStatusMap.activated;
     if (!returnVal && emit) {
-      Toast.show({
-        text: ostErrors.getUIErrorMessage('user_not_active'),
-        buttonText: 'Okay'
-      });
+      FlyerEventEmitter.emit('onShowProfileFlyer', { id: 1 });
     }
     return returnVal;
   }
   // End Move this to utilities once all branches are merged.
-  
+
   setupDeviceFailed(ostWorkflowContext, error) {
     console.log('----- IMPORTANT :: SETUP DEVICE FAILED -----');
   }
-  
+
   setupDeviceComplete() {}
-  
 }
 
 export default new CurrentUser();

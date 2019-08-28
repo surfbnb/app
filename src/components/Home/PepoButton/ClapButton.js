@@ -1,8 +1,9 @@
 import * as React from "react";
 import {
-  View,
   Animated,
-  Easing
+  Easing,
+  View,
+  Vibration
 } from "react-native";
 import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
 import pepo_tx_img_disabled from "../../../assets/Pepo-tx-disabled.png"
@@ -22,7 +23,7 @@ export default class ClapButton extends React.Component{
 
 
   AnimateFunction(){
-    Animated.loop(
+    return Animated.loop(
       Animated.sequence([
         Animated.timing(this.state.scaleValue, {
           toValue: 1,
@@ -39,25 +40,21 @@ export default class ClapButton extends React.Component{
       {
         iterations: -1
       }
-    ).start();
-  }
-
-  componentDidMount(){
-    this.AnimateFunction();
+    );
   }
 
   render(){
     if(this.props.isClapping){
       this.firstClap = this.props.isClapping;
       this.timedClap = this.props.isClapping;
+      this.AnimateFunction().start();
+      Vibration.vibrate([1,1]);
       setTimeout(()=>{
         this.timedClap = false
       },95)
+    } else {
+      this.AnimateFunction().stop();
     }
-    let interpolateScaleIn = this.state.scaleValue.interpolate({
-      inputRange : [0, 0.5, 1],
-      outputRange : [1, 0.90, 1]
-    });
 
     let interpolatedRingOpacity = this.state.scaleValue.interpolate({
       inputRange: [0, 1],
@@ -70,14 +67,14 @@ export default class ClapButton extends React.Component{
     });
 
     return(
-      <React.Fragment>
+      <View>
         <Animated.Image
           id={this.props.id+"_animated_image1"}
           style={[{
             height: 50,
             width: 50,
             borderRadius :25,
-            borderWidth : this.props.isSelected || this.props.isClapping?3:0,
+            borderWidth : this.props.isSelected || this.props.isClapping? 3 : 0,
             borderColor: this.props.isSelected || this.props.isClapping?  Colors.primary : Colors.white,
             zIndex:100,
             ...this.timedClap ? {transform : [
@@ -113,7 +110,7 @@ export default class ClapButton extends React.Component{
 
         </Animated.View>
 
-      </React.Fragment>
+      </View>
     )
   }
 }

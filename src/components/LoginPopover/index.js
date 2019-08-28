@@ -68,7 +68,11 @@ class loginPopover extends React.Component {
                       style={{
                         position: 'absolute',
                         top: 15,
-                        right: 15
+                        right: 15,
+                        width: 38,
+                        height: 38,
+                        alignItems: 'center',
+                        justifyContent: 'center'
                       }}
                     >
                       <Image source={modalCross} style={{ width: 19.5, height: 19 }} />

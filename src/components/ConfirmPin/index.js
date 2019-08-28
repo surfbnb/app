@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Alert, Text, Image, Linking, KeyboardAvoidingView, Platform } from 'react-native';
-import Toast from '../../theme/components/Toast';
 import utilities from '../../services/Utilities';
 import PinInput from '../PinInput';
 import PinFooter from '../PinInput/PinFooter';
@@ -28,7 +27,7 @@ export default class ConfirmPin extends Component {
 
   onPinChange = (pin, resetPinCallback) => {
     if (pin === this.props.navigation.getParam('pin', '')) {
-      LoadingModal.show('Activating User...');
+      LoadingModal.show('Activating User...', 'This may take a while,\n we are surfing on Blockchain');
       ActivateUser.activateUser(pin, this);
     } else {
       if (resetPinCallback) {
@@ -40,7 +39,7 @@ export default class ConfirmPin extends Component {
 
   onRequestAcknowledge() {
     LoadingModal.hide();
-    this.props.navigation.navigate('HomeScreen');     
+    this.props.navigation.navigate('HomeScreen');
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
@@ -56,7 +55,6 @@ export default class ConfirmPin extends Component {
             If you forget your PIN, you cannot recover your Wallet. So please be sure to remember it.
           </Text>
           <PinInput {...this.props} onPinChange={this.onPinChange} />
-          <Toast timeout={3000} />
         </View>
 
         <PinFooter />

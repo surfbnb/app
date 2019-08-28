@@ -9,6 +9,7 @@ import ClapBubble from "./ClapBubble";
 import inlineStyles from '../styles'
 import ClapButton from "./ClapButton";
 import appConfig from "../../../constants/AppConfig";
+import Pricer from "../../../services/Pricer";
 
 const animDuration = 1000;
 const maxThreshold = appConfig.maxBtAllowedInSingleTransfer;
@@ -127,7 +128,7 @@ class PepoButton extends React.Component {
             />
           </View>
         </TouchableWithoutFeedback>
-        <Text style={inlineStyles.pepoTxCount}>{this.state.count || 0}</Text>
+        <Text style={inlineStyles.pepoTxCount}>{ Pricer.toDisplayAmount(this.state.count || 0 )}</Text>
       </React.Fragment>
     );
   }

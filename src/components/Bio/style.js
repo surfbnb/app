@@ -9,7 +9,7 @@ let stylesMap = {
   },
   suggestionText:{
     fontWeight:"normal",
-    color:Colors.midnightblue,
+    color:Colors.midNightblue,
     fontSize:18
   },
   suggestionTextWrapper : {

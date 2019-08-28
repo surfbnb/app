@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
 import com.smixx.fabric.FabricPackage;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
@@ -14,9 +15,7 @@ import com.existfragger.rnimagesize.RNImageSizePackage;
 import com.goldenowl.twittersignin.TwitterSigninPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
-import com.brentvatne.react.ReactVideoPackage;
 import org.reactnative.camera.RNCameraPackage;
-import com.brentvatne.react.ReactVideoPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.ostwalletrnsdk.OstWalletRnSdkPackage;
@@ -46,6 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
 
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new ReactVideoPackage(),
             new FabricPackage(),
             new RNDeviceInfo(),
             new AndroidOpenSettingsPackage(),
@@ -54,7 +54,6 @@ public class MainApplication extends Application implements ReactApplication {
             new TwitterSigninPackage(),
             new ImageResizerPackage(),
             new LinearGradientPackage(),
-            new ReactVideoPackage(),
             new RNCameraPackage(),
             new FastImageViewPackage(),
             new NetInfoPackage(),

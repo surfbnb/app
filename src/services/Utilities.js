@@ -1,9 +1,46 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import pricer from './Pricer';
-import PriceOracle from "./PriceOracle";
+import reduxGetters from './ReduxGetters';
 import appConfig from '../constants/AppConfig';
 
+import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
+import CurrentUser from '../models/CurrentUser';
+import { LoginPopoverActions } from '../components/LoginPopover';
+import Toast from '../components/NotificationToast';
+import CameraPermissionsApi from '../services/CameraPermissionsApi';
+import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
+let recursiveMaxCount = 0;
+
+let checkVideoPermission = function(navigation) {
+  CameraPermissionsApi.requestPermission('camera').then((cameraResult) => {
+    CameraPermissionsApi.requestPermission('microphone').then((microphoneResult) => {
+      if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
+        console.log('checkVideoPermission:cameraResult', cameraResult);
+        console.log('checkVideoPermission:microphoneResult', microphoneResult);
+        navigation.navigate('CaptureVideo');
+      } else if (
+        (Platform.OS == 'ios' && (cameraResult == 'denied' || microphoneResult == 'denied')) ||
+        cameraResult == 'restricted' ||
+        microphoneResult == 'restricted'
+      ) {
+        let accessText = '';
+        if ((cameraResult == 'denied' || cameraResult == 'restricted') && microphoneResult == 'authorized') {
+          accessText = 'Enable Camera Access';
+        } else if ((microphoneResult == 'denied' || microphoneResult == 'restricted') && cameraResult == 'authorized') {
+          accessText = 'Enable Microphone Access';
+        } else {
+          accessText = 'Enable Camera and Microphone Access';
+        }
+        allowAcessModalEventEmitter.emit('show', accessText);
+
+        // this.setState({
+        //   showCameraAccessModal: true
+        // });
+      }
+    });
+  });
+};
 
 export default {
   async saveItem(key, val) {
@@ -14,13 +51,13 @@ export default {
         val = String(val);
       }
       await AsyncStorage.removeItem(key);
-      await AsyncStorage.setItem(key, val);      
+      await AsyncStorage.setItem(key, val);
     } catch (error) {
       console.warn('AsyncStorage error: ' + error.message);
     }
   },
 
-  removeItem(key) {    
+  removeItem(key) {
     return AsyncStorage.removeItem(key);
   },
 
@@ -66,14 +103,47 @@ export default {
     return entities;
   },
 
-  _getEntityFromObj( resultObj , key = "id" ){
-    const entity = {} ,  id = `${key}_${resultObj.id}` ;
-    entity[ id ] = resultObj ;
+  _getEntityFromObj(resultObj, key = 'id') {
+    const entity = {},
+      id = `${key}_${resultObj.id}`;
+    entity[id] = resultObj;
     return entity;
   },
 
-  isUserActivated( status ){
-    status =  status || ""
-    return status.toLowerCase() == appConfig.userStatusMap.activated; 
+  isUserActivated(status) {
+    status = status || '';
+    return status.toLowerCase() == appConfig.userStatusMap.activated;
+  },
+
+  getLastChildRoutename(state) {
+    if (!state) return null;
+    let index = state.index,
+      routes = state.routes;
+    if (!routes || recursiveMaxCount > 10) {
+      recursiveMaxCount = 0;
+      return state.routeName;
+    }
+    recursiveMaxCount++;
+    return this.getLastChildRoutename(routes[index]);
+  },
+
+  handleVideoUploadModal(previousTabIndex, navigation) {
+    if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
+      FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
+    } else if (reduxGetters.getVideoProcessingStatus() == true) {
+      Toast.show({
+        text: 'Video uploading in progress.'
+      });
+    } else {
+      checkVideoPermission(navigation);
+    }
+  },
+
+  checkActiveUser(showPopover = true) {
+    if (!CurrentUser.getOstUserId() && showPopover) {
+      LoginPopoverActions.show();
+      return false;
+    }
+    return true;
   }
 };

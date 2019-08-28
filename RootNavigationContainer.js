@@ -2,9 +2,10 @@ import React from 'react';
 import { View, Dimensions, Easing, Animated } from 'react-native';
 import { Root } from 'native-base';
 import {
-  createMaterialTopTabNavigator,
+  createBottomTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
+  createDrawerNavigator,
   createAppContainer
 } from 'react-navigation';
 import deepGet from 'lodash/get';
@@ -12,62 +13,87 @@ import deepGet from 'lodash/get';
 import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
 import AuthScreen from './src/components/Authentication';
-import Users from './src/components/Users';
 import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';
 import CustomTab from './src/components/CustomTab';
-import Activities from './src/components/Activities';
 import TransactionScreen from './src/components/Transaction/TransactionScreen';
+import SayThanksScreen from './src/components/SayThanks';
 import Colors from './src/theme/styles/Colors';
 import ProfileScreen from './src/components/Profile/ProfileScreen';
+import ProfileEdit from './src/components/Profile/ProfileEditScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
-import Giphy from './src/components/Giphy';
-import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
-import EditTx from './src/components/Transaction/EditTxModal';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from './src/components/UsersProfile';
+import SupportingListScreen from './src/components/SupportingList';
+import SupportersListScreen from './src/components/SupportersList';
 import CameraWorker from './src/services/CameraWorker';
 import PictureWorker from './src/services/PictureWorker';
-import CaptureVideo from './src/components/CaptureVideo';
+import UserVideoHistory from './src/components/UserVideoHistory';
 import CaptureImage from './src/components/CaptureImage';
 import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
-import CurrentUser from './src/models/CurrentUser';
+import CaptureVideo from './src/components/CaptureVideo';
+import NotificationScreen from './src/components/Notification';
 import { StatusBarManager } from './src/services/StatusBarManager';
+import CustomDrawerContent from './src/components/CustomDrawerContent';
+import AllowAccessModalScreen from './src/components/AllowAccessModalScreen';
+import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
+import utilities from './src/services/Utilities';
+import { NotificationToastComponent } from './src/components/NotificationToast';
 
-const getRouteName = (navigation) => {
-  if (!navigation) return null;
-  let routeName = deepGet(navigation, 'state.routeName');
-  let stateIndex = deepGet(navigation, 'state.index');
-  let routes = deepGet(navigation, `state.routes[${stateIndex}]`);
-  if (routes) {
-    routeName = (routes && routes['routeName']) || routeName;
-    stateIndex = routes && routes.index;
-    routeName = deepGet(routes, `routes[${stateIndex}].routeName`) || routeName;
-  }
-  return routeName;
-};
+const customTabHiddenRoutes = ['CaptureVideo'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
   headerMode: 'none',
   mode: 'modal',
   navigationOptions: ({ navigation }) => {
-    const routeName = getRouteName(navigation);
+    const routeName = utilities.getLastChildRoutename(navigation.state);
     return {
-      swipeEnabled: CurrentUser.getOstUserId() ? true : false,
-      tabBarVisible: routeName == 'TransactionScreen' || routeName == 'VideoPlayer' ? false : true
+      tabBarVisible: !customTabHiddenRoutes.includes(routeName)
     };
   }
 };
 
-const HomeTransactionStack = createStackNavigator(
+const txModalConfig = {
+  transparentCard: true,
+  cardStyle: { backgroundColor: 'rgba(0,0,0,0.5)' },
+  gesturesEnabled: false,
+  transitionConfig: () => ({
+    transitionSpec: {
+      duration: 300,
+      easing: Easing.out(Easing.poly(4)),
+      timing: Animated.timing
+    },
+    screenInterpolator: (sceneProps) => {
+      const { layout, position, scene } = sceneProps;
+      const { index } = scene;
+
+      const height = layout.initHeight;
+      const translateY = position.interpolate({
+        inputRange: [index - 1, index, index + 1],
+        outputRange: [height, 0, 0]
+      });
+
+      const opacity = position.interpolate({
+        inputRange: [index - 1, index - 0.99, index],
+        outputRange: [0, 1, 1]
+      });
+
+      return { opacity, transform: [{ translateY }] };
+    }
+  })
+};
+
+const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
     UsersProfileScreen: UsersProfileScreen,
-    TransactionScreen: TransactionScreen
+    UserVideoHistory: UserVideoHistory,
+    SupportingListScreen: SupportingListScreen,
+    SupportersListScreen: SupportersListScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -76,86 +102,80 @@ const HomeTransactionStack = createStackNavigator(
 
 const HomeStack = createStackNavigator(
   {
-    HomeTransactionStack: HomeTransactionStack,
-    Giphy: Giphy,
-    EditTx: EditTx,
-    VideoPlayer: VideoPlayer
+    HomePushStack: HomePushStack,
+    TransactionScreen: TransactionScreen,
+    CaptureVideo: CaptureVideo
   },
-  { ...modalStackConfig }
+  {
+    ...modalStackConfig,
+    ...txModalConfig
+  }
 );
 
-const ActivityTransactionStack = createStackNavigator(
+const NotificationPushStack = createStackNavigator(
   {
-    ActivitiesScreen: Activities,
+    NotificationScreen: NotificationScreen,
     UsersProfileScreen: UsersProfileScreen,
-    TransactionScreen: TransactionScreen
+    UserVideoHistory: UserVideoHistory,
+    VideoPlayer: VideoPlayer,
+    SupportingListScreen: SupportingListScreen,
+    SupportersListScreen: SupportersListScreen
   },
   {
     headerLayoutPreset: 'center'
   }
 );
 
-const ActivityStack = createStackNavigator(
+const NotificationStack = createStackNavigator(
   {
-    ActivityTransactionStack: ActivityTransactionStack,
-    Giphy: Giphy,
-    EditTx: EditTx,
-    VideoPlayer: VideoPlayer
+    NotificationPushStack: NotificationPushStack,
+    TransactionScreen: TransactionScreen,
+    SayThanksScreen: SayThanksScreen,
+    CaptureVideo: CaptureVideo
   },
-  { ...modalStackConfig }
+  { ...modalStackConfig, ...txModalConfig }
 );
 
-const UserTransactionStack = createStackNavigator(
+const ProfilePushStack = createStackNavigator(
   {
-    UsersScreen: Users,
+    ProfileScreen: ProfileScreen,
+    UserVideoHistory: UserVideoHistory,
+    SupportingListScreen: SupportingListScreen,
+    SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
-    TransactionScreen: TransactionScreen
+    ProfileEdit: ProfileEdit,
+    BioScreen: BioScreen
   },
   {
     headerLayoutPreset: 'center'
   }
-);
-
-const UserStack = createStackNavigator(
-  {
-    UserTransactionStack: UserTransactionStack,
-    Giphy: Giphy,
-    EditTx: EditTx,
-    VideoPlayer: VideoPlayer
-  },
-  { ...modalStackConfig }
 );
 
 const ProfileStack = createStackNavigator(
   {
-    ProfileScreen: ProfileScreen,
-    BioScreen: BioScreen,
-    VideoPlayer: VideoPlayer,
-    CaptureVideo: CaptureVideo,
+    ProfilePushStack: ProfilePushStack,
     CaptureImageScreen: CaptureImage,
-    ImageGalleryScreen: ImageGallery
+    ImageGalleryScreen: ImageGallery,
+    TransactionScreen: TransactionScreen,
+    CaptureVideo: CaptureVideo
   },
   {
     headerLayoutPreset: 'center',
+    headerMode: 'none',
     mode: 'modal',
     navigationOptions: ({ navigation }) => {
-      const routeName = deepGet(navigation, 'state.routes[1].routeName');
       return {
-        tabBarVisible: deepGet(navigation, 'state.index') == 0 ? true : false,
-        swipeEnabled:
-          routeName == 'CaptureVideo' || routeName == 'CaptureImageScreen' || routeName == 'ImageGalleryScreen'
-            ? false
-            : true
+        tabBarVisible: deepGet(navigation, 'state.index') === 0
       };
-    }
+    },
+    ...txModalConfig
   }
 );
 
-const CustomTabStack = createMaterialTopTabNavigator(
+const CustomTabStack = createBottomTabNavigator(
   {
     Home: HomeStack,
-    Activities: ActivityStack,
-    Users: UserStack,
+    Notification: NotificationStack,
     Profile: ProfileStack
   },
   {
@@ -194,14 +214,28 @@ const PinStack = createStackNavigator(
   }
 );
 
+const DrawerNavigator = createDrawerNavigator(
+  {
+    CustomTabStack: CustomTabStack
+  },
+  {
+    drawerPosition: 'right',
+    drawerBackgroundColor: '#fff',
+    overlayColor: 'rgba(0, 0, 0, 0.8)',
+    drawerWidth: Dimensions.get('window').width - Dimensions.get('window').width / 5,
+    contentComponent: CustomDrawerContent,
+    drawerLockMode: 'locked-closed'
+  }
+);
+
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading,
       AuthScreen,
-      CustomTabStack,
       PinStack,
-      UserActivatingScreen
+      UserActivatingScreen,
+      DrawerNavigator
     },
     {
       initialRouteName: 'AuthLoading'
@@ -217,11 +251,12 @@ const RootNavigationContainer = () => (
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
     />
-
     <CameraWorker />
     <PictureWorker />
     <LoadingModalCover />
     <LoginPopover />
+    <AllowAccessModalScreen />
+    <NotificationToastComponent />
   </Root>
 );
 

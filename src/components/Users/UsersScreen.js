@@ -46,7 +46,7 @@ class Users extends PureComponent {
     if (index == SUPPORTING_INDEX) {
       return (
         <View style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}>
-          <SupportingList fetchUrl={'/users/contribution-to'} />
+          <SupportingList fetchUrl={`/users/${CurrentUser.getUserId()}/contribution-to`} />
         </View>
       );
     } else if (index == SUPPORTER_INDEX) {

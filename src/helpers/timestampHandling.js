@@ -1,12 +1,26 @@
 import moment from 'moment';
 
-export default class TimestampHandling {
-  static fromNow(tsInSeconds) {
-    let tsInMilliSeconds = tsInSeconds * 1000;
-    if (Math.abs(moment().diff(tsInMilliSeconds)) < 60 * 1000) {
-      // 1000 milliseconds
-      return 'just now';
+const updateLocaleForShortTimeFormat = () => {
+  moment.updateLocale('en', {
+    relativeTime : {          
+        s  : '%ds',
+        ss : '%ds',
+        m:  "%dm",
+        mm: "%dm",
+        h:  "%dh",
+        hh: "%dh",
+        d:  "%dd",
+        dd: "%dd",
+        M:  "%dM",
+        MM: "%dM",
+        y:  "%dy",
+        yy: "%dy"
     }
-    return moment(tsInMilliSeconds).fromNow();
-  }
+  });
+}
+
+export const shortenedFromNow = (tsInSeconds) => {
+  let tsInMilliSeconds = tsInSeconds;
+  updateLocaleForShortTimeFormat(); 
+  return moment(tsInMilliSeconds).fromNow(true);   
 }

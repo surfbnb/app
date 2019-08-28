@@ -1,5 +1,16 @@
 import pepo_icon from '../assets/pepo-white-icon.png';
 import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
+
+const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
+  PROFILE_TX_RECEIVE_SUCCESS = 'PROFILE_TX_RECEIVE_SUCCESS',
+  VIDEO_TX_SEND_SUCCESS = 'VIDEO_TX_SEND_SUCCESS',
+  VIDEO_TX_RECEIVE_SUCCESS = 'VIDEO_TX_RECEIVE_SUCCESS',
+  VIDEO_ADD = 'VIDEO_ADD',
+  CONTRIBUTION_THANKS = 'CONTRIBUTION_THANKS',
+  SYSTEM_NOTIFICATION = 'SYSTEM_NOTIFICATION',
+  PROFILE_TX_SEND_FAILURE = 'PROFILE_TX_SEND_FAILURE',
+  VIDEO_TX_SEND_FAILURE = 'VIDEO_TX_SEND_FAILURE';
+
 export default {
   userStatusMap: {
     activated: 'activated',
@@ -77,14 +88,75 @@ export default {
     HEIGHT: 480
   },
 
-  videoConstant : {
-    videoWidth: "576w",
-    videoImageWidth : "original"
+  videoConstant: {
+    videoWidth: '576w',
+    videoImageWidth: 'original'
   },
 
-  profileImageConstants : {
-    imageWidth: "144w"
+  profileImageConstants: {
+    imageWidth: '144w'
   },
 
-  cameraHeightRatio : 0.6
+  userVideos: {
+    userScreenCoverImageWidth: '288w'
+  },
+
+  cameraHeightRatio: 0.6,
+
+  notificationConstants: {
+    profileTxSendKind: PROFILE_TX_SEND_SUCCESS,
+    profileTxReceiveKind: PROFILE_TX_RECEIVE_SUCCESS,
+    videoTxSendKind: VIDEO_TX_SEND_SUCCESS,
+    videoTxReceiveKind: VIDEO_TX_RECEIVE_SUCCESS,
+    videoAddKind: VIDEO_ADD,
+    AppreciationKind: CONTRIBUTION_THANKS,
+    systemNotification: SYSTEM_NOTIFICATION,
+    showCoinComponentArray: [
+      PROFILE_TX_SEND_SUCCESS,
+      PROFILE_TX_RECEIVE_SUCCESS,
+      VIDEO_TX_SEND_SUCCESS,
+      VIDEO_TX_RECEIVE_SUCCESS,
+      PROFILE_TX_SEND_FAILURE,
+      VIDEO_TX_SEND_FAILURE
+    ],
+    whitelistedNotificationKinds: [
+      PROFILE_TX_SEND_SUCCESS,
+      PROFILE_TX_RECEIVE_SUCCESS,
+      VIDEO_TX_SEND_SUCCESS,
+      VIDEO_TX_RECEIVE_SUCCESS,
+      VIDEO_ADD,
+      CONTRIBUTION_THANKS,
+      SYSTEM_NOTIFICATION,
+      PROFILE_TX_SEND_FAILURE,
+      VIDEO_TX_SEND_FAILURE
+    ]
+  },
+
+  tabConfig: {
+    tab1: {
+      rootStack: 'Home',
+      childStack: 'HomeScreen',
+      navigationIndex: 0
+    },
+    tab2: {
+      rootStack: 'Search',
+      childStack: 'SearchScreen',
+      navigationIndex: null
+    },
+    tab3: {
+      rootStack: 'CaptureVideo',
+      childStack: 'CaptureVideo',
+      navigationIndex: null
+    },
+    tab4: {
+      rootStack: 'Notification',
+      childStack: 'NotificationScreen',
+      navigationIndex: 1
+    },
+    tab5: {
+      rootStack: 'Profile',
+      childStack: 'ProfileScreen',
+      navigationIndex: 2
+    }
+  }
 };

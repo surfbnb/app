@@ -8,7 +8,8 @@ import profilePicture from '../../assets/default_user_icon.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    profilePicture: reduxGetter.getProfileImage(reduxGetter.getProfileImageId(ownProps.userId, state), state)
+    profilePicture: ownProps.userId ? reduxGetter.getProfileImage(reduxGetter.getProfileImageId(ownProps.userId, state), state) :
+    reduxGetter.getProfileImage(ownProps.pictureId)
   };
 };
 let getImageSrc = (props) => {
@@ -19,7 +20,7 @@ let getImageSrc = (props) => {
     src = profilePicture;
   }
 
-  return <FastImage style={[{ backgroundColor: Colors.gainsboro }, inlineStyle.profileImageSkipFont]} source={src} />;
+  return <FastImage style={[{ backgroundColor: Colors.gainsboro} , inlineStyle.profileImageSkipFont, props.style]} source={src} />;
 };
 
 export default connect(mapStateToProps)(getImageSrc);

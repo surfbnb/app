@@ -4,16 +4,23 @@ import { Platform } from 'react-native';
 
 let styles = {
   textInputStyle: {
-    borderColor: Colors.light,
-    borderWidth: 1,
-    borderRadius: 6,
+    borderColor: Colors.seaMist,
+    borderWidth: 1.2,
+    borderRadius: 3,
     fontSize: 17,
     fontWeight: '300',
     padding: 5,
     paddingLeft: 15,
-    marginTop: 10,
+    marginTop: 5,
     color: Colors.dark,
     height: Platform.OS === 'ios' ? 46 : 46
+  },
+
+  labelStyle:{
+    color: Colors.valhalla,
+    fontSize: 16,
+    marginLeft: 10,
+    fontFamily: 'AvenirNext-Medium'
   }
 };
 

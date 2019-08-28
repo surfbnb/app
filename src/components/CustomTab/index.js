@@ -1,113 +1,102 @@
-import React, { Component } from 'react';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
-import { StackActions, NavigationActions, SafeAreaView } from 'react-navigation';
+import React from 'react';
+import { TouchableOpacity, Image } from 'react-native';
+import { StackActions, SafeAreaView } from 'react-navigation';
 
 import styles from './styles';
-import feed from '../../assets/user_feed.png';
-import global from '../../assets/user_global.png';
-import profile from '../../assets/user_profile.png';
-import friends from '../../assets/user_friends.png';
+import homeNs from '../../assets/user-home-icon.png';
+import homeSelected from '../../assets/user-home-icon-selected.png';
+import profileNs from '../../assets/user-profile-icon.png';
+import profileSelected from '../../assets/user-profile-icon-selected.png';
+import searchNs from '../../assets/user-search-icon.png';
+import searchSelected from '../../assets/user-search-icon-selected.png';
+import activityNs from '../../assets/user-activity-icon.png';
+import activitySelected from '../../assets/user-activity-icon-selected.png';
+import videoNs from '../../assets/user-video-capture-icon.png';
+import utilities from '../../services/Utilities';
+import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import CurrentUser from '../../models/CurrentUser';
-
-const tabConfig = {
-  tab1: {
-    rootStack: 'Home',
-    childStack: 'HomeScreen',
-    index: 0
-  },
-  tab2: {
-    rootStack: 'Activities',
-    childStack: 'ActivitiesScreen',
-    index: 1
-  },
-  tab3: {
-    rootStack: 'Users',
-    childStack: 'UsersScreen',
-    index: 2
-  },
-  tab4: {
-    rootStack: 'Profile',
-    childStack: 'ProfileScreen',
-    index: 3
-  }
-};
+import { LoginPopoverActions } from '../../components/LoginPopover';
+import appConfig from '../../constants/AppConfig';
 
 let previousTabIndex = 0;
 
-let recursiveMaxCount = 0;
-
-function getLastChildRoutename(state) {
-  if (!state) return null;
-  let index = state.index,
-    routes = state.routes;
-  if (!routes || recursiveMaxCount > 10) {
-    recursiveMaxCount = 0;
-    return state.routeName;
+function onTabPressed(navigation, tab) {
+  if (CurrentUser.getOstUserId()) {
+    loginInFlow(navigation, tab);
+  } else {
+    logoutFlow(navigation, tab);
   }
-  recursiveMaxCount++;
-  console.log('recursiveMaxCount', recursiveMaxCount);
-  return getLastChildRoutename(routes[index]);
 }
 
-function onTabPressed(navigation, tab) {
-  if (!CurrentUser.checkActiveUser()) return;
-  if (previousTabIndex != tab.index) {
+let refreshTimeOut = 0 ; 
+
+function loginInFlow(navigation, tab) {
+  let currentTabIndex = tab.navigationIndex;
+  if (tab.rootStack === 'CaptureVideo') {
+    utilities.handleVideoUploadModal(previousTabIndex , navigation);
+    return;
+  }
+  if (currentTabIndex == undefined || currentTabIndex == null) return;
+  if (previousTabIndex !== currentTabIndex) {
     navigation.navigate(tab.rootStack);
-  } else {
+  } else if (utilities.getLastChildRoutename(navigation.state) !== tab.childStack) {
     try {
-      if (getLastChildRoutename(navigation.state) !== tab.childStack) {
-        navigation.dispatch(StackActions.popToTop());
-      }
+      navigation.dispatch(StackActions.popToTop());
     } catch {
       console.log('Catch error');
     }
+  } else {
+    clearTimeout(refreshTimeOut)
+    refreshTimeOut = setTimeout(() => {
+      NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
+    } , 300) 
   }
-  previousTabIndex = tab.index;
 }
 
-const CustomTab = ({ navigation, screenProps }) => (
-  <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab1)}>
-      <Image
-        tintColor={navigation.state.index === tabConfig.tab1.index ? '#61b2d6' : 'rgb(72,72,72)'}
-        style={[
-          styles.tabElementSkipFont,
-          { tintColor: navigation.state.index === tabConfig.tab1.index ? '#ef5566' : '#484848' }
-        ]}
-        source={global}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab2)}>
-      <Image
-        tintColor={navigation.state.index === tabConfig.tab2.index ? '#61b2d6' : 'rgb(72,72,72)'}
-        style={[
-          { height: 24, width: 28 },
-          { tintColor: navigation.state.index === tabConfig.tab2.index ? '#ef5566' : '#484848' }
-        ]}
-        source={feed}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab3)}>
-      <Image
-        tintColor={navigation.state.index === tabConfig.tab3.index ? '#61b2d6' : '#484848'}
-        style={[
-          styles.tabElementFriendsSkipFont,
-          { tintColor: navigation.state.index === tabConfig.tab3.index ? '#ef5566' : '#484848' }
-        ]}
-        source={friends}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => onTabPressed(navigation, tabConfig.tab4)}>
-      <Image
-        tintColor={navigation.state.index === tabConfig.tab4.index ? '#61b2d6' : '#484848'}
-        style={[
-          styles.tabElementSkipFont,
-          { tintColor: navigation.state.index === tabConfig.tab4.index ? '#ef5566' : '#484848' }
-        ]}
-        source={profile}
-      />
-    </TouchableOpacity>
-  </SafeAreaView>
-);
+function logoutFlow(navigation, tab) {
+  if (tab.navigationIndex == appConfig.tabConfig.tab1.navigationIndex) {
+    clearTimeout(refreshTimeOut);
+    refreshTimeOut = setTimeout(() => {
+      NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
+    }, 300)
+  } else {
+    LoginPopoverActions.show();
+  }
+}
+
+const CustomTab = ({ navigation, screenProps }) => {
+  previousTabIndex = navigation.state.index;
+  return (
+    <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab1)}>
+        <Image
+          style={[styles.tabElementSkipFont]}
+          source={navigation.state.index === appConfig.tabConfig.tab1.navigationIndex ? homeSelected : homeNs}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab2)}>
+        <Image
+          style={[styles.tabElementSkipFont]}
+          source={navigation.state.index === appConfig.tabConfig.tab2.navigationIndex ? searchSelected : searchNs}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab3)}>
+        <Image style={[styles.tabElementSkipFont]} source={videoNs} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab4)}>
+        <Image
+          style={[styles.tabElementSkipFont]}
+          source={navigation.state.index === appConfig.tabConfig.tab4.navigationIndex ? activitySelected : activityNs}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab5)}>
+        <Image
+          style={[styles.tabElementSkipFont]}
+          source={navigation.state.index === appConfig.tabConfig.tab5.navigationIndex ? profileSelected : profileNs}
+        />
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
+};
 
 export default CustomTab;

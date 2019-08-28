@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
-import air_drop from '../../assets/airdrop.png';
+import air_drop from '../../assets/airdrop-create-pin.png';
 import styles from './Style';
 
 // create a component
@@ -26,29 +26,33 @@ export default class UserActivatingScreen extends Component {
                 minHeight: '100%'
               }}
             showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>Welcome to Pepo</Text>
-            <Text style={styles.subTitle}>Congratulations, you received</Text>
-            <Text style={styles.coinsCount}>200 Pepo Coins</Text>
+            <View style={{marginBottom: 20}}>
+              <Image source={air_drop} style={{width: 296.5, height: 289.5}} />
+              <View style={{position: 'absolute', bottom: 3, left: 0, right: 0}}>
+                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-DemiBold', fontSize: 12, letterSpacing: 1}}>YOU’VE RECEIVED</Text>
+                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-Bold', fontSize: 14, letterSpacing: 2}}>200 PEPO COINS</Text>
+              </View>
+            </View>
+            <Text style={[styles.descTxt, {marginBottom: 3}]}>Pepo coins can be used to support your</Text>
+            <Text style={[styles.descTxt, {marginBottom: 50}]}>favorite creators!</Text>
+            <Text style={styles.descTxt}>Create a PIN to access your wallet and</Text>
+            <Text style={[styles.descTxt, {marginTop: 3}]}>claim Pepo Coins</Text>
             <LinearGradient
-              colors={['#ffffff', '#ffdea3', '#ffffff']}
-              style={{paddingVertical: 25, paddingHorizontal: 50, marginTop: 25, alignItems: 'center'}}
+              colors={['#ff7499', '#ff5566']}
+              locations={[0, 1]}
+              style={{ marginTop: 30, marginHorizontal: 35, borderRadius: 3}}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             >
-                <Text style={{fontSize: 16, textAlign: "center"}}>Pepo coins can be used to</Text>
-                <Text style={{fontSize: 16, textAlign: "center", marginTop: 3}}>support your favorite creators!</Text>
+              <TouchableButton
+              TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0}]}
+              TextStyles={[Theme.Button.btnPinkText]}
+              text="Create PIN"
+              onPress={() => {
+                this.onCreatePin();
+              }}
+              />
             </LinearGradient>
-            <Image source={air_drop} style={{width: 199.5, height: 238, marginVertical: 30}} />
-            <Text style={styles.descTxt}>Create a pin to access your wallet and</Text>
-            <Text style={[styles.descTxt, {marginTop: 3}]}>claim Pepo Coins</Text>
-            <TouchableButton
-            TouchableStyles={[Theme.Button.btnPink, { minWidth: '75%', marginTop: 30}]}
-            TextStyles={[Theme.Button.btnPinkText]}
-            text="Create PIN"
-            onPress={() => {
-              this.onCreatePin();
-            }}
-            />
           </ScrollView>
         </SafeAreaView>
       </View>

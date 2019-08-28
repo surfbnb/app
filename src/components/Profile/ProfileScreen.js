@@ -1,22 +1,20 @@
 import React, { PureComponent } from 'react';
-import { ActivityIndicator, Platform } from 'react-native';
 import { connect } from 'react-redux';
-
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import EventEmitter from 'eventemitter3';
 import BalanceHeader from '../Profile/BalanceHeader';
 import LogoutComponent from '../LogoutLink';
 import UserInfo from '../CommonComponents/UserInfo';
 import CurrentUser from '../../models/CurrentUser';
-
-import EmptyCoverImage from './EmptyCoverImage';
-import ProfileEdit from './ProfileEdit';
-import UserProfileCoverImage from './UserProfileCoverImage';
 import reduxGetter from '../../services/ReduxGetters';
-import UpdateTimeStamp from '../CommonComponents/UpdateTimeStamp';
-
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Toast } from 'native-base';
-import PepoApi from '../../services/PepoApi';
-import CameraPermissionsApi from '../../services/CameraPermissionsApi';
+import UserProfileFlatList from '../CommonComponents/UserProfileFlatList';
+import inlineStyles from './styles';
+import Colors from '../../theme/styles/Colors';
+import NavigationEmitter from '../../helpers/TabNavigationEvent';
+import Pricer from '../../services/Pricer';
+import appConfig from '../../constants/AppConfig';
+import profileEditIcon from '../../assets/profile_edit_icon.png';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -28,124 +26,95 @@ class ProfileScreen extends PureComponent {
     return {
       headerBackTitle: null,
       headerTitle: name,
+      headerStyle: {
+        backgroundColor: Colors.white,
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
       headerRight: <LogoutComponent {...options} />
     };
   };
 
   constructor(props) {
     super(props);
-    //TODO Shraddha : remove hardcoded values once tested on ios
-    this.coverImageId = reduxGetter.getUserCoverImageId(this.props.userId, this.state);
-    this.videoId = reduxGetter.getUserCoverVideoId(this.props.userId, this.state);
-    this.state = {
-      isEdit: false,
-      loading: true
-    };
-    this.fetchUser();
+    this.refreshEvent = new EventEmitter();
+  }
+
+  componentDidMount() {
+    NavigationEmitter.on('onRefresh', (screen) => {
+      if (screen.screenName == appConfig.tabConfig.tab5.childStack) {
+        this.refresh();
+      }
+    });
+    this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
+      this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
+      this.refresh();
+    });
+  }
+
+  componentWillUnmount() {
+    NavigationEmitter.removeListener('onRefresh');
+    this.didFocus.remove();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.userId != prevProps.userId) {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
-      this.setState({
-        isEdit: false
-      });
+      this.props.navigation.goBack(null);
     }
   }
 
-  fetchUser = () => {
-    return new PepoApi(`/users/${this.props.userId}/profile`)
-      .get()
-      .then((res) => {
-        console.log('profile', res);
-        if (!res || !res.success) {
-          Toast.show({
-            text: ostErrors.getErrorMessage(res),
-            buttonText: 'OK'
-          });
+  refresh() {
+    this.refreshEvent.emit('refresh');
+  }
+
+  onEdit = () => {
+    this.props.navigation.push('ProfileEdit');
+  };
+
+  fetchBalance = () => {
+    Pricer.getBalance();
+  };
+
+  _headerComponent() {
+    return (
+      <UserInfo
+        userId={this.props.userId}
+        header={<BalanceHeader />}
+        editButton={
+          <TouchableOpacity
+            onPress={multipleClickHandler(() => this.onEdit())}
+            style={[inlineStyles.editProfileIconPos]}
+          >
+            <Image style={{ width: 13, height: 13 }} source={profileEditIcon}></Image>
+          </TouchableOpacity>
         }
-      })
-      .catch((error) => {
-        Toast.show({
-          text: ostErrors.getErrorMessage(error),
-          buttonText: 'OK'
-        });
-      })
-      .finally(() => {
-        this.setState({ loading: false });
-      });
-  };
-
-  isLoading() {
-    if (this.state.loading) {
-      return <ActivityIndicator />;
-    }
+      />
+    );
   }
 
-  hideUserInfo = (isEditValue) => {
-    this.setState({
-      isEdit: isEditValue
-    });
-  };
-
-  hideProfileEdit = (res) => {
-    this.setState({
-      isEdit: false
-    });
-  };
-
-  uploadVideo = async () => {
-    const cameraResponse = await CameraPermissionsApi.checkPermission('camera');
-    const microphoneResponse = await CameraPermissionsApi.checkPermission('microphone');
-    if (Platform.OS == 'android') {
-      //can ask permissions multiple times on android
-      CameraPermissionsApi.requestPermission('camera').then((result) => {
-        const cameraResult = result;
-        CameraPermissionsApi.requestPermission('microphone').then((result) => {
-          const microphoneResult = result;
-          //if do not ask again is selected then 'restricted' is returned and permission dialog does not appear again
-          if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
-            this.props.navigation.push('CaptureVideo');
-          }
-        });
-      });
-      if (cameraResponse == 'restricted' || microphoneResponse == 'restricted') {
-        this.props.navigation.push('CaptureVideo');
-      }
-    } else if (Platform.OS == 'ios') {
-      if (cameraResponse == 'undetermined') {
-        //can ask only once in ios i.e first time
-        CameraPermissionsApi.requestPermission('camera').then((result) => {
-          const cameraResult = result;
-          CameraPermissionsApi.requestPermission('microphone').then((result) => {
-            const microphoneResult = result;
-            if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
-              this.props.navigation.push('CaptureVideo');
-            }
-          });
-        });
-      } else {
-        //redirect inside irrespective of response as enable access modal is handled inside the screen
-        this.props.navigation.push('CaptureVideo');
-      }
-    }
-  };
+  _subHeader() {
+    return <Text style={{ color: 'transparent' }}>Videos</Text>;
+  }
 
   render() {
     return (
-      <KeyboardAwareScrollView enableOnAndroid={true} style={{ padding: 20, flex: 1 }}>
-        {this.isLoading()}
-        <BalanceHeader />
-        <React.Fragment>
-          <UserProfileCoverImage userId={this.props.userId} uploadVideo={this.uploadVideo} />
-          <UpdateTimeStamp userId={this.props.userId} />
-        </React.Fragment>
-
-        {!this.coverImageId && <EmptyCoverImage uploadVideo={this.uploadVideo} userId={this.props.userId} />}
-
-        {!this.state.isEdit && <UserInfo userId={this.props.userId} isEdit={true} hideUserInfo={this.hideUserInfo} />}
-        {this.state.isEdit && <ProfileEdit userId={this.props.userId} hideProfileEdit={this.hideProfileEdit} />}
-      </KeyboardAwareScrollView>
+      <UserProfileFlatList
+        refreshEvent={this.refreshEvent}
+        ref={(ref) => {
+          this.flatlistRef = ref;
+        }}
+        listHeaderComponent={this._headerComponent()}
+        listHeaderSubComponent={this._subHeader()}
+        beforeRefresh={this.fetchBalance}
+        userId={this.props.userId}
+      />
     );
   }
 }

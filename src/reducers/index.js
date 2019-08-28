@@ -1,5 +1,6 @@
 import { createActions, handleActions } from 'redux-actions';
 import assignIn from 'lodash/assignIn';
+import merge from 'lodash/merge';
 import * as types from '../actions/constants';
 
 export const {
@@ -35,7 +36,11 @@ export const {
   clearRecordedVideo,
   videoInProcessing,
   upsertProfilePicture,
-  clearProfilePicture
+  clearProfilePicture,
+  upsertUserVideoEntities,
+  upsertUserContributionToStats,
+  upsertUserContributionByStats,
+  upsertUserNotifications
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -61,9 +66,16 @@ const defaultState = {
   executeTransactionDisabledStatus: false,
   recorded_video: {},
   profile_picture: {},
-  token: { decimals: 18},
-  balance: '0'
+  token: { decimals: 18 },
+  balance: null
 };
+
+const logoutDefault = {
+  current_user: {},
+  balance: null,
+  video_contribution_entities: {},
+  user_contribution_entities: {}
+}
 
 export const reducer = handleActions(
   {
@@ -127,6 +139,10 @@ export const reducer = handleActions(
       ...state,
       home_feed_entities: assignIn({}, state.home_feed_entities, action.payload.home_feed_entities)
     }),
+    [upsertUserVideoEntities]: (state, action) => ({
+      ...state,
+      user_video_entities: assignIn({}, state.user_video_entities, action.payload.user_video_entities)
+    }),
     [upsertVideoContributionEntities]: (state, action) => ({
       ...state,
       video_contribution_entities: assignIn(
@@ -151,7 +167,7 @@ export const reducer = handleActions(
       ...state,
       price_points: action.payload.price_points
     }),
-    [updateToken]: (state , action) => ({
+    [updateToken]: (state, action) => ({
       ...state,
       token: action.payload.token
     }),
@@ -184,8 +200,19 @@ export const reducer = handleActions(
     }),
     [logoutUser]: (state, action) => ({
       ...state,
-      current_user: {},
-      balance: '0'
+      ...logoutDefault
+    }),
+    [upsertUserContributionByStats]: (state, action) => ({
+      ...state,
+      user_contribution_by_stats: merge({}, state.user_contribution_by_stats, action.payload.user_contribution_by_stats)
+    }),
+    [upsertUserContributionToStats]: (state, action) => ({
+      ...state,
+      user_contribution_to_stats: merge({}, state.user_contribution_to_stats, action.payload.user_contribution_to_stats)
+    }),
+    [upsertUserNotifications]: (state, action) => ({
+      ...state,
+      user_notifications: assignIn({}, state.user_notifications, action.payload.user_notifications)
     })
   },
   defaultState

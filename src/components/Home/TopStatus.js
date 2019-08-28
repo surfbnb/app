@@ -1,36 +1,42 @@
 import React from 'react';
-import {View, Text, Image} from "react-native";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import inlineStyles from "./styles";
-import selfAmountPlus from "../../assets/self-amount-plus-icon.png";
-import selAmountPepo from "../../assets/self-amount-pepo-icon.png";
-import CurrentUser from "../../models/CurrentUser";
-import Pricer from "../../services/Pricer";
+import CurrentUser from '../../models/CurrentUser';
+import WalletSetupFlyer from '../WalletSetupFlyer';
+import WalletBalanceFlyer from '../WalletBalanceFlyer';
+import {ifIphoneX} from "react-native-iphone-x-helper";
 
-const mapStateToProps = (state) => ({ balance: state.balance });
-
-const getBalance = (props) => {
-  return Pricer.getToBT(Pricer.getFromDecimal( props.balance ), 2)|| 0 ;
-   // return Pricer.getFromDecimal( props.balance ) || 0 ;
-}
+const mapStateToProps = (state) => ({
+  balance: state.balance,
+  current_user_ost_status: CurrentUser.__getUserStatus()
+});
 
 const TopStatus = (props) => {
-  return CurrentUser.getUserId() && (
-    <View style={ inlineStyles.topContainer }>
-      <View style={inlineStyles.topBg}>
-        <Image
-          style={[{height: 16, width: 16}, inlineStyles.topBgPosSkipFont]}
-          source={selfAmountPlus}
-        />
-        <Image
-          style={[{height: 13, width: 13}]}
-          source={selAmountPepo}
-        />
-        <Text style={[inlineStyles.topBgTxt]}>{getBalance(props)}</Text>
-      </View>
-    </View>
-  )
+  return (
+    CurrentUser.getUserId() &&
+    (!CurrentUser.isUserActivated() && props.balance == null ? (
+      <WalletSetupFlyer
+        componentHeight={46}
+        componentWidth={46}
+        sliderWidth={250}
+        containerStyle=
+          {{
+            ...ifIphoneX({
+              top: 60,
+            }, {
+              top: 30,
+            }),
+            right: 10
+          }}
+        displayText="Initializing wallet please wait..."
+        extendDirection="left"
+        extend={true}
+        id={1}
+      />
+    ) : (
+      <WalletBalanceFlyer {...props} id={2} />
+    ))
+  );
 };
 
 export default connect(mapStateToProps)(TopStatus);
