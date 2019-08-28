@@ -31,29 +31,34 @@ export default class PepoSocket{
         .get()
         .then((response) => {
             this.setConnectionParams(response);
-            console.log(`Connecting to socket :: ${this.protocol}://${this.endPoint}?auth_key_expiry_at=${this.authKeyExpiryAt}&payload=${this.payload}`);
-            const socket = io(`wss://${this.endPoint}`, {
-                query: {
-                    auth_key_expiry_at: this.authKeyExpiryAt,
-                    payload: this.payload+'abc'
+
+            console.log(`Connecting to socket server https://${this.endPoint}`);
+
+            this.socket = io(`https://${this.endPoint}?auth_key_expiry_at=${this.authKeyExpiryAt}&payload=${this.payload}`, {
+                jsonp: false,
+                transports: ['websocket'],
+                reconnection: true,
+                reconnectionDelay: 500,
+                reconnectionAttempts: Infinity
+            });
+
+            this.socket.on('connect', () => {
+                console.log(`Connected to socket server https://${this.endPoint} successfully!`);
+            });
+
+            this.socket.on('connect_error', (err) => {
+                console.log(`Error connecting to socket server https://${this.endPoint}:`, err);
+            });
+
+            this.socket.on('disconnect', (reason) => {
+                console.log(`Disconnected from socket server https://${this.endPoint}`, reason);
+                if (reason === 'io server disconnect') {
+                    // the disconnection was initiated by the server, you need to reconnect manually
+                    this.connect();
                 }
             });
 
-            //console.log(socket);
-
-            socket.on('connect', () => {
-                console.log('Connected to socket server');
-            });
-
-            socket.on('connect_error', (err) => {
-                console.log('connect_error :', err)
-            });
-
-            socket.on('disconnect', () => {
-                console.log("Disconnected Socket!")
-            });
-
-            socket.on('pepo-stream', payload => {
+            this.socket.on('pepo-stream', payload => {
                 console.log('Socket payload pepo-stream:: ', payload);
             })
 
