@@ -36,10 +36,7 @@ export default class PepoSocket{
 
             this.socket = io(`https://${this.endPoint}?auth_key_expiry_at=${this.authKeyExpiryAt}&payload=${this.payload}`, {
                 jsonp: false,
-                transports: ['websocket'],
-                reconnection: true,
-                reconnectionDelay: 500,
-                reconnectionAttempts: Infinity
+                transports: ['websocket']
             });
 
             this.socket.on('connect', () => {
