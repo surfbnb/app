@@ -110,7 +110,7 @@ const CustomTab = (props) => {
             <View />
           )}
           <Image
-            style={[styles.tabElementSkipFont, { marginTop: 0 }]}
+            style={[styles.tabElementSkipFont, { marginTop: unreadNotification ? 0 : 10 }]}
             source={navigation.state.index === appConfig.tabConfig.tab4.navigationIndex ? activitySelected : activityNs}
           />
         </View>

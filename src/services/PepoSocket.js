@@ -58,11 +58,14 @@ export default class PepoSocket {
       });
 
       this.socket.on('pepo-stream', (payload) => {
-        console.log('payload received', payload);
         if (payload && payload.notification_unread) {
           Store.dispatch(upsertNotificationUnread(payload.notification_unread));
         }
       });
     });
+  }
+
+  disconnect() {
+    this.socket && this.socket.close();
   }
 }
