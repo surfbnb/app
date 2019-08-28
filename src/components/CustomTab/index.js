@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity, Image, Text, View } from 'react-native';
 import { StackActions, SafeAreaView } from 'react-navigation';
+import { connect } from 'react-redux';
 
 import styles from './styles';
 import homeNs from '../../assets/user-home-icon.png';
@@ -17,6 +18,14 @@ import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import CurrentUser from '../../models/CurrentUser';
 import { LoginPopoverActions } from '../../components/LoginPopover';
 import appConfig from '../../constants/AppConfig';
+import reduxGetter from '../../services/ReduxGetters';
+import Colors from '../../theme/styles/Colors';
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    unreadNotification: reduxGetter.getNotificationUnreadFlag(state)
+  };
+};
 
 let previousTabIndex = 0;
 
@@ -28,12 +37,12 @@ function onTabPressed(navigation, tab) {
   }
 }
 
-let refreshTimeOut = 0 ; 
+let refreshTimeOut = 0;
 
 function loginInFlow(navigation, tab) {
   let currentTabIndex = tab.navigationIndex;
   if (tab.rootStack === 'CaptureVideo') {
-    utilities.handleVideoUploadModal(previousTabIndex , navigation);
+    utilities.handleVideoUploadModal(previousTabIndex, navigation);
     return;
   }
   if (currentTabIndex == undefined || currentTabIndex == null) return;
@@ -46,10 +55,10 @@ function loginInFlow(navigation, tab) {
       console.log('Catch error');
     }
   } else {
-    clearTimeout(refreshTimeOut)
+    clearTimeout(refreshTimeOut);
     refreshTimeOut = setTimeout(() => {
       NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
-    } , 300) 
+    }, 300);
   }
 }
 
@@ -58,13 +67,14 @@ function logoutFlow(navigation, tab) {
     clearTimeout(refreshTimeOut);
     refreshTimeOut = setTimeout(() => {
       NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
-    }, 300)
+    }, 300);
   } else {
     LoginPopoverActions.show();
   }
 }
 
-const CustomTab = ({ navigation, screenProps }) => {
+const CustomTab = (props) => {
+  let { navigation, unreadNotification } = props;
   previousTabIndex = navigation.state.index;
   return (
     <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
@@ -84,10 +94,26 @@ const CustomTab = ({ navigation, screenProps }) => {
         <Image style={[styles.tabElementSkipFont]} source={videoNs} />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab4)}>
-        <Image
-          style={[styles.tabElementSkipFont]}
-          source={navigation.state.index === appConfig.tabConfig.tab4.navigationIndex ? activitySelected : activityNs}
-        />
+        <View>
+          {unreadNotification ? (
+            <View
+              style={{
+                alignSelf: 'center',
+                position: 'absolute',
+                width: 4,
+                height: 4,
+                backgroundColor: Colors.pinkRed,
+                borderRadius: 2
+              }}
+            />
+          ) : (
+            <View />
+          )}
+          <Image
+            style={[styles.tabElementSkipFont, { marginTop: 0 }]}
+            source={navigation.state.index === appConfig.tabConfig.tab4.navigationIndex ? activitySelected : activityNs}
+          />
+        </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab5)}>
         <Image
@@ -99,4 +125,4 @@ const CustomTab = ({ navigation, screenProps }) => {
   );
 };
 
-export default CustomTab;
+export default connect(mapStateToProps)(CustomTab);

@@ -332,6 +332,11 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `user_notifications.id_${notificationId}.goto`);
   }
+
+  getNotificationUnreadFlag(state) {
+    state = state || Store.getState();
+    return deepGet(state, `notification_unread.flag`);
+  }
 }
 
 export default new ReduxGetters();

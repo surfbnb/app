@@ -110,6 +110,7 @@ class FanVideoDetails extends Component {
   }
 
   enableStartUploadFlag = () => {
+    if (!this.validLink()) return;
     Store.dispatch(
       upsertRecordedVideo({ video_desc: this.state.videoDesc, video_link: this.state.videoLink, do_upload: true })
     );
@@ -128,7 +129,8 @@ class FanVideoDetails extends Component {
 
   onChangeLink = (link) => {
     this.setState({
-      videoLink: link
+      videoLink: link,
+      error: ''
     });
     //Done for the value to be accessible in static navigationOptions
     this.props.navigation.setParams({
@@ -140,6 +142,26 @@ class FanVideoDetails extends Component {
     this.setState({
       error
     });
+  };
+
+  validLink = () => {
+    //synced with backend
+    if (
+      !this.state.videoLink.match(
+        /^(http(s)?:\/\/)([a-zA-Z0-9-_@:%+~#=]{1,256}\.)+[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=*]*)$/i
+      )
+    ) {
+      this.setState(
+        {
+          error: 'Invalid link'
+        },
+        () => {
+          this.setError(this.state.error);
+        }
+      );
+      return false;
+    }
+    return true;
   };
 
   render() {
@@ -171,11 +193,7 @@ class FanVideoDetails extends Component {
             <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
           </View>
           <View style={[styles.videoDescriptionItem, { alignItems: 'center', paddingVertical: 5 }]}>
-            <VideoLink
-              initialValue={this.props.recordedVideo.video_link}
-              onChangeLink={this.onChangeLink}
-              setError={this.setError}
-            />
+            <VideoLink initialValue={this.props.recordedVideo.video_link} onChangeLink={this.onChangeLink} />
           </View>
         </View>
         <View>

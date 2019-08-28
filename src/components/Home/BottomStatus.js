@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Linking } from 'react-native';
+import { View, Text, Linking, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
@@ -8,6 +8,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import reduxGetter from '../../services/ReduxGetters';
 
 import multipleClickHandler from '../../services/MultipleClickHandler';
+import { getSocialIcon } from '../../helpers/helpers';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -55,9 +56,18 @@ class BottomStatus extends PureComponent {
             onPress={multipleClickHandler(() => Linking.openURL(this.props.link))}
             pointerEvents={'auto'}
           >
-            <View style={{ borderTopWidth: 0.5, borderColor: 'rgba(255, 255, 255, 0.3)', paddingHorizontal: 12 }}>
+            <View
+              style={{
+                borderTopWidth: 0.5,
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+                paddingHorizontal: 12,
+                flexDirection: 'row',
+                alignItems: 'center'
+              }}
+            >
+              <Image style={{ height: 20, width: 20 }} source={getSocialIcon(this.props.link, 'HOME_FEED')} />
               <Text
-                style={[{ fontSize: 14, paddingVertical: 4 }, inlineStyles.bottomBgTxt]}
+                style={[{ fontSize: 14, paddingVertical: 4, paddingLeft: 8 }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
               >

@@ -28,13 +28,16 @@ const knownEntitiesDispatcherMap = {
   user_videos: 'upsertUserVideoEntities',
   user_notifications: 'upsertUserNotifications',
   feeds: 'upsertHomeFeedEntities',
-  feed: 'upsertHomeFeedEntities'
+  feed: 'upsertHomeFeedEntities',
+  notification_unread: 'notification_unread'
 };
 
 const dispatchEntities = (data) => {
-  if(!data) return;
-  for (let entity in data){
-    data.hasOwnProperty(entity) && Actions[knownEntitiesDispatcherMap[entity]] && Store.dispatch(Actions[knownEntitiesDispatcherMap[entity]](getEntities(data[entity])));
+  if (!data) return;
+  for (let entity in data) {
+    data.hasOwnProperty(entity) &&
+      Actions[knownEntitiesDispatcherMap[entity]] &&
+      Store.dispatch(Actions[knownEntitiesDispatcherMap[entity]](getEntities(data[entity])));
   }
 };
 
@@ -56,7 +59,7 @@ const getEntitiesFromArray = (resultData, key = 'id') => {
 const getEntitiesFromObj = (resultObj, key = 'id') => {
   const entities = {};
   for (let identifier in resultObj) {
-    if(resultObj.hasOwnProperty(identifier)){
+    if (resultObj.hasOwnProperty(identifier)) {
       let key_identifier = isNaN(parseInt(identifier)) ? identifier : `${key}_${identifier}`;
       entities[key_identifier] = resultObj[identifier];
     }
