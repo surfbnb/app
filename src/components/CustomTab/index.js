@@ -94,23 +94,24 @@ const CustomTab = (props) => {
         <Image style={[styles.tabElementSkipFont]} source={videoNs} />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab4)}>
-        <View>
+        <View style={{ position: 'relative' }}>
           {unreadNotification ? (
             <View
               style={{
                 alignSelf: 'center',
                 position: 'absolute',
-                width: 4,
-                height: 4,
+                width: 5,
+                height: 5,
                 backgroundColor: Colors.pinkRed,
-                borderRadius: 2
+                borderRadius: 2.5,
+                marginTop: 10
               }}
             />
           ) : (
             <View />
           )}
           <Image
-            style={[styles.tabElementSkipFont, { marginTop: unreadNotification ? 0 : 10 }]}
+            style={[styles.tabElementSkipFont]}
             source={navigation.state.index === appConfig.tabConfig.tab4.navigationIndex ? activitySelected : activityNs}
           />
         </View>
