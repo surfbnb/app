@@ -1,5 +1,5 @@
 import PepoApi from '../services/PepoApi';
-import Toast from '../components/NotificationToast';
+import Toast from '../theme/components/NotificationToast';
 import AppConfig from '../constants/AppConfig';
 
 function fetchUser(userId, successCallback, errorCallback, finallyCallback) {

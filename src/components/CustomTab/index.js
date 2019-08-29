@@ -93,8 +93,11 @@ const CustomTab = (props) => {
       <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab3)}>
         <Image style={[styles.tabElementSkipFont]} source={videoNs} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab4)}>
-        <View style={{ position: 'relative' }}>
+      <TouchableOpacity
+        onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab4)}
+        style={{ position: 'relative' }}
+      >
+        <React.Fragment>
           {unreadNotification ? (
             <View
               style={{
@@ -108,13 +111,13 @@ const CustomTab = (props) => {
               }}
             />
           ) : (
-            <View />
+            <React.Fragment />
           )}
           <Image
             style={[styles.tabElementSkipFont]}
             source={navigation.state.index === appConfig.tabConfig.tab4.navigationIndex ? activitySelected : activityNs}
           />
-        </View>
+        </React.Fragment>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab5)}>
         <Image

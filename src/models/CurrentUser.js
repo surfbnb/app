@@ -7,7 +7,7 @@ import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
-import Toast from "../components/NotificationToast";
+import Toast from "../theme/components/NotificationToast";
 
 // Used require to support all platforms
 const RCTNetworking = require("RCTNetworking");

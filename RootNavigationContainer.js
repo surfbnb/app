@@ -41,7 +41,7 @@ import CustomDrawerContent from './src/components/CustomDrawerContent';
 import AllowAccessModalScreen from './src/components/AllowAccessModalScreen';
 import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
 import utilities from './src/services/Utilities';
-import { NotificationToastComponent } from './src/components/NotificationToast';
+import { NotificationToastComponent } from './src/theme/components/NotificationToast';
 import SocketManager from './src/components/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';

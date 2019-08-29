@@ -1,5 +1,5 @@
-import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
-import Colors from '../../theme/styles/Colors';
+import DefaultStyleGenerator from '../../styles/DefaultStyleGenerator';
+import Colors from '../../styles/Colors';
 
 let stylesMap = {
   animatedToastView: {

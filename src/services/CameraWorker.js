@@ -18,7 +18,7 @@ import PepoApi from './PepoApi';
 import ReduxGetters from './ReduxGetters';
 import videoUploaderComponent from './CameraWorkerEventEmitter';
 import createObjectForRedux from '../helpers/createObjectForRedux';
-import Toast from '../components/NotificationToast';
+import Toast from '../theme/components/NotificationToast';
 
 const recordedVideoStates = [
   'raw_video',

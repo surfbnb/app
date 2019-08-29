@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
-import Toast from '../NotificationToast';
+import Toast from '../../theme/components/NotificationToast';
 
 import styles from './styles';
 import CurrentUser from '../../models/CurrentUser';

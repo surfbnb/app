@@ -4,7 +4,7 @@ import NetInfo from '@react-native-community/netinfo';
 import { Platform } from 'react-native';
 
 import Package from '../../package';
-import Toast from '../components/NotificationToast';
+import Toast from '../theme/components/NotificationToast';
 import { API_ROOT } from '../constants/index';
 import { ostErrors, UIWhitelistedErrorCode } from './OstErrors';
 import dispatchEntities from '../services/ReduxSetters';

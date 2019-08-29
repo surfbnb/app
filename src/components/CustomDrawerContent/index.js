@@ -8,7 +8,7 @@ import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
 import loggedOutIcon from '../../assets/drawer-logout-icon.png';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
-import Toast from '../NotificationToast';
+import Toast from '../../theme/components/NotificationToast';
 
 import BackArrow from '../../assets/back-arrow.png';
 
