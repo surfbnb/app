@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		000C67FD22D764EA0095497C /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C67F922D764E90095497C /* TwitterKit.framework */; };
 		000C67FE22D764EA0095497C /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C67FA22D764EA0095497C /* TwitterCore.framework */; };
@@ -69,6 +70,7 @@
 		22FE2B7F2DE4496EB61E6F7E /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61D8EE774B704B6DAC8F8DBA /* FontAwesome5_Solid.ttf */; };
 		270223CFEF014067B45C1388 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 695C1EFE72E34F80A174D50D /* Lato-BlackItalic.ttf */; };
 		34DAB1A620A348A7BDD85ACE /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BD20DFACA44547828EDB44C2 /* Roboto.ttf */; };
+		447300E3C09042CFA23D5C9F /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB47A46149204503A9909BC7 /* libRNFirebase.a */; };
 		44E7621D0BF54D0D94AE8775 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1E81A640BFF41ACB5A01A53 /* FontAwesome5_Regular.ttf */; };
 		45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2697F42945424A4984DF2EDE /* Lato-LightItalic.ttf */; };
 		4720B1815AA646A98064A0C8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBEB5D26FF5447979A63766E /* EvilIcons.ttf */; };
@@ -86,6 +88,19 @@
 		7766C64E22DD9FD000C019D8 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7766C64822DD9FB000C019D8 /* libRNFS.a */; };
 		7781225822FD7EF300697E8C /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7781225622FD7EF300697E8C /* Fabric.framework */; };
 		7781225922FD7EF300697E8C /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7781225722FD7EF300697E8C /* Crashlytics.framework */; };
+		7796E3A32317FAEA00D0F2D2 /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E3962317FAE900D0F2D2 /* Protobuf.framework */; };
+		7796E3A42317FAEA00D0F2D2 /* FirebaseMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E3972317FAE900D0F2D2 /* FirebaseMessaging.framework */; };
+		7796E3A52317FAEA00D0F2D2 /* GoogleDataTransport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E3992317FAE900D0F2D2 /* GoogleDataTransport.framework */; };
+		7796E3A62317FAEA00D0F2D2 /* GoogleDataTransportCCTSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E39A2317FAE900D0F2D2 /* GoogleDataTransportCCTSupport.framework */; };
+		7796E3A72317FAEA00D0F2D2 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E39B2317FAE900D0F2D2 /* GoogleAppMeasurement.framework */; };
+		7796E3A82317FAEA00D0F2D2 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E39C2317FAE900D0F2D2 /* FirebaseCore.framework */; };
+		7796E3A92317FAEA00D0F2D2 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E39D2317FAE900D0F2D2 /* FirebaseAnalytics.framework */; };
+		7796E3AA2317FAEA00D0F2D2 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E39E2317FAE900D0F2D2 /* GoogleUtilities.framework */; };
+		7796E3AB2317FAEA00D0F2D2 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E39F2317FAE900D0F2D2 /* nanopb.framework */; };
+		7796E3AC2317FAEA00D0F2D2 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E3A02317FAE900D0F2D2 /* FIRAnalyticsConnector.framework */; };
+		7796E3AD2317FAEA00D0F2D2 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E3A12317FAE900D0F2D2 /* FirebaseInstanceID.framework */; };
+		7796E3AE2317FAEA00D0F2D2 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E3A22317FAEA00D0F2D2 /* FirebaseCoreDiagnostics.framework */; };
+		7796E3B02317FCEF00D0F2D2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7796E3AF2317FCEF00D0F2D2 /* GoogleService-Info.plist */; };
 		779F2EEC22D7CEA60076410B /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 779F2ECE22D7CE180076410B /* libRCTVideo.a */; };
 		77C415DF22FD89CB008F0F63 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 009F91BC22B00D69001C00E1 /* libRNCAsyncStorage.a */; };
 		77C415E022FD8ACE008F0F63 /* libRNCNetInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0088107422BA26A8000B154C /* libRNCNetInfo.a */; };
@@ -108,7 +123,6 @@
 		F2A32E0A60454BE284A285CE /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31DCA738643B4C8C8514EDE8 /* Lato-HairlineItalic.ttf */; };
 		FD1B3131FA5145A5A67CDE87 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A20954163BBA4DA493E99FCE /* Lato-Light.ttf */; };
 		FE9B0CCD60EE40268CC3C1DD /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7992EE0C56F44302ACD1F565 /* FontAwesome.ttf */; };
-		447300E3C09042CFA23D5C9F /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB47A46149204503A9909BC7 /* libRNFirebase.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -483,6 +497,13 @@
 			remoteGlobalIDString = 6463C84C1EBA12A60095B8CD;
 			remoteInfo = "SMXCrashlytics-tvOS";
 		};
+		7796E38F2317F11B00D0F2D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28D39F3F1C7F412BA45EDD63 /* RNFirebase.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNFirebase;
+		};
 		779F2ECD22D7CE180076410B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */;
@@ -615,6 +636,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Pepo2/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		2697F42945424A4984DF2EDE /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-LightItalic.ttf"; path = "../src/assets/fonts/Lato-LightItalic.ttf"; sourceTree = "<group>"; };
+		28D39F3F1C7F412BA45EDD63 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		31DCA738643B4C8C8514EDE8 /* Lato-HairlineItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-HairlineItalic.ttf"; path = "../src/assets/fonts/Lato-HairlineItalic.ttf"; sourceTree = "<group>"; };
 		3B2B67F8A2A64C6DA55E80CA /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -632,6 +654,20 @@
 		7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		7781225622FD7EF300697E8C /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = "Crashlytics/com.crashlytics.ios-manual/Fabric.framework"; sourceTree = "<group>"; };
 		7781225722FD7EF300697E8C /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = "Crashlytics/com.crashlytics.ios-manual/Crashlytics.framework"; sourceTree = "<group>"; };
+		7796E3942317FAE900D0F2D2 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		7796E3962317FAE900D0F2D2 /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Protobuf.framework; sourceTree = "<group>"; };
+		7796E3972317FAE900D0F2D2 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = "<group>"; };
+		7796E3992317FAE900D0F2D2 /* GoogleDataTransport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleDataTransport.framework; sourceTree = "<group>"; };
+		7796E39A2317FAE900D0F2D2 /* GoogleDataTransportCCTSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleDataTransportCCTSupport.framework; sourceTree = "<group>"; };
+		7796E39B2317FAE900D0F2D2 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleAppMeasurement.framework; sourceTree = "<group>"; };
+		7796E39C2317FAE900D0F2D2 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
+		7796E39D2317FAE900D0F2D2 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
+		7796E39E2317FAE900D0F2D2 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleUtilities.framework; sourceTree = "<group>"; };
+		7796E39F2317FAE900D0F2D2 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = nanopb.framework; sourceTree = "<group>"; };
+		7796E3A02317FAE900D0F2D2 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
+		7796E3A12317FAE900D0F2D2 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		7796E3A22317FAEA00D0F2D2 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
+		7796E3AF2317FCEF00D0F2D2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		77EDA37622D763CB0095674F /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		789B7BE072654BAB9FD268A5 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../src/assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
@@ -646,6 +682,7 @@
 		A7AD85F48C1E4E04AB39DA01 /* Lato-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Bold.ttf"; path = "../src/assets/fonts/Lato-Bold.ttf"; sourceTree = "<group>"; };
 		AA9BB6AFAB7045B48A74A823 /* RNTwitterSignIn.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNTwitterSignIn.xcodeproj; path = "../node_modules/react-native-twitter-signin/ios/RNTwitterSignIn.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		BB47A46149204503A9909BC7 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
 		BD20DFACA44547828EDB44C2 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
 		BF841003911544D1B506D1B5 /* Lato-Hairline.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Hairline.ttf"; path = "../src/assets/fonts/Lato-Hairline.ttf"; sourceTree = "<group>"; };
 		CC06FFEC4C2F4EE2B75BF27B /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
@@ -663,8 +700,6 @@
 		F3F319F40E4C450690D77546 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		F406518F2D434EC0A78FA040 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		FE776FBD854C4ABF96A4B23E /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
-		28D39F3F1C7F412BA45EDD63 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		BB47A46149204503A9909BC7 /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -672,15 +707,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7796E3A32317FAEA00D0F2D2 /* Protobuf.framework in Frameworks */,
 				4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */,
 				4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */,
 				4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */,
+				7796E3AD2317FAEA00D0F2D2 /* FirebaseInstanceID.framework in Frameworks */,
 				4BDACD6323019EE600CF8294 /* libRCTImageResizer.a in Frameworks */,
 				4BDACD0B23018F0100CF8294 /* libRNTwitterSignIn.a in Frameworks */,
 				77C415E222FD8B53008F0F63 /* libRNGestureHandler.a in Frameworks */,
 				77C415E122FD8B00008F0F63 /* libRNDeviceInfo.a in Frameworks */,
 				77C415E022FD8ACE008F0F63 /* libRNCNetInfo.a in Frameworks */,
 				77C415DF22FD89CB008F0F63 /* libRNCAsyncStorage.a in Frameworks */,
+				7796E3AB2317FAEA00D0F2D2 /* nanopb.framework in Frameworks */,
 				7766C64E22DD9FD000C019D8 /* libRNFS.a in Frameworks */,
 				00281BB422DC813400C0E079 /* libbz2.1.0.tbd in Frameworks */,
 				7729409A22D74BBE00C9FE35 /* OstWalletSdk.framework in Frameworks */,
@@ -689,10 +727,12 @@
 				00281BAE22DC7E9C00C0E079 /* VideoToolbox.framework in Frameworks */,
 				00281BAC22DC7E8200C0E079 /* CoreMedia.framework in Frameworks */,
 				00281BAA22DC7E7800C0E079 /* AVFoundation.framework in Frameworks */,
+				7796E3AA2317FAEA00D0F2D2 /* GoogleUtilities.framework in Frameworks */,
 				00281BA822DC7E6E00C0E079 /* AudioToolbox.framework in Frameworks */,
 				00470EF222DC7C7D00FC8345 /* x264.framework in Frameworks */,
 				00470EF322DC7C7D00FC8345 /* libavfilter.framework in Frameworks */,
 				7781225822FD7EF300697E8C /* Fabric.framework in Frameworks */,
+				7796E3A62317FAEA00D0F2D2 /* GoogleDataTransportCCTSupport.framework in Frameworks */,
 				00470EF422DC7C7D00FC8345 /* libavcodec.framework in Frameworks */,
 				00470EF522DC7C7D00FC8345 /* libavdevice.framework in Frameworks */,
 				00470EF622DC7C7D00FC8345 /* libswscale.framework in Frameworks */,
@@ -705,7 +745,11 @@
 				00470EFD22DC7C7D00FC8345 /* xvidcore.framework in Frameworks */,
 				00281BB022DC80CA00C0E079 /* libz.1.2.11.tbd in Frameworks */,
 				779F2EEC22D7CEA60076410B /* libRCTVideo.a in Frameworks */,
+				7796E3A92317FAEA00D0F2D2 /* FirebaseAnalytics.framework in Frameworks */,
 				77EDA37C22D763D20095674F /* libRNCamera.a in Frameworks */,
+				7796E3AC2317FAEA00D0F2D2 /* FIRAnalyticsConnector.framework in Frameworks */,
+				7796E3A82317FAEA00D0F2D2 /* FirebaseCore.framework in Frameworks */,
+				7796E3A52317FAEA00D0F2D2 /* GoogleDataTransport.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				000C67FD22D764EA0095497C /* TwitterKit.framework in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -713,15 +757,18 @@
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				000C67FE22D764EA0095497C /* TwitterCore.framework in Frameworks */,
+				7796E3A42317FAEA00D0F2D2 /* FirebaseMessaging.framework in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
+				7796E3A72317FAEA00D0F2D2 /* GoogleAppMeasurement.framework in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				002AAB6D22E6177E000E153B /* libRNCCameraRoll.a in Frameworks */,
 				003EBBBA22F87C73008C5DF4 /* libART.a in Frameworks */,
+				7796E3AE2317FAEA00D0F2D2 /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				7781225922FD7EF300697E8C /* Crashlytics.framework in Frameworks */,
 				447300E3C09042CFA23D5C9F /* libRNFirebase.a in Frameworks */,
 			);
@@ -821,6 +868,7 @@
 		0050FCE222A821D600C2634F /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				BB47A46149204503A9909BC7 /* libRNFirebase.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -950,6 +998,7 @@
 		13B07FAE1A68108700A75B9A /* Pepo2 */ = {
 			isa = PBXGroup;
 			children = (
+				7796E3932317FAE900D0F2D2 /* Firebase */,
 				0023A1FD230F8524006A5ACF /* ostwalletrnsdk */,
 				7781225722FD7EF300697E8C /* Crashlytics.framework */,
 				7781225622FD7EF300697E8C /* Fabric.framework */,
@@ -1103,6 +1152,50 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7796E38C2317F11B00D0F2D2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7796E3902317F11B00D0F2D2 /* libRNFirebase.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7796E3932317FAE900D0F2D2 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				7796E3942317FAE900D0F2D2 /* Firebase.h */,
+				7796E3952317FAE900D0F2D2 /* Messaging */,
+				7796E3982317FAE900D0F2D2 /* Analytics */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		7796E3952317FAE900D0F2D2 /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				7796E3962317FAE900D0F2D2 /* Protobuf.framework */,
+				7796E3972317FAE900D0F2D2 /* FirebaseMessaging.framework */,
+			);
+			path = Messaging;
+			sourceTree = "<group>";
+		};
+		7796E3982317FAE900D0F2D2 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				7796E3992317FAE900D0F2D2 /* GoogleDataTransport.framework */,
+				7796E39A2317FAE900D0F2D2 /* GoogleDataTransportCCTSupport.framework */,
+				7796E39B2317FAE900D0F2D2 /* GoogleAppMeasurement.framework */,
+				7796E39C2317FAE900D0F2D2 /* FirebaseCore.framework */,
+				7796E39D2317FAE900D0F2D2 /* FirebaseAnalytics.framework */,
+				7796E39E2317FAE900D0F2D2 /* GoogleUtilities.framework */,
+				7796E39F2317FAE900D0F2D2 /* nanopb.framework */,
+				7796E3A02317FAE900D0F2D2 /* FIRAnalyticsConnector.framework */,
+				7796E3A12317FAE900D0F2D2 /* FirebaseInstanceID.framework */,
+				7796E3A22317FAEA00D0F2D2 /* FirebaseCoreDiagnostics.framework */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		779F2EB722D7CE180076410B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1184,6 +1277,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				7796E3AF2317FCEF00D0F2D2 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Pepo2 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* Pepo2Tests */,
@@ -1356,6 +1450,10 @@
 				{
 					ProductGroup = 00A1A95A22F2DA2F0071923D /* Products */;
 					ProjectRef = 3C3B95280CE2413493668E17 /* RNDeviceInfo.xcodeproj */;
+				},
+				{
+					ProductGroup = 7796E38C2317F11B00D0F2D2 /* Products */;
+					ProjectRef = 28D39F3F1C7F412BA45EDD63 /* RNFirebase.xcodeproj */;
 				},
 				{
 					ProductGroup = 7766C61722DD9FB000C019D8 /* Products */;
@@ -1753,6 +1851,13 @@
 			remoteRef = 7781225422FD68EA00697E8C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		7796E3902317F11B00D0F2D2 /* libRNFirebase.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFirebase.a;
+			remoteRef = 7796E38F2317F11B00D0F2D2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		779F2ECE22D7CE180076410B /* libRCTVideo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1838,6 +1943,7 @@
 				B121E889D6D8469FB607BFC5 /* Octicons.ttf in Resources */,
 				5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */,
 				34DAB1A620A348A7BDD85ACE /* Roboto.ttf in Resources */,
+				7796E3B02317FCEF00D0F2D2 /* GoogleService-Info.plist in Resources */,
 				000C680022D764EA0095497C /* TwitterShareExtensionUIResources.bundle in Resources */,
 				7E873BEEA71D4772A4CEA8FE /* rubicon-icon-font.ttf in Resources */,
 				77280AE9DDE14F90B1ACDAF8 /* SimpleLineIcons.ttf in Resources */,
@@ -1961,6 +2067,8 @@
 					"$(PROJECT_DIR)/ReactNativeFFmpeg/mobile-ffmpeg-min-gpl-4.2.2.LTS-ios-framework",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Crashlytics/com.crashlytics.ios-manual",
+					"$(PROJECT_DIR)/Firebase/Messaging",
+					"$(PROJECT_DIR)/Firebase/Analytics",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1977,6 +2085,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/Firebase",
 				);
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -2017,6 +2126,8 @@
 					"$(PROJECT_DIR)/ReactNativeFFmpeg/mobile-ffmpeg-min-gpl-4.2.2.LTS-ios-framework",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Crashlytics/com.crashlytics.ios-manual",
+					"$(PROJECT_DIR)/Firebase/Messaging",
+					"$(PROJECT_DIR)/Firebase/Analytics",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2033,6 +2144,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/Firebase",
 				);
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
