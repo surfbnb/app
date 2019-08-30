@@ -19,6 +19,8 @@ const defaultOptions = {
   enableDefaultShare: true,
   forceCloseOnRedirection: false,
   animations: {
+    startEnter: 'bottom_in',
+    startExit: 'bottom_out',
     endEnter: 'bottom_in',
     endExit: 'bottom_out'
   }
