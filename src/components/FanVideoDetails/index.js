@@ -145,6 +145,7 @@ class FanVideoDetails extends Component {
   };
 
   validLink = () => {
+    if (!this.state.videoLink) return true;
     //synced with backend
     if (
       !this.state.videoLink.match(
