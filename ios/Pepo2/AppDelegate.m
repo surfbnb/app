@@ -13,6 +13,7 @@
 #import <TwitterKit/TWTRKit.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import <TrustKit/TrustKit.h>
 
 @implementation AppDelegate
 
@@ -31,8 +32,41 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   [Fabric with:@[[Crashlytics class]]];
+  
+  [self setupTrustKit];
   return YES;
 }
+
+
+- (void) setupTrustKit {
+  // Initialize TrustKit
+  NSDictionary *trustKitConfig =
+  @{
+    kTSKSwizzleNetworkDelegates: @YES,
+    kTSKPinnedDomains: @{
+      @"stagingpepo.com" : @{
+        kTSKEnforcePinning:@YES,
+        kTSKIncludeSubdomains: @NO,
+        kTSKPublicKeyHashes : @[
+          @"5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=",
+          @"HXXQgxueCIU5TTLHob/bPbwcKOKw6DkfsTWYHbxbqTY="//just to avoid crash. (add backup hash)
+        ],
+      },
+      
+      @"sandboxpepo.com" : @{
+          kTSKEnforcePinning:@YES,
+          kTSKIncludeSubdomains: @NO,
+          kTSKPublicKeyHashes : @[
+              @"rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=",
+              @"HXXQgxueCIU5TTLHob/bPbwcKOKw6DkfsTWYHbxbqTY="//just to avoid crash. (add backup hash)
+          ],
+      },
+    }
+  };
+  
+  [TrustKit initSharedInstanceWithConfiguration:trustKitConfig];
+}
+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
   return [[Twitter sharedInstance] application:app openURL:url options:options];
 }
