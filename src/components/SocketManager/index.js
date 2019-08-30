@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PepoSocket from '../../services/PepoSocket';
 import { connect } from 'react-redux';
+import { YellowBox } from 'react-native';
+
+YellowBox.ignoreWarnings(['Unrecognized WebSocket connection']);
 
 class SocketManager extends Component {
   constructor(props) {
