@@ -3,7 +3,7 @@ import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   container: {
-    flex: 1,
+    // flex: 1,
     padding: 20
   },
   textInputUi: {
@@ -11,7 +11,7 @@ let stylesMap = {
     borderWidth: 0,
     paddingLeft: 45,
     paddingRight: 35,
-    backgroundColor: 'rgba(204, 211, 205, 0.2)'
+    backgroundColor: '#F5F6F5'
   },
   searchIconSkipFont: {
     width: 30,
@@ -26,7 +26,8 @@ let stylesMap = {
     height: 50,
     width: 50,
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    zIndex: 10
   },
   txtWrapper: {
     paddingVertical: 12,

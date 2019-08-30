@@ -43,15 +43,18 @@ class SearchResults extends Component {
       <SafeAreaView style={styles.container}>
         <FlatList
           data={this.props.list}
+          keyboardShouldPersistTaps={'always'}
+          horizontal={this.props.horizontal}
+          enableEmptySections={true}
+          stickyHeaderIndices={[0]}
           onEndReached={this.props.getNext}
-          onRefresh={this.props.onRefresh}
-          toRefresh={this.props.toRefresh}
           keyExtractor={this._keyExtractor}
-          refreshing={this.props.refreshing}
+          refreshing={false}
           onEndReachedThreshold={5}
           renderItem={this._renderItem}
           ListEmptyComponent={this.getEmptyComponent}
           ListHeaderComponent={<SearchListHeader setSearchParams={this.props.setSearchParams} />}
+          showsVerticalScrollIndicator={false}
         />
       </SafeAreaView>
     );
