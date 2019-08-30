@@ -33,15 +33,15 @@ function fetchUser(userId, successCallback, errorCallback, finallyCallback) {
 }
 
 function getSocialIcon(url, screen) {
-  let hostName = url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?([^:\/?\n]+)/im)[1];
-  if (!hostName) return;
-  for (let domainName in AppConfig.videoLinkConfig.WHITELISTED_DOMAINS) {
-    if (hostName.includes(AppConfig.videoLinkConfig.WHITELISTED_DOMAINS[domainName])) {
-      return AppConfig.videoLinkConfig[screen].SOCIAL_ICONS[domainName];
-    } else {
-      return AppConfig.videoLinkConfig[screen].SOCIAL_ICONS.DEFAULT;
+  let hostName = url && url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?([^:\/?\n]+)/im)[1];
+  if (hostName) {
+    for (let domainName in AppConfig.videoLinkConfig.WHITELISTED_DOMAINS) {
+      if (hostName.includes(AppConfig.videoLinkConfig.WHITELISTED_DOMAINS[domainName])) {
+        return AppConfig.videoLinkConfig[screen].SOCIAL_ICONS[domainName];
+      }
     }
   }
+  return AppConfig.videoLinkConfig[screen].SOCIAL_ICONS.DEFAULT;
 }
 
 export { fetchUser, getSocialIcon };
