@@ -49,7 +49,7 @@
         kTSKIncludeSubdomains: @NO,
         kTSKPublicKeyHashes : @[
           @"5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=",
-          @"HXXQgxueCIU5TTLHob/bPbwcKOKw6DkfsTWYHbxbqTY="//just to avoid crash. (add backup hash)
+          @"HXXQgxueCIU5TTLHob/bPbwcKOKw6DkfsTWYHbxbqTY="//just to avoid crash. (add backup key)
         ],
       },
       
@@ -58,7 +58,7 @@
           kTSKIncludeSubdomains: @NO,
           kTSKPublicKeyHashes : @[
               @"rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=",
-              @"HXXQgxueCIU5TTLHob/bPbwcKOKw6DkfsTWYHbxbqTY="//just to avoid crash. (add backup hash)
+              @"HXXQgxueCIU5TTLHob/bPbwcKOKw6DkfsTWYHbxbqTY="//just to avoid crash. (add backup key)
           ],
       },
     }
