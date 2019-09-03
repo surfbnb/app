@@ -10,23 +10,25 @@ class PushNotificationManager extends PureComponent {
     componentDidMount() {
         this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => this.sendToken(fcmToken));
         this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notification) => console.log('onNotificationOpened', notification));
+        this.removeNotificationListener = firebase.notifications().onNotification((notification) => console.log('onNotification', notification));
         firebase.messaging().hasPermission()
             .then(enabled => {
                 if (!enabled) {
-                    firebase.messaging().requestPermission()
-                        .then(() => {
-                            console.log('Permission given');
-                        })
-                        .catch(error => {
-                            console.log('Permission denied');
-                        });
+                    return firebase.messaging().requestPermission();
                 }
+            })
+            .then(() => {
+                console.log('Permission given');
+            })
+            .catch(error => {
+                console.log('Permission denied');
             });
     }
 
     componentWillUnmount() {
         this.onTokenRefreshListener();
         this.removeNotificationOpenedListener();
+        this.removeNotificationListener();
     }
 
     getToken() {
