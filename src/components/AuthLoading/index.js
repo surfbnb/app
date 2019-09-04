@@ -8,9 +8,8 @@ import { OstWalletSdk, OstWalletSdkUI } from '@ostdotcom/ost-wallet-sdk-react-na
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
-import ost_sdk_theme_config from "../../theme/ostsdk/ost-sdk-theme-config";
-import ost_sdk_content_config from "../../theme/ostsdk/ost-sdk-content-config";
-
+import ost_sdk_theme_config from '../../theme/ostsdk/ost-sdk-theme-config';
+import ost_sdk_content_config from '../../theme/ostsdk/ost-sdk-content-config';
 
 let t1, t2;
 
@@ -40,17 +39,14 @@ export default class AuthLoading extends Component {
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
 
-
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();
         console.log(reduxGetter.getPushNotification(), 'getPushNotification');
-        let pushNotification =  JSON.parse(reduxGetter.getPushNotification());
+        // let pushNotification =  JSON.parse(reduxGetter.getPushNotification());
 
         if (user && !CurrentUser.isActiveUser(user)) {
           this.props.navigation.navigate('UserActivatingScreen');
-        } else if(Object.keys(pushNotification).length != 0 ){
-          console.log('I am hereeeee');
         } else {
           //
           this.props.navigation.navigate('HomeScreen');

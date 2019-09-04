@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image } from 'react-native';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import { OstWalletSdk, OstWalletSdkUI, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
@@ -9,11 +9,11 @@ import Colors from '../../theme/styles/Colors';
 import loggedOutIcon from '../../assets/drawer-logout-icon.png';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
 import Toast from '../NotificationToast';
+import DeviceInfo from 'react-native-device-info';
 
 import BackArrow from '../../assets/back-arrow.png';
 
-export default class CustomDrawerContent extends Component{
-
+export default class CustomDrawerContent extends Component {
   constructor() {
     super();
     this.userName = reduxGetter.getName(CurrentUser.getUserId());
@@ -26,59 +26,67 @@ export default class CustomDrawerContent extends Component{
     this.twitterDisconnect = this.twitterDisconnect.bind(this);
     this.CurrentUserLogout = this.CurrentUserLogout.bind(this);
     this.onWillFocus = this.onWillFocus.bind(this);
-    
+
     this.updateOptions = this.updateOptions.bind(this);
     this.onDataFetched = this.onDataFetched.bind(this);
 
     // Render Methods.
     this.renderRecoverDevice = this.renderRecoverDevice.bind(this);
     this.renderAbortRecovery = this.renderAbortRecovery.bind(this);
-    
 
     // Workflow Methods.
     this.resetPin = this.resetPin.bind(this);
-    this.recoverDevice = this.recoverDevice.bind( this );
-    this.abortRecovery = this.abortRecovery.bind( this );
+    this.recoverDevice = this.recoverDevice.bind(this);
+    this.abortRecovery = this.abortRecovery.bind(this);
   }
 
   twitterDisconnect() {
-    this.setState({
-      disableButtons: true
-    }, () => {
-      new PepoApi('/auth/twitter-disconnect')
-      .post()
-      .catch((error) => {
-        Toast.show({
-          text: 'Twitter Disconnect failed',
-          icon: 'error'
-        });
-        this.setState({disableButtons: false})
-      })
-      .then(async (res) => {
-        if (res && res.success) {
-          this.CurrentUserLogout();
-        } else {
-          Toast.show({
-            text: 'Twitter Disconnect failed',
-            icon: 'error'
+    this.setState(
+      {
+        disableButtons: true
+      },
+      () => {
+        new PepoApi('/auth/twitter-disconnect')
+          .post()
+          .catch((error) => {
+            Toast.show({
+              text: 'Twitter Disconnect failed',
+              icon: 'error'
+            });
+            this.setState({ disableButtons: false });
+          })
+          .then(async (res) => {
+            if (res && res.success) {
+              this.CurrentUserLogout();
+            } else {
+              Toast.show({
+                text: 'Twitter Disconnect failed',
+                icon: 'error'
+              });
+              this.setState({ disableButtons: false });
+            }
           });
-          this.setState({disableButtons: false})
-        }
-      })
-    });
+      }
+    );
   }
 
-  CurrentUserLogout(){
-    this.setState({
-      disableButtons: true
-    } , async () => {
-      await CurrentUser.logout();
-      setTimeout(()=> {
-        this.setState({
-          disableButtons: false
-        });
-      }, 300)
-    });
+  CurrentUserLogout() {
+    let params = {
+      device_id: DeviceInfo.getUniqueID()
+    };
+    this.setState(
+      {
+        disableButtons: true
+      },
+      async () => {
+        await CurrentUser.logout(params);
+        setTimeout(() => {
+          this.setState({
+            disableButtons: false
+          });
+        }, 300);
+      }
+    );
   }
 
   componentDidMount() {
@@ -86,12 +94,12 @@ export default class CustomDrawerContent extends Component{
   }
 
   onWillFocus() {
-   this.updateOptions();    
+    this.updateOptions();
   }
 
   updateOptions() {
     let ostUserId = CurrentUser.getOstUserId();
-    if ( null == ostUserId ) {
+    if (null == ostUserId) {
       this.setState({
         disableResetPin: true,
         showAbortRecovery: false,
@@ -108,39 +116,42 @@ export default class CustomDrawerContent extends Component{
     this.deviceData = null;
     this.pendingRecovery = null;
 
-    OstWalletSdk.getUser(ostUserId, ( user ) => {
+    OstWalletSdk.getUser(ostUserId, (user) => {
       this.ostUserData = user;
       this.hasFetchedOstUserData = true;
     });
 
-    OstWalletSdk.getCurrentDeviceForUserId(ostUserId, ( device ) => {
+    OstWalletSdk.getCurrentDeviceForUserId(ostUserId, (device) => {
       this.deviceData = device;
       this.hasFetchedDeviceData = true;
       this.onDataFetched();
     });
 
-    OstJsonApi.getPendingRecoveryForUserId(ostUserId, ( data ) => {
-      console.log("getPendingRecovery data", data);
-      this.pendingRecovery = data;
-      this.hasFetchedPendingRecoveryData = true;
-      this.onDataFetched();
-    }, ( error ) => {
-      console.log("OstJsonApi.getPendingRecoveryForUserId :: error", error);
-      // igonre error. Backend will give error ("UNPROCESSABLE_ENTITY") when no recovery in progress.
-      this.pendingRecovery = null;
-      this.hasFetchedPendingRecoveryData = true;
-      this.onDataFetched();
-    })
-    
+    OstJsonApi.getPendingRecoveryForUserId(
+      ostUserId,
+      (data) => {
+        console.log('getPendingRecovery data', data);
+        this.pendingRecovery = data;
+        this.hasFetchedPendingRecoveryData = true;
+        this.onDataFetched();
+      },
+      (error) => {
+        console.log('OstJsonApi.getPendingRecoveryForUserId :: error', error);
+        // igonre error. Backend will give error ("UNPROCESSABLE_ENTITY") when no recovery in progress.
+        this.pendingRecovery = null;
+        this.hasFetchedPendingRecoveryData = true;
+        this.onDataFetched();
+      }
+    );
   }
 
   onDataFetched() {
-    if ( !this.hasFetchedOstUserData || !this.hasFetchedDeviceData ) {
+    if (!this.hasFetchedOstUserData || !this.hasFetchedDeviceData) {
       // Wait for user and device data.
       return;
     }
 
-    if ( !this.ostUserData || !this.deviceData || !this.canDeviceMakeOstApiCall(this.deviceData) ) {
+    if (!this.ostUserData || !this.deviceData || !this.canDeviceMakeOstApiCall(this.deviceData)) {
       // Sdk can not make Api call.
       this.setState({
         disableResetPin: true,
@@ -151,7 +162,7 @@ export default class CustomDrawerContent extends Component{
     }
 
     let canAbortReovery = false;
-    if ( this.hasFetchedPendingRecoveryData && this.pendingRecovery ) {
+    if (this.hasFetchedPendingRecoveryData && this.pendingRecovery) {
       canAbortReovery = true;
     }
 
@@ -160,57 +171,64 @@ export default class CustomDrawerContent extends Component{
       showAbortRecovery: canAbortReovery,
       showRecoverDevice: this.canRecoverDevice(this.ostUserData, this.deviceData, this.pendingRecovery)
     });
-
   }
 
-  canDeviceMakeOstApiCall( device ) {
-    if ( null === device ) {
+  canDeviceMakeOstApiCall(device) {
+    if (null === device) {
       return false;
     }
-    switch( device.status ) {
-      case "REGISTERED":
-      case "AUTHORIZING":
-      case "AUTHORIZED":
-      case "REVOKING":
+    switch (device.status) {
+      case 'REGISTERED':
+      case 'AUTHORIZING':
+      case 'AUTHORIZED':
+      case 'REVOKING':
         return true;
       default:
-       return false;
+        return false;
     }
   }
 
-  canResetPin( user, device ) {
+  canResetPin(user, device) {
     return true;
   }
 
-  canRecoverDevice(user, device, pendingRecovery ) {
-    if ( "ACTIVATED" === user.status && "REGISTERED" === device.status && !pendingRecovery ) {
-        return true;
+  canRecoverDevice(user, device, pendingRecovery) {
+    if ('ACTIVATED' === user.status && 'REGISTERED' === device.status && !pendingRecovery) {
+      return true;
     } else {
-      console.log("canRecoverDevice", "user.status", user.status, "device.status", device.status, "pendingRecovery", pendingRecovery);
+      console.log(
+        'canRecoverDevice',
+        'user.status',
+        user.status,
+        'device.status',
+        device.status,
+        'pendingRecovery',
+        pendingRecovery
+      );
     }
     return false;
   }
 
-
   resetPin() {
-    let workflowId = OstWalletSdkUI.resetPin(
-      CurrentUser.getOstUserId(),
-      CurrentUser.newPassphraseDelegate()
+    let workflowId = OstWalletSdkUI.resetPin(CurrentUser.getOstUserId(), CurrentUser.newPassphraseDelegate());
+
+    OstWalletSdkUI.subscribe(
+      workflowId,
+      OstWalletSdkUI.EVENTS.requestAcknowledged,
+      (ostWorkflowContext, ostContextEntity) => {
+        // Sdk event received.
+      }
     );
 
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.requestAcknowledged, (ostWorkflowContext , ostContextEntity) => {
+    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowComplete, (ostWorkflowContext, ostContextEntity) => {
       // Sdk event received.
+      console.log('resetPin workflow completed successfully');
     });
 
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowComplete, (ostWorkflowContext , ostContextEntity) => {
-      // Sdk event received.
-      console.log("resetPin workflow completed successfully");
-    });
-
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowInterrupt, (ostWorkflowContext , ostError) => {
-      console.log("resetPin :: ostError", ostError, "ostError.error.error_code:", ostError.error.error_code );
-      if ( ostError.error.error_code === "WORKFLOW_CANCELLED") {
-        console.log("resetPin :: Ignoring error");
+    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowInterrupt, (ostWorkflowContext, ostError) => {
+      console.log('resetPin :: ostError', ostError, 'ostError.error.error_code:', ostError.error.error_code);
+      if (ostError.error.error_code === 'WORKFLOW_CANCELLED') {
+        console.log('resetPin :: Ignoring error');
         //ignore it.
         return;
       }
@@ -225,19 +243,23 @@ export default class CustomDrawerContent extends Component{
       CurrentUser.newPassphraseDelegate()
     );
 
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.requestAcknowledged, (ostWorkflowContext , ostContextEntity) => {
+    OstWalletSdkUI.subscribe(
+      workflowId,
+      OstWalletSdkUI.EVENTS.requestAcknowledged,
+      (ostWorkflowContext, ostContextEntity) => {
+        // Sdk event received.
+      }
+    );
+
+    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowComplete, (ostWorkflowContext, ostContextEntity) => {
       // Sdk event received.
+      console.log('abortRecovery workflow completed successfully');
     });
 
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowComplete, (ostWorkflowContext , ostContextEntity) => {
-      // Sdk event received.
-      console.log("abortRecovery workflow completed successfully");
-    });
-
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowInterrupt, (ostWorkflowContext , ostError) => {
-      console.log("abortDeviceRecovery :: ostError", ostError, "ostError.error.error_code:", ostError.error.error_code );
-      if ( ostError.error.error_code === "WORKFLOW_CANCELLED") {
-        console.log("abortDeviceRecovery :: Ignoring error");
+    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowInterrupt, (ostWorkflowContext, ostError) => {
+      console.log('abortDeviceRecovery :: ostError', ostError, 'ostError.error.error_code:', ostError.error.error_code);
+      if (ostError.error.error_code === 'WORKFLOW_CANCELLED') {
+        console.log('abortDeviceRecovery :: Ignoring error');
         //ignore it.
         return;
       }
@@ -253,18 +275,20 @@ export default class CustomDrawerContent extends Component{
       CurrentUser.newPassphraseDelegate()
     );
 
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.requestAcknowledged, (ostWorkflowContext , ostContextEntity) => {
-      
+    OstWalletSdkUI.subscribe(
+      workflowId,
+      OstWalletSdkUI.EVENTS.requestAcknowledged,
+      (ostWorkflowContext, ostContextEntity) => {}
+    );
+
+    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowComplete, (ostWorkflowContext, ostContextEntity) => {
+      console.log('recoverDevice workflow completed successfully');
     });
 
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowComplete, (ostWorkflowContext , ostContextEntity) => {
-      console.log("recoverDevice workflow completed successfully");
-    });
-
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowInterrupt, (ostWorkflowContext , ostError) => {
-      console.log("recoverDevice :: ostError", ostError, "ostError.error.error_code:", ostError.error.error_code );
-      if ( ostError.error.error_code === "WORKFLOW_CANCELLED") {
-        console.log("recoverDevice :: Ignoring error");
+    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowInterrupt, (ostWorkflowContext, ostError) => {
+      console.log('recoverDevice :: ostError', ostError, 'ostError.error.error_code:', ostError.error.error_code);
+      if (ostError.error.error_code === 'WORKFLOW_CANCELLED') {
+        console.log('recoverDevice :: Ignoring error');
         //ignore it.
         return;
       }
@@ -274,8 +298,8 @@ export default class CustomDrawerContent extends Component{
   }
 
   renderRecoverDevice() {
-    console.log("this.state.showRecoverDevice", this.state.showRecoverDevice);
-    if ( !this.state.showRecoverDevice ) {
+    console.log('this.state.showRecoverDevice', this.state.showRecoverDevice);
+    if (!this.state.showRecoverDevice) {
       return null;
     }
     return (
@@ -289,7 +313,7 @@ export default class CustomDrawerContent extends Component{
   }
 
   renderAbortRecovery() {
-    if ( !this.state.showAbortRecovery ) {
+    if (!this.state.showAbortRecovery) {
       return null;
     }
     return (
@@ -302,48 +326,45 @@ export default class CustomDrawerContent extends Component{
     );
   }
 
-  render(){
+  render() {
     return (
-        <ScrollView style={styles.container}>
-          <NavigationEvents 
-            onWillFocus={this.onWillFocus}
-          />
-          <SafeAreaView forceInset={{ top: 'always' }}>
-            <View style={styles.header}>
-              <TouchableOpacity
-                  onPress={this.props.navigation.closeDrawer}
-                  style={{ height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}
-              >
-                <Image style={{ width: 10, height: 18 }} source={BackArrow} />
-              </TouchableOpacity>
-              <Text style={styles.headerText}>{this.userName}</Text>
+      <ScrollView style={styles.container}>
+        <NavigationEvents onWillFocus={this.onWillFocus} />
+        <SafeAreaView forceInset={{ top: 'always' }}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={this.props.navigation.closeDrawer}
+              style={{ height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Image style={{ width: 10, height: 18 }} source={BackArrow} />
+            </TouchableOpacity>
+            <Text style={styles.headerText}>{this.userName}</Text>
+          </View>
+          <TouchableOpacity onPress={this.twitterDisconnect} disabled={this.state.disableButtons}>
+            <View style={styles.itemParent}>
+              <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
+              <Text style={styles.item}>Twitter Disconnect</Text>
             </View>
-            <TouchableOpacity onPress={this.twitterDisconnect} disabled={this.state.disableButtons}>
-              <View style={styles.itemParent}>
-                <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
-                <Text style={styles.item}>Twitter Disconnect</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.resetPin} disabled={this.state.disableResetPin}>
-              <View style={styles.itemParent}>
-                <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
-                <Text style={styles.item}>Reset Pin</Text>
-              </View>
-            </TouchableOpacity>
-            {this.renderRecoverDevice()}
-            {this.renderAbortRecovery()}
-            <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>
-              <View style={styles.itemParent}>
-                <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
-                <Text style={styles.item}>Log out</Text>
-              </View>
-            </TouchableOpacity>
-          </SafeAreaView>
-        </ScrollView>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.resetPin} disabled={this.state.disableResetPin}>
+            <View style={styles.itemParent}>
+              <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+              <Text style={styles.item}>Reset Pin</Text>
+            </View>
+          </TouchableOpacity>
+          {this.renderRecoverDevice()}
+          {this.renderAbortRecovery()}
+          <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>
+            <View style={styles.itemParent}>
+              <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+              <Text style={styles.item}>Log out</Text>
+            </View>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </ScrollView>
     );
   }
-
-};
+}
 
 const styles = StyleSheet.create({
   container: {

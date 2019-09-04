@@ -4,37 +4,49 @@ import firebase from 'react-native-firebase';
 import DeviceInfo from 'react-native-device-info';
 import { connect } from 'react-redux';
 import PepoApi from './PepoApi';
-import { upsertPushNotification } from '../actions';
-import Store from '../store';
+
+function deleteToken() {
+  firebase
+    .messaging()
+    .deleteToken()
+    .then((res) => {
+      console.log('Successfully deleted device token');
+    })
+    .catch((error) => {
+      if (error) console.log('Error occured while deleting device token ', error);
+    });
+}
+
 class PushNotificationManager extends PureComponent {
+  componentDidMount() {
+    this.onTokenRefreshListener = firebase.messaging().onTokenRefresh((fcmToken) => this.sendToken(fcmToken));
+    this.removeNotificationOpenedListener = firebase
+      .notifications()
+      .onNotificationOpened((notification) => console.log('onNotificationOpened', notification));
+    this.removeNotificationListener = firebase
+      .notifications()
+      .onNotification((notification) => console.log('onNotification', notification));
+    firebase
+      .messaging()
+      .hasPermission()
+      .then((enabled) => {
+        if (!enabled) {
+          return firebase.messaging().requestPermission();
+        }
+      })
+      .then(() => {
+        console.log('Permission given');
+      })
+      .catch((error) => {
+        console.log('Permission denied');
+      });
+  }
 
-
-    componentDidMount() {
-        this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => this.sendToken(fcmToken));
-        this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationData) => {      
-          Store.dispatch(upsertPushNotification(notificationData.notification.data));
-        });
-        this.removeNotificationListener = firebase.notifications().onNotification((notification) => console.log('onNotification', notification));
-        firebase.messaging().hasPermission()
-            .then(enabled => {
-                if (!enabled) {
-                    return firebase.messaging().requestPermission();
-                }
-            })
-            .then(() => {
-                console.log('Permission given');
-            })
-            .catch(error => {
-                console.log('Permission denied');
-            });
-    }
-
-    componentWillUnmount() {
-        this.onTokenRefreshListener();
-        this.removeNotificationOpenedListener();
-        this.removeNotificationListener();
-    }
-
+  componentWillUnmount() {
+    this.onTokenRefreshListener();
+    this.removeNotificationOpenedListener();
+    this.removeNotificationListener();
+  }
 
   getToken() {
     if (Object.keys(this.props.current_user).length === 0) {
@@ -68,3 +80,6 @@ class PushNotificationManager extends PureComponent {
 const mapStateToProps = ({ current_user }) => ({ current_user });
 
 export default connect(mapStateToProps)(PushNotificationManager);
+export const PushNotificationMethods = {
+  deleteToken: deleteToken
+};
