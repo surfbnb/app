@@ -11,18 +11,15 @@ import javax.net.ssl.SSLSocketFactory;
 
 public class PepoSSLSocketFactory extends SSLSocketFactory {
     private String defaultHostName = "stagingpepo.com";
-    static SSLSocketFactory trustKitSslSocketFactory = null;
+    private static SSLSocketFactory defaultTrustKitSslSocketFactory = null;
     private SSLSocketFactory defaultFactory() {
-        return factoryFor(defaultHostName);
+        if (null == defaultTrustKitSslSocketFactory) {
+            defaultTrustKitSslSocketFactory = factoryFor(defaultHostName);
+        }
+        return defaultTrustKitSslSocketFactory;
     }
 
     private SSLSocketFactory factoryFor(String host) {
-        if (defaultHostName.equalsIgnoreCase(host)) {
-            if (null == trustKitSslSocketFactory) {
-                trustKitSslSocketFactory = TrustKit.getInstance().getSSLSocketFactory(host);
-            }
-            return trustKitSslSocketFactory;
-        }
         return TrustKit.getInstance().getSSLSocketFactory(host);
     }
 

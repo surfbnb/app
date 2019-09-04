@@ -29,6 +29,7 @@ public class PepoTrustManager implements X509TrustManager {
 
     @Override
     public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        // TrustKit always throws CertificateException, so, we can use default manager here.
         getDefaultTrustManager().checkClientTrusted(chain, authType);
     }
 
@@ -36,7 +37,7 @@ public class PepoTrustManager implements X509TrustManager {
     public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         List<String> altNames = getSubjectAltNames(chain[0]);
         if (altNames.isEmpty()) {
-         getDefaultTrustManager().checkServerTrusted(chain, authType);
+            throw new CertificateException("Certificate validation failed. Please ensure Certificate contains hostname.");
         } else {
             trustManagerFor(altNames.get(0)).checkServerTrusted(chain, authType);
         }
