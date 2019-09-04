@@ -49,11 +49,6 @@ class PushNotificationManager extends PureComponent {
   }
 
   getToken() {
-    if (Object.keys(this.props.current_user).length === 0) {
-      console.log('getToken :: current_user is not yet available');
-      return;
-    }
-
     firebase
       .messaging()
       .getToken()
@@ -61,6 +56,10 @@ class PushNotificationManager extends PureComponent {
   }
 
   sendToken(token) {
+    if (Object.keys(this.props.current_user).length === 0) {
+      console.log('sendToken :: current_user is not yet available');
+      return;
+    }
     let payload = {
       device_id: DeviceInfo.getUniqueID(),
       device_kind: Platform.OS,
