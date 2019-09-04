@@ -332,6 +332,11 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `user_notifications.id_${notificationId}.goto`);
   }
+  getPushNotification( state) {
+    state = state || Store.getState();
+    return deepGet(state, `push_notification`);
+  }
+
 }
 
 export default new ReduxGetters();

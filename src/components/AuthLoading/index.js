@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
 import Toast from '../NotificationToast';
-
+import reduxGetter from '../../services/ReduxGetters';
 import styles from './styles';
 import CurrentUser from '../../models/CurrentUser';
 import { OstWalletSdk, OstWalletSdkUI } from '@ostdotcom/ost-wallet-sdk-react-native';
@@ -39,12 +39,20 @@ export default class AuthLoading extends Component {
 
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
+
+
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();
+        console.log(reduxGetter.getPushNotification(), 'getPushNotification');
+        let pushNotification =  JSON.parse(reduxGetter.getPushNotification());
+
         if (user && !CurrentUser.isActiveUser(user)) {
           this.props.navigation.navigate('UserActivatingScreen');
+        } else if(Object.keys(pushNotification).length != 0 ){
+          console.log('I am hereeeee');
         } else {
+          //
           this.props.navigation.navigate('HomeScreen');
         }
       })
