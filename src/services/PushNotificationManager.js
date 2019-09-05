@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Platform } from 'react-native';
+import { Platform, AppState } from 'react-native';
 import firebase from 'react-native-firebase';
 import DeviceInfo from 'react-native-device-info';
 import { connect } from 'react-redux';
@@ -19,6 +19,7 @@ function deleteToken() {
 
 class PushNotificationManager extends PureComponent {
   componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
     this.onTokenRefreshListener = firebase.messaging().onTokenRefresh((fcmToken) => this.sendToken(fcmToken));
     this.removeNotificationOpenedListener = firebase
       .notifications()
@@ -48,6 +49,12 @@ class PushNotificationManager extends PureComponent {
     this.removeNotificationListener();
   }
 
+  _handleAppStateChange = (nextAppState) => {
+    if (nextAppState == 'active') {
+      this.clearNotifications();
+    }
+  };
+
   getToken() {
     firebase
       .messaging()
@@ -56,8 +63,8 @@ class PushNotificationManager extends PureComponent {
   }
 
   sendToken(token) {
-    if (Object.keys(this.props.current_user).length === 0) {
-      console.log('sendToken :: current_user is not yet available');
+    if (this.props.currentUserId) {
+      console.log('sendToken :: currentUserId is not yet available');
       return;
     }
     let payload = {
@@ -65,9 +72,22 @@ class PushNotificationManager extends PureComponent {
       device_kind: Platform.OS,
       device_token: token
     };
-    new PepoApi(`/users/${this.props.current_user.id}/device-token`).post(payload).then((responseData) => {
+    new PepoApi(`/users/${this.props.currentUserId}/device-token`).post(payload).then((responseData) => {
       console.log('sendToken :: Payload sent successfully', payload);
     });
+  }
+
+  clearNotifications() {
+    firebase
+      .notifications()
+      .removeAllDeliveredNotifications()
+      .then((res) => {
+        console.log('Successfully removed notifications');
+        firebase.notifications().setBadge(0);
+      })
+      .catch((error) => {
+        if (error) console.log('Error occured while removing notifications ', error);
+      });
   }
 
   render() {
@@ -76,7 +96,9 @@ class PushNotificationManager extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ current_user }) => ({ current_user });
+const mapStateToProps = ({ current_user }) => {
+  return { currentUserId: current_user.id };
+};
 
 export default connect(mapStateToProps)(PushNotificationManager);
 export const PushNotificationMethods = {
