@@ -8,9 +8,11 @@ import { OstWalletSdk, OstWalletSdkUI } from '@ostdotcom/ost-wallet-sdk-react-na
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
-import ost_sdk_theme_config from "../../theme/ostsdk/ost-sdk-theme-config";
-import ost_sdk_content_config from "../../theme/ostsdk/ost-sdk-content-config";
+import ost_sdk_theme_config from '../../theme/ostsdk/ost-sdk-theme-config';
+import ost_sdk_content_config from '../../theme/ostsdk/ost-sdk-content-config';
 
+import { upsertPushNotification } from '../../actions';
+import Store from '../../store';
 
 let t1, t2;
 
@@ -18,6 +20,13 @@ export default class AuthLoading extends Component {
   constructor() {
     super();
     this.init();
+  }
+
+  componentDidMount(){
+    
+    // pushNotificationEvent.on('goToPage', (gotoObject) => {      
+    //   new NavigateTo(this.props.navigation).navigate(gotoObject);
+    // });
   }
 
   // Fetch the token from storage then navigate to our appropriate place
@@ -40,19 +49,21 @@ export default class AuthLoading extends Component {
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
 
-
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();
-        console.log(reduxGetter.getPushNotification(), 'getPushNotification');
-        let pushNotification =  JSON.parse(reduxGetter.getPushNotification());
-
+        // console.log(reduxGetter.getPushNotification(), 'getPushNotification');
+        // let pushNotification = reduxGetter.getPushNotification();
+        // console.log('pushNotification typppppppppeeee ', typeof pushNotification);
         if (user && !CurrentUser.isActiveUser(user)) {
           this.props.navigation.navigate('UserActivatingScreen');
-        } else if(Object.keys(pushNotification).length != 0 ){
-          console.log('I am hereeeee');
+        // }   else if (Object.keys(pushNotification).length > 0) {
+        //   new NavigateTo(this.props.navigation).navigate(pushNotification.goto);
+        //   Store.dispatch(upsertPushNotification({}));    
+
         } else {
           //
+          console.log('I am AuthLoading: HomeScreen');
           this.props.navigation.navigate('HomeScreen');
         }
       })
