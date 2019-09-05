@@ -42,13 +42,9 @@ export default class AuthLoading extends Component {
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();
-        console.log(reduxGetter.getPushNotification(), 'getPushNotification');
-        // let pushNotification =  JSON.parse(reduxGetter.getPushNotification());
-
         if (user && !CurrentUser.isActiveUser(user)) {
           this.props.navigation.navigate('UserActivatingScreen');
         } else {
-          //
           this.props.navigation.navigate('HomeScreen');
         }
       })

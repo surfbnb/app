@@ -4,6 +4,9 @@ import firebase from 'react-native-firebase';
 import DeviceInfo from 'react-native-device-info';
 import { connect } from 'react-redux';
 import PepoApi from './PepoApi';
+import { upsertPushNotification } from '../actions';
+import Store from '../store';
+import NavigateTo from '../helpers/navigateTo';
 
 function deleteToken() {
   firebase
@@ -21,9 +24,10 @@ class PushNotificationManager extends PureComponent {
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
     this.onTokenRefreshListener = firebase.messaging().onTokenRefresh((fcmToken) => this.sendToken(fcmToken));
-    this.removeNotificationOpenedListener = firebase
-      .notifications()
-      .onNotificationOpened((notification) => console.log('onNotificationOpened', notification));
+    this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notification) => {
+      this.handleGoto(notificationData.notification.data);
+      console.log('onNotificationOpened', notification);
+    });
     this.removeNotificationListener = firebase
       .notifications()
       .onNotification((notification) => console.log('onNotification', notification));
@@ -54,6 +58,19 @@ class PushNotificationManager extends PureComponent {
       this.clearNotifications();
     }
   };
+  handleGoto(notificationData) {
+    // if (Object.keys(this.props.current_user).length === 0) {
+    // Dispatch to redux
+    console.log(notificationData.goto, 'notificationData.notification.data.goto');
+    let gotoObject = JSON.parse(notificationData.goto);
+    if (Object.keys(gotoObject).length < 0) return;
+    console.log('PushNotificationManager: handleGoto');
+    Store.dispatch(upsertPushNotification({ goto: gotoObject }));
+    // } else {
+    //   // goto
+    //   pushNotificationEvent.emit('goToPage', notificationData)
+    // }
+  }
 
   getToken() {
     firebase
