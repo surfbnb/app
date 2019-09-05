@@ -15,22 +15,23 @@ function deleteToken() {
     .then((res) => {
       console.log('Successfully deleted device token');
     })
-    .catch((error) => {
-      if (error) console.log('Error occured while deleting device token ', error);
-    });
-} 
+    .catch((error) => console.log('Error occured while deleting device token ', error));
+}
 
 class PushNotificationManager extends PureComponent {
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
+
     this.onTokenRefreshListener = firebase.messaging().onTokenRefresh((fcmToken) => this.sendToken(fcmToken));
-    this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notification) => {
-      this.handleGoto(notificationData.notification.data);
-      console.log('onNotificationOpened', notification);
-    });
+
+    this.removeNotificationOpenedListener = firebase
+      .notifications()
+      .onNotificationOpened((notification) => this.handleGoto(notificationData.notification.data));
+
     this.removeNotificationListener = firebase
       .notifications()
       .onNotification((notification) => console.log('onNotification', notification));
+
     firebase
       .messaging()
       .hasPermission()
@@ -44,6 +45,7 @@ class PushNotificationManager extends PureComponent {
       })
       .catch((error) => {
         console.log('Permission denied');
+        // Implement screen?
       });
   }
 
@@ -51,13 +53,15 @@ class PushNotificationManager extends PureComponent {
     this.onTokenRefreshListener();
     this.removeNotificationOpenedListener();
     this.removeNotificationListener();
+    AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
   _handleAppStateChange = (nextAppState) => {
-    if (nextAppState == 'active') {
+    if (nextAppState === 'active') {
       this.clearNotifications();
     }
   };
+
   handleGoto(notificationData) {
     // if (Object.keys(this.props.current_user).length === 0) {
     // Dispatch to redux
@@ -80,7 +84,7 @@ class PushNotificationManager extends PureComponent {
   }
 
   sendToken(token) {
-    if (this.props.currentUserId) {
+    if (!this.props.currentUserId) {
       console.log('sendToken :: currentUserId is not yet available');
       return;
     }
@@ -89,9 +93,9 @@ class PushNotificationManager extends PureComponent {
       device_kind: Platform.OS,
       device_token: token
     };
-    new PepoApi(`/users/${this.props.currentUserId}/device-token`).post(payload).then((responseData) => {
-      console.log('sendToken :: Payload sent successfully', payload);
-    });
+    new PepoApi(`/users/${this.props.currentUserId}/device-token`)
+      .post(payload)
+      .then((responseData) => console.log('sendToken :: Payload sent successfully', payload));
   }
 
   clearNotifications() {
@@ -99,12 +103,9 @@ class PushNotificationManager extends PureComponent {
       .notifications()
       .removeAllDeliveredNotifications()
       .then((res) => {
-        console.log('Successfully removed notifications');
         firebase.notifications().setBadge(0);
       })
-      .catch((error) => {
-        if (error) console.log('Error occured while removing notifications ', error);
-      });
+      .catch((error) => console.log('Error occured while removing notifications ', error));
   }
 
   render() {
