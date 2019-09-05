@@ -47,11 +47,9 @@ class HomeScreen extends Component {
   }
 
   handlepushNotification(){    
-    console.log('handlepushNotification------------');
     let pushNotification = reduxGetter.getPushNotification();
 
-    if (Object.keys(pushNotification).length > 0) {
-      console.log('Object.keys(pushNotification).length ', Object.keys(pushNotification).length, pushNotification);
+    if (Object.keys(pushNotification).length > 0) {      
       new NavigateTo(this.props.navigation).navigate(pushNotification.goto);
       Store.dispatch(clearPushNotification());
       return;
@@ -78,7 +76,8 @@ class HomeScreen extends Component {
     }
   }
 
-  componentWillUnmount = () => {
+  componentWillUnmount = () => {    
+    AppState.removeEventListener('change', this._handleAppStateChange);
     videoUploaderComponent.removeListener('show');
     videoUploaderComponent.removeListener('hide');
     NavigationEmitter.removeListener('onRefresh');

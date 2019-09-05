@@ -23,7 +23,7 @@ class PushNotificationManager extends PureComponent {
     AppState.addEventListener('change', this._handleAppStateChange);
 
     this.onTokenRefreshListener = firebase.messaging().onTokenRefresh((fcmToken) => this.sendToken(fcmToken));
-
+    firebase.notifications().getInitialNotification().then((notificationData) => notificationData && this.handleGoto(notificationData.notification.data));
     this.removeNotificationOpenedListener = firebase
       .notifications()
       .onNotificationOpened((notificationData) => {
@@ -67,8 +67,7 @@ class PushNotificationManager extends PureComponent {
 
   handleGoto(notificationData) {
     // if (Object.keys(this.props.current_user).length === 0) {
-    // Dispatch to redux
-    console.log(notificationData.goto, 'notificationData.notification.data.goto');
+    // Dispatch to redux    
     let gotoObject = JSON.parse(notificationData.goto);
     if (Object.keys(gotoObject).length < 0) return;
     console.log('PushNotificationManager: handleGoto');
