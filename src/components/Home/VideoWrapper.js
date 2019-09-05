@@ -7,6 +7,7 @@ import inlineStyles from './styles';
 import reduxGetter from '../../services/ReduxGetters';
 import playIcon from '../../assets/play_icon.png';
 import PixelCall from '../../services/PixelCall';
+import BrowserEmitter from '../../helpers/BrowserEmitter';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -57,6 +58,10 @@ class VideoWrapper extends PureComponent {
     };
 
     AppState.addEventListener('change', this._handleAppStateChange);
+
+    BrowserEmitter.on('browserOpened', () => {
+      //this.pauseVideo();
+    });
   }
 
   componentWillUnmount() {
@@ -67,6 +72,7 @@ class VideoWrapper extends PureComponent {
     }
     clearTimeout(this.loadingTimeOut);
     clearTimeout(this.activeStateTimeout);
+    BrowserEmitter.removeListener('browserOpened');
   }
 
   isPaused() {
@@ -125,7 +131,7 @@ class VideoWrapper extends PureComponent {
         e_action: 'view',
         e_data_json: {
           video_id: this.props.videoId,
-          profile_user_id: this.props.userId,
+          profile_user_id: this.props.userId
         },
         p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
       };
@@ -141,7 +147,7 @@ class VideoWrapper extends PureComponent {
       e_action: 'full_viewed',
       e_data_json: {
         video_id: this.props.videoId,
-        profile_user_id: this.props.userId,
+        profile_user_id: this.props.userId
       },
       p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
     };
@@ -163,7 +169,7 @@ class VideoWrapper extends PureComponent {
               source={{ uri: this.props.videoUrl }}
               repeat={this.props.repeat || true}
               onLoad={this.onLoad}
-              ignoreSilentSwitch={"ignore"}
+              ignoreSilentSwitch={'ignore'}
               onProgress={this.onProgress}
               onEnd={this.onEnd}
             />
