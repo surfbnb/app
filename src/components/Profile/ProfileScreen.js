@@ -44,6 +44,7 @@ class ProfileScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.refreshEvent = new EventEmitter();
+    this.refresh();
   }
 
   componentDidMount() {
@@ -54,7 +55,6 @@ class ProfileScreen extends PureComponent {
     });
     this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
-      this.refresh();
     });
   }
 
@@ -67,6 +67,7 @@ class ProfileScreen extends PureComponent {
     if (this.props.userId != prevProps.userId) {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
       this.props.navigation.goBack(null);
+      this.refresh();
     }
   }
 
