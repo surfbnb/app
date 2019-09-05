@@ -1,5 +1,6 @@
 import deepGet from "lodash/get";
-
+import Store from '../store';
+import {updateIsPurchase} from "../actions";
 import CurrentUser from "../models/CurrentUser";
 import PepoApi from "../services/PepoApi"; 
 import Pricer from "../services/Pricer";
@@ -47,6 +48,8 @@ class PollCurrentUserPendingPayments {
         const pendingTransactions = deepGet( res , `data.${res.result_type}`) || [] ;
         //If all pending Payments are resolved fetch balance 
         if(  pendingTransactions.length ==  0 ){
+             //Update the payment status in Redux; 
+            Store.dispatch(updateIsPurchase(false));
             Pricer.getBalance(); 
         //Else keep polling    
         }else{

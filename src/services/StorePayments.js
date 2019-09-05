@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
-
 import RNIap from 'react-native-iap';
-
+import Store from '../store';
+import {updateIsPurchase} from "../actions";
 
 import PepoApi from "../services/PepoApi";
 import UserPayments from "../models/UserPayments";
@@ -53,6 +53,8 @@ class StorePayments {
         new BackendPaymentAcknowledge( params ).acknowledgeBEOnPurchaseSuccess( ); 
         //Convey others payment is processed irrespective of status 
         this.events.emit("paymentProcessed"); 
+        //Update the payment status in Redux; 
+        Store.dispatch(updateIsPurchase(true));
     }
 
     snycPendingPayments( userId ){

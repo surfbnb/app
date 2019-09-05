@@ -27,6 +27,7 @@ export const {
   upsertImageEntities,
   upsertHomeFeedEntities,
   updateBalance,
+  updateIsPurchase,
   updatePricePoints,
   updateToken,
   updateExecuteTransactionStatus,
@@ -71,12 +72,14 @@ const defaultState = {
   profile_picture: {},
   token: { decimals: 18 },
   balance: null,
+  isPurchase: false,
   notification_unread: {}
 };
 
 const logoutDefault = {
   current_user: {},
   balance: null,
+  isPurchase: false,
   video_contribution_entities: {},
   user_contribution_entities: {}
 };
@@ -174,6 +177,10 @@ export const reducer = handleActions(
     [updateBalance]: (state, action) => ({
       ...state,
       balance: action.payload.balance
+    }),
+    [updateIsPurchase]: (state, action)=>({
+      ...state,
+      balance: action.payload.isPurchase
     }),
     [updatePricePoints]: (state, action) => ({
       ...state,

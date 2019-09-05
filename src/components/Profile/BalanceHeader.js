@@ -9,6 +9,8 @@ import topUpIcon from '../../assets/top-up-icon.png'
 import redeemIcon from '../../assets/redeem-icon.png'
 import inlineStyle from "../CommonComponents/UserInfo/styles";
 import LinearGradient from "react-native-linear-gradient";
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { withNavigation } from 'react-navigation';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -29,15 +31,21 @@ class BalanceHeader extends PureComponent {
     val = priceOracle.fromDecimal( val ); 
     return pricer.toDisplayAmount( priceOracle.btToFiat( val ));
   }
+  
+  onTopUp = () => {
+    this.props.navigation.push("StoreProductsScreen");
+  }
 
   render() {
     return (
       <View style={inlineStyle.infoHeaderWrapper}>
         <View style={{flexDirection: 'row'}}>
-          <View style={{alignItems: 'center'}}>
-            <Image style={{ width: 50, height: 50 }} source={topUpIcon}></Image>
-            <Text style={inlineStyles.redeemBalance}>Top Up</Text>
-          </View>
+          <TouchableWithoutFeedback onPress={this.onTopUp}>
+            <View style={{alignItems: 'center'}}>
+              <Image style={{ width: 50, height: 50 }} source={topUpIcon}></Image>
+              <Text style={inlineStyles.redeemBalance}>Top Up</Text>
+            </View>
+          </TouchableWithoutFeedback>  
           <LinearGradient
             colors={['#dadfdc', '#dadfdc']}
             locations={[0, 1]}
@@ -62,4 +70,4 @@ class BalanceHeader extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps)(BalanceHeader) ;
+export default connect(mapStateToProps)(withNavigation( BalanceHeader )) ;

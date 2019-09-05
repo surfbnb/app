@@ -134,6 +134,13 @@ export const updateBalance = (balance = '0') => ({
   }
 });
 
+export const updateIsPurchase = (isPurchase = false) => ({
+  type: types.UPDATE_IS_PURCHASE,
+  payload: {
+    isPurchase: isPurchase
+  }
+});
+
 export const updateExecuteTransactionStatus = (status = false) => ({
   type: types.UPDATE_EXECUTE_TRANSACTION_STATUS,
   payload: {
