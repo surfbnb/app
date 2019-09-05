@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import  { purchaseUpdatedListener,purchaseErrorListener } from 'react-native-iap';
-
 import Toast from '../../theme/components/NotificationToast';
-
 import StorePayments from "../../services/StorePayments";
-import OstErrors from "../../services/OstErrors";
+import {ostErrors} from "../../services/OstErrors";
 import CurrentUser from '../../models/CurrentUser';
 
 let purchaseUpdateSubscription , purchaseErrorSubscription ;
@@ -55,7 +54,7 @@ class PaymentWorker extends PureComponent {
      onRequestPurchaseError = ( error  ) => {
         StorePayments.acknowledgeBEOnPurchaseError( error , CurrentUser.getUserId() ) ; 
          Toast.show({
-             text:  OstErrors.getUIErrorMessage("payment_failed_error"),
+             text:  ostErrors.getUIErrorMessage("payment_failed_error"),
              icon: 'error'
          });
      }

@@ -30,6 +30,7 @@ class StoreProductsScreen extends PureComponent{
         this.products = [];
         this.isProductFetchError = false;
         this.maxThresholdReached = false;
+        this.fetchProducts();
     }
 
     componentDidMount(){
@@ -112,25 +113,23 @@ class StoreProductsScreen extends PureComponent{
 
     getErrorMarkup = () => {
         return (
-            <View><Text>TODO UI Error Please try again</Text></View>
+            <View style={{padding: 30}}><Text>TODO UI Error Please try again</Text></View>
         )  
     }
 
     getThresholdReachedMarkUp = () => {
         return (
-            <View><Text>TODO UI Max Threshold reached</Text></View>
+            <View tyle={{padding: 30}} ><Text>TODO UI Max Threshold reached</Text></View>
         )
     }
 
     getNoProductsMarkUp = () => {
-        return (
-            <View><Text>TODO UI No Products</Text></View>
-        ) 
+        return this.getErrorMarkup();
     }
 
     getProductsMarkUp = () => {
         return this.products.map(( product )=> {
-            <View style={{flexDirection: "row", justifyContent:"space-between"}}>
+            <View style={{flexDirection: "row", justifyContent:"space-between" , paddingHorizontal: 20 , paddingVertical: 5}}>
                 <View><Text>{product.title}</Text></View>
                 <TouchableOpacity disabled={this.state.isPurchasing}
                     onPress={() => {this.onRequestPurchase(product.productId) }}>
@@ -168,8 +167,10 @@ class StoreProductsScreen extends PureComponent{
         return (
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
                 <View style={{ flex: 1, backgroundColor: 'transparent' }}>
-                    {this.state.loadingProducts && <ActivityIndicator/>}                   
-                    {!this.state.loadingProducts && this.getMarkUp()}
+                    <View style={[inlineStyles.container]}>
+                        {this.state.loadingProducts && <ActivityIndicator/>}                   
+                        {!this.state.loadingProducts && this.getMarkUp()}
+                    </View>     
                 </View>
             </TouchableWithoutFeedback>
         );
