@@ -18,7 +18,7 @@ function deleteToken() {
     .catch((error) => {
       if (error) console.log('Error occured while deleting device token ', error);
     });
-}
+} 
 
 class PushNotificationManager extends PureComponent {
   componentDidMount() {
