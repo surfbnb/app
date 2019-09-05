@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, View, Text, ActivityIndicator } from 'react-native';
+import { FlatList, View, Text, ActivityIndicator, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import styles from './styles';
@@ -41,21 +41,28 @@ class SearchResults extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <FlatList
-          data={this.props.list}
-          keyboardShouldPersistTaps={'always'}
-          horizontal={this.props.horizontal}
-          enableEmptySections={true}
-          stickyHeaderIndices={[0]}
-          onEndReached={this.props.getNext}
-          keyExtractor={this._keyExtractor}
-          refreshing={false}
-          onEndReachedThreshold={5}
-          renderItem={this._renderItem}
-          ListEmptyComponent={this.getEmptyComponent}
-          ListHeaderComponent={<SearchListHeader setSearchParams={this.props.setSearchParams} />}
-          showsVerticalScrollIndicator={false}
-        />
+        <TouchableWithoutFeedback
+          onPress={() => {
+            Keyboard.dismiss();
+          }}
+          accessible={false}
+        >
+          <FlatList
+            data={this.props.list}
+            keyboardShouldPersistTaps={'always'}
+            horizontal={this.props.horizontal}
+            enableEmptySections={true}
+            stickyHeaderIndices={[0]}
+            onEndReached={this.props.getNext}
+            keyExtractor={this._keyExtractor}
+            refreshing={false}
+            onEndReachedThreshold={5}
+            renderItem={this._renderItem}
+            ListEmptyComponent={this.getEmptyComponent}
+            ListHeaderComponent={<SearchListHeader setSearchParams={this.props.setSearchParams} />}
+            showsVerticalScrollIndicator={false}
+          />
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     );
   }
