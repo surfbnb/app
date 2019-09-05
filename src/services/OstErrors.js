@@ -22,7 +22,8 @@ const UIErros = {
   user_not_active: 'Please wait for your user activation.',
   no_internet: 'No Internet, please try again later.',
   maxAllowedBt: `Max allowed Pepo coin transfer reached`,
-  name: 'Name is mandatory.'
+  name: 'Name is mandatory.',
+  payment_failed_error : "Unable to process the payment."
 };
 
 const UIWhitelistedErrorCode = {

@@ -62,7 +62,6 @@ export default {
   },
 
   async getItem(key) {
-    res = await AsyncStorage.getItem(key);
     return AsyncStorage.getItem(key);
   },
 
@@ -145,5 +144,14 @@ export default {
       return false;
     }
     return true;
+  },
+
+  getParsedData( val ){
+    if( typeof val == "string"){
+        try{
+          val = JSON.parse( val ); 
+        }catch(error){}
+    }
+    val = val || {};
   }
 };

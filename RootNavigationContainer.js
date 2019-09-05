@@ -45,6 +45,8 @@ import { NotificationToastComponent } from './src/theme/components/NotificationT
 import SocketManager from './src/components/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
+import StoreProductsScreen from "./src/components/StoreProducts";
+import PaymentWorker from "./src/components/PaymentWorker";
 
 const customTabHiddenRoutes = ['CaptureVideo'];
 
@@ -112,7 +114,8 @@ const HomeStack = createStackNavigator(
   {
     HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen,
-    CaptureVideo: CaptureVideoStack
+    CaptureVideo: CaptureVideoStack,
+    StoreProductsScreen: StoreProductsScreen
   },
   {
     ...modalStackConfig,
@@ -165,7 +168,8 @@ const ProfileStack = createStackNavigator(
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery,
     TransactionScreen: TransactionScreen,
-    CaptureVideo: CaptureVideoStack
+    CaptureVideo: CaptureVideoStack,
+    StoreProductsScreen: StoreProductsScreen
   },
   {
     headerLayoutPreset: 'center',
@@ -290,6 +294,7 @@ const RootNavigationContainer = () => (
     <AllowAccessModalScreen />
     <NotificationToastComponent />
     <SocketManager />
+    <PaymentWorker />
   </Root>
 );
 
