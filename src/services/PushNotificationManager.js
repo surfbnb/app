@@ -26,7 +26,10 @@ class PushNotificationManager extends PureComponent {
 
     this.removeNotificationOpenedListener = firebase
       .notifications()
-      .onNotificationOpened((notification) => this.handleGoto(notificationData.notification.data));
+      .onNotificationOpened((notificationData) => {
+        
+        console.log("onNotificationOpened [[[[[onNotificationOpened]]]]] ") 
+        this.handleGoto(notificationData.notification.data)});
 
     this.removeNotificationListener = firebase
       .notifications()
