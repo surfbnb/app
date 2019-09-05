@@ -174,3 +174,5 @@ export const upsertPushNotification = (data) => ({
   type: types.UPSERT_PUSH_NOTIFICATION,
   payload: { push_notification : data }
 });
+
+export const clearPushNotification = () => ({ type: types.CLEAR_PUSH_NOTIFICATION });

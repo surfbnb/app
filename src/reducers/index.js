@@ -231,6 +231,10 @@ export const reducer = handleActions(
       ...state,
       push_notification: assignIn({}, state.push_notification, action.payload.push_notification)
     }),
+    [clearPushNotification]: (state, action) => ({
+      ...state,
+      push_notification: assignIn(defaultState.push_notification)
+    }),
 
 
   },

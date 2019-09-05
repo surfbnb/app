@@ -22,6 +22,7 @@ export default class NavigateTo {
   };
 
   goToSupporters = (profileId) => {
+    console.log('goToSupporters', profileId);
     this.navigation.push('SupportersListScreen', { userId: profileId });
   };
 
