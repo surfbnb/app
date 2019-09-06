@@ -178,5 +178,9 @@ export default {
     WHITELISTED_DOMAINS: {
       TWITTER: 'twitter.com'
     }
+  },
+
+  searchConfig: {
+    MIN_SEARCH_CHAR: 2
   }
 };

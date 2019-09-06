@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import SearchResults from './SearchResults';
+import AppConfig from '../../constants/AppConfig';
 
 class SearchScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -19,7 +21,7 @@ class SearchScreen extends Component {
 
   setSearchParams = (searchText) => {
     let queryParams = '';
-    if (searchText && searchText.length >= 3) {
+    if (searchText && searchText.length >= AppConfig.searchConfig.MIN_SEARCH_CHAR) {
       queryParams = searchText;
     } else {
       queryParams = null;

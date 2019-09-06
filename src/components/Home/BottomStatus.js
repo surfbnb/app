@@ -10,6 +10,7 @@ import reduxGetter from '../../services/ReduxGetters';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import { getSocialIcon } from '../../helpers/helpers';
 import InAppBrowser from '../../services/InAppBrowser';
+import BrowserEmitter from '../../helpers/BrowserEmitter';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -54,7 +55,10 @@ class BottomStatus extends PureComponent {
         </TouchableWithoutFeedback>
         {this.props.link ? (
           <TouchableWithoutFeedback
-            onPress={multipleClickHandler(() => InAppBrowser.openBrowser(this.props.link))}
+            onPress={multipleClickHandler(() => {
+              BrowserEmitter.emit('browserOpened');
+              InAppBrowser.openBrowser(this.props.link);
+            })}
             pointerEvents={'auto'}
           >
             <View
