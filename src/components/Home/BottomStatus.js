@@ -75,8 +75,8 @@ class BottomStatus extends PureComponent {
                 style={[{ fontSize: 14, paddingVertical: 4, paddingLeft: 8 }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
-              >
-                {this.props.link}
+              >                                
+                {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")}
               </Text>
             </View>
           </TouchableWithoutFeedback>

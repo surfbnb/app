@@ -5,12 +5,21 @@ import {
   View,
   Vibration
 } from "react-native";
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
+
 import pepo_tx_img from "../../../assets/pepo_anim_btn.png"
 import pepo_tx_img_disabled from "../../../assets/Pepo-tx-disabled.png"
 import Colors from "../../../theme/styles/Colors"
 
 
 const animDuration = 1000;
+
+const options = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false
+};
+
+
 export default class ClapButton extends React.Component{
 
   constructor(props){
@@ -47,8 +56,8 @@ export default class ClapButton extends React.Component{
     if(this.props.isClapping){
       this.firstClap = this.props.isClapping;
       this.timedClap = this.props.isClapping;
-      this.AnimateFunction().start();
-      Vibration.vibrate([1,1]);
+      this.AnimateFunction().start();         
+      ReactNativeHapticFeedback.trigger("notificationSuccess", options);
       setTimeout(()=>{
         this.timedClap = false
       },95)

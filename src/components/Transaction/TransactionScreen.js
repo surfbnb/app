@@ -38,6 +38,7 @@ const bottomSpace = getBottomSpace([true]),
   safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
 
 const validMinAmount = 1;
+const defaultBtAmount = 10;
 const HEADER_TITLE = 'Send Pepos';
 const SUCCESS_HEADER_TITLE = 'Sent';
 const SUBMIT_BTN_TXT = 'Confirm';
@@ -56,9 +57,9 @@ class TransactionScreen extends Component {
       balance: 0,
       exceBtnDisabled: true,
       general_error: '',
-      btAmount: validMinAmount,
+      btAmount: defaultBtAmount,
       fieldErrorText: null,
-      btUSDAmount: (this.priceOracle && this.priceOracle.btToFiat(validMinAmount)) || 0,
+      btUSDAmount: (this.priceOracle && this.priceOracle.btToFiat(defaultBtAmount)) || 0,
       btAmountErrorMsg: null,
       bottomPadding: safeAreaBottomSpace,
       btFocus: false,
@@ -77,7 +78,8 @@ class TransactionScreen extends Component {
   }
 
   componentDidMount() {
-    this.setState({ btFocus: true });
+    // default we need 
+    //this.setState({ btFocus: true });
   }
 
   _keyboardShown(e) {

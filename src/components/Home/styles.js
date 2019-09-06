@@ -34,8 +34,8 @@ let stylesMap = {
     fontSize: 18,
     color: Colors.white,
     alignSelf: 'center',
-    marginTop: 3,
-    marginBottom: 15
+    marginBottom: 3
+    // marginBottom: 15
   },
   txElem: {
     marginBottom: 20
