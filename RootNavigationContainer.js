@@ -46,7 +46,7 @@ import SocketManager from './src/components/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
 
-const customTabHiddenRoutes = ['CaptureVideo'];
+const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -90,10 +90,15 @@ const txModalConfig = {
   })
 };
 
-const CaptureVideoStack = createStackNavigator({
-  CaptureVideo: CaptureVideo,
-  FanVideoDetails: FanVideoDetails
-});
+const CaptureVideoStack = createStackNavigator(
+  {
+    CaptureVideo: CaptureVideo,
+    FanVideoDetails: FanVideoDetails
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
 
 const HomePushStack = createStackNavigator(
   {
