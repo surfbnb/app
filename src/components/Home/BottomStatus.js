@@ -78,7 +78,7 @@ class BottomStatus extends PureComponent {
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
               >
-                {this.props.link}
+                {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")}
               </Text>
             </View>
           </TouchableWithoutFeedback>
