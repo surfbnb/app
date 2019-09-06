@@ -33,10 +33,6 @@ let checkVideoPermission = function(navigation) {
           accessText = 'Enable Camera and Microphone Access';
         }
         allowAcessModalEventEmitter.emit('show', accessText);
-
-        // this.setState({
-        //   showCameraAccessModal: true
-        // });
       }
     });
   });
