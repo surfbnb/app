@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image, Keyboard, BackHandler, Dimensions , ActivityIndicator, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Keyboard,
+  BackHandler,
+  Dimensions,
+  ActivityIndicator,
+  TouchableWithoutFeedback
+} from 'react-native';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import reduxGetter from '../../services/ReduxGetters';
 import deepGet from 'lodash/get';
@@ -23,12 +33,20 @@ class SayThanks extends Component {
       thanksMessage: '',
       server_errors: {},
       thanksError: '',
-      posting: false
+      posting: false,
+      bottomPadding: safeAreaBottomSpace,
+      focus: false
     };
   }
 
+  componentDidMount() {
+    console.log('componentDidMount');
+    this.setState({
+      focus: true
+    });
+  }
+
   componentWillMount() {
-    this.defaultVals();
     this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
     this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
 
@@ -36,8 +54,6 @@ class SayThanks extends Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
-
-  defaultVals() {}
 
   componentWillUnmount() {
     this.keyboardWillShowListener.remove();
@@ -48,16 +64,11 @@ class SayThanks extends Component {
   }
 
   _keyboardShown(e) {
-    console.log('_keyboardShown', e);
-    console.log(deepGet(e, 'endCoordinates.height'), '_keyboardShown', extraPadding);
-    console.log(Dimensions.get('screen').height);
-    let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;    
-    bottomPaddingValue -= 50 ;
-
+    let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;
+    bottomPaddingValue -= 50;
     if (this.state.bottomPadding == bottomPaddingValue) {
       return;
     }
-
     this.setState({
       bottomPadding: bottomPaddingValue
     });
@@ -89,43 +100,42 @@ class SayThanks extends Component {
   };
 
   sendMessage = () => {
-    this.setState({server_errors: {}, thanksError: ''});
-    if(this.state.thanksMessage.trim().length == 0){
-      this.setState({thanksError: 'Message can not be empty'});
+    this.setState({ server_errors: {}, thanksError: '' });
+    if (this.state.thanksMessage.trim().length == 0) {
+      this.setState({ thanksError: 'Message can not be empty' });
       return;
     }
-    this.setState({posting:true});
+    this.setState({ posting: true });
     return new PepoApi(`/users/thank-you`)
       .post({ notification_id: this.props.navigation.getParam('notificationId'), text: this.state.thanksMessage })
       .then((res) => {
-        this.setState({posting:false});
+        this.setState({ posting: false });
         if (res && res.success) {
           this.closeModal();
           this.props.navigation.getParam('sendMessageSuccess')();
         } else {
-          this.setState({server_errors: res});
+          this.setState({ server_errors: res });
         }
       })
       .catch((error) => {
-        this.setState({posting:false});
+        this.setState({ posting: false });
       });
   };
 
   render() {
-
     return (
       <TouchableWithoutFeedback
-      onPressOut={() => {
+        onPressOut={() => {
           if (!this.state.closeDisabled) {
             this.closeModal();
           }
         }}
-      > 
+      >
         <View style={{ flex: 1, backgroundColor: 'transparent' }}>
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
               <View style={inlineStyles.headerWrapper}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <ProfilePicture userId={this.props.navigation.getParam('userId')} />
                   <Text style={inlineStyles.modalHeader}>
                     {reduxGetter.getName(this.props.navigation.getParam('userId'))}
@@ -146,26 +156,29 @@ class SayThanks extends Component {
                   <Image source={modalCross} style={{ width: 17.5, height: 17 }} />
                 </TouchableOpacity>
               </View>
-              <View style={{flexDirection:'row', alignItems: 'center', marginTop: 12}}>
-                <View style={{flex: 1}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
+                <View style={{ flex: 1 }}>
                   <FormInput
                     onChangeText={this.changeMessage}
                     placeholder="Thanks for supporting me!"
-                    fieldName="text"
-                    style={[Theme.TextInput.textInputStyle, {height: 50, color: '#2a293b', marginTop: 0}]}
+                    fieldName="sayThanksInput"
+                    style={[Theme.TextInput.textInputStyle, { height: 50, color: '#2a293b', marginTop: 0 }]}
                     value={`${this.state.thanksMessage}`}
-                    isFocus={true}
+                    isFocus={this.state.focus}
                     serverErrors={this.state.server_errors}
                     errorMsg={this.state.thanksError}
                     placeholderTextColor="#ababab"
                   />
                 </View>
-                <TouchableOpacity onPress={this.sendMessage} style={{alignSelf: 'flex-start'}}>
-                  <Image style={{ height: 40, width: 40, marginLeft: 8, marginTop: 5, transform: [{ rotate: '-45deg' }] }} source={sendMessageIcon} />
+                <TouchableOpacity onPress={this.sendMessage} style={{ alignSelf: 'flex-start' }}>
+                  <Image
+                    style={{ height: 40, width: 40, marginLeft: 8, marginTop: 5, transform: [{ rotate: '-45deg' }] }}
+                    source={sendMessageIcon}
+                  />
                 </TouchableOpacity>
               </View>
-              <View style={{height:15}}>
-                {this.state.posting && (<ActivityIndicator size="small" color="#168dc1" />)}
+              <View style={{ height: 15 }}>
+                {this.state.posting && <ActivityIndicator size="small" color="#168dc1" />}
               </View>
             </View>
           </TouchableWithoutFeedback>
