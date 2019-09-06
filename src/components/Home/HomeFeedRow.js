@@ -89,7 +89,7 @@ class HomeFeedRow extends PureComponent {
               </View>
             )}
 
-            <VideoAmountStat videoId={this.videoId} />
+            <VideoAmountStat videoId={this.videoId} userId={this.userId} />
           </View>
 
           <BottomStatus userId={this.userId} videoId={this.videoId} onWrapperClick={this.navigateToUserProfile} />

@@ -80,9 +80,6 @@ class WalletBalanceFlyer extends Component {
               opacity: contentOpacity
             }}
           >
-            <TouchableWithoutFeedback onPress={this.hideFlyer} style={styles.crossIconClickSpace}>
-              <Image style={[styles.crossIconSkipFont]} source={modalCross} />
-            </TouchableWithoutFeedback>
             {/*<Text> Low Balance please </Text>*/}
             <Text style={styles.topUp}>Topup</Text>
           </Animated.View>

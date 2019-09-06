@@ -50,7 +50,7 @@ let stylesMap = {
     // flexDirection: 'column',
     // justifyContent: 'flex-start',
     borderTopLeftRadius: 20,
-    maxHeight: Dimensions.get('window').height * 0.20,
+    maxHeight: Dimensions.get('window').height * 0.3,
     minHeight: Dimensions.get('window').height * 0.05
   },
   handle: {
