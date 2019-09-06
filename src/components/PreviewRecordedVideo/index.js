@@ -10,6 +10,7 @@ import { ActionSheet } from 'native-base';
 import styles from './styles';
 import closeIcon from '../../assets/cross_icon.png';
 import { withNavigation } from 'react-navigation';
+import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
 import LinearGradient from 'react-native-linear-gradient';
@@ -103,13 +104,14 @@ class PreviewRecordedVideo extends Component {
           this.props.goToRecordScreen();
         } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
           this.props.navigation.goBack(null);
+          videoUploaderComponent.emit('hide');
           //TODO: Check why we were discarding video here from mayur
           // Store.dispatch(
           //   upsertRecordedVideo({
           //     do_discard: true
           //   })
           // );
-          // Store.dispatch(videoInProcessing(false));
+          Store.dispatch(videoInProcessing(false));
         }
       }
     );
