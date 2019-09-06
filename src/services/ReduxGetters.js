@@ -337,6 +337,11 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `notification_unread.flag`);
   }
+
+  getPurchasingStatus(state){
+    state = state || Store.getState();
+    return deepGet(state, `isPurchase`);
+  }
 }
 
 export default new ReduxGetters();

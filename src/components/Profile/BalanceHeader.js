@@ -11,6 +11,7 @@ import inlineStyle from "../CommonComponents/UserInfo/styles";
 import LinearGradient from "react-native-linear-gradient";
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
+import CurrentUser from '../../models/CurrentUser';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -33,7 +34,9 @@ class BalanceHeader extends PureComponent {
   }
   
   onTopUp = () => {
-    this.props.navigation.push("StoreProductsScreen");
+    if(CurrentUser.isUserActivated(true)){
+      this.props.navigation.push("StoreProductsScreen");
+    }
   }
 
   render() {

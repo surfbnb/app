@@ -4,15 +4,19 @@ import {
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    ActivityIndicator,
     BackHandler,
-    Platform
+    Platform,
+    Animated,
+    Easing,
+    Image
   } from 'react-native';
 
 
 import deepGet from "lodash/get";
 import PepoApi from "../../services/PepoApi";
 import StorePayments from "../../services/StorePayments";
+import pepoTxIcon from "../../assets/pepo-tx-icon.png";
+import toastError from '../../assets/toast_error.png';
 
 import inlineStyles from './styles';
 
@@ -23,7 +27,9 @@ class StoreProductsScreen extends PureComponent{
 
         this.state = {
             loadingProducts : true,
-            isPurchasing : false
+            isPurchasing : false,
+            rotate: new Animated.Value(0),
+            scale: new Animated.Value(0.1)
         }
 
         this.productIds = [];
@@ -111,15 +117,67 @@ class StoreProductsScreen extends PureComponent{
         this.setState({isPurchasing: false});
     }
 
+    getAnimation(){
+        return Animated.sequence([
+          Animated.delay(800),
+          Animated.timing(this.state.rotate, {
+            toValue: 1,
+            easing:Easing.elastic(1.5),
+            useNativeDriver: true
+          }),
+          Animated.loop(
+            Animated.timing(this.state.scale, {
+              duration: 1200,
+              easing:Easing.inOut(Easing.ease),
+              useNativeDriver: true
+            })
+          )
+        ])
+      };
+
+    getLoadingMarkup = () => {
+        const rotateData = this.state.rotate.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg','-135deg'],
+          });
+          const scaleData = this.state.scale.interpolate({
+            inputRange: [0.11, 0.5, 1],
+            outputRange: [1, Platform.OS == 'ios' ? 1.15 : 1.3, 1]
+          });
+          let animationStyle = {
+            transform: [
+              {scale: scaleData},
+              {rotate: rotateData}
+            ],
+          };
+          this.getAnimation().start() ;
+        return (
+            <View style={inlineStyles.viewWrapper}>
+                <Animated.Image
+                  style={[ animationStyle, inlineStyles.loadingIcon ]}
+                  source={pepoTxIcon}/>
+                <Text>Fetching Topup Options</Text>
+            </View>
+        )
+    }
+
     getErrorMarkup = () => {
         return (
-            <View style={{padding: 30}}><Text>TODO UI Error Please try again</Text></View>
+            <View style={inlineStyles.viewWrapper}>
+                <Image source={toastError} style={inlineStyles.errorIcon}></Image>
+                <Text style={{textAlign: "center"}}>Topup not available at this time, we are looking into in. Please check back later</Text>
+            </View>
         )  
     }
 
     getThresholdReachedMarkUp = () => {
         return (
-            <View tyle={{padding: 30}} ><Text>TODO UI Max Threshold reached</Text></View>
+            <View style={inlineStyles.viewWrapper} >
+               <Image source={toastError} style={inlineStyles.errorIcon}></Image>
+               <Text style={{textAlign: "center"}}>
+                You have exceeded the Topup limit of $50 Contact us on info@pepo.com to increase your topup limit.
+               </Text>
+            </View>
         )
     }
 
@@ -128,18 +186,23 @@ class StoreProductsScreen extends PureComponent{
     }
 
     getProductsMarkUp = () => {
-        return this.products.map(( product )=> {
-            <View style={{flexDirection: "row", justifyContent:"space-between" , paddingHorizontal: 20 , paddingVertical: 5}}>
-                <View><Text>{product.title}</Text></View>
-                <TouchableOpacity disabled={this.state.isPurchasing}
-                    onPress={() => {this.onRequestPurchase(product.productId) }}>
-                    <Text>{this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}</Text>
-                </TouchableOpacity>
-            </View>
-        })
+        return (
+            <View style={inlineStyles.poductListWrapper}>
+                this.products.map(( product )=> {
+                            <View style={inlineStyles.poductListRow}>
+                                <View><Text>{product.title}</Text></View>
+                                <TouchableOpacity disabled={this.state.isPurchasing}
+                                    onPress={() => {this.onRequestPurchase(product.productId) }}>
+                                    <Text>{this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}</Text>
+                                </TouchableOpacity>
+                            </View>
+                })
+            </View>    
+        )
     }
 
     getMarkUp = () => {
+        this.getAnimation().stop() ;
         if(this.isProductFetchError){
             return this.getErrorMarkup();
         } else if(this.maxThresholdReached){
@@ -168,7 +231,7 @@ class StoreProductsScreen extends PureComponent{
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
                 <View style={{ flex: 1, backgroundColor: 'transparent' }}>
                     <View style={[inlineStyles.container]}>
-                        {this.state.loadingProducts && <ActivityIndicator/>}                   
+                        {this.state.loadingProducts && this.getLoadingMarkup()}                   
                         {!this.state.loadingProducts && this.getMarkUp()}
                     </View>     
                 </View>

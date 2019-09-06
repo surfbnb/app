@@ -9,6 +9,7 @@ import CurrentUser from '../../models/CurrentUser';
 import Pricer from '../../services/Pricer';
 import { FlyerEventEmitter } from '../CommonComponents/FlyerHOC';
 import EventEmitter from 'eventemitter3';
+import ReduxGetter from "../../services/ReduxGetters";
 
 export const WalletBalanceFlyerEventEmitter = new EventEmitter();
 
@@ -84,7 +85,7 @@ class WalletBalanceFlyer extends Component {
               <Image style={[styles.crossIconSkipFont]} source={modalCross} />
             </TouchableWithoutFeedback>
             {/*<Text> Low Balance please </Text>*/}
-            <Text style={styles.topUp}>Topup</Text>
+            <Text style={styles.topUp}> {ReduxGetter.getPurchasingStatus() ? "Sending Pepos please wait" : "Topup"}</Text>
           </Animated.View>
         )}
         <TouchableWithoutFeedback onPress={this.handlePress}>
