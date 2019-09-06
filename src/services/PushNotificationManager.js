@@ -27,8 +27,8 @@ class PushNotificationManager extends PureComponent {
     this.removeNotificationOpenedListener = firebase
       .notifications()
       .onNotificationOpened((notificationData) => {
-        
-        console.log("onNotificationOpened [[[[[onNotificationOpened]]]]] ") 
+
+        console.log("onNotificationOpened [[[[[onNotificationOpened]]]]] ")
         this.handleGoto(notificationData.notification.data)});
 
     this.removeNotificationListener = firebase
@@ -67,7 +67,7 @@ class PushNotificationManager extends PureComponent {
 
   handleGoto(notificationData) {
     // if (Object.keys(this.props.current_user).length === 0) {
-    // Dispatch to redux    
+    // Dispatch to redux
     let gotoObject = JSON.parse(notificationData.goto);
     if (Object.keys(gotoObject).length < 0) return;
     console.log('PushNotificationManager: handleGoto');
@@ -92,6 +92,7 @@ class PushNotificationManager extends PureComponent {
     }
     let payload = {
       device_id: DeviceInfo.getUniqueID(),
+      user_timezone: DeviceInfo.getTimezone(),
       device_kind: Platform.OS,
       device_token: token
     };
