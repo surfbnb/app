@@ -189,13 +189,13 @@ class StoreProductsScreen extends PureComponent{
         return (
             <View style={inlineStyles.poductListWrapper}>
                 this.products.map(( product )=> {
-                            <View style={inlineStyles.poductListRow}>
-                                <View><Text>{product.title}</Text></View>
-                                <TouchableOpacity disabled={this.state.isPurchasing}
-                                    onPress={() => {this.onRequestPurchase(product.productId) }}>
-                                    <Text>{this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}</Text>
-                                </TouchableOpacity>
-                            </View>
+                    <View style={inlineStyles.poductListRow}>
+                        <View><Text>{product.title}</Text></View>
+                        <TouchableOpacity disabled={this.state.isPurchasing}
+                            onPress={() => {this.onRequestPurchase(product.productId) }}>
+                            <Text>{this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}</Text>
+                        </TouchableOpacity>
+                    </View>
                 })
             </View>    
         )
