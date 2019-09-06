@@ -30,7 +30,7 @@ class PaymentWorker extends PureComponent {
         });
     }
 
-    componentWillMount(){
+    componentWillUnmount(){
         if (purchaseUpdateSubscription) {
             purchaseUpdateSubscription.remove();
             purchaseUpdateSubscription = null;

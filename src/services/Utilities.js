@@ -152,6 +152,6 @@ export default {
           val = JSON.parse( val ); 
         }catch(error){}
     }
-    val = val || {};
+    return val = val || {};
   }
 };

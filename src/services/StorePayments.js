@@ -10,6 +10,7 @@ import PollCurrentUserPendingPayments from "../helpers/PollCurrentUserPendingPay
 import Utilities from "./Utilities";
 
 const maxRetryCount = 5 ;
+const paymentAcknowledgeApi = "/payments/confirm-pay-receipt" ; 
 
 class StorePayments {
 
@@ -39,7 +40,7 @@ class StorePayments {
     }
 
     acknowledgeBEOnPurchaseError(error , userId ){
-        new PepoApi("/top-up")
+        new PepoApi(paymentAcknowledgeApi)
         .post(UserPayments.getBEAcknowledgeData( userId , error))
         //Convey others that payment is processed irrespective of status 
         this.events.emit("paymentProcessed"); 
@@ -85,7 +86,7 @@ class BackendPaymentAcknowledge {
     acknowledgeBEOnPurchaseSuccess( ){
         //Check if the logined user is same as the user made the transaction 
         if( !this.params || this.params.user_id != CurrentUser.getUserId() ) return ;
-        new PepoApi("/top-up")
+        new PepoApi(paymentAcknowledgeApi)
         .post(this.params)
         .then(( res )=> {
             if(res && res.success ){

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
     TouchableWithoutFeedback,
     BackHandler,
     Platform,
@@ -11,12 +10,16 @@ import {
     Image
   } from 'react-native';
 
+import TouchableButton from "../../theme/components/TouchableButton";
+import Theme from '../../theme/styles';
 
 import deepGet from "lodash/get";
 import PepoApi from "../../services/PepoApi";
 import StorePayments from "../../services/StorePayments";
 import pepoTxIcon from "../../assets/pepo-tx-icon.png";
 import toastError from '../../assets/toast_error.png';
+import pepoIcon from '../../assets/self-amount-pepo-icon.png';
+import mailIcon from '../../assets/mail-filled.png';
 
 import inlineStyles from './styles';
 
@@ -57,7 +60,7 @@ class StoreProductsScreen extends PureComponent{
        const params = {"os": Platform.OS.toLowerCase()};
        new PepoApi('/users/available-products')
         .get(params)
-        .then(async (res) => {
+        .then((res) => {
             if(res && res.success){
                 this.onFetchSuccess(res);
             }else{
@@ -86,14 +89,15 @@ class StoreProductsScreen extends PureComponent{
     }
 
     setProductIds( res ){
-        const products = deepGet(res, `data.${data.result_type}`); 
+        const   result_type = deepGet(res, 'data.result_type'),
+                products = deepGet(res, `data.${result_type}`); 
         this.productIds = products.map( (product) => {
             return product.id ; 
         }); 
     }
 
     fetchProductsFromStore = () =>{
-        StorePayments.getProductsFromStore( this.products , this.onFetchStoreProductSuccess , this.onFetchError )
+        StorePayments.getProductsFromStore(this.productIds , this.onFetchStoreProductSuccess , this.onFetchError )
     }
 
     onFetchStoreProductSuccess = ( products ) => {
@@ -154,7 +158,7 @@ class StoreProductsScreen extends PureComponent{
         return (
             <View style={inlineStyles.viewWrapper}>
                 <Animated.Image
-                  style={[ animationStyle, inlineStyles.loadingIcon ]}
+                  style={[ animationStyle, {width: 40, height: 40, marginBottom: 20} ]}
                   source={pepoTxIcon}/>
                 <Text>Fetching Topup Options</Text>
             </View>
@@ -164,7 +168,7 @@ class StoreProductsScreen extends PureComponent{
     getErrorMarkup = () => {
         return (
             <View style={inlineStyles.viewWrapper}>
-                <Image source={toastError} style={inlineStyles.errorIcon}></Image>
+                <Image source={toastError} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
                 <Text style={{textAlign: "center"}}>Topup not available at this time, we are looking into in. Please check back later</Text>
             </View>
         )  
@@ -172,10 +176,11 @@ class StoreProductsScreen extends PureComponent{
 
     getThresholdReachedMarkUp = () => {
         return (
-            <View style={inlineStyles.viewWrapper} >
-               <Image source={toastError} style={inlineStyles.errorIcon}></Image>
-               <Text style={{textAlign: "center"}}>
-                You have exceeded the Topup limit of $50 Contact us on info@pepo.com to increase your topup limit.
+            <View style={[inlineStyles.viewWrapper,  {flexDirection: "row" , alignItems: "center" , padding: 30}]} >
+               <Image source={mailIcon} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
+               <Text style={{textAlign: "center" , marginLeft: 10}}>
+                You have exceeded the Topup limit of $50
+                Contact us on info@pepo.com to increase your topup limit.
                </Text>
             </View>
         )
@@ -188,15 +193,24 @@ class StoreProductsScreen extends PureComponent{
     getProductsMarkUp = () => {
         return (
             <View style={inlineStyles.poductListWrapper}>
-                this.products.map(( product )=> {
-                    <View style={inlineStyles.poductListRow}>
-                        <View><Text>{product.title}</Text></View>
-                        <TouchableOpacity disabled={this.state.isPurchasing}
-                            onPress={() => {this.onRequestPurchase(product.productId) }}>
-                            <Text>{this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}</Text>
-                        </TouchableOpacity>
+                <View style={inlineStyles.headerWrapper}>
+                    <Text style={inlineStyles.modalHeader}>Top-Up Pepo Coins</Text>
+                </View>
+                {this.products.map(( product ) => (
+                    <View key={ product.productId } style={inlineStyles.poductListRow}>
+                        <View style={{flexDirection: "row", alignItems: 'center'}}>
+                            <Image source={pepoIcon} style={{ width: 25, height: 25 }}/>
+                            <Text style={{marginRight: 10}}>{product.title}</Text>
+                        </View>
+                        <TouchableButton
+                                disabled={this.state.isPurchasing}
+                                TouchableStyles={[Theme.Button.btnPink , inlineStyles.pepoBtnStyle]}
+                                TextStyles={[Theme.Button.btnPinkText]}
+                                text={this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}
+                                onPress={() => {this.onRequestPurchase(product.productId) }}
+                        />
                     </View>
-                })
+                ))}
             </View>    
         )
     }
