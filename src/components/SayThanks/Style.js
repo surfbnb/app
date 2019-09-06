@@ -7,13 +7,12 @@ let stylesMap = {
     backgroundColor: Colors.white,
     alignSelf: 'center',
     justifyContent: 'center',
-    // paddingBottom: 50,
     position: 'absolute',
     width: '100%',
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
     paddingHorizontal: 15,
-    paddingVertical: 15,
+    paddingTop: 15,
     bottom: 0
   },
   headerWrapper: {

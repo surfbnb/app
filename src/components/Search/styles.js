@@ -1,9 +1,11 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
+import { Platform } from 'react-native';
 
 let stylesMap = {
   container: {
-    padding: 20
+    padding: 20,
+    paddingTop: Platform.OS === 'ios' ? 30 : 20
   },
   textInputUi: {
     marginTop: 0,
