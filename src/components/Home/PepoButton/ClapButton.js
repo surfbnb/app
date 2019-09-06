@@ -56,7 +56,7 @@ export default class ClapButton extends React.Component{
     if(this.props.isClapping){
       this.firstClap = this.props.isClapping;
       this.timedClap = this.props.isClapping;
-      this.AnimateFunction().start();         
+      this.AnimateFunction().start();
       ReactNativeHapticFeedback.trigger("notificationSuccess", options);
       setTimeout(()=>{
         this.timedClap = false
