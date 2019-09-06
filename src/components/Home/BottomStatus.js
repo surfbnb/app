@@ -57,7 +57,9 @@ class BottomStatus extends PureComponent {
           <TouchableWithoutFeedback
             onPress={multipleClickHandler(() => {
               BrowserEmitter.emit('browserOpened');
-              InAppBrowser.openBrowser(this.props.link);
+              setTimeout(() => {
+                InAppBrowser.openBrowser(this.props.link);
+              }, 0);
             })}
             pointerEvents={'auto'}
           >

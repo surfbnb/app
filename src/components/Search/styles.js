@@ -3,7 +3,6 @@ import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   container: {
-    // flex: 1,
     padding: 20
   },
   textInputUi: {
