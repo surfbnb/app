@@ -14,6 +14,7 @@ import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
 import LinearGradient from 'react-native-linear-gradient';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Close Camera', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
@@ -156,19 +157,27 @@ class PreviewRecordedVideo extends Component {
             <View style={styles.playIcon} />
           )}
 
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20 }}>
             <LinearGradient
               colors={['#ff7499', '#ff5566']}
               locations={[0, 1]}
-              style={{ borderRadius: 0, borderTopLeftRadius: 3, borderBottomLeftRadius: 3, paddingLeft: 15, paddingRight: 10}}
+              style={{
+                borderRadius: 0,
+                borderTopLeftRadius: 3,
+                borderBottomLeftRadius: 3,
+                paddingLeft: 15,
+                paddingRight: 10
+              }}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             >
               <TouchableOpacity
-                onPress={this.props.goToDetailsScreen}
-                style={{height: 44, alignItems: 'center', justifyContent: 'center'}}
+                onPress={multipleClickHandler(() => {
+                  this.props.goToDetailsScreen();
+                })}
+                style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}
               >
-                <Text style={{color: '#fff', fontSize: 16}}>NEXT</Text>
+                <Text style={{ color: '#fff', fontSize: 16 }}>NEXT</Text>
               </TouchableOpacity>
             </LinearGradient>
             <View style={styles.triangleRight}></View>
