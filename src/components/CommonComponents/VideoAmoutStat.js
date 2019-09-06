@@ -6,6 +6,9 @@ import reduxGetter from "../../services/ReduxGetters";
 
 import pricer from "../../services/Pricer";
 
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import multipleClickHandler from '../../services/MultipleClickHandler';
+
 import inlineStyles from "../Home/styles";
 
 const mapStateToProps = (state, ownProps) => {
@@ -28,9 +31,16 @@ class VideoAmountStat extends PureComponent {
         return  (priceOracle && priceOracle.btToFiat(btAmount, 2)) || 0;
     }
     
+    onWrapperClick = (e) => {
+        this.props.onWrapperClick && this.props.onWrapperClick();
+    };
+
+
+    
     render() {
     
     return (
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onWrapperClick())} pointerEvents={'auto'}>
         <View style={[inlineStyles.raisedSupported]}>
             {/*{*/}
             {/*<View*/}
@@ -57,6 +67,7 @@ class VideoAmountStat extends PureComponent {
             </View>
             }
         </View>
+        </TouchableWithoutFeedback>
         );
     }
 }

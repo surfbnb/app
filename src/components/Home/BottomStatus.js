@@ -74,7 +74,7 @@ class BottomStatus extends PureComponent {
             >
               <Image style={{ height: 20, width: 20 }} source={getSocialIcon(this.props.link, 'HOME_FEED')} />
               <Text
-                style={[{ fontSize: 14, paddingVertical: 4, paddingLeft: 8 }, inlineStyles.bottomBgTxt]}
+                style={[{ fontSize: 14, paddingVertical: 8, paddingLeft: 8 }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
               >
