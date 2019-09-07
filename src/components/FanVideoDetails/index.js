@@ -73,7 +73,6 @@ class FanVideoDetails extends Component {
     let keyboardHeight = deepGet(e, 'endCoordinates.height') || 350;
     this.setState({
       viewStyle: {
-        //10 is the paddingBottom of the view
         paddingBottom: keyboardHeight - (15 + getBottomSpace([true]))
       }
     });
