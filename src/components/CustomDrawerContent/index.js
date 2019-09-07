@@ -7,6 +7,7 @@ import reduxGetter from '../../services/ReduxGetters';
 import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
 import loggedOutIcon from '../../assets/drawer-logout-icon.png';
+import resetPinIcon from '../../assets/reset-pin.png'
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
 import Toast from '../../theme/components/NotificationToast';
 
@@ -324,14 +325,14 @@ export default class CustomDrawerContent extends Component{
                 <Text style={styles.item}>Twitter Disconnect</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.resetPin} disabled={this.state.disableResetPin}>
+            {/* <TouchableOpacity onPress={this.resetPin} disabled={this.state.disableResetPin}>
               <View style={styles.itemParent}>
-                <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+                <Image height={12} width={16} source={resetPinIcon} />
                 <Text style={styles.item}>Reset Pin</Text>
               </View>
             </TouchableOpacity>
             {this.renderRecoverDevice()}
-            {this.renderAbortRecovery()}
+            {this.renderAbortRecovery()} */}
             <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>
               <View style={styles.itemParent}>
                 <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
