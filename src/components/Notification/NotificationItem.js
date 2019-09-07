@@ -177,7 +177,7 @@ class NotificationItem extends Component {
         <TouchableWithoutFeedback         
           onPress={multipleClickHandler(() => this.handleRowClick())}
         >
-          <React.Fragment>
+          <View>
             <View style={styles.txtWrapper}>
               <View style={{ width: '8%', marginRight: 4 }}>
                 {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
@@ -202,7 +202,7 @@ class NotificationItem extends Component {
               <View style={{ width:notificationInfoWidth}}>{this.notificationInfo()}</View>
             </View>
             {this.showSayThanks()}
-          </React.Fragment>
+          </View>
         </TouchableWithoutFeedback>
       </View>
     );
