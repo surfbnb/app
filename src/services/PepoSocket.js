@@ -51,10 +51,7 @@ export default class PepoSocket {
 
       this.socket.on('disconnect', (reason) => {
         console.log(`Disconnected from socket server https://${this.endPoint}`, reason);
-        if (reason === 'io server disconnect') {
-          // the disconnection was initiated by the server, you need to reconnect manually
-          this.connect();
-        }
+        this.connect();
       });
 
       this.socket.on('pepo-stream', (payload) => {
