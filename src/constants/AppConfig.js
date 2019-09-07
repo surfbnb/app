@@ -2,6 +2,7 @@ import pepo_icon from '../assets/pepo-white-icon.png';
 import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
 import twitterDisconnectIcon from '../assets/drawer-twitter-icon.png';
 import defaultLinkIcon from '../assets/default_link_icon.png';
+import feedLinkIcon from '../assets/Link.png';
 
 const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
   PROFILE_TX_RECEIVE_SUCCESS = 'PROFILE_TX_RECEIVE_SUCCESS',
@@ -166,7 +167,7 @@ export default {
     HOME_FEED: {
       SOCIAL_ICONS: {
         TWITTER: twitterDisconnectIcon,
-        DEFAULT: defaultLinkIcon
+        DEFAULT: feedLinkIcon
       }
     },
     VIDEO: {
@@ -176,7 +177,7 @@ export default {
       }
     },
     WHITELISTED_DOMAINS: {
-      TWITTER: 'twitter.com'
+      // TWITTER: 'twitter.com'
     }
   },
 
