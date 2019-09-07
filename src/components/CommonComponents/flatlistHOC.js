@@ -31,11 +31,23 @@ function flatlistHOC(ListComponent, options) {
 
     componentDidMount() {
       if (this.props.fetchUrl) {
-        this.initList(new FetchServices(this.props.fetchUrl));
+        if (this.shouldMakeApiCall()) {
+          this.initList(new FetchServices(this.props.fetchUrl));
+        } else {
+          // Clear all results if you encounter a bug.
+        }
       }
     }
 
     componentDidUpdate(prevProps) {
+      if (!this.shouldMakeApiCall()) {
+        if (this.state.list.length) {
+          //Clear the results.
+          this.setState({ list: [] });
+        }
+        return;
+      }
+
       if (this.props.toRefresh) {
         if (this.props.fetchUrl != prevProps.fetchUrl) {
           this.refresh(new FetchServices(this.props.fetchUrl));
@@ -43,6 +55,13 @@ function flatlistHOC(ListComponent, options) {
           this.refresh();
         }
       }
+    }
+
+    shouldMakeApiCall() {
+      if (this.props.shouldMakeApiCall) {
+        return this.props.shouldMakeApiCall();
+      }
+      return true; // Default behaviour.
     }
 
     componentWillUnmount() {
@@ -85,7 +104,11 @@ function flatlistHOC(ListComponent, options) {
 
     onRefresh(res) {
       this.props.onRefresh && this.props.onRefresh(res);
-      this.setState({ refreshing: false, list: (options && options.keyPath) ? this.fetchServices.getIDList(options.keyPath): this.fetchServices.getIDList() });
+      this.setState({
+        refreshing: false,
+        list:
+          options && options.keyPath ? this.fetchServices.getIDList(options.keyPath) : this.fetchServices.getIDList()
+      });
     }
 
     onRefreshError(error) {
@@ -129,7 +152,11 @@ function flatlistHOC(ListComponent, options) {
 
     onNext(res) {
       this.props.onNext && this.props.onNext(res);
-      this.setState({ loadingNext: false, list: (options && options.keyPath) ? this.fetchServices.getIDList(options.keyPath): this.fetchServices.getIDList() });
+      this.setState({
+        loadingNext: false,
+        list:
+          options && options.keyPath ? this.fetchServices.getIDList(options.keyPath) : this.fetchServices.getIDList()
+      });
     }
 
     onNextError(error) {
