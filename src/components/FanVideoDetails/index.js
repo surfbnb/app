@@ -128,7 +128,7 @@ class FanVideoDetails extends Component {
 
   onChangeLink = (link) => {
     this.setState({
-      videoLink: this.sanitizeLink(link),
+      videoLink: link,
       error: ''
     });
     //Done for the value to be accessible in static navigationOptions
@@ -136,12 +136,6 @@ class FanVideoDetails extends Component {
       videoLink: link
     });
   };
-
-  sanitizeLink = (link) =>
-    link
-      .split('/')
-      .map((item, index) => (index < 3 ? item.toLowerCase() : item))
-      .join('/');
 
   setError = (error) => {
     this.setState({

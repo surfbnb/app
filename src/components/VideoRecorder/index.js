@@ -92,6 +92,7 @@ class VideoRecorder extends Component {
   cancleVideoHandling = () => {
     this.cancelVideo();
     this.props.navigation.goBack(null);
+    ActionSheet.hide();
   };
 
   cameraView() {
