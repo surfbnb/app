@@ -45,6 +45,7 @@ class VideoLink extends Component {
           placeholder="Add link"
           onChangeText={this.onChangeValue}
           value={this.state.value}
+          autoCapitalize={'none'}
         />
       </React.Fragment>
     );
