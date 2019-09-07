@@ -7,7 +7,6 @@ import reduxGetter from '../../services/ReduxGetters';
 import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
 import loggedOutIcon from '../../assets/drawer-logout-icon.png';
-import resetPinIcon from '../../assets/reset-pin.png'
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
 import Toast from '../../theme/components/NotificationToast';
 
