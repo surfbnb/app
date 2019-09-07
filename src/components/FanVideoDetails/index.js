@@ -73,8 +73,8 @@ class FanVideoDetails extends Component {
     let keyboardHeight = deepGet(e, 'endCoordinates.height') || 350;
     this.setState({
       viewStyle: {
-        //45 is calculated by custom tab height i.e 55 - paddingBottom of the view
-        paddingBottom: keyboardHeight - (45 + getBottomSpace([true]))
+        //10 is the paddingBottom of the view
+        paddingBottom: keyboardHeight - (15 + getBottomSpace([true]))
       }
     });
   };
