@@ -120,10 +120,8 @@ export default class PepoApi {
           case 409:
             break;
           case 401:
-            if (this.url !== '/auth/logout') {
-              await CurrentUser.logout(responseJSON);
-              break;
-            }
+            await CurrentUser.logout(responseJSON);
+            break;
           default:
             Toast.show({
               text: ostErrors.getUIErrorMessage('general_error'),

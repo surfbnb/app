@@ -19,16 +19,10 @@ class SearchScreen extends Component {
     };
   }
 
-  setSearchParams = (searchText) => {
-    let queryParams = '';
-    if (searchText && searchText.length >= AppConfig.searchConfig.MIN_SEARCH_CHAR) {
-      queryParams = searchText;
-    } else {
-      queryParams = null;
-    }
+  setSearchParams = (searchParams) => {
     this.setState({
-      searchParams: queryParams,
-      refresh: true
+      searchParams: searchParams || '',
+      refresh: this.shouldMakeApiCall(searchParams)
     });
   };
 
@@ -40,10 +34,19 @@ class SearchScreen extends Component {
     });
   };
 
+  shouldMakeApiCall = (searchParams) => {
+    searchParams = searchParams || this.state.searchParams;
+    if (searchParams && searchParams.length >= AppConfig.searchConfig.MIN_SEARCH_CHAR) {
+      return true;
+    }
+    return false;
+  };
+
   render() {
     return (
       <SearchResults
         fetchUrl={`/users/search?q=${this.state.searchParams}`}
+        shouldMakeApiCall={this.shouldMakeApiCall}
         setSearchParams={this.setSearchParams}
         onRefresh={this.onRefresh}
         toRefresh={this.state.refresh}
