@@ -52,7 +52,7 @@ class SearchResults extends Component {
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <ActivityIndicator size="small" color={Colors.greyLite} />
         <Text style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}>
-          {`Searching for "${this.props.searchParams || ''}"`}
+          {`Searching for "${decodeURIComponent(this.props.searchParams) || ''}"`}
         </Text>
       </View>
     );
