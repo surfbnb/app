@@ -25,7 +25,6 @@ let stylesMap = {
 
   numericInnerWrapper: {
     marginHorizontal: 6,
-    height: 32,
     justifyContent: 'center',
     color: Colors.white,
     flexDirection: 'row'
