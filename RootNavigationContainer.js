@@ -45,6 +45,7 @@ import { NotificationToastComponent } from './src/theme/components/NotificationT
 import SocketManager from './src/components/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
+import  WalletSettingScreen from "./src/components/WalletSetting";
 
 const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails'];
 
@@ -157,7 +158,8 @@ const ProfilePushStack = createStackNavigator(
     SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
     ProfileEdit: ProfileEdit,
-    BioScreen: BioScreen
+    BioScreen: BioScreen,
+    WalletSettingScreen: WalletSettingScreen
   },
   {
     headerLayoutPreset: 'center'
