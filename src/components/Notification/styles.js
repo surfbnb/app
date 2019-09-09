@@ -11,7 +11,10 @@ let stylesMap = {
 
   txtWrapper: {
     flex: 1,
-    padding: 12,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 12,
+    paddingLeft: 12,
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%'
@@ -65,6 +68,7 @@ let stylesMap = {
     borderWidth: 1,
     marginLeft: 50,
     marginBottom: 10,
+    marginTop: 2,
     borderColor: Colors.rhino,
     justifyContent: 'center'
   },

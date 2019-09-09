@@ -93,7 +93,7 @@ class PreviewRecordedVideo extends Component {
         options: ACTION_SHEET_BUTTONS,
         cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
         destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
-        title: 'Discard Video?'
+        title: 'Discard or reshoot?'
       },
       (buttonIndex) => {
         if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
