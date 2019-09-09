@@ -16,6 +16,7 @@ import Theme from '../../theme/styles';
 import deepGet from "lodash/get";
 import PepoApi from "../../services/PepoApi";
 import StorePayments from "../../services/StorePayments";
+import  { paymentEvents,  paymentEventsMap } from "../../helpers/PaymentEvents";
 import pepoTxIcon from "../../assets/pepo-tx-icon.png";
 import toastError from '../../assets/toast_error.png';
 import pepoIcon from '../../assets/self-amount-pepo-icon.png';
@@ -43,7 +44,8 @@ class StoreProductsScreen extends PureComponent{
     }
 
     componentDidMount(){
-        StorePayments.events.on("paymentProcessed" , this.onPaymentProcessed);
+        paymentEvents.on( paymentEventsMap.paymentIAPSuccess, this.onPaymentProcessed);
+        paymentEvents.on( paymentEventsMap.paymentIAPError, this.onPaymentProcessed);
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
@@ -52,7 +54,8 @@ class StoreProductsScreen extends PureComponent{
         this.onFetchError = () => {};
         this.onFetchStoreProductSuccess = () => {};
         this.onPaymentProcessed = () => {};
-        StorePayments.events.removeListener('paymentProcessed');
+        paymentEvents.removeListener(paymentEventsMap.paymentIAPSuccess);
+        paymentEvents.removeListener(paymentEventsMap.paymentIAPError);
         BackHandler.removeEventListener('hardwareBackPress');
     }
 
@@ -111,9 +114,10 @@ class StoreProductsScreen extends PureComponent{
     }
 
     onRequestPurchase = ( skuId ) => {
+        paymentEvents.emit(paymentEventsMap.paymentIAPStarted);
         this.productId = skuId ; 
         this.setState({isPurchasing: true});
-          //View controll ends here. 
+        //View controll ends here. 
         StorePayments.requestPurchase( skuId );
     }
 

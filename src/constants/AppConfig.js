@@ -19,6 +19,12 @@ export default {
     activating: 'activating'
   },
 
+  topEntityStatusMap : {
+    success: "success", 
+    pending:"pending",
+    error: "error"
+  },
+
   ruleTypeMap: {
     directTransfer: 'direct transfer',
     pricer: 'pricer'
