@@ -42,16 +42,19 @@ export default class PepoSocket {
       );
 
       this.socket.on('connect', () => {
-        console.log(`Connected to socket server https://${this.endPoint} successfully!`);
+        console.log(`Connected to socket server ${this.protocol}://${this.endPoint} successfully!`);
       });
 
       this.socket.on('connect_error', (err) => {
-        console.log(`Error connecting to socket server https://${this.endPoint}:`, err);
+        console.log(`Error connecting to socket server ${this.protocol}://${this.endPoint}:`, err);
       });
 
       this.socket.on('disconnect', (reason) => {
-        console.log(`Disconnected from socket server https://${this.endPoint}`, reason);
-        this.connect();
+        console.log(`Disconnected from socket server ${this.protocol}://${this.endPoint} reason: ${reason}`);
+        if (reason === 'io server disconnect') {
+          // the disconnection was initiated by the server, you need to reconnect manually
+          this.connect();
+        }
       });
 
       this.socket.on('pepo-stream', (payload) => {
