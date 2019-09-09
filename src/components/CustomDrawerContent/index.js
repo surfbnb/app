@@ -26,14 +26,14 @@ export default class CustomDrawerContent extends Component{
     this.twitterDisconnect = this.twitterDisconnect.bind(this);
     this.CurrentUserLogout = this.CurrentUserLogout.bind(this);
     this.onWillFocus = this.onWillFocus.bind(this);
-    
+
     this.updateOptions = this.updateOptions.bind(this);
     this.onDataFetched = this.onDataFetched.bind(this);
 
     // Render Methods.
     this.renderRecoverDevice = this.renderRecoverDevice.bind(this);
     this.renderAbortRecovery = this.renderAbortRecovery.bind(this);
-    
+
 
     // Workflow Methods.
     this.resetPin = this.resetPin.bind(this);
@@ -86,7 +86,7 @@ export default class CustomDrawerContent extends Component{
   }
 
   onWillFocus() {
-   this.updateOptions();    
+   this.updateOptions();
   }
 
   updateOptions() {
@@ -131,7 +131,7 @@ export default class CustomDrawerContent extends Component{
       this.hasFetchedPendingRecoveryData = true;
       this.onDataFetched();
     })
-    
+
   }
 
   onDataFetched() {
@@ -254,7 +254,7 @@ export default class CustomDrawerContent extends Component{
     );
 
     OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.requestAcknowledged, (ostWorkflowContext , ostContextEntity) => {
-      
+
     });
 
     OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowComplete, (ostWorkflowContext , ostContextEntity) => {
@@ -305,7 +305,7 @@ export default class CustomDrawerContent extends Component{
   render(){
     return (
         <ScrollView style={styles.container}>
-          <NavigationEvents 
+          <NavigationEvents
             onWillFocus={this.onWillFocus}
           />
           <SafeAreaView forceInset={{ top: 'always' }}>
@@ -324,14 +324,14 @@ export default class CustomDrawerContent extends Component{
                 <Text style={styles.item}>Twitter Disconnect</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.resetPin} disabled={this.state.disableResetPin}>
+            {/* <TouchableOpacity onPress={this.resetPin} disabled={this.state.disableResetPin}>
               <View style={styles.itemParent}>
-                <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+                <Image height={12} width={16} source={resetPinIcon} />
                 <Text style={styles.item}>Reset Pin</Text>
               </View>
             </TouchableOpacity>
             {this.renderRecoverDevice()}
-            {this.renderAbortRecovery()}
+            {this.renderAbortRecovery()} */}
             <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>
               <View style={styles.itemParent}>
                 <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />

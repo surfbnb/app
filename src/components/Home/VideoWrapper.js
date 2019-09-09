@@ -59,8 +59,9 @@ class VideoWrapper extends PureComponent {
 
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    BrowserEmitter.on('browserOpened', () => {
-      this.pauseVideo(true);
+    BrowserEmitter.on('browserOpened', () => {      
+      setTimeout(()=>{this.pauseVideo(true);}, 100);
+      
     });
   }
 

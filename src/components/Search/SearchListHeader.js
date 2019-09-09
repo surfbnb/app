@@ -17,7 +17,7 @@ class SearchListHeader extends Component {
   onChangeText = (text) => {
     this.props.setSearchParams(text);
     this.setState({
-      value: text
+      value: text || ''
     });
   };
 

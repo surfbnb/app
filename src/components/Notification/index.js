@@ -50,6 +50,7 @@ class NotificationScreen extends Component {
     });
     this.props.navigation.addListener('didFocus', () => {
       if (this.props.unreadNotification) {
+        this.refresh(true, 300);
         Store.dispatch(upsertNotificationUnread({ flag: 0 }));
       }
     });

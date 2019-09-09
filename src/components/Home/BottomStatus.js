@@ -11,6 +11,7 @@ import multipleClickHandler from '../../services/MultipleClickHandler';
 import { getSocialIcon } from '../../helpers/helpers';
 import InAppBrowser from '../../services/InAppBrowser';
 import BrowserEmitter from '../../helpers/BrowserEmitter';
+import Utilities from '../../services/Utilities';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -58,7 +59,7 @@ class BottomStatus extends PureComponent {
             onPress={multipleClickHandler(() => {
               BrowserEmitter.emit('browserOpened');
               setTimeout(() => {
-                InAppBrowser.openBrowser(this.props.link);
+                InAppBrowser.openBrowser(Utilities.sanitizeLink(this.props.link));
               }, 0);
             })}
             pointerEvents={'auto'}
@@ -78,7 +79,7 @@ class BottomStatus extends PureComponent {
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
               >
-                {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")}
+                {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
               </Text>
             </View>
           </TouchableWithoutFeedback>

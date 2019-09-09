@@ -146,18 +146,25 @@ class CurrentUser {
   async logout(params) {
     await new PepoApi('/auth/logout')
       .post()
-      .catch((error) => {
-        Toast.show({
-          text: 'Logout failed please try again.',
-          icon: 'error'
-        });
-      })
       .then((res) => {
         RCTNetworking.clearCookies(async () => {
           await this.clearCurrentUser();
           NavigationService.navigate('HomeScreen', params)
         });
+      })
+      .catch((error) => {
+        Toast.show({
+          text: 'Logout failed please try again.',
+          icon: 'error'
+        });
       });
+  }
+
+  async logoutLocal(params) {
+    await RCTNetworking.clearCookies(async () => {
+      await this.clearCurrentUser();
+      NavigationService.navigate('HomeScreen', params)
+    });
   }
 
   _signin(apiUrl, params) {

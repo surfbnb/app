@@ -141,5 +141,12 @@ export default {
       return false;
     }
     return true;
+  },
+
+  sanitizeLink(link) {
+    return link
+      .split('/')
+      .map((item, index) => (index < 3 ? item.toLowerCase() : item))
+      .join('/');
   }
 };
