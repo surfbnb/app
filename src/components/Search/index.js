@@ -21,7 +21,7 @@ class SearchScreen extends Component {
 
   setSearchParams = (searchParams) => {
     this.setState({
-      searchParams: searchParams || '',
+      searchParams: encodeURIComponent(searchParams) || '',
       refresh: this.shouldMakeApiCall(searchParams)
     });
   };
