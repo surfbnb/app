@@ -48,11 +48,8 @@ class NotificationScreen extends Component {
         this.refresh(true, 300);
       }
     });
-    this.didFocus = this.props.navigation.addListener('didFocus', () => {
-      if (this.props.unreadNotification) {
-        this.refresh(true, 300);
-        Store.dispatch(upsertNotificationUnread({ flag: 0 }));
-      }
+    this.props.navigation.addListener('didFocus', () => {
+      this.refresh(true, 300);
     });
   }
 
@@ -81,6 +78,12 @@ class NotificationScreen extends Component {
     this.didFocus.remove();
   }
 
+  onRefresh = () => {
+    if (this.props.unreadNotification) {
+      Store.dispatch(upsertNotificationUnread({ flag: 0 }));
+    }
+  };
+
   render() {
     return (
       <NotificationList
@@ -88,6 +91,7 @@ class NotificationScreen extends Component {
           this.listRef = ref;
         }}
         fetchUrl={'/notifications'}
+        onRefresh={this.onRefresh}
       />
     );
   }
