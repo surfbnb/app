@@ -126,7 +126,7 @@ class WalletBalanceFlyer extends Component {
             <TouchableWithoutFeedback onPress={this.hideFlyer} style={styles.crossIconClickSpace}>
               <Image style={[styles.crossIconSkipFont]} source={modalCross} />
             </TouchableWithoutFeedback>
-            <Text style={styles.topUp}> {this.state.isPurchasing ? "Sending Pepos please wait" : "Topup"}</Text>
+            <Text style={styles.topUp}> {this.state.isPurchasing ? "Sending Pepo please wait" : "Topup"}</Text>
           </Animated.View>
         )}
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handlePress())}>
