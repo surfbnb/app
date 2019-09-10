@@ -93,8 +93,7 @@ class PushNotificationManager extends PureComponent {
       device_id: DeviceInfo.getUniqueID(),
       user_timezone: DeviceInfo.getTimezone(),
       device_kind: Platform.OS,
-      device_token: token,
-      user_timezone: DeviceInfo.getTimezone()
+      device_token: token      
     };
     new PepoApi(`/users/${this.props.currentUserId}/device-token`)
       .post(payload)
