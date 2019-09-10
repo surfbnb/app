@@ -18,16 +18,21 @@ const paymentAcknowledgeApi = dataContract.payments.postPaymentAcknowledgeApi ;
 const topUpStatusApi = dataContract.payments.getTopUpStatusApi; 
 const topUpIdKey = dataContract.payments.topUpEntityId
 
+//TODO remove all console logs 
+
 class StorePayments {
 
     getProductsFromStore(itemSkus ,  successCallback ,  errorCallback ){
         try {
             RNIap.getProducts(itemSkus).then(( products ) => {
+                console.log("getProductsFromStore" , itemSkus , products );
                 successCallback && successCallback( products );
             }).catch(( error )=> {
+                console.log("getProductsFromStore error" , itemSkus , error );
                 errorCallback && errorCallback( error );
             });
           } catch(error) {
+            console.log("getProductsFromStore error catch" , itemSkus , error );
             errorCallback && errorCallback( error );  
         }
     }
@@ -38,9 +43,11 @@ class StorePayments {
             RNIap.initConnection().then((res)=> {
                 RNIap.requestPurchase(skuId);
             }).catch((error)=> {
+                console.log("initConnection error" , skuId , error );
                 this.onInitRequestPurchaseError(error); 
             });
         }catch(error){
+            console.log("initConnection error catch" , skuId , error );
           this.onInitRequestPurchaseError(error); 
         }
     }
@@ -51,6 +58,7 @@ class StorePayments {
     }
 
     onRequestPurchaseError(error , userId ){
+        console.log("onRequestPurchaseError" , error , userId );
         paymentEvents.emit(paymentEventsMap.paymentIAPError); 
         if(error && error.responseCode !== 2){
             Toast.show({
@@ -61,6 +69,7 @@ class StorePayments {
     }
 
     onRequestPurchaseSuccess( res , userId ){
+        console.log("onRequestPurchaseSuccess" , res , userId );
         const params = UserPayments.getBEAcknowledgeData( userId , res ); 
         // Add to Async immediately 
         UserPayments.addPendingPaymentForBEAcknowledge(params);
@@ -76,6 +85,7 @@ class StorePayments {
 
         //Sync BE pending payments 
         UserPayments.getPendingPaymentsForBEAcknowledge( userId ).then((payments) => {
+            console.log("getPendingPaymentsForBEAcknowledge" , payments , userId );
             payments = Utilities.getParsedData( payments );
             for (var key in payments) {
                 shouldCheckForPendingTopUps =  false;
@@ -85,6 +95,7 @@ class StorePayments {
 
         //Sync native store pending payments 
         UserPayments.getPendingPaymentsForStoreAcknowledge( userId ).then((topEntities) => {
+            console.log("getPendingPaymentsForStoreAcknowledge" , topEntities , userId );
             topEntities = Utilities.getParsedData( topEntities );
             for (var key in topEntities) {
                 new NativeStoreAcknowledge( topEntities[key] , true ); 
@@ -135,7 +146,7 @@ class BackendPaymentAcknowledge {
     }
 
     onBEAcknowdledgeSuccess(res){
-
+        console.log("onBEAcknowdledgeSuccess" , res  , this.payment );
         let resultType = deepGet(res ,  "data.result_type")
             topUpEntity = deepGet(res,  `data.${resultType}`) || {} , 
             status = topUpEntity.status
@@ -161,6 +172,7 @@ class BackendPaymentAcknowledge {
     }
 
     onBEAcknowdledgeError(error ){
+        console.log("onBEAcknowdledgeError" , error  , this.payment );
         this.count++ ;
         if(this.count < maxRetryCount ){
             setTimeout( () => {
@@ -207,7 +219,8 @@ class NativeStoreAcknowledge{
         })
     }
 
-    storeSyncError(){
+    storeSyncError(error){
+        console.log("storeSyncError" , error  , this.storeEntity );
         this.count++;
         if(this.count < maxRetryCount ){
             this.storeSync();
@@ -217,6 +230,7 @@ class NativeStoreAcknowledge{
     }
 
     storeSyncSuccess(res){
+        console.log("storeSyncSuccess" , res  , this.storeEntity );
         let resultType = deepGet(res ,  "data.result_type")
         topUpEntity = deepGet(res,  `data.${resultType}`) || {} , 
         isConsumable = topUpEntity.is_consumable 
@@ -237,22 +251,24 @@ class NativeStoreAcknowledge{
             try {
                 const purchaseToken = deepGet(this.storeEntity ,  "paymentEntity.purchaseToken"); 
                 RNIap.consumePurchaseAndroid(purchaseToken).then((res)=> {
-                    this.nativeStoreSyncSuccess();
+                    this.nativeStoreSyncSuccess(res);
                 }).catch((error)=> {
-                    this.nativeStoreSyncError(); 
+                    this.nativeStoreSyncError( error); 
                 })
             }catch(error){
-                this.nativeStoreSyncError(); 
+                this.nativeStoreSyncError( error ); 
             }
         }
     }
 
-    nativeStoreSyncSuccess(){
+    nativeStoreSyncSuccess(res){
+      console.log("nativeStoreSyncSuccess" , res  , this.storeEntity );
       UserPayments.removePendingPaymentForStoreAcknowledge(this.storeEntity);
       paymentEvents.emit(paymentEventsMap.paymentStoreSyncSuccess ,  {isBackgroundSync : this.isBackgroundSync}); 
     }   
 
-    nativeStoreSyncError(){
+    nativeStoreSyncError(error ){
+        console.log("nativeStoreSyncError" , error  , this.storeEntity );
         paymentEvents.emit(paymentEventsMap.paymentStoreSyncFailed ,  {isBackgroundSync : this.isBackgroundSync});
          //Not sure whether its a good idea.
         // this.count++ ; 

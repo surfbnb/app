@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {connect} from 'react-redux';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, Image } from 'react-native';
 import pricer from '../../services/Pricer';
 import inlineStyles from './styles';
@@ -12,6 +12,9 @@ import LinearGradient from "react-native-linear-gradient";
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
 import CurrentUser from '../../models/CurrentUser';
+import ProgressCircle from 'react-native-progress/CircleSnail';
+
+import Colors from '../../theme/styles/Colors';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -19,6 +22,17 @@ class BalanceHeader extends PureComponent {
  
   constructor(props) {
     super(props);
+    this.state = {
+      isPurchasing : false
+    }
+  }
+
+  componentDidMount(){
+
+  }
+
+  componentWillUnmount(){
+
   }
 
   toBt( val ){
@@ -36,6 +50,18 @@ class BalanceHeader extends PureComponent {
   onTopUp = () => {
     if(CurrentUser.isUserActivated(true)){
       this.props.navigation.push("StoreProductsScreen");
+    }
+  }
+
+  getWalletIcon = () => {
+    if( this.state.isPurchasing ){
+      return  <View style={{position: "relative"}}>
+                  <ProgressCircle size={40} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
+                  <Image style={{ width: 18, height: 18, position: 'absolute', transform: [{translateX: 12}, {translateY: 12}] }} source={selfAmountWallet}></Image>
+              </View> ;
+    }else{
+      return <Image style={{ width: 18, height: 18}} source={selfAmountWallet}></Image> ;
+          
     }
   }
 
@@ -62,10 +88,10 @@ class BalanceHeader extends PureComponent {
           </View>
         </View>
         <View style={{alignItems: 'flex-end'}}>
-          <Text>
-            <Image style={{ width: 18, height: 18}} source={selfAmountWallet}></Image>{' '}
-            <Text style={inlineStyles.pepoBalance}>{this.toBt(this.props.balance) || 0.00}</Text>
-          </Text>
+          <View style={{flexDirection: "row"}}>
+            {this.getWalletIcon()}
+            <Text style={inlineStyles.pepoBalance}>{' '}{this.toBt(this.props.balance) || 0.00}</Text>
+          </View>
           <Text style={inlineStyles.usdBalance}>${' '}{this.toFiat( this.props.balance ) || 0.00} </Text>
         </View>
       </View>

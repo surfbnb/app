@@ -7,9 +7,10 @@ import  { paymentEvents,  paymentEventsMap } from "../helpers/PaymentEvents";
 import appConfig from "../constants/AppConfig";
 import ostErrors from "../services/OstErrors";
 
-
 let errorMaxCount = 10 ,  errorCount = 0 ,  pollingTimeOut = 0 ,  pollingInterval = 10000  , 
-      maxPollDuration = 300000; pollDuration = 0 ;      
+      maxPollDuration = 300000; pollDuration = 0 ;   
+      
+//TODO remove all console.logs      
 
 class PollCurrentUserPendingPayments {
 
@@ -19,11 +20,13 @@ class PollCurrentUserPendingPayments {
         pollDuration = 0;
         this.schedulePoll();
         paymentEvents.emit(paymentEventsMap.pollPendingPaymentsStart , {isBackgroundSync: this.isBackgroundSync} ); 
+        console.log("initBalancePoll" , userId  ,isBackgroundSync );
     }
 
     schedulePoll( ){
         clearTimeout( pollingTimeOut ); 
         if( maxPollDuration < pollDuration) {
+            console.log("schedulePoll maxPollDuration" , maxPollDuration  ,pollDuration );
             if(!this.isBackgroundSync ){
                 Alert.alert("" , appConfig.paymentFlowMessages.transactionPending);
             }      
@@ -57,6 +60,7 @@ class PollCurrentUserPendingPayments {
     }
 
     onPendingPaymentSuccess( res ){
+        console.log("onPendingPaymentSuccess" , res  ,CurrentUser.getUserId() );
         const pendingTransactions = deepGet( res , `data.${res.result_type}`) || [] ;
         //If all pending Payments are resolved fetch balance 
         if(  pendingTransactions.length == 0 ){
@@ -71,6 +75,7 @@ class PollCurrentUserPendingPayments {
     }
 
     onPendingPaymentError(error){
+        console.log("onPendingPaymentError" , error  ,CurrentUser.getUserId() );
         errorCount++ 
         if( errorCount < errorMaxCount ){
             this.schedulePoll();
@@ -78,6 +83,7 @@ class PollCurrentUserPendingPayments {
             if(!this.isBackgroundSync){
                 Alert.alert("" , ostErrors.getUIErrorMessage("pending_transaction_poll"));
             }
+            console.log("onPendingPaymentError max reached" , error  ,CurrentUser.getUserId() );
             paymentEvents.emit(paymentEventsMap.pollPendingPaymentsError , {isBackgroundSync: this.isBackgroundSync} ); 
         }
     }
