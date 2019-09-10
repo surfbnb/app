@@ -7,6 +7,7 @@ import styles from './styles';
 import modalCross from '../../../assets/modal-cross-icon.png';
 import toastSuccess from '../../../assets/toast_success.png';
 import toastError from '../../../assets/toast_error.png';
+import pepoIcon from '../../../assets/pepo-tx-icon.png';
 
 const toastEventEmitter = new EventEmitter();
 const duration = 500;
@@ -124,6 +125,9 @@ export class NotificationToastComponent extends Component {
               )}
               {this.state.config.icon == 'error' && (
                 <Image source={toastError} style={{ width: 30, height: 30 }}></Image>
+              )}
+               {this.state.config.icon == 'pepo' && (
+                <Image source={pepoIcon} style={{ width: 30, height: 30 }}></Image>
               )}
             </View>
           )}

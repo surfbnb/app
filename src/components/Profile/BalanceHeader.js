@@ -16,6 +16,10 @@ import ProgressCircle from 'react-native-progress/CircleSnail';
 
 import Colors from '../../theme/styles/Colors';
 
+import { PurchaseLoader } from "../../helpers/PaymentEvents";
+import Toast from '../../theme/components/NotificationToast';
+import appConfig from "../../constants/AppConfig";
+
 const mapStateToProps = (state) => ({ balance: state.balance });
 
 class BalanceHeader extends PureComponent {
@@ -25,14 +29,33 @@ class BalanceHeader extends PureComponent {
     this.state = {
       isPurchasing : false
     }
+    this.purchaseLoaderSubscribtion  = null ;
   }
 
   componentDidMount(){
-
+    this.purchaseLoaderSubscribtion = new PurchaseLoader( this.updatePurchasingLoader ); 
+    this.purchaseLoaderSubscribtion.subscribeToEvents();
   }
 
   componentWillUnmount(){
+    this.updatePurchasingLoader = () => {};
+    this.purchaseLoaderSubscribtion.unSubscribeToEvents();
+    this.purchaseLoaderSubscribtion = null;
+  }
 
+  updatePurchasingLoader = ( status ,  payload ) => {
+    if( status == this.purchaseLoaderSubscribtion.statusMap.show ){
+      this.setState({isPurchasing : true });
+    }else if( status == this.purchaseLoaderSubscribtion.statusMap.hide ){
+      this.setState({isPurchasing : false });
+    }
+  }
+
+  onPurchaseInProgress = () => {
+    Toast.show({
+      text:  appConfig.paymentFlowMessages.sendingPepo,
+      icon: 'pepo'
+    });
   }
 
   toBt( val ){
@@ -55,10 +78,12 @@ class BalanceHeader extends PureComponent {
 
   getWalletIcon = () => {
     if( this.state.isPurchasing ){
-      return  <View style={{position: "relative"}}>
-                  <ProgressCircle size={40} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
-                  <Image style={{ width: 18, height: 18, position: 'absolute', transform: [{translateX: 12}, {translateY: 12}] }} source={selfAmountWallet}></Image>
-              </View> ;
+      return  <TouchableWithoutFeedback onPress={this.onPurchaseInProgress}>
+                <View style={{position: "relative"}}>
+                    <ProgressCircle size={40} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
+                    <Image style={{ width: 18, height: 18, position: 'absolute', transform: [{translateX: 12}, {translateY: 12}] }} source={selfAmountWallet}></Image>
+                </View> 
+              </TouchableWithoutFeedback> ;
     }else{
       return <Image style={{ width: 18, height: 18}} source={selfAmountWallet}></Image> ;
           
