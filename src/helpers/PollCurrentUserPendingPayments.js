@@ -1,30 +1,33 @@
+import {Alert} from "react-native"
 import deepGet from "lodash/get";
 import CurrentUser from "../models/CurrentUser";
 import PepoApi from "../services/PepoApi"; 
 import Pricer from "../services/Pricer";
 import  { paymentEvents,  paymentEventsMap } from "../helpers/PaymentEvents";
-import dataContract from "../constants/DataContract";
+import appConfig from "../constants/AppConfig";
+import ostErrors from "../services/OstErrors";
 
-const errorMaxCount = 10 ,  errorCount = 0 ,  pollingTimeOut = 0 ,  pollingInterval = 10000  , 
-      maxPollDuration = 600000; pollDuration = 0 ; 
+
+let errorMaxCount = 10 ,  errorCount = 0 ,  pollingTimeOut = 0 ,  pollingInterval = 10000  , 
+      maxPollDuration = 300000; pollDuration = 0 ;      
 
 class PollCurrentUserPendingPayments {
 
-    constructor(){
-        this.pepoApi = new PepoApi(dataContract.payments.getPendingPaymentsApi) ; 
-    }
-
     initBalancePoll( userId ,  isBackgroundSync ){ 
         this.userId = userId ;
-        this.isBackgroundSync =  !!isBackgroundSync; 
+        this.isBackgroundSync = !!isBackgroundSync; 
         pollDuration = 0;
         this.schedulePoll();
-        paymentEvents.emit(paymentEventsMap.pollPendingPaymentsStart); 
+        paymentEvents.emit(paymentEventsMap.pollPendingPaymentsStart , {isBackgroundSync: this.isBackgroundSync} ); 
     }
 
     schedulePoll( ){
         clearTimeout( pollingTimeOut ); 
-        if( maxPollDuration < pollDuration || errorCount > errorMaxCount ) {
+        if( maxPollDuration < pollDuration) {
+            if(!this.isBackgroundSync ){
+                Alert.alert("" , appConfig.paymentFlowMessages.transactionPending);
+            }      
+           paymentEvents.emit(paymentEventsMap.pollPendingPaymentsSuccess , {isBackgroundSync: this.isBackgroundSync , status: "pending"} ); 
            return;
         } 
         pollingTimeOut =  setTimeout( () => {
@@ -32,13 +35,13 @@ class PollCurrentUserPendingPayments {
         },  pollingInterval ) ;
     }
 
-    fetchPendingPayments(  ){
+    fetchPendingPayments(){
         //Payment of user and login user are not same dont poll and reset the error count
         if( this.userId != CurrentUser.getUserId() ) {
             errorCount = 0;   
             return
         } ; 
-        this.pepoApi.get()
+        new PepoApi(`/${this.userId}/pending-topups`).get()
         .then((res)=> {
             if(res&& res.success){
                 this.onPendingPaymentSuccess(res); 
@@ -59,6 +62,7 @@ class PollCurrentUserPendingPayments {
         if(  pendingTransactions.length == 0 ){
             Pricer.getBalance(); 
             paymentEvents.emit(paymentEventsMap.pollPendingPaymentsSuccess , {isBackgroundSync: this.isBackgroundSync}); 
+            Alert.alert("" , appConfig.paymentFlowMessages.transactionSuccess);
         //Else keep polling    
         }else{
             this.schedulePoll();
@@ -71,6 +75,9 @@ class PollCurrentUserPendingPayments {
         if( errorCount < errorMaxCount ){
             this.schedulePoll();
         }else{
+            if(!this.isBackgroundSync){
+                Alert.alert("" , ostErrors.getUIErrorMessage("pending_transaction_poll"));
+            }
             paymentEvents.emit(paymentEventsMap.pollPendingPaymentsError , {isBackgroundSync: this.isBackgroundSync} ); 
         }
     }

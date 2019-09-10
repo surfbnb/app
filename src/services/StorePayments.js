@@ -146,7 +146,7 @@ class BackendPaymentAcknowledge {
          //Remove the entry from async 
          UserPayments.removePendingPaymentForBEAcknowledge( this.payment );
          //Emit evnt 
-         paymentEvents.emit(paymentEventsMap.paymentBESyncSuccess, {isBackgroundSync: this.isBackgroundSync}) ;
+         paymentEvents.emit(paymentEventsMap.paymentBESyncSuccess, {isBackgroundSync: this.isBackgroundSync , topEntityStatus :status });
           //Start native store acknowledge 
           new NativeStoreAcknowledge( UserPayments.getNativeStoreData(this.payment , topUpEntity ) ) ; 
 
@@ -155,7 +155,7 @@ class BackendPaymentAcknowledge {
             PollCurrentUserPendingPayments.initBalancePoll(this.payment.user_id);
         } else if( status == appConfig.topUpEntityStatusMap.pending ){
             //Notify user that he needs to get in touch with Apple of Google store
-            Alert.alert("", ostErrors.getUIErrorMessage("invalid_payment") );
+            Alert.alert("", ostErrors.getUIErrorMessage("invalid_payment_from_store") );
         }       
 
     }
@@ -172,7 +172,7 @@ class BackendPaymentAcknowledge {
     }
 
     inAppError( error ){
-        !this.isBackgroundSync && Alert.alert("", ostErrors.getUIErrorMessage("iap_transaction_done_locally"));  
+        !this.isBackgroundSync && Alert.alert("", ostErrors.getUIErrorMessage("payment_acknowledge_to_be"));  
         paymentEvents.emit(paymentEventsMap.paymentBESyncFailed , {isBackgroundSync: this.isBackgroundSync}) ; 
     }
 }

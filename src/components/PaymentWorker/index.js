@@ -20,10 +20,12 @@ class PaymentWorker extends PureComponent {
 
     componentDidMount() {
         purchaseUpdateSubscription = purchaseUpdatedListener(( res ) => {
+            console.log("purchaseUpdateSubscription" , res);
             this.onRequestPurchaseSuccess( res ); 
         });
 
         purchaseErrorSubscription = purchaseErrorListener((error) => {
+            console.log("purchaseUpdateSubscription" , error);
             this.onRequestPurchaseError(error);
         });
     }
