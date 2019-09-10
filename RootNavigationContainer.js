@@ -200,7 +200,8 @@ const SearchPushStack = createStackNavigator(
 const SearchStack = createStackNavigator(
   {
     SearchPushStack: SearchPushStack,
-    CaptureVideo: CaptureVideoStack
+    CaptureVideo: CaptureVideoStack,
+    TransactionScreen: TransactionScreen
   },
   {
     ...modalStackConfig,
