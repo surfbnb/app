@@ -3,6 +3,7 @@ import CurrentUser from '../../models/CurrentUser';
 import { OstWalletSdk, OstWalletSdkUI, OstJsonApi} from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from "lodash/get";
 import appConfig from '../../constants/AppConfig';
+import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper'
 
 const optionIds = {
   recoverDevice: 'recoverDevice',
@@ -26,6 +27,8 @@ class WalletSettingController {
     ];
     this.userStatusMap = appConfig.userStatusMap;
     this.deviceStatusMap = appConfig.deviceStatusMap;
+    this.currentWorkflow = null;
+    this.uiDelegate = null;
   }
 
   _initialize() {
@@ -38,14 +41,14 @@ class WalletSettingController {
     this._createOptionsData(optionIds.recoverDevice, "Recover Device", "Recover your device");
     this._createOptionsData(optionIds.abortRecovery, "Abort Device Recovery", "Abort Device Recovery");
     this._createOptionsData(optionIds.resetPin, "Reset Pin", "Reset your wallet pin");
-    this._createOptionsData(optionIds.viewMnemonics, "Reset Pin", "Reset your wallet pin");
+    this._createOptionsData(optionIds.viewMnemonics, "Show Device Mnemonics", "Please write down your 12-word mnemonic phrase");
     this._createOptionsData(optionIds.authorizeWithMnemonics, "Authorize Device with Mnemonics", "Authorize current device by using mnemonics");
-    this._createOptionsData(optionIds.authorizeWithQR, "Authorize Device with QR Code", "Scan QR Code of the new device to authorize it");
-    this._createOptionsData(optionIds.showQR, "Authorize Device with QR Code", "Scan QR Code from the device authorized device to authorize this device");
+    this._createOptionsData(optionIds.authorizeWithQR, "Scan QR to Authorize", "Scan QR Code of the new device to authorize it");
+    this._createOptionsData(optionIds.showQR, "Show Device QR Code", "Scan QR Code from the device authorized device to authorize this device");
   }
 
   refresh( callback, onlyPerformable ) {
-    this._validateInstance();
+    this._ensureUserIdValidity();
     onlyPerformable = onlyPerformable || false;
 
     if ( !this.userId ) {
@@ -72,7 +75,18 @@ class WalletSettingController {
       this.ostUser = userData;
 
       // Get the device.
-      this._fetchDeviceFromServer();
+      this._fetchDevice();
+    });
+  }
+
+  _fetchDevice() {
+    OstWalletSdk.getCurrentDeviceForUserId(this.userId, (device) => {
+      if( device && OstWalletSdkHelper.canDeviceMakeApiCall( device ) ) {
+        this._fetchDeviceFromServer();
+        return;
+      }
+      // Make do with what we have.
+      this._onDeviceFetch(device);
     });
   }
 
@@ -168,10 +182,14 @@ class WalletSettingController {
     return filteredData
   }
 
-  _validateInstance() {
-    if ( CurrentUser.getOstUserId() !== this.userId ) {
+  _ensureUserIdValidity() {
+    if ( !this._isUserIdValid() ) {
       this._initialize();
     }
+  }
+
+  _isUserIdValid() {
+    return CurrentUser.getOstUserId() === this.userId;
   }
 
   _createOptionsData(id, heading, description){
@@ -210,6 +228,147 @@ class WalletSettingController {
   _getDeviceStatus() {
     let dStatus = deepGet(this.ostDevice, 'status') || '';
     return dStatus.toLowerCase();
+  }
+
+  /**
+   *
+   * @param optionId
+   *
+   * @returns workflowInfo - Information of the workflow.
+   */
+
+  perform( optionId ) {
+    if ( !this._isUserIdValid() ) {
+      return null;
+    }
+
+    let activeWorkflow = this.getActiveWorkflowInfo();
+    if ( activeWorkflow ) {
+      return activeWorkflow;
+    }
+
+    let delegate = this._getWorkflowDelegate(),
+        workflowId = null,
+        userId = this.userId
+    ;
+
+    switch( optionId ) {
+      case optionIds.recoverDevice:
+        workflowId = OstWalletSdkUI.initiateDeviceRecovery(userId, null, delegate);
+        break;
+
+      case optionIds.abortRecovery:
+        workflowId = OstWalletSdkUI.abortDeviceRecovery(userId, delegate);
+        break;
+
+      case optionIds.resetPin:
+        workflowId = OstWalletSdkUI.resetPin(userId, delegate);
+        break;
+
+      case optionIds.viewMnemonics:
+        workflowId = OstWalletSdkUI.getDeviceMnemonics(userId, delegate);
+        break;
+
+      case optionIds.authorizeWithMnemonics:
+        workflowId = OstWalletSdkUI.authorizeCurrentDeviceWithMnemonics(userId, delegate);
+        break;
+
+      case optionIds.authorizeWithQR:
+        workflowId = OstWalletSdkUI.scanQRCodeToAuthorizeDevice(userId, delegate);
+        break;
+
+      case optionIds.showQR:
+        workflowId = OstWalletSdkUI.getAddDeviceQRCode(userId, delegate);
+        break;
+
+      default:
+        return null;
+    }
+
+    this.currentWorkflow = this._createWorkflowInfo(workflowId, optionId);
+
+    return this.currentWorkflow;
+  }
+
+  getActiveWorkflowInfo() {
+    let  workflowInfo = this.currentWorkflow;
+    if ( !workflowInfo ) {
+      return null;
+    }
+    if ( workflowInfo.isFlowInterrupted || workflowInfo.isFlowComplete ) {
+      return null;
+    }
+    return workflowInfo;
+  }
+
+  _createWorkflowInfo(workflowId, optionId) {
+    return {
+      workflowId: workflowId,
+      workflowOptionId: optionId,
+      isRequestAcknowledge: false,
+      isFlowInterrupted: false,
+      isFlowComplete: false
+    };
+  }
+
+  setUIDelegate( uiDelegate ) {
+    this.uiDelegate = uiDelegate;
+  }
+
+  _getWorkflowDelegate() {
+    let delegate = CurrentUser.newPassphraseDelegate();
+    //
+    delegate.requestAcknowledged = (ostWorkflowContext , ostContextEntity) => {
+      if ( this.uiDelegate ) {
+        this.uiDelegate.requestAcknowledged(ostWorkflowContext, ostContextEntity);
+      }
+
+      this.currentWorkflow.isRequestAcknowledge = true
+    };
+
+    delegate.flowComplete = (ostWorkflowContext , ostContextEntity) => {
+      if ( this.uiDelegate ) {
+        this.uiDelegate.flowComplete(ostWorkflowContext, ostContextEntity);
+      }
+      this.currentWorkflow.isFlowComplete = true
+    };
+
+    delegate.onUnauthorized = (ostWorkflowContext, ostError) => {
+      if ( this.uiDelegate ) {
+        this.uiDelegate.onUnauthorized(ostWorkflowContext, ostError);
+      }
+      this.currentWorkflow.isFlowInterrupted = true
+    };
+
+    delegate.saltFetchFailed = () => {
+      if ( this.uiDelegate ) {
+        this.uiDelegate.saltFetchFailed();
+      }
+      this.currentWorkflow.isFlowInterrupted = true
+    };
+
+    delegate.userCancelled = (ostWorkflowContext, ostError) => {
+      if ( this.uiDelegate ) {
+        this.uiDelegate.userCancelled(ostWorkflowContext, ostError);
+      }
+      this.currentWorkflow.isFlowInterrupted = true
+    };
+
+    delegate.deviceTimeOutOfSync = (ostWorkflowContext, ostError) => {
+      if ( this.uiDelegate ) {
+        this.uiDelegate.deviceTimeOutOfSync(ostWorkflowContext, ostError);
+      }
+      this.currentWorkflow.isFlowInterrupted = true
+    };
+
+    delegate.workflowFailed = (ostWorkflowContext, ostError) => {
+      if ( this.uiDelegate ) {
+        this.uiDelegate.workflowFailed(ostWorkflowContext, ostError);
+      }
+      this.currentWorkflow.isFlowInterrupted = true
+    };
+
+    return delegate;
   }
 
 };

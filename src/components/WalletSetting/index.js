@@ -3,10 +3,29 @@ import { FlatList, View, Text, TouchableWithoutFeedback, Alert } from 'react-nat
 import inlineStyle from './styles'
 import {walletSettingController, optionIds} from  './WalletSettingController';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
-import { OstWalletSdkUI } from '@ostdotcom/ost-wallet-sdk-react-native';
-import CurrentUser from "../../models/CurrentUser";
+import Colors from "../../theme/styles/Colors";
+import BackArrow from '../CommonComponents/BackArrow';
+import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper'
 
 class WalletSettingList extends PureComponent {
+  static navigationOptions = (options) => {
+    return {
+      title: 'Wallet Settings',
+      headerBackTitle: null,
+      headerStyle: {
+        backgroundColor: Colors.white,
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
+      headerBackImage: <BackArrow />
+    };
+  };
 
   constructor(props) {
     super(props);
@@ -23,18 +42,21 @@ class WalletSettingList extends PureComponent {
 
     this._createEventLoaderData(
       optionIds.resetPin,
+      "Resetting pin",
       "Reset pin acknowledged",
       "Pin has been modified successfully",
       "Issue occurred while modifying pin");
 
     this._createEventLoaderData(
       optionIds.recoverDevice,
+      "Recovering device",
       "Recover device request acknowledged",
       "Device has been recovered successfully",
       "Issue occurred while recovering device");
 
     this._createEventLoaderData(
       optionIds.abortRecovery,
+      "Cancelling recovery",
       "Recovery cancelled acknowledged",
       "Recovery cancelled successfully",
       "Issue occurred while canceling recovery");
@@ -43,10 +65,12 @@ class WalletSettingList extends PureComponent {
       optionIds.viewMnemonics,
       null,
       null,
+      null,
       null);
 
     this._createEventLoaderData(
       optionIds.authorizeWithQR,
+      "Authorizing device",
       "Authorize device request acknowledged",
       "Device authorized successfully",
       "Issue occurred while authorizing device");
@@ -54,20 +78,24 @@ class WalletSettingList extends PureComponent {
 
     this._createEventLoaderData(
       optionIds.authorizeWithMnemonics,
+      "Authorizing device",
       "Authorize device request acknowledged",
       "Device authorized successfully",
       "Issue occurred while authorizing device");
 
     this._createEventLoaderData(
       optionIds.showQR,
+      null,
       "Device is authorizing",
       "Device authorized successfully",
-      "Issue occured while checking device status");
+      null);
   }
 
-  _createEventLoaderData(id, ackText, successText, failureText){
+  _createEventLoaderData(id, startText, ackText, successText, failureText){
     let loaderData = {
       id: id,
+
+      startText: startText,
 
       // Acknowledgement text
       acknowledgedText: ackText,
@@ -101,77 +129,77 @@ class WalletSettingList extends PureComponent {
   };
 
   onSettingItemTapped = (item) => {
-    let itemId = item.id
-      , workflowId = null
-    ;
-
-    if (optionIds.recoverDevice === itemId) {
-      workflowId = OstWalletSdkUI.initiateDeviceRecovery(
-        CurrentUser.getOstUserId(),
-        null,
-        CurrentUser.newPassphraseDelegate()
-      );
-    }
-
-    else if (optionIds.abortRecovery === itemId) {
-      workflowId = OstWalletSdkUI.abortDeviceRecovery(CurrentUser.getOstUserId(), CurrentUser.newPassphraseDelegate())
-    }
-
-    else if (optionIds.viewMnemonics === itemId) {
-      workflowId = OstWalletSdkUI.getDeviceMnemonics(CurrentUser.getOstUserId(), CurrentUser.newPassphraseDelegate())
-    }
-
-    else if (optionIds.authorizeWithMnemonics === itemId) {
-      workflowId = OstWalletSdkUI.authorizeCurrentDeviceWithMnemonics(CurrentUser.getOstUserId(), CurrentUser.newPassphraseDelegate())
-    }
-
-    else if (optionIds.authorizeWithQR === itemId) {
-      workflowId = OstWalletSdkUI.authorizeWithQR(CurrentUser.getOstUserId(), CurrentUser.newPassphraseDelegate())
-    }
-
-    else if (optionIds.showQR === itemId) {
-      workflowId = OstWalletSdkUI.getAddDeviceQRCode(CurrentUser.getOstUserId(), CurrentUser.newPassphraseDelegate())
-    }
-
-    else if (optionIds.resetPin === itemId) {
-      workflowId = OstWalletSdkUI.resetPin(CurrentUser.getOstUserId(), CurrentUser.newPassphraseDelegate())
-    }
-
-    if ( workflowId ) {
-      this.currentWorkflow = itemId;
-      this.subscribeToEvent(workflowId)
+    let workflowInfo = walletSettingController.perform(item.id);
+    if ( workflowInfo ) {
+      this.onWorkflowStarted( workflowInfo );
+    } else {
+      //Some coding error occurred.
+      console.log("PepoError", "ws_indx_osit_1", "Some coding error occurred");
     }
   };
 
-  subscribeToEvent(workflowId) {
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.requestAcknowledged, (ostWorkflowContext , ostContextEntity) => {
+  onWorkflowStarted = (workflowInfo) => {
+    this.workflowInfo = workflowInfo;
+    // Show loader.
+    let text = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].startText;
+    if (text) {
+      LoadingModal.show(text);
+    }
 
-      Alert.alert(
-        ostWorkflowContext.WORKFLOW_TYPE,
-        this.eventLoaderTextMap[this.currentWorkflow].acknowledgedText)
+    // Subscribe to events.
+    walletSettingController.setUIDelegate(this);
+  };
 
-    });
+  requestAcknowledged = (ostWorkflowContext , ostContextEntity) => {
+    let ackText = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].acknowledgedText;
 
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowComplete, (ostWorkflowContext , ostContextEntity) => {
+    if (ackText) {
+      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, ackText)
+    }
+  };
 
-      this.refreshList();
+  flowComplete = (ostWorkflowContext , ostContextEntity) => {
+    LoadingModal.hide();
 
-      Alert.alert(
-        ostWorkflowContext.WORKFLOW_TYPE,
-        this.eventLoaderTextMap[this.currentWorkflow].successText)
+    this.refreshList();
 
-    });
+    let successText = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].successText;
 
-    OstWalletSdkUI.subscribe(workflowId, OstWalletSdkUI.EVENTS.flowInterrupt, (ostWorkflowContext , ostError) => {
+    if (successText) {
+      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, successText)
+    }
+  };
 
-      Alert.alert(
-        ostWorkflowContext.WORKFLOW_TYPE,
-        this.eventLoaderTextMap[this.currentWorkflow].failureText)
+  onUnauthorized = (ostWorkflowContext , ostError) => {
 
-    });
-  }
+    LoadingModal.hide();
+    Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Device is unauthorized. Please logout and login")
+  };
 
-  _keyExtractor = (item, index) => `id_${item}`;
+  saltFetchFailed = (ostWorkflowContext , ostError) => {
+    LoadingModal.hide();
+    Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Getting salt from server failed.")
+  };
+
+  userCancelled = (ostWorkflowContext , ostError) => {
+    // LoadingModal.hide();
+
+     Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "User cancelled.")
+
+  };
+
+  deviceTimeOutOfSync = (ostWorkflowContext , ostError) => {
+    LoadingModal.hide();
+    Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Device time out of sync")
+  };
+
+  workflowFailed = (ostWorkflowContext , ostError) => {
+    LoadingModal.hide();
+    Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, ostError.getErrorMessage())
+  };
+
+
+  _keyExtractor = (item, index) => `id_${item.id}`;
 
   _renderItem = ({ item, index }) => {
     return (
