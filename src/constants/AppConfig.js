@@ -187,7 +187,7 @@ export default {
   },
 
   paymentFlowMessages : {
-    transactionSuccess: "Payment is taking time will update soon.",
+    transactionSuccess: "Payment done successfully.",
     transactionPending: "Payment processing will take some time please wait." ,
     sendingPepo: "Sending Pepos please wait"
   }

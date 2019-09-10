@@ -24,19 +24,25 @@ class PollCurrentUserPendingPayments {
         this.startPolling(paymentEventsMap.pollPendingPaymentsStart , {isBackgroundSync: this.isBackgroundSync});
     }
 
-    schedulePoll( ){
+    startPolling( event ,  payload  ){
+        pollDuration = 0;  
+        this.isPolling = true ;
+        this.schedulePoll(1);
+        event && paymentEvents.emit(event , payload);
+    }
+
+    schedulePoll( pInterval ){
+        pInterval =  pInterval || pollingInterval ;
         clearTimeout( pollingTimeOut ); 
         if( maxPollDuration < pollDuration) {
             console.log("schedulePoll maxPollDuration" , maxPollDuration  ,pollDuration );
-            if(!this.isBackgroundSync ){
-                Alert.alert("" , appConfig.paymentFlowMessages.transactionPending);
-            }      
+           this.showAlert( appConfig.paymentFlowMessages.transactionPending); 
            this.stopPolling( paymentEventsMap.pollPendingPaymentsSuccess ,  {isBackgroundSync: this.isBackgroundSync,  status: "pending"} ) ; 
            return;
         } 
         pollingTimeOut =  setTimeout( () => {
             this.fetchPendingPayments();
-        },  pollingInterval ) ;
+        },  pInterval ) ;
     }
 
     fetchPendingPayments(){
@@ -45,7 +51,7 @@ class PollCurrentUserPendingPayments {
             errorCount = 0;   
             return
         } ; 
-        new PepoApi(`/${this.userId}/pending-topups`).get()
+        new PepoApi(`/users/${this.userId}/pending-topups`).get()
         .then((res)=> {
             if(res&& res.success){
                 this.onPendingPaymentSuccess(res); 
@@ -67,7 +73,7 @@ class PollCurrentUserPendingPayments {
         if(  pendingTransactions.length == 0 ){
             Pricer.getBalance(); 
             this.stopPolling( paymentEventsMap.pollPendingPaymentsSuccess ,  {isBackgroundSync: this.isBackgroundSync} ) ; 
-            Alert.alert("" , appConfig.paymentFlowMessages.transactionSuccess);
+            this.showAlert( appConfig.paymentFlowMessages.transactionSuccess ); 
         //Else keep polling    
         }else{
             this.schedulePoll();
@@ -81,19 +87,10 @@ class PollCurrentUserPendingPayments {
         if( errorCount < errorMaxCount ){
             this.schedulePoll();
         }else{
-            if(!this.isBackgroundSync){
-                Alert.alert("" , ostErrors.getUIErrorMessage("pending_transaction_poll"));
-            }
+            this.showAlert(ostErrors.getUIErrorMessage("pending_transaction_poll")) ;
             console.log("onPendingPaymentError max reached" , error  ,CurrentUser.getUserId() );
             this.stopPolling( paymentEventsMap.pollPendingPaymentsError ,  {isBackgroundSync: this.isBackgroundSync} ) ; 
         }
-    }
-
-    startPolling( event ,  payload  ){
-        pollDuration = 0;  
-        this.isPolling = true ;
-        this.schedulePoll();
-        event && paymentEvents.emit(event , payload);
     }
 
     stopPolling(event ,  payload ){
@@ -103,6 +100,12 @@ class PollCurrentUserPendingPayments {
 
     getPollingStatus(){
         return this.isPolling;
+    }
+
+    showAlert( msg ,  header=""){
+        if(!this.isBackgroundSync){
+            msg && Alert.alert("" ,msg);
+        }
     }
     
 }
