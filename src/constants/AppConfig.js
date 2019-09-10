@@ -19,7 +19,7 @@ export default {
     activating: 'activating'
   },
 
-  topEntityStatusMap : {
+  topUpEntityStatusMap : {
     success: "success", 
     pending:"pending",
     error: "error"

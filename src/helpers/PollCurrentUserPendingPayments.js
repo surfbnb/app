@@ -3,6 +3,7 @@ import CurrentUser from "../models/CurrentUser";
 import PepoApi from "../services/PepoApi"; 
 import Pricer from "../services/Pricer";
 import  { paymentEvents,  paymentEventsMap } from "../helpers/PaymentEvents";
+import dataContract from "../constants/DataContract";
 
 const errorMaxCount = 10 ,  errorCount = 0 ,  pollingTimeOut = 0 ,  pollingInterval = 10000  , 
       maxPollDuration = 600000; pollDuration = 0 ; 
@@ -10,14 +11,15 @@ const errorMaxCount = 10 ,  errorCount = 0 ,  pollingTimeOut = 0 ,  pollingInter
 class PollCurrentUserPendingPayments {
 
     constructor(){
-        this.pepoApi = new PepoApi("/top-up/pending") ; 
+        this.pepoApi = new PepoApi(dataContract.payments.getPendingPaymentsApi) ; 
     }
 
-    initBalancePoll( userId ){ 
+    initBalancePoll( userId ,  isBackgroundSync ){ 
         this.userId = userId ;
+        this.isBackgroundSync =  !!isBackgroundSync; 
         pollDuration = 0;
         this.schedulePoll();
-        paymentEvents.emit(paymentEvents.pollPendingPaymentsStart); 
+        paymentEvents.emit(paymentEventsMap.pollPendingPaymentsStart); 
     }
 
     schedulePoll( ){
@@ -56,7 +58,7 @@ class PollCurrentUserPendingPayments {
         //If all pending Payments are resolved fetch balance 
         if(  pendingTransactions.length == 0 ){
             Pricer.getBalance(); 
-            paymentEvents.emit(paymentEvents.pollPendingPaymentsSuccess); 
+            paymentEvents.emit(paymentEventsMap.pollPendingPaymentsSuccess , {isBackgroundSync: this.isBackgroundSync}); 
         //Else keep polling    
         }else{
             this.schedulePoll();
@@ -69,7 +71,7 @@ class PollCurrentUserPendingPayments {
         if( errorCount < errorMaxCount ){
             this.schedulePoll();
         }else{
-            paymentEvents.emit(paymentEvents.pollPendingPaymentsError); 
+            paymentEvents.emit(paymentEventsMap.pollPendingPaymentsError , {isBackgroundSync: this.isBackgroundSync} ); 
         }
     }
     

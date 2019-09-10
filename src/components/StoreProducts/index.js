@@ -23,6 +23,7 @@ import pepoIcon from '../../assets/self-amount-pepo-icon.png';
 import mailIcon from '../../assets/mail-filled.png';
 
 import inlineStyles from './styles';
+import dataContract from "../../constants/DataContract";
 
 class StoreProductsScreen extends PureComponent{
 
@@ -61,7 +62,7 @@ class StoreProductsScreen extends PureComponent{
 
     fetchProducts = () => {
        const params = {"os": Platform.OS.toLowerCase()};
-       new PepoApi('/users/available-products')
+       new PepoApi(dataContract.payments.getAllProductsApi)
         .get(params)
         .then((res) => {
             if(res && res.success){
@@ -82,7 +83,7 @@ class StoreProductsScreen extends PureComponent{
     }
 
     isMaxLimitReached( res ){
-        const limits =  deepGet(res, 'data.limits_data') || {} ; 
+        const limits =  deepGet(res,  `data.${dataContract.payments.purchaseThresholdReachedKey}`) || {} ; 
         for (var key in limits) {
             if (limits[key] == 1) {
               return true;
@@ -92,7 +93,7 @@ class StoreProductsScreen extends PureComponent{
     }
 
     setProductIds( res ){
-        const   result_type = deepGet(res, 'data.result_type'),
+        const   result_type = deepGet(res, dataContract.common.resultType),
                 products = deepGet(res, `data.${result_type}`); 
         this.productIds = products.map( (product) => {
             return product.id ; 

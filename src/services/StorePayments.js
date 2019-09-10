@@ -11,11 +11,12 @@ import PollCurrentUserPendingPayments from "../helpers/PollCurrentUserPendingPay
 import Utilities from "./Utilities";
 import {ostErrors} from "../services/OstErrors";
 import appConfig from "../constants/AppConfig";
+import dataContract from "../constants/DataContract"; 
 
 const maxRetryCount = 10 ;
-const paymentAcknowledgeApi = "/payments/confirm-pay-receipt" ; 
-const topUpStatusApi = "user"; //TODO 
-const topUpIdKey = "top_up_id"
+const paymentAcknowledgeApi = dataContract.payments.postPaymentAcknowledgeApi ; 
+const topUpStatusApi = dataContract.payments.getTopUpStatusApi; 
+const topUpIdKey = dataContract.payments.topUpEntityId
 
 class StorePayments {
 
@@ -51,7 +52,7 @@ class StorePayments {
 
     onRequestPurchaseError(error , userId ){
         paymentEvents.emit(paymentEventsMap.paymentIAPError); 
-        if(error && error.errorCode !== 2){ //TODO Confrim Error code
+        if(error && error.responseCode !== 2){
             Toast.show({
                 text:  ostErrors.getUIErrorMessage("payment_failed_error"),
                 icon: 'error'
@@ -71,13 +72,13 @@ class StorePayments {
 
     snycPendingPayments( userId ){
 
-        let shouldCheckForPendingTopUps = false ;
+        let shouldCheckForPendingTopUps = true;
 
         //Sync BE pending payments 
         UserPayments.getPendingPaymentsForBEAcknowledge( userId ).then((payments) => {
             payments = Utilities.getParsedData( payments );
             for (var key in payments) {
-                shouldCheckForPendingTopUps =  true ;
+                shouldCheckForPendingTopUps =  false;
                 new BackendPaymentAcknowledge( payments[key] , true ); 
             } 
         });
@@ -91,7 +92,7 @@ class StorePayments {
         });
          
          if( shouldCheckForPendingTopUps ){
-            PollCurrentUserPendingPayments.initBalancePoll(userId);
+            PollCurrentUserPendingPayments.initBalancePoll(userId ,  true);
          }
         
     }
@@ -139,30 +140,24 @@ class BackendPaymentAcknowledge {
             topUpEntity = deepGet(res,  `data.${resultType}`) || {} , 
             status = topUpEntity.status
             ; 
-        if( isProcessableTopEntity( status ) ){
-            //Add for pending apple or google acknowledge 
-            UserPayments.addPendingPaymentForStoreAcknowledge(this.payment , topUpEntity ); 
-            //Remove the entry from async 
-            UserPayments.removePendingPaymentForBEAcknowledge( this.payment );
-            //Emit evnt 
-            paymentEvents.emit(paymentEventsMap.paymentBESyncSuccess, {isBackgroundSync: this.isBackgroundSync}) ;
-            //Start native store acknowledge 
-            new NativeStoreAcknowledge( UserPayments.getNativeStoreData(this.payment , topUpEntity ) ) ; 
+
+         //Add for pending apple or google acknowledge 
+         UserPayments.addPendingPaymentForStoreAcknowledge(this.payment , topUpEntity ); 
+         //Remove the entry from async 
+         UserPayments.removePendingPaymentForBEAcknowledge( this.payment );
+         //Emit evnt 
+         paymentEvents.emit(paymentEventsMap.paymentBESyncSuccess, {isBackgroundSync: this.isBackgroundSync}) ;
+          //Start native store acknowledge 
+          new NativeStoreAcknowledge( UserPayments.getNativeStoreData(this.payment , topUpEntity ) ) ; 
+
+        if( status == appConfig.topUpEntityStatusMap.success ){
             //Start long poll for user 
             PollCurrentUserPendingPayments.initBalancePoll(this.payment.user_id);
-        } else if( status == appConfig.topEntityStatusMap.pending ){
-            //IF invalid payment remove from async 
-            UserPayments.removePendingPaymentForBEAcknowledge( this.payment );
-            //Emit success as backend has acknowledged but its an invalid or fraud transaction.
-            paymentEvents.emit(paymentEventsMap.paymentBESyncSuccess, {isBackgroundSync: this.isBackgroundSync}) ;
+        } else if( status == appConfig.topUpEntityStatusMap.pending ){
             //Notify user that he needs to get in touch with Apple of Google store
             Alert.alert("", ostErrors.getUIErrorMessage("invalid_payment") );
         }       
 
-    }
-
-    isProcessableTopEntity(status){
-        return status == appConfig.topEntityStatusMap.success || status == appConfig.topEntityStatusMap.pending ; 
     }
 
     onBEAcknowdledgeError(error ){
@@ -186,20 +181,20 @@ class NativeStoreAcknowledge{
 
     constructor(storeEntity , isBackgroundSync) {
         this.storeEntity =  storeEntity || {}; 
-        this.topUpId = deepGet(this.storeEntity , `topUpEntity.${topUpIdKey}`) ;       
-        this.userId = deepGet(this.storeEntity , `paymentEntity.${user_id}`) ;  ;
+        this.topUpId = deepGet(this.storeEntity , `topUpEntity.${topUpIdKey}`);       
+        this.userId = deepGet(this.storeEntity , `paymentEntity.${user_id}`); 
         if(!this.topUpId || this.userId != CurrentUser.getUserId() )  return null;
         this.isBackgroundSync = isBackgroundSync ;
         this.pollInterval = 10000;
         this.count = 0 ;
-        this.pepoApi = new PepoApi(topUpStatusApi);
+        this.pepoApi = new PepoApi(topUpStatusApi+this.topUpId)
         paymentEvents.emit(paymentEventsMap.paymentStoreSyncStarted,  { isBackgroundSync : this.isBackgroundSync });
         this.storeSync();   
     }
 
     storeSync(){
         this.pepoApi
-        .get({"top_up_id": this.topUpId })
+        .get()
         .then((res)=> {
             if(res && res.success){
                 this.storeSyncSuccess(res);
@@ -236,9 +231,19 @@ class NativeStoreAcknowledge{
     nativeStoreSync(){
         if(this.userId != CurrentUser.getUserId()) return;
         if(Platform.OS == "ios") {
-
+            RNIap.clearTransactionIOS(); //Not sure whether to do this or not.
+            this.nativeStoreSyncSuccess();
         } else if(Platform.OS == "android"){
-  
+            try {
+                const purchaseToken = deepGet(this.storeEntity ,  "paymentEntity.purchaseToken"); 
+                RNIap.consumePurchaseAndroid(purchaseToken).then((res)=> {
+                    this.nativeStoreSyncSuccess();
+                }).catch((error)=> {
+                    this.nativeStoreSyncError(); 
+                })
+            }catch(error){
+                this.nativeStoreSyncError(); 
+            }
         }
     }
 
@@ -248,12 +253,14 @@ class NativeStoreAcknowledge{
     }   
 
     nativeStoreSyncError(){
-        this.count++ ; 
-        if(this.count < maxRetryCount ){
-            this.nativeStoreSync();
-        }else{
-            paymentEvents.emit(paymentEventsMap.paymentStoreSyncFailed ,  {isBackgroundSync : this.isBackgroundSync});
-        }
+        paymentEvents.emit(paymentEventsMap.paymentStoreSyncFailed ,  {isBackgroundSync : this.isBackgroundSync});
+         //Not sure whether its a good idea.
+        // this.count++ ; 
+        // if(this.count < maxRetryCount ){
+        //     // this.nativeStoreSync(); 
+        // }else{
+           
+        // }
     }
 
 }
