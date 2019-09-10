@@ -102,9 +102,9 @@ class StorePayments {
             } 
         });
          
-         if( shouldCheckForPendingTopUps ){
+         //if( shouldCheckForPendingTopUps ){ 
             PollCurrentUserPendingPayments.initBalancePoll(userId ,  true);
-         }
+        // }
         
     }
 

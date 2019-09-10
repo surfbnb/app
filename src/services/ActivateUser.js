@@ -3,8 +3,6 @@ import ActivateUserWorkflow from './OstWalletCallbacks/ActivateUserWorkflow';
 import { SESSION_KEY_EXPIRY_TIME } from '../constants';
 import { SPENDING_LIMIT } from '../constants';
 import CurrentUser from '../models/CurrentUser';
-import { hideModal } from '../actions';
-import Store from '../store';
 import deepGet from 'lodash/get';
 import utilities from '../services/Utilities';
 
