@@ -321,7 +321,8 @@ class TransactionScreen extends Component {
   getSendTransactionPlatformData(ostWorkflowEntity) {
     let params = {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
-      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')
+      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id'),
+      is_paper_plane: true
     };
     if (this.videoId) {
       params['meta'] = {};

@@ -27,7 +27,7 @@ class PushNotificationManager extends PureComponent {
     this.removeNotificationOpenedListener = firebase
       .notifications()
       .onNotificationOpened((notificationData) => {
-        
+
         console.log("onNotificationOpened [[[[[onNotificationOpened]]]]] ") 
         this.handleGoto(notificationData.notification.data)});
 
@@ -93,7 +93,8 @@ class PushNotificationManager extends PureComponent {
     let payload = {
       device_id: DeviceInfo.getUniqueID(),
       device_kind: Platform.OS,
-      device_token: token
+      device_token: token,
+      user_timezone: DeviceInfo.getTimezone()
     };
     new PepoApi(`/users/${this.props.currentUserId}/device-token`)
       .post(payload)
