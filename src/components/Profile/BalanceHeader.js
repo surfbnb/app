@@ -27,7 +27,7 @@ class BalanceHeader extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isPurchasing : false
+      isPurchasing : true
     }
     this.purchaseLoaderSubscribtion  = null ;
   }
