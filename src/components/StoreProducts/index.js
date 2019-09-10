@@ -181,12 +181,14 @@ class StoreProductsScreen extends PureComponent{
 
     getThresholdReachedMarkUp = () => {
         return (
-            <View style={[inlineStyles.viewWrapper,  {flexDirection: "row" , alignItems: "center" , padding: 30}]} >
-               <Image source={mailIcon} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
-               <Text style={{textAlign: "center" , marginLeft: 10}}>
-                You have exceeded the Topup limit of $50
-                Contact us on info@pepo.com to increase your topup limit.
-               </Text>
+            <View style={[inlineStyles.viewWrapper, {marginHorizontal: 20}]} >
+               <View style={{paddingHorizontal: 10, paddingVertical: 15, borderWidth: 1, borderColor: '#ff7499', flexDirection: "row" , alignItems: "center", borderRadius: 3}}>
+                 <Image source={mailIcon} style={{ width: 45, height: 45}}></Image>
+                 <Text style={{textAlign: "left" , marginLeft: 10}}>
+                   You have exceeded the Topup limit of $50
+                   Contact us on info@pepo.com to increase your topup limit.
+                 </Text>
+               </View>
             </View>
         )
     }
@@ -249,10 +251,13 @@ class StoreProductsScreen extends PureComponent{
         return (
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
                 <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+                  <TouchableWithoutFeedback>
                     <View style={[inlineStyles.container]}>
-                        {this.state.loadingProducts && this.getLoadingMarkup()}                   
+                        <View style={inlineStyles.dragger}></View>
+                        {this.state.loadingProducts && this.getLoadingMarkup()}
                         {!this.state.loadingProducts && this.getMarkUp()}
-                    </View>     
+                    </View>
+                  </TouchableWithoutFeedback>
                 </View>
             </TouchableWithoutFeedback>
         );

@@ -34,7 +34,10 @@ let stylesMap = {
       },
 
       viewWrapper: {
-        padding: 20, alignItems: "center"
+        paddingHorizontal: 20,
+        paddingBottom: 20,
+        paddingTop: 10,
+        alignItems: "center"
       },
 
       loadingIcon : {
@@ -60,6 +63,15 @@ let stylesMap = {
 
       pepoBtnStyle: {
         width: 60
+      },
+
+      dragger: {
+        backgroundColor: 'rgba(42, 41, 59, 0.44)',
+        borderRadius: 2.5,
+        height: 5,
+        width: 75,
+        alignSelf: 'center',
+        marginVertical: 10
       }
 
 
