@@ -14,13 +14,14 @@ let errorMaxCount = 10 ,  errorCount = 0 ,  pollingTimeOut = 0 ,  pollingInterva
 
 class PollCurrentUserPendingPayments {
 
+    constructor(){
+        this.isPolling = false ;
+    }
+
     initBalancePoll( userId ,  isBackgroundSync ){ 
         this.userId = userId ;
         this.isBackgroundSync = !!isBackgroundSync; 
-        pollDuration = 0;
-        this.schedulePoll();
-        paymentEvents.emit(paymentEventsMap.pollPendingPaymentsStart , {isBackgroundSync: this.isBackgroundSync} ); 
-        console.log("initBalancePoll" , userId  ,isBackgroundSync );
+        this.startPolling(paymentEventsMap.pollPendingPaymentsStart , {isBackgroundSync: this.isBackgroundSync});
     }
 
     schedulePoll( ){
@@ -30,7 +31,7 @@ class PollCurrentUserPendingPayments {
             if(!this.isBackgroundSync ){
                 Alert.alert("" , appConfig.paymentFlowMessages.transactionPending);
             }      
-           paymentEvents.emit(paymentEventsMap.pollPendingPaymentsSuccess , {isBackgroundSync: this.isBackgroundSync , status: "pending"} ); 
+           this.stopPolling( paymentEventsMap.pollPendingPaymentsSuccess ,  {isBackgroundSync: this.isBackgroundSync,  status: "pending"} ) ; 
            return;
         } 
         pollingTimeOut =  setTimeout( () => {
@@ -65,7 +66,7 @@ class PollCurrentUserPendingPayments {
         //If all pending Payments are resolved fetch balance 
         if(  pendingTransactions.length == 0 ){
             Pricer.getBalance(); 
-            paymentEvents.emit(paymentEventsMap.pollPendingPaymentsSuccess , {isBackgroundSync: this.isBackgroundSync}); 
+            this.stopPolling( paymentEventsMap.pollPendingPaymentsSuccess ,  {isBackgroundSync: this.isBackgroundSync} ) ; 
             Alert.alert("" , appConfig.paymentFlowMessages.transactionSuccess);
         //Else keep polling    
         }else{
@@ -84,8 +85,24 @@ class PollCurrentUserPendingPayments {
                 Alert.alert("" , ostErrors.getUIErrorMessage("pending_transaction_poll"));
             }
             console.log("onPendingPaymentError max reached" , error  ,CurrentUser.getUserId() );
-            paymentEvents.emit(paymentEventsMap.pollPendingPaymentsError , {isBackgroundSync: this.isBackgroundSync} ); 
+            this.stopPolling( paymentEventsMap.pollPendingPaymentsError ,  {isBackgroundSync: this.isBackgroundSync} ) ; 
         }
+    }
+
+    startPolling( event ,  payload  ){
+        pollDuration = 0;  
+        this.isPolling = true ;
+        this.schedulePoll();
+        event && paymentEvents.emit(event , payload);
+    }
+
+    stopPolling(event ,  payload ){
+        event && paymentEvents.emit(event , payload);
+        this.isPolling = false ;
+    }
+
+    getPollingStatus(){
+        return this.isPolling;
     }
     
 }

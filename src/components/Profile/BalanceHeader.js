@@ -17,6 +17,7 @@ import ProgressCircle from 'react-native-progress/CircleSnail';
 import Colors from '../../theme/styles/Colors';
 
 import { PurchaseLoader } from "../../helpers/PaymentEvents";
+import PollCurrentUserPendingPayments from "../../helpers/PollCurrentUserPendingPayments";
 import Toast from '../../theme/components/NotificationToast';
 import appConfig from "../../constants/AppConfig";
 
@@ -27,7 +28,7 @@ class BalanceHeader extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isPurchasing : true
+      isPurchasing : false
     }
     this.purchaseLoaderSubscribtion  = null ;
   }
@@ -35,6 +36,7 @@ class BalanceHeader extends PureComponent {
   componentDidMount(){
     this.purchaseLoaderSubscribtion = new PurchaseLoader( this.updatePurchasingLoader ); 
     this.purchaseLoaderSubscribtion.subscribeToEvents();
+    this.setState({isPurchasing: PollCurrentUserPendingPayments.getPollingStatus()});
   }
 
   componentWillUnmount(){
