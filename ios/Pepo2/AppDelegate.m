@@ -49,7 +49,7 @@
         kTSKIncludeSubdomains: @NO,
         kTSKPublicKeyHashes : @[
           @"5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=",
-          @"HXXQgxueCIU5TTLHob/bPbwcKOKw6DkfsTWYHbxbqTY="//just to avoid crash. (add backup key)
+          @"KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w="
         ],
       },
       
@@ -57,8 +57,9 @@
           kTSKEnforcePinning:@YES,
           kTSKIncludeSubdomains: @NO,
           kTSKPublicKeyHashes : @[
-              @"rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=",
-              @"HXXQgxueCIU5TTLHob/bPbwcKOKw6DkfsTWYHbxbqTY="//just to avoid crash. (add backup key)
+              @"rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=", //Temp. Will deactivate soon.
+              @"DYo5lqgDZl75OmwvtxvNkpDMfeoDcyVaZi1rANPi4GA=",
+              @"ImWdHMV2ca7NG/Gl542B/RXBXuiT+CF93UZl+jqowGI="
           ],
       },
     }
