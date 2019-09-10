@@ -206,8 +206,8 @@ class StoreProductsScreen extends PureComponent{
                 {this.products.map(( product ) => (
                     <View key={ product.productId } style={inlineStyles.poductListRow}>
                         <View style={{flexDirection: "row", alignItems: 'center'}}>
-                            <Image source={pepoIcon} style={{ width: 25, height: 25 }}/>
-                            <Text style={{marginRight: 10}}>{product.title}</Text>
+                            <Image source={pepoIcon} style={{ width: 19, height: 19 }}/>
+                            <Text style={[inlineStyles.topUpName, {marginLeft: 5}]}>{product.title}</Text>
                         </View>
                         <TouchableButton
                                 disabled={this.state.isPurchasing}

@@ -30,7 +30,8 @@ let stylesMap = {
         textAlign: 'center',
         color: Colors.valhalla,
         fontSize: 16,
-        paddingVertical: 5
+        fontFamily: 'AvenirNext-DemiBold',
+        paddingBottom: 5
       },
 
       viewWrapper: {
@@ -53,16 +54,27 @@ let stylesMap = {
       },
 
       poductListWrapper: {
-        flex: 1,
-        padding: 20
+        flex: 1
       }, 
 
       poductListRow : {
-        flexDirection: "row", justifyContent:"space-between" , paddingVertical: 10
+        flexDirection: "row",
+        justifyContent:"space-between",
+        paddingVertical: 15,
+        marginHorizontal: 20,
+        borderBottomWidth: 1,
+        borderColor: Colors.whisper
+      },
+
+      topUpName:{
+        color: Colors.valhalla,
+        fontSize: 15,
+        fontFamily: 'AvenirNext-DemiBold'
       },
 
       pepoBtnStyle: {
-        width: 60
+        minWidth: 70,
+        paddingVertical: 7
       },
 
       dragger: {
