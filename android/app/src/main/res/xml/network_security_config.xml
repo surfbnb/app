@@ -6,7 +6,18 @@
         <domain includeSubdomains="true">stagingpepo.com</domain>
         <pin-set>
             <pin digest="SHA-256">5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=</pin>
-            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
+            <pin digest="SHA-256">KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w=</pin>
+        </pin-set>
+        <trustkit-config enforcePinning="true">
+        </trustkit-config>
+    </domain-config>
+    <domain-config>
+        <domain includeSubdomains="true">sandboxpepo.com</domain>
+        <pin-set>
+            <!--Temp. Will deactivate soon.-->
+            <pin digest="SHA-256">rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=</pin>
+            <pin digest="SHA-256">DYo5lqgDZl75OmwvtxvNkpDMfeoDcyVaZi1rANPi4GA=</pin>
+            <pin digest="SHA-256">ImWdHMV2ca7NG/Gl542B/RXBXuiT+CF93UZl+jqowGI=</pin>
         </pin-set>
         <trustkit-config enforcePinning="true">
         </trustkit-config>
