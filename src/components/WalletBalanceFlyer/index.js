@@ -95,14 +95,13 @@ class WalletBalanceFlyer extends Component {
 
   getWalletIcon = () => {
     if( this.state.isPurchasing ){
-      return   <View style={{position: "relative"}}>
-                    <ProgressCircle size={35} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
-                    <Image style={{ width: 16, height: 16, position: 'absolute', transform: [{translateX: 12}, {translateY: 12}] }} 
+      return  <View style={{position: "relative"}}>
+                    <ProgressCircle size={36} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
+                    <Image style={{ width: 16, height: 16, position: 'absolute', top: '50%', left: '50%', transform: [{translateX: -8}, {translateY: -8}] }}
                     source={selfAmountWallet}></Image>
-                </View> 
-              ;
+              </View>;
     }else{
-      return <Image style={{ width: 18, height: 18}} source={selfAmountWallet}></Image> ;
+      return <Image style={{ width: 16, height: 16 }} source={selfAmountWallet}></Image>;
           
     }
   }

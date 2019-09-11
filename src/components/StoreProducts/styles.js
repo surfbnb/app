@@ -6,7 +6,7 @@ let stylesMap = {
         backgroundColor: Colors.white,
         alignSelf: 'center',
         justifyContent: 'center',
-        paddingBottom: 10,
+        paddingVertical: 10,
         position: 'absolute',
         width: '100%',
         borderTopRightRadius: 25,
@@ -23,8 +23,7 @@ let stylesMap = {
         paddingHorizontal: 10,
         paddingVertical: 10,
         alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative'
+        justifyContent: 'center'
       },
       modalHeader: {
         textAlign: 'center',
