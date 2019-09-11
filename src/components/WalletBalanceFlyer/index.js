@@ -61,7 +61,8 @@ class WalletBalanceFlyer extends Component {
   showFlyer = () => {
     FlyerEventEmitter.emit('onToggleProfileFlyer');
     this.state.animatedWidth.setValue(0);
-    Animated.timing(this.state.animatedWidth, { toValue: 75, duration: 300, easing: Easing.elastic(1) }).start(() => {
+    let widthVal = this.state.isPurchasing ? "Sending Pepo please wait".length * 8 : "TopUp".length * 8 + 30;
+    Animated.timing(this.state.animatedWidth, { toValue: ((widthVal) ), duration: 300, easing: Easing.elastic(1) }).start(() => {
       this.setState({
         extensionVisible: true
       });
@@ -95,14 +96,13 @@ class WalletBalanceFlyer extends Component {
 
   getWalletIcon = () => {
     if( this.state.isPurchasing ){
-      return  <View style={{position: "relative"}}>
-                    <ProgressCircle size={36} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
-                    <Image style={{ width: 16, height: 16, position: 'absolute', top: '50%', left: '50%', transform: [{translateX: -8}, {translateY: -8}] }}
-                    source={selfAmountWallet}></Image>
+      return  <View style={styles.shadowLoader}>
+                <ProgressCircle size={36} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true} radius={18}/>
+                <Image style={{ width: 16, height: 16, position: 'absolute', top: '50%', left: '50%', transform: [{translateX: -8}, {translateY: -8}] }}
+                       source={selfAmountWallet}></Image>
               </View>;
     }else{
       return <Image style={{ width: 16, height: 16 }} source={selfAmountWallet}></Image>;
-          
     }
   }
 
