@@ -7,6 +7,8 @@ import {
     Platform,
     Animated,
     Easing,
+    ScrollView,
+    Dimensions,
     Image
   } from 'react-native';
 
@@ -199,26 +201,29 @@ class StoreProductsScreen extends PureComponent{
     }
 
     getProductsMarkUp = () => {
+      this.products = [{title: "asds" ,price: 10 }, {title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 }]
         return (
             <View style={inlineStyles.poductListWrapper}>
                 <View style={inlineStyles.headerWrapper}>
                     <Text style={inlineStyles.modalHeader}>Top-Up Pepo Coins</Text>
                 </View>
-                {this.products.map(( product ) => (
-                    <View key={ product.productId } style={inlineStyles.poductListRow}>
-                        <View style={{flexDirection: "row", alignItems: 'center'}}>
-                            <Image source={pepoIcon} style={{ width: 19, height: 19 }}/>
-                            <Text style={[inlineStyles.topUpName, {marginLeft: 5}]}>{product.title}</Text>
-                        </View>
-                        <TouchableButton
-                                disabled={this.state.isPurchasing}
-                                TouchableStyles={[Theme.Button.btnPink , inlineStyles.pepoBtnStyle]}
-                                TextStyles={[Theme.Button.btnPinkText]}
-                                text={this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}
-                                onPress={() => {this.onRequestPurchase(product.productId) }}
-                        />
-                    </View>
-                ))}
+                <ScrollView>
+                  {this.products.map(( product) => (
+                      <View key={ product.productId } style={inlineStyles.poductListRow}>
+                          <View style={{flexDirection: "row", alignItems: 'center'}}>
+                              <Image source={pepoIcon} style={{ width: 19, height: 19 }}/>
+                              <Text style={[inlineStyles.topUpName, {marginLeft: 5}]}>{product.title}</Text>
+                          </View>
+                          <TouchableButton
+                                  disabled={this.state.isPurchasing}
+                                  TouchableStyles={[Theme.Button.btnPink , inlineStyles.pepoBtnStyle]}
+                                  TextStyles={[Theme.Button.btnPinkText]}
+                                  text={this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}
+                                  onPress={() => {this.onRequestPurchase(product.productId) }}
+                          />
+                      </View>
+                  ))}
+                </ScrollView>
             </View>    
         )
     }
@@ -253,8 +258,8 @@ class StoreProductsScreen extends PureComponent{
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
                 <View style={{ flex: 1, backgroundColor: 'transparent' }}>
                   <TouchableWithoutFeedback>
-                    <View style={[inlineStyles.container]}>
-                        <View style={inlineStyles.dragger}></View>
+                    <View style={[inlineStyles.container, {height:  Dimensions.get('window').height / 2 } ]}>
+                        {/*<View style={inlineStyles.dragger}></View>*/}
                         {this.state.loadingProducts && this.getLoadingMarkup()}
                         {!this.state.loadingProducts && this.getMarkUp()}
                     </View>
