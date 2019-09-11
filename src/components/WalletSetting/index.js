@@ -40,6 +40,13 @@ class WalletSettingList extends PureComponent {
     this.eventLoaderTextMap = {};
 
     this._createEventLoaderData(
+      optionIds.addSession,
+      "Adding Session",
+      "Add Session acknowledged",
+      "Session got added Successfully",
+      "Issue occurred while adding Session");
+
+    this._createEventLoaderData(
       optionIds.resetPin,
       "Resetting pin",
       "Reset pin acknowledged",

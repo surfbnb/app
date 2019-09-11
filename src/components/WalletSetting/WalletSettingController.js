@@ -4,6 +4,7 @@ import { OstWalletSdk, OstWalletSdkUI, OstJsonApi} from '@ostdotcom/ost-wallet-s
 import deepGet from "lodash/get";
 import appConfig from '../../constants/AppConfig';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper'
+import { SESSION_KEY_EXPIRY_TIME, SPENDING_LIMIT } from '../../constants';
 
 const optionIds = {
   recoverDevice: 'recoverDevice',
@@ -12,7 +13,8 @@ const optionIds = {
   viewMnemonics: 'viewMnemonics',
   authorizeWithMnemonics: 'authorizeWithMnemonics',
   authorizeWithQR: 'authorizeWithQR',
-  showQR: 'showQR'
+  showQR: 'showQR',
+  addSession: 'addSession'
 };
 
 class WalletSettingController {
@@ -20,6 +22,7 @@ class WalletSettingController {
   constructor() {
     this._initialize();
     this.optionsOrdering = [
+      optionIds.addSession,
       optionIds.recoverDevice, optionIds.abortRecovery,
       optionIds.resetPin,
       optionIds.viewMnemonics, optionIds.authorizeWithMnemonics,
@@ -38,6 +41,7 @@ class WalletSettingController {
   }
 
   _initializeOptions() {
+    this._createOptionsData(optionIds.addSession, "Add Session", "Add Session to do transaction");
     this._createOptionsData(optionIds.recoverDevice, "Recover Device", "Recover your device");
     this._createOptionsData(optionIds.abortRecovery, "Abort Device Recovery", "Abort Device Recovery");
     this._createOptionsData(optionIds.resetPin, "Reset Pin", "Reset your wallet pin");
@@ -56,7 +60,7 @@ class WalletSettingController {
       setTimeout(()=> {
         let data = this._getData(onlyPerformable);
         callback( data );
-      }, 10);
+      }, 0);
 
       // Done.
       return;
@@ -136,6 +140,7 @@ class WalletSettingController {
       this._updateOptionsData(optionIds.resetPin, false, true);
 
       if (deviceStatus == this.deviceStatusMap.authorized) {
+        this._updateOptionsData(optionIds.addSession, false, true);
         this._updateOptionsData(optionIds.viewMnemonics, false, true);
         this._updateOptionsData(optionIds.authorizeWithQR, false, true);
       }
@@ -264,6 +269,10 @@ class WalletSettingController {
     ;
 
     switch( optionId ) {
+      case optionIds.addSession:
+        workflowId = OstWalletSdkUI.addSession(userId, SESSION_KEY_EXPIRY_TIME, SPENDING_LIMIT, delegate);
+        break;
+
       case optionIds.recoverDevice:
         workflowId = OstWalletSdkUI.initiateDeviceRecovery(userId, null, delegate);
         break;
