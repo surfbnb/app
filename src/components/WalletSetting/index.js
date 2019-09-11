@@ -1,11 +1,10 @@
-import React, { PureComponent } from 'react';
-import { FlatList, View, Text, TouchableWithoutFeedback, Alert } from 'react-native';
+import React, {PureComponent} from 'react';
+import {Alert, FlatList, Text, TouchableWithoutFeedback, View} from 'react-native';
 import inlineStyle from './styles'
-import {walletSettingController, optionIds} from  './WalletSettingController';
-import { LoadingModal } from '../../theme/components/LoadingModalCover';
+import {optionIds, walletSettingController} from './WalletSettingController';
+import {LoadingModal} from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
 import BackArrow from '../CommonComponents/BackArrow';
-import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper'
 
 class WalletSettingList extends PureComponent {
   static navigationOptions = (options) => {
@@ -182,7 +181,7 @@ class WalletSettingList extends PureComponent {
   };
 
   userCancelled = (ostWorkflowContext , ostError) => {
-    // LoadingModal.hide();
+     LoadingModal.hide();
 
      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "User cancelled.")
 
