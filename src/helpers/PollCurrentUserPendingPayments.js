@@ -21,14 +21,14 @@ class PollCurrentUserPendingPayments {
     initBalancePoll( userId ,  isBackgroundSync ){ 
         this.userId = userId ;
         this.isBackgroundSync = !!isBackgroundSync; 
-        this.startPolling(paymentEventsMap.pollPendingPaymentsStart , {isBackgroundSync: this.isBackgroundSync});
+        this.startPolling();
     }
 
-    startPolling( event ,  payload  ){
+    startPolling( ){
         pollDuration = 0;  
         this.isPolling = true ;
         this.schedulePoll(1);
-        event && paymentEvents.emit(event , payload);
+        paymentEvents.emit(paymentEventsMap.pollPendingPaymentsStart  , {isBackgroundSync: this.isBackgroundSync});
     }
 
     schedulePoll( pInterval ){

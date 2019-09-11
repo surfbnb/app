@@ -16,14 +16,14 @@ import Theme from '../../theme/styles';
 import deepGet from "lodash/get";
 import PepoApi from "../../services/PepoApi";
 import StorePayments from "../../services/StorePayments";
-import  { paymentEvents,  paymentEventsMap } from "../../helpers/PaymentEvents";
+import { paymentEvents,  paymentEventsMap } from "../../helpers/PaymentEvents";
+import inlineStyles from './styles';
+import dataContract from "../../constants/DataContract";
+
 import pepoTxIcon from "../../assets/pepo-tx-icon.png";
 import toastError from '../../assets/toast_error.png';
 import pepoIcon from '../../assets/self-amount-pepo-icon.png';
 import mailIcon from '../../assets/mail-filled.png';
-
-import inlineStyles from './styles';
-import dataContract from "../../constants/DataContract";
 
 class StoreProductsScreen extends PureComponent{
 
@@ -115,6 +115,7 @@ class StoreProductsScreen extends PureComponent{
     }
 
     onRequestPurchase = ( skuId ) => {
+        if(!skuId) return;
         paymentEvents.emit(paymentEventsMap.paymentIAPStarted);
         this.productId = skuId ; 
         this.setState({isPurchasing: true});

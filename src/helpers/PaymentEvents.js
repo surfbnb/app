@@ -21,7 +21,7 @@ export { paymentEvents,  paymentEventsMap , PurchaseLoader } ;
 
 /**
  * Private UI implementation move this to some other file 
- ***/
+ **/
 
  class PurchaseLoader {
 

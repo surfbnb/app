@@ -1,9 +1,9 @@
 import {Alert , Platform} from "react-native";
-import Toast from '../theme/components/NotificationToast';
-
-import  { paymentEvents,  paymentEventsMap } from "../helpers/PaymentEvents";
 import RNIap from 'react-native-iap';
 import deepGet from "lodash/get";
+
+import Toast from '../theme/components/NotificationToast';
+import  { paymentEvents,  paymentEventsMap } from "../helpers/PaymentEvents";
 import PepoApi from "../services/PepoApi";
 import UserPayments from "../models/UserPayments";
 import CurrentUser from "../models/CurrentUser";
@@ -149,7 +149,8 @@ class BackendPaymentAcknowledge {
         console.log("onBEAcknowdledgeSuccess" , res  , this.payment );
         let resultType = deepGet(res ,  "data.result_type")
             topUpEntity = deepGet(res,  `data.${resultType}`) || {} , 
-            status = topUpEntity.status
+            isStartPolling = topUpEntity[dataContract.payments.startPollingKey], 
+            errMsg = topUpEntity[dataContract.payments.paymentAcknowledgeErrMsgKey]
             ; 
 
          //Add for pending apple or google acknowledge 
@@ -157,18 +158,17 @@ class BackendPaymentAcknowledge {
          //Remove the entry from async 
          UserPayments.removePendingPaymentForBEAcknowledge( this.payment );
          //Emit evnt 
-         paymentEvents.emit(paymentEventsMap.paymentBESyncSuccess, {isBackgroundSync: this.isBackgroundSync , topEntityStatus :status });
+         paymentEvents.emit(paymentEventsMap.paymentBESyncSuccess, {isBackgroundSync: this.isBackgroundSync , topUpEntity :topUpEntity });
           //Start native store acknowledge 
-          new NativeStoreAcknowledge( UserPayments.getNativeStoreData(this.payment , topUpEntity ) ) ; 
+         new NativeStoreAcknowledge( UserPayments.getNativeStoreData(this.payment , topUpEntity ) ) ; 
 
-        if( status == appConfig.topUpEntityStatusMap.success ){
+        if( !!isStartPolling ){
             //Start long poll for user 
             PollCurrentUserPendingPayments.initBalancePoll(this.payment.user_id);
-        } else if( status == appConfig.topUpEntityStatusMap.pending ){
+        } else if( errMsg ){
             //Notify user that he needs to get in touch with Apple of Google store
-            Alert.alert("", ostErrors.getUIErrorMessage("invalid_payment_from_store") );
-        }       
-
+            Alert.alert("", errMsg );
+        }   
     }
 
     onBEAcknowdledgeError(error ){
@@ -194,8 +194,7 @@ class NativeStoreAcknowledge{
     constructor(storeEntity , isBackgroundSync) {
         this.storeEntity =  storeEntity || {}; 
         this.topUpId = deepGet(this.storeEntity , `topUpEntity.${topUpIdKey}`);       
-        this.userId = deepGet(this.storeEntity , `paymentEntity.${user_id}`); 
-        if(!this.topUpId || this.userId != CurrentUser.getUserId() )  return null;
+        this.userId = deepGet(this.storeEntity , `paymentEntity.user_id`); 
         this.isBackgroundSync = isBackgroundSync ;
         this.pollInterval = 10000;
         this.count = 0 ;
@@ -205,6 +204,7 @@ class NativeStoreAcknowledge{
     }
 
     storeSync(){
+        if(!this.topUpId || this.userId != CurrentUser.getUserId() )  return;
         this.pepoApi
         .get()
         .then((res)=> {
@@ -243,7 +243,6 @@ class NativeStoreAcknowledge{
     }
 
     nativeStoreSync(){
-        if(this.userId != CurrentUser.getUserId()) return;
         if(Platform.OS == "ios") {
             RNIap.clearTransactionIOS(); //Not sure whether to do this or not.
             this.nativeStoreSyncSuccess();
