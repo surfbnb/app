@@ -28,8 +28,10 @@ const knownEntitiesDispatcherMap = {
   user_videos: 'upsertUserVideoEntities',
   user_notifications: 'upsertUserNotifications',
   feeds: 'upsertHomeFeedEntities',
+  notification_unread: 'notification_unread',
   feed: 'upsertHomeFeedEntities',
-  notification_unread: 'notification_unread'
+  upsert_push_notification: 'upsertPushNotification'
+
 };
 
 const dispatchEntities = (data) => {

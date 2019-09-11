@@ -31,6 +31,7 @@ const UIWhitelistedErrorCode = {
 
 class OstErrors {
   getErrorMessage(ostError, generalErrorKey) {
+    console.log(ostError, generalErrorKey, 'Helllooooo');
     if (this.isWhiteListedErrorCode(ostError)) return null;
 
     generalErrorKey = generalErrorKey || 'GENERAL_ERROR';

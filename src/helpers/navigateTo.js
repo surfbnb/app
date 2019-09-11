@@ -12,6 +12,10 @@ export default class NavigateTo {
       this.goToSupporters(goToObject.v.puid);
     } else if (goToObject && goToObject.pn == 'v') {
       this.goToVideo(goToObject.v.vid);
+    } else if (goToObject && goToObject.pn == 'f') {
+      this.navigation.navigate('Home');
+    } else if (goToObject && goToObject.pn == 'nc') {
+      this.navigation.navigate('Notification');
     }
   }
 
@@ -22,6 +26,7 @@ export default class NavigateTo {
   };
 
   goToSupporters = (profileId) => {
+    console.log('goToSupporters', profileId);
     this.navigation.push('SupportersListScreen', { userId: profileId });
   };
 

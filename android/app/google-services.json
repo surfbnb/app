@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "547573806792",
+    "firebase_url": "https://pepo2-18368.firebaseio.com",
+    "project_id": "pepo2-18368",
+    "storage_bucket": "pepo2-18368.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547573806792:android:9476c898fefca246",
+        "android_client_info": {
+          "package_name": "com.pepo.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547573806792-bt60c07qjala7tuhcsv424n5u1tk2b2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7Y_bDzNs78U0S6OauPjyAkJCAUo7eBCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547573806792-bt60c07qjala7tuhcsv424n5u1tk2b2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
