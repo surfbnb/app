@@ -82,13 +82,12 @@ class BalanceHeader extends PureComponent {
     if( this.state.isPurchasing ){
       return  <TouchableWithoutFeedback onPress={this.onPurchaseInProgress}>
                 <View style={{position: "relative"}}>
-                    <ProgressCircle size={40} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
-                    <Image style={{ width: 18, height: 18, position: 'absolute', transform: [{translateX: 12}, {translateY: 12}] }} source={selfAmountWallet}></Image>
+                  <ProgressCircle size={40} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
+                  <Image style={{ width: 18, height: 18, position: 'absolute', top: '50%', left: '50%', transform: [{translateX: -9}, {translateY: -9}] }} source={selfAmountWallet}></Image>
                 </View> 
               </TouchableWithoutFeedback> ;
     }else{
       return <Image style={{ width: 18, height: 18}} source={selfAmountWallet}></Image> ;
-          
     }
   }
 
@@ -115,7 +114,7 @@ class BalanceHeader extends PureComponent {
           </View>
         </View>
         <View style={{alignItems: 'flex-end'}}>
-          <View style={{flexDirection: "row"}}>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
             {this.getWalletIcon()}
             <Text style={inlineStyles.pepoBalance}>{' '}{this.toBt(this.props.balance) || 0.00}</Text>
           </View>
