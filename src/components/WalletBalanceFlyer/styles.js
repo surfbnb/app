@@ -53,8 +53,8 @@ let stylesMap = {
     borderRadius: 18,
     backgroundColor: Colors.white,
     shadowColor: Colors.black,
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
     shadowOffset: {width: 0, height: 0},
     elevation: 2
   }
