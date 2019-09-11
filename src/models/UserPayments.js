@@ -3,8 +3,6 @@ import deepGet from "lodash/get";
 
 import Utilities from "../services/Utilities";
 
-const topIdKey = "top_up_id" ;
-
 class UserPayments  {
 
 
@@ -23,7 +21,7 @@ class UserPayments  {
     addPendingPaymentForBEAcknowledge( payment ) {
         if(!payment) return ;
         let  userPendingPaymentsAsKey = this._getPendingPaymentsForBEAcknowledgeASKey(  payment && payment.user_id  )  ;
-        Utilities.getItem( userPendingPaymentsAsKey ).then((payments)=>{
+        return  Utilities.getItem( userPendingPaymentsAsKey ).then((payments)=>{
             payments =  Utilities.getParsedData(payments) ;
             let transactionId = this.getTransactionId( payment );
             payments[transactionId] = payment ; 
@@ -34,7 +32,7 @@ class UserPayments  {
     removePendingPaymentForBEAcknowledge( payment ){
         if(!payment) return ;
         let  userPendingPaymentsAsKey = this._getPendingPaymentsForBEAcknowledgeASKey(  payment && payment.user_id  )  ;
-        Utilities.getItem( userPendingPaymentsAsKey ).then((payments)=>{
+        return Utilities.getItem( userPendingPaymentsAsKey ).then((payments)=>{
             payments =  Utilities.getParsedData(payments) ;
             let transactionId = this.getTransactionId( payment );
             delete payments[transactionId]; 
@@ -47,7 +45,7 @@ class UserPayments  {
     }
 
     _getPendingPaymentsForBEAcknowledgeASKey(userId) {
-        return 'user-' + userId + "be-pending-payments";
+        return 'user-' + userId + "-be-pending-payments";
     }
 
     getNativeStoreData(paymentEntity ,  topUpEntity ){
@@ -63,8 +61,8 @@ class UserPayments  {
 
     addPendingPaymentForStoreAcknowledge(paymentEntity , topUpEntity) {
         if(!paymentEntity || !topUpEntity) return ;
-        let storeEntityIdAsKey = this.getPendingPaymentsForStoreAcknowledge( paymentEntity && paymentEntity.user_id  )  ;
-        Utilities.getItem( storeEntityIdAsKey ).then((storeEntities)=>{
+        let storeEntityIdAsKey = this._getStorePendingTopsUpsKey( paymentEntity && paymentEntity.user_id  )  ;
+        return Utilities.getItem( storeEntityIdAsKey ).then((storeEntities)=>{
             storeEntities =  Utilities.getParsedData(storeEntities) ;
             let transactionId = this.getTransactionId( paymentEntity );
             storeEntities[transactionId] = this.getNativeStoreData( paymentEntity , topUpEntity ) ;
@@ -73,10 +71,10 @@ class UserPayments  {
     }
 
     removePendingPaymentForStoreAcknowledge( storeEntity ){
-        if(storeEntity) return ;
+        if(!storeEntity) return ;
         let userId = deepGet(storeEntity,  "paymentEntity.user_id")
-        storeEntityIdAsKey = this.getPendingPaymentsForStoreAcknowledge(userId)  ;
-        Utilities.getItem( storeEntityIdAsKey ).then((storeEntities)=>{
+        storeEntityIdAsKey = this._getStorePendingTopsUpsKey(userId)  ;
+        return Utilities.getItem( storeEntityIdAsKey ).then((storeEntities)=>{
             storeEntities =  Utilities.getParsedData(storeEntities) ;
             let transactionId = this.getTransactionId( storeEntities.paymentEntity );
             delete storeEntities[transactionId]; 
@@ -85,7 +83,7 @@ class UserPayments  {
     }
 
     _getStorePendingTopsUpsKey(userId){
-        return 'user-' + userId + "store-pending-payments";
+        return 'user-' + userId + "-store-pending-payments";
     }
 
 }

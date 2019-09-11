@@ -154,9 +154,14 @@ class BackendPaymentAcknowledge {
             ; 
 
          //Add for pending apple or google acknowledge 
-         UserPayments.addPendingPaymentForStoreAcknowledge(this.payment , topUpEntity ); 
+         UserPayments.addPendingPaymentForStoreAcknowledge(this.payment , topUpEntity )
+            .then(()=> {
+                UserPayments.removePendingPaymentForBEAcknowledge( this.payment );
+            }).catch(()=>{
+                console.log("addPendingPaymentForStoreAcknowledge failed");
+            }); 
          //Remove the entry from async 
-         UserPayments.removePendingPaymentForBEAcknowledge( this.payment );
+        
          //Emit evnt 
          paymentEvents.emit(paymentEventsMap.paymentBESyncSuccess, {isBackgroundSync: this.isBackgroundSync , topUpEntity :topUpEntity });
           //Start native store acknowledge 

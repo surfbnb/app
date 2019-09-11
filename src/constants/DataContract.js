@@ -3,7 +3,7 @@ export default {
     payments: {
         postPaymentAcknowledgeApi : "/payments/confirm-pay-receipt", 
         getAllProductsApi : '/users/available-products' , 
-        getTopUpStatusApi : "/user/topup/",
+        getTopUpStatusApi : "/users/topup/",
         purchaseThresholdReachedKey : "limits_data",
         topUpEntityId : "id",
         startPollingKey : "start_polling",
