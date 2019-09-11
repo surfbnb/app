@@ -7,7 +7,8 @@ export default {
         purchaseThresholdReachedKey : "limits_data",
         topUpEntityId : "id",
         startPollingKey : "start_polling",
-        paymentAcknowledgeErrMsgKey :"err_message"
+        paymentAcknowledgeErrMsgKey :"err_message",
+        isConsumableKey: "is_consumable"
     },
 
     common: {

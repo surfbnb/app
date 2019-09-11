@@ -162,7 +162,7 @@ class BackendPaymentAcknowledge {
           //Start native store acknowledge 
          new NativeStoreAcknowledge( UserPayments.getNativeStoreData(this.payment , topUpEntity ) ) ; 
 
-        if( !!isStartPolling ){
+        if( isStartPolling == 1 ){
             //Start long poll for user 
             PollCurrentUserPendingPayments.initBalancePoll(this.payment.user_id);
         } else if( errMsg ){
@@ -233,7 +233,7 @@ class NativeStoreAcknowledge{
         console.log("storeSyncSuccess" , res  , this.storeEntity );
         let resultType = deepGet(res ,  "data.result_type")
         topUpEntity = deepGet(res,  `data.${resultType}`) || {} , 
-        isConsumable = topUpEntity.is_consumable 
+        isConsumable = topUpEntity[dataContract.payments.isConsumableKey] 
         ; 
         if( isConsumable == 1 ){
             //Reset the error count
