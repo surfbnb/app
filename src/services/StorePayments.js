@@ -1,16 +1,16 @@
 import {Alert , Platform} from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 import RNIap from 'react-native-iap';
 import deepGet from "lodash/get";
 
 import Toast from '../theme/components/NotificationToast';
 import  { paymentEvents,  paymentEventsMap } from "../helpers/PaymentEvents";
 import PepoApi from "../services/PepoApi";
-import UserPayments from "../models/UserPayments";
+import userPayments from "../models/UserPayments";
 import CurrentUser from "../models/CurrentUser";
 import PollCurrentUserPendingPayments from "../helpers/PollCurrentUserPendingPayments";
 import Utilities from "./Utilities";
 import {ostErrors} from "../services/OstErrors";
-import appConfig from "../constants/AppConfig";
 import dataContract from "../constants/DataContract"; 
 
 const maxRetryCount = 10 ;
@@ -18,21 +18,16 @@ const paymentAcknowledgeApi = dataContract.payments.postPaymentAcknowledgeApi ;
 const topUpStatusApi = dataContract.payments.getTopUpStatusApi; 
 const topUpIdKey = dataContract.payments.topUpEntityId
 
-//TODO remove all console logs 
-
 class StorePayments {
 
     getProductsFromStore(itemSkus ,  successCallback ,  errorCallback ){
         try {
             RNIap.getProducts(itemSkus).then(( products ) => {
-                console.log("getProductsFromStore" , itemSkus , products );
                 successCallback && successCallback( products );
             }).catch(( error )=> {
-                console.log("getProductsFromStore error" , itemSkus , error );
                 errorCallback && errorCallback( error );
             });
           } catch(error) {
-            console.log("getProductsFromStore error catch" , itemSkus , error );
             errorCallback && errorCallback( error );  
         }
     }
@@ -43,11 +38,9 @@ class StorePayments {
             RNIap.initConnection().then((res)=> {
                 RNIap.requestPurchase(skuId);
             }).catch((error)=> {
-                console.log("initConnection error" , skuId , error );
                 this.onInitRequestPurchaseError(error); 
             });
         }catch(error){
-            console.log("initConnection error catch" , skuId , error );
           this.onInitRequestPurchaseError(error); 
         }
     }
@@ -58,7 +51,6 @@ class StorePayments {
     }
 
     onRequestPurchaseError(error , userId ){
-        console.log("onRequestPurchaseError" , error , userId );
         paymentEvents.emit(paymentEventsMap.paymentIAPError); 
         if(error && error.responseCode !== 2){
             Toast.show({
@@ -69,10 +61,9 @@ class StorePayments {
     }
 
     onRequestPurchaseSuccess( res , userId ){
-        console.log("onRequestPurchaseSuccess" , res , userId );
-        const params = UserPayments.getBEAcknowledgeData( userId , res ); 
+        const  params = userPayments.getBEAcknowledgeData( userId , res ) ; 
         // Add to Async immediately 
-        UserPayments.addPendingPaymentForBEAcknowledge(params);
+        userPayments.addPendingPaymentForBEAcknowledge(params);
          //Sync with Backend
         new BackendPaymentAcknowledge( params ); 
         //Convey others payment is processed irrespective of status 
@@ -80,33 +71,49 @@ class StorePayments {
     }
 
     snycPendingPayments( userId ){
-
-        let shouldCheckForPendingTopUps = true;
-
-        //Sync BE pending payments 
-        UserPayments.getPendingPaymentsForBEAcknowledge( userId ).then((payments) => {
-            console.log("getPendingPaymentsForBEAcknowledge" , payments , userId );
-            payments = Utilities.getParsedData( payments );
-            for (var key in payments) {
-                shouldCheckForPendingTopUps =  false;
-                new BackendPaymentAcknowledge( payments[key] , true ); 
-            } 
+        const beAcknowledgeData = [], nativeAcknowledgeData = []   ;
+    
+         AsyncStorage.getAllKeys()
+        .then((keys) => {
+            if(!keys) return;
+            for(let cnt = 0 ;  cnt < keys.length ; cnt++ ){
+                let currentKey = keys[cnt]; 
+                if(currentKey.indexOf( userPayments.getPendingPaymentsForBEAcknowledgeASKeyPrefix( userId )) > -1 ){
+                    beAcknowledgeData.push( currentKey );
+                }else if(currentKey.indexOf( userPayments.getStorePendingTopsUpsKeyPrefix( userId ))> -1) {
+                    nativeAcknowledgeData.push( currentKey );
+                }
+           }
+           //Sync BE pending payments 
+           this.__syncBETransactions( beAcknowledgeData );
+           //Sync native store pending payments
+           this.__syncNativeStoreTransactions( nativeAcknowledgeData );
+        }).catch((error)=> {
+            console.log("snycPendingPayments getAllKeys" , error);
         });
 
-        //Sync native store pending payments 
-        UserPayments.getPendingPaymentsForStoreAcknowledge( userId ).then((topEntities) => {
-            console.log("getPendingPaymentsForStoreAcknowledge" , topEntities , userId );
-            topEntities = Utilities.getParsedData( topEntities );
-            for (var key in topEntities) {
-                new NativeStoreAcknowledge( topEntities[key] , true ); 
-            } 
-        });
-         
-         //if( shouldCheckForPendingTopUps ){ 
-            PollCurrentUserPendingPayments.initBalancePoll(userId ,  true);
-        // }
-        
+        PollCurrentUserPendingPayments.initBalancePoll(userId ,  true);
     }
+
+    __syncBETransactions( list ){
+        for( let cnt = 0 ;  cnt< list.length ; cnt++ ){
+            userPayments.getPendingPaymentsForBEAcknowledge( list[cnt] ).then((payment) => {
+                    payment =  Utilities.getParsedData( payment );
+                    new BackendPaymentAcknowledge( payment, true ); 
+            });    
+        }
+    }
+
+    __syncNativeStoreTransactions( list ){
+        for( let cnt = 0 ;  cnt< list.length ; cnt++ ){
+            userPayments.getPendingPaymentsForStoreAcknowledge( list[cnt] ).then((storeEntity) => {
+                    storeEntity =  Utilities.getParsedData( storeEntity );
+                    new NativeStoreAcknowledge( storeEntity, true ); 
+            });    
+        }
+    }
+
+
 
 }
 
@@ -146,7 +153,6 @@ class BackendPaymentAcknowledge {
     }
 
     onBEAcknowdledgeSuccess(res){
-        console.log("onBEAcknowdledgeSuccess" , res  , this.payment );
         let resultType = deepGet(res ,  "data.result_type")
             topUpEntity = deepGet(res,  `data.${resultType}`) || {} , 
             isStartPolling = topUpEntity[dataContract.payments.startPollingKey], 
@@ -154,22 +160,22 @@ class BackendPaymentAcknowledge {
             ; 
 
          //Add for pending apple or google acknowledge 
-         UserPayments.addPendingPaymentForStoreAcknowledge(this.payment , topUpEntity )
+         userPayments.addPendingPaymentForStoreAcknowledge(this.payment , topUpEntity )
             .then(()=> {
-                UserPayments.removePendingPaymentForBEAcknowledge( this.payment );
+                 //Remove the entry from async   
+                userPayments.removePendingPaymentForBEAcknowledge( this.payment );
             }).catch(()=>{
                 console.log("addPendingPaymentForStoreAcknowledge failed");
             }); 
-         //Remove the entry from async 
         
          //Emit evnt 
          paymentEvents.emit(paymentEventsMap.paymentBESyncSuccess, {isBackgroundSync: this.isBackgroundSync , topUpEntity :topUpEntity });
           //Start native store acknowledge 
-         new NativeStoreAcknowledge( UserPayments.getNativeStoreData(this.payment , topUpEntity ) ) ; 
+         new NativeStoreAcknowledge( userPayments.getNativeStoreData(this.payment , topUpEntity ) ) ; 
 
         if( isStartPolling == 1 ){
             //Start long poll for user 
-            PollCurrentUserPendingPayments.initBalancePoll(this.payment.user_id);
+            PollCurrentUserPendingPayments.initBalancePoll(this.payment.user_id , this.isBackgroundSync);
         } else if( errMsg ){
             //Notify user that he needs to get in touch with Apple of Google store
             Alert.alert("", errMsg );
@@ -177,7 +183,6 @@ class BackendPaymentAcknowledge {
     }
 
     onBEAcknowdledgeError(error ){
-        console.log("onBEAcknowdledgeError" , error  , this.payment );
         this.count++ ;
         if(this.count < maxRetryCount ){
             setTimeout( () => {
@@ -225,7 +230,6 @@ class NativeStoreAcknowledge{
     }
 
     storeSyncError(error){
-        console.log("storeSyncError" , error  , this.storeEntity );
         this.count++;
         if(this.count < maxRetryCount ){
             this.storeSync();
@@ -235,7 +239,6 @@ class NativeStoreAcknowledge{
     }
 
     storeSyncSuccess(res){
-        console.log("storeSyncSuccess" , res  , this.storeEntity );
         let resultType = deepGet(res ,  "data.result_type")
         topUpEntity = deepGet(res,  `data.${resultType}`) || {} , 
         isConsumable = topUpEntity[dataContract.payments.isConsumableKey] 
@@ -266,21 +269,12 @@ class NativeStoreAcknowledge{
     }
 
     nativeStoreSyncSuccess(res){
-      console.log("nativeStoreSyncSuccess" , res  , this.storeEntity );
-      UserPayments.removePendingPaymentForStoreAcknowledge(this.storeEntity);
+      userPayments.removePendingPaymentForStoreAcknowledge(this.storeEntity);
       paymentEvents.emit(paymentEventsMap.paymentStoreSyncSuccess ,  {isBackgroundSync : this.isBackgroundSync}); 
     }   
 
     nativeStoreSyncError(error ){
-        console.log("nativeStoreSyncError" , error  , this.storeEntity );
         paymentEvents.emit(paymentEventsMap.paymentStoreSyncFailed ,  {isBackgroundSync : this.isBackgroundSync});
-         //Not sure whether its a good idea.
-        // this.count++ ; 
-        // if(this.count < maxRetryCount ){
-        //     // this.nativeStoreSync(); 
-        // }else{
-           
-        // }
     }
 
 }

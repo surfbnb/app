@@ -3,6 +3,8 @@ import deepGet from "lodash/get";
 
 import Utilities from "../services/Utilities";
 
+const userIdKey = "user_id" ;
+
 class UserPayments  {
 
 
@@ -14,76 +16,75 @@ class UserPayments  {
           }; 
     }
 
-    getPendingPaymentsForBEAcknowledge( userId ){
-        return Utilities.getItem(this._getPendingPaymentsForBEAcknowledgeASKey( userId ));
-    }
-
     addPendingPaymentForBEAcknowledge( payment ) {
         if(!payment) return ;
-        let  userPendingPaymentsAsKey = this._getPendingPaymentsForBEAcknowledgeASKey(  payment && payment.user_id  )  ;
-        return  Utilities.getItem( userPendingPaymentsAsKey ).then((payments)=>{
-            payments =  Utilities.getParsedData(payments) ;
-            let transactionId = this.getTransactionId( payment );
-            payments[transactionId] = payment ; 
-            Utilities.saveItem(userPendingPaymentsAsKey, payments);
-        }); 
+        let userId = payment[userIdKey],
+            transactionId = this.getTransactionId( payment ),
+            userPendingPaymentsAsKey = this._getPendingPaymentsForBEAcknowledgeASKey(userId , transactionId  )  ;
+        return Utilities.saveItem(userPendingPaymentsAsKey, payment); 
     }
 
     removePendingPaymentForBEAcknowledge( payment ){
         if(!payment) return ;
-        let  userPendingPaymentsAsKey = this._getPendingPaymentsForBEAcknowledgeASKey(  payment && payment.user_id  )  ;
-        return Utilities.getItem( userPendingPaymentsAsKey ).then((payments)=>{
-            payments =  Utilities.getParsedData(payments) ;
-            let transactionId = this.getTransactionId( payment );
-            delete payments[transactionId]; 
-            Utilities.saveItem(userPendingPaymentsAsKey, payments);
-        }); 
+        let userId = payment[userIdKey],
+            transactionId = this.getTransactionId( payment ),  
+            userPendingPaymentsAsKey = this._getPendingPaymentsForBEAcknowledgeASKey(userId, transactionId )  ;
+        return Utilities.removeItem( userPendingPaymentsAsKey );
     }
+
+    addPendingPaymentForStoreAcknowledge(paymentEntity , topUpEntity) {
+        if(!paymentEntity || !topUpEntity) return ;
+        let userId = paymentEntity[userIdKey],
+            transactionId = this.getTransactionId( paymentEntity );
+            storeEntityIdAsKey = this._getStorePendingTopsUpsKey(userId ,transactionId)  ;
+        return Utilities.saveItem(storeEntityIdAsKey,  this.getNativeStoreData( paymentEntity , topUpEntity ) );
+    }
+
+    removePendingPaymentForStoreAcknowledge( storeEntity ){
+        if(!storeEntity) return ;
+        let userId = deepGet(storeEntity,  "paymentEntity.user_id"), 
+            transactionId = this.getTransactionId(storeEntity.paymentEntity); 
+        storeEntityIdAsKey = this._getStorePendingTopsUpsKey(userId , transactionId)  ;
+        return Utilities.removeItem( storeEntityIdAsKey );
+    }
+
+    getNativeStoreData(paymentEntity ,  topUpEntity ){
+        return {
+             paymentEntity : paymentEntity,
+             topUpEntity: topUpEntity
+         }
+     }
 
     getTransactionId( payment ){
         return deepGet(payment ,  "response.transactionId") ;
     }
 
-    _getPendingPaymentsForBEAcknowledgeASKey(userId) {
+    getPendingPaymentsForBEAcknowledgeASKeyPrefix( userId ){
         return 'user-' + userId + "-be-pending-payments";
     }
 
-    getNativeStoreData(paymentEntity ,  topUpEntity ){
-       return {
-            paymentEntity : paymentEntity,
-            topUpEntity: topUpEntity
-        }
+    _getPendingPaymentsForBEAcknowledgeASKey(userId ,  transactionId ) {
+        return `${this.getPendingPaymentsForBEAcknowledgeASKeyPrefix(userId)}-${transactionId}`  ;
     }
 
-    getPendingPaymentsForStoreAcknowledge( userId ){
-        return Utilities.getItem(this._getStorePendingTopsUpsKey( userId ));
+    getPendingPaymentsForBEAcknowledge( key ){
+        return Utilities.getItem( key );
+    }
+  
+    getPendingPaymentsForStoreAcknowledge( key ){
+        return Utilities.getItem(key);
     }
 
-    addPendingPaymentForStoreAcknowledge(paymentEntity , topUpEntity) {
-        if(!paymentEntity || !topUpEntity) return ;
-        let storeEntityIdAsKey = this._getStorePendingTopsUpsKey( paymentEntity && paymentEntity.user_id  )  ;
-        return Utilities.getItem( storeEntityIdAsKey ).then((storeEntities)=>{
-            storeEntities =  Utilities.getParsedData(storeEntities) ;
-            let transactionId = this.getTransactionId( paymentEntity );
-            storeEntities[transactionId] = this.getNativeStoreData( paymentEntity , topUpEntity ) ;
-            Utilities.saveItem(storeEntityIdAsKey, storeEntities);
-        }); 
-    }
-
-    removePendingPaymentForStoreAcknowledge( storeEntity ){
-        if(!storeEntity) return ;
-        let userId = deepGet(storeEntity,  "paymentEntity.user_id")
-        storeEntityIdAsKey = this._getStorePendingTopsUpsKey(userId)  ;
-        return Utilities.getItem( storeEntityIdAsKey ).then((storeEntities)=>{
-            storeEntities =  Utilities.getParsedData(storeEntities) ;
-            let transactionId = this.getTransactionId( storeEntities.paymentEntity );
-            delete storeEntities[transactionId]; 
-            Utilities.saveItem(storeEntityIdAsKey, storeEntities);
-        }); 
-    }
-
-    _getStorePendingTopsUpsKey(userId){
+    getStorePendingTopsUpsKeyPrefix(userId){
         return 'user-' + userId + "-store-pending-payments";
+    }
+
+    _getStorePendingTopsUpsKey(userId , transactionId){
+        return `${this.getStorePendingTopsUpsKeyPrefix( userId )}-${transactionId}`  ;
+    }
+
+    getUserIdKey (){
+        return userIdKey;
     }
 
 }

@@ -10,8 +10,6 @@ import ostErrors from "../services/OstErrors";
 let errorMaxCount = 10 ,  errorCount = 0 ,  pollingTimeOut = 0 ,  pollingInterval = 10000  , 
       maxPollDuration = 300000; pollDuration = 0 ;   
       
-//TODO remove all console.logs      
-
 class PollCurrentUserPendingPayments {
 
     constructor(){
@@ -35,7 +33,6 @@ class PollCurrentUserPendingPayments {
         pInterval =  pInterval || pollingInterval ;
         clearTimeout( pollingTimeOut ); 
         if( maxPollDuration < pollDuration) {
-            console.log("schedulePoll maxPollDuration" , maxPollDuration  ,pollDuration );
            this.showAlert( appConfig.paymentFlowMessages.transactionPending); 
            this.stopPolling( paymentEventsMap.pollPendingPaymentsSuccess ,  {isBackgroundSync: this.isBackgroundSync,  status: "pending"} ) ; 
            return;
@@ -67,7 +64,6 @@ class PollCurrentUserPendingPayments {
     }
 
     onPendingPaymentSuccess( res ){
-        console.log("onPendingPaymentSuccess" , res  ,CurrentUser.getUserId() );
         const pendingTransactions = deepGet( res , `data.${res.result_type}`) || [] ;
         //If all pending Payments are resolved fetch balance 
         if(  pendingTransactions.length == 0 ){
@@ -82,7 +78,6 @@ class PollCurrentUserPendingPayments {
     }
 
     onPendingPaymentError(error){
-        console.log("onPendingPaymentError" , error  ,CurrentUser.getUserId() );
         errorCount++ 
         if( errorCount < errorMaxCount ){
             this.schedulePoll();
