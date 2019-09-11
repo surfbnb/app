@@ -201,7 +201,6 @@ class StoreProductsScreen extends PureComponent{
     }
 
     getProductsMarkUp = () => {
-      this.products = [{title: "asds" ,price: 10 }, {title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 },{title: "asds" ,price: 10 }]
         return (
             <View style={inlineStyles.poductListWrapper}>
                 <View style={inlineStyles.headerWrapper}>
