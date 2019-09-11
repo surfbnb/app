@@ -50,11 +50,13 @@ let stylesMap = {
   },
   shadowLoader:{
     position: "relative",
+    borderRadius: 18,
+    backgroundColor: Colors.white,
     shadowColor: Colors.black,
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowOffset: {width: 0, height: 0},
-    elevation: 8
+    elevation: 2
   }
 };
 
