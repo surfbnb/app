@@ -1,7 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image } from 'react-native';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import { OstWalletSdk, OstWalletSdkUI, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import DeviceInfo from 'react-native-device-info';
+
 import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
 import PepoApi from '../../services/PepoApi';
@@ -12,8 +14,7 @@ import Toast from '../../theme/components/NotificationToast';
 
 import BackArrow from '../../assets/back-arrow.png';
 
-export default class CustomDrawerContent extends Component{
-
+export default class CustomDrawerContent extends Component {
   constructor() {
     super();
     this.userName = reduxGetter.getName(CurrentUser.getUserId());
@@ -25,43 +26,52 @@ export default class CustomDrawerContent extends Component{
   }
 
   twitterDisconnect() {
-    this.setState({
-      disableButtons: true
-    }, () => {
-      new PepoApi('/auth/twitter-disconnect')
-      .post()
-      .catch((error) => {
-        Toast.show({
-          text: 'Twitter Disconnect failed',
-          icon: 'error'
-        });
-        this.setState({disableButtons: false})
-      })
-      .then(async (res) => {
-        if (res && res.success) {
-          this.CurrentUserLogout();
-        } else {
-          Toast.show({
-            text: 'Twitter Disconnect failed',
-            icon: 'error'
+    this.setState(
+      {
+        disableButtons: true
+      },
+      () => {
+        new PepoApi('/auth/twitter-disconnect')
+          .post()
+          .catch((error) => {
+            Toast.show({
+              text: 'Twitter Disconnect failed',
+              icon: 'error'
+            });
+            this.setState({ disableButtons: false });
+          })
+          .then(async (res) => {
+            if (res && res.success) {
+              this.CurrentUserLogout();
+            } else {
+              Toast.show({
+                text: 'Twitter Disconnect failed',
+                icon: 'error'
+              });
+              this.setState({ disableButtons: false });
+            }
           });
-          this.setState({disableButtons: false})
-        }
-      })
-    });
+      }
+    );
   }
 
-  CurrentUserLogout(){
-    this.setState({
-      disableButtons: true
-    } , async () => {
-      await CurrentUser.logout();
-      setTimeout(()=> {
-        this.setState({
-          disableButtons: false
-        });
-      }, 300)
-    });
+  CurrentUserLogout() {
+    let params = {
+      device_id: DeviceInfo.getUniqueID()
+    };
+    this.setState(
+      {
+        disableButtons: true
+      },
+      async () => {
+        await CurrentUser.logout(params);
+        setTimeout(() => {
+          this.setState({
+            disableButtons: false
+          });
+        }, 300);
+      }
+    );
   }
 
   render(){
@@ -93,8 +103,7 @@ export default class CustomDrawerContent extends Component{
         </ScrollView>
     );
   }
-
-};
+}
 
 const styles = StyleSheet.create({
   container: {
