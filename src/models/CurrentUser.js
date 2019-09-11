@@ -146,7 +146,7 @@ class CurrentUser {
 
     async logout(params) {
         await new PepoApi('/auth/logout')
-            .post()
+            .post(params)
             .then((res) => {
                 RCTNetworking.clearCookies(async () => {
                     await this.clearCurrentUser();
