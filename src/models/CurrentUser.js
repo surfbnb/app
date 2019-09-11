@@ -185,7 +185,7 @@ class CurrentUser {
   }
 
   newPassphraseDelegate() {
-    let delegate = new OstWorkflowDelegate();
+    let delegate = new OstWorkflowDelegate(this.getOstUserId(), this);
     this.bindSetPassphrase( delegate );
     return delegate;
   }
@@ -256,6 +256,7 @@ class CurrentUser {
 const _getPassphrase = (currentUserModel, workflowDelegate, passphrasePrefixAccept) => {
 
   if ( !_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept) ) {
+    passphrasePrefixAccept.cancelFlow();
     return Promise.resolve();
   }
 

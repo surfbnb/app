@@ -130,6 +130,8 @@ class WalletSettingController {
     let deviceStatus = this._getDeviceStatus();
     let userStatus = this._getUserStatus();
 
+    this._resetOptions()
+
     if (userStatus == this.userStatusMap.activated) {
       this._updateOptionsData(optionIds.resetPin, false, true);
 
@@ -162,6 +164,15 @@ class WalletSettingController {
     this.refreshCallback(data)
   }
 
+  _resetOptions() {
+    let cnt = 0, len = this.optionsOrdering.length;
+    for ( cnt=0; cnt< len; cnt++ ) {
+      let optionKey = this.optionsOrdering[cnt];
+      let option = this.optionsMap[optionKey];
+      option.inProgress = false;
+      option.canPerform = false;
+    }
+  }
 
   _getData(onlyPerformable) {
     let filteredData = [];

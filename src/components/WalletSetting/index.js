@@ -160,31 +160,40 @@ class WalletSettingList extends PureComponent {
   flowComplete = (ostWorkflowContext , ostContextEntity) => {
     LoadingModal.hide();
 
-    this.refreshList();
+    setTimeout(() => {
+      this.refreshList();
+    }, 0);
 
-    let successText = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].successText;
+    setTimeout(() => {
+      let successText = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].successText;
 
-    if (successText) {
-      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, successText)
-    }
+      if (successText) {
+        Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, successText)
+      }
+    }, 300);
+    
   };
 
   onUnauthorized = (ostWorkflowContext , ostError) => {
 
     LoadingModal.hide();
-    Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Device is unauthorized. Please logout and login")
+    setTimeout(()=> {
+      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Device is unauthorized. Please logout and login")
+    }, 0);
   };
 
   saltFetchFailed = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-    Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Getting salt from server failed.")
+    setTimeout(()=> {
+      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Getting salt from server failed.")
+    }, 0);
   };
 
   userCancelled = (ostWorkflowContext , ostError) => {
      LoadingModal.hide();
-
-     Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "User cancelled.")
-
+     setTimeout(()=> {
+       Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "User cancelled.")
+     },  0);
   };
 
   deviceTimeOutOfSync = (ostWorkflowContext , ostError) => {
@@ -194,7 +203,9 @@ class WalletSettingList extends PureComponent {
 
   workflowFailed = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-    Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, ostError.getErrorMessage())
+    setTimeout(()=> {
+      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, ostError.getErrorMessage())
+    },0);
   };
 
 
