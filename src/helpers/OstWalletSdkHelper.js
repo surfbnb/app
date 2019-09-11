@@ -21,6 +21,11 @@ class OstWalletSdkHelper {
       // Application must logout the user in this case.
 
       return true;
+    } else if ("DEVICE_NOT_REGISTERED" === ostError.getErrorCode() ) {
+      // User's device is not registered.
+      // IMPORTANT: User's Device can't make api calls.
+      // Application must logout the user in this case.
+      return true;
     }
 
     return false
