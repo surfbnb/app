@@ -51,8 +51,9 @@
     kTSKPinnedDomains: @{
       @"stagingpepo.com" : @{
         kTSKEnforcePinning:@YES,
-        kTSKIncludeSubdomains: @NO,
+        kTSKIncludeSubdomains: @YES,
         kTSKPublicKeyHashes : @[
+          @"93m2RcpFNG6qGhj6NKDplTVTL7jcqAnkd69kelXSxxI=",
           @"5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=",
           @"KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w="
         ],
