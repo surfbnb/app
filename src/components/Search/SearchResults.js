@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { FlatList, View, Text, ActivityIndicator, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
@@ -8,7 +8,7 @@ import SearchListHeader from './SearchListHeader';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import Colors from '../../theme/styles/Colors';
 
-class SearchResults extends Component {
+class SearchResults extends PureComponent {
   constructor(props) {
     super(props);
   }
