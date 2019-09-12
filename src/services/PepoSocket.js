@@ -37,7 +37,8 @@ export default class PepoSocket {
         `${this.protocol}://${this.endPoint}?auth_key_expiry_at=${this.authKeyExpiryAt}&payload=${this.payload}`,
         {
           jsonp: false,
-          transports: ['websocket']
+          transports: ['websocket'],
+          reconnectionAttempts: 10
         }
       );
 
