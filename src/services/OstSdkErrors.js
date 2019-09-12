@@ -6,7 +6,7 @@ const DEFAULT_ERROR_MSG = "Something went wrong";
  * To get Message of OstError based on workflow type.
  */
 class OstSdkErrors {
-  static getErrorMessage(ostWorkflowContext, ostError) {
+   getErrorMessage(ostWorkflowContext, ostError) {
 
     // Parameter validation
     if (!ostWorkflowContext || !ostError) return DEFAULT_ERROR_MSG;
