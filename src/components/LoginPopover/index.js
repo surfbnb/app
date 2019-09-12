@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Modal, Text, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, Modal, Text, Image, TouchableOpacity, TouchableWithoutFeedback, WebView } from 'react-native';
 import TouchableButton from '../../theme/components/TouchableButton';
 
 import inlineStyles from './styles';
@@ -65,34 +65,18 @@ class loginPopover extends React.Component {
                       onPress={() => {
                         Store.dispatch(hideLoginPopover());
                       }}
-                      style={{
-                        position: 'absolute',
-                        top: 15,
-                        right: 15,
-                        width: 38,
-                        height: 38,
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
+                      style={inlineStyles.crossBtnPos}
                     >
                       <Image source={modalCross} style={{ width: 19.5, height: 19 }} />
                     </TouchableOpacity>
                     <Image source={loggedOutLogo} style={{ width: 261, height: 70, marginBottom: 20 }} />
-                    <Text style={inlineStyles.desc}>
-                      Pepo is a place to discover and support your favorite creators.
+                    <Text style={[inlineStyles.desc, {marginBottom: 10}]}>
+                      Pepo is a place to discover & support creators.
                     </Text>
-                    <Text style={inlineStyles.desc}>Please create a account to continue</Text>
+                    <Text style={[inlineStyles.desc, {fontFamily: 'AvenirNext-Regular'}]}>Pepo is currently Invite only, connect with Twitter to know if your account is whitelisted!</Text>
                     <TouchableButton
                       TouchableStyles={[
-                        Theme.Button.btnSoftBlue,
-                        {
-                          marginTop: 30,
-                          flexDirection: 'row',
-                          height: 55,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '80%'
-                        },
+                        Theme.Button.btnSoftBlue, inlineStyles.twtBtn,
                         this.state.disableLoginBtn ? Theme.Button.disabled : null
                       ]}
                       TextStyles={[Theme.Button.btnPinkText, { fontSize: 18 }]}
@@ -102,6 +86,9 @@ class loginPopover extends React.Component {
                       imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
                       disabled={this.state.disableLoginBtn}
                     />
+                    <View style={{paddingTop: 15}}>
+                      <Text style={inlineStyles.tos}>By signing up, you confirm that you agree to our Terms of use and have read and agree to our Privacy Policy</Text>
+                    </View>
                   </View>
                 </TouchableWithoutFeedback>
               </View>
