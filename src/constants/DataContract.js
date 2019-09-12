@@ -4,7 +4,7 @@ export default {
         postPaymentAcknowledgeApi : "/top-up/", 
         getAllProductsApi : '/top-up/products' , 
         getTopUpStatusApi : "/top-up/",
-        getPendingApi: "top-up/pending",
+        getPendingApi: "/top-up/pending",
         purchaseThresholdReachedKey : "limits_data",
         topUpEntityId : "id",
         startPollingKey : "start_polling",

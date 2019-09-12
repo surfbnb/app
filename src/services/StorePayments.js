@@ -256,7 +256,7 @@ class NativeStoreAcknowledge{
             this.nativeStoreSyncSuccess();
         } else if(Platform.OS == "android"){
             try {
-                const purchaseToken = deepGet(this.storeEntity ,  "paymentEntity.purchaseToken"); 
+                const purchaseToken = deepGet(this.storeEntity ,  "paymentEntity.response.purchaseToken"); 
                 RNIap.consumePurchaseAndroid(purchaseToken).then((res)=> {
                     this.nativeStoreSyncSuccess(res);
                 }).catch((error)=> {
