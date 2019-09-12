@@ -68,6 +68,11 @@ class HomeScreen extends Component {
         this.refresh(true, 0);
       }
     });
+
+    setTimeout(()=> {
+      this.props.navigation.push('AddEmailScreen')
+    } , 2000)
+
   };
 
   componentWillUpdate(nextProps) {

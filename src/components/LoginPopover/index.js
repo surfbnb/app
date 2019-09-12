@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Modal, Text, Image, TouchableOpacity, TouchableWithoutFeedback, WebView } from 'react-native';
+import { View, Modal, Text, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import TouchableButton from '../../theme/components/TouchableButton';
 
 import inlineStyles from './styles';

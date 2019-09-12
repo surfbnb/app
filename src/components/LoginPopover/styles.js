@@ -7,7 +7,7 @@ let stylesMap = {
     flex: 1
   },
   container: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: Dimensions.get('window').height / 2,
