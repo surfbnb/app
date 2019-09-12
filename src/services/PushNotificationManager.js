@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import PepoApi from './PepoApi';
 import { upsertPushNotification } from '../actions';
 import Store from '../store';
-import NavigateTo from '../helpers/navigateTo';
 
 function deleteToken() {
   firebase
@@ -23,12 +22,13 @@ class PushNotificationManager extends PureComponent {
     AppState.addEventListener('change', this._handleAppStateChange);
 
     this.onTokenRefreshListener = firebase.messaging().onTokenRefresh((fcmToken) => this.sendToken(fcmToken));
-    firebase.notifications().getInitialNotification().then((notificationData) => notificationData && this.handleGoto(notificationData.notification.data));
-    this.removeNotificationOpenedListener = firebase
+    firebase
       .notifications()
-      .onNotificationOpened((notificationData) => {
-        this.handleGoto(notificationData.notification.data);
-      });
+      .getInitialNotification()
+      .then((notificationData) => notificationData && this.handleGoto(notificationData.notification.data));
+    this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationData) => {
+      this.handleGoto(notificationData.notification.data);
+    });
 
     this.removeNotificationListener = firebase
       .notifications()
@@ -39,16 +39,16 @@ class PushNotificationManager extends PureComponent {
       .hasPermission()
       .then((enabled) => {
         if (!enabled) {
-          return firebase.messaging().requestPermission();
+          firebase
+            .messaging()
+            .requestPermission()
+            .then(() => {
+              firebase.messaging().registerForNotifications();
+            })
+            .catch((error) => console.log('Permission denied'));
         }
       })
-      .then(() => {
-        console.log('Permission given');
-      })
-      .catch((error) => {
-        console.log('Permission denied');
-        // Implement screen?
-      });
+      .catch((error) => console.log('Cannot read permissions'));
   }
 
   componentWillUnmount() {
@@ -65,16 +65,9 @@ class PushNotificationManager extends PureComponent {
   };
 
   handleGoto(notificationData) {
-    // if (Object.keys(this.props.current_user).length === 0) {
-    // Dispatch to redux
     let gotoObject = JSON.parse(notificationData.goto);
     if (Object.keys(gotoObject).length < 0) return;
-    console.log('PushNotificationManager: handleGoto');
     Store.dispatch(upsertPushNotification({ goto: gotoObject }));
-    // } else {
-    //   // goto
-    //   pushNotificationEvent.emit('goToPage', notificationData)
-    // }
   }
 
   getToken() {
@@ -93,21 +86,49 @@ class PushNotificationManager extends PureComponent {
       device_id: DeviceInfo.getUniqueID(),
       user_timezone: DeviceInfo.getTimezone(),
       device_kind: Platform.OS,
-      device_token: token      
+      device_token: token
     };
-    new PepoApi(`/users/${this.props.currentUserId}/device-token`)
-      .post(payload)
-      .then((responseData) => console.log('sendToken :: Payload sent successfully', payload));
+    this.props.currentUserId &&
+      new PepoApi(`/users/${this.props.currentUserId}/device-token`)
+        .post(payload)
+        .then((responseData) => console.log('sendToken :: Payload sent successfully', responseData));
   }
 
   clearNotifications() {
-    firebase
-      .notifications()
-      .removeAllDeliveredNotifications()
-      .then((res) => {
-        firebase.notifications().setBadge(0);
-      })
-      .catch((error) => console.log('Error occured while removing notifications ', error));
+    console.log('clearNotifications');
+
+    if (Platform.OS == 'ios') {
+      firebase
+        .notifications()
+        .getBadge()
+        .then((count) => {
+          if (count > 0) {
+            console.log(`clearNotifications :: as badge count (${count}) > 0`);  
+            this.clearFirebaseNotifications();
+
+            if (this.props.currentUserId) {          
+              new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
+                .post()
+                .then((responseData) => console.log('reset-badge :: responseData', responseData));
+            }
+
+          }
+        });
+    } else {
+      this.clearFirebaseNotifications();
+    }
+  }
+
+  clearFirebaseNotifications() {
+      // Reset badge and clear notifications on device
+      firebase
+        .notifications()
+        .removeAllDeliveredNotifications()
+        .then((res) => {
+          firebase.notifications().setBadge(0);
+        })
+        .catch((error) => console.log('Error occured while removing notifications ', error));
+    
   }
 
   render() {

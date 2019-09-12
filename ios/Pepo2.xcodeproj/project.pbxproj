@@ -69,8 +69,8 @@
 		22FE2B7F2DE4496EB61E6F7E /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61D8EE774B704B6DAC8F8DBA /* FontAwesome5_Solid.ttf */; };
 		270223CFEF014067B45C1388 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 695C1EFE72E34F80A174D50D /* Lato-BlackItalic.ttf */; };
 		34DAB1A620A348A7BDD85ACE /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BD20DFACA44547828EDB44C2 /* Roboto.ttf */; };
-		447300E3C09042CFA23D5C9F /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB47A46149204503A9909BC7 /* libRNFirebase.a */; };
 		39BD41000EAF4364950A47AA /* libRNInAppBrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D930902C2C7147109E9E682B /* libRNInAppBrowser.a */; };
+		447300E3C09042CFA23D5C9F /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB47A46149204503A9909BC7 /* libRNFirebase.a */; };
 		44E7621D0BF54D0D94AE8775 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1E81A640BFF41ACB5A01A53 /* FontAwesome5_Regular.ttf */; };
 		45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2697F42945424A4984DF2EDE /* Lato-LightItalic.ttf */; };
 		4720B1815AA646A98064A0C8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBEB5D26FF5447979A63766E /* EvilIcons.ttf */; };
@@ -100,8 +100,8 @@
 		7796E3AC2317FAEA00D0F2D2 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E3A02317FAE900D0F2D2 /* FIRAnalyticsConnector.framework */; };
 		7796E3AD2317FAEA00D0F2D2 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E3A12317FAE900D0F2D2 /* FirebaseInstanceID.framework */; };
 		7796E3AE2317FAEA00D0F2D2 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7796E3A22317FAEA00D0F2D2 /* FirebaseCoreDiagnostics.framework */; };
-		7796E3B02317FCEF00D0F2D2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7796E3AF2317FCEF00D0F2D2 /* GoogleService-Info.plist */; };
 		779F2EEC22D7CEA60076410B /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 779F2ECE22D7CE180076410B /* libRCTVideo.a */; };
+		77A27B8E232923F4008C55AA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77A27B4E232923F4008C55AA /* GoogleService-Info.plist */; };
 		77C415DF22FD89CB008F0F63 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 009F91BC22B00D69001C00E1 /* libRNCAsyncStorage.a */; };
 		77C415E022FD8ACE008F0F63 /* libRNCNetInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0088107422BA26A8000B154C /* libRNCNetInfo.a */; };
 		77C415E122FD8B00008F0F63 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A1A95F22F2DA2F0071923D /* libRNDeviceInfo.a */; };
@@ -685,8 +685,8 @@
 		7796E3A02317FAE900D0F2D2 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		7796E3A12317FAE900D0F2D2 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
 		7796E3A22317FAEA00D0F2D2 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
-		7796E3AF2317FCEF00D0F2D2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
+		77A27B4E232923F4008C55AA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		77EDA37622D763CB0095674F /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		789B7BE072654BAB9FD268A5 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../src/assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -1320,7 +1320,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				7796E3AF2317FCEF00D0F2D2 /* GoogleService-Info.plist */,
+				77A27B4E232923F4008C55AA /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Pepo2 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* Pepo2Tests */,
@@ -2014,9 +2014,9 @@
 				000C67FF22D764EA0095497C /* TwitterKitResources.bundle in Resources */,
 				108A6E98F43648CDB5F2EF3C /* MaterialIcons.ttf in Resources */,
 				B121E889D6D8469FB607BFC5 /* Octicons.ttf in Resources */,
+				77A27B8E232923F4008C55AA /* GoogleService-Info.plist in Resources */,
 				5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */,
 				34DAB1A620A348A7BDD85ACE /* Roboto.ttf in Resources */,
-				7796E3B02317FCEF00D0F2D2 /* GoogleService-Info.plist in Resources */,
 				000C680022D764EA0095497C /* TwitterShareExtensionUIResources.bundle in Resources */,
 				7E873BEEA71D4772A4CEA8FE /* rubicon-icon-font.ttf in Resources */,
 				77280AE9DDE14F90B1ACDAF8 /* SimpleLineIcons.ttf in Resources */,
@@ -2143,6 +2143,7 @@
 					"$(PROJECT_DIR)/Crashlytics/com.crashlytics.ios-manual",
 					"$(PROJECT_DIR)/Firebase/Messaging",
 					"$(PROJECT_DIR)/Firebase/Analytics",
+					"$(SRCROOT)/Firebase",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2201,6 +2202,7 @@
 					"$(PROJECT_DIR)/Crashlytics/com.crashlytics.ios-manual",
 					"$(PROJECT_DIR)/Firebase/Messaging",
 					"$(PROJECT_DIR)/Firebase/Analytics",
+					"$(SRCROOT)/Firebase",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

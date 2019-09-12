@@ -241,11 +241,14 @@ class TransactionScreen extends Component {
   }
 
   getSdkMetaProperties() {
+    let details = '';
     const metaProperties = clone(appConfig.metaProperties);
     if (this.videoId) {
       metaProperties['name'] = 'video';
-      metaProperties['details'] = `vi_${this.videoId} ipp_${1}`;
+      details = `vi_${this.videoId} `;
     }
+    details += `ipp_${1}`;
+    metaProperties['details'] = details;
     return metaProperties;
   }
 

@@ -13,7 +13,7 @@
 #import <TwitterKit/TWTRKit.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-#import "Firebase.h"
+#import <Firebase.h>
 #import "RNFirebaseMessaging.h"
 #import "RNFirebaseNotifications.h"
 
