@@ -1,9 +1,10 @@
 export default {
 
     payments: {
-        postPaymentAcknowledgeApi : "/payments/confirm-pay-receipt", 
-        getAllProductsApi : '/users/available-products' , 
-        getTopUpStatusApi : "/users/topup/",
+        postPaymentAcknowledgeApi : "/top-up/", 
+        getAllProductsApi : '/top-up/products' , 
+        getTopUpStatusApi : "/top-up/",
+        getPendingApi: "top-up/pending",
         purchaseThresholdReachedKey : "limits_data",
         topUpEntityId : "id",
         startPollingKey : "start_polling",

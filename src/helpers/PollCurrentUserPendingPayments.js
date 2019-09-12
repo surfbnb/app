@@ -6,6 +6,7 @@ import Pricer from "../services/Pricer";
 import  { paymentEvents,  paymentEventsMap } from "../helpers/PaymentEvents";
 import appConfig from "../constants/AppConfig";
 import ostErrors from "../services/OstErrors";
+import dataContract from "../constants/DataContract";
 
 let errorMaxCount = 10 ,  errorCount = 0 ,  pollingTimeOut = 0 ,  pollingInterval = 10000  , 
       maxPollDuration = 300000; pollDuration = 0 ;   
@@ -48,7 +49,7 @@ class PollCurrentUserPendingPayments {
             errorCount = 0;   
             return
         } ; 
-        new PepoApi(`/users/${this.userId}/pending-topups`).get()
+        new PepoApi(dataContract.payments.getPendingApi).get()
         .then((res)=> {
             if(res&& res.success){
                 this.onPendingPaymentSuccess(res); 
