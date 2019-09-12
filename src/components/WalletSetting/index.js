@@ -5,6 +5,9 @@ import {optionIds, walletSettingController} from './WalletSettingController';
 import {LoadingModal} from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
 import BackArrow from '../CommonComponents/BackArrow';
+import {CustomAlert} from "../../theme/components/CustomAlert";
+import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
+import OstSdkErrors from "../../services/OstSdkErrors";
 
 class WalletSettingList extends PureComponent {
   static navigationOptions = (options) => {
@@ -117,20 +120,44 @@ class WalletSettingList extends PureComponent {
     return loaderData;
   }
 
-  componentDidMount() {
-    this.refreshList()
+  _getFlowCompleteText() {
+    let text = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].successText;
+    return text
   }
 
-  refreshList = () => {
+  _getFlowStartedText() {
+    let text = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].startText;
+    return text
+  }
+
+  _getFlowFailedText(workflowContext, ostError) {
+    return
+  }
+
+
+  componentDidMount() {
+    LoadingModal.show("Fetching Setting");
+    this.refreshList(() => {
+      CustomAlert.showSuccess("Title");
+    });
+  }
+
+  refreshList = (onFetch) => {
     let refreshState = this.state.refreshing;
 
-    LoadingModal.show("Fetching Setting");
     walletSettingController.refresh((optionsData) => {
       this.setState({
         list: optionsData,
         refreshing: !refreshState
       });
+
       LoadingModal.hide();
+      if (onFetch) {
+        setTimeout(() => {
+          onFetch()
+        },0)
+      }
+
     }, true);
   };
 
@@ -157,35 +184,22 @@ class WalletSettingList extends PureComponent {
   };
 
   requestAcknowledged = (ostWorkflowContext , ostContextEntity) => {
-    let ackText = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].acknowledgedText;
-
-    if (ackText) {
-      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, ackText)
-    }
+    //TODO: update language on request acknowledged.
   };
 
   flowComplete = (ostWorkflowContext , ostContextEntity) => {
-    LoadingModal.hide();
-
-    setTimeout(() => {
-      this.refreshList();
-    }, 0);
-
-    setTimeout(() => {
-      let successText = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].successText;
-
-      if (successText) {
-        Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, successText)
-      }
-    }, 300);
-    
+    this.refreshList(() => {
+      let text = this._getFlowCompleteText();
+      CustomAlert.showSuccess(text);
+    });
   };
 
   onUnauthorized = (ostWorkflowContext , ostError) => {
-
     LoadingModal.hide();
     setTimeout(()=> {
-      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Device is unauthorized. Please logout and login")
+      let text = this._getFlowFailedText(ostWorkflowContext, ostError);
+      CustomAlert.showFailure(text)
+
     }, 0);
   };
 

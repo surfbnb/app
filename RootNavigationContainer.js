@@ -23,6 +23,7 @@ import ProfileScreen from './src/components/Profile/ProfileScreen';
 import ProfileEdit from './src/components/Profile/ProfileEditScreen';
 import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
+import { CustomAlertModal } from './src/theme/components/CustomAlert';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
 import UsersProfileScreen from './src/components/UsersProfile';
@@ -295,6 +296,7 @@ const RootNavigationContainer = () => (
     <CameraWorker />
     <PictureWorker />
     <LoadingModalCover />
+    <CustomAlertModal/>
     <LoginPopover />
     <AllowAccessModalScreen />
     <NotificationToastComponent />

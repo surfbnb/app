@@ -8,6 +8,8 @@ export const {
   hideModal,
   showModalCover,
   hideModalCover,
+  showAlert,
+  hideAlert,
   showLoginPopover,
   hideLoginPopover,
   showToast,
@@ -50,6 +52,7 @@ export const {
 const defaultState = {
   modal: { message: '', show: false },
   modal_cover: { message: '', footerText: '', show: false },
+  alert_data: {alertType: null, message: '', footerText: '', actionText: '', onTap: null, show: false},
   toast: { message: '', show: false },
   current_user: {},
   activities_entities: {},
@@ -86,6 +89,8 @@ const logoutDefault = {
 
 export const reducer = handleActions(
   {
+    [showAlert]: (state, action) => ({...state, alert_data: action.payload.alert_data}),
+    [hideAlert]: (state, action) => ({...state, alert_data: action.payload.alert_data}),
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [showModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
     [showLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),

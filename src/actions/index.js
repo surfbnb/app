@@ -1,5 +1,32 @@
 import * as types from './constants';
 
+export const showAlert = (alertType = null,message = '', footerText = '', actionText = '', onTap) => ({
+  type: types.SHOW_ALERT,
+  payload: {
+    alert_data: {
+      message,
+      footerText,
+      actionText,
+      show: true,
+      onTap,
+      alertType
+    }
+  }
+});
+
+export const hideAlert = (message = '', footerText = '', actionText = '', onTap = null) => ({
+  type: types.HIDE_ALERT,
+  payload: {
+    alert_data: {
+      message,
+      footerText,
+      actionText,
+      show: false,
+      onTap
+    }
+  }
+});
+
 export const showModalCover = (message = 'Processing...', footerText = '') => ({
   type: types.SHOW_MODAL_COVER,
   payload: {
