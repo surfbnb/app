@@ -7,21 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00005AE02326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AE12326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AE22326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AE32326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AE42326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AE52326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AE62326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AE72326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AE82326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AE92326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AEA2326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AEB2326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AEC2326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AED2326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		00005AEE2326A80700340966 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		000C67FD22D764EA0095497C /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C67F922D764E90095497C /* TwitterKit.framework */; };
 		000C67FE22D764EA0095497C /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C67FA22D764EA0095497C /* TwitterCore.framework */; };
 		000C67FF22D764EA0095497C /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 000C67FB22D764EA0095497C /* TwitterKitResources.bundle */; };
@@ -2204,37 +2189,22 @@
 			files = (
 				00E5D93A232A57FF006EA3DE /* OstMessageBus.m in Sources */,
 				00E5D936232A57FF006EA3DE /* OstDeviceRegisteredWrap.m in Sources */,
-				00005AE22326A80700340966 /* (null) in Sources */,
-				00005AEC2326A80700340966 /* (null) in Sources */,
 				00E5D93F232A57FF006EA3DE /* OstWorkFlowCallbackImpl.m in Sources */,
-				00005AE62326A80700340966 /* (null) in Sources */,
-				00005AEA2326A80700340966 /* (null) in Sources */,
-				00005AE32326A80700340966 /* (null) in Sources */,
-				00005AE82326A80700340966 /* (null) in Sources */,
 				00E5D934232A57FF006EA3DE /* OstJsonApiCallbackImpl.m in Sources */,
 				00E5D935232A57FF006EA3DE /* OstVerifyDataWrap.m in Sources */,
-				00005AEB2326A80700340966 /* (null) in Sources */,
 				00E5D937232A57FF006EA3DE /* OstPassphrasePrefixAcceptWrap.m in Sources */,
 				00E5D93B232A57FF006EA3DE /* OstWalletRnSdk.m in Sources */,
 				00E5D938232A57FF006EA3DE /* OstRNErrorUtils.m in Sources */,
 				00E5D93E232A57FF006EA3DE /* OstUICallbackImpl.m in Sources */,
 				00E5D940232A57FF006EA3DE /* OstWalletRnSdkApi.m in Sources */,
-				00005AE42326A80700340966 /* (null) in Sources */,
 				00E5D932232A57FF006EA3DE /* BaseSdkInteract.m in Sources */,
 				00E5D93C232A57FF006EA3DE /* OstRNSdkUICallbackManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				00005AED2326A80700340966 /* (null) in Sources */,
-				00005AE52326A80700340966 /* (null) in Sources */,
 				00E5D93D232A57FF006EA3DE /* OstWalletRnSdkUI.m in Sources */,
 				00E5D933232A57FF006EA3DE /* OstPinAcceptWrap.m in Sources */,
 				00470EE522DC7A8100FC8345 /* RNFFmpegModule.m in Sources */,
-				00005AE12326A80700340966 /* (null) in Sources */,
-				00005AEE2326A80700340966 /* (null) in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				00E5D939232A57FF006EA3DE /* OstRNSdkCallbackManager.m in Sources */,
-				00005AE02326A80700340966 /* (null) in Sources */,
-				00005AE72326A80700340966 /* (null) in Sources */,
-				00005AE92326A80700340966 /* (null) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
