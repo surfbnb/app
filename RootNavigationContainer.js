@@ -25,6 +25,8 @@ import HomeScreen from './src/components/Home/HomeScreen';
 import { LoadingModalCover } from './src/theme/components/LoadingModalCover';
 import UserActivatingScreen from './src/components/UserActivating';
 import { LoginPopover } from './src/components/LoginPopover';
+import InviteCodeScreen from './src/components/InviteCode';
+import AddEmailScreen from './src/components/AddEmail';
 import UsersProfileScreen from './src/components/UsersProfile';
 import SupportingListScreen from './src/components/SupportingList';
 import SupportersListScreen from './src/components/SupportersList';
@@ -49,7 +51,7 @@ import StoreProductsScreen from "./src/components/StoreProducts";
 import PaymentWorker from "./src/components/PaymentWorker";
 import PushNotificationManager from './src/services/PushNotificationManager';
 
-const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails'];
+const customTabHiddenRoutes = ['CaptureVideo' ,  'InviteCodeScreen' , 'AddEmailScreen', 'FanVideoDetails' ];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -121,7 +123,9 @@ const HomeStack = createStackNavigator(
     HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen,
     CaptureVideo: CaptureVideoStack,
-    StoreProductsScreen: StoreProductsScreen
+    StoreProductsScreen: StoreProductsScreen,
+    InviteCodeScreen: InviteCodeScreen,
+    AddEmailScreen: AddEmailScreen
   },
   {
     ...modalStackConfig,
