@@ -9,6 +9,7 @@ import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
 import Toast from "../theme/components/NotificationToast";
 import { PushNotificationMethods } from '../services/PushNotificationManager';
+import OstWorkflowDelegate from "../helpers/OstWorkflowDelegate";
 
 // Used require to support all platforms
 const RCTNetworking = require('RCTNetworking');
@@ -193,39 +194,15 @@ class CurrentUser {
   }
 
   newPassphraseDelegate() {
-    let delegate = new OstWalletUIWorkflowCallback();
-    this.bindSetPassphrase(delegate);
+    let delegate = new OstWorkflowDelegate(this.getOstUserId(), this);
+    this.bindSetPassphrase( delegate );
     return delegate;
   }
 
-  bindSetPassphrase(uiWorkflowCallback) {
+  bindSetPassphrase( uiWorkflowCallback ) {
     Object.assign(uiWorkflowCallback, {
       getPassphrase: (userId, ostWorkflowContext, passphrasePrefixAccept) => {
-        if (!userId || this.getOstUserId() != userId) {
-          //TODO: Figure out what to do here.
-          passphrasePrefixAccept.cancelFlow();
-          return;
-        }
-
-        this.getUserSalt()
-          .then((res) => {
-            if (res.success && res.data) {
-              let resultType = deepGet(res, 'data.result_type'),
-                userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
-
-              if (!userSalt) {
-                //TODO: Figure out what to do here.
-                passphrasePrefixAccept.cancelFlow();
-              }
-
-              // provide the passphrase to sdk.
-              passphrasePrefixAccept.setPassphrase(userSalt);
-            }
-          })
-          .catch(() => {
-            //TODO: Figure out what to do here.
-            passphrasePrefixAccept.cancelFlow();
-          });
+        return _getPassphrase(this, uiWorkflowCallback, passphrasePrefixAccept);
       }
     });
   }

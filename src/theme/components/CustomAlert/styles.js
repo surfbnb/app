@@ -14,6 +14,7 @@ export default StyleSheet.create({
     resizeMode: 'contain'
   },
   loadingMessage: {
+    textAlign: 'center',
     fontSize: 18,
     margin: 15,
     marginBottom: 4,

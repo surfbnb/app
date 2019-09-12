@@ -25,9 +25,16 @@ class customAlertModal extends React.Component {
 
   }
 
-  onConfirm = () => {
+  onButtonTap = () => {
     if (this.props.onTap) {
-      this.props.onTap();
+      this.props.onTap(true);
+    }
+    CustomAlert.hide()
+  };
+
+  onViewTap = () => {
+    if (this.props.onTap) {
+      this.props.onTap(false);
     }
     CustomAlert.hide()
   };
@@ -54,16 +61,6 @@ class customAlertModal extends React.Component {
 
     this.setupComponents();
 
-    let topMarginForButton = 0;
-    if (this.props.footerText && this.props.footerText.length > 0) {
-      topMarginForButton = 15
-    }
-
-    let isActionButtonHidden = true;
-    if (this.props.actionText && this.props.actionText.length > 0) {
-      isActionButtonHidden = false
-    }
-
     return (
 
       <React.Fragment>
@@ -75,9 +72,7 @@ class customAlertModal extends React.Component {
           hasBackdrop={false}
         >
           <TouchableWithoutFeedback
-            onPressOut={() => {
-              CustomAlert.hide()
-            }}
+            onPressOut={this.onViewTap}
           >
           <View style={inlineStyles.backgroundStyle}>
             <Image
@@ -88,35 +83,53 @@ class customAlertModal extends React.Component {
 
             <Text style={inlineStyles.footerText}>{this.props.footerText}</Text>
 
-            <LinearGradient
-              colors={['#ff7499', '#ff5566']}
-              locations={[0, 1]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{ marginTop: topMarginForButton, borderRadius: 3 , flexDirection: 'row'}}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  this.onConfirm();
-                }}
-                style={[Theme.Button.btn, { borderWidth: 0 , width:'80%'}]}
-              >
-                <Text
-                  style={[
-                    Theme.Button.btnPinkText,
-                    { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
-                  ]}
-                >
-                  {this.props.actionText}
-                </Text>
-              </TouchableOpacity>
-            </LinearGradient>
-
+            {this.getActionButtonView()}
           </View>
           </TouchableWithoutFeedback>
         </Modal>
       </React.Fragment>
     );
+  }
+
+  getActionButtonView() {
+
+    let topMarginForButton = 0;
+    if (this.props.footerText && this.props.footerText.length > 0) {
+      topMarginForButton = 15
+    }
+
+
+    if (this.props.actionText && this.props.actionText.length > 0) {
+      return (
+        <LinearGradient
+          colors={['#ff7499', '#ff5566']}
+          locations={[0, 1]}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          style={{marginTop: topMarginForButton, borderRadius: 3, flexDirection: 'row',}}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              this.onButtonTap();
+            }}
+            style={[Theme.Button.btn, {borderWidth: 0, width: '80%'}]}
+          >
+            <Text
+              style={[
+                Theme.Button.btnPinkText,
+                {fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center'}
+              ]}
+            >
+              {this.props.actionText}
+            </Text>
+          </TouchableOpacity>
+        </LinearGradient>
+      )
+    }
+
+    return (
+      <View/>
+    )
   }
 }
 

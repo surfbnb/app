@@ -8,6 +8,7 @@ import BackArrow from '../CommonComponents/BackArrow';
 import {CustomAlert} from "../../theme/components/CustomAlert";
 import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
 import {ostSdkErrors} from "../../services/OstSdkErrors";
+import CurrentUser from "../../models/CurrentUser";
 
 class WalletSettingList extends PureComponent {
   static navigationOptions = (options) => {
@@ -134,7 +135,6 @@ class WalletSettingList extends PureComponent {
     return ostSdkErrors.getErrorMessage(workflowContext, ostError)
   }
 
-
   componentDidMount() {
     LoadingModal.show("Fetching Settings...");
     this.refreshList();
@@ -194,22 +194,24 @@ class WalletSettingList extends PureComponent {
 
   onUnauthorized = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-    CustomAlert.showFailure("Device is not authorized. Please authorize device again.", "Logout", () => {
-
+    CustomAlert.showFailure("Device is not authorized. Please authorize device again.", null, "Logout", () => {
+      CurrentUser.logout()
     })
+
   };
 
   saltFetchFailed = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-    CustomAlert.showFailure("There is some issue while fetching salt. Please retry", null, "retry", () => {
-      let retryItem = walletSettingController.optionsMap[this.workflowInfo.workflowOptionId];
-      this.onSettingItemTapped(retryItem);
+    CustomAlert.showFailure("There is some issue while fetching salt. Please retry", null, "Retry", (isButtonTapped) => {
+      if (isButtonTapped) {
+        let retryItem = walletSettingController.optionsMap[this.workflowInfo.workflowOptionId];
+        this.onSettingItemTapped(retryItem);
+      }
     })
   };
 
   userCancelled = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-
   };
 
   deviceTimeOutOfSync = (ostWorkflowContext , ostError) => {
@@ -218,12 +220,9 @@ class WalletSettingList extends PureComponent {
 
   workflowFailed = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-    // let text = this._getFlowFailedText(ostWorkflowContext, ostError);
-    // CustomAlert.showFailure(text, "Dismiss", () => {
-    //   this.onSettingItemTapped(this.workflowInfo);
-    // })
+    let text = this._getFlowFailedText(ostWorkflowContext, ostError);
+    CustomAlert.showFailure(text, null, "Dismiss");
   };
-
 
   _keyExtractor = (item, index) => `id_${item.id}`;
 
@@ -246,6 +245,7 @@ class WalletSettingList extends PureComponent {
           refreshing={this.state.refreshing}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
+          visible={false}
         />
       </View>
     );
