@@ -49,6 +49,9 @@ class StoreProductsScreen extends PureComponent{
     componentDidMount(){
         paymentEvents.on( paymentEventsMap.paymentIAPSuccess, this.onPaymentProcessed);
         paymentEvents.on( paymentEventsMap.paymentIAPError, this.onPaymentProcessed);
+        paymentEvents.on( paymentEventsMap.paymentBESyncSuccess , ()=> {
+            this.props.navigation.goBack();
+        } );
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
@@ -59,6 +62,7 @@ class StoreProductsScreen extends PureComponent{
         this.onPaymentProcessed = () => {};
         paymentEvents.removeListener(paymentEventsMap.paymentIAPSuccess);
         paymentEvents.removeListener(paymentEventsMap.paymentIAPError);
+        paymentEvents.removeListener( paymentEventsMap.paymentBESyncSuccess);
         BackHandler.removeEventListener('hardwareBackPress');
     }
 
@@ -249,7 +253,7 @@ class StoreProductsScreen extends PureComponent{
     }
 
     handleBackButtonClick = () => {
-        this.closeModal();
+        return this.closeModal();
     }
 
     render(){

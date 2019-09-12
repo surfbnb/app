@@ -53,7 +53,7 @@ class StorePayments {
     onRequestPurchaseError(error , userId ){
         error = error || {};
         paymentEvents.emit(paymentEventsMap.paymentIAPError); 
-        Alert.alert(error.responseCode,  error.debugMessage);
+        Alert.alert(""+error.responseCode,  ""+error.debugMessage);
         if(error && error.responseCode !== 2){
             Toast.show({
                 text:  ostErrors.getUIErrorMessage("payment_failed_error"),
@@ -218,7 +218,9 @@ class NativeStoreAcknowledge{
     storeSync(){
         if(!this.topUpId || this.userId != CurrentUser.getUserId() )  return;
         this.pepoApi
-        .get()
+        .get({
+            "transaction_id"  : deepGet(this.storeEntity , "paymentEntity.response.transactionId")
+        })
         .then((res)=> {
             if(res && res.success){
                 this.storeSyncSuccess(res);
@@ -252,25 +254,47 @@ class NativeStoreAcknowledge{
         }
     }
 
-    nativeStoreSync(){
-        if(Platform.OS == "ios") {
-            RNIap.clearTransactionIOS(); //Not sure whether to do this or not.
-            this.nativeStoreSyncSuccess();
-        } else if(Platform.OS == "android"){
-            try {
-                const purchaseToken = deepGet(this.storeEntity ,  "paymentEntity.response.purchaseToken"); 
-                RNIap.consumePurchaseAndroid(purchaseToken).then((res)=> {
-                    this.nativeStoreSyncSuccess(res);
-                }).catch((error)=> {
-                    this.nativeStoreSyncError( error); 
-                })
-            }catch(error){
-                this.nativeStoreSyncError( error ); 
-            }
+    async nativeStoreSync(){
+        try {
+            let purchaseToken = deepGet(this.storeEntity ,  "paymentEntity.response.purchaseToken") ,
+                isConsumed =  true;     
+            RNIap.getAvailablePurchases().then((purchases)=> {
+                purchases.forEach(purchase => {
+                    if( purchaseToken == purchase.purchaseToken  ){
+                        isConsumed =  false ;
+                        if(Platform.OS == "ios") {
+                            this.iOsConsumtion( purchase );
+                         } else if(Platform.OS == "android"){
+                            this.androidConsumtion( purchase );
+                         }
+                    }  
+                });
+                if( isConsumed ){
+                    this.nativeStoreSyncSuccess();
+                }
+            });   
+        }catch(error){
+            this.nativeStoreSyncError( error ); 
         }
     }
 
-    nativeStoreSyncSuccess(res){
+    iOsConsumtion( purchase ){
+        RNIap.consumePurchaseAndroid(purchase.transactionId).then((res)=> {
+            this.nativeStoreSyncSuccess();
+        }).catch((error)=> {
+           console.log("==nativeStoreSync== error" , error); 
+        })
+    }
+
+    androidConsumtion( purchase){
+        RNIap.consumePurchaseAndroid(purchase.purchaseToken).then((res)=> {
+            this.nativeStoreSyncSuccess();
+        }).catch((error)=> {
+           console.log("==nativeStoreSync== error" , error); 
+        });
+    }
+
+    nativeStoreSyncSuccess(){
       userPayments.removePendingPaymentForStoreAcknowledge(this.storeEntity);
       paymentEvents.emit(paymentEventsMap.paymentStoreSyncSuccess ,  {isBackgroundSync : this.isBackgroundSync}); 
     }   

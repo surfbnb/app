@@ -65,7 +65,8 @@ class PollCurrentUserPendingPayments {
     }
 
     onPendingPaymentSuccess( res ){
-        const pendingTransactions = deepGet( res , `data.${res.result_type}`) || [] ;
+        const   resultType = deepGet( res , dataContract.common.resultType),
+                pendingTransactions = deepGet( res , `data.${resultType}`) || [] ;
         //If all pending Payments are resolved fetch balance 
         if(  pendingTransactions.length == 0 ){
             Pricer.getBalance(); 
