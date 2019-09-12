@@ -11,9 +11,9 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, ownProps) => {  
   return {
-    supporters: reduxGetter.getUserSupporters(ownProps.userId, state),
+    supporters: ownProps.pageName == 'feed' ? reduxGetter.getUserSupporters(ownProps.userId, state): reduxGetter.getVideoSupporters(ownProps.videoId, state),
     totalBt: reduxGetter.getVideoBt(ownProps.videoId, state)
   };
 };

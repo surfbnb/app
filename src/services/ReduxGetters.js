@@ -115,6 +115,11 @@ class ReduxGetters {
     return deepGet(state, `user_stat_entities.id_${id}.total_contributed_by`);
   }
 
+  getVideoSupporters(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.total_contributed_by`);
+  }
+
   getUsersSupporting(id, state) {
     state = state || Store.getState();
     return deepGet(state, `user_stat_entities.id_${id}.total_contributed_to`);
@@ -331,6 +336,10 @@ class ReduxGetters {
   getNotificationGoTo(notificationId, state) {
     state = state || Store.getState();
     return deepGet(state, `user_notifications.id_${notificationId}.goto`);
+  }
+  getPushNotification( state) {
+    state = state || Store.getState();
+    return deepGet(state, `push_notification`);
   }
 
   getNotificationUnreadFlag(state) {

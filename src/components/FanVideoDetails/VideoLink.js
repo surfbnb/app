@@ -3,14 +3,12 @@ import { TextInput, Image } from 'react-native';
 
 import styles from './styles';
 import AppConfig from '../../constants/AppConfig';
-import { getSocialIcon } from '../../helpers/helpers';
 
 class VideoLink extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: this.props.initialValue,
-      socialIcon: AppConfig.videoLinkConfig.VIDEO.SOCIAL_ICONS.DEFAULT
+      value: this.props.initialValue
     };
   }
 
@@ -20,22 +18,15 @@ class VideoLink extends Component {
         value
       },
       () => {
-        this.setSocialIcon();
         this.props.onChangeLink(value);
       }
     );
   };
 
-  setSocialIcon = () => {
-    this.setState({
-      socialIcon: getSocialIcon(this.state.value, 'VIDEO')
-    });
-  };
-
   render() {
     return (
       <React.Fragment>
-        <Image style={{ height: 26, width: 26 }} source={this.state.socialIcon} />
+        <Image style={{ height: 26, width: 26 }} source={AppConfig.videoLinkConfig.VIDEO.SOCIAL_ICONS.DEFAULT} />
         <TextInput
           style={styles.linkText}
           numberOfLines={1}
@@ -45,6 +36,7 @@ class VideoLink extends Component {
           placeholder="Add link"
           onChangeText={this.onChangeValue}
           value={this.state.value}
+          autoCapitalize={'none'}
         />
       </React.Fragment>
     );

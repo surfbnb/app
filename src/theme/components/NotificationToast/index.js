@@ -50,7 +50,9 @@ export class NotificationToastComponent extends Component {
         toValue: 1,
         duration,
         useNativeDriver: true
-      }).start(this.hideToast(delay));
+      }).start(() => {
+        this.hideToast(delay);
+      });
     });
   }
 

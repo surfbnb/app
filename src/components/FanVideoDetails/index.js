@@ -73,8 +73,7 @@ class FanVideoDetails extends Component {
     let keyboardHeight = deepGet(e, 'endCoordinates.height') || 350;
     this.setState({
       viewStyle: {
-        //45 is calculated by custom tab height i.e 55 - paddingBottom of the view
-        paddingBottom: keyboardHeight - (45 + getBottomSpace([true]))
+        paddingBottom: keyboardHeight - (15 + getBottomSpace([true]))
       }
     });
   };
@@ -129,7 +128,7 @@ class FanVideoDetails extends Component {
 
   onChangeLink = (link) => {
     this.setState({
-      videoLink: this.sanitizeLink(link),
+      videoLink: link,
       error: ''
     });
     //Done for the value to be accessible in static navigationOptions
@@ -137,12 +136,6 @@ class FanVideoDetails extends Component {
       videoLink: link
     });
   };
-
-  sanitizeLink = (link) =>
-    link
-      .split('/')
-      .map((item, index) => (index < 3 ? item.toLowerCase() : item))
-      .join('/');
 
   setError = (error) => {
     this.setState({

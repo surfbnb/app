@@ -1,6 +1,7 @@
 import PepoApi from '../services/PepoApi';
 import Toast from '../theme/components/NotificationToast';
 import AppConfig from '../constants/AppConfig';
+import { ostErrors } from '../services/OstErrors';
 
 function fetchUser(userId, successCallback, errorCallback, finallyCallback) {
   new PepoApi(`/users/${userId}/profile`)
@@ -33,7 +34,11 @@ function fetchUser(userId, successCallback, errorCallback, finallyCallback) {
 }
 
 function getSocialIcon(url, screen) {
-  let hostName = url && url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?([^:\/?\n]+)/im)[1];
+  let hostName = url && url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?([^:\/?\n]+)/im);
+  if ( !hostName || hostName.length < 2) {
+    return;
+  }
+  hostName = hostName[1];
   if (hostName) {
     for (let domainName in AppConfig.videoLinkConfig.WHITELISTED_DOMAINS) {
       if (hostName.includes(AppConfig.videoLinkConfig.WHITELISTED_DOMAINS[domainName])) {

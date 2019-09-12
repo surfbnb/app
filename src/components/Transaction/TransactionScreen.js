@@ -78,7 +78,7 @@ class TransactionScreen extends Component {
   }
 
   componentDidMount() {
-    // default we need 
+    // default we need
     //this.setState({ btFocus: true });
   }
 
@@ -241,11 +241,14 @@ class TransactionScreen extends Component {
   }
 
   getSdkMetaProperties() {
+    let details = '';
     const metaProperties = clone(appConfig.metaProperties);
     if (this.videoId) {
       metaProperties['name'] = 'video';
-      metaProperties['details'] = `vi_${this.videoId}`;
+      details = `vi_${this.videoId} `;
     }
+    details += `ipp_${1}`;
+    metaProperties['details'] = details;
     return metaProperties;
   }
 
@@ -323,7 +326,7 @@ class TransactionScreen extends Component {
   getSendTransactionPlatformData(ostWorkflowEntity) {
     let params = {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
-      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')
+      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')      
     };
     if (this.videoId) {
       params['meta'] = {};
@@ -468,10 +471,12 @@ class TransactionScreen extends Component {
                 </View>
               )}
               {this.state.showSuccess && (
-                <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 40, backgroundColor: '#fbfbfb' }}>
+                <View
+                  style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 40, backgroundColor: '#fbfbfb' }}
+                >
                   <Image source={tx_success} style={{ width: 164.6, height: 160, marginBottom: 20 }}></Image>
                   <Text style={{ textAlign: 'center', fontFamily: 'AvenirNext-Regular', fontSize: 16 }}>
-                    Success, you have sent {this.toUser.name} {this.state.btAmount} Pepo’s
+                    Success, you have sent {this.toUser.name} {this.state.btAmount} Pepos
                   </Text>
                 </View>
               )}

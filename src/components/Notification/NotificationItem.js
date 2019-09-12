@@ -165,10 +165,11 @@ class NotificationItem extends Component {
   }
 
   render() {
+    //  
     let headerWidth = '72%', notificationInfoWidth = '20%';
-    if(this.props.kind == AppConfig.notificationConstants.AppreciationKind){
+    if(this.props.kind == AppConfig.notificationConstants.AppreciationKind || AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)){
       headerWidth = '92%';
-       notificationInfoWidth = '0%';
+      notificationInfoWidth = '0%';
     }
 
     return (
@@ -176,7 +177,7 @@ class NotificationItem extends Component {
         <TouchableWithoutFeedback         
           onPress={multipleClickHandler(() => this.handleRowClick())}
         >
-          <React.Fragment>
+          <View>
             <View style={styles.txtWrapper}>
               <View style={{ width: '8%', marginRight: 4 }}>
                 {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
@@ -201,7 +202,7 @@ class NotificationItem extends Component {
               <View style={{ width:notificationInfoWidth}}>{this.notificationInfo()}</View>
             </View>
             {this.showSayThanks()}
-          </React.Fragment>
+          </View>
         </TouchableWithoutFeedback>
       </View>
     );
