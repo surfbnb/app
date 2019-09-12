@@ -52,7 +52,7 @@ export const {
 const defaultState = {
   modal: { message: '', show: false },
   modal_cover: { message: '', footerText: '', show: false },
-  alert_data: {alertType: null, message: '', footerText: '', actionText: '', onTap: null, show: false},
+  alert_data: {alertType: '', message: '', footerText: '', actionText: '', onTap: null, show: false},
   toast: { message: '', show: false },
   current_user: {},
   activities_entities: {},

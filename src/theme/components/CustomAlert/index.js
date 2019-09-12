@@ -54,6 +54,16 @@ class customAlertModal extends React.Component {
 
     this.setupComponents();
 
+    let topMarginForButton = 0;
+    if (this.props.footerText && this.props.footerText.length > 0) {
+      topMarginForButton = 15
+    }
+
+    let isActionButtonHidden = true;
+    if (this.props.actionText && this.props.actionText.length > 0) {
+      isActionButtonHidden = false
+    }
+
     return (
 
       <React.Fragment>
@@ -64,6 +74,11 @@ class customAlertModal extends React.Component {
           coverScreen={false}
           hasBackdrop={false}
         >
+          <TouchableWithoutFeedback
+            onPressOut={() => {
+              CustomAlert.hide()
+            }}
+          >
           <View style={inlineStyles.backgroundStyle}>
             <Image
               style={[inlineStyles.loadingImage]}
@@ -78,7 +93,7 @@ class customAlertModal extends React.Component {
               locations={[0, 1]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
-              style={{ marginTop: 25, borderRadius: 3 , flexDirection: 'row' }}
+              style={{ marginTop: topMarginForButton, borderRadius: 3 , flexDirection: 'row'}}
             >
               <TouchableOpacity
                 onPress={() => {
@@ -98,6 +113,7 @@ class customAlertModal extends React.Component {
             </LinearGradient>
 
           </View>
+          </TouchableWithoutFeedback>
         </Modal>
       </React.Fragment>
     );
@@ -107,15 +123,22 @@ class customAlertModal extends React.Component {
 export const CustomAlertModal = connect(mapStateToProps)(customAlertModal);
 export const CustomAlert = {
   showSuccess: (message = '', footerText = '') => {
-    Store.dispatch(showAlert('success', message, footerText, null, null));
+    setTimeout(() => {
+      Store.dispatch(showAlert('success', message, footerText, null, null));
+    }, 0)
+
   },
 
-  showFailure: (message= '', footerText ='', actionText= '', onTapCallback = null) => {
-    Store.dispatch(showAlert('failure', message, footerText, actionText, onTapCallback));
+  showFailure: (message= '', footerText ='', actionText= 'Cancel', onTapCallback) => {
+    setTimeout(() => {
+      Store.dispatch(showAlert('failure', message, footerText, actionText, onTapCallback));
+    },0)
   },
 
   showRetry: (message= '', footerText= '', actionText= '', onTapCallback = null) => {
-    Store.dispatch(showAlert('retry', message, footerText, actionText, onTapCallback));
+    setTimeout(() => {
+      Store.dispatch(showAlert('retry', message, footerText, actionText, onTapCallback));
+    },0)
   },
 
   hide: () => {

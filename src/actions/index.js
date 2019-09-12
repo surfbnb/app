@@ -1,15 +1,15 @@
 import * as types from './constants';
 
-export const showAlert = (alertType = null,message = '', footerText = '', actionText = '', onTap) => ({
+export const showAlert = (alertType = null, message = '', footerText = '', actionText = '', onTap) => ({
   type: types.SHOW_ALERT,
   payload: {
     alert_data: {
-      message,
-      footerText,
-      actionText,
+      alertType: alertType,
+      message: message,
+      footerText: footerText,
+      actionText: actionText,
+      onTap: onTap,
       show: true,
-      onTap,
-      alertType
     }
   }
 });

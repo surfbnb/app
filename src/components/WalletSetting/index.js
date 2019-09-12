@@ -7,7 +7,7 @@ import Colors from "../../theme/styles/Colors";
 import BackArrow from '../CommonComponents/BackArrow';
 import {CustomAlert} from "../../theme/components/CustomAlert";
 import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
-import OstSdkErrors from "../../services/OstSdkErrors";
+import {ostSdkErrors} from "../../services/OstSdkErrors";
 
 class WalletSettingList extends PureComponent {
   static navigationOptions = (options) => {
@@ -131,15 +131,13 @@ class WalletSettingList extends PureComponent {
   }
 
   _getFlowFailedText(workflowContext, ostError) {
-    return
+    return ostSdkErrors.getErrorMessage(workflowContext, ostError)
   }
 
 
   componentDidMount() {
-    LoadingModal.show("Fetching Setting");
-    this.refreshList(() => {
-      CustomAlert.showSuccess("Title");
-    });
+    LoadingModal.show("Fetching Settings...");
+    this.refreshList();
   }
 
   refreshList = (onFetch) => {
@@ -196,37 +194,34 @@ class WalletSettingList extends PureComponent {
 
   onUnauthorized = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-    setTimeout(()=> {
-      let text = this._getFlowFailedText(ostWorkflowContext, ostError);
-      CustomAlert.showFailure(text)
+    CustomAlert.showFailure("Device is not authorized. Please authorize device again.", "Logout", () => {
 
-    }, 0);
+    })
   };
 
   saltFetchFailed = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-    setTimeout(()=> {
-      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Getting salt from server failed.")
-    }, 0);
+    CustomAlert.showFailure("There is some issue while fetching salt. Please retry", null, "retry", () => {
+      let retryItem = walletSettingController.optionsMap[this.workflowInfo.workflowOptionId];
+      this.onSettingItemTapped(retryItem);
+    })
   };
 
   userCancelled = (ostWorkflowContext , ostError) => {
-     LoadingModal.hide();
-     setTimeout(()=> {
-       Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "User cancelled.")
-     },  0);
+    LoadingModal.hide();
+
   };
 
   deviceTimeOutOfSync = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-    Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, "Device time out of sync")
   };
 
   workflowFailed = (ostWorkflowContext , ostError) => {
     LoadingModal.hide();
-    setTimeout(()=> {
-      Alert.alert(ostWorkflowContext.WORKFLOW_TYPE, ostError.getErrorMessage())
-    },0);
+    // let text = this._getFlowFailedText(ostWorkflowContext, ostError);
+    // CustomAlert.showFailure(text, "Dismiss", () => {
+    //   this.onSettingItemTapped(this.workflowInfo);
+    // })
   };
 
 

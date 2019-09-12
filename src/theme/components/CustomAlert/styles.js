@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   loadingMessage: {
     fontSize: 18,
-    margin: 12,
+    margin: 15,
     marginBottom: 4,
     color: 'white',
     fontWeight: '500'
