@@ -1,43 +1,54 @@
-import { StyleSheet, Dimensions, PixelRatio } from 'react-native';
+import { Dimensions } from 'react-native';
 import Colors from '../../theme/styles/Colors';
-import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
+import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
 
-export default StyleSheet.create({
+let stylesMap = {
+  parent: {
+    flex: 1
+  },
   container: {
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     alignItems: 'center',
     justifyContent: 'center',
-    // ...ifIphoneX({
-    //   height: Dimensions.get('window').height / 2,
-    // }, {
-    //   height: PixelRatio.get() === 2 ? Dimensions.get('window').height * 0.75 : Dimensions.get('window').height / 2
-    // }),
-    // height: Dimensions.get('window').height * 0.75,
     minHeight: Dimensions.get('window').height / 2,
-    paddingVertical: 50,
+    paddingTop: 40,
+    paddingBottom: 30,
     position: 'absolute',
     width: '100%',
+    paddingHorizontal: 20,
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
-    // ...ifIphoneX(
-    //   {
-    //     bottom: getBottomSpace([true])
-    //   },
-    //   {
-    //     bottom: 0
-    //   }
-    // )
     bottom: 0
   },
-  parent: {
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width
+  crossBtnPos: {
+    position: 'absolute',
+    top: 10,
+    right: 15,
+    width: 38,
+    height: 38,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   desc: {
     color: Colors.dark,
-    width: '80%',
     fontSize: 18,
-    lineHeight: 26,
-    textAlign: 'center'
+    lineHeight: 24,
+    textAlign: 'center',
+    fontFamily: 'AvenirNext-Medium'
+  },
+  twtBtn:{
+    marginTop: 30,
+    flexDirection: 'row',
+    height: 55,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%'
+  },
+  tos:{
+    textAlign: 'center',
+    lineHeight: 20,
+    color: 'rgba(72, 72, 72, 0.8)'
   }
-});
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);
