@@ -17,7 +17,7 @@ class SearchListHeader extends Component {
   onChangeText = (text) => {
     this.props.setSearchParams(text);
     this.setState({
-      value: text
+      value: text || ''
     });
   };
 
@@ -49,15 +49,22 @@ class SearchListHeader extends Component {
           value={this.state.value}
           style={[Theme.TextInput.textInputStyle, styles.textInputUi]}
           placeholder="Search People / Usernames"
-          returnKeyType="next"
-          returnKeyLabel="next"
+          returnKeyType="done"
+          returnKeyLabel="Done"
           placeholderTextColor="rgba(42, 41, 59, 0.4)"
           onChangeText={this.onChangeText}
           autocomplete="off"
         />
-        <TouchableOpacity style={[styles.iconsPos, { right: 0, justifyContent: 'center' }]} onPress={this.clearSearch}>
-          <Image source={CrossIcon} style={[styles.crossIconSkipFont]} />
-        </TouchableOpacity>
+        {this.state.value ? (
+          <TouchableOpacity
+            style={[styles.iconsPos, { right: 0, justifyContent: 'center' }]}
+            onPress={this.clearSearch}
+          >
+            <Image source={CrossIcon} style={[styles.crossIconSkipFont]} />
+          </TouchableOpacity>
+        ) : (
+          <React.Fragment />
+        )}
       </View>
     );
   }

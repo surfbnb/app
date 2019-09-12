@@ -33,10 +33,6 @@ let checkVideoPermission = function(navigation) {
           accessText = 'Enable Camera and Microphone Access';
         }
         allowAcessModalEventEmitter.emit('show', accessText);
-
-        // this.setState({
-        //   showCameraAccessModal: true
-        // });
       }
     });
   });
@@ -149,9 +145,16 @@ export default {
   getParsedData( val ){
     if( typeof val == "string"){
         try{
-          val = JSON.parse( val ); 
+          val = JSON.parse( val );
         }catch(error){}
     }
     return val = val || {};
+  },
+
+  sanitizeLink(link) {
+    return link
+      .split('/')
+      .map((item, index) => (index < 3 ? item.toLowerCase() : item))
+      .join('/');
   }
 };

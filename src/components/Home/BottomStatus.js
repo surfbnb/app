@@ -10,6 +10,8 @@ import reduxGetter from '../../services/ReduxGetters';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import { getSocialIcon } from '../../helpers/helpers';
 import InAppBrowser from '../../services/InAppBrowser';
+import BrowserEmitter from '../../helpers/BrowserEmitter';
+import Utilities from '../../services/Utilities';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -54,7 +56,12 @@ class BottomStatus extends PureComponent {
         </TouchableWithoutFeedback>
         {this.props.link ? (
           <TouchableWithoutFeedback
-            onPress={multipleClickHandler(() => InAppBrowser.openBrowser(this.props.link))}
+            onPress={multipleClickHandler(() => {
+              BrowserEmitter.emit('browserOpened');
+              setTimeout(() => {
+                InAppBrowser.openBrowser(Utilities.sanitizeLink(this.props.link));
+              }, 0);
+            })}
             pointerEvents={'auto'}
           >
             <View
@@ -68,11 +75,11 @@ class BottomStatus extends PureComponent {
             >
               <Image style={{ height: 20, width: 20 }} source={getSocialIcon(this.props.link, 'HOME_FEED')} />
               <Text
-                style={[{ fontSize: 14, paddingVertical: 4, paddingLeft: 8 }, inlineStyles.bottomBgTxt]}
+                style={[{ fontSize: 14, paddingVertical: 8, paddingLeft: 8 }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={1}
               >
-                {this.props.link}
+                {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
               </Text>
             </View>
           </TouchableWithoutFeedback>

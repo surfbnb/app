@@ -118,9 +118,7 @@ class NotificationItem extends Component {
   };
 
   notificationInfo = () => {
-    if (AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)) {
-      return this.showAmountComponent();
-    } else if (this.props.kind == AppConfig.notificationConstants.videoAddKind) {
+    if (this.props.kind == AppConfig.notificationConstants.videoAddKind) {
       return this.showVideoComponent();
     }
   };
@@ -157,11 +155,21 @@ class NotificationItem extends Component {
     return <Text style={{ marginLeft: 10, marginTop: 2, fontSize: 10 }}> failed </Text>;
   };
 
+
+  showPepoAmout = () => {
+
+    if (AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)) {
+      return this.showAmountComponent();
+    } 
+
+  }
+
   render() {
+    //  
     let headerWidth = '72%', notificationInfoWidth = '20%';
-    if(this.props.kind == AppConfig.notificationConstants.AppreciationKind){
+    if(this.props.kind == AppConfig.notificationConstants.AppreciationKind || AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)){
       headerWidth = '92%';
-       notificationInfoWidth = '0%';
+      notificationInfoWidth = '0%';
     }
 
     return (
@@ -169,7 +177,7 @@ class NotificationItem extends Component {
         <TouchableWithoutFeedback         
           onPress={multipleClickHandler(() => this.handleRowClick())}
         >
-          <React.Fragment>
+          <View>
             <View style={styles.txtWrapper}>
               <View style={{ width: '8%', marginRight: 4 }}>
                 {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
@@ -182,6 +190,7 @@ class NotificationItem extends Component {
                 <View style={{ flexDirection: 'column' }}>
                   <View style={styles.item}>
                     {this.getHeading()}
+                    {this.showPepoAmout()}
                     <Text style={styles.timeStamp}>
                       {this.props.timeStamp && shortenedFromNow(this.props.timeStamp)}
                     </Text>
@@ -193,7 +202,7 @@ class NotificationItem extends Component {
               <View style={{ width:notificationInfoWidth}}>{this.notificationInfo()}</View>
             </View>
             {this.showSayThanks()}
-          </React.Fragment>
+          </View>
         </TouchableWithoutFeedback>
       </View>
     );

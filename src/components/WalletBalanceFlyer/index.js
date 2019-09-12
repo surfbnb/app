@@ -34,7 +34,7 @@ class WalletBalanceFlyer extends Component {
 
   componentDidMount() {
     WalletBalanceFlyerEventEmitter.on('onHideBalanceFlyer', this.handleToggle.bind(this));
-    this.purchaseLoaderSubscribtion = new PurchaseLoader( this.updatePurchasingLoader ); 
+    this.purchaseLoaderSubscribtion = new PurchaseLoader( this.updatePurchasingLoader );
     this.purchaseLoaderSubscribtion.subscribeToEvents();
     this.setState({isPurchasing: PollCurrentUserPendingPayments.getPollingStatus()});
   }

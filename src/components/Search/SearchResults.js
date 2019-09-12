@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { FlatList, View, Text, ActivityIndicator } from 'react-native';
+import React, { Component, PureComponent } from 'react';
+import { FlatList, View, Text, ActivityIndicator, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import styles from './styles';
@@ -8,7 +8,7 @@ import SearchListHeader from './SearchListHeader';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import Colors from '../../theme/styles/Colors';
 
-class SearchResults extends Component {
+class SearchResults extends PureComponent {
   constructor(props) {
     super(props);
   }
@@ -20,29 +20,49 @@ class SearchResults extends Component {
   };
 
   getEmptyComponent = () => {
-    return (
-      !this.props.refreshing &&
-      this.props.searchParams &&
-      (this.props.noResultsFound && !this.props.toRefresh ? (
-        <View>
-          <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14 }}>No results found!</Text>
-        </View>
-      ) : (
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <ActivityIndicator size="small" color={Colors.greyLite} />
-          <Text
-            style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}
-          >{`Searching for "${this.props.searchParams}"`}</Text>
-        </View>
-      ))
-    );
+    if (!this.props.refreshing && this.props.searchParams) {
+      if (this.props.noResultsFound && !this.props.toRefresh) {
+        return this.renderNoResults();
+      }
+    }
+
+    if (this.shouldMakeApiCall()) {
+      return this.renderSearchingFor();
+    }
+    return null;
   };
 
+  shouldMakeApiCall() {
+    if (this.props.shouldMakeApiCall) {
+      return this.props.shouldMakeApiCall();
+    }
+    return true; // Default behaviour.
+  }
+
+  renderNoResults() {
+    return (
+      <View>
+        <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14 }}>No results found!</Text>
+      </View>
+    );
+  }
+
+  renderSearchingFor() {
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <ActivityIndicator size="small" color={Colors.greyLite} />
+        <Text style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}>
+          {`Searching for "${decodeURIComponent(this.props.searchParams) || ''}"`}
+        </Text>
+      </View>
+    );
+  }
   render() {
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
           data={this.props.list}
+          onScrollBeginDrag={() => Keyboard.dismiss()}
           keyboardShouldPersistTaps={'always'}
           horizontal={this.props.horizontal}
           enableEmptySections={true}

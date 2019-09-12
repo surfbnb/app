@@ -47,8 +47,9 @@ import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
 import StoreProductsScreen from "./src/components/StoreProducts";
 import PaymentWorker from "./src/components/PaymentWorker";
+import PushNotificationManager from './src/services/PushNotificationManager';
 
-const customTabHiddenRoutes = ['CaptureVideo'];
+const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -92,10 +93,15 @@ const txModalConfig = {
   })
 };
 
-const CaptureVideoStack = createStackNavigator({
-  CaptureVideo: CaptureVideo,
-  FanVideoDetails: FanVideoDetails
-});
+const CaptureVideoStack = createStackNavigator(
+  {
+    CaptureVideo: CaptureVideo,
+    FanVideoDetails: FanVideoDetails
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
 
 const HomePushStack = createStackNavigator(
   {
@@ -199,7 +205,8 @@ const SearchPushStack = createStackNavigator(
 const SearchStack = createStackNavigator(
   {
     SearchPushStack: SearchPushStack,
-    CaptureVideo: CaptureVideoStack
+    CaptureVideo: CaptureVideoStack,
+    TransactionScreen: TransactionScreen
   },
   {
     ...modalStackConfig,
@@ -295,6 +302,7 @@ const RootNavigationContainer = () => (
     <NotificationToastComponent />
     <SocketManager />
     <PaymentWorker />
+    <PushNotificationManager />
   </Root>
 );
 

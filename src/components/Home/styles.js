@@ -34,8 +34,7 @@ let stylesMap = {
     fontSize: 18,
     color: Colors.white,
     alignSelf: 'center',
-    marginTop: 3,
-    marginBottom: 15
+    marginBottom: 3
   },
   txElem: {
     marginBottom: 20
@@ -50,7 +49,7 @@ let stylesMap = {
     // flexDirection: 'column',
     // justifyContent: 'flex-start',
     borderTopLeftRadius: 20,
-    maxHeight: Dimensions.get('window').height * 0.20,
+    maxHeight: Dimensions.get('window').height * 0.3,
     minHeight: Dimensions.get('window').height * 0.05
   },
   handle: {

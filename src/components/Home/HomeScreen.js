@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar, Platform } from 'react-native';
+import { View, StatusBar, Platform, AppState } from 'react-native';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
 
@@ -11,7 +11,11 @@ import VideoLoadingFlyer from '../CommonComponents/VideoLoadingFlyer';
 import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import appConfig from '../../constants/AppConfig';
-import {ifIphoneX} from "react-native-iphone-x-helper";
+import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { clearPushNotification } from '../../actions';
+import Store from '../../store';
+import reduxGetter from '../../services/ReduxGetters';
+import NavigateTo from '../../helpers/navigateTo';
 
 const mapStateToProps = (state) => {
   return {
@@ -27,7 +31,14 @@ class HomeScreen extends Component {
     };
   };
 
-  constructor(props) {
+  _handleAppStateChange = (nextAppState) => {
+    if (nextAppState == 'active'){
+      this.handlepushNotification();
+    }    
+  };
+
+  constructor(props) {    
+    console.log('HomeScreen constructor');
     super(props);
     this.state = {
       videoUploaderVisible: false
@@ -35,7 +46,21 @@ class HomeScreen extends Component {
     this.listRef = null;
   }
 
+  handlepushNotification(){    
+    let pushNotification = reduxGetter.getPushNotification();
+
+    if (Object.keys(pushNotification).length > 0) {      
+      new NavigateTo(this.props.navigation).navigate(pushNotification.goto);
+      Store.dispatch(clearPushNotification());
+      return;
+    }
+  }
+
+
+
   componentDidMount = () => {
+    AppState.addEventListener('change', this._handleAppStateChange);
+    this.handlepushNotification();
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
     NavigationEmitter.on('onRefresh', (screen) => {
@@ -51,7 +76,8 @@ class HomeScreen extends Component {
     }
   }
 
-  componentWillUnmount = () => {
+  componentWillUnmount = () => {    
+    AppState.removeEventListener('change', this._handleAppStateChange);
     videoUploaderComponent.removeListener('show');
     videoUploaderComponent.removeListener('hide');
     NavigationEmitter.removeListener('onRefresh');
@@ -100,15 +126,17 @@ class HomeScreen extends Component {
             componentHeight={46}
             componentWidth={46}
             sliderWidth={170}
-            containerStyle=
-              {{
-                ...ifIphoneX({
-                  top: 60,
-                }, {
-                  top: 30,
-                }),
-                left: 10
-              }}
+            containerStyle={{
+              ...ifIphoneX(
+                {
+                  top: 60
+                },
+                {
+                  top: 30
+                }
+              ),
+              left: 10
+            }}
             displayText="Uploading Video"
             extendDirection="right"
             extend={true}

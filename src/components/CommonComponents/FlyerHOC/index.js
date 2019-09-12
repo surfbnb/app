@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {View, TouchableWithoutFeedback, Animated, Text, Image, Easing} from 'react-native';
+import { View, TouchableWithoutFeedback, Animated, Text, Image, Easing } from 'react-native';
 import EventEmitter from 'eventemitter3';
 
 import styles from './styles';
@@ -32,13 +32,13 @@ function flyerHOC(BaseComponent) {
       this.extensionStyles = {
         extensionStyleLeft: {
           right: -this.props.componentWidth / 2,
-          borderTopLeftRadius: 25,
+          borderTopLeftRadius: 25
           // borderBottomLeftRadius: 50
         },
         displayTextStyleLeft: { paddingLeft: 10 },
         extensionStyleRight: {
           left: -this.props.componentWidth / 2,
-          borderTopRightRadius: 25,
+          borderTopRightRadius: 25
           // borderBottomRightRadius: 50
         },
         displayTextStyleRight: { marginLeft: 30 }
@@ -133,20 +133,6 @@ function flyerHOC(BaseComponent) {
                   ]}
                 >
                   <View style={{ flexDirection: 'row' }}>
-                    {this.props.extendDirection === 'left' ? (
-                      <TouchableWithoutFeedback
-                        onPress={this.hideFlyer}
-                        style={{ alignItems: 'center', width: 19.5, height: 19 }}
-                      >
-                        <Animated.View
-                          style={[styles.crossIcon, { opacity: this.contentOpacity, alignSelf: 'center' }]}
-                        >
-                          <Image style={{ width: 12.6, height: 12.6 }} source={modalCross} />
-                        </Animated.View>
-                      </TouchableWithoutFeedback>
-                    ) : (
-                      <View />
-                    )}
                     <Animated.Text
                       style={[
                         styles.text,
@@ -159,20 +145,6 @@ function flyerHOC(BaseComponent) {
                       {this.props.displayText}
                     </Animated.Text>
                     <Text style={this.props.highlightedTextStyle}>{this.props.highlightedText}</Text>
-                    {this.props.extendDirection === 'right' ? (
-                      <TouchableWithoutFeedback
-                        onPress={this.hideFlyer}
-                        style={{ alignItems: 'center', width: 19.5, height: 19 }}
-                      >
-                        <Animated.View
-                          style={[styles.crossIcon, { opacity: this.contentOpacity, alignSelf: 'center' }]}
-                        >
-                          <Image style={{ width: 12.6, height: 12.6 }} source={modalCross} />
-                        </Animated.View>
-                      </TouchableWithoutFeedback>
-                    ) : (
-                      <View />
-                    )}
                   </View>
                 </Animated.View>
                 {this.props.extendDirection === 'left' ? <BaseComponent {...this.props} /> : <View />}

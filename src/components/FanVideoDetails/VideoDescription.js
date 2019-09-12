@@ -32,7 +32,7 @@ class VideoDescription extends PureComponent {
           submitEvent={this.submitEvent}
           searchResultRowComponent={SearchResultRowComponent}
           textInputStyles={inlineStyles.videoDescription}
-          maxLength={300}
+          maxLength={110}
           autoFocus={false}
         />
       </View>

@@ -8,9 +8,10 @@ import appConfig from '../constants/AppConfig';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
 import Toast from "../theme/components/NotificationToast";
+import { PushNotificationMethods } from '../services/PushNotificationManager';
 
 // Used require to support all platforms
-const RCTNetworking = require("RCTNetworking");
+const RCTNetworking = require('RCTNetworking');
 
 let utilities = null;
 import('../services/Utilities').then((pack) => {
@@ -18,7 +19,7 @@ import('../services/Utilities').then((pack) => {
 });
 
 let FlyerEventEmitter = null;
-import ('../components/CommonComponents/FlyerHOC').then( (pack) => {
+import('../components/CommonComponents/FlyerHOC').then((pack) => {
   FlyerEventEmitter = pack.FlyerEventEmitter;
 });
 
@@ -143,22 +144,30 @@ class CurrentUser {
     return this._signin('/auth/twitter-login', params);
   }
 
-  async logout(params) {
-    await new PepoApi('/auth/logout')
-      .post()
-      .catch((error) => {
-        Toast.show({
-          text: 'Logout failed please try again.',
-          icon: 'error'
+    async logout(params) {
+        await new PepoApi('/auth/logout')
+            .post(params)
+            .then((res) => {
+                RCTNetworking.clearCookies(async () => {
+                    await this.clearCurrentUser();
+                    PushNotificationMethods.deleteToken();
+                    NavigationService.navigate('HomeScreen', params)
+                });
+            })
+            .catch((error) => {
+                Toast.show({
+                    text: 'Logout failed please try again.',
+                    icon: 'error'
+                });
+            });
+    }
+
+    async logoutLocal(params) {
+        await RCTNetworking.clearCookies(async () => {
+            await this.clearCurrentUser();
+            NavigationService.navigate('HomeScreen', params)
         });
-      })
-      .then((res) => {
-        RCTNetworking.clearCookies(async () => {
-          await this.clearCurrentUser();
-          NavigationService.navigate('HomeScreen', params)
-        });
-      });
-  }
+    }
 
   _signin(apiUrl, params) {
     let authApi = new PepoApi(apiUrl);
@@ -177,14 +186,14 @@ class CurrentUser {
 
   newPassphraseDelegate() {
     let delegate = new OstWalletUIWorkflowCallback();
-    this.bindSetPassphrase( delegate );
+    this.bindSetPassphrase(delegate);
     return delegate;
   }
 
-  bindSetPassphrase( uiWorkflowCallback ) {
+  bindSetPassphrase(uiWorkflowCallback) {
     Object.assign(uiWorkflowCallback, {
       getPassphrase: (userId, ostWorkflowContext, passphrasePrefixAccept) => {
-        if ( !userId || this.getOstUserId() != userId ) {
+        if (!userId || this.getOstUserId() != userId) {
           //TODO: Figure out what to do here.
           passphrasePrefixAccept.cancelFlow();
           return;
@@ -194,22 +203,21 @@ class CurrentUser {
           .then((res) => {
             if (res.success && res.data) {
               let resultType = deepGet(res, 'data.result_type'),
-                  userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
+                userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
 
-              if ( !userSalt ) {
+              if (!userSalt) {
                 //TODO: Figure out what to do here.
                 passphrasePrefixAccept.cancelFlow();
               }
 
               // provide the passphrase to sdk.
-              passphrasePrefixAccept.setPassphrase( userSalt );
+              passphrasePrefixAccept.setPassphrase(userSalt);
             }
           })
           .catch(() => {
             //TODO: Figure out what to do here.
             passphrasePrefixAccept.cancelFlow();
-          })
-
+          });
       }
     });
   }

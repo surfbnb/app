@@ -43,7 +43,9 @@ export const {
   upsertUserContributionByStats,
   upsertUserNotifications,
   upsertVideoDescriptionEntities,
-  upsertNotificationUnread
+  upsertNotificationUnread,
+  upsertPushNotification,
+  clearPushNotification
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -71,6 +73,7 @@ const defaultState = {
   recorded_video: {},
   profile_picture: {},
   token: { decimals: 18 },
+  push_notification: {},
   balance: null,
   isPurchase: false,
   notification_unread: {}
@@ -232,6 +235,14 @@ export const reducer = handleActions(
     [upsertUserNotifications]: (state, action) => ({
       ...state,
       user_notifications: assignIn({}, state.user_notifications, action.payload.user_notifications)
+    }),
+    [upsertPushNotification]: (state, action) => ({
+      ...state,
+      push_notification: assignIn({}, state.push_notification, action.payload.push_notification)
+    }),
+    [clearPushNotification]: (state, action) => ({
+      ...state,
+      push_notification: assignIn(defaultState.push_notification)
     }),
     [upsertNotificationUnread]: (state, action) => ({
       ...state,

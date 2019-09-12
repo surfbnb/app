@@ -37,11 +37,7 @@ function flatlistHOC(ListComponent, options) {
 
     componentDidUpdate(prevProps) {
       if (this.props.toRefresh) {
-        if (this.props.fetchUrl != prevProps.fetchUrl) {
-          this.refresh(new FetchServices(this.props.fetchUrl));
-        } else {
-          this.refresh();
-        }
+        this.refresh();
       }
     }
 
@@ -85,7 +81,11 @@ function flatlistHOC(ListComponent, options) {
 
     onRefresh(res) {
       this.props.onRefresh && this.props.onRefresh(res);
-      this.setState({ refreshing: false, list: (options && options.keyPath) ? this.fetchServices.getIDList(options.keyPath): this.fetchServices.getIDList() });
+      this.setState({
+        refreshing: false,
+        list:
+          options && options.keyPath ? this.fetchServices.getIDList(options.keyPath) : this.fetchServices.getIDList()
+      });
     }
 
     onRefreshError(error) {
@@ -129,7 +129,11 @@ function flatlistHOC(ListComponent, options) {
 
     onNext(res) {
       this.props.onNext && this.props.onNext(res);
-      this.setState({ loadingNext: false, list: (options && options.keyPath) ? this.fetchServices.getIDList(options.keyPath): this.fetchServices.getIDList() });
+      this.setState({
+        loadingNext: false,
+        list:
+          options && options.keyPath ? this.fetchServices.getIDList(options.keyPath) : this.fetchServices.getIDList()
+      });
     }
 
     onNextError(error) {

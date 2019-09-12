@@ -1,11 +1,10 @@
 import { Linking } from 'react-native';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
+import Colors from '../theme/styles/Colors';
 
 const defaultOptions = {
   // iOS Properties
   dismissButtonStyle: 'cancel',
-  preferredBarTintColor: '#453AA4',
-  preferredControlTintColor: 'white',
   readerMode: false,
   animated: true,
   modalPresentationStyle: 'overFullScreen',
@@ -13,8 +12,6 @@ const defaultOptions = {
   modalEnabled: true,
   // Android Properties
   showTitle: true,
-  toolbarColor: '#6200EE',
-  secondaryToolbarColor: 'black',
   enableUrlBarHiding: true,
   enableDefaultShare: true,
   forceCloseOnRedirection: false,

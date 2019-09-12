@@ -10,11 +10,13 @@ import { ActionSheet } from 'native-base';
 import styles from './styles';
 import closeIcon from '../../assets/cross_icon.png';
 import { withNavigation } from 'react-navigation';
+import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
 import LinearGradient from 'react-native-linear-gradient';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
-const ACTION_SHEET_BUTTONS = ['Reshoot', 'Close Camera', 'Cancel'];
+const ACTION_SHEET_BUTTONS = ['Reshoot', 'Discard', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
 const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -90,7 +92,8 @@ class PreviewRecordedVideo extends Component {
       {
         options: ACTION_SHEET_BUTTONS,
         cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
-        destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX
+        destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
+        title: 'Discard or reshoot?'
       },
       (buttonIndex) => {
         if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
@@ -103,13 +106,13 @@ class PreviewRecordedVideo extends Component {
           this.props.goToRecordScreen();
         } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
           this.props.navigation.goBack(null);
-          //TODO: Check why we were discarding video here from mayur
-          // Store.dispatch(
-          //   upsertRecordedVideo({
-          //     do_discard: true
-          //   })
-          // );
-          // Store.dispatch(videoInProcessing(false));
+          // videoUploaderComponent.emit('hide');
+          Store.dispatch(
+            upsertRecordedVideo({
+              do_discard: true
+            })
+          );
+          Store.dispatch(videoInProcessing(false));
         }
       }
     );
@@ -154,19 +157,27 @@ class PreviewRecordedVideo extends Component {
             <View style={styles.playIcon} />
           )}
 
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20 }}>
             <LinearGradient
               colors={['#ff7499', '#ff5566']}
               locations={[0, 1]}
-              style={{ borderRadius: 0, borderTopLeftRadius: 3, borderBottomLeftRadius: 3, paddingLeft: 15, paddingRight: 10}}
+              style={{
+                borderRadius: 0,
+                borderTopLeftRadius: 3,
+                borderBottomLeftRadius: 3,
+                paddingLeft: 15,
+                paddingRight: 10
+              }}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             >
               <TouchableOpacity
-                onPress={this.props.goToDetailsScreen}
-                style={{height: 44, alignItems: 'center', justifyContent: 'center'}}
+                onPress={multipleClickHandler(() => {
+                  this.props.goToDetailsScreen();
+                })}
+                style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}
               >
-                <Text style={{color: '#fff', fontSize: 16}}>NEXT</Text>
+                <Text style={{ color: '#fff', fontSize: 16 }}>NEXT</Text>
               </TouchableOpacity>
             </LinearGradient>
             <View style={styles.triangleRight}></View>
