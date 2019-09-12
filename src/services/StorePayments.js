@@ -158,7 +158,7 @@ class BackendPaymentAcknowledge {
         let resultType = deepGet(res ,  "data.result_type")
             topUpEntity = deepGet(res,  `data.${resultType}`) || {} , 
             isStartPolling = topUpEntity[dataContract.payments.startPollingKey], 
-            errMsg = topUpEntity[dataContract.payments.paymentAcknowledgeErrMsgKey]
+            status  = topUpEntity[dataContract.payments.statusCodeBEAcknowledgeKey]
             ; 
 
          //Add for pending apple or google acknowledge 
@@ -178,9 +178,13 @@ class BackendPaymentAcknowledge {
         if( isStartPolling == 1 ){
             //Start long poll for user 
             PollCurrentUserPendingPayments.initBalancePoll(this.payment.user_id , this.isBackgroundSync);
-        } else if( errMsg ){
+        } else {
             //Notify user that he needs to get in touch with Apple of Google store
-            Alert.alert("", errMsg );
+            if( status = dataContract.payments.statusCodeBEAcknowledgeMap.failed ){
+                Alert.alert("", ostErrors.getUIErrorMessage("invalid_payment_from_store") );
+            }else if(status = dataContract.payments.statusCodeBEAcknowledgeMap.processing ) {
+                Alert.alert("", ostErrors.getUIErrorMessage("pending_payment_from_be") );
+            }
         }   
     }
 

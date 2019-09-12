@@ -9,6 +9,12 @@ export default {
         topUpEntityId : "id",
         startPollingKey : "start_polling",
         paymentAcknowledgeErrMsgKey :"err_message",
+        statusCodeBEAcknowledgeKey : "display_status", 
+        statusCodeBEAcknowledgeMap : {
+            failed : "FAILED",
+            processing : "PROCESSING",
+            refund: "REFUND"
+        },
         isConsumableKey: "is_consumable"
     },
 
