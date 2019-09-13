@@ -241,11 +241,14 @@ class TransactionScreen extends Component {
   }
 
   getSdkMetaProperties() {
+    let details = '';
     const metaProperties = clone(appConfig.metaProperties);
     if (this.videoId) {
       metaProperties['name'] = 'video';
-      metaProperties['details'] = `vi_${this.videoId}`;
+      details = `vi_${this.videoId} `;
     }
+    details += `ipp_${1}`;
+    metaProperties['details'] = details;
     return metaProperties;
   }
 
@@ -323,7 +326,7 @@ class TransactionScreen extends Component {
   getSendTransactionPlatformData(ostWorkflowEntity) {
     let params = {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
-      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')
+      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')      
     };
     if (this.videoId) {
       params['meta'] = {};

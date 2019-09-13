@@ -15,3 +15,11 @@
 2. Move the unzipped folder to `pepo-react/ios/Crashlytics`
  
 You can also use https://fabric.io/kits/ios/crashlytics/manual-install?step=0 to get updated download links if needed.
+
+#### Firebase (for iOS)
+
+1. Download the frameworks from: http://sdk.stagingost.com.s3.amazonaws.com/ThirdPartyFrameworks/Firebase.zip
+
+2. Move the unzipped folder to `pepo-react/ios/Firebase` (all unzipped files and folders should be inside `pepo-react/ios/Firebase`)
+
+You can also use https://github.com/firebase/firebase-ios-sdk/releases/` to get updated download links if needed.

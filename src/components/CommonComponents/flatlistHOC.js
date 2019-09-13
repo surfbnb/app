@@ -31,37 +31,14 @@ function flatlistHOC(ListComponent, options) {
 
     componentDidMount() {
       if (this.props.fetchUrl) {
-        if (this.shouldMakeApiCall()) {
-          this.initList(new FetchServices(this.props.fetchUrl));
-        } else {
-          // Clear all results if you encounter a bug.
-        }
+        this.initList(new FetchServices(this.props.fetchUrl));
       }
     }
 
     componentDidUpdate(prevProps) {
-      if (!this.shouldMakeApiCall()) {
-        if (this.state.list.length) {
-          //Clear the results.
-          this.setState({ list: [] });
-        }
-        return;
-      }
-
       if (this.props.toRefresh) {
-        if (this.props.fetchUrl != prevProps.fetchUrl) {
-          this.refresh(new FetchServices(this.props.fetchUrl));
-        } else {
-          this.refresh();
-        }
+        this.refresh();
       }
-    }
-
-    shouldMakeApiCall() {
-      if (this.props.shouldMakeApiCall) {
-        return this.props.shouldMakeApiCall();
-      }
-      return true; // Default behaviour.
     }
 
     componentWillUnmount() {

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
-import Toast from '../../theme/components/NotificationToast';
 
+import Toast from '../../theme/components/NotificationToast';
+import reduxGetter from '../../services/ReduxGetters';
 import styles from './styles';
 import CurrentUser from '../../models/CurrentUser';
 import { OstWalletSdk, OstWalletSdkUI } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
-import ost_sdk_theme_config from "../../theme/ostsdk/ost-sdk-theme-config";
-import ost_sdk_content_config from "../../theme/ostsdk/ost-sdk-content-config";
-
+import ost_sdk_theme_config from '../../theme/ostsdk/ost-sdk-theme-config';
+import ost_sdk_content_config from '../../theme/ostsdk/ost-sdk-content-config';
 
 let t1, t2;
 
@@ -39,6 +39,7 @@ export default class AuthLoading extends Component {
 
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
+
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();

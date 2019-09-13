@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Pin the domain stagingost.com and ost.com-->
+    <!-- Official Android N API -->
+    <domain-config>
+        <domain includeSubdomains="true">stagingpepo.com</domain>
+        <pin-set>
+            <pin digest="SHA-256">93m2RcpFNG6qGhj6NKDplTVTL7jcqAnkd69kelXSxxI=</pin>
+            <pin digest="SHA-256">5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=</pin>
+            <pin digest="SHA-256">KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w=</pin>
+        </pin-set>
+        <trustkit-config enforcePinning="true">
+        </trustkit-config>
+    </domain-config>
+    <domain-config>
+        <domain includeSubdomains="true">sandboxpepo.com</domain>
+        <pin-set>
+            <!--Temp. Will deactivate soon.-->
+            <pin digest="SHA-256">rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=</pin>
+            <pin digest="SHA-256">DYo5lqgDZl75OmwvtxvNkpDMfeoDcyVaZi1rANPi4GA=</pin>
+            <pin digest="SHA-256">ImWdHMV2ca7NG/Gl542B/RXBXuiT+CF93UZl+jqowGI=</pin>
+        </pin-set>
+        <trustkit-config enforcePinning="true">
+        </trustkit-config>
+    </domain-config>
+    <domain-config>
+        <domain includeSubdomains="false">api.ost.com</domain>
+        <pin-set>
+            <!--Production-->
+            <pin digest="SHA-256">s4vrk6by0cqKQ9p/mFOakoi0daivc7Le8q7fUuuo4/U=</pin>
+            <pin digest="SHA-256">MvVeCJ2tAuJZmbqoXMqSNP2mKh+VjGiljvqWytjzasU=</pin>
+            <pin digest="SHA-256">J+0IGhy08mkHR1Z1WbdrHEdHhXRohrdLHUYORlWGafA=</pin>
+            <pin digest="SHA-256">aF+lKYb0WChlCTx5uPBw5ZWze/98vAXSzBBIrVSZWJE=</pin>
+            <pin digest="SHA-256">efgWbb0q/zHFLub1SY5QpoQVlZp33QpLOj0EmhoK8tI=</pin>
+
+            <!--Staging-->
+            <!--<pin digest="SHA-256">VMqNElFr41WvPqW6DcYoVXGjW7u85pF2dGpuyxaAPAk=</pin>-->
+            <!--<pin digest="SHA-256">EB5U//Yqir8uZ9UgM+sVXBoOi+daBWlrjO1543RvDmk=</pin>-->
+        </pin-set>
+        <trustkit-config enforcePinning="true">
+        </trustkit-config>
+    </domain-config>
+</network-security-config>
