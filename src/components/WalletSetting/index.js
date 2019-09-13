@@ -175,10 +175,7 @@ class WalletSettingList extends PureComponent {
   onWorkflowStarted = (workflowInfo) => {
     this.workflowInfo = workflowInfo;
     // Show loader.
-    let text = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].startText;
-    if (text) {
-      LoadingModal.show(text);
-    }
+    LoadingModal.show('');
 
     // Subscribe to events.
     walletSettingController.setUIDelegate(this);
