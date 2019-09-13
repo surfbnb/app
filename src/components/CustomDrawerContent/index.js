@@ -10,6 +10,7 @@ import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
 import loggedOutIcon from '../../assets/drawer-logout-icon.png';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
+import pepoAmountWallet from '../../assets/pepo-amount-wallet.png';
 import Toast from '../../theme/components/NotificationToast';
 
 import BackArrow from '../../assets/back-arrow.png';
@@ -123,7 +124,7 @@ class CustomDrawerContent extends Component {
     return (
       <TouchableOpacity onPress={this.initWallet} >
         <View style={[styles.itemParent]}>
-          <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+          <Image style={{ height: 24, width: 25.3 }} source={pepoAmountWallet} />
           <Text style={styles.item}>Wallet settings</Text>
         </View>
       </TouchableOpacity>);
@@ -162,10 +163,6 @@ class CustomDrawerContent extends Component {
           </SafeAreaView>
         </ScrollView>
     );
-  }
-
-  getWalletSettingOption() {
-
   }
 }
 
