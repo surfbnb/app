@@ -10,9 +10,14 @@ import okhttp3.OkHttpClient;
 
 public class OkHttpCertificatePin implements OkHttpClientFactory {
     private static final String TAG = "OkHttpCertPin";
+    private static boolean mTrustKitNotInitialized = true;
+
 
     public OkHttpCertificatePin(Context context) {
-        TrustKit.initializeWithNetworkSecurityConfiguration(context.getApplicationContext());
+        if (mTrustKitNotInitialized) {
+            TrustKit.initializeWithNetworkSecurityConfiguration(context.getApplicationContext());
+            mTrustKitNotInitialized = false;
+        }
     }
 
     @Override
