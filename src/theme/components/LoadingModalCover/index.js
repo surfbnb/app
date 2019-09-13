@@ -134,9 +134,9 @@ class loadingModalCover extends React.Component {
 
   getProgressView() {
 
-    // if (!this.props.message || this.props.message.length == 0) {
-    //   return <View style={inlineStyles.backgroundStyle} />
-    // }
+    if (!this.props.message || this.props.message.length == 0) {
+      return <View style={inlineStyles.backgroundStyle} />
+    }
 
     const rotateData = this.state.rotate.interpolate({
       inputRange: [0, 1],
