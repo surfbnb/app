@@ -5,7 +5,6 @@ import {optionIds, walletSettingController} from './WalletSettingController';
 import {LoadingModal} from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
 import BackArrow from '../CommonComponents/BackArrow';
-import {CustomAlert} from "../../theme/components/CustomAlert";
 import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
 import {ostSdkErrors} from "../../services/OstSdkErrors";
 import CurrentUser from "../../models/CurrentUser";
@@ -131,6 +130,11 @@ class WalletSettingList extends PureComponent {
     return text
   }
 
+  _getRequestAcknowledgedText() {
+    let text = this.eventLoaderTextMap[this.workflowInfo.workflowOptionId].acknowledgedText;
+    return text
+  }
+
   _getFlowFailedText(workflowContext, ostError) {
     return ostSdkErrors.getErrorMessage(workflowContext, ostError)
   }
@@ -149,11 +153,10 @@ class WalletSettingList extends PureComponent {
         refreshing: !refreshState
       });
 
-      LoadingModal.hide();
       if (onFetch) {
-        setTimeout(() => {
-          onFetch()
-        },0)
+        onFetch()
+      }else {
+        LoadingModal.hide()
       }
 
     }, true);
@@ -182,27 +185,24 @@ class WalletSettingList extends PureComponent {
   };
 
   requestAcknowledged = (ostWorkflowContext , ostContextEntity) => {
-    //TODO: update language on request acknowledged.
+    LoadingModal.show(this._getRequestAcknowledgedText())
   };
 
   flowComplete = (ostWorkflowContext , ostContextEntity) => {
     this.refreshList(() => {
       let text = this._getFlowCompleteText();
-      CustomAlert.showSuccess(text);
+      LoadingModal.showSuccessAlert(text);
     });
   };
 
   onUnauthorized = (ostWorkflowContext , ostError) => {
-    LoadingModal.hide();
-    CustomAlert.showFailure("Device is not authorized. Please authorize device again.", null, "Logout", () => {
-      CurrentUser.logout()
+    LoadingModal.showFailureAlert("Device is not authorized. Please authorize device again.", null, "Logout", () => {
+      CurrentUser.logoutLocal();
     })
-
   };
 
   saltFetchFailed = (ostWorkflowContext , ostError) => {
-    LoadingModal.hide();
-    CustomAlert.showFailure("There is some issue while fetching salt. Please retry", null, "Retry", (isButtonTapped) => {
+    LoadingModal.showFailureAlert("There is some issue while fetching salt. Please retry", null, "Retry", (isButtonTapped) => {
       if (isButtonTapped) {
         let retryItem = walletSettingController.optionsMap[this.workflowInfo.workflowOptionId];
         this.onSettingItemTapped(retryItem);
@@ -219,9 +219,8 @@ class WalletSettingList extends PureComponent {
   };
 
   workflowFailed = (ostWorkflowContext , ostError) => {
-    LoadingModal.hide();
     let text = this._getFlowFailedText(ostWorkflowContext, ostError);
-    CustomAlert.showFailure(text, null, "Dismiss");
+    LoadingModal.showFailureAlert(text, null, "Dismiss");
   };
 
   _keyExtractor = (item, index) => `id_${item.id}`;

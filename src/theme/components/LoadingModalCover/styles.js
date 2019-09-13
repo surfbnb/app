@@ -21,10 +21,29 @@ export default StyleSheet.create({
     fontWeight: '500'
   },
   footerText: {
-    // position: 'absolute',
+    position: 'absolute',
     bottom: 20,
     textAlign: 'center',
     color: '#fff',
     fontSize: 14
+  },
+
+  alertImage: {
+    width: 40,
+    height:40,
+    resizeMode: 'contain'
+  },
+  alertMessage: {
+    textAlign: 'center',
+    fontSize: 18,
+    margin: 15,
+    marginBottom: 4,
+    color: 'white',
+    fontWeight: '500'
+  },
+  alertFooter: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 14,
   }
 });
