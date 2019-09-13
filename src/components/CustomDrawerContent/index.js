@@ -18,8 +18,8 @@ import {connect} from "react-redux";
 import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
 
 class CustomDrawerContent extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.userName = "";
     this.state = {
       disableButtons: false,
