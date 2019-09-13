@@ -190,8 +190,13 @@ class WalletSettingList extends PureComponent {
 
   flowComplete = (ostWorkflowContext , ostContextEntity) => {
     this.refreshList(() => {
-      let text = this._getFlowCompleteText();
-      LoadingModal.showSuccessAlert(text);
+      if (this.canShowAlert(ostWorkflowContext)) {
+        let text = this._getFlowCompleteText();
+        LoadingModal.showSuccessAlert(text);
+      }else {
+        LoadingModal.hide()
+      }
+
     });
   };
 
@@ -222,6 +227,14 @@ class WalletSettingList extends PureComponent {
     let text = this._getFlowFailedText(ostWorkflowContext, ostError);
     LoadingModal.showFailureAlert(text, null, "Dismiss");
   };
+
+  canShowAlert(workflowContext) {
+    if (workflowContext.WORKFLOW_TYPE === 'GET_DEVICE_MNEMONICS') {
+      return false
+    }
+
+    return true
+  }
 
   _keyExtractor = (item, index) => `id_${item.id}`;
 
