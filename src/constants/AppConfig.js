@@ -20,6 +20,15 @@ export default {
     activating: 'activating'
   },
 
+  deviceStatusMap: {
+    registered: 'registered',
+    authorizing: 'authorizing',
+    authorized: 'authorized',
+    revoking: 'revoking',
+    recovering: 'recovering',
+    revoked: 'revoked'
+  },
+
   ruleTypeMap: {
     directTransfer: 'direct transfer',
     pricer: 'pricer'

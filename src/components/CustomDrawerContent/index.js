@@ -70,9 +70,43 @@ export default class CustomDrawerContent extends Component {
             disableButtons: false
           });
         }, 300);
-      }
+      //TODO: Show error somewhere.
+    });
+  }
+
+  renderRecoverDevice() {
+    console.log("this.state.showRecoverDevice", this.state.showRecoverDevice);
+    if ( !this.state.showRecoverDevice ) {
+      return null;
+    }
+    return (
+      <TouchableOpacity onPress={this.recoverDevice}>
+        <View style={styles.itemParent}>
+          <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+          <Text style={styles.item}>Recover Device</Text>
+        </View>
+      </TouchableOpacity>
     );
   }
+
+  renderAbortRecovery() {
+    if ( !this.state.showAbortRecovery ) {
+      return null;
+    }
+    return (
+      <TouchableOpacity onPress={this.abortRecovery}>
+         <View style={styles.itemParent}>
+          <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+          <Text style={styles.item}>Abort Recovery</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  initWallet = () => {
+    //TODO: Navigation should push instead of navigate
+    this.props.navigation.navigate("WalletSettingScreen") ;
+  };
 
   render(){
     return (
@@ -91,6 +125,20 @@ export default class CustomDrawerContent extends Component {
               <View style={styles.itemParent}>
                 <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
                 <Text style={styles.item}>Twitter Disconnect</Text>
+              </View>
+            </TouchableOpacity>
+            {/*<TouchableOpacity onPress={this.resetPin} disabled={this.state.disableResetPin}>*/}
+              {/*<View style={styles.itemParent}>*/}
+                {/*<Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />*/}
+                {/*<Text style={styles.item}>Reset Pin</Text>*/}
+              {/*</View>*/}
+            {/*</TouchableOpacity>*/}
+            {/*{this.renderRecoverDevice()}*/}
+            {/*{this.renderAbortRecovery()}*/}
+            <TouchableOpacity onPress={this.initWallet} >
+              <View style={styles.itemParent}>
+                <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+                <Text style={styles.item}>Wallet settings</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>

@@ -6,7 +6,8 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 30
+    padding: 30,
+    height: '100%'
   },
   loadingImage: {
     width: 82,
@@ -25,5 +26,24 @@ export default StyleSheet.create({
     textAlign: 'center',
     color: '#fff',
     fontSize: 14
+  },
+
+  alertImage: {
+    width: 40,
+    height:40,
+    resizeMode: 'contain'
+  },
+  alertMessage: {
+    textAlign: 'center',
+    fontSize: 18,
+    margin: 15,
+    marginBottom: 4,
+    color: 'white',
+    fontWeight: '500'
+  },
+  alertFooter: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 14,
   }
 });
