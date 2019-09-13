@@ -28,7 +28,7 @@ function ensureTransaction(userId, btAmount, callback) {
           })
         } else {
           Toast.show({
-            text: 'Device Does not have enough balance',
+            text: 'Device does not have enough balance',
             icon: 'error'
           });
           return callback(false);
