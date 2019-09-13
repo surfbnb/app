@@ -86,7 +86,7 @@ class WalletSettingController {
   _fetchDevice() {
     OstWalletSdk.getCurrentDeviceForUserId(this.userId, (device) => {
       if( device && OstWalletSdkHelper.canDeviceMakeApiCall( device ) ) {
-        this._fetchDeviceFromServer();
+        this._fetchDeviceFromServer(device);
         return;
       }
       // Make do with what we have.
@@ -94,13 +94,13 @@ class WalletSettingController {
     });
   }
 
-  _fetchDeviceFromServer() {
+  _fetchDeviceFromServer(localDevice) {
     OstJsonApi.getCurrentDeviceForUserId(this.userId,( device ) => {
 
       this._onDeviceFetch(device)
 
     }, ( error ) => {
-      this._onDeviceFetch(null)
+      this._onDeviceFetch(localDevice)
     });
   }
 
@@ -267,6 +267,8 @@ class WalletSettingController {
         workflowId = null,
         userId = this.userId
     ;
+
+    console.log("WalletSettings ost userId", userId);
 
     switch( optionId ) {
       case optionIds.addSession:

@@ -261,7 +261,6 @@ class WalletSettingList extends PureComponent {
         />
       </View>
     );
-
   }
 }
 
