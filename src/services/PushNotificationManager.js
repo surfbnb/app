@@ -32,7 +32,13 @@ class PushNotificationManager extends PureComponent {
 
     this.removeNotificationListener = firebase
       .notifications()
-      .onNotification((notification) => console.log('onNotification', notification));
+      .onNotification((notification) => {
+        if (this.props.currentUserId) {          
+          new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
+            .post()
+            .then((responseData) => console.log('reset-badge :: responseData', responseData));
+        }
+      });
 
     firebase
       .messaging()
@@ -94,9 +100,7 @@ class PushNotificationManager extends PureComponent {
         .then((responseData) => console.log('sendToken :: Payload sent successfully', responseData));
   }
 
-  clearNotifications() {
-    console.log('clearNotifications');
-
+  clearNotifications() {    
     if (Platform.OS == 'ios') {
       firebase
         .notifications()
@@ -104,14 +108,7 @@ class PushNotificationManager extends PureComponent {
         .then((count) => {
           if (count > 0) {
             console.log(`clearNotifications :: as badge count (${count}) > 0`);  
-            this.clearFirebaseNotifications();
-
-            if (this.props.currentUserId) {          
-              new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
-                .post()
-                .then((responseData) => console.log('reset-badge :: responseData', responseData));
-            }
-
+            this.clearFirebaseNotifications();      
           }
         });
     } else {
@@ -121,6 +118,11 @@ class PushNotificationManager extends PureComponent {
 
   clearFirebaseNotifications() {
       // Reset badge and clear notifications on device
+      if (this.props.currentUserId) {          
+        new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
+          .post()
+          .then((responseData) => console.log('reset-badge :: responseData', responseData));
+      }
       firebase
         .notifications()
         .removeAllDeliveredNotifications()
