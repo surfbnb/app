@@ -299,7 +299,7 @@ const RootNavigationContainer = () => (
     <AllowAccessModalScreen />
     <NotificationToastComponent />
     <SocketManager />
-    <PushNotificationManager />
+    {/*<PushNotificationManager />*/}
   </Root>
 );
 

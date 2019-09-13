@@ -1,6 +1,5 @@
 import { Linking } from 'react-native';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
-import Colors from '../theme/styles/Colors';
 
 const defaultOptions = {
   // iOS Properties
