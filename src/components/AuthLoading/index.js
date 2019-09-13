@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
-import Toast from '../NotificationToast';
+import Toast from '../../theme/components/NotificationToast';
 
 import styles from './styles';
 import CurrentUser from '../../models/CurrentUser';
-import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstWalletSdk, OstWalletSdkUI } from '@ostdotcom/ost-wallet-sdk-react-native';
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
+import ost_sdk_theme_config from "../../theme/ostsdk/ost-sdk-theme-config";
+import ost_sdk_content_config from "../../theme/ostsdk/ost-sdk-content-config";
+
 
 let t1, t2;
 
@@ -21,6 +24,8 @@ export default class AuthLoading extends Component {
   init = async () => {
     LoadingModal.show('Syncing...');
     t1 = Date.now();
+    OstWalletSdkUI.setThemeConfig(ost_sdk_theme_config);
+    OstWalletSdkUI.setContentConfig(ost_sdk_content_config);
     OstWalletSdk.initialize(PLATFORM_API_ENDPOINT, this.onSdkInitialized);
   };
 

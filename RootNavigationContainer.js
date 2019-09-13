@@ -41,9 +41,12 @@ import CustomDrawerContent from './src/components/CustomDrawerContent';
 import AllowAccessModalScreen from './src/components/AllowAccessModalScreen';
 import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
 import utilities from './src/services/Utilities';
-import { NotificationToastComponent } from './src/components/NotificationToast';
+import { NotificationToastComponent } from './src/theme/components/NotificationToast';
+import SocketManager from './src/components/SocketManager';
+import SearchScreen from './src/components/Search';
+import FanVideoDetails from './src/components/FanVideoDetails';
 
-const customTabHiddenRoutes = ['CaptureVideo'];
+const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -87,6 +90,16 @@ const txModalConfig = {
   })
 };
 
+const CaptureVideoStack = createStackNavigator(
+  {
+    CaptureVideo: CaptureVideo,
+    FanVideoDetails: FanVideoDetails
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
 const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
@@ -104,7 +117,7 @@ const HomeStack = createStackNavigator(
   {
     HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen,
-    CaptureVideo: CaptureVideo
+    CaptureVideo: CaptureVideoStack
   },
   {
     ...modalStackConfig,
@@ -131,7 +144,7 @@ const NotificationStack = createStackNavigator(
     NotificationPushStack: NotificationPushStack,
     TransactionScreen: TransactionScreen,
     SayThanksScreen: SayThanksScreen,
-    CaptureVideo: CaptureVideo
+    CaptureVideo: CaptureVideoStack
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -157,7 +170,7 @@ const ProfileStack = createStackNavigator(
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery,
     TransactionScreen: TransactionScreen,
-    CaptureVideo: CaptureVideo
+    CaptureVideo: CaptureVideoStack
   },
   {
     headerLayoutPreset: 'center',
@@ -172,9 +185,33 @@ const ProfileStack = createStackNavigator(
   }
 );
 
+const SearchPushStack = createStackNavigator(
+  {
+    SearchScreen: SearchScreen,
+    UsersProfileScreen: UsersProfileScreen,
+    SupportingListScreen: SupportingListScreen,
+    SupportersListScreen: SupportersListScreen
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
+const SearchStack = createStackNavigator(
+  {
+    SearchPushStack: SearchPushStack,
+    CaptureVideo: CaptureVideoStack
+  },
+  {
+    ...modalStackConfig,
+    ...txModalConfig
+  }
+);
+
 const CustomTabStack = createBottomTabNavigator(
   {
     Home: HomeStack,
+    Search: SearchStack,
     Notification: NotificationStack,
     Profile: ProfileStack
   },
@@ -257,6 +294,7 @@ const RootNavigationContainer = () => (
     <LoginPopover />
     <AllowAccessModalScreen />
     <NotificationToastComponent />
+    <SocketManager />
   </Root>
 );
 

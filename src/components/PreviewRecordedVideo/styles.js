@@ -24,8 +24,9 @@ let stylesMap = {
     borderWidth: 0.5,
     height: 7,
     width: '90%',
-    marginLeft: 10,
-    marginRight: 10
+    alignSelf: 'center'
+    // marginLeft: 10,
+    // marginRight: 10
   },
   cancelButton: {
     position: 'absolute',
@@ -39,7 +40,7 @@ let stylesMap = {
     fontWeight: 'bold'
   },
   bottomControls: {
-    flex: 1,
+    // flex: 1,
     position: 'absolute',
     bottom: 40,
     flexDirection: 'row',
@@ -54,11 +55,11 @@ let stylesMap = {
     paddingHorizontal: 20,
     marginLeft: -32.5
   },
-  tickIconSkipFont: {
-    width: 45,
-    height: 45,
-    marginRight: 20
-  },
+  // tickIconSkipFont: {
+  //   width: 45,
+  //   height: 45,
+  //   marginRight: 20
+  // },
   closeBtWrapper: {
     position: 'absolute',
     top: 10,
@@ -71,6 +72,18 @@ let stylesMap = {
     marginLeft: 20,
     height: 20,
     width: 20
+  },
+  triangleRight: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderBottomWidth: 22,
+    borderTopWidth: 22,
+    borderLeftWidth: 16,
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent',
+    borderLeftColor: '#ff5566'
   }
 };
 

@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import { OstWalletSdk, OstWalletSdkUI, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
 import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
 import loggedOutIcon from '../../assets/drawer-logout-icon.png';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
-import Toast from '../NotificationToast';
+import Toast from '../../theme/components/NotificationToast';
 
 import BackArrow from '../../assets/back-arrow.png';
 
@@ -17,7 +18,7 @@ export default class CustomDrawerContent extends Component{
     super();
     this.userName = reduxGetter.getName(CurrentUser.getUserId());
     this.state = {
-      disableButtons: false
+      disableButtons: false,
     };
     this.twitterDisconnect = this.twitterDisconnect.bind(this);
     this.CurrentUserLogout = this.CurrentUserLogout.bind(this);

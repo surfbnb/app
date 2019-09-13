@@ -1,5 +1,8 @@
 import pepo_icon from '../assets/pepo-white-icon.png';
 import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
+import twitterDisconnectIcon from '../assets/drawer-twitter-icon.png';
+import defaultLinkIcon from '../assets/default_link_icon.png';
+import feedLinkIcon from '../assets/Link.png';
 
 const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
   PROFILE_TX_RECEIVE_SUCCESS = 'PROFILE_TX_RECEIVE_SUCCESS',
@@ -141,7 +144,7 @@ export default {
     tab2: {
       rootStack: 'Search',
       childStack: 'SearchScreen',
-      navigationIndex: null
+      navigationIndex: 1
     },
     tab3: {
       rootStack: 'CaptureVideo',
@@ -151,12 +154,34 @@ export default {
     tab4: {
       rootStack: 'Notification',
       childStack: 'NotificationScreen',
-      navigationIndex: 1
+      navigationIndex: 2
     },
     tab5: {
       rootStack: 'Profile',
       childStack: 'ProfileScreen',
-      navigationIndex: 2
+      navigationIndex: 3
     }
+  },
+
+  videoLinkConfig: {
+    HOME_FEED: {
+      SOCIAL_ICONS: {
+        TWITTER: twitterDisconnectIcon,
+        DEFAULT: feedLinkIcon
+      }
+    },
+    VIDEO: {
+      SOCIAL_ICONS: {
+        TWITTER: twitterDisconnectIcon,
+        DEFAULT: defaultLinkIcon
+      }
+    },
+    WHITELISTED_DOMAINS: {
+      // TWITTER: 'twitter.com'
+    }
+  },
+
+  searchConfig: {
+    MIN_SEARCH_CHAR: 2
   }
 };

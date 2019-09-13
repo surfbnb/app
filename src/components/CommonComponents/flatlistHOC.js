@@ -16,7 +16,7 @@ import { FetchServices } from '../../services/FetchServices';
  * Will have to implement onEndReachedCalledDuringMomentum mechanism there as
  */
 
-function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
+function flatlistHOC(ListComponent, options) {
   return class extends PureComponent {
     constructor(props) {
       super(props);
@@ -25,20 +25,43 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
         refreshing: false,
         loadingNext: false
       };
-      this.onEndReachedCalledDuringMomentum = !!scrollDetectNext;
+      this.onEndReachedCalledDuringMomentum = options && !!options.scrollDetectNext;
       this.flatListHocRef = null;
     }
 
     componentDidMount() {
       if (this.props.fetchUrl) {
-        this.initList(new FetchServices(this.props.fetchUrl));
+        if (this.shouldMakeApiCall()) {
+          this.initList(new FetchServices(this.props.fetchUrl));
+        } else {
+          // Clear all results if you encounter a bug.
+        }
       }
     }
 
-    componentDidUpdate() {
-      if (this.props.toRefresh) {
-        this.refresh();
+    componentDidUpdate(prevProps) {
+      if (!this.shouldMakeApiCall()) {
+        if (this.state.list.length) {
+          //Clear the results.
+          this.setState({ list: [] });
+        }
+        return;
       }
+
+      if (this.props.toRefresh) {
+        if (this.props.fetchUrl != prevProps.fetchUrl) {
+          this.refresh(new FetchServices(this.props.fetchUrl));
+        } else {
+          this.refresh();
+        }
+      }
+    }
+
+    shouldMakeApiCall() {
+      if (this.props.shouldMakeApiCall) {
+        return this.props.shouldMakeApiCall();
+      }
+      return true; // Default behaviour.
     }
 
     componentWillUnmount() {
@@ -75,13 +98,17 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
 
     beforeRefresh() {
       this.props.beforeRefresh && this.props.beforeRefresh();
-      if (this.props.toRefresh && silentRefresh) return;
+      if (this.props.toRefresh && (options && options.silentRefresh)) return;
       this.setState({ refreshing: true });
     }
 
     onRefresh(res) {
       this.props.onRefresh && this.props.onRefresh(res);
-      this.setState({ refreshing: false, list: this.fetchServices.getIDList() });
+      this.setState({
+        refreshing: false,
+        list:
+          options && options.keyPath ? this.fetchServices.getIDList(options.keyPath) : this.fetchServices.getIDList()
+      });
     }
 
     onRefreshError(error) {
@@ -116,7 +143,7 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
     };
 
     beforeNext() {
-      if (scrollDetectNext) {
+      if (options && options.scrollDetectNext) {
         this.onEndReachedCalledDuringMomentum = true;
       }
       this.props.beforeNext && this.props.beforeNext();
@@ -125,7 +152,11 @@ function flatlistHOC(ListComponent, scrollDetectNext, silentRefresh) {
 
     onNext(res) {
       this.props.onNext && this.props.onNext(res);
-      this.setState({ loadingNext: false, list: this.fetchServices.getIDList() });
+      this.setState({
+        loadingNext: false,
+        list:
+          options && options.keyPath ? this.fetchServices.getIDList(options.keyPath) : this.fetchServices.getIDList()
+      });
     }
 
     onNextError(error) {

@@ -18,9 +18,17 @@ import PepoApi from './PepoApi';
 import ReduxGetters from './ReduxGetters';
 import videoUploaderComponent from './CameraWorkerEventEmitter';
 import createObjectForRedux from '../helpers/createObjectForRedux';
-import Toast from '../components/NotificationToast';
+import Toast from '../theme/components/NotificationToast';
 
-const recordedVideoStates = ['raw_video', 'compressed_video', 's3_video', 'cover_image', 's3_cover_image'];
+const recordedVideoStates = [
+  'raw_video',
+  'compressed_video',
+  's3_video',
+  'cover_image',
+  's3_cover_image',
+  'video_desc',
+  'video_link'
+];
 
 const processingStatuses = [
   'compression_processing',
@@ -344,6 +352,8 @@ class CameraWorker extends PureComponent {
       let payload = {
         video_url: this.props.recorded_video.s3_video,
         poster_image_url: this.props.recorded_video.s3_cover_image,
+        video_description: this.props.recorded_video.video_desc,
+        link: this.props.recorded_video.video_link,
         video_width: appConfig.cameraConstants.VIDEO_WIDTH,
         video_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         image_width: appConfig.cameraConstants.VIDEO_WIDTH,

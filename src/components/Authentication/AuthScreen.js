@@ -11,7 +11,7 @@ import Theme from '../../theme/styles';
 import styles from './styles';
 import PepoIcon from '../../assets/pepo_logo.png';
 import InitWalletSdk from '../../services/InitWalletSdk';
-import Toast from '../../theme/components/Toast';
+// import Toast from '../../theme/components/Toast';
 import CurrentUser from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
@@ -160,14 +160,13 @@ class AuthScreen extends Component {
   }
 
   setupDeviceComplete() {
-    CurrentUser
-      .initialize()
+    CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();
         if (!CurrentUser.isActiveUser()) {
           this.props.navigation.navigate('UserActivatingScreen');
         } else {
-         this.props.navigation.navigate('HomeScreen');          
+          this.props.navigation.navigate('HomeScreen');
         }
       })
       .catch((error) => {
@@ -349,7 +348,7 @@ class AuthScreen extends Component {
               )}
               <Text style={Theme.Errors.errorText}>{this.state.general_error}</Text>
             </View>
-            <Toast timeout={3000} />
+            {/* <Toast timeout={3000} /> */}
           </View>
           <View style={styles.bottomBtnAndTxt}>
             {!this.state.signup && (

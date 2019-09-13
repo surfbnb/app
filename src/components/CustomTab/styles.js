@@ -11,11 +11,11 @@ let stylesMap = {
     justifyContent: 'space-around',
     backgroundColor: Colors.white,
     shadowColor: Colors.black,
-    shadowOffset: {width: 0, height: -1},
+    shadowOffset: { width: 0, height: -1 },
     shadowOpacity: 0.2,
     shadowRadius: 1,
-    // elevation: 1,
-    alignItems: 'center',
+    elevation: 5,
+    alignItems: 'center'
     // borderColor: 'rgba(0, 0, 0, 0.25)',
     // borderWidth: 1,
     // borderBottomWidth: 0,
@@ -27,7 +27,7 @@ let stylesMap = {
     marginVertical: 10,
     height: 35,
     width: 35
-  },
+  }
   // tabElementFriendsSkipFont: {
   //   alignSelf: 'center',
   //   marginHorizontal: 20,

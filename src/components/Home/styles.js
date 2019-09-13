@@ -14,9 +14,10 @@ let stylesMap = {
         height: Dimensions.get('window').height - CUSTOM_TAB_Height - getBottomSpace([true])
       },
       {
-        height: (DeviceInfo.hasNotch() || StatusBar.currentHeight > 24)
-          ? Dimensions.get('window').height - CUSTOM_TAB_Height + StatusBar.currentHeight
-          : Dimensions.get('window').height - CUSTOM_TAB_Height
+        height:
+          DeviceInfo.hasNotch() || StatusBar.currentHeight > 24
+            ? Dimensions.get('window').height - CUSTOM_TAB_Height + StatusBar.currentHeight
+            : Dimensions.get('window').height - CUSTOM_TAB_Height
       }
     )
   },
@@ -33,8 +34,7 @@ let stylesMap = {
     fontSize: 18,
     color: Colors.white,
     alignSelf: 'center',
-    marginTop: 3,
-    marginBottom: 15
+    marginBottom: 3
   },
   txElem: {
     marginBottom: 20
@@ -46,12 +46,11 @@ let stylesMap = {
   },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingHorizontal: 15,
+    // flexDirection: 'column',
+    // justifyContent: 'flex-start',
     borderTopLeftRadius: 20,
-    maxHeight: Dimensions.get('window').height * 0.15,
-    minHeight: Dimensions.get('window').height * 0.07
+    maxHeight: Dimensions.get('window').height * 0.3,
+    minHeight: Dimensions.get('window').height * 0.05
   },
   handle: {
     fontSize: 15,
@@ -66,7 +65,7 @@ let stylesMap = {
     borderTopLeftRadius: 25,
     borderBottomRightRadius: 25,
     paddingHorizontal: 8,
-    width: 130,
+    width: 120,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',

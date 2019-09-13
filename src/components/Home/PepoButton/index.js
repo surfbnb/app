@@ -114,11 +114,12 @@ class PepoButton extends React.Component {
     return (
       <React.Fragment>
         {this.renderClaps()}
+        <Text style={inlineStyles.pepoTxCount}>{ Pricer.toDisplayAmount(this.state.count || 0 )}</Text>
         <TouchableWithoutFeedback
           disabled={this.state.disabled}
           onPressIn={this.keepClapping}
           onPressOut={this.stopClapping}>
-          <View>
+          <View style={{marginBottom: 15}}>
             <ClapButton disabled={this.state.disabled}
                         isSupported={this.props.isSupported}
                         id={this.props.id+"_clap_btn"}
@@ -128,7 +129,7 @@ class PepoButton extends React.Component {
             />
           </View>
         </TouchableWithoutFeedback>
-        <Text style={inlineStyles.pepoTxCount}>{ Pricer.toDisplayAmount(this.state.count || 0 )}</Text>
+        
       </React.Fragment>
     );
   }

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Text, Animated, TouchableOpacity, Image, View } from 'react-native';
-import EventEmitter from 'eventemitter3';
+import EventEmitter from 'eventemitter3/index';
 
-import Colors from '../../theme/styles/Colors';
+import Colors from '../../styles/Colors';
 import styles from './styles';
-import modalCross from '../../assets/modal-cross-icon.png';
-import toastSuccess from '../../assets/toast_success.png';
-import toastError from '../../assets/toast_error.png';
+import modalCross from '../../../assets/modal-cross-icon.png';
+import toastSuccess from '../../../assets/toast_success.png';
+import toastError from '../../../assets/toast_error.png';
 
 const toastEventEmitter = new EventEmitter();
 const duration = 500;
@@ -50,7 +50,9 @@ export class NotificationToastComponent extends Component {
         toValue: 1,
         duration,
         useNativeDriver: true
-      }).start(this.hideToast(delay));
+      }).start(() => {
+        this.hideToast(delay);
+      });
     });
   }
 

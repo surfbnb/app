@@ -7,7 +7,7 @@ import appConfig from '../constants/AppConfig';
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
 import CurrentUser from '../models/CurrentUser';
 import { LoginPopoverActions } from '../components/LoginPopover';
-import Toast from '../components/NotificationToast';
+import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
 let recursiveMaxCount = 0;
@@ -33,10 +33,6 @@ let checkVideoPermission = function(navigation) {
           accessText = 'Enable Camera and Microphone Access';
         }
         allowAcessModalEventEmitter.emit('show', accessText);
-
-        // this.setState({
-        //   showCameraAccessModal: true
-        // });
       }
     });
   });
@@ -145,5 +141,12 @@ export default {
       return false;
     }
     return true;
+  },
+
+  sanitizeLink(link) {
+    return link
+      .split('/')
+      .map((item, index) => (index < 3 ? item.toLowerCase() : item))
+      .join('/');
   }
 };

@@ -12,6 +12,8 @@ import PixelCall from '../../../services/PixelCall';
 import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import Pricer from '../../../services/Pricer';
+import InAppBrowser from '../../../services/InAppBrowser';
+import Utilities from '../../../services/Utilities';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -121,7 +123,7 @@ class UserInfo extends React.PureComponent {
           <Text
             style={[{ color: Colors.summerSky, textAlign: 'center', marginTop: 10 }]}
             onPress={() => {
-              Linking.openURL(this.props.link);
+              InAppBrowser.openBrowser(Utilities.sanitizeLink(this.props.link));
             }}
           >
             {this.props.link}

@@ -72,7 +72,7 @@ class UserVideoHistoryRow extends PureComponent {
                   </View>
                 )}
 
-                <VideoAmountStat videoId={this.props.videoId} />
+                <VideoAmountStat videoId={this.props.videoId} pageName='profile' />
               </View>
 
               <BottomStatus userId={this.props.userId} videoId={this.props.videoId} />

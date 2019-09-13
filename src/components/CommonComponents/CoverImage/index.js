@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import { View, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 
 import reduxGetter from '../../../services/ReduxGetters';

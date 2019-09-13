@@ -1,5 +1,6 @@
 import PepoApi from '../services/PepoApi';
-import Toast from '../components/NotificationToast';
+import Toast from '../theme/components/NotificationToast';
+import AppConfig from '../constants/AppConfig';
 
 function fetchUser(userId, successCallback, errorCallback, finallyCallback) {
   new PepoApi(`/users/${userId}/profile`)
@@ -31,4 +32,20 @@ function fetchUser(userId, successCallback, errorCallback, finallyCallback) {
     });
 }
 
-export { fetchUser };
+function getSocialIcon(url, screen) {
+  let hostName = url && url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?([^:\/?\n]+)/im);
+  if ( !hostName || hostName.length < 2) {
+    return;
+  }
+  hostName = hostName[1];
+  if (hostName) {
+    for (let domainName in AppConfig.videoLinkConfig.WHITELISTED_DOMAINS) {
+      if (hostName.includes(AppConfig.videoLinkConfig.WHITELISTED_DOMAINS[domainName])) {
+        return AppConfig.videoLinkConfig[screen].SOCIAL_ICONS[domainName];
+      }
+    }
+  }
+  return AppConfig.videoLinkConfig[screen].SOCIAL_ICONS.DEFAULT;
+}
+
+export { fetchUser, getSocialIcon };

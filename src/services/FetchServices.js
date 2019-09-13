@@ -1,4 +1,5 @@
 import PepoApi from './PepoApi';
+import deepGet from 'lodash/get';
 
 const VCErrors = {
   AlreadyFetchingError: 'AlreadyFetchingError',
@@ -141,7 +142,7 @@ class FetchServices {
   }
 
   getIDList(key = 'id') {
-    return this.results.map((item) => item[key]);
+    return this.results.map((item) => deepGet(item, key));
   }
 
   clone() {

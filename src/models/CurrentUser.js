@@ -1,4 +1,4 @@
-import utilities from '../services/Utilities';
+import { OstWalletUIWorkflowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import PepoApi from '../services/PepoApi';
 import deepGet from 'lodash/get';
 import Store from '../store';
@@ -7,11 +7,20 @@ import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
-import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
-import Toast from "../components/NotificationToast";
+import Toast from "../theme/components/NotificationToast";
 
 // Used require to support all platforms
 const RCTNetworking = require("RCTNetworking");
+
+let utilities = null;
+import('../services/Utilities').then((pack) => {
+  utilities = pack.default;
+});
+
+let FlyerEventEmitter = null;
+import ('../components/CommonComponents/FlyerHOC').then( (pack) => {
+  FlyerEventEmitter = pack.FlyerEventEmitter;
+});
 
 class CurrentUser {
   constructor() {
@@ -137,18 +146,25 @@ class CurrentUser {
   async logout(params) {
     await new PepoApi('/auth/logout')
       .post()
-      .catch((error) => {
-        Toast.show({
-          text: 'Logout failed please try again.',
-          icon: 'error'
-        });
-      })
       .then((res) => {
         RCTNetworking.clearCookies(async () => {
           await this.clearCurrentUser();
           NavigationService.navigate('HomeScreen', params)
         });
+      })
+      .catch((error) => {
+        Toast.show({
+          text: 'Logout failed please try again.',
+          icon: 'error'
+        });
       });
+  }
+
+  async logoutLocal(params) {
+    await RCTNetworking.clearCookies(async () => {
+      await this.clearCurrentUser();
+      NavigationService.navigate('HomeScreen', params)
+    });
   }
 
   _signin(apiUrl, params) {
@@ -164,6 +180,45 @@ class CurrentUser {
 
   getUserSalt() {
     return new PepoApi('/users/recovery-info').get();
+  }
+
+  newPassphraseDelegate() {
+    let delegate = new OstWalletUIWorkflowCallback();
+    this.bindSetPassphrase( delegate );
+    return delegate;
+  }
+
+  bindSetPassphrase( uiWorkflowCallback ) {
+    Object.assign(uiWorkflowCallback, {
+      getPassphrase: (userId, ostWorkflowContext, passphrasePrefixAccept) => {
+        if ( !userId || this.getOstUserId() != userId ) {
+          //TODO: Figure out what to do here.
+          passphrasePrefixAccept.cancelFlow();
+          return;
+        }
+
+        this.getUserSalt()
+          .then((res) => {
+            if (res.success && res.data) {
+              let resultType = deepGet(res, 'data.result_type'),
+                  userSalt = deepGet(res, `data.${resultType}.scrypt_salt`);
+
+              if ( !userSalt ) {
+                //TODO: Figure out what to do here.
+                passphrasePrefixAccept.cancelFlow();
+              }
+
+              // provide the passphrase to sdk.
+              passphrasePrefixAccept.setPassphrase( userSalt );
+            }
+          })
+          .catch(() => {
+            //TODO: Figure out what to do here.
+            passphrasePrefixAccept.cancelFlow();
+          })
+
+      }
+    });
   }
 
   // Simple getter/setter methods.
