@@ -1,28 +1,44 @@
 
 const developerMode = false;
 const DEFAULT_ERROR_MSG = "Something went wrong";
+const DEFAULT_CONTEXT = "_default";
 /**
  * OstSdkErrors
  * To get Message of OstError based on workflow type.
  */
 class OstSdkErrors {
-   getErrorMessage(ostWorkflowContext, ostError) {
+    constructor() {
+      allErrors[ DEFAULT_CONTEXT ] = BaseErrorMessages;
+    }
 
-    // Parameter validation
-    if (!ostWorkflowContext || !ostError) return DEFAULT_ERROR_MSG;
+    getErrorMessage(ostWorkflowContext, ostError) {
 
-    // workflow specific error message getter
-    let getWorkFlowErrorMessageFunction = workflowTypeErrorFunction[ostWorkflowContext.WORKFLOW_TYPE];
+      // Parameter validation
+      if (!ostError) {
+        return DEFAULT_ERROR_MSG;
+      }
+      let errorCode = ostError.getErrorCode();
+      if ( !errorCode ) {
+        return DEFAULT_ERROR_MSG;
+      }
 
-    if (!getWorkFlowErrorMessageFunction) return DEFAULT_ERROR_MSG;
 
-    return getWorkFlowErrorMessageFunction(ostError);
-  }
+      let workflowType = ostWorkflowContext ? ostWorkflowContext.WORKFLOW_TYPE : null;
+      workflowType = workflowType || DEFAULT_CONTEXT;
+
+      let errMsg;
+      if ( allErrors[workflowType] ) {
+        errMsg = allErrors[workflowType][ errorCode ];
+      }
+
+      if ( !errMsg ) {
+        errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
+      }
+
+      return errMsg || DEFAULT_ERROR_MSG;
+
+    }
 }
-
-const ostSdkErrors = new OstSdkErrors();
-
-export {ostSdkErrors};
 
 // Utility methods
 const _getErrorMessageFor = function (workflowErrorMessages, errorCode) {
@@ -33,85 +49,39 @@ const _getErrorMessageFor = function (workflowErrorMessages, errorCode) {
   return DEFAULT_ERROR_MSG;
 };
 
-const workflowTypeErrorFunction = {
-  ACTIVATE_USER: function (ostError) {
-    const thisErrorMessages = {
+const allErrors = {
+  "ACTIVATE_USER": {
 
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   },
+  "ADD_SESSION": {
 
-  ADD_SESSION: function (ostError) {
-    const thisErrorMessages = {
-
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   },
+  "GET_DEVICE_MNEMONICS": {
 
-  GET_DEVICE_MNEMONICS: function (ostError) {
-    const thisErrorMessages = {
-
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   },
+  "PERFORM_QR_ACTION": {
 
-  PERFORM_QR_ACTION: function (ostError) {
-    const thisErrorMessages = {
-
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   },
+  "AUTHORIZE_DEVICE_WITH_QR_CODE": {
 
-  AUTHORIZE_DEVICE_WITH_QR_CODE: function (ostError) {
-    const thisErrorMessages = {
-
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   },
+  "AUTHORIZE_DEVICE_WITH_MNEMONICS": {
 
-  AUTHORIZE_DEVICE_WITH_MNEMONICS: function (ostError) {
-    const thisErrorMessages = {
-
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   },
+  "INITIATE_DEVICE_RECOVERY": {
 
-  INITIATE_DEVICE_RECOVERY: function (ostError) {
-    const thisErrorMessages = {
-
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   },
+  "ABORT_DEVICE_RECOVERY": {
 
-  ABORT_DEVICE_RECOVERY: function (ostError) {
-    const thisErrorMessages = {
-
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   },
+  "RESET_PIN": {
 
-  LOGOUT_ALL_SESSIONS: function (ostError) {
-    const thisErrorMessages = {
-
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   },
+  "LOGOUT_ALL_SESSIONS": {
 
-  UPDATE_BIOMETRIC_PREFERENCE: function (ostError) {
-    const thisErrorMessages = {
+  },
+  "UPDATE_BIOMETRIC_PREFERENCE": {
 
-    };
-
-    return _getErrorMessageFor(thisErrorMessages, ostError.getErrorCode());
   }
 };
 
@@ -225,3 +195,8 @@ const DeveloperErrorMessages = {
   UNKNOWN:
     "Unknown error",
 };
+
+
+const ostSdkErrors = new OstSdkErrors();
+
+export {ostSdkErrors};

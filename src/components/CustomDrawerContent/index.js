@@ -10,20 +10,58 @@ import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
 import loggedOutIcon from '../../assets/drawer-logout-icon.png';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
+import pepoAmountWallet from '../../assets/pepo-amount-wallet.png';
 import Toast from '../../theme/components/NotificationToast';
 
 import BackArrow from '../../assets/back-arrow.png';
+import {connect} from "react-redux";
+import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
 
-export default class CustomDrawerContent extends Component {
+class CustomDrawerContent extends Component {
   constructor() {
     super();
-    this.userName = reduxGetter.getName(CurrentUser.getUserId());
+    this.userName = "";
     this.state = {
       disableButtons: false,
+      showWalletSettings: false
     };
     this.twitterDisconnect = this.twitterDisconnect.bind(this);
     this.CurrentUserLogout = this.CurrentUserLogout.bind(this);
   }
+
+  componentDidMount() {
+    this.updateMenuSettings();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    this.updateMenuSettings();
+  }
+
+  updateMenuSettings = () => {
+    this.updateUserName();
+    this.updateWalletSettings();
+  }
+
+  updateUserName = () => {
+    this.userName = reduxGetter.getName(CurrentUser.getUserId()) || "";
+  }
+
+  updateWalletSettings = () => {
+    if (CurrentUser.getOstUserId()) {
+      OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), (localDevice) => {
+
+        if (localDevice && OstWalletSdkHelper.canDeviceMakeApiCall( localDevice ) ) {
+          this.setState({
+            showWalletSettings: true
+          })
+        } else {
+          this.setState({
+            showWalletSettings: false
+          })
+        }
+      });
+    }
+  };
 
   twitterDisconnect() {
     this.setState(
@@ -74,39 +112,25 @@ export default class CustomDrawerContent extends Component {
     });
   }
 
-  renderRecoverDevice() {
-    console.log("this.state.showRecoverDevice", this.state.showRecoverDevice);
-    if ( !this.state.showRecoverDevice ) {
-      return null;
-    }
-    return (
-      <TouchableOpacity onPress={this.recoverDevice}>
-        <View style={styles.itemParent}>
-          <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
-          <Text style={styles.item}>Recover Device</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-
-  renderAbortRecovery() {
-    if ( !this.state.showAbortRecovery ) {
-      return null;
-    }
-    return (
-      <TouchableOpacity onPress={this.abortRecovery}>
-         <View style={styles.itemParent}>
-          <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
-          <Text style={styles.item}>Abort Recovery</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-
   initWallet = () => {
     //TODO: Navigation should push instead of navigate
     this.props.navigation.navigate("WalletSettingScreen") ;
   };
+
+  renderWalletSetting = () => {
+    if ( !this.state.showWalletSettings ) {
+      return null;
+    }
+    return (
+      <TouchableOpacity onPress={this.initWallet} >
+        <View style={[styles.itemParent]}>
+          <Image style={{ height: 24, width: 25.3 }} source={pepoAmountWallet} />
+          <Text style={styles.item}>Wallet settings</Text>
+        </View>
+      </TouchableOpacity>);
+  }
+
+
 
   render(){
     return (
@@ -127,20 +151,9 @@ export default class CustomDrawerContent extends Component {
                 <Text style={styles.item}>Twitter Disconnect</Text>
               </View>
             </TouchableOpacity>
-            {/*<TouchableOpacity onPress={this.resetPin} disabled={this.state.disableResetPin}>*/}
-              {/*<View style={styles.itemParent}>*/}
-                {/*<Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />*/}
-                {/*<Text style={styles.item}>Reset Pin</Text>*/}
-              {/*</View>*/}
-            {/*</TouchableOpacity>*/}
-            {/*{this.renderRecoverDevice()}*/}
-            {/*{this.renderAbortRecovery()}*/}
-            <TouchableOpacity onPress={this.initWallet} >
-              <View style={styles.itemParent}>
-                <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
-                <Text style={styles.item}>Wallet settings</Text>
-              </View>
-            </TouchableOpacity>
+
+            {this.renderWalletSetting()}
+
             <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>
               <View style={styles.itemParent}>
                 <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
@@ -152,6 +165,10 @@ export default class CustomDrawerContent extends Component {
     );
   }
 }
+
+const mapStateToProps = ({ current_user }) => ({ current_user });
+
+export default connect(mapStateToProps)(CustomDrawerContent);
 
 const styles = StyleSheet.create({
   container: {
