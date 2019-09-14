@@ -14,7 +14,8 @@ const optionIds = {
   authorizeWithMnemonics: 'authorizeWithMnemonics',
   authorizeWithQR: 'authorizeWithQR',
   showQR: 'showQR',
-  addSession: 'addSession'
+  addSession: 'addSession',
+  updateBiometricPreference: 'updateBiometricPreference'
 };
 
 class WalletSettingController {
@@ -26,7 +27,8 @@ class WalletSettingController {
       optionIds.recoverDevice, optionIds.abortRecovery,
       optionIds.resetPin,
       optionIds.viewMnemonics, optionIds.authorizeWithMnemonics,
-      optionIds.authorizeWithQR, optionIds.showQR
+      optionIds.authorizeWithQR, optionIds.showQR,
+      optionIds.updateBiometricPreference
     ];
     this.userStatusMap = appConfig.userStatusMap;
     this.deviceStatusMap = appConfig.deviceStatusMap;
@@ -49,6 +51,7 @@ class WalletSettingController {
     this._createOptionsData(optionIds.authorizeWithMnemonics, "Authorize Device with Mnemonics", "Authorize current device by using mnemonics");
     this._createOptionsData(optionIds.authorizeWithQR, "Scan QR to Authorize", "Scan QR Code of the new device to authorize it");
     this._createOptionsData(optionIds.showQR, "Show Device QR Code", "Scan QR Code from the device authorized device to authorize this device");
+    this._createOptionsData(optionIds.updateBiometricPreference, "Update Biometric Preference", "Authenticate user with biometric");
   }
 
   refresh( callback, onlyPerformable ) {
@@ -72,13 +75,20 @@ class WalletSettingController {
     OstWalletSdk.getUser(this.userId, (userData) => {
       if ( !userData ) {
         // What to do here?
-
       }
 
       // Store user data.
       this.ostUser = userData;
 
       // Get the device.
+
+      this._fetchBiometricPreference();
+    });
+  }
+
+  _fetchBiometricPreference() {
+    OstWalletSdk.isBiometricEnabled(this.userId, (isBiometricEnabled) => {
+      this.isBiometricEnabled = isBiometricEnabled;
       this._fetchDevice();
     });
   }
@@ -134,9 +144,13 @@ class WalletSettingController {
     let deviceStatus = this._getDeviceStatus();
     let userStatus = this._getUserStatus();
 
-    this._resetOptions()
+    this._resetOptions();
 
     if (userStatus == this.userStatusMap.activated) {
+
+      let biometricMessage = (this.isBiometricEnabled || false) ? 'Disable Biometric Preference' : 'Enable Biometric Preference'
+      this._updateOptionsData(optionIds.updateBiometricPreference, false, true, biometricMessage)
+
       this._updateOptionsData(optionIds.resetPin, false, true);
 
       if (deviceStatus == this.deviceStatusMap.authorized) {
@@ -230,10 +244,14 @@ class WalletSettingController {
     return optionsData;
   }
 
-  _updateOptionsData(id, inProgress, canPerform) {
+  _updateOptionsData(id, inProgress, canPerform, message = null) {
     let optionData = this.optionsMap[id];
     optionData.inProgress = inProgress || false;
     optionData.canPerform = canPerform || false;
+
+    if (message) {
+      optionData.heading = message;
+    }
   }
 
   _getUserStatus() {
@@ -301,6 +319,10 @@ class WalletSettingController {
 
       case optionIds.showQR:
         workflowId = OstWalletSdkUI.getAddDeviceQRCode(userId, delegate);
+        break;
+
+      case optionIds.updateBiometricPreference:
+        workflowId = OstWalletSdkUI.updateBiometricPreference(userId, !this.isBiometricEnabled, delegate);
         break;
 
       default:
