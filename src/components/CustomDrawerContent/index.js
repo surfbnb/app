@@ -34,30 +34,43 @@ class CustomDrawerContent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    // let shouldUpdateMenuSetting = true;
+    console.log("---------HERE---------------componentDidUpdate called from CustomDrawerContent");
+    // if (this.props.current_user && (this.props.current_user.id === prevProps.current_user.id) && this.state.showWalletSettings) {
+    //   shouldUpdateMenuSetting = false;
+    // }
+    //
+    // if (shouldUpdateMenuSetting) {
+    //   this.updateMenuSettings();
+    // }
     this.updateMenuSettings();
   }
 
   updateMenuSettings = () => {
     this.updateUserName();
     this.updateWalletSettings();
-  }
+  };
 
   updateUserName = () => {
     this.userName = reduxGetter.getName(CurrentUser.getUserId()) || "";
-  }
+  };
 
   updateWalletSettings = () => {
     if (CurrentUser.getOstUserId()) {
       OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), (localDevice) => {
 
         if (localDevice && OstWalletSdkHelper.canDeviceMakeApiCall( localDevice ) ) {
-          this.setState({
-            showWalletSettings: true
-          })
+          if ( !this.state.showWalletSettings ) {
+            this.setState({
+              showWalletSettings: true
+            });
+          }
         } else {
-          this.setState({
-            showWalletSettings: false
-          })
+          if ( this.state.showWalletSettings ) {
+            this.setState({
+              showWalletSettings: false
+            })
+          }
         }
       });
     }
@@ -128,9 +141,7 @@ class CustomDrawerContent extends Component {
           <Text style={styles.item}>Wallet settings</Text>
         </View>
       </TouchableOpacity>);
-  }
-
-
+  };
 
   render(){
     return (
