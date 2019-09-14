@@ -1,42 +1,44 @@
 import {OstWalletSdk, OstWalletSdkUI, OstJsonApi} from '@ostdotcom/ost-wallet-sdk-react-native';
 import {SESSION_KEY_EXPIRY_TIME, SPENDING_LIMIT} from '../constants';
-import {fetchDeviceByUserId} from "./SdkApihelpers";
 import CurrentUser from "../models/CurrentUser";
 import pricer from '../services/Pricer';
 import Toast from '../theme/components/NotificationToast';
 import {LoadingModal} from '../theme/components/LoadingModalCover';
+import BigNumber from 'bignumber.js';
 
 function ensureTransaction(userId, btAmount, callback) {
-  _checkDevice(userId, (validDevice) => {
-    if (validDevice) {
-      _checkBalance(userId, btAmount, (haveBalance) => {
-        if (haveBalance) {
-          _checkSessions(userId, btAmount, (haveSession) => {
-            if (haveSession) {
-              return callback(true);
-            } else {
 
+  _checkBalance(userId, btAmount, (haveBalance) => {
+    if (haveBalance) {
+
+      _checkSessions(userId, btAmount, (haveSession) => {
+        if (haveSession) {
+          return callback(true);
+        } else {
+
+          _checkDevice(userId, (validDevice) => {
+            if (validDevice) {
               let spendingLimit = SPENDING_LIMIT;
               let sessionKeyExpiryTime = SESSION_KEY_EXPIRY_TIME;
-              if (btAmount > SPENDING_LIMIT) {
-                spendingLimit = btAmount;
-                sessionKeyExpiryTime = 60 * 60 * 2;
+              if ( (new BigNumber(btAmount)).gt(new BigNumber(SPENDING_LIMIT)) ) {
+                spendingLimit = (new BigNumber(btAmount).plus( new BigNumber(1000000000000000000) )).toString();
+                sessionKeyExpiryTime = 60 * 60 * 1;
               }
               let workflowDelegate = _getWorkflowDelegate(callback);
               OstWalletSdkUI.addSession(userId, sessionKeyExpiryTime, spendingLimit, workflowDelegate);
+            } else {
+              Toast.show({
+                text: 'Device is not authorized to do Transaction',
+                icon: 'error'
+              });
+              return callback(false);
             }
-          })
-        } else {
-          Toast.show({
-            text: 'Device does not have enough balance',
-            icon: 'error'
           });
-          return callback(false);
         }
       });
     } else {
       Toast.show({
-        text: 'Device is not authorized to do Transaction',
+        text: 'Device does not have enough balance',
         icon: 'error'
       });
       return callback(false);
@@ -45,25 +47,22 @@ function ensureTransaction(userId, btAmount, callback) {
 }
 
 const _checkDevice = function (userId, deviceCallback) {
-  fetchDeviceByUserId(userId)
-    .then((device) => {
-      if ("AUTHORIZED" === device.status) {
-        return deviceCallback(true);
-      }
-      return deviceCallback(false);
-    })
-    .catch((err) => {
-      return deviceCallback(false);
-    });
+  OstWalletSdk.getCurrentDeviceForUserId(userId, (device) => {
+    if (device && "AUTHORIZED" === device.status) {
+      deviceCallback(true);
+    } else {
+      deviceCallback(false);
+    }
+  });
 };
 
 const _checkBalance = function (userId, btAmount, balanceCallback) {
-  pricer.getBalance((balance)=>{
-    if (balance >= btAmount) {
+  pricer.getBalance((balance) => {
+    if ((new BigNumber(balance)).gte(new BigNumber(btAmount))) {
       return balanceCallback(true);
     }
     return balanceCallback(false);
-  },()=>{
+  }, () => {
     return balanceCallback(false);
   });
 };
