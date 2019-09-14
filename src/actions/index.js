@@ -1,12 +1,13 @@
 import * as types from './constants';
 
-export const showModalCover = (message = 'Processing...', footerText = '') => ({
+export const showModalCover = (message = 'Processing...', footerText = '', alertData = null) => ({
   type: types.SHOW_MODAL_COVER,
   payload: {
     modal_cover: {
       message,
       footerText,
-      show: true
+      show: true,
+      alertData: alertData
     }
   }
 });

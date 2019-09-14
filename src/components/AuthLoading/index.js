@@ -11,6 +11,7 @@ import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import ost_sdk_theme_config from '../../theme/ostsdk/ost-sdk-theme-config';
 import ost_sdk_content_config from '../../theme/ostsdk/ost-sdk-content-config';
+import ost_wallet_sdk_config from '../../theme/ostsdk/ost-wallet-sdk-config';
 
 let t1, t2;
 
@@ -26,7 +27,7 @@ export default class AuthLoading extends Component {
     t1 = Date.now();
     OstWalletSdkUI.setThemeConfig(ost_sdk_theme_config);
     OstWalletSdkUI.setContentConfig(ost_sdk_content_config);
-    OstWalletSdk.initialize(PLATFORM_API_ENDPOINT, this.onSdkInitialized);
+    OstWalletSdk.initialize(PLATFORM_API_ENDPOINT, ost_wallet_sdk_config, this.onSdkInitialized);
   };
 
   onSdkInitialized = (error, success) => {

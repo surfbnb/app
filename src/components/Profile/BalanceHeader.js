@@ -24,7 +24,7 @@ import appConfig from "../../constants/AppConfig";
 const mapStateToProps = (state) => ({ balance: state.balance });
 
 class BalanceHeader extends PureComponent {
- 
+
   constructor(props) {
     super(props);
     this.state = {
@@ -61,14 +61,14 @@ class BalanceHeader extends PureComponent {
   }
 
   toBt( val ){
-    const priceOracle =  pricer.getPriceOracle() ; 
-    val = priceOracle.fromDecimal( val )  ; 
+    const priceOracle =  pricer.getPriceOracle() ;
+    val = priceOracle.fromDecimal( val )  ;
     return pricer.toDisplayAmount( priceOracle.toBt( val ) );
   }
 
   toFiat( val ){
-    const priceOracle =  pricer.getPriceOracle() ; 
-    val = priceOracle.fromDecimal( val ); 
+    const priceOracle =  pricer.getPriceOracle() ;
+    val = priceOracle.fromDecimal( val );
     return pricer.toDisplayAmount( priceOracle.btToFiat( val ));
   }
   

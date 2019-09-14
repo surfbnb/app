@@ -33,6 +33,8 @@ import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
 
+import {ensureTransaction} from '../../helpers/TransactionHelper';
+
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
   safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
@@ -230,14 +232,20 @@ class TransactionScreen extends Component {
     const user = CurrentUser.getUser();
     const btInDecimal = pricer.getToDecimal(this.state.btAmount);
     this.workflow = new ExecuteTransactionWorkflow(this);
-    OstWalletSdk.executeTransaction(
-      user.ost_user_id,
-      [this.toUser.ost_token_holder_address],
-      [btInDecimal],
-      appConfig.ruleTypeMap.directTransfer,
-      this.getSdkMetaProperties(),
-      this.workflow
-    );
+    ensureTransaction(user.ost_user_id, btInDecimal, (response)=>{
+      if (response) {
+        OstWalletSdk.executeTransaction(
+          user.ost_user_id,
+          [this.toUser.ost_token_holder_address],
+          [btInDecimal],
+          appConfig.ruleTypeMap.directTransfer,
+          this.getSdkMetaProperties(),
+          this.workflow
+        );
+      } else {
+        this.resetState();
+      }
+    });
   }
 
   getSdkMetaProperties() {
@@ -326,7 +334,7 @@ class TransactionScreen extends Component {
   getSendTransactionPlatformData(ostWorkflowEntity) {
     let params = {
       ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
-      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')      
+      ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')
     };
     if (this.videoId) {
       params['meta'] = {};

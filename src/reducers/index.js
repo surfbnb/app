@@ -50,7 +50,7 @@ export const {
 
 const defaultState = {
   modal: { message: '', show: false },
-  modal_cover: { message: '', footerText: '', show: false },
+  modal_cover: { message: '', footerText: '', show: false, alertData: null },
   toast: { message: '', show: false },
   current_user: {},
   activities_entities: {},
