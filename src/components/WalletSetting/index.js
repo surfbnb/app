@@ -50,6 +50,13 @@ class WalletSettingList extends PureComponent {
       "Issue occurred while adding Session");
 
     this._createEventLoaderData(
+      optionIds.updateBiometricPreference,
+      "Updating Biometric Preference",
+      "Updating Biometric Preference acknowledged",
+      "Biometric Preference Updated Successfully",
+      "Issue occurred while Updating Biometric Preference");
+
+    this._createEventLoaderData(
       optionIds.resetPin,
       "Resetting pin",
       "Reset pin acknowledged",

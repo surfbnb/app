@@ -81,8 +81,7 @@
 		4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C73F122E880BD00FE1B04 /* libReactNativePermissions.a */; };
 		4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7734F2CD22DE373E004D7152 /* libBVLinearGradient.a */; };
 		4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EDA33222D74FBC0095674F /* libFastImage.a */; };
-		4BFFD39D232D35CE0033959D /* com.pepo.sandbox.GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BFFD39B232D35CE0033959D /* com.pepo.sandbox.GoogleService-Info.plist */; };
-		4BFFD39F232D35F70033959D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BFFD39E232D35F70033959D /* GoogleService-Info.plist */; };
+		4BFFD402232D3D930033959D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BFFD401232D3D930033959D /* GoogleService-Info.plist */; };
 		5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F11DD15287DC4605913C28BE /* Roboto_medium.ttf */; };
 		65CD6A21EC164A9A8F14A9A3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAB07333EF0A462BB5571B78 /* Zocial.ttf */; };
 		6C300736152B4242B645C0CA /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F406518F2D434EC0A78FA040 /* AntDesign.ttf */; };
@@ -667,8 +666,7 @@
 		4644A8D258C5493CAD1FB4CE /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		4942AA6D4C5247669FA8FCAF /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		4B76D86A2318FAAC007316D4 /* TrustKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TrustKit.framework; path = Carthage/Build/iOS/TrustKit.framework; sourceTree = "<group>"; };
-		4BFFD39B232D35CE0033959D /* com.pepo.sandbox.GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "com.pepo.sandbox.GoogleService-Info.plist"; sourceTree = "<group>"; };
-		4BFFD39E232D35F70033959D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4BFFD401232D3D930033959D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5E7E0A527AF64DDB95B586B0 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SMXCrashlytics.xcodeproj; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		61D8EE774B704B6DAC8F8DBA /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -1034,8 +1032,7 @@
 		13B07FAE1A68108700A75B9A /* Pepo2 */ = {
 			isa = PBXGroup;
 			children = (
-				4BFFD39E232D35F70033959D /* GoogleService-Info.plist */,
-				4BFFD39B232D35CE0033959D /* com.pepo.sandbox.GoogleService-Info.plist */,
+				4BFFD401232D3D930033959D /* GoogleService-Info.plist */,
 				00DDF0AA231818DA00F7D30D /* Pepo2.entitlements */,
 				7796E3932317FAE900D0F2D2 /* Firebase */,
 				00005ABF2326A80700340966 /* ostwalletrnsdk */,
@@ -2000,6 +1997,7 @@
 				DEFC2FA34E9642D5936FD159 /* Lato-BoldItalic.ttf in Resources */,
 				7CF11B015E3845FC8E8CBCC4 /* Lato-Hairline.ttf in Resources */,
 				F2A32E0A60454BE284A285CE /* Lato-HairlineItalic.ttf in Resources */,
+				4BFFD402232D3D930033959D /* GoogleService-Info.plist in Resources */,
 				049F72EF676443A5B1172993 /* Lato-Italic.ttf in Resources */,
 				FD1B3131FA5145A5A67CDE87 /* Lato-Light.ttf in Resources */,
 				45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */,
@@ -2011,7 +2009,6 @@
 				FE9B0CCD60EE40268CC3C1DD /* FontAwesome.ttf in Resources */,
 				17D99A44BE8F48C9A715DE30 /* FontAwesome5_Brands.ttf in Resources */,
 				44E7621D0BF54D0D94AE8775 /* FontAwesome5_Regular.ttf in Resources */,
-				4BFFD39D232D35CE0033959D /* com.pepo.sandbox.GoogleService-Info.plist in Resources */,
 				22FE2B7F2DE4496EB61E6F7E /* FontAwesome5_Solid.ttf in Resources */,
 				0BD0080023E44AFCA2D1AA46 /* Foundation.ttf in Resources */,
 				DE36609E3E5C41D195881334 /* Ionicons.ttf in Resources */,
@@ -2021,7 +2018,6 @@
 				B121E889D6D8469FB607BFC5 /* Octicons.ttf in Resources */,
 				5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */,
 				34DAB1A620A348A7BDD85ACE /* Roboto.ttf in Resources */,
-				4BFFD39F232D35F70033959D /* GoogleService-Info.plist in Resources */,
 				000C680022D764EA0095497C /* TwitterShareExtensionUIResources.bundle in Resources */,
 				7E873BEEA71D4772A4CEA8FE /* rubicon-icon-font.ttf in Resources */,
 				77280AE9DDE14F90B1ACDAF8 /* SimpleLineIcons.ttf in Resources */,
@@ -2182,7 +2178,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.staging;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.sandbox;
 				PRODUCT_NAME = Pepo2;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2241,7 +2237,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.staging;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.sandbox;
 				PRODUCT_NAME = Pepo2;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
