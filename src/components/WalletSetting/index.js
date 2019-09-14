@@ -199,7 +199,7 @@ class WalletSettingList extends PureComponent {
 
   onUnauthorized = (ostWorkflowContext , ostError) => {
     LoadingModal.showFailureAlert("Device is not authorized. Please authorize device again.", null, "Logout", () => {
-      CurrentUser.logoutLocal();
+      CurrentUser.logout();
     })
   };
 
