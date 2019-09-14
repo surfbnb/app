@@ -48,7 +48,6 @@
 		00470EFB22DC7C7D00FC8345 /* libswresample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EEF22DC7C7D00FC8345 /* libswresample.framework */; };
 		00470EFC22DC7C7D00FC8345 /* libvidstab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EF022DC7C7D00FC8345 /* libvidstab.framework */; };
 		00470EFD22DC7C7D00FC8345 /* xvidcore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EF122DC7C7D00FC8345 /* xvidcore.framework */; };
-		0050FDA422A823E300C2634F /* OstWalletSdk.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0050FDA322A823E300C2634F /* OstWalletSdk.plist */; };
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
 		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
@@ -632,7 +631,6 @@
 		00470EF022DC7C7D00FC8345 /* libvidstab.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libvidstab.framework; path = "ReactNativeFFmpeg/mobile-ffmpeg-min-gpl-4.2.2.LTS-ios-framework/libvidstab.framework"; sourceTree = "<group>"; };
 		00470EF122DC7C7D00FC8345 /* xvidcore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = xvidcore.framework; path = "ReactNativeFFmpeg/mobile-ffmpeg-min-gpl-4.2.2.LTS-ios-framework/xvidcore.framework"; sourceTree = "<group>"; };
 		0050FDA022A8226800C2634F /* OstWalletSdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OstWalletSdk.framework; path = Carthage/Build/iOS/OstWalletSdk.framework; sourceTree = "<group>"; };
-		0050FDA322A823E300C2634F /* OstWalletSdk.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = OstWalletSdk.plist; path = Pepo2/OstWalletSdk.plist; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGeolocation.xcodeproj; path = "../node_modules/react-native/Libraries/Geolocation/RCTGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
@@ -1048,7 +1046,6 @@
 				000C67F922D764E90095497C /* TwitterKit.framework */,
 				000C67FB22D764EA0095497C /* TwitterKitResources.bundle */,
 				000C67FC22D764EA0095497C /* TwitterShareExtensionUIResources.bundle */,
-				0050FDA322A823E300C2634F /* OstWalletSdk.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -1995,7 +1992,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0050FDA422A823E300C2634F /* OstWalletSdk.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				BE42726A63944FCB9B8AEBF7 /* Lato-Black.ttf in Resources */,
 				4B983AB722BD153800B9E6D4 /* Images.xcassets in Resources */,

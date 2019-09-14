@@ -1,4 +1,4 @@
-{
+export default {
   "BLOCK_GENERATION_TIME": 3,
   "PIN_MAX_RETRY_COUNT": 3,
   "REQUEST_TIMEOUT_DURATION": 60,
