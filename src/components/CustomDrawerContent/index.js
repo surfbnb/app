@@ -34,15 +34,6 @@ class CustomDrawerContent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    // let shouldUpdateMenuSetting = true;
-    console.log("---------HERE---------------componentDidUpdate called from CustomDrawerContent");
-    // if (this.props.current_user && (this.props.current_user.id === prevProps.current_user.id) && this.state.showWalletSettings) {
-    //   shouldUpdateMenuSetting = false;
-    // }
-    //
-    // if (shouldUpdateMenuSetting) {
-    //   this.updateMenuSettings();
-    // }
     this.updateMenuSettings();
   }
 
@@ -59,7 +50,7 @@ class CustomDrawerContent extends Component {
     if (CurrentUser.getOstUserId()) {
       OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), (localDevice) => {
 
-        if (localDevice && OstWalletSdkHelper.canDeviceMakeApiCall( localDevice ) ) {
+        if (localDevice && OstWalletSdkHelper.canDeviceMakeApiCall( localDevice ) && CurrentUser.isUserActivated() ) {
           if ( !this.state.showWalletSettings ) {
             this.setState({
               showWalletSettings: true
