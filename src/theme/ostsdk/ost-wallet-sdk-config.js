@@ -6,3 +6,4 @@ export default {
   "PRICE_POINT_CURRENCY_SYMBOL": "USD",
   "USE_SEED_PASSWORD": true
 }
+}
