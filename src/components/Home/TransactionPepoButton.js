@@ -76,8 +76,6 @@ class TransactionPepoButton extends PureComponent {
           this.getSdkMetaProperties(),
           this.workflow
         );
-      } else {
-        this.dropPixel();
       }
     })
   }
