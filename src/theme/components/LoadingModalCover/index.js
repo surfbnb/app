@@ -70,7 +70,6 @@ class loadingModalCover extends React.Component {
   };
 
   render() {
-    this.props.show ? this.getAnimation().start() : this.getAnimation().stop();
     return (
       <React.Fragment>
           <Modal
@@ -158,6 +157,8 @@ class loadingModalCover extends React.Component {
         {rotate: rotateData}
       ],
     };
+
+    this.props.show ? this.getAnimation().start() : this.getAnimation().stop();
 
     //progress indicator view
     return (

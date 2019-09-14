@@ -32,8 +32,7 @@ import reduxGetter from '../../services/ReduxGetters';
 import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
-
-import {ensureTransaction} from '../../helpers/TransactionHelper';
+import {ON_USER_CANCLLED_ERROR_MSG, ensureSession} from '../../helpers/TransactionHelper';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -230,22 +229,37 @@ class TransactionScreen extends Component {
 
   sendTransactionToSdk() {
     const user = CurrentUser.getUser();
+    // const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(this.state.btAmount);
-    this.workflow = new ExecuteTransactionWorkflow(this);
-    ensureTransaction(user.ost_user_id, btInDecimal, (response)=>{
-      if (response) {
-        OstWalletSdk.executeTransaction(
-          user.ost_user_id,
-          [this.toUser.ost_token_holder_address],
-          [btInDecimal],
-          appConfig.ruleTypeMap.directTransfer,
-          this.getSdkMetaProperties(),
-          this.workflow
-        );
-      } else {
-        this.resetState();
+    ensureSession(user.ost_user_id, btInDecimal, (errorMessage, success) => {
+      if ( success ) {
+        return this._executeTransaction(user, btInDecimal);
+      }
+
+      if ( errorMessage ) {
+        if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage) {
+          //Cancel the flow.
+          this.resetState();
+          return;
+        }
+
+        // Else: Show the error message.
+        this.showError( errorMessage );
+
       }
     });
+  }
+
+  _executeTransaction(user, btInDecimal) {
+    this.workflow = new ExecuteTransactionWorkflow(this);
+    OstWalletSdk.executeTransaction(
+      user.ost_user_id,
+      [this.toUser.ost_token_holder_address],
+      [btInDecimal],
+      appConfig.ruleTypeMap.directTransfer,
+      this.getSdkMetaProperties(),
+      this.workflow
+    );
   }
 
   getSdkMetaProperties() {
@@ -344,17 +358,22 @@ class TransactionScreen extends Component {
   }
 
   onError(error) {
-    this.resetState();
+
     const errorMsg = ostErrors.getErrorMessage(error);
     if (errorMsg) {
-      this.setState({ general_error: errorMsg });
+      this.showError( errorMsg );
       return;
     }
     const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
     if (errorDataMsg) {
-      this.setState({ general_error: errorDataMsg });
+      this.showError( errorDataMsg );
       return;
     }
+  }
+
+  showError( errorMessage ) {
+    this.resetState();
+    this.setState({ general_error: errorMessage });
   }
 
   render() {

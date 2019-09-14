@@ -20,7 +20,7 @@ import { ostErrors } from '../../services/OstErrors';
 import Pricer from '../../services/Pricer';
 import utilities from '../../services/Utilities';
 import PixelCall from '../../services/PixelCall';
-import {ensureTransaction} from '../../helpers/TransactionHelper';
+import {ON_USER_CANCLLED_ERROR_MSG, ensureSession} from '../../helpers/TransactionHelper';
 
 const mapStateToProps = (state, ownProps) => ({
   balance: state.balance,
@@ -65,19 +65,40 @@ class TransactionPepoButton extends PureComponent {
     const user = CurrentUser.getUser();
     // const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(btAmount);
-    this.workflow = new ExecuteTransactionWorkflow(this);
-    ensureTransaction(user.ost_user_id, btInDecimal, (response)=>{
-      if (response) {
-        OstWalletSdk.executeTransaction(
-          user.ost_user_id,
-          [this.toUser.ost_token_holder_address],
-          [btInDecimal],
-          appConfig.ruleTypeMap.directTransfer,
-          this.getSdkMetaProperties(),
-          this.workflow
-        );
+    ensureSession(user.ost_user_id, btInDecimal, (errorMessage, success) => {
+      if ( success ) {
+        return this._executeTransaction(user, btInDecimal);
       }
-    })
+
+      if ( errorMessage ) {
+        if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage) {
+          //Cancel the flow.
+          this.syncData(1000);
+          return;
+        }
+
+        // Else: Show the error message.
+        this.syncData(1000);
+        Toast.show({
+          text: errorMessage,
+          icon: 'error'
+        });
+
+      }
+    });
+  }
+
+
+  _executeTransaction(user, btInDecimal) {
+    this.workflow = new ExecuteTransactionWorkflow(this);
+    OstWalletSdk.executeTransaction(
+      user.ost_user_id,
+      [this.toUser.ost_token_holder_address],
+      [btInDecimal],
+      appConfig.ruleTypeMap.directTransfer,
+      this.getSdkMetaProperties(),
+      this.workflow
+    );
   }
 
   getSdkMetaProperties() {

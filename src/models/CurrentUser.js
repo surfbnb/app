@@ -281,13 +281,13 @@ const _getPassphrase = (currentUserModel, workflowDelegate, passphrasePrefixAcce
 
       if ( !passphrasePrefixString ) {
         passphrasePrefixAccept.cancelFlow();
-        workflowDelegate.saltFetchFailed();
+        workflowDelegate.saltFetchFailed(res);
         return;
       }
 
       passphrasePrefixAccept.setPassphrase(passphrasePrefixString, currentUserModel.getOstUserId(), () => {
         passphrasePrefixAccept.cancelFlow();
-        workflowDelegate.saltFetchFailed();
+        workflowDelegate.saltFetchFailed(res);
       });
     }
   })

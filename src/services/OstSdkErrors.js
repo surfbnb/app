@@ -1,5 +1,6 @@
-
-const developerMode = false;
+import deepGet from 'lodash/get';
+import {IS_PRODUCTION, IS_SANDBOX} from '../constants';
+const developerMode = !IS_PRODUCTION;
 const DEFAULT_ERROR_MSG = "Something went wrong";
 const DEFAULT_CONTEXT = "_default";
 /**
@@ -12,11 +13,20 @@ class OstSdkErrors {
     }
 
     getErrorMessage(ostWorkflowContext, ostError) {
-
+      let errMsg;
       // Parameter validation
       if (!ostError) {
         return DEFAULT_ERROR_MSG;
       }
+
+      if ( ostError.isApiError() ) {
+        errMsg = ostError.getApiErrorMessage();
+        if ( developerMode ) {
+          errMsg = errMsg + " (" + ostError.getApiInternalId() + ")"
+        }
+        return errMsg;
+      }
+
       let errorCode = ostError.getErrorCode();
       if ( !errorCode ) {
         return DEFAULT_ERROR_MSG;
@@ -26,7 +36,7 @@ class OstSdkErrors {
       let workflowType = ostWorkflowContext ? ostWorkflowContext.WORKFLOW_TYPE : null;
       workflowType = workflowType || DEFAULT_CONTEXT;
 
-      let errMsg;
+
       if ( allErrors[workflowType] ) {
         errMsg = allErrors[workflowType][ errorCode ];
       }
@@ -35,8 +45,15 @@ class OstSdkErrors {
         errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
       }
 
-      return errMsg || DEFAULT_ERROR_MSG;
+      if ( developerMode && errorCode) {
+        if ( !errMsg ) {
+          errMsg = errMsg || DEFAULT_ERROR_MSG;
+        }
 
+        errMsg = errMsg + " (" + errorCode + "," + ostError.getInternalErrorCode() + ")";
+      }
+
+      return errMsg || DEFAULT_ERROR_MSG;
     }
 }
 
@@ -81,6 +98,9 @@ const allErrors = {
 
   },
   "UPDATE_BIOMETRIC_PREFERENCE": {
+
+  },
+  "EXECUTE_TRANSACTION": {
 
   }
 };
