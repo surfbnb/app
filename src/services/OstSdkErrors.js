@@ -2,7 +2,7 @@ import deepGet from 'lodash/get';
 import {IS_PRODUCTION, IS_SANDBOX} from '../constants';
 import PepoApi from "./PepoApi";
 //NEVER COMMIT WITH developerMode true.
-const developerMode = true;
+const developerMode = false;
 const logErrorMessage = !IS_PRODUCTION;
 const DEFAULT_ERROR_MSG = "Something went wrong";
 const DEFAULT_CONTEXT = "_default";
