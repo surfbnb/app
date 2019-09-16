@@ -48,31 +48,31 @@ class WalletSettingList extends PureComponent {
     this._createEventLoaderData(
       optionIds.addSession,
       "Adding Session",
-      "Waiting for conformation",
+      "Waiting for confirmation",
       "Session added");
 
     this._createEventLoaderData(
       optionIds.updateBiometricPreference,
       "Updating Biometric",
-      "Waiting for conformation",
+      "Waiting for confirmation",
       "Biometric updated");
 
     this._createEventLoaderData(
       optionIds.resetPin,
       "Resetting PIN",
-      "Waiting for conformation",
+      "Waiting for confirmation",
       "PIN updated");
 
     this._createEventLoaderData(
       optionIds.recoverDevice,
       "Recovering device",
-      "Waiting for conformation",
+      "Waiting for confirmation",
       "Device recovery initiated");
 
     this._createEventLoaderData(
       optionIds.abortRecovery,
       "Cancelling recovery",
-      "Waiting for conformation",
+      "Waiting for confirmation",
       "Aborted recovery ");
 
     this._createEventLoaderData(
@@ -84,20 +84,20 @@ class WalletSettingList extends PureComponent {
     this._createEventLoaderData(
       optionIds.authorizeWithQR,
       "Authorizing device",
-      "Waiting for conformation",
+      "Waiting for confirmation",
       "Device authorized");
 
 
     this._createEventLoaderData(
       optionIds.authorizeWithMnemonics,
       "Authorizing device",
-      "Waiting for conformation",
+      "Waiting for confirmation",
       "Device authorized");
 
     this._createEventLoaderData(
       optionIds.showQR,
       "",
-      "Waiting for conformation",
+      "Waiting for confirmation",
       "Device authorized");
   }
 
