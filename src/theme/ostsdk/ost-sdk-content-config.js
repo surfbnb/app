@@ -283,7 +283,7 @@ export default {
   "add_current_device_with_mnemonics": {
     "get_pin": {
       "title_label": {
-        "text": "Add device with QR"
+        "text": "Add device with mnemonics"
       },
       "lead_label": {
         "text": "Enter your 6-digit PIN to authorize your action"
