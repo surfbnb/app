@@ -46,7 +46,7 @@ class WorkflowDelegate extends OstWalletUIWorkflowCallback {
     // Others should override this method and logout the user.
   }
 
-  saltFetchFailed() {
+  saltFetchFailed( response ) {
     // Others should override this method and show the error.
   }
 

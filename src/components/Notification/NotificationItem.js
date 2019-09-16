@@ -12,7 +12,7 @@ import PepoPinkIcon from '../../assets/heart.png';
 import { connect } from 'react-redux';
 import AppConfig from '../../../src/constants/AppConfig';
 import { shortenedFromNow } from '../../helpers/timestampHandling';
-import NavigateTo from '../../helpers/navigateTo';
+import {navigateTo} from '../../helpers/navigateTo';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import playIcon from '../../assets/play_icon.png';
 
@@ -38,7 +38,7 @@ class NotificationItem extends Component {
   }
 
   handleRowClick = () => {
-    this.props.goTo && new NavigateTo(this.props.navigation).navigate(this.props.goTo);
+    this.props.goTo && navigateTo.navigate(this.props.goTo , this.props.navigation);
   };
 
   sendMessageSuccess = () => {
@@ -53,7 +53,7 @@ class NotificationItem extends Component {
 
   includesTextNavigate = (includesObject) => {
     if (includesObject.kind === 'users') {
-      new NavigateTo(this.props.navigation).goToProfilePage(includesObject.id);
+      navigateTo.goToProfilePage(includesObject.id, this.props.navigation);
     }
   };
 

@@ -1,4 +1,12 @@
 import DeviceInfo from 'react-native-device-info';
+import BigNumber from 'bignumber.js';
+
+const B18 = new BigNumber('10').exponentiatedBy('18');
+const PProduction = new BigNumber('1000').multipliedBy(B18);
+
+const PStaging = new BigNumber('10').multipliedBy(B18);
+
+const PSandbox = new BigNumber('10').multipliedBy(B18);
 
 const BundleConstants = {
   'com.pepo.staging': {
@@ -9,7 +17,9 @@ const BundleConstants = {
     TWITTER_CONSUMER_KEY: 'NEo4gEXzdQZaoTsqzpZvepfKb',
     TWITTER_CONSUMER_SECRET: 'iM5UMt4px8rwoqEoRV9gJGrJGtEoMUxOYkaWXSges7t4bk564t',
     SESSION_KEY_EXPIRY_TIME: 60 * 60 * 2,
-    SPENDING_LIMIT: '10000000000000000000'
+    SPENDING_LIMIT: PStaging.toString( 10 ),
+    HIGH_SPEND_SESSION_KEY_EXPIRY_TIME: 0
+
   },
   'com.pepo.sandbox': {
     API_ROOT: 'https://sandboxpepo.com/api/v1',
@@ -19,7 +29,8 @@ const BundleConstants = {
     TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
     TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0',
     SESSION_KEY_EXPIRY_TIME: 60 * 60 * 2,
-    SPENDING_LIMIT: '10000000000000000000'
+    SPENDING_LIMIT: PSandbox.toString( 10 ),
+    HIGH_SPEND_SESSION_KEY_EXPIRY_TIME: 0
   },
   'com.pepo.production': {
     API_ROOT: 'https://sandboxpepo.com/api/v1',
@@ -28,8 +39,9 @@ const BundleConstants = {
     TOKEN_ID: '1506',
     TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
     TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0',
-    SESSION_KEY_EXPIRY_TIME: 60 * 60 * 24 * 365,
-    SPENDING_LIMIT: '1000000000000000000000'
+    SESSION_KEY_EXPIRY_TIME: 2 * 7 * 24 * 60 * 60,
+    SPENDING_LIMIT: PProduction.toString( 10 ),
+    HIGH_SPEND_SESSION_KEY_EXPIRY_TIME: 1 * 60 * 60
   }
 };
 
@@ -40,6 +52,11 @@ export const PLATFORM_API_ENDPOINT = BundleConstants[DeviceInfo.getBundleId()].P
 export const TRACKER_ENDPOINT = BundleConstants[DeviceInfo.getBundleId()].TRACKER_ENDPOINT;
 export const TOKEN_ID = BundleConstants[DeviceInfo.getBundleId()].TOKEN_ID;
 export const SESSION_KEY_EXPIRY_TIME = BundleConstants[DeviceInfo.getBundleId()].SESSION_KEY_EXPIRY_TIME || 60 * 60 * 24 * 365;
+export const HIGH_SPEND_SESSION_KEY_EXPIRY_TIME = BundleConstants[DeviceInfo.getBundleId()].HIGH_SPEND_SESSION_KEY_EXPIRY_TIME || 0;
 export const SPENDING_LIMIT = BundleConstants[DeviceInfo.getBundleId()].SPENDING_LIMIT || '1000000000000000000000';
 export const TWITTER_CONSUMER_KEY = BundleConstants[DeviceInfo.getBundleId()].TWITTER_CONSUMER_KEY;
 export const TWITTER_CONSUMER_SECRET = BundleConstants[DeviceInfo.getBundleId()].TWITTER_CONSUMER_SECRET;
+
+
+export const IS_PRODUCTION = ( 'com.pepo.production' === DeviceInfo.getBundleId() );
+export const IS_SANDBOX = ('com.pepo.sandbox' === DeviceInfo.getBundleId() );

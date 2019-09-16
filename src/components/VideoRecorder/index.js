@@ -7,13 +7,14 @@ import ProgressBar from 'react-native-progress/Bar';
 import styles from './styles';
 import reduxGetters from '../../services/ReduxGetters';
 import RNFS from 'react-native-fs';
-import { ActionSheet } from 'native-base';
+import { ActionSheet, Button } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/cross_icon.png';
 import { withNavigation } from 'react-navigation';
-
 import AppConfig from '../../constants/AppConfig';
+import utilities from '../../services/Utilities';
+import CurrentUser from '../../models/CurrentUser';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
@@ -26,7 +27,8 @@ class VideoRecorder extends Component {
     this.state = {
       isRecording: false,
       progress: 0,
-      recordingInProgress: false
+      recordingInProgress: false,
+      acceptedCameraTnC: null
     };
     this.camera = null;
     this.recordedVideo = null;
@@ -37,6 +39,9 @@ class VideoRecorder extends Component {
   };
 
   async componentDidMount() {
+    utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
+      this.setState({ acceptedCameraTnC: terms });
+    });
     BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
     AppState.addEventListener('change', this._handleAppStateChange);
     if (this.props.actionSheetOnRecordVideo) {
@@ -95,6 +100,13 @@ class VideoRecorder extends Component {
     ActionSheet.hide();
   };
 
+  acceptCameraTerms = () => {
+    utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
+    this.setState({
+      acceptedCameraTnC: 'true'
+    });
+  };
+
   cameraView() {
     return (
       <View style={styles.container}>
@@ -120,6 +132,43 @@ class VideoRecorder extends Component {
           defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
           defaultMuted={false}
         >
+          {this.state.acceptedCameraTnC != 'true' && (
+            <View style={styles.backgroundStyle}>
+              <View style={{ padding: 26 }}>
+                <Text style={styles.headerText}>Some Tips to help you get started on your first fan update</Text>
+
+                <Text style={styles.smallText}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna
+                </Text>
+                <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
+
+                <Text style={styles.headerText}>One More thing!</Text>
+
+                <Text style={styles.smallText}>
+                  Pepo has a review process for creators. Our team will help you get started once you create your first
+                  video.   Once approved your video will appear in the feed or other user. In the mean time we will send
+                  you timly updates about the review process
+                </Text>
+
+                <Button
+                  style={{ alignSelf: 'center', backgroundColor: '#f56', padding: 14, marginTop: 24 }}
+                  onPress={this.acceptCameraTerms} >
+                  <Text style={styles.buttonText}>Get Started</Text>
+                </Button>
+              </View>
+            </View>
+          )}
+          {this.showCameraActions()}
+        </RNCamera>
+      </View>
+    );
+  }
+
+  showCameraActions = () => {
+    if (this.state.acceptedCameraTnC == 'true') {
+      return (
+        <React.Fragment>
           <ProgressBar
             width={null}
             color="#EF5566"
@@ -142,10 +191,10 @@ class VideoRecorder extends Component {
           >
             {this.getActionButton()}
           </View>
-        </RNCamera>
-      </View>
-    );
-  }
+        </React.Fragment>
+      );
+    }
+  };
 
   stopRecording = () => {
     // naviagate from here to other page

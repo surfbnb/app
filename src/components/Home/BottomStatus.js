@@ -59,7 +59,7 @@ class BottomStatus extends PureComponent {
             onPress={multipleClickHandler(() => {
               BrowserEmitter.emit('browserOpened');
               setTimeout(() => {
-                InAppBrowser.openBrowser(Utilities.sanitizeLink(this.props.link));
+                InAppBrowser.openBrowser(this.props.link);
               }, 0);
             })}
             pointerEvents={'auto'}

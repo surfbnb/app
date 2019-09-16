@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert, Platform } from 'react-native';
+import deepGet from 'lodash/get';
+
 import pricer from './Pricer';
 import reduxGetters from './ReduxGetters';
 import appConfig from '../constants/AppConfig';
@@ -10,6 +12,9 @@ import { LoginPopoverActions } from '../components/LoginPopover';
 import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
+import NavigationService from '../services/NavigationService';
+import {NavigateTo} from '../helpers/navigateTo';
+
 let recursiveMaxCount = 0;
 
 let checkVideoPermission = function(navigation) {

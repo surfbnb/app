@@ -2,8 +2,8 @@ import AssignIn from 'lodash/assignIn';
 import qs from 'qs';
 import NetInfo from '@react-native-community/netinfo';
 import { Platform } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
-import Package from '../../package';
 import Toast from '../theme/components/NotificationToast';
 import { API_ROOT } from '../constants/index';
 import { ostErrors, UIWhitelistedErrorCode } from './OstErrors';
@@ -22,7 +22,11 @@ export default class PepoApi {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': this._getUserAgent()
+        'User-Agent': DeviceInfo.getUserAgent(),
+        'X-PEPO-DEVICE-OS': Platform.OS,
+        'X-PEPO-DEVICE-OS-VERSION': DeviceInfo.getSystemVersion(),
+        'X-PEPO-BUILD-NUMBER': DeviceInfo.getBuildNumber(),
+        'X-PEPO-APP-VERSION': DeviceInfo.getVersion()
       }
     };
     this._cleanUrl();
@@ -54,16 +58,6 @@ export default class PepoApi {
 
   _parseParams() {
     this.parsedParams = AssignIn(this.defaultParams, this.params);
-  }
-
-  _getUserAgent() {
-    let name = Package.name,
-      appVersion = Package.version,
-      rnVersion = Package.dependencies['react-native'],
-      os = Platform.OS,
-      osVersion = Platform.Version,
-      envDev = __DEV__ === true;
-    return `${os} ${osVersion}; RN ${rnVersion}; ${name} ${appVersion}; envDev ${envDev}`;
   }
 
   _getIDList(resultData, key = 'id') {

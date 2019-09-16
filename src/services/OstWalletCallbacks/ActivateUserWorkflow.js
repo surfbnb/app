@@ -1,5 +1,4 @@
 import { OstWalletWorkFlowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
-import Toast from '../../theme/components/NotificationToast';
 import CurrentUser from '../../models/CurrentUser';
 import Pricer from '../Pricer';
 import deepGet from 'lodash/get';

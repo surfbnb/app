@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import EventEmitter from 'eventemitter3';
 import BalanceHeader from '../Profile/BalanceHeader';
-import LogoutComponent from '../LogoutLink';
+import SideMenu from '../Menu';
 import UserInfo from '../CommonComponents/UserInfo';
 import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
@@ -37,7 +37,7 @@ class ProfileScreen extends PureComponent {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
-      headerRight: <LogoutComponent {...options} />
+      headerRight: <SideMenu {...options} />
     };
   };
 
@@ -60,13 +60,12 @@ class ProfileScreen extends PureComponent {
 
   componentWillUnmount() {
     NavigationEmitter.removeListener('onRefresh');
-    this.didFocus.remove();
+    this.didFocus && this.didFocus.remove && this.didFocus.remove();
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.userId != prevProps.userId) {
+    if (this.props.userId && this.props.userId != prevProps.userId) {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
-      this.props.navigation.goBack(null);
       this.refresh();
     }
   }
@@ -96,6 +95,7 @@ class ProfileScreen extends PureComponent {
             <Image style={{ width: 13, height: 13 }} source={profileEditIcon}></Image>
           </TouchableOpacity>
         }
+        isOwnProfile={true}
       />
     );
   }

@@ -29,7 +29,9 @@ const UIErros = {
   payment_invalid: "This is invalid payment, please contact in app store",
   payment_pending: "We have noted your order, will update your balance once processed.",
   payment_cancelled: "The payment was cancelled",
-  pending_transaction_poll: "Failed to check status please wait"
+  pending_transaction_poll: "Failed to check status please wait",
+  invite_code_error: 'Enter a valid invite code.',
+  email_error: 'Enter a valid email.'
 };
 
 const UIWhitelistedErrorCode = {

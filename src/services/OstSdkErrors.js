@@ -1,5 +1,9 @@
-
-const developerMode = false;
+import deepGet from 'lodash/get';
+import {IS_PRODUCTION, IS_SANDBOX} from '../constants';
+import PepoApi from "./PepoApi";
+//NEVER COMMIT WITH developerMode true.
+const developerMode = true;
+const logErrorMessage = !IS_PRODUCTION;
 const DEFAULT_ERROR_MSG = "Something went wrong";
 const DEFAULT_CONTEXT = "_default";
 /**
@@ -12,11 +16,39 @@ class OstSdkErrors {
     }
 
     getErrorMessage(ostWorkflowContext, ostError) {
+      let errMsg = this._getErrorMessage(ostWorkflowContext, ostError);
+      if ( logErrorMessage ) {
+        try {
+          this._postErrorDetails(ostWorkflowContext, ostError, errMsg);
+        } catch(e) {
+          //ignore.
+        }
+      }
+      return errMsg;
+    }
 
+    _getErrorMessage(ostWorkflowContext, ostError) {
+      let errMsg;
       // Parameter validation
       if (!ostError) {
         return DEFAULT_ERROR_MSG;
       }
+
+      if ( ostError.isApiError() ) {
+        let errData = ostError.getApiErrorData();
+        if (errData && errData.length > 0) {
+          let firstErrMsg = errData[0];
+          errMsg = firstErrMsg.msg || DEFAULT_ERROR_MSG;
+        }else {
+          errMsg = ostError.getApiErrorMessage();
+        }
+
+        if ( developerMode ) {
+          errMsg = errMsg + "\n\n(" + ostError.getApiInternalId() + ")"
+        }
+        return errMsg;
+      }
+
       let errorCode = ostError.getErrorCode();
       if ( !errorCode ) {
         return DEFAULT_ERROR_MSG;
@@ -26,7 +58,7 @@ class OstSdkErrors {
       let workflowType = ostWorkflowContext ? ostWorkflowContext.WORKFLOW_TYPE : null;
       workflowType = workflowType || DEFAULT_CONTEXT;
 
-      let errMsg;
+
       if ( allErrors[workflowType] ) {
         errMsg = allErrors[workflowType][ errorCode ];
       }
@@ -35,8 +67,32 @@ class OstSdkErrors {
         errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
       }
 
-      return errMsg || DEFAULT_ERROR_MSG;
+      if ( developerMode && errorCode) {
+        if ( !errMsg ) {
+          errMsg = errMsg || DEFAULT_ERROR_MSG;
+        }
 
+        errMsg = errMsg + "\n\n (" + errorCode + "," + ostError.getInternalErrorCode() + ")";
+      }
+
+      return errMsg || DEFAULT_ERROR_MSG;
+    }
+
+    _postErrorDetails(ostWorkflowContext, ostError, errorMessage) {
+      const errorType = ostError.isApiError() ? "wallet-sdk-platform-api" : "wallet-sdk-internal";
+      const errorKind = ostWorkflowContext.WORKLFOW_TYPE;
+      const errData = ostError.error || { "_somekey_": "ostError.error missing. Something unexpected happened!"};
+      errData.displayed_error = errorMessage;
+
+      new PepoApi(`/api/v1/report-issue`)
+        .post({
+          "type": errorType,
+          "kind": errorKind,
+          "error_data": errData
+        })
+        .catch((error) => {
+          //I_D_K
+        })
     }
 }
 
@@ -82,6 +138,9 @@ const allErrors = {
   },
   "UPDATE_BIOMETRIC_PREFERENCE": {
 
+  },
+  "EXECUTE_TRANSACTION": {
+    
   }
 };
 
@@ -199,4 +258,4 @@ const DeveloperErrorMessages = {
 
 const ostSdkErrors = new OstSdkErrors();
 
-export {ostSdkErrors};
+export {ostSdkErrors, DEFAULT_CONTEXT};

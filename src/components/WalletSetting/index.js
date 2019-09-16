@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Alert, FlatList, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {Alert, FlatList, Linking, Platform, Text, TouchableWithoutFeedback, View} from 'react-native';
 import inlineStyle from './styles'
 import {optionIds, walletSettingController} from './WalletSettingController';
 import {LoadingModal} from '../../theme/components/LoadingModalCover';
@@ -8,6 +8,9 @@ import BackArrow from '../CommonComponents/BackArrow';
 import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
 import {ostSdkErrors} from "../../services/OstSdkErrors";
 import CurrentUser from "../../models/CurrentUser";
+import CameraPermissionsApi from "../../services/CameraPermissionsApi";
+
+import AndroidOpenSettings from 'react-native-android-open-settings';
 
 class WalletSettingList extends PureComponent {
   static navigationOptions = (options) => {
@@ -45,62 +48,60 @@ class WalletSettingList extends PureComponent {
     this._createEventLoaderData(
       optionIds.addSession,
       "Adding Session",
-      "Add Session acknowledged",
-      "Session got added Successfully",
-      "Issue occurred while adding Session");
+      "Waiting for conformation",
+      "Session added");
+
+    this._createEventLoaderData(
+      optionIds.updateBiometricPreference,
+      "Updating Biometric",
+      "Waiting for conformation",
+      "Biometric updated");
 
     this._createEventLoaderData(
       optionIds.resetPin,
-      "Resetting pin",
-      "Reset pin acknowledged",
-      "Pin has been modified successfully",
-      "Issue occurred while modifying pin");
+      "Resetting PIN",
+      "Waiting for conformation",
+      "PIN updated");
 
     this._createEventLoaderData(
       optionIds.recoverDevice,
       "Recovering device",
-      "Recover device request acknowledged",
-      "Device has been recovered successfully",
-      "Issue occurred while recovering device");
+      "Waiting for conformation",
+      "Device recovery initiated");
 
     this._createEventLoaderData(
       optionIds.abortRecovery,
       "Cancelling recovery",
-      "Recovery cancelled acknowledged",
-      "Recovery cancelled successfully",
-      "Issue occurred while canceling recovery");
+      "Waiting for conformation",
+      "Aborted recovery ");
 
     this._createEventLoaderData(
       optionIds.viewMnemonics,
-      null,
-      null,
-      null,
-      null);
+      "",
+      "",
+      "");
 
     this._createEventLoaderData(
       optionIds.authorizeWithQR,
       "Authorizing device",
-      "Authorize device request acknowledged",
-      "Device authorized successfully",
-      "Issue occurred while authorizing device");
+      "Waiting for conformation",
+      "Device authorized");
 
 
     this._createEventLoaderData(
       optionIds.authorizeWithMnemonics,
       "Authorizing device",
-      "Authorize device request acknowledged",
-      "Device authorized successfully",
-      "Issue occurred while authorizing device");
+      "Waiting for conformation",
+      "Device authorized");
 
     this._createEventLoaderData(
       optionIds.showQR,
-      null,
-      "Device is authorizing",
-      "Device authorized successfully",
-      null);
+      "",
+      "Waiting for conformation",
+      "Device authorized");
   }
 
-  _createEventLoaderData(id, startText, ackText, successText, failureText){
+  _createEventLoaderData(id, startText, ackText, successText){
     let loaderData = {
       id: id,
 
@@ -111,9 +112,6 @@ class WalletSettingList extends PureComponent {
 
       // Success Text
       successText: successText,
-
-      // Failure Text
-      failureText: failureText,
     };
 
     this.eventLoaderTextMap[ id ] = loaderData;
@@ -163,6 +161,25 @@ class WalletSettingList extends PureComponent {
   };
 
   onSettingItemTapped = (item) => {
+    this._processTappedOption(item);
+  };
+
+  async _processTappedOption(item) {
+    if (item.id === optionIds.authorizeWithQR) {
+      let cameraResult = await CameraPermissionsApi.requestPermission('camera');
+      if ((cameraResult == 'denied' || cameraResult == 'restricted')) {
+        LoadingModal.showFailureAlert("Allow access to your camera to scan QR", '', 'Enable Camera Access', (isBtnTapped) => {
+          if (isBtnTapped) {
+            this.enableAccess();
+          }
+        });
+        return;
+      }
+    }
+    this._perfromWorkflow(item)
+  }
+
+  _perfromWorkflow(item) {
     let workflowInfo = walletSettingController.perform(item.id);
     if ( workflowInfo ) {
       this.onWorkflowStarted( workflowInfo );
@@ -170,7 +187,25 @@ class WalletSettingList extends PureComponent {
       //Some coding error occurred.
       console.log("PepoError", "ws_indx_osit_1", "Some coding error occurred");
     }
-  };
+  }
+
+  enableAccess() {
+    if (Platform.OS == 'android') {
+      if (AndroidOpenSettings) {
+        AndroidOpenSettings.appDetailsSettings();
+      }
+    } else {
+      Linking.canOpenURL('app-settings:')
+        .then((supported) => {
+          if (!supported) {
+            console.log("Can't handle settings url");
+          } else {
+            return Linking.openURL('app-settings:');
+          }
+        })
+        .catch((err) => console.error('An error occurred', err));
+    }
+  }
 
   onWorkflowStarted = (workflowInfo) => {
     this.workflowInfo = workflowInfo;

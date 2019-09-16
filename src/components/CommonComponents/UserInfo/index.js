@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Linking, TouchableOpacity } from 'react-native';
+import { View, Text, Linking, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import { withNavigation } from 'react-navigation';
@@ -14,6 +14,7 @@ import multipleClickHandler from '../../../services/MultipleClickHandler';
 import Pricer from '../../../services/Pricer';
 import InAppBrowser from '../../../services/InAppBrowser';
 import Utilities from '../../../services/Utilities';
+import infoIcon from '../../../assets/information_icon.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -23,7 +24,8 @@ const mapStateToProps = (state, ownProps) => {
     link: reduxGetter.getLink(reduxGetter.getUserLinkId(ownProps.userId, state), state),
     supporters: reduxGetter.getUserSupporters(ownProps.userId, state),
     supporting: reduxGetter.getUsersSupporting(ownProps.userId, state),
-    btAmount: reduxGetter.getUsersBt(ownProps.userId, state)
+    btAmount: reduxGetter.getUsersBt(ownProps.userId, state),
+    approvedCreater: reduxGetter.isCreatorApproved(ownProps.userId, state)
   };
 };
 
@@ -123,12 +125,24 @@ class UserInfo extends React.PureComponent {
           <Text
             style={[{ color: Colors.summerSky, textAlign: 'center', marginTop: 10 }]}
             onPress={() => {
-              InAppBrowser.openBrowser(Utilities.sanitizeLink(this.props.link));
+              InAppBrowser.openBrowser(this.props.link);
             }}
           >
             {this.props.link}
           </Text>
         )}
+        {this.props.approvedCreater === 0  && this.props.isOwnProfile && (
+          <View  style={{ backgroundColor: '#ff5566', textAlign: 'center', width: '100%', paddingVertical: 10, marginTop: 10, marginBottom:-16, alignItems: 'center', justifyContent: 'center' }}>
+            <View style= {{flexDirection: 'row'}}>
+            <Image source={infoIcon} style={{height:20, width:20}}/>
+            <Text
+              style={[{ color: Colors.white, textAlign: 'center', marginLeft: 4 }]}           
+            >
+              Your profile is in review
+            </Text>
+            </View>
+          </View>
+        )}      
       </View>
     );
   }

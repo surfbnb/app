@@ -21,11 +21,14 @@ import StorePayments from "../../services/StorePayments";
 import { paymentEvents,  paymentEventsMap } from "../../helpers/PaymentEvents";
 import inlineStyles from './styles';
 import dataContract from "../../constants/DataContract";
+import {OstWalletSdk} from "@ostdotcom/ost-wallet-sdk-react-native";
 
 import pepoTxIcon from "../../assets/pepo-tx-icon.png";
 import toastError from '../../assets/toast_error.png';
 import pepoIcon from '../../assets/self-amount-pepo-icon.png';
 import mailIcon from '../../assets/mail-filled.png';
+import CurrentUser from '../../models/CurrentUser';
+import AppConfig from '../../constants/AppConfig';
 
 class StoreProductsScreen extends PureComponent{
 
@@ -43,7 +46,8 @@ class StoreProductsScreen extends PureComponent{
         this.products = [];
         this.isProductFetchError = false;
         this.maxThresholdReached = false;
-        this.fetchProducts();
+        this.deviceUnAuthorised =  false;
+        this.checkDeviceAuthorized();
     }
 
     componentDidMount(){
@@ -64,6 +68,21 @@ class StoreProductsScreen extends PureComponent{
         paymentEvents.removeListener(paymentEventsMap.paymentIAPError);
         paymentEvents.removeListener( paymentEventsMap.paymentBESyncSuccess);
         BackHandler.removeEventListener('hardwareBackPress');
+    }
+
+    isDevicesAuthorized( device ) {
+       return device && device.status && device.status.toLowerCase() == AppConfig.deviceStatusMap.authorized;
+    }
+
+    checkDeviceAuthorized = () => {
+        OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
+            if(this.isDevicesAuthorized( device )){
+              this.fetchProducts();
+            }else{
+                this.deviceUnAuthorised = true;
+                this.onFetchError();
+            }
+        })
     }
 
     fetchProducts = () => {
@@ -177,11 +196,13 @@ class StoreProductsScreen extends PureComponent{
         )
     }
 
-    getErrorMarkup = () => {
+    getErrorMarkup = (errorMsg) => {
         return (
             <View style={inlineStyles.viewWrapper}>
                 <Image source={toastError} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
-                <Text style={{textAlign: "center"}}>Topup not available at this time, we are looking into in. Please check back later</Text>
+                <Text style={{textAlign: "center"}}>
+                  {errorMsg || "Topup not available at this time, we are looking into in. Please check back later."} 
+                </Text>
             </View>
         )  
     }
@@ -198,6 +219,10 @@ class StoreProductsScreen extends PureComponent{
                </View>
             </View>
         )
+    }
+
+    getDeviceUnAutorizedMarkup(){
+        return this.getErrorMarkup("Your device is not authorized. Please authorized the device.");
     }
 
     getNoProductsMarkUp = () => {
@@ -233,7 +258,9 @@ class StoreProductsScreen extends PureComponent{
 
     getMarkUp = () => {
         this.getAnimation().stop() ;
-        if(this.isProductFetchError){
+        if(this.deviceUnAuthorised){
+            return this.getDeviceUnAutorizedMarkup();
+        }else if(this.isProductFetchError){
             return this.getErrorMarkup();
         } else if(this.maxThresholdReached){
             return this.getThresholdReachedMarkUp(); 

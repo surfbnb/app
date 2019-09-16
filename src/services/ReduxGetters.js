@@ -63,6 +63,11 @@ class ReduxGetters {
     return deepGet(state, `user_entities.id_${id}.ost_status`);
   }
 
+  isCreatorApproved(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `user_entities.id_${id}.approved_creator`);
+  }
+
   getBio(id, state) {
     state = state || Store.getState();
     return unescape(deepGet(state, `user_profile_entities.id_${id}.bio.text`));

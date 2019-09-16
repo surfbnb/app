@@ -28,6 +28,8 @@
 		00228199232D02F600B3F25C /* OstWorkFlowCallbackImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 00228189232D02F600B3F25C /* OstWorkFlowCallbackImpl.m */; };
 		0022819A232D02F600B3F25C /* OstWalletRnSdkApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 0022818B232D02F600B3F25C /* OstWalletRnSdkApi.m */; };
 		0022819B232D031C00B3F25C /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
+		00228406232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 00228404232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist */; };
+		00228407232FD8EE00B3F25C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 00228405232FD8EE00B3F25C /* GoogleService-Info.plist */; };
 		00281BA822DC7E6E00C0E079 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00281B7822DC7E6E00C0E079 /* AudioToolbox.framework */; };
 		00281BAA22DC7E7800C0E079 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00281BA922DC7E7800C0E079 /* AVFoundation.framework */; };
 		00281BAC22DC7E8200C0E079 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00281BAB22DC7E8200C0E079 /* CoreMedia.framework */; };
@@ -90,8 +92,6 @@
 		44E7621D0BF54D0D94AE8775 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1E81A640BFF41ACB5A01A53 /* FontAwesome5_Regular.ttf */; };
 		45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2697F42945424A4984DF2EDE /* Lato-LightItalic.ttf */; };
 		4720B1815AA646A98064A0C8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBEB5D26FF5447979A63766E /* EvilIcons.ttf */; };
-		4B74AE33232BD46B00CCBCB2 /* com.pepo.sandbox.GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B74AE32232BD46B00CCBCB2 /* com.pepo.sandbox.GoogleService-Info.plist */; };
-		4B74AF3B232BEAA400CCBCB2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B74AF3A232BEAA400CCBCB2 /* GoogleService-Info.plist */; };
 		4B903A7F232A77D6002B212E /* TrustKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B76D86A2318FAAC007316D4 /* TrustKit.framework */; };
 		4B983AB722BD153800B9E6D4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		4BDACD0B23018F0100CF8294 /* libRNTwitterSignIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 776EEED922E1F1F400BE1922 /* libRNTwitterSignIn.a */; };
@@ -624,6 +624,8 @@
 		00228189232D02F600B3F25C /* OstWorkFlowCallbackImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OstWorkFlowCallbackImpl.m; sourceTree = "<group>"; };
 		0022818A232D02F600B3F25C /* OstMessageBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OstMessageBus.h; sourceTree = "<group>"; };
 		0022818B232D02F600B3F25C /* OstWalletRnSdkApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OstWalletRnSdkApi.m; sourceTree = "<group>"; };
+		00228404232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "com.pepo.sandbox.GoogleService-Info.plist"; sourceTree = "<group>"; };
+		00228405232FD8EE00B3F25C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		00281B7822DC7E6E00C0E079 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		00281BA922DC7E7800C0E079 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		00281BAB22DC7E8200C0E079 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -711,8 +713,6 @@
 		4644A8D258C5493CAD1FB4CE /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		4942AA6D4C5247669FA8FCAF /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		4B46BF1CB84243E2AF31F2B2 /* RNIap.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNIap.xcodeproj; path = "../node_modules/react-native-iap/ios/RNIap.xcodeproj"; sourceTree = "<group>"; };
-		4B74AE32232BD46B00CCBCB2 /* com.pepo.sandbox.GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "com.pepo.sandbox.GoogleService-Info.plist"; sourceTree = "<group>"; };
-		4B74AF3A232BEAA400CCBCB2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B76D86A2318FAAC007316D4 /* TrustKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TrustKit.framework; path = Carthage/Build/iOS/TrustKit.framework; sourceTree = "<group>"; };
 		5E7E0A527AF64DDB95B586B0 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SMXCrashlytics.xcodeproj; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -1113,12 +1113,12 @@
 		13B07FAE1A68108700A75B9A /* Pepo2 */ = {
 			isa = PBXGroup;
 			children = (
+				00228404232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist */,
+				00228405232FD8EE00B3F25C /* GoogleService-Info.plist */,
 				0022816B232D02F600B3F25C /* ostwalletrnsdk */,
 				00E5D90E232A573A006EA3DE /* Crashlytics.framework */,
 				00E5D90D232A573A006EA3DE /* Fabric.framework */,
 				00E5D8EB232A556F006EA3DE /* Firebase */,
-				4B74AF3A232BEAA400CCBCB2 /* GoogleService-Info.plist */,
-				4B74AE32232BD46B00CCBCB2 /* com.pepo.sandbox.GoogleService-Info.plist */,
 				00DDF0AA231818DA00F7D30D /* Pepo2.entitlements */,
 				00470E9A22DC7A8100FC8345 /* ReactNativeFFmpeg */,
 				000C67FA22D764EA0095497C /* TwitterCore.framework */,
@@ -1456,6 +1456,9 @@
 								enabled = 1;
 							};
 							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
 								enabled = 1;
 							};
 						};
@@ -2096,10 +2099,10 @@
 				000C67FF22D764EA0095497C /* TwitterKitResources.bundle in Resources */,
 				108A6E98F43648CDB5F2EF3C /* MaterialIcons.ttf in Resources */,
 				B121E889D6D8469FB607BFC5 /* Octicons.ttf in Resources */,
-				4B74AF3B232BEAA400CCBCB2 /* GoogleService-Info.plist in Resources */,
 				5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */,
+				00228406232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist in Resources */,
 				34DAB1A620A348A7BDD85ACE /* Roboto.ttf in Resources */,
-				4B74AE33232BD46B00CCBCB2 /* com.pepo.sandbox.GoogleService-Info.plist in Resources */,
+				00228407232FD8EE00B3F25C /* GoogleService-Info.plist in Resources */,
 				000C680022D764EA0095497C /* TwitterShareExtensionUIResources.bundle in Resources */,
 				7E873BEEA71D4772A4CEA8FE /* rubicon-icon-font.ttf in Resources */,
 				77280AE9DDE14F90B1ACDAF8 /* SimpleLineIcons.ttf in Resources */,

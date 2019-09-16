@@ -19,6 +19,8 @@ const mapStateToProps = ({ login_popover }) => ({
 const btnPreText = 'Connect with Twitter';
 const btnPostText = 'Connecting...';
 
+//TODO @preshita While isTwitterConnecting, Check if android hardware back close the modal if not do nothing, if yes block android hardware back .
+
 class loginPopover extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,13 @@ class loginPopover extends React.Component {
       disableLoginBtn: false,
       btnText: btnPreText
     };
+    this.isTwitterConnecting =  false;
+  }
+
+  componentWillUnmount(){
+    this.state.disableLoginBtn =  false ;
+    this.state.btnText =  btnPreText;
+    this.isTwitterConnecting =  false;
   }
 
   componentDidUpdate(prevProps) {
@@ -36,12 +45,19 @@ class loginPopover extends React.Component {
 
   onSignUp = () => {
     this.setState({ disableLoginBtn: true, btnText: btnPostText });
+    this.isTwitterConnecting =  true ;
     TwitterAuthService.signUp();
-    //cannot hide popover here
   };
 
+  //Use this function if needed to handle hardware back handling for android.
+  closeModal = () => {
+    if( !this.isTwitterConnecting ){
+      Store.dispatch(hideLoginPopover());
+    }
+    return true;
+  }
+
   render() {
-    console.log('disableLoginBtn', this.state.disableLoginBtn);
     return (
       <React.Fragment>
         {this.props.show && (
@@ -54,18 +70,22 @@ class loginPopover extends React.Component {
             onRequestClose={() => console.log('onRequestClose')}
           >
             <TouchableWithoutFeedback
-              onPressIn={() => {
-                Store.dispatch(hideLoginPopover());
-              }}
+              onPressIn={this.closeModal}
             >
               <View style={inlineStyles.parent}>
                 <TouchableWithoutFeedback>
                   <View style={inlineStyles.container}>
                     <TouchableOpacity
-                      onPress={() => {
-                        Store.dispatch(hideLoginPopover());
+                      onPress={this.closeModal}
+                      style={{
+                        position: 'absolute',
+                        top: 15,
+                        right: 15,
+                        width: 38,
+                        height: 38,
+                        alignItems: 'center',
+                        justifyContent: 'center'
                       }}
-                      style={inlineStyles.crossBtnPos}
                     >
                       <Image source={modalCross} style={{ width: 19.5, height: 19 }} />
                     </TouchableOpacity>

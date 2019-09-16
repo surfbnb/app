@@ -20,6 +20,8 @@ import { PurchaseLoader } from "../../helpers/PaymentEvents";
 import PollCurrentUserPendingPayments from "../../helpers/PollCurrentUserPendingPayments";
 import Toast from '../../theme/components/NotificationToast';
 import appConfig from "../../constants/AppConfig";
+import PepoApi from '../../services/PepoApi';
+import InAppBrowser from '../../services/InAppBrowser';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -34,7 +36,7 @@ class BalanceHeader extends PureComponent {
   }
 
   componentDidMount(){
-    this.purchaseLoaderSubscribtion = new PurchaseLoader( this.updatePurchasingLoader ); 
+    this.purchaseLoaderSubscribtion = new PurchaseLoader( this.updatePurchasingLoader );
     this.purchaseLoaderSubscribtion.subscribeToEvents();
     this.setState({isPurchasing: PollCurrentUserPendingPayments.getPollingStatus()});
   }
@@ -78,14 +80,27 @@ class BalanceHeader extends PureComponent {
     }
   }
 
+  openWebView = () => {
+    console.log('openWebView: open browser');
+    
+    new PepoApi(`/redemptions/info`)
+    .get()
+    .then((res) => { setTimeout(() => {
+      
+      res && res.data && InAppBrowser.openBrowser(res.data.redemption_info.url);
+    }, 0); })
+    .catch((error) => {});
+
+  }
+  
   getWalletIcon = () => {
     if( this.state.isPurchasing ){
       return  <TouchableWithoutFeedback onPress={this.onPurchaseInProgress}>
-                <View style={{position: "relative"}}>
-                  <ProgressCircle size={40} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
-                  <Image style={{ width: 18, height: 18, position: 'absolute', top: '50%', left: '50%', transform: [{translateX: -9}, {translateY: -9}] }} source={selfAmountWallet}></Image>
-                </View> 
-              </TouchableWithoutFeedback> ;
+        <View style={{position: "relative"}}>
+          <ProgressCircle size={40} color={Colors.primary} duration={1000} direction="clockwise" useNativeDriver={true}/>
+          <Image style={{ width: 18, height: 18, position: 'absolute', top: '50%', left: '50%', transform: [{translateX: -9}, {translateY: -9}] }} source={selfAmountWallet}></Image>
+        </View>
+      </TouchableWithoutFeedback> ;
     }else{
       return <Image style={{ width: 18, height: 18}} source={selfAmountWallet}></Image> ;
     }
@@ -100,7 +115,7 @@ class BalanceHeader extends PureComponent {
               <Image style={{ width: 50, height: 50 }} source={topUpIcon}></Image>
               <Text style={inlineStyles.redeemBalance}>Top Up</Text>
             </View>
-          </TouchableWithoutFeedback>  
+          </TouchableWithoutFeedback>
           <LinearGradient
             colors={['#dadfdc', '#dadfdc']}
             locations={[0, 1]}
@@ -109,8 +124,10 @@ class BalanceHeader extends PureComponent {
             style={{height: 20, width: 1, marginHorizontal: 8, marginTop: 16.5}}
           ></LinearGradient>
           <View style={{alignItems: 'center'}}>
+            <TouchableWithoutFeedback onPress={this.openWebView}>
             <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
             <Text style={inlineStyles.redeemBalance}>Redeem</Text>
+            </TouchableWithoutFeedback>
           </View>
         </View>
         <View style={{alignItems: 'flex-end'}}>

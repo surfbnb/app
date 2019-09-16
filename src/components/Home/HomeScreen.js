@@ -12,10 +12,6 @@ import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import appConfig from '../../constants/AppConfig';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
-import { clearPushNotification } from '../../actions';
-import Store from '../../store';
-import reduxGetter from '../../services/ReduxGetters';
-import NavigateTo from '../../helpers/navigateTo';
 
 const mapStateToProps = (state) => {
   return {
@@ -31,12 +27,6 @@ class HomeScreen extends Component {
     };
   };
 
-  _handleAppStateChange = (nextAppState) => {
-    if (nextAppState == 'active'){
-      this.handlepushNotification();
-    }    
-  };
-
   constructor(props) {    
     console.log('HomeScreen constructor');
     super(props);
@@ -46,21 +36,8 @@ class HomeScreen extends Component {
     this.listRef = null;
   }
 
-  handlepushNotification(){    
-    let pushNotification = reduxGetter.getPushNotification();
-
-    if (Object.keys(pushNotification).length > 0) {      
-      new NavigateTo(this.props.navigation).navigate(pushNotification.goto);
-      Store.dispatch(clearPushNotification());
-      return;
-    }
-  }
-
-
-
   componentDidMount = () => {
     AppState.addEventListener('change', this._handleAppStateChange);
-    this.handlepushNotification();
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
     NavigationEmitter.on('onRefresh', (screen) => {

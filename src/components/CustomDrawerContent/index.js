@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image } from 'react-native';
-import { SafeAreaView, NavigationEvents } from 'react-navigation';
-import { OstWalletSdk, OstWalletSdkUI, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { SafeAreaView } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
+import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 
 import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
@@ -10,12 +10,14 @@ import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
 import loggedOutIcon from '../../assets/drawer-logout-icon.png';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
+import referAndEarn from '../../assets/refer-and-earn.png';
 import pepoAmountWallet from '../../assets/pepo-amount-wallet.png';
 import Toast from '../../theme/components/NotificationToast';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 import BackArrow from '../../assets/back-arrow.png';
-import {connect} from "react-redux";
-import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
+import { connect } from 'react-redux';
+import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper';
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -25,8 +27,6 @@ class CustomDrawerContent extends Component {
       disableButtons: false,
       showWalletSettings: false
     };
-    this.twitterDisconnect = this.twitterDisconnect.bind(this);
-    this.CurrentUserLogout = this.CurrentUserLogout.bind(this);
   }
 
   componentDidMount() {
@@ -34,15 +34,6 @@ class CustomDrawerContent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    // let shouldUpdateMenuSetting = true;
-    console.log("---------HERE---------------componentDidUpdate called from CustomDrawerContent");
-    // if (this.props.current_user && (this.props.current_user.id === prevProps.current_user.id) && this.state.showWalletSettings) {
-    //   shouldUpdateMenuSetting = false;
-    // }
-    //
-    // if (shouldUpdateMenuSetting) {
-    //   this.updateMenuSettings();
-    // }
     this.updateMenuSettings();
   }
 
@@ -52,25 +43,23 @@ class CustomDrawerContent extends Component {
   };
 
   updateUserName = () => {
-    this.userName = reduxGetter.getName(CurrentUser.getUserId()) || "";
+    this.userName = reduxGetter.getName(CurrentUser.getUserId()) || '';
   };
 
   updateWalletSettings = () => {
     if (CurrentUser.getOstUserId()) {
       OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), (localDevice) => {
 
-        if (localDevice && OstWalletSdkHelper.canDeviceMakeApiCall( localDevice ) ) {
+        if (localDevice && OstWalletSdkHelper.canDeviceMakeApiCall( localDevice ) && CurrentUser.isUserActivated() ) {
           if ( !this.state.showWalletSettings ) {
             this.setState({
               showWalletSettings: true
             });
           }
         } else {
-          if ( this.state.showWalletSettings ) {
-            this.setState({
-              showWalletSettings: false
-            })
-          }
+          this.setState({
+            showWalletSettings: false
+          });
         }
       });
     }
@@ -106,7 +95,7 @@ class CustomDrawerContent extends Component {
     );
   }
 
-  CurrentUserLogout() {
+  CurrentUserLogout = () => {
     let params = {
       device_id: DeviceInfo.getUniqueID()
     };
@@ -121,58 +110,73 @@ class CustomDrawerContent extends Component {
             disableButtons: false
           });
         }, 300);
-      //TODO: Show error somewhere.
-    });
-  }
+      }
+    );
+  };
 
   initWallet = () => {
     //TODO: Navigation should push instead of navigate
-    this.props.navigation.navigate("WalletSettingScreen") ;
+    this.props.navigation.navigate('WalletSettingScreen');
   };
 
   renderWalletSetting = () => {
-    if ( !this.state.showWalletSettings ) {
+    if (!this.state.showWalletSettings) {
       return null;
     }
     return (
-      <TouchableOpacity onPress={this.initWallet} >
+      <TouchableOpacity onPress={this.initWallet}>
         <View style={[styles.itemParent]}>
           <Image style={{ height: 24, width: 25.3 }} source={pepoAmountWallet} />
           <Text style={styles.item}>Wallet settings</Text>
         </View>
-      </TouchableOpacity>);
+      </TouchableOpacity>
+    );
   };
 
-  render(){
+  referAndEarn = () => {
+    this.props.navigation.push('ReferAndEarn');
+  };
+
+  render() {
     return (
-        <ScrollView style={styles.container}>
-          <SafeAreaView forceInset={{ top: 'always' }}>
-            <View style={styles.header}>
-              <TouchableOpacity
-                  onPress={this.props.navigation.closeDrawer}
-                  style={{ height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}
-              >
-                <Image style={{ width: 10, height: 18 }} source={BackArrow} />
-              </TouchableOpacity>
-              <Text style={styles.headerText}>{this.userName}</Text>
+      <ScrollView style={styles.container}>
+        <SafeAreaView forceInset={{ top: 'always' }}>
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={this.props.navigation.closeDrawer}
+              style={{ height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Image style={{ width: 10, height: 18 }} source={BackArrow} />
+            </TouchableOpacity>
+            <Text style={styles.headerText}>{this.userName}</Text>
+          </View>
+          <TouchableOpacity onPress={this.twitterDisconnect} disabled={this.state.disableButtons}>
+            <View style={styles.itemParent}>
+              <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
+              <Text style={styles.item}>Twitter Disconnect</Text>
             </View>
-            <TouchableOpacity onPress={this.twitterDisconnect} disabled={this.state.disableButtons}>
-              <View style={styles.itemParent}>
-                <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
-                <Text style={styles.item}>Twitter Disconnect</Text>
-              </View>
-            </TouchableOpacity>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={multipleClickHandler(() => {
+              this.referAndEarn();
+            })}
+            disabled={this.state.disableButtons}
+          >
+            <View style={styles.itemParent}>
+              <Image style={{ height: 24, width: 29 }} source={referAndEarn} />
+              <Text style={styles.item}>Refer and Earn</Text>
+            </View>
+          </TouchableOpacity>
+          {this.renderWalletSetting()}
 
-            {this.renderWalletSetting()}
-
-            <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>
-              <View style={styles.itemParent}>
-                <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
-                <Text style={styles.item}>Log out</Text>
-              </View>
-            </TouchableOpacity>
-          </SafeAreaView>
-        </ScrollView>
+          <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>
+            <View style={styles.itemParent}>
+              <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+              <Text style={styles.item}>Log out</Text>
+            </View>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </ScrollView>
     );
   }
 }

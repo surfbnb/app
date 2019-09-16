@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Pepo Staging</string>
+	<string>Pepo Sandbox</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -25,7 +25,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>twitterkit-NEo4gEXzdQZaoTsqzpZvepfKb</string>
+				<string>twitterkit-qqc45NF23dhKRuNbfsdnHGEkI</string>
 			</array>
 		</dict>
 	</array>

@@ -51,7 +51,7 @@ export default {
   "b2": {
     "size": 17,
     "color": "#FF5566",
-    "background_color": "#f8f8f8",
+    "background_color": "#ffffff",
     "system_font_weight": "semi_bold"
   },
 

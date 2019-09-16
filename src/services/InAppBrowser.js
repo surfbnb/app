@@ -1,5 +1,7 @@
 import { Linking } from 'react-native';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
+import Colors from '../theme/styles/Colors';
+import Utilities from './Utilities';
 
 const defaultOptions = {
   // iOS Properties
@@ -26,7 +28,7 @@ const defaultOptions = {
 
 export default {
   openBrowser: async (urlParam, optionsParam) => {
-    const url = urlParam;
+    const url = Utilities.sanitizeLink(urlParam);
     const options = Object.assign({}, defaultOptions, optionsParam);
     try {
       if (await InAppBrowser.isAvailable()) {

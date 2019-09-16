@@ -3,16 +3,12 @@ import { TouchableOpacity, TouchableWithoutFeedback, View, Image, BackHandler, A
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/preview_play_icon.png';
-import tickIcon from '../../assets/tick_icon.png';
 import Store from '../../store';
 import { upsertRecordedVideo, videoInProcessing } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
 import closeIcon from '../../assets/cross_icon.png';
 import { withNavigation } from 'react-navigation';
-import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
-import TouchableButton from '../../theme/components/TouchableButton';
-import Theme from '../../theme/styles';
 import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
@@ -52,7 +48,7 @@ class PreviewRecordedVideo extends Component {
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     AppState.removeEventListener('change', this._handleAppStateChange);
-    this.didFocus.remove();
+    this.didFocus && this.didFocus.remove && this.didFocus.remove();
     this.willBlur.remove();
   }
 

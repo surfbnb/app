@@ -7,9 +7,9 @@ import NavigationService from '../services/NavigationService';
 import appConfig from '../constants/AppConfig';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
-import Toast from "../theme/components/NotificationToast";
+import Toast from '../theme/components/NotificationToast';
 import { PushNotificationMethods } from '../services/PushNotificationManager';
-import OstWorkflowDelegate from "../helpers/OstWorkflowDelegate";
+import OstWorkflowDelegate from '../helpers/OstWorkflowDelegate';
 
 // Used require to support all platforms
 const RCTNetworking = require('RCTNetworking');
@@ -103,7 +103,16 @@ class CurrentUser {
       .then(() => {
         Store.dispatch(updateCurrentUser(user));
         this.userId = userId;
-        setupDevice && InitWalletSdk.initializeDevice(this);
+        if (setupDevice) {
+          return InitWalletSdk.promisifiedSetupDevice()
+            .then((res) => {
+              return user;
+            })
+            .catch((error) => {
+              console.log('setup device failed', error);
+              //DO NOTHING Unexpected error.
+            });
+        }
         return user;
       });
   }
@@ -133,47 +142,39 @@ class CurrentUser {
     }
   }
 
-  login(params) {
-    return this._signin('/auth/login', params);
-  }
-
-  signUp(params) {
-    return this._signin('/auth/sign-up', params);
-  }
-
   twitterConnect(params) {
     return this._signin('/auth/twitter-login', params);
   }
 
-    async logout(params) {
-        await new PepoApi('/auth/logout')
-            .post(params)
-            .then((res) => {
-                RCTNetworking.clearCookies(async () => {
-                    await this.clearCurrentUser();
-                    PushNotificationMethods.deleteToken();
-                    NavigationService.navigate('HomeScreen', params)
-                });
-            })
-            .catch((error) => {
-                Toast.show({
-                    text: 'Logout failed please try again.',
-                    icon: 'error'
-                });
-            });
-    }
-
-    async logoutLocal(params) {
-        await RCTNetworking.clearCookies(async () => {
-            await this.clearCurrentUser();
-            NavigationService.navigate('HomeScreen', params)
+  async logout(params) {
+    await new PepoApi('/auth/logout')
+      .post(params)
+      .then((res) => {
+        RCTNetworking.clearCookies(async () => {
+          await this.clearCurrentUser();
+          PushNotificationMethods.deleteToken();
+          NavigationService.navigate('HomeScreen', params);
         });
-    }
+      })
+      .catch((error) => {
+        Toast.show({
+          text: 'Logout failed please try again.',
+          icon: 'error'
+        });
+      });
+  }
+
+  async logoutLocal(params) {
+    await RCTNetworking.clearCookies(async () => {
+      await this.clearCurrentUser();
+      NavigationService.navigate('HomeScreen', params);
+    });
+  }
 
   _signin(apiUrl, params) {
     let authApi = new PepoApi(apiUrl);
     return authApi.post(JSON.stringify(params)).then((apiResponse) => {
-      return this._saveCurrentUser(apiResponse)
+      return this._saveCurrentUser(apiResponse, null, true)
         .catch()
         .then(() => {
           return apiResponse;
@@ -182,7 +183,6 @@ class CurrentUser {
   }
 
   getUserSalt() {
-
     return new PepoApi('/users/recovery-info').get();
 
     //TODO: Someday, in far future, uncomment below code.
@@ -195,11 +195,11 @@ class CurrentUser {
 
   newPassphraseDelegate() {
     let delegate = new OstWorkflowDelegate(this.getOstUserId(), this);
-    this.bindSetPassphrase( delegate );
+    this.bindSetPassphrase(delegate);
     return delegate;
   }
 
-  bindSetPassphrase( uiWorkflowCallback ) {
+  bindSetPassphrase(uiWorkflowCallback) {
     Object.assign(uiWorkflowCallback, {
       getPassphrase: (userId, ostWorkflowContext, passphrasePrefixAccept) => {
         return _getPassphrase(this, uiWorkflowCallback, passphrasePrefixAccept);
@@ -254,40 +254,35 @@ class CurrentUser {
     return returnVal;
   }
   // End Move this to utilities once all branches are merged.
-
-  setupDeviceFailed(ostWorkflowContext, error) {
-    console.log('----- IMPORTANT :: SETUP DEVICE FAILED -----');
-  }
-
-  setupDeviceComplete() {}
 }
 
 const _getPassphrase = (currentUserModel, workflowDelegate, passphrasePrefixAccept) => {
-
-  if ( !_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept) ) {
+  if (!_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept)) {
     passphrasePrefixAccept.cancelFlow();
     return Promise.resolve();
   }
 
   _canFetchSalt = true;
-  const getSaltPromise = currentUserModel.getUserSalt().then((res) => {
-    if ( !_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept) ) {
-      return;
-    }
+  const getSaltPromise = currentUserModel
+    .getUserSalt()
+    .then((res) => {
+      if (!_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept)) {
+        return;
+      }
 
-    if (res.success && res.data) {
-      let resultType = deepGet(res, 'data.result_type'),
-        passphrasePrefixString = deepGet(res, `data.${resultType}.scrypt_salt`);
+      if (res.success && res.data) {
+        let resultType = deepGet(res, 'data.result_type'),
+          passphrasePrefixString = deepGet(res, `data.${resultType}.scrypt_salt`);
 
       if ( !passphrasePrefixString ) {
         passphrasePrefixAccept.cancelFlow();
-        workflowDelegate.saltFetchFailed();
+        workflowDelegate.saltFetchFailed(res);
         return;
       }
 
       passphrasePrefixAccept.setPassphrase(passphrasePrefixString, currentUserModel.getOstUserId(), () => {
         passphrasePrefixAccept.cancelFlow();
-        workflowDelegate.saltFetchFailed();
+        workflowDelegate.saltFetchFailed(res);
       });
     }
   })
@@ -303,7 +298,7 @@ const _getPassphrase = (currentUserModel, workflowDelegate, passphrasePrefixAcce
 };
 
 const _ensureValidUserId = (currentUserModel, workflowDelegate, passphrasePrefixAccept) => {
-  if ( currentUserModel.getOstUserId() === workflowDelegate.userId ) {
+  if (currentUserModel.getOstUserId() === workflowDelegate.userId) {
     return true;
   }
 
@@ -314,6 +309,5 @@ const _ensureValidUserId = (currentUserModel, workflowDelegate, passphrasePrefix
 };
 
 let _canFetchSalt = false;
-
 
 export default new CurrentUser();

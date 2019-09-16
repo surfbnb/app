@@ -15,6 +15,7 @@ export default StyleSheet.create({
     marginBottom: 20
   },
   loadingMessage: {
+    textAlign: 'center',
     fontSize: 18,
     marginBottom: 15,
     color: 'white',

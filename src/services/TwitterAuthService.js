@@ -1,47 +1,37 @@
-import { NativeModules } from 'react-native';
-import { LoadingModal } from '../theme/components/LoadingModalCover';
 import deepGet from 'lodash/get';
-import { ostErrors } from './OstErrors';
-import InitWalletSdk from './InitWalletSdk';
-import NavigationService from './NavigationService';
+
 import Toast from '../theme/components/NotificationToast';
-import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../constants';
 
 let LoginPopoverActions = null;
 import('../components/LoginPopover').then((pack) => {
   LoginPopoverActions = pack.LoginPopoverActions;
 });
 
-const { RNTwitterSignIn } = NativeModules;
-
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
   CurrentUser = imports.default;
 });
 
+import TwitterAuth from './ExternalLogin/TwitterAuth';
+import Utilities from './Utilities';
+import AppConfig from '../constants/AppConfig';
+import NavigationService from './NavigationService';
+import { navigateTo } from '../helpers/navigateTo';
+
 class TwitterAuthService {
   signUp() {
-    const oThis = this;
-    this._signIn()
-      .then((loginData) => {
-        console.log(loginData);
-        if (loginData) {
-          let params = this.getParams(loginData);
-          LoadingModal.show('Connecting...');
+    TwitterAuth.signIn()
+      .then(async (params) => {
+        if (params) {
+          //TODO @preshita Create worker as well
+          let inviteCode = await Utilities.getItem(AppConfig.appInstallInviteCodeASKey);
+          if (inviteCode) {
+            params['invite_code'] = inviteCode;
+          }
           CurrentUser.twitterConnect(params)
             .then((res) => {
-              if (res.success && res.data) {
-                let resultType = deepGet(res, 'data.result_type'),
-                  userData = deepGet(res, 'data.' + resultType);
-                if (!userData) {
-                  LoadingModal.hide();
-                  Toast.show({
-                    text: ostErrors.getErrorMessage(res),
-                    icon: 'error'
-                  });
-                  return;
-                }
-                InitWalletSdk.initializeDevice(oThis);
+              if (res && res.success) {
+                this.onSuccess(res);
               } else {
                 this.onServerError(res);
               }
@@ -54,7 +44,6 @@ class TwitterAuthService {
         }
       })
       .catch((error) => {
-        console.log(error);
         this.onServerError(error);
       })
       .finally(() => {
@@ -62,47 +51,51 @@ class TwitterAuthService {
       });
   }
 
-  getParams(loginData) {
-    return {
-      token: loginData.authToken,
-      secret: loginData.authTokenSecret,
-      twitter_id: loginData.userID,
-      handle: loginData.userName
-    };
+  onSuccess(res) {
+    if (this.handleGoTo(res)) {
+      return;
+    }
+    navigateTo.navigationDecision();
   }
 
   logout() {
-    this._signout();
+    TwitterAuth.signOut();
   }
 
-  setupDeviceComplete() {
-    LoadingModal.hide();
-    if (!CurrentUser.isActiveUser()) {
-      NavigationService.navigate('UserActivatingScreen');
-    } else {
-      NavigationService.navigate('HomeScreen');
+  onServerError(error) {
+    if (this.handleGoTo(error)) {
+      return;
     }
-  }
-
-  setupDeviceFailed(ostWorkflowContext, error) {
-    // this.onServerError(error);
-  }
-
-  onServerError(res) {
-    LoadingModal.hide();
     Toast.show({
       text: 'Failed to login via Twitter.',
       icon: 'error'
     });
   }
 
-  _signIn() {
-    RNTwitterSignIn.init(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
-    return RNTwitterSignIn.logIn();
+  handleGoTo(res) {
+    //On success goto can be handled by the generic utility
+    if (navigateTo.handleGoTo(res)) {
+      return true;
+    }
+    //TODO @preshita
+    //Is error and error for invite code
+    let errorData = deepGet(res, 'err.error_data');
+    if (res && this.isInviteCodeError(errorData)) {
+      //Goto invite screen
+      NavigationService.navigate('InviteCodeScreen');
+      return true;
+    }
+    return false;
+    //DOnt forget to return true or false ,if handleGoTo has taken a decission return true or false
   }
 
-  _signout() {
-    RNTwitterSignIn.logOut();
+  isInviteCodeError(errorObj) {
+    for (i in errorObj) {
+      if (errorObj[i].parameter === 'invite_code') {
+        return true;
+      }
+    }
+    return false;
   }
 }
 

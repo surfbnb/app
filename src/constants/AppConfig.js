@@ -190,6 +190,8 @@ export default {
     }
   },
 
+  appInstallInviteCodeASKey : "app_install_invite_code",
+
   searchConfig: {
     MIN_SEARCH_CHAR: 2
   },
