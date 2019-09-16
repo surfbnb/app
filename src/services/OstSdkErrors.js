@@ -80,13 +80,13 @@ class OstSdkErrors {
 
     _postErrorDetails(ostWorkflowContext, ostError, errorMessage) {
       const errorType = ostError.isApiError() ? "wallet-sdk-platform-api" : "wallet-sdk-internal";
-      const errorKind = ostWorkflowContext.WORKLFOW_TYPE;
+      const errorKind = ostWorkflowContext.WORKFLOW_TYPE;
       const errData = ostError.error || { "_somekey_": "ostError.error missing. Something unexpected happened!"};
       errData.displayed_error = errorMessage;
 
-      new PepoApi(`/api/v1/report-issue`)
+      new PepoApi(`/report-issue`)
         .post({
-          "type": errorType,
+          "app_name": errorType,
           "kind": errorKind,
           "error_data": errData
         })
@@ -140,7 +140,7 @@ const allErrors = {
 
   },
   "EXECUTE_TRANSACTION": {
-    
+
   }
 };
 
