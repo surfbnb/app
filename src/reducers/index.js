@@ -81,7 +81,8 @@ const logoutDefault = {
   current_user: {},
   balance: null,
   video_contribution_entities: {},
-  user_contribution_entities: {}
+  user_contribution_entities: {},
+  notification_unread: {}
 };
 
 export const reducer = handleActions(
@@ -214,8 +215,7 @@ export const reducer = handleActions(
       video_in_processing: action.payload.video_in_processing
     }),
     [logoutUser]: (state, action) => ({
-      ...state,
-      ...logoutDefault
+      ...defaultState
     }),
     [upsertUserContributionByStats]: (state, action) => ({
       ...state,
