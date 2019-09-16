@@ -168,6 +168,8 @@ class WalletSettingController {
         this._updateOptionsData(optionIds.resetPin, false, true);
       }else {
         this._updateOptionsData(optionIds.abortRecovery, false, true);
+        this._updateOptionsData(optionIds.resetPin, false, false);
+
       }
 
       if (deviceStatus == this.deviceStatusMap.revoked) {
