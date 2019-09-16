@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Alert, FlatList, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {Alert, FlatList, Linking, Platform, Text, TouchableWithoutFeedback, View} from 'react-native';
 import inlineStyle from './styles'
 import {optionIds, walletSettingController} from './WalletSettingController';
 import {LoadingModal} from '../../theme/components/LoadingModalCover';
@@ -8,6 +8,9 @@ import BackArrow from '../CommonComponents/BackArrow';
 import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
 import {ostSdkErrors} from "../../services/OstSdkErrors";
 import CurrentUser from "../../models/CurrentUser";
+import CameraPermissionsApi from "../../services/CameraPermissionsApi";
+
+import AndroidOpenSettings from 'react-native-android-open-settings';
 
 class WalletSettingList extends PureComponent {
   static navigationOptions = (options) => {
@@ -170,6 +173,25 @@ class WalletSettingList extends PureComponent {
   };
 
   onSettingItemTapped = (item) => {
+    this._processTappedOption(item);
+  };
+
+  async _processTappedOption(item) {
+    if (item.id === optionIds.authorizeWithQR) {
+      let cameraResult = await CameraPermissionsApi.requestPermission('camera');
+      if ((cameraResult == 'denied' || cameraResult == 'restricted')) {
+        LoadingModal.showFailureAlert("Allow access to your camera to scan QR", '', 'Enable Camera Access', (isBtnTapped) => {
+          if (isBtnTapped) {
+            this.enableAccess();
+          }
+        });
+        return;
+      }
+    }
+    this._perfromWorkflow(item)
+  }
+
+  _perfromWorkflow(item) {
     let workflowInfo = walletSettingController.perform(item.id);
     if ( workflowInfo ) {
       this.onWorkflowStarted( workflowInfo );
@@ -177,7 +199,25 @@ class WalletSettingList extends PureComponent {
       //Some coding error occurred.
       console.log("PepoError", "ws_indx_osit_1", "Some coding error occurred");
     }
-  };
+  }
+
+  enableAccess() {
+    if (Platform.OS == 'android') {
+      if (AndroidOpenSettings) {
+        AndroidOpenSettings.appDetailsSettings();
+      }
+    } else {
+      Linking.canOpenURL('app-settings:')
+        .then((supported) => {
+          if (!supported) {
+            console.log("Can't handle settings url");
+          } else {
+            return Linking.openURL('app-settings:');
+          }
+        })
+        .catch((err) => console.error('An error occurred', err));
+    }
+  }
 
   onWorkflowStarted = (workflowInfo) => {
     this.workflowInfo = workflowInfo;
