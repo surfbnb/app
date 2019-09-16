@@ -29,6 +29,7 @@ import pepoIcon from '../../assets/self-amount-pepo-icon.png';
 import mailIcon from '../../assets/mail-filled.png';
 import CurrentUser from '../../models/CurrentUser';
 import AppConfig from '../../constants/AppConfig';
+import { ostErrors } from '../../services/OstErrors';
 
 class StoreProductsScreen extends PureComponent{
 
@@ -201,7 +202,7 @@ class StoreProductsScreen extends PureComponent{
             <View style={inlineStyles.viewWrapper}>
                 <Image source={toastError} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
                 <Text style={{textAlign: "center"}}>
-                  {errorMsg || "Topup not available at this time, we are looking into in. Please check back later."} 
+                  {errorMsg || ostErrors.getUIErrorMessage("top_not_available")} 
                 </Text>
             </View>
         )  
@@ -222,7 +223,7 @@ class StoreProductsScreen extends PureComponent{
     }
 
     getDeviceUnAutorizedMarkup(){
-        return this.getErrorMarkup("Your device is not authorized. Please authorized the device.");
+        return this.getErrorMarkup(ostErrors.getUIErrorMessage("device_unathorized"));
     }
 
     getNoProductsMarkUp = () => {

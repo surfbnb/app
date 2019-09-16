@@ -31,7 +31,9 @@ const UIErros = {
   payment_cancelled: "The payment was cancelled",
   pending_transaction_poll: "Failed to check status please wait",
   invite_code_error: 'Enter a valid invite code.',
-  email_error: 'Enter a valid email.'
+  email_error: 'Enter a valid email.',
+  device_unathorized: "Your device is not authorized. Please authorized the device.",
+  top_not_available: "Topup not available at this time, we are looking into in. Please check back later."
 };
 
 const UIWhitelistedErrorCode = {
