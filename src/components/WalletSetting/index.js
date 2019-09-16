@@ -49,40 +49,34 @@ class WalletSettingList extends PureComponent {
       optionIds.addSession,
       "Adding Session",
       "Add Session acknowledged",
-      "Session got added Successfully",
-      "Issue occurred while adding Session");
+      "Session got added Successfully");
 
     this._createEventLoaderData(
       optionIds.updateBiometricPreference,
       "Updating Biometric Preference",
       "Updating Biometric Preference acknowledged",
-      "Biometric Preference Updated Successfully",
-      "Issue occurred while Updating Biometric Preference");
+      "Biometric Preference Updated Successfully");
 
     this._createEventLoaderData(
       optionIds.resetPin,
       "Resetting pin",
       "Reset pin acknowledged",
-      "Pin has been modified successfully",
-      "Issue occurred while modifying pin");
+      "Pin has been modified successfully");
 
     this._createEventLoaderData(
       optionIds.recoverDevice,
       "Recovering device",
       "Recover device request acknowledged",
-      "Device has been recovered successfully",
-      "Issue occurred while recovering device");
+      "Device has been recovered successfully");
 
     this._createEventLoaderData(
       optionIds.abortRecovery,
       "Cancelling recovery",
       "Recovery cancelled acknowledged",
-      "Recovery cancelled successfully",
-      "Issue occurred while canceling recovery");
+      "Recovery cancelled successfully");
 
     this._createEventLoaderData(
       optionIds.viewMnemonics,
-      null,
       null,
       null,
       null);
@@ -91,26 +85,23 @@ class WalletSettingList extends PureComponent {
       optionIds.authorizeWithQR,
       "Authorizing device",
       "Authorize device request acknowledged",
-      "Device authorized successfully",
-      "Issue occurred while authorizing device");
+      "Device authorized successfully");
 
 
     this._createEventLoaderData(
       optionIds.authorizeWithMnemonics,
       "Authorizing device",
       "Authorize device request acknowledged",
-      "Device authorized successfully",
-      "Issue occurred while authorizing device");
+      "Device authorized successfully");
 
     this._createEventLoaderData(
       optionIds.showQR,
       null,
       "Device is authorizing",
-      "Device authorized successfully",
-      null);
+      "Device authorized successfully");
   }
 
-  _createEventLoaderData(id, startText, ackText, successText, failureText){
+  _createEventLoaderData(id, startText, ackText, successText){
     let loaderData = {
       id: id,
 
@@ -121,9 +112,6 @@ class WalletSettingList extends PureComponent {
 
       // Success Text
       successText: successText,
-
-      // Failure Text
-      failureText: failureText,
     };
 
     this.eventLoaderTextMap[ id ] = loaderData;
