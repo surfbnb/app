@@ -181,9 +181,11 @@ class BackendPaymentAcknowledge {
         } else {
             //Notify user that he needs to get in touch with Apple of Google store
             if( status = dataContract.payments.statusCodeBEAcknowledgeMap.failed ){
-                Alert.alert("", ostErrors.getUIErrorMessage("invalid_payment_from_store") );
+                Alert.alert("", ostErrors.getUIErrorMessage("payment_invalid") );
             }else if(status = dataContract.payments.statusCodeBEAcknowledgeMap.processing ) {
-                Alert.alert("", ostErrors.getUIErrorMessage("pending_payment_from_be") );
+                Alert.alert("", ostErrors.getUIErrorMessage("payment_pending") );
+            }else if(status = dataContract.payments.statusCodeBEAcknowledgeMap.cancelled ) {
+                Alert.alert("", ostErrors.getUIErrorMessage("payment_cancelled") );
             }
         }   
     }

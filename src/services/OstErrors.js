@@ -26,8 +26,9 @@ const UIErros = {
   payment_failed_error : "Unable to process the payment.",
   init_iap_payment: "Failed to initalize in app payments, please try again later.",
   payment_acknowledge_to_be: "The in app transaction is complete, we  have noted it on device. We are facing some problem BE problems. Will update soon",
-  invalid_payment_from_store: "This is invalid payment, please contact in app store",
-  pending_payment_from_be: "We have noted your order, will update your balance once processed.",
+  payment_invalid: "This is invalid payment, please contact in app store",
+  payment_pending: "We have noted your order, will update your balance once processed.",
+  payment_cancelled: "The payment was cancelled",
   pending_transaction_poll: "Failed to check status please wait"
 };
 

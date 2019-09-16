@@ -20,12 +20,6 @@ export default {
     activating: 'activating'
   },
 
-  topUpEntityStatusMap : {
-    success: "success",
-    pending:"pending",
-    error: "error"
-  },
-
   deviceStatusMap: {
     registered: 'registered',
     authorizing: 'authorizing',

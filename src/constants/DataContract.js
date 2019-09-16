@@ -13,7 +13,7 @@ export default {
         statusCodeBEAcknowledgeMap : {
             failed : "FAILED",
             processing : "PROCESSING",
-            refund: "REFUND"
+            cancelled: "CANCELLED"
         },
         isConsumableKey: "is_consumable"
     },
