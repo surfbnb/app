@@ -215,7 +215,8 @@ export const reducer = handleActions(
       video_in_processing: action.payload.video_in_processing
     }),
     [logoutUser]: (state, action) => ({
-      ...defaultState
+      ...state,
+      ...logoutDefault
     }),
     [upsertUserContributionByStats]: (state, action) => ({
       ...state,
