@@ -148,15 +148,15 @@ class WalletSettingController {
 
     if (userStatus == this.userStatusMap.activated) {
 
-      let biometricMessage = (this.isBiometricEnabled || false) ? 'Disable Biometric Preference' : 'Enable Biometric Preference'
-      this._updateOptionsData(optionIds.updateBiometricPreference, false, true, biometricMessage)
-
       this._updateOptionsData(optionIds.resetPin, false, true);
 
       if (deviceStatus == this.deviceStatusMap.authorized) {
         this._updateOptionsData(optionIds.addSession, false, true);
         this._updateOptionsData(optionIds.viewMnemonics, false, true);
         this._updateOptionsData(optionIds.authorizeWithQR, false, true);
+
+        let biometricMessage = (this.isBiometricEnabled || false) ? 'Disable Biometric Preference' : 'Enable Biometric Preference';
+        this._updateOptionsData(optionIds.updateBiometricPreference, false, true, biometricMessage);
       }
 
       if (deviceStatus == this.deviceStatusMap.registered) {
