@@ -197,23 +197,24 @@ class FanVideoDetails extends Component {
           </View>
         </View>
         <View>
+          <Text style={[Theme.Errors.errorText, { alignSelf: 'center', marginBottom: 10 }]}>{this.state.error}</Text>
           <LinearGradient
             colors={['#ff7499', '#ff5566']}
             locations={[0, 1]}
-            style={{ borderRadius: 3, marginHorizontal: 20 }}
+            style={{ borderRadius: 3, marginHorizontal: 20, marginBottom: 20 }}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >
             <TouchableButton
               TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
               TextStyles={[Theme.Button.btnPinkText]}
+              style={{marginBottom: 20}}
               text="SHARE"
               onPress={multipleClickHandler(() => {
                 this.enableStartUploadFlag();
               })}
             />
           </LinearGradient>
-          <Text style={[Theme.Errors.errorText, { alignSelf: 'center', paddingTop: 10 }]}>{this.state.error}</Text>
         </View>
       </View>
     );
