@@ -20,7 +20,14 @@ class OstSdkErrors {
       }
 
       if ( ostError.isApiError() ) {
-        errMsg = ostError.getApiErrorMessage();
+        let errData = ostError.getApiErrorData();
+        if (errData && errData.length > 0) {
+          let firstErrMsg = errData[0];
+          errMsg = firstErrMsg.msg || DEFAULT_ERROR_MSG;
+        }else {
+          errMsg = ostError.getApiErrorMessage();
+        }
+
         if ( developerMode ) {
           errMsg = errMsg + " (" + ostError.getApiInternalId() + ")"
         }
