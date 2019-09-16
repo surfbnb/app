@@ -193,7 +193,8 @@ const SearchPushStack = createStackNavigator(
     SearchScreen: SearchScreen,
     UsersProfileScreen: UsersProfileScreen,
     SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen
+    SupportersListScreen: SupportersListScreen,
+    UserVideoHistory: UserVideoHistory
   },
   {
     headerLayoutPreset: 'center'
