@@ -148,8 +148,6 @@ class WalletSettingController {
 
     if (userStatus == this.userStatusMap.activated) {
 
-      this._updateOptionsData(optionIds.resetPin, false, true);
-
       if (deviceStatus == this.deviceStatusMap.authorized) {
         this._updateOptionsData(optionIds.addSession, false, true);
         this._updateOptionsData(optionIds.viewMnemonics, false, true);
@@ -167,6 +165,7 @@ class WalletSettingController {
 
       if (null == this.pendingRecovery) {
         this._updateOptionsData(optionIds.abortRecovery, false, false);
+        this._updateOptionsData(optionIds.resetPin, false, true);
       }else {
         this._updateOptionsData(optionIds.abortRecovery, false, true);
       }
