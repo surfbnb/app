@@ -1,6 +1,8 @@
 import deepGet from 'lodash/get';
 import {IS_PRODUCTION, IS_SANDBOX} from '../constants';
+import PepoApi from "./PepoApi";
 const developerMode = !IS_PRODUCTION;
+const logErrorMessage = !IS_PRODUCTION;
 const DEFAULT_ERROR_MSG = "Something went wrong";
 const DEFAULT_CONTEXT = "_default";
 /**
@@ -13,6 +15,18 @@ class OstSdkErrors {
     }
 
     getErrorMessage(ostWorkflowContext, ostError) {
+      let errMsg = this._getErrorMessage(ostWorkflowContext, ostError);
+      if ( logErrorMessage ) {
+        try {
+          this._postErrorDetails(ostWorkflowContext, ostError, errMsg);
+        } catch(e) {
+          //ignore.
+        }
+      }
+      return errMsg;
+    }
+
+    _getErrorMessage(ostWorkflowContext, ostError) {
       let errMsg;
       // Parameter validation
       if (!ostError) {
@@ -29,7 +43,7 @@ class OstSdkErrors {
         }
 
         if ( developerMode ) {
-          errMsg = errMsg + " (" + ostError.getApiInternalId() + ")"
+          errMsg = errMsg + "\n\n(" + ostError.getApiInternalId() + ")"
         }
         return errMsg;
       }
@@ -57,10 +71,27 @@ class OstSdkErrors {
           errMsg = errMsg || DEFAULT_ERROR_MSG;
         }
 
-        errMsg = errMsg + " (" + errorCode + "," + ostError.getInternalErrorCode() + ")";
+        errMsg = errMsg + "\n\n (" + errorCode + "," + ostError.getInternalErrorCode() + ")";
       }
 
       return errMsg || DEFAULT_ERROR_MSG;
+    }
+
+    _postErrorDetails(ostWorkflowContext, ostError, errorMessage) {
+      const errorType = ostError.isApiError() ? "wallet-sdk-platform-api" : "wallet-sdk-internal";
+      const errorKind = ostWorkflowContext.WORKLFOW_TYPE;
+      const errData = ostError.error || { "_somekey_": "ostError.error missing. Something unexpected happened!"};
+      errData.displayed_error = errorMessage;
+
+      new PepoApi(`/api/v1/report-issue`)
+        .post({
+          "type": errorType,
+          "kind": errorKind,
+          "error_data": errData
+        })
+        .catch((error) => {
+          //I_D_K
+        })
     }
 }
 
