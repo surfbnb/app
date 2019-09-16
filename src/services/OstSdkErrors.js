@@ -5,6 +5,7 @@ import PepoApi from "./PepoApi";
 const developerMode = false;
 const logErrorMessage = !IS_PRODUCTION;
 const DEFAULT_ERROR_MSG = "Something went wrong";
+const WORKFLOW_CANCELLED_MSG = "WORKFLOW_CANCELLED";
 const DEFAULT_CONTEXT = "_default";
 /**
  * OstSdkErrors
@@ -18,10 +19,12 @@ class OstSdkErrors {
     getErrorMessage(ostWorkflowContext, ostError) {
       let errMsg = this._getErrorMessage(ostWorkflowContext, ostError);
       if ( logErrorMessage ) {
-        try {
-          this._postErrorDetails(ostWorkflowContext, ostError, errMsg);
-        } catch(e) {
-          //ignore.
+        if ( WORKFLOW_CANCELLED_MSG != errMsg ) {
+          try {
+            this._postErrorDetails(ostWorkflowContext, ostError, errMsg);
+          } catch(e) {
+            //ignore.
+          }
         }
       }
       return errMsg;
@@ -177,6 +180,9 @@ const BaseErrorMessages = {
 
   DEVICE_CAN_NOT_BE_REVOKED:
     "Cannot complete the revoke device operation. Only an authorized device can be revoked. Please ensure you are trying to revoke a valid device and re-submit the request.",
+
+  WORKFLOW_CANCELED: WORKFLOW_CANCELLED_MSG,
+  WORKFLOW_CANCELLED: WORKFLOW_CANCELLED_MSG
 };
 
 const DeveloperErrorMessages = {
@@ -258,4 +264,4 @@ const DeveloperErrorMessages = {
 
 const ostSdkErrors = new OstSdkErrors();
 
-export {ostSdkErrors, DEFAULT_CONTEXT};
+export {ostSdkErrors, DEFAULT_CONTEXT, WORKFLOW_CANCELLED_MSG};
