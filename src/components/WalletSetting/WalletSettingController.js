@@ -49,7 +49,7 @@ class WalletSettingController {
     this._createOptionsData(optionIds.resetPin, "Reset Pin", "Reset your wallet pin");
     this._createOptionsData(optionIds.viewMnemonics, "Show Device Mnemonics", "Please write down your 12-word mnemonic phrase");
     this._createOptionsData(optionIds.authorizeWithMnemonics, "Authorize Device with Mnemonics", "Authorize current device by using mnemonics");
-    this._createOptionsData(optionIds.authorizeWithQR, "Scan QR to Authorize", "Scan QR Code of the new device to authorize it");
+    this._createOptionsData(optionIds.authorizeWithQR, "Scan QR to Authorize Device", "Scan QR Code of the new device to authorize it");
     this._createOptionsData(optionIds.showQR, "Show Device QR Code", "Scan QR Code from the device authorized device to authorize this device");
     this._createOptionsData(optionIds.updateBiometricPreference, "Update Biometric Preference", "Authenticate user with biometric");
   }
