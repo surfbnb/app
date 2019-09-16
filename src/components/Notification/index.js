@@ -48,9 +48,6 @@ class NotificationScreen extends Component {
         this.refresh(true, 300);
       }
     });
-    this.didFocus = this.props.navigation.addListener('didFocus', () => {
-      this.refresh(true, 300);
-    });
   }
 
   componentWillUpdate(nextProps) {
@@ -75,7 +72,6 @@ class NotificationScreen extends Component {
 
   componentWillUnmount() {
     NavigationEmitter.removeListener('onRefresh');
-    this.didFocus && this.didFocus.remove && this.didFocus.remove();
   }
 
   onRefresh = () => {
