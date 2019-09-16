@@ -17,6 +17,7 @@ import { updateExecuteTransactionStatus, updateBalance, upsertVideoStatEntities 
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import reduxGetter from '../../services/ReduxGetters';
 import { ostErrors } from '../../services/OstErrors';
+import { ostSdkErrors } from '../../services/OstSdkErrors';
 import Pricer from '../../services/Pricer';
 import utilities from '../../services/Utilities';
 import PixelCall from '../../services/PixelCall';
@@ -144,10 +145,16 @@ class TransactionPepoButton extends PureComponent {
       });
   }
 
-  onSdkError(error) {
+  onSdkError(error, ostWorkflowContext) {
     this.syncData(1000);
+    let errMsg;
+    if ( ostWorkflowContext ) {
+      errMsg = ostSdkErrors.getErrorMessage(ostWorkflowContext, error);
+    } else {
+      errMsg = ostErrors.getErrorMessage(error);
+    }
     Toast.show({
-      text: ostErrors.getErrorMessage(error),
+      text: errMsg,
       icon: 'error'
     });
   }

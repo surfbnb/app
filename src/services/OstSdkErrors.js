@@ -1,7 +1,8 @@
 import deepGet from 'lodash/get';
 import {IS_PRODUCTION, IS_SANDBOX} from '../constants';
 import PepoApi from "./PepoApi";
-const developerMode = !IS_PRODUCTION;
+//NEVER COMMIT WITH developerMode true.
+const developerMode = true;
 const logErrorMessage = !IS_PRODUCTION;
 const DEFAULT_ERROR_MSG = "Something went wrong";
 const DEFAULT_CONTEXT = "_default";
@@ -139,7 +140,7 @@ const allErrors = {
 
   },
   "EXECUTE_TRANSACTION": {
-
+    
   }
 };
 
@@ -257,4 +258,4 @@ const DeveloperErrorMessages = {
 
 const ostSdkErrors = new OstSdkErrors();
 
-export {ostSdkErrors};
+export {ostSdkErrors, DEFAULT_CONTEXT};

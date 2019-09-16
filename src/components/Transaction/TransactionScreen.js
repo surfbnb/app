@@ -26,6 +26,7 @@ import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import { ostErrors } from '../../services/OstErrors';
+import { ostSdkErrors } from '../../services/OstSdkErrors';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
 import reduxGetter from '../../services/ReduxGetters';
@@ -199,8 +200,8 @@ class TransactionScreen extends Component {
       (res) => {
         this.onBalance(res);
       },
-      (err) => {
-        this.onError(err);
+      (err, context) => {
+        this.onError(err, context);
       }
     );
   }
@@ -301,7 +302,7 @@ class TransactionScreen extends Component {
 
   onFlowInterrupt(ostWorkflowContext, error) {
     pricer.getBalance();
-    this.onError(error);
+    this.onError(error, ostWorkflowContext);
   }
 
   sendTransactionToPlatform(ostWorkflowContext, ostWorkflowEntity) {
@@ -357,7 +358,14 @@ class TransactionScreen extends Component {
     return params;
   }
 
-  onError(error) {
+  onError(error, ostWorkflowContext) {
+
+    if ( ostWorkflowContext ) {
+      // workflow error.
+      const errorMsg = ostSdkErrors.getErrorMessage(ostWorkflowContext, error) ;
+      this.showError( errorMsg );
+      return;
+    }
 
     const errorMsg = ostErrors.getErrorMessage(error);
     if (errorMsg) {
