@@ -28,6 +28,11 @@
 #### Website
 1. Universal linking set-up 
 
+### Build Instructions (for Android)
+
+- [android/publish_app_production.md](android/publish_app_production.md)
+- [android/publish_app_sandbox.md](android/publish_app_sandbox.md)
+
 ### Manual installations needed (for iOS)
 
 #### FFmpeg 
