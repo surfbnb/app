@@ -36,6 +36,10 @@ class OstWalletSdkHelper {
       return true
     }
 
+    if ( "WORKFLOW_CANCELED" === ostError.getErrorCode() ) {
+      return true
+    }
+
     return false
   }
 

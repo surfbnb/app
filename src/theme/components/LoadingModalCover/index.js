@@ -217,6 +217,36 @@ class loadingModalCover extends React.Component {
       )
     }
   }
+
+  getCancelButton() {
+    let alertData = this.props.alertData;
+
+    if (alertData && alertData.cancelText) {
+
+      let canceTxt = 'Dismiss';
+
+      if (alertData.cancelText.length > 0) {
+        canceTxt = alertData.cancelText
+      }
+        return(
+          <TouchableOpacity
+            onPress={() => {
+              this.onButtonTap();
+            }}
+            style={[Theme.Button.btnSecondary, {borderWidth: 1, width: '80%', marginTop: 15}]}
+          >
+            <Text
+              style={[
+                Theme.Button.btnPinkText,
+                {fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center'}
+              ]}
+            >
+              {canceTxt}
+            </Text>
+          </TouchableOpacity>
+        )
+    }
+  }
 }
 
 export const LoadingModalCover = connect(mapStateToProps)(loadingModalCover);
@@ -234,14 +264,14 @@ export const LoadingModal = {
   },
 
   showFailureAlert: (message= '', footerText ='', actionText= 'Cancel', onTapCallback = null) => {
-    let alertData = {alertType: 'failure', message: message, footerText: footerText, actionText: actionText, onTap: onTapCallback};
+    let alertData = {alertType: 'failure', message: message, footerText: footerText, actionText: actionText, cancelText: null, onTap: onTapCallback};
     setTimeout(() => {
       Store.dispatch(showModalCover(null, null, alertData));
     },0)
   },
 
-  showRetryAlert: (message= '', footerText= '', actionText= '', onTapCallback = null) => {
-    let alertData = {alertType: 'retry', message: message, footerText: footerText, actionText: actionText, onTap: onTapCallback};
+  showRetryAlert: (message= '', footerText= '', actionText= '', cancelText = '', onTapCallback = null) => {
+    let alertData = {alertType: 'retry', message: message, footerText: footerText, actionText: actionText, cancelText: cancelText || '', onTap: onTapCallback};
     setTimeout(() => {
       Store.dispatch(showModalCover(null, null, alertData));
     },0);
