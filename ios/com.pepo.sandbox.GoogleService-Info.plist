@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>92901610544-s0lm16vmv0gmdgrbn94lv27s14t8ia95.apps.googleusercontent.com</string>
+	<string>256507122234-mgv789sjmf68ojks4k127ehvb728tns2.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.92901610544-s0lm16vmv0gmdgrbn94lv27s14t8ia95</string>
+	<string>com.googleusercontent.apps.256507122234-mgv789sjmf68ojks4k127ehvb728tns2</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAbMDfZvxFA4YaVP5-52pY10uRBQl_AMik</string>
+	<string>AIzaSyDY9hVMmH7T_JEYUcG1ixya2QOujMT1gng</string>
 	<key>GCM_SENDER_ID</key>
-	<string>92901610544</string>
+	<string>256507122234</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.pepo.v2.production</string>
+	<string>com.pepo.sandbox</string>
 	<key>PROJECT_ID</key>
-	<string>pepo-production-ea5b6</string>
+	<string>pepo-staging-60d8e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>pepo-production-ea5b6.appspot.com</string>
+	<string>pepo-staging-60d8e.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:92901610544:ios:2cb6a6baa234b471fac9f5</string>
+	<string>1:256507122234:ios:4fa68004d68eb30dcd1b03</string>
 	<key>DATABASE_URL</key>
-	<string>https://pepo-production-ea5b6.firebaseio.com</string>
+	<string>https://pepo-staging-60d8e.firebaseio.com</string>
 </dict>
 </plist>
