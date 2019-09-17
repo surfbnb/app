@@ -101,8 +101,8 @@ class CurrentUser {
         return utilities.saveItem(this._getCurrentUserIdKey(), userId);
       })
       .then(() => {
-        Store.dispatch(updateCurrentUser(user));
         this.userId = userId;
+        Store.dispatch(updateCurrentUser(user));
         if (setupDevice) {
           return InitWalletSdk.promisifiedSetupDevice()
             .then((res) => {

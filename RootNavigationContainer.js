@@ -45,9 +45,9 @@ import { NotificationToastComponent } from './src/theme/components/NotificationT
 import SocketManager from './src/components/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
+import WalletSettingScreen from './src/components/WalletSetting';
 import StoreProductsScreen from "./src/components/StoreProducts";
 import PaymentWorker from "./src/components/PaymentWorker";
-import  WalletSettingScreen from "./src/components/WalletSetting";
 import PushNotificationManager from './src/services/PushNotificationManager';
 import ReferAndEarn from './src/components/ReferAndEarn';
 import Invites from './src/components/Invites';

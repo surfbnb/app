@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar, Platform, AppState } from 'react-native';
+import { View, StatusBar, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
 
@@ -37,7 +37,6 @@ class HomeScreen extends Component {
   }
 
   componentDidMount = () => {
-    AppState.addEventListener('change', this._handleAppStateChange);
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
     NavigationEmitter.on('onRefresh', (screen) => {
@@ -54,8 +53,7 @@ class HomeScreen extends Component {
     }
   }
 
-  componentWillUnmount = () => {    
-    AppState.removeEventListener('change', this._handleAppStateChange);
+  componentWillUnmount = () => {
     videoUploaderComponent.removeListener('show');
     videoUploaderComponent.removeListener('hide');
     NavigationEmitter.removeListener('onRefresh');

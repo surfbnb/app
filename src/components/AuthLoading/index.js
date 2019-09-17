@@ -4,7 +4,7 @@ import { View, StatusBar, Alert, Platform, Linking } from 'react-native';
 import Toast from '../../theme/components/NotificationToast';
 import styles from './styles';
 import CurrentUser from '../../models/CurrentUser';
-import {OstWalletSdk, OstWalletSdkEvents, OstWalletSdkUI} from '@ostdotcom/ost-wallet-sdk-react-native';
+import {OstWalletSdk, OstWalletSdkUI} from '@ostdotcom/ost-wallet-sdk-react-native';
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
