@@ -21,6 +21,9 @@
     2. Android: `android/app/google-services.json`
     3. In case of iOS, the APN certificate needs to be uploaded to Firebase.
 3. Crashlytics: No specific set-up needed as same keys used in all environments.
+4. Certificates (for SSL pinning) for API endpoints to be added
+    1. iOS: `ios/Pepo2/AppDelegate.m`
+    2. Android: `android/app/src/main/res/xml/network_security_config.xml`
 
 #### Website
 1. Universal linking set-up 
