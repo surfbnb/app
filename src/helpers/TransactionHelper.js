@@ -5,11 +5,11 @@ import CurrentUser from "../models/CurrentUser";
 import pricer from '../services/Pricer';
 import Toast from '../theme/components/NotificationToast';
 import {LoadingModal} from '../theme/components/LoadingModalCover';
-import {ostSdkErrors} from '../services/OstSdkErrors';
+import {ostSdkErrors, WORKFLOW_CANCELLED_MSG} from '../services/OstSdkErrors';
 import {ostErrors} from "../services/OstErrors";
 
 
-const ON_USER_CANCLLED_ERROR_MSG = "ON_USER_CANCLLED_ERROR_MSG";
+const ON_USER_CANCLLED_ERROR_MSG = WORKFLOW_CANCELLED_MSG;
 const bnSpendingLimit = new BigNumber(SPENDING_LIMIT);
 const bnOne = new BigNumber(1);
 

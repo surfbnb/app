@@ -48,57 +48,57 @@ class WalletSettingList extends PureComponent {
     this._createEventLoaderData(
       optionIds.addSession,
       "Adding Session",
-      "Add Session acknowledged",
-      "Session got added Successfully");
+      "Waiting for confirmation",
+      "Session added");
 
     this._createEventLoaderData(
       optionIds.updateBiometricPreference,
-      "Updating Biometric Preference",
-      "Updating Biometric Preference acknowledged",
-      "Biometric Preference Updated Successfully");
+      "Updating Biometric",
+      "Waiting for confirmation",
+      "Biometric updated");
 
     this._createEventLoaderData(
       optionIds.resetPin,
-      "Resetting pin",
-      "Reset pin acknowledged",
-      "Pin has been modified successfully");
+      "Resetting PIN",
+      "Waiting for confirmation",
+      "PIN updated");
 
     this._createEventLoaderData(
       optionIds.recoverDevice,
       "Recovering device",
-      "Recover device request acknowledged",
-      "Device has been recovered successfully");
+      "Waiting for confirmation",
+      "Device recovery initiated");
 
     this._createEventLoaderData(
       optionIds.abortRecovery,
       "Cancelling recovery",
-      "Recovery cancelled acknowledged",
-      "Recovery cancelled successfully");
+      "Waiting for confirmation",
+      "Aborted recovery ");
 
     this._createEventLoaderData(
       optionIds.viewMnemonics,
-      null,
-      null,
-      null);
+      "",
+      "",
+      "");
 
     this._createEventLoaderData(
       optionIds.authorizeWithQR,
       "Authorizing device",
-      "Authorize device request acknowledged",
-      "Device authorized successfully");
+      "Waiting for confirmation",
+      "Device authorized");
 
 
     this._createEventLoaderData(
       optionIds.authorizeWithMnemonics,
       "Authorizing device",
-      "Authorize device request acknowledged",
-      "Device authorized successfully");
+      "Waiting for confirmation",
+      "Device authorized");
 
     this._createEventLoaderData(
       optionIds.showQR,
-      null,
-      "Device is authorizing",
-      "Device authorized successfully");
+      "",
+      "Waiting for confirmation",
+      "Device authorized");
   }
 
   _createEventLoaderData(id, startText, ackText, successText){

@@ -26,7 +26,7 @@ import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import { ostErrors } from '../../services/OstErrors';
-import { ostSdkErrors } from '../../services/OstSdkErrors';
+import { ostSdkErrors, WORKFLOW_CANCELLED_MSG } from '../../services/OstSdkErrors';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
 import reduxGetter from '../../services/ReduxGetters';
@@ -238,7 +238,7 @@ class TransactionScreen extends Component {
       }
 
       if ( errorMessage ) {
-        if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage) {
+        if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage ) {
           //Cancel the flow.
           this.resetState();
           return;

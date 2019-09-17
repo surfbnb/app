@@ -72,7 +72,6 @@ class NotificationScreen extends Component {
 
   componentWillUnmount() {
     NavigationEmitter.removeListener('onRefresh');
-    this.didFocus.remove();
   }
 
   onRefresh = () => {

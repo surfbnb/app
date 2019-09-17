@@ -81,7 +81,8 @@ const logoutDefault = {
   current_user: {},
   balance: null,
   video_contribution_entities: {},
-  user_contribution_entities: {}
+  user_contribution_entities: {},
+  notification_unread: {}
 };
 
 export const reducer = handleActions(

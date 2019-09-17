@@ -2,9 +2,10 @@ import deepGet from 'lodash/get';
 import {IS_PRODUCTION, IS_SANDBOX} from '../constants';
 import PepoApi from "./PepoApi";
 //NEVER COMMIT WITH developerMode true.
-const developerMode = true;
+const developerMode = false;
 const logErrorMessage = !IS_PRODUCTION;
 const DEFAULT_ERROR_MSG = "Something went wrong";
+const WORKFLOW_CANCELLED_MSG = "WORKFLOW_CANCELLED";
 const DEFAULT_CONTEXT = "_default";
 /**
  * OstSdkErrors
@@ -18,10 +19,12 @@ class OstSdkErrors {
     getErrorMessage(ostWorkflowContext, ostError) {
       let errMsg = this._getErrorMessage(ostWorkflowContext, ostError);
       if ( logErrorMessage ) {
-        try {
-          this._postErrorDetails(ostWorkflowContext, ostError, errMsg);
-        } catch(e) {
-          //ignore.
+        if ( WORKFLOW_CANCELLED_MSG != errMsg ) {
+          try {
+            this._postErrorDetails(ostWorkflowContext, ostError, errMsg);
+          } catch(e) {
+            //ignore.
+          }
         }
       }
       return errMsg;
@@ -80,13 +83,13 @@ class OstSdkErrors {
 
     _postErrorDetails(ostWorkflowContext, ostError, errorMessage) {
       const errorType = ostError.isApiError() ? "wallet-sdk-platform-api" : "wallet-sdk-internal";
-      const errorKind = ostWorkflowContext.WORKLFOW_TYPE;
+      const errorKind = ostWorkflowContext.WORKFLOW_TYPE;
       const errData = ostError.error || { "_somekey_": "ostError.error missing. Something unexpected happened!"};
       errData.displayed_error = errorMessage;
 
-      new PepoApi(`/api/v1/report-issue`)
+      new PepoApi(`/report-issue`)
         .post({
-          "type": errorType,
+          "app_name": errorType,
           "kind": errorKind,
           "error_data": errData
         })
@@ -140,7 +143,7 @@ const allErrors = {
 
   },
   "EXECUTE_TRANSACTION": {
-    
+
   }
 };
 
@@ -177,6 +180,9 @@ const BaseErrorMessages = {
 
   DEVICE_CAN_NOT_BE_REVOKED:
     "Cannot complete the revoke device operation. Only an authorized device can be revoked. Please ensure you are trying to revoke a valid device and re-submit the request.",
+
+  WORKFLOW_CANCELED: WORKFLOW_CANCELLED_MSG,
+  WORKFLOW_CANCELLED: WORKFLOW_CANCELLED_MSG
 };
 
 const DeveloperErrorMessages = {
@@ -258,4 +264,4 @@ const DeveloperErrorMessages = {
 
 const ostSdkErrors = new OstSdkErrors();
 
-export {ostSdkErrors, DEFAULT_CONTEXT};
+export {ostSdkErrors, DEFAULT_CONTEXT, WORKFLOW_CANCELLED_MSG};

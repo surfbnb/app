@@ -1,4 +1,4 @@
-import { OstJsonApi,OstWalletError } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstJsonApi,OstWalletError, OstWalletApiError } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
 import {ostErrors} from "./OstErrors";
 import {ostSdkErrors, DEFAULT_CONTEXT} from "./OstSdkErrors";
@@ -45,6 +45,9 @@ class Pricer {
       },
       (ostErrorJson) => {
         let ostError = new OstWalletError( ostErrorJson );
+        if ( ostError.isApiError() ) {
+          ostError = new OstWalletApiError( ostErrorJson );
+        }
         let errMsg = ostSdkErrors.getErrorMessage(DEFAULT_CONTEXT, ostError);
         errorCallback && errorCallback(ostError, DEFAULT_CONTEXT);
       }
