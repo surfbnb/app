@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image, Dimensions } from 'react-native';
 import { SafeAreaView, NavigationEvents } from 'react-navigation';
 import { OstWalletSdk, OstWalletSdkUI, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import DeviceInfo from 'react-native-device-info';
@@ -136,9 +136,9 @@ class CustomDrawerContent extends Component {
 
   render(){
     return (
-        <ScrollView style={styles.container}>
-          <SafeAreaView forceInset={{ top: 'always' }}>
-            <View style={styles.header}>
+      <SafeAreaView forceInset={{ top: 'always' }} style={[styles.container, {justifyContent: 'space-between'}]}>
+        <View>
+          <View style={styles.header}>
               <TouchableOpacity
                   onPress={this.props.navigation.closeDrawer}
                   style={{ height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}
@@ -162,8 +162,11 @@ class CustomDrawerContent extends Component {
                 <Text style={styles.item}>Log out</Text>
               </View>
             </TouchableOpacity>
-          </SafeAreaView>
-        </ScrollView>
+          </View>
+          <View style={{ alignItems: 'center', paddingVertical: 12 }}>
+            <Text style={{ fontSize: 12 }}>Version {DeviceInfo.getVersion()}, Build {DeviceInfo.getBuildNumber()}</Text>
+          </View>
+      </SafeAreaView>
     );
   }
 }
