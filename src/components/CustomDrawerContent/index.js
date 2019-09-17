@@ -164,7 +164,7 @@ class CustomDrawerContent extends Component {
             </TouchableOpacity>
           </View>
           <View style={{ alignItems: 'center', paddingVertical: 12 }}>
-            <Text style={{ fontSize: 12 }}>Version {DeviceInfo.getVersion()}, Build {DeviceInfo.getBuildNumber()}</Text>
+            <Text style={{ fontSize: 12 }}>Pepo v{DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})</Text>
           </View>
       </SafeAreaView>
     );
