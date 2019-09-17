@@ -17,6 +17,7 @@ export default class PepoSocket {
     this.protocol = null;
     this.payload = null;
     this.socket = null;
+    this.isConnecting = false;
   }
 
   setConnectionParams(response) {
@@ -28,6 +29,15 @@ export default class PepoSocket {
   }
 
   connect() {
+
+    if(this.isConnecting) {
+      console.log(`Socket instance is connecting, aborting...`);
+      return;
+    }
+
+    console.log(`Getting websocket details to connect...`);
+
+    this.isConnecting = true;
     new PepoApi(`/users/${this.userId}/websocket-details`).get().then((response) => {
       this.setConnectionParams(response);
 
@@ -44,14 +54,17 @@ export default class PepoSocket {
 
       this.socket.on('connect', () => {
         console.log(`Connected to socket server ${this.protocol}://${this.endPoint} successfully!`);
+        this.isConnecting = false;
       });
 
       this.socket.on('connect_error', (err) => {
-        console.log(`Error connecting to socket server ${this.protocol}://${this.endPoint}:`, err);
+        console.log(`Error connecting to socket server ${this.protocol}://${this.endPoint} reason:`, err);
+        this.isConnecting = false;
       });
 
       this.socket.on('disconnect', (reason) => {
         console.log(`Disconnected from socket server ${this.protocol}://${this.endPoint} reason: ${reason}`);
+        this.isConnecting = false;
         if (reason === 'io server disconnect') {
           // the disconnection was initiated by the server, you need to reconnect manually
           this.connect();
@@ -67,6 +80,9 @@ export default class PepoSocket {
   }
 
   disconnect() {
-    this.socket && this.socket.close();
+    if(this.socket){
+      console.log(`Disconnecting from socket server ${this.protocol}://${this.endPoint}`);
+      this.socket.close();
+    }
   }
 }

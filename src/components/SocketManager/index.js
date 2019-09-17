@@ -26,7 +26,10 @@ class SocketManager extends Component {
     if (this.props.current_user.id) {
       this.initSocket();
     } else {
-      this.pepoSocket && this.pepoSocket.disconnect();
+      if(this.pepoSocket){
+        this.pepoSocket.disconnect();
+        this.pepoSocket = null;
+      }
     }
     return null;
   }
