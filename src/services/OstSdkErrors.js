@@ -171,6 +171,8 @@ const BaseErrorMessages = {
 
   RECOVERY_KEY_GENERATION_FAILED: "Failed to generate Recovery key. Inspect if a correct input values required are being sent and re-submit the request. ",
 
+  OUT_OF_MEMORY_ERROR: "Device is running low on memory. Reduce the number of App running on your device and re-enter the pin",
+
   WORKFLOW_FAILED:
     "Something went wrong, please try again",
 
