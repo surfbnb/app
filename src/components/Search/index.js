@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import SearchResults from './SearchResults';
 import AppConfig from '../../constants/AppConfig';
+import SearchComponent from './SearchComponent';
 
 class SearchScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -44,7 +44,7 @@ class SearchScreen extends Component {
 
   render() {
     return (
-      <SearchResults
+      <SearchComponent
         fetchUrl={`/users/search?q=${this.state.searchParams}`}
         shouldMakeApiCall={this.shouldMakeApiCall}
         setSearchParams={this.setSearchParams}

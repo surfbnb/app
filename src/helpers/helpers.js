@@ -1,6 +1,7 @@
 import PepoApi from '../services/PepoApi';
 import Toast from '../theme/components/NotificationToast';
 import AppConfig from '../constants/AppConfig';
+import { ostErrors } from '../services/OstErrors';
 
 function fetchUser(userId, successCallback, errorCallback, finallyCallback) {
   new PepoApi(`/users/${userId}/profile`)

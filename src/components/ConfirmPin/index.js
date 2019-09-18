@@ -7,6 +7,7 @@ import ActivateUser from '../../services/ActivateUser';
 import inlineStyles from './styles';
 import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
+import { ostSdkErrors } from '../../services/OstSdkErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 
 export default class ConfirmPin extends Component {
@@ -44,7 +45,7 @@ export default class ConfirmPin extends Component {
 
   onFlowInterrupt(ostWorkflowContext, error) {
     LoadingModal.hide();
-    utilities.showAlert(null, ostErrors.getErrorMessage(error));
+    utilities.showAlert(null, ostSdkErrors.getErrorMessage(ostWorkflowContext, error));
   }
 
   render() {

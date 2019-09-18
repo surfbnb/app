@@ -44,27 +44,27 @@ export default {
   "b1": {
     "size": 17,
     "color": "#ffffff",
-    "background_color": "#438bad",
+    "background_color": "#FF5566",
     "system_font_weight": "medium"
   },
 
   "b2": {
     "size": 17,
-    "color": "#438bad",
-    "background_color": "#f8f8f8",
+    "color": "#FF5566",
+    "background_color": "#ffffff",
     "system_font_weight": "semi_bold"
   },
 
   "b3": {
     "size": 12,
     "color": "#ffffff",
-    "background_color": "#438bad",
+    "background_color": "#FF5566",
     "system_font_weight": "medium"
   },
 
   "b4": {
     "size": 12,
-    "color": "#438bad",
+    "color": "#FF5566",
     "background_color": "#ffffff",
     "system_font_weight": "medium"
   },

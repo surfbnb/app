@@ -13,20 +13,20 @@ import LinearGradient from "react-native-linear-gradient";
 const mapStateToProps = (state) => ({ balance: state.balance });
 
 class BalanceHeader extends PureComponent {
- 
+
   constructor(props) {
     super(props);
   }
 
   toBt( val ){
-    const priceOracle =  pricer.getPriceOracle() ; 
-    val = priceOracle.fromDecimal( val )  ; 
+    const priceOracle =  pricer.getPriceOracle() ;
+    val = priceOracle.fromDecimal( val )  ;
     return pricer.toDisplayAmount( priceOracle.toBt( val ) );
   }
 
   toFiat( val ){
-    const priceOracle =  pricer.getPriceOracle() ; 
-    val = priceOracle.fromDecimal( val ); 
+    const priceOracle =  pricer.getPriceOracle() ;
+    val = priceOracle.fromDecimal( val );
     return pricer.toDisplayAmount( priceOracle.btToFiat( val ));
   }
 
@@ -34,20 +34,23 @@ class BalanceHeader extends PureComponent {
     return (
       <View style={inlineStyle.infoHeaderWrapper}>
         <View style={{flexDirection: 'row'}}>
+          {/*<View style={{alignItems: 'center'}}>*/}
+            {/*<Image style={{ width: 50, height: 50 }} source={topUpIcon}></Image>*/}
+            {/*<Text style={inlineStyles.redeemBalance}>Top Up</Text>*/}
+          {/*</View>*/}
+          {/*<LinearGradient*/}
+            {/*colors={['#dadfdc', '#dadfdc']}*/}
+            {/*locations={[0, 1]}*/}
+            {/*start={{ x: 0, y: 0 }}*/}
+            {/*end={{ x: 1, y: 0 }}*/}
+            {/*style={{height: 20, width: 1, marginHorizontal: 8, marginTop: 16.5}}*/}
+          {/*></LinearGradient>*/}
+          {/*<View style={{alignItems: 'center'}}>*/}
+            {/*<Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>*/}
+            {/*<Text style={inlineStyles.redeemBalance}>Redeem</Text>*/}
+          {/*</View>*/}
           <View style={{alignItems: 'center'}}>
-            <Image style={{ width: 50, height: 50 }} source={topUpIcon}></Image>
-            <Text style={inlineStyles.redeemBalance}>Top Up</Text>
-          </View>
-          <LinearGradient
-            colors={['#dadfdc', '#dadfdc']}
-            locations={[0, 1]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={{height: 20, width: 1, marginHorizontal: 8, marginTop: 16.5}}
-          ></LinearGradient>
-          <View style={{alignItems: 'center'}}>
-            <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
-            <Text style={inlineStyles.redeemBalance}>Redeem</Text>
+            <Text style={inlineStyles.balanceLabel}>Balance</Text>
           </View>
         </View>
         <View style={{alignItems: 'flex-end'}}>

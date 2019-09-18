@@ -1,12 +1,13 @@
 import * as types from './constants';
 
-export const showModalCover = (message = 'Processing...', footerText = '') => ({
+export const showModalCover = (message = 'Processing...', footerText = '', alertData = null) => ({
   type: types.SHOW_MODAL_COVER,
   payload: {
     modal_cover: {
       message,
       footerText,
-      show: true
+      show: true,
+      alertData: alertData
     }
   }
 });
@@ -174,3 +175,10 @@ export const upsertNotificationUnread = (data) => ({
   type: types.UPSERT_NOTIFICATION_UNREAD,
   payload: { notification_unread: data }
 });
+
+export const upsertPushNotification = (data) => ({
+  type: types.UPSERT_PUSH_NOTIFICATION,
+  payload: { push_notification : data }
+});
+
+export const clearPushNotification = () => ({ type: types.CLEAR_PUSH_NOTIFICATION });

@@ -45,6 +45,8 @@ import { NotificationToastComponent } from './src/theme/components/NotificationT
 import SocketManager from './src/components/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
+import  WalletSettingScreen from "./src/components/WalletSetting";
+import PushNotificationManager from './src/services/PushNotificationManager';
 
 const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails'];
 
@@ -157,7 +159,8 @@ const ProfilePushStack = createStackNavigator(
     SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
     ProfileEdit: ProfileEdit,
-    BioScreen: BioScreen
+    BioScreen: BioScreen,
+    WalletSettingScreen: WalletSettingScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -190,7 +193,8 @@ const SearchPushStack = createStackNavigator(
     SearchScreen: SearchScreen,
     UsersProfileScreen: UsersProfileScreen,
     SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen
+    SupportersListScreen: SupportersListScreen,
+    UserVideoHistory: UserVideoHistory
   },
   {
     headerLayoutPreset: 'center'
@@ -200,7 +204,8 @@ const SearchPushStack = createStackNavigator(
 const SearchStack = createStackNavigator(
   {
     SearchPushStack: SearchPushStack,
-    CaptureVideo: CaptureVideoStack
+    CaptureVideo: CaptureVideoStack,
+    TransactionScreen: TransactionScreen
   },
   {
     ...modalStackConfig,
@@ -295,6 +300,7 @@ const RootNavigationContainer = () => (
     <AllowAccessModalScreen />
     <NotificationToastComponent />
     <SocketManager />
+    {/*<PushNotificationManager />*/}
   </Root>
 );
 
