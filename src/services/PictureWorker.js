@@ -56,7 +56,7 @@ class PictureWorker extends PureComponent {
   };
 
   processImage() {
-    if (Object.keys(this.props.current_user).length === 0 || Object.keys(this.props.profile_picture).length === 0) {
+    if (! this.props.currentUserId || Object.keys(this.props.profile_picture).length === 0) {
       console.log('processImage :: Nothing to process');
       return;
     }
@@ -109,7 +109,7 @@ class PictureWorker extends PureComponent {
       let imageSize = imageInfo.size;
       console.log(this.props.profile_picture.s3_cropped_image, 'this.props.profile_picture.s3_cropped_image');
       let oThis = this;
-      new PepoApi(`/users/${this.props.current_user.id}/profile-image`)
+      new PepoApi(`/users/${this.props.currentUserId}/profile-image`)
         .post({
           image_url: this.props.profile_picture.s3_cropped_image,
           width: imgWidth,
@@ -181,6 +181,6 @@ class PictureWorker extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ profile_picture, current_user }) => ({ profile_picture, current_user });
+const mapStateToProps = ({ profile_picture }) => ({ profile_picture,  currentUserId: CurrentUser.getUserId() });
 
 export default connect(mapStateToProps)(PictureWorker);

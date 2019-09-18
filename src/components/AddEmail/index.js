@@ -14,12 +14,11 @@ import { ostErrors } from '../../services/OstErrors';
 import Colors from '../../theme/styles/Colors';
 import CurrentUser from '../../models/CurrentUser';
 import { navigateTo } from '../../helpers/navigateTo';
+import Utilities from '../../services/Utilities';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
   safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
-
-//TODO @preshita block android hardware back and close modal if submitting invite code in process.
 
 class AddEmailScreen extends React.Component {
   constructor(props) {
@@ -56,32 +55,27 @@ class AddEmailScreen extends React.Component {
     });
   }
 
-  componentWillMount() {
-    this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
-    this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
+  componentDidMount() {
+    Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
+    Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
 
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
+    Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
+    Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
   }
 
   componentWillUnmount() {
-    this.keyboardWillShowListener.remove();
-    this.keyboardWillHideListener.remove();
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
+    Keyboard.removeListener('keyboardWillShow');
+    Keyboard.removeListener('keyboardWillHide');
+    Keyboard.removeListener('keyboardDidShow');
+    Keyboard.removeListener('keyboardDidHide');
+    this.onEmailSubmit = () => {};
+    this.onSuccess = () => {};
+    this.onError = () => {};
+    this.onChangeText = () => {};
   }
 
-  isValidEmail = () => {
-    let validPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (validPattern.test(this.state.email)) {
-      return true;
-    }
-    return false;
-  };
-
   onEmailSubmit = () => {
-    if (!this.isValidEmail()) {
-      //TODO @preshita the validation should happen by FormInput itself but if not do it manually
+    if (!this.state.email) {
       this.setState({
         email_error: ostErrors.getUIErrorMessage('email_error')
       });
@@ -91,7 +85,8 @@ class AddEmailScreen extends React.Component {
     this.setState({
       isSubmitting: true,
       btnSubmitText: 'Processing...',
-      email_error: null
+      email_error: null,
+      general_error: null
     });
 
     new PepoApi(`/users/${CurrentUser.getUserId()}/save-email`)
@@ -122,14 +117,12 @@ class AddEmailScreen extends React.Component {
   }
 
   onError(error) {
-    //TODO show error, honor backend error. You should pass the response to  FormInput it will manage the display error , Check AuthScreen for refrences how to manage feild specific error and general error
     this.setState({
       server_errors: error,
       general_error: ostErrors.getErrorMessage(error)
     });
   }
 
-  //@TODO @preshita use this function on close modal and android hardware back
   closeModal = () => {
     if (!this.state.isSubmitting) {
       this.props.navigation.goBack(null);
@@ -164,6 +157,9 @@ class AddEmailScreen extends React.Component {
           placeholderTextColor={Colors.darkGray}
           autoCapitalize={'none'}
           serverErrors={this.state.server_errors}
+          returnKeyType="done"
+          returnKeyLabel="Done"
+          onSubmitEditing={this.onEmailSubmit}
         />
         <LinearGradient
           colors={['#ff7499', '#ff7499', '#ff5566']}

@@ -22,50 +22,35 @@ class PushNotificationManager extends PureComponent {
     AppState.addEventListener('change', this._handleAppStateChange);
 
     this.onTokenRefreshListener = firebase.messaging().onTokenRefresh((fcmToken) => this.sendToken(fcmToken));
+
+    // getInitialNotification when app is closed and is being launched by clicking on push notification
     firebase
       .notifications()
       .getInitialNotification()
       .then((notificationData) => notificationData && this.handleGoto(notificationData.notification.data));
+
+    // onNotificationOpened when app is in background and launched by clicking on push notification
     this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationData) => {
       this.handleGoto(notificationData.notification.data);
       this.clearNotifications();
     });
 
-    this.removeNotificationListener = firebase
-      .notifications()
-      .onNotification((notification) => {        
-        if (this.props.currentUserId) {          
-          new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
-            .post()
-            .then((responseData) => console.log('reset-badge :: responseData', responseData));
-        }
-      });
-
-    firebase
-      .messaging()
-      .hasPermission()
-      .then((enabled) => {
-        if (!enabled) {
-          firebase
-            .messaging()
-            .requestPermission()
-            .then(() => {
-              firebase.messaging().registerForNotifications();
-            })
-            .catch((error) => console.log('Permission denied'));
-        }
-      })
-      .catch((error) => console.log('Cannot read permissions'));
+    this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
+      if (this.props.currentUserId) {
+        new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
+          .post()
+          .then((responseData) => console.log('reset-badge :: responseData', responseData));
+      }
+    });
   }
 
   componentWillUnmount() {
     this.onTokenRefreshListener();
     this.removeNotificationOpenedListener();
     this.removeNotificationListener();
-    if(this._handleAppStateChange){
+    if (this._handleAppStateChange) {
       AppState.removeEventListener('change', this._handleAppStateChange);
     }
-  
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -78,8 +63,8 @@ class PushNotificationManager extends PureComponent {
     let gotoObject = JSON.parse(notificationData.goto);
     if (Object.keys(gotoObject).length < 0) return;
     navigateTo.setGoTo(gotoObject);
-    if(CurrentUser.isActiveUser()){
-      navigateTo.navigationDecision(true);
+    if (CurrentUser.isActiveUser()) {
+      navigateTo.goToNavigationDecision(true);
     }
   }
 
@@ -88,6 +73,26 @@ class PushNotificationManager extends PureComponent {
       .messaging()
       .getToken()
       .then((fcmToken) => fcmToken && this.sendToken(fcmToken));
+  }
+
+  askForPermission() {
+    if (this.props.currentUserId) {
+      firebase
+        .messaging()
+        .hasPermission()
+        .then((enabled) => {
+          if (!enabled) {
+            firebase
+              .messaging()
+              .requestPermission()
+              .then(() => {
+                firebase.messaging().registerForNotifications();
+              })
+              .catch((error) => console.log('Permission denied'));
+          }
+        })
+        .catch((error) => console.log('Cannot read permissions'));
+    }
   }
 
   sendToken(token) {
@@ -107,15 +112,15 @@ class PushNotificationManager extends PureComponent {
         .then((responseData) => console.log('sendToken :: Payload sent successfully', responseData));
   }
 
-  clearNotifications() {    
+  clearNotifications() {
     if (Platform.OS == 'ios') {
       firebase
         .notifications()
         .getBadge()
         .then((count) => {
           if (count > 0) {
-            console.log(`clearNotifications :: as badge count (${count}) > 0`);  
-            this.clearFirebaseNotifications();      
+            console.log(`clearNotifications :: as badge count (${count}) > 0`);
+            this.clearFirebaseNotifications();
           }
         });
     } else {
@@ -124,30 +129,30 @@ class PushNotificationManager extends PureComponent {
   }
 
   clearFirebaseNotifications() {
-      // Reset badge and clear notifications on device
-      if (this.props.currentUserId) {          
-        new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
-          .post()
-          .then((responseData) => console.log('reset-badge :: responseData', responseData));
-      }
-      firebase
-        .notifications()
-        .removeAllDeliveredNotifications()
-        .then((res) => {
-          firebase.notifications().setBadge(0);
-        })
-        .catch((error) => console.log('Error occured while removing notifications ', error));
-    
+    // Reset badge and clear notifications on device
+    if (this.props.currentUserId) {
+      new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
+        .post()
+        .then((responseData) => console.log('reset-badge :: responseData', responseData));
+    }
+    firebase
+      .notifications()
+      .removeAllDeliveredNotifications()
+      .then((res) => {
+        firebase.notifications().setBadge(0);
+      })
+      .catch((error) => console.log('Error occured while removing notifications ', error));
   }
 
   render() {
     this.getToken();
+    this.askForPermission();
     return <React.Fragment />;
   }
 }
 
-const mapStateToProps = ({ current_user }) => {
-  return { currentUserId: current_user.id };
+const mapStateToProps = ({}) => {
+  return { currentUserId: CurrentUser.getUserId() };
 };
 
 export default connect(mapStateToProps)(PushNotificationManager);

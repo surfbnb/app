@@ -65,8 +65,7 @@ export default class AuthLoading extends Component {
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();
-        console.log('GOTO: ', this.url);
-        navigateTo.navigationDecision();
+        this.props.navigation.navigate('HomeScreen');
       })
       .catch(() => {
         Alert.alert('', ostErrors.getUIErrorMessage('general_error'));

@@ -19,6 +19,7 @@ import ReduxGetters from './ReduxGetters';
 import videoUploaderComponent from './CameraWorkerEventEmitter';
 import createObjectForRedux from '../helpers/createObjectForRedux';
 import Toast from '../theme/components/NotificationToast';
+import CurrentUser from '../models/CurrentUser';
 
 const recordedVideoStates = [
   'raw_video',
@@ -51,7 +52,7 @@ class CameraWorker extends PureComponent {
       return;
     }
 
-    if (Object.keys(this.props.current_user).length === 0) {
+    if (!this.props.currentUserId) {
       console.log('syncAsyncToRedux :: Cannot sync as current_user is not yet available');
       return;
     }
@@ -86,7 +87,7 @@ class CameraWorker extends PureComponent {
 
   async processVideo() {
     // Early exit
-    if (Object.keys(this.props.current_user).length === 0 || Object.keys(this.props.recorded_video).length === 0) {
+    if ( ! this.props.currentUserId || Object.keys(this.props.recorded_video).length === 0) {
       console.log('processVideo :: Nothing to process');
       return;
     }
@@ -362,7 +363,7 @@ class CameraWorker extends PureComponent {
         image_size: imageSize
       };
 
-      new PepoApi(`/users/${this.props.current_user.id}/fan-video`)
+      new PepoApi(`/users/${this.props.currentUserId}/fan-video`)
         .post(payload)
         .then((responseData) => {
           if (responseData.success && responseData.data) {
@@ -398,8 +399,8 @@ class CameraWorker extends PureComponent {
   }
 
   getCurrentUserRecordedVideoKey() {
-    if (this.props.current_user.id) {
-      return `user-${this.props.current_user.id}-recorded_video`;
+    if (this.props.currentUserId) {
+      return `user-${this.props.currentUserId}-recorded_video`;
     }
     return;
   }
@@ -422,6 +423,6 @@ class CameraWorker extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ recorded_video, current_user }) => ({ recorded_video, current_user });
+const mapStateToProps = ({ recorded_video }) => ({ recorded_video, currentUserId: CurrentUser.getUserId() });
 
 export default connect(mapStateToProps)(CameraWorker);

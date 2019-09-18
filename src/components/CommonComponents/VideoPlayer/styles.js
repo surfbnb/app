@@ -1,8 +1,30 @@
 import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
-import {getBottomSpace, ifIphoneX} from "react-native-iphone-x-helper";
-
+import {ifIphoneX} from "react-native-iphone-x-helper";
+import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
+
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.snow
+  },
+
+  imgSize: {
+    width: 68.5,
+    height: 68.5
+  },
+
+  desc:{
+    fontSize: 22,
+    marginTop: 10,
+    textAlign: 'center',
+    paddingHorizontal: 25,
+    color: Colors.valhalla,
+    fontFamily: 'AvenirNext-Regular'
+  },
+
   historyBackSkipFont:{
     ...ifIphoneX({
       top: 55,

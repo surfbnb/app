@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import DeviceInfo from 'react-native-device-info';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
@@ -22,7 +22,7 @@ import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper';
 class CustomDrawerContent extends Component {
   constructor(props) {
     super(props);
-    this.userName = "";
+    this.userName = '';
     this.state = {
       disableButtons: false,
       showWalletSettings: false
@@ -49,17 +49,18 @@ class CustomDrawerContent extends Component {
   updateWalletSettings = () => {
     if (CurrentUser.getOstUserId()) {
       OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), (localDevice) => {
-
-        if (localDevice && OstWalletSdkHelper.canDeviceMakeApiCall( localDevice ) && CurrentUser.isUserActivated() ) {
-          if ( !this.state.showWalletSettings ) {
+        if (localDevice && OstWalletSdkHelper.canDeviceMakeApiCall(localDevice) && CurrentUser.isUserActivated()) {
+          if (!this.state.showWalletSettings) {
             this.setState({
               showWalletSettings: true
             });
           }
         } else {
-          this.setState({
-            showWalletSettings: false
-          });
+          if (this.state.showWalletSettings) {
+            this.setState({
+              showWalletSettings: false
+            });
+          }
         }
       });
     }
@@ -139,8 +140,8 @@ class CustomDrawerContent extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <SafeAreaView forceInset={{ top: 'always' }}>
+      <SafeAreaView forceInset={{ top: 'always' }} style={[styles.container, { justifyContent: 'space-between' }]}>
+        <View>
           <View style={styles.header}>
             <TouchableOpacity
               onPress={this.props.navigation.closeDrawer}
@@ -175,8 +176,13 @@ class CustomDrawerContent extends Component {
               <Text style={styles.item}>Log out</Text>
             </View>
           </TouchableOpacity>
-        </SafeAreaView>
-      </ScrollView>
+        </View>
+        <View style={{ alignItems: 'center', paddingVertical: 12 }}>
+          <Text style={{ fontSize: 12 }}>
+            Pepo v{DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
+          </Text>
+        </View>
+      </SafeAreaView>
     );
   }
 }

@@ -12,9 +12,16 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
   CONTRIBUTION_THANKS = 'CONTRIBUTION_THANKS',
   SYSTEM_NOTIFICATION = 'SYSTEM_NOTIFICATION',
   PROFILE_TX_SEND_FAILURE = 'PROFILE_TX_SEND_FAILURE',
-  VIDEO_TX_SEND_FAILURE = 'VIDEO_TX_SEND_FAILURE';
+  VIDEO_TX_SEND_FAILURE = 'VIDEO_TX_SEND_FAILURE',
+  TOPUP_DONE = 'TOPUP_DONE',
+  AIRDROP_DONE = 'AIRDROP_DONE';
 
 export default {
+
+  beKnownErrorCodeMaps : {
+    entityDeleted: "not_found"
+  },
+
   userStatusMap: {
     activated: 'activated',
     activating: 'activating'
@@ -60,7 +67,7 @@ export default {
     activity: 'downsized'
   },
 
-  maxBtAllowedInSingleTransfer: 10,
+  maxBtAllowedInSingleTransfer: 50,
 
   fileUploadTypes: {
     video: 'videos',
@@ -129,7 +136,10 @@ export default {
       VIDEO_TX_SEND_SUCCESS,
       VIDEO_TX_RECEIVE_SUCCESS,
       PROFILE_TX_SEND_FAILURE,
-      VIDEO_TX_SEND_FAILURE
+      VIDEO_TX_SEND_FAILURE,
+      AIRDROP_DONE,
+      TOPUP_DONE
+
     ],
     whitelistedNotificationKinds: [
       PROFILE_TX_SEND_SUCCESS,

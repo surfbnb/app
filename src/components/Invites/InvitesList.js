@@ -26,7 +26,7 @@ class InvitesList extends Component {
 
   renderNoResults() {
     return (
-      <View>
+      <View style={{ marginTop: 30 }}>
         <Text style={{ textAlign: 'center', color: Colors.darkGray }}>No Invitees!</Text>
       </View>
     );

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import escapeRegExp from 'lodash/escapeRegExp';
+import unescape from 'lodash/unescape';
 
 import styles from './styles';
 import Pricer from '../../services/Pricer';
@@ -65,7 +66,9 @@ class NotificationItem extends Component {
       stringArray = [];
 
     if (!heading.includes || Object.keys(heading.includes).length == 0) {
-      return <Text>{text}</Text>;
+      return text.split(/(\s+)/).map((element, id) => {
+        return <Text key={id}>{`${element}`}</Text>;
+      });
     }
     for (entity in heading.includes) {
       let entityStartedAt = text.search(escapeRegExp(entity));
@@ -84,17 +87,15 @@ class NotificationItem extends Component {
     return stringArray.map((item, i) => {
       return heading.includes[item] ? (
         <TouchableWithoutFeedback
-        onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}          
+        onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}
           key={i}
         >
-          <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] || item}</Text>
+          <Text style={{ fontWeight: '600' }}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
         </TouchableWithoutFeedback>
-      ) : (        
-        item          
-        .split(/(\s+)/)
-          .map((element, id) => {
-            return <Text key={id}>{`${element}`}</Text>;
-          })
+      ) : (
+        item.split(/(\s+)/).map((element, id) => {
+          return <Text key={id}>{`${element}`}</Text>;
+        })
       );
     });
   };
@@ -133,20 +134,18 @@ class NotificationItem extends Component {
   showSayThanks = () => {
     if (this.props.payload.thank_you_flag === 0 && this.state.showSayThanks) {
       return (
-        <TouchableWithoutFeedback          
-          onPress={multipleClickHandler(() =>  this.sayThanks())}
-        >
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.sayThanks())}>
           <View style={styles.sayThanksButton}>
             <Text style={styles.sayThanksText}>Say Thanks</Text>
           </View>
         </TouchableWithoutFeedback>
       );
     }
-  }; 
+  };
 
   showAppreciationText = () => {
     if (this.props.kind == AppConfig.notificationConstants.AppreciationKind && this.props.payload.thank_you_text) {
-      return <Text style={{ marginLeft: 10, marginTop: 2 }}>&quot;{this.props.payload.thank_you_text}&quot;</Text>;
+      return <Text style={{ marginLeft: 10, marginTop: 2 }}>&quot;{unescape(this.props.payload.thank_you_text)}&quot;</Text>;
     }
   };
 
@@ -155,28 +154,27 @@ class NotificationItem extends Component {
     return <Text style={{ marginLeft: 10, marginTop: 2, fontSize: 10 }}> failed </Text>;
   };
 
-
   showPepoAmout = () => {
-
     if (AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)) {
       return this.showAmountComponent();
-    } 
-
-  }
+    }
+  };
 
   render() {
-    //  
-    let headerWidth = '72%', notificationInfoWidth = '20%';
-    if(this.props.kind == AppConfig.notificationConstants.AppreciationKind || AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)){
+    //
+    let headerWidth = '72%',
+      notificationInfoWidth = '20%';
+    if (
+      this.props.kind == AppConfig.notificationConstants.AppreciationKind ||
+      AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)
+    ) {
       headerWidth = '92%';
       notificationInfoWidth = '0%';
     }
 
     return (
       <View style={{ minHeight: 25 }}>
-        <TouchableWithoutFeedback         
-          onPress={multipleClickHandler(() => this.handleRowClick())}
-        >
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handleRowClick())}>
           <View>
             <View style={styles.txtWrapper}>
               <View style={{ width: '8%', marginRight: 4 }}>

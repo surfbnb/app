@@ -66,6 +66,21 @@ class CurrentUser {
     return reduxGetter.getUser(this.userId);
   }
 
+  updateActivatingStatus() {
+    return new PepoApi('/users/activation-initiate')
+      .post()
+      .then((apiResponse) => {
+        return this._saveCurrentUser(apiResponse)
+          .catch()
+          .then(() => {
+            return apiResponse;
+          });
+      })
+      .catch((err) => {
+        console.log('updateActivatingStatus', err);
+      });
+  }
+
   sync(userId, setupDevice) {
     //Sync user with server. Return user js obj in a promise.
     userId = userId || this.userId;

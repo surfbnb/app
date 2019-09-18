@@ -15,7 +15,6 @@ import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
 import utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
-
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -45,7 +44,8 @@ class VideoRecorder extends Component {
     BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
     AppState.addEventListener('change', this._handleAppStateChange);
     if (this.props.actionSheetOnRecordVideo) {
-      this.recordedVideo = reduxGetters.getRecordedVideo().raw_video;
+      let recordedVideoObj = reduxGetters.getRecordedVideo();
+      this.recordedVideo = recordedVideoObj.raw_video;
       let isFileExists = false;
       const oThis = this;
 
@@ -53,11 +53,16 @@ class VideoRecorder extends Component {
       if (this.recordedVideo) {
         isFileExists = await RNFS.exists(this.recordedVideo);
       }
-
       if (isFileExists) {
         setTimeout(function() {
           oThis.showActionSheet();
         }, 100);
+      } else if (Object.keys(recordedVideoObj).length > 0) {
+        Store.dispatch(
+          upsertRecordedVideo({
+            do_discard: true
+          })
+        );
       }
     }
   }

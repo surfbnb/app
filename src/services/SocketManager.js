@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import PepoSocket from '../../services/PepoSocket';
+import PepoSocket from '../services/PepoSocket';
 import { connect } from 'react-redux';
-import { YellowBox } from 'react-native';
-
-YellowBox.ignoreWarnings(['Unrecognized WebSocket connection']);
+import CurrentUser from "../models/CurrentUser";
 
 class SocketManager extends Component {
   constructor(props) {
@@ -13,7 +11,7 @@ class SocketManager extends Component {
 
   initSocket() {
     if (!this.pepoSocket) {
-      this.pepoSocket = new PepoSocket(this.props.current_user.id);
+      this.pepoSocket = new PepoSocket(this.props.currentUserId);
       this.pepoSocket.connect();
     }
   }
@@ -23,15 +21,22 @@ class SocketManager extends Component {
   }
 
   render() {
-    if (this.props.current_user.id) {
+    if (this.props.currentUserId) {
       this.initSocket();
     } else {
-      this.pepoSocket && this.pepoSocket.disconnect();
+      if(this.pepoSocket){
+        this.pepoSocket.disconnect();
+        this.pepoSocket = null;
+      }
     }
     return null;
   }
 }
 
-const mapStateToProps = ({ current_user }) => ({ current_user });
+const mapStateToProps = () => {
+  return {
+    currentUserId: CurrentUser.getUserId()
+  }
+};
 
 export default connect(mapStateToProps)(SocketManager);

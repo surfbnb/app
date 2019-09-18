@@ -23,7 +23,6 @@ class TwitterAuthService {
     TwitterAuth.signIn()
       .then(async (params) => {
         if (params) {
-          //TODO @preshita Create worker as well
           let inviteCode = await Utilities.getItem(AppConfig.appInstallInviteCodeASKey);
           if (inviteCode) {
             params['invite_code'] = inviteCode;
@@ -77,8 +76,6 @@ class TwitterAuthService {
     if (navigateTo.handleGoTo(res)) {
       return true;
     }
-    //TODO @preshita
-    //Is error and error for invite code
     let errorData = deepGet(res, 'err.error_data');
     if (res && this.isInviteCodeError(errorData)) {
       //Goto invite screen
@@ -86,7 +83,6 @@ class TwitterAuthService {
       return true;
     }
     return false;
-    //DOnt forget to return true or false ,if handleGoTo has taken a decission return true or false
   }
 
   isInviteCodeError(errorObj) {

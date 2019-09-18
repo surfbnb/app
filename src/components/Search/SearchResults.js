@@ -42,14 +42,16 @@ class SearchResults extends PureComponent {
   renderNoResults() {
     return (
       <View>
-        <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14 }}>No results found!</Text>
+        <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14, marginTop: 10 }}>
+          No results found!
+        </Text>
       </View>
     );
   }
 
   renderSearchingFor() {
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
         <ActivityIndicator size="small" color={Colors.greyLite} />
         <Text style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}>
           {`Searching for "${decodeURIComponent(this.props.searchParams) || ''}"`}

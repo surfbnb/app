@@ -8,6 +8,8 @@
             <pin digest="SHA-256">93m2RcpFNG6qGhj6NKDplTVTL7jcqAnkd69kelXSxxI=</pin>
             <pin digest="SHA-256">5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=</pin>
             <pin digest="SHA-256">KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w=</pin>
+            <pin digest="SHA-256">8uSMBSa5X2xQ2bHvkFif3SB4v7Kpsds+f9hYQJJ95qg=</pin>
+            <pin digest="SHA-256">7LpmFlRSq6cS/+XRRanI8tKCBTTSkBSMYBqKtMVD+lo=</pin>
         </pin-set>
         <trustkit-config enforcePinning="true">
         </trustkit-config>
@@ -20,6 +22,18 @@
             <pin digest="SHA-256">rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=</pin>
             <pin digest="SHA-256">DYo5lqgDZl75OmwvtxvNkpDMfeoDcyVaZi1rANPi4GA=</pin>
             <pin digest="SHA-256">ImWdHMV2ca7NG/Gl542B/RXBXuiT+CF93UZl+jqowGI=</pin>
+        </pin-set>
+        <trustkit-config enforcePinning="true">
+        </trustkit-config>
+    </domain-config>
+    <domain-config>
+        <domain includeSubdomains="true">pepo.com</domain>
+        <pin-set>
+            <pin digest="SHA-256">ky8nCk4FQhMGlsodEkZAtJsKgf6pGBHCVE0EThWZog8=</pin>
+            <pin digest="SHA-256">AcAc8wzZwwW7PQ9hdEwubX1YshNI5FF495tRJxkpYLw=</pin>
+            <pin digest="SHA-256">fAeYjyy5PcAEYkvlxLqQqleSup1huF4ZKNfftmfSmsQ=</pin>
+            <pin digest="SHA-256">AC09ehpGZCY0nd9gZDM7ah4Fi+13wsVl4A9QBuxEdo4=</pin>
+            <pin digest="SHA-256">P+kBO3agvFcJWWtwknvbODfmogOW1m8yE12wvmAHyTY=</pin>
         </pin-set>
         <trustkit-config enforcePinning="true">
         </trustkit-config>

@@ -1,17 +1,28 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
+import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
 
-  // updates: {
-  //   textAlign: 'center',
-  //   borderColor: 'rgb(218, 223, 220)',
-  //   borderWidth: 1,
-  //   color: '#2a293b',
-  //   fontSize: 18,
-  //   fontFamily: 'AvenirNext-Regular',
-  //   paddingVertical: 10,
-  //   marginTop: 30
-  // },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.snow
+  },
+
+  imgSize: {
+    width: 68.5,
+    height: 68.5
+  },
+
+  desc:{
+    fontSize: 22,
+    marginTop: 10,
+    textAlign: 'center',
+    paddingHorizontal: 25,
+    color: Colors.valhalla,
+    fontFamily: 'AvenirNext-Regular'
+  }
 
 };
 

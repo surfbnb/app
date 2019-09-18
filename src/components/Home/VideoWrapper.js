@@ -13,7 +13,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     videoImgUrl: reduxGetter.getVideoImgUrl(ownProps.videoId, state),
     videoUrl: reduxGetter.getVideoUrl(ownProps.videoId, state),
-    //TODO: logic should not be decided on login popover--Ashutosh
     loginPopover: ownProps.isActive && state.login_popover.show
   };
 };
@@ -59,9 +58,9 @@ class VideoWrapper extends PureComponent {
 
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    BrowserEmitter.on('browserOpened', () => {      
+    BrowserEmitter.on('browserOpened', () => {
       setTimeout(()=>{this.pauseVideo(true);}, 100);
-      
+
     });
   }
 
@@ -160,7 +159,7 @@ class VideoWrapper extends PureComponent {
     return (
       <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked}>
         <View>
-          {this.props.doRender && (
+          {this.props.doRender && this.props.videoUrl && (
             <Video
               poster={this.props.videoImgUrl}
               posterResizeMode={this.props.posterResizeMode || 'cover'}

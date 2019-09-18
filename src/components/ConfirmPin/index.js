@@ -10,6 +10,7 @@ import { ostErrors } from '../../services/OstErrors';
 import { ostSdkErrors } from '../../services/OstSdkErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import { navigateTo } from '../../helpers/navigateTo';
+import CurrentUser from '../../models/CurrentUser';
 
 export default class ConfirmPin extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -40,8 +41,12 @@ export default class ConfirmPin extends Component {
   };
 
   onRequestAcknowledge() {
-    LoadingModal.hide();
-    navigateTo.navigationDecision();
+    CurrentUser.updateActivatingStatus()
+      .catch(() => {})
+      .finally(() => {
+        LoadingModal.hide();
+        navigateTo.goToNavigationDecision(true, { ignoreNavigationDecision: true });
+      });
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {

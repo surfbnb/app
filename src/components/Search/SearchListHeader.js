@@ -30,7 +30,7 @@ class SearchListHeader extends Component {
 
   render() {
     return (
-      <View style={{ position: 'relative', justifyContent: 'center', marginBottom: 30 }}>
+      <View style={{ position: 'relative', justifyContent: 'center', marginBottom: 10 }}>
         <TouchableOpacity
           style={[
             styles.iconsPos,

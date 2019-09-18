@@ -140,7 +140,7 @@ class SayThanks extends Component {
               this.tweeterHandle = twitterInfo && twitterInfo.handle;
               if (this.tweeterHandle){
                 this.setState({thanksMessage: `@${this.tweeterHandle} ${this.state.thanksMessage}`})
-              }              
+              }
               if (response.data.logged_in_user.twitter_auth_expired === 1) {
                 console.log('tweeter auth expired');
                 TwitterAuth.signIn().then((res) => {

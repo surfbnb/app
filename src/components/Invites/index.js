@@ -11,7 +11,7 @@ class Invites extends Component {
   static navigationOptions = (options) => {
     return {
       headerBackTitle: null,
-      headerTitle: 'Invites and Earnings',
+      headerTitle: 'Accepted Invites',
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
@@ -44,7 +44,6 @@ class Invites extends Component {
   render() {
     return (
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
-        <Text style={styles.header}>Accepted Invites</Text>
         <InvitesList
           fetchUrl={`/users/invites`}
           onRefresh={this.onRefresh}

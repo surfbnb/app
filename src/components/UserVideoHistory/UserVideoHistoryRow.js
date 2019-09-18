@@ -82,14 +82,14 @@ class UserVideoHistoryRow extends PureComponent {
               )}
 
               {this.isCurrentUser() && (
-                <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>                 
+                <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
                   <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem} onPress={this.shareVideo}>
                     <Image style={{ height: 48, width: 48 }} source={share_icon} />
                   </TouchableOpacity>
                 </View>
               )}
 
-              <VideoAmountStat videoId={this.props.videoId} pageName="profile" />
+              <VideoAmountStat videoId={this.props.videoId} userId={this.props.userId} />
             </View>
 
             <BottomStatus userId={this.props.userId} videoId={this.props.videoId} />

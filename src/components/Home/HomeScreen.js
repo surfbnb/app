@@ -12,6 +12,7 @@ import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import appConfig from '../../constants/AppConfig';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
+import {navigateTo} from "../../helpers/navigateTo";
 
 const mapStateToProps = (state) => {
   return {
@@ -26,10 +27,10 @@ class HomeScreen extends Component {
       headerBackTitle: null
     };
   };
-
-  constructor(props) {    
-    console.log('HomeScreen constructor');
+  
+  constructor(props) {
     super(props);
+    navigateTo.setTopLevelNavigation(this.props.navigation);
     this.state = {
       videoUploaderVisible: false
     };
@@ -44,7 +45,7 @@ class HomeScreen extends Component {
         this.refresh(true, 0);
       }
     });
-
+    navigateTo.navigationDecision();
   };
 
   componentWillUpdate(nextProps) {

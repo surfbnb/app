@@ -52,11 +52,13 @@
     kTSKPinnedDomains: @{
       @"stagingpepo.com" : @{
         kTSKEnforcePinning:@YES,
-        kTSKIncludeSubdomains: @YES,
+        kTSKIncludeSubdomains: @NO,
         kTSKPublicKeyHashes : @[
           @"93m2RcpFNG6qGhj6NKDplTVTL7jcqAnkd69kelXSxxI=",
           @"5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=",
-          @"KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w="
+          @"KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w=",
+          @"8uSMBSa5X2xQ2bHvkFif3SB4v7Kpsds+f9hYQJJ95qg=",
+          @"7LpmFlRSq6cS/+XRRanI8tKCBTTSkBSMYBqKtMVD+lo="
         ],
       },
 
@@ -69,6 +71,17 @@
               @"ImWdHMV2ca7NG/Gl542B/RXBXuiT+CF93UZl+jqowGI="
           ],
       },
+      @"pepo.com" : @{
+          kTSKEnforcePinning:@YES,
+          kTSKIncludeSubdomains: @YES,
+          kTSKPublicKeyHashes : @[
+              @"ky8nCk4FQhMGlsodEkZAtJsKgf6pGBHCVE0EThWZog8=",
+              @"AcAc8wzZwwW7PQ9hdEwubX1YshNI5FF495tRJxkpYLw=",
+              @"fAeYjyy5PcAEYkvlxLqQqleSup1huF4ZKNfftmfSmsQ=",
+              @"AC09ehpGZCY0nd9gZDM7ah4Fi+13wsVl4A9QBuxEdo4=",
+              @"P+kBO3agvFcJWWtwknvbODfmogOW1m8yE12wvmAHyTY="
+          ],
+      }
     }
   };
 

@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import EventEmitter from 'eventemitter3';
+import deepGet from 'lodash/get';
+
 import BalanceHeader from '../Profile/BalanceHeader';
 import SideMenu from '../Menu';
 import UserInfo from '../CommonComponents/UserInfo';
@@ -15,6 +17,7 @@ import Pricer from '../../services/Pricer';
 import appConfig from '../../constants/AppConfig';
 import profileEditIcon from '../../assets/profile_edit_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
+import PepoApi from '../../services/PepoApi';
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -44,7 +47,10 @@ class ProfileScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.refreshEvent = new EventEmitter();
-    this.refresh();
+    this.state = {
+      emailAddress: '',
+      isVerifiedEmail: false
+    };
   }
 
   componentDidMount() {
@@ -56,7 +62,33 @@ class ProfileScreen extends PureComponent {
     this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
     });
+    this.refresh();
+    this.setEmail();
   }
+
+  setEmail() {
+    new PepoApi(`/users/email`)
+      .get()
+      .then((res) => {
+        if (res && res.success) {
+          this.onEmailSuccess(res);
+        } else {
+          this.onEmailError(res);
+        }
+      })
+      .catch((error) => {
+        this.onEmailError(error);
+      });
+  }
+
+  onEmailSuccess(res) {
+    this.setState({
+      emailAddress: deepGet(res, 'data.email.address'),
+      isVerifiedEmail: deepGet(res, 'data.email.verified')
+    });
+  }
+
+  onEmailError(error) {}
 
   componentWillUnmount() {
     NavigationEmitter.removeListener('onRefresh');
@@ -75,7 +107,10 @@ class ProfileScreen extends PureComponent {
   }
 
   onEdit = () => {
-    this.props.navigation.push('ProfileEdit');
+    this.props.navigation.push('ProfileEdit', {
+      email: this.state.emailAddress,
+      isVerifiedEmail: this.state.isVerifiedEmail
+    });
   };
 
   fetchBalance = () => {

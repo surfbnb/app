@@ -23,5 +23,6 @@ export default {
   valhalla: '#2A293B',
   seaMist: '#ccd3cd',
   whisper: '#ECECEC',
-  rhino: "#34445b"
+  rhino: "#34445b",
+  snow: '#FBFBFB'
 };

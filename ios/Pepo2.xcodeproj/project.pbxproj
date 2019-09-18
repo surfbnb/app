@@ -99,6 +99,7 @@
 		4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C73F122E880BD00FE1B04 /* libReactNativePermissions.a */; };
 		4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7734F2CD22DE373E004D7152 /* libBVLinearGradient.a */; };
 		4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EDA33222D74FBC0095674F /* libFastImage.a */; };
+		4BFFD402232D3D930033959D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BFFD401232D3D930033959D /* GoogleService-Info.plist */; };
 		5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F11DD15287DC4605913C28BE /* Roboto_medium.ttf */; };
 		65CD6A21EC164A9A8F14A9A3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAB07333EF0A462BB5571B78 /* Zocial.ttf */; };
 		6C300736152B4242B645C0CA /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F406518F2D434EC0A78FA040 /* AntDesign.ttf */; };
@@ -116,7 +117,6 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		85A8F833EBFA49C5B547D4BC /* libRNReactNativeHapticFeedback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EA3FBA55B042D89B057E41 /* libRNReactNativeHapticFeedback.a */; };
 		8F9432A3D84C40EB9B2A7B63 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 789B7BE072654BAB9FD268A5 /* Lato-Regular.ttf */; };
-		90DF0D03232CD58600221693 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90DF0D02232CD58600221693 /* GoogleService-Info.plist */; };
 		96B1C1C99E1549EB83F9652F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC7AFFBB3D9A402BBFE151B1 /* MaterialCommunityIcons.ttf */; };
 		A1B29692D8F74122AF07DDEF /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7AD85F48C1E4E04AB39DA01 /* Lato-Bold.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -715,13 +715,13 @@
 		4942AA6D4C5247669FA8FCAF /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		4B46BF1CB84243E2AF31F2B2 /* RNIap.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNIap.xcodeproj; path = "../node_modules/react-native-iap/ios/RNIap.xcodeproj"; sourceTree = "<group>"; };
 		4B76D86A2318FAAC007316D4 /* TrustKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TrustKit.framework; path = Carthage/Build/iOS/TrustKit.framework; sourceTree = "<group>"; };
+		4BFFD401232D3D930033959D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5E7E0A527AF64DDB95B586B0 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SMXCrashlytics.xcodeproj; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		61D8EE774B704B6DAC8F8DBA /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		695C1EFE72E34F80A174D50D /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BlackItalic.ttf"; path = "../src/assets/fonts/Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
 		7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
-		77B070CF232B9F75003272F7 /* Pepo2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Pepo2.entitlements; path = Pepo2/Pepo2.entitlements; sourceTree = "<group>"; };
 		77EDA37622D763CB0095674F /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		789B7BE072654BAB9FD268A5 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../src/assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -730,7 +730,6 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		845CDE8555BB44DF9C86B077 /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
 		8C3C31893A924D0BBC0BFA8E /* RNReactNativeHapticFeedback.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeHapticFeedback.xcodeproj; path = "../node_modules/react-native-haptic-feedback/ios/RNReactNativeHapticFeedback.xcodeproj"; sourceTree = "<group>"; };
-		90DF0D02232CD58600221693 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		95CD1DED238D4513AB4C5191 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		9A0BC22B8B25470A8142B471 /* libRNIap.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNIap.a; sourceTree = "<group>"; };
 		9FD60B28CE824C59AE47FEA0 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -934,6 +933,7 @@
 				D930902C2C7147109E9E682B /* libRNInAppBrowser.a */,
 				01EA3FBA55B042D89B057E41 /* libRNReactNativeHapticFeedback.a */,
 				9A0BC22B8B25470A8142B471 /* libRNIap.a */,
+				4BFFD401232D3D930033959D /* GoogleService-Info.plist */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -2084,6 +2084,7 @@
 				DEFC2FA34E9642D5936FD159 /* Lato-BoldItalic.ttf in Resources */,
 				7CF11B015E3845FC8E8CBCC4 /* Lato-Hairline.ttf in Resources */,
 				F2A32E0A60454BE284A285CE /* Lato-HairlineItalic.ttf in Resources */,
+				4BFFD402232D3D930033959D /* GoogleService-Info.plist in Resources */,
 				049F72EF676443A5B1172993 /* Lato-Italic.ttf in Resources */,
 				FD1B3131FA5145A5A67CDE87 /* Lato-Light.ttf in Resources */,
 				45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */,
