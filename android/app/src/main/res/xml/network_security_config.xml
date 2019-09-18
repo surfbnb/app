@@ -25,6 +25,18 @@
         </trustkit-config>
     </domain-config>
     <domain-config>
+        <domain includeSubdomains="true">pepo.com</domain>
+        <pin-set>
+            <pin digest="SHA-256">ky8nCk4FQhMGlsodEkZAtJsKgf6pGBHCVE0EThWZog8=</pin>
+            <pin digest="SHA-256">AcAc8wzZwwW7PQ9hdEwubX1YshNI5FF495tRJxkpYLw=</pin>
+            <pin digest="SHA-256">fAeYjyy5PcAEYkvlxLqQqleSup1huF4ZKNfftmfSmsQ=</pin>
+            <pin digest="SHA-256">AC09ehpGZCY0nd9gZDM7ah4Fi+13wsVl4A9QBuxEdo4=</pin>
+            <pin digest="SHA-256">P+kBO3agvFcJWWtwknvbODfmogOW1m8yE12wvmAHyTY=</pin>
+        </pin-set>
+        <trustkit-config enforcePinning="true">
+        </trustkit-config>
+    </domain-config>
+    <domain-config>
         <domain includeSubdomains="false">api.ost.com</domain>
         <pin-set>
             <!--Production-->

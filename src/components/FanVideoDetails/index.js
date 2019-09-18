@@ -109,7 +109,7 @@ class FanVideoDetails extends Component {
   }
 
   enableStartUploadFlag = () => {
-    if (!this.validLink()) return;
+   // if (!this.validLink()) return;
     Store.dispatch(
       upsertRecordedVideo({ video_desc: this.state.videoDesc, video_link: this.state.videoLink, do_upload: true })
     );

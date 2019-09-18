@@ -50,7 +50,7 @@ class TransactionPepoButton extends PureComponent {
   };
 
   getBalanceToNumber = () => {
-    return (this.props.balance && Number(pricer.getFromDecimal(this.props.balance))) || 0;
+    return (this.props.balance && Math.floor(Number(pricer.getFromDecimal(this.props.balance)))) || 0;
   };
 
   getBtAmount = () => {
