@@ -28,10 +28,6 @@ const initiatePolling = (expectedUserId) => {
             const airDropStatus = user && user.signup_airdrop_status;
             if (airDropStatus == 1) {
               stopPolling = true;
-              Toast.show({
-                text: 'User Activated! Airdrop is initiated.',
-                icon: 'success'
-              });
               Pricer.getBalance();
             }
           })

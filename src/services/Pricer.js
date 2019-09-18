@@ -1,6 +1,7 @@
-import { OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstJsonApi,OstWalletError, OstWalletApiError } from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
-import {ostErrors} from "./OstErrors"; 
+import {ostErrors} from "./OstErrors";
+import {ostSdkErrors, DEFAULT_CONTEXT} from "./OstSdkErrors";
 import {updateBalance} from "../actions";
 import Store from '../store';
 import PriceOracle from './PriceOracle';
@@ -26,12 +27,12 @@ class Pricer {
 
   getDecimal(){
     const token = ReduxGetter.getToken() || {};
-    return token.decimal;  
+    return token.decimal;
   }
 
   getBalance( successCallback ,  errorCallback ) {
     if( !CurrentUser.isUserActivated() ){
-      errorCallback && errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")}); 
+      errorCallback && errorCallback({"USER_NOT_ACTIVATED" : ostErrors.getUIErrorMessage("USER_NOT_ACTIVATED")});
       return;
     }
 
@@ -40,10 +41,15 @@ class Pricer {
       (res) => {
         let bal = deepGet(res, 'balance.available_balance');
         this.onBalance( bal );
-        successCallback && successCallback( bal , res); 
+        successCallback && successCallback( bal , res);
       },
-      (error) => {
-        errorCallback && errorCallback(error);
+      (ostErrorJson) => {
+        let ostError = new OstWalletError( ostErrorJson );
+        if ( ostError.isApiError() ) {
+          ostError = new OstWalletApiError( ostErrorJson );
+        }
+        let errMsg = ostSdkErrors.getErrorMessage(DEFAULT_CONTEXT, ostError);
+        errorCallback && errorCallback(ostError, DEFAULT_CONTEXT);
       }
     );
   }
@@ -53,9 +59,9 @@ class Pricer {
   }
 
   getPriceOracle() {
-    const pricePoint = ReduxGetter.getPricePoint(); 
-    const token = ReduxGetter.getToken(); 
-    return new PriceOracle( token  , pricePoint["OST"] );
+    const pricePoint = ReduxGetter.getPricePoint();
+    const token = ReduxGetter.getToken();
+    return new PriceOracle( token  , pricePoint && pricePoint["OST"] );
   }
 
   getFromDecimal( bt ){

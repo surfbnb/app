@@ -41,7 +41,6 @@ class loginPopover extends React.Component {
   };
 
   render() {
-    console.log('disableLoginBtn', this.state.disableLoginBtn);
     return (
       <React.Fragment>
         {this.props.show && (

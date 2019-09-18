@@ -26,12 +26,14 @@ import appConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import { ostErrors } from '../../services/OstErrors';
+import { ostSdkErrors, WORKFLOW_CANCELLED_MSG } from '../../services/OstSdkErrors';
 import PriceOracle from '../../services/PriceOracle';
 import pricer from '../../services/Pricer';
 import reduxGetter from '../../services/ReduxGetters';
 import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
+import {ON_USER_CANCLLED_ERROR_MSG, ensureSession} from '../../helpers/TransactionHelper';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -198,8 +200,8 @@ class TransactionScreen extends Component {
       (res) => {
         this.onBalance(res);
       },
-      (err) => {
-        this.onError(err);
+      (err, context) => {
+        this.onError(err, context);
       }
     );
   }
@@ -228,7 +230,28 @@ class TransactionScreen extends Component {
 
   sendTransactionToSdk() {
     const user = CurrentUser.getUser();
+    // const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(this.state.btAmount);
+    ensureSession(user.ost_user_id, btInDecimal, (errorMessage, success) => {
+      if ( success ) {
+        return this._executeTransaction(user, btInDecimal);
+      }
+
+      if ( errorMessage ) {
+        if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage ) {
+          //Cancel the flow.
+          this.resetState();
+          return;
+        }
+
+        // Else: Show the error message.
+        this.showError( errorMessage );
+
+      }
+    });
+  }
+
+  _executeTransaction(user, btInDecimal) {
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
       user.ost_user_id,
@@ -241,11 +264,14 @@ class TransactionScreen extends Component {
   }
 
   getSdkMetaProperties() {
+    let details = '';
     const metaProperties = clone(appConfig.metaProperties);
     if (this.videoId) {
       metaProperties['name'] = 'video';
-      metaProperties['details'] = `vi_${this.videoId}`;
+      details = `vi_${this.videoId} `;
     }
+    details += `ipp_${1}`;
+    metaProperties['details'] = details;
     return metaProperties;
   }
 
@@ -276,7 +302,7 @@ class TransactionScreen extends Component {
 
   onFlowInterrupt(ostWorkflowContext, error) {
     pricer.getBalance();
-    this.onError(error);
+    this.onError(error, ostWorkflowContext);
   }
 
   sendTransactionToPlatform(ostWorkflowContext, ostWorkflowEntity) {
@@ -332,18 +358,30 @@ class TransactionScreen extends Component {
     return params;
   }
 
-  onError(error) {
-    this.resetState();
+  onError(error, ostWorkflowContext) {
+
+    if ( ostWorkflowContext ) {
+      // workflow error.
+      const errorMsg = ostSdkErrors.getErrorMessage(ostWorkflowContext, error) ;
+      this.showError( errorMsg );
+      return;
+    }
+
     const errorMsg = ostErrors.getErrorMessage(error);
     if (errorMsg) {
-      this.setState({ general_error: errorMsg });
+      this.showError( errorMsg );
       return;
     }
     const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
     if (errorDataMsg) {
-      this.setState({ general_error: errorDataMsg });
+      this.showError( errorDataMsg );
       return;
     }
+  }
+
+  showError( errorMessage ) {
+    this.resetState();
+    this.setState({ general_error: errorMessage });
   }
 
   render() {

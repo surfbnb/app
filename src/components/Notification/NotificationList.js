@@ -90,7 +90,7 @@ class NotificationList extends PureComponent {
           onRefresh={this.props.refresh}
           stickySectionHeadersEnabled={false}
           ListEmptyComponent={this.emptyList}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.3}
           onEndReached={this.props.getNext}
         />
       </View>

@@ -16,6 +16,11 @@ let stylesMap = {
     color: Colors.valhalla,
     fontFamily: 'AvenirNext-Regular'
   },
+  balanceLabel: {
+    fontSize: 16,
+    color: Colors.wildWatermelon2,
+    fontFamily: 'AvenirNext-Regular'
+  },
   editProfileContainer: {
     height: 75,
     width: 75,

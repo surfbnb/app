@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import escapeRegExp from 'lodash/escapeRegExp';
+import unescape from 'lodash/unescape';
 
 import styles from './styles';
 import Pricer from '../../services/Pricer';
@@ -84,13 +85,13 @@ class NotificationItem extends Component {
     return stringArray.map((item, i) => {
       return heading.includes[item] ? (
         <TouchableWithoutFeedback
-        onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}          
+        onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}
           key={i}
         >
-          <Text style={{ fontWeight: '600' }}>{heading.includes[item]['display_text'] || item}</Text>
+          <Text style={{ fontWeight: '600' }}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
         </TouchableWithoutFeedback>
-      ) : (        
-        item          
+      ) : (
+        item
         .split(/(\s+)/)
           .map((element, id) => {
             return <Text key={id}>{`${element}`}</Text>;
@@ -133,7 +134,7 @@ class NotificationItem extends Component {
   showSayThanks = () => {
     if (this.props.payload.thank_you_flag === 0 && this.state.showSayThanks) {
       return (
-        <TouchableWithoutFeedback          
+        <TouchableWithoutFeedback
           onPress={multipleClickHandler(() =>  this.sayThanks())}
         >
           <View style={styles.sayThanksButton}>
@@ -142,11 +143,11 @@ class NotificationItem extends Component {
         </TouchableWithoutFeedback>
       );
     }
-  }; 
+  };
 
   showAppreciationText = () => {
     if (this.props.kind == AppConfig.notificationConstants.AppreciationKind && this.props.payload.thank_you_text) {
-      return <Text style={{ marginLeft: 10, marginTop: 2 }}>&quot;{this.props.payload.thank_you_text}&quot;</Text>;
+      return <Text style={{ marginLeft: 10, marginTop: 2 }}>&quot;{unescape(this.props.payload.thank_you_text)}&quot;</Text>;
     }
   };
 
@@ -160,12 +161,12 @@ class NotificationItem extends Component {
 
     if (AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)) {
       return this.showAmountComponent();
-    } 
+    }
 
   }
 
   render() {
-    //  
+    //
     let headerWidth = '72%', notificationInfoWidth = '20%';
     if(this.props.kind == AppConfig.notificationConstants.AppreciationKind || AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)){
       headerWidth = '92%';
@@ -174,7 +175,7 @@ class NotificationItem extends Component {
 
     return (
       <View style={{ minHeight: 25 }}>
-        <TouchableWithoutFeedback         
+        <TouchableWithoutFeedback
           onPress={multipleClickHandler(() => this.handleRowClick())}
         >
           <View>

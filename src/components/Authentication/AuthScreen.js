@@ -14,6 +14,7 @@ import InitWalletSdk from '../../services/InitWalletSdk';
 // import Toast from '../../theme/components/Toast';
 import CurrentUser from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
+import { ostSdkErrors } from '../../services/OstSdkErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 
 const signUpLoginTestMap = {
@@ -177,7 +178,7 @@ class AuthScreen extends Component {
 
   setupDeviceFailed(ostWorkflowContext, error) {
     LoadingModal.hide();
-    this.setState({ general_error: ostErrors.getErrorMessage(error) });
+    this.setState({ general_error: ostSdkErrors.getErrorMessage(ostWorkflowContext, error) });
   }
 
   onServerError(res) {

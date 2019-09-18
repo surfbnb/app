@@ -25,6 +25,8 @@ project.xcworkspace
 # Android/IntelliJ
 #
 android/app/src/main/assets/fonts/*
+android/app/release/*
+android/build/*
 build/
 .idea
 .gradle
@@ -65,3 +67,4 @@ ios/Crashlytics/com.crashlytics.ios-manual/*
 ios/Firebase/*
 ios/Pepo2.xcodeproj/project.pbxproj
 ios/Pods
+*.hprof

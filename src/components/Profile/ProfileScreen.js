@@ -60,7 +60,7 @@ class ProfileScreen extends PureComponent {
 
   componentWillUnmount() {
     NavigationEmitter.removeListener('onRefresh');
-    this.didFocus.remove();
+    this.didFocus && this.didFocus.remove && this.didFocus.remove();
   }
 
   componentDidUpdate(prevProps) {
