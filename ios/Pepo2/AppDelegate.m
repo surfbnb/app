@@ -55,7 +55,9 @@
         kTSKPublicKeyHashes : @[
           @"93m2RcpFNG6qGhj6NKDplTVTL7jcqAnkd69kelXSxxI=",
           @"5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=",
-          @"KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w="
+          @"KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w=",
+          @"8uSMBSa5X2xQ2bHvkFif3SB4v7Kpsds+f9hYQJJ95qg=",
+          @"7LpmFlRSq6cS/+XRRanI8tKCBTTSkBSMYBqKtMVD+lo="
         ],
       },
 

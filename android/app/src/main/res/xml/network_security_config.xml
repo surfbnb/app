@@ -8,6 +8,8 @@
             <pin digest="SHA-256">93m2RcpFNG6qGhj6NKDplTVTL7jcqAnkd69kelXSxxI=</pin>
             <pin digest="SHA-256">5i3RtbkFS7nt/4viEcyy7PdCO58byAt54uQ8gSuccjg=</pin>
             <pin digest="SHA-256">KupuWHThXgu73zCS0XD67PIkVGxl0FAH9sKrNRA+T/w=</pin>
+            <pin digest="SHA-256">8uSMBSa5X2xQ2bHvkFif3SB4v7Kpsds+f9hYQJJ95qg=</pin>
+            <pin digest="SHA-256">7LpmFlRSq6cS/+XRRanI8tKCBTTSkBSMYBqKtMVD+lo=</pin>
         </pin-set>
         <trustkit-config enforcePinning="true">
         </trustkit-config>
