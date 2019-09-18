@@ -239,7 +239,7 @@ class WalletSettingList extends PureComponent {
   };
 
   saltFetchFailed = (ostWorkflowContext , ostError) => {
-    LoadingModal.showRetryAlert("There is some issue while fetching salt. Please retry", null, "Retry", null, (isButtonTapped) => {
+    LoadingModal.showFailureAlert("There is some issue while fetching salt. Please retry", null, "Retry", (isButtonTapped) => {
       if (isButtonTapped) {
         let retryItem = walletSettingController.optionsMap[this.workflowInfo.workflowOptionId];
         this.onSettingItemTapped(retryItem);
