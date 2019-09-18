@@ -61,7 +61,7 @@ class Pricer {
   getPriceOracle() {
     const pricePoint = ReduxGetter.getPricePoint();
     const token = ReduxGetter.getToken();
-    return new PriceOracle( token  , pricePoint["OST"] );
+    return new PriceOracle( token  , pricePoint && pricePoint["OST"] );
   }
 
   getFromDecimal( bt ){
