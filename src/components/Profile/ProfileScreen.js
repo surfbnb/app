@@ -135,19 +135,19 @@ class ProfileScreen extends PureComponent {
     );
   }
 
-  _subHeader() {
-    return <Text style={{ color: 'transparent' }}>Videos</Text>;
-  }
+  // _subHeader() {
+  //   return <Text style={{ color: 'transparent' }}>Videos</Text>;
+  // }
 
   render() {
-    return (
+    return this.props.userId && (
       <UserProfileFlatList
         refreshEvent={this.refreshEvent}
         ref={(ref) => {
           this.flatlistRef = ref;
         }}
         listHeaderComponent={this._headerComponent()}
-        listHeaderSubComponent={this._subHeader()}
+        // listHeaderSubComponent={this._subHeader()}
         beforeRefresh={this.fetchBalance}
         userId={this.props.userId}
       />

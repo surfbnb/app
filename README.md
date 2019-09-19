@@ -28,6 +28,10 @@
 #### Website
 1. Universal linking set-up 
 
+### Build Instructions (for iOS)
+
+- [ios-publish_app_production.md](iOS_production.md)
+
 ### Build Instructions (for Android)
 
 - [android/publish_app_production.md](android/publish_app_production.md)

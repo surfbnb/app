@@ -4,8 +4,6 @@ import {View, Modal, Text, Image, Animated, Easing, Platform, TouchableOpacity, 
 import * as Progress from 'react-native-progress';
 
 import inlineStyles from './styles';
-import Loading_left from '../../../assets/Loading_left.png';
-import Loading_right from '../../../assets/Loading_right.png';
 import pepoTxIcon from "../../../assets/pepo-white-icon.png";
 import Colors from '../../styles/Colors';
 import Store from '../../../store';

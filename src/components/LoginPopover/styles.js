@@ -11,13 +11,20 @@ let stylesMap = {
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: Dimensions.get('window').height / 2,
-    paddingTop: 40,
+    paddingTop: 50,
     paddingBottom: 30,
     position: 'absolute',
     width: '100%',
-    paddingHorizontal: 20,
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    // ...ifIphoneX(
+    //   {
+    //     bottom: getBottomSpace([true])
+    //   },
+    //   {
+    //     bottom: 0
+    //   }
+    // )
     bottom: 0
   },
   crossBtnPos: {
@@ -32,22 +39,23 @@ let stylesMap = {
   desc: {
     color: Colors.dark,
     fontSize: 18,
-    lineHeight: 24,
-    textAlign: 'center',
-    fontFamily: 'AvenirNext-Medium'
+    lineHeight: 26,
+    textAlign: 'center'
   },
-  twtBtn:{
-    marginTop: 30,
+  tocPp: {
+    width: '85%',
+    marginTop: 10,
+    flexWrap: 'wrap',
     flexDirection: 'row',
-    height: 55,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%'
+    justifyContent: 'center'
   },
-  tos:{
-    textAlign: 'center',
-    lineHeight: 20,
-    color: 'rgba(72, 72, 72, 0.8)'
+  termsTextBlack: {
+    lineHeight: 24,
+    color: Colors.dark
+  },
+  termsTextBlue: {
+    lineHeight: 24,
+    color: Colors.softBlue
   }
 };
 

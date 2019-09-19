@@ -81,10 +81,26 @@ const defaultState = {
 
 const logoutDefault = {
   current_user: {},
-  balance: null,
-  isPurchase: false,
+  activities_entities: {},
+  transaction_entities: {},
+  giffy_entities: {},
+  tag_entities: {},
+  user_profile_entities: {},
+  user_entities: {},
+  user_stat_entities: {},
+  link_entities: {},
+  video_entities: {},
+  video_stat_entities: {},
+  video_description_entities: {},
+  image_entities: {},
+  home_feed_entities: {},
   video_contribution_entities: {},
   user_contribution_entities: {},
+  executeTransactionDisabledStatus: false,
+  recorded_video: {},
+  profile_picture: {},
+  push_notification: {},
+  balance: null,
   notification_unread: {}
 };
 

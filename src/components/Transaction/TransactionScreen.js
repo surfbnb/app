@@ -33,7 +33,7 @@ import reduxGetter from '../../services/ReduxGetters';
 import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
-import {ON_USER_CANCLLED_ERROR_MSG, ensureSession} from '../../helpers/TransactionHelper';
+import { ON_USER_CANCLLED_ERROR_MSG, ensureSession } from '../../helpers/TransactionHelper';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -73,6 +73,7 @@ class TransactionScreen extends Component {
       showSuccess: false
     };
     this.toUser = reduxGetter.getUser(this.props.navigation.getParam('toUserId'));
+    this.userName = reduxGetter.getName(this.props.navigation.getParam('toUserId'));
     //Imp : Make sure if transaction is mappning againts Profile dont send video Id
     this.videoId = this.props.navigation.getParam('videoId');
     this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate');
@@ -233,20 +234,19 @@ class TransactionScreen extends Component {
     // const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(this.state.btAmount);
     ensureSession(user.ost_user_id, btInDecimal, (errorMessage, success) => {
-      if ( success ) {
+      if (success) {
         return this._executeTransaction(user, btInDecimal);
       }
 
-      if ( errorMessage ) {
-        if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage ) {
+      if (errorMessage) {
+        if (ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage) {
           //Cancel the flow.
           this.resetState();
           return;
         }
 
         // Else: Show the error message.
-        this.showError( errorMessage );
-
+        this.showError(errorMessage);
       }
     });
   }
@@ -359,27 +359,26 @@ class TransactionScreen extends Component {
   }
 
   onError(error, ostWorkflowContext) {
-
-    if ( ostWorkflowContext ) {
+    if (ostWorkflowContext) {
       // workflow error.
-      const errorMsg = ostSdkErrors.getErrorMessage(ostWorkflowContext, error) ;
-      this.showError( errorMsg );
+      const errorMsg = ostSdkErrors.getErrorMessage(ostWorkflowContext, error);
+      this.showError(errorMsg);
       return;
     }
 
     const errorMsg = ostErrors.getErrorMessage(error);
     if (errorMsg) {
-      this.showError( errorMsg );
+      this.showError(errorMsg);
       return;
     }
     const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
     if (errorDataMsg) {
-      this.showError( errorDataMsg );
+      this.showError(errorDataMsg);
       return;
     }
   }
 
-  showError( errorMessage ) {
+  showError(errorMessage) {
     this.resetState();
     this.setState({ general_error: errorMessage });
   }
@@ -511,7 +510,7 @@ class TransactionScreen extends Component {
                 >
                   <Image source={tx_success} style={{ width: 164.6, height: 160, marginBottom: 20 }}></Image>
                   <Text style={{ textAlign: 'center', fontFamily: 'AvenirNext-Regular', fontSize: 16 }}>
-                    Success, you have sent {this.toUser.name} {this.state.btAmount} Pepos
+                    Success, you have sent {this.userName} {this.state.btAmount} Pepos
                   </Text>
                 </View>
               )}

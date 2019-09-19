@@ -18,6 +18,8 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
 
 export default {
 
+  logoutTimeOut : 2000,
+
   beKnownErrorCodeMaps : {
     entityDeleted: "not_found"
   },

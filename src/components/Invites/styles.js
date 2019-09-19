@@ -37,6 +37,7 @@ let stylesMap = {
     fontSize: 15
   },
   listWrapper: {
+    paddingTop: 10,
     paddingHorizontal: 25,
     ...ifIphoneX(
       {

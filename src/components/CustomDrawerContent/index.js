@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, Image } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image, Dimensions } from 'react-native';
+import { SafeAreaView, NavigationEvents } from 'react-navigation';
+import { OstWalletSdk, OstWalletSdkUI, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import CurrentUser from '../../models/CurrentUser';
@@ -12,12 +12,15 @@ import loggedOutIcon from '../../assets/drawer-logout-icon.png';
 import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
 import referAndEarn from '../../assets/refer-and-earn.png';
 import pepoAmountWallet from '../../assets/pepo-amount-wallet.png';
+import helpIcon from  '../../assets/help.png'
 import Toast from '../../theme/components/NotificationToast';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
 import BackArrow from '../../assets/back-arrow.png';
 import { connect } from 'react-redux';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper';
+import {ostErrors} from "../../services/OstErrors";
+import InAppBrowser from '../../services/InAppBrowser';
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -66,7 +69,7 @@ class CustomDrawerContent extends Component {
     }
   };
 
-  twitterDisconnect() {
+  twitterDisconnect = () => {
     this.setState(
       {
         disableButtons: true
@@ -94,7 +97,7 @@ class CustomDrawerContent extends Component {
           });
       }
     );
-  }
+  };
 
   CurrentUserLogout = () => {
     let params = {
@@ -138,6 +141,40 @@ class CustomDrawerContent extends Component {
     this.props.navigation.push('ReferAndEarn');
   };
 
+  onGetSupport = () => {
+    // 1. Disable the button.
+    this.setState({ disableButtons: true }, () => {
+      //2. Make Api call.
+      new PepoApi('/support/info')
+        .get()
+        .then((response) => {
+          if ( !response || !response.success || !response.data || !response.data.result_type ) {
+            // Throw the response to display error.
+            throw res;
+          }
+          let result_type = response.data.result_type;
+          let payload = response.data[ result_type ];
+          if ( !payload || !payload.url ) {
+            throw new Error("Unexpected server response");
+          }
+
+          // 3.t Enable the button.
+          this.setState({ disableButtons: false }, () => {
+            //4. Open the web-view
+            InAppBrowser.openBrowser( payload.url );
+          });
+        })
+        .catch((response) => {
+          // 3.f Enable the button.
+          this.setState({ disableButtons: false }, () => {
+            //4. Show error message.
+            let errorMessage = ostErrors.getErrorMessage(response);
+            LoadingModal.showFailureAlert(errorMessage, null, "Dismiss");
+          });
+        });
+      });
+  }
+
   render() {
     return (
       <SafeAreaView forceInset={{ top: 'always' }} style={[styles.container, { justifyContent: 'space-between' }]}>
@@ -169,6 +206,13 @@ class CustomDrawerContent extends Component {
             </View>
           </TouchableOpacity>
           {this.renderWalletSetting()}
+
+          <TouchableOpacity onPress={this.onGetSupport} disabled={this.state.disableButtons}>
+            <View style={styles.itemParent}>
+              <Image style={{ height: 24, width: 25.3 }} source={helpIcon} />
+              <Text style={styles.item}>Support</Text>
+            </View>
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>

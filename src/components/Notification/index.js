@@ -81,7 +81,7 @@ class NotificationScreen extends Component {
   };
 
   render() {
-    return (
+    return this.props.userId && (
       <NotificationList
         ref={(ref) => {
           this.listRef = ref;

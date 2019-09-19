@@ -1,4 +1,4 @@
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions , StackActions } from 'react-navigation';
 
 let _navigator;
 
@@ -15,17 +15,16 @@ function navigate(routeName, params) {
   );
 }
 
-function push(routeName , params){
-  _navigator.dispatch(
-    NavigationActions.push({
-      routeName,
-      params
-    })
-  );
+
+function reset(navigation) {
+  if(!navigation) return;
+   navigation.dispatch(StackActions.popToTop("Notification"));
+   navigation.dispatch(StackActions.popToTop("Search"));
+   navigation.dispatch(StackActions.popToTop("Home"));
 }
 
 export default {
   navigate,
-  push,
-  setTopLevelNavigator
+  setTopLevelNavigator,
+  reset
 };

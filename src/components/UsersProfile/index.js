@@ -72,9 +72,9 @@ export default class UsersProfile extends Component {
     return <UserInfo userId={this.userId}/>;
   }
 
-  _subHeader() {
-    return <Text style={{color: 'transparent'}}>Videos</Text>;
-  }
+  // _subHeader() {
+  //   return <Text style={{color: 'transparent'}}>Videos</Text>;
+  // }
 
   render() {
     if(this.state.isDeleted){
@@ -89,7 +89,7 @@ export default class UsersProfile extends Component {
         <React.Fragment>
           <UserProfileFlatList
             listHeaderComponent={this._headerComponent()}
-            listHeaderSubComponent={this._subHeader()}
+            // listHeaderSubComponent={this._subHeader()}
             userId={this.userId}
           />
           <TouchableOpacity

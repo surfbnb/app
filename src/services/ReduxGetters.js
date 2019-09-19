@@ -117,7 +117,7 @@ class ReduxGetters {
     state = state || Store.getState();
     let val = deepGet(state, `video_contribution_entities.id_${id}`);
     val = val && Number(val);
-    return !!val;
+    return !!val && CurrentUser.getUserId();
   }
 
   getUserSupporters(id, state) {

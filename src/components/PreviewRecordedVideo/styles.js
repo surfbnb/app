@@ -1,12 +1,11 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
+import { Dimensions, StatusBar } from 'react-native';
 
 let stylesMap = {
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: Colors.black,
-    alignSelf: 'stretch'
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height    
   },
   previewVideoSkipFont: {
     overflow: 'hidden',
@@ -43,6 +42,7 @@ let stylesMap = {
     // flex: 1,
     position: 'absolute',
     bottom: 40,
+    zIndex: 2,
     flexDirection: 'row',
     width: '50%',
     alignSelf: 'flex-end',

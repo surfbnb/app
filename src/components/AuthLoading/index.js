@@ -11,7 +11,6 @@ import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import ost_sdk_theme_config from '../../theme/ostsdk/ost-sdk-theme-config';
 import ost_sdk_content_config from '../../theme/ostsdk/ost-sdk-content-config';
 import ost_wallet_sdk_config from '../../theme/ostsdk/ost-wallet-sdk-config';
-import { navigateTo } from '../../helpers/navigateTo';
 
 let t1, t2;
 
@@ -19,27 +18,6 @@ export default class AuthLoading extends Component {
   constructor() {
     super();
     this.init();
-  }
-
-  componentDidMount() {
-    if (Platform.OS === 'android') {
-      Linking.getInitialURL().then(url => {
-        //console.log('_handleOpenURL url', url);
-        this.url = url;
-      });
-    } else {
-      Linking.addEventListener('url', this.handleOpenURL);
-    }
-  }
-
-  componentWillUnmount() {
-    if (Platform.OS !== 'android') {
-      Linking.removeEventListener('url', this._handleOpenURL);
-    }
-  }
-
-  _handleOpenURL(event) {
-    console.log('_handleOpenURL event', event);
   }
 
   // Fetch the token from storage then navigate to our appropriate place

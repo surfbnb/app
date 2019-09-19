@@ -196,7 +196,9 @@ class ReferAndEarn extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={multipleClickHandler(() => {
-              InAppBrowser.openBrowser('http://termsandconditions');
+              InAppBrowser.openBrowser(
+                'https://pepo.com/terms'
+              );
             })}
             activeOpacity={0.2}
           >

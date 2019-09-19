@@ -290,7 +290,6 @@ const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading,
-      AuthScreen,
       PinStack,
       UserActivatingScreen,
       CustomTabStack

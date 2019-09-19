@@ -1,4 +1,3 @@
-import { OstWalletUIWorkflowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import PepoApi from '../services/PepoApi';
 import deepGet from 'lodash/get';
 import Store from '../store';
@@ -10,6 +9,8 @@ import InitWalletSdk from '../services/InitWalletSdk';
 import Toast from '../theme/components/NotificationToast';
 import { PushNotificationMethods } from '../services/PushNotificationManager';
 import OstWorkflowDelegate from '../helpers/OstWorkflowDelegate';
+import EventEmitter from "eventemitter3";
+import {navigateTo} from "../helpers/navigateTo";
 
 // Used require to support all platforms
 const RCTNetworking = require('RCTNetworking');
@@ -27,6 +28,7 @@ import('../components/CommonComponents/FlyerHOC').then((pack) => {
 class CurrentUser {
   constructor() {
     this.userId = null;
+    this.event = new EventEmitter();
   }
 
   initialize() {
@@ -64,6 +66,10 @@ class CurrentUser {
 
   getUser() {
     return reduxGetter.getUser(this.userId);
+  }
+
+  getEvent(){
+    return this.event ;
   }
 
   updateActivatingStatus() {
@@ -149,6 +155,7 @@ class CurrentUser {
     try {
       userId = userId || this.userId;
       this.userId = null;
+      //TODO add await
       Store.dispatch(logoutUser());
       await utilities.removeItem(this._getCurrentUserIdKey());
       await utilities.removeItem(this._getASKey(userId));
@@ -162,21 +169,29 @@ class CurrentUser {
   }
 
   async logout(params) {
+    this.getEvent().emit("beforeUserLogout");
     await new PepoApi('/auth/logout')
       .post(params)
       .then((res) => {
-        RCTNetworking.clearCookies(async () => {
-          await this.clearCurrentUser();
-          PushNotificationMethods.deleteToken();
-          NavigationService.navigate('HomeScreen', params);
-        });
+        this.onLogout( res , params );
       })
       .catch((error) => {
         Toast.show({
           text: 'Logout failed please try again.',
           icon: 'error'
         });
+        this.getEvent().emit("onUserLogoutFailed");
       });
+  }
+
+  onLogout( params ){
+    return RCTNetworking.clearCookies(async () => {
+       this.getEvent().emit("onUserLogout");
+       navigateTo.resetAllNavigationStack();
+       await this.clearCurrentUser();
+       PushNotificationMethods.deleteToken();
+       NavigationService.navigate('HomeScreen' , params);
+    });
   }
 
   async logoutLocal(params) {
@@ -289,24 +304,24 @@ const _getPassphrase = (currentUserModel, workflowDelegate, passphrasePrefixAcce
         let resultType = deepGet(res, 'data.result_type'),
           passphrasePrefixString = deepGet(res, `data.${resultType}.scrypt_salt`);
 
-      if ( !passphrasePrefixString ) {
-        passphrasePrefixAccept.cancelFlow();
-        workflowDelegate.saltFetchFailed(res);
-        return;
-      }
+        if (!passphrasePrefixString) {
+          passphrasePrefixAccept.cancelFlow();
+          workflowDelegate.saltFetchFailed(res);
+          return;
+        }
 
-      passphrasePrefixAccept.setPassphrase(passphrasePrefixString, currentUserModel.getOstUserId(), () => {
+        passphrasePrefixAccept.setPassphrase(passphrasePrefixString, currentUserModel.getOstUserId(), () => {
+          passphrasePrefixAccept.cancelFlow();
+          workflowDelegate.saltFetchFailed(res);
+        });
+      }
+    })
+    .catch((err) => {
+      if (_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept)) {
         passphrasePrefixAccept.cancelFlow();
-        workflowDelegate.saltFetchFailed(res);
-      });
-    }
-  })
-  .catch(( err ) => {
-    if ( _ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept) ) {
-      passphrasePrefixAccept.cancelFlow();
-      workflowDelegate.saltFetchFailed(err);
-    }
-  });
+        workflowDelegate.saltFetchFailed(err);
+      }
+    });
   _canFetchSalt = false;
 
   return getSaltPromise;

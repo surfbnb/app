@@ -150,6 +150,12 @@ function flatlistHOC(ListComponent, options) {
       this.onEndReachedCalledDuringMomentum = false;
     };
 
+    updateFlatList = (list) =>{
+      if(list && list instanceof Array ){
+        this.setState({list});
+      }
+    }
+
     render() {
       return (
         <ListComponent
@@ -160,6 +166,7 @@ function flatlistHOC(ListComponent, options) {
           refreshing={this.state.refreshing}
           renderFooter={this.renderFooter}
           onMomentumScrollBeginCallback={this.onMomentumScrollBeginCallback}
+          updateFlatList={this.updateFlatList}
           {...this.props}
         />
       );

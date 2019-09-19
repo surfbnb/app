@@ -252,7 +252,7 @@ class WalletSettingList extends PureComponent {
   };
 
   deviceTimeOutOfSync = (ostWorkflowContext , ostError) => {
-    LoadingModal.hide();
+    this.workflowFailed(ostWorkflowContext, ostError);
   };
 
   workflowFailed = (ostWorkflowContext , ostError) => {

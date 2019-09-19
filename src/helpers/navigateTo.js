@@ -109,6 +109,10 @@ class NavigateTo {
     this.goTo = null;
   }
 
+  resetAllNavigationStack( ){
+    NavigationService.reset(this.navigation);
+  }
+
   __isGoto() {
     return this.goTo && Object.keys(this.goTo).length > 0;
   }

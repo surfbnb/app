@@ -218,6 +218,7 @@ class SayThanks extends Component {
                   <Switch
                       value={this.state.tweetOn}
                       trackColor={{ true: Colors.primary }}
+                      thumbColor='#ffffff'
                       ios_backgroundColor="#c9cdd2"
                       onValueChange={this.tweetSwitchChange}
                   />
