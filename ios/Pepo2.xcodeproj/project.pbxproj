@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00029B4323329B55009E6919 /* TrustKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B76D86A2318FAAC007316D4 /* TrustKit.framework */; };
 		00029B4423329B63009E6919 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
@@ -13,7 +14,6 @@
 		000C67FF22D764EA0095497C /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 000C67FB22D764EA0095497C /* TwitterKitResources.bundle */; };
 		000C680022D764EA0095497C /* TwitterShareExtensionUIResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 000C67FC22D764EA0095497C /* TwitterShareExtensionUIResources.bundle */; };
 		000C680222D764F70095497C /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C680122D764F70095497C /* Twitter.framework */; };
-		00228406232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 00228404232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist */; };
 		00228407232FD8EE00B3F25C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 00228405232FD8EE00B3F25C /* GoogleService-Info.plist */; };
 		00281BA822DC7E6E00C0E079 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00281B7822DC7E6E00C0E079 /* AudioToolbox.framework */; };
 		00281BAA22DC7E7800C0E079 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00281BA922DC7E7800C0E079 /* AVFoundation.framework */; };
@@ -594,7 +594,6 @@
 		000C67FB22D764EA0095497C /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TwitterKitResources.bundle; sourceTree = "<group>"; };
 		000C67FC22D764EA0095497C /* TwitterShareExtensionUIResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TwitterShareExtensionUIResources.bundle; sourceTree = "<group>"; };
 		000C680122D764F70095497C /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
-		00228404232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "com.pepo.sandbox.GoogleService-Info.plist"; sourceTree = "<group>"; };
 		00228405232FD8EE00B3F25C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		00281B7822DC7E6E00C0E079 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		00281BA922DC7E7800C0E079 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1116,7 +1115,6 @@
 			isa = PBXGroup;
 			children = (
 				00B7D5572332992B0035BC00 /* ostwalletrnsdk */,
-				00228404232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist */,
 				00228405232FD8EE00B3F25C /* GoogleService-Info.plist */,
 				00E5D90E232A573A006EA3DE /* Crashlytics.framework */,
 				00E5D90D232A573A006EA3DE /* Fabric.framework */,
@@ -2103,7 +2101,6 @@
 				108A6E98F43648CDB5F2EF3C /* MaterialIcons.ttf in Resources */,
 				B121E889D6D8469FB607BFC5 /* Octicons.ttf in Resources */,
 				5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */,
-				00228406232FD8EE00B3F25C /* com.pepo.sandbox.GoogleService-Info.plist in Resources */,
 				34DAB1A620A348A7BDD85ACE /* Roboto.ttf in Resources */,
 				00228407232FD8EE00B3F25C /* GoogleService-Info.plist in Resources */,
 				000C680022D764EA0095497C /* TwitterShareExtensionUIResources.bundle in Resources */,
