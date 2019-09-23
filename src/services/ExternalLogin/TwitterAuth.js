@@ -5,8 +5,11 @@ const { RNTwitterSignIn } = NativeModules;
 let twitterLoginParams = null;
 
 class TwitterAuth {
-  signIn() {
+  constructor(){
     RNTwitterSignIn.init(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
+  }
+  
+  signIn() {
     return RNTwitterSignIn.logIn()
       .then((res) => {
         return this.__getLoginParamsFromTwitterResponse(res);

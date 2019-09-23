@@ -42,6 +42,7 @@ class ReferAndEarn extends Component {
       inviteCodeText: 'Your Invite Code, Tap to Copy',
       pendingInvites: '50',
       inviteLimit: null,
+      invitedUserCount: null,
       message: '',
       url: '',
       title: ''
@@ -49,7 +50,7 @@ class ReferAndEarn extends Component {
   }
 
   componentDidMount() {
-    new PepoApi(`/users/get-invite-code`)
+    new PepoApi(`/invites/code`)
       .get()
       .then((res) => {
         this.onInit(res);
@@ -64,9 +65,11 @@ class ReferAndEarn extends Component {
         inviteCode: deepGet(res, `data.${resultType}.code`),
         pendingInvites: deepGet(res, `data.${resultType}.pending_invites`),
         inviteLimit: deepGet(res, `data.${resultType}.invite_limit`),
+        invitedUserCount: deepGet(res, `data.${resultType}.invited_user_count`),
         message: deepGet(res, `data.share.message`),
         title: deepGet(res, `data.share.title`),
-        url: deepGet(res, `data.share.url`)
+        url: deepGet(res, `data.share.url`),
+        subject: deepGet(res, `data.share.subject`)
       },
       () => {
         this.setInviteText();
@@ -88,12 +91,11 @@ class ReferAndEarn extends Component {
 
   onShare = async () => {
     let content = {
-      message: Platform.OS === 'android' ? `${this.state.message} ${this.state.url}` : this.state.message,
-      title: this.state.title
+      message: this.state.message,
+      title: this.state.title,
+     // url: this.state.url,
+      subject: this.state.subject
     };
-    if (Platform.OS === 'ios') {
-      content.url = this.state.url;
-    }
     try {
       const result = await Share.share(content);
     } catch (error) {
@@ -160,7 +162,7 @@ class ReferAndEarn extends Component {
             <ImageBackground source={confetti} resizeMode="contain" style={{ width: '100%', height: '100%' }}>
               <View style={{ padding: 25 }}>
                 <Text style={[styles.heading, { textAlign: 'center' }]}>
-                  Amazing 50 People Joined Pepo Via Your Link
+                  {`Amazing ${this.state.invitedUserCount} People Joined Pepo Via Your Link`}
                 </Text>
                 <Text style={styles.content}>
                   As your friends start earning you will get 5% of their earnings in Pepo Coins. Contact us if you need

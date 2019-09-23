@@ -1,10 +1,14 @@
-import { Dimensions, StatusBar } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import { Dimensions, StatusBar, NativeModules } from 'react-native';
 
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 import { CUSTOM_TAB_Height } from '../../theme/constants';
+import  NotchHelper from "../../helpers/NotchHelper";
+
+let RNDeviceInfo = NativeModules.RNDeviceInfo;
+let modalDeviceName = RNDeviceInfo.model === "Redmi Note 7 Pro" && RNDeviceInfo.brand === "xiaomi";
+let btmSpace = modalDeviceName ? 5 : 0;
 
 let stylesMap = {
   fullScreen: {
@@ -15,8 +19,8 @@ let stylesMap = {
       },
       {
         height:
-          DeviceInfo.hasNotch() || StatusBar.currentHeight > 24
-            ? Dimensions.get('window').height - CUSTOM_TAB_Height + StatusBar.currentHeight
+          NotchHelper.hasNotch()
+            ? Dimensions.get('window').height + StatusBar.currentHeight - CUSTOM_TAB_Height - btmSpace
             : Dimensions.get('window').height - CUSTOM_TAB_Height
       }
     )

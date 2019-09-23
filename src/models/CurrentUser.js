@@ -3,14 +3,14 @@ import deepGet from 'lodash/get';
 import Store from '../store';
 import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
-import appConfig from '../constants/AppConfig';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
 import Toast from '../theme/components/NotificationToast';
-import { PushNotificationMethods } from '../services/PushNotificationManager';
 import OstWorkflowDelegate from '../helpers/OstWorkflowDelegate';
 import EventEmitter from "eventemitter3";
 import {navigateTo} from "../helpers/navigateTo";
+import AppConfig from '../constants/AppConfig';
+import { PushNotificationMethods } from '../services/PushNotificationManager';
 
 // Used require to support all platforms
 const RCTNetworking = require('RCTNetworking');
@@ -169,7 +169,7 @@ class CurrentUser {
   }
 
   async logout(params) {
-    this.getEvent().emit("beforeUserLogout");
+    this.getEvent().emit("onBeforeUserLogout");
     await new PepoApi('/auth/logout')
       .post(params)
       .then((res) => {
@@ -189,8 +189,11 @@ class CurrentUser {
        this.getEvent().emit("onUserLogout");
        navigateTo.resetAllNavigationStack();
        await this.clearCurrentUser();
-       PushNotificationMethods.deleteToken();
-       NavigationService.navigate('HomeScreen' , params);
+       //Remove this timeout once redux logout is promise based.
+      setTimeout(()=> {
+         NavigationService.navigate('HomeScreen' , params);
+         this.getEvent().emit("onUserLogoutComplete");
+       } , AppConfig.logoutTimeOut );
     });
   }
 
@@ -252,7 +255,7 @@ class CurrentUser {
   }
 
   isUserActivating() {
-    const userStatusMap = appConfig.userStatusMap;
+    const userStatusMap = AppConfig.userStatusMap;
     return this.__getUserStatus() == userStatusMap.activating;
   }
 
@@ -276,7 +279,7 @@ class CurrentUser {
   }
 
   isUserActivated(emit) {
-    const userStatusMap = appConfig.userStatusMap,
+    const userStatusMap = AppConfig.userStatusMap,
       returnVal = this.__getUserStatus() == userStatusMap.activated;
     if (!returnVal && emit) {
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 1 });

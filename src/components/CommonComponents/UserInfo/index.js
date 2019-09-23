@@ -14,7 +14,6 @@ import multipleClickHandler from '../../../services/MultipleClickHandler';
 import Pricer from '../../../services/Pricer';
 import InAppBrowser from '../../../services/InAppBrowser';
 import Utilities from '../../../services/Utilities';
-import infoIcon from '../../../assets/information_icon.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -131,22 +130,7 @@ class UserInfo extends React.PureComponent {
             {this.props.link}
           </Text>
         )}
-        {this.props.approvedCreater === 0  && this.props.isOwnProfile && (
-          
-          <View  style={{ backgroundColor: '#ff5566', textAlign: 'center', width: '100%', paddingVertical: 10, marginTop: 10, alignItems: 'center', justifyContent: 'center' }}>
-            <View style= {{flexDirection: 'row'}}>
-            <Image source={infoIcon} style={{height:20, width:20}}/>
-            <Text
-              style={[{ color: Colors.white, textAlign: 'center', marginLeft: 4 }]}
-            >
-              Your profile is in review
-            </Text>
-            </View>
-          </View>
-        )}
-        { (! this.props.isOwnProfile  || this.props.approvedCreater === 1) && <View style={{height:15}}>
-        </View>}
-
+        {this.props.videoInReviewHeader || <View style={{height:15}} />}
       </View>
     );
   }

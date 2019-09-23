@@ -97,6 +97,24 @@ let stylesMap = {
     fontSize: 15,
     textAlign: 'center',
     fontWeight: '500'
+  },
+  bannerContainer : {
+    backgroundColor: '#ff5566',
+    textAlign: 'center',
+    width: '100%',
+    paddingVertical: 10,
+    marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  infoImageDimensions : {
+    height:20,
+    width:20
+  },
+  infoText : {
+    color: Colors.white,
+    textAlign: 'center',
+    marginLeft: 4
   }
 };
 

@@ -1,4 +1,4 @@
-import { OstJsonApi,OstWalletError, OstWalletApiError } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstJsonApi,OstWalletError, OstWalletApiError , OstWalletSdk} from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
 import {ostErrors} from "./OstErrors";
 import {ostSdkErrors, DEFAULT_CONTEXT} from "./OstSdkErrors";
@@ -7,6 +7,7 @@ import Store from '../store';
 import PriceOracle from './PriceOracle';
 import ReduxGetter from "./ReduxGetters";
 import numeral from "numeral";
+import OstWalletSdkHelper from '../helpers/OstWalletSdkHelper';
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -36,22 +37,25 @@ class Pricer {
       return;
     }
 
-    OstJsonApi.getBalanceForUserId(
-      CurrentUser.getOstUserId(),
-      (res) => {
-        let bal = deepGet(res, 'balance.available_balance');
-        this.onBalance( bal );
-        successCallback && successCallback( bal , res);
-      },
-      (ostErrorJson) => {
-        let ostError = new OstWalletError( ostErrorJson );
-        if ( ostError.isApiError() ) {
-          ostError = new OstWalletApiError( ostErrorJson );
-        }
-        let errMsg = ostSdkErrors.getErrorMessage(DEFAULT_CONTEXT, ostError);
-        errorCallback && errorCallback(ostError, DEFAULT_CONTEXT);
+    OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
+      if( !OstWalletSdkHelper.canDeviceMakeApiCall( device ) ) {
+        successCallback && successCallback(bal);
+        return;
       }
-    );
+      OstJsonApi.getBalanceForUserId(
+        CurrentUser.getOstUserId(),
+        (res) => {
+          let bal = deepGet(res, 'balance.available_balance');
+          this.onBalance( bal );
+          successCallback && successCallback( bal , res);
+        },
+        (ostErrorJson) => {
+          let ostError =  OstWalletSdkHelper.jsonToOstRNError(ostErrorJson);
+          let errMsg = ostSdkErrors.getErrorMessage(DEFAULT_CONTEXT, ostError);
+          errorCallback && errorCallback(ostError, DEFAULT_CONTEXT);
+        }
+      );
+    });
   }
 
   onBalance(bal){

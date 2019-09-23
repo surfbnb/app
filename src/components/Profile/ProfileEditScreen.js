@@ -113,6 +113,10 @@ class ProfileEdit extends React.PureComponent {
       current_formField: 0,
       ...this.defaults
     };
+
+    this.onEmailSaveDelegate = this.props.navigation.getParam('onEmailSave');
+
+    this.savedEmail= this.props.navigation.getParam('email');
   }
 
   componentDidMount() {
@@ -127,7 +131,6 @@ class ProfileEdit extends React.PureComponent {
   }
 
   getImageSrc = () => {
-    console.log(this.props.profilePicture, 'this.props.profilePicture');
     if (this.props.profilePicture) {
       return (
         <FastImage
@@ -177,6 +180,7 @@ class ProfileEdit extends React.PureComponent {
     return {
       name: this.state.name,
       user_name: this.state.user_name,
+      email: this.state.emailAddress,
       bio: this.state.bio,
       link: this.state.link
     };
@@ -278,17 +282,25 @@ class ProfileEdit extends React.PureComponent {
     });
   };
 
-  onEmailChangeDelegate = (val) => {
+  // onEmailChangeDelegate = (val) => {
+  //   this.setState({ emailAddress: val });
+  // };
+
+  onEmailSentDelegate = (val) =>{
     this.setState({ emailAddress: val });
-  };
+    this.savedEmail = val;
+    this.onEmailSaveDelegate &&  this.onEmailSaveDelegate( val );
+  }
 
   onEmailFocus = () => {
     this.setState({
       current_formField: 0
     });
     this.props.navigation.push('EmailScreen', {
-      onChangeTextDelegate: this.onEmailChangeDelegate,
-      initialValue: this.state.emailAddress
+    //  onChangeTextDelegate: this.onEmailChangeDelegate,
+      initialValue: this.state.emailAddress,
+      savedEmail: this.savedEmail,
+      onEmailSentDelegate: this.onEmailSentDelegate
     });
   };
 
@@ -447,8 +459,9 @@ class ProfileEdit extends React.PureComponent {
         </View>
 
         <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
+        <TouchableWithoutFeedback onPressOut={multipleClickHandler(() => this.onBioFocus())}>
         <FormInput
-          editable={true}
+          editable={false}
           fieldName="bio"
           textContentType="none"
           style={[Theme.TextInput.textInputStyle, { height: 75, paddingVertical: 15 }]}
@@ -461,8 +474,9 @@ class ProfileEdit extends React.PureComponent {
           value={this.state.bio}
           serverErrors={this.state.server_errors}
           isFocus={false}
-          onFocus={multipleClickHandler(() => this.onBioFocus())}
+          //onFocus={multipleClickHandler(() => this.onBioFocus())}
         />
+        </TouchableWithoutFeedback>
 
         <Text style={[Theme.TextInput.labelStyle]}>Link</Text>
         <FormInput

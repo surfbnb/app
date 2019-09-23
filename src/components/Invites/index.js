@@ -45,7 +45,7 @@ class Invites extends Component {
     return (
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
         <InvitesList
-          fetchUrl={`/users/invites`}
+          fetchUrl={`/invites`}
           onRefresh={this.onRefresh}
           noResultsFound={this.state.noResultsFound}
         />

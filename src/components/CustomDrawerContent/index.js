@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, Text, View, Image, Dimensions } from 'react-native';
-import { SafeAreaView, NavigationEvents } from 'react-navigation';
-import { OstWalletSdk, OstWalletSdkUI, OstJsonApi } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { StyleSheet, TouchableOpacity, Text, View, Image } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
+import { OstWalletSdk} from '@ostdotcom/ost-wallet-sdk-react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import CurrentUser from '../../models/CurrentUser';
@@ -100,6 +100,7 @@ class CustomDrawerContent extends Component {
   };
 
   CurrentUserLogout = () => {
+    //this.props.navigation.closeDrawer();
     let params = {
       device_id: DeviceInfo.getUniqueID()
     };
@@ -121,20 +122,6 @@ class CustomDrawerContent extends Component {
   initWallet = () => {
     //TODO: Navigation should push instead of navigate
     this.props.navigation.navigate('WalletSettingScreen');
-  };
-
-  renderWalletSetting = () => {
-    if (!this.state.showWalletSettings) {
-      return null;
-    }
-    return (
-      <TouchableOpacity onPress={this.initWallet}>
-        <View style={[styles.itemParent]}>
-          <Image style={{ height: 24, width: 25.3 }} source={pepoAmountWallet} />
-          <Text style={styles.item}>Wallet settings</Text>
-        </View>
-      </TouchableOpacity>
-    );
   };
 
   referAndEarn = () => {
@@ -188,12 +175,6 @@ class CustomDrawerContent extends Component {
             </TouchableOpacity>
             <Text style={styles.headerText}>{this.userName}</Text>
           </View>
-          <TouchableOpacity onPress={this.twitterDisconnect} disabled={this.state.disableButtons}>
-            <View style={styles.itemParent}>
-              <Image style={{ height: 24, width: 25.3 }} source={twitterDisconnectIcon} />
-              <Text style={styles.item}>Twitter Disconnect</Text>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity
             onPress={multipleClickHandler(() => {
               this.referAndEarn();
@@ -201,22 +182,35 @@ class CustomDrawerContent extends Component {
             disabled={this.state.disableButtons}
           >
             <View style={styles.itemParent}>
-              <Image style={{ height: 24, width: 29 }} source={referAndEarn} />
+              <Image style={{ height: 24, width: 29, resizeMode: 'contain' }} source={referAndEarn} />
               <Text style={styles.item}>Refer and Earn</Text>
             </View>
           </TouchableOpacity>
           {this.renderWalletSetting()}
 
-          <TouchableOpacity onPress={this.onGetSupport} disabled={this.state.disableButtons}>
+          <TouchableOpacity   onPress={multipleClickHandler(() => {
+              this.onGetSupport();
+            })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
-              <Image style={{ height: 24, width: 25.3 }} source={helpIcon} />
+              <Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={helpIcon} />
               <Text style={styles.item}>Support</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.CurrentUserLogout} disabled={this.state.disableButtons}>
+          <TouchableOpacity   onPress={multipleClickHandler(() => {
+              this.twitterDisconnect();
+            })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
-              <Image style={{ height: 24, width: 25.3 }} source={loggedOutIcon} />
+              <Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={twitterDisconnectIcon} />
+              <Text style={styles.item}>Twitter Disconnect</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity   onPress={multipleClickHandler(() => {
+              this.CurrentUserLogout();
+            })} disabled={this.state.disableButtons}>
+            <View style={styles.itemParent}>
+              <Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={loggedOutIcon} />
               <Text style={styles.item}>Log out</Text>
             </View>
           </TouchableOpacity>
@@ -229,6 +223,20 @@ class CustomDrawerContent extends Component {
       </SafeAreaView>
     );
   }
+
+  renderWalletSetting = () => {
+    if (!this.state.showWalletSettings) {
+      return null;
+    }
+    return (
+      <TouchableOpacity onPress={this.initWallet}>
+        <View style={[styles.itemParent]}>
+          <Image style={{ height: 24, width: 25.3, resizeMode: 'contain'  }} source={pepoAmountWallet} />
+          <Text style={styles.item}>Wallet settings</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 }
 
 const mapStateToProps = ({ current_user }) => ({ current_user });
@@ -267,6 +275,7 @@ const styles = StyleSheet.create({
   item: {
     fontSize: 16,
     marginLeft: 10,
+    marginTop: 3,
     fontFamily: 'AvenirNext-Regular'
   }
 });

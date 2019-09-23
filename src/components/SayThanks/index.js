@@ -23,6 +23,7 @@ import PepoApi from '../../services/PepoApi';
 import Theme from '../../theme/styles';
 import Colors from '../../theme/styles/Colors';
 import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
+import Toast from '../../theme/components/NotificationToast';
 
 const bottomSpace = getBottomSpace([true]),
     extraPadding = 10,
@@ -107,79 +108,76 @@ class SayThanks extends Component {
     }
     this.setState({ posting: true });
     return new PepoApi(`/users/thank-you`)
-        .post({
-          notification_id: this.props.navigation.getParam('notificationId'),
-          text: this.state.thanksMessage,
-          tweet_needed: tweetNeeded
-        })
-        .then((res) => {
-          this.setState({ posting: false });
-          if (res && res.success) {
-            this.closeModal();
-            this.props.navigation.getParam('sendMessageSuccess')();
-          } else {
-            this.setState({ server_errors: res });
-          }
-        })
-        .catch((error) => {
-          this.setState({ posting: false });
-        });
+      .post({
+        notification_id: this.props.navigation.getParam('notificationId'),
+        text: this.state.thanksMessage,
+        tweet_needed: tweetNeeded
+      })
+      .then((res) => {
+        this.setState({ posting: false });
+        if (res && res.success) {
+          this.closeModal();
+          this.props.navigation.getParam('sendMessageSuccess')();
+        } else {
+          Toast.show({ text: res.err.msg, icon: 'error' });
+          this.setState({ server_errors: res });
+        }
+      })
+      .catch((error) => {
+        this.setState({ posting: false });
+      });
   };
-
 
   tweetSwitchChange = (value) => {
     if (value === true && !this.receivedTweetHandle) {
       this.setState({ gettingTweetInfo: true });
-      return new PepoApi(`/users/tweet-info`)
-          .get({ receiver_user_id: this.props.navigation.getParam('userId') })
-          .then((response) => {
-            this.setState({ gettingTweetInfo: false });
-            if (response && response.success) {
-              let twitterInfo =
-                  response.data.twitter_users && response.data.twitter_users[this.props.navigation.getParam('userId')];
-              this.tweeterHandle = twitterInfo && twitterInfo.handle;
-              if (this.tweeterHandle){
-                this.setState({thanksMessage: `@${this.tweeterHandle} ${this.state.thanksMessage}`})
-              }
-              if (response.data.logged_in_user.twitter_auth_expired === 1) {
-                console.log('tweeter auth expired');
-                TwitterAuth.signIn().then((res) => {
-                  if (res) {
-                    return new PepoApi(`/auth/refresh-twitter-connect`)
-                        .post(res)
-                        .then((resp) => {
-                          if (resp && resp.success) {
-                            this.receivedTweetHandle = true;
-                            this.setState({
-                              tweetOn: value
-                            });
-                          } else {
-                            //TODO: show error
-                          }
-                        })
-                        .catch((error) => {});
-                  }
-                });
-              } else {
-                console.log('tweeter auth not expired');
-                this.setState({
-                  tweetOn: value
-                });
-                this.receivedTweetHandle = true;
-              }
-            }
-
-            if (resp && resp.success) {
-              this.setState({
-                tweetOn: value
+      return new PepoApi(`/twitter/tweet-info`)
+        .get({ receiver_user_id: this.props.navigation.getParam('userId') })
+        .then((response) => {
+          this.setState({ gettingTweetInfo: false });
+          if (response && response.success) {
+            let twitterInfo =
+              response.data.twitter_users && response.data.twitter_users[this.props.navigation.getParam('userId')];
+            this.tweeterHandle = twitterInfo &&  twitterInfo.handle != 'null' && twitterInfo.handle;
+            if (response.data.logged_in_user.twitter_auth_expired === 1) {
+              console.log('tweeter auth expired');
+              TwitterAuth.signIn().then((res) => {
+                if (res) {
+                  return new PepoApi(`/twitter/refresh-token`)
+                    .post(res)
+                    .then((resp) => {
+                      if (resp && resp.success) {
+                        this.receivedTweetHandle = true;
+                        this.setState({
+                          tweetOn: value,
+                          thanksMessage: this.tweeterHandle ? `@${this.tweeterHandle} ${this.state.thanksMessage}`: this.state.thanksMessage
+                        });
+                      } else {
+                        //TODO: show error
+                        if (resp.err.msg) {
+                          Toast.show({ text: resp.err.msg, icon: 'error' });
+                        }
+                      }
+                    })
+                    .catch((error) => {});
+                }
               });
             } else {
-              //TODO: show error
+              console.log('tweeter auth not expired');
+              this.receivedTweetHandle = true;
+              this.setState({
+                tweetOn: value,
+                thanksMessage:  this.tweeterHandle ? `@${this.tweeterHandle} ${this.state.thanksMessage}` : this.state.thanksMessage
+              });
             }
-          })
-          .catch((error) => {
-            this.setState({ gettingTweetInfo: false });
-          });
+          } else {
+            // show toast
+            Toast.show({ text: response.err.msg, icon: 'error' });
+          }
+        })
+        .catch((error) => {
+          this.setState({ gettingTweetInfo: false });
+        });
     } else {
       this.setState({
         tweetOn: value
@@ -189,76 +187,76 @@ class SayThanks extends Component {
 
   render() {
     return (
-        <TouchableWithoutFeedback
-            onPressOut={() => {
-              if (!this.state.closeDisabled) {
-                this.closeModal();
-              }
-            }}
-        >
-          <View style={{ flex: 1, backgroundColor: 'transparent' }}>
-            <TouchableWithoutFeedback>
-              <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
-                {this.state.gettingTweetInfo && (
-                    <View style={[inlineStyles.backgroundStyle]}>
-                      <View style={{ padding: 26 }}>
-                        <ActivityIndicator />
-                      </View>
-                    </View>
-                )}
-
-                <View style={inlineStyles.headerWrapper}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <ProfilePicture userId={this.props.navigation.getParam('userId')} />
-                    <Text style={inlineStyles.modalHeader}>
-                      {reduxGetter.getName(this.props.navigation.getParam('userId'))}
-                    </Text>
+      <TouchableWithoutFeedback
+        onPressOut={() => {
+          if (!this.state.closeDisabled) {
+            this.closeModal();
+          }
+        }}
+      >
+        <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+          <TouchableWithoutFeedback>
+            <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
+              {this.state.gettingTweetInfo && (
+                <View style={[inlineStyles.backgroundStyle]}>
+                  <View style={{ padding: 26 }}>
+                    <ActivityIndicator />
                   </View>
-                  <Text style={{ marginLeft: 'auto', marginRight: 5 }}>Tweet</Text>
-                  <Switch
-                      value={this.state.tweetOn}
-                      trackColor={{ true: Colors.primary }}
-                      thumbColor='#ffffff'
-                      ios_backgroundColor="#c9cdd2"
-                      onValueChange={this.tweetSwitchChange}
+                </View>
+              )}
+
+              <View style={inlineStyles.headerWrapper}>
+                <View style={{ flexDirection: 'row' }}>
+                  <ProfilePicture userId={this.props.navigation.getParam('userId')} />
+                  <Text style={inlineStyles.modalHeader}>
+                    {reduxGetter.getName(this.props.navigation.getParam('userId'))}
+                  </Text>
+                </View>
+                <Text style={{ marginLeft: 'auto', marginRight: 5 }}>Tweet</Text>
+                <Switch
+                  value={this.state.tweetOn}
+                  trackColor={{ true: Colors.primary }}
+                  thumbColor="#ffffff"
+                  ios_backgroundColor="#c9cdd2"
+                  onValueChange={this.tweetSwitchChange}
+                />
+              </View>
+              <View style={{ marginTop: 14, width: '100%' }}>
+                <View style={{ flex: 1 }}>
+                  <FormInput
+                    onChangeText={this.changeMessage}
+                    placeholder="Thanks for supporting me!"
+                    fieldName="text"
+                    style={[Theme.TextInput.textInputStyle, { height: 50, color: '#2a293b', marginTop: 0 }]}
+                    value={`${this.state.thanksMessage}`}
+                    isFocus={this.state.focus}
+                    serverErrors={this.state.server_errors}
+                    errorMsg={this.state.thanksError}
+                    placeholderTextColor="#ababab"
                   />
                 </View>
-                <View style={{ marginTop: 14, width: '100%' }}>
-                  <View style={{ flex: 1 }}>
-                    <FormInput
-                        onChangeText={this.changeMessage}
-                        placeholder="Thanks for supporting me!"
-                        fieldName="text"
-                        style={[Theme.TextInput.textInputStyle, { height: 50, color: '#2a293b', marginTop: 0 }]}
-                        value={`${this.state.thanksMessage}`}
-                        isFocus={this.state.focus}
-                        serverErrors={this.state.server_errors}
-                        errorMsg={this.state.thanksError}
-                        placeholderTextColor="#ababab"
-                    />
+                <TouchableWithoutFeedback onPress={this.sendMessage}>
+                  <View
+                    style={{
+                      backgroundColor: Colors.primary,
+                      height: 40,
+                      borderRadius: 4,
+                      width: '100%',
+                      justifyContent: 'center',
+                      marginTop: 8
+                    }}
+                  >
+                    <Text style={{ textAlign: 'center', color: Colors.white }}>Send</Text>
                   </View>
-                  <TouchableWithoutFeedback onPress={this.sendMessage}>
-                    <View
-                        style={{
-                          backgroundColor: Colors.primary,
-                          height: 40,
-                          borderRadius: 4,
-                          width: '100%',
-                          justifyContent: 'center',
-                          marginTop: 8
-                        }}
-                    >
-                      <Text style={{ textAlign: 'center', color: Colors.white }}>Send</Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </View>
-                <View style={{ height: 15 }}>
-                  {this.state.posting && <ActivityIndicator size="small" color="#168dc1" />}
-                </View>
+                </TouchableWithoutFeedback>
               </View>
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
+              <View style={{ height: 15 }}>
+                {this.state.posting && <ActivityIndicator size="small" color="#168dc1" />}
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

@@ -6,7 +6,12 @@ import { connect } from 'react-redux';
 import PepoApi from './PepoApi';
 import { navigateTo } from '../helpers/navigateTo';
 import CurrentUser from '../models/CurrentUser';
+import reduxGetter from '../services/ReduxGetters';
+import NavigationEmitter from '../helpers/TabNavigationEvent';
 
+
+let refreshTimeOut = null;
+// Not to be used for now
 function deleteToken() {
   firebase
     .messaging()
@@ -65,7 +70,15 @@ class PushNotificationManager extends PureComponent {
     navigateTo.setGoTo(gotoObject);
     if (CurrentUser.isActiveUser()) {
       navigateTo.goToNavigationDecision(true);
+      //TODO confrim with @mayur why this code is needed
+      gotoObject.pn == 'nc' && this.refreshActivity('NotificationScreen');
     }
+  }
+
+
+
+  refreshActivity(screenName){
+      NavigationEmitter.emit('onRefresh', { screenName });
   }
 
   getToken() {
@@ -107,7 +120,7 @@ class PushNotificationManager extends PureComponent {
       device_token: token
     };
     this.props.currentUserId &&
-      new PepoApi(`/users/${this.props.currentUserId}/device-token`)
+      new PepoApi(`/notifications/device-token`)
         .post(payload)
         .then((responseData) => console.log('sendToken :: Payload sent successfully', responseData));
   }

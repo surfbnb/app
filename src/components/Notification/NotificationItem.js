@@ -178,7 +178,7 @@ class NotificationItem extends Component {
           <View>
             <View style={styles.txtWrapper}>
               <View style={{ width: '8%', marginRight: 4 }}>
-                {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
+                {[AppConfig.notificationConstants.systemNotification, AppConfig.notificationConstants.airDropNotification, AppConfig.notificationConstants.topupNotification].includes(this.props.kind) ? (
                   <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
                 ) : (
                   <ProfilePicture pictureId={this.props.pictureId} />

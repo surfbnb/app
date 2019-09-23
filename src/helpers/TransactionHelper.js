@@ -1,16 +1,21 @@
 import BigNumber from 'bignumber.js';
 import {OstWalletSdk, OstWalletSdkUI, OstJsonApi} from '@ostdotcom/ost-wallet-sdk-react-native';
-import {IS_PRODUCTION, SESSION_KEY_EXPIRY_TIME, SPENDING_LIMIT, HIGH_SPEND_SESSION_KEY_EXPIRY_TIME} from '../constants';
+import {
+  IS_PRODUCTION, DEFAULT_SESSION_KEY_EXPIRY_TIME, DEFAULT_SPENDING_LIMIT, MAX_SPENDING_LIMIT,
+  HIGH_SPEND_SESSION_KEY_EXPIRY_TIME, MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME
+} from '../constants';
 import CurrentUser from "../models/CurrentUser";
 import pricer from '../services/Pricer';
 import Toast from '../theme/components/NotificationToast';
 import {LoadingModal} from '../theme/components/LoadingModalCover';
 import {ostSdkErrors, WORKFLOW_CANCELLED_MSG} from '../services/OstSdkErrors';
 import {ostErrors} from "../services/OstErrors";
+import {VideoPlayPauseEmitter} from './Emitters'
 
 
 const ON_USER_CANCLLED_ERROR_MSG = WORKFLOW_CANCELLED_MSG;
-const bnSpendingLimit = new BigNumber(SPENDING_LIMIT);
+const bnDefaultSpendingLimit = new BigNumber(DEFAULT_SPENDING_LIMIT);
+const bnMaxSpendingLimit = new BigNumber(MAX_SPENDING_LIMIT);
 const bnOne = new BigNumber(1);
 
 const ensureSession = (userId, btAmount, callback) => {
@@ -35,18 +40,26 @@ const _onNoSessions = (userId, btAmount, callback) => {
 };
 
 const _onHasAuthoirizedDevice = (userId, btAmount, callback) => {
-  let spendingLimit = SPENDING_LIMIT;
-  let sessionKeyExpiryTime = SESSION_KEY_EXPIRY_TIME;
+  let spendingLimit = DEFAULT_SPENDING_LIMIT;
+  let sessionKeyExpiryTime = DEFAULT_SESSION_KEY_EXPIRY_TIME;
 
   let bnBtAmount = new BigNumber(btAmount);
 
-  if ( bnBtAmount.gt(bnSpendingLimit) ) {
+  if ( bnBtAmount.gt(bnMaxSpendingLimit) ) {
     //Create a short-lived session.
     spendingLimit = bnBtAmount.plus( bnOne ).toString( 10 );
     sessionKeyExpiryTime = HIGH_SPEND_SESSION_KEY_EXPIRY_TIME;
+  } else if ( bnBtAmount.gt(bnDefaultSpendingLimit) ) {
+    // Create a medium-lived session
+    spendingLimit = bnMaxSpendingLimit.toString( 10 );
+    sessionKeyExpiryTime = MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME;
+  } else {
+    spendingLimit = bnDefaultSpendingLimit.toString( 10 );
+    sessionKeyExpiryTime = DEFAULT_SESSION_KEY_EXPIRY_TIME;
   }
 
   let workflowDelegate = _getWorkflowDelegate(callback);
+  VideoPlayPauseEmitter.emit('pause');
   OstWalletSdkUI.addSession(userId, sessionKeyExpiryTime, spendingLimit, workflowDelegate);
 };
 
@@ -121,9 +134,9 @@ function ensureTransaction(userId, btAmount, callback) {
 
           _hasAuthorizedDevice(userId, (validDevice) => {
             if (validDevice) {
-              let spendingLimit = SPENDING_LIMIT;
-              let sessionKeyExpiryTime = SESSION_KEY_EXPIRY_TIME;
-              if ( (new BigNumber(btAmount)).gt(new BigNumber(SPENDING_LIMIT)) ) {
+              let spendingLimit = DEFAULT_SPENDING_LIMIT;
+              let sessionKeyExpiryTime = DEFAULT_SESSION_KEY_EXPIRY_TIME;
+              if ( (new BigNumber(btAmount)).gt(new BigNumber(DEFAULT_SPENDING_LIMIT)) ) {
                 spendingLimit = (new BigNumber(btAmount).plus( new BigNumber(1000000000000000000) )).toString();
                 sessionKeyExpiryTime = 60 * 60 * 1;
               }

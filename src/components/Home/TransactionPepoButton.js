@@ -22,6 +22,7 @@ import Pricer from '../../services/Pricer';
 import utilities from '../../services/Utilities';
 import PixelCall from '../../services/PixelCall';
 import {ON_USER_CANCLLED_ERROR_MSG, ensureSession} from '../../helpers/TransactionHelper';
+import {VideoPlayPauseEmitter} from "../../helpers/Emitters";
 
 const mapStateToProps = (state, ownProps) => ({
   balance: state.balance,
@@ -67,6 +68,7 @@ class TransactionPepoButton extends PureComponent {
     // const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(btAmount);
     ensureSession(user.ost_user_id, btInDecimal, (errorMessage, success) => {
+      VideoPlayPauseEmitter.emit('play');
       if ( success ) {
         return this._executeTransaction(user, btInDecimal);
       }

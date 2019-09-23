@@ -17,6 +17,7 @@ import Utilities from './Utilities';
 import AppConfig from '../constants/AppConfig';
 import NavigationService from './NavigationService';
 import { navigateTo } from '../helpers/navigateTo';
+import Pricer from './Pricer';
 
 class TwitterAuthService {
   signUp() {
@@ -37,20 +38,23 @@ class TwitterAuthService {
             })
             .catch((err) => {
               this.onServerError(err);
+            })
+            .finally(() => {
+              LoginPopoverActions.hide();
             });
         } else {
+          LoginPopoverActions.hide();
           console.log('No user data!');
         }
       })
       .catch((error) => {
-        this.onServerError(error);
-      })
-      .finally(() => {
         LoginPopoverActions.hide();
+        this.onServerError(error);
       });
   }
 
   onSuccess(res) {
+    Pricer.getBalance();
     if (this.handleGoTo(res)) {
       return;
     }

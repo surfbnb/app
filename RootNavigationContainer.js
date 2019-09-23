@@ -56,8 +56,9 @@ import AddEmailScreen from './src/components/AddEmail';
 import InviteCodeWorker from './src/services/InviteCodeWorker';
 import EmailScreen from './src/components/Email';
 import UniversalLinksManager from './src/services/UniversalLinksManager';
+import WalletDetails from './src/components/WalletSetting/WalletDetails';
 
-const customTabHiddenRoutes = ['CaptureVideo' ,  'InviteCodeScreen' , 'AddEmailScreen', 'FanVideoDetails' ];
+const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -175,7 +176,8 @@ const ProfilePushStack = createStackNavigator(
     EmailScreen: EmailScreen,
     ReferAndEarn: ReferAndEarn,
     Invites: Invites,
-    WalletSettingScreen: WalletSettingScreen
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails
   },
   {
     headerLayoutPreset: 'center'

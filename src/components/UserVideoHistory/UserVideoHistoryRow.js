@@ -51,6 +51,7 @@ class UserVideoHistoryRow extends PureComponent {
     return (
       <View style={inlineStyles.fullScreen}>
         <VideoWrapper
+          shouldPlay={this.props.shouldPlay}
           userId={this.props.userId}
           videoId={this.props.videoId}
           doRender={this.props.doRender}
@@ -75,7 +76,7 @@ class UserVideoHistoryRow extends PureComponent {
                     <Image style={{ height: 57, width: 57 }} source={tx_icon} />
                   </TouchableOpacity>
 
-                  <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem} onPress={this.shareVideo}>
+                  <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem} onPress={multipleClickHandler(() => this.shareVideo())}>
                     <Image style={{ height: 48, width: 48 }} source={share_icon} />
                   </TouchableOpacity>
                 </View>
@@ -83,16 +84,16 @@ class UserVideoHistoryRow extends PureComponent {
 
               {this.isCurrentUser() && (
                 <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                  <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem} onPress={this.shareVideo}>
+                  <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem} onPress={multipleClickHandler(() => this.shareVideo())}>
                     <Image style={{ height: 48, width: 48 }} source={share_icon} />
                   </TouchableOpacity>
                 </View>
               )}
 
-              <VideoAmountStat videoId={this.props.videoId} userId={this.props.userId} />
+              <VideoAmountStat videoId={this.props.videoId} userId={this.props.userId} onWrapperClick={this.props.onWrapperClick} />
             </View>
 
-            <BottomStatus userId={this.props.userId} videoId={this.props.videoId} />
+            <BottomStatus userId={this.props.userId} videoId={this.props.videoId} onWrapperClick={this.props.onWrapperClick} />
           </View>
         )}
       </View>

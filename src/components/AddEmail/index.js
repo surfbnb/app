@@ -187,7 +187,7 @@ class AddEmailScreen extends React.Component {
         <Image source={confirmEmail} style={{ width: 72, height: 72, marginBottom: 25 }} />
         <Text style={[inlineStyles.desc, { marginBottom: 10, fontSize: 18 }]}>Please Confirm Your Email</Text>
         <Text style={[inlineStyles.desc, { marginBottom: 20, fontFamily: 'AvenirNext-Regular' }]}>
-          We have sent a email on prineel@ost.com, Please go to your inbox and click on the confrim button to continue.
+         {` We have sent a email on ${this.state.email}, Please go to your inbox and click on the confirm button to continue.`}
         </Text>
         <LinearGradient
           colors={['#ff7499', '#ff7499', '#ff5566']}

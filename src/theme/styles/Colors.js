@@ -24,5 +24,6 @@ export default {
   seaMist: '#ccd3cd',
   whisper: '#ECECEC',
   rhino: "#34445b",
-  snow: '#FBFBFB'
+  snow: '#FBFBFB',
+  green: '#0F9D58'
 };

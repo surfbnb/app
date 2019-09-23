@@ -75,6 +75,7 @@ class HomeFeedRow extends PureComponent {
           videoId={this.videoId}
           doRender={this.props.doRender}
           isActive={this.props.isActive}
+          shouldPlay={this.props.shouldPlay}
         />
 
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
@@ -94,15 +95,15 @@ class HomeFeedRow extends PureComponent {
                   <Image style={{ height: 57, width: 57 }} source={tx_icon} />
                 </TouchableOpacity>
 
-                <TouchableOpacity pointerEvents={'auto'} onPress={this.shareVideo} style={inlineStyles.txElem}>
+                <TouchableOpacity pointerEvents={'auto'} onPress={multipleClickHandler(() => this.shareVideo())} style={inlineStyles.txElem}>
                   <Image style={{ height: 48, width: 48 }} source={share_icon} />
                 </TouchableOpacity>
               </View>
             )}
 
             {this.isCurrentUser() && (
-              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>                
-                <TouchableOpacity pointerEvents={'auto'} onPress={this.shareVideo} style={inlineStyles.txElem}>
+              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                <TouchableOpacity pointerEvents={'auto'} onPress={multipleClickHandler(() => this.shareVideo())} style={inlineStyles.txElem}>
                   <Image style={{ height: 48, width: 48 }} source={share_icon} />
                 </TouchableOpacity>
               </View>

@@ -36,15 +36,18 @@ class EmailScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.initialValue = this.props.navigation.getParam('initialValue') || '';
+    this.saveEmail = this.props.navigation.getParam('savedEmail') || '';
     this.onChangeTextDelegate = this.props.navigation.getParam('onChangeTextDelegate');
+    this.onEmailSentDelegate = this.props.navigation.getParam('onEmailSentDelegate');
     this.state = {
       email: this.initialValue,
       email_error: '',
       isSubmitting: false,
       isEditing: false,
-      btnSubmitText: this.initialValue ? 'Resend Email' : 'Send Email',
+      btnSubmitText: (this.initialValue == this.saveEmail )? 'Resend Email' : 'Send Email',
       serverErrors: {},
-      general_error: ''
+      general_error: '',
+      savedEmail: this.saveEmail
     };
   }
 
@@ -78,22 +81,25 @@ class EmailScreen extends PureComponent {
       })
       .finally(() => {
         this.setState({
-          isSubmitting: false,
-          btnSubmitText: this.state.email ? 'Resend Email' : 'Send Email'
+          isSubmitting: false
         });
       });
   };
 
   onSuccess(res) {
     this.setState({
-      isEditing: false
+      isEditing: false,
+      savedEmail: this.state.email,
+      btnSubmitText: 'Resend Email'
     });
+    this.onEmailSentDelegate(this.state.email);
   }
 
   onError(error) {
     this.setState({
       server_errors: error,
-      general_error: ostErrors.getErrorMessage(error)
+      general_error: ostErrors.getErrorMessage(error),
+      btnSubmitText: 'Send Email'
     });
   }
 
@@ -102,7 +108,8 @@ class EmailScreen extends PureComponent {
     this.setState({
       email: value,
       email_error: null,
-      isEditing: true
+      isEditing: true,
+      btnSubmitText: 'Send Email'
     });
   };
 
@@ -128,13 +135,13 @@ class EmailScreen extends PureComponent {
           autoCapitalize={'none'}
           isFocus={false}
         />
-        {this.state.email && !this.state.isEditing ? (
+        {this.state.email && (this.state.email == this.state.savedEmail) && !this.state.isEditing ? (
           <View style={inlineStyles.resend}>
             <View style={{ flexDirection: 'row', padding: 10, flexWrap: 'wrap' }}>
               <Image source={resendEmail} style={{ width: 50, height: 50 }} />
               <Text
                 style={{ paddingLeft: 10, flex: 1 }}
-              >{`We have sent an email on ${this.state.email}. Please go to your inbox and click on the  confirm button to confirm your email address.`}</Text>
+              >{`We have sent an email on ${this.state.savedEmail}. Please go to your inbox and click on the confirm button to confirm your email address.`}</Text>
             </View>
             <LinearGradient
               colors={['#ff7499', '#ff5566']}

@@ -173,7 +173,6 @@ class InviteCodeScreen extends React.Component {
                 placeholderTextColor={Colors.darkGray}
                 errorMsg={this.state.invite_code_error}
                 serverErrors={this.state.server_errors}
-                maxLength={6}
                 autoCapitalize={'none'}
                 returnKeyType="done"
                 returnKeyLabel="Done"

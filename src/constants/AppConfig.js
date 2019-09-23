@@ -132,6 +132,8 @@ export default {
     videoAddKind: VIDEO_ADD,
     AppreciationKind: CONTRIBUTION_THANKS,
     systemNotification: SYSTEM_NOTIFICATION,
+    airDropNotification: AIRDROP_DONE,
+    topupNotification: TOPUP_DONE,
     showCoinComponentArray: [
       PROFILE_TX_SEND_SUCCESS,
       PROFILE_TX_RECEIVE_SUCCESS,
@@ -155,7 +157,6 @@ export default {
       VIDEO_TX_SEND_FAILURE
     ]
   },
-
   tabConfig: {
     tab1: {
       rootStack: 'Home',

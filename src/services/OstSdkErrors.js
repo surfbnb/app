@@ -168,7 +168,7 @@ const allErrors = {
 };
 
 const BaseErrorMessages = {
-  DEVICE_OUT_OF_SYNC: 'Device out of sync. Please update device time.',
+  DEVICE_OUT_OF_SYNC: 'Device time is out of sync. Please check the time on your device reflects current date and time.',
   NETWORK_ERROR: "Request could not be executed due to cancellation, a connectivity problem or timeout.",
 
   INVALID_MNEMONICS:

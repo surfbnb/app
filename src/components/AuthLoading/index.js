@@ -11,6 +11,7 @@ import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import ost_sdk_theme_config from '../../theme/ostsdk/ost-sdk-theme-config';
 import ost_sdk_content_config from '../../theme/ostsdk/ost-sdk-content-config';
 import ost_wallet_sdk_config from '../../theme/ostsdk/ost-wallet-sdk-config';
+import  NotchHelper from "../../helpers/NotchHelper";
 
 let t1, t2;
 
@@ -18,6 +19,7 @@ export default class AuthLoading extends Component {
   constructor() {
     super();
     this.init();
+    NotchHelper.syncList();
   }
 
   // Fetch the token from storage then navigate to our appropriate place

@@ -10,6 +10,8 @@ if (!window.location) {
   window.navigator.userAgent = 'ReactNative';
 }
 
+const reconnectionAttempts = 10;
+
 export default class PepoSocket {
   constructor(userId) {
     this.userId = userId;
@@ -18,6 +20,7 @@ export default class PepoSocket {
     this.payload = null;
     this.socket = null;
     this.isConnecting = false;
+    this.attempt = 0;
   }
 
   setConnectionParams(response) {
@@ -41,6 +44,11 @@ export default class PepoSocket {
     new PepoApi(`/users/${this.userId}/websocket-details`).get().then((response) => {
       this.setConnectionParams(response);
 
+      if(!this.protocol || !this.endPoint || !this.authKeyExpiryAt || !this.payload){
+        console.log(`Invalid params received, aborting...`);
+        return;
+      }
+
       console.log(`Connecting to socket server ${this.protocol}://${this.endPoint}`);
 
       this.socket = io(
@@ -48,7 +56,7 @@ export default class PepoSocket {
         {
           jsonp: false,
           transports: ['websocket'],
-          reconnectionAttempts: 10
+          reconnectionAttempts: reconnectionAttempts
         }
       );
 

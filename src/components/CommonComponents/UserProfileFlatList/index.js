@@ -52,7 +52,6 @@ class UserProfileFlatList extends PureComponent {
             this.refresh();
           });
         }
-        fetchUser(this.props.userId);
         this.videoHistoryPagination.initPagination();
     }
 
@@ -87,7 +86,9 @@ class UserProfileFlatList extends PureComponent {
     }
 
     onRefresh = ( res ) => {
-        this.setState({ refreshing : false , list : this.videoHistoryPagination.getList() }); 
+        const list = this.videoHistoryPagination.getList()  ; 
+        this.props.onRefresh && this.props.onRefresh( list , res );
+        this.setState({ refreshing : false , list : list }); 
     }
 
     onRefreshError = ( error ) => {

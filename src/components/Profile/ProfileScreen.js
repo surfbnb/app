@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity , View , Text } from 'react-native';
 import EventEmitter from 'eventemitter3';
 import deepGet from 'lodash/get';
 
@@ -18,6 +18,9 @@ import appConfig from '../../constants/AppConfig';
 import profileEditIcon from '../../assets/profile_edit_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import PepoApi from '../../services/PepoApi';
+import ReviewStatusBanner from './ReviewStatusBanner';
+
+
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -49,11 +52,13 @@ class ProfileScreen extends PureComponent {
     this.refreshEvent = new EventEmitter();
     this.state = {
       emailAddress: '',
-      isVerifiedEmail: false
+      isVerifiedEmail: false,
+      hasVideos: false
     };
   }
 
   componentDidMount() {
+    this.getEmail();
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab5.childStack) {
         this.refresh();
@@ -62,11 +67,9 @@ class ProfileScreen extends PureComponent {
     this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
     });
-    this.refresh();
-    this.setEmail();
   }
 
-  setEmail() {
+  getEmail() {
     new PepoApi(`/users/email`)
       .get()
       .then((res) => {
@@ -82,10 +85,9 @@ class ProfileScreen extends PureComponent {
   }
 
   onEmailSuccess(res) {
-    this.setState({
-      emailAddress: deepGet(res, 'data.email.address'),
-      isVerifiedEmail: deepGet(res, 'data.email.verified')
-    });
+    //Silent update, not yet need on UI, once need do it via set state.
+    this.state["emailAddress"] = deepGet(res, 'data.email.address') ;
+    this.state["isVerifiedEmail"] =deepGet(res, 'data.email.verified') ;
   }
 
   onEmailError(error) {}
@@ -98,6 +100,11 @@ class ProfileScreen extends PureComponent {
   componentDidUpdate(prevProps) {
     if (this.props.userId && this.props.userId != prevProps.userId) {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
+      //Be careful before removing this function. It will stop loading the user videos.
+      //Ideally should have been in UserProfileFlatList, but sinces it commonly used
+      //for User Profile and Current User profile not changing this code for now.
+      //Will do it ref based later.
+      //I should have never taken an event based approch for component to component interaction. My bad.
       this.refresh();
     }
   }
@@ -109,11 +116,18 @@ class ProfileScreen extends PureComponent {
   onEdit = () => {
     this.props.navigation.push('ProfileEdit', {
       email: this.state.emailAddress,
-      isVerifiedEmail: this.state.isVerifiedEmail
+      isVerifiedEmail: this.state.isVerifiedEmail ,
+      onEmailSave : this.onEmailSave
     });
   };
 
-  fetchBalance = () => {
+  onEmailSave = ( email ) => {
+    if(!email) return;
+    this.state.emailAddress = email;
+  }
+
+  beforeRefresh = () => {
+   // this.getEmail();
     Pricer.getBalance();
   };
 
@@ -130,28 +144,36 @@ class ProfileScreen extends PureComponent {
             <Image style={{ width: 13, height: 13 }} source={profileEditIcon}></Image>
           </TouchableOpacity>
         }
-        isOwnProfile={true}
+        videoInReviewHeader={this.videoInReviewHeader()}
       />
     );
   }
 
-  // _subHeader() {
-  //   return <Text style={{ color: 'transparent' }}>Videos</Text>;
-  // }
+  onRefresh =(list , res) => {
+    this.setState({ hasVideos : !!list.length });
+  }
+
+  videoInReviewHeader = () => {
+    if(this.state.hasVideos){
+      return <ReviewStatusBanner />
+    }
+  }
 
   render() {
-    return this.props.userId && (
-      <UserProfileFlatList
-        refreshEvent={this.refreshEvent}
-        ref={(ref) => {
-          this.flatlistRef = ref;
-        }}
-        listHeaderComponent={this._headerComponent()}
-        // listHeaderSubComponent={this._subHeader()}
-        beforeRefresh={this.fetchBalance}
-        userId={this.props.userId}
-      />
-    );
+    if(this.props.userId){
+      return <UserProfileFlatList
+              refreshEvent={this.refreshEvent}
+              ref={(ref) => {
+                this.flatlistRef = ref;
+              }}
+              listHeaderComponent={this._headerComponent()}
+              beforeRefresh={this.beforeRefresh}
+              onRefresh={this.onRefresh}
+              userId={this.props.userId}
+            />
+    }else{
+      return <View style={{flex: 1 , backgroundColor: Colors.black}} />
+    }
   }
 }
 

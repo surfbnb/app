@@ -34,8 +34,9 @@ class UniversalLinksManager extends PureComponent {
     }
 
     _processURL(url) {
-        new PepoApi(`/fetch-goto`)
-            .get({url})
+        //TODO @preshita , get this reviwed from @Akshay
+        new PepoApi(`/fetch-goto?url=${url}`)
+            .get()
             .then((res) => {
                 const resultType = deepGet(res, "data.result_type"),
                         goTo = deepGet( res , `data.${resultType}`)

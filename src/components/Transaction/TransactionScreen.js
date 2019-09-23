@@ -34,6 +34,7 @@ import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
 import { ON_USER_CANCLLED_ERROR_MSG, ensureSession } from '../../helpers/TransactionHelper';
+import ReduxGetters from '../../services/ReduxGetters';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -77,12 +78,12 @@ class TransactionScreen extends Component {
     //Imp : Make sure if transaction is mappning againts Profile dont send video Id
     this.videoId = this.props.navigation.getParam('videoId');
     this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate');
-    this.getBalance();
   }
 
   componentDidMount() {
-    // default we need
-    //this.setState({ btFocus: true });
+    this.onBalance(ReduxGetters.getBalance());
+    //Make a background call for sync balance.
+    this.getBalance();
   }
 
   _keyboardShown(e) {
