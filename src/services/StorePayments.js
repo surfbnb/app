@@ -280,6 +280,7 @@ class NativeStoreAcknowledge{
     }
 
     iOsConsumtion( purchase ){
+        RNIap.clearTransactionIOS();
         RNIap.consumePurchaseAndroid(purchase.transactionId).then((res)=> {
             this.nativeStoreSyncSuccess();
         }).catch((error)=> {
