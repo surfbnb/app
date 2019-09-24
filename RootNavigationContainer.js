@@ -56,6 +56,7 @@ import AddEmailScreen from './src/components/AddEmail';
 import EmailScreen from './src/components/Email';
 import UniversalLinksManager from './src/services/UniversalLinksManager';
 import WalletDetails from './src/components/WalletSetting/WalletDetails';
+import AuthDeviceDrawer from './src/components/Home/AuthDeviceDrawer';
 
 const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen'];
 
@@ -128,9 +129,11 @@ const HomeStack = createStackNavigator(
   {
     HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen,
+    AuthDeviceDrawer: AuthDeviceDrawer,
     CaptureVideo: CaptureVideoStack,
     StoreProductsScreen: StoreProductsScreen,
     InviteCodeScreen: InviteCodeScreen,
+    AuthDeviceDrawer : AuthDeviceDrawer,
     AddEmailScreen: AddEmailScreen
   },
   {
@@ -157,6 +160,7 @@ const NotificationStack = createStackNavigator(
   {
     NotificationPushStack: NotificationPushStack,
     TransactionScreen: TransactionScreen,
+    AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
     CaptureVideo: CaptureVideoStack
   },
@@ -203,6 +207,7 @@ const ProfileStack = createStackNavigator(
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery,
     TransactionScreen: TransactionScreen,
+    AuthDeviceDrawer: AuthDeviceDrawer,
     CaptureVideo: CaptureVideoStack,
     StoreProductsScreen: StoreProductsScreen
   },
@@ -236,7 +241,8 @@ const SearchStack = createStackNavigator(
   {
     SearchPushStack: SearchPushStack,
     CaptureVideo: CaptureVideoStack,
-    TransactionScreen: TransactionScreen
+    TransactionScreen: TransactionScreen,
+    AuthDeviceDrawer: AuthDeviceDrawer
   },
   {
     ...modalStackConfig,
