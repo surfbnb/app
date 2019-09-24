@@ -213,7 +213,7 @@ class WalletSettingList extends PureComponent {
   onWorkflowStarted = (workflowInfo) => {
     this.workflowInfo = workflowInfo;
     // Show loader.
-    LoadingModal.show('');
+    //LoadingModal.show('');
 
     // Subscribe to events.
     walletSettingController.setUIDelegate(this);

@@ -197,6 +197,8 @@ const BaseErrorMessages = {
   WORKFLOW_FAILED:
     "Something went wrong, please try again",
 
+  WORKFLOW_VIEW_DESTROYED: "The application interrupted the workflow. The view got terminated while performing the workflow",
+
   // Rare Errors
   DEVICE_UNAUTHORIZED:
     "Unable to perform the operation as the device not authorized. For details on how to authorize a device please visit https://dev.ost.com/platform/docs/sdk/references ",
