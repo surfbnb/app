@@ -33,7 +33,7 @@ import reduxGetter from '../../services/ReduxGetters';
 import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
-import { ON_USER_CANCLLED_ERROR_MSG, ensureSession } from '../../helpers/TransactionHelper';
+import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
 import ReduxGetters from '../../services/ReduxGetters';
 
 const bottomSpace = getBottomSpace([true]),
@@ -234,22 +234,39 @@ class TransactionScreen extends Component {
     const user = CurrentUser.getUser();
     // const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(this.state.btAmount);
-    ensureSession(user.ost_user_id, btInDecimal, (errorMessage, success) => {
-      if (success) {
-        return this._executeTransaction(user, btInDecimal);
-      }
-
-      if (errorMessage) {
-        if (ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage) {
-          //Cancel the flow.
-          this.resetState();
-          return;
-        }
-
-        // Else: Show the error message.
-        this.showError(errorMessage);
-      }
+    ensureDeivceAndSession(user.ost_user_id, btInDecimal, (device) => {
+      this._deviceUnauthorizedCallback(device);
+      }, (errorMessage, success) => {
+        this._ensureDeivceAndSessionCallback(errorMessage, success);
     });
+  }
+
+  _ensureDeivceAndSessionCallback(errorMessage, success) {
+    if (success) {
+      return this._executeTransaction(user, btInDecimal);
+    }
+
+    if (errorMessage) {
+      if (ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage) {
+        //Cancel the flow.
+        this.resetState();
+        return;
+      }
+
+      // Else: Show the error message.
+      this.showError(errorMessage);
+    }
+  }
+
+  _deviceUnauthorizedCallback(device) {
+    //Cancel the flow.
+    this.resetState();
+
+    //Dismiss self
+    this.closeModal();
+
+    //@Shradha: Open the drawer.
+    console.log("@Shradha: Open the drawer.");
   }
 
   _executeTransaction(user, btInDecimal) {

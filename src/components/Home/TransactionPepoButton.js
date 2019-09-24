@@ -21,7 +21,7 @@ import { ostSdkErrors } from '../../services/OstSdkErrors';
 import Pricer from '../../services/Pricer';
 import utilities from '../../services/Utilities';
 import PixelCall from '../../services/PixelCall';
-import {ON_USER_CANCLLED_ERROR_MSG, ensureSession} from '../../helpers/TransactionHelper';
+import {ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession} from '../../helpers/TransactionHelper';
 import {VideoPlayPauseEmitter} from "../../helpers/Emitters";
 
 const mapStateToProps = (state, ownProps) => ({
@@ -67,30 +67,43 @@ class TransactionPepoButton extends PureComponent {
     const user = CurrentUser.getUser();
     // const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(btAmount);
-    ensureSession(user.ost_user_id, btInDecimal, (errorMessage, success) => {
-      VideoPlayPauseEmitter.emit('play');
-      if ( success ) {
-        return this._executeTransaction(user, btInDecimal);
-      }
-
-      if ( errorMessage ) {
-        if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage) {
-          //Cancel the flow.
-          this.syncData(1000);
-          return;
-        }
-
-        // Else: Show the error message.
-        this.syncData(1000);
-        Toast.show({
-          text: errorMessage,
-          icon: 'error'
-        });
-
-      }
+    ensureDeivceAndSession(user.ost_user_id, btInDecimal, (device) => {
+      this._deviceUnauthorizedCallback(device);
+    }, (errorMessage, success) => {
+      this._ensureDeivceAndSessionCallback(errorMessage, success);
     });
   }
 
+  _ensureDeivceAndSessionCallback(errorMessage, success) {
+    VideoPlayPauseEmitter.emit('play');
+    if ( success ) {
+      return this._executeTransaction(user, btInDecimal);
+    }
+
+    if ( errorMessage ) {
+      if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage) {
+        //Cancel the flow.
+        this.syncData(1000);
+        return;
+      }
+
+      // Else: Show the error message.
+      this.syncData(1000);
+      Toast.show({
+        text: errorMessage,
+        icon: 'error'
+      });
+
+    }
+  }
+
+  _deviceUnauthorizedCallback( device ) {
+    //Cancel the flow.
+    this.syncData(1000);
+
+    //@Shradha: Open the drawer.
+    console.log("@Shradha: Open the drawer.");
+  }
 
   _executeTransaction(user, btInDecimal) {
     this.workflow = new ExecuteTransactionWorkflow(this);
