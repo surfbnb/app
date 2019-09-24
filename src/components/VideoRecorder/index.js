@@ -146,11 +146,7 @@ class VideoRecorder extends Component {
             <View style={styles.backgroundStyle}>
               <View style={{ padding: 26 }}>
                 <Text style={styles.headerText}>Some Tips to help you get started on your first fan update</Text>
-
-                <Text style={styles.smallText}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna
-                </Text>
+                
                 <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
 
                 <Text style={styles.headerText}>One More thing!</Text>
