@@ -162,7 +162,7 @@ class InviteCodeScreen extends React.Component {
   }
 
   closeModal = () => {
-    this.clearInviteCode();
+    // this.clearInviteCode();
     if (!this.state.isSubmitting) {
       this.props.navigation.goBack();
     }

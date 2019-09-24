@@ -106,6 +106,12 @@ class NavigateTo {
     return false;
   }
 
+  shouldNavigate( goToHome ){
+    if(CurrentUser.isActiveUser()) {
+      this.goToNavigationDecision( goToHome );
+   }
+  }
+
   navigationDecision() {
     if (CurrentUser.getUser() && !CurrentUser.isActiveUser()) {
       this.__navigate('UserActivatingScreen');
