@@ -103,7 +103,7 @@ class SayThanks extends Component {
   };
 
   sendMessage = () => {
-    let tweetNeeded = this.state.tweetOn === true ? 1 : 0;
+    // let tweetNeeded = this.state.tweetOn === true ? 1 : 0;
     this.setState({ server_errors: {}, thanksError: '' });
     if (this.state.thanksMessage.trim().length == 0) {
       this.setState({ thanksError: 'Message can not be empty' });
@@ -114,7 +114,7 @@ class SayThanks extends Component {
       .post({
         notification_id: this.props.navigation.getParam('notificationId'),
         text: this.state.thanksMessage,
-        tweet_needed: tweetNeeded
+         // tweet_needed: tweetNeeded
       })
       .then((res) => {
         this.setState({ posting: false });
@@ -215,14 +215,14 @@ class SayThanks extends Component {
                     {reduxGetter.getName(this.props.navigation.getParam('userId'))}
                   </Text>
                 </View>
-                <Text style={{ marginLeft: 'auto', marginRight: 5 }}>Tweet</Text>
-                <Switch
+                {/* <Text style={{ marginLeft: 'auto', marginRight: 5 }}>Tweet</Text> */}
+                {/* <Switch
                   value={this.state.tweetOn}
                   trackColor={{ true: Colors.primary }}
                   thumbColor="#ffffff"
                   ios_backgroundColor="#c9cdd2"
                   onValueChange={this.tweetSwitchChange}
-                />
+                /> */}
               </View>
               <View style={{ marginTop: 14, width: '100%' }}>
                 <View style={{ flex: 1 }}>
