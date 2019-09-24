@@ -135,7 +135,7 @@ let stylesMap = {
     color : Colors.dark
   },
   desc : {
-    color : Colors.darkGray,
+    color : Colors.dark,
     fontSize: 15,
     lineHeight: 24,
     textAlign: 'center',
