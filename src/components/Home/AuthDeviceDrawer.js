@@ -4,7 +4,9 @@ import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback} from 're
 import inlineStyles from './styles';
 import AuthDeviceDrawerData from './AuthDeviceDrawerData';
 import TouchableButton from '../../theme/components/TouchableButton';
-import pepo from '../../assets/pepo-tx-icon.png'
+import pepoIcon from '../../assets/pepo-tx-icon.png';
+import fingerprintIcon from '../../assets/fingerprint.png';
+import infoIcon from '../../assets/toast_error.png';
 import Theme from "../../theme/styles";
 import modalCross from '../../assets/modal-cross-icon.png';
 
@@ -14,9 +16,8 @@ import modalCross from '../../assets/modal-cross-icon.png';
 
 
 export default class AuthDeviceDrawer extends PureComponent {
-  constructor(props){
+  constructor(props) {
     super(props);
-
   }
 
   componentDidMount() {
@@ -24,7 +25,6 @@ export default class AuthDeviceDrawer extends PureComponent {
   }
 
   componentWillUnmount() {
-    console.log("Yes! i am here!");
     if ( this.onCloseGoTo ) {
       this.props.navigation.navigate(this.onCloseGoTo);
     }
@@ -43,10 +43,11 @@ export default class AuthDeviceDrawer extends PureComponent {
     }
   }
 
-  getIcon = ( Icon ) => {
-    switch ( Icon ){
-      case "pepo" : return pepo;
-      case "fingerprint": return pepo;
+  getIcon = ( icon ) => {
+    switch ( icon ){
+      case "pepo" : return pepoIcon;
+      case "fingerprint": return fingerprintIcon;
+      case "info" : return infoIcon;
     }
   }
 
@@ -80,7 +81,7 @@ export default class AuthDeviceDrawer extends PureComponent {
     if ( !config.icon ) {
       return null;
     }
-    return(<Image style = {inlineStyles.imageDimensions} source={this.getIcon(config.icon)}></Image>);
+    return(<Image style = {inlineStyles.imageDimensionSkipFont} source={this.getIcon(config.icon)}></Image>);
   }
 
   _renderHeader() {
@@ -96,7 +97,7 @@ export default class AuthDeviceDrawer extends PureComponent {
     if ( !config.desc ) {
       return null;
     }
-    return(<Text style={{ fontSize : 10 , paddingBottom : 15 }}> {config.desc}</Text>);
+    return(<Text style={inlineStyles.desc}> {config.desc}</Text>);
   }
 
   _renderCTA() {
@@ -108,7 +109,7 @@ export default class AuthDeviceDrawer extends PureComponent {
     return(
       <TouchableButton
         TouchableStyles={[Theme.Button.btnPink,{ minWidth: '100%',borderColor: 'none', borderWidth: 0}]}
-        TextStyles={[Theme.Button.btnPinkText, { fontSize: 10 }]}
+        TextStyles={[Theme.Button.btnPinkText, { fontSize: 15 }]}
         text={config.cta.ctaText}
         onPress={this.onActionBtnPressed}
       />

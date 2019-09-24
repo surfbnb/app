@@ -102,11 +102,11 @@ let stylesMap = {
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
     bottom: 0,
-    minHeight: Dimensions.get('window').height / 2,
   },
     crossIconWrapper: {
       position: 'absolute',
-      left: 5,
+      left: 10,
+      top : 10,
       width: 40,
       height: 40,
       alignItems: 'center',
@@ -119,15 +119,26 @@ let stylesMap = {
     contentWrapper:{
       flex:1,
       justifyContent : 'center' ,
-      alignItems : 'center'
+      alignItems : 'center',
+      marginVertical : 20
   },
-    imageDimensions :{
-      height : 40,
-      width :40,
+    imageDimensionSkipFont :{
+      height : 50,
+      width : 50,
     },
   headerText : {
-    fontSize : 14,
-    paddingVertical: 15
+    fontSize : 18,
+    paddingVertical: 15,
+    fontFamily: 'AvenirNext-Regular',
+    color : Colors.dark
+  },
+  desc : {
+    color : Colors.darkGray,
+    fontSize: 15,
+    lineHeight: 24,
+    textAlign: 'center',
+    fontFamily: 'AvenirNext-Medium',
+    paddingBottom : 15
   }
 }
 
