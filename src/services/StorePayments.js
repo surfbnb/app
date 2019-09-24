@@ -53,13 +53,8 @@ class StorePayments {
     onRequestPurchaseError(error , userId ){
         error = error || {};
         paymentEvents.emit(paymentEventsMap.paymentIAPError); 
-        Alert.alert(""+error.responseCode,  ""+error.debugMessage);
-        if(error && error.responseCode !== 2){
-            Toast.show({
-                text:  ostErrors.getUIErrorMessage("payment_failed_error"),
-                icon: 'error'
-            });
-        }   
+        //TODO error sync with @PM 
+        Alert.alert(""+error.responseCode,  ""+error.debugMessage);  
     }
 
     onRequestPurchaseSuccess( res , userId ){
