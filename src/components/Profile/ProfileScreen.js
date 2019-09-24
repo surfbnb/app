@@ -19,19 +19,23 @@ import profileEditIcon from '../../assets/profile_edit_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import PepoApi from '../../services/PepoApi';
 import ReviewStatusBanner from './ReviewStatusBanner';
-
-
+import CustomDrawer from '../CustomDrawer';
+import {DrawerEmitter} from '../../helpers/Emitters';
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
 };
+
+const Header = (props)=>{
+  return <TouchableOpacity onPress={()=> DrawerEmitter.emit('closeDrawer')}><Text style={{fontWeight: '600', fontSize: 17, color: 'rgba(0,0,0,.9)'}}>{props.name}</Text></TouchableOpacity>
+}
 
 class ProfileScreen extends PureComponent {
   static navigationOptions = (options) => {
     const name = options.navigation.getParam('headerTitle') || reduxGetter.getName(CurrentUser.getUserId());
     return {
       headerBackTitle: null,
-      headerTitle: name,
+      headerTitle: <Header name={name}/>,
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
@@ -53,7 +57,8 @@ class ProfileScreen extends PureComponent {
     this.state = {
       emailAddress: '',
       isVerifiedEmail: false,
-      hasVideos: false
+      hasVideos: false,
+      openDrawer: false
     };
   }
 
@@ -67,6 +72,16 @@ class ProfileScreen extends PureComponent {
     this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
     });
+    DrawerEmitter.on('toggleDrawer', ()=>{
+      this.setState({
+        openDrawer: !this.state.openDrawer
+      })
+    });
+    DrawerEmitter.on('closeDrawer', ()=>{
+      this.setState({
+        openDrawer: false
+      })
+    })
   }
 
   getEmail() {
@@ -159,18 +174,28 @@ class ProfileScreen extends PureComponent {
     }
   }
 
+  onClose = ()=>{
+    this.setState({
+      openDrawer: false
+    })
+  }
+
   render() {
     if(this.props.userId){
-      return <UserProfileFlatList
-              refreshEvent={this.refreshEvent}
-              ref={(ref) => {
-                this.flatlistRef = ref;
-              }}
-              listHeaderComponent={this._headerComponent()}
-              beforeRefresh={this.beforeRefresh}
-              onRefresh={this.onRefresh}
-              userId={this.props.userId}
-            />
+      return  <CustomDrawer openDrawer={this.state.openDrawer} navigation={this.props.navigation} onClose={this.onClose}>
+                <UserProfileFlatList
+                      refreshEvent={this.refreshEvent}
+                      ref={(ref) => {
+                        this.flatlistRef = ref;
+                      }}
+                      listHeaderComponent={this._headerComponent()}
+                      beforeRefresh={this.beforeRefresh}
+                      onRefresh={this.onRefresh}
+                      userId={this.props.userId}
+                    />
+              </CustomDrawer>
+           
+
     }else{
       return <View style={{flex: 1 , backgroundColor: Colors.black}} />
     }
