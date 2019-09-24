@@ -40,8 +40,7 @@ let stylesMap = {
     height: 65,
     padding: 15,
     paddingHorizontal: 20,
-    position:'absolute',
-
+    alignSelf: 'center'
   },
   progressBar: {
     borderRadius: 3.5,

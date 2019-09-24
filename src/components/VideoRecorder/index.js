@@ -28,7 +28,7 @@ class VideoRecorder extends Component {
       isRecording: false,
       progress: 0,
       recordingInProgress: false,
-      acceptedCameraTnC: null,
+      acceptedCameraTnC: this.props.acceptedCameraTnC,
       cameraFrontMode: true
     };
     this.camera = null;
@@ -40,9 +40,11 @@ class VideoRecorder extends Component {
   };
 
   async componentDidMount() {
-    utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
-      this.setState({ acceptedCameraTnC: terms });
-    });
+    if (this.props.acceptedCameraTnC === null){
+      utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
+        this.setState({ acceptedCameraTnC: terms });
+      });
+    }
     BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
     AppState.addEventListener('change', this._handleAppStateChange);
     if (this.props.actionSheetOnRecordVideo) {
@@ -146,7 +148,7 @@ class VideoRecorder extends Component {
             <View style={styles.backgroundStyle}>
               <View style={{ padding: 26 }}>
                 <Text style={styles.headerText}>Some Tips to help you get started on your first fan update</Text>
-                
+
                 <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
 
                 <Text style={styles.headerText}>One More thing!</Text>
