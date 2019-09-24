@@ -54,7 +54,7 @@ class StorePayments {
         error = error || {};
         paymentEvents.emit(paymentEventsMap.paymentIAPError); 
         //TODO error sync with @PM 
-        Alert.alert(""+error.responseCode,  ""+error.debugMessage);  
+        Alert.alert(""+error.responseCode,  ""+error.debugMessage);   
     }
 
     onRequestPurchaseSuccess( res , userId ){
