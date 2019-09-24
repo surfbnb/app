@@ -35,6 +35,7 @@ class StorePayments {
     //@Note : Success and error will be subscribtion based
     requestPurchase( skuId ){
         try {
+            RNIap.clearTransactionIOS();
             RNIap.initConnection().then((res)=> {
                 RNIap.requestPurchase(skuId);
             }).catch((error)=> {
@@ -90,8 +91,6 @@ class StorePayments {
         });
 
         PollCurrentUserPendingPayments.initBalancePoll(userId ,  true);
-        
-        RNIap.clearTransactionIOS();
     }
 
     __syncBETransactions( list ){
