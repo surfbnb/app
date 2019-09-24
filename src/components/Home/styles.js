@@ -89,7 +89,48 @@ let stylesMap = {
     width: 25,
     top: Dimensions.get('window').height * 0.5 - 12,
     left: Dimensions.get('window').width * 0.5 - 12
+  },
+  parent:{
+    flex: 1,
+    backgroundColor: 'transparent'
+  },
+  popupContainer: {
+    backgroundColor: Colors.white,
+    padding : 20,
+    position: 'absolute',
+    width: '100%',
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
+    bottom: 0,
+    minHeight: Dimensions.get('window').height / 2,
+  },
+    crossIconWrapper: {
+      position: 'absolute',
+      left: 5,
+      width: 40,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    crossIconSkipFont: {
+      width: 13,
+      height: 12.6
+    },
+    contentWrapper:{
+      flex:1,
+      justifyContent : 'center' ,
+      alignItems : 'center'
+  },
+    imageDimensions :{
+      height : 40,
+      width :40,
+    },
+  headerText : {
+    fontSize : 14,
+    paddingVertical: 15
   }
-};
+}
+
+;
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

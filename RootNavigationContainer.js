@@ -52,6 +52,7 @@ import PushNotificationManager from './src/services/PushNotificationManager';
 import ReferAndEarn from './src/components/ReferAndEarn';
 import Invites from './src/components/Invites';
 import InviteCodeScreen from './src/components/InviteCode';
+import DeviceStatusPopup from './src/components/Home/DeviceStatusPopup';
 import AddEmailScreen from './src/components/AddEmail';
 import InviteCodeWorker from './src/services/InviteCodeWorker';
 import EmailScreen from './src/components/Email';
@@ -132,6 +133,7 @@ const HomeStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     StoreProductsScreen: StoreProductsScreen,
     InviteCodeScreen: InviteCodeScreen,
+    DeviceStatusPopup : DeviceStatusPopup,
     AddEmailScreen: AddEmailScreen
   },
   {

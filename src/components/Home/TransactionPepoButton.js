@@ -70,11 +70,13 @@ class TransactionPepoButton extends PureComponent {
     ensureDeivceAndSession(user.ost_user_id, btInDecimal, (device) => {
       this._deviceUnauthorizedCallback(device);
     }, (errorMessage, success) => {
-      this._ensureDeivceAndSessionCallback(errorMessage, success);
+      this._ensureDeivceAndSessionCallback(btAmount,errorMessage, success);
     });
   }
 
-  _ensureDeivceAndSessionCallback(errorMessage, success) {
+  _ensureDeivceAndSessionCallback(btAmount, errorMessage, success) {
+    const user = CurrentUser.getUser();
+    const btInDecimal = pricer.getToDecimal(btAmount);
     VideoPlayPauseEmitter.emit('play');
     if ( success ) {
       return this._executeTransaction(user, btInDecimal);
@@ -103,6 +105,7 @@ class TransactionPepoButton extends PureComponent {
 
     //@Shradha: Open the drawer.
     console.log("@Shradha: Open the drawer.");
+    this.props.navigation.push('DeviceStatusPopup', { device });
   }
 
   _executeTransaction(user, btInDecimal) {
