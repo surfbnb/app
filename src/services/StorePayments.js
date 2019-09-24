@@ -90,6 +90,8 @@ class StorePayments {
         });
 
         PollCurrentUserPendingPayments.initBalancePoll(userId ,  true);
+        
+        RNIap.clearTransactionIOS();
     }
 
     __syncBETransactions( list ){
@@ -280,7 +282,6 @@ class NativeStoreAcknowledge{
     }
 
     iOsConsumtion( purchase ){
-        RNIap.clearTransactionIOS();
         RNIap.consumePurchaseAndroid(purchase.transactionId).then((res)=> {
             this.nativeStoreSyncSuccess();
         }).catch((error)=> {
