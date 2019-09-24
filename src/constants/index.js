@@ -2,11 +2,13 @@ import DeviceInfo from 'react-native-device-info';
 import BigNumber from 'bignumber.js';
 
 const B18 = new BigNumber('10').exponentiatedBy('18');
-const PProduction = new BigNumber('50').multipliedBy(B18);
+const DefaultSpendingLimitProduction = new BigNumber('50').multipliedBy(B18);
+const DefaultSpendingLimitStaging = new BigNumber('50').multipliedBy(B18);
+const DefaultSpendingLimitSandbox = new BigNumber('50').multipliedBy(B18);
 
-const PStaging = new BigNumber('50').multipliedBy(B18);
-
-const PSandbox = new BigNumber('50').multipliedBy(B18);
+const MaxSpendingLimitProduction = new BigNumber('1000').multipliedBy(B18);
+const MaxSpendingLimitSandbox = new BigNumber('1000').multipliedBy(B18);
+const MaxSpendingLimitStaging = new BigNumber('1000').multipliedBy(B18);
 
 const BundleConstants = {
   'com.pepo.staging': {
@@ -17,8 +19,8 @@ const BundleConstants = {
     TWITTER_CONSUMER_KEY: 'NEo4gEXzdQZaoTsqzpZvepfKb',
     TWITTER_CONSUMER_SECRET: 'iM5UMt4px8rwoqEoRV9gJGrJGtEoMUxOYkaWXSges7t4bk564t',
     VIEW_END_POINT: 'https://view.stagingost.com/testnet/',
-    DEFAULT_SPENDING_LIMIT: PStaging.toString( 10 ),
-    MAX_SPENDING_LIMIT: PStaging.multipliedBy( 20 ).toString( 10 ),
+    DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitStaging.toString( 10 ),
+    MAX_SPENDING_LIMIT: MaxSpendingLimitStaging.toString( 10 ),
     DEFAULT_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 1, //1 hour + buffer from config 1 hr = 2 hr
     MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME: 60 * 30, // buffer 1 hr + 20 mins
     HIGH_SPEND_SESSION_KEY_EXPIRY_TIME: 60 * 10 // buffer 1 hr + 10 mins
@@ -31,8 +33,8 @@ const BundleConstants = {
     TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
     TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0',
     VIEW_END_POINT: 'https://view.ost.com/testnet/',
-    DEFAULT_SPENDING_LIMIT: PSandbox.toString( 10 ),
-    MAX_SPENDING_LIMIT: PSandbox.multipliedBy( 20 ).toString( 10 ),
+    DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitSandbox.toString( 10 ),
+    MAX_SPENDING_LIMIT: MaxSpendingLimitSandbox.toString( 10 ),
     DEFAULT_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 24 * 365, //1 year
     MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 1, // 1 hour + buffer from config 1 hr = 2 hr
     HIGH_SPEND_SESSION_KEY_EXPIRY_TIME: 0 // buffer 1 hr
@@ -45,8 +47,8 @@ const BundleConstants = {
     TWITTER_CONSUMER_KEY: '53Q0hHEe4Hhartej9lFVWZX4C',
     TWITTER_CONSUMER_SECRET: 'L3jOhUfHr8drwrx8qT7GnvObFtPxTxZkFQbdCWGKawzo7l9avV',
     VIEW_END_POINT: 'https://view.ost.com/mainnet/',
-    DEFAULT_SPENDING_LIMIT: PProduction.toString( 10 ),
-    MAX_SPENDING_LIMIT: PProduction.multipliedBy( 20 ).toString( 10 ),
+    DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitProduction.toString( 10 ),
+    MAX_SPENDING_LIMIT: MaxSpendingLimitProduction.toString( 10 ),
     DEFAULT_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 24 * 365, //1 year
     MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 24 * 7 * 2, // 2 weeks
     HIGH_SPEND_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 1 // 1 hour + buffer from config 1 hr = 2 hr
