@@ -88,6 +88,11 @@ class WalletBalanceFlyer extends Component {
 
     if( getBalance(this.props.balance) < 1 ){
       this.props.navigation.push("StoreProductsScreen");
+      return;
+    }
+
+    if(!this.isRenderFlyer()){
+        this.props.navigation.navigate("ProfileScreen");
     }
 
   };

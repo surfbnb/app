@@ -61,11 +61,11 @@ class SearchResults extends PureComponent {
   }
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>        
         <FlatList
           data={this.props.list}
           onScrollBeginDrag={() => Keyboard.dismiss()}
-          keyboardShouldPersistTaps={'always'}
+          keyboardShouldPersistTaps={'handled'}          
           horizontal={this.props.horizontal}
           enableEmptySections={true}
           stickyHeaderIndices={[0]}
@@ -77,7 +77,7 @@ class SearchResults extends PureComponent {
           ListEmptyComponent={this.getEmptyComponent}
           ListHeaderComponent={<SearchListHeader setSearchParams={this.props.setSearchParams} />}
           showsVerticalScrollIndicator={false}
-        />
+        />        
       </SafeAreaView>
     );
   }

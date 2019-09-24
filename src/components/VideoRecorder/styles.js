@@ -35,6 +35,14 @@ let stylesMap = {
     alignSelf: 'center'
     // margin: 20
   },
+  flipIconSkipFont: {
+    width: 65,
+    height: 65,
+    padding: 15,
+    paddingHorizontal: 20,
+    position:'absolute',
+
+  },
   progressBar: {
     borderRadius: 3.5,
     borderColor: Colors.white,

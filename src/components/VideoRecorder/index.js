@@ -3,6 +3,7 @@ import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback, BackHand
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
+import flipIcon from '../../assets/camera.png';
 import ProgressBar from 'react-native-progress/Bar';
 import styles from './styles';
 import reduxGetters from '../../services/ReduxGetters';
@@ -27,7 +28,8 @@ class VideoRecorder extends Component {
       isRecording: false,
       progress: 0,
       recordingInProgress: false,
-      acceptedCameraTnC: null
+      acceptedCameraTnC: null,
+      cameraFrontMode: true
     };
     this.camera = null;
     this.recordedVideo = null;
@@ -106,10 +108,13 @@ class VideoRecorder extends Component {
   };
 
   acceptCameraTerms = () => {
-    utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
     this.setState({
       acceptedCameraTnC: 'true'
     });
+  };
+
+  flipCamera = () => {
+    this.setState({ cameraFrontMode: !this.state.cameraFrontMode });
   };
 
   cameraView() {
@@ -120,7 +125,7 @@ class VideoRecorder extends Component {
             this.camera = ref;
           }}
           style={styles.previewSkipFont}
-          type={RNCamera.Constants.Type.front}
+          type={this.state.cameraFrontMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back}
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
@@ -158,7 +163,8 @@ class VideoRecorder extends Component {
 
                 <Button
                   style={{ alignSelf: 'center', backgroundColor: '#f56', padding: 14, marginTop: 24 }}
-                  onPress={this.acceptCameraTerms} >
+                  onPress={this.acceptCameraTerms}
+                >
                   <Text style={styles.buttonText}>Get Started</Text>
                 </Button>
               </View>
@@ -190,11 +196,12 @@ class VideoRecorder extends Component {
           <View
             style={{
               flex: 0,
-              flexDirection: 'row',
-              justifyContent: 'center'
+              flexDirection: 'row'
+              // justifyContent: 'center'
             }}
           >
             {this.getActionButton()}
+            {this.flipButton()}
           </View>
         </React.Fragment>
       );
@@ -220,6 +227,16 @@ class VideoRecorder extends Component {
         <Image style={styles.captureButtonSkipFont} source={source} />
       </TouchableOpacity>
     );
+  }
+
+  flipButton() {
+    if (!this.state.isRecording) {
+      return (
+        <TouchableOpacity onPress={this.flipCamera}>
+          <Image style={styles.flipIconSkipFont} source={flipIcon} />
+        </TouchableOpacity>
+      );
+    }
   }
 
   initProgressBar() {
