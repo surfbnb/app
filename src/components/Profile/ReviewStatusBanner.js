@@ -26,7 +26,7 @@ const ReviewStatusBanner = ( props ) => {
       </View>
       );
   }else{
-    return <React.Fragment/>
+    return <View style={{height:15}} />
   }
 
 };
