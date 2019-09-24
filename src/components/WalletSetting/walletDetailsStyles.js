@@ -8,21 +8,20 @@ let stylesMap = {
   },
   title: {
     color: Colors.grey,
-    fontSize: 14,
+    fontSize: 13,
     marginTop: 15,
     fontFamily: 'AvenirNext-DemiBold'
   },
   text: {
     color: Colors.valhalla,
-    fontSize: 16,
-    marginTop: 5,
+    fontSize: 15,
     marginBottom: 15,
     fontFamily: 'AvenirNext-Regular'
   },
 
   statusText: {
     color: Colors.green,
-    fontSize: 16,
+    fontSize: 15,
     marginTop: 5,
     marginBottom: 15,
     fontFamily: 'AvenirNext-Regular'
@@ -37,7 +36,7 @@ let stylesMap = {
   linkText: {
     color: Colors.azureBlue,
     marginBottom: 15,
-    fontSize: 16,
+    fontSize: 15,
     flexWrap: 'wrap',
     fontFamily: 'AvenirNext-Regular'
   },
