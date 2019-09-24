@@ -59,7 +59,7 @@ class PollCurrentUserPendingPayments {
         }).catch(()=> {
             this.onPendingPaymentError(error);
         }).finally( () => {
-            pollDuration + pollingInterval;
+            pollDuration = pollDuration + pollingInterval;
         })
 
     }
