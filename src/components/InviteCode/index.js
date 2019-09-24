@@ -24,6 +24,7 @@ class InviteCodeScreen extends React.Component {
     this.state = {
       inviteCode: null,
       isSubmitting: false,
+      focus: false,
       general_error: null,
       server_errors: {},
       invite_code_error: '',
@@ -61,6 +62,9 @@ class InviteCodeScreen extends React.Component {
     Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
     Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+
+    //Dont delete this code. This is a pure hack for android keyboard initial jump.
+    this.setState({inviteCode: "" , focus: true});
   }
 
   componentWillUnMount() {
@@ -168,6 +172,7 @@ class InviteCodeScreen extends React.Component {
               <FormInput
                 onChangeText={this.onChangeText}
                 value={this.state.inviteCode}
+                isFocus={this.state.focus}
                 fieldName="invite_code"
                 style={[Theme.TextInput.textInputStyle, { width: '100%', marginTop: 20, marginBottom: 10 }]}
                 placeholderTextColor={Colors.darkGray}

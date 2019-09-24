@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
-  Image,
   Keyboard,
   BackHandler,
-  Dimensions,
   ActivityIndicator,
   TouchableWithoutFeedback,
   Switch
@@ -14,7 +11,6 @@ import {
 import { connect } from 'react-redux';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import reduxGetter from '../../services/ReduxGetters';
-import CurrentUser from '../../models/CurrentUser';
 import deepGet from 'lodash/get';
 import inlineStyles from './Style';
 import ProfilePicture from '../ProfilePicture';
@@ -29,12 +25,14 @@ const bottomSpace = getBottomSpace([true]),
     extraPadding = 10,
     safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
 
+const thanksMsg = 'Thanks for supporting me!';     
+
 class SayThanks extends Component {
   constructor(props) {
     super(props);
     this.state = {
       closeDisabled: false,
-      thanksMessage: 'Thanks for supporting me!',
+      thanksMessage: '',
       server_errors: {},
       thanksError: '',
       posting: false,
@@ -45,6 +43,11 @@ class SayThanks extends Component {
     };
     this.tweeterHandle = '';
     this.receivedTweetHandle = false;
+  }
+
+  componentDidMount(){
+    //Dont delete this code. This is a pure hack for android keyboard initial jump.
+    this.setState({ thanksMessage: thanksMsg ,focus: true});
   }
 
   componentWillMount() {
