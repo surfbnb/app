@@ -103,9 +103,7 @@ class TransactionPepoButton extends PureComponent {
     //Cancel the flow.
     this.syncData(1000);
 
-    //@Shradha: Open the drawer.
-    console.log("@Shradha: Open the drawer.");
-    this.props.navigation.push('DeviceStatusPopup', { device });
+    this.props.navigation.push('AuthDeviceDrawer', { device });
   }
 
   _executeTransaction(user, btInDecimal) {

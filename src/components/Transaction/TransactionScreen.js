@@ -189,6 +189,10 @@ class TransactionScreen extends Component {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    if ( this.showAuthDeviceDrawer ) {
+      this.props.navigation.push('AuthDeviceDrawer', { device: this.ostDevice });
+    }
+    this.showAuthDeviceDrawer = false;
   }
 
   handleBackButtonClick = () => {
@@ -262,11 +266,13 @@ class TransactionScreen extends Component {
     //Cancel the flow.
     this.resetState();
 
+    //Set flag to open AuthDeviceDrawer.
+    this.showAuthDeviceDrawer = true;
+    this.ostDevice = device;
+
     //Dismiss self
     this.closeModal();
 
-    //@Shradha: Open the drawer.
-    console.log("@Shradha: Open the drawer.");
   }
 
   _executeTransaction(user, btInDecimal) {

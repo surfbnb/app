@@ -1,5 +1,5 @@
 
-export default DrawerElementStates=  {
+export default {
   "CREATED" : {
     "icon": "info",
     "header": "Please restart the App.",
@@ -7,9 +7,9 @@ export default DrawerElementStates=  {
     "cta": null
   },
   "REGISTERED": {
-    "icon": "pepo",
-    "header": "Please restart the App",
-    "desc": "",
+    "icon": "fingerprint",
+    "header": "Please authorize your device",
+    "desc": "Your device needs to be authorized to perform transactions",
     "cta": {
       "ctaText": "Recover Device",
       "ctaAction": "GO_TO_WALLET_SETTINGS"
@@ -22,7 +22,7 @@ export default DrawerElementStates=  {
     "cta": null
   },
   "REVOKING": {
-    "icon": "info",
+    "icon": "fingerprint",
     "header": "Your device is being revoked",
     "desc": "You can abort the recovery.",
     "cta": {
@@ -43,6 +43,3 @@ export default DrawerElementStates=  {
     "cta": null
   }
 }
-
-
-
