@@ -2,6 +2,12 @@ import deepGet from 'lodash/get';
 import CurrentUser from '../models/CurrentUser';
 import NavigationService from '../services/NavigationService';
 import InAppBrowser from '../services/InAppBrowser';
+import { LoginPopoverActions } from '../components/LoginPopover';
+import Utilities from '../services/Utilities';
+import AppConfig from '../constants/AppConfig';
+import { upsertInviteCode } from '../actions';
+import Store from '../store';
+
 
 class NavigateTo {
   constructor() {
@@ -41,8 +47,20 @@ class NavigateTo {
     }
   }
 
-  goToSignUp(){}
+  goToSignUp(inviteCode, payload ){
+    this._setInviteCode(inviteCode);
+    // if(!CurrentUser.getUserId() && Utilities.getLastChildRoutename(this.navigation.state) == 'HomeScreen'){
+    //   LoginPopoverActions.show();
+    // }
+  }
 
+  _setInviteCode(inviteCode){
+    if(inviteCode){
+        Utilities.saveItem(AppConfig.appInstallInviteCodeASKey, inviteCode);
+        Store.dispatch(upsertInviteCode(inviteCode));
+    }
+}
+  
   goToInvitedUsers = (payload)=> {
     this.__push('Invites', payload);
   }
