@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Linking } from 'react-native';
 import  deepGet from "lodash/get";
-import CurrentUser from '../models/CurrentUser';
 import {connect} from "react-redux";
+
+import CurrentUser from '../models/CurrentUser';
 import PepoApi from "./PepoApi";
 import {navigateTo} from "../helpers/navigateTo";
 
@@ -34,17 +35,14 @@ class UniversalLinksManager extends PureComponent {
     }
 
     _processURL(url) {
-        //TODO @preshita , get this reviwed from @Akshay
-        new PepoApi(`/fetch-goto?url=${url}`)
-            .get()
+        new PepoApi(`/fetch-goto`)
+            .get({url})
             .then((res) => {
                 const resultType = deepGet(res, "data.result_type"),
                         goTo = deepGet( res , `data.${resultType}`)
                 ;
                 navigateTo.setGoTo(goTo);
-                if(CurrentUser.isActiveUser()) {
-                    navigateTo.navigationDecision();
-                }
+                navigateTo.shouldNavigate();
             })
             .catch((error) => {});
     }

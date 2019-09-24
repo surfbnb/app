@@ -163,6 +163,7 @@ class WalletSettingController {
         this._updateOptionsData(optionIds.addSession, false, true);
         this._updateOptionsData(optionIds.viewMnemonics, false, true);
         this._updateOptionsData(optionIds.authorizeWithQR, false, true);
+        this._updateOptionsData(optionIds.resetPin, false, true);
 
         let biometricMessage = (this.isBiometricEnabled || false) ? 'Disable Biometric Preference' : 'Enable Biometric Preference';
         this._updateOptionsData(optionIds.updateBiometricPreference, false, true, biometricMessage);
@@ -176,11 +177,8 @@ class WalletSettingController {
 
       if (null == this.pendingRecovery) {
         this._updateOptionsData(optionIds.abortRecovery, false, false);
-        this._updateOptionsData(optionIds.resetPin, false, true);
       }else {
         this._updateOptionsData(optionIds.abortRecovery, false, true);
-        this._updateOptionsData(optionIds.resetPin, false, false);
-
       }
 
       if (deviceStatus == this.deviceStatusMap.revoked) {

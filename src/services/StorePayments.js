@@ -53,13 +53,8 @@ class StorePayments {
     onRequestPurchaseError(error , userId ){
         error = error || {};
         paymentEvents.emit(paymentEventsMap.paymentIAPError); 
-        Alert.alert(""+error.responseCode,  ""+error.debugMessage);
-        if(error && error.responseCode !== 2){
-            Toast.show({
-                text:  ostErrors.getUIErrorMessage("payment_failed_error"),
-                icon: 'error'
-            });
-        }   
+        //TODO error sync with @PM 
+        Alert.alert(""+error.responseCode,  ""+error.debugMessage);   
     }
 
     onRequestPurchaseSuccess( res , userId ){
@@ -67,7 +62,7 @@ class StorePayments {
         // Add to Async immediately 
         userPayments.addPendingPaymentForBEAcknowledge(params);
          //Sync with Backend
-        new BackendPaymentAcknowledge( params ); 
+        new BackendPaymentAcknowledge( params , false ); 
         //Convey others payment is processed irrespective of status 
         paymentEvents.emit(paymentEventsMap.paymentIAPSuccess);
     }
@@ -285,6 +280,7 @@ class NativeStoreAcknowledge{
     }
 
     iOsConsumtion( purchase ){
+        RNIap.clearTransactionIOS();
         RNIap.consumePurchaseAndroid(purchase.transactionId).then((res)=> {
             this.nativeStoreSyncSuccess();
         }).catch((error)=> {

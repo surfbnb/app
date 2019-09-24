@@ -39,7 +39,7 @@ class Pricer {
 
     OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
       if( !OstWalletSdkHelper.canDeviceMakeApiCall( device ) ) {
-        successCallback && successCallback(bal);
+        successCallback && successCallback(0);
         return;
       }
       OstJsonApi.getBalanceForUserId(

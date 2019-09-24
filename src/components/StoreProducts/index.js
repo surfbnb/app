@@ -45,6 +45,7 @@ class StoreProductsScreen extends PureComponent{
 
         this.productIds = [];
         this.products = [];
+        this.thresholdLimit = 50;
         this.isProductFetchError = false;
         this.maxThresholdReached = false;
         this.deviceUnAuthorised =  false;
@@ -109,11 +110,14 @@ class StoreProductsScreen extends PureComponent{
     }
 
     isMaxLimitReached( res ){
-        const limits =  deepGet(res,  `data.${dataContract.payments.purchaseThresholdReachedKey}`) || {} ; 
-        for (var key in limits) {
-            if (limits[key] == 1) {
-              return true;
-            }
+        const limitReached =  deepGet(res,  dataContract.payments.purchaseThresholdReachedKeyPath) ,
+              limit = deepGet(res,  dataContract.payments.purchaseThresholdValueKeyPath) 
+        ; 
+        if(limit){
+            this.thresholdLimit = limit ;
+        }
+        if( limitReached == 1 ){
+            return true;
         }
         return false ;
     }
@@ -214,7 +218,7 @@ class StoreProductsScreen extends PureComponent{
                <View style={{paddingHorizontal: 10, paddingVertical: 15, borderWidth: 1, borderColor: '#ff7499', flexDirection: "row" , alignItems: "center", borderRadius: 3}}>
                  <Image source={mailIcon} style={{ width: 45, height: 45}}></Image>
                  <Text style={{textAlign: "left" , marginLeft: 10}}>
-                   You have exceeded the Topup limit of $50
+                   You have exceeded the Topup limit of ${this.thresholdLimit}
                    Contact us on info@pepo.com to increase your topup limit.
                  </Text>
                </View>

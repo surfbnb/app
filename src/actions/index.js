@@ -189,3 +189,10 @@ export const upsertPushNotification = (data) => ({
 });
 
 export const clearPushNotification = () => ({ type: types.CLEAR_PUSH_NOTIFICATION });
+
+export const upsertInviteCode = (data) => ({
+  type: types.UPSERT_INVITE_CODE,
+  payload: {
+    invite_code: data
+  }
+});

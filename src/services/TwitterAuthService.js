@@ -1,6 +1,8 @@
 import deepGet from 'lodash/get';
 
 import Toast from '../theme/components/NotificationToast';
+import { upsertInviteCode } from '../actions';
+import Store from '../store';
 
 let LoginPopoverActions = null;
 import('../components/LoginPopover').then((pack) => {
@@ -54,6 +56,8 @@ class TwitterAuthService {
   }
 
   onSuccess(res) {
+    Utilities.removeItem(AppConfig.appInstallInviteCodeASKey);
+    Store.dispatch(upsertInviteCode(null));
     Pricer.getBalance();
     if (this.handleGoTo(res)) {
       return;

@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper';
 import {ostErrors} from "../../services/OstErrors";
 import InAppBrowser from '../../services/InAppBrowser';
+import {DrawerEmitter} from '../../helpers/Emitters';
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -77,13 +78,6 @@ class CustomDrawerContent extends Component {
       () => {
         new PepoApi('/auth/twitter-disconnect')
           .post()
-          .catch((error) => {
-            Toast.show({
-              text: 'Twitter Disconnect failed',
-              icon: 'error'
-            });
-            this.setState({ disableButtons: false });
-          })
           .then(async (res) => {
             if (res && res.success) {
               this.CurrentUserLogout();
@@ -94,13 +88,20 @@ class CustomDrawerContent extends Component {
               });
               this.setState({ disableButtons: false });
             }
+          })
+          .catch((error) => {
+            Toast.show({
+              text: 'Twitter Disconnect failed',
+              icon: 'error'
+            });
+            this.setState({ disableButtons: false });
           });
       }
     );
   };
 
   CurrentUserLogout = () => {
-    //this.props.navigation.closeDrawer();
+    DrawerEmitter.emit('closeDrawer');
     let params = {
       device_id: DeviceInfo.getUniqueID()
     };
@@ -166,15 +167,6 @@ class CustomDrawerContent extends Component {
     return (
       <SafeAreaView forceInset={{ top: 'always' }} style={[styles.container, { justifyContent: 'space-between' }]}>
         <View>
-          <View style={styles.header}>
-            <TouchableOpacity
-              onPress={this.props.navigation.closeDrawer}
-              style={{ height: 30, width: 30, alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Image style={{ width: 10, height: 18 }} source={BackArrow} />
-            </TouchableOpacity>
-            <Text style={styles.headerText}>{this.userName}</Text>
-          </View>
           <TouchableOpacity
             onPress={multipleClickHandler(() => {
               this.referAndEarn();
@@ -188,7 +180,7 @@ class CustomDrawerContent extends Component {
           </TouchableOpacity>
           {this.renderWalletSetting()}
 
-          <TouchableOpacity   onPress={multipleClickHandler(() => {
+          <TouchableOpacity onPress={multipleClickHandler(() => {
               this.onGetSupport();
             })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
@@ -206,14 +198,14 @@ class CustomDrawerContent extends Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity   onPress={multipleClickHandler(() => {
-              this.CurrentUserLogout();
-            })} disabled={this.state.disableButtons}>
-            <View style={styles.itemParent}>
-              <Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={loggedOutIcon} />
-              <Text style={styles.item}>Log out</Text>
-            </View>
-          </TouchableOpacity>
+          {/*<TouchableOpacity   onPress={multipleClickHandler(() => {*/}
+              {/*this.CurrentUserLogout();*/}
+            {/*})} disabled={this.state.disableButtons}>*/}
+            {/*<View style={styles.itemParent}>*/}
+              {/*<Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={loggedOutIcon} />*/}
+              {/*<Text style={styles.item}>Log out</Text>*/}
+            {/*</View>*/}
+          {/*</TouchableOpacity>*/}
         </View>
         <View style={{ alignItems: 'center', paddingVertical: 12 }}>
           <Text style={{ fontSize: 12 }}>
@@ -247,7 +239,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderLeftWidth: 1,
-    borderLeftColor: Colors.whisper
+    borderLeftColor: Colors.whisper,
+    backgroundColor: Colors.white,
+    paddingTop: 10
   },
   header: {
     paddingVertical: 7,

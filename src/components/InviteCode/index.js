@@ -3,6 +3,7 @@ import { View, Text, TouchableWithoutFeedback, BackHandler, Keyboard } from 'rea
 import TouchableButton from '../../theme/components/TouchableButton';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import deepGet from 'lodash/get';
+import {connect} from 'react-redux';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
@@ -13,6 +14,13 @@ import CurrentUser from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
 import Colors from '../../theme/styles/Colors';
 import { navigateTo } from '../../helpers/navigateTo';
+import Utilities from '../../services/Utilities';
+import AppConfig from '../../constants/AppConfig';
+import { upsertInviteCode } from '../../actions';
+import Store from '../../store';
+
+
+const mapStateToProps = ({ invite_code }) => ({ invite_code });
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -22,7 +30,7 @@ class InviteCodeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inviteCode: null,
+      inviteCode: this.props.invite_code || null,
       isSubmitting: false,
       focus: false,
       general_error: null,
@@ -78,6 +86,14 @@ class InviteCodeScreen extends React.Component {
     this.onChangeText = () => {};
   }
 
+  componentDidUpdate(prevProps){
+    if(this.props.invite_code !== prevProps.invite_code){
+      this.setState({
+        inviteCode: this.props.invite_code
+      })
+    }
+  }
+
   handleBackButtonClick = () => {
     if (this.isSubmitting) {
       return true;
@@ -114,6 +130,7 @@ class InviteCodeScreen extends React.Component {
   };
 
   onSuccess(res) {
+   this.clearInviteCode();
     if (this.handleGoTo(res)) {
       return;
     }
@@ -145,9 +162,15 @@ class InviteCodeScreen extends React.Component {
   }
 
   closeModal = () => {
+    // this.clearInviteCode();
     if (!this.state.isSubmitting) {
       this.props.navigation.goBack();
     }
+  };
+
+  clearInviteCode(){
+    Utilities.removeItem(AppConfig.appInstallInviteCodeASKey);
+    Store.dispatch(upsertInviteCode(null));
   };
 
   onChangeText = (inviteCode) => {
@@ -167,7 +190,7 @@ class InviteCodeScreen extends React.Component {
                 Looks like your account is not whitelisted
               </Text>
               <Text style={[inlineStyles.desc, { fontFamily: 'AvenirNext-Regular' }]}>
-                To activite your account you can either join via a invite link enter a referal code below.
+                To activite your account you can either join via a invite link or enter a referal code below.
               </Text>
               <FormInput
                 onChangeText={this.onChangeText}
@@ -206,5 +229,5 @@ class InviteCodeScreen extends React.Component {
     );
   }
 }
+export default connect(mapStateToProps)( InviteCodeScreen );
 
-export default InviteCodeScreen;
