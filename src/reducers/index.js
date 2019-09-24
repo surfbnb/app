@@ -45,7 +45,8 @@ export const {
   upsertVideoDescriptionEntities,
   upsertNotificationUnread,
   upsertPushNotification,
-  clearPushNotification
+  clearPushNotification,
+  upsertInviteCode
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -76,7 +77,8 @@ const defaultState = {
   push_notification: {},
   balance: null,
   isPurchase: false,
-  notification_unread: {}
+  notification_unread: {},
+  invite_code: null
 };
 
 const logoutDefault = {
@@ -101,7 +103,8 @@ const logoutDefault = {
   profile_picture: {},
   push_notification: {},
   balance: null,
-  notification_unread: {}
+  notification_unread: {},
+  invite_code: null
 };
 
 export const reducer = handleActions(
@@ -264,6 +267,10 @@ export const reducer = handleActions(
     [upsertNotificationUnread]: (state, action) => ({
       ...state,
       notification_unread: assignIn({}, state.notification_unread, action.payload.notification_unread)
+    }),
+    [upsertInviteCode]: (state, action) => ({
+      ...state,
+      invite_code: action.payload.invite_code
     })
   },
   defaultState

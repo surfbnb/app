@@ -33,6 +33,12 @@ class UserInfo extends React.PureComponent {
     super(props);
   }
 
+  toBt( val ){
+    const priceOracle =  pricer.getPriceOracle() ;
+    val = priceOracle.fromDecimal( val )  ;
+    return pricer.toDisplayAmount( priceOracle.toBt( val ) );
+  }
+
   btToFiat(btAmount) {
     const priceOracle = pricer.getPriceOracle();
     if (!priceOracle) return 0;
@@ -114,9 +120,9 @@ class UserInfo extends React.PureComponent {
           {this.dividerLine()}
           <View style={[inlineStyle.numericInnerWrapper]} style={[inlineStyle.numericInnerWrapper]}>
             <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>
-              ${Pricer.toDisplayAmount(this.btToFiat(this.props.btAmount))}
+              {Pricer.toDisplayAmount(this.toBt(this.props.btAmount))}
             </Text>
-            <Text style={inlineStyle.numericInfoText}>Raised</Text>
+            <Text style={inlineStyle.numericInfoText}>Received</Text>
           </View>
         </View>
         {!!this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>}

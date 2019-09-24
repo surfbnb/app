@@ -53,7 +53,6 @@ import ReferAndEarn from './src/components/ReferAndEarn';
 import Invites from './src/components/Invites';
 import InviteCodeScreen from './src/components/InviteCode';
 import AddEmailScreen from './src/components/AddEmail';
-import InviteCodeWorker from './src/services/InviteCodeWorker';
 import EmailScreen from './src/components/Email';
 import UniversalLinksManager from './src/services/UniversalLinksManager';
 import WalletDetails from './src/components/WalletSetting/WalletDetails';
@@ -319,7 +318,6 @@ const RootNavigationContainer = () => (
     <SocketManager />
     <PaymentWorker />
     <PushNotificationManager />
-    <InviteCodeWorker />
     <UniversalLinksManager />
   </Root>
 );

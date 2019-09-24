@@ -77,13 +77,6 @@ class CustomDrawerContent extends Component {
       () => {
         new PepoApi('/auth/twitter-disconnect')
           .post()
-          .catch((error) => {
-            Toast.show({
-              text: 'Twitter Disconnect failed',
-              icon: 'error'
-            });
-            this.setState({ disableButtons: false });
-          })
           .then(async (res) => {
             if (res && res.success) {
               this.CurrentUserLogout();
@@ -94,6 +87,13 @@ class CustomDrawerContent extends Component {
               });
               this.setState({ disableButtons: false });
             }
+          })
+          .catch((error) => {
+            Toast.show({
+              text: 'Twitter Disconnect failed',
+              icon: 'error'
+            });
+            this.setState({ disableButtons: false });
           });
       }
     );
@@ -206,14 +206,14 @@ class CustomDrawerContent extends Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity   onPress={multipleClickHandler(() => {
-              this.CurrentUserLogout();
-            })} disabled={this.state.disableButtons}>
-            <View style={styles.itemParent}>
-              <Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={loggedOutIcon} />
-              <Text style={styles.item}>Log out</Text>
-            </View>
-          </TouchableOpacity>
+          {/*<TouchableOpacity   onPress={multipleClickHandler(() => {*/}
+              {/*this.CurrentUserLogout();*/}
+            {/*})} disabled={this.state.disableButtons}>*/}
+            {/*<View style={styles.itemParent}>*/}
+              {/*<Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={loggedOutIcon} />*/}
+              {/*<Text style={styles.item}>Log out</Text>*/}
+            {/*</View>*/}
+          {/*</TouchableOpacity>*/}
         </View>
         <View style={{ alignItems: 'center', paddingVertical: 12 }}>
           <Text style={{ fontSize: 12 }}>
