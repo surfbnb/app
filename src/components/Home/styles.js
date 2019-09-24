@@ -120,15 +120,17 @@ let stylesMap = {
       flex:1,
       justifyContent : 'center' ,
       alignItems : 'center',
-      marginVertical : 20
+      marginTop : 20,
+      paddingBottom : 25
   },
     imageDimensionSkipFont :{
       height : 50,
       width : 50,
+      marginBottom : 15,
     },
   headerText : {
     fontSize : 18,
-    paddingVertical: 15,
+    marginBottom : 11,
     fontFamily: 'AvenirNext-Regular',
     color : Colors.dark
   },
