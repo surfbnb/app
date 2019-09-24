@@ -68,14 +68,11 @@ class PushNotificationManager extends PureComponent {
     let gotoObject = JSON.parse(notificationData.goto);
     if (Object.keys(gotoObject).length < 0) return;
     navigateTo.setGoTo(gotoObject);
+    navigateTo.shouldNavigate();
     if (CurrentUser.isActiveUser()) {
-      navigateTo.goToNavigationDecision(true);
-      //TODO confrim with @mayur why this code is needed
       gotoObject.pn == 'nc' && this.refreshActivity('NotificationScreen');
     }
   }
-
-
 
   refreshActivity(screenName){
       NavigationEmitter.emit('onRefresh', { screenName });

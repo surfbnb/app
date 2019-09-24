@@ -42,7 +42,7 @@ class UniversalLinksManager extends PureComponent {
                         goTo = deepGet( res , `data.${resultType}`)
                 ;
                 navigateTo.setGoTo(goTo);
-                navigateTo.navigationDecision();
+                navigateTo.shouldNavigate();
             })
             .catch((error) => {});
     }
