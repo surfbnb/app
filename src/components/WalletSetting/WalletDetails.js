@@ -52,12 +52,12 @@ class WalletDetails extends PureComponent {
     this.ostUser = null;
     this.ostDevice = null;
     this.token = null;
-    this.cells =
+    this.cells = null;
     this.onRefresh();
   }
 
 
-  onRefresh() {
+  onRefresh = () => {
     if( this.state.refreshing ) {
       return;
     }
@@ -240,6 +240,7 @@ class WalletDetails extends PureComponent {
     return (
       <View style= {inlineStyle.list}>
         <FlatList
+          onRefresh={this.onRefresh}
           data={this.state.list}
           refreshing={this.state.refreshing}
           renderItem={this._renderItem}
