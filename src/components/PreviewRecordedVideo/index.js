@@ -122,8 +122,8 @@ class PreviewRecordedVideo extends Component {
           style={{
             flex:1
           }}
-          posterResizeMode={'stretch'}
-          resizeMode={'stretch'}
+          posterResizeMode={'cover'}
+          resizeMode={'cover'}
           onLoad={this.handleLoad}
           onProgress={this.handleProgress}
           onEnd={this.handleEnd}

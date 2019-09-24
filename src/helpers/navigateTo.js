@@ -62,7 +62,7 @@ class NavigateTo {
   goToSupporters = (profileId, payload) => {
     payload = payload || {};
     payload['userId'] = profileId;
-    this.__push('SupporterListScreen', payload);
+    this.__push('SupportersListScreen', payload);
   };
 
   goToProfilePage = (id, payload) => {
