@@ -9,9 +9,9 @@ import fingerprintIcon from '../../assets/fingerprint.png';
 import infoIcon from '../../assets/toast_error.png';
 import Theme from "../../theme/styles";
 import modalCross from '../../assets/modal-cross-icon.png';
+import LinearGradient from 'react-native-linear-gradient';
 
 
-// null : treat it as created state
 
 
 
@@ -107,12 +107,20 @@ export default class AuthDeviceDrawer extends PureComponent {
     }
 
     return(
+      <LinearGradient
+        colors={['#ff7499', '#ff7499', '#ff5566']}
+        locations={[0, 0.35, 1]}
+        style={{ borderRadius: 3, marginHorizontal: 20, borderWidth: 0, width: '100%', marginTop: 10 }}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+      >
       <TouchableButton
-        TouchableStyles={[Theme.Button.btnPink,{ minWidth: '100%',borderColor: 'none', borderWidth: 0}]}
+        TouchableStyles={[{ minWidth: '100%',borderColor: 'none', borderWidth: 0}]}
         TextStyles={[Theme.Button.btnPinkText, { fontSize: 15 }]}
         text={config.cta.ctaText}
         onPress={this.onActionBtnPressed}
       />
+      </LinearGradient>
     );
   }
 
