@@ -60,7 +60,7 @@ class BottomStatus extends PureComponent {
               BrowserEmitter.emit('browserOpened');
               setTimeout(() => {
                 InAppBrowser.openBrowser(this.props.link);
-              }, 0);
+              }, 100);
             })}
             pointerEvents={'auto'}
           >

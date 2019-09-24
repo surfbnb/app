@@ -25,6 +25,8 @@ const ReviewStatusBanner = ( props ) => {
         </View>
       </View>
       );
+  }else{
+    return <React.Fragment/>
   }
 
 };
