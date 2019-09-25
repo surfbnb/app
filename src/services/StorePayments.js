@@ -37,7 +37,8 @@ class StorePayments {
         try {
             RNIap.clearTransactionIOS();
             RNIap.initConnection().then((res)=> {
-                RNIap.requestPurchase(skuId);
+                RNIap.requestPurchase(skuId)
+                .catch((err)=> {});
             }).catch((error)=> {
                 this.onInitRequestPurchaseError(error); 
             });
