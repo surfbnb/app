@@ -123,6 +123,10 @@ let devicesWithNotch =  [
     "brand": "HONOR",
     "model": "COR-AL00"
   },
+  {
+    "brand": "OnePlus",
+    "model": "ONEPLUS A6010"
+  }
 ];
 
 class NotchHelper {
