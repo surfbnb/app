@@ -8,7 +8,7 @@ import UserInfo from '../../components/CommonComponents/UserInfo';
 import CurrentUser from '../../models/CurrentUser';
 import UserProfileFlatList from '../../components/CommonComponents/UserProfileFlatList';
 import multipleClickHandler from '../../services/MultipleClickHandler';
-import tx_icon from '../../assets/tx_icon.png';
+import p_tx_img from '../../assets/p_tx_icon.png';
 import user_not_exist from '../../assets/user-not-exist.png';
 
 
@@ -97,7 +97,7 @@ export default class UsersProfile extends Component {
             onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
             style={{ position: 'absolute', right: 20, bottom: 30 }}
           >
-            <Image style={{ height: 57, width: 57 }} source={tx_icon} />
+            <Image style={{ height: 57, width: 57 }} source={p_tx_img} />
           </TouchableOpacity>
         </React.Fragment>
       );

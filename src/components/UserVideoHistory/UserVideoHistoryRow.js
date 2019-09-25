@@ -69,14 +69,14 @@ class UserVideoHistoryRow extends PureComponent {
                     userId={this.props.userId}
                     videoId={this.props.videoId}
                   />
-                  <TouchableOpacity
-                    pointerEvents={'auto'}
-                    style={inlineStyles.txElem}
-                    onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
-                  >
-                    <Image style={{ height: 57, width: 57 }} source={tx_icon} />
-                  </TouchableOpacity>
-                  
+                  {/*<TouchableOpacity*/}
+                    {/*pointerEvents={'auto'}*/}
+                    {/*style={inlineStyles.txElem}*/}
+                    {/*onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}*/}
+                  {/*>*/}
+                    {/*<Image style={{ height: 57, width: 57 }} source={tx_icon} />*/}
+                  {/*</TouchableOpacity>*/}
+
                   <TouchableOpacity
                     pointerEvents={'auto'}
                     style={inlineStyles.txElem}
