@@ -459,7 +459,7 @@ class ProfileEdit extends React.PureComponent {
         </View>
 
         <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
-        <TouchableWithoutFeedback onPressOut={multipleClickHandler(() => this.onBioFocus())}>
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onBioFocus())}>
         <FormInput
           editable={false}
           fieldName="bio"
