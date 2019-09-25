@@ -14,6 +14,7 @@ import ShareVideo from '../../services/shareVideo';
 import inlineStyles from './styles';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import utilities from '../../services/Utilities';
+import reduxGetters from '../../services/ReduxGetters';
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
@@ -28,7 +29,7 @@ class UserVideoHistoryRow extends PureComponent {
   };
 
   navigateToTransactionScreen = (e) => {
-    if (this.userId == CurrentUser.getUserId()) return;
+    if (this.isCurrentUser()) return;
     if (utilities.checkActiveUser() && CurrentUser.isUserActivated(true)) {
       this.props.navigation.push('TransactionScreen', {
         toUserId: this.props.userId,
@@ -75,25 +76,41 @@ class UserVideoHistoryRow extends PureComponent {
                   >
                     <Image style={{ height: 57, width: 57 }} source={tx_icon} />
                   </TouchableOpacity>
-
-                  <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem} onPress={multipleClickHandler(() => this.shareVideo())}>
+                  
+                  <TouchableOpacity
+                    pointerEvents={'auto'}
+                    style={inlineStyles.txElem}
+                    onPress={multipleClickHandler(() => this.shareVideo())}
+                  >
                     <Image style={{ height: 48, width: 48 }} source={share_icon} />
                   </TouchableOpacity>
                 </View>
               )}
 
-              {this.isCurrentUser() && (
+              {this.isCurrentUser() && reduxGetters.isCreatorApproved(this.props.userId) === 1 && (
                 <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                  <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem} onPress={multipleClickHandler(() => this.shareVideo())}>
+                  <TouchableOpacity
+                    pointerEvents={'auto'}
+                    style={inlineStyles.txElem}
+                    onPress={multipleClickHandler(() => this.shareVideo())}
+                  >
                     <Image style={{ height: 48, width: 48 }} source={share_icon} />
                   </TouchableOpacity>
                 </View>
               )}
 
-              <VideoAmountStat videoId={this.props.videoId} userId={this.props.userId} onWrapperClick={this.props.onWrapperClick} />
+              <VideoAmountStat
+                videoId={this.props.videoId}
+                userId={this.props.userId}
+                onWrapperClick={this.props.onWrapperClick}
+              />
             </View>
 
-            <BottomStatus userId={this.props.userId} videoId={this.props.videoId} onWrapperClick={this.props.onWrapperClick} />
+            <BottomStatus
+              userId={this.props.userId}
+              videoId={this.props.videoId}
+              onWrapperClick={this.props.onWrapperClick}
+            />
           </View>
         )}
       </View>
