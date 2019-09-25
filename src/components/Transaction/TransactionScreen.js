@@ -148,15 +148,15 @@ class TransactionScreen extends Component {
   getDecimalGroupSeperators(){
     let locale;
     if (Platform.OS === 'ios') {
-      locale = NativeModules.SettingsManager.settings.AppleLocale // "fr_FR"
+      locale = NativeModules.SettingsManager.settings.AppleLocale; // "fr_FR"
     }else {
-      locale = NativeModules.I18nManager.localeIdentifier // "fr_FR"
+      locale = NativeModules.I18nManager.localeIdentifier; // "fr_FR"
     }
 
     if (!locale) {
       locale = 'en-US';
     }else {
-      locale = locale.replace('_','-')
+      locale = locale.replace('_','-'); // toLocaleString requires '-' separated
     }
 
     let num = 1000.1,
@@ -179,14 +179,13 @@ class TransactionScreen extends Component {
     let sperators = this.getDecimalGroupSeperators()
       , groupSeperator = sperators[0]
       , decimalSeperator = sperators[1]
-      , regex = new RegExp([decimalSeperator],'g')
-      , decimalCount = (val.match(regex) || []).length
     ;
 
     val = val.replace(groupSeperator, '');
 
-    if (decimalCount > 1) {
-      let splitArray = val.split(decimalSeperator);
+    let splitArray = val.split(decimalSeperator);
+
+    if (splitArray.length > 1) {
       let firstVal = splitArray[0];
       splitArray.shift();
       let decimalVal = splitArray.join('');
