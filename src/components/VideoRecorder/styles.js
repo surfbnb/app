@@ -32,15 +32,18 @@ let stylesMap = {
     height: 65,
     padding: 15,
     paddingHorizontal: 20,
-    alignSelf: 'center'
+    marginLeft: -32.5
+    //alignSelf: 'center'
     // margin: 20
   },
   flipIconSkipFont: {
-    width: 65,
-    height: 65,
+    width: 35,
+    height: 40,
     padding: 15,
-    paddingHorizontal: 20,
-    alignSelf: 'center'
+    //paddingHorizontal: 20,
+    marginRight: 12,
+    marginTop: 13
+    //alignSelf: 'center'
   },
   progressBar: {
     borderRadius: 3.5,
@@ -101,6 +104,13 @@ let stylesMap = {
     fontWeight: '600',
     fontSize: 24,
     fontFamily: 'AvenirNext-Medium'
+  },
+
+  bottomWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'flex-end',
+    width: Dimensions.get('window').width/2,
   }
 };
 

@@ -75,11 +75,11 @@ class TransactionPepoButton extends PureComponent {
   }
 
   _ensureDeivceAndSessionCallback(btAmount, errorMessage, success) {
-    const user = CurrentUser.getUser();
+
     const btInDecimal = pricer.getToDecimal(btAmount);
     VideoPlayPauseEmitter.emit('play');
     if ( success ) {
-      return this._executeTransaction(user, btInDecimal);
+      return this._executeTransaction(btInDecimal);
     }
 
     if ( errorMessage ) {
@@ -106,10 +106,10 @@ class TransactionPepoButton extends PureComponent {
     this.props.navigation.push('AuthDeviceDrawer', { device });
   }
 
-  _executeTransaction(user, btInDecimal) {
+  _executeTransaction(btInDecimal) {
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
-      user.ost_user_id,
+      CurrentUser.getOstUserId(),
       [this.toUser.ost_token_holder_address],
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
