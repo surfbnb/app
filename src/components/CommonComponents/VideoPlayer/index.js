@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {View,Image,TouchableOpacity, Text} from 'react-native';
 import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
-import { withNavigation } from 'react-navigation';
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
 import inlineStyles from './styles'
@@ -85,6 +84,9 @@ class VideoPlayer extends Component {
     render() {
         if(this.state.isDeleted){
          return <View style={inlineStyles.container}>
+                  <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
+                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
+                  </TouchableOpacity>
                   <Image style={inlineStyles.imgSize} source={video_not_available} />
                   <Text style={inlineStyles.desc}>Looks like the Video you were looking for isn’t available and might have been deleted by the creator!</Text>
                 </View>
@@ -103,4 +105,4 @@ class VideoPlayer extends Component {
     }
 }
 
-export default withNavigation( VideoPlayer );
+export default  VideoPlayer ;

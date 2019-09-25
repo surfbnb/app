@@ -228,7 +228,7 @@ class VideoRecorder extends Component {
         <TouchableOpacity onPress={onPressCallback}>
           <Image style={styles.captureButtonSkipFont} source={source} />
         </TouchableOpacity>
-          <View style={{width: 90, marginLeft:-45, height:10}}>
+          <View style={{width: 90, marginLeft:-45, height:20}}>
             { !this.state.isRecording && <Text style={{color: 'white', fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Tap to record</Text>}
         </View>
       </View>

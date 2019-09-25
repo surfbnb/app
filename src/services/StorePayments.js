@@ -2,8 +2,6 @@ import {Alert , Platform} from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 import RNIap from 'react-native-iap';
 import deepGet from "lodash/get";
-
-import Toast from '../theme/components/NotificationToast';
 import  { paymentEvents,  paymentEventsMap } from "../helpers/PaymentEvents";
 import PepoApi from "../services/PepoApi";
 import userPayments from "../models/UserPayments";
@@ -37,7 +35,8 @@ class StorePayments {
         try {
             RNIap.clearTransactionIOS();
             RNIap.initConnection().then((res)=> {
-                RNIap.requestPurchase(skuId);
+                RNIap.requestPurchase(skuId)
+                .catch((err)=> {});
             }).catch((error)=> {
                 this.onInitRequestPurchaseError(error); 
             });
@@ -176,11 +175,11 @@ class BackendPaymentAcknowledge {
             PollCurrentUserPendingPayments.initBalancePoll(this.payment.user_id , this.isBackgroundSync);
         } else {
             //Notify user that he needs to get in touch with Apple of Google store
-            if( status = dataContract.payments.statusCodeBEAcknowledgeMap.failed ){
+            if( status == dataContract.payments.statusCodeBEAcknowledgeMap.failed ){
                 Alert.alert("", ostErrors.getUIErrorMessage("payment_invalid") );
-            }else if(status = dataContract.payments.statusCodeBEAcknowledgeMap.processing ) {
+            }else if(status == dataContract.payments.statusCodeBEAcknowledgeMap.processing ) {
                 Alert.alert("", ostErrors.getUIErrorMessage("payment_pending") );
-            }else if(status = dataContract.payments.statusCodeBEAcknowledgeMap.cancelled ) {
+            }else if(status == dataContract.payments.statusCodeBEAcknowledgeMap.cancelled ) {
                 Alert.alert("", ostErrors.getUIErrorMessage("payment_cancelled") );
             }
         }   

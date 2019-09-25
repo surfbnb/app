@@ -48,20 +48,22 @@ let stylesMap = {
     marginBottom: 20
   },
   bottomContainer: {
-    width: '100%',
+    width: width,
     position: 'absolute',
     bottom: 0
   },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderTopLeftRadius: 20,
-    maxHeight: height * 0.20,
-    minHeight: height * 0.05
+    minHeight: height * 0.05,
+    paddingHorizontal: 12
   },
   handle: {
     fontSize: 15,
+    paddingBottom: 3,
     color: Colors.white,
-    fontFamily: 'AvenirNext-DemiBold'
+    fontFamily: 'AvenirNext-DemiBold',
+    fontWeight: '700'
   },
   bottomBgTxt: {
     color: Colors.white

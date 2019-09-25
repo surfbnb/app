@@ -45,7 +45,7 @@ class StoreProductsScreen extends PureComponent{
 
         this.productIds = [];
         this.products = [];
-        this.thresholdLimit = 50;
+        this.thresholdLimit;
         this.isProductFetchError = false;
         this.maxThresholdReached = false;
         this.deviceUnAuthorised =  false;
@@ -236,12 +236,13 @@ class StoreProductsScreen extends PureComponent{
 
     getProductsMarkUp = () => {
         return (
-            <View style={inlineStyles.poductListWrapper}>
+            <View style={[inlineStyles.poductListWrapper , {height: Dimensions.get('window').height * 0.65}]}>
                 <View style={inlineStyles.headerWrapper}>
                     <Text style={inlineStyles.modalHeader}>Top-Up Pepo Coins</Text>
                 </View>
                 <ScrollView>
                   {this.products.map(( product) => (
+                    <TouchableWithoutFeedback>
                       <View key={ product.productId } style={inlineStyles.poductListRow}>
                           <View style={{flexDirection: "row", alignItems: 'center'}}>
                               <Image source={pepoIcon} style={{ width: 19, height: 19 }}/>
@@ -251,10 +252,11 @@ class StoreProductsScreen extends PureComponent{
                                   disabled={this.state.isPurchasing}
                                   TouchableStyles={[Theme.Button.btnPink , inlineStyles.pepoBtnStyle]}
                                   TextStyles={[Theme.Button.btnPinkText]}
-                                  text={this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}
+                                  text={this.state.isPurchasing && this.productId == product.productId ? "..." :  product.localizedPrice || product.price }
                                   onPress={() => {this.onRequestPurchase(product.productId) }}
                           />
                       </View>
+                    </TouchableWithoutFeedback>
                   ))}
                 </ScrollView>
             </View>    
@@ -292,7 +294,7 @@ class StoreProductsScreen extends PureComponent{
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
                 <View style={{ flex: 1, backgroundColor: 'transparent' }}>
                   <TouchableWithoutFeedback>
-                    <View style={[inlineStyles.container, {height:  Dimensions.get('window').height / 2 } ]}>
+                    <View style={[inlineStyles.container]}>
                         {/*<View style={inlineStyles.dragger}></View>*/}
                         {this.state.loadingProducts && this.getLoadingMarkup()}
                         {!this.state.loadingProducts && this.getMarkUp()}

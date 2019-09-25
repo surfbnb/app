@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Linking, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import { withNavigation } from 'react-navigation';
@@ -13,7 +13,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import Pricer from '../../../services/Pricer';
 import InAppBrowser from '../../../services/InAppBrowser';
-import Utilities from '../../../services/Utilities';
 
 const mapStateToProps = (state, ownProps) => {
   return {

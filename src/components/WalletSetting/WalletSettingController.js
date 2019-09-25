@@ -130,7 +130,6 @@ class WalletSettingController {
     ;
 
     this.ostDevice = data;
-    this.hasFetchedPendingRecoveryData = true;
 
     this._fetchPendingRecovery();
   }
@@ -139,13 +138,12 @@ class WalletSettingController {
     OstJsonApi.getPendingRecoveryForUserId(this.userId, ( data ) => {
       this._onPendingRecoveryFetch(data)
     }, ( error ) => {
-      this._onPendingRecoveryFetch(null)
+      this._onPendingRecoveryFetch()
     })
   }
 
   _onPendingRecoveryFetch(pendingRecovery) {
     this.pendingRecovery = pendingRecovery;
-    this.hasFetchedPendingRecoveryData = true;
 
     this._onDataFetched()
   }
@@ -157,7 +155,9 @@ class WalletSettingController {
     this._resetOptions();
 
     if (userStatus == this.userStatusMap.activated) {
-      this._updateOptionsData(optionIds.walletDetails, false, true);
+      if (deviceStatus) {
+        this._updateOptionsData(optionIds.walletDetails, false, true);
+      }
 
       if (deviceStatus == this.deviceStatusMap.authorized) {
         this._updateOptionsData(optionIds.addSession, false, true);
@@ -175,10 +175,10 @@ class WalletSettingController {
         this._updateOptionsData(optionIds.showQR, false, true);
       }
 
-      if (null == this.pendingRecovery) {
-        this._updateOptionsData(optionIds.abortRecovery, false, false);
-      }else {
+      if (this.pendingRecovery) {
         this._updateOptionsData(optionIds.abortRecovery, false, true);
+      }else {
+        this._updateOptionsData(optionIds.abortRecovery, false, false);
       }
 
       if (deviceStatus == this.deviceStatusMap.revoked) {

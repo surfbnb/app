@@ -65,7 +65,7 @@ class WalletDetails extends PureComponent {
       refreshing: true
     });
     this._fetchToken();
-  }
+  };
 
   _fetchToken() {
     OstWalletSdk.getToken(TOKEN_ID, (token) => {
@@ -114,10 +114,18 @@ class WalletDetails extends PureComponent {
   }
 
   _onDeviceFetch(deviceApiResponse) {
-    let resultType = deviceApiResponse["result_type"];
-    let device = deviceApiResponse[ resultType ];
-    this.ostDevice = device;
-    this._buildList();
+    if (deviceApiResponse) {
+      let resultType = deviceApiResponse["result_type"];
+      let device = deviceApiResponse[ resultType ];
+      this.ostDevice = device;
+      this._buildList();
+
+    }else {
+      LoadingModal.showFailureAlert("Something went wrong", "", "OK", ()=> {
+        // Close this view.
+        this.props.navigation.goBack(null);
+      });
+    }
   }
 
   _buildList() {
