@@ -6,28 +6,31 @@ import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 import { CUSTOM_TAB_Height } from '../../theme/constants';
 import  NotchHelper from "../../helpers/NotchHelper";
 
+const {width, height} = Dimensions.get('window');
+const statusBarHeight = StatusBar.currentHeight;
+
 let RNDeviceInfo = NativeModules.RNDeviceInfo;
 let modalDeviceName = RNDeviceInfo.model === "Redmi Note 7 Pro" && RNDeviceInfo.brand === "xiaomi";
 let btmSpace = modalDeviceName ? 5 : 0;
 
 let stylesMap = {
   fullScreen: {
-    width: Dimensions.get('window').width,
+    width: width,
     ...ifIphoneX(
       {
-        height: Dimensions.get('window').height - CUSTOM_TAB_Height - getBottomSpace([true])
+        height: height - CUSTOM_TAB_Height - getBottomSpace([true])
       },
       {
         height:
           NotchHelper.hasNotch()
-            ? Dimensions.get('window').height + StatusBar.currentHeight - CUSTOM_TAB_Height - btmSpace
-            : Dimensions.get('window').height - CUSTOM_TAB_Height
+            ? height + statusBarHeight - CUSTOM_TAB_Height - btmSpace
+            : height - CUSTOM_TAB_Height
       }
     )
   },
   fullHeightSkipFont: {
-    width: '100%',
-    height: '100%'
+    width: width,
+    height: height
   },
   touchablesBtns: {
     alignSelf: 'flex-end',
@@ -52,8 +55,8 @@ let stylesMap = {
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderTopLeftRadius: 20,
-    maxHeight: Dimensions.get('window').height * 0.20,
-    minHeight: Dimensions.get('window').height * 0.05
+    maxHeight: height * 0.20,
+    minHeight: height * 0.05
   },
   handle: {
     fontSize: 15,
@@ -86,8 +89,8 @@ let stylesMap = {
     position: 'absolute',
     height: 25,
     width: 25,
-    top: Dimensions.get('window').height * 0.5 - 12,
-    left: Dimensions.get('window').width * 0.5 - 12
+    top: height * 0.5 - 12,
+    left: width * 0.5 - 12
   },
   historyBackSkipFont:{
     ...ifIphoneX({
