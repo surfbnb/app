@@ -118,6 +118,7 @@ class WalletBalanceFlyer extends Component {
       inputRange: [0, 50, 75],
       outputRange: [0, 0.1, 1]
     });
+    if(this.props.balance == null) return null;
     return (
       <View style={[styles.topBg]}>
         {this.isRenderFlyer() && (
