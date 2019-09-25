@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { TextInput, Image } from 'react-native';
+import { TextInput } from 'react-native';
 
 import styles from './styles';
-import AppConfig from '../../constants/AppConfig';
 
 class VideoLink extends Component {
   constructor(props) {
@@ -26,7 +25,6 @@ class VideoLink extends Component {
   render() {
     return (
       <React.Fragment>
-        <Image style={{ height: 26, width: 26 }} source={AppConfig.videoLinkConfig.VIDEO.SOCIAL_ICONS.DEFAULT} />
         <TextInput
           style={styles.linkText}
           numberOfLines={1}

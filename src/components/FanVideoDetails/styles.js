@@ -54,7 +54,7 @@ let stylesMap = {
   suggestionTextWrapper: {
     marginTop: 20
   },
-  linkText: { color: Colors.softBlue, flex: 1, marginLeft: 5 }
+  linkText: { color: Colors.softBlue, flex: 1}
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

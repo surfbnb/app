@@ -236,12 +236,13 @@ class StoreProductsScreen extends PureComponent{
 
     getProductsMarkUp = () => {
         return (
-            <View style={inlineStyles.poductListWrapper}>
+            <View style={[inlineStyles.poductListWrapper , {height: Dimensions.get('window').height * 0.65}]}>
                 <View style={inlineStyles.headerWrapper}>
                     <Text style={inlineStyles.modalHeader}>Top-Up Pepo Coins</Text>
                 </View>
                 <ScrollView>
                   {this.products.map(( product) => (
+                    <TouchableWithoutFeedback>
                       <View key={ product.productId } style={inlineStyles.poductListRow}>
                           <View style={{flexDirection: "row", alignItems: 'center'}}>
                               <Image source={pepoIcon} style={{ width: 19, height: 19 }}/>
@@ -255,6 +256,7 @@ class StoreProductsScreen extends PureComponent{
                                   onPress={() => {this.onRequestPurchase(product.productId) }}
                           />
                       </View>
+                    </TouchableWithoutFeedback>
                   ))}
                 </ScrollView>
             </View>    
@@ -292,7 +294,7 @@ class StoreProductsScreen extends PureComponent{
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
                 <View style={{ flex: 1, backgroundColor: 'transparent' }}>
                   <TouchableWithoutFeedback>
-                    <View style={[inlineStyles.container, {height:  Dimensions.get('window').height / 2 } ]}>
+                    <View style={[inlineStyles.container]}>
                         {/*<View style={inlineStyles.dragger}></View>*/}
                         {this.state.loadingProducts && this.getLoadingMarkup()}
                         {!this.state.loadingProducts && this.getMarkUp()}

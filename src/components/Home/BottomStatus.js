@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
@@ -8,7 +8,6 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import reduxGetter from '../../services/ReduxGetters';
 
 import multipleClickHandler from '../../services/MultipleClickHandler';
-import { getSocialIcon } from '../../helpers/helpers';
 import InAppBrowser from '../../services/InAppBrowser';
 import {BrowserEmitter} from '../../helpers/Emitters';
 
@@ -36,13 +35,13 @@ class BottomStatus extends PureComponent {
     return (
       <View style={inlineStyles.bottomBg}>
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onWrapperClick())} pointerEvents={'auto'}>
-          <View style={{ paddingTop: 8, paddingBottom: 5, paddingHorizontal: 12 }}>
+          <View style={{ paddingTop: 8, paddingBottom: 5 }}>
             <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
               {`@${this.props.userName}`}
             </Text>
             {this.props.description ? (
               <Text
-                style={[{ fontSize: 14, flexWrap: 'wrap' }, inlineStyles.bottomBgTxt]}
+                style={[{ fontSize: 14, flexWrap: 'wrap', fontFamily: 'AvenirNext-Regular', textAlign: 'left' }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={3}
               >
@@ -63,24 +62,13 @@ class BottomStatus extends PureComponent {
             })}
             pointerEvents={'auto'}
           >
-            <View
-              style={{
-                borderTopWidth: 0.5,
-                borderColor: 'rgba(255, 255, 255, 0.3)',
-                paddingHorizontal: 12,
-                flexDirection: 'row',
-                alignItems: 'center'
-              }}
+            <Text
+              style={[{ fontSize: 13, paddingBottom: 10, fontFamily: 'AvenirNext-DemiBold', fontWeight: '700'}, inlineStyles.bottomBgTxt]}
+              numberOfLines={1}
+              ellipsizeMode={'tail'}
             >
-              <Image style={{ height: 20, width: 20 }} source={getSocialIcon(this.props.link, 'HOME_FEED')} />
-              <Text
-                style={[{ fontSize: 14, paddingVertical: 8, paddingLeft: 8, flex:1 }, inlineStyles.bottomBgTxt]}
-                numberOfLines={1}
-                ellipsizeMode={'tail'}
-              >
-                {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
-              </Text>
-            </View>
+              {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
+            </Text>
           </TouchableWithoutFeedback>
         ) : (
           <React.Fragment />

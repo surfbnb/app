@@ -165,6 +165,7 @@ export default {
   },
 
   isEntityDeleted (res){
-    return deepGet(res ,  "err.code") == AppConfig.beKnownErrorCodeMaps.entityDeleted ;
+    let status = deepGet(res ,  "err.code") || "";
+    return status.toLowerCase() == AppConfig.beKnownErrorCodeMaps.entityDeleted ;
   }
 };
