@@ -52,7 +52,7 @@ class HomeScreen extends Component {
       this.onLogout();
     });
     CurrentUser.getEvent().on("onBeforeUserLogout" , ()=> {
-      LoadingModal.show("Logging out...");
+      LoadingModal.show("Disconnecting...");
     });
     CurrentUser.getEvent().on("onUserLogoutFailed" , ()=> {
       LoadingModal.hide();

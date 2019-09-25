@@ -87,13 +87,13 @@ class HomeFeedRow extends PureComponent {
                   userId={this.userId}
                   videoId={this.videoId}
                 />
-                <TouchableOpacity
-                  pointerEvents={'auto'}
-                  onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
-                  style={inlineStyles.txElem}
-                >
-                  <Image style={{ height: 57, width: 57 }} source={tx_icon} />
-                </TouchableOpacity>
+                {/*<TouchableOpacity*/}
+                  {/*pointerEvents={'auto'}*/}
+                  {/*onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}*/}
+                  {/*style={inlineStyles.txElem}*/}
+                {/*>*/}
+                  {/*<Image style={{ height: 57, width: 57 }} source={tx_icon} />*/}
+                {/*</TouchableOpacity>*/}
 
                 <TouchableOpacity pointerEvents={'auto'} onPress={multipleClickHandler(() => this.shareVideo())} style={inlineStyles.txElem}>
                   <Image style={{ height: 48, width: 48 }} source={share_icon} />
