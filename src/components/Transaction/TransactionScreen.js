@@ -201,7 +201,7 @@ class TransactionScreen extends Component {
       , decimalSeperator = sperators[1]
     ;
 
-    val = val.replace(decimalSeperator, '.');
+    val = String(val).replace(decimalSeperator, '.');
 
     return val
   }
