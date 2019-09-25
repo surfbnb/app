@@ -293,7 +293,6 @@ class ProfileEdit extends React.PureComponent {
   }
 
   onEmailFocus = () => {
-    if(this.state.isVerifiedEmail) return;
     this.props.navigation.push('EmailScreen', {
     //  onChangeTextDelegate: this.onEmailChangeDelegate,
       initialValue: this.state.emailAddress,
@@ -423,7 +422,8 @@ class ProfileEdit extends React.PureComponent {
 
         <Text style={[Theme.TextInput.labelStyle]}>Email Address</Text>
         <View style={{ position: 'relative' }}>
-          <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onEmailFocus())}>
+          <TouchableWithoutFeedback disabled={this.state.isVerifiedEmail}
+            onPress={multipleClickHandler(() => this.onEmailFocus())}>
             <FormInput
               editable={false}
               fieldName="email"
