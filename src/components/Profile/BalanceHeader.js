@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {connect} from 'react-redux';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Text, Image } from 'react-native';
 import pricer from '../../services/Pricer';
 import inlineStyles from './styles';
@@ -9,7 +9,6 @@ import topUpIcon from '../../assets/top-up-icon.png'
 import redeemIcon from '../../assets/redeem-icon.png'
 import inlineStyle from "../CommonComponents/UserInfo/styles";
 import LinearGradient from "react-native-linear-gradient";
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
 import CurrentUser from '../../models/CurrentUser';
 import ProgressCircle from 'react-native-progress/CircleSnail';
@@ -74,7 +73,7 @@ class BalanceHeader extends PureComponent {
     val = priceOracle.fromDecimal( val );
     return pricer.toDisplayAmount( priceOracle.btToFiat( val ));
   }
-  
+
   onTopUp = () => {
     if(CurrentUser.isUserActivated()){
       this.props.navigation.push("StoreProductsScreen");
@@ -88,17 +87,17 @@ class BalanceHeader extends PureComponent {
 
   openWebView = () => {
     console.log('openWebView: open browser');
-    
+
     new PepoApi(`/redemptions/info`)
     .get()
     .then((res) => { setTimeout(() => {
-      
+
       res && res.data && InAppBrowser.openBrowser(res.data.redemption_info.url);
     }, 0); })
     .catch((error) => {});
 
   }
-  
+
   getWalletIcon = () => {
     if( this.state.isPurchasing ){
       return  <TouchableWithoutFeedback onPress={this.onPurchaseInProgress}>
@@ -131,8 +130,10 @@ class BalanceHeader extends PureComponent {
           ></LinearGradient>
           <View style={{alignItems: 'center'}}>
             <TouchableWithoutFeedback onPress={this.openWebView}>
-            <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
-            <Text style={inlineStyles.redeemBalance}>Redeem</Text>
+              <View>
+                <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
+                <Text style={inlineStyles.redeemBalance}>Redeem</Text>
+              </View>
             </TouchableWithoutFeedback>
           </View>
         </View>
