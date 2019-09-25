@@ -42,7 +42,7 @@ class TransactionPepoButton extends PureComponent {
 
   isDisabled = () => {
     return (
-      !this.isBalance() || !this.props.isCurrentUserActivated || this.props.disabled || !this.props.isVideoUserActivated
+       this.props.userId == CurrentUser.getUserId() || !this.isBalance() || !this.props.isCurrentUserActivated || this.props.disabled || !this.props.isVideoUserActivated
     );
   };
 
