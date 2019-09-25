@@ -252,7 +252,7 @@ class StoreProductsScreen extends PureComponent{
                                   disabled={this.state.isPurchasing}
                                   TouchableStyles={[Theme.Button.btnPink , inlineStyles.pepoBtnStyle]}
                                   TextStyles={[Theme.Button.btnPinkText]}
-                                  text={this.state.isPurchasing && this.productId == product.productId ? "..." : product.price}
+                                  text={this.state.isPurchasing && this.productId == product.productId ? "..." :  product.localizedPrice || product.price }
                                   onPress={() => {this.onRequestPurchase(product.productId) }}
                           />
                       </View>
