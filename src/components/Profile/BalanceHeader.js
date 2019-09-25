@@ -22,6 +22,7 @@ import Toast from '../../theme/components/NotificationToast';
 import appConfig from "../../constants/AppConfig";
 import PepoApi from '../../services/PepoApi';
 import InAppBrowser from '../../services/InAppBrowser';
+import { ostErrors } from '../../services/OstErrors';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -75,8 +76,13 @@ class BalanceHeader extends PureComponent {
   }
   
   onTopUp = () => {
-    if(CurrentUser.isUserActivated(true)){
+    if(CurrentUser.isUserActivated()){
       this.props.navigation.push("StoreProductsScreen");
+    }else{
+      Toast.show({
+        text: ostErrors.getUIErrorMessage('user_not_active'),
+        buttonText: 'Okay'
+      });
     }
   }
 
