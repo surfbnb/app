@@ -11,7 +11,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
 
-const mapStateToProps = (state, ownProps) => {  
+const mapStateToProps = (state, ownProps) => {
   return {
     supporters: reduxGetter.getUserSupporters(ownProps.userId, state),
     totalBt: reduxGetter.getVideoBt(ownProps.videoId, state)
@@ -52,7 +52,7 @@ class VideoAmountStat extends PureComponent {
         {
           <View ellipsizeMode={'tail'} numberOfLines={1}>
             <Text style={[inlineStyles.raisedSupportedTxt]} ellipsizeMode={'tail'} numberOfLines={1}>
-              {this.props.supporters || 0} <Text style={{ letterSpacing: 0.8, fontSize: 13 }}>FANS</Text>
+              {this.props.supporters || 0} <Text style={{ letterSpacing: 1.0, fontSize: 13 }}>Supporters</Text>
             </Text>
           </View>
         }

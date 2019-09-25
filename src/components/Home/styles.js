@@ -72,7 +72,7 @@ let stylesMap = {
     borderTopLeftRadius: 25,
     borderBottomRightRadius: 25,
     paddingHorizontal: 8,
-    width: 120,
+    minWidth: 120,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
