@@ -21,7 +21,7 @@ class SearchScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.defaultState =  {
-      searchParams: null,
+      searchParams: '',
       refresh: true,
       noResultsFound: false
     };
@@ -50,11 +50,12 @@ class SearchScreen extends PureComponent {
   };
 
   shouldMakeApiCall = (searchParams) => {
+    if(searchParams == "") return true;
     searchParams = searchParams || this.state.searchParams;
-    if (searchParams && searchParams.length >= AppConfig.searchConfig.MIN_SEARCH_CHAR) {
-      return true;
+    if (searchParams.length == 1) {
+      return false;
     }
-    return false;
+    return true;
   };
 
   render() {

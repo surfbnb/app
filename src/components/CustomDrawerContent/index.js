@@ -165,7 +165,7 @@ class CustomDrawerContent extends Component {
 
   render() {
     return (
-      <SafeAreaView forceInset={{ top: 'always' }} style={[styles.container, { justifyContent: 'space-between' }]}>
+      <SafeAreaView style={[styles.container, { justifyContent: 'space-between' }]}>
         <View>
           <TouchableOpacity
             onPress={multipleClickHandler(() => {

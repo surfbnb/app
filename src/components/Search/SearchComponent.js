@@ -6,8 +6,6 @@ class SearchComponent extends SearchResults {
     super(props);
   }
 
-  componentDidMount() {}
-
   componentDidUpdate(prevProps) {
     if (!this.shouldMakeApiCall()) {
       if (this.state.list.length) {

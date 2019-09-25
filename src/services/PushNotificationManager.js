@@ -16,9 +16,7 @@ function deleteToken() {
   firebase
     .messaging()
     .deleteToken()
-    .then((res) => {
-      console.log('Successfully deleted device token');
-    })
+    .then((res) => console.log('Successfully deleted device token with response ',res))
     .catch((error) => console.log('Error occured while deleting device token ', error));
 }
 
@@ -167,5 +165,5 @@ const mapStateToProps = ({}) => {
 
 export default connect(mapStateToProps)(PushNotificationManager);
 export const PushNotificationMethods = {
-  deleteToken: deleteToken
+  deleteToken
 };

@@ -133,7 +133,7 @@ class UserInfo extends React.PureComponent {
               InAppBrowser.openBrowser(this.props.link);
             }}
           >
-            {this.props.link}
+            {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
           </Text>
         )}
         {this.props.videoInReviewHeader || <View style={{height:15}} />}

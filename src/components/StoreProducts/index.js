@@ -218,7 +218,7 @@ class StoreProductsScreen extends PureComponent{
                <View style={{paddingHorizontal: 10, paddingVertical: 15, borderWidth: 1, borderColor: '#ff7499', flexDirection: "row" , alignItems: "center", borderRadius: 3}}>
                  <Image source={mailIcon} style={{ width: 45, height: 45}}></Image>
                  <Text style={{textAlign: "left" , marginLeft: 10}}>
-                   You have exceeded the Topup limit of ${this.thresholdLimit}
+                   You have exceeded the Topup limit of ${this.thresholdLimit}{" "}
                    Contact us on info@pepo.com to increase your topup limit.
                  </Text>
                </View>

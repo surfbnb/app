@@ -189,8 +189,9 @@ class CurrentUser {
        this.getEvent().emit("onUserLogout");
        navigateTo.resetAllNavigationStack();
        await this.clearCurrentUser();
+       PushNotificationMethods.deleteToken();
        //Remove this timeout once redux logout is promise based.
-      setTimeout(()=> {
+       setTimeout(()=> {
          NavigationService.navigate('HomeScreen' , params);
          this.getEvent().emit("onUserLogoutComplete");
        } , AppConfig.logoutTimeOut );

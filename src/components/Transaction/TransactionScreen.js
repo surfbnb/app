@@ -8,7 +8,9 @@ import {
   Image,
   Keyboard,
   BackHandler,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  NativeModules,
+  Platform
 } from 'react-native';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import BigNumber from 'bignumber.js';
@@ -113,7 +115,14 @@ class TransactionScreen extends Component {
 
   onBtChange(bt) {
     if (!this.priceOracle) return;
-    this.setState({ btAmount: bt, btUSDAmount: this.priceOracle.btToFiat(bt) });
+
+    let formattedVal = this._convertToValidFormat(bt)
+      , val = this._getFullStopValue(formattedVal)
+      , usdVal = this.priceOracle.btToFiat(val)
+      , formattedUsdVal = this._getFormattedValue( usdVal)
+    ;
+
+    this.setState({ btAmount: formattedVal, btUSDAmount: formattedUsdVal});
     this.clearFieldErrors();
   }
 
@@ -125,12 +134,92 @@ class TransactionScreen extends Component {
 
   onUSDChange(usd) {
     if (!this.priceOracle) return;
-    this.setState({ btAmount: this.priceOracle.fiatToBt(usd), btUSDAmount: usd });
+
+    let formattedVal = this._convertToValidFormat(usd)
+      , val = this._getFullStopValue(formattedVal)
+      , btVal = this.priceOracle.fiatToBt(val)
+      , formattedBtVal = this._getFormattedValue(btVal)
+    ;
+
+    this.setState({ btAmount: formattedBtVal, btUSDAmount: formattedVal });
     this.clearFieldErrors();
+  }
+
+  getDecimalGroupSeperators(){
+    let locale;
+    if (Platform.OS === 'ios') {
+      locale = NativeModules.SettingsManager.settings.AppleLocale // "fr_FR"
+    }else {
+      locale = NativeModules.I18nManager.localeIdentifier // "fr_FR"
+    }
+
+    if (!locale) {
+      locale = 'en-US';
+    }else {
+      locale = locale.replace('_','-')
+    }
+
+    let num = 1000.1,
+      groupSeperator = "",
+      decimalSeperator = "",
+      formatedNum = num.toLocaleString(locale);
+
+    formatedNum = formatedNum.split("");
+    if(!formatedNum[1] == 0){
+      groupSeperator = formatedNum[1];
+      decimalSeperator = formatedNum[5]
+    }else{
+      decimalSeperator = formatedNum[5]
+    }
+    return [groupSeperator, decimalSeperator]
+  }
+
+  _convertToValidFormat(val) {
+
+    let sperators = this.getDecimalGroupSeperators()
+      , groupSeperator = sperators[0]
+      , decimalSeperator = sperators[1]
+      , regex = new RegExp([decimalSeperator],'g')
+      , decimalCount = (val.match(regex) || []).length
+    ;
+
+    val = val.replace(groupSeperator, '');
+
+    if (decimalCount > 1) {
+      let splitArray = val.split(decimalSeperator);
+      let firstVal = splitArray[0];
+      splitArray.shift();
+      let decimalVal = splitArray.join('');
+
+      val = firstVal+decimalSeperator+decimalVal;
+    }
+
+    return val
+  };
+
+  _getFullStopValue(val) {
+    let sperators = this.getDecimalGroupSeperators()
+      , decimalSeperator = sperators[1]
+    ;
+
+    val = val.replace(decimalSeperator, '.');
+
+    return val
+  }
+
+  _getFormattedValue(valTobeFormatted) {
+    let sperators = this.getDecimalGroupSeperators()
+      , decimalSeperator = sperators[1]
+    ;
+
+    valTobeFormatted = valTobeFormatted.replace('.', decimalSeperator);
+
+    return valTobeFormatted
   }
 
   onConfirm = () => {
     let btAmount = this.state.btAmount;
+    btAmount = this._getFullStopValue(btAmount);
     if (!this.isValidInput(btAmount)) {
       return;
     }
@@ -235,10 +324,10 @@ class TransactionScreen extends Component {
   }
 
   sendTransactionToSdk() {
-    const user = CurrentUser.getUser();
     // const option = { wait_for_finalization: false };
-    const btInDecimal = pricer.getToDecimal(this.state.btAmount);
-    ensureDeivceAndSession(user.ost_user_id, btInDecimal, (device) => {
+    let btVal = this._getFullStopValue(this.state.btAmount);
+    const btInDecimal = pricer.getToDecimal(btVal);
+    ensureDeivceAndSession(CurrentUser.getOstUserId(), btInDecimal, (device) => {
       this._deviceUnauthorizedCallback(device);
       }, (errorMessage, success) => {
         this._ensureDeivceAndSessionCallback(errorMessage, success);
@@ -247,7 +336,11 @@ class TransactionScreen extends Component {
 
   _ensureDeivceAndSessionCallback(errorMessage, success) {
     if (success) {
-      return this._executeTransaction(user, btInDecimal);
+
+      let btVal = this._getFullStopValue(this.state.btAmount);
+      const btInDecimal = pricer.getToDecimal(btVal);
+
+      return this._executeTransaction(btInDecimal);
     }
 
     if (errorMessage) {
@@ -275,10 +368,10 @@ class TransactionScreen extends Component {
 
   }
 
-  _executeTransaction(user, btInDecimal) {
+  _executeTransaction(btInDecimal) {
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
-      user.ost_user_id,
+      CurrentUser.getOstUserId(),
       [this.toUser.ost_token_holder_address],
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
@@ -444,7 +537,7 @@ class TransactionScreen extends Component {
                         value={`${this.state.btAmount}`}
                         placeholderTextColor="#ababab"
                         errorMsg={this.state.btAmountErrorMsg}
-                        keyboardType="numeric"
+                        keyboardType="decimal-pad"
                         isFocus={this.state.btFocus}
                         blurOnSubmit={true}
                       />
@@ -469,7 +562,7 @@ class TransactionScreen extends Component {
                         fieldName="usd_amount"
                         style={Theme.TextInput.textInputStyle}
                         placeholderTextColor="#ababab"
-                        keyboardType="numeric"
+                        keyboardType="decimal-pad"
                         blurOnSubmit={true}
                         isFocus={this.state.usdFocus}
                         onFocus={() =>
