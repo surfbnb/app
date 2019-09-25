@@ -118,7 +118,11 @@ let devicesWithNotch =  [
   {
     "brand": "xiaomi",
     "model": "Redmi Note 7 Pro"
-  }
+  },
+  {
+    "brand": "HONOR",
+    "model": "COR-AL00"
+  },
 ];
 
 class NotchHelper {

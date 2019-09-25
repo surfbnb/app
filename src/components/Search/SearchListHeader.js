@@ -22,7 +22,7 @@ class SearchListHeader extends Component {
   };
 
   clearSearch = () => {
-    this.props.setSearchParams(null);
+    this.props.setSearchParams("");
     this.setState({
       value: ''
     });

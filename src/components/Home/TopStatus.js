@@ -18,7 +18,7 @@ const TopStatus = (props) => {
       <WalletSetupFlyer
         componentHeight={46}
         componentWidth={46}
-        sliderWidth={250}
+        sliderWidth={230}
         containerStyle={{
           ...ifIphoneX(
             {
