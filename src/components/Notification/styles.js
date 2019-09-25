@@ -1,5 +1,6 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
+import {Dimensions} from "react-native";
 
 let stylesMap = {
   item: {    
@@ -94,7 +95,44 @@ let stylesMap = {
     borderTopWidth: 1,
     marginHorizontal: 15,
     paddingTop: 15
-  }
+  },
+
+
+  backgroundStyle: {
+    //backgroundColor: 'rgba(0,0,0,0.80)',
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: Dimensions.get('screen').height,
+
+  },
+  headerText: {
+    color: 'white',
+    fontWeight: '500',
+    fontSize: 24,
+    fontFamily: 'AvenirNext-Medium',
+    textAlign: 'center'
+  },
+  smallText: {
+    color: 'white',
+    fontSize: 18, marginTop: 14,
+    fontFamily: 'AvenirNext-Medium',
+    textAlign: 'center'
+  },
+
+  wrappedView: {
+    padding: 40,
+    backgroundColor: 'rgba(0,0,0,0.80)',
+    height:Dimensions.get('screen').height,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  buttonText: {color: 'white', fontSize: 18, fontFamily: 'AvenirNext-Medium' }
+
+
+
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

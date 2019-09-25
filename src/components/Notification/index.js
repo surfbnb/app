@@ -10,13 +10,37 @@ import Store from '../../store';
 import { upsertNotificationUnread } from '../../actions';
 import appConfig from '../../constants/AppConfig';
 import reduxGetter from '../../services/ReduxGetters';
-
+import styles from './styles';
+import {Text, View, Modal, Platform, Linking} from 'react-native';
+import { Button } from 'native-base';
+import utilities from '../../services/Utilities';
+import {PushNotificationMethods} from '../../services/PushNotificationManager'
+import AndroidOpenSettings from "react-native-android-open-settings";
 const mapStateToProps = (state) => {
   return {
     userId: CurrentUser.getUserId(),
     unreadNotification: reduxGetter.getNotificationUnreadFlag(state)
   };
 };
+
+
+function enableAccess() {
+  if (Platform.OS == 'android') {
+    if (AndroidOpenSettings) {
+      AndroidOpenSettings.appDetailsSettings();
+    }
+  } else {
+    Linking.canOpenURL('app-settings:')
+        .then((supported) => {
+          if (!supported) {
+            console.log("Can't handle settings url");
+          } else {
+            return Linking.openURL('app-settings:');
+          }
+        })
+        .catch((err) => console.error('An error occurred', err));
+  }
+}
 
 class NotificationScreen extends Component {
   static navigationOptions = (options) => {
@@ -40,6 +64,7 @@ class NotificationScreen extends Component {
   constructor(props) {
     super(props);
     this.listRef = null;
+    this.state = {permissionModalVisible:null}
   }
 
   componentDidMount() {
@@ -47,6 +72,19 @@ class NotificationScreen extends Component {
       if (screen.screenName == appConfig.tabConfig.tab4.childStack) {
         this.refresh(true, 300);
       }
+    });
+    this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
+      this.getPermissions();
+    });
+
+
+
+  }
+
+  getPermissions (){
+    utilities.getItem(`n-p-${this.props.userId}`).then((value)=> {
+      let permissionButtonClicked = value === 'true';
+      this.setState({permissionModalVisible: !permissionButtonClicked })
     });
   }
 
@@ -72,6 +110,7 @@ class NotificationScreen extends Component {
 
   componentWillUnmount() {
     NavigationEmitter.removeListener('onRefresh');
+    this.didFocus && this.didFocus.remove && this.didFocus.remove();
   }
 
   onRefresh = () => {
@@ -80,15 +119,63 @@ class NotificationScreen extends Component {
     }
   };
 
+  handlePermissionButtonClick = () => {
+
+      PushNotificationMethods.askForPNPermission().then(() => {
+        console.log('handlePermissionButtonClick.askForPNPermission: then');
+      }).catch(() => {
+        console.log('handlePermissionButtonClick.askForPNPermission: catch');
+        utilities.getItem(`n-p-a`).then((value)=> {
+          if( value === 'true' || Platform.OS == 'android'){
+            enableAccess();
+          }
+        });
+
+      }).finally(()=>{
+        utilities.saveItem(`n-p-${this.props.userId}`, true);
+        utilities.saveItem(`n-p-a`, true);
+        PushNotificationMethods.getToken(this.props.userId);
+        this.setState({permissionModalVisible: false});
+      });
+
+  }
+
+  showPermissionModal = () => {
+    return (
+      <Modal style={styles.backgroundStyle} transparent={true}>
+        <View style={styles.wrappedView}>
+          <Text style={styles.headerText}>Enable Notification to get Instant Alearts </Text>
+
+          <Text style={styles.smallText}>
+            Know when someone thanks you for your support and get important account updates
+          </Text>
+
+          <Button
+            style={{ alignSelf: 'center', backgroundColor: '#f56', padding: 14, marginTop: 24 }}
+            onPress={this.handlePermissionButtonClick}
+            
+          >
+          <Text style={styles.buttonText}>Turn On Notification</Text>
+          </Button>
+        </View>
+      </Modal>
+    );
+  };
+
   render() {
-    return this.props.userId && (
-      <NotificationList
-        ref={(ref) => {
-          this.listRef = ref;
-        }}
-        fetchUrl={'/notifications'}
-        onRefresh={this.onRefresh}
-      />
+    return (
+      this.props.userId && (
+        <View style={{flex:1}}>
+          <NotificationList
+            ref={(ref) => {
+              this.listRef = ref;
+            }}
+            fetchUrl={'/notifications'}
+            onRefresh={this.onRefresh}
+          />
+          {this.state.permissionModalVisible && this.showPermissionModal()}
+        </View>
+      )
     );
   }
 }
