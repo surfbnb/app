@@ -114,7 +114,7 @@ class PepoButton extends React.Component {
     return (
       <React.Fragment>
         {this.renderClaps()}
-        <Text style={inlineStyles.pepoTxCount}>{ Pricer.toDisplayAmount(this.state.count || 0 )}</Text>
+        <Text style={inlineStyles.pepoTxCount}>{ Pricer.displayAmountWithKFomatter(this.state.count || 0 )}</Text>
         <TouchableWithoutFeedback
           disabled={this.state.disabled}
           onPressIn={this.keepClapping}

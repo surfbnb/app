@@ -85,6 +85,16 @@ class Pricer {
     return numeral(amount).format('0[.]00a') || 0;
   }
 
+  displayAmountWithKFomatter( amount ){
+    if(isNaN( amount )) return amount;
+    if( amount < 10000 ){
+      return numeral( amount ).format('0', Math.floor);
+    } else {
+      return numeral( amount ).format('0a+', Math.floor)
+
+    }
+  }
+
 }
 
 export default new Pricer();
