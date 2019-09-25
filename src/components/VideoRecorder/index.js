@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback, BackHandler, AppState } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Image,
+  Text,
+  TouchableWithoutFeedback,
+  BackHandler,
+  AppState,
+  Dimensions
+} from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
-import flipIcon from '../../assets/camera.png';
+import flipIcon from '../../assets/flip_camera.png';
 import ProgressBar from 'react-native-progress/Bar';
 import styles from './styles';
 import reduxGetters from '../../services/ReduxGetters';
@@ -40,7 +49,7 @@ class VideoRecorder extends Component {
   };
 
   async componentDidMount() {
-    if (this.props.acceptedCameraTnC === null){
+    if (this.props.acceptedCameraTnC === null) {
       utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
         this.setState({ acceptedCameraTnC: terms });
       });
@@ -191,13 +200,7 @@ class VideoRecorder extends Component {
               <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
             </View>
           </TouchableWithoutFeedback>
-          <View
-            style={{
-              flex: 0,
-              flexDirection: 'row'
-              // justifyContent: 'center'
-            }}
-          >
+          <View style={styles.bottomWrapper}>
             {this.getActionButton()}
             {this.flipButton()}
           </View>
@@ -221,9 +224,14 @@ class VideoRecorder extends Component {
       source = captureIcon;
     }
     return (
-      <TouchableOpacity onPress={onPressCallback}>
-        <Image style={styles.captureButtonSkipFont} source={source} />
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={onPressCallback}>
+          <Image style={styles.captureButtonSkipFont} source={source} />
+        </TouchableOpacity>
+          <View style={{width: 90, marginLeft:-45, height:10}}>
+            { !this.state.isRecording && <Text style={{color: 'white', fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Tap to record</Text>}
+        </View>
+      </View>
     );
   }
 
