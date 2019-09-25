@@ -84,6 +84,9 @@ class VideoPlayer extends Component {
     render() {
         if(this.state.isDeleted){
          return <View style={inlineStyles.container}>
+                  <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
+                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
+                  </TouchableOpacity>
                   <Image style={inlineStyles.imgSize} source={video_not_available} />
                   <Text style={inlineStyles.desc}>Looks like the Video you were looking for isn’t available and might have been deleted by the creator!</Text>
                 </View>
