@@ -16,7 +16,7 @@ class SearchResults extends PureComponent {
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
-    return <User userId={item} />;
+     return <User userId={item} />;
   };
 
   getEmptyComponent = () => {
@@ -26,9 +26,16 @@ class SearchResults extends PureComponent {
       }
     }
 
-    if (this.shouldMakeApiCall()) {
+    if (this.shouldMakeApiCall() && this.props.searchParams) {
       return this.renderSearchingFor();
     }
+
+    if(!this.props.searchParams){
+      return ( <View style={{ flex: 1,flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                <ActivityIndicator style={{alignSelf:'center'}} size="small" color={Colors.greyLite} />
+              </View>);
+    }
+
     return null;
   };
 
