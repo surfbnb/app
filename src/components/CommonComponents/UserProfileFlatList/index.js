@@ -76,8 +76,12 @@ class UserProfileFlatList extends PureComponent {
     }
 
     onPullToRefresh = () => {
-      fetchUser(this.props.userId); 
+      fetchUser(this.props.userId , this.onUserFetch ); 
     } 
+
+    onUserFetch =(res) => {
+      this.props.onUserFetch && this.props.onUserFetch(res);
+    }
 
     beforeRefresh = ( ) => {
         this.props.beforeRefresh && this.props.beforeRefresh();
