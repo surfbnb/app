@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Linking, Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
@@ -11,7 +11,6 @@ import multipleClickHandler from '../../services/MultipleClickHandler';
 import { getSocialIcon } from '../../helpers/helpers';
 import InAppBrowser from '../../services/InAppBrowser';
 import {BrowserEmitter} from '../../helpers/Emitters';
-import Utilities from '../../services/Utilities';
 
 const mapStateToProps = (state, ownProps) => {
   return {
