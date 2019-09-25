@@ -41,7 +41,8 @@ let stylesMap = {
     fontSize: 18,
     color: Colors.white,
     alignSelf: 'center',
-    marginBottom: 3
+    marginTop: 3,
+    marginBottom: 15
   },
   txElem: {
     marginBottom: 20
@@ -53,16 +54,16 @@ let stylesMap = {
   },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    // flexDirection: 'column',
-    // justifyContent: 'flex-start',
     borderTopLeftRadius: 20,
-    maxHeight: height * 0.3,
-    minHeight: height * 0.05
+    minHeight: height * 0.05,
+    paddingHorizontal: 12
   },
   handle: {
     fontSize: 15,
+    paddingBottom: 3,
     color: Colors.white,
-    fontFamily: 'AvenirNext-DemiBold'
+    fontFamily: 'AvenirNext-DemiBold',
+    fontWeight: '700'
   },
   bottomBgTxt: {
     color: Colors.white
