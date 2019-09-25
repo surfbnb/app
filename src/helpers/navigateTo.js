@@ -63,6 +63,7 @@ class NavigateTo {
   goToVideo = (vId, payload) => {
     payload = payload || {};
     payload['videoId'] = vId;
+    this.__navigate('NotificationScreen', payload);
     this.__push('VideoPlayer', payload);
   };
 

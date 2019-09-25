@@ -45,7 +45,7 @@ class StoreProductsScreen extends PureComponent{
 
         this.productIds = [];
         this.products = [];
-        this.thresholdLimit = 50;
+        this.thresholdLimit;
         this.isProductFetchError = false;
         this.maxThresholdReached = false;
         this.deviceUnAuthorised =  false;

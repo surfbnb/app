@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {View,Image,TouchableOpacity, Text} from 'react-native';
 import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
-import { withNavigation } from 'react-navigation';
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
 import inlineStyles from './styles'
@@ -103,4 +102,4 @@ class VideoPlayer extends Component {
     }
 }
 
-export default withNavigation( VideoPlayer );
+export default  VideoPlayer ;
