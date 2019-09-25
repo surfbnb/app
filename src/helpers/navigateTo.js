@@ -8,7 +8,6 @@ import AppConfig from '../constants/AppConfig';
 import { upsertInviteCode } from '../actions';
 import Store from '../store';
 
-
 class NavigateTo {
   constructor() {
     this.navigation = null;
@@ -37,8 +36,6 @@ class NavigateTo {
       this.__push('AddEmailScreen', payload);
     } else if (goToObject && goToObject.pn == 'ct') {
       this.goToSupportings(goToObject.v.puid, payload);
-    } else if (goToObject && goToObject.pn == 's') {
-      this.goToSignUp(goToObject.v.ic, payload);
     } else if (goToObject && goToObject.pn == 'iu'){
       this.goToInvitedUsers(payload);
     } else if (goToObject && goToObject.pn == 'wv'){
@@ -48,10 +45,8 @@ class NavigateTo {
   }
 
   goToSignUp(inviteCode, payload ){
-    this._setInviteCode(inviteCode);
-    // if(!CurrentUser.getUserId() && Utilities.getLastChildRoutename(this.navigation.state) == 'HomeScreen'){
-    //   LoginPopoverActions.show();
-    // }
+    if(CurrentUser.isActiveUser())return;
+    LoginPopoverActions.show();
   }
 
   _setInviteCode(inviteCode){
@@ -144,6 +139,10 @@ class NavigateTo {
   }
 
   setGoTo(goTo) {
+    if (goTo && goTo.pn == 's') {
+      this._setInviteCode(goTo.v.ic);
+      return;
+    } 
     this.goTo = goTo;
   }
 
