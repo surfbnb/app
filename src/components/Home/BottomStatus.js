@@ -31,6 +31,13 @@ class BottomStatus extends PureComponent {
     this.props.onWrapperClick && this.props.onWrapperClick();
   };
 
+  onLinkClick = () => {
+    BrowserEmitter.emit('browserOpened');
+    setTimeout(() => {
+      InAppBrowser.openBrowser(this.props.link);
+    }, 300);
+  }
+
   render() {
     return (
       <View style={inlineStyles.bottomBg}>
@@ -55,10 +62,7 @@ class BottomStatus extends PureComponent {
         {this.props.link ? (
           <TouchableWithoutFeedback
             onPress={multipleClickHandler(() => {
-              BrowserEmitter.emit('browserOpened');
-              setTimeout(() => {
-                InAppBrowser.openBrowser(this.props.link);
-              }, 100);
+             this.onLinkClick();
             })}
             pointerEvents={'auto'}
           >
