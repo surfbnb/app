@@ -141,26 +141,20 @@ class loginPopover extends React.Component {
                       disabled={this.state.disableLoginBtn}
                     />
                     <View style={inlineStyles.tocPp}>
-                      <Text style={inlineStyles.termsTextBlack}>By signing up, you confirm that you agree to our </Text>
-                      <TouchableOpacity
-                        onPress={multipleClickHandler(() => {
+                      <Text style={{textAlign: 'center'}}>
+                        <Text style={inlineStyles.termsTextBlack}>By signing up, you confirm that you agree to our </Text>
+                        <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
                           InAppBrowser.openBrowser(
                             'https://pepo.com/terms'
                           );
-                        })}
-                      >
-                        <Text style={inlineStyles.termsTextBlue}>Terms of use </Text>
-                      </TouchableOpacity>
-                      <Text style={inlineStyles.termsTextBlack}>and have read and agree to our </Text>
-                      <TouchableOpacity
-                        onPress={multipleClickHandler(() => {
+                        })}>Terms of use </Text>
+                        <Text style={inlineStyles.termsTextBlack}>and have read and agree to our </Text>
+                        <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
                           InAppBrowser.openBrowser(
                             'https://pepo.com/privacy'
                           );
-                        })}
-                      >
-                        <Text style={inlineStyles.termsTextBlue}>Privacy Policy</Text>
-                      </TouchableOpacity>
+                        })}>Privacy Policy</Text>
+                      </Text>
                     </View>
                   </View>
                 </TouchableWithoutFeedback>
