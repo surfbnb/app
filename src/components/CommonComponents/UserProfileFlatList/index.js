@@ -134,13 +134,13 @@ class UserProfileFlatList extends PureComponent {
                         uri: imageUrl,
                         priority: FastImage.priority.high
                        }}/>
-              <LinearGradient
-                  colors={['#dd0017', '#dd0017', 'rgba(0, 0, 0, 0.3)']}
-                  locations={[0, 0.5, 1]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1 }}
-                  style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', top: 0, left: 0, alignItems: 'flex-end'}}
-              >
+            <LinearGradient
+              colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
+              locations={[0, 0.5, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', top: 0, left: 0, alignItems: 'flex-end'}}
+            >
               <View style={inlineStyles.deleteButton}>
                 <Image style={{height: 3, width: 14}} source={elipses} />
               </View>

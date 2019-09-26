@@ -9,17 +9,10 @@ let stylesMap = {
     width: '100%'
   },
   deleteButton: {
-    // padding: 10,
-    backgroundColor: 'blue',
-    height: 6,
-    width: 28,
+    height: 24,
+    width: 40,
     justifyContent: 'center',
-    alignItems: 'flex-end'
-    // top:0,
-    // right: 4
-    //flexDirection: 'row',
-    //alignItems: 'center',
-    //width: '100%'
+    alignItems: 'center'
   },
   videoStatsTxt: {
     color: Colors.white,
