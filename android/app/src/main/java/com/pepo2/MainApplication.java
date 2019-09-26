@@ -6,6 +6,7 @@ import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
 import com.dooboolab.RNIap.RNIapPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
+import com.pepo2.bridge.PepoNativePackage;
 import com.proyecto26.inappbrowser.RNInAppBrowserPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
@@ -50,6 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
 
       return Arrays.<ReactPackage>asList(
+            new PepoNativePackage(),
             new MainReactPackage(),
             new RNIapPackage(),
             new RNReactNativeHapticFeedbackPackage(),

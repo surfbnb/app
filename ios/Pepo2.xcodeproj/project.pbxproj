@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00029B4323329B55009E6919 /* TrustKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B76D86A2318FAAC007316D4 /* TrustKit.framework */; };
 		00029B4423329B63009E6919 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
@@ -13,6 +14,7 @@
 		000C67FF22D764EA0095497C /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 000C67FB22D764EA0095497C /* TwitterKitResources.bundle */; };
 		000C680022D764EA0095497C /* TwitterShareExtensionUIResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 000C67FC22D764EA0095497C /* TwitterShareExtensionUIResources.bundle */; };
 		000C680222D764F70095497C /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000C680122D764F70095497C /* Twitter.framework */; };
+		000D4D7C233CD19D003403E6 /* PepoNativeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 000D4D7B233CD19D003403E6 /* PepoNativeHelper.m */; };
 		00228407232FD8EE00B3F25C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 00228405232FD8EE00B3F25C /* GoogleService-Info.plist */; };
 		00281BA822DC7E6E00C0E079 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00281B7822DC7E6E00C0E079 /* AudioToolbox.framework */; };
 		00281BAA22DC7E7800C0E079 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00281BA922DC7E7800C0E079 /* AVFoundation.framework */; };
@@ -593,6 +595,8 @@
 		000C67FB22D764EA0095497C /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TwitterKitResources.bundle; sourceTree = "<group>"; };
 		000C67FC22D764EA0095497C /* TwitterShareExtensionUIResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TwitterShareExtensionUIResources.bundle; sourceTree = "<group>"; };
 		000C680122D764F70095497C /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		000D4D7A233CD19D003403E6 /* PepoNativeHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PepoNativeHelper.h; path = Pepo2/PepoNativeHelper.h; sourceTree = "<group>"; };
+		000D4D7B233CD19D003403E6 /* PepoNativeHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PepoNativeHelper.m; path = Pepo2/PepoNativeHelper.m; sourceTree = "<group>"; };
 		00228405232FD8EE00B3F25C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		00281B7822DC7E6E00C0E079 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		00281BA922DC7E7800C0E079 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1130,6 +1134,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				000D4D7A233CD19D003403E6 /* PepoNativeHelper.h */,
+				000D4D7B233CD19D003403E6 /* PepoNativeHelper.m */,
 			);
 			name = Pepo2;
 			sourceTree = "<group>";
@@ -2179,6 +2185,7 @@
 				00B7D5822332992B0035BC00 /* OstRNSdkUICallbackManager.m in Sources */,
 				00B7D57B2332992B0035BC00 /* OstVerifyDataWrap.m in Sources */,
 				00B7D5802332992B0035BC00 /* OstMessageBus.m in Sources */,
+				000D4D7C233CD19D003403E6 /* PepoNativeHelper.m in Sources */,
 				00B7D5832332992B0035BC00 /* OstWalletRnSdkUI.m in Sources */,
 				00B7D57C2332992B0035BC00 /* OstDeviceRegisteredWrap.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,

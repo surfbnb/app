@@ -38,6 +38,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
 import ReduxGetters from '../../services/ReduxGetters';
 import DeviceInfo from 'react-native-device-info';
+import PepoNativeHelper from '../../helpers/PepoNativeHelper';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -87,6 +88,16 @@ class TransactionScreen extends Component {
     this.onBalance(ReduxGetters.getBalance());
     //Make a background call for sync balance.
     this.getBalance();
+    PepoNativeHelper.getGroupAndDecimalSeparators((groupSeparator, decimalSeparator)=> {
+      console.log("Got decimalSeparator", decimalSeparator, "groupSeparator", groupSeparator);
+
+      this.groupSeparator = groupSeparator;
+      this.decimalSeparator = decimalSeparator;
+
+    }, (error)=> {
+      this.groupSeparator = ',';
+      this.decimalSeparator = '.';
+    })
   }
 
   _keyboardShown(e) {
@@ -117,6 +128,17 @@ class TransactionScreen extends Component {
   onBtChange(bt) {
     if (!this.priceOracle) return;
 
+    if (!this._isValidInputProvided(bt)) {
+      let errMsg = this._getErrorMessage(bt);
+      this.setState({
+        btAmount: bt,
+        btUSDAmount: '',
+        btAmountErrorMsg: errMsg
+      });
+
+      return;
+    }
+
     let formattedVal = this._convertToValidFormat(bt)
       , val = this._getFullStopValue(formattedVal)
       , usdVal = this.priceOracle.btToFiat(val)
@@ -136,6 +158,17 @@ class TransactionScreen extends Component {
   onUSDChange(usd) {
     if (!this.priceOracle) return;
 
+    if (!this._isValidInputProvided(usd)) {
+      let errMsg = this._getErrorMessage(usd)
+      this.setState({
+        btAmount: '',
+        btUSDAmount: usd,
+        btAmountErrorMsg: errMsg
+      });
+
+      return;
+    }
+
     let formattedVal = this._convertToValidFormat(usd)
       , val = this._getFullStopValue(formattedVal)
       , btVal = this.priceOracle.fiatToBt(val)
@@ -146,74 +179,63 @@ class TransactionScreen extends Component {
     this.clearFieldErrors();
   }
 
-  getDecimalGroupSeperators(){
-    let locale = DeviceInfo.getDeviceLocale();
-    // if (Platform.OS === 'ios') {
-    //   locale = NativeModules.SettingsManager.settings.AppleLocale; // "fr_FR"
-    // }else {
-    //   locale = NativeModules.I18nManager.localeIdentifier; // "fr_FR"
-    // }
+  _isValidInputProvided(val) {
+    let separators = this.getDecimalGroupSeparators()
+      , decimalSeparator = separators[1]
+      , regex = new RegExp(['[^0-9'+decimalSeparator+']+'],'g')
+      , matchStrs = val.match(regex)
+    ;
 
-    if (!locale) {
-      locale = 'en-US';
-    }else {
-      locale = locale.replace('_','-'); // toLocaleString requires '-' separated
+    if (matchStrs && matchStrs.length > 0) {
+      return false;
     }
 
-    let num = 1000.1,
-      groupSeperator = "",
-      decimalSeperator = "",
-      formatedNum = num.toLocaleString(locale);
+    return true;
+  }
 
-    formatedNum = formatedNum.split("");
-    if(formatedNum[1] != 0){
-      groupSeperator = formatedNum[1];
-      decimalSeperator = formatedNum[formatedNum.length-2]
-    }else{
-      groupSeperator = '';
-      decimalSeperator = formatedNum[formatedNum.length-2]
-    }
-    return [groupSeperator, decimalSeperator]
+  getDecimalGroupSeparators(){
+    return [this.groupSeparator, this.decimalSeparator];
   }
 
   _convertToValidFormat(val) {
 
-    let sperators = this.getDecimalGroupSeperators()
-      , groupSeperator = sperators[0]
-      , decimalSeperator = sperators[1]
+    let separators = this.getDecimalGroupSeparators()
+      , groupSeparator = separators[0]
+      , decimalSeparator = separators[1]
+      , regex = new RegExp(['[^0-9'+decimalSeparator+']+'],'g')
     ;
 
-    val = val.replace(groupSeperator, '');
+    val = val.split(regex).join('')
 
-    let splitArray = val.split(decimalSeperator);
+    let splitArray = val.split(decimalSeparator);
 
     if (splitArray.length > 1) {
       let firstVal = splitArray[0];
       splitArray.shift();
       let decimalVal = splitArray.join('');
 
-      val = firstVal+decimalSeperator+decimalVal;
+      val = firstVal+decimalSeparator+decimalVal;
     }
 
     return val
   };
 
   _getFullStopValue(val) {
-    let sperators = this.getDecimalGroupSeperators()
-      , decimalSeperator = sperators[1]
+    let sperators = this.getDecimalGroupSeparators()
+      , decimalSeparator = sperators[1]
     ;
 
-    val = String(val).replace(decimalSeperator, '.');
+    val = String(val).replace(decimalSeparator, '.');
 
     return val
   }
 
   _getFormattedValue(valTobeFormatted) {
-    let sperators = this.getDecimalGroupSeperators()
-      , decimalSeperator = sperators[1]
+    let sperators = this.getDecimalGroupSeparators()
+      , decimalSeparator = sperators[1]
     ;
 
-    valTobeFormatted = valTobeFormatted.replace('.', decimalSeperator);
+    valTobeFormatted = valTobeFormatted.replace('.', decimalSeparator);
 
     return valTobeFormatted
   }
@@ -230,20 +252,29 @@ class TransactionScreen extends Component {
     this.excecuteTransaction();
   };
 
-  isValidInput(btAmount) {
+  _getErrorMessage(btAmount) {
     if (btAmount && String(btAmount).indexOf(',') > -1) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_decimal_error') });
-      return false;
+      return ostErrors.getUIErrorMessage('bt_amount_decimal_error');
     }
     if (btAmount && String(btAmount).split('.')[1] && String(btAmount).split('.')[1].length > 2) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error') });
-      return false;
+      return ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error');
     }
     btAmount = btAmount && Number(btAmount);
     if (!btAmount || btAmount < validMinAmount || btAmount > this.state.balance) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
+      return ostErrors.getUIErrorMessage('bt_amount_error');
+    }
+
+    return undefined;
+  }
+
+
+  isValidInput(btAmount) {
+    let errorMessage = this._getErrorMessage(btAmount)
+    if (errorMessage) {
+      this.setState({ btAmountErrorMsg: errorMessage });
       return false;
     }
+
     return true;
   }
 
