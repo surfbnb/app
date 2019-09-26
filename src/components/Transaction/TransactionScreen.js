@@ -200,12 +200,11 @@ class TransactionScreen extends Component {
   _convertToValidFormat(val) {
 
     let separators = this.getDecimalGroupSeparators()
-      , groupSeparator = separators[0]
       , decimalSeparator = separators[1]
-      , regex = new RegExp(['[^0-9'+decimalSeparator+']+'],'g')
+      , regex = new RegExp(['[^0-9\\'+decimalSeparator+']+'],'g')
     ;
 
-    val = val.split(regex).join('')
+    val = val.split(regex).join('');
 
     let splitArray = val.split(decimalSeparator);
 

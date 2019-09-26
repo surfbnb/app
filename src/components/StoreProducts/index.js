@@ -3,7 +3,6 @@ import {
     View,
     Text,
     TouchableWithoutFeedback,
-    BackHandler,
     Platform,
     Animated,
     Easing,
@@ -31,7 +30,7 @@ import { ostErrors } from '../../services/OstErrors';
 class StoreProductsScreen extends PureComponent{
 
     constructor(props){
-        super(props); 
+        super(props);
 
         this.state = {
             loadingProducts : true,
@@ -54,7 +53,6 @@ class StoreProductsScreen extends PureComponent{
         paymentEvents.on( paymentEventsMap.paymentBESyncSuccess , ()=> {
             this.props.navigation.goBack();
         } );
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
     componentWillUnmount(){
@@ -65,7 +63,6 @@ class StoreProductsScreen extends PureComponent{
         paymentEvents.removeListener(paymentEventsMap.paymentIAPSuccess);
         paymentEvents.removeListener(paymentEventsMap.paymentIAPError);
         paymentEvents.removeListener( paymentEventsMap.paymentBESyncSuccess);
-        BackHandler.removeEventListener('hardwareBackPress');
     }
 
     fetchProducts = () => {
@@ -92,8 +89,8 @@ class StoreProductsScreen extends PureComponent{
 
     isMaxLimitReached( res ){
         const limitReached =  deepGet(res,  dataContract.payments.purchaseThresholdReachedKeyPath) ,
-              limit = deepGet(res,  dataContract.payments.purchaseThresholdValueKeyPath) 
-        ; 
+              limit = deepGet(res,  dataContract.payments.purchaseThresholdValueKeyPath)
+        ;
         if(limit){
             this.thresholdLimit = limit ;
         }
@@ -105,10 +102,10 @@ class StoreProductsScreen extends PureComponent{
 
     setProductIds( res ){
         const   result_type = deepGet(res, dataContract.common.resultType),
-                products = deepGet(res, `data.${result_type}`); 
+                products = deepGet(res, `data.${result_type}`);
         this.productIds = products.map( (product) => {
-            return product.id ; 
-        }); 
+            return product.id ;
+        });
     }
 
     fetchProductsFromStore = () =>{
@@ -116,7 +113,7 @@ class StoreProductsScreen extends PureComponent{
     }
 
     onFetchStoreProductSuccess = ( products ) => {
-        this.products = products ;  
+        this.products = products ;
         this.setState({ loadingProducts : false});
     }
 
@@ -128,9 +125,9 @@ class StoreProductsScreen extends PureComponent{
     onRequestPurchase = ( skuId ) => {
         if(!skuId) return;
         paymentEvents.emit(paymentEventsMap.paymentIAPStarted);
-        this.productId = skuId ; 
+        this.productId = skuId ;
         this.setState({isPurchasing: true});
-        //View controll ends here. 
+        //View controll ends here.
         StorePayments.requestPurchase( skuId );
     }
 
@@ -187,10 +184,10 @@ class StoreProductsScreen extends PureComponent{
             <View style={inlineStyles.viewWrapper}>
                 <Image source={toastError} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
                 <Text style={{textAlign: "center"}}>
-                  {errorMsg || ostErrors.getUIErrorMessage("top_not_available")} 
+                  {errorMsg || ostErrors.getUIErrorMessage("top_not_available")}
                 </Text>
             </View>
-        )  
+        )
     }
 
     getThresholdReachedMarkUp = () => {
@@ -240,7 +237,7 @@ class StoreProductsScreen extends PureComponent{
                     </TouchableWithoutFeedback>
                   ))}
                 </ScrollView>
-            </View>    
+            </View>
         )
     }
 
@@ -249,21 +246,16 @@ class StoreProductsScreen extends PureComponent{
         if(this.isProductFetchError){
             return this.getErrorMarkup();
         } else if(this.maxThresholdReached){
-            return this.getThresholdReachedMarkUp(); 
+            return this.getThresholdReachedMarkUp();
         }else if(this.products.length <  1 ){
-            return this.getNoProductsMarkUp(); 
+            return this.getNoProductsMarkUp();
         }else{
-            return this.getProductsMarkUp(); 
+            return this.getProductsMarkUp();
         }
     }
 
     closeModal = () => {
         this.props.navigation.goBack();
-        return true ;
-    }
-
-    handleBackButtonClick = () => {
-        return this.closeModal();
     }
 
     render(){

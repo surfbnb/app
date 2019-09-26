@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00029B4323329B55009E6919 /* TrustKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B76D86A2318FAAC007316D4 /* TrustKit.framework */; };
 		00029B4423329B63009E6919 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
@@ -24,6 +23,7 @@
 		00281BB422DC813400C0E079 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 00281BB322DC813400C0E079 /* libbz2.1.0.tbd */; };
 		002AAB6D22E6177E000E153B /* libRNCCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00065C3C22E5ED9C008F3EDF /* libRNCCameraRoll.a */; };
 		003EBBBA22F87C73008C5DF4 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003EBB7F22F87C5D008C5DF4 /* libART.a */; };
+		004112FC233D182B0076FEDD /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90D1E5C6233C9D7300EBC4D9 /* libRNCWebView.a */; };
 		00470EE522DC7A8100FC8345 /* RNFFmpegModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 00470EA922DC7A8100FC8345 /* RNFFmpegModule.m */; };
 		00470EF222DC7C7D00FC8345 /* x264.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EE622DC7C7D00FC8345 /* x264.framework */; };
 		00470EF322DC7C7D00FC8345 /* libavfilter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EE722DC7C7D00FC8345 /* libavfilter.framework */; };
@@ -37,6 +37,7 @@
 		00470EFB22DC7C7D00FC8345 /* libswresample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EEF22DC7C7D00FC8345 /* libswresample.framework */; };
 		00470EFC22DC7C7D00FC8345 /* libvidstab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EF022DC7C7D00FC8345 /* libvidstab.framework */; };
 		00470EFD22DC7C7D00FC8345 /* xvidcore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00470EF122DC7C7D00FC8345 /* xvidcore.framework */; };
+		0054911F233D143600692D50 /* libRNIap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005B8DC5231E7C1600B240DB /* libRNIap.a */; };
 		005B8D62231E7BBD00B240DB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 005B8D61231E7BBD00B240DB /* StoreKit.framework */; };
 		00B7D5782332992B0035BC00 /* BaseSdkInteract.m in Sources */ = {isa = PBXBuildFile; fileRef = 00B7D55A2332992B0035BC00 /* BaseSdkInteract.m */; };
 		00B7D5792332992B0035BC00 /* OstPinAcceptWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 00B7D55C2332992B0035BC00 /* OstPinAcceptWrap.m */; };
@@ -77,7 +78,6 @@
 		0BD0080023E44AFCA2D1AA46 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08D7C506430143C8AB61A4BA /* Foundation.ttf */; };
 		108A6E98F43648CDB5F2EF3C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95CD1DED238D4513AB4C5191 /* MaterialIcons.ttf */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		12B8EAA7662D4CA9AA43460D /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2AB22225D74E6496659BC7 /* libRNCWebView.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -103,7 +103,6 @@
 		5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F11DD15287DC4605913C28BE /* Roboto_medium.ttf */; };
 		65CD6A21EC164A9A8F14A9A3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAB07333EF0A462BB5571B78 /* Zocial.ttf */; };
 		6C300736152B4242B645C0CA /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F406518F2D434EC0A78FA040 /* AntDesign.ttf */; };
-		717EB7B076EF4A4AAE33436E /* libRNIap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A0BC22B8B25470A8142B471 /* libRNIap.a */; };
 		77280AE9DDE14F90B1ACDAF8 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4644A8D258C5493CAD1FB4CE /* SimpleLineIcons.ttf */; };
 		7766C64E22DD9FD000C019D8 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7766C64822DD9FB000C019D8 /* libRNFS.a */; };
 		779F2EEC22D7CEA60076410B /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 779F2ECE22D7CE180076410B /* libRCTVideo.a */; };
@@ -764,6 +763,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				004112FC233D182B0076FEDD /* libRNCWebView.a in Frameworks */,
+				0054911F233D143600692D50 /* libRNIap.a in Frameworks */,
+				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */,
 				4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */,
 				4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */,
@@ -823,16 +825,13 @@
 				00E5D8FD232A556F006EA3DE /* GoogleDataTransport.framework in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
-				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				002AAB6D22E6177E000E153B /* libRNCCameraRoll.a in Frameworks */,
 				003EBBBA22F87C73008C5DF4 /* libART.a in Frameworks */,
 				00029B4323329B55009E6919 /* TrustKit.framework in Frameworks */,
 				00029B4423329B63009E6919 /* OstWalletSdk.framework in Frameworks */,
 				447300E3C09042CFA23D5C9F /* libRNFirebase.a in Frameworks */,
-				717EB7B076EF4A4AAE33436E /* libRNIap.a in Frameworks */,
 				00E5D8FE232A556F006EA3DE /* GoogleDataTransportCCTSupport.framework in Frameworks */,
 				85A8F833EBFA49C5B547D4BC /* libRNReactNativeHapticFeedback.a in Frameworks */,
-				12B8EAA7662D4CA9AA43460D /* libRNCWebView.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -877,7 +876,6 @@
 			isa = PBXGroup;
 			children = (
 				BB47A46149204503A9909BC7 /* libRNFirebase.a */,
-				D930902C2C7147109E9E682B /* libRNInAppBrowser.a */,
 				01EA3FBA55B042D89B057E41 /* libRNReactNativeHapticFeedback.a */,
 				9A0BC22B8B25470A8142B471 /* libRNIap.a */,
 				4BFFD401232D3D930033959D /* GoogleService-Info.plist */,
@@ -2262,9 +2260,7 @@
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2321,9 +2317,7 @@
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
