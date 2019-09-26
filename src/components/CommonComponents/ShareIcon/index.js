@@ -6,7 +6,7 @@ import inlineStyles from './styles';
 import multipleClickHandler from "../../../services/MultipleClickHandler";
 import ShareVideo from "../../../services/shareVideo";
 
-import share_icon from '../../../assets/share_icon.png';
+import share_icon from '../../../assets/profile-share-icon.png';
 import share_icon_disabled from '../../../assets/share_icon_disabled.png';
 
 const mapStateToProps = (state , ownProps) => {
@@ -33,8 +33,9 @@ class ShareIcon extends PureComponent {
   render(){
     return (<TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem}
                               disabled={this.isDisabled()}
+                              style={{marginBottom: 15, height: 50, width: 50, alignItems: 'center', justifyContent: 'center'}}
                               onPress={multipleClickHandler(() => this.shareVideo())} >
-              <Image style={{ height: 48, width: 48 }} source={this.isDisabled() ? share_icon_disabled : share_icon} />
+              <Image style={{ height: 34, width: 39 }} source={this.isDisabled() ? share_icon_disabled : share_icon} />
           </TouchableOpacity>);
   }
 

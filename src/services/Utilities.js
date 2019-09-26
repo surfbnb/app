@@ -12,9 +12,10 @@ import { LoginPopoverActions } from '../components/LoginPopover';
 import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
-import NavigationService from '../services/NavigationService';
-import { NavigateTo } from '../helpers/navigateTo';
 import AppConfig from '../constants/AppConfig';
+
+let os = Platform.OS || "";
+os =  os.toLowerCase();
 
 let recursiveMaxCount = 0;
 
@@ -167,5 +168,9 @@ export default {
   isEntityDeleted (res){
     let status = deepGet(res ,  "err.code") || "";
     return status.toLowerCase() == AppConfig.beKnownErrorCodeMaps.entityDeleted ;
+  },
+
+  getNativeStoreName(){
+    return deepGet(AppConfig.nativeStoreMap , `${os}.storeName` , "store");
   }
 };

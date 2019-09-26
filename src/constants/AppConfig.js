@@ -210,8 +210,17 @@ export default {
   },
 
   paymentFlowMessages : {
-    transactionSuccess: "Payment done successfully.",
-    transactionPending: "Payment processing will take some time please wait." ,
-    sendingPepo: "Sending Pepos please wait"
+    transactionSuccess: "Your account is recharged.",
+    transactionPending: "We are processing your transaction we'll update you shortly." ,
+    sendingPepo: "Sending Pepos please wait."
+  },
+
+  nativeStoreMap : {
+    ios : {
+      storeName : "app store" 
+    },
+    android: {
+      storeName: "play store"
+    }
   }
 };
