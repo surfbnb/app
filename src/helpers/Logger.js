@@ -23,7 +23,7 @@ const buildCustomMethod = ( methodName ) => {
 }
 
 let allowedMethods = [];
-if ( IS_PRODUCTION ) {
+if ( IS_PRODUCTION || IS_SANDBOX || IS_STAGING ) {
   allowedMethods = [
     "warn",
     "info"
