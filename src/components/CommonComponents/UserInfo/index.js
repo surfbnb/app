@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Linking, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import { withNavigation } from 'react-navigation';
@@ -13,6 +13,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import Pricer from '../../../services/Pricer';
 import InAppBrowser from '../../../services/InAppBrowser';
+import profileLink from '../../../assets/profile_link.png';
+import twitterLink from '../../../assets/twitter_link.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -23,7 +25,9 @@ const mapStateToProps = (state, ownProps) => {
     supporters: reduxGetter.getUserSupporters(ownProps.userId, state),
     supporting: reduxGetter.getUsersSupporting(ownProps.userId, state),
     btAmount: reduxGetter.getUsersBt(ownProps.userId, state),
-    approvedCreater: reduxGetter.isCreatorApproved(ownProps.userId, state)
+    approvedCreater: reduxGetter.isCreatorApproved(ownProps.userId, state),
+    twitterHandle : reduxGetter.getUserTwitterHandle(ownProps.userId, state),
+    twitterHandleLink : reduxGetter.getUserTwitterHandleLink(ownProps.userId, state),
   };
 };
 
@@ -125,16 +129,28 @@ class UserInfo extends React.PureComponent {
           </View>
         </View>
         {!!this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>}
+        <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginTop: 10}}>
         {!!this.props.link && (
+          <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center'}}>
+            <Image source={profileLink} style={{height:9,width:18,marginTop:5}}></Image>
           <Text
-            style={[{ color: Colors.summerSky, textAlign: 'center', marginTop: 10 }]}
+            style={[{ color: Colors.pinkRed, textAlign: 'center',paddingLeft:5 }]}
             onPress={() => {
               InAppBrowser.openBrowser(this.props.link);
             }}
           >
             {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
           </Text>
+          </View>
         )}
+          <View style={{paddingLeft:20,flexDirection:'row', alignItems:'center',justifyContent:'center'}}>
+            <Image style={{height:15,width:18}} source={twitterLink}></Image>
+            <Text
+              style={[{paddingLeft:5, color: Colors.summerSky, textAlign: 'center',}]}
+              onPress={() => {Linking.openURL(this.props.twitterHandleLink);}}>{this.props.twitterHandle}
+            </Text>
+          </View>
+        </View>
         {this.props.videoInReviewHeader || <View style={{height:15}} />}
       </View>
     );

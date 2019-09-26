@@ -13,6 +13,7 @@ const MaxSpendingLimitStaging = new BigNumber('1000').multipliedBy(B18);
 const BundleConstants = {
   'com.pepo.staging': {
     API_ROOT: 'https://stagingpepo.com/api/v1',
+    WEB_ROOT: 'https://pepo:Pepo-Admin-20!9*@stagingpepo.com',
     PLATFORM_API_ENDPOINT: 'https://api.stagingost.com/testnet/v2',
     TRACKER_ENDPOINT: 'https://px.pepo.com/devp101_pixel.png',
     TOKEN_ID: '1185',
@@ -27,6 +28,7 @@ const BundleConstants = {
   },
   'com.pepo.sandbox': {
     API_ROOT: 'https://sandboxpepo.com/api/v1',
+    WEB_ROOT: 'https://pepo:Pepo-Admin-20!9*@sandboxpepo.com',
     PLATFORM_API_ENDPOINT: 'https://api.ost.com/testnet/v2',
     TRACKER_ENDPOINT: 'https://px.pepo.com/ps501_pixel.png',
     TOKEN_ID: '1506',
@@ -41,6 +43,7 @@ const BundleConstants = {
   },
   'com.pepo.v2.production': {
     API_ROOT: 'https://pepo.com/api/v1',
+    WEB_ROOT: 'https://pepo.com',
     PLATFORM_API_ENDPOINT: 'https://api.ost.com/mainnet/v2',
     TRACKER_ENDPOINT: 'https://px.pepo.com/pp1001_pixel.png',
     TOKEN_ID: '1009',
@@ -58,6 +61,7 @@ const BundleConstants = {
 console.log(`Exporting constants for Bundle ID ${DeviceInfo.getBundleId()}`);
 
 export const API_ROOT = BundleConstants[DeviceInfo.getBundleId()].API_ROOT;
+export const WEB_ROOT = BundleConstants[DeviceInfo.getBundleId()].WEB_ROOT;
 export const PLATFORM_API_ENDPOINT = BundleConstants[DeviceInfo.getBundleId()].PLATFORM_API_ENDPOINT;
 export const TRACKER_ENDPOINT = BundleConstants[DeviceInfo.getBundleId()].TRACKER_ENDPOINT;
 export const TOKEN_ID = BundleConstants[DeviceInfo.getBundleId()].TOKEN_ID;

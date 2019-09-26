@@ -196,3 +196,10 @@ export const upsertInviteCode = (data) => ({
     invite_code: data
   }
 });
+
+export const upsertTwitterEntities = (data) => ({
+  type: types.UPSERT_TWITTER_ENTITIES,
+  payload: {
+    twitter_entities: data
+  }
+});

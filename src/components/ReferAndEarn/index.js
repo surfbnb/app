@@ -13,6 +13,7 @@ import InAppBrowser from '../../services/InAppBrowser';
 import BackArrow from '../CommonComponents/BackArrow';
 import { ScrollView } from 'react-native-gesture-handler';
 import PepoApi from '../../services/PepoApi';
+import { WEB_ROOT } from '../../constants/index';
 
 class ReferAndEarn extends Component {
   static navigationOptions = (options) => {
@@ -200,7 +201,7 @@ class ReferAndEarn extends Component {
           <TouchableOpacity
             onPress={multipleClickHandler(() => {
               InAppBrowser.openBrowser(
-                'https://pepo.com/terms'
+                  `${WEB_ROOT}/terms`
               );
             })}
             activeOpacity={0.2}

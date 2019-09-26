@@ -46,7 +46,8 @@ export const {
   upsertNotificationUnread,
   upsertPushNotification,
   clearPushNotification,
-  upsertInviteCode
+  upsertInviteCode,
+  upsertTwitterEntities,
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -78,7 +79,8 @@ const defaultState = {
   balance: null,
   isPurchase: false,
   notification_unread: {},
-  invite_code: null
+  invite_code: null,
+  twitter_entities : {},
 };
 
 const logoutDefault = {
@@ -104,7 +106,8 @@ const logoutDefault = {
   push_notification: {},
   balance: null,
   notification_unread: {},
-  invite_code: null
+  invite_code: null,
+  twitter_entities : null,
 };
 
 export const reducer = handleActions(
@@ -271,6 +274,10 @@ export const reducer = handleActions(
     [upsertInviteCode]: (state, action) => ({
       ...state,
       invite_code: action.payload.invite_code
+    }),
+    [upsertTwitterEntities]: (state, action) => ({
+      ...state,
+      twitter_entities: assignIn({}, state.twitter_entities, action.payload.twitter_entities)
     })
   },
   defaultState

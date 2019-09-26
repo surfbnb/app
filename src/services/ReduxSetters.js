@@ -30,7 +30,8 @@ const knownEntitiesDispatcherMap = {
   feeds: 'upsertHomeFeedEntities',
   notification_unread: 'notification_unread',
   feed: 'upsertHomeFeedEntities',
-  upsert_push_notification: 'upsertPushNotification'
+  upsert_push_notification: 'upsertPushNotification',
+  twitter_users : 'upsertTwitterEntities'
 
 };
 

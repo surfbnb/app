@@ -13,6 +13,7 @@ import twitterBird from '../../assets/twitter-bird.png';
 import modalCross from '../../assets/modal-cross-icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
+import { WEB_ROOT } from '../../constants/index';
 
 const mapStateToProps = ({ login_popover }) => ({
   show: login_popover.show
@@ -132,14 +133,14 @@ class loginPopover extends React.Component {
                         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
                           this.closeModal();
                           InAppBrowser.openBrowser(
-                            'https://pepo.com/terms'
+                            `${WEB_ROOT}/terms`
                           );
                         })}>Terms of use </Text>
                         <Text style={inlineStyles.termsTextBlack}>and have read and agree to our </Text>
                         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
                           this.closeModal();
                           InAppBrowser.openBrowser(
-                            'https://pepo.com/privacy'
+                              `${WEB_ROOT}/privacy`
                           );
                         })}>Privacy Policy</Text>
                       </Text>
