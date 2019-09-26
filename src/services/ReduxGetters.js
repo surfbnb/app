@@ -53,6 +53,15 @@ class ReduxGetters {
     return deepGet(state, `user_entities.id_${id}.user_name`);
   }
 
+  getUserTwitterHandle(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `twitter_entities.id_${id}.handle`);
+  }
+  getUserTwitterHandleLink(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `twitter_entities.id_${id}.link`);
+  }
+
   getName(id, state) {
     state = state || Store.getState();
     return unescape(deepGet(state, `user_entities.id_${id}.name`));
