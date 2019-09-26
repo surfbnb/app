@@ -37,6 +37,7 @@ import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
 import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
 import ReduxGetters from '../../services/ReduxGetters';
+import DeviceInfo from 'react-native-device-info';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -146,12 +147,12 @@ class TransactionScreen extends Component {
   }
 
   getDecimalGroupSeperators(){
-    let locale;
-    if (Platform.OS === 'ios') {
-      locale = NativeModules.SettingsManager.settings.AppleLocale; // "fr_FR"
-    }else {
-      locale = NativeModules.I18nManager.localeIdentifier; // "fr_FR"
-    }
+    let locale = DeviceInfo.getDeviceLocale();
+    // if (Platform.OS === 'ios') {
+    //   locale = NativeModules.SettingsManager.settings.AppleLocale; // "fr_FR"
+    // }else {
+    //   locale = NativeModules.I18nManager.localeIdentifier; // "fr_FR"
+    // }
 
     if (!locale) {
       locale = 'en-US';
