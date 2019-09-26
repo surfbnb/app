@@ -53,7 +53,7 @@ export default {
   "add_session": {
     "get_pin": {
       "title_label": {
-        "text": "Create Session"
+        "text": "Authorize New Session"
       },
       "lead_label": {
         "text": "Add a 6-digit PIN to secure your wallet"
@@ -83,13 +83,13 @@ export default {
       },
       "cell": {
         "action_button": {
-          "text": "Start Recovery"
+          "text": "Start recovery"
         }
       }
     },
     "get_pin": {
       "title_label": {
-        "text": "Recover Access to Your Wallet"
+        "text": "Recover access to your wallet"
       },
       "lead_label": {
         "text": "Enter your 6-digit PIN to recover access to your wallet"
@@ -125,7 +125,7 @@ export default {
       }
     },
     "loader": {
-      "text": "Aborting Recovery..."
+      "text": "Aborting recovery..."
     },
     "initial_loader": {
       "text": "Initializing..."
@@ -210,10 +210,10 @@ export default {
 
     "set_new_pin": {
       "title_label": {
-        "text": "Add New Pin"
+        "text": "Create A New PIN"
       },
       "lead_label": {
-        "text": "Add a 6-digit PIN to secure your wallet"
+        "text": "Add a 6-digit PIN to secure your wallet."
       },
       "info_label":{
         "text":  ""
@@ -228,7 +228,7 @@ export default {
         "text": "Confirm New Pin"
       },
       "lead_label": {
-        "text": "If you forget your PIN, you cannot recover your wallet"
+        "text": "Please make sure to remember your PIN. If you forget your PIN you will not be able to recover your wallet."
       },
       "info_label":{
         "text":  ""
@@ -241,7 +241,7 @@ export default {
       "text": "Resetting Pin..."
     },
     "initial_loader": {
-      "text": "Initializing..."
+      "text": "Processing...."
     }
   },
 
@@ -251,7 +251,7 @@ export default {
         "text": "View Mnemonics"
       },
       "lead_label": {
-        "text": "Enter your 6-digit PIN to authorize your action"
+        "text": "Please authenticate to confirm."
       },
       "info_label":{
         "text":  ""
@@ -266,17 +266,17 @@ export default {
         "text": "View Mnemonics"
       },
       "info_label": {
-        "text": "Write down your 12-word mnemonic phrase and store them securely"
+        "text": "Write down your 12-word mnemonic phrase and store them securely."
       },
       "bottom_label": {
-        "text": "You can write the phrases down in a piece of paper or save in a password manager. Don’t email them or screenshot them. The order of words are important too."
+        "text": "Write the 12 words on a piece of paper or save them in a password manager. Don't email them or screenshot them. The order of the words is important."
       }
     },
     "loader": {
-      "text": "Getting Mnemonics..."
+      "text": "Fetching Mnemonics..."
     },
     "initial_loader": {
-      "text": "Initializing..."
+      "text": "Fetching mnemonics..."
     }
   },
 
@@ -286,7 +286,7 @@ export default {
         "text": "Add device with mnemonics"
       },
       "lead_label": {
-        "text": "Enter your 6-digit PIN to authorize your action"
+        "text": "Enter your 6-digit PIN"
       },
       "info_label":{
         "text":  ""
@@ -298,13 +298,13 @@ export default {
 
     "provide_mnemonics": {
       "title_label": {
-        "text": "Enter Recovery Phrase"
+        "text": "Enter 12 Word Mnemonic Phrase"
       },
       "info_label": {
-        "text": "Please enter the 12-word recovery phrase that you wrote down."
+        "text": "Please enter the 12-word recovery phrase that you wrote down, in exact order."
       },
       "bottom_label": {
-        "text": "If you don’t have the recovery phrase, try using PIN or a second authorized device."
+        "text": "If you do not have the recovery phrase, try recovery using PIN."
       },
       "action_button": {
         "text": "Authorize Device"

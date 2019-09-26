@@ -157,16 +157,19 @@ class VideoRecorder extends Component {
           {this.state.acceptedCameraTnC != 'true' && (
             <View style={styles.backgroundStyle}>
               <View style={{ padding: 26 }}>
-                <Text style={styles.headerText}>Some Tips to help you get started on your first fan update</Text>
+                <Text style={styles.headerText}>Submit your first video</Text>
 
                 <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
 
-                <Text style={styles.headerText}>One More thing!</Text>
+                <Text style={styles.headerText}>Approval process</Text>
 
                 <Text style={styles.smallText}>
-                  Pepo has a review process for creators. Our team will help you get started once you create your first
-                  video. Once approved your video will appear in the feed or other user. In the mean time we will send
-                  you timly updates about the review process
+                  Create a 30 second video update. Share what you're working on, what excites you, or anything on your
+                  mind.
+                </Text>
+                <Text style={styles.smallText}>
+                  The Pepo team will review your first video before it is shared publicly. We'll get in touch with you
+                  ASAP!
                 </Text>
 
                 <LinearGradient

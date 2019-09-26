@@ -187,10 +187,10 @@ class InviteCodeScreen extends React.Component {
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
               <Text style={[inlineStyles.desc, { marginBottom: 10, fontSize: 18 }]}>
-                Looks like your account is not whitelisted
+                Your Twitter account has not been activated for Pepo.
               </Text>
               <Text style={[inlineStyles.desc, { fontFamily: 'AvenirNext-Regular' }]}>
-                To activite your account you can either join via a invite link or enter a referal code below.
+                If you have an invite code, please enter it below. If not, try tweeting asking for invite to @thepepoapp #pepo
               </Text>
               <FormInput
                 onChangeText={this.onChangeText}

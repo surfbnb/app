@@ -30,7 +30,7 @@ export default class ConfirmPin extends Component {
 
   onPinChange = (pin, resetPinCallback) => {
     if (pin === this.props.navigation.getParam('pin', '')) {
-      LoadingModal.show('Activating User...');
+      LoadingModal.show('Activating...', 'This may take a while,\n we are surfing on Blockchain');
       ActivateUser.activateUser(pin, this);
     } else {
       if (resetPinCallback) {
@@ -59,7 +59,7 @@ export default class ConfirmPin extends Component {
       <View style={{ flex: 1 }}>
         <View style={inlineStyles.container}>
           <Text style={inlineStyles.confirmPinInfoText}>
-            If you forget your PIN, you cannot recover your Wallet. So please be sure to remember it.
+            Please make sure to remember your PIN. If you forget your PIN you will not be able to recover your wallet.
           </Text>
           <PinInput {...this.props} onPinChange={this.onPinChange} />
         </View>

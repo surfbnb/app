@@ -115,10 +115,13 @@ class loginPopover extends React.Component {
                         }
                       ]}
                     >
-                      Pepo is a place to discover and support creators.
+                      Meet the people shaping the crypto movement.
                     </Text>
                     <Text style={inlineStyles.desc}>
-                      Pepo is currently invite only, connect with Twitter to know if your account is whitelisted!
+                      Pepo is currently invite only.
+                    </Text>
+                    <Text style={inlineStyles.desc}>
+                      Connect Twitter to see if you have access.
                     </Text>
                     <TouchableButton
                       TouchableStyles={[
@@ -142,7 +145,8 @@ class loginPopover extends React.Component {
                     />
                     <View style={inlineStyles.tocPp}>
                       <Text style={{textAlign: 'center'}}>
-                        <Text style={inlineStyles.termsTextBlack}>By signing up, you confirm that you agree to our </Text>
+                        <Text style={inlineStyles.termsTextBlack}>By signing up, you confirm that you agree to
+                          our </Text>
                         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
                           InAppBrowser.openBrowser(
                             'https://pepo.com/terms'

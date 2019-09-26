@@ -156,10 +156,10 @@ class NotificationScreen extends Component {
     return (
       <Modal style={styles.backgroundStyle} transparent={true}>
         <View style={styles.wrappedView}>
-          <Text style={styles.headerText}>Enable Notification to get Instant Alearts </Text>
+          <Text style={styles.headerText}>This is your Pepo inbox - we'll keep you updated.</Text>
 
           <Text style={styles.smallText}>
-            Know when someone thanks you for your support and get important account updates
+            Make sure to turn "on" notifications so you don't miss important events, like when you receive Pepo Coins or when someone thanks you. We promise to keep it light.
           </Text>
 
           <LinearGradient
@@ -167,12 +167,10 @@ class NotificationScreen extends Component {
             locations={[0, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
-          >
+            style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}>
             <TouchableOpacity
               onPress={this.handlePermissionButtonClick}
-              style={[Theme.Button.btn, { borderWidth: 0 }]}
-            >
+              style={[Theme.Button.btn, { borderWidth: 0 }]}>
               <Text style={[
                 Theme.Button.btnPinkText,
                 { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }

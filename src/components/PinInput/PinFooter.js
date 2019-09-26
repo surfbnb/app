@@ -8,7 +8,7 @@ export default () => {
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : -500;
   return (
     <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={keyboardVerticalOffset}>
-      <Text style={inlineStyles.termsPoliciesInfoText}>By Creating Your Wallet, you Agree to our</Text>
+      <Text style={inlineStyles.termsPoliciesInfoText}>By creating your wallet, you agree to our</Text>
       <Text style={inlineStyles.termsPoliciesLinkText}>
         <Text
             onPress={multipleClickHandler(() => {

@@ -62,9 +62,9 @@ class WalletSettingList extends PureComponent {
 
     this._createEventLoaderData(
       optionIds.resetPin,
-      "Resetting PIN",
+      "Resetting PIN...",
       "Waiting for confirmation",
-      "PIN updated");
+      "PIN has been successfully reset");
 
     this._createEventLoaderData(
       optionIds.recoverDevice,

@@ -48,7 +48,7 @@ const validMinAmount = 1;
 const defaultBtAmount = 10;
 const HEADER_TITLE = 'Send Pepos';
 const SUCCESS_HEADER_TITLE = 'Sent';
-const SUBMIT_BTN_TXT = 'Confirm';
+const SUBMIT_BTN_TXT = 'Send Pepo Coins';
 const SUBMIT_PROCESSING_TXT = 'Confirming...';
 
 class TransactionScreen extends Component {

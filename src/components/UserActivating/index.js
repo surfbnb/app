@@ -29,14 +29,12 @@ export default class UserActivatingScreen extends Component {
             <View style={{marginBottom: 20}}>
               <Image source={air_drop} style={{width: 296.5, height: 289.5}} />
               <View style={{position: 'absolute', bottom: 3, left: 0, right: 0}}>
-                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-DemiBold', fontSize: 12, letterSpacing: 1}}>YOU’VE RECEIVED</Text>
-                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-Bold', fontSize: 14, letterSpacing: 2}}>500 PEPO COINS</Text>
+                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-DemiBold', fontSize: 12, letterSpacing: 1}}>You've Received</Text>
+                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-Bold', fontSize: 14, letterSpacing: 2}}>500 Pepo Coins</Text>
               </View>
             </View>
-            <Text style={[styles.descTxt, {marginBottom: 3}]}>Pepo coins can be used to support your</Text>
-            <Text style={[styles.descTxt, {marginBottom: 50}]}>favorite creators!</Text>
-            <Text style={styles.descTxt}>Create a PIN to access your wallet and</Text>
-            <Text style={[styles.descTxt, {marginTop: 3}]}>claim Pepo Coins</Text>
+            <Text style={[styles.descTxt, {marginBottom: 3}]}>Pepo Coins are used to express support and make connections.</Text>
+            <Text style={styles.descTxt}>Create a PIN to claim your free Pepo Coins</Text>
             <LinearGradient
               colors={['#ff7499', '#ff5566']}
               locations={[0, 1]}

@@ -74,7 +74,7 @@ class TwitterAuthService {
       return;
     }
     Toast.show({
-      text: 'Failed to login via Twitter.',
+      text: 'Unable to login with Twitter',
       icon: 'error'
     });
   }

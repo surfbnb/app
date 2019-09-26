@@ -188,7 +188,7 @@ const BaseErrorMessages = {
   SESSION_NOT_FOUND:
     "The device doesn't has any active session. Please authorize a session before doing any transaction. Workflow details provided at https://dev.ost.com/platform/docs/sdk/references ",
 
-  INVALID_QR_CODE: "The QR code does not contain valid data definition. To know the data definition for QR code based on type of operations please visit https://dev.ost.com/platform",
+  INVALID_QR_CODE: "Incorrect QR code.",
 
   RECOVERY_KEY_GENERATION_FAILED: "Failed to generate Recovery key. Inspect if a correct input values required are being sent and re-submit the request. ",
 

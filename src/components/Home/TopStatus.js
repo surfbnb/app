@@ -30,7 +30,7 @@ const TopStatus = (props) => {
           ),
           right: 10
         }}
-        displayText="Initializing wallet please wait..."
+        displayText="Wallet loading..."
         extendDirection="left"
         extend={true}
         id={1}

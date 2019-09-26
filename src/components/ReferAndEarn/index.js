@@ -123,11 +123,9 @@ class ReferAndEarn extends Component {
                 <View style={{ padding: 25 }}>
                   <Text
                     style={[styles.heading, { textAlign: 'center' }]}
-                  >{`You have ${this.state.inviteText} Invites`}</Text>
+                  >{`You have ${this.state.inviteText} invites remaining`}</Text>
                   <Text style={styles.content}>
-                    Pepo Invites will let your friends skip the queue and join the community immediately. When someone
-                    signs up for Pepo with your Invite, they will get 500 to support you and other creators. When they
-                    start earning, you will get 5% of their earnings in Coins.
+                    Pepo is currently invite only. Invite your friends and you will get 5% commission on their earnings.
                   </Text>
                 </View>
               </ImageBackground>
@@ -194,7 +192,7 @@ class ReferAndEarn extends Component {
             >
               <Text style={styles.heading}>Invites</Text>
               <Text style={[styles.content, { textAlign: 'left' }]}>
-                You will see your accepted invites here and the amount of pepos earned
+                You will see a list of your referrals and commissions here.
               </Text>
               <Image style={styles.arrowImageSkipFont} source={arrowRight}></Image>
             </View>
@@ -208,10 +206,9 @@ class ReferAndEarn extends Component {
             activeOpacity={0.2}
           >
             <View style={{ position: 'relative', borderTopColor: Colors.whisper, borderTopWidth: 1, paddingTop: 10 }}>
-              <Text style={styles.heading}>Terms and Conditions</Text>
+              <Text style={styles.heading}>Referral terms</Text>
               <Text style={[styles.content, { textAlign: 'left' }]}>
-                For anything related to payouts, waiting lists and more information please look at our Terms and
-                Conditions
+                Please see our Terms and Conditions
               </Text>
               <Image style={styles.arrowImageSkipFont} source={arrowRight}></Image>
             </View>

@@ -49,11 +49,11 @@ class WalletSettingController {
     this._createOptionsData(optionIds.recoverDevice, "Recover Device", "Recover your device");
     this._createOptionsData(optionIds.abortRecovery, "Abort Device Recovery", "Abort Device Recovery");
     this._createOptionsData(optionIds.resetPin, "Reset Pin", "Reset your wallet pin");
-    this._createOptionsData(optionIds.viewMnemonics, "Show Device Mnemonics", "Please write down your 12-word mnemonic phrase");
+    this._createOptionsData(optionIds.viewMnemonics, "Show Mnemonics", "While not required, writing down your 12 word mnemonic phrase provides an additional backup in case you forget your PIN.");
     this._createOptionsData(optionIds.authorizeWithMnemonics, "Authorize Device with Mnemonics", "Authorize current device by using mnemonics");
-    this._createOptionsData(optionIds.authorizeWithQR, "Scan QR to Authorize Device", "Scan QR Code of the new device to authorize it");
+    this._createOptionsData(optionIds.authorizeWithQR, "Add Another Device", "Scan QR Code to add another device.");
     this._createOptionsData(optionIds.showQR, "Show Device QR Code", "Scan QR Code from the device authorized device to authorize this device");
-    this._createOptionsData(optionIds.updateBiometricPreference, "Update Biometric Preference", "Authenticate user with biometric");
+    this._createOptionsData(optionIds.updateBiometricPreference, "Enable Biometric", "Use biometrics to authorize new Sessions and to confirm high value transactions.");
   }
 
   refresh( callback, onlyPerformable ) {
@@ -165,7 +165,7 @@ class WalletSettingController {
         this._updateOptionsData(optionIds.authorizeWithQR, false, true);
         this._updateOptionsData(optionIds.resetPin, false, true);
 
-        let biometricMessage = (this.isBiometricEnabled || false) ? 'Disable Biometric Preference' : 'Enable Biometric Preference';
+        let biometricMessage = (this.isBiometricEnabled || false) ? 'Disable Biometrics' : 'Enable Biometric';
         this._updateOptionsData(optionIds.updateBiometricPreference, false, true, biometricMessage);
       }
 
