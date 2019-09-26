@@ -26,16 +26,15 @@ const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
 };
 
-const Header = (props)=>{
-  return <TouchableOpacity onPress={()=> DrawerEmitter.emit('closeDrawer')}><Text style={inlineStyles.headerStyle}>{props.name}</Text></TouchableOpacity>
-}
-
 class ProfileScreen extends PureComponent {
   static navigationOptions = (options) => {
     const name = options.navigation.getParam('headerTitle') || reduxGetter.getName(CurrentUser.getUserId());
     return {
       headerBackTitle: null,
-      headerTitle: <Header name={name}/>,
+      title: name,
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
+      },
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
