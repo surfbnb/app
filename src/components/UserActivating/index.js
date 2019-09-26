@@ -20,32 +20,30 @@ export default class UserActivatingScreen extends Component {
           <ScrollView
             contentContainerStyle=
               {{
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingBottom: 50,
-                minHeight: '100%'
+                justifyContent: 'space-between',
+                paddingVertical: 50,
+                flexGrow: 1
               }}
             showsVerticalScrollIndicator={false}>
-            <View style={{marginBottom: 20}}>
-              <Image source={air_drop} style={{width: 296.5, height: 289.5}} />
-              <View style={{position: 'absolute', bottom: 3, left: 0, right: 0}}>
-                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-DemiBold', fontSize: 12, letterSpacing: 1}}>You've Received</Text>
-                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-Bold', fontSize: 14, letterSpacing: 2}}>500 Pepo Coins</Text>
+            <View style={styles.contentContainer}>
+              <Image source={air_drop} style={{width: 137.5, height: 192}} />
+              <Text style={styles.heading}>Welcome Gift!</Text>
+              <View style={styles.valueContainer}>
+                <Text style={styles.desc}>You’ve received <Text style={[styles.desc, {color: '#ff5566', fontWeight: '700'}]}>500 </Text>Pepo!</Text>
+                <Text style={styles.desc}>$5 Value!</Text>
               </View>
             </View>
-            <Text style={[styles.descTxt, {marginBottom: 3}]}>Pepo Coins are used to express support and make connections.</Text>
-            <Text style={styles.descTxt}>Create a PIN to claim your free Pepo Coins</Text>
             <LinearGradient
               colors={['#ff7499', '#ff5566']}
               locations={[0, 1]}
-              style={{ marginTop: 30, marginHorizontal: 35, borderRadius: 3}}
+              style={{ marginHorizontal: 30, borderRadius: 3, marginTop: 50}}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             >
               <TouchableButton
               TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0}]}
               TextStyles={[Theme.Button.btnPinkText]}
-              text="Create PIN"
+              text="Add to Wallet"
               onPress={() => {
                 this.onCreatePin();
               }}
