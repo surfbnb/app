@@ -29,7 +29,6 @@ export const StatusBarManager = (prevState,currentState,action) => {
   if(typesToIgnore.includes(action.type)) return;
   console.log('StatusBarManager action ::', action);
   let routeName = NavigationService.findCurrentRoute(currentState);
-  console.log("StatusBarManager routeName ::", routeName);
   routesWithoutStatusBar.includes(routeName) ? StatusBarHide() : StatusBarShow();
 
 };

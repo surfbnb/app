@@ -21,7 +21,6 @@ function navigate(routeName, params) {
 }
 
 const findCurrentRoute = (navState) => {
-  console.log(JSON.stringify(getTopLevelNavigator().state, null ,2 ) );
   if ( !navState ) {
     navState = getTopLevelNavigator().state.nav;
   }
