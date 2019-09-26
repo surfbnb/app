@@ -30,6 +30,9 @@ class ReferAndEarn extends Component {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
+      },
       headerBackImage: <BackArrow />
     };
   };
