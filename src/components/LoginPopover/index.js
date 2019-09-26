@@ -21,8 +21,6 @@ const mapStateToProps = ({ login_popover }) => ({
 const btnPreText = 'Connect with Twitter';
 const btnPostText = 'Connecting...';
 
-//TODO @preshita While isTwitterConnecting, Check if android hardware back close the modal if not do nothing, if yes block android hardware back .
-
 class loginPopover extends React.Component {
   constructor(props) {
     super(props);
@@ -59,22 +57,6 @@ class loginPopover extends React.Component {
     }
     return true;
   };
-
-  //Use this function if needed to handle hardware back handling for android.
-  closeModal = () => {
-    if (!this.isTwitterConnecting) {
-      Store.dispatch(hideLoginPopover());
-    }
-    return true;
-  };
-
-  //Use this function if needed to handle hardware back handling for android.
-  closeModal = () => {
-    if( !this.isTwitterConnecting ){
-      Store.dispatch(hideLoginPopover());
-    }
-    return true;
-  }
 
   render() {
     return (
@@ -148,12 +130,14 @@ class loginPopover extends React.Component {
                         <Text style={inlineStyles.termsTextBlack}>By signing up, you confirm that you agree to
                           our </Text>
                         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
+                          this.closeModal();
                           InAppBrowser.openBrowser(
                             'https://pepo.com/terms'
                           );
                         })}>Terms of use </Text>
                         <Text style={inlineStyles.termsTextBlack}>and have read and agree to our </Text>
                         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
+                          this.closeModal();
                           InAppBrowser.openBrowser(
                             'https://pepo.com/privacy'
                           );
