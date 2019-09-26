@@ -7,6 +7,7 @@ import reduxGetter from '../../services/ReduxGetters';
 import InAppBrowser from '../../services/InAppBrowser';
 import CurrentUser from '../../models/CurrentUser';
 import inlineStyles from './styles';
+import { WEB_ROOT } from '../../constants/index';
 
 const mapStateToProps = (state , ownProps) => {
   return {
@@ -17,7 +18,7 @@ const mapStateToProps = (state , ownProps) => {
 const ReviewStatusBanner = ( props ) => {
   if( props.isCreatorApproved == 0 ){
     return(
-      <TouchableOpacity style={inlineStyles.bannerContainer} onPress={() => InAppBrowser.openBrowser('https://pepo.com/content-terms')}>
+      <TouchableOpacity style={inlineStyles.bannerContainer} onPress={() => InAppBrowser.openBrowser(`${WEB_ROOT}/content-terms`)}>
         <View style= {{flexDirection: 'row'}}>
           <Image source={infoIcon} style={inlineStyles.infoImageDimensions}/>
           <Text style={inlineStyles.infoText} >

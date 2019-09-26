@@ -290,7 +290,8 @@ const CustomTabStack = createBottomTabNavigator(
 const PinStack = createStackNavigator(
   {
     SetPinScreen: SetPin,
-    ConfirmPinScreen: ConfirmPin
+    ConfirmPinScreen: ConfirmPin,
+    InAppBrowserStack: InAppBrowserStack
   },
   {
     headerLayoutPreset: 'center',
