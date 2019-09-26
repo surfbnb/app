@@ -258,9 +258,7 @@ class StoreProductsScreen extends PureComponent{
     }
 
     closeModal = () => {
-        if(!this.state.isPurchasing){
-            this.props.navigation.goBack();
-        }
+        this.props.navigation.goBack();
         return true ;
     }
 
