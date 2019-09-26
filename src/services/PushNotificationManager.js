@@ -43,8 +43,8 @@ function askForPNPermission() {
                   }
 
                 })
-                .catch((error) => {console.log('Permission denied', error); console.log('requestPermission: catch'); return reject(); });
-          } else{
+                .catch((error) => {console.log('Permission denied', error); return reject(); });
+          } else {
             resolve();
           }
 
@@ -137,13 +137,6 @@ class PushNotificationManager extends PureComponent {
       NavigationEmitter.emit('onRefresh', { screenName });
   }
 
-  getToken() {
-    firebase
-      .messaging()
-      .getToken()
-      .then((fcmToken) => fcmToken && this.sendToken(fcmToken));
-  }
-
 
 
 
@@ -180,7 +173,7 @@ class PushNotificationManager extends PureComponent {
   }
 
   getUserToken(){
-    utilities.getItem(`n-p-${this.props.currentUserId}`).then((value)=> {
+    utilities.getItem(`notification-permission-${this.props.currentUserId}`).then((value)=> {
       value === 'true' && getToken(this.props.currentUserId);
     });
   }
@@ -198,6 +191,6 @@ const mapStateToProps = ({}) => {
 export default connect(mapStateToProps)(PushNotificationManager);
 export const PushNotificationMethods = {
   deleteToken,
-  askForPNPermission: askForPNPermission,
-  getToken: getToken
+  askForPNPermission,
+  getToken
 };
