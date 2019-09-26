@@ -165,11 +165,12 @@ class TransactionScreen extends Component {
       formatedNum = num.toLocaleString(locale);
 
     formatedNum = formatedNum.split("");
-    if(!formatedNum[1] == 0){
+    if(formatedNum[1] != 0){
       groupSeperator = formatedNum[1];
-      decimalSeperator = formatedNum[5]
+      decimalSeperator = formatedNum[formatedNum.length-2]
     }else{
-      decimalSeperator = formatedNum[5]
+      groupSeperator = '';
+      decimalSeperator = formatedNum[formatedNum.length-2]
     }
     return [groupSeperator, decimalSeperator]
   }
