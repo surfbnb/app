@@ -14,6 +14,7 @@ class VideoPlayer extends Component {
 
     static navigationOptions = ({navigation, navigationOptions}) => {
         return {
+          headerBackTitle: null,
           header: null
         };
       };
