@@ -21,12 +21,13 @@ export default class DeleteVideo extends Component {
     }
 
     deleteUser = () => {
+        if(!this.props.videoId) return;
         new PepoApi(`/videos/${this.props.videoId}/delete`)
             .post()
             .then((response) => {
 
                 if (response && response.success){
-                    this.props.removeVideo && this.props.removeVideo(this.props.videoId, this.props.videoIndex);
+                    this.props.removeVideo && this.props.removeVideo(this.props.videoId);
                     Toast.show({text:'Video deleted successfully!', icon: 'success'});
                 } else {
                     Toast.show({text:ostErrors.getUIErrorMessage('delete_video_error'), icon: 'error'});

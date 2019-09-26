@@ -184,7 +184,6 @@ class ProfileScreen extends PureComponent {
     if (!list || list.length == 0){
       this.setState({hasVideos: false});
     }
-
   }
 
   render() {

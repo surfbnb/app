@@ -1,5 +1,6 @@
 import { FetchServices } from './FetchServices';
 import EventEmitter from "eventemitter3";
+import deepGet from "lodash/get";
 
 class Pagination {
    
@@ -102,6 +103,12 @@ class Pagination {
 
     getResults(){
       return this.fetchServices.getAllResults() || [];
+    }
+
+    deleteItem( id , path="id" ){
+        if(!id) return;
+        this.fetchServices.results =  this.getResults().filter((item)=> {return deepGet( item , path ) !=  id });
+        console.log("this.fetchServices.results" ,this.fetchServices.results );
     }
 
   };

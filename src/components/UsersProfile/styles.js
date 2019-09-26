@@ -24,8 +24,8 @@ let stylesMap = {
     fontFamily: 'AvenirNext-Regular'
   },
   userProfileOptionSkipFont : {
-    height:6,
-    width:28,
+    height:5,
+    width:24,
     marginRight:20
   },
   reportIconWrapper: {

@@ -124,13 +124,13 @@ class UserProfileFlatList extends PureComponent {
     }
 
     removeVideo = (videoId, index) => {
-            var array = [...this.state.list]; // make a separate copy of the array
-            var videoIndex = array.indexOf(`v_${videoId}`);
-            if (videoIndex !== -1) {
-                array.splice(videoIndex, 1);
-                this.setState({list: array});
-                this.props.onDelete(array);
-            }
+        if (index > -1) {
+            this.videoHistoryPagination.deleteItem(videoId , "payload.video_id");
+            let array = [...this.state.list]; // make a separate copy of the array
+            array.splice(index, 1);
+            this.setState({list: array});
+            this.props.onDelete(array);
+        }
     }
 
     _keyExtractor = (item, index) => `id_${item}`;
@@ -156,7 +156,7 @@ class UserProfileFlatList extends PureComponent {
               style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', top: 0, left: 0, alignItems: 'flex-end'}}
             >
                 { this.isCurrentUser() && <View style={inlineStyles.deleteButton}>
-                <DeleteVideo videoId={videoId} videoIndex={index} removeVideo={this.removeVideo} />
+                <DeleteVideo videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
               </View>}
             </LinearGradient>
             <LinearGradient
