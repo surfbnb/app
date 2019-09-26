@@ -77,7 +77,6 @@
 		0BD0080023E44AFCA2D1AA46 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08D7C506430143C8AB61A4BA /* Foundation.ttf */; };
 		108A6E98F43648CDB5F2EF3C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95CD1DED238D4513AB4C5191 /* MaterialIcons.ttf */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		12B8EAA7662D4CA9AA43460D /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2AB22225D74E6496659BC7 /* libRNCWebView.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -764,6 +763,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */,
 				4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */,
 				4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */,
@@ -823,7 +823,6 @@
 				00E5D8FD232A556F006EA3DE /* GoogleDataTransport.framework in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
-				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				002AAB6D22E6177E000E153B /* libRNCCameraRoll.a in Frameworks */,
 				003EBBBA22F87C73008C5DF4 /* libART.a in Frameworks */,
 				00029B4323329B55009E6919 /* TrustKit.framework in Frameworks */,
@@ -832,7 +831,6 @@
 				717EB7B076EF4A4AAE33436E /* libRNIap.a in Frameworks */,
 				00E5D8FE232A556F006EA3DE /* GoogleDataTransportCCTSupport.framework in Frameworks */,
 				85A8F833EBFA49C5B547D4BC /* libRNReactNativeHapticFeedback.a in Frameworks */,
-				12B8EAA7662D4CA9AA43460D /* libRNCWebView.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -877,7 +875,6 @@
 			isa = PBXGroup;
 			children = (
 				BB47A46149204503A9909BC7 /* libRNFirebase.a */,
-				D930902C2C7147109E9E682B /* libRNInAppBrowser.a */,
 				01EA3FBA55B042D89B057E41 /* libRNReactNativeHapticFeedback.a */,
 				9A0BC22B8B25470A8142B471 /* libRNIap.a */,
 				4BFFD401232D3D930033959D /* GoogleService-Info.plist */,
@@ -2262,9 +2259,7 @@
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2321,9 +2316,7 @@
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
