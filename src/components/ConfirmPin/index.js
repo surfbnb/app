@@ -30,7 +30,7 @@ export default class ConfirmPin extends Component {
 
   onPinChange = (pin, resetPinCallback) => {
     if (pin === this.props.navigation.getParam('pin', '')) {
-      LoadingModal.show('Activating...', 'This may take a while,\n we are surfing on Blockchain');
+      LoadingModal.show('Activating...');
       ActivateUser.activateUser(pin, this);
     } else {
       if (resetPinCallback) {
@@ -45,7 +45,10 @@ export default class ConfirmPin extends Component {
       .catch(() => {})
       .finally(() => {
         LoadingModal.hide();
-        navigateTo.goToNavigationDecision(true);
+        this.props.navigation.navigate('HomeScreen');
+        setTimeout(()=>{
+          this.props.navigation.push('CouchMarks');
+        },300);
       });
   }
 

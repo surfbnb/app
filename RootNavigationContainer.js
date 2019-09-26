@@ -57,8 +57,9 @@ import UniversalLinksManager from './src/services/UniversalLinksManager';
 import WalletDetails from './src/components/WalletSetting/WalletDetails';
 import AuthDeviceDrawer from './src/components/Home/AuthDeviceDrawer';
 import InAppBrowserComponent from './src/components/CommonComponents/InAppBrowser';
+import CouchMarks from './src/components/CouchMarks';
 
-const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserComponent'];
+const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserComponent' , 'CouchMarks'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -139,13 +140,13 @@ const HomeStack = createStackNavigator(
   {
     HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen,
-    AuthDeviceDrawer: AuthDeviceDrawer,
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen,
     InviteCodeScreen: InviteCodeScreen,
     AuthDeviceDrawer : AuthDeviceDrawer,
-    AddEmailScreen: AddEmailScreen
+    AddEmailScreen: AddEmailScreen,
+    CouchMarks: CouchMarks
   },
   {
     ...modalStackConfig,
