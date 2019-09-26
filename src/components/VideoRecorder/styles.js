@@ -97,7 +97,6 @@ let stylesMap = {
     fontWeight: '500'
   },
   smallText: { color: 'white', fontSize: 18, marginTop: 14, fontFamily: 'AvenirNext-Medium' },
-  buttonText: {color: 'white', fontSize: 18, fontFamily: 'AvenirNext-Medium' },
 
   headerText: {
     color: 'white',
