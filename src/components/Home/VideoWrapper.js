@@ -65,7 +65,9 @@ class VideoWrapper extends PureComponent {
     });
 
     VideoPlayPauseEmitter.on('pause', () => {
-      this.pauseVideo();
+      if(this.props.isActive){
+        this.pauseVideo(true);
+      }
     });
   }
 
