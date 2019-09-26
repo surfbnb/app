@@ -17,6 +17,7 @@ import utilities from '../../services/Utilities';
 import inlineStyles from './styles';
 import Utilities from '../../services/Utilities';
 import UserProfileOptions from '../../assets/user_profile_options.png';
+import ReportProfile from './reportProfile';
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -35,7 +36,7 @@ export default class UsersProfile extends Component {
         shadowRadius: 3
       },
       headerBackImage: <BackArrow />,
-      headerRight: <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}></Image>
+      headerRight: <ReportProfile userId={navigation.getParam('userId')}  />
     };
   };
 

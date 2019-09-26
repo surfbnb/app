@@ -8,6 +8,19 @@ let stylesMap = {
     alignItems: 'center',
     width: '100%'
   },
+  deleteButton: {
+    // padding: 10,
+    backgroundColor: 'blue',
+    height: 6,
+    width: 28,
+    justifyContent: 'center',
+    alignItems: 'flex-end'
+    // top:0,
+    // right: 4
+    //flexDirection: 'row',
+    //alignItems: 'center',
+    //width: '100%'
+  },
   videoStatsTxt: {
     color: Colors.white,
     fontSize: 16,

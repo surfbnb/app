@@ -27,6 +27,12 @@ let stylesMap = {
     height:6,
     width:28,
     marginRight:20
+  },
+  reportIconWrapper: {
+    height:40,
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 
 };

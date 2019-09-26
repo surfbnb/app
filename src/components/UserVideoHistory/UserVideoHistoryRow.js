@@ -52,7 +52,6 @@ class UserVideoHistoryRow extends PureComponent {
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
-        <Image style={inlineStyles.optionsIconSkipFont} source={OptionsIcon}/>
         <VideoWrapper
           shouldPlay={this.props.shouldPlay}
           userId={this.props.userId}
