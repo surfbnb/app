@@ -8,7 +8,6 @@ import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.dooboolab.RNIap.RNIapPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
 import com.pepo2.bridge.PepoNativePackage;
-import com.proyecto26.inappbrowser.RNInAppBrowserPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
