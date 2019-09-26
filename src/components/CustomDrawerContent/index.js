@@ -8,11 +8,11 @@ import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
 import PepoApi from '../../services/PepoApi';
 import Colors from '../../theme/styles/Colors';
-import loggedOutIcon from '../../assets/drawer-logout-icon.png';
-import twitterDisconnectIcon from '../../assets/drawer-twitter-icon.png';
-import referAndEarn from '../../assets/refer-and-earn.png';
-import pepoAmountWallet from '../../assets/pepo-amount-wallet.png';
-import helpIcon from  '../../assets/help.png'
+import twitterDisconnectIcon from '../../assets/settings-twitter-disconnect.png';
+import referAndEarn from '../../assets/settings-refer-and-earn.png';
+import pepoAmountWallet from '../../assets/settings-wallet-settings.png';
+import helpIcon from  '../../assets/settings-support.png';
+import loggedOutIcon from '../../assets/settings-logout.png';
 import Toast from '../../theme/components/NotificationToast';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
@@ -174,7 +174,7 @@ class CustomDrawerContent extends Component {
             disabled={this.state.disableButtons}
           >
             <View style={styles.itemParent}>
-              <Image style={{ height: 24, width: 29, resizeMode: 'contain' }} source={referAndEarn} />
+              <Image style={{ height: 29, width: 26.6, resizeMode: 'contain' }} source={referAndEarn} />
               <Text style={styles.item}>Refer and Earn</Text>
             </View>
           </TouchableOpacity>
@@ -184,7 +184,7 @@ class CustomDrawerContent extends Component {
               this.onGetSupport();
             })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
-              <Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={helpIcon} />
+              <Image style={{ height: 29, width: 29, resizeMode: 'contain' }} source={helpIcon} />
               <Text style={styles.item}>Support</Text>
             </View>
           </TouchableOpacity>
@@ -193,7 +193,7 @@ class CustomDrawerContent extends Component {
               this.twitterDisconnect();
             })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
-              <Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={twitterDisconnectIcon} />
+              <Image style={{ height: 23.6, width: 29, resizeMode: 'contain' }} source={twitterDisconnectIcon} />
               <Text style={styles.item}>Twitter Disconnect</Text>
             </View>
           </TouchableOpacity>
@@ -223,7 +223,7 @@ class CustomDrawerContent extends Component {
     return (
       <TouchableOpacity onPress={this.initWallet}>
         <View style={[styles.itemParent]}>
-          <Image style={{ height: 24, width: 25.3, resizeMode: 'contain'  }} source={pepoAmountWallet} />
+          <Image style={{ height: 26.6, width: 29, resizeMode: 'contain'  }} source={pepoAmountWallet} />
           <Text style={styles.item}>Wallet settings</Text>
         </View>
       </TouchableOpacity>

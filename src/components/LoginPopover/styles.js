@@ -44,10 +44,7 @@ let stylesMap = {
   },
   tocPp: {
     width: '85%',
-    marginTop: 10,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'center'
+    marginTop: 10
   },
   termsTextBlack: {
     lineHeight: 24,
