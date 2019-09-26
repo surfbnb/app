@@ -35,6 +35,9 @@ export default class UsersProfile extends Component {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
+      },
       headerBackImage: <BackArrow />,
       headerRight: <ReportProfile userId={navigation.getParam('userId')}  />
     };

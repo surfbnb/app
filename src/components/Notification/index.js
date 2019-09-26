@@ -57,6 +57,9 @@ class NotificationScreen extends Component {
         },
         shadowOpacity: 0.1,
         shadowRadius: 3
+      },
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
       }
     };
   };
@@ -153,7 +156,7 @@ class NotificationScreen extends Component {
           <Button
             style={{ alignSelf: 'center', backgroundColor: '#f56', padding: 14, marginTop: 24 }}
             onPress={this.handlePermissionButtonClick}
-            
+
           >
           <Text style={styles.buttonText}>Turn On Notification</Text>
           </Button>

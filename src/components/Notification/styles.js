@@ -3,7 +3,7 @@ import Colors from '../../theme/styles/Colors';
 import {Dimensions} from "react-native";
 
 let stylesMap = {
-  item: {    
+  item: {
     marginLeft: 4,
     marginRight: 4,
     flexDirection: 'row',
@@ -48,7 +48,7 @@ let stylesMap = {
     fontFamily: 'AvenirNext-Regular',
     fontSize: 14,
     marginLeft: 5,
-    letterSpacing: -0.68    
+    letterSpacing: -0.68
   },
 
   posterImageSkipFont: {
@@ -129,7 +129,17 @@ let stylesMap = {
     alignItems: 'center',
     justifyContent: 'center'
   },
-  buttonText: {color: 'white', fontSize: 18, fontFamily: 'AvenirNext-Medium' }
+
+  headingText: {
+    fontWeight: '600',
+    fontFamily: 'AvenirNext-Medium'
+  },
+
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: 'AvenirNext-Medium'
+  }
 
 
 

@@ -12,7 +12,6 @@ import deepGet from 'lodash/get';
 
 import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
-import AuthScreen from './src/components/Authentication';
 import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';
 import CustomTab from './src/components/CustomTab';
