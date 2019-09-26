@@ -55,6 +55,7 @@ class BrowserMenu extends React.PureComponent {
           <MenuItem onPress={this.copyLink}>Copy Link</MenuItem>
           <MenuDivider />
           <MenuItem onPress={this.shareVia}>Share via</MenuItem>
+          <MenuDivider />
           <MenuItem onPress={this.reload}>Reload</MenuItem>
         </Menu>
       </View>
