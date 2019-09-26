@@ -49,4 +49,8 @@ function getSocialIcon(url, screen) {
   return AppConfig.videoLinkConfig[screen].SOCIAL_ICONS.DEFAULT;
 }
 
-export { fetchUser, getSocialIcon };
+function getHostName( url ){
+  return url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/im)[1];
+}
+
+export { fetchUser, getHostName };

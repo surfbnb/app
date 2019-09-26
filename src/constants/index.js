@@ -18,7 +18,7 @@ const BundleConstants = {
     TOKEN_ID: '1185',
     TWITTER_CONSUMER_KEY: 'NEo4gEXzdQZaoTsqzpZvepfKb',
     TWITTER_CONSUMER_SECRET: 'iM5UMt4px8rwoqEoRV9gJGrJGtEoMUxOYkaWXSges7t4bk564t',
-    VIEW_END_POINT: 'https://view.stagingost.com/testnet/',
+    VIEW_END_POINT: 'https://ost:Ax23!sdQ*kN-201~96@view.stagingost.com/testnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitStaging.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitStaging.toString( 10 ),
     DEFAULT_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 1, //1 hour + buffer from config 1 hr = 2 hr
