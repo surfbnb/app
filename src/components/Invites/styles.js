@@ -37,16 +37,8 @@ let stylesMap = {
     fontSize: 15
   },
   listWrapper: {
-    paddingTop: 10,
-    paddingHorizontal: 25,
-    ...ifIphoneX(
-      {
-        marginBottom: 50 + getBottomSpace([true])
-      },
-      {
-        marginBottom: 50
-      }
-    )
+    flex: 1,
+    paddingHorizontal: 25
   }
 };
 
