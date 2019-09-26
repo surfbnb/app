@@ -6,8 +6,8 @@ import inlineStyles from './styles';
 import multipleClickHandler from "../../../services/MultipleClickHandler";
 import ShareVideo from "../../../services/shareVideo";
 
-import share_icon from '../../../assets/profile-share-icon.png';
-import share_icon_disabled from '../../../assets/share_icon_disabled.png';
+import share_icon from '../../../assets/social-share-icon.png';
+import share_icon_disabled from '../../../assets/social-disabled-share-icon.png';
 
 const mapStateToProps = (state , ownProps) => {
   return {

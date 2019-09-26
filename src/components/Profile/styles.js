@@ -108,8 +108,8 @@ let stylesMap = {
     justifyContent: 'center'
   },
   infoImageDimensions : {
-    height:20,
-    width:20
+    height: 19.3,
+    width: 18.6
   },
   infoText : {
     color: Colors.white,

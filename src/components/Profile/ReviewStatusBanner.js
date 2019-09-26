@@ -20,7 +20,7 @@ const ReviewStatusBanner = ( props ) => {
         <View style= {{flexDirection: 'row'}}>
           <Image source={infoIcon} style={inlineStyles.infoImageDimensions}/>
           <Text style={inlineStyles.infoText} >
-            Your profile is in review
+            Your videos are private, pending approval.
           </Text>
         </View>
       </View>
