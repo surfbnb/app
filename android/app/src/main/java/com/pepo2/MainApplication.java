@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.dooboolab.RNIap.RNIapPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
 import com.pepo2.bridge.PepoNativePackage;
@@ -53,9 +54,9 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new PepoNativePackage(),
             new MainReactPackage(),
+            new RNCWebViewPackage(),
             new RNIapPackage(),
             new RNReactNativeHapticFeedbackPackage(),
-            new RNInAppBrowserPackage(),
             new RNFirebasePackage(),
             new RNFirebaseMessagingPackage(),
             new RNFirebaseNotificationsPackage(),

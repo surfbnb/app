@@ -9,7 +9,6 @@ import reduxGetter from '../../services/ReduxGetters';
 
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
-import {BrowserEmitter} from '../../helpers/Emitters';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -32,10 +31,7 @@ class BottomStatus extends PureComponent {
   };
 
   onLinkClick = () => {
-    BrowserEmitter.emit('browserOpened');
-    setTimeout(() => {
-      InAppBrowser.openBrowser(this.props.link);
-    }, 300);
+    InAppBrowser.openBrowser(this.props.link);
   }
 
   render() {

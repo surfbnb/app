@@ -56,8 +56,9 @@ import EmailScreen from './src/components/Email';
 import UniversalLinksManager from './src/services/UniversalLinksManager';
 import WalletDetails from './src/components/WalletSetting/WalletDetails';
 import AuthDeviceDrawer from './src/components/Home/AuthDeviceDrawer';
+import InAppBrowserComponent from './src/components/CommonComponents/InAppBrowser';
 
-const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen'];
+const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserComponent'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -111,6 +112,16 @@ const CaptureVideoStack = createStackNavigator(
   }
 );
 
+
+const InAppBrowserStack = createStackNavigator(
+  {
+    InAppBrowserComponent: InAppBrowserComponent
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
 const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
@@ -130,6 +141,7 @@ const HomeStack = createStackNavigator(
     TransactionScreen: TransactionScreen,
     AuthDeviceDrawer: AuthDeviceDrawer,
     CaptureVideo: CaptureVideoStack,
+    InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen,
     InviteCodeScreen: InviteCodeScreen,
     AuthDeviceDrawer : AuthDeviceDrawer,
@@ -161,7 +173,8 @@ const NotificationStack = createStackNavigator(
     TransactionScreen: TransactionScreen,
     AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
-    CaptureVideo: CaptureVideoStack
+    CaptureVideo: CaptureVideoStack,
+    InAppBrowserStack: InAppBrowserStack,
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -208,6 +221,7 @@ const ProfileStack = createStackNavigator(
     TransactionScreen: TransactionScreen,
     AuthDeviceDrawer: AuthDeviceDrawer,
     CaptureVideo: CaptureVideoStack,
+    InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen
   },
   {
@@ -240,6 +254,7 @@ const SearchStack = createStackNavigator(
   {
     SearchPushStack: SearchPushStack,
     CaptureVideo: CaptureVideoStack,
+    InAppBrowserStack: InAppBrowserStack,
     TransactionScreen: TransactionScreen,
     AuthDeviceDrawer: AuthDeviceDrawer
   },
