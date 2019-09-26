@@ -133,12 +133,6 @@ let stylesMap = {
   headingText: {
     fontWeight: '600',
     fontFamily: 'AvenirNext-Medium'
-  },
-
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontFamily: 'AvenirNext-Medium'
   }
 
 

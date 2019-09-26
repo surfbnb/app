@@ -6,8 +6,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   BackHandler,
-  AppState,
-  Dimensions
+  AppState
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
@@ -25,6 +24,8 @@ import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
 import utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
+import LinearGradient from "react-native-linear-gradient";
+import Theme from "../../theme/styles";
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -168,12 +169,26 @@ class VideoRecorder extends Component {
                   you timly updates about the review process
                 </Text>
 
-                <Button
-                  style={{ alignSelf: 'center', backgroundColor: '#f56', padding: 14, marginTop: 24 }}
-                  onPress={this.acceptCameraTerms}
+                <LinearGradient
+                  colors={['#ff7499', '#ff5566']}
+                  locations={[0, 1]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
                 >
-                  <Text style={styles.buttonText}>Get Started</Text>
-                </Button>
+                  <TouchableOpacity
+                    onPress={this.acceptCameraTerms}
+                    style={[Theme.Button.btn, { borderWidth: 0 }]}
+                  >
+                    <Text style={[
+                      Theme.Button.btnPinkText,
+                      { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+                    ]}>
+                      Get Started
+                    </Text>
+                  </TouchableOpacity>
+                </LinearGradient>
+
               </View>
             </View>
           )}

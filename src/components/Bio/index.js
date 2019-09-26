@@ -22,6 +22,9 @@ class BioScreen extends PureComponent {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
+      },
       headerBackImage: <BackArrow />
     };
   };

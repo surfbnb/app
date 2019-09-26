@@ -83,7 +83,10 @@ class ProfileEdit extends React.PureComponent {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
-      headerTitle: reduxGetter.getName(CurrentUser.getUserId())
+      headerTitle: reduxGetter.getName(CurrentUser.getUserId()),
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
+      },
     };
   };
 

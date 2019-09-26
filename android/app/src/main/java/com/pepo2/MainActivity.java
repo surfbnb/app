@@ -32,8 +32,8 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
         rebuildOkHttp();
     }
 

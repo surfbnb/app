@@ -11,11 +11,13 @@ import { upsertNotificationUnread } from '../../actions';
 import appConfig from '../../constants/AppConfig';
 import reduxGetter from '../../services/ReduxGetters';
 import styles from './styles';
-import {Text, View, Modal, Platform, Linking} from 'react-native';
+import {Text, View, Modal, Platform, Linking, TouchableOpacity} from 'react-native';
 import { Button } from 'native-base';
 import utilities from '../../services/Utilities';
 import {PushNotificationMethods} from '../../services/PushNotificationManager'
 import AndroidOpenSettings from "react-native-android-open-settings";
+import LinearGradient from "react-native-linear-gradient";
+import Theme from "../../theme/styles";
 const mapStateToProps = (state) => {
   return {
     userId: CurrentUser.getUserId(),
@@ -31,14 +33,14 @@ function enableAccess() {
     }
   } else {
     Linking.canOpenURL('app-settings:')
-        .then((supported) => {
-          if (!supported) {
-            console.log("Can't handle settings url");
-          } else {
-            return Linking.openURL('app-settings:');
-          }
-        })
-        .catch((err) => console.error('An error occurred', err));
+      .then((supported) => {
+        if (!supported) {
+          console.log("Can't handle settings url");
+        } else {
+          return Linking.openURL('app-settings:');
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
   }
 }
 
@@ -124,22 +126,22 @@ class NotificationScreen extends Component {
 
   handlePermissionButtonClick = () => {
 
-      PushNotificationMethods.askForPNPermission().then(() => {
-        console.log('handlePermissionButtonClick.askForPNPermission: then');
-      }).catch(() => {
-        console.log('handlePermissionButtonClick.askForPNPermission: catch');
-        utilities.getItem(`notification-permission-app`).then((value)=> {
-          if( value === 'true' || Platform.OS == 'android'){
-            enableAccess();
-          }
-        });
-
-      }).finally(()=>{
-        utilities.saveItem(`notification-permission-${this.props.userId}`, true);
-        utilities.saveItem(`notification-permission-app`, true);
-        PushNotificationMethods.getToken(this.props.userId);
-        this.setState({permissionModalVisible: false});
+    PushNotificationMethods.askForPNPermission().then(() => {
+      console.log('handlePermissionButtonClick.askForPNPermission: then');
+    }).catch(() => {
+      console.log('handlePermissionButtonClick.askForPNPermission: catch');
+      utilities.getItem(`notification-permission-app`).then((value)=> {
+        if( value === 'true' || Platform.OS == 'android'){
+          enableAccess();
+        }
       });
+
+    }).finally(()=>{
+      utilities.saveItem(`notification-permission-${this.props.userId}`, true);
+      utilities.saveItem(`notification-permission-app`, true);
+      PushNotificationMethods.getToken(this.props.userId);
+      this.setState({permissionModalVisible: false});
+    });
 
   }
 
@@ -153,13 +155,25 @@ class NotificationScreen extends Component {
             Know when someone thanks you for your support and get important account updates
           </Text>
 
-          <Button
-            style={{ alignSelf: 'center', backgroundColor: '#f56', padding: 14, marginTop: 24 }}
-            onPress={this.handlePermissionButtonClick}
-
+          <LinearGradient
+            colors={['#ff7499', '#ff5566']}
+            locations={[0, 1]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
           >
-          <Text style={styles.buttonText}>Turn On Notification</Text>
-          </Button>
+            <TouchableOpacity
+              onPress={this.handlePermissionButtonClick}
+              style={[Theme.Button.btn, { borderWidth: 0 }]}
+            >
+              <Text style={[
+                Theme.Button.btnPinkText,
+                { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+              ]}>
+                Turn On Notification
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
         </View>
       </Modal>
     );
