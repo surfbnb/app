@@ -20,16 +20,24 @@ export default class InAppBrowserComponent extends Component {
 
     constructor(props){
         super(props);
-        this.url =  this.props.navigation.getParam('browserUrl');
+        this.url =  this.validateUrl(this.props.navigation.getParam('browserUrl'));
         this.props.navigation.setParams({
          reload: this.reload,
-         share: this.share
+         share: this.share,
+         browserUrl : this.url
         })
         this.webview = null;
     }
 
     componentWillUnmount(){
       this.url = "about:blank"
+    }
+
+    validateUrl(url){
+      if(!(url.startsWith('http://',0) || url.startsWith('https://',0))){
+        url = 'http://'+url;
+      }
+      return url;
     }
 
     reload = ()=>{
@@ -59,10 +67,10 @@ export default class InAppBrowserComponent extends Component {
         return (
           <SafeAreaView style={{flex: 1}}>
             <WebView
-                style={{flex: 1}}
+                style={{flex:1, position:'relative'}}
                 ref={ref => (this.webview = ref)}
                 source={{ uri: this.url }}
-                // renderError={errorName => <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text>Wrong URL </Text></View>}
+                renderError={errorName => <View style={{flex:1, alignItems:"center"}}><Text style={{marginTop: -40, fontSize: 20}}>Invalid Link</Text></View>}
                 onLoad={syntheticEvent => {
                   const { nativeEvent } = syntheticEvent;
                   this.setHeader(nativeEvent.title);
