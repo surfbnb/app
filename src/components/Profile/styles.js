@@ -115,6 +115,13 @@ let stylesMap = {
     color: Colors.white,
     textAlign: 'center',
     marginLeft: 4
+  },
+  clickWrapper :{
+    zIndex: 10,
+    position: "absolute",
+    top:0,
+    right: 0,
+    width:'100%'
   }
 };
 

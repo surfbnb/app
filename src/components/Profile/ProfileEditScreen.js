@@ -37,6 +37,8 @@ const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
 const OPEN_GALLERY = 1;
 const CANCEL_INDEX = 2;
+const BIO_HEIGHT = 75;
+const EMAIL_HEIGHT = 45;
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -422,29 +424,32 @@ class ProfileEdit extends React.PureComponent {
 
         <Text style={[Theme.TextInput.labelStyle]}>Email Address</Text>
         <View style={{ position: 'relative' }}>
-          <TouchableWithoutFeedback disabled={this.state.isVerifiedEmail}
-            onPress={multipleClickHandler(() => this.onEmailFocus())}>
-            <FormInput
-              editable={false}
-              fieldName="email"
-              textContentType="none"
-              style={[
-                Theme.TextInput.textInputStyle,
-                !this.state.isVerifiedEmail
-                  ? { borderColor: Colors.wildWatermelon2 }
-                  : { backgroundColor: Colors.whiteSmoke }
-              ]}
-              placeholder="Email"
-              returnKeyType="next"
-              returnKeyLabel="Next"
-              placeholderTextColor="#ababab"
-              blurOnSubmit={false}
-              value={this.state.emailAddress}
-              serverErrors={this.state.server_errors}
-              autoCapitalize={'none'}
-              isFocus={false}
-            />
-          </TouchableWithoutFeedback>  
+          <TouchableOpacity disabled={this.state.isVerifiedEmail}
+            onPress={multipleClickHandler(() => this.onEmailFocus())}
+            style={[inlineStyles.clickWrapper,{height : EMAIL_HEIGHT}]}
+          >
+
+          </TouchableOpacity>
+          <FormInput
+            editable={false}
+            fieldName="email"
+            textContentType="none"
+            style={[
+              Theme.TextInput.textInputStyle,
+              !this.state.isVerifiedEmail
+                ? { borderColor: Colors.wildWatermelon2 }
+                : { backgroundColor: Colors.whiteSmoke }
+            ]}
+            placeholder="Email"
+            returnKeyType="next"
+            returnKeyLabel="Next"
+            placeholderTextColor="#ababab"
+            blurOnSubmit={false}
+            value={this.state.emailAddress}
+            serverErrors={this.state.server_errors}
+            autoCapitalize={'none'}
+            isFocus={false}
+          />
           <Image
             source={!this.state.isVerifiedEmail ? pendingConfirmEmail : confirmedEmail}
             style={{
@@ -458,12 +463,15 @@ class ProfileEdit extends React.PureComponent {
         </View>
 
         <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
-        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onBioFocus())}>
+        <View style={{position: "relative"}}>
+          <TouchableOpacity style={[inlineStyles.clickWrapper,{height : BIO_HEIGHT}]}
+                            onPress={multipleClickHandler(() => this.onBioFocus())}>
+          </TouchableOpacity>
           <FormInput
             editable={false}
             fieldName="bio"
             textContentType="none"
-            style={[Theme.TextInput.textInputStyle, { height: 75, paddingVertical: 15 }]}
+            style={[Theme.TextInput.textInputStyle, { height: BIO_HEIGHT, paddingVertical: 15 }]}
             placeholder="Bio"
             returnKeyType="next"
             returnKeyLabel="Next"
@@ -475,7 +483,8 @@ class ProfileEdit extends React.PureComponent {
             isFocus={false}
             //onFocus={multipleClickHandler(() => this.onBioFocus())}
           />
-        </TouchableWithoutFeedback>
+        </View>
+
 
         <Text style={[Theme.TextInput.labelStyle]}>Link</Text>
         <FormInput
