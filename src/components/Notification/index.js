@@ -87,7 +87,7 @@ class NotificationScreen extends Component {
   }
 
   getPermissions (){
-    utilities.getItem(`notification-permission-${this.props.userId}`).then((value)=> {
+    utilities.getItem(`notification-permission-show-${this.props.userId}`).then((value)=> {
       let permissionButtonClicked = value === 'true';
       this.setState({permissionModalVisible: !permissionButtonClicked })
     });
@@ -135,21 +135,18 @@ class NotificationScreen extends Component {
           enableAccess();
         }
       });
-
-    }).finally(()=>{
+    }).finally(() => {
       utilities.saveItem(`notification-permission-${this.props.userId}`, true);
+      utilities.saveItem(`notification-permission-show-${this.props.userId}`, true);
       utilities.saveItem(`notification-permission-app`, true);
       PushNotificationMethods.getToken(this.props.userId);
       this.setState({permissionModalVisible: false});
     });
-
   }
 
   handlePermissionDismiss = () => {
-    utilities.saveItem(`notification-permission-${this.props.userId}`, true);
+    utilities.saveItem(`notification-permission-show-${this.props.userId}`, true);
     this.setState({permissionModalVisible: false});
-
-
   }
 
   showPermissionModal = () => {
