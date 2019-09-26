@@ -5,7 +5,7 @@
   Make sure to include Akshay in code review.
 */
 
-import {IS_PRODUCTION} from "../constants";
+import {IS_PRODUCTION, IS_SANDBOX, IS_STAGING} from "../constants";
 const CONSOLE_SCOPE = global;
 const originalConsole = console;
 const _console = Object.assign({}, originalConsole);
