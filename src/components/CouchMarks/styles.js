@@ -26,7 +26,6 @@ let stylesMap = {
         color: 'rgb(255, 255, 255)',
         fontSize: 14,
         fontFamily: 'AvenirNext-Regular',
-        textAlign: 'center'
     },
 
     wrappedView: {

@@ -3,7 +3,9 @@ import styles from './styles';
 import {Modal, Text, TouchableOpacity, View, Image} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Theme from "../../theme/styles";
-import Swipe from '../../assets/swipe.png'
+import Swipe from '../../assets/swipe.png';
+import PepoIcon from '../../assets/pepo_coach.png';
+import AddIcon from '../../assets/add_icon_coach.png';
 import multipleClickHandler from "../../services/MultipleClickHandler";
 
 export default class CouchMarks extends Component {
@@ -32,15 +34,19 @@ export default class CouchMarks extends Component {
 
                 <View style={styles.horizontalLine}></View>
 
-                <Text style={styles.smallText}>
-                    Press and hold to show how much you will like it
-                </Text>
+                <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                    <Text style={[styles.smallText, , {width: '80%'}]}> Press and hold to show how much you will like it</Text>
+                    <Image source={PepoIcon} style={{height: 41, width:41, marginRight: 20}}/>
+                </View>
+
 
                 <View style={styles.horizontalLine}></View>
 
-                <Text style={styles.smallText}>
-                    Tap to create your video
-                </Text>
+                <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                    <Text style={[styles.smallText]}> Tap to create your video</Text>
+                    <Image source={AddIcon} style={{height: 60, width:60, marginRight: 6}}/>
+                </View>
+
 
                 <LinearGradient
                     colors={['#ff7499', '#ff5566']}
