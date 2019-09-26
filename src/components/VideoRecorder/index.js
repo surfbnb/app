@@ -164,7 +164,7 @@ class VideoRecorder extends Component {
 
                 <Text style={styles.smallText}>
                   Pepo has a review process for creators. Our team will help you get started once you create your first
-                  video.   Once approved your video will appear in the feed or other user. In the mean time we will send
+                  video. Once approved your video will appear in the feed or other user. In the mean time we will send
                   you timly updates about the review process
                 </Text>
 

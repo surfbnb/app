@@ -57,6 +57,9 @@ class NotificationScreen extends Component {
         },
         shadowOpacity: 0.1,
         shadowRadius: 3
+      },
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
       }
     };
   };
@@ -82,7 +85,7 @@ class NotificationScreen extends Component {
   }
 
   getPermissions (){
-    utilities.getItem(`n-p-${this.props.userId}`).then((value)=> {
+    utilities.getItem(`notification-permission-${this.props.userId}`).then((value)=> {
       let permissionButtonClicked = value === 'true';
       this.setState({permissionModalVisible: !permissionButtonClicked })
     });
@@ -125,15 +128,15 @@ class NotificationScreen extends Component {
         console.log('handlePermissionButtonClick.askForPNPermission: then');
       }).catch(() => {
         console.log('handlePermissionButtonClick.askForPNPermission: catch');
-        utilities.getItem(`n-p-a`).then((value)=> {
+        utilities.getItem(`notification-permission-app`).then((value)=> {
           if( value === 'true' || Platform.OS == 'android'){
             enableAccess();
           }
         });
 
       }).finally(()=>{
-        utilities.saveItem(`n-p-${this.props.userId}`, true);
-        utilities.saveItem(`n-p-a`, true);
+        utilities.saveItem(`notification-permission-${this.props.userId}`, true);
+        utilities.saveItem(`notification-permission-app`, true);
         PushNotificationMethods.getToken(this.props.userId);
         this.setState({permissionModalVisible: false});
       });
@@ -153,7 +156,7 @@ class NotificationScreen extends Component {
           <Button
             style={{ alignSelf: 'center', backgroundColor: '#f56', padding: 14, marginTop: 24 }}
             onPress={this.handlePermissionButtonClick}
-            
+
           >
           <Text style={styles.buttonText}>Turn On Notification</Text>
           </Button>

@@ -27,7 +27,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const Header = (props)=>{
-  return <TouchableOpacity onPress={()=> DrawerEmitter.emit('closeDrawer')}><Text style={{fontWeight: '600', fontSize: 17, color: 'rgba(0,0,0,.9)'}}>{props.name}</Text></TouchableOpacity>
+  return <TouchableOpacity onPress={()=> DrawerEmitter.emit('closeDrawer')}><Text style={inlineStyles.headerStyle}>{props.name}</Text></TouchableOpacity>
 }
 
 class ProfileScreen extends PureComponent {
@@ -194,7 +194,7 @@ class ProfileScreen extends PureComponent {
                       userId={this.props.userId}
                     />
               </CustomDrawer>
-           
+
 
     }else{
       return <View style={{flex: 1 , backgroundColor: Colors.black}} />

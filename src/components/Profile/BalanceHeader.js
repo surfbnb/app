@@ -22,6 +22,8 @@ import appConfig from "../../constants/AppConfig";
 import PepoApi from '../../services/PepoApi';
 import InAppBrowser from '../../services/InAppBrowser';
 import { ostErrors } from '../../services/OstErrors';
+import {OstWalletSdk} from "@ostdotcom/ost-wallet-sdk-react-native";
+import AppConfig from '../../constants/AppConfig';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -74,9 +76,20 @@ class BalanceHeader extends PureComponent {
     return pricer.toDisplayAmount( priceOracle.btToFiat( val ));
   }
 
+
+  isDevicesAuthorized( device ) {
+    return device && device.status && device.status.toLowerCase() == AppConfig.deviceStatusMap.authorized;
+  }
+
   onTopUp = () => {
     if(CurrentUser.isUserActivated()){
-      this.props.navigation.push("StoreProductsScreen");
+      OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
+        if(this.isDevicesAuthorized( device )){
+          this.props.navigation.push("StoreProductsScreen");
+        }else{
+          this.props.navigation.push("AuthDeviceDrawer" , {device: device});  
+        }
+    })    
     }else{
       Toast.show({
         text: ostErrors.getUIErrorMessage('user_not_active'),

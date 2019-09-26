@@ -1,4 +1,5 @@
 import deepGet from 'lodash/get';
+import Utilities from './Utilities';
 
 const sdkErrors = {
   USER_NOT_ACTIVATED: 'User is not activated.',
@@ -23,17 +24,17 @@ const UIErros = {
   no_internet: 'No Internet, please try again later.',
   maxAllowedBt: `Max allowed Pepo coin transfer reached`,
   name: 'Name is mandatory.',
-  payment_failed_error : "Unable to process the payment.",
+  payment_failed_error : `Transaction failed. Please check your ${Utilities.getNativeStoreName()} account.`,
   init_iap_payment: "Failed to initalize in app payments, please try again later.",
-  payment_acknowledge_to_be: "The in app transaction is complete, we  have noted it on device. We are facing some problem BE problems. Will update soon",
-  payment_invalid: "This is invalid payment, please contact in app store",
-  payment_pending: "We have noted your order, will update your balance once processed.",
-  payment_cancelled: "The payment was cancelled",
-  pending_transaction_poll: "Failed to check status please wait",
+  payment_acknowledge_to_be: "We are not able to connect to our servers right now. We will try again and  update your transaction status soon. Please do not uninstall the app until then.",
+  payment_invalid: `Transaction failed in ${Utilities.getNativeStoreName()}. Please check your ${Utilities.getNativeStoreName()} account.`,
+  payment_pending: `Transaction is still being processed at ${Utilities.getNativeStoreName()}. Please check your ${Utilities.getNativeStoreName()} account.`,
+  payment_cancelled: `Transaction has been canceled by ${Utilities.getNativeStoreName()}. Please check your ${Utilities.getNativeStoreName()} account.`,
+  pending_transaction_poll: 'We are not able to connect to the server. Your transaction status will be updated shortly.',
   invite_code_error: 'Enter a valid invite code.',
   email_error: 'Enter a valid email.',
   device_unathorized: "Your device is not authorized. Please authorized the device.",
-  top_not_available: "Topup not available at this time, we are looking into in. Please check back later."
+  top_not_available: "Topup not available at this time, we are looking into it. Please check back later."
 };
 
 const UIWhitelistedErrorCode = {

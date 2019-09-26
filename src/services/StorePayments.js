@@ -53,8 +53,7 @@ class StorePayments {
     onRequestPurchaseError(error , userId ){
         error = error || {};
         paymentEvents.emit(paymentEventsMap.paymentIAPError); 
-        //TODO error sync with @PM 
-        Alert.alert(""+error.responseCode,  ""+error.debugMessage);   
+        Alert.alert("" , ostErrors.getUIErrorMessage("payment_failed_error"));   
     }
 
     onRequestPurchaseSuccess( res , userId ){
@@ -89,7 +88,10 @@ class StorePayments {
             console.log("snycPendingPayments getAllKeys" , error);
         });
 
-        PollCurrentUserPendingPayments.initBalancePoll(userId ,  true);
+        if(CurrentUser.isUserActivated()){
+            PollCurrentUserPendingPayments.initBalancePoll(userId ,  true);    
+        }
+       
     }
 
     __syncBETransactions( list ){

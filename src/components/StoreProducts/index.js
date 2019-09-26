@@ -21,14 +21,11 @@ import StorePayments from "../../services/StorePayments";
 import { paymentEvents,  paymentEventsMap } from "../../helpers/PaymentEvents";
 import inlineStyles from './styles';
 import dataContract from "../../constants/DataContract";
-import {OstWalletSdk} from "@ostdotcom/ost-wallet-sdk-react-native";
 
 import pepoTxIcon from "../../assets/pepo-tx-icon.png";
 import toastError from '../../assets/toast_error.png';
 import pepoIcon from '../../assets/self-amount-pepo-icon.png';
 import mailIcon from '../../assets/mail-filled.png';
-import CurrentUser from '../../models/CurrentUser';
-import AppConfig from '../../constants/AppConfig';
 import { ostErrors } from '../../services/OstErrors';
 
 class StoreProductsScreen extends PureComponent{
@@ -48,8 +45,7 @@ class StoreProductsScreen extends PureComponent{
         this.thresholdLimit;
         this.isProductFetchError = false;
         this.maxThresholdReached = false;
-        this.deviceUnAuthorised =  false;
-        this.checkDeviceAuthorized();
+        this.fetchProducts();
     }
 
     componentDidMount(){
@@ -70,21 +66,6 @@ class StoreProductsScreen extends PureComponent{
         paymentEvents.removeListener(paymentEventsMap.paymentIAPError);
         paymentEvents.removeListener( paymentEventsMap.paymentBESyncSuccess);
         BackHandler.removeEventListener('hardwareBackPress');
-    }
-
-    isDevicesAuthorized( device ) {
-       return device && device.status && device.status.toLowerCase() == AppConfig.deviceStatusMap.authorized;
-    }
-
-    checkDeviceAuthorized = () => {
-        OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
-            if(this.isDevicesAuthorized( device )){
-              this.fetchProducts();
-            }else{
-                this.deviceUnAuthorised = true;
-                this.onFetchError();
-            }
-        })
     }
 
     fetchProducts = () => {
@@ -236,7 +217,7 @@ class StoreProductsScreen extends PureComponent{
 
     getProductsMarkUp = () => {
         return (
-            <View style={[inlineStyles.poductListWrapper , {height: Dimensions.get('window').height * 0.65}]}>
+            <View style={[inlineStyles.poductListWrapper , {height: Dimensions.get('window').height * 0.50}]}>
                 <View style={inlineStyles.headerWrapper}>
                     <Text style={inlineStyles.modalHeader}>Top-Up Pepo Coins</Text>
                 </View>
@@ -265,9 +246,7 @@ class StoreProductsScreen extends PureComponent{
 
     getMarkUp = () => {
         this.getAnimation().stop() ;
-        if(this.deviceUnAuthorised){
-            return this.getDeviceUnAutorizedMarkup();
-        }else if(this.isProductFetchError){
+        if(this.isProductFetchError){
             return this.getErrorMarkup();
         } else if(this.maxThresholdReached){
             return this.getThresholdReachedMarkUp(); 
