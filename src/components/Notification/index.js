@@ -145,6 +145,13 @@ class NotificationScreen extends Component {
 
   }
 
+  handlePermissionDismiss = () => {
+    utilities.saveItem(`notification-permission-${this.props.userId}`, true);
+    this.setState({permissionModalVisible: false});
+
+
+  }
+
   showPermissionModal = () => {
     return (
       <Modal style={styles.backgroundStyle} transparent={true}>
@@ -171,6 +178,26 @@ class NotificationScreen extends Component {
                 { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
               ]}>
                 Turn On Notification
+              </Text>
+            </TouchableOpacity>
+          </LinearGradient>
+
+          <LinearGradient
+              colors={['#ff7499', '#ff5566']}
+              locations={[0, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
+          >
+            <TouchableOpacity
+                onPress={this.handlePermissionDismiss}
+                style={[Theme.Button.btn, { borderWidth: 0 }]}
+            >
+              <Text style={[
+                Theme.Button.btnPinkText,
+                { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+              ]}>
+                No, Thanks
               </Text>
             </TouchableOpacity>
           </LinearGradient>
