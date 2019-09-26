@@ -324,7 +324,7 @@ const AppContainer = createAppContainer(
 const RootNavigationContainer = () => (
   <Root>
     <AppContainer
-      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(action)}
+      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(prevState,currentState,action)}
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}

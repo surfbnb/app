@@ -6,6 +6,11 @@ function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
 }
 
+function getTopLevelNavigator(){
+  return _navigator;
+}
+
+
 function navigate(routeName, params) {
   _navigator.dispatch(
     NavigationActions.navigate({
@@ -15,6 +20,21 @@ function navigate(routeName, params) {
   );
 }
 
+const findCurrentRoute = (navState) => {
+  console.log(JSON.stringify(getTopLevelNavigator().state, null ,2 ) );
+  if ( !navState ) {
+    navState = getTopLevelNavigator().state.nav;
+  }
+
+  let index = navState.index;
+  if (typeof index !== "number") {
+    //No more index.
+    return navState.routeName;
+  } else {
+    //Call recursive;
+    return findCurrentRoute(navState.routes[index] );
+  }
+}
 
 function reset(navigation) {
   if(!navigation) return;
@@ -26,5 +46,7 @@ function reset(navigation) {
 export default {
   navigate,
   setTopLevelNavigator,
+  getTopLevelNavigator,
+  findCurrentRoute,
   reset
 };
