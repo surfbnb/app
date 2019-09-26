@@ -58,7 +58,7 @@ import WalletDetails from './src/components/WalletSetting/WalletDetails';
 import AuthDeviceDrawer from './src/components/Home/AuthDeviceDrawer';
 import InAppBrowserComponent from './src/components/CommonComponents/InAppBrowser';
 
-const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserStack'];
+const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserComponent'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
