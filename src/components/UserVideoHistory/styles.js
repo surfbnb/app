@@ -106,6 +106,18 @@ let stylesMap = {
     left: 10,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  optionsIconSkipFont:{
+    ...ifIphoneX({
+      top: 70,
+    }, {
+      top: 40,
+    }),
+    position: 'absolute',
+    right: 10,
+    height :10,
+    width:23,
+    zIndex: 1,
   }
 };
 

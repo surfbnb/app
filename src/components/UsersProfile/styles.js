@@ -22,6 +22,11 @@ let stylesMap = {
     paddingHorizontal: 25,
     color: Colors.valhalla,
     fontFamily: 'AvenirNext-Regular'
+  },
+  userProfileOptionSkipFont : {
+    height:6,
+    width:28,
+    marginRight:20
   }
 
 };

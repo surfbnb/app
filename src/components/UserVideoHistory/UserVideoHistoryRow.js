@@ -14,6 +14,7 @@ import ShareVideo from '../../services/shareVideo';
 import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
+import OptionsIcon from '../../assets/options_self_video.png';
 
 
 class UserVideoHistoryRow extends PureComponent {
@@ -51,6 +52,7 @@ class UserVideoHistoryRow extends PureComponent {
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
+        <Image style={inlineStyles.optionsIconSkipFont} source={OptionsIcon}/>
         <VideoWrapper
           shouldPlay={this.props.shouldPlay}
           userId={this.props.userId}

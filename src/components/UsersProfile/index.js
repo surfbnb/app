@@ -16,6 +16,7 @@ import { fetchUser } from '../../helpers/helpers';
 import utilities from '../../services/Utilities';
 import inlineStyles from './styles';
 import Utilities from '../../services/Utilities';
+import UserProfileOptions from '../../assets/user_profile_options.png';
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -33,7 +34,8 @@ export default class UsersProfile extends Component {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
-      headerBackImage: <BackArrow />
+      headerBackImage: <BackArrow />,
+      headerRight: <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}></Image>
     };
   };
 
