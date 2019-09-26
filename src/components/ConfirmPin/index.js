@@ -45,7 +45,7 @@ export default class ConfirmPin extends Component {
       .catch(() => {})
       .finally(() => {
         LoadingModal.hide();
-        navigateTo.goToNavigationDecision(true, { ignoreNavigationDecision: true });
+        navigateTo.goToNavigationDecision(true);
       });
   }
 
