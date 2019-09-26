@@ -35,7 +35,7 @@ class ShareIcon extends PureComponent {
                               disabled={this.isDisabled()}
                               style={{marginBottom: 15, height: 50, width: 50, alignItems: 'center', justifyContent: 'center'}}
                               onPress={multipleClickHandler(() => this.shareVideo())} >
-              <Image style={{ height: 34, width: 39 }} source={this.isDisabled() ? share_icon_disabled : share_icon} />
+              <Image style={{ height: 35, width: 36.5 }} source={this.isDisabled() ? share_icon_disabled : share_icon} />
           </TouchableOpacity>);
   }
 
