@@ -19,10 +19,10 @@ import {fetchUser} from "../../../helpers/helpers";
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 
 import inlineStyles from './style';
-
-import elipses from '../../../assets/elipses_video_in_profile.png';
 import pepoWhiteIcon from '../../../assets/pepo-white-icon.png'
 import LinearGradient from "react-native-linear-gradient";
+import CurrentUser from "../../../models/CurrentUser";
+import DeleteVideo from "../DeleteVideo";
 
 
 class UserProfileFlatList extends PureComponent {
@@ -119,6 +119,20 @@ class UserProfileFlatList extends PureComponent {
       this.videoHistoryPagination.refresh();
     }
 
+    isCurrentUser = () => {
+        return this.props.userId === CurrentUser.getUserId();
+    }
+
+    removeVideo = (videoId, index) => {
+            var array = [...this.state.list]; // make a separate copy of the array
+            var videoIndex = array.indexOf(`v_${videoId}`);
+            if (videoIndex !== -1) {
+                array.splice(videoIndex, 1);
+                this.setState({list: array});
+                this.props.onDelete(array);
+            }
+    }
+
     _keyExtractor = (item, index) => `id_${item}`;
 
     _renderItem = ({ item, index }) => {
@@ -141,9 +155,9 @@ class UserProfileFlatList extends PureComponent {
               end={{ x: 0, y: 1 }}
               style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', top: 0, left: 0, alignItems: 'flex-end'}}
             >
-              <View style={inlineStyles.deleteButton}>
-                <Image style={{height: 3, width: 14}} source={elipses} />
-              </View>
+                { this.isCurrentUser() && <View style={inlineStyles.deleteButton}>
+                <DeleteVideo videoId={videoId} videoIndex={index} removeVideo={this.removeVideo} />
+              </View>}
             </LinearGradient>
             <LinearGradient
               colors={['transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']}

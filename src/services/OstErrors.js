@@ -33,7 +33,8 @@ const UIErros = {
   invite_code_error: 'Enter a valid invite code.',
   email_error: 'Enter a valid email.',
   device_unathorized: "Your device is not authorized. Please authorized the device.",
-  top_not_available: "Topup not available at this time, we are looking into in. Please check back later."
+  top_not_available: "Topup not available at this time, we are looking into in. Please check back later.",
+  delete_video_error:"Unable to delete Video at this moment."
 };
 
 const UIWhitelistedErrorCode = {

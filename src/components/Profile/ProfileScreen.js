@@ -180,6 +180,13 @@ class ProfileScreen extends PureComponent {
     })
   }
 
+  onDelete = (list) => {
+    if (!list || list.length == 0){
+      this.setState({hasVideos: false});
+    }
+
+  }
+
   render() {
     if(this.props.userId){
       return  <CustomDrawer openDrawer={this.state.openDrawer} navigation={this.props.navigation} onClose={this.onClose}>
@@ -192,6 +199,7 @@ class ProfileScreen extends PureComponent {
                       beforeRefresh={this.beforeRefresh}
                       onRefresh={this.onRefresh}
                       userId={this.props.userId}
+                      onDelete={this.onDelete}
                     />
               </CustomDrawer>
 
