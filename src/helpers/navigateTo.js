@@ -15,7 +15,7 @@ class NavigateTo {
   }
 
   setTopLevelNavigation(navigation) {
-    if (!navigation) return; //TODO check instance of navigation
+    if (!navigation) return;
     this.navigation = navigation;
   }
 
@@ -63,7 +63,9 @@ class NavigateTo {
   goToVideo = (vId, payload) => {
     payload = payload || {};
     payload['videoId'] = vId;
-    this.__navigate('NotificationScreen', payload);
+    if(Utilities.getLastChildRoutename(this.navigation.state) != "NotificationScreen"){
+      this.__navigate('NotificationScreen', payload);
+    }
     this.__push('VideoPlayer', payload);
   };
 

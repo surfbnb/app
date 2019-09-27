@@ -129,28 +129,30 @@ class UserInfo extends React.PureComponent {
           </View>
         </View>
         {!!this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>}
-        <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginTop: 10}}>
+        {/*<View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginTop: 10, marginHorizontal: 15}}>*/}
         {!!this.props.link && (
-          <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center'}}>
-            <Image source={profileLink} style={{height:9,width:18,marginTop:5}}></Image>
-          <Text
-            style={[{ color: Colors.pinkRed, textAlign: 'center',paddingLeft:5 }]}
-            onPress={() => {
-              InAppBrowser.openBrowser(this.props.link);
-            }}
-          >
-            {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
-          </Text>
+          <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginHorizontal: 20, marginTop: 10}}>
+            <Text ellipsizeMode={'tail'} numberOfLines={1}>
+              <Image source={profileLink} style={{height:8.25,width:17.25}}/>{'  '}
+              <Text
+                style={[{ color: Colors.pinkRed, marginLeft:5}]}
+                onPress={() => {
+                  InAppBrowser.openBrowser(this.props.link);
+                }}
+              >
+                {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
+              </Text>
+            </Text>
           </View>
         )}
-          <View style={{paddingLeft:20,flexDirection:'row', alignItems:'center',justifyContent:'center'}}>
-            <Image style={{height:15,width:18}} source={twitterLink}></Image>
+          <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginTop: 10}}>
+            <Image style={{height:14,width:17}} source={twitterLink}/>
             <Text
-              style={[{paddingLeft:5, color: Colors.summerSky, textAlign: 'center',}]}
+              style={[{marginLeft:5, color: Colors.summerSky}]}
               onPress={() => {Linking.openURL(this.props.twitterHandleLink);}}>{this.props.twitterHandle}
             </Text>
           </View>
-        </View>
+        {/*</View>*/}
         {this.props.videoInReviewHeader || <View style={{height:15}} />}
       </View>
     );
