@@ -30,19 +30,19 @@ let stylesMap = {
   captureButtonSkipFont: {
     width: 65,
     height: 65,
-    padding: 15,
-    paddingHorizontal: 20,
-    marginLeft: -32.5
+    // padding: 15,
+    // paddingHorizontal: 20,
+    // marginLeft: -32.5
     //alignSelf: 'center'
     // margin: 20
   },
   flipIconSkipFont: {
-    width: 35,
-    height: 40,
-    padding: 15,
+    width: 39.5,
+    height: 36.5,
+    // padding: 15,
     //paddingHorizontal: 20,
-    marginRight: 12,
-    marginTop: 13
+    // marginRight: 12,
+    // marginTop: 13
     //alignSelf: 'center'
   },
   progressBar: {
@@ -73,10 +73,10 @@ let stylesMap = {
     width: 60
   },
   closeIconSkipFont: {
-    marginTop: 40,
+    marginTop: 45,
     marginLeft: 20,
-    height: 20,
-    width: 20
+    height: 27,
+    width: 27
   },
 
   backgroundStyle: {
@@ -107,9 +107,10 @@ let stylesMap = {
 
   bottomWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignSelf: 'flex-end',
-    width: Dimensions.get('window').width/2,
+    // backgroundColor: '#fff',
+    // justifyContent: 'space-between',
+    // alignSelf: 'flex-end',
+    width: Dimensions.get('window').width,
   }
 };
 

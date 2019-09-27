@@ -7,7 +7,7 @@ import Store from '../../store';
 import { upsertRecordedVideo, videoInProcessing } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
-import closeIcon from '../../assets/cross_icon.png';
+import closeIcon from '../../assets/camera-cross-icon.png';
 import { withNavigation } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../services/MultipleClickHandler';

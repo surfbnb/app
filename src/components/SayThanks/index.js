@@ -228,7 +228,7 @@ class SayThanks extends Component {
                 <View style={{ flex: 1 }}>
                   <FormInput
                     onChangeText={this.changeMessage}
-                    placeholder="🙌"
+                    placeholder=""
                     fieldName="text"
                     style={[Theme.TextInput.textInputStyle, { height: 50, color: '#2a293b', marginTop: 0 }]}
                     value={`${this.state.thanksMessage}`}

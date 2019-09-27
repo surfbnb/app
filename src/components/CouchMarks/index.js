@@ -37,7 +37,7 @@ export default class CouchMarks extends Component {
                             <Text>
                               <Text style={styles.smallText }>Press and hold</Text>{' '}
                               <Image source={PepoIcon} style={{height: 14, width:14}}/>{' '}
-                              <Text style={styles.smallText }>to show how much you will like it</Text>
+                              <Text style={styles.smallText }>to show how much you like it</Text>
                             </Text>
                         </View>
                         <Image source={PepoIcon} style={{height: 41, width:41, marginHorizontal: 10}}/>
@@ -49,7 +49,7 @@ export default class CouchMarks extends Component {
                         <View style={{flexDirection:'row', flex: 1, flexWrap: 'wrap', alignItems: 'center'}}>
                             <Text style={styles.smallText }>Tap</Text>
                             <Image source={AddIcon} style={{height: 14, width:14, marginHorizontal: 5}}/>
-                            <Text style={styles.smallText }>to create your video</Text>
+                            <Text style={styles.smallText }>to create your 30s video</Text>
                         </View>
                         <Image source={AddIcon} style={{height: 40, width:40, marginHorizontal: 10}}/>
                     </View>

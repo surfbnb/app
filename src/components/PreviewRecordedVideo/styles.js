@@ -68,10 +68,10 @@ let stylesMap = {
     width: 60
   },
   closeIconSkipFont: {
-    marginTop: 44,
+    marginTop: 45,
     marginLeft: 20,
-    height: 20,
-    width: 20
+    height: 27,
+    width: 27
   },
   triangleRight: {
     width: 0,
