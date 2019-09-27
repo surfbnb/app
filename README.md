@@ -25,8 +25,11 @@
     1. iOS: `ios/Pepo2/AppDelegate.m`
     2. Android: `android/app/src/main/res/xml/network_security_config.xml`
 
-#### Website
-1. Universal linking set-up 
+#### Universal linking
+1. In website (`pepo-web`), make sure the universal links config is updated
+2. Within app, update capabilites / manifest:
+    1. iOS: `ios/Pepo2/Pepo2.entitlements`
+    2. Android: `android/app/src/main/AndroidManifest.xml`
 
 ### Build Instructions (for iOS)
 
