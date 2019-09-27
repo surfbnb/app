@@ -55,7 +55,8 @@ let stylesMap = {
     aspectRatio: 3 / 4,
     width: 40,
     marginLeft: 'auto',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: Colors.gainsboro
   },
   playIconSkipFont: {
     height: 14,
