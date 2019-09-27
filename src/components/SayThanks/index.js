@@ -25,7 +25,7 @@ const bottomSpace = getBottomSpace([true]),
     extraPadding = 10,
     safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
 
-const thanksMsg = '🙌 Thanks for your support!';
+const thanksMsg = '🙌';
 
 class SayThanks extends Component {
   constructor(props) {
@@ -228,7 +228,7 @@ class SayThanks extends Component {
                 <View style={{ flex: 1 }}>
                   <FormInput
                     onChangeText={this.changeMessage}
-                    placeholder="🙌 Thanks for your support! "
+                    placeholder="🙌"
                     fieldName="text"
                     style={[Theme.TextInput.textInputStyle, { height: 50, color: '#2a293b', marginTop: 0 }]}
                     value={`${this.state.thanksMessage}`}
