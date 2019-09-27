@@ -9,7 +9,7 @@ import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
 import {ostSdkErrors} from "../../services/OstSdkErrors";
 import CurrentUser from "../../models/CurrentUser";
 import CameraPermissionsApi from "../../services/CameraPermissionsApi";
-
+import DeviceInfo from 'react-native-device-info';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 
 class WalletSettingList extends PureComponent {
@@ -27,6 +27,9 @@ class WalletSettingList extends PureComponent {
         },
         shadowOpacity: 0.1,
         shadowRadius: 3
+      },
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
       },
       headerBackImage: <BackArrow />
     };
@@ -59,9 +62,9 @@ class WalletSettingList extends PureComponent {
 
     this._createEventLoaderData(
       optionIds.resetPin,
-      "Resetting PIN",
+      "Resetting PIN...",
       "Waiting for confirmation",
-      "PIN updated");
+      "PIN has been successfully reset");
 
     this._createEventLoaderData(
       optionIds.recoverDevice,
@@ -165,7 +168,10 @@ class WalletSettingList extends PureComponent {
   };
 
   async _processTappedOption(item) {
-    if (item.id === optionIds.authorizeWithQR) {
+    if ( optionIds.walletDetails === item.id ) {
+      this.props.navigation.navigate('WalletDetails');
+      return;
+    } else if (item.id === optionIds.authorizeWithQR) {
       let cameraResult = await CameraPermissionsApi.requestPermission('camera');
       if ((cameraResult == 'denied' || cameraResult == 'restricted')) {
         LoadingModal.showFailureAlert("Allow access to your camera to scan QR", '', 'Enable Camera Access', (isBtnTapped) => {
@@ -210,7 +216,7 @@ class WalletSettingList extends PureComponent {
   onWorkflowStarted = (workflowInfo) => {
     this.workflowInfo = workflowInfo;
     // Show loader.
-    LoadingModal.show('');
+    //LoadingModal.show('');
 
     // Subscribe to events.
     walletSettingController.setUIDelegate(this);
@@ -234,7 +240,9 @@ class WalletSettingList extends PureComponent {
 
   onUnauthorized = (ostWorkflowContext , ostError) => {
     LoadingModal.showFailureAlert("Device is not authorized. Please authorize device again.", null, "Logout", () => {
-      CurrentUser.logout();
+      CurrentUser.logout({
+        device_id: DeviceInfo.getUniqueID()
+      });
     })
   };
 
@@ -252,7 +260,7 @@ class WalletSettingList extends PureComponent {
   };
 
   deviceTimeOutOfSync = (ostWorkflowContext , ostError) => {
-    LoadingModal.hide();
+    this.workflowFailed(ostWorkflowContext, ostError);
   };
 
   workflowFailed = (ostWorkflowContext , ostError) => {

@@ -1,12 +1,15 @@
 import deepGet from 'lodash/get';
 import {IS_PRODUCTION, IS_SANDBOX} from '../constants';
 import PepoApi from "./PepoApi";
+import OstWalletSdkHelper from "../helpers/OstWalletSdkHelper";
+
 //NEVER COMMIT WITH developerMode true.
 const developerMode = false;
 const logErrorMessage = !IS_PRODUCTION;
 const DEFAULT_ERROR_MSG = "Something went wrong";
 const WORKFLOW_CANCELLED_MSG = "WORKFLOW_CANCELLED";
 const DEFAULT_CONTEXT = "_default";
+const DEVICE_OUT_OF_SYNC = "DEVICE_OUT_OF_SYNC";
 /**
  * OstSdkErrors
  * To get Message of OstError based on workflow type.
@@ -19,7 +22,7 @@ class OstSdkErrors {
     getErrorMessage(ostWorkflowContext, ostError) {
       let errMsg = this._getErrorMessage(ostWorkflowContext, ostError);
       if ( logErrorMessage ) {
-        if ( WORKFLOW_CANCELLED_MSG != errMsg ) {
+        if ( WORKFLOW_CANCELLED_MSG !== errMsg ) {
           try {
             this._postErrorDetails(ostWorkflowContext, ostError, errMsg);
           } catch(e) {
@@ -37,6 +40,29 @@ class OstSdkErrors {
         return DEFAULT_ERROR_MSG;
       }
 
+      let errorCode = ostError.getErrorCode();
+
+      let workflowType = ostWorkflowContext ? ostWorkflowContext.WORKFLOW_TYPE : null;
+      workflowType = workflowType || DEFAULT_CONTEXT;
+
+      if (OstWalletSdkHelper.isDeviceTimeOutOfSync(ostError)) {
+        errorCode = DEVICE_OUT_OF_SYNC;
+
+        if ( allErrors[workflowType] ) {
+          errMsg = allErrors[workflowType][ errorCode ];
+        }
+
+        if ( !errMsg ) {
+          errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
+        }
+
+        if ( developerMode ) {
+          errMsg = errMsg + "\n\n(" + ostError.getApiInternalId() + ")"
+        }
+
+        return errMsg || DEFAULT_ERROR_MSG;
+      }
+
       if ( ostError.isApiError() ) {
         let errData = ostError.getApiErrorData();
         if (errData && errData.length > 0) {
@@ -52,15 +78,9 @@ class OstSdkErrors {
         return errMsg;
       }
 
-      let errorCode = ostError.getErrorCode();
       if ( !errorCode ) {
         return DEFAULT_ERROR_MSG;
       }
-
-
-      let workflowType = ostWorkflowContext ? ostWorkflowContext.WORKFLOW_TYPE : null;
-      workflowType = workflowType || DEFAULT_CONTEXT;
-
 
       if ( allErrors[workflowType] ) {
         errMsg = allErrors[workflowType][ errorCode ];
@@ -148,6 +168,7 @@ const allErrors = {
 };
 
 const BaseErrorMessages = {
+  DEVICE_OUT_OF_SYNC: 'Device time is out of sync. Please check the time on your device reflects current date and time.',
   NETWORK_ERROR: "Request could not be executed due to cancellation, a connectivity problem or timeout.",
 
   INVALID_MNEMONICS:
@@ -167,7 +188,7 @@ const BaseErrorMessages = {
   SESSION_NOT_FOUND:
     "The device doesn't has any active session. Please authorize a session before doing any transaction. Workflow details provided at https://dev.ost.com/platform/docs/sdk/references ",
 
-  INVALID_QR_CODE: "The QR code does not contain valid data definition. To know the data definition for QR code based on type of operations please visit https://dev.ost.com/platform",
+  INVALID_QR_CODE: "Incorrect QR code.",
 
   RECOVERY_KEY_GENERATION_FAILED: "Failed to generate Recovery key. Inspect if a correct input values required are being sent and re-submit the request. ",
 
@@ -175,6 +196,8 @@ const BaseErrorMessages = {
 
   WORKFLOW_FAILED:
     "Something went wrong, please try again",
+
+  WORKFLOW_VIEW_DESTROYED: "The application interrupted the workflow. The view got terminated while performing the workflow",
 
   // Rare Errors
   DEVICE_UNAUTHORIZED:

@@ -1,4 +1,4 @@
-
+import {OstWalletApiError, OstWalletError} from '@ostdotcom/ost-wallet-sdk-react-native';
 class OstWalletSdkHelper {
   constructor() {}
 
@@ -43,8 +43,8 @@ class OstWalletSdkHelper {
     return false
   }
 
-  static canDeviceMakeApiCall(device ) {
-    if ( null === device ) {
+  static canDeviceMakeApiCall(device) {
+    if (!device) {
       return false;
     }
     switch( device.status ) {
@@ -66,6 +66,17 @@ class OstWalletSdkHelper {
       }
     }
     return false
+  }
+
+  static jsonToOstRNError( ostErrorJson ) {
+    if ( ostErrorJson instanceof OstWalletError ) {
+      return ostErrorJson;
+    }
+    let ostError = new OstWalletError( ostErrorJson );
+    if ( ostError.isApiError() ) {
+      ostError = new OstWalletApiError( ostErrorJson );
+    }
+    return ostError;
   }
 }
 

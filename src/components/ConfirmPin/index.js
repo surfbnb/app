@@ -9,6 +9,8 @@ import BackArrow from '../../assets/back-arrow.png';
 import { ostErrors } from '../../services/OstErrors';
 import { ostSdkErrors } from '../../services/OstSdkErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
+import { navigateTo } from '../../helpers/navigateTo';
+import CurrentUser from '../../models/CurrentUser';
 
 export default class ConfirmPin extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -28,7 +30,7 @@ export default class ConfirmPin extends Component {
 
   onPinChange = (pin, resetPinCallback) => {
     if (pin === this.props.navigation.getParam('pin', '')) {
-      LoadingModal.show('Activating User...', 'This may take a while,\n we are surfing on Blockchain');
+      LoadingModal.show('Activating...');
       ActivateUser.activateUser(pin, this);
     } else {
       if (resetPinCallback) {
@@ -39,8 +41,13 @@ export default class ConfirmPin extends Component {
   };
 
   onRequestAcknowledge() {
-    LoadingModal.hide();
-    this.props.navigation.navigate('HomeScreen');
+    CurrentUser.updateActivatingStatus()
+      .catch(() => {})
+      .finally(() => {
+        LoadingModal.hide();
+        this.props.navigation.navigate('HomeScreen');
+        this.props.navigation.push('CouchMarks');
+      });
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
@@ -53,7 +60,7 @@ export default class ConfirmPin extends Component {
       <View style={{ flex: 1 }}>
         <View style={inlineStyles.container}>
           <Text style={inlineStyles.confirmPinInfoText}>
-            If you forget your PIN, you cannot recover your Wallet. So please be sure to remember it.
+            Please make sure to remember your PIN. If you forget your PIN you will not be able to recover your wallet.
           </Text>
           <PinInput {...this.props} onPinChange={this.onPinChange} />
         </View>

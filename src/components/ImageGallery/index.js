@@ -50,7 +50,7 @@ class ImageGallery extends Component {
   async getPhotos() {
     await ImageBrowser.getPhotos()
       .then((photos) => {
-        if (!photos) return;
+        if (photos.length == 0) return;
         let newPhotoHash = this.getPhotosHash(photos),
           oldPhotoHash = this.getPhotosHash(this.state.photos),
           finalPhotoArray = Object.values(assignIn({}, oldPhotoHash, newPhotoHash));

@@ -41,11 +41,22 @@ let stylesMap = {
   topUp: {
     color: Colors.wildWatermelon2,
     fontFamily: 'AvenirNext-DemiBold',
-    fontSize: 14
+    fontSize: 14,
+    marginRight: 4
   },
   crossIconSkipFont: {
     width: 13,
     height: 12.6
+  },
+  shadowLoader:{
+    position: "relative",
+    borderRadius: 18,
+    backgroundColor: Colors.white,
+    shadowColor: Colors.black,
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    shadowOffset: {width: 0, height: 0},
+    elevation: 2
   }
 };
 

@@ -23,7 +23,7 @@ class InitWalletSdk {
           resolve(ostContextEntity);
         },
         setupDeviceFailed: (ostWorkflowContext, error) => {
-          reject(error)
+          resolve(error);
         }
       };
       OstWalletSdk.setupDevice(CurrentUser.getOstUserId(), TOKEN_ID, new SetupDeviceWorkflow(setupDeviceDelegate));

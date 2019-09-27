@@ -1,20 +1,31 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback, BackHandler, AppState } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Image,
+  Text,
+  TouchableWithoutFeedback,
+  BackHandler,
+  AppState
+} from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
+import flipIcon from '../../assets/flip_camera.png';
 import ProgressBar from 'react-native-progress/Bar';
 import styles from './styles';
 import reduxGetters from '../../services/ReduxGetters';
 import RNFS from 'react-native-fs';
-import { ActionSheet } from 'native-base';
+import { ActionSheet, Button } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/cross_icon.png';
 import { withNavigation } from 'react-navigation';
-
 import AppConfig from '../../constants/AppConfig';
-
+import utilities from '../../services/Utilities';
+import CurrentUser from '../../models/CurrentUser';
+import LinearGradient from "react-native-linear-gradient";
+import Theme from "../../theme/styles";
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -26,7 +37,9 @@ class VideoRecorder extends Component {
     this.state = {
       isRecording: false,
       progress: 0,
-      recordingInProgress: false
+      recordingInProgress: false,
+      acceptedCameraTnC: this.props.acceptedCameraTnC,
+      cameraFrontMode: true
     };
     this.camera = null;
     this.recordedVideo = null;
@@ -37,10 +50,16 @@ class VideoRecorder extends Component {
   };
 
   async componentDidMount() {
+    if (this.props.acceptedCameraTnC === null) {
+      utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
+        this.setState({ acceptedCameraTnC: terms });
+      });
+    }
     BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
     AppState.addEventListener('change', this._handleAppStateChange);
     if (this.props.actionSheetOnRecordVideo) {
-      this.recordedVideo = reduxGetters.getRecordedVideo().raw_video;
+      let recordedVideoObj = reduxGetters.getRecordedVideo();
+      this.recordedVideo = recordedVideoObj.raw_video;
       let isFileExists = false;
       const oThis = this;
 
@@ -48,11 +67,16 @@ class VideoRecorder extends Component {
       if (this.recordedVideo) {
         isFileExists = await RNFS.exists(this.recordedVideo);
       }
-
       if (isFileExists) {
         setTimeout(function() {
           oThis.showActionSheet();
         }, 100);
+      } else if (Object.keys(recordedVideoObj).length > 0) {
+        Store.dispatch(
+          upsertRecordedVideo({
+            do_discard: true
+          })
+        );
       }
     }
   }
@@ -95,6 +119,16 @@ class VideoRecorder extends Component {
     ActionSheet.hide();
   };
 
+  acceptCameraTerms = () => {
+    this.setState({
+      acceptedCameraTnC: 'true'
+    });
+  };
+
+  flipCamera = () => {
+    this.setState({ cameraFrontMode: !this.state.cameraFrontMode });
+  };
+
   cameraView() {
     return (
       <View style={styles.container}>
@@ -103,7 +137,7 @@ class VideoRecorder extends Component {
             this.camera = ref;
           }}
           style={styles.previewSkipFont}
-          type={RNCamera.Constants.Type.front}
+          type={this.state.cameraFrontMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back}
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
@@ -120,6 +154,58 @@ class VideoRecorder extends Component {
           defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
           defaultMuted={false}
         >
+          {this.state.acceptedCameraTnC != 'true' && (
+            <View style={styles.backgroundStyle}>
+              <View style={{ padding: 26 }}>
+                <Text style={styles.headerText}>Submit your first video</Text>
+
+                <Text style={styles.smallText}>
+                  Create a 30 second video update. Share what you're working on, what excites you, or anything on your
+                  mind.
+                </Text>
+
+                <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
+
+                <Text style={styles.headerText}>Approval process</Text>
+
+                <Text style={styles.smallText}>
+                  The Pepo team will review your first video before it is shared publicly. We'll get in touch with you
+                  ASAP!
+                </Text>
+
+                <LinearGradient
+                  colors={['#ff7499', '#ff5566']}
+                  locations={[0, 1]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
+                >
+                  <TouchableOpacity
+                    onPress={this.acceptCameraTerms}
+                    style={[Theme.Button.btn, { borderWidth: 0 }]}
+                  >
+                    <Text style={[
+                      Theme.Button.btnPinkText,
+                      { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+                    ]}>
+                      Get Started
+                    </Text>
+                  </TouchableOpacity>
+                </LinearGradient>
+
+              </View>
+            </View>
+          )}
+          {this.showCameraActions()}
+        </RNCamera>
+      </View>
+    );
+  }
+
+  showCameraActions = () => {
+    if (this.state.acceptedCameraTnC == 'true') {
+      return (
+        <React.Fragment>
           <ProgressBar
             width={null}
             color="#EF5566"
@@ -133,19 +219,14 @@ class VideoRecorder extends Component {
               <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
             </View>
           </TouchableWithoutFeedback>
-          <View
-            style={{
-              flex: 0,
-              flexDirection: 'row',
-              justifyContent: 'center'
-            }}
-          >
+          <View style={styles.bottomWrapper}>
             {this.getActionButton()}
+            {this.flipButton()}
           </View>
-        </RNCamera>
-      </View>
-    );
-  }
+        </React.Fragment>
+      );
+    }
+  };
 
   stopRecording = () => {
     // naviagate from here to other page
@@ -162,10 +243,25 @@ class VideoRecorder extends Component {
       source = captureIcon;
     }
     return (
-      <TouchableOpacity onPress={onPressCallback}>
-        <Image style={styles.captureButtonSkipFont} source={source} />
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={onPressCallback}>
+          <Image style={styles.captureButtonSkipFont} source={source} />
+        </TouchableOpacity>
+          <View style={{width: 90, marginLeft:-45, height:20}}>
+            { !this.state.isRecording && <Text style={{color: 'white', fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Tap to record</Text>}
+        </View>
+      </View>
     );
+  }
+
+  flipButton() {
+    if (!this.state.isRecording) {
+      return (
+        <TouchableOpacity onPress={this.flipCamera}>
+          <Image style={styles.flipIconSkipFont} source={flipIcon} />
+        </TouchableOpacity>
+      );
+    }
   }
 
   initProgressBar() {

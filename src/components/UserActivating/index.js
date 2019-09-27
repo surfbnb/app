@@ -9,6 +9,14 @@ import styles from './Style';
 
 // create a component
 export default class UserActivatingScreen extends Component {
+
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      header: null,
+      headerBackTitle: null
+    };
+  };
+
   onCreatePin() {
     this.props.navigation.navigate('SetPinScreen');
   }
@@ -20,39 +28,36 @@ export default class UserActivatingScreen extends Component {
           <ScrollView
             contentContainerStyle=
               {{
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingBottom: 50,
-                minHeight: '100%'
+                flexGrow: 1,
+                justifyContent: 'center'
               }}
             showsVerticalScrollIndicator={false}>
-            <View style={{marginBottom: 20}}>
-              <Image source={air_drop} style={{width: 296.5, height: 289.5}} />
-              <View style={{position: 'absolute', bottom: 3, left: 0, right: 0}}>
-                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-DemiBold', fontSize: 12, letterSpacing: 1}}>YOU’VE RECEIVED</Text>
-                <Text style={{color: '#fff', textAlign: 'center', fontFamily: 'AvenirNext-Bold', fontSize: 14, letterSpacing: 2}}>500 PEPO COINS</Text>
+            <View style={styles.contentContainer}>
+              <Image source={air_drop} style={{width: 137.5, height: 192}} />
+              <Text style={styles.heading}>Welcome Gift!</Text>
+              <View style={styles.valueContainer}>
+                <Text style={styles.desc}>You’ve received <Text style={[styles.desc, {color: '#ff5566', fontWeight: '700'}]}>500 </Text>Pepo!</Text>
+                <Text style={styles.desc}>$5 Value!</Text>
               </View>
             </View>
-            <Text style={[styles.descTxt, {marginBottom: 3}]}>Pepo coins can be used to support your</Text>
-            <Text style={[styles.descTxt, {marginBottom: 50}]}>favorite creators!</Text>
-            <Text style={styles.descTxt}>Create a PIN to access your wallet and</Text>
-            <Text style={[styles.descTxt, {marginTop: 3}]}>claim Pepo Coins</Text>
-            <LinearGradient
-              colors={['#ff7499', '#ff5566']}
-              locations={[0, 1]}
-              style={{ marginTop: 30, marginHorizontal: 35, borderRadius: 3}}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-            >
-              <TouchableButton
-              TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0}]}
-              TextStyles={[Theme.Button.btnPinkText]}
-              text="Create PIN"
-              onPress={() => {
-                this.onCreatePin();
-              }}
-              />
-            </LinearGradient>
+            <View style={{paddingBottom: 30}}>
+              <LinearGradient
+                colors={['#ff7499', '#ff5566']}
+                locations={[0, 1]}
+                style={{ marginHorizontal: 30, borderRadius: 3}}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <TouchableButton
+                  TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0}]}
+                  TextStyles={[Theme.Button.btnPinkText]}
+                  text="Add to Wallet"
+                  onPress={() => {
+                    this.onCreatePin();
+                  }}
+                />
+              </LinearGradient>
+            </View>
           </ScrollView>
         </SafeAreaView>
       </View>

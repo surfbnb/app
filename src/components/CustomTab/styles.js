@@ -21,10 +21,14 @@ let stylesMap = {
     // borderBottomWidth: 0,
     // elevation: 8
   },
+  tapArea:{
+    minHeight: 55,
+    justifyContent: "center"
+  },
   tabElementSkipFont: {
     alignSelf: 'center',
     marginHorizontal: 20,
-    marginVertical: 10,
+    // marginVertical: 10,
     height: 35,
     width: 35
   }

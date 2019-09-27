@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableWithoutFeedback, ImageBackground } from 'react-native';
+import { View, Text, Image, TouchableWithoutFeedback, ImageBackground , Platform } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import escapeRegExp from 'lodash/escapeRegExp';
 import unescape from 'lodash/unescape';
@@ -13,7 +13,7 @@ import PepoPinkIcon from '../../assets/heart.png';
 import { connect } from 'react-redux';
 import AppConfig from '../../../src/constants/AppConfig';
 import { shortenedFromNow } from '../../helpers/timestampHandling';
-import NavigateTo from '../../helpers/navigateTo';
+import {navigateTo} from '../../helpers/navigateTo';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import playIcon from '../../assets/play_icon.png';
 
@@ -28,6 +28,11 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
+let textStyling = {fontWeight: '600'};
+if( Platform.OS == "android"){
+  textStyling['fontFamily'] = 'AvenirNext-Medium';
+}
+
 class NotificationItem extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +44,7 @@ class NotificationItem extends Component {
   }
 
   handleRowClick = () => {
-    this.props.goTo && new NavigateTo(this.props.navigation).navigate(this.props.goTo);
+    this.props.goTo && navigateTo.navigate(this.props.goTo , this.props.navigation);
   };
 
   sendMessageSuccess = () => {
@@ -54,7 +59,7 @@ class NotificationItem extends Component {
 
   includesTextNavigate = (includesObject) => {
     if (includesObject.kind === 'users') {
-      new NavigateTo(this.props.navigation).goToProfilePage(includesObject.id);
+      navigateTo.goToProfilePage(includesObject.id, this.props.navigation);
     }
   };
 
@@ -66,7 +71,9 @@ class NotificationItem extends Component {
       stringArray = [];
 
     if (!heading.includes || Object.keys(heading.includes).length == 0) {
-      return <Text>{text}</Text>;
+      return text.split(/(\s+)/).map((element, id) => {
+        return <Text key={id}>{`${element}`}</Text>;
+      });
     }
     for (entity in heading.includes) {
       let entityStartedAt = text.search(escapeRegExp(entity));
@@ -88,14 +95,12 @@ class NotificationItem extends Component {
         onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}
           key={i}
         >
-          <Text style={{ fontWeight: '600' }}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
+          <Text style={textStyling}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
         </TouchableWithoutFeedback>
       ) : (
-        item
-        .split(/(\s+)/)
-          .map((element, id) => {
-            return <Text key={id}>{`${element}`}</Text>;
-          })
+        item.split(/(\s+)/).map((element, id) => {
+          return <Text key={id}>{`${element}`}</Text>;
+        })
       );
     });
   };
@@ -134,9 +139,7 @@ class NotificationItem extends Component {
   showSayThanks = () => {
     if (this.props.payload.thank_you_flag === 0 && this.state.showSayThanks) {
       return (
-        <TouchableWithoutFeedback
-          onPress={multipleClickHandler(() =>  this.sayThanks())}
-        >
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.sayThanks())}>
           <View style={styles.sayThanksButton}>
             <Text style={styles.sayThanksText}>Say Thanks</Text>
           </View>
@@ -156,32 +159,32 @@ class NotificationItem extends Component {
     return <Text style={{ marginLeft: 10, marginTop: 2, fontSize: 10 }}> failed </Text>;
   };
 
-
   showPepoAmout = () => {
-
     if (AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)) {
       return this.showAmountComponent();
     }
-
-  }
+  };
 
   render() {
     //
-    let headerWidth = '72%', notificationInfoWidth = '20%';
-    if(this.props.kind == AppConfig.notificationConstants.AppreciationKind || AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)){
+    let headerWidth = '72%',
+      notificationInfoWidth = '20%';
+    if (
+      this.props.kind == AppConfig.notificationConstants.AppreciationKind ||
+        this.props.kind == AppConfig.notificationConstants.recoveryInitiate ||
+      AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)
+    ) {
       headerWidth = '92%';
       notificationInfoWidth = '0%';
     }
 
     return (
       <View style={{ minHeight: 25 }}>
-        <TouchableWithoutFeedback
-          onPress={multipleClickHandler(() => this.handleRowClick())}
-        >
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handleRowClick())}>
           <View>
             <View style={styles.txtWrapper}>
               <View style={{ width: '8%', marginRight: 4 }}>
-                {this.props.kind == AppConfig.notificationConstants.systemNotification ? (
+                {[AppConfig.notificationConstants.systemNotification, AppConfig.notificationConstants.airDropNotification, AppConfig.notificationConstants.topupNotification, AppConfig.notificationConstants.recoveryInitiate ].includes(this.props.kind) ? (
                   <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
                 ) : (
                   <ProfilePicture pictureId={this.props.pictureId} />

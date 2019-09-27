@@ -1,24 +1,22 @@
-import { StyleSheet, Dimensions, PixelRatio } from 'react-native';
+import { Dimensions } from 'react-native';
 import Colors from '../../theme/styles/Colors';
-import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
+import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
 
-export default StyleSheet.create({
+let stylesMap = {
+  parent: {
+    flex: 1
+  },
   container: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-    // ...ifIphoneX({
-    //   height: Dimensions.get('window').height / 2,
-    // }, {
-    //   height: PixelRatio.get() === 2 ? Dimensions.get('window').height * 0.75 : Dimensions.get('window').height / 2
-    // }),
-    // height: Dimensions.get('window').height * 0.75,
     minHeight: Dimensions.get('window').height / 2,
-    paddingVertical: 50,
+    paddingTop: 50,
+    paddingBottom: 30,
     position: 'absolute',
     width: '100%',
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
     // ...ifIphoneX(
     //   {
     //     bottom: getBottomSpace([true])
@@ -29,15 +27,33 @@ export default StyleSheet.create({
     // )
     bottom: 0
   },
-  parent: {
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width
+  crossBtnPos: {
+    position: 'absolute',
+    top: 10,
+    right: 15,
+    width: 38,
+    height: 38,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   desc: {
     color: Colors.dark,
-    width: '80%',
     fontSize: 18,
     lineHeight: 26,
     textAlign: 'center'
+  },
+  tocPp: {
+    width: '85%',
+    marginTop: 10
+  },
+  termsTextBlack: {
+    lineHeight: 24,
+    color: Colors.dark
+  },
+  termsTextBlue: {
+    lineHeight: 24,
+    color: Colors.softBlue
   }
-});
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);

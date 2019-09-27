@@ -28,7 +28,7 @@ class VideoDescription extends PureComponent {
           horizontal={false}
           initialValue={this.props.initialValue}
           onChangeVal={this.onChangeValue}
-          placeholderText="Write something about your video"
+          placeholderText="Add a description. You can include #tags."
           submitEvent={this.submitEvent}
           searchResultRowComponent={SearchResultRowComponent}
           textInputStyles={inlineStyles.videoDescription}

@@ -4,7 +4,7 @@ import BackArrow from "../CommonComponents/BackArrow";
 import Colors from "../../theme/styles/Colors";
 
 class SupportersListScreen extends PureComponent {
-  
+
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       headerTitle: 'Supporters',
@@ -19,14 +19,17 @@ class SupportersListScreen extends PureComponent {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
+      },
       headerBackImage: <BackArrow />
     };
   };
 
   constructor(props) {
     super(props);
-    this.userId = this.props.navigation.getParam('userId') ; 
-    this.fetchUrl = `/users/${this.userId}/contribution-by`; 
+    this.userId = this.props.navigation.getParam('userId') ;
+    this.fetchUrl = `/users/${this.userId}/contribution-by`;
   }
 
   render() {

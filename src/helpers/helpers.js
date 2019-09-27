@@ -3,12 +3,12 @@ import Toast from '../theme/components/NotificationToast';
 import AppConfig from '../constants/AppConfig';
 import { ostErrors } from '../services/OstErrors';
 
-function fetchUser(userId, successCallback, errorCallback, finallyCallback) {
+function fetchUser(userId, onResponse, errorCallback, finallyCallback) {
   new PepoApi(`/users/${userId}/profile`)
     .get()
     .then((res) => {
-      if (successCallback) {
-        successCallback(res);
+      if (onResponse) {
+        onResponse(res);
       } else {
         if (!res || !res.success) {
           Toast.show({
@@ -49,4 +49,8 @@ function getSocialIcon(url, screen) {
   return AppConfig.videoLinkConfig[screen].SOCIAL_ICONS.DEFAULT;
 }
 
-export { fetchUser, getSocialIcon };
+function getHostName( url ){
+  return url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/im)[1];
+}
+
+export { fetchUser, getHostName };

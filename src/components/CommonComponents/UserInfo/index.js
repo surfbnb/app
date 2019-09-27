@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Linking, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Linking, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import { withNavigation } from 'react-navigation';
@@ -13,7 +13,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import Pricer from '../../../services/Pricer';
 import InAppBrowser from '../../../services/InAppBrowser';
-import Utilities from '../../../services/Utilities';
+import profileLink from '../../../assets/profile_link.png';
+import twitterLink from '../../../assets/twitter_link.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -23,13 +24,22 @@ const mapStateToProps = (state, ownProps) => {
     link: reduxGetter.getLink(reduxGetter.getUserLinkId(ownProps.userId, state), state),
     supporters: reduxGetter.getUserSupporters(ownProps.userId, state),
     supporting: reduxGetter.getUsersSupporting(ownProps.userId, state),
-    btAmount: reduxGetter.getUsersBt(ownProps.userId, state)
+    btAmount: reduxGetter.getUsersBt(ownProps.userId, state),
+    approvedCreater: reduxGetter.isCreatorApproved(ownProps.userId, state),
+    twitterHandle : reduxGetter.getUserTwitterHandle(ownProps.userId, state),
+    twitterHandleLink : reduxGetter.getUserTwitterHandleLink(ownProps.userId, state),
   };
 };
 
 class UserInfo extends React.PureComponent {
   constructor(props) {
     super(props);
+  }
+
+  toBt( val ){
+    const priceOracle =  pricer.getPriceOracle() ;
+    val = priceOracle.fromDecimal( val )  ;
+    return pricer.toDisplayAmount( priceOracle.toBt( val ) );
   }
 
   btToFiat(btAmount) {
@@ -73,7 +83,7 @@ class UserInfo extends React.PureComponent {
 
   render() {
     return (
-      <View style={{ alignItems: 'center', paddingTop: 30 }}>
+      <View style={{ alignItems: 'center', paddingTop: 30}}>
         <NavigationEvents onDidFocus={this.onDidFocus} />
         {this.props.header}
         <ProfilePicture
@@ -113,22 +123,39 @@ class UserInfo extends React.PureComponent {
           {this.dividerLine()}
           <View style={[inlineStyle.numericInnerWrapper]} style={[inlineStyle.numericInnerWrapper]}>
             <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>
-              ${Pricer.toDisplayAmount(this.btToFiat(this.props.btAmount))}
+              {Pricer.toDisplayAmount(this.toBt(this.props.btAmount))}
             </Text>
-            <Text style={inlineStyle.numericInfoText}>Raised</Text>
+            <Text style={inlineStyle.numericInfoText}>Received</Text>
           </View>
         </View>
         {!!this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>}
         {!!this.props.link && (
-          <Text
-            style={[{ color: Colors.summerSky, textAlign: 'center', marginTop: 10 }]}
-            onPress={() => {
-              InAppBrowser.openBrowser(Utilities.sanitizeLink(this.props.link));
-            }}
-          >
-            {this.props.link}
-          </Text>
+          <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginHorizontal: 20, marginTop: 10}}>
+            <Text ellipsizeMode={'tail'} numberOfLines={1}>
+              <Image source={profileLink} style={{height:8.25,width:17.25}}/>{'  '}
+              <Text
+                style={[{ color: 'rgba(42, 41, 59, 0.7)', marginLeft:5}]}
+                onPress={() => {
+                  InAppBrowser.openBrowser(this.props.link);
+                }}
+              >
+                {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
+              </Text>
+            </Text>
+          </View>
         )}
+        {!!this.props.twitterHandleLink && !!this.props.twitterHandle && (
+          <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginTop: 10}}>
+            <Image style={{height:14,width:17}} source={twitterLink}/>
+            <Text
+              style={[{marginLeft:5, color: Colors.summerSky}]}
+              onPress={() => {Linking.openURL(this.props.twitterHandleLink);}}>{this.props.twitterHandle}
+            </Text>
+          </View>
+        )}
+
+        {/*</View>*/}
+        {this.props.videoInReviewHeader || <View style={{height:15}} />}
       </View>
     );
   }

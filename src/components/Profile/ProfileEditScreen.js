@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, BackHandler, Platform, Alert, Keyb
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
@@ -29,18 +30,22 @@ import CameraIcon from '../../assets/camera_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import BackArrow from '../CommonComponents/BackArrow';
 import LinearGradient from 'react-native-linear-gradient';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import pendingConfirmEmail from '../../assets/verify_email_error.png';
+import confirmedEmail from '../../assets/verify_email_success.png';
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
 const OPEN_GALLERY = 1;
 const CANCEL_INDEX = 2;
+const BIO_HEIGHT = 75;
+const EMAIL_HEIGHT = 45;
 
 const mapStateToProps = (state, ownProps) => {
   return {
     user_name: reduxGetter.getUserName(CurrentUser.getUserId(), state) || '',
     name: reduxGetter.getName(CurrentUser.getUserId(), state) || '',
     bio: reduxGetter.getBio(CurrentUser.getUserId(), state) || '',
+    email: reduxGetter.getBio(CurrentUser.getUserId(), state) || '',
     link: reduxGetter.getLink(reduxGetter.getUserLinkId(CurrentUser.getUserId(), state), state) || '',
     profilePicture: reduxGetter.getImage(reduxGetter.getProfileImageId(CurrentUser.getUserId(), state), state)
   };
@@ -78,7 +83,10 @@ class ProfileEdit extends React.PureComponent {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
-      headerTitle: reduxGetter.getName(CurrentUser.getUserId())
+      headerTitle: reduxGetter.getName(CurrentUser.getUserId()),
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
+      },
     };
   };
 
@@ -87,9 +95,7 @@ class ProfileEdit extends React.PureComponent {
 
     this.tabIndex = {
       name: 1,
-      username: 2,
-      link: 3,
-      bio: 4
+      username: 2
     };
 
     this.defaults = {
@@ -104,12 +110,18 @@ class ProfileEdit extends React.PureComponent {
       name: this.props.name,
       user_name: this.props.user_name,
       bio: this.props.bio,
+      emailAddress: this.props.navigation.getParam('email'),
+      isVerifiedEmail: this.props.navigation.getParam('isVerifiedEmail'),
       link: this.props.link,
-      current_formField: 0,
       showGalleryAccessModal: false,
       showCameraAccessModal: false,
+      current_formField: 0,
       ...this.defaults
     };
+
+    this.onEmailSaveDelegate = this.props.navigation.getParam('onEmailSave');
+
+    this.savedEmail= this.props.navigation.getParam('email');
   }
 
   componentDidMount() {
@@ -124,7 +136,6 @@ class ProfileEdit extends React.PureComponent {
   }
 
   getImageSrc = () => {
-    console.log(this.props.profilePicture, 'this.props.profilePicture');
     if (this.props.profilePicture) {
       return (
         <FastImage
@@ -174,6 +185,7 @@ class ProfileEdit extends React.PureComponent {
     return {
       name: this.state.name,
       user_name: this.state.user_name,
+      email: this.state.emailAddress,
       bio: this.state.bio,
       link: this.state.link
     };
@@ -275,6 +287,25 @@ class ProfileEdit extends React.PureComponent {
     });
   };
 
+  // onEmailChangeDelegate = (val) => {
+  //   this.setState({ emailAddress: val });
+  // };
+
+  onEmailSentDelegate = (val) =>{
+    this.setState({ emailAddress: val });
+    this.savedEmail = val;
+    this.onEmailSaveDelegate &&  this.onEmailSaveDelegate( val );
+  }
+
+  onEmailFocus = () => {
+    this.props.navigation.push('EmailScreen', {
+    //  onChangeTextDelegate: this.onEmailChangeDelegate,
+      initialValue: this.state.emailAddress,
+      savedEmail: this.savedEmail,
+      onEmailSentDelegate: this.onEmailSentDelegate
+    });
+  };
+
   onServerError(res) {
     const errorMsg = ostErrors.getErrorMessage(res);
     this.setState({ server_errors: res, general_error: errorMsg });
@@ -354,7 +385,9 @@ class ProfileEdit extends React.PureComponent {
           blurOnSubmit={false}
           isFocus={this.state.current_formField == this.tabIndex.name}
           onFocus={() => {
-            this.state.current_formField = this.tabIndex.name;
+            this.setState({
+              current_formField: this.tabIndex.name
+            });
           }}
           onSubmitEditing={() => {
             this.onSubmitEditing(this.tabIndex.name);
@@ -378,16 +411,83 @@ class ProfileEdit extends React.PureComponent {
           placeholderTextColor="#ababab"
           blurOnSubmit={false}
           onSubmitEditing={() => {
+            Keyboard.dismiss();
             this.onSubmitEditing(this.tabIndex.username);
           }}
           isFocus={this.state.current_formField == this.tabIndex.username}
           onFocus={() => {
-            this.state.current_formField = this.tabIndex.username;
+            this.setState({
+              current_formField: this.tabIndex.username
+            });
           }}
           value={this.state.user_name}
           errorMsg={this.state.user_name_error}
           serverErrors={this.state.server_errors}
         />
+
+        <Text style={[Theme.TextInput.labelStyle]}>Email Address</Text>
+        <View style={{ position: 'relative' }}>
+          <TouchableOpacity disabled={this.state.isVerifiedEmail}
+            onPress={multipleClickHandler(() => this.onEmailFocus())}
+            style={[inlineStyles.clickWrapper,{height : EMAIL_HEIGHT}]}
+          >
+
+          </TouchableOpacity>
+          <FormInput
+            editable={false}
+            fieldName="email"
+            textContentType="none"
+            style={[
+              Theme.TextInput.textInputStyle,
+              !this.state.isVerifiedEmail
+                ? { borderColor: Colors.wildWatermelon2 }
+                : { backgroundColor: Colors.whiteSmoke }
+            ]}
+            placeholder="Email"
+            returnKeyType="next"
+            returnKeyLabel="Next"
+            placeholderTextColor="#ababab"
+            blurOnSubmit={false}
+            value={this.state.emailAddress}
+            serverErrors={this.state.server_errors}
+            autoCapitalize={'none'}
+            isFocus={false}
+          />
+          <Image
+            source={!this.state.isVerifiedEmail ? pendingConfirmEmail : confirmedEmail}
+            style={{
+              width: 30,
+              height: 30,
+              position: 'absolute',
+              right: 10,
+              top: 13
+            }}
+          />
+        </View>
+
+        <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
+        <View style={{position: "relative"}}>
+          <TouchableOpacity style={[inlineStyles.clickWrapper,{height : BIO_HEIGHT}]}
+                            onPress={multipleClickHandler(() => this.onBioFocus())}>
+          </TouchableOpacity>
+          <FormInput
+            editable={false}
+            fieldName="bio"
+            textContentType="none"
+            style={[Theme.TextInput.textInputStyle, { height: BIO_HEIGHT, paddingVertical: 15 }]}
+            placeholder="Bio"
+            returnKeyType="next"
+            returnKeyLabel="Next"
+            placeholderTextColor="#ababab"
+            blurOnSubmit={false}
+            maxLength={100}
+            value={this.state.bio}
+            serverErrors={this.state.server_errors}
+            isFocus={false}
+            //onFocus={multipleClickHandler(() => this.onBioFocus())}
+          />
+        </View>
+
 
         <Text style={[Theme.TextInput.labelStyle]}>Link</Text>
         <FormInput
@@ -403,33 +503,10 @@ class ProfileEdit extends React.PureComponent {
           placeholderTextColor="#ababab"
           blurOnSubmit={false}
           onSubmitEditing={() => {
-            this.onSubmitEditing(-1);
             Keyboard.dismiss();
-          }}
-          isFocus={this.state.current_formField == this.tabIndex.link}
-          onFocus={() => {
-            this.state.current_formField = this.tabIndex.link;
           }}
           value={this.state.link}
           serverErrors={this.state.server_errors}
-        />
-
-        <Text style={[Theme.TextInput.labelStyle]}>Bio</Text>
-        <FormInput
-          editable={true}
-          fieldName="bio"
-          textContentType="none"
-          style={[Theme.TextInput.textInputStyle, { height: 75, paddingVertical: 15 }]}
-          placeholder="Bio"
-          returnKeyType="next"
-          returnKeyLabel="Next"
-          placeholderTextColor="#ababab"
-          blurOnSubmit={false}
-          maxLength={100}
-          isFocus={this.state.current_formField == this.tabIndex.bio}
-          value={this.state.bio}
-          serverErrors={this.state.server_errors}
-          onFocus={multipleClickHandler(() => this.onBioFocus())}
         />
 
         <LinearGradient

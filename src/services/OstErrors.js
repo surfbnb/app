@@ -1,4 +1,5 @@
 import deepGet from 'lodash/get';
+import Utilities from './Utilities';
 
 const sdkErrors = {
   USER_NOT_ACTIVATED: 'User is not activated.',
@@ -8,21 +9,33 @@ const sdkErrors = {
 };
 
 const UIErros = {
-  user_name: 'User name is mandatory.',
-  user_name_min_max: 'User name can be minimum 1 characters and maximum 15 characters.',
+  user_name: 'Usernames can be max 15 characters and can only include letters, numbers, or underscore.',
+  user_name_min_max: 'Usernames can be max 15 characters and can only include letters, numbers, or underscore.',
   password: 'Please enter password of minimum 8 characters.',
   first_name: 'First name is mandatory.',
   last_name: 'Last name is mandatory',
   user_not_found: 'User not found.',
   general_error: 'Something went wrong. Please try again later',
   general_error_ex: 'Oops, Please try again.',
-  bt_amount_error: 'Please enter valid amount.',
-  bt_amount_decimal_error: 'Only . is allowed as decimails',
+  bt_amount_error: 'Minimum amount allowed is 1 Pepo.',
+  bt_amount_decimal_error: 'Only . or , is allowed as decimals',
   bt_amount_decimal_allowed_error: 'Only 2 decimals are allowed',
   user_not_active: 'Please wait for your user activation.',
   no_internet: 'No Internet, please try again later.',
-  maxAllowedBt: `Max allowed Pepo coin transfer reached`,
-  name: 'Name is mandatory.'
+  maxAllowedBt: `Visit user's profile to send more Pepo Coins.`,
+  name: 'Name is required',
+  payment_failed_error : `Transaction failed. Please check your ${Utilities.getNativeStoreName()} account.`,
+  init_iap_payment: "Failed to initalize in app payments, please try again later.",
+  payment_acknowledge_to_be: "We are not able to connect to our servers right now. We will try again and  update your transaction status soon. Please do not uninstall the app until then.",
+  payment_invalid: `Transaction failed in ${Utilities.getNativeStoreName()}. Please check your ${Utilities.getNativeStoreName()} account.`,
+  payment_pending: `Transaction is still being processed at ${Utilities.getNativeStoreName()}. Please check your ${Utilities.getNativeStoreName()} account.`,
+  payment_cancelled: `Transaction has been canceled by ${Utilities.getNativeStoreName()}. Please check your ${Utilities.getNativeStoreName()} account.`,
+  pending_transaction_poll: 'We are not able to connect to the server. Your transaction status will be updated shortly.',
+  invite_code_error: 'Enter a valid invite code.',
+  email_error: 'Enter a valid email.',
+  device_unathorized: "Your device is not authorized. Please authorized the device.",
+  top_not_available: "Topup not available at this time, we are looking into it. Please check back later.",
+  delete_video_error:"Unable to delete Video at this moment."
 };
 
 const UIWhitelistedErrorCode = {

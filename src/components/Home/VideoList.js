@@ -32,6 +32,7 @@ class VideoList extends PureComponent {
     return (
       <HomeFeedRow
         isActive={index == this.state.activeIndex}
+        shouldPlay={this.props.shouldPlay}
         doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
         feedId={item}
       />
@@ -46,7 +47,7 @@ class VideoList extends PureComponent {
     this.setActiveIndex();
   };
 
-  //This only is required for android,  as scroll to top or momentumscrollend callback are not getting iterscepted. 
+  //This only is required for android,  as scroll to top or momentumscrollend callback are not getting iterscepted.
   //This code is only for Android. Need to debug it a bit more.
   forceSetActiveIndex( index=0 ){
     this.setState({ activeIndex: index });

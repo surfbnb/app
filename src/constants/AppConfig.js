@@ -12,9 +12,19 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
   CONTRIBUTION_THANKS = 'CONTRIBUTION_THANKS',
   SYSTEM_NOTIFICATION = 'SYSTEM_NOTIFICATION',
   PROFILE_TX_SEND_FAILURE = 'PROFILE_TX_SEND_FAILURE',
-  VIDEO_TX_SEND_FAILURE = 'VIDEO_TX_SEND_FAILURE';
+  VIDEO_TX_SEND_FAILURE = 'VIDEO_TX_SEND_FAILURE',
+  TOPUP_DONE = 'TOPUP_DONE',
+  AIRDROP_DONE = 'AIRDROP_DONE',
+  RECOVERY_INITIATE='RECOVERY_INITIATE';
 
 export default {
+
+  logoutTimeOut : 2000,
+
+  beKnownErrorCodeMaps : {
+    entityDeleted: "not_found"
+  },
+
   userStatusMap: {
     activated: 'activated',
     activating: 'activating'
@@ -123,13 +133,19 @@ export default {
     videoAddKind: VIDEO_ADD,
     AppreciationKind: CONTRIBUTION_THANKS,
     systemNotification: SYSTEM_NOTIFICATION,
+    airDropNotification: AIRDROP_DONE,
+    topupNotification: TOPUP_DONE,
+    recoveryInitiate:RECOVERY_INITIATE,
     showCoinComponentArray: [
       PROFILE_TX_SEND_SUCCESS,
       PROFILE_TX_RECEIVE_SUCCESS,
       VIDEO_TX_SEND_SUCCESS,
       VIDEO_TX_RECEIVE_SUCCESS,
       PROFILE_TX_SEND_FAILURE,
-      VIDEO_TX_SEND_FAILURE
+      VIDEO_TX_SEND_FAILURE,
+      AIRDROP_DONE,
+      TOPUP_DONE
+
     ],
     whitelistedNotificationKinds: [
       PROFILE_TX_SEND_SUCCESS,
@@ -143,7 +159,6 @@ export default {
       VIDEO_TX_SEND_FAILURE
     ]
   },
-
   tabConfig: {
     tab1: {
       rootStack: 'Home',
@@ -190,7 +205,24 @@ export default {
     }
   },
 
+  appInstallInviteCodeASKey : "app_install_invite_code",
+
   searchConfig: {
     MIN_SEARCH_CHAR: 2
+  },
+
+  paymentFlowMessages : {
+    transactionSuccess: "Your account is recharged.",
+    transactionPending: "We are processing your transaction we'll update you shortly." ,
+    sendingPepo: "Sending Pepos please wait."
+  },
+
+  nativeStoreMap : {
+    ios : {
+      storeName : "app store" 
+    },
+    android: {
+      storeName: "play store"
+    }
   }
 };

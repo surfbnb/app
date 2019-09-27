@@ -3,17 +3,16 @@ import { View, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-n
 import { withNavigation } from 'react-navigation';
 
 import VideoWrapper from './VideoWrapper';
+import ShareIcon from "../CommonComponents/ShareIcon";
 import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
 import TransactionPepoButton from './TransactionPepoButton';
-import tx_icon from '../../assets/tx_icon.png';
 import CurrentUser from '../../models/CurrentUser';
 
 import BottomStatus from './BottomStatus';
 import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 
 import inlineStyles from './styles';
-import multipleClickHandler from '../../services/MultipleClickHandler';
 import utilities from '../../services/Utilities';
 
 class HomeFeedRow extends PureComponent {
@@ -46,10 +45,6 @@ class HomeFeedRow extends PureComponent {
     }
   };
 
-  isCurrentUser() {
-    return this.userId == CurrentUser.getUserId();
-  }
-
   navigateToUserProfile = (e) => {
     if (utilities.checkActiveUser()) {
       if (this.userId == CurrentUser.getUserId()) {
@@ -60,6 +55,7 @@ class HomeFeedRow extends PureComponent {
     }
   };
 
+
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
@@ -68,28 +64,27 @@ class HomeFeedRow extends PureComponent {
           videoId={this.videoId}
           doRender={this.props.doRender}
           isActive={this.props.isActive}
+          shouldPlay={this.props.shouldPlay}
         />
 
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
-            {!this.isCurrentUser() && (
+
               <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
                 <TransactionPepoButton
                   resyncDataDelegate={this.refetchFeed}
                   userId={this.userId}
                   videoId={this.videoId}
                 />
-                <TouchableOpacity
-                  pointerEvents={'auto'}
-                  onPress={multipleClickHandler(() => this.navigateToTransactionScreen())}
-                  style={inlineStyles.txElem}
-                >
-                  <Image style={{ height: 57, width: 57 }} source={tx_icon} />
-                </TouchableOpacity>
+                <ShareIcon videoId={this.videoId} userId={this.userId} />
               </View>
-            )}
 
-            <VideoAmountStat videoId={this.videoId} onWrapperClick={this.navigateToUserProfile} userId={this.userId} />
+            <VideoAmountStat
+              videoId={this.videoId}
+              onWrapperClick={this.navigateToUserProfile}
+              userId={this.userId}
+              pageName="feed"
+            />
           </View>
 
           <BottomStatus userId={this.userId} videoId={this.videoId} onWrapperClick={this.navigateToUserProfile} />

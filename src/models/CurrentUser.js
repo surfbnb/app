@@ -1,15 +1,15 @@
-import { OstWalletUIWorkflowCallback } from '@ostdotcom/ost-wallet-sdk-react-native';
 import PepoApi from '../services/PepoApi';
 import deepGet from 'lodash/get';
 import Store from '../store';
 import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
-import appConfig from '../constants/AppConfig';
 import reduxGetter from '../services/ReduxGetters';
 import InitWalletSdk from '../services/InitWalletSdk';
-import Toast from "../theme/components/NotificationToast";
-import { PushNotificationMethods } from '../services/PushNotificationManager';
-import OstWorkflowDelegate from "../helpers/OstWorkflowDelegate";
+import Toast from '../theme/components/NotificationToast';
+import OstWorkflowDelegate from '../helpers/OstWorkflowDelegate';
+import EventEmitter from "eventemitter3";
+import {navigateTo} from "../helpers/navigateTo";
+import AppConfig from '../constants/AppConfig';
 
 // Used require to support all platforms
 const RCTNetworking = require('RCTNetworking');
@@ -17,6 +17,11 @@ const RCTNetworking = require('RCTNetworking');
 let utilities = null;
 import('../services/Utilities').then((pack) => {
   utilities = pack.default;
+});
+
+let PushNotificationMethods = null;
+import('../services/PushNotificationManager').then((pack) => {
+  PushNotificationMethods = pack.PushNotificationMethods;
 });
 
 let FlyerEventEmitter = null;
@@ -27,6 +32,7 @@ import('../components/CommonComponents/FlyerHOC').then((pack) => {
 class CurrentUser {
   constructor() {
     this.userId = null;
+    this.event = new EventEmitter();
   }
 
   initialize() {
@@ -66,6 +72,25 @@ class CurrentUser {
     return reduxGetter.getUser(this.userId);
   }
 
+  getEvent(){
+    return this.event ;
+  }
+
+  updateActivatingStatus() {
+    return new PepoApi('/users/activation-initiate')
+      .post()
+      .then((apiResponse) => {
+        return this._saveCurrentUser(apiResponse)
+          .catch()
+          .then(() => {
+            return apiResponse;
+          });
+      })
+      .catch((err) => {
+        console.log('updateActivatingStatus', err);
+      });
+  }
+
   sync(userId, setupDevice) {
     //Sync user with server. Return user js obj in a promise.
     userId = userId || this.userId;
@@ -101,9 +126,18 @@ class CurrentUser {
         return utilities.saveItem(this._getCurrentUserIdKey(), userId);
       })
       .then(() => {
-        Store.dispatch(updateCurrentUser(user));
         this.userId = userId;
-        setupDevice && InitWalletSdk.initializeDevice(this);
+        Store.dispatch(updateCurrentUser(user));
+        if (setupDevice) {
+          return InitWalletSdk.promisifiedSetupDevice()
+            .then((res) => {
+              return user;
+            })
+            .catch((error) => {
+              console.log('setup device failed', error);
+              //DO NOTHING Unexpected error.
+            });
+        }
         return user;
       });
   }
@@ -125,6 +159,7 @@ class CurrentUser {
     try {
       userId = userId || this.userId;
       this.userId = null;
+      //TODO add await
       Store.dispatch(logoutUser());
       await utilities.removeItem(this._getCurrentUserIdKey());
       await utilities.removeItem(this._getASKey(userId));
@@ -133,47 +168,51 @@ class CurrentUser {
     }
   }
 
-  login(params) {
-    return this._signin('/auth/login', params);
-  }
-
-  signUp(params) {
-    return this._signin('/auth/sign-up', params);
-  }
-
   twitterConnect(params) {
     return this._signin('/auth/twitter-login', params);
   }
 
-    async logout(params) {
-        await new PepoApi('/auth/logout')
-            .post(params)
-            .then((res) => {
-                RCTNetworking.clearCookies(async () => {
-                    await this.clearCurrentUser();
-                    PushNotificationMethods.deleteToken();
-                    NavigationService.navigate('HomeScreen', params)
-                });
-            })
-            .catch((error) => {
-                Toast.show({
-                    text: 'Logout failed please try again.',
-                    icon: 'error'
-                });
-            });
-    }
-
-    async logoutLocal(params) {
-        await RCTNetworking.clearCookies(async () => {
-            await this.clearCurrentUser();
-            NavigationService.navigate('HomeScreen', params)
+  async logout(params) {
+    this.getEvent().emit("onBeforeUserLogout");
+    await new PepoApi('/auth/logout')
+      .post(params)
+      .then((res) => {
+        this.onLogout( res , params );
+      })
+      .catch((error) => {
+        Toast.show({
+          text: 'Logout failed please try again.',
+          icon: 'error'
         });
-    }
+        this.getEvent().emit("onUserLogoutFailed");
+      });
+  }
+
+  onLogout( params ){
+    return RCTNetworking.clearCookies(async () => {
+       this.getEvent().emit("onUserLogout");
+       navigateTo.resetAllNavigationStack();
+       await this.clearCurrentUser();
+       PushNotificationMethods.deleteToken();
+       //Remove this timeout once redux logout is promise based.
+       setTimeout(()=> {
+         NavigationService.navigate('HomeScreen' , params);
+         this.getEvent().emit("onUserLogoutComplete");
+       } , AppConfig.logoutTimeOut );
+    });
+  }
+
+  async logoutLocal(params) {
+    await RCTNetworking.clearCookies(async () => {
+      await this.clearCurrentUser();
+      NavigationService.navigate('HomeScreen', params);
+    });
+  }
 
   _signin(apiUrl, params) {
     let authApi = new PepoApi(apiUrl);
     return authApi.post(JSON.stringify(params)).then((apiResponse) => {
-      return this._saveCurrentUser(apiResponse)
+      return this._saveCurrentUser(apiResponse, null, true)
         .catch()
         .then(() => {
           return apiResponse;
@@ -182,7 +221,6 @@ class CurrentUser {
   }
 
   getUserSalt() {
-
     return new PepoApi('/users/recovery-info').get();
 
     //TODO: Someday, in far future, uncomment below code.
@@ -195,11 +233,11 @@ class CurrentUser {
 
   newPassphraseDelegate() {
     let delegate = new OstWorkflowDelegate(this.getOstUserId(), this);
-    this.bindSetPassphrase( delegate );
+    this.bindSetPassphrase(delegate);
     return delegate;
   }
 
-  bindSetPassphrase( uiWorkflowCallback ) {
+  bindSetPassphrase(uiWorkflowCallback) {
     Object.assign(uiWorkflowCallback, {
       getPassphrase: (userId, ostWorkflowContext, passphrasePrefixAccept) => {
         return _getPassphrase(this, uiWorkflowCallback, passphrasePrefixAccept);
@@ -222,7 +260,7 @@ class CurrentUser {
   }
 
   isUserActivating() {
-    const userStatusMap = appConfig.userStatusMap;
+    const userStatusMap = AppConfig.userStatusMap;
     return this.__getUserStatus() == userStatusMap.activating;
   }
 
@@ -246,7 +284,7 @@ class CurrentUser {
   }
 
   isUserActivated(emit) {
-    const userStatusMap = appConfig.userStatusMap,
+    const userStatusMap = AppConfig.userStatusMap,
       returnVal = this.__getUserStatus() == userStatusMap.activated;
     if (!returnVal && emit) {
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 1 });
@@ -254,56 +292,51 @@ class CurrentUser {
     return returnVal;
   }
   // End Move this to utilities once all branches are merged.
-
-  setupDeviceFailed(ostWorkflowContext, error) {
-    console.log('----- IMPORTANT :: SETUP DEVICE FAILED -----');
-  }
-
-  setupDeviceComplete() {}
 }
 
 const _getPassphrase = (currentUserModel, workflowDelegate, passphrasePrefixAccept) => {
-
-  if ( !_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept) ) {
+  if (!_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept)) {
     passphrasePrefixAccept.cancelFlow();
     return Promise.resolve();
   }
 
   _canFetchSalt = true;
-  const getSaltPromise = currentUserModel.getUserSalt().then((res) => {
-    if ( !_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept) ) {
-      return;
-    }
-
-    if (res.success && res.data) {
-      let resultType = deepGet(res, 'data.result_type'),
-        passphrasePrefixString = deepGet(res, `data.${resultType}.scrypt_salt`);
-
-      if ( !passphrasePrefixString ) {
-        passphrasePrefixAccept.cancelFlow();
-        workflowDelegate.saltFetchFailed(res);
+  const getSaltPromise = currentUserModel
+    .getUserSalt()
+    .then((res) => {
+      if (!_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept)) {
         return;
       }
 
-      passphrasePrefixAccept.setPassphrase(passphrasePrefixString, currentUserModel.getOstUserId(), () => {
+      if (res.success && res.data) {
+        let resultType = deepGet(res, 'data.result_type'),
+          passphrasePrefixString = deepGet(res, `data.${resultType}.scrypt_salt`);
+
+        if (!passphrasePrefixString) {
+          passphrasePrefixAccept.cancelFlow();
+          workflowDelegate.saltFetchFailed(res);
+          return;
+        }
+
+        passphrasePrefixAccept.setPassphrase(passphrasePrefixString, currentUserModel.getOstUserId(), () => {
+          passphrasePrefixAccept.cancelFlow();
+          workflowDelegate.saltFetchFailed(res);
+        });
+      }
+    })
+    .catch((err) => {
+      if (_ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept)) {
         passphrasePrefixAccept.cancelFlow();
-        workflowDelegate.saltFetchFailed(res);
-      });
-    }
-  })
-  .catch(( err ) => {
-    if ( _ensureValidUserId(currentUserModel, workflowDelegate, passphrasePrefixAccept) ) {
-      passphrasePrefixAccept.cancelFlow();
-      workflowDelegate.saltFetchFailed(err);
-    }
-  });
+        workflowDelegate.saltFetchFailed(err);
+      }
+    });
   _canFetchSalt = false;
 
   return getSaltPromise;
 };
 
 const _ensureValidUserId = (currentUserModel, workflowDelegate, passphrasePrefixAccept) => {
-  if ( currentUserModel.getOstUserId() === workflowDelegate.userId ) {
+  if (currentUserModel.getOstUserId() === workflowDelegate.userId) {
     return true;
   }
 
@@ -314,6 +347,5 @@ const _ensureValidUserId = (currentUserModel, workflowDelegate, passphrasePrefix
 };
 
 let _canFetchSalt = false;
-
 
 export default new CurrentUser();

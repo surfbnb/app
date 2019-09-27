@@ -4,7 +4,7 @@ import Colors from "../../theme/styles/Colors";
 import SupportingList from './SupportingListComponent';
 
 class SupportingListScreen extends PureComponent {
-  
+
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       headerTitle: 'Supporting',
@@ -19,6 +19,9 @@ class SupportingListScreen extends PureComponent {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
+      },
       headerBackImage: <BackArrow />
     };
   };
@@ -26,7 +29,7 @@ class SupportingListScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.userId = this.props.navigation.getParam('userId') ;
-    this.fetchUrl = `/users/${this.userId}/contribution-to`; 
+    this.fetchUrl = `/users/${this.userId}/contribution-to`;
   }
 
   render() {

@@ -1,10 +1,8 @@
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import ActivateUserWorkflow from './OstWalletCallbacks/ActivateUserWorkflow';
-import { SESSION_KEY_EXPIRY_TIME } from '../constants';
-import { SPENDING_LIMIT } from '../constants';
+import { DEFAULT_SESSION_KEY_EXPIRY_TIME } from '../constants';
+import { DEFAULT_SPENDING_LIMIT } from '../constants';
 import CurrentUser from '../models/CurrentUser';
-import { hideModal } from '../actions';
-import Store from '../store';
 import deepGet from 'lodash/get';
 import utilities from '../services/Utilities';
 
@@ -26,8 +24,8 @@ class ActivateUser {
             CurrentUser.getOstUserId(),
             pin,
             userSalt,
-            SESSION_KEY_EXPIRY_TIME,
-            SPENDING_LIMIT,
+            DEFAULT_SESSION_KEY_EXPIRY_TIME,
+            DEFAULT_SPENDING_LIMIT,
             new ActivateUserWorkflow(delegate)
           );
         } else {

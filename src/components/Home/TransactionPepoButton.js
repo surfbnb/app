@@ -21,7 +21,8 @@ import { ostSdkErrors } from '../../services/OstSdkErrors';
 import Pricer from '../../services/Pricer';
 import utilities from '../../services/Utilities';
 import PixelCall from '../../services/PixelCall';
-import {ON_USER_CANCLLED_ERROR_MSG, ensureSession} from '../../helpers/TransactionHelper';
+import {ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession} from '../../helpers/TransactionHelper';
+import {VideoPlayPauseEmitter} from "../../helpers/Emitters";
 
 const mapStateToProps = (state, ownProps) => ({
   balance: state.balance,
@@ -41,7 +42,7 @@ class TransactionPepoButton extends PureComponent {
 
   isDisabled = () => {
     return (
-      !this.isBalance() || !this.props.isCurrentUserActivated || this.props.disabled || !this.props.isVideoUserActivated
+       this.props.userId == CurrentUser.getUserId() || !this.isBalance() || !this.props.isCurrentUserActivated || this.props.disabled || !this.props.isVideoUserActivated
     );
   };
 
@@ -66,34 +67,49 @@ class TransactionPepoButton extends PureComponent {
     const user = CurrentUser.getUser();
     // const option = { wait_for_finalization: false };
     const btInDecimal = pricer.getToDecimal(btAmount);
-    ensureSession(user.ost_user_id, btInDecimal, (errorMessage, success) => {
-      if ( success ) {
-        return this._executeTransaction(user, btInDecimal);
-      }
-
-      if ( errorMessage ) {
-        if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage) {
-          //Cancel the flow.
-          this.syncData(1000);
-          return;
-        }
-
-        // Else: Show the error message.
-        this.syncData(1000);
-        Toast.show({
-          text: errorMessage,
-          icon: 'error'
-        });
-
-      }
+    ensureDeivceAndSession(user.ost_user_id, btInDecimal, (device) => {
+      this._deviceUnauthorizedCallback(device);
+    }, (errorMessage, success) => {
+      this._ensureDeivceAndSessionCallback(btAmount,errorMessage, success);
     });
   }
 
+  _ensureDeivceAndSessionCallback(btAmount, errorMessage, success) {
 
-  _executeTransaction(user, btInDecimal) {
+    const btInDecimal = pricer.getToDecimal(btAmount);
+    VideoPlayPauseEmitter.emit('play');
+    if ( success ) {
+      return this._executeTransaction(btInDecimal);
+    }
+
+    if ( errorMessage ) {
+      if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage) {
+        //Cancel the flow.
+        this.syncData(1000);
+        return;
+      }
+
+      // Else: Show the error message.
+      this.syncData(1000);
+      Toast.show({
+        text: errorMessage,
+        icon: 'error'
+      });
+
+    }
+  }
+
+  _deviceUnauthorizedCallback( device ) {
+    //Cancel the flow.
+    this.syncData(1000);
+
+    this.props.navigation.push('AuthDeviceDrawer', { device });
+  }
+
+  _executeTransaction(btInDecimal) {
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
-      user.ost_user_id,
+      CurrentUser.getOstUserId(),
       [this.toUser.ost_token_holder_address],
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,

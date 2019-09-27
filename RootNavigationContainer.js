@@ -12,7 +12,6 @@ import deepGet from 'lodash/get';
 
 import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
-import AuthScreen from './src/components/Authentication';
 import SetPin from './src/components/SetPin';
 import ConfirmPin from './src/components/ConfirmPin';
 import CustomTab from './src/components/CustomTab';
@@ -42,13 +41,25 @@ import AllowAccessModalScreen from './src/components/AllowAccessModalScreen';
 import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
 import utilities from './src/services/Utilities';
 import { NotificationToastComponent } from './src/theme/components/NotificationToast';
-import SocketManager from './src/components/SocketManager';
+import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
-import  WalletSettingScreen from "./src/components/WalletSetting";
+import WalletSettingScreen from './src/components/WalletSetting';
+import StoreProductsScreen from "./src/components/StoreProducts";
+import PaymentWorker from "./src/components/PaymentWorker";
 import PushNotificationManager from './src/services/PushNotificationManager';
+import ReferAndEarn from './src/components/ReferAndEarn';
+import Invites from './src/components/Invites';
+import InviteCodeScreen from './src/components/InviteCode';
+import AddEmailScreen from './src/components/AddEmail';
+import EmailScreen from './src/components/Email';
+import UniversalLinksManager from './src/services/UniversalLinksManager';
+import WalletDetails from './src/components/WalletSetting/WalletDetails';
+import AuthDeviceDrawer from './src/components/Home/AuthDeviceDrawer';
+import InAppBrowserComponent from './src/components/CommonComponents/InAppBrowser';
+import CouchMarks from './src/components/CouchMarks';
 
-const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails'];
+const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserComponent' , 'CouchMarks'];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -102,6 +113,16 @@ const CaptureVideoStack = createStackNavigator(
   }
 );
 
+
+const InAppBrowserStack = createStackNavigator(
+  {
+    InAppBrowserComponent: InAppBrowserComponent
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
 const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
@@ -119,7 +140,13 @@ const HomeStack = createStackNavigator(
   {
     HomePushStack: HomePushStack,
     TransactionScreen: TransactionScreen,
-    CaptureVideo: CaptureVideoStack
+    CaptureVideo: CaptureVideoStack,
+    InAppBrowserStack: InAppBrowserStack,
+    StoreProductsScreen: StoreProductsScreen,
+    InviteCodeScreen: InviteCodeScreen,
+    AuthDeviceDrawer : AuthDeviceDrawer,
+    AddEmailScreen: AddEmailScreen,
+    CouchMarks: CouchMarks
   },
   {
     ...modalStackConfig,
@@ -145,8 +172,10 @@ const NotificationStack = createStackNavigator(
   {
     NotificationPushStack: NotificationPushStack,
     TransactionScreen: TransactionScreen,
+    AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
-    CaptureVideo: CaptureVideoStack
+    CaptureVideo: CaptureVideoStack,
+    InAppBrowserStack: InAppBrowserStack,
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -160,20 +189,41 @@ const ProfilePushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     ProfileEdit: ProfileEdit,
     BioScreen: BioScreen,
-    WalletSettingScreen: WalletSettingScreen
+    EmailScreen: EmailScreen,
+    ReferAndEarn: ReferAndEarn,
+    Invites: Invites,
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails
   },
   {
     headerLayoutPreset: 'center'
   }
 );
 
+const ProfileDrawerNavigator = createDrawerNavigator(
+  {
+    ProfilePushStack: ProfilePushStack
+  },
+  {
+    drawerPosition: 'right',
+    drawerBackgroundColor: '#fff',
+    overlayColor: 'rgba(0, 0, 0, 0.8)',
+    drawerWidth: Dimensions.get('window').width - Dimensions.get('window').width / 5,
+    contentComponent: CustomDrawerContent,
+    drawerLockMode: 'locked-closed'
+  }
+);
+
 const ProfileStack = createStackNavigator(
   {
-    ProfilePushStack: ProfilePushStack,
+    ProfileDrawerNavigator: ProfileDrawerNavigator,
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery,
     TransactionScreen: TransactionScreen,
-    CaptureVideo: CaptureVideoStack
+    AuthDeviceDrawer: AuthDeviceDrawer,
+    CaptureVideo: CaptureVideoStack,
+    InAppBrowserStack: InAppBrowserStack,
+    StoreProductsScreen: StoreProductsScreen
   },
   {
     headerLayoutPreset: 'center',
@@ -205,7 +255,9 @@ const SearchStack = createStackNavigator(
   {
     SearchPushStack: SearchPushStack,
     CaptureVideo: CaptureVideoStack,
-    TransactionScreen: TransactionScreen
+    InAppBrowserStack: InAppBrowserStack,
+    TransactionScreen: TransactionScreen,
+    AuthDeviceDrawer: AuthDeviceDrawer
   },
   {
     ...modalStackConfig,
@@ -235,8 +287,9 @@ const CustomTabStack = createBottomTabNavigator(
   }
 );
 
-const PinStack = createStackNavigator(
+const PinPushStack = createStackNavigator(
   {
+    UserActivatingScreen: UserActivatingScreen,
     SetPinScreen: SetPin,
     ConfirmPinScreen: ConfirmPin
   },
@@ -256,17 +309,13 @@ const PinStack = createStackNavigator(
   }
 );
 
-const DrawerNavigator = createDrawerNavigator(
+const PinStack = createStackNavigator(
   {
-    CustomTabStack: CustomTabStack
+    PinPushStack : PinPushStack,
+    InAppBrowserStack: InAppBrowserStack
   },
   {
-    drawerPosition: 'right',
-    drawerBackgroundColor: '#fff',
-    overlayColor: 'rgba(0, 0, 0, 0.8)',
-    drawerWidth: Dimensions.get('window').width - Dimensions.get('window').width / 5,
-    contentComponent: CustomDrawerContent,
-    drawerLockMode: 'locked-closed'
+    ...modalStackConfig
   }
 );
 
@@ -274,10 +323,8 @@ const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading,
-      AuthScreen,
       PinStack,
-      UserActivatingScreen,
-      DrawerNavigator
+      CustomTabStack
     },
     {
       initialRouteName: 'AuthLoading'
@@ -288,7 +335,7 @@ const AppContainer = createAppContainer(
 const RootNavigationContainer = () => (
   <Root>
     <AppContainer
-      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(action)}
+      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(prevState,currentState,action)}
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
@@ -300,7 +347,9 @@ const RootNavigationContainer = () => (
     <AllowAccessModalScreen />
     <NotificationToastComponent />
     <SocketManager />
-    {/*<PushNotificationManager />*/}
+    <PaymentWorker />
+    <PushNotificationManager />
+    <UniversalLinksManager />
   </Root>
 );
 

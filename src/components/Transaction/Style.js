@@ -8,7 +8,7 @@ let stylesMap = {
     backgroundColor: Colors.white,
     alignSelf: 'center',
     justifyContent: 'center',
-    paddingBottom: 50,
+    paddingBottom: 10,
     position: 'absolute',
     width: '100%',
     borderTopRightRadius: 25,

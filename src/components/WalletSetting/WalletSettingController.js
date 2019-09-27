@@ -4,9 +4,10 @@ import { OstWalletSdk, OstWalletSdkUI, OstJsonApi} from '@ostdotcom/ost-wallet-s
 import deepGet from "lodash/get";
 import appConfig from '../../constants/AppConfig';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper'
-import { SESSION_KEY_EXPIRY_TIME, SPENDING_LIMIT } from '../../constants';
+import { DEFAULT_SESSION_KEY_EXPIRY_TIME, DEFAULT_SPENDING_LIMIT } from '../../constants';
 
 const optionIds = {
+  walletDetails: 'walletDetails',
   recoverDevice: 'recoverDevice',
   abortRecovery: 'abortRecovery',
   resetPin: 'resetPin',
@@ -23,7 +24,7 @@ class WalletSettingController {
   constructor() {
     this._initialize();
     this.optionsOrdering = [
-      optionIds.addSession,
+      optionIds.walletDetails,
       optionIds.recoverDevice, optionIds.abortRecovery,
       optionIds.resetPin,
       optionIds.viewMnemonics, optionIds.authorizeWithMnemonics,
@@ -44,14 +45,15 @@ class WalletSettingController {
 
   _initializeOptions() {
     this._createOptionsData(optionIds.addSession, "Add Session", "Add Session to do transaction");
+    this._createOptionsData(optionIds.walletDetails, "Wallet Details", "View your wallet details");
     this._createOptionsData(optionIds.recoverDevice, "Recover Device", "Recover your device");
     this._createOptionsData(optionIds.abortRecovery, "Abort Device Recovery", "Abort Device Recovery");
     this._createOptionsData(optionIds.resetPin, "Reset Pin", "Reset your wallet pin");
-    this._createOptionsData(optionIds.viewMnemonics, "Show Device Mnemonics", "Please write down your 12-word mnemonic phrase");
+    this._createOptionsData(optionIds.viewMnemonics, "Show Mnemonics", "While not required, writing down your 12 word mnemonic phrase provides an additional backup in case you forget your PIN.");
     this._createOptionsData(optionIds.authorizeWithMnemonics, "Authorize Device with Mnemonics", "Authorize current device by using mnemonics");
-    this._createOptionsData(optionIds.authorizeWithQR, "Scan QR to Authorize Device", "Scan QR Code of the new device to authorize it");
+    this._createOptionsData(optionIds.authorizeWithQR, "Add Another Device", "Scan QR Code to add another device.");
     this._createOptionsData(optionIds.showQR, "Show Device QR Code", "Scan QR Code from the device authorized device to authorize this device");
-    this._createOptionsData(optionIds.updateBiometricPreference, "Update Biometric Preference", "Authenticate user with biometric");
+    this._createOptionsData(optionIds.updateBiometricPreference, "Enable Biometric", "Use biometrics to authorize new Sessions and to confirm high value transactions.");
   }
 
   refresh( callback, onlyPerformable ) {
@@ -110,17 +112,24 @@ class WalletSettingController {
       this._onDeviceFetch(device)
 
     }, ( error ) => {
-      this._onDeviceFetch(localDevice)
+      let ostError = OstWalletSdkHelper.jsonToOstRNError(error);
+      //ToDo: Show the error and close the wallet settings.
+      this._onDeviceFetch({
+        "local_device": localDevice,
+        "resut_type": "local_device"
+      });
     });
   }
 
   _onDeviceFetch(device) {
+    if ( null == device) {
+
+    }
     let resultType = device["result_type"]
       , data = device[resultType]
     ;
 
     this.ostDevice = data;
-    this.hasFetchedPendingRecoveryData = true;
 
     this._fetchPendingRecovery();
   }
@@ -129,13 +138,12 @@ class WalletSettingController {
     OstJsonApi.getPendingRecoveryForUserId(this.userId, ( data ) => {
       this._onPendingRecoveryFetch(data)
     }, ( error ) => {
-      this._onPendingRecoveryFetch(null)
+      this._onPendingRecoveryFetch()
     })
   }
 
   _onPendingRecoveryFetch(pendingRecovery) {
     this.pendingRecovery = pendingRecovery;
-    this.hasFetchedPendingRecoveryData = true;
 
     this._onDataFetched()
   }
@@ -147,13 +155,17 @@ class WalletSettingController {
     this._resetOptions();
 
     if (userStatus == this.userStatusMap.activated) {
+      if (deviceStatus) {
+        this._updateOptionsData(optionIds.walletDetails, false, true);
+      }
 
       if (deviceStatus == this.deviceStatusMap.authorized) {
         this._updateOptionsData(optionIds.addSession, false, true);
         this._updateOptionsData(optionIds.viewMnemonics, false, true);
         this._updateOptionsData(optionIds.authorizeWithQR, false, true);
+        this._updateOptionsData(optionIds.resetPin, false, true);
 
-        let biometricMessage = (this.isBiometricEnabled || false) ? 'Disable Biometric Preference' : 'Enable Biometric Preference';
+        let biometricMessage = (this.isBiometricEnabled || false) ? 'Disable Biometrics' : 'Enable Biometric';
         this._updateOptionsData(optionIds.updateBiometricPreference, false, true, biometricMessage);
       }
 
@@ -163,13 +175,10 @@ class WalletSettingController {
         this._updateOptionsData(optionIds.showQR, false, true);
       }
 
-      if (null == this.pendingRecovery) {
-        this._updateOptionsData(optionIds.abortRecovery, false, false);
-        this._updateOptionsData(optionIds.resetPin, false, true);
-      }else {
+      if (this.pendingRecovery) {
         this._updateOptionsData(optionIds.abortRecovery, false, true);
-        this._updateOptionsData(optionIds.resetPin, false, false);
-
+      }else {
+        this._updateOptionsData(optionIds.abortRecovery, false, false);
       }
 
       if (deviceStatus == this.deviceStatusMap.revoked) {
@@ -291,7 +300,7 @@ class WalletSettingController {
 
     switch( optionId ) {
       case optionIds.addSession:
-        workflowId = OstWalletSdkUI.addSession(userId, SESSION_KEY_EXPIRY_TIME, SPENDING_LIMIT, delegate);
+        workflowId = OstWalletSdkUI.addSession(userId, DEFAULT_SESSION_KEY_EXPIRY_TIME, DEFAULT_SPENDING_LIMIT, delegate);
         break;
 
       case optionIds.recoverDevice:

@@ -7,13 +7,12 @@ import inlineStyles from './styles';
 import reduxGetter from '../../services/ReduxGetters';
 import playIcon from '../../assets/play_icon.png';
 import PixelCall from '../../services/PixelCall';
-import BrowserEmitter from '../../helpers/BrowserEmitter';
+import {VideoPlayPauseEmitter} from '../../helpers/Emitters';
 
 const mapStateToProps = (state, ownProps) => {
   return {
     videoImgUrl: reduxGetter.getVideoImgUrl(ownProps.videoId, state),
     videoUrl: reduxGetter.getVideoUrl(ownProps.videoId, state),
-    //TODO: logic should not be decided on login popover--Ashutosh
     loginPopover: ownProps.isActive && state.login_popover.show
   };
 };
@@ -38,7 +37,7 @@ class VideoWrapper extends PureComponent {
       clearTimeout(this.loadingTimeOut);
       this.loadingTimeOut = setTimeout(() => {
         this.pausedOnNavigation = false;
-        if (!this.isUserPaused && this.props.ignoreScroll == undefined) {
+        if (!this.isUserPaused) {
           this.playVideo();
         }
       }, 300);
@@ -59,9 +58,16 @@ class VideoWrapper extends PureComponent {
 
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    BrowserEmitter.on('browserOpened', () => {      
-      setTimeout(()=>{this.pauseVideo(true);}, 100);
-      
+    VideoPlayPauseEmitter.on('play', () => {
+      if (!this.isUserPaused ) {
+        this.playVideo();
+      }
+    });
+
+    VideoPlayPauseEmitter.on('pause', () => {
+      if(this.props.isActive){
+        this.pauseVideo(true);
+      }
     });
   }
 
@@ -73,11 +79,10 @@ class VideoWrapper extends PureComponent {
     }
     clearTimeout(this.loadingTimeOut);
     clearTimeout(this.activeStateTimeout);
-    BrowserEmitter.removeListener('browserOpened');
   }
 
   isPaused() {
-    return !this.props.isActive || this.state.paused || this.props.loginPopover;
+    return !this.props.isActive || this.state.paused || this.props.loginPopover || !this.props.shouldPlay();
   }
 
   playVideo() {
@@ -160,7 +165,7 @@ class VideoWrapper extends PureComponent {
     return (
       <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked}>
         <View>
-          {this.props.doRender && (
+          {this.props.doRender && this.props.videoUrl && (
             <Video
               poster={this.props.videoImgUrl}
               posterResizeMode={this.props.posterResizeMode || 'cover'}
@@ -184,5 +189,13 @@ class VideoWrapper extends PureComponent {
     );
   }
 }
+
+VideoWrapper.defaultProps = {
+  shouldPlay: function(){
+    return true;
+  },
+  doRender: true ,
+  isActive: true
+};
 
 export default connect(mapStateToProps)(withNavigation(VideoWrapper));

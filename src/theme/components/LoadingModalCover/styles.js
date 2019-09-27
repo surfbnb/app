@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import DefaultStyleGenerator from "../../styles/DefaultStyleGenerator";
 
-export default StyleSheet.create({
+let stylesMap = {
   backgroundStyle: {
     backgroundColor: 'rgba(0,0,0,0.75)',
     flex: 1,
@@ -47,4 +47,6 @@ export default StyleSheet.create({
     color: '#fff',
     fontSize: 14,
   }
-});
+};
+
+export default styles = DefaultStyleGenerator.generate(stylesMap);

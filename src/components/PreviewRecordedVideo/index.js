@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback, View, Image, BackHandler, AppState, Text } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, View, Image, BackHandler, AppState, Text, Dimensions } from 'react-native';
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/preview_play_icon.png';
-import tickIcon from '../../assets/tick_icon.png';
 import Store from '../../store';
 import { upsertRecordedVideo, videoInProcessing } from '../../actions';
 import { ActionSheet } from 'native-base';
 import styles from './styles';
 import closeIcon from '../../assets/cross_icon.png';
 import { withNavigation } from 'react-navigation';
-import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
-import TouchableButton from '../../theme/components/TouchableButton';
-import Theme from '../../theme/styles';
 import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
@@ -123,8 +119,11 @@ class PreviewRecordedVideo extends Component {
       <View style={styles.container}>
         <Video
           source={{ uri: this.cachedVideoUri }}
-          style={styles.previewVideoSkipFont}
-          fullscreen={true}
+          style={{
+            flex:1
+          }}
+          posterResizeMode={'cover'}
+          resizeMode={'cover'}
           onLoad={this.handleLoad}
           onProgress={this.handleProgress}
           onEnd={this.handleEnd}
@@ -154,7 +153,7 @@ class PreviewRecordedVideo extends Component {
               <Image style={styles.playIconSkipFont} source={playIcon} />
             </TouchableOpacity>
           ) : (
-            <View style={styles.playIcon} />
+            <View style={styles.playIconSkipFont} />
           )}
 
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20 }}>

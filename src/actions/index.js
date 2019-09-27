@@ -135,6 +135,13 @@ export const updateBalance = (balance = '0') => ({
   }
 });
 
+export const updateIsPurchase = (isPurchase = false) => ({
+  type: types.UPDATE_IS_PURCHASE,
+  payload: {
+    isPurchase: isPurchase
+  }
+});
+
 export const updateExecuteTransactionStatus = (status = false) => ({
   type: types.UPDATE_EXECUTE_TRANSACTION_STATUS,
   payload: {
@@ -182,3 +189,17 @@ export const upsertPushNotification = (data) => ({
 });
 
 export const clearPushNotification = () => ({ type: types.CLEAR_PUSH_NOTIFICATION });
+
+export const upsertInviteCode = (data) => ({
+  type: types.UPSERT_INVITE_CODE,
+  payload: {
+    invite_code: data
+  }
+});
+
+export const upsertTwitterEntities = (data) => ({
+  type: types.UPSERT_TWITTER_ENTITIES,
+  payload: {
+    twitter_entities: data
+  }
+});

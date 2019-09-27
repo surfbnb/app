@@ -1,9 +1,17 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import AppConfig from '../../constants/AppConfig';
+import { connect } from 'react-redux';
 import SearchComponent from './SearchComponent';
+import CurrentUser from '../../models/CurrentUser';
 
-class SearchScreen extends Component {
+const mapStateToProps = (state) => {
+  return {
+    userId: CurrentUser.getUserId()
+  };
+};
+
+class SearchScreen extends PureComponent {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     return {
       header: null,
@@ -12,11 +20,18 @@ class SearchScreen extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = {
-      searchParams: null,
+    this.defaultState =  {
+      searchParams: '',
       refresh: true,
       noResultsFound: false
     };
+    this.state = this.defaultState;
+  }
+
+  componentDidUpdate(){
+    if(!this.props.userId){
+      this.setState({...this.defaultState});
+    }
   }
 
   setSearchParams = (searchParams) => {
@@ -35,15 +50,16 @@ class SearchScreen extends Component {
   };
 
   shouldMakeApiCall = (searchParams) => {
+    if(searchParams == "") return true;
     searchParams = searchParams || this.state.searchParams;
-    if (searchParams && searchParams.length >= AppConfig.searchConfig.MIN_SEARCH_CHAR) {
-      return true;
+    if (searchParams.length == 1) {
+      return false;
     }
-    return false;
+    return true;
   };
 
   render() {
-    return (
+    return this.props.userId && (
       <SearchComponent
         fetchUrl={`/users/search?q=${this.state.searchParams}`}
         shouldMakeApiCall={this.shouldMakeApiCall}
@@ -57,4 +73,4 @@ class SearchScreen extends Component {
   }
 }
 
-export default SearchScreen;
+export default connect(mapStateToProps)(SearchScreen);

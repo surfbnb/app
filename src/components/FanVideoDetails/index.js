@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Image, ImageBackground, TouchableOpacity, Platform, View, Text, Keyboard } from 'react-native';
 import deepGet from 'lodash/get';
-
+import utilities from '../../services/Utilities';
+import CurrentUser from '../../models/CurrentUser';
 import styles from './styles';
 import VideoDescription from './VideoDescription';
 import BackArrow from '../CommonComponents/BackArrow';
@@ -38,6 +39,9 @@ class FanVideoDetails extends Component {
         },
         shadowOpacity: 0.1,
         shadowRadius: 3
+      },
+      headerTitleStyle: {
+        fontFamily: 'AvenirNext-Medium'
       },
       headerLeft: (
         <TouchableOpacity
@@ -110,6 +114,7 @@ class FanVideoDetails extends Component {
 
   enableStartUploadFlag = () => {
    // if (!this.validLink()) return;
+   utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
     Store.dispatch(
       upsertRecordedVideo({ video_desc: this.state.videoDesc, video_link: this.state.videoLink, do_upload: true })
     );

@@ -4,8 +4,10 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
+import com.dooboolab.RNIap.RNIapPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
-import com.proyecto26.inappbrowser.RNInAppBrowserPackage;
+import com.pepo2.bridge.PepoNativePackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
@@ -49,9 +51,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
 
       return Arrays.<ReactPackage>asList(
+            new PepoNativePackage(),
             new MainReactPackage(),
+            new RNCWebViewPackage(),
+            new RNIapPackage(),
             new RNReactNativeHapticFeedbackPackage(),
-            new RNInAppBrowserPackage(),
             new RNFirebasePackage(),
             new RNFirebaseMessagingPackage(),
             new RNFirebaseNotificationsPackage(),

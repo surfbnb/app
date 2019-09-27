@@ -1,16 +1,26 @@
-import { OstJsonApi,OstWalletError, OstWalletApiError } from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstJsonApi, OstWalletSdk} from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
-import {ostErrors} from "./OstErrors";
-import {ostSdkErrors, DEFAULT_CONTEXT} from "./OstSdkErrors";
 import {updateBalance} from "../actions";
 import Store from '../store';
 import PriceOracle from './PriceOracle';
 import ReduxGetter from "./ReduxGetters";
 import numeral from "numeral";
+import OstWalletSdkHelper from '../helpers/OstWalletSdkHelper';
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
   CurrentUser = imports.default;
+});
+
+let ostErrors;
+import('./OstErrors').then((imports) => {
+  ostErrors = imports.ostErrors;
+});
+
+let ostSdkErrors, DEFAULT_CONTEXT;
+import('./OstSdkErrors').then((imports) => {
+  ostSdkErrors = imports.ostSdkErrors;
+  DEFAULT_CONTEXT = imports.DEFAULT_CONTEXT;
 });
 
 class Pricer {
@@ -36,22 +46,25 @@ class Pricer {
       return;
     }
 
-    OstJsonApi.getBalanceForUserId(
-      CurrentUser.getOstUserId(),
-      (res) => {
-        let bal = deepGet(res, 'balance.available_balance');
-        this.onBalance( bal );
-        successCallback && successCallback( bal , res);
-      },
-      (ostErrorJson) => {
-        let ostError = new OstWalletError( ostErrorJson );
-        if ( ostError.isApiError() ) {
-          ostError = new OstWalletApiError( ostErrorJson );
-        }
-        let errMsg = ostSdkErrors.getErrorMessage(DEFAULT_CONTEXT, ostError);
-        errorCallback && errorCallback(ostError, DEFAULT_CONTEXT);
+    OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
+      if( !OstWalletSdkHelper.canDeviceMakeApiCall( device ) ) {
+        successCallback && successCallback(0);
+        return;
       }
-    );
+      OstJsonApi.getBalanceForUserId(
+        CurrentUser.getOstUserId(),
+        (res) => {
+          let bal = deepGet(res, 'balance.available_balance');
+          this.onBalance( bal );
+          successCallback && successCallback( bal , res);
+        },
+        (ostErrorJson) => {
+          let ostError =  OstWalletSdkHelper.jsonToOstRNError(ostErrorJson);
+          let errMsg = ostSdkErrors.getErrorMessage(DEFAULT_CONTEXT, ostError);
+          errorCallback && errorCallback(ostError, DEFAULT_CONTEXT);
+        }
+      );
+    });
   }
 
   onBalance(bal){
@@ -61,7 +74,7 @@ class Pricer {
   getPriceOracle() {
     const pricePoint = ReduxGetter.getPricePoint();
     const token = ReduxGetter.getToken();
-    return new PriceOracle( token  , pricePoint && pricePoint["OST"] );
+    return new PriceOracle( token  , pricePoint &&  pricePoint["OST"] );
   }
 
   getFromDecimal( bt ){
@@ -79,6 +92,16 @@ class Pricer {
   toDisplayAmount(amount) {
     if(isNaN(amount)) return amount;
     return numeral(amount).format('0[.]00a') || 0;
+  }
+
+  displayAmountWithKFomatter( amount ){
+    if(isNaN( amount )) return amount;
+    if( amount < 10000 ){
+      return numeral( amount ).format('0', Math.floor);
+    } else {
+      return numeral( amount ).format('0a+', Math.floor)
+
+    }
   }
 
 }

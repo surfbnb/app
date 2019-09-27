@@ -8,7 +8,9 @@ import {
   Image,
   Keyboard,
   BackHandler,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  NativeModules,
+  Platform
 } from 'react-native';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import BigNumber from 'bignumber.js';
@@ -33,7 +35,10 @@ import reduxGetter from '../../services/ReduxGetters';
 import PixelCall from '../../services/PixelCall';
 import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
-import {ON_USER_CANCLLED_ERROR_MSG, ensureSession} from '../../helpers/TransactionHelper';
+import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
+import ReduxGetters from '../../services/ReduxGetters';
+import DeviceInfo from 'react-native-device-info';
+import PepoNativeHelper from '../../helpers/PepoNativeHelper';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -43,7 +48,7 @@ const validMinAmount = 1;
 const defaultBtAmount = 10;
 const HEADER_TITLE = 'Send Pepos';
 const SUCCESS_HEADER_TITLE = 'Sent';
-const SUBMIT_BTN_TXT = 'Confirm';
+const SUBMIT_BTN_TXT = 'Send Pepo Coins';
 const SUBMIT_PROCESSING_TXT = 'Confirming...';
 
 class TransactionScreen extends Component {
@@ -73,15 +78,26 @@ class TransactionScreen extends Component {
       showSuccess: false
     };
     this.toUser = reduxGetter.getUser(this.props.navigation.getParam('toUserId'));
+    this.userName = reduxGetter.getName(this.props.navigation.getParam('toUserId'));
     //Imp : Make sure if transaction is mappning againts Profile dont send video Id
     this.videoId = this.props.navigation.getParam('videoId');
     this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate');
-    this.getBalance();
   }
 
   componentDidMount() {
-    // default we need
-    //this.setState({ btFocus: true });
+    this.onBalance(ReduxGetters.getBalance());
+    //Make a background call for sync balance.
+    this.getBalance();
+    PepoNativeHelper.getGroupAndDecimalSeparators((groupSeparator, decimalSeparator)=> {
+      console.log("Got decimalSeparator", decimalSeparator, "groupSeparator", groupSeparator);
+
+      this.groupSeparator = groupSeparator;
+      this.decimalSeparator = decimalSeparator;
+
+    }, (error)=> {
+      this.groupSeparator = ',';
+      this.decimalSeparator = '.';
+    })
   }
 
   _keyboardShown(e) {
@@ -111,7 +127,25 @@ class TransactionScreen extends Component {
 
   onBtChange(bt) {
     if (!this.priceOracle) return;
-    this.setState({ btAmount: bt, btUSDAmount: this.priceOracle.btToFiat(bt) });
+
+    if (!this._isValidInputProvided(bt)) {
+      let errMsg = this._getErrorMessage(bt);
+      this.setState({
+        btAmount: bt,
+        btUSDAmount: '',
+        btAmountErrorMsg: errMsg
+      });
+
+      return;
+    }
+
+    let formattedVal = this._convertToValidFormat(bt)
+      , val = this._getFullStopValue(formattedVal)
+      , usdVal = this.priceOracle.btToFiat(val)
+      , formattedUsdVal = this._getFormattedValue( usdVal)
+    ;
+
+    this.setState({ btAmount: formattedVal, btUSDAmount: formattedUsdVal});
     this.clearFieldErrors();
   }
 
@@ -123,12 +157,91 @@ class TransactionScreen extends Component {
 
   onUSDChange(usd) {
     if (!this.priceOracle) return;
-    this.setState({ btAmount: this.priceOracle.fiatToBt(usd), btUSDAmount: usd });
+
+    if (!this._isValidInputProvided(usd)) {
+      let errMsg = this._getErrorMessage(usd)
+      this.setState({
+        btAmount: '',
+        btUSDAmount: usd,
+        btAmountErrorMsg: errMsg
+      });
+
+      return;
+    }
+
+    let formattedVal = this._convertToValidFormat(usd)
+      , val = this._getFullStopValue(formattedVal)
+      , btVal = this.priceOracle.fiatToBt(val)
+      , formattedBtVal = this._getFormattedValue(btVal)
+    ;
+
+    this.setState({ btAmount: formattedBtVal, btUSDAmount: formattedVal });
     this.clearFieldErrors();
+  }
+
+  _isValidInputProvided(val) {
+    let separators = this.getDecimalGroupSeparators()
+      , decimalSeparator = separators[1]
+      , regex = new RegExp(['[^0-9'+decimalSeparator+']+'],'g')
+      , matchStrs = val.match(regex)
+    ;
+
+    if (matchStrs && matchStrs.length > 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  getDecimalGroupSeparators(){
+    return [this.groupSeparator, this.decimalSeparator];
+  }
+
+  _convertToValidFormat(val) {
+
+    let separators = this.getDecimalGroupSeparators()
+      , decimalSeparator = separators[1]
+      , regex = new RegExp(['[^0-9\\'+decimalSeparator+']+'],'g')
+    ;
+
+    val = val.split(regex).join('');
+
+    let splitArray = val.split(decimalSeparator);
+
+    if (splitArray.length > 1) {
+      let firstVal = splitArray[0];
+      splitArray.shift();
+      let decimalVal = splitArray.join('');
+
+      val = firstVal+decimalSeparator+decimalVal;
+    }
+
+    return val
+  };
+
+  _getFullStopValue(val) {
+    let sperators = this.getDecimalGroupSeparators()
+      , decimalSeparator = sperators[1]
+    ;
+
+    val = String(val).replace(decimalSeparator, '.');
+
+    return val
+  }
+
+  _getFormattedValue(valTobeFormatted) {
+    let sperators = this.getDecimalGroupSeparators()
+      , decimalSeparator = sperators[1]
+    ;
+
+    valTobeFormatted = valTobeFormatted.replace('.', decimalSeparator);
+
+    return valTobeFormatted
   }
 
   onConfirm = () => {
     let btAmount = this.state.btAmount;
+    btAmount = this._getFullStopValue(btAmount);
     if (!this.isValidInput(btAmount)) {
       return;
     }
@@ -138,20 +251,29 @@ class TransactionScreen extends Component {
     this.excecuteTransaction();
   };
 
-  isValidInput(btAmount) {
+  _getErrorMessage(btAmount) {
     if (btAmount && String(btAmount).indexOf(',') > -1) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_decimal_error') });
-      return false;
+      return ostErrors.getUIErrorMessage('bt_amount_decimal_error');
     }
     if (btAmount && String(btAmount).split('.')[1] && String(btAmount).split('.')[1].length > 2) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error') });
-      return false;
+      return ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error');
     }
     btAmount = btAmount && Number(btAmount);
     if (!btAmount || btAmount < validMinAmount || btAmount > this.state.balance) {
-      this.setState({ btAmountErrorMsg: ostErrors.getUIErrorMessage('bt_amount_error') });
+      return ostErrors.getUIErrorMessage('bt_amount_error');
+    }
+
+    return undefined;
+  }
+
+
+  isValidInput(btAmount) {
+    let errorMessage = this._getErrorMessage(btAmount)
+    if (errorMessage) {
+      this.setState({ btAmountErrorMsg: errorMessage });
       return false;
     }
+
     return true;
   }
 
@@ -187,6 +309,10 @@ class TransactionScreen extends Component {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    if ( this.showAuthDeviceDrawer ) {
+      this.props.navigation.push('AuthDeviceDrawer', { device: this.ostDevice });
+    }
+    this.showAuthDeviceDrawer = false;
   }
 
   handleBackButtonClick = () => {
@@ -229,32 +355,54 @@ class TransactionScreen extends Component {
   }
 
   sendTransactionToSdk() {
-    const user = CurrentUser.getUser();
     // const option = { wait_for_finalization: false };
-    const btInDecimal = pricer.getToDecimal(this.state.btAmount);
-    ensureSession(user.ost_user_id, btInDecimal, (errorMessage, success) => {
-      if ( success ) {
-        return this._executeTransaction(user, btInDecimal);
-      }
-
-      if ( errorMessage ) {
-        if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage ) {
-          //Cancel the flow.
-          this.resetState();
-          return;
-        }
-
-        // Else: Show the error message.
-        this.showError( errorMessage );
-
-      }
+    let btVal = this._getFullStopValue(this.state.btAmount);
+    const btInDecimal = pricer.getToDecimal(btVal);
+    ensureDeivceAndSession(CurrentUser.getOstUserId(), btInDecimal, (device) => {
+      this._deviceUnauthorizedCallback(device);
+      }, (errorMessage, success) => {
+        this._ensureDeivceAndSessionCallback(errorMessage, success);
     });
   }
 
-  _executeTransaction(user, btInDecimal) {
+  _ensureDeivceAndSessionCallback(errorMessage, success) {
+    if (success) {
+
+      let btVal = this._getFullStopValue(this.state.btAmount);
+      const btInDecimal = pricer.getToDecimal(btVal);
+
+      return this._executeTransaction(btInDecimal);
+    }
+
+    if (errorMessage) {
+      if (ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage) {
+        //Cancel the flow.
+        this.resetState();
+        return;
+      }
+
+      // Else: Show the error message.
+      this.showError(errorMessage);
+    }
+  }
+
+  _deviceUnauthorizedCallback(device) {
+    //Cancel the flow.
+    this.resetState();
+
+    //Set flag to open AuthDeviceDrawer.
+    this.showAuthDeviceDrawer = true;
+    this.ostDevice = device;
+
+    //Dismiss self
+    this.closeModal();
+
+  }
+
+  _executeTransaction(btInDecimal) {
     this.workflow = new ExecuteTransactionWorkflow(this);
     OstWalletSdk.executeTransaction(
-      user.ost_user_id,
+      CurrentUser.getOstUserId(),
       [this.toUser.ost_token_holder_address],
       [btInDecimal],
       appConfig.ruleTypeMap.directTransfer,
@@ -359,27 +507,26 @@ class TransactionScreen extends Component {
   }
 
   onError(error, ostWorkflowContext) {
-
-    if ( ostWorkflowContext ) {
+    if (ostWorkflowContext) {
       // workflow error.
-      const errorMsg = ostSdkErrors.getErrorMessage(ostWorkflowContext, error) ;
-      this.showError( errorMsg );
+      const errorMsg = ostSdkErrors.getErrorMessage(ostWorkflowContext, error);
+      this.showError(errorMsg);
       return;
     }
 
     const errorMsg = ostErrors.getErrorMessage(error);
     if (errorMsg) {
-      this.showError( errorMsg );
+      this.showError(errorMsg);
       return;
     }
     const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
     if (errorDataMsg) {
-      this.showError( errorDataMsg );
+      this.showError(errorDataMsg);
       return;
     }
   }
 
-  showError( errorMessage ) {
+  showError(errorMessage) {
     this.resetState();
     this.setState({ general_error: errorMessage });
   }
@@ -421,7 +568,7 @@ class TransactionScreen extends Component {
                         value={`${this.state.btAmount}`}
                         placeholderTextColor="#ababab"
                         errorMsg={this.state.btAmountErrorMsg}
-                        keyboardType="numeric"
+                        keyboardType="decimal-pad"
                         isFocus={this.state.btFocus}
                         blurOnSubmit={true}
                       />
@@ -446,7 +593,7 @@ class TransactionScreen extends Component {
                         fieldName="usd_amount"
                         style={Theme.TextInput.textInputStyle}
                         placeholderTextColor="#ababab"
-                        keyboardType="numeric"
+                        keyboardType="decimal-pad"
                         blurOnSubmit={true}
                         isFocus={this.state.usdFocus}
                         onFocus={() =>
@@ -511,7 +658,7 @@ class TransactionScreen extends Component {
                 >
                   <Image source={tx_success} style={{ width: 164.6, height: 160, marginBottom: 20 }}></Image>
                   <Text style={{ textAlign: 'center', fontFamily: 'AvenirNext-Regular', fontSize: 16 }}>
-                    Success, you have sent {this.toUser.name} {this.state.btAmount} Pepos
+                    Success, you have sent {this.userName} {this.state.btAmount} Pepos
                   </Text>
                 </View>
               )}

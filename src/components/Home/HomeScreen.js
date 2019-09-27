@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar, Platform, AppState } from 'react-native';
+import { View, StatusBar, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
 
@@ -12,10 +12,8 @@ import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import appConfig from '../../constants/AppConfig';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
-import { clearPushNotification } from '../../actions';
-import Store from '../../store';
-import reduxGetter from '../../services/ReduxGetters';
-import NavigateTo from '../../helpers/navigateTo';
+import {navigateTo} from "../../helpers/navigateTo";
+import { LoadingModal } from '../../theme/components/LoadingModalCover';
 
 const mapStateToProps = (state) => {
   return {
@@ -31,36 +29,17 @@ class HomeScreen extends Component {
     };
   };
 
-  _handleAppStateChange = (nextAppState) => {
-    if (nextAppState == 'active'){
-      this.handlepushNotification();
-    }    
-  };
-
-  constructor(props) {    
-    console.log('HomeScreen constructor');
+  constructor(props) {
     super(props);
+    navigateTo.setTopLevelNavigation(this.props.navigation);
     this.state = {
       videoUploaderVisible: false
     };
     this.listRef = null;
+    this.isActiveScreen = false;
   }
-
-  handlepushNotification(){    
-    let pushNotification = reduxGetter.getPushNotification();
-
-    if (Object.keys(pushNotification).length > 0) {      
-      new NavigateTo(this.props.navigation).navigate(pushNotification.goto);
-      Store.dispatch(clearPushNotification());
-      return;
-    }
-  }
-
-
 
   componentDidMount = () => {
-    AppState.addEventListener('change', this._handleAppStateChange);
-    this.handlepushNotification();
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
     NavigationEmitter.on('onRefresh', (screen) => {
@@ -68,19 +47,50 @@ class HomeScreen extends Component {
         this.refresh(true, 0);
       }
     });
+    navigateTo.navigationDecision();
+    CurrentUser.getEvent().on("onUserLogout" , ()=> {
+      this.onLogout();
+    });
+    CurrentUser.getEvent().on("onBeforeUserLogout" , ()=> {
+      LoadingModal.show("Disconnecting...");
+    });
+    CurrentUser.getEvent().on("onUserLogoutFailed" , ()=> {
+      LoadingModal.hide();
+    });
+    CurrentUser.getEvent().on("onUserLogoutComplete" , ()=> {
+      this.refresh(true);
+      LoadingModal.hide();
+    });
+
+    this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
+        this.isActiveScreen = true ;
+    });
+
+    this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
+      this.isActiveScreen =  false ;
+    });
   };
 
   componentWillUpdate(nextProps) {
-    if (this.props.userId !== nextProps.userId || this.props.navigation.state.refresh) {
+    if ( (nextProps.userId && this.props.userId !== nextProps.userId) || this.props.navigation.state.refresh) {
       this.refresh(true, 300);
     }
   }
 
-  componentWillUnmount = () => {    
-    AppState.removeEventListener('change', this._handleAppStateChange);
+  componentWillUnmount = () => {
     videoUploaderComponent.removeListener('show');
     videoUploaderComponent.removeListener('hide');
     NavigationEmitter.removeListener('onRefresh');
+    CurrentUser.getEvent().removeListener("onBeforeUserLogout");
+    CurrentUser.getEvent().removeListener("onUserLogout");
+    CurrentUser.getEvent().removeListener("onUserLogoutFailed");
+    CurrentUser.getEvent().removeListener("onUserLogoutComplete");
+    this.willFocusSubscription && this.willFocusSubscription.remove();
+    this.willBlurSubscription && this.willBlurSubscription.remove();
+  };
+
+  shouldPlay = () => {
+    return this.isActiveScreen;
   };
 
   showVideoUploader = () => {
@@ -111,6 +121,13 @@ class HomeScreen extends Component {
       }
     }, timeOut);
   };
+
+  onLogout = () => {
+    const updateFlatList = deepGet(this, 'listRef.flatListHocRef.props.updateFlatList'),
+          flatListHocRef = deepGet(this, 'listRef.flatListHocRef');
+      flatListHocRef.forceSetActiveIndex(0);
+      updateFlatList && updateFlatList([]);
+  }
 
   beforeRefresh = () => {
     Pricer.getBalance();
@@ -150,6 +167,7 @@ class HomeScreen extends Component {
           }}
           fetchUrl={'/feeds'}
           beforeRefresh={this.beforeRefresh}
+          shouldPlay={this.shouldPlay}
         />
       </View>
     );

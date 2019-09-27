@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, StatusBar, Alert } from 'react-native';
+import { View, StatusBar, Alert, Platform, Linking } from 'react-native';
 
 import Toast from '../../theme/components/NotificationToast';
-import reduxGetter from '../../services/ReduxGetters';
 import styles from './styles';
 import CurrentUser from '../../models/CurrentUser';
-import { OstWalletSdk, OstWalletSdkUI } from '@ostdotcom/ost-wallet-sdk-react-native';
+import {OstWalletSdk, OstWalletSdkUI} from '@ostdotcom/ost-wallet-sdk-react-native';
 import { PLATFORM_API_ENDPOINT } from '../../constants';
 import { ostErrors } from '../../services/OstErrors';
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import ost_sdk_theme_config from '../../theme/ostsdk/ost-sdk-theme-config';
 import ost_sdk_content_config from '../../theme/ostsdk/ost-sdk-content-config';
 import ost_wallet_sdk_config from '../../theme/ostsdk/ost-wallet-sdk-config';
+import  NotchHelper from "../../helpers/NotchHelper";
 
 let t1, t2;
 
@@ -19,6 +19,7 @@ export default class AuthLoading extends Component {
   constructor() {
     super();
     this.init();
+    NotchHelper.syncList();
   }
 
   // Fetch the token from storage then navigate to our appropriate place
@@ -44,11 +45,7 @@ export default class AuthLoading extends Component {
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();
-        if (user && !CurrentUser.isActiveUser(user)) {
-          this.props.navigation.navigate('UserActivatingScreen');
-        } else {
-          this.props.navigation.navigate('HomeScreen');
-        }
+        this.props.navigation.navigate('HomeScreen');
       })
       .catch(() => {
         Alert.alert('', ostErrors.getUIErrorMessage('general_error'));

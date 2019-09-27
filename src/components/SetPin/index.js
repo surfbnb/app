@@ -11,7 +11,7 @@ export default class SetPin extends Component {
     const { params } = navigation.state;
 
     return {
-      headerTitle: 'Set Pin',
+      headerTitle: 'Set PIN',
       headerBackTitle: null
     };
   };
@@ -29,8 +29,7 @@ export default class SetPin extends Component {
       <View style={{ flex: 1 }}>
         <View style={inlineStyles.container}>
           <Text style={inlineStyles.setPinInfoText}>
-            Add a new 6-digit PIN to secure your Wallet. PIN will also help you recover the wallet if the phone is lost
-            or stolen.
+            Set a 6-digit PIN for your Wallet. Your PIN is requied to recover your wallet if your phone is lost or stolen.
           </Text>
           <PinInput {...this.props} onPinChange={this.onPinChange} />
         </View>

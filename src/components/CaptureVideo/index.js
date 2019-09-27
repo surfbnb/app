@@ -13,14 +13,16 @@ class CaptureVideo extends Component {
       recordingScreen: true,
       videoUri: '',
       actionSheetOnRecordVideo: true,
-      modalVisible: true
+      modalVisible: true,
+      acceptedCameraTnC: null
     };
   }
 
   goToRecordScreen() {
     this.setState({
       recordingScreen: true,
-      actionSheetOnRecordVideo: false
+      actionSheetOnRecordVideo: false,
+      acceptedCameraTnC: 'true'
     });
   }
 
@@ -50,6 +52,7 @@ class CaptureVideo extends Component {
           ref={(recorder) => {
             this.videoRecorder = recorder;
           }}
+          acceptedCameraTnC={this.state.acceptedCameraTnC}
           goToPreviewScreen={(videoUri) => {
             this.goToPreviewScreen(videoUri);
           }}

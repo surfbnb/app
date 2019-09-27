@@ -8,6 +8,12 @@ let stylesMap = {
     alignItems: 'center',
     width: '100%'
   },
+  deleteButton: {
+    height: 24,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   videoStatsTxt: {
     color: Colors.white,
     fontSize: 16,

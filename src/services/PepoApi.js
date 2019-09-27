@@ -111,6 +111,7 @@ export default class PepoApi {
           case 302:
           case 304:
           case 400:
+          case 404:
           case 409:
             break;
           case 401:

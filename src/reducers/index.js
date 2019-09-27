@@ -27,6 +27,7 @@ export const {
   upsertImageEntities,
   upsertHomeFeedEntities,
   updateBalance,
+  updateIsPurchase,
   updatePricePoints,
   updateToken,
   updateExecuteTransactionStatus,
@@ -44,7 +45,9 @@ export const {
   upsertVideoDescriptionEntities,
   upsertNotificationUnread,
   upsertPushNotification,
-  clearPushNotification
+  clearPushNotification,
+  upsertInviteCode,
+  upsertTwitterEntities,
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -74,15 +77,37 @@ const defaultState = {
   token: { decimals: 18 },
   push_notification: {},
   balance: null,
-  notification_unread: {}
+  isPurchase: false,
+  notification_unread: {},
+  invite_code: null,
+  twitter_entities : {},
 };
 
 const logoutDefault = {
   current_user: {},
-  balance: null,
+  activities_entities: {},
+  transaction_entities: {},
+  giffy_entities: {},
+  tag_entities: {},
+  user_profile_entities: {},
+  user_entities: {},
+  user_stat_entities: {},
+  link_entities: {},
+  video_entities: {},
+  video_stat_entities: {},
+  video_description_entities: {},
+  image_entities: {},
+  home_feed_entities: {},
   video_contribution_entities: {},
   user_contribution_entities: {},
-  notification_unread: {}
+  executeTransactionDisabledStatus: false,
+  recorded_video: {},
+  profile_picture: {},
+  push_notification: {},
+  balance: null,
+  notification_unread: {},
+  invite_code: null,
+  twitter_entities : null,
 };
 
 export const reducer = handleActions(
@@ -179,6 +204,10 @@ export const reducer = handleActions(
       ...state,
       balance: action.payload.balance
     }),
+    [updateIsPurchase]: (state, action)=>({
+      ...state,
+      balance: action.payload.isPurchase
+    }),
     [updatePricePoints]: (state, action) => ({
       ...state,
       price_points: action.payload.price_points
@@ -241,6 +270,14 @@ export const reducer = handleActions(
     [upsertNotificationUnread]: (state, action) => ({
       ...state,
       notification_unread: assignIn({}, state.notification_unread, action.payload.notification_unread)
+    }),
+    [upsertInviteCode]: (state, action) => ({
+      ...state,
+      invite_code: action.payload.invite_code
+    }),
+    [upsertTwitterEntities]: (state, action) => ({
+      ...state,
+      twitter_entities: assignIn({}, state.twitter_entities, action.payload.twitter_entities)
     })
   },
   defaultState

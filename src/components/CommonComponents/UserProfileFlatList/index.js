@@ -11,18 +11,19 @@ import {
 import {SafeAreaView, withNavigation} from "react-navigation";
 import FastImage from 'react-native-fast-image';
 
-import reduxGetters from "../../../services/ReduxGetters"; 
-import AppConfig from "../../../constants/AppConfig"; 
+import reduxGetters from "../../../services/ReduxGetters";
+import AppConfig from "../../../constants/AppConfig";
 import Pricer from '../../../services/Pricer';
 import Pagination from "../../../services/Pagination";
 import {fetchUser} from "../../../helpers/helpers";
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 
 import inlineStyles from './style';
-
-
 import pepoWhiteIcon from '../../../assets/pepo-white-icon.png'
 import LinearGradient from "react-native-linear-gradient";
+import CurrentUser from "../../../models/CurrentUser";
+import DeleteVideo from "../DeleteVideo";
+import Colors from '../../../theme/styles/Colors';
 
 
 class UserProfileFlatList extends PureComponent {
@@ -33,7 +34,7 @@ class UserProfileFlatList extends PureComponent {
 
         this.state = {
           list :  this.videoHistoryPagination.getList(),
-          refreshing : false, 
+          refreshing : false,
           loadingNext: false
         }
         this.listRef = null ;
@@ -52,7 +53,6 @@ class UserProfileFlatList extends PureComponent {
             this.refresh();
           });
         }
-        fetchUser(this.props.userId);
         this.videoHistoryPagination.initPagination();
     }
 
@@ -69,25 +69,31 @@ class UserProfileFlatList extends PureComponent {
     }
 
     _fetchUrlVideoHistory(){
-        return `/users/${this.props.userId}/video-history` ; 
+        return `/users/${this.props.userId}/video-history` ;
     }
 
     getVideoBtAmount(videoId){
-      return Pricer.toDisplayAmount( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
+      return Pricer.displayAmountWithKFomatter( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
     }
 
     onPullToRefresh = () => {
-      fetchUser(this.props.userId); 
-    } 
+      fetchUser(this.props.userId , this.onUserFetch );
+    }
+
+    onUserFetch =(res) => {
+      this.props.onUserFetch && this.props.onUserFetch(res);
+    }
 
     beforeRefresh = ( ) => {
         this.props.beforeRefresh && this.props.beforeRefresh();
         this.onPullToRefresh();
-        this.setState({ refreshing : true }); 
+        this.setState({ refreshing : true });
     }
 
     onRefresh = ( res ) => {
-        this.setState({ refreshing : false , list : this.videoHistoryPagination.getList() }); 
+        const list = this.videoHistoryPagination.getList()  ;
+        this.props.onRefresh && this.props.onRefresh( list , res );
+        this.setState({ refreshing : false , list : list });
     }
 
     onRefreshError = ( error ) => {
@@ -95,15 +101,15 @@ class UserProfileFlatList extends PureComponent {
     }
 
     beforeNext =() => {
-        this.setState({ loadingNext : true }); 
+        this.setState({ loadingNext : true });
     }
 
     onNext = ( res  ) => {
-        this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.getList() }); 
+        this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.getList() });
     }
 
     onNextError = ( error ) => {
-        this.setState({ loadingNext : false }); 
+        this.setState({ loadingNext : false });
     }
 
     getNext = () => {
@@ -114,22 +120,51 @@ class UserProfileFlatList extends PureComponent {
       this.videoHistoryPagination.refresh();
     }
 
+    isCurrentUser = () => {
+        return this.props.userId === CurrentUser.getUserId();
+    }
+
+    removeVideo = (videoId, index) => {
+        if (index > -1) {
+            this.videoHistoryPagination.deleteItem(videoId , "payload.video_id");
+            let array = [...this.state.list]; // make a separate copy of the array
+            array.splice(index, 1);
+            this.setState({list: array});
+            this.props.onDelete(array);
+        }
+    }
+
     _keyExtractor = (item, index) => `id_${item}`;
 
     _renderItem = ({ item, index }) => {
       const videoId = reduxGetters.getUserVideoId(item),
-            imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;     
-      return imageUrl ? (
+            imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;
+      return (
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.onVideoClick( item, index ); } )}
         >
           <View>
 
-            <FastImage style={{ width: (Dimensions.get('window').width - 6) / 3, aspectRatio:9/16, margin: 1}}
+            <FastImage style={{
+                width: (Dimensions.get('window').width - 6) / 3,
+                aspectRatio:9/16,
+                margin: 1,
+                backgroundColor: imageUrl ? Colors.white : Colors.gainsboro
+            }}
                        source={{
                         uri: imageUrl,
                         priority: FastImage.priority.high
                        }}/>
-
+            <LinearGradient
+              colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
+              locations={[0, 0.5, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', top: 0, left: 0, alignItems: 'flex-end'}}
+            >
+                { this.isCurrentUser() && <View style={inlineStyles.deleteButton}>
+                <DeleteVideo videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
+              </View>}
+            </LinearGradient>
             <LinearGradient
               colors={['transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']}
               locations={[0, 0.5, 1]}
@@ -145,7 +180,7 @@ class UserProfileFlatList extends PureComponent {
 
           </View>
         </TouchableWithoutFeedback>
-      ) : <View/>;
+      );
     };
 
     renderFooter = () => {
@@ -190,7 +225,7 @@ class UserProfileFlatList extends PureComponent {
             </SafeAreaView>
         );
     }
-    
+
 }
 
 export default withNavigation( UserProfileFlatList );

@@ -15,6 +15,25 @@ let stylesMap = {
     paddingTop: 15,
     bottom: 0
   },
+
+
+  backgroundStyle: {
+    backgroundColor: 'white',
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom:0,
+    right:0,
+    zIndex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
+    opacity: 0.8
+  },
+
+
   headerWrapper: {
     backgroundColor: Colors.white,
     borderTopRightRadius: 25,

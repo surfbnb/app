@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -71,6 +71,8 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Application uses apple music</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Application uses bluetooth</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Application users bluetooth</string>
 	<key>NSCalendarsUsageDescription</key>

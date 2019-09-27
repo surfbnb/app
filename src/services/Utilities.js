@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert, Platform } from 'react-native';
+import deepGet from 'lodash/get';
+
 import pricer from './Pricer';
 import reduxGetters from './ReduxGetters';
 import appConfig from '../constants/AppConfig';
@@ -10,6 +12,11 @@ import { LoginPopoverActions } from '../components/LoginPopover';
 import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
+import AppConfig from '../constants/AppConfig';
+
+let os = Platform.OS || "";
+os =  os.toLowerCase();
+
 let recursiveMaxCount = 0;
 
 let checkVideoPermission = function(navigation) {
@@ -58,7 +65,6 @@ export default {
   },
 
   async getItem(key) {
-    res = await AsyncStorage.getItem(key);
     return AsyncStorage.getItem(key);
   },
 
@@ -143,10 +149,28 @@ export default {
     return true;
   },
 
+  getParsedData( val ){
+    if( typeof val == "string"){
+        try{
+          val = JSON.parse( val );
+        }catch(error){}
+    }
+    return val = val || {};
+  },
+
   sanitizeLink(link) {
     return link
       .split('/')
       .map((item, index) => (index < 3 ? item.toLowerCase() : item))
       .join('/');
+  },
+
+  isEntityDeleted (res){
+    let status = deepGet(res ,  "err.code") || "";
+    return status.toLowerCase() == AppConfig.beKnownErrorCodeMaps.entityDeleted ;
+  },
+
+  getNativeStoreName(){
+    return deepGet(AppConfig.nativeStoreMap , `${os}.storeName` , "store");
   }
 };
