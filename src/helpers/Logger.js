@@ -26,8 +26,7 @@ let allowedMethods = [];
 if ( IS_PRODUCTION || IS_SANDBOX || IS_STAGING ) {
   allowedMethods = [
     "warn",
-    "info",
-    "log"
+    "info"
   ];
 
 } else {

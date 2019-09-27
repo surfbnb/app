@@ -112,8 +112,26 @@ class StoreProductsScreen extends PureComponent{
         StorePayments.getProductsFromStore(this.productIds , this.onFetchStoreProductSuccess , this.onFetchError )
     }
 
+    arrangeProducts = ( products ) =>{
+      console.log("products",products);
+      console.log("productIds",this.productIds);
+      for(let i = 0 ; i < this.productIds.length ; i++){
+        let productId = this.productIds[i];
+        for(let j = 0 ; j < products.length ; j++){
+          if( products[j].productId == productId ){
+            this.products.push(products[j]);
+            break;
+          }
+        }
+      }
+
+    }
+
+
     onFetchStoreProductSuccess = ( products ) => {
-        this.products = products ;
+
+        this.arrangeProducts( products );
+        console.log("this.products",this.products);
         this.setState({ loadingProducts : false});
     }
 
