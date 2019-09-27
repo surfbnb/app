@@ -7,15 +7,8 @@ import Theme from '../../theme/styles';
 import air_drop from '../../assets/airdrop-create-pin.png';
 import styles from './Style';
 
+// create a component
 export default class UserActivatingScreen extends Component {
-
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    return {
-      header: null,
-      headerBackTitle: null
-    };
-  };
-
   onCreatePin() {
     this.props.navigation.navigate('SetPinScreen');
   }
@@ -27,9 +20,9 @@ export default class UserActivatingScreen extends Component {
           <ScrollView
             contentContainerStyle=
               {{
-                justifyContent: 'space-between',
                 paddingVertical: 50,
-                flexGrow: 1
+                flexGrow: 1,
+                justifyContent: 'center'
               }}
             showsVerticalScrollIndicator={false}>
             <View style={styles.contentContainer}>
@@ -43,7 +36,7 @@ export default class UserActivatingScreen extends Component {
             <LinearGradient
               colors={['#ff7499', '#ff5566']}
               locations={[0, 1]}
-              style={{ marginHorizontal: 30, borderRadius: 3, marginTop: 50}}
+              style={{ marginHorizontal: 30, borderRadius: 3, marginTop: 100}}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             >
