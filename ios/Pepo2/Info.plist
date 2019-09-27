@@ -71,8 +71,6 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Application uses apple music</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Application uses bluetooth</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Application users bluetooth</string>
 	<key>NSCalendarsUsageDescription</key>
