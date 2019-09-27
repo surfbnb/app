@@ -7,8 +7,15 @@ import Theme from '../../theme/styles';
 import air_drop from '../../assets/airdrop-create-pin.png';
 import styles from './Style';
 
-// create a component
 export default class UserActivatingScreen extends Component {
+
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      header: null,
+      headerBackTitle: null
+    };
+  };
+
   onCreatePin() {
     this.props.navigation.navigate('SetPinScreen');
   }

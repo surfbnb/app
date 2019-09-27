@@ -289,6 +289,7 @@ const CustomTabStack = createBottomTabNavigator(
 
 const PinPushStack = createStackNavigator(
   {
+    UserActivatingScreen: UserActivatingScreen,
     SetPinScreen: SetPin,
     ConfirmPinScreen: ConfirmPin
   },
@@ -323,7 +324,6 @@ const AppContainer = createAppContainer(
     {
       AuthLoading,
       PinStack,
-      UserActivatingScreen,
       CustomTabStack
     },
     {

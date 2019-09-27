@@ -104,21 +104,28 @@ class NavigateTo {
     return false;
   }
 
+  isWebViewLink(){
+    return deepGet(this.getGoTo() , 'pn') ==  'wv';
+  }
+
+  //Call this function if you want to navigate to screens only if logind user or webview redirects.
+  //Eg: UniversalLinkWorker or PushNotificationWorker 
   shouldNavigate( goToHome ){
-    if(CurrentUser.isActiveUser()) {
-      this.goToNavigationDecision( goToHome );
+    if(CurrentUser.isActiveUser() || this.isWebViewLink()) {
+      this.__goToNavigationDecision( goToHome );
    }
   }
 
-  navigationDecision() {
+  //This is a controlled navigation for internals flows only.
+  navigationDecision( goToHome ) {
     if (CurrentUser.getUser() && !CurrentUser.isActiveUser()) {
       this.__navigate('UserActivatingScreen');
       return;
     }
-    this.goToNavigationDecision();
+    this.__goToNavigationDecision( goToHome);
   }
 
-  goToNavigationDecision(goToHome) {
+  __goToNavigationDecision(goToHome) {
     if (this.__isGoto()) {
       this.navigate(this.getGoTo());
       this.clearGoTo();

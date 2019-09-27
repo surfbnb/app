@@ -129,7 +129,7 @@ class PushNotificationManager extends PureComponent {
     navigateTo.setGoTo(gotoObject);
     navigateTo.shouldNavigate();
     if (CurrentUser.isActiveUser()) {
-      gotoObject.pn == 'nc' && this.refreshActivity('NotificationScreen');
+      gotoObject && gotoObject.pn == 'nc' && this.refreshActivity('NotificationScreen');
     }
   }
 
