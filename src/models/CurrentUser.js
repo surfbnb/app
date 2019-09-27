@@ -10,7 +10,6 @@ import OstWorkflowDelegate from '../helpers/OstWorkflowDelegate';
 import EventEmitter from "eventemitter3";
 import {navigateTo} from "../helpers/navigateTo";
 import AppConfig from '../constants/AppConfig';
-import { PushNotificationMethods } from '../services/PushNotificationManager';
 
 // Used require to support all platforms
 const RCTNetworking = require('RCTNetworking');
@@ -18,6 +17,11 @@ const RCTNetworking = require('RCTNetworking');
 let utilities = null;
 import('../services/Utilities').then((pack) => {
   utilities = pack.default;
+});
+
+let PushNotificationMethods = null;
+import('../services/PushNotificationManager').then((pack) => {
+  PushNotificationMethods = pack.PushNotificationMethods;
 });
 
 let FlyerEventEmitter = null;

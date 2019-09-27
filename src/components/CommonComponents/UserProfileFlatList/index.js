@@ -11,8 +11,8 @@ import {
 import {SafeAreaView, withNavigation} from "react-navigation";
 import FastImage from 'react-native-fast-image';
 
-import reduxGetters from "../../../services/ReduxGetters"; 
-import AppConfig from "../../../constants/AppConfig"; 
+import reduxGetters from "../../../services/ReduxGetters";
+import AppConfig from "../../../constants/AppConfig";
 import Pricer from '../../../services/Pricer';
 import Pagination from "../../../services/Pagination";
 import {fetchUser} from "../../../helpers/helpers";
@@ -23,6 +23,7 @@ import pepoWhiteIcon from '../../../assets/pepo-white-icon.png'
 import LinearGradient from "react-native-linear-gradient";
 import CurrentUser from "../../../models/CurrentUser";
 import DeleteVideo from "../DeleteVideo";
+import Colors from '../../../theme/styles/Colors';
 
 
 class UserProfileFlatList extends PureComponent {
@@ -33,7 +34,7 @@ class UserProfileFlatList extends PureComponent {
 
         this.state = {
           list :  this.videoHistoryPagination.getList(),
-          refreshing : false, 
+          refreshing : false,
           loadingNext: false
         }
         this.listRef = null ;
@@ -68,7 +69,7 @@ class UserProfileFlatList extends PureComponent {
     }
 
     _fetchUrlVideoHistory(){
-        return `/users/${this.props.userId}/video-history` ; 
+        return `/users/${this.props.userId}/video-history` ;
     }
 
     getVideoBtAmount(videoId){
@@ -76,8 +77,8 @@ class UserProfileFlatList extends PureComponent {
     }
 
     onPullToRefresh = () => {
-      fetchUser(this.props.userId , this.onUserFetch ); 
-    } 
+      fetchUser(this.props.userId , this.onUserFetch );
+    }
 
     onUserFetch =(res) => {
       this.props.onUserFetch && this.props.onUserFetch(res);
@@ -86,13 +87,13 @@ class UserProfileFlatList extends PureComponent {
     beforeRefresh = ( ) => {
         this.props.beforeRefresh && this.props.beforeRefresh();
         this.onPullToRefresh();
-        this.setState({ refreshing : true }); 
+        this.setState({ refreshing : true });
     }
 
     onRefresh = ( res ) => {
-        const list = this.videoHistoryPagination.getList()  ; 
+        const list = this.videoHistoryPagination.getList()  ;
         this.props.onRefresh && this.props.onRefresh( list , res );
-        this.setState({ refreshing : false , list : list }); 
+        this.setState({ refreshing : false , list : list });
     }
 
     onRefreshError = ( error ) => {
@@ -100,15 +101,15 @@ class UserProfileFlatList extends PureComponent {
     }
 
     beforeNext =() => {
-        this.setState({ loadingNext : true }); 
+        this.setState({ loadingNext : true });
     }
 
     onNext = ( res  ) => {
-        this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.getList() }); 
+        this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.getList() });
     }
 
     onNextError = ( error ) => {
-        this.setState({ loadingNext : false }); 
+        this.setState({ loadingNext : false });
     }
 
     getNext = () => {
@@ -137,13 +138,18 @@ class UserProfileFlatList extends PureComponent {
 
     _renderItem = ({ item, index }) => {
       const videoId = reduxGetters.getUserVideoId(item),
-            imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;     
-      return imageUrl ? (
+            imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;
+      return (
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.onVideoClick( item, index ); } )}
         >
           <View>
 
-            <FastImage style={{ width: (Dimensions.get('window').width - 6) / 3, aspectRatio:9/16, margin: 1}}
+            <FastImage style={{
+                width: (Dimensions.get('window').width - 6) / 3,
+                aspectRatio:9/16,
+                margin: 1,
+                backgroundColor: imageUrl ? Colors.white : Colors.gainsboro
+            }}
                        source={{
                         uri: imageUrl,
                         priority: FastImage.priority.high
@@ -174,7 +180,7 @@ class UserProfileFlatList extends PureComponent {
 
           </View>
         </TouchableWithoutFeedback>
-      ) : <View/>;
+      );
     };
 
     renderFooter = () => {
@@ -219,7 +225,7 @@ class UserProfileFlatList extends PureComponent {
             </SafeAreaView>
         );
     }
-    
+
 }
 
 export default withNavigation( UserProfileFlatList );

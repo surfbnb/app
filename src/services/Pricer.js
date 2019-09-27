@@ -1,7 +1,5 @@
-import { OstJsonApi,OstWalletError, OstWalletApiError , OstWalletSdk} from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstJsonApi, OstWalletSdk} from '@ostdotcom/ost-wallet-sdk-react-native';
 import deepGet from 'lodash/get';
-import {ostErrors} from "./OstErrors";
-import {ostSdkErrors, DEFAULT_CONTEXT} from "./OstSdkErrors";
 import {updateBalance} from "../actions";
 import Store from '../store';
 import PriceOracle from './PriceOracle';
@@ -12,6 +10,17 @@ import OstWalletSdkHelper from '../helpers/OstWalletSdkHelper';
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
   CurrentUser = imports.default;
+});
+
+let ostErrors;
+import('./OstErrors').then((imports) => {
+  ostErrors = imports.ostErrors;
+});
+
+let ostSdkErrors, DEFAULT_CONTEXT;
+import('./OstSdkErrors').then((imports) => {
+  ostSdkErrors = imports.ostSdkErrors;
+  DEFAULT_CONTEXT = imports.DEFAULT_CONTEXT;
 });
 
 class Pricer {

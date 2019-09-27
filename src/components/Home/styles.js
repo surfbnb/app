@@ -41,8 +41,11 @@ let stylesMap = {
     fontSize: 18,
     color: Colors.white,
     alignSelf: 'center',
-    marginTop: 3,
-    marginBottom: 15
+    marginBottom: 8,
+    textShadowColor: 'rgba(0, 0, 0, 0.65)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    fontFamily: 'AvenirNext-DemiBold'
   },
   txElem: {
     marginBottom: 20
