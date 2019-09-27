@@ -68,6 +68,7 @@ export default class InAppBrowserComponent extends Component {
           <SafeAreaView style={{flex: 1}}>
             <WebView
                 style={{flex:1, position:'relative'}}
+                mediaPlaybackRequiresUserAction={true}
                 ref={ref => (this.webview = ref)}
                 source={{ uri: this.url }}
                 renderError={errorName => <View style={{flex:1, alignItems:"center"}}><Text style={{marginTop: -40, fontSize: 20}}>Invalid Link</Text></View>}
