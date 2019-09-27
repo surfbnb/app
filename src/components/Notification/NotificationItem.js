@@ -166,6 +166,7 @@ class NotificationItem extends Component {
       notificationInfoWidth = '20%';
     if (
       this.props.kind == AppConfig.notificationConstants.AppreciationKind ||
+        this.props.kind == AppConfig.notificationConstants.recoveryInitiate ||
       AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)
     ) {
       headerWidth = '92%';
