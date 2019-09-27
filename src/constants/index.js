@@ -41,6 +41,21 @@ const BundleConstants = {
     MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 1, // 1 hour + buffer from config 1 hr = 2 hr
     HIGH_SPEND_SESSION_KEY_EXPIRY_TIME: 0 // buffer 1 hr
   },
+  'com.pepo.v2.sandbox': {
+    API_ROOT: 'https://sandboxpepo.com/api/v1',
+    WEB_ROOT: 'https://pepo:Pepo-Admin-20!9*@sandboxpepo.com',
+    PLATFORM_API_ENDPOINT: 'https://api.ost.com/testnet/v2',
+    TRACKER_ENDPOINT: 'https://px.pepo.com/ps501_pixel.png',
+    TOKEN_ID: '1506',
+    TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
+    TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0',
+    VIEW_END_POINT: 'https://view.ost.com/testnet/',
+    DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitSandbox.toString( 10 ),
+    MAX_SPENDING_LIMIT: MaxSpendingLimitSandbox.toString( 10 ),
+    DEFAULT_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 24 * 365, //1 year
+    MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 1, // 1 hour + buffer from config 1 hr = 2 hr
+    HIGH_SPEND_SESSION_KEY_EXPIRY_TIME: 0 // buffer 1 hr
+  },
   'com.pepo.v2.production': {
     API_ROOT: 'https://pepo.com/api/v1',
     WEB_ROOT: 'https://pepo.com',
@@ -76,5 +91,5 @@ export const TWITTER_CONSUMER_SECRET = BundleConstants[DeviceInfo.getBundleId()]
 export const VIEW_END_POINT = BundleConstants[DeviceInfo.getBundleId()].VIEW_END_POINT;
 
 export const IS_PRODUCTION = ( 'com.pepo.v2.production' === DeviceInfo.getBundleId() );
-export const IS_SANDBOX = ('com.pepo.sandbox' === DeviceInfo.getBundleId() );
+export const IS_SANDBOX = ('com.pepo.sandbox' === DeviceInfo.getBundleId()) || ('com.pepo.v2.sandbox' === DeviceInfo.getBundleId());
 export const IS_STAGING = ('com.pepo.staging' === DeviceInfo.getBundleId() );
