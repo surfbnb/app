@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, TouchableOpacity, Platform, View, Text, Keyboard } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+  View,
+  Text,
+  Keyboard,
+  ScrollView
+} from 'react-native';
 import deepGet from 'lodash/get';
 import utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
@@ -172,13 +180,9 @@ class FanVideoDetails extends Component {
   render() {
     let imageUrl = this.props.recordedVideo.cover_image;
     return (
-      <View
-        style={[styles.container, this.state.viewStyle]}
-        onKeyboardWillShow={(frames) => this.openedKeyboard(frames)}
-        onKeyboardDidShow={(frames) => Platform.OS !== 'ios' && this.openedKeyboard(frames)}
-        onKeyboardWillHide={(frames) => this.closedKeyboard(frames)}
-        onKeyboardDidHide={(frames) => Platform.OS !== 'ios' && this.closedKeyboard(frames)}
-        keyboardShouldPersistTaps="always"
+      <ScrollView
+        contentContainerStyle={[styles.container, this.state.viewStyle]}
+        keyboardShouldPersistTaps={'handled'}
         enableOnAndroid
         eyboardOpeningTime={0}
       >
@@ -206,7 +210,7 @@ class FanVideoDetails extends Component {
           <LinearGradient
             colors={['#ff7499', '#ff5566']}
             locations={[0, 1]}
-            style={{ borderRadius: 3, marginHorizontal: 20, marginBottom: 20 }}
+            style={{ borderRadius: 3, marginHorizontal: 20, marginBottom: 50 }}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >
@@ -221,7 +225,7 @@ class FanVideoDetails extends Component {
             />
           </LinearGradient>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
