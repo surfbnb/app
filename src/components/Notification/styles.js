@@ -28,7 +28,7 @@ let stylesMap = {
   },
 
   numericInnerWrapper: {
-    marginHorizontal: 6,
+    marginLeft: 6,
     justifyContent: 'center',
     color: Colors.white,
     flexDirection: 'row'
@@ -36,7 +36,8 @@ let stylesMap = {
   numericInfoText: {
     color: Colors.wildWatermelon2,
     fontFamily: 'AvenirNext-DemiBold',
-    marginLeft: 3
+    minWidth: 18,
+    paddingLeft: 3
   },
   imageIconSkipFont: {
     width: 12,
@@ -47,8 +48,7 @@ let stylesMap = {
     color: Colors.darkGray2,
     fontFamily: 'AvenirNext-Regular',
     fontSize: 14,
-    marginLeft: 5,
-    letterSpacing: -0.68
+    marginLeft: 5
   },
 
   posterImageSkipFont: {
