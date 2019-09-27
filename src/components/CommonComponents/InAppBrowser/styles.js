@@ -1,5 +1,4 @@
 import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
-import {Platform} from 'react-native';
 
 import Colors from '../../../theme/styles/Colors';
 
@@ -16,8 +15,8 @@ let stylesMap = {
         width: 20
       },
       tripleDotSkipFont: {
-        height:6,
-        width:28,
+        height:4,
+        width:20,
         marginRight:10
       },
       headerStyles: {
