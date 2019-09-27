@@ -287,7 +287,7 @@ const CustomTabStack = createBottomTabNavigator(
   }
 );
 
-const PinStack = createStackNavigator(
+const PinPushStack = createStackNavigator(
   {
     SetPinScreen: SetPin,
     ConfirmPinScreen: ConfirmPin,
@@ -306,6 +306,16 @@ const PinStack = createStackNavigator(
       },
       headerRight: <View />
     }
+  }
+);
+
+const PinStack = createStackNavigator(
+  {
+    PinPushStack : PinPushStack,
+    InAppBrowserStack: InAppBrowserStack
+  },
+  {
+    ...modalStackConfig
   }
 );
 
