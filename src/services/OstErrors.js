@@ -17,7 +17,7 @@ const UIErros = {
   user_not_found: 'User not found.',
   general_error: 'Something went wrong. Please try again later',
   general_error_ex: 'Oops, Please try again.',
-  bt_amount_error: 'Please enter valid amount.',
+  bt_amount_error: 'Minimum amount allowed is 1 Pepo.',
   bt_amount_decimal_error: 'Only . or , is allowed as decimals',
   bt_amount_decimal_allowed_error: 'Only 2 decimals are allowed',
   user_not_active: 'Please wait for your user activation.',
