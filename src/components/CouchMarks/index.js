@@ -26,7 +26,7 @@ export default class CouchMarks extends Component {
                 <Text style={styles.headerText}>Quick Tips:</Text>
 
                 <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                    <Text style={styles.smallText}> Swipe up to watch more videos</Text>
+                    <Text style={styles.smallText}>Swipe up to watch more videos</Text>
                     <Image source={Swipe} style={{height: 41, width:36, marginRight: 20}}/>
                 </View>
 
@@ -35,16 +35,37 @@ export default class CouchMarks extends Component {
                 <View style={styles.horizontalLine}></View>
 
                 <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                    <Text style={[styles.smallText, , {width: '80%'}]}> Press and hold to show how much you will like it</Text>
+                    <View style={{flexDirection:'row', width: '80%', flexWrap: 'wrap', alignItems: 'center'}}>
+                        <Text style={styles.smallText }>
+                            Press and hold
+                        </Text>
+
+                    <Image source={PepoIcon} style={{height: 14, width:14, marginHorizontal: 5}}/>
+                    <Text style={styles.smallText }>
+                        to show how
+                    </Text>
+                    <Text style={styles.smallText }>
+                        much you will like it
+                    </Text>
+                    </View>
                     <Image source={PepoIcon} style={{height: 41, width:41, marginRight: 20}}/>
+
+
                 </View>
 
 
                 <View style={styles.horizontalLine}></View>
 
                 <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                    <Text style={[styles.smallText]}> Tap to create your video</Text>
-                    <Image source={AddIcon} style={{height: 60, width:60, marginRight: 6}}/>
+
+                    <View style={{flexDirection:'row', width: '80%', flexWrap: 'wrap', alignItems: 'center'}}>
+                        <Text style={styles.smallText }>Tap</Text>
+                        <Image source={AddIcon} style={{height: 14, width:14, marginHorizontal: 5}}/>
+                        <Text style={styles.smallText }>
+                            to create your video
+                        </Text>
+                    </View>
+                    <Image source={AddIcon} style={{height: 40, width:40, marginRight: 20}}/>
                 </View>
 
 
@@ -56,10 +77,10 @@ export default class CouchMarks extends Component {
                     style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}>
                     <TouchableOpacity
                         onPress={multipleClickHandler(() => this.handleGotItClick())}
-                        style={[Theme.Button.btn, { borderWidth: 0 }]}>
+                        style={[Theme.Button.btn, { borderWidth: 0, minWidth: '100%' }]}>
                         <Text style={[
                             Theme.Button.btnPinkText,
-                            { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+                            { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center'}
                         ]}>
                             Got It!
                         </Text>
