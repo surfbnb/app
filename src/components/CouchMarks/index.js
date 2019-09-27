@@ -49,7 +49,7 @@ export default class CouchMarks extends Component {
                         <View style={{flexDirection:'row', flex: 1, flexWrap: 'wrap', alignItems: 'center'}}>
                             <Text style={styles.smallText }>Tap</Text>
                             <Image source={AddIcon} style={{height: 14, width:14, marginHorizontal: 5}}/>
-                            <Text style={styles.smallText }>to create your video</Text>
+                            <Text style={styles.smallText }>to create your 30s video</Text>
                         </View>
                         <Image source={AddIcon} style={{height: 40, width:40, marginHorizontal: 10}}/>
                     </View>
