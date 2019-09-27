@@ -51,8 +51,9 @@ class BottomStatus extends PureComponent {
                 {this.props.description}
               </Text>
             ) : (
-              <Text />
-            )}
+                <React.Fragment />
+              )
+            }
           </View>
         </TouchableWithoutFeedback>
         {this.props.link ? (
