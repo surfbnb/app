@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableWithoutFeedback, ImageBackground } from 'react-native';
+import { View, Text, Image, TouchableWithoutFeedback, ImageBackground , Platform } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import escapeRegExp from 'lodash/escapeRegExp';
 import unescape from 'lodash/unescape';
@@ -27,6 +27,11 @@ const mapStateToProps = (state, ownProps) => {
     goTo: reduxGetter.getNotificationGoTo(ownProps.notificationId, state)
   };
 };
+
+let textStyling = {fontWeight: '600'};
+if( Platform.OS == "android"){
+  textStyling['fontFamily'] = 'AvenirNext-Medium';
+}
 
 class NotificationItem extends Component {
   constructor(props) {
@@ -90,7 +95,7 @@ class NotificationItem extends Component {
         onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}
           key={i}
         >
-          <Text style={styles.headingText}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
+          <Text style={textStyling}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
         </TouchableWithoutFeedback>
       ) : (
         item.split(/(\s+)/).map((element, id) => {

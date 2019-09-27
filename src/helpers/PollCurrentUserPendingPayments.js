@@ -5,7 +5,7 @@ import PepoApi from "../services/PepoApi";
 import Pricer from "../services/Pricer";
 import  { paymentEvents,  paymentEventsMap } from "../helpers/PaymentEvents";
 import appConfig from "../constants/AppConfig";
-import ostErrors from "../services/OstErrors";
+import {ostErrors} from "../services/OstErrors";
 import dataContract from "../constants/DataContract";
 
 let errorMaxCount = 10 ,  errorCount = 0 ,  pollingTimeOut = 0 ,  pollingInterval = 10000  , 
@@ -69,7 +69,6 @@ class PollCurrentUserPendingPayments {
         }).finally( () => {
             pollDuration = pollDuration + pollingInterval;
         })
-
     }
 
     onPendingPaymentSuccess( res ){
@@ -92,7 +91,6 @@ class PollCurrentUserPendingPayments {
             this.schedulePoll();
         }else{
             this.showAlert(ostErrors.getUIErrorMessage("pending_transaction_poll")) ;
-            console.log("onPendingPaymentError max reached" , error  ,CurrentUser.getUserId() );
             this.stopPolling( paymentEventsMap.pollPendingPaymentsError ,  {isBackgroundSync: this.isBackgroundSync} ) ; 
         }
     }
