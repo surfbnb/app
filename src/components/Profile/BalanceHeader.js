@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {connect} from 'react-redux';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { Text, Image } from 'react-native';
 import pricer from '../../services/Pricer';
 import inlineStyles from './styles';
@@ -128,12 +128,12 @@ class BalanceHeader extends PureComponent {
     return (
       <View style={inlineStyle.infoHeaderWrapper}>
         <View style={{flexDirection: 'row'}}>
-          <TouchableWithoutFeedback onPress={this.onTopUp}>
+          <TouchableOpacity onPress={this.onTopUp}>
             <View style={{alignItems: 'center'}}>
               <Image style={{ width: 50, height: 50 }} source={topUpIcon}></Image>
               <Text style={inlineStyles.redeemBalance}>Top Up</Text>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
           <LinearGradient
             colors={['#dadfdc', '#dadfdc']}
             locations={[0, 1]}
@@ -141,14 +141,12 @@ class BalanceHeader extends PureComponent {
             end={{ x: 1, y: 0 }}
             style={{height: 20, width: 1, marginHorizontal: 8, marginTop: 16.5}}
           ></LinearGradient>
-          <View style={{alignItems: 'center'}}>
-            <TouchableWithoutFeedback onPress={this.openWebView}>
-              <View>
-                <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
-                <Text style={inlineStyles.redeemBalance}>Redeem</Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
+          <TouchableOpacity onPress={this.openWebView}>
+            <View style={{alignItems: 'center'}}>
+              <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
+              <Text style={inlineStyles.redeemBalance}>Redeem</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={{alignItems: 'flex-end'}}>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
