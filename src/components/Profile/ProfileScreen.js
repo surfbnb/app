@@ -99,9 +99,7 @@ class ProfileScreen extends PureComponent {
   }
 
   onEmailSuccess(res) {
-    //Silent update, not yet need on UI, once need do it via set state.
-    this.state["emailAddress"] = deepGet(res, 'data.email.address') ;
-    this.state["isVerifiedEmail"] =deepGet(res, 'data.email.verified') ;
+    this.setState({ emailAddress : deepGet(res, 'data.email.address' , "") , isVerifiedEmail : deepGet(res, 'data.email.verified' , false)});
   }
 
   onEmailError(error) {}
@@ -141,7 +139,7 @@ class ProfileScreen extends PureComponent {
   }
 
   beforeRefresh = () => {
-   // this.getEmail();
+    this.getEmail();
     Pricer.getBalance();
   };
 
