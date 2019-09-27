@@ -14,6 +14,8 @@ let stylesMap = {
   },
   contentContainer: {
     alignItems: 'center',
+    flex: 4,
+    justifyContent: 'center',
     marginHorizontal: 30
   },
   heading: {

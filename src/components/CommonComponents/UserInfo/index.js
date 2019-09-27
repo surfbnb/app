@@ -129,13 +129,12 @@ class UserInfo extends React.PureComponent {
           </View>
         </View>
         {!!this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>}
-        {/*<View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginTop: 10, marginHorizontal: 15}}>*/}
         {!!this.props.link && (
           <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginHorizontal: 20, marginTop: 10}}>
             <Text ellipsizeMode={'tail'} numberOfLines={1}>
               <Image source={profileLink} style={{height:8.25,width:17.25}}/>{'  '}
               <Text
-                style={[{ color: Colors.pinkRed, marginLeft:5}]}
+                style={[{ color: 'rgba(42, 41, 59, 0.7)', marginLeft:5}]}
                 onPress={() => {
                   InAppBrowser.openBrowser(this.props.link);
                 }}
@@ -152,7 +151,6 @@ class UserInfo extends React.PureComponent {
               onPress={() => {Linking.openURL(this.props.twitterHandleLink);}}>{this.props.twitterHandle}
             </Text>
           </View>
-        {/*</View>*/}
         {this.props.videoInReviewHeader || <View style={{height:15}} />}
       </View>
     );

@@ -28,7 +28,6 @@ export default class UserActivatingScreen extends Component {
           <ScrollView
             contentContainerStyle=
               {{
-                paddingVertical: 50,
                 flexGrow: 1,
                 justifyContent: 'center'
               }}
@@ -41,22 +40,24 @@ export default class UserActivatingScreen extends Component {
                 <Text style={styles.desc}>$5 Value!</Text>
               </View>
             </View>
-            <LinearGradient
-              colors={['#ff7499', '#ff5566']}
-              locations={[0, 1]}
-              style={{ marginHorizontal: 30, borderRadius: 3, marginTop: 100}}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-            >
-              <TouchableButton
-              TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0}]}
-              TextStyles={[Theme.Button.btnPinkText]}
-              text="Add to Wallet"
-              onPress={() => {
-                this.onCreatePin();
-              }}
-              />
-            </LinearGradient>
+            <View style={{paddingBottom: 30}}>
+              <LinearGradient
+                colors={['#ff7499', '#ff5566']}
+                locations={[0, 1]}
+                style={{ marginHorizontal: 30, borderRadius: 3}}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <TouchableButton
+                  TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0}]}
+                  TextStyles={[Theme.Button.btnPinkText]}
+                  text="Add to Wallet"
+                  onPress={() => {
+                    this.onCreatePin();
+                  }}
+                />
+              </LinearGradient>
+            </View>
           </ScrollView>
         </SafeAreaView>
       </View>

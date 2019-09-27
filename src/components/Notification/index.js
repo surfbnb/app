@@ -177,25 +177,18 @@ class NotificationScreen extends Component {
             </TouchableOpacity>
           </LinearGradient>
 
-          <LinearGradient
-              colors={['#ff7499', '#ff5566']}
-              locations={[0, 1]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
+          <TouchableOpacity
+              onPress={this.handlePermissionDismiss}
+              style={[Theme.Button.btn, { borderWidth: 0, marginTop: 10 }]}
           >
-            <TouchableOpacity
-                onPress={this.handlePermissionDismiss}
-                style={[Theme.Button.btn, { borderWidth: 0 }]}
-            >
-              <Text style={[
-                Theme.Button.btnPinkText,
-                { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
-              ]}>
-                No, Thanks
-              </Text>
-            </TouchableOpacity>
-          </LinearGradient>
+            <Text style={[
+              Theme.Button.btnPinkText,
+              { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+            ]}>
+              No, Thanks
+            </Text>
+          </TouchableOpacity>
+
         </View>
       </Modal>
     );

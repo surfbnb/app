@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './styles';
-import {Modal, Text, TouchableOpacity, View, Image} from "react-native";
+import {Text, TouchableOpacity, View, Image} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Theme from "../../theme/styles";
 import Swipe from '../../assets/swipe.png';
@@ -25,49 +25,34 @@ export default class CouchMarks extends Component {
                 <View style={styles.wrappedView}>
                     <Text style={styles.headerText}>Quick Tips:</Text>
 
-                    <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                        <Text style={styles.smallText}>Swipe up to watch more videos</Text>
-                        <Image source={Swipe} style={{height: 41, width:36, marginRight: 20}}/>
+                    <View style={{flexDirection:'row', alignItems: 'center', width: '100%'}}>
+                        <Text style={[styles.smallText, {flexWrap: 'wrap', flex: 1}]}>Swipe up to watch more videos</Text>
+                        <Image source={Swipe} style={{height: 41, width:36, marginHorizontal: 10}}/>
                     </View>
-
-
 
                     <View style={styles.horizontalLine}></View>
 
-                    <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                        <View style={{flexDirection:'row', width: '80%', flexWrap: 'wrap', alignItems: 'center'}}>
-                            <Text style={styles.smallText }>
-                                Press and hold
+                    <View style={{flexDirection:'row', alignItems: 'center', width: '100%'}}>
+                        <View style={{flexDirection:'row', flex: 1, flexWrap: 'wrap', alignItems: 'center'}}>
+                            <Text>
+                              <Text style={styles.smallText }>Press and hold</Text>{' '}
+                              <Image source={PepoIcon} style={{height: 14, width:14}}/>{' '}
+                              <Text style={styles.smallText }>to show how much you will like it</Text>
                             </Text>
-
-                        <Image source={PepoIcon} style={{height: 14, width:14, marginHorizontal: 5}}/>
-                        <Text style={styles.smallText }>
-                            to show how
-                        </Text>
-                        <Text style={styles.smallText }>
-                            much you will like it
-                        </Text>
                         </View>
-                        <Image source={PepoIcon} style={{height: 41, width:41, marginRight: 20}}/>
-
-
+                        <Image source={PepoIcon} style={{height: 41, width:41, marginHorizontal: 10}}/>
                     </View>
-
 
                     <View style={styles.horizontalLine}></View>
 
-                    <View style={{flexDirection:'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-
-                        <View style={{flexDirection:'row', width: '80%', flexWrap: 'wrap', alignItems: 'center'}}>
+                    <View style={{flexDirection:'row', alignItems: 'center', width: '100%'}}>
+                        <View style={{flexDirection:'row', flex: 1, flexWrap: 'wrap', alignItems: 'center'}}>
                             <Text style={styles.smallText }>Tap</Text>
                             <Image source={AddIcon} style={{height: 14, width:14, marginHorizontal: 5}}/>
-                            <Text style={styles.smallText }>
-                                to create your video
-                            </Text>
+                            <Text style={styles.smallText }>to create your video</Text>
                         </View>
-                        <Image source={AddIcon} style={{height: 40, width:40, marginRight: 20}}/>
+                        <Image source={AddIcon} style={{height: 40, width:40, marginHorizontal: 10}}/>
                     </View>
-
 
                     <LinearGradient
                         colors={['#ff7499', '#ff5566']}
@@ -86,8 +71,9 @@ export default class CouchMarks extends Component {
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>
+
                 </View>
-        </View>);
+            </View>);
 
 
     }

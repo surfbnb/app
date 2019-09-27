@@ -94,7 +94,8 @@ class loginPopover extends React.Component {
                       style={[
                         inlineStyles.desc,
                         {
-                          fontWeight: '500'
+                          fontWeight: '500',
+                          marginBottom: 5
                         }
                       ]}
                     >
