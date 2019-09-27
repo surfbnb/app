@@ -144,6 +144,7 @@ class UserInfo extends React.PureComponent {
             </Text>
           </View>
         )}
+        {!!this.props.twitterHandleLink && !!this.props.twitterHandle && (
           <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginTop: 10}}>
             <Image style={{height:14,width:17}} source={twitterLink}/>
             <Text
@@ -151,6 +152,9 @@ class UserInfo extends React.PureComponent {
               onPress={() => {Linking.openURL(this.props.twitterHandleLink);}}>{this.props.twitterHandle}
             </Text>
           </View>
+        )}
+
+        {/*</View>*/}
         {this.props.videoInReviewHeader || <View style={{height:15}} />}
       </View>
     );
