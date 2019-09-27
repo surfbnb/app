@@ -87,9 +87,9 @@ class BalanceHeader extends PureComponent {
         if(this.isDevicesAuthorized( device )){
           this.props.navigation.push("StoreProductsScreen");
         }else{
-          this.props.navigation.push("AuthDeviceDrawer" , {device: device});  
+          this.props.navigation.push("AuthDeviceDrawer" , {device: device});
         }
-    })    
+    })
     }else{
       Toast.show({
         text: ostErrors.getUIErrorMessage('user_not_active'),
