@@ -9,6 +9,14 @@ import styles from './Style';
 
 // create a component
 export default class UserActivatingScreen extends Component {
+
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    return {
+      header: null,
+      headerBackTitle: null
+    };
+  };
+
   onCreatePin() {
     this.props.navigation.navigate('SetPinScreen');
   }
