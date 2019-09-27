@@ -19,7 +19,7 @@ import RNFS from 'react-native-fs';
 import { ActionSheet, Button } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
-import closeIcon from '../../assets/cross_icon.png';
+import closeIcon from '../../assets/camera-cross-icon.png';
 import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
 import utilities from '../../services/Utilities';
@@ -220,6 +220,7 @@ class VideoRecorder extends Component {
             </View>
           </TouchableWithoutFeedback>
           <View style={styles.bottomWrapper}>
+            {!this.state.isRecording && <View style={{flex: 1}}/>}
             {this.getActionButton()}
             {this.flipButton()}
           </View>
@@ -243,23 +244,26 @@ class VideoRecorder extends Component {
       source = captureIcon;
     }
     return (
-      <View>
-        <TouchableOpacity onPress={onPressCallback}>
-          <Image style={styles.captureButtonSkipFont} source={source} />
-        </TouchableOpacity>
-          <View style={{width: 90, marginLeft:-45, height:20}}>
-            { !this.state.isRecording && <Text style={{color: 'white', fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Tap to record</Text>}
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <TouchableOpacity onPress={onPressCallback}>
+            <Image style={styles.captureButtonSkipFont} source={source} />
+          </TouchableOpacity>
+          { !this.state.isRecording ?
+            ( <Text style={{color: 'white', marginTop: 5, letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Tap to record</Text> )
+            : ( <Text/> )
+          }
         </View>
-      </View>
     );
   }
 
   flipButton() {
     if (!this.state.isRecording) {
       return (
-        <TouchableOpacity onPress={this.flipCamera}>
-          <Image style={styles.flipIconSkipFont} source={flipIcon} />
-        </TouchableOpacity>
+        <View style={{flex: 1, alignItems: 'flex-end', justifyContent: 'flex-start'}}>
+          <TouchableOpacity onPress={this.flipCamera} style={{marginRight: 30, marginTop: 15}}>
+            <Image style={styles.flipIconSkipFont} source={flipIcon} />
+          </TouchableOpacity>
+        </View>
       );
     }
   }

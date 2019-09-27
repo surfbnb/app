@@ -13,6 +13,9 @@ import referAndEarn from '../../assets/settings-refer-and-earn.png';
 import pepoAmountWallet from '../../assets/settings-wallet-settings.png';
 import helpIcon from  '../../assets/settings-support.png';
 import loggedOutIcon from '../../assets/settings-logout.png';
+import about from '../../assets/settings-about.png';
+import privacy from '../../assets/settings-privacy.png';
+import tac from '../../assets/settings-terms-and-conditions.png';
 import Toast from '../../theme/components/NotificationToast';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
@@ -203,8 +206,15 @@ class CustomDrawerContent extends Component {
 
   render() {
     return (
-      <SafeAreaView style={[styles.container, { justifyContent: 'space-between' }]}>
-        <ScrollView>
+      <SafeAreaView style={[styles.container, {paddingVertical: 0}]}>
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'space-between'
+          }}
+        >
+
+        <View style={{paddingBottom: 80}}>
           <TouchableOpacity
             onPress={multipleClickHandler(() => {
               this.aboutLink();
@@ -212,21 +222,22 @@ class CustomDrawerContent extends Component {
             disabled={this.state.disableButtons}
           >
             <View style={styles.itemParent}>
-              <Image style={{ height: 29, width: 26.6, resizeMode: 'contain' }} source={referAndEarn} />
+              <Image style={{ height: 27, width: 27, resizeMode: 'contain' }} source={about} />
               <Text style={styles.item}>About</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={multipleClickHandler(() => {
-              this.blockExplorer();
-            })}
-            disabled={this.state.disableButtons}
-          >
-            <View style={styles.itemParent}>
-              <Image style={{ height: 29, width: 26.6, resizeMode: 'contain' }} source={referAndEarn} />
-              <Text style={styles.item}>Block Explorer</Text>
-            </View>
-          </TouchableOpacity>
+
+          {/*<TouchableOpacity*/}
+          {/*onPress={multipleClickHandler(() => {*/}
+          {/*this.blockExplorer();*/}
+          {/*})}*/}
+          {/*disabled={this.state.disableButtons}*/}
+          {/*>*/}
+          {/*<View style={styles.itemParent}>*/}
+          {/*<Image style={{ height: 29, width: 26.6, resizeMode: 'contain' }} source={referAndEarn} />*/}
+          {/*<Text style={styles.item}>Block Explorer</Text>*/}
+          {/*</View>*/}
+          {/*</TouchableOpacity>*/}
 
           <TouchableOpacity
             onPress={multipleClickHandler(() => {
@@ -242,8 +253,8 @@ class CustomDrawerContent extends Component {
           {this.renderWalletSetting()}
 
           <TouchableOpacity onPress={multipleClickHandler(() => {
-              this.onGetSupport();
-            })} disabled={this.state.disableButtons}>
+            this.onGetSupport();
+          })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
               <Image style={{ height: 29, width: 29, resizeMode: 'contain' }} source={helpIcon} />
               <Text style={styles.item}>Support</Text>
@@ -253,7 +264,7 @@ class CustomDrawerContent extends Component {
             this.termsAndConditions();
           })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
-              <Image style={{ height: 29, width: 29, resizeMode: 'contain' }} source={helpIcon} />
+              <Image style={{ height: 24, width: 25.5, resizeMode: 'contain' }} source={tac} />
               <Text style={styles.item}>Terms and conditions</Text>
             </View>
           </TouchableOpacity>
@@ -261,36 +272,36 @@ class CustomDrawerContent extends Component {
             this.privacypolicy();
           })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
-              <Image style={{ height: 29, width: 29, resizeMode: 'contain' }} source={helpIcon} />
+              <Image style={{ height: 27.75, width: 25.5, resizeMode: 'contain' }} source={privacy} />
               <Text style={styles.item}>Privacy Policy</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity   onPress={multipleClickHandler(() => {
-              this.twitterDisconnect();
-            })} disabled={this.state.disableButtons}>
+          <TouchableOpacity onPress={multipleClickHandler(() => {
+            this.twitterDisconnect();
+          })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
               <Image style={{ height: 23.6, width: 29, resizeMode: 'contain' }} source={twitterDisconnectIcon} />
               <Text style={styles.item}>Disconnect Twitter</Text>
             </View>
           </TouchableOpacity>
-
-          {/*<TouchableOpacity   onPress={multipleClickHandler(() => {*/}
-              {/*this.CurrentUserLogout();*/}
-            {/*})} disabled={this.state.disableButtons}>*/}
-            {/*<View style={styles.itemParent}>*/}
-              {/*<Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={loggedOutIcon} />*/}
-              {/*<Text style={styles.item}>Log out</Text>*/}
-            {/*</View>*/}
-          {/*</TouchableOpacity>*/}
+        {/*<TouchableOpacity   onPress={multipleClickHandler(() => {*/}
+        {/*this.CurrentUserLogout();*/}
+        {/*})} disabled={this.state.disableButtons}>*/}
+        {/*<View style={styles.itemParent}>*/}
+        {/*<Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={loggedOutIcon} />*/}
+        {/*<Text style={styles.item}>Log out</Text>*/}
+        {/*</View>*/}
+        {/*</TouchableOpacity>*/}
+        </View>
 
         <View style={{ alignItems: 'center', paddingVertical: 12 }}>
           <Text style={{ fontSize: 12 }}>
             Pepo v{DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
           </Text>
         </View>
-
         </ScrollView>
+
       </SafeAreaView>
     );
   }
