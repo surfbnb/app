@@ -242,7 +242,7 @@ class StoreProductsScreen extends PureComponent{
                       <View key={ product.productId } style={inlineStyles.poductListRow}>
                           <View style={{flexDirection: "row", alignItems: 'center'}}>
                               <Image source={pepoIcon} style={{ width: 19, height: 19 }}/>
-                              <Text style={[inlineStyles.topUpName, {marginLeft: 5}]}>{product.title}</Text>
+                              <Text style={[inlineStyles.topUpName, {marginLeft: 5}]}>{product.title && product.title.replace(/\s\(Pepo.*\)+/ig , "") || product.title }</Text>
                           </View>
                           <TouchableButton
                                   disabled={this.state.isPurchasing}

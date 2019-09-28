@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { WebView } from 'react-native-webview';
 import { SafeAreaView } from 'react-navigation';
-import { Image, TouchableOpacity, Text, View, Share } from 'react-native';
+import {Image, TouchableOpacity, Text, View, Share, Platform} from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import inlineStyles from './styles';
 import crossIcon from '../../../assets/cross_icon.png';
@@ -71,7 +72,15 @@ export default class InAppBrowserComponent extends Component {
                 useWebKit={true}
                 allowsInlineMediaPlayback={true}
                 ref={ref => (this.webview = ref)}
-                source={{ uri: this.url }}
+                source={{
+                    uri: this.url,
+                    headers: {
+                        'X-PEPO-DEVICE-OS': Platform.OS,
+                        'X-PEPO-DEVICE-OS-VERSION': String(DeviceInfo.getSystemVersion()),
+                        'X-PEPO-BUILD-NUMBER': String(DeviceInfo.getBuildNumber()),
+                        'X-PEPO-APP-VERSION': String(DeviceInfo.getVersion())
+                    }
+                }}
                 renderError={errorName => <View style={{flex:1, alignItems:"center"}}><Text style={{marginTop: -40, fontSize: 20}}>Invalid Link</Text></View>}
                 onLoad={syntheticEvent => {
                   const { nativeEvent } = syntheticEvent;
