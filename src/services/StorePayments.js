@@ -177,6 +177,7 @@ class BackendPaymentAcknowledge {
             PollCurrentUserPendingPayments.initBalancePoll(this.payment.user_id , this.isBackgroundSync);
         } else {
             //Notify user that he needs to get in touch with Apple of Google store
+            paymentEvents.emit(paymentEventsMap.stopLoader, {isBackgroundSync: this.isBackgroundSync});
             if( status == dataContract.payments.statusCodeBEAcknowledgeMap.failed ){
                 Alert.alert("", ostErrors.getUIErrorMessage("payment_invalid") );
             }else if(status == dataContract.payments.statusCodeBEAcknowledgeMap.processing ) {

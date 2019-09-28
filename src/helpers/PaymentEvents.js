@@ -12,7 +12,8 @@ const paymentEventsMap = {
     paymentStoreSyncFailed: "paymentStoreSyncFailed",
     pollPendingPaymentsStart: "pollPendingPaymentsStart",
     pollPendingPaymentsSuccess: "pollPendingPaymentsSuccess",
-    pollPendingPaymentsError: "pollPendingPaymentsError"
+    pollPendingPaymentsError: "pollPendingPaymentsError",
+    stopLoader : "stopLoader"
 }
 
 const paymentEvents = new EventEmitter() ; 
@@ -50,6 +51,10 @@ export { paymentEvents,  paymentEventsMap , PurchaseLoader } ;
         paymentEvents.on( paymentEventsMap.pollPendingPaymentsError , ( payload ) => {
             this.__eventCallback(this.statusMap.hide , payload , true);
         });
+        paymentEvents.on( paymentEventsMap.stopLoader , ( payload ) => {
+            this.__eventCallback(this.statusMap.hide , payload , true);
+        });
+
     }
 
     unSubscribeToEvents(){
@@ -58,6 +63,7 @@ export { paymentEvents,  paymentEventsMap , PurchaseLoader } ;
         paymentEvents.removeListener( paymentEventsMap.paymentBESyncFailed);
         paymentEvents.removeListener( paymentEventsMap.pollPendingPaymentsSuccess);
         paymentEvents.removeListener( paymentEventsMap.pollPendingPaymentsError);
+        paymentEvents.removeListener( paymentEventsMap.stopLoader);
     }
 
     __eventCallback(status ,  payload , igNoreBackgroundSync ){ 
