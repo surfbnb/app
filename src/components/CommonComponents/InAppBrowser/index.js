@@ -57,10 +57,10 @@ export default class InAppBrowserComponent extends Component {
       }
     }
 
-    setHeader = ( title )=>{
+    setHeader = ( title, url)=>{
       this.props.navigation.setParams({
         title: title,
-        url: getHostName(this.url)
+        url: getHostName(url)
       })
     }
 
@@ -84,7 +84,7 @@ export default class InAppBrowserComponent extends Component {
                 renderError={errorName => <View style={{flex:1, alignItems:"center"}}><Text style={{marginTop: -40, fontSize: 20}}>Invalid Link</Text></View>}
                 onLoad={syntheticEvent => {
                   const { nativeEvent } = syntheticEvent;
-                  this.setHeader(nativeEvent.title);
+                  this.setHeader(nativeEvent.title, nativeEvent.url);
                 }}
             />
            </SafeAreaView>
