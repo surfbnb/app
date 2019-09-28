@@ -30,13 +30,13 @@ class Users extends PureComponent {
     this.userFlatList.scrollToIndex({ index: newActiveIndex });
   };
 
-  goToScreenSupporters = () => {    
+  goToScreenSupporters = () => {
     if (this.state.activeIndex == SUPPORTER_INDEX ) return;
     this.setState({ activeIndex: SUPPORTER_INDEX });
     this.userFlatList.scrollToIndex({ index: SUPPORTER_INDEX });
   }
 
-  goToScreenSupporting = () => {    
+  goToScreenSupporting = () => {
     if (this.state.activeIndex == SUPPORTING_INDEX ) return;
     this.setState({ activeIndex: SUPPORTING_INDEX });
     this.userFlatList.scrollToIndex({ index: SUPPORTING_INDEX });
@@ -58,7 +58,7 @@ class Users extends PureComponent {
       );
     }
   };
-  
+
   flScrolled = (scrollEvent) => {
     let nativeEvent = scrollEvent.nativeEvent;
     Animated.timing(this.state.animatedMargin, { toValue: nativeEvent.contentOffset.x / 2, duration: 0.1 }).start();
@@ -70,6 +70,10 @@ class Users extends PureComponent {
       this.userFlatList.scrollToIndex({ index: SUPPORTING_INDEX });
     }
   };
+
+  onScrollToIndexFailed =( info) => {
+    console.log("======onScrollToIndexFailed=====" , info );
+  }
 
   _keyExtractor = (item, index) => `id_${item}`;
 
@@ -118,6 +122,7 @@ class Users extends PureComponent {
             keyExtractor={this._keyExtractor}
             renderItem={this.renderItem}
             onScroll={this.flScrolled}
+            onScrollToIndexFailed={this.onScrollToIndexFailed}
           />
         </View>
       </SafeAreaView>

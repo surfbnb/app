@@ -47,6 +47,10 @@ class VideoList extends PureComponent {
     this.setActiveIndex();
   };
 
+  onScrollToIndexFailed =( info) => {
+    console.log("======onScrollToIndexFailed=====" , info );
+  }
+
   //This only is required for android,  as scroll to top or momentumscrollend callback are not getting iterscepted.
   //This code is only for Android. Need to debug it a bit more.
   forceSetActiveIndex( index=0 ){
@@ -77,6 +81,7 @@ class VideoList extends PureComponent {
         renderItem={this._renderItem}
         showsVerticalScrollIndicator={false}
         onScrollToTop={this.onScrollToTop}
+        onScrollToIndexFailed={this.onScrollToIndexFailed}
         ref={(ref) => (this.flatlistRef = ref)}
       />
     );

@@ -57,6 +57,10 @@ class NotificationList extends PureComponent {
     return <Notification notificationId={item} />;
   };
 
+  onScrollToIndexFailed =( info) => {
+    console.log("======onScrollToIndexFailed=====" , info );
+  }
+
   renderSectionHeader = (section) => {
     if (!section.section.title || section.section.data.length === 0) return null;
     return (
@@ -92,6 +96,7 @@ class NotificationList extends PureComponent {
           ListEmptyComponent={this.emptyList}
           onEndReachedThreshold={0.3}
           onEndReached={this.props.getNext}
+          onScrollToIndexFailed={this.onScrollToIndexFailed}
         />
       </View>
     );
