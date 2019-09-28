@@ -15,10 +15,12 @@ import multipleClickHandler from '../../services/MultipleClickHandler';
 import { withNavigation } from 'react-navigation';
 import PollCurrentUserPendingPayments from "../../helpers/PollCurrentUserPendingPayments";
 import Colors from '../../theme/styles/Colors';
+import AppConfig from "../../constants/AppConfig";
 
 export const WalletBalanceFlyerEventEmitter = new EventEmitter();
 
-const sendingPepoText = "Sending Pepos please wait." ;
+const sendingPepoText = AppConfig.paymentFlowMessages.sendingPepo;
+const topupText = 'Topup';
 
 const getBalance = (balance) => {
   return Pricer.getToBT(Pricer.getFromDecimal(balance), 2) || 0;
@@ -63,7 +65,7 @@ class WalletBalanceFlyer extends Component {
   showFlyer = () => {
     FlyerEventEmitter.emit('onToggleProfileFlyer');
     this.state.animatedWidth.setValue(0);
-    let widthVal = this.state.isPurchasing ? sendingPepoText.length * 8 : "TopUp".length * 8 + 30;
+    let widthVal = this.state.isPurchasing ? sendingPepoText.length * 8 : topupText.length * 8 + 30;
     Animated.timing(this.state.animatedWidth, { toValue: ((widthVal) ), duration: 300, easing: Easing.elastic(1) }).start(() => {
       this.setState({
         extensionVisible: true
@@ -134,7 +136,7 @@ class WalletBalanceFlyer extends Component {
               <Image style={[styles.crossIconSkipFont]} source={modalCross} />
             </TouchableWithoutFeedback>
             <Text style={[styles.topUp , {color: this.state.isPurchasing ? Colors.black : Colors.wildWatermelon2 } ]}>
-               {this.state.isPurchasing ? sendingPepoText : "Topup"}
+               {this.state.isPurchasing ? sendingPepoText : topupText}
             </Text>
           </Animated.View>
         )}

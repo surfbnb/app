@@ -214,12 +214,12 @@ export default {
   paymentFlowMessages : {
     transactionSuccess: "Your account is recharged.",
     transactionPending: "We are processing your transaction we'll update you shortly." ,
-    sendingPepo: "Sending Pepos please wait."
+    sendingPepo: "Topping up please wait."
   },
 
   nativeStoreMap : {
     ios : {
-      storeName : "app store" 
+      storeName : "app store"
     },
     android: {
       storeName: "play store"

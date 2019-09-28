@@ -46,7 +46,7 @@ const bottomSpace = getBottomSpace([true]),
 
 const validMinAmount = 1;
 const defaultBtAmount = 10;
-const HEADER_TITLE = 'Send Pepos';
+const HEADER_TITLE = 'Send Pepo Coins';
 const SUCCESS_HEADER_TITLE = 'Sent';
 const SUBMIT_BTN_TXT = 'Send Pepo Coins';
 const SUBMIT_PROCESSING_TXT = 'Confirming...';
@@ -658,7 +658,7 @@ class TransactionScreen extends Component {
                 >
                   <Image source={tx_success} style={{ width: 164.6, height: 160, marginBottom: 20 }}></Image>
                   <Text style={{ textAlign: 'center', fontFamily: 'AvenirNext-Regular', fontSize: 16 }}>
-                    Success, you have sent {this.userName} {this.state.btAmount} Pepos
+                    Success, you have sent {this.userName} {this.state.btAmount} Pepo Coins
                   </Text>
                 </View>
               )}
