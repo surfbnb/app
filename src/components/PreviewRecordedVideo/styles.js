@@ -62,14 +62,14 @@ let stylesMap = {
   // },
   closeBtWrapper: {
     position: 'absolute',
-    top: 10,
-    left: 0,
-    height: 60,
-    width: 60
+    top: 45,
+    left: 10,
+    height: 45,
+    width: 45,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   closeIconSkipFont: {
-    marginTop: 45,
-    marginLeft: 20,
     height: 27,
     width: 27
   },

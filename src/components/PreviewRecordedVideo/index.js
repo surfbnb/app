@@ -137,11 +137,9 @@ class PreviewRecordedVideo extends Component {
           indeterminate={false}
           style={styles.progressBar}
         />
-        <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
-          <View style={styles.closeBtWrapper}>
-            <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
-          </View>
-        </TouchableWithoutFeedback>
+        <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
+          <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
+        </TouchableOpacity>
 
         <View style={styles.bottomControls}>
           {this.state.progress == 1 ? (

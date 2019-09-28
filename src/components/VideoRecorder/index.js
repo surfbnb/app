@@ -214,11 +214,9 @@ class VideoRecorder extends Component {
             style={styles.progressBar}
           />
 
-          <TouchableWithoutFeedback onPressIn={this.cancleVideoHandling}>
-            <View style={styles.closeBtWrapper}>
-              <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
-            </View>
-          </TouchableWithoutFeedback>
+          <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
+            <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
+          </TouchableOpacity>
           <View style={styles.bottomWrapper}>
             {!this.state.isRecording && <View style={{flex: 1}}/>}
             {this.getActionButton()}
