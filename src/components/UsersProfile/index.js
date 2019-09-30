@@ -82,7 +82,7 @@ export default class UsersProfile extends Component {
     if(this.state.isDeleted){
       return (
           <View style={inlineStyles.container}>
-            <Image style={inlineStyles.imgSize} source={user_not_exist} />
+            <Image style={inlineStyles.imgSizeSkipFont} source={user_not_exist} />
             <Text style={inlineStyles.desc}>The user you were looking for does not exist!</Text>
          </View>
       )

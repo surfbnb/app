@@ -107,7 +107,7 @@ let stylesMap = {
     alignItems: 'center',
     justifyContent: 'center'
   },
-  infoImageDimensions : {
+  infoImageDimensionsSkipFont : {
     height: 19.3,
     width: 18.6
   },

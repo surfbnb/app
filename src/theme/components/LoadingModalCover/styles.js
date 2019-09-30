@@ -29,7 +29,7 @@ let stylesMap = {
     fontSize: 14
   },
 
-  alertImage: {
+  alertImageSkipFont: {
     width: 40,
     height:40,
     resizeMode: 'contain'

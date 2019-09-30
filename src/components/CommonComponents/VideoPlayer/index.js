@@ -87,7 +87,7 @@ class VideoPlayer extends Component {
                   <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
                     <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
                   </TouchableOpacity>
-                  <Image style={inlineStyles.imgSize} source={video_not_available} />
+                  <Image style={inlineStyles.imgSizeSkipFont} source={video_not_available} />
                   <Text style={inlineStyles.desc}>Looks like the Video you were looking for isn’t available and might have been deleted by the creator!</Text>
                 </View>
         }else{

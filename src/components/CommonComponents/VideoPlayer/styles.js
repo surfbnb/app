@@ -11,7 +11,7 @@ let stylesMap = {
     backgroundColor: Colors.snow
   },
 
-  imgSize: {
+  imgSizeSkipFont: {
     width: 68.5,
     height: 68.5
   },

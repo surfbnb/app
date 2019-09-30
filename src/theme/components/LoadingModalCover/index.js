@@ -122,7 +122,7 @@ class loadingModalCover extends React.Component {
       >
         <View style={inlineStyles.backgroundStyle}>
           <Image
-            style={[inlineStyles.alertImage]}
+            style={[inlineStyles.alertImageSkipFont]}
             source={image}/>
 
           <Text style={inlineStyles.alertMessage}>{alertData.message}</Text>
