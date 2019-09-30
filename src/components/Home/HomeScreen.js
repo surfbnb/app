@@ -14,6 +14,7 @@ import appConfig from '../../constants/AppConfig';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import {navigateTo} from "../../helpers/navigateTo";
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
+import Colors from "../../theme/styles/Colors";
 
 const mapStateToProps = (state) => {
   return {
@@ -135,7 +136,7 @@ class HomeScreen extends Component {
 
   render() {
     return (
-      <View style={{ backgroundColor: '#000' }}>
+      <View style={{ backgroundColor: Colors.black}}>
         <StatusBar translucent={true} backgroundColor={'transparent'} />
         <TopStatus />
         {this.props.userId && this.state.videoUploaderVisible && (
