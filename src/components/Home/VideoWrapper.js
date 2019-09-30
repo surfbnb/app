@@ -8,6 +8,7 @@ import reduxGetter from '../../services/ReduxGetters';
 import playIcon from '../../assets/play_icon.png';
 import PixelCall from '../../services/PixelCall';
 import {VideoPlayPauseEmitter} from '../../helpers/Emitters';
+import AppConfig from '../../constants/AppConfig';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -81,8 +82,12 @@ class VideoWrapper extends PureComponent {
     clearTimeout(this.activeStateTimeout);
   }
 
+  shouldPlay(){
+   return AppState.currentState == AppConfig.appStateMap.active && this.props.shouldPlay() ;
+  }
+
   isPaused() {
-    return !this.props.isActive || this.state.paused || this.props.loginPopover || !this.props.shouldPlay();
+    return !this.props.isActive || this.state.paused || this.props.loginPopover || !this.shouldPlay();
   }
 
   playVideo() {
@@ -106,9 +111,9 @@ class VideoWrapper extends PureComponent {
 
   appActiveStateChanged(nextAppState) {
     let appState = nextAppState.toLowerCase();
-    if ('active' === appState && !this.isUserPaused && !this.pausedOnNavigation) {
+    if (AppConfig.appStateMap.active === appState && !this.isUserPaused && !this.pausedOnNavigation) {
       this.playVideo();
-    } else if ('inactive' === appState) {
+    } else if ( AppConfig.appStateMap.inactive === appState || AppConfig.appStateMap.background === appState ) {
       this.pauseVideo();
     }
   }

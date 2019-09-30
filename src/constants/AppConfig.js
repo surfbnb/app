@@ -224,5 +224,11 @@ export default {
     android: {
       storeName: "play store"
     }
+  },
+
+  appStateMap :{
+    active : "active",
+    inactive: "inactive",
+    background : "background"
   }
 };

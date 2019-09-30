@@ -61,12 +61,18 @@ class NavigateTo {
   }
 
   goToVideo = (vId, payload) => {
+    let timeOut = 0 ;
     payload = payload || {};
     payload['videoId'] = vId;
-    if(Utilities.getLastChildRoutename(this.navigation.state) != "NotificationScreen"){
+    if(Utilities.getActiveTab(this.navigation) != "Notification"){
+      timeOut = 100;
       this.__navigate('NotificationScreen', payload);
     }
-    this.__push('VideoPlayer', payload);
+    //Once migrated to react-navigation version 4 remove the settimeout code 
+    //as version 3 dosent provides navigation chaining. 
+    setTimeout(()=> {
+      this.__push('VideoPlayer', payload);
+    }, timeOut)
   };
 
   goToSupportings = (profileId, payload) => {
