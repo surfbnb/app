@@ -35,6 +35,11 @@ let stylesMap = {
       },
       headerSubText:{
           fontSize: 12
+      },
+      webviewContent:{
+        flex:1,
+        alignItems:"center", 
+        marginTop: -40
       }
   }
 
