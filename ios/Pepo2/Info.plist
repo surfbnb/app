@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Application uses bluetooth</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -32,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>6</string>
+	<string>7</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -71,6 +69,8 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Application uses apple music</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Application uses bluetooth</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Application users bluetooth</string>
 	<key>NSCalendarsUsageDescription</key>

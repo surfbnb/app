@@ -17,7 +17,9 @@
     <domain-config>
         <domain includeSubdomains="true">sandboxpepo.com</domain>
         <pin-set>
-            <!--Temp. Will deactivate soon.-->
+            <pin digest="SHA-256">6cN2gRsHMiv4iDmgoQoG49RTbm1Ec44hNBNQS0f0SnA=</pin>
+            <pin digest="SHA-256">/oaFmxrP6EZ4Qi7B1+hjcQcyZ9Atf9hKJ1QEKzoMdbQ=</pin>
+            <!--deactivate-->
             <pin digest="SHA-256">vQXjff8/gFlJ3u+GtTw1vMfmOGD+HfQAbUhPMLYFjS4=</pin>
             <pin digest="SHA-256">rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=</pin>
             <pin digest="SHA-256">DYo5lqgDZl75OmwvtxvNkpDMfeoDcyVaZi1rANPi4GA=</pin>

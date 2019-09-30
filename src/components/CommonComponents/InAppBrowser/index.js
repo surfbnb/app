@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { WebView } from 'react-native-webview';
 import { SafeAreaView } from 'react-navigation';
-import {Image, TouchableOpacity, Text, View, Share, Platform} from 'react-native';
+import {Image, TouchableOpacity, Text, View, Share, Platform, ActivityIndicator} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import inlineStyles from './styles';
@@ -25,7 +25,8 @@ export default class InAppBrowserComponent extends Component {
         this.props.navigation.setParams({
          reload: this.reload,
          share: this.share,
-         browserUrl : this.url
+         goBack: this.goBack,
+         url : getHostName(this.url)
         })
         this.webview = null;
     }
@@ -45,9 +46,13 @@ export default class InAppBrowserComponent extends Component {
       this.webview.reload();
     }
 
+    goBack = ()=> {
+      this.webview.goBack();
+    }
+
     share = async()=>{
       let content = {
-        message: this.props.navigation.getParam('browserUrl'),
+        message: this.props.navigation.getParam('copyAndShareUrl'),
         title: this.props.navigation.getParam('title')
       };
       try {
@@ -57,10 +62,11 @@ export default class InAppBrowserComponent extends Component {
       }
     }
 
-    setHeader = ( title, url)=>{
+    setHeaderParams = ( title, url)=>{
       this.props.navigation.setParams({
         title: title,
-        url: getHostName(url)
+        url: getHostName(url),
+        copyAndShareUrl: url
       })
     }
 
@@ -68,7 +74,7 @@ export default class InAppBrowserComponent extends Component {
         return (
           <SafeAreaView style={{flex: 1}}>
             <WebView
-                style={{flex:1, position:'relative'}}
+                style={{flex:1}}
                 useWebKit={true}
                 allowsInlineMediaPlayback={true}
                 ref={ref => (this.webview = ref)}
@@ -81,11 +87,13 @@ export default class InAppBrowserComponent extends Component {
                         'X-PEPO-APP-VERSION': String(DeviceInfo.getVersion())
                     }
                 }}
-                renderError={errorName => <View style={{flex:1, alignItems:"center"}}><Text style={{marginTop: -40, fontSize: 20}}>Invalid Link</Text></View>}
+                renderError={errorName => <View style={inlineStyles.webviewContent}><Text style={{fontSize: 20}}>Invalid Link</Text></View>}
                 onLoad={syntheticEvent => {
                   const { nativeEvent } = syntheticEvent;
-                  this.setHeader(nativeEvent.title, nativeEvent.url);
+                  this.setHeaderParams(nativeEvent.title, nativeEvent.url);
                 }}
+                startInLoadingState={true}
+                renderLoading={() =>  <View style={inlineStyles.webviewContent}><ActivityIndicator /></View>}
             />
            </SafeAreaView>
         );
@@ -106,11 +114,12 @@ const BrowserHeaderLeft = (props)=>{
 }
 
 const BrowserHeaderRight = (props)=>{
-  const url =  props.navigation.getParam('browserUrl');
+  const url =  props.navigation.getParam('copyAndShareUrl');
   const reloadDelegate =  props.navigation.getParam('reload');
   const shareDelegate =  props.navigation.getParam('share');
+  const goBackDelegate =  props.navigation.getParam('goBack');
   return (
-    <BrowserMenu url={url} share={shareDelegate} reload={reloadDelegate}/>
+    <BrowserMenu url={url} share={shareDelegate} reload={reloadDelegate} goBack={goBackDelegate}/>
   )
 }
 
