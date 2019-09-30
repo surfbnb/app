@@ -31,7 +31,7 @@ class SearchResults extends PureComponent {
     }
 
     if(!this.props.searchParams){
-      return ( <View style={{ flex: 1,flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+      return ( <View style={{ flex: 1,flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
                 <ActivityIndicator style={{alignSelf:'center'}} size="small" color={Colors.greyLite} />
               </View>);
     }
