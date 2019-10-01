@@ -15,8 +15,6 @@ import user_not_exist from '../../assets/user-not-exist.png';
 import { fetchUser } from '../../helpers/helpers';
 import utilities from '../../services/Utilities';
 import inlineStyles from './styles';
-import Utilities from '../../services/Utilities';
-import UserProfileOptions from '../../assets/user_profile_options.png';
 import ReportProfile from './reportProfile';
 
 export default class UsersProfile extends Component {
@@ -47,7 +45,7 @@ export default class UsersProfile extends Component {
     super(props);
     this.userId = this.props.navigation.getParam('userId');
     this.state = {
-      isDeleted : false
+      isDeleted : reduxGetter.isUserInactive(this.userId)
     }
   }
 
@@ -69,9 +67,7 @@ export default class UsersProfile extends Component {
   };
 
   onUserResponse = ( res ) => {
-    if(Utilities.isEntityDeleted(res)){
-      this.setState({isDeleted: true});
-    }
+    this.setState({isDeleted: reduxGetter.isUserInactive(this.userId)});
   }
 
   _headerComponent() {

@@ -27,7 +27,12 @@ export default {
 
   userStatusMap: {
     activated: 'activated',
-    activating: 'activating'
+    activating: 'activating',
+    inActive: 'inactive'
+  },
+
+  videoStatusMap:{
+    deleted: 'deleted'
   },
 
   deviceStatusMap: {
