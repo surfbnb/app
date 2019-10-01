@@ -31,7 +31,7 @@ class ShareIcon extends PureComponent {
   };
 
   render(){
-    return (<TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem}
+    return (<TouchableOpacity pointerEvents={'auto'}
                               disabled={this.isDisabled()}
                               style={{marginBottom: 15, height: 50, width: 50, alignItems: 'center', justifyContent: 'center'}}
                               onPress={multipleClickHandler(() => this.shareVideo())} >
