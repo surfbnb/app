@@ -14,6 +14,7 @@ import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 
 import inlineStyles from './styles';
 import utilities from '../../services/Utilities';
+import ReportVideo from "../CommonComponents/ReportVideo";
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -77,6 +78,7 @@ class HomeFeedRow extends PureComponent {
                   videoId={this.videoId}
                 />
                 <ShareIcon videoId={this.videoId} userId={this.userId} />
+                <ReportVideo  userId={this.userId} videoId={this.videoId} />
               </View>
 
             <VideoAmountStat

@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import VideoWrapper from '../Home/VideoWrapper';
 import ShareIcon from "../CommonComponents/ShareIcon";
+import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
 import TransactionPepoButton from '../Home/TransactionPepoButton';
 
@@ -71,6 +72,7 @@ class UserVideoHistoryRow extends PureComponent {
                   videoId={this.props.videoId}
                 />
                 <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} />
+                <ReportVideo  userId={this.props.userId} videoId={this.props.videoId} />
               </View>
 
               <VideoAmountStat
