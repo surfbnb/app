@@ -71,7 +71,7 @@ class InviteCodeScreen extends React.Component {
     Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
 
-    //Dont delete this code. This is a pure hack for android keyboard initial jump.
+    //Dont delete this code. This is a hack for android keyboard initial jump.
     this.setState({inviteCode: "" , focus: true});
   }
 

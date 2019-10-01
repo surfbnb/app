@@ -14,7 +14,6 @@ import { ostErrors } from '../../services/OstErrors';
 import Colors from '../../theme/styles/Colors';
 import CurrentUser from '../../models/CurrentUser';
 import { navigateTo } from '../../helpers/navigateTo';
-import Utilities from '../../services/Utilities';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -25,6 +24,7 @@ class AddEmailScreen extends React.Component {
     super(props);
     this.state = {
       email: null,
+      focus: false,
       isSubmitting: false,
       btnSubmitText: 'Sign Up',
       emailSent: false,
@@ -61,6 +61,9 @@ class AddEmailScreen extends React.Component {
 
     Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
     Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
+
+    //Dont delete this code. This is a hack for android keyboard initial jump.
+    this.setState({email: "" , focus: true});
   }
 
   componentWillUnmount() {
@@ -157,6 +160,7 @@ class AddEmailScreen extends React.Component {
           placeholderTextColor={Colors.darkGray}
           autoCapitalize={'none'}
           serverErrors={this.state.server_errors}
+          isFocus={this.state.focus}
           returnKeyType="done"
           returnKeyLabel="Done"
           onSubmitEditing={this.onEmailSubmit}

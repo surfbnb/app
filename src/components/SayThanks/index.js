@@ -46,7 +46,7 @@ class SayThanks extends Component {
   }
 
   componentDidMount(){
-    //Dont delete this code. This is a pure hack for android keyboard initial jump.
+    //Dont delete this code. This is a hack for android keyboard initial jump.
     this.setState({ thanksMessage: thanksMsg ,focus: true});
   }
 
