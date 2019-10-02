@@ -2,6 +2,7 @@
 <network-security-config>
     <!-- Pin the domain stagingost.com and ost.com-->
     <!-- Official Android N API -->
+    <base-config cleartextTrafficPermitted="true" />
     <domain-config>
         <domain includeSubdomains="true">stagingpepo.com</domain>
         <pin-set>

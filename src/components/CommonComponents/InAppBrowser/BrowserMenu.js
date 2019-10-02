@@ -39,13 +39,6 @@ class BrowserMenu extends React.PureComponent {
     }
     this.hideMenu();
   }
-
-  goBack = () => {
-    if(this.props.goBack ){
-        this.props.goBack();
-    }
-    this.hideMenu();
-  }
  
   render() {
     return (
@@ -64,8 +57,6 @@ class BrowserMenu extends React.PureComponent {
           <MenuItem onPress={this.shareVia}>Share via</MenuItem>
           <MenuDivider />
           <MenuItem onPress={this.reload}>Reload</MenuItem>
-          <MenuDivider />
-          <MenuItem onPress={this.goBack}>Go Back</MenuItem>
         </Menu>
       </View>
     );

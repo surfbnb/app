@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { WebView } from 'react-native-webview';
 import { SafeAreaView } from 'react-navigation';
-import {Image, TouchableOpacity, Text, View, Share, Platform, ActivityIndicator} from 'react-native';
+import {Image, TouchableOpacity, Text, View, Share, Platform} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import ProgressBar from 'react-native-progress/Bar';
 
 import inlineStyles from './styles';
 import crossIcon from '../../../assets/cross_icon.png';
+import BackActive from '../../../assets/BackActive.png';
+import ForwardActive from '../../../assets/ForwardActive.png';
 import BrowserMenu from './BrowserMenu';
 import {getHostName} from '../../../helpers/helpers';
+import Colors from '../../../theme/styles/Colors';
 
 export default class InAppBrowserComponent extends Component {
     static navigationOptions = (props) => {
@@ -29,6 +33,11 @@ export default class InAppBrowserComponent extends Component {
          url : getHostName(this.url)
         })
         this.webview = null;
+        this.state = {
+          loadingProgress: 0,
+          canGoBack: false,
+          canGoForward: false
+        };
     }
 
     componentWillUnmount(){
@@ -48,6 +57,10 @@ export default class InAppBrowserComponent extends Component {
 
     goBack = ()=> {
       this.webview.goBack();
+    }
+
+    goForward = ()=> {
+      this.webview.goForward();
     }
 
     share = async()=>{
@@ -70,9 +83,19 @@ export default class InAppBrowserComponent extends Component {
       })
     }
 
+    setNavigation = (nativeEvent)=>{
+      this.setState({
+        canGoBack: nativeEvent.canGoBack,
+        canGoForward: nativeEvent.canGoForward
+      })
+    }
+
     render() {
         return (
           <SafeAreaView style={{flex: 1}}>
+            {this.state.loadingProgress != 1 && 
+              <ProgressBar progress={this.state.loadingProgress} width={null} height={3}
+                  color={ Colors.pinkRed } useNativeDriver={ true} borderRadius = {0} borderWidth={0}/>}
             <WebView
                 style={{flex:1}}
                 useWebKit={true}
@@ -91,10 +114,16 @@ export default class InAppBrowserComponent extends Component {
                 onLoad={syntheticEvent => {
                   const { nativeEvent } = syntheticEvent;
                   this.setHeaderParams(nativeEvent.title, nativeEvent.url);
+                  this.setNavigation(nativeEvent);
                 }}
-                startInLoadingState={true}
-                renderLoading={() =>  <View style={inlineStyles.webviewContent}><ActivityIndicator /></View>}
+                onLoadProgress={({ nativeEvent }) => {
+                  this.setState({
+                    loadingProgress : nativeEvent.progress
+                  })
+                }}
             />
+            <BrowserFooter canGoBack={this.state.canGoBack} canGoForward={this.state.canGoForward} 
+                            goBack={this.goBack} goForward={this.goForward}/>
            </SafeAreaView>
         );
     }
@@ -117,9 +146,8 @@ const BrowserHeaderRight = (props)=>{
   const url =  props.navigation.getParam('copyAndShareUrl');
   const reloadDelegate =  props.navigation.getParam('reload');
   const shareDelegate =  props.navigation.getParam('share');
-  const goBackDelegate =  props.navigation.getParam('goBack');
   return (
-    <BrowserMenu url={url} share={shareDelegate} reload={reloadDelegate} goBack={goBackDelegate}/>
+    <BrowserMenu url={url} share={shareDelegate} reload={reloadDelegate}/>
   )
 }
 
@@ -128,6 +156,19 @@ const BrowserHeaderTitle = (props)=>{
     <View>
       <Text numberOfLines={1} style={inlineStyles.headerText}>{props.navigation.getParam('title')}</Text>
       <Text style={inlineStyles.headerSubText}>{props.navigation.getParam('url')}</Text>
+    </View>
+  )
+}
+
+const BrowserFooter = (props)=>{
+  return (
+    <View style={[inlineStyles.footerStyles]}>
+      <TouchableOpacity onPress={props.goBack} style={inlineStyles.navigateWrapper}>
+        <Image style={[inlineStyles.navigateSkipFont,!props.canGoBack ? {tintColor: Colors.lightGrey} : '']} source={BackActive}></Image>
+     </TouchableOpacity>
+     <TouchableOpacity onPress={props.goForward} style={inlineStyles.navigateWrapper}>
+        <Image style={[inlineStyles.navigateSkipFont,!props.canGoForward ? {tintColor: Colors.lightGrey} : '']} source={ForwardActive}></Image>
+     </TouchableOpacity>
     </View>
   )
 }
