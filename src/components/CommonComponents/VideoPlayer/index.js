@@ -9,7 +9,7 @@ import historyBack from "../../../assets/user-video-history-back-icon.png";
 import video_not_available from '../../../assets/video-not-available.png';
 import Utilities from '../../../services/Utilities';
 import CurrentUser from '../../../models/CurrentUser';
-
+import reduxGetter from '../../../services/ReduxGetters';
 
 class VideoPlayer extends Component {
 
@@ -25,7 +25,7 @@ class VideoPlayer extends Component {
         this.videoId =  this.props.navigation.getParam('videoId');
         this.state = {
           userId :  this.props.navigation.getParam('userId') || null,
-          isDeleted : false
+          isDeleted : reduxGetter.isVideoDeleted(this.videoId)
         };
         this.refetchVideo();
         this.isActiveScreen = true;
@@ -52,6 +52,7 @@ class VideoPlayer extends Component {
     };
 
     refetchVideo = () => {
+      if (this.state.isDeleted) return;
       new PepoApi(`/videos/${this.videoId}`)
         .get()
         .then((res) => { this.onRefetchVideo(res) })
@@ -59,10 +60,7 @@ class VideoPlayer extends Component {
     };
 
     onRefetchVideo = ( res ) => {
-      if(Utilities.isEntityDeleted(res)){
-        this.setState({isDeleted: true});
-        return;
-      }
+      this.setState({isDeleted: reduxGetter.isVideoDeleted(this.videoId)});
       const users = deepGet(res , "data.users") || {} ,
             userKeys =  Object.keys(users) || [] ,
             userId = userKeys[0] || null;
