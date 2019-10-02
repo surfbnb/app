@@ -9,6 +9,7 @@ import pricer from '../../services/Pricer';
 import inlineStyles from '../Home/styles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import multipleClickHandler from '../../services/MultipleClickHandler';
+import Utilities from "../../services/Utilities";
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -52,7 +53,9 @@ class VideoAmountStat extends PureComponent {
         {
           <View ellipsizeMode={'tail'} numberOfLines={1}>
             <Text style={[inlineStyles.raisedSupportedTxt]} ellipsizeMode={'tail'} numberOfLines={1}>
-              {this.props.supporters || 0} <Text style={{ letterSpacing: 1.0, fontSize: 13 }}>Supporters</Text>
+              {this.props.supporters || 0} <Text style={{ letterSpacing: 1.0, fontSize: 13 }}>
+                {Utilities.getSingularPluralText(this.props.supporters , "Supporter")}
+              </Text>
             </Text>
           </View>
         }
