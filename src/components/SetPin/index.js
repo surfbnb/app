@@ -29,7 +29,7 @@ export default class SetPin extends Component {
       <View style={{ flex: 1 }}>
         <View style={inlineStyles.container}>
           <Text style={inlineStyles.setPinInfoText}>
-            Set a 6-digit PIN for your Wallet. Your PIN is requied to recover your wallet if your phone is lost or stolen.
+            Set a 6-digit PIN for your Wallet. Your PIN is required to recover your wallet if your phone is lost or stolen.
           </Text>
           <PinInput {...this.props} onPinChange={this.onPinChange} />
         </View>
