@@ -40,7 +40,7 @@ class UserInfo extends React.PureComponent {
   toBt( val ){
     const priceOracle =  pricer.getPriceOracle() ;
     val = priceOracle.fromDecimal( val )  ;
-    return pricer.toDisplayAmount( priceOracle.toBt( val ) );
+    return priceOracle.toBt( val );
   }
 
   btToFiat(btAmount) {
