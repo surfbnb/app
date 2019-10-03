@@ -83,13 +83,7 @@ class BalanceHeader extends PureComponent {
 
   onTopUp = () => {
     if(CurrentUser.isUserActivated()){
-      OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
-        if(this.isDevicesAuthorized( device )){
-          this.props.navigation.push("StoreProductsScreen");
-        }else{
-          this.props.navigation.push("AuthDeviceDrawer" , {device: device});
-        }
-    })
+      this.props.navigation.push("StoreProductsScreen");
     }else{
       Toast.show({
         text: ostErrors.getUIErrorMessage('user_not_active'),
