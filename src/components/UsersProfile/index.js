@@ -51,13 +51,11 @@ export default class UsersProfile extends Component {
       isDeleted : false
     }
     this.listRef = null;
-    this.refreshEvent = new EventEmitter();
   }
 
   componentDidMount(){
     userActionEvents.on("onBlockUnblockAction" ,  ( params ) => {
-      //TODO change this code Should not be event based. Should be done by ref forwarding.
-      this.refreshEvent.emit("refresh");
+      this.listRef && this.listRef.refresh()
     });
   }
 
@@ -105,7 +103,7 @@ export default class UsersProfile extends Component {
             refreshEvent={this.refreshEvent}
             onUserFetch={this.onUserResponse}
             userId={this.userId}
-            ref={(ref) => {this.listRef = ref;}}
+            onRef={(elem) => this.listRef = elem}
           />
           <TouchableOpacity
             pointerEvents={'auto'}
