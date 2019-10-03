@@ -13,7 +13,7 @@ let styles = {
     paddingLeft: 15,
     marginTop: 5,
     color: Colors.dark,
-    height: Platform.OS === 'ios' ? 46 : 46
+    height: 46
   },
 
   labelStyle:{

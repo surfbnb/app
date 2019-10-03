@@ -73,7 +73,7 @@ class VideoList extends PureComponent {
         keyExtractor={this._keyExtractor}
         refreshing={this.props.refreshing}
         initialNumToRender={maxVideosThreshold}
-        onEndReachedThreshold={7}
+        onEndReachedThreshold={3}
         style={inlineStyles.fullScreen}
         onViewableItemsChanged={this.onViewableItemsChanged}
         onMomentumScrollEnd={this.onMomentumScrollEndCallback}

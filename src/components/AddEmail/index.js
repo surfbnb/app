@@ -63,7 +63,7 @@ class AddEmailScreen extends React.Component {
     Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
 
     //Dont delete this code. This is a hack for android keyboard initial jump.
-    this.setState({email: "" , focus: true});
+    setTimeout(() => this.setState({email: "" , focus: true}), 0);
   }
 
   componentWillUnmount() {

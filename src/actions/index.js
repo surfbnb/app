@@ -83,6 +83,11 @@ export const upsertUserProfileEntities = (data) => ({
   payload: { user_profile_entities: data }
 });
 
+export const upsertUserAllowedActionEntities = (data) => ({
+  type: types.UPSERT_USER_ALLOWED_ACTION_ENTITIES,
+  payload: { user_allowed_action_entities: data }
+});
+
 export const upsertUserStatEntities = (data) => ({
   type: types.UPSERT_USER_STAT_ENTITIES,
   payload: { user_stat_entities: data }

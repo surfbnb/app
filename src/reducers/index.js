@@ -21,6 +21,7 @@ export const {
   upsertTagEntities,
   upsertLinkEntities,
   upsertUserProfileEntities,
+  upsertUserAllowedActionEntities,
   upsertUserStatEntities,
   upsertVideoEntities,
   upsertVideoStatEntities,
@@ -81,6 +82,7 @@ const defaultState = {
   notification_unread: {},
   invite_code: null,
   twitter_entities : {},
+  user_allowed_action_entities: {}
 };
 
 const logoutDefault = {
@@ -108,6 +110,7 @@ const logoutDefault = {
   notification_unread: {},
   invite_code: null,
   twitter_entities : null,
+  user_allowed_action_entities:{}
 };
 
 export const reducer = handleActions(
@@ -147,6 +150,10 @@ export const reducer = handleActions(
     [upsertUserProfileEntities]: (state, action) => ({
       ...state,
       user_profile_entities: assignIn({}, state.user_profile_entities, action.payload.user_profile_entities)
+    }),
+    [upsertUserAllowedActionEntities]: (state, action) => ({
+      ...state,
+      user_allowed_action_entities: assignIn({}, state.user_allowed_action_entities, action.payload.user_allowed_action_entities)
     }),
     [upsertUserStatEntities]: (state, action) => ({
       ...state,

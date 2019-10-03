@@ -15,6 +15,7 @@ import Pricer from '../../../services/Pricer';
 import InAppBrowser from '../../../services/InAppBrowser';
 import profileLink from '../../../assets/profile_link.png';
 import twitterLink from '../../../assets/twitter_link.png';
+import Utilities from '../../../services/Utilities';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -39,7 +40,7 @@ class UserInfo extends React.PureComponent {
   toBt( val ){
     const priceOracle =  pricer.getPriceOracle() ;
     val = priceOracle.fromDecimal( val )  ;
-    return pricer.toDisplayAmount( priceOracle.toBt( val ) );
+    return priceOracle.toBt( val );
   }
 
   btToFiat(btAmount) {
@@ -103,7 +104,7 @@ class UserInfo extends React.PureComponent {
             disabled={this.props.supporting === 0}
           >
             <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>
-              {Pricer.toDisplayAmount(this.props.supporting)}
+              {Pricer.displayAmountWithKFomatter(this.props.supporting)}
             </Text>
             <Text style={inlineStyle.numericInfoText}>Supporting</Text>
           </TouchableOpacity>
@@ -116,14 +117,14 @@ class UserInfo extends React.PureComponent {
             disabled={this.props.supporters === 0}
           >
             <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>
-              {Pricer.toDisplayAmount(this.props.supporters)}
+              {Pricer.displayAmountWithKFomatter(this.props.supporters)}
             </Text>
-            <Text style={inlineStyle.numericInfoText}>Supporters</Text>
+            <Text style={inlineStyle.numericInfoText}>{Utilities.getSingularPluralText(this.props.supporters , "Supporter")}</Text>
           </TouchableOpacity>
           {this.dividerLine()}
           <View style={[inlineStyle.numericInnerWrapper]} style={[inlineStyle.numericInnerWrapper]}>
             <Text style={[inlineStyle.numericInfoText, inlineStyle.numericInfoTextBold]}>
-              {Pricer.toDisplayAmount(this.toBt(this.props.btAmount))}
+              {Pricer.displayAmountWithKFomatter(this.toBt(this.props.btAmount))}
             </Text>
             <Text style={inlineStyle.numericInfoText}>Received</Text>
           </View>

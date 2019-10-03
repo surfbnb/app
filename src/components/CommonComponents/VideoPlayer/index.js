@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {View,Image,TouchableOpacity, Text} from 'react-native';
 import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
+import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
 import inlineStyles from './styles'
@@ -90,14 +91,15 @@ class VideoPlayer extends Component {
                 </View>
         }else{
           return (
-            <React.Fragment>
+            <View style={{flex:1}}>
+              <TopStatus />
               <VideoRowComponent doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
                                  videoId={this.videoId} userId={this.state.userId}
                                  onWrapperClick={this.navigateToUserProfile}/>
               <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
                 <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
               </TouchableOpacity>
-            </React.Fragment>
+            </View>
           )
         }
     }

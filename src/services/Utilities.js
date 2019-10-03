@@ -179,5 +179,14 @@ export default {
 
   getNativeStoreName(){
     return deepGet(AppConfig.nativeStoreMap , `${os}.storeName` , "store");
+  },
+
+  getSingularPluralText( val = 0 , text = "" ){
+    if(!text) return text ;
+    val =  Number( val );
+    if( val > 1  ){
+      return text+"s" ; 
+    }
+    return text ;
   }
 };
