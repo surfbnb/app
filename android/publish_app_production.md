@@ -7,6 +7,21 @@
     <string name="app_name">Pepo</string>
   ```
 
+* Edit src/main/AndroidManifest 
+Make sure `android:host` is set to `"pepo.com"`.
+```xml
+<intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="https"
+          android:host="pepo.com"/>
+    <data android:scheme="http"
+          android:host="pepo.com"/>
+</intent-filter>
+```
+
+
 * Edit File build.gradle: 
  * File Path: pepo-react/android/app/build.gradle
  * Change application Id to `com.pepo.v2.production`.
