@@ -78,7 +78,9 @@ export default class UsersProfile extends Component {
   };
 
   onUserResponse = ( res ) => {
-    this.setState({isDeleted: reduxGetter.isUserInactive(this.userId)});
+    if(utilities.isEntityDeleted(res)){
+      this.setState({isDeleted: true});
+    }
   }
 
   _headerComponent() {
