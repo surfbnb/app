@@ -19,6 +19,9 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
+const VIDEO_PLAY_START_EVENT_NAME = "video_play_start";
+const VIDEO_PLAY_END_EVENT_NAME = "video_play_end";
+
 class VideoWrapper extends PureComponent {
   constructor(props) {
     super(props);
@@ -149,21 +152,25 @@ class VideoWrapper extends PureComponent {
       };
       PixelCall(pixelParams);
 
-      this.sendFeedVideoEvent();
+      this.sendFeedVideoEvent(VIDEO_PLAY_START_EVENT_NAME);
 
       this.isPixelCalledOnView = true;
     }
   };
 
-  sendFeedVideoEvent() {
+  sendFeedVideoEvent(eventKind) {
+    let feedId = 0; // For non-feed video elements.
     if (this.props.feedId) {
-      let data = {
-        kind: "feed_video_view",
-        payload: {feed_id: this.props.feedId, video_id: this.props.videoId}
-      };
-      socketPixelCall.fireEvent(data);
+      feedId = this.props.feedId;
     }
+
+    let data = {
+      kind: eventKind,
+      payload: {feed_id: feedId, video_id: this.props.videoId}
+    };
+    socketPixelCall.fireEvent(data);
   }
+
   onEnd = (params) => {
     if (this.isPixelCalledOnEnd) return;
     let pixelParams = {

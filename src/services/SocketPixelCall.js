@@ -53,6 +53,8 @@ class SocketPixelCall {
       return;
     }
 
+    console.log("events", JSON.stringify(events) );
+
     //Queue up if not able to send the event
     this.pushEventsInBuffer(events);
   }
@@ -67,9 +69,9 @@ class SocketPixelCall {
     let eventsToFire = [];
 
     //Filter event of currentUser;
-    this.eventQueue.forEach((data, index)=> {
-      if (data.currentUserId == CurrentUser.getUserId()) {
-        eventsToFire.push(data);
+    this.eventQueue.forEach((eventData, index)=> {
+      if (eventData.currentUserId == CurrentUser.getUserId()) {
+        eventsToFire.push(eventData.data);
       }
     });
 
