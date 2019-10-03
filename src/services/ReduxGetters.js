@@ -82,6 +82,11 @@ class ReduxGetters {
     return unescape(deepGet(state, `user_profile_entities.id_${id}.bio.text`));
   }
 
+  canBlockUser(id ,state){
+    state = state || Store.getState();
+    return !!deepGet(state, `user_allowed_action_entities.id_${id}.can_block` , true) ; 
+  }
+
   getEmail(id, state) {
     state = state || Store.getState();
     return deepGet(state, `user_profile_entities.id_${id}.email.text`);
