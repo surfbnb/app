@@ -25,6 +25,7 @@
 {
   [FIRApp configure];
   [RNFirebaseNotifications configure];
+  [application registerForRemoteNotifications];
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"Pepo2"

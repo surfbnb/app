@@ -74,14 +74,6 @@ async function  sendToken(token, userId) {
     device_token: token
   };
 
-  if (Platform.OS === 'ios') {
-    await firebase.messaging().ios.registerForRemoteNotifications();
-    const apnsToken = await firebase.messaging().ios.getAPNSToken();
-    if (apnsToken) {
-      console.log('User APNS Token:', apnsToken);
-      payload['apns_token'] = apnsToken;
-    }
-  }
 
   userId &&
   new PepoApi(`/notifications/device-token`)
