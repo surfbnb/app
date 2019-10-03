@@ -78,7 +78,7 @@ export default class UsersProfile extends Component {
   };
 
   onUserResponse = ( res ) => {
-    if(Utilities.isEntityDeleted(res)){
+    if(utilities.isEntityDeleted(res)){
       this.setState({isDeleted: true});
     }
   }
