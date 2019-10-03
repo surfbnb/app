@@ -15,9 +15,10 @@ import user_not_exist from '../../assets/user-not-exist.png';
 import { fetchUser } from '../../helpers/helpers';
 import utilities from '../../services/Utilities';
 import inlineStyles from './styles';
-import Utilities from '../../services/Utilities';
-import UserProfileOptions from '../../assets/user_profile_options.png';
-import ReportProfile from './reportProfile';
+import UserProfileActionSheet from './userProfileActionSheet';
+
+import EventEmitter from "eventemitter3";
+const userActionEvents = new EventEmitter();
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -39,7 +40,7 @@ export default class UsersProfile extends Component {
         fontFamily: 'AvenirNext-Medium'
       },
       headerBackImage: <BackArrow />,
-      headerRight: <ReportProfile userId={navigation.getParam('userId')}  />
+      headerRight: <UserProfileActionSheet userId={navigation.getParam('userId')} userActionEvents={userActionEvents}  />
     };
   };
 
@@ -49,10 +50,20 @@ export default class UsersProfile extends Component {
     this.state = {
       isDeleted : false
     }
+    this.listRef = null;
+    this.refreshEvent = new EventEmitter();
+  }
+
+  componentDidMount(){
+    userActionEvents.on("onBlockUnblockAction" ,  ( params ) => {
+      //TODO change this code Should not be event based. Should be done by ref forwarding.
+      this.refreshEvent.emit("refresh");
+    });
   }
 
   componentWillUnmount(){
     this.onUserResponse = () => {};
+    userActionEvents.removeListener('onBlockUnblockAction');
   }
 
   navigateToTransactionScreen = () => {
@@ -91,8 +102,10 @@ export default class UsersProfile extends Component {
         <React.Fragment>
           <UserProfileFlatList
             listHeaderComponent={this._headerComponent()}
+            refreshEvent={this.refreshEvent}
             onUserFetch={this.onUserResponse}
             userId={this.userId}
+            ref={(ref) => {this.listRef = ref;}}
           />
           <TouchableOpacity
             pointerEvents={'auto'}
