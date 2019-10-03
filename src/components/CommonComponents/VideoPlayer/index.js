@@ -60,7 +60,10 @@ class VideoPlayer extends Component {
     };
 
     onRefetchVideo = ( res ) => {
-      this.setState({isDeleted: reduxGetter.isVideoDeleted(this.videoId)});
+      if(Utilities.isEntityDeleted(res)){
+        this.setState({isDeleted: true});
+        return;
+      }
       const users = deepGet(res , "data.users") || {} ,
             userKeys =  Object.keys(users) || [] ,
             userId = userKeys[0] || null;
