@@ -61,17 +61,28 @@ function getToken(userId) {
       .then((fcmToken) => fcmToken && sendToken(fcmToken, userId));
 }
 
-function sendToken(token, userId) {
+async function  sendToken(token, userId) {
   if (!userId) {
     console.log('sendToken :: currentUserId is not yet available');
     return;
   }
+
   let payload = {
     device_id: DeviceInfo.getUniqueID(),
     user_timezone: DeviceInfo.getTimezone(),
     device_kind: Platform.OS,
     device_token: token
   };
+
+  if (Platform.OS === 'ios') {
+    await firebase.messaging().ios.registerForRemoteNotifications();
+    const apnsToken = await firebase.messaging().ios.getAPNSToken();
+    if (apnsToken) {
+      console.log('User APNS Token:', apnsToken);
+      payload['apns_token'] = apnsToken;
+    }
+  }
+
   userId &&
   new PepoApi(`/notifications/device-token`)
       .post(payload)
