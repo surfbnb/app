@@ -9,6 +9,7 @@ import playIcon from '../../assets/play_icon.png';
 import PixelCall from '../../services/PixelCall';
 import {VideoPlayPauseEmitter} from '../../helpers/Emitters';
 import AppConfig from '../../constants/AppConfig';
+import socketPixelCall from './../../services/SocketPixelCall'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -147,6 +148,7 @@ class VideoWrapper extends PureComponent {
         p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
       };
       PixelCall(pixelParams);
+      socketPixelCall.fireEvent(pixelParams);
       this.isPixelCalledOnView = true;
     }
   };

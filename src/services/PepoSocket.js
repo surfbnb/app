@@ -5,6 +5,8 @@ import deepGet from 'lodash/get';
 import { upsertNotificationUnread } from '../actions';
 import Store from '../store';
 
+import socketPixelCall from './../services/SocketPixelCall'
+
 if (!window.location) {
   // App is running in simulator
   window.navigator.userAgent = 'ReactNative';
@@ -59,6 +61,9 @@ export default class PepoSocket {
           reconnectionAttempts: reconnectionAttempts
         }
       );
+
+      //Assign socket object to emitters
+      socketPixelCall.setPepoSocket(this.socket);
 
       this.socket.on('connect', () => {
         console.log(`Connected to socket server ${this.protocol}://${this.endPoint} successfully!`);
