@@ -148,11 +148,22 @@ class VideoWrapper extends PureComponent {
         p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
       };
       PixelCall(pixelParams);
-      socketPixelCall.fireEvent(pixelParams);
+
+      this.sendFeedVideoEvent();
+
       this.isPixelCalledOnView = true;
     }
   };
 
+  sendFeedVideoEvent() {
+    if (this.props.feedId) {
+      let data = {
+        kind: "feed_video_view",
+        payload: {feed_id: this.props.feedId, video_id: this.props.videoId}
+      };
+      socketPixelCall.fireEvent(data);
+    }
+  }
   onEnd = (params) => {
     if (this.isPixelCalledOnEnd) return;
     let pixelParams = {
