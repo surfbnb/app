@@ -29,21 +29,11 @@ let stylesMap = {
   },
   captureButtonSkipFont: {
     width: 65,
-    height: 65,
-    // padding: 15,
-    // paddingHorizontal: 20,
-    // marginLeft: -32.5
-    //alignSelf: 'center'
-    // margin: 20
+    height: 65
   },
   flipIconSkipFont: {
     width: 39.5,
-    height: 36.5,
-    // padding: 15,
-    //paddingHorizontal: 20,
-    // marginRight: 12,
-    // marginTop: 13
-    //alignSelf: 'center'
+    height: 36.5
   },
   progressBar: {
     borderRadius: 3.5,
@@ -93,24 +83,26 @@ let stylesMap = {
   loadingMessage: {
     fontSize: 18,
     marginBottom: 15,
-    color: 'white',
+    color: Colors.white,
     fontWeight: '500'
   },
-  smallText: { color: 'white', fontSize: 18, marginTop: 14, fontFamily: 'AvenirNext-Medium' },
+  smallText: {
+    color: Colors.white,
+    fontSize: 18,
+    marginTop: 14,
+    fontFamily: 'AvenirNext-Medium'
+  },
 
   headerText: {
-    color: 'white',
+    color: Colors.white,
     fontWeight: '600',
     fontSize: 24,
     fontFamily: 'AvenirNext-Medium'
   },
 
   bottomWrapper: {
-    flexDirection: 'row',
-    // backgroundColor: '#fff',
-    // justifyContent: 'space-between',
-    // alignSelf: 'flex-end',
-    width: Dimensions.get('window').width,
+    flexDirection: 'row'
+    // width: Dimensions.get('window').width
   }
 };
 

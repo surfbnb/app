@@ -27,7 +27,12 @@ export default {
 
   userStatusMap: {
     activated: 'activated',
-    activating: 'activating'
+    activating: 'activating',
+    inActive: 'inactive'
+  },
+
+  videoStatusMap:{
+    deleted: 'deleted'
   },
 
   deviceStatusMap: {
@@ -224,5 +229,11 @@ export default {
     android: {
       storeName: "play store"
     }
+  },
+
+  appStateMap :{
+    active : "active",
+    inactive: "inactive",
+    background : "background"
   }
 };

@@ -380,6 +380,17 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `isPurchase`);
   }
+  isUserInactive(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `user_entities.id_${id}.status`, '').toLowerCase() == appConfig.userStatusMap.inActive;
+  }
+
+  isVideoDeleted(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_entities.id_${id}.status`, '').toLowerCase() == appConfig.videoStatusMap.deleted;
+
+  }
+
 }
 
 export default new ReduxGetters();

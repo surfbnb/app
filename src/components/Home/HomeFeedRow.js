@@ -63,6 +63,7 @@ class HomeFeedRow extends PureComponent {
         <VideoWrapper
           userId={this.userId}
           videoId={this.videoId}
+          feedId={this.props.feedId}
           doRender={this.props.doRender}
           isActive={this.props.isActive}
           shouldPlay={this.props.shouldPlay}

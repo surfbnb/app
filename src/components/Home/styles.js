@@ -28,9 +28,9 @@ let stylesMap = {
       }
     )
   },
-  fullHeightSkipFont: {
-    width: width,
-    height: height
+  fullHeightWidth: {
+    width: "100%",
+    height: "100%"
   },
   touchablesBtns: {
     alignSelf: 'flex-end',

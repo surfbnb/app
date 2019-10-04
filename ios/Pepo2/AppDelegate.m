@@ -25,6 +25,7 @@
 {
   [FIRApp configure];
   [RNFirebaseNotifications configure];
+  [application registerForRemoteNotifications];
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"Pepo2"
@@ -66,9 +67,11 @@
           kTSKEnforcePinning:@YES,
           kTSKIncludeSubdomains: @NO,
           kTSKPublicKeyHashes : @[
-              @"rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=", //Temp. Will deactivate soon.
-              @"DYo5lqgDZl75OmwvtxvNkpDMfeoDcyVaZi1rANPi4GA=",
-              @"ImWdHMV2ca7NG/Gl542B/RXBXuiT+CF93UZl+jqowGI="
+              @"rxifILU6WUJ5WvsbiTr+q2uLD3wkjsokyRpqEe/u6ck=", //deactivated
+              @"DYo5lqgDZl75OmwvtxvNkpDMfeoDcyVaZi1rANPi4GA=", //deactivated
+              @"ImWdHMV2ca7NG/Gl542B/RXBXuiT+CF93UZl+jqowGI=", //deactivated
+              @"6cN2gRsHMiv4iDmgoQoG49RTbm1Ec44hNBNQS0f0SnA=",
+              @"/oaFmxrP6EZ4Qi7B1+hjcQcyZ9Atf9hKJ1QEKzoMdbQ="
           ],
       },
       @"pepo.com" : @{

@@ -129,6 +129,13 @@ export default {
     return this.getLastChildRoutename(routes[index]);
   },
 
+  getActiveTab( navigation ){
+    if( !navigation ) return ;
+    let activeIndex = deepGet(navigation , 'state.index'),
+        route = deepGet(navigation , `state.routes[${activeIndex}]`);
+    return route && route["routeName"];
+  },
+
   handleVideoUploadModal(previousTabIndex, navigation) {
     if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
@@ -172,5 +179,14 @@ export default {
 
   getNativeStoreName(){
     return deepGet(AppConfig.nativeStoreMap , `${os}.storeName` , "store");
+  },
+
+  getSingularPluralText( val = 0 , text = "" ){
+    if(!text) return text ;
+    val =  Number( val );
+    if( val > 1  ){
+      return text+"s" ; 
+    }
+    return text ;
   }
 };

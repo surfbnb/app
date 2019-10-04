@@ -8,6 +8,8 @@ import reduxGetter from '../../services/ReduxGetters';
 import playIcon from '../../assets/play_icon.png';
 import PixelCall from '../../services/PixelCall';
 import {VideoPlayPauseEmitter} from '../../helpers/Emitters';
+import AppConfig from '../../constants/AppConfig';
+import socketPixelCall from './../../services/SocketPixelCall'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -16,6 +18,9 @@ const mapStateToProps = (state, ownProps) => {
     loginPopover: ownProps.isActive && state.login_popover.show
   };
 };
+
+const VIDEO_PLAY_START_EVENT_NAME = "video_play_start";
+const VIDEO_PLAY_END_EVENT_NAME = "video_play_end";
 
 class VideoWrapper extends PureComponent {
   constructor(props) {
@@ -81,8 +86,12 @@ class VideoWrapper extends PureComponent {
     clearTimeout(this.activeStateTimeout);
   }
 
+  shouldPlay(){
+   return AppState.currentState == AppConfig.appStateMap.active && this.props.shouldPlay() ;
+  }
+
   isPaused() {
-    return !this.props.isActive || this.state.paused || this.props.loginPopover || !this.props.shouldPlay();
+    return !this.props.isActive || this.state.paused || this.props.loginPopover || !this.shouldPlay();
   }
 
   playVideo() {
@@ -106,9 +115,9 @@ class VideoWrapper extends PureComponent {
 
   appActiveStateChanged(nextAppState) {
     let appState = nextAppState.toLowerCase();
-    if ('active' === appState && !this.isUserPaused && !this.pausedOnNavigation) {
+    if (AppConfig.appStateMap.active === appState && !this.isUserPaused && !this.pausedOnNavigation) {
       this.playVideo();
-    } else if ('inactive' === appState) {
+    } else if ( AppConfig.appStateMap.inactive === appState || AppConfig.appStateMap.background === appState ) {
       this.pauseVideo();
     }
   }
@@ -142,9 +151,25 @@ class VideoWrapper extends PureComponent {
         p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
       };
       PixelCall(pixelParams);
+
+      this.sendFeedVideoEvent(VIDEO_PLAY_START_EVENT_NAME);
+
       this.isPixelCalledOnView = true;
     }
   };
+
+  sendFeedVideoEvent(eventKind) {
+    let feedId = 0; // For non-feed video elements.
+    if (this.props.feedId) {
+      feedId = this.props.feedId;
+    }
+
+    let data = {
+      kind: eventKind,
+      payload: {feed_id: feedId, video_id: this.props.videoId}
+    };
+    socketPixelCall.fireEvent(data);
+  }
 
   onEnd = (params) => {
     if (this.isPixelCalledOnEnd) return;
@@ -169,7 +194,7 @@ class VideoWrapper extends PureComponent {
             <Video
               poster={this.props.videoImgUrl}
               posterResizeMode={this.props.posterResizeMode || 'cover'}
-              style={[inlineStyles.fullHeightSkipFont, this.props.style]}
+              style={[inlineStyles.fullHeightWidth, this.props.style]}
               paused={this.isPaused()}
               resizeMode={this.props.resizeMode || 'cover'}
               source={{ uri: this.props.videoUrl }}

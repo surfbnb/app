@@ -19,6 +19,10 @@ let stylesMap = {
         width:20,
         marginRight:10
       },
+      navigateSkipFont: {
+        height: 20,
+        aspectRatio: 44/80
+      },
       headerStyles: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
@@ -35,6 +39,28 @@ let stylesMap = {
       },
       headerSubText:{
           fontSize: 12
+      },
+      webviewContent:{
+        flex:1,
+        alignItems:"center", 
+        marginTop: -40
+      },
+      footerStyles: {
+        flex: 0,
+        width: '100%',
+        flexDirection: 'row',
+        backgroundColor: Colors.white,
+        shadowColor: Colors.black,
+        shadowOffset: { width: 0, height: -4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+        elevation: 5
+      },
+      navigateWrapper: {
+        width: 50,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center'
       }
   }
 

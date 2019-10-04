@@ -46,8 +46,8 @@ class SayThanks extends Component {
   }
 
   componentDidMount(){
-    //Dont delete this code. This is a pure hack for android keyboard initial jump.
-    this.setState({ thanksMessage: thanksMsg ,focus: true});
+    //Dont delete this code. This is a hack for android keyboard initial jump.
+    setTimeout(() => this.setState({ thanksMessage: thanksMsg, focus: true}), 0);
   }
 
   componentWillMount() {
@@ -228,7 +228,6 @@ class SayThanks extends Component {
                 <View style={{ flex: 1 }}>
                   <FormInput
                     onChangeText={this.changeMessage}
-                    placeholder=""
                     fieldName="text"
                     style={[Theme.TextInput.textInputStyle, { height: 50, color: '#2a293b', marginTop: 0 }]}
                     value={`${this.state.thanksMessage}`}

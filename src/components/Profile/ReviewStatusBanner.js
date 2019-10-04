@@ -20,7 +20,7 @@ const ReviewStatusBanner = ( props ) => {
     return(
       <TouchableOpacity style={inlineStyles.bannerContainer} onPress={() => InAppBrowser.openBrowser(`${WEB_ROOT}/content-terms`)}>
         <View style= {{flexDirection: 'row'}}>
-          <Image source={infoIcon} style={inlineStyles.infoImageDimensions}/>
+          <Image source={infoIcon} style={inlineStyles.infoImageDimensionsSkipFont}/>
           <Text style={inlineStyles.infoText} >
             Your videos are private, pending approval.
           </Text>

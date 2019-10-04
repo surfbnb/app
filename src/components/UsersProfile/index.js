@@ -48,7 +48,7 @@ export default class UsersProfile extends Component {
     super(props);
     this.userId = this.props.navigation.getParam('userId');
     this.state = {
-      isDeleted : false
+      isDeleted : reduxGetter.isUserInactive(this.userId)
     }
     this.listRef = null;
   }
@@ -91,7 +91,7 @@ export default class UsersProfile extends Component {
     if(this.state.isDeleted){
       return (
           <View style={inlineStyles.container}>
-            <Image style={inlineStyles.imgSize} source={user_not_exist} />
+            <Image style={inlineStyles.imgSizeSkipFont} source={user_not_exist} />
             <Text style={inlineStyles.desc}>The user you were looking for does not exist!</Text>
          </View>
       )
@@ -100,7 +100,6 @@ export default class UsersProfile extends Component {
         <React.Fragment>
           <UserProfileFlatList
             listHeaderComponent={this._headerComponent()}
-            refreshEvent={this.refreshEvent}
             onUserFetch={this.onUserResponse}
             userId={this.userId}
             onRef={(elem) => this.listRef = elem}

@@ -8,14 +8,6 @@ import('../models/CurrentUser').then((imports) => {
 });
 
 class InitWalletSdk {
-  initializeDevice = (setupDeviceDelegate) => {
-    this.setupDevice(setupDeviceDelegate);
-  };
-
-  setupDevice = (setupDeviceDelegate) => {
-    OstWalletSdk.setupDevice(CurrentUser.getOstUserId(), TOKEN_ID, new SetupDeviceWorkflow(setupDeviceDelegate));
-  };
-
   promisifiedSetupDevice() {
     return new Promise((resolve, reject)=> {
       let setupDeviceDelegate = {

@@ -115,7 +115,7 @@ export default class PepoApi {
           case 409:
             break;
           case 401:
-            await CurrentUser.logout(responseJSON);
+            await CurrentUser.logout({device_id: DeviceInfo.getUniqueID()});
             break;
           default:
             Toast.show({
