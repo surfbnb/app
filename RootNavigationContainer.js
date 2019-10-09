@@ -1,13 +1,10 @@
 import React from 'react';
 import { View, Dimensions, Easing, Animated } from 'react-native';
 import { Root } from 'native-base';
-import {
-  createBottomTabNavigator,
-  createStackNavigator,
-  createSwitchNavigator,
-  createDrawerNavigator,
-  createAppContainer
-} from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import deepGet from 'lodash/get';
 
 import NavigationService from './src/services/NavigationService';
@@ -45,8 +42,8 @@ import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
 import WalletSettingScreen from './src/components/WalletSetting';
-import StoreProductsScreen from "./src/components/StoreProducts";
-import PaymentWorker from "./src/components/PaymentWorker";
+import StoreProductsScreen from './src/components/StoreProducts';
+import PaymentWorker from './src/components/PaymentWorker';
 import PushNotificationManager from './src/services/PushNotificationManager';
 import ReferAndEarn from './src/components/ReferAndEarn';
 import Invites from './src/components/Invites';
@@ -59,7 +56,14 @@ import AuthDeviceDrawer from './src/components/Home/AuthDeviceDrawer';
 import InAppBrowserComponent from './src/components/CommonComponents/InAppBrowser';
 import CouchMarks from './src/components/CouchMarks';
 
-const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserComponent' , 'CouchMarks'];
+const customTabHiddenRoutes = [
+  'CaptureVideo',
+  'FanVideoDetails',
+  'InviteCodeScreen',
+  'AddEmailScreen',
+  'InAppBrowserComponent',
+  'CouchMarks'
+];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -113,7 +117,6 @@ const CaptureVideoStack = createStackNavigator(
   }
 );
 
-
 const InAppBrowserStack = createStackNavigator(
   {
     InAppBrowserComponent: InAppBrowserComponent
@@ -144,7 +147,7 @@ const HomeStack = createStackNavigator(
     InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen,
     InviteCodeScreen: InviteCodeScreen,
-    AuthDeviceDrawer : AuthDeviceDrawer,
+    AuthDeviceDrawer: AuthDeviceDrawer,
     AddEmailScreen: AddEmailScreen,
     CouchMarks: CouchMarks
   },
@@ -175,7 +178,7 @@ const NotificationStack = createStackNavigator(
     AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
     CaptureVideo: CaptureVideoStack,
-    InAppBrowserStack: InAppBrowserStack,
+    InAppBrowserStack: InAppBrowserStack
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -311,7 +314,7 @@ const PinPushStack = createStackNavigator(
 
 const PinStack = createStackNavigator(
   {
-    PinPushStack : PinPushStack,
+    PinPushStack: PinPushStack,
     InAppBrowserStack: InAppBrowserStack
   },
   {
@@ -335,7 +338,7 @@ const AppContainer = createAppContainer(
 const RootNavigationContainer = () => (
   <Root>
     <AppContainer
-      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(prevState,currentState,action)}
+      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(prevState, currentState, action)}
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
