@@ -4,7 +4,6 @@ import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createDrawerNavigator } from 'react-navigation-drawer';
 import deepGet from 'lodash/get';
 
 import NavigationService from './src/services/NavigationService';
@@ -203,23 +202,9 @@ const ProfilePushStack = createStackNavigator(
   }
 );
 
-const ProfileDrawerNavigator = createDrawerNavigator(
-  {
-    ProfilePushStack: ProfilePushStack
-  },
-  {
-    drawerPosition: 'right',
-    drawerBackgroundColor: '#fff',
-    overlayColor: 'rgba(0, 0, 0, 0.8)',
-    drawerWidth: Dimensions.get('window').width - Dimensions.get('window').width / 5,
-    contentComponent: CustomDrawerContent,
-    drawerLockMode: 'locked-closed'
-  }
-);
-
 const ProfileStack = createStackNavigator(
   {
-    ProfileDrawerNavigator: ProfileDrawerNavigator,
+    ProfilePushStack: ProfilePushStack,
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery,
     TransactionScreen: TransactionScreen,
