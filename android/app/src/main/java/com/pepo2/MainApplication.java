@@ -11,6 +11,7 @@ import com.pepo2.bridge.PepoNativePackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
+import io.invertase.firebase.links.RNFirebaseLinksPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.smixx.fabric.FabricPackage;
 import com.crashlytics.android.Crashlytics;
@@ -59,6 +60,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFirebasePackage(),
             new RNFirebaseMessagingPackage(),
             new RNFirebaseNotificationsPackage(),
+            new RNFirebaseLinksPackage(),
             new ReactVideoPackage(),
             new FabricPackage(),
             new RNDeviceInfo(),
