@@ -1,16 +1,13 @@
 import React, { PureComponent } from 'react';
-import { FlatList, View, Text, ActivityIndicator, Keyboard } from 'react-native';
+import {View} from "react-native";
 import { SafeAreaView } from 'react-navigation';
-
-import AppConfig from '../../constants/AppConfig';
 import { connect } from 'react-redux';
-import SearchComponent from './SearchComponent';
 import CurrentUser from '../../models/CurrentUser';
-import { Container, Header, Tab, Tabs, ScrollableTab } from 'native-base';
+import { Tab, Tabs, ScrollableTab } from 'native-base';
 import UserProfileFlatList from '../CommonComponents/UserProfileFlatList';
 import SearchListHeader from "./SearchListHeader";
 import styles from './styles';
-
+import NativeBaseTabTheme from "../../theme/styles/NativeBaseTabs";
 
 const mapStateToProps = (state) => {
   return {
@@ -66,74 +63,40 @@ class SearchScreen extends PureComponent {
   };
 
   render() {
+    const tabStyle = NativeBaseTabTheme.tab;
+    const scTabStyle = NativeBaseTabTheme.scrollableTab;
+
     return this.props.userId && ( 
-      <SafeAreaView style={styles.container}>
-          <Container>  
-            <Header hasTabs>
-              <SearchListHeader />
-            </Header>
-            <Tabs renderTabBar={()=> <ScrollableTab />}>
-              <Tab heading="Tab1">
-                <FlatList  
-                      data={[  
-                          {key: 'Android'},{key: 'iOS'}, {key: 'Java'},{key: 'Swift'},  
-                          {key: 'Php'},{key: 'Hadoop'},{key: 'Sap'},  
-                          {key: 'Python'},{key: 'Ajax'}, {key: 'C++'},  
-                          {key: 'Ruby'},{key: 'Rails'},{key: '.Net'},  
-                          {key: 'Perl'},{key: 'Sap'},{key: 'Python'},  
-                          {key: 'Ajax'}, {key: 'C++'},{key: 'Ruby'},  
-                          {key: 'Rails'},{key: '.Net'},{key: 'Perl'} 
-                      ]}  
-                      renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}     
-                  />  
+      <SafeAreaView style={styles.container}> 
+            <SearchListHeader />
+            <Tabs renderTabBar={()=> 
+                  <ScrollableTab 
+                  //  style={{marginHorizontal: 10}}
+                  tabsContainerStyle={scTabStyle.tabsContainerStyle} 
+                  underlineStyle={scTabStyle.underlineStyle} />} 
+                  >
+              <Tab heading="Top" textStyle={tabStyle.textStyle}
+                                activeTextStyle={tabStyle.activeTextStyle} 
+                                activeTabStyle={tabStyle.activeTabStyle}
+                                tabStyle={tabStyle.tabStyle}
+                                style={tabStyle.style}>
+                <UserProfileFlatList userId={"1710"}/> 
               </Tab>
-              <Tab heading="Tab2asdasdsaada">
+              <Tab heading="Pepole" textStyle={tabStyle.textStyle}
+                                activeTextStyle={tabStyle.activeTextStyle} 
+                                activeTabStyle={tabStyle.activeTabStyle}
+                                tabStyle={tabStyle.tabStyle}
+                                style={tabStyle.style}>
                 <UserProfileFlatList userId={"1710"}/>
               </Tab>
-              <Tab heading="Tab3">
-              <FlatList  
-                    data={[  
-                        {key: 'Android'},{key: 'iOS'}, {key: 'Java'},{key: 'Swift'},  
-                        {key: 'Php'},{key: 'Hadoop'},{key: 'Sap'},  
-                        {key: 'Python'},{key: 'Ajax'}, {key: 'C++'},  
-                        {key: 'Ruby'},{key: 'Rails'},{key: '.Net'},  
-                        {key: 'Perl'},{key: 'Sap'},{key: 'Python'},  
-                        {key: 'Ajax'}, {key: 'C++'},{key: 'Ruby'},  
-                        {key: 'Rails'},{key: '.Net'},{key: 'Perl'}  
-                    ]}  
-                    renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}                    
-                />  
-              </Tab>
-              <Tab heading="Tabdddasdsa4">
-              <FlatList  
-                    data={[  
-                        {key: 'Android'},{key: 'iOS'}, {key: 'Java'},{key: 'Swift'},  
-                        {key: 'Php'},{key: 'Hadoop'},{key: 'Sap'},  
-                        {key: 'Python'},{key: 'Ajax'}, {key: 'C++'},  
-                        {key: 'Ruby'},{key: 'Rails'},{key: '.Net'},  
-                        {key: 'Perl'},{key: 'Sap'},{key: 'Python'},  
-                        {key: 'Ajax'}, {key: 'C++'},{key: 'Ruby'},  
-                        {key: 'Rails'},{key: '.Net'},{key: 'Perl'}  
-                    ]}  
-                    renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}     
-                />  
-              </Tab>
-              <Tab heading="Tab5">
-              <FlatList  
-                    data={[  
-                        {key: 'Android'},{key: 'iOS'}, {key: 'Java'},{key: 'Swift'},  
-                        {key: 'Php'},{key: 'Hadoop'},{key: 'Sap'},  
-                        {key: 'Python'},{key: 'Ajax'}, {key: 'C++'},  
-                        {key: 'Ruby'},{key: 'Rails'},{key: '.Net'},  
-                        {key: 'Perl'},{key: 'Sap'},{key: 'Python'},  
-                        {key: 'Ajax'}, {key: 'C++'},{key: 'Ruby'},  
-                        {key: 'Rails'},{key: '.Net'},{key: 'Perl'}  
-                    ]}  
-                    renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}  
-                />  
+              <Tab heading="Tags" textStyle={tabStyle.textStyle}
+                                activeTextStyle={tabStyle.activeTextStyle} 
+                                activeTabStyle={tabStyle.activeTabStyle}
+                                tabStyle={tabStyle.tabStyle}
+                                style={tabStyle.style}>
+                <UserProfileFlatList userId={"1710"}/>
               </Tab>
             </Tabs>
-      </Container>
     </SafeAreaView>  
     );
   }
