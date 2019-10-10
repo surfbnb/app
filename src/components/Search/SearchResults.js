@@ -73,16 +73,14 @@ class SearchResults extends PureComponent {
           data={this.props.list}
           onScrollBeginDrag={() => Keyboard.dismiss()}
           keyboardShouldPersistTaps={'handled'}          
-          horizontal={this.props.horizontal}
           enableEmptySections={true}
-          stickyHeaderIndices={[0]}
           onEndReached={this.props.getNext}
           keyExtractor={this._keyExtractor}
           refreshing={false}
           onEndReachedThreshold={5}
           renderItem={this._renderItem}
           ListEmptyComponent={this.getEmptyComponent}
-          ListHeaderComponent={<SearchListHeader setSearchParams={this.props.setSearchParams} />}
+          // ListHeaderComponent={<SearchListHeader setSearchParams={this.props.setSearchParams} />}
           showsVerticalScrollIndicator={false}
         />        
       </SafeAreaView>
