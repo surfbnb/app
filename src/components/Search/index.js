@@ -1,9 +1,13 @@
 import React, { PureComponent } from 'react';
-
-import AppConfig from '../../constants/AppConfig';
+import {View} from "react-native";
+import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import SearchComponent from './SearchComponent';
 import CurrentUser from '../../models/CurrentUser';
+import { Tab, Tabs, ScrollableTab } from 'native-base';
+import UserProfileFlatList from '../CommonComponents/UserProfileFlatList';
+import SearchListHeader from "./SearchListHeader";
+import styles from './styles';
+import NativeBaseTabTheme from "../../theme/styles/NativeBaseTabs";
 
 const mapStateToProps = (state) => {
   return {
@@ -59,16 +63,41 @@ class SearchScreen extends PureComponent {
   };
 
   render() {
-    return this.props.userId && (
-      <SearchComponent
-        fetchUrl={`/users/search?q=${this.state.searchParams}`}
-        shouldMakeApiCall={this.shouldMakeApiCall}
-        setSearchParams={this.setSearchParams}
-        onRefresh={this.onRefresh}
-        toRefresh={this.state.refresh}
-        searchParams={this.state.searchParams}
-        noResultsFound={this.state.noResultsFound}
-      />
+    const tabStyle = NativeBaseTabTheme.tab;
+    const scTabStyle = NativeBaseTabTheme.scrollableTab;
+
+    return this.props.userId && ( 
+      <SafeAreaView style={styles.container}> 
+            <SearchListHeader />
+            <Tabs renderTabBar={()=> 
+                  <ScrollableTab 
+                  //  style={{marginHorizontal: 10}}
+                  tabsContainerStyle={scTabStyle.tabsContainerStyle} 
+                  underlineStyle={scTabStyle.underlineStyle} />} 
+                  >
+              <Tab heading="Top" textStyle={tabStyle.textStyle}
+                                activeTextStyle={tabStyle.activeTextStyle} 
+                                activeTabStyle={tabStyle.activeTabStyle}
+                                tabStyle={tabStyle.tabStyle}
+                                style={tabStyle.style}>
+                <UserProfileFlatList userId={"1710"}/> 
+              </Tab>
+              <Tab heading="Pepole" textStyle={tabStyle.textStyle}
+                                activeTextStyle={tabStyle.activeTextStyle} 
+                                activeTabStyle={tabStyle.activeTabStyle}
+                                tabStyle={tabStyle.tabStyle}
+                                style={tabStyle.style}>
+                <UserProfileFlatList userId={"1710"}/>
+              </Tab>
+              <Tab heading="Tags" textStyle={tabStyle.textStyle}
+                                activeTextStyle={tabStyle.activeTextStyle} 
+                                activeTabStyle={tabStyle.activeTabStyle}
+                                tabStyle={tabStyle.tabStyle}
+                                style={tabStyle.style}>
+                <UserProfileFlatList userId={"1710"}/>
+              </Tab>
+            </Tabs>
+    </SafeAreaView>  
     );
   }
 }

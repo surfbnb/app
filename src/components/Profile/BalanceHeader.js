@@ -93,16 +93,12 @@ class BalanceHeader extends PureComponent {
   }
 
   openWebView = () => {
-    console.log('openWebView: open browser');
-
     new PepoApi(`/redemptions/info`)
     .get()
-    .then((res) => { setTimeout(() => {
-
+    .then((res) => {
       res && res.data && InAppBrowser.openBrowser(res.data.redemption_info.url);
-    }, 0); })
+    })
     .catch((error) => {});
-
   }
 
   getWalletIcon = () => {
