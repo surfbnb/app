@@ -25,7 +25,7 @@ class SearchScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.defaultState =  {
-      searchParams: 'ash',
+      searchParams: '',
       refresh: true,
       noResultsFound: false
     };
