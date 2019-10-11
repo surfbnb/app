@@ -41,6 +41,10 @@
                       android:host="stagingpepo.com"/>
                 <data android:scheme="http"
                       android:host="stagingpepo.com"/>
+                <data android:host="testapp.stagingpepo.com"
+                      android:scheme="http"/>
+                <data android:host="testapp.stagingpepo.com"
+                      android:scheme="https"/>
             </intent-filter>
         </activity>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
