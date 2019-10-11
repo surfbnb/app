@@ -19,6 +19,10 @@ export default {
         isConsumableKey: "is_consumable"
     },
 
+    redemption: {
+        configApi : ""
+    },
+
     common: {
         resultType : "data.result_type"
     }

@@ -13,6 +13,7 @@ import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
 import AppConfig from '../constants/AppConfig';
+import InAppBrowser from './InAppBrowser';
 
 let os = Platform.OS || "";
 os =  os.toLowerCase();
@@ -188,5 +189,16 @@ export default {
       return text+"s" ; 
     }
     return text ;
+  },
+
+  openRedemptionWebView() {
+    new PepoApi(`/redemptions/info`)
+    .get()
+    .then((res) => {
+      let url =  deepGet(res, "data.redemption_info.url");
+      url && Linking.openURL(url);
+    })
+    .catch((error) => {});
   }
+
 };
