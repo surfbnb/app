@@ -235,5 +235,9 @@ export default {
     active : "active",
     inactive: "inactive",
     background : "background"
+  },
+
+  redemption:{
+    pepoCornsName : "Pepocorns"
   }
 };

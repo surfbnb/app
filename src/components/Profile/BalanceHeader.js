@@ -22,6 +22,7 @@ import appConfig from "../../constants/AppConfig";
 import { ostErrors } from '../../services/OstErrors';
 import AppConfig from '../../constants/AppConfig';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
+import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -94,6 +95,15 @@ class BalanceHeader extends PureComponent {
   }
 
   onRedemptionClick = () => {
+  
+    if(!CurrentUser.isUserActivated()){
+      Toast.show({
+        text: ostErrors.getUIErrorMessage('user_not_active'),
+        buttonText: 'Okay'
+      });
+      return;
+    }
+
     let btVal = this.__toBt(this.props.balance);
     btVal =  Number( btVal )
     if( btVal < 1 ){
@@ -102,7 +112,13 @@ class BalanceHeader extends PureComponent {
         buttonText: 'Okay'
       });
     }else{
-      this.props.navigation.push("RedemptiomScreen");
+      OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
+        if(this.isDevicesAuthorized( device )){
+          this.props.navigation.push("RedemptiomScreen");
+        }else{
+          this.props.navigation.push("AuthDeviceDrawer" , {device: device});
+        }
+      })
     }
   }
 

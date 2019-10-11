@@ -62,7 +62,7 @@ class FormInput extends Component {
             (this.state.errorMsg || this.props.errorMsg) ? Theme.Errors.errorBorder : {}
           ]}
         />
-        <Text style={Theme.Errors.errorText}>
+        <Text style={[Theme.Errors.errorText ,  this.props.errorStyle]}>
           { this.props.errorMsg || this.state.errorMsg }
         </Text>
       </React.Fragment>

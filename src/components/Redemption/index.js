@@ -26,11 +26,13 @@ import DataContract from '../../constants/DataContract';
 import FormInput from '../../theme/components/FormInput';
 
 import pepoTxIcon from "../../assets/pepo-tx-icon.png";
+import pepo_icon from '../../assets/pepo-tx-icon.png';
 import toastError from '../../assets/toast_error.png';
-import pepoCorn from '../../assets/PepoCornActive.png';
+import pepoCornsImg from '../../assets/PepoCornActive.png';
 import tx_success from '../../assets/transaction_success_star.png';
 import Utilities from '../../services/Utilities';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
+import AppConfig from '../../constants/AppConfig';
 
 
 class Redemption extends PureComponent{
@@ -51,6 +53,7 @@ class Redemption extends PureComponent{
         }
 
         this.isError =  false;
+        this.configResponse = null;
         this.serverError = null;
         this.isAppUpdate = false;
     }
@@ -79,8 +82,9 @@ class Redemption extends PureComponent{
     }
 
     onFetchRedemptionConfigSuccess( res ){
-        //TODO i dont know.
+        this.configResponse = res;
         this.isError =  false ;
+        this.isAppUpdate = this.__isAppUpdate(res); 
         this.setState({isLoading: false});
     }
 
@@ -88,6 +92,24 @@ class Redemption extends PureComponent{
         this.state.errorMsg = ostErrors.getErrorMessage( error  , "redemption_error");
         this.isError = true ;
         this.setState({isLoading: false});
+    }
+
+    __isAppUpdate( ){
+        return !!deepGet(this.configResponse , DataContract.redemption.isAppUpdateKeyPath);
+    }
+
+    getPepoCornsName(){
+        const pepoCornsEntity = deepGet(this.configResponse , `data.${deepGet(this.configResponse ,  DataContract.common.resultType)}` , {}); 
+        return pepoCornsEntity[DataContract.redemption.pepoCornsNameKey] || AppConfig.redemption.pepoCornsName; 
+    }
+
+    getPepoCornsImageSource(){
+        const pepoCornsEntity = deepGet(this.configResponse , `data.${deepGet(this.configResponse ,  DataContract.common.resultType)}` , {}); 
+        const imageSrc = pepoCornsEntity[DataContract.redemption.pepoCornsImageKey];
+        if( imageSrc ){
+            return {uri: imageSrc};
+        }
+        return pepoCornsImg
     }
 
     onPepoCornChange = (val) => {
@@ -161,7 +183,7 @@ class Redemption extends PureComponent{
                 <Animated.Image
                   style={[ animationStyle, {width: 40, height: 40, marginBottom: 20} ]}
                   source={pepoTxIcon}/>
-                <Text> {msg || "Please wait, we are getting your Pepocorns" }</Text>
+                <Text> {msg || `Please wait, we are getting your ${this.getPepoCornsName()}` }</Text>
             </View>
         )
     }
@@ -196,7 +218,7 @@ class Redemption extends PureComponent{
             <View style={inlineStyles.successViewWrapper}>
                 <Image source={tx_success} style={[{ width: 164.6, height: 160, marginBottom: 20 }]}></Image>
                 <Text style={[inlineStyles.successText , {fontFamily: 'AvenirNext-Regular'}]}>
-                    Success, you have {this.state.pepoCorns} new Pepocorns, you can also view them in your settings menu
+                    Success, you have {this.state.pepoCorns} new {this.getPepoCornsName()}, you can also view them in your settings menu.
                 </Text>
                 <TouchableButton  TouchableStyles={[Theme.Button.btnPink]}
                                   TextStyles={[Theme.Button.btnPinkText]}
@@ -210,31 +232,41 @@ class Redemption extends PureComponent{
     getRedemptionMarkup = () => {
         return (
             <View style={inlineStyles.viewWrapper}>
-                <Text style={inlineStyles.heading}>Buy Pepocorns</Text>
-                <Image source={pepoCorn} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
-                <Text style={inlineStyles.subText1}>Pepocorns are elusive creatures that only exist in Pepo. They are currently un-chained but we are working on that.</Text>
+                <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
+                <Image source={this.getPepoCornsImageSource()} style={{ width: 80, height: 80, marginBottom: 20}}></Image>
+                <Text style={inlineStyles.subText1}>
+                    {this.getPepoCornsName()} are elusive creatures that only exist in Pepo.{" "}
+                    {this.getPepoCornsName()} can be only be purchased with Pepo Coins
+                </Text>
                 <View style={inlineStyles.subSection}>
-                    <Text style={inlineStyles.heading2} >How many Pepocorns do you want to buy?</Text>
-                    {/* TODO converstion display */}
-                    <Text style={inlineStyles.subText2}>Pepocorns can be only be purchased with Pepo Coins 1 Pepocorn = 1 Pepocoin</Text>
+                    <Text style={inlineStyles.heading2} >How many {this.getPepoCornsName()} do you want to buy?</Text>
                     <View style={inlineStyles.formInputWrapper}>
                         <FormInput
                             editable={true}
                             onChangeText={this.onPepoCornChange}
+                            style={[Theme.TextInput.textInputStyle]}
                             value={this.state.pepoCorns}
                             placeholder="Pepocorns"
                             fieldName="pepo_corns"
                             placeholderTextColor="#ababab"
                             keyboardType="decimal-pad"
                             blurOnSubmit={true}
+                            errorStyle={{display: "none"}}
                             onFocus={this.onPepoCornFocus}
-                        />
-                        <Text style={[{ textAlign: 'center', marginTop: 10 }, Theme.Errors.errorText]}> {this.state.errorMsg}</Text>
-                        <TouchableButton    TouchableStyles={[Theme.Button.btnPink]}
+                        >
+                          {this.state.pepoCorns}  
+                        </FormInput>
+                        <View style={inlineStyles.valueIn}>
+                            <Text>Value in <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}{this.state.btAmout}</Text>
+                        </View>
+                        {/* TODO error handling */}
+                        {/* <Text style={[{ textAlign: 'center', marginTop: 10 }, Theme.Errors.errorText]}> {this.state.errorMsg}</Text> */}
+                        <TouchableButton    TouchableStyles={[Theme.Button.btnPink , {width: "100%"}]}
                                             TextStyles={[Theme.Button.btnPinkText]}
-                                            text={"Buy"}
+                                            text={"Buy with Pepocoins"}
                                             onPress={MultipleClickHandler(() => this.onConfrim())}
                           />
+                        <Text style={inlineStyles.balanceText}>Your current balance: <Image style={{ width: 14, height: 14 }} source={pepo_icon}></Image>{' '}{this.toBt(this.state.balance)}</Text>  
                    </View> 
                 </View>
             </View>
@@ -242,6 +274,7 @@ class Redemption extends PureComponent{
     }
 
     getMarkUp = () => {
+        return this.getRedemptionMarkup();
         this.getAnimation().stop() ;
         if(this.state.isLoading){
            return this.getLoadingMarkup();
@@ -256,13 +289,6 @@ class Redemption extends PureComponent{
         }
     }
 
-    closeModal = () => {
-        if(!this.state.isPurchasing){
-            this.props.navigation.goBack();
-            return true ;
-        }
-        return false;
-    }
 
     render(){
         return (
@@ -278,6 +304,18 @@ class Redemption extends PureComponent{
         );
     }
 
+    toBt( val ){
+        const priceOracle =  Pricer.getPriceOracle() ;
+        return priceOracle.fromDecimal( val ) || 0 ;
+    }
+
+    closeModal = () => {
+        if(!this.state.isPurchasing){
+            this.props.navigation.goBack();
+            return true ;
+        }
+        return false;
+    }
   
 
 }
