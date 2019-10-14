@@ -111,6 +111,7 @@
 		77C415E022FD8ACE008F0F63 /* libRNCNetInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0088107422BA26A8000B154C /* libRNCNetInfo.a */; };
 		77C415E122FD8B00008F0F63 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A1A95F22F2DA2F0071923D /* libRNDeviceInfo.a */; };
 		77C415E222FD8B53008F0F63 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FD1522A821D700C2634F /* libRNGestureHandler.a */; };
+		77E9E941235074F10081E690 /* FirebaseDynamicLinks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77E9E8FF235074F10081E690 /* FirebaseDynamicLinks.framework */; };
 		77EDA37C22D763D20095674F /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EDA37B22D763CB0095674F /* libRNCamera.a */; };
 		7CF11B015E3845FC8E8CBCC4 /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF841003911544D1B506D1B5 /* Lato-Hairline.ttf */; };
 		7E873BEEA71D4772A4CEA8FE /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4942AA6D4C5247669FA8FCAF /* rubicon-icon-font.ttf */; };
@@ -723,6 +724,7 @@
 		6E2AB22225D74E6496659BC7 /* libRNCWebView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCWebView.a; sourceTree = "<group>"; };
 		7766C61622DD9FB000C019D8 /* RNFS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		779F2EB622D7CE180076410B /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
+		77E9E8FF235074F10081E690 /* FirebaseDynamicLinks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseDynamicLinks.framework; sourceTree = "<group>"; };
 		77EDA37622D763CB0095674F /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		789B7BE072654BAB9FD268A5 /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../src/assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -815,6 +817,7 @@
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
+				77E9E941235074F10081E690 /* FirebaseDynamicLinks.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00E5D902232A556F006EA3DE /* GoogleUtilities.framework in Frameworks */,
 				00E5D8FF232A556F006EA3DE /* GoogleAppMeasurement.framework in Frameworks */,
@@ -1053,6 +1056,7 @@
 		00E5D8EB232A556F006EA3DE /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
+				77E9E8FE235074F10081E690 /* DynamicLinks */,
 				00E5D8EC232A556F006EA3DE /* Firebase.h */,
 				00E5D8ED232A556F006EA3DE /* Messaging */,
 				00E5D8F0232A556F006EA3DE /* Analytics */,
@@ -1303,6 +1307,14 @@
 				77A278AA23225CD6008C55AA /* libRNReactNativeHapticFeedback.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		77E9E8FE235074F10081E690 /* DynamicLinks */ = {
+			isa = PBXGroup;
+			children = (
+				77E9E8FF235074F10081E690 /* FirebaseDynamicLinks.framework */,
+			);
+			path = DynamicLinks;
 			sourceTree = "<group>";
 		};
 		77EDA32E22D74FBC0095674F /* Products */ = {
@@ -2236,6 +2248,7 @@
 					"$(PROJECT_DIR)/Firebase/Messaging",
 					"$(PROJECT_DIR)/Firebase/Analytics",
 					"$(SRCROOT)/Firebase",
+					"$(PROJECT_DIR)/Firebase/DynamicLinks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2293,6 +2306,7 @@
 					"$(PROJECT_DIR)/Firebase/Messaging",
 					"$(PROJECT_DIR)/Firebase/Analytics",
 					"$(SRCROOT)/Firebase",
+					"$(PROJECT_DIR)/Firebase/DynamicLinks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
