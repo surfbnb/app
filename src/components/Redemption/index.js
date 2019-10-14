@@ -9,7 +9,8 @@ import {
     Image,
     BackHandler,
     Linking,
-    Keyboard
+    Keyboard,
+    TouchableOpacity
   } from 'react-native';
 
 import TouchableButton from "../../theme/components/TouchableButton";
@@ -31,6 +32,7 @@ import toastError from '../../assets/toast_error.png';
 import pepoCornsImg from '../../assets/PepoCornActive.png';
 import pepoCornSmall from '../../assets/PepoCorn.png';
 import tx_success from '../../assets/transaction_success_star.png';
+import modalCross from '../../assets/modal-cross-icon.png';
 import AppUpgrade from '../../assets/app_upgrade.png';
 import Utilities from '../../services/Utilities';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
@@ -595,7 +597,18 @@ class Redemption extends PureComponent{
                 <View style={{ flex: 1, backgroundColor: 'transparent' }}>
                   <TouchableWithoutFeedback>
                     <View style={[inlineStyles.container , { paddingBottom: this.state.bottomPadding }]}>
-                        {this.getMarkUp()}
+                        <View style={{position:'relative'}}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.closeModal();
+                                }}
+                                style={inlineStyles.crossIconWrapper}
+                                disabled={this.state.isPurchasing}
+                                >
+                                <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
+                            </TouchableOpacity>
+                            {this.getMarkUp()}
+                        </View>
                     </View>
                   </TouchableWithoutFeedback>
                 </View>
