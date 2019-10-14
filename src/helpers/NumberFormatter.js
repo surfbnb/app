@@ -54,7 +54,7 @@ class NumberFormatter {
           val = firstVal+decimalSeparator+decimalVal;
         }
     
-        return val
+        return val;
       };
     
       getFullStopValue(val) {

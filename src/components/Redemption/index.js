@@ -7,7 +7,9 @@ import {
     Animated,
     Easing,
     Image,
-    BackHandler
+    BackHandler,
+    Linking,
+    Keyboard
   } from 'react-native';
 
 import TouchableButton from "../../theme/components/TouchableButton";
@@ -27,7 +29,9 @@ import pepoTxIcon from "../../assets/pepo-tx-icon.png";
 import pepo_icon from '../../assets/pepo-tx-icon.png';
 import toastError from '../../assets/toast_error.png';
 import pepoCornsImg from '../../assets/PepoCornActive.png';
+import pepoCornSmall from '../../assets/PepoCorn.png';
 import tx_success from '../../assets/transaction_success_star.png';
+import AppUpgrade from '../../assets/app_upgrade.png';
 import Utilities from '../../services/Utilities';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
 import AppConfig from '../../constants/AppConfig';
@@ -38,6 +42,7 @@ import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import InAppBrowser from '../../services/InAppBrowser';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -48,9 +53,9 @@ const btnPostText = "Confriming...";
 
 /**TODO Start
  * @Preshita Keyboard avoiding view
- * @Preshita Appstore linking 
- * @Preshita update store icon instead of remeeption icon in BalanceHeader file. 
- * @Preshita App upgrade Screen UI
+ * @Preshita @sunil Appstore linking
+ * @Preshita update store icon instead of remeeption icon in BalanceHeader file. --> Done
+ * @Preshita App upgrade Screen UI--> done
  * @Preshita Complete dev test
  * @Preshita Check your name below TODO's
  * @Ashutosh confrim meta data to sdk
@@ -84,23 +89,31 @@ class Redemption extends PureComponent{
             scale: new Animated.Value(0.1),
             btnText: btnPreText
         }
-       
+
         this.numberFormatter = new NumberFormatter();
     }
 
+        this.defaultState = {
+            exceBtnDisabled: false,
+            redemptionSuccess: false,
+            isPurchasing: false,
+            isLoading: false,
+            btnText: btnPreText,
+            inputFieldsEditable: true,
+            errorMsg: null
+          }
+    }
+
     resetState() {
-        this.setState({
-          exceBtnDisabled: false,
-          redemptionSuccess: false,
-          isPurchasing: false,
-          isLoading: false,
-          btnText: btnPreText,
-          inputFieldsEditable: true,
-          errorMsg: null
-        });
+        this.setState({...this.defaultState});
       }
 
     componentDidMount(){
+        this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
+        this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
+
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
         this.fetchRedemptionConfig();
     }
@@ -145,7 +158,7 @@ class Redemption extends PureComponent{
     }
 
     __isAppUpdate( ){
-        return !!deepGet(this.configResponse , DataContract.redemption.isAppUpdateKeyPath);
+        return !!deepGet(this.configResponse , DataContract.redemption.appUpdateKeyPath);
     }
 
     getPepoCornEntity(){
@@ -201,10 +214,6 @@ class Redemption extends PureComponent{
         this.setState({
           bottomPadding: safeAreaBottomSpace
         });
-    }
-
-    onPepoCornFocus = () => {
-        //TODO @Preshita
     }
 
     onPepoCornChange = (val) => {
@@ -476,27 +485,40 @@ class Redemption extends PureComponent{
         )
     }
 
+    getAppUpdateMessage(){
+       return deepGet(this.configResponse , `${DataContract.redemption.appUpdateKeyPath}.${Platform.OS}.message`);
+    }
+
+    getAppUpdateCTAText(){
+        return deepGet(this.configResponse , `${DataContract.redemption.appUpdateKeyPath}.${Platform.OS}.cta_text`) || 'Update';
+    }
+
+    getAppUpdateCTAUrl(){
+        return  'itms-apps://itunes.apple.com/us/app/id${APP_STORE_LINK_ID}?mt=8';
+    }
+
     getAppUpdateMarkup = () => {
-        //TODO @Preshita , do the UI part as well
         return (
             <View style={inlineStyles.viewWrapper}>
-                <Image source={toastError} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
-                <Text style={{textAlign: "center"}}>Please update your app for redemption.</Text>
+                <Image source={AppUpgrade} style={{ height: 100, aspectRatio: 220/368, marginBottom: 20 }}></Image>
+                <Text style={{marginBottom: 20,  textAlign: 'center'}}>
+                    {this.getAppUpdateMessage()}
+                </Text>
                 <TouchableButton  TouchableStyles={[Theme.Button.btnPink]}
-                                  TextStyles={[Theme.Button.btnPinkText]}
-                                  text={"Update"}
-                                  onPress={MultipleClickHandler(() => this.onUpdateAppClick())}
-                          />
+                                    TextStyles={[Theme.Button.btnPinkText]}
+                                    text={this.getAppUpdateCTAText()}
+                                    onPress={MultipleClickHandler(() => this.onUpdateAppClick())}
+                            />
             </View>
         )
     }
 
     getSuccessMarkup = (msg) => {
-         //TODO @Preshita , do the UI part as well
+         //TODO @Preshita , do the UI part as well --> done
         return (
             <View style={inlineStyles.successViewWrapper}>
                 <Image source={tx_success} style={[{ width: 164.6, height: 160, marginBottom: 20 }]}></Image>
-                <Text style={[inlineStyles.successText , {fontFamily: 'AvenirNext-Regular'}]}>
+                <Text style={[inlineStyles.successText]}>
                     Success, you have {this.state.pepoCorns} new {this.getPepoCornsName()}, you can also view them in your settings menu.
                 </Text>
                 <TouchableButton  TouchableStyles={[Theme.Button.btnPink]}
@@ -509,7 +531,7 @@ class Redemption extends PureComponent{
     }
 
     getRedemptionMarkup = () => {
-        //TODO minor UI @Preshita , Unicorn icon 
+        //TODO minor UI @Preshita , Unicorn icon --> done
         return (
             <View style={inlineStyles.viewWrapper}>
                 <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
@@ -520,11 +542,13 @@ class Redemption extends PureComponent{
                 </Text>
                 <View style={inlineStyles.subSection}>
                     <Text style={inlineStyles.heading2} >How many {this.getPepoCornsName()} do you want to buy?</Text>
-                    <View style={inlineStyles.formInputWrapper}>
-                        <FormInput
+                    <View>
+                       <View style={inlineStyles.formInputWrapper}>
+                         <Image source={pepoCornSmall} style={inlineStyles.textInputImage}/>
+                         <FormInput
                             editable={this.state.inputFieldsEditable}
                             onChangeText={this.onPepoCornChange}
-                            style={[Theme.TextInput.textInputStyle]}
+                            style={[Theme.TextInput.textInputStyle, {paddingLeft: 35}]}
                             value={this.state.pepoCorns}
                             placeholder="Pepocorns"
                             fieldName="pepo_corns"
@@ -532,10 +556,10 @@ class Redemption extends PureComponent{
                             keyboardType="decimal-pad"
                             blurOnSubmit={true}
                             errorStyle={{display: "none"}}
-                            onFocus={this.onPepoCornFocus}
-                        >
-                          {this.state.pepoCorns}  
-                        </FormInput>
+                            >
+                                {this.state.pepoCorns}
+                            </FormInput>
+                        </View>
                         <View style={inlineStyles.valueIn}>
                             <Text>Value in <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}{this.state.btAmount}</Text>
                         </View>
@@ -595,8 +619,11 @@ class Redemption extends PureComponent{
         return this.state.isPurchasing
     }
 
-    onUpdateAppClick = () =>{
-        //TODO @Preshita
+    onUpdateAppClick = () => {
+        const url = this.getAppUpdateCTAUrl();
+        if(url) {
+            Linking.openURL(url);
+        }
     }
 
     onRedemptionWebViewClick = () => {

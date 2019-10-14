@@ -3,84 +3,102 @@ import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
     
-    container: {
-        backgroundColor: Colors.white,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        paddingVertical: 15,
-        position: 'absolute',
-        width: '100%',
-        borderTopRightRadius: 25,
-        borderTopLeftRadius: 25,
-        bottom: 0
-      },
+  container: {
+      backgroundColor: Colors.white,
+      alignSelf: 'center',
+      justifyContent: 'center',
+      paddingVertical: 15,
+      position: 'absolute',
+      width: '100%',
+      borderTopRightRadius: 25,
+      borderTopLeftRadius: 25,
+      bottom: 0
+    },
 
-      viewWrapper: {
-        paddingHorizontal: 20,
-        paddingBottom: 20,
-        paddingTop: 10,
-        alignItems: "center"
-      },
+    viewWrapper: {
+      paddingHorizontal: 20,
+      paddingBottom: 20,
+      paddingTop: 10,
+      alignItems: "center"
+    },
 
-      successViewWrapper : {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 40,
-        backgroundColor: '#fbfbfb' 
-      },
+    successViewWrapper : {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop: 40
+    },
 
-      successText : {
-        textAlign: 'center',
-        fontSize: 16 
-      },
+    appUpdateWrapper : {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop: 40
+    },
 
-      redemtionWrapper :{ 
-        alignItems: "center"
-      },
+    successText : {
+      textAlign: 'center',
+      fontSize: 16 , 
+      marginBottom: 20
+    },
 
-      heading :{ 
-        fontSize: 18,
-        fontWeight: "500",
-        paddingBottom: 10,
-        color: Colors.black
-      },
+    redemtionWrapper :{ 
+      alignItems: "center"
+    },
 
-      subText1 : {
-        textAlign: "center",
-        color: Colors.black,
-        paddingBottom: 10,
-        fontSize: 12
-      },
+    heading :{ 
+      fontSize: 18,
+      fontWeight: "500",
+      paddingBottom: 10,
+      color: Colors.black
+    },
 
-      subSection : {
-        width: '100%'
-      },
+    subText1 : {
+      textAlign: "center",
+      color: Colors.black,
+      paddingBottom: 10,
+      fontSize: 12
+    },
 
-      heading2 : {
-        textAlign: "center",
-        fontSize: 12,
-        fontWeight: "500",
-        color: Colors.black,
-        marginBottom: 5
-      },
+    subSection : {
+      width: '100%'
+    },
 
-      valueIn:{
-        backgroundColor: '#e0e5e1',
-        paddingVertical: 3,
-        alignItems: 'center',
-        marginBottom: 10
-      },
+    heading2 : {
+      textAlign: "center",
+      fontSize: 12,
+      fontWeight: "500",
+      color: Colors.black,
+      marginBottom: 5
+    },
 
-      btnStyle : {
-        fontSize: 16,
-        textAlign: 'center' 
-      },
+    valueIn:{
+      backgroundColor: '#e0e5e1',
+      paddingVertical: 3,
+      alignItems: 'center',
+      marginBottom: 10
+    },
 
-      balanceText : {
-        textAlign: "center",
-        color: Colors.black,
-        marginTop: 10
-      }
+    btnStyle : {
+      fontSize: 16,
+      textAlign: 'center' 
+    },
+
+    balanceText : {
+      textAlign: "center",
+      color: Colors.black,
+      marginTop: 10
+    },
+
+    formInputWrapper : {
+      position: 'relative'
+    },
+
+    textInputImage : {
+      position:'absolute', 
+      height: 25, 
+      width: 25, 
+      left: 10, 
+      top: 14
+    }
  
 };
 

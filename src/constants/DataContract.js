@@ -23,7 +23,7 @@ export default {
         configApi : "/pepocorn-topups/info/",
         fetchPepoCornsBalanceApi: "/pepocorn-topups/balance",
         validatePricePoint: "/pepocorn-topups/validate",
-        isAppUpdateKeyPath: "data.app_upgrade",
+        appUpdateKeyPath: "data.app_upgrade",
         pepoCornsNameKey: "product_name",
         pepoCornsImageKey: "product_image",
         pepoCornInputStep : "step",

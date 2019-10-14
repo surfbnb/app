@@ -6,7 +6,7 @@ import pricer from '../../services/Pricer';
 import inlineStyles from './styles';
 import selfAmountWallet from '../../assets/pepo-amount-wallet.png';
 import topUpIcon from '../../assets/top-up-icon.png'
-import redeemIcon from '../../assets/redeem-icon.png'
+import redeemIcon from '../../assets/redeem_store.png'
 import inlineStyle from "../CommonComponents/UserInfo/styles";
 import LinearGradient from "react-native-linear-gradient";
 import { withNavigation } from 'react-navigation';
@@ -155,7 +155,7 @@ class BalanceHeader extends PureComponent {
           <TouchableOpacity onPress={MultipleClickHandler(() => this.onRedemptionClick())} >
             <View style={{alignItems: 'center'}}>
               <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
-              <Text style={inlineStyles.redeemBalance}>Redeem</Text>
+              <Text style={inlineStyles.redeemBalance}>Store</Text>
             </View>
           </TouchableOpacity>
         </View>
