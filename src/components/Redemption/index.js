@@ -44,7 +44,7 @@ import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
-import InAppBrowser from '../../services/InAppBrowser';
+import clone from 'lodash/clone';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -283,8 +283,8 @@ class Redemption extends PureComponent{
         return {
             pepo_amount_in_wei : Pricer.getToDecimal(this.state.btAmount),
             pepocorn_amount: this.numberFormatter.getFullStopValue( this.state.pepoCorns ) ,
-            product_id: this.getPepoCornEntity()["id"],
-            pepo_usd_price_point: ReduxGetters.getUSDPrice() 
+            product_id: this.getPepoCornEntity()[DataContract.redemption.productIdKey],
+            pepo_usd_price_point: ReduxGetters.getUSDPrice()
         }
     }
 
@@ -351,10 +351,10 @@ class Redemption extends PureComponent{
     
     getSdkMetaProperties() {
         const metaProperties = clone(AppConfig.redemptionMetaProperties);
-        let details = "";
-        details += `pid_${this.getPepoCornEntity()['id']} `;
-        details += `pupp_${ReduxGetters.getUSDPrice()}`;
-        details += `pca_$${this.numberFormatter.getFullStopValue(this.state.pepoCorns)}` 
+        let details = "" , separator=" ";
+        details += `pid_${this.getPepoCornEntity()[DataContract.redemption.productIdKey]}${separator}`;
+        details += `pupp_${ReduxGetters.getUSDPrice()}${separator}`;
+        details += `pca_${this.numberFormatter.getFullStopValue(this.state.pepoCorns)}` 
         metaProperties["details"] = details;
         return metaProperties;
     }
@@ -362,6 +362,10 @@ class Redemption extends PureComponent{
     onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
         Pricer.getBalance();
         this.sendTransactionToPlatform(ostWorkflowContext, ostWorkflowEntity);
+    }
+
+    onFlowInterrupt(ostWorkflowContext, error) {
+        this.onError(error, ostWorkflowContext);
     }
 
     sendTransactionToPlatform(ostWorkflowContext, ostWorkflowEntity) {

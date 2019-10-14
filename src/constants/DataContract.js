@@ -28,7 +28,8 @@ export default {
         pepoCornsImageKey: "product_image",
         pepoCornInputStep : "step",
         pepoInWeiPerStep: "pepo_in_wei_per_step",
-        pepoBeneficiaryAddress: "pepo_beneficiary_address"
+        pepoBeneficiaryAddress: "pepo_beneficiary_address",
+        productIdKey : "product_id"
     },
 
     common: {
