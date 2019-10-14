@@ -15,6 +15,7 @@ import helpIcon from  '../../assets/settings-support.png';
 import about from '../../assets/settings-about.png';
 import privacy from '../../assets/settings-privacy.png';
 import tac from '../../assets/settings-terms-and-conditions.png';
+import pepoCornsImg from '../../assets/PepoCornActive.png';
 import Toast from '../../theme/components/NotificationToast';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
@@ -25,7 +26,8 @@ import InAppBrowser from '../../services/InAppBrowser';
 import {DrawerEmitter} from '../../helpers/Emitters';
 import {WEB_ROOT, VIEW_END_POINT, TOKEN_ID} from "../../constants";
 import Pricer from '../../services/Pricer';
-
+import Utilities from '../../services/Utilities';
+import ReduxGetters from '../../services/ReduxGetters';
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -34,19 +36,36 @@ class CustomDrawerContent extends Component {
     this.token = null;
     this.state = {
       disableButtons: false,
-      showWalletSettings: false
+      showWalletSettings: false,
+      pepocorns: ReduxGetters.getPepocornBalance()
     };
   }
 
   componentDidMount() {
     this._fetchToken();
+    this.fetchPepocorns();
     this.updateMenuSettings();
-    Pricer.fetchPepoCornsBalance();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     this.updateMenuSettings();
   }
+
+  componentWillUnmount(){
+    this.onPepoCornFetchSuccess = () => {};
+  }
+
+  fetchPepocorns(){
+    Pricer.fetchPepocornsBalance()
+    .then((res)=> {
+      this.onPepocornFetchSuccess(res);
+    })
+    .catch((error)=>{});
+  }
+
+  onPepocornFetchSuccess(res){
+    this.setState({pepocorns: ReduxGetters.getPepocornBalance()})
+  } 
 
   updateMenuSettings = () => {
     this.updateUserName();
@@ -204,6 +223,10 @@ class CustomDrawerContent extends Component {
     );
   }
 
+  onPepocornsClick = () => {
+    Utilities.openRedemptionWebView();
+  } 
+
   render() {
     return (
       <SafeAreaView style={[styles.container, {paddingVertical: 0}]}>
@@ -215,17 +238,19 @@ class CustomDrawerContent extends Component {
         >
 
         <View style={{paddingBottom: 80}}>
-          <TouchableOpacity
-            onPress={multipleClickHandler(() => {
-              this.aboutLink();
-            })}
-            disabled={this.state.disableButtons}
-          >
-            <View style={styles.itemParent}>
-              <Image style={{ height: 27, width: 27, resizeMode: 'contain' }} source={about} />
-              <Text style={styles.item}>About</Text>
-            </View>
-          </TouchableOpacity>
+          
+          {CurrentUser.isUserActivated() && (
+            <TouchableOpacity
+                onPress={multipleClickHandler(() => {
+                  this.onPepocornsClick();
+                })}
+                disabled={this.state.disableButtons}>
+                <View style={styles.itemParent}>
+                  <Image style={{ height: 27, width: 27, resizeMode: 'contain' }} source={pepoCornsImg} />
+                  <Text style={styles.item}>Pepocorns ({this.state.pepocorns})</Text>
+                </View>
+            </TouchableOpacity>
+          )} 
 
           <TouchableOpacity
             onPress={multipleClickHandler(() => {
@@ -248,6 +273,16 @@ class CustomDrawerContent extends Component {
               <Text style={styles.item}>Support</Text>
             </View>
           </TouchableOpacity>
+    
+          <TouchableOpacity onPress={multipleClickHandler(() => {
+            this.privacypolicy();
+          })} disabled={this.state.disableButtons}>
+            <View style={styles.itemParent}>
+              <Image style={{ height: 27.75, width: 25.5, resizeMode: 'contain' }} source={privacy} />
+              <Text style={styles.item}>Privacy Policy</Text>
+            </View>
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={multipleClickHandler(() => {
             this.termsAndConditions();
           })} disabled={this.state.disableButtons}>
@@ -256,12 +291,16 @@ class CustomDrawerContent extends Component {
               <Text style={styles.item}>Terms and conditions</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={multipleClickHandler(() => {
-            this.privacypolicy();
-          })} disabled={this.state.disableButtons}>
+
+          <TouchableOpacity
+            onPress={multipleClickHandler(() => {
+              this.aboutLink();
+            })}
+            disabled={this.state.disableButtons}
+          >
             <View style={styles.itemParent}>
-              <Image style={{ height: 27.75, width: 25.5, resizeMode: 'contain' }} source={privacy} />
-              <Text style={styles.item}>Privacy Policy</Text>
+              <Image style={{ height: 27, width: 27, resizeMode: 'contain' }} source={about} />
+              <Text style={styles.item}>About</Text>
             </View>
           </TouchableOpacity>
 
@@ -273,14 +312,7 @@ class CustomDrawerContent extends Component {
               <Text style={styles.item}>Disconnect Twitter</Text>
             </View>
           </TouchableOpacity>
-        {/*<TouchableOpacity   onPress={multipleClickHandler(() => {*/}
-        {/*this.CurrentUserLogout();*/}
-        {/*})} disabled={this.state.disableButtons}>*/}
-        {/*<View style={styles.itemParent}>*/}
-        {/*<Image style={{ height: 24, width: 25.3, resizeMode: 'contain' }} source={loggedOutIcon} />*/}
-        {/*<Text style={styles.item}>Log out</Text>*/}
-        {/*</View>*/}
-        {/*</TouchableOpacity>*/}
+
         </View>
 
         <View style={{ alignItems: 'center', paddingVertical: 12 }}>

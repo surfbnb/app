@@ -111,7 +111,7 @@ class Pricer {
     return Nummber( pepoInWeiPerStep ) * ( Number(pepoCorns) / Number(step));
   }
 
-  fetchPepoCornsBalance(){
+  fetchPepocornsBalance(){
     return new PepoApi(DataContract.redemption.fetchPepoCornsBalanceApi)
     .get()
     .catch((error)=> {
