@@ -65,6 +65,10 @@ class Redemption extends PureComponent{
     constructor(props){
         super(props);
 
+        this.configResponse = null;
+        this.isAppUpdate = false;
+        this.isConfigFetchError = false;
+
         this.state = {
             btAmount: 0,
             pepoCorns : 0,
@@ -81,11 +85,7 @@ class Redemption extends PureComponent{
             btnText: btnPreText
         }
        
-        this.priceOracle = Pricer.getPriceOracle();
         this.numberFormatter = new NumberFormatter();
-       
-        this.configResponse = null;
-        this.isAppUpdate = false;
     }
 
     resetState() {
@@ -109,9 +109,14 @@ class Redemption extends PureComponent{
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
         this.onFetchRedemptionConfigSuccess = () => {};
         this.onFetchRedemptionConfigError = () => {};  
+        this.onValidatePricePointSuccess = () => {};
+        this.onValidatePricePointError = () => {};
+        this.onTransactionSuccess = () => {};
+        this.redemptionSuccess = () => {};
+        this.onError = () => {};
     }
 
-    fetchRedemptionConfig(  successCallback, errorCallback ){
+    fetchRedemptionConfig( successCallback, errorCallback ){
         new PepoApi(DataContract.redemption.configApi)
         .get()
         .then((res)=> {
@@ -135,7 +140,8 @@ class Redemption extends PureComponent{
     }
 
     onFetchRedemptionConfigError( error ){
-        this.onError(error, null , "redemption_error");
+        this.isConfigFetchError = true;
+        this.onError(error);
     }
 
     __isAppUpdate( ){
@@ -334,11 +340,12 @@ class Redemption extends PureComponent{
       }
     
     getSdkMetaProperties() {
-        let details = "";
         const metaProperties = clone(AppConfig.redemptionMetaProperties);
+        let details = "";
         details += `pid_${this.getPepoCornEntity()['id']} `;
         details += `pupp_${ReduxGetters.getUSDPrice()}`;
         details += `pca_$${this.numberFormatter.getFullStopValue(this.state.pepoCorns)}` 
+        metaProperties["details"] = details;
         return metaProperties;
     }
 
@@ -463,7 +470,7 @@ class Redemption extends PureComponent{
             <View style={inlineStyles.viewWrapper}>
                 <Image source={toastError} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
                 <Text style={{textAlign: "center"}}>
-                  {errorMsg ||this.state.errorMsg}
+                  {errorMsg || ostErrors.getUIErrorMessage("redemption_error")}
                 </Text>
             </View>
         )
@@ -550,6 +557,8 @@ class Redemption extends PureComponent{
         this.getAnimation().stop() ;
         if(this.state.isLoading){
            return this.getLoadingMarkup();
+        }else if(this.isConfigFetchError){
+            return this.getErrorMarkup();
         }else if( this.isAppUpdate ) {
             return this.getAppUpdateMarkup();
         }else if( this.state.redemptionSuccess ){
