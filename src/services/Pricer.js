@@ -6,6 +6,8 @@ import PriceOracle from './PriceOracle';
 import ReduxGetter from "./ReduxGetters";
 import numeral from "numeral";
 import OstWalletSdkHelper from '../helpers/OstWalletSdkHelper';
+import PepoApi from './PepoApi';
+import DataContract from '../constants/DataContract';
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -100,7 +102,6 @@ class Pricer {
       return numeral( amount ).format('0', Math.floor);
     } else {
       return numeral( amount ).format('0a+', Math.floor)
-
     }
   }
 
@@ -108,6 +109,14 @@ class Pricer {
     if(!pepoCorns || !step || !pepoInWeiPerStep ) return 0;
     pepoInWeiPerStep =  this.getToBT(pepoInWeiPerStep);
     return Nummber( pepoInWeiPerStep ) * ( Number(pepoCorns) / Number(step));
+  }
+
+  fetchPepoCornsBalance(){
+    return new PepoApi(DataContract.redemption.fetchPepoCornsBalanceApi)
+    .get()
+    .catch((error)=> {
+      //Silent Ignore
+    })
   }
 
 }

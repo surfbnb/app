@@ -12,20 +12,19 @@ import twitterDisconnectIcon from '../../assets/settings-twitter-disconnect.png'
 import referAndEarn from '../../assets/settings-refer-and-earn.png';
 import pepoAmountWallet from '../../assets/settings-wallet-settings.png';
 import helpIcon from  '../../assets/settings-support.png';
-import loggedOutIcon from '../../assets/settings-logout.png';
 import about from '../../assets/settings-about.png';
 import privacy from '../../assets/settings-privacy.png';
 import tac from '../../assets/settings-terms-and-conditions.png';
 import Toast from '../../theme/components/NotificationToast';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 
-import BackArrow from '../../assets/back-arrow.png';
 import { connect } from 'react-redux';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper';
 import {ostErrors} from "../../services/OstErrors";
 import InAppBrowser from '../../services/InAppBrowser';
 import {DrawerEmitter} from '../../helpers/Emitters';
 import {WEB_ROOT, VIEW_END_POINT, TOKEN_ID} from "../../constants";
+import Pricer from '../../services/Pricer';
 
 
 class CustomDrawerContent extends Component {
@@ -42,6 +41,7 @@ class CustomDrawerContent extends Component {
   componentDidMount() {
     this._fetchToken();
     this.updateMenuSettings();
+    Pricer.fetchPepoCornsBalance();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -226,18 +226,6 @@ class CustomDrawerContent extends Component {
               <Text style={styles.item}>About</Text>
             </View>
           </TouchableOpacity>
-
-          {/*<TouchableOpacity*/}
-          {/*onPress={multipleClickHandler(() => {*/}
-          {/*this.blockExplorer();*/}
-          {/*})}*/}
-          {/*disabled={this.state.disableButtons}*/}
-          {/*>*/}
-          {/*<View style={styles.itemParent}>*/}
-          {/*<Image style={{ height: 29, width: 26.6, resizeMode: 'contain' }} source={referAndEarn} />*/}
-          {/*<Text style={styles.item}>Block Explorer</Text>*/}
-          {/*</View>*/}
-          {/*</TouchableOpacity>*/}
 
           <TouchableOpacity
             onPress={multipleClickHandler(() => {

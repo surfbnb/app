@@ -395,6 +395,11 @@ class ReduxGetters {
     return deepGet(state,  "price_points.OST.USD");
   }
 
+  getPepoCornBalance(state){
+    state = state || Store.getState();
+    return deepGet(state,  "pepocorn.balance" , 0);
+  }
+
 }
 
 export default new ReduxGetters();

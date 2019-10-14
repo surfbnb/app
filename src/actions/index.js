@@ -133,6 +133,8 @@ export const updatePricePoints = (data) => ({ type: types.UPDATE_PRICE_POINTS, p
 
 export const updateToken = (data) => ({ type: types.UPDATE_TOKEN, payload: { token: data } });
 
+export const updatePepocorn = (data) => ({ type: types.UPDATE_PEPOCORN, payload: { pepocorn: data } });
+
 export const updateBalance = (balance = '0') => ({
   type: types.UPDATE_BALANCE,
   payload: {
