@@ -8,25 +8,42 @@ import UserProfileFlatList from '../CommonComponents/UserProfileFlatList';
 import SearchListHeader from "./SearchListHeader";
 import styles from './styles';
 import NativeBaseTabTheme from "../../theme/styles/NativeBaseTabs";
-import TagsList from '../../components/TagsList'
-const TabMap = [
-  {
+import TagsList from '../../components/TagsList';
+import PeopleList from '../../components/PeopleList';
+import qs from 'qs';
+import VideoCollections from "../VideoCollections";
+
+const TabMap = {
+  "top": {
+    id: 'top',
     baseUrl: '/search/top',
-    title: 'Top'
+    title: 'Top',
+    "params": {
+      "supported_entities": ["users", "tags"]
+    },
+    "queryParam": "q"
   },
-  {
-
+  "people": {
+    id: 'people',
     baseUrl : '/search/users',
-    title: 'People'
+    title: 'People',
+    "queryParam": "q"
   },
-  {
+  "tags": {
+    id: 'tags',
     baseUrl : '/search/tags',
-    title: 'Tags'
+    title: 'Tags',
+    "queryParam": "q"
+  },
+  "video": {
+    id: 'video',
+    baseUrl : '/tags/1/videos',
+    title: 'Video',
+    "queryParam": "q"
   }
-];
+};
 
-
-
+const TabsArray = [TabMap.top, TabMap.people, TabMap.tags, TabMap.video];
 
 const mapStateToProps = (state) => {
   return {
@@ -43,140 +60,229 @@ class SearchScreen extends PureComponent {
   };
   constructor(props) {
     super(props);
+    this.initReferences();
+  }
+
+  isUserLoggedIn(){
+    return Boolean(this.props.userId);
+  }
+
+  isUserUpdated(prevProps){
+    return prevProps.userId !== this.props.userId;
+  }
+
+
+  componentDidUpdate(prevProps){
+    if(this.isUserUpdated(prevProps)) {
+      this.initReferences();
+    }
+  }
+
+  initReferences = () =>{
     this.currentIndex = 0;
-    this.topBaseUrl = TabMap[0].baseUrl;
-    this.peopleUrl = TabMap[1].baseUrl;
-    this.tagsUrl = TabMap[2].baseUrl;
-    this.defaultState = {
-      searchTagsParams: '',
-      // refresh: true,
-      noResultsFound: false
-    };
-    this.state = this.defaultState;
-  }
-
-  componentDidUpdate(){
-    if(!this.props.userId){
-      this.setState({ ...this.defaultState });
+    this.currentSearchTerm = "";
+    this.searchListHeaderRef = null;
+    if ( this.flatLists ) {
+      for (let key in this.flatLists) { if ( this.flatLists.hasOwnProperty( key ) ) {
+        this.flatLists[key] = null;
+      }};
     }
-  }
-
-  topSearchHandler(searchParams){
-
-  }
-
-  peopleSearchHandler(searchParams){
-
-  }
-
-  tagsSearchHandler(searchTagsParams){
-    this.setState({searchTagsParams});
-    let newUrl = `${TabMap[2].baseUrl}?q=${searchTagsParams}`;
-    if (this.tagsUrl !== newUrl){
-      this.tagsListRef.forcedRefresh(newUrl);
-    }
-  }
-
-  // shouldMakeApiCall = () => {
-  //   switch (this.currentIndex) {
-  //     case 0:
-  //       // this.topSearchHandler(searchParams);
-  //       break;
-  //     case 1:
-  //       // this.peopleSearchHandler(searchParams);
-  //       break;
-  //     case 2:
-  //       return Boolean(this.searchTagsParams);
-  //       // this.tagsSearchHandler(searchParams);
-  //   }
-  // }
-
-
-
-
-  setSearchParams = (searchParams) => {
-      switch (this.currentIndex) {
-        case 0:
-          this.topSearchHandler(searchParams);
-          break;
-        case 1:
-          this.peopleSearchHandler(searchParams);
-          break;
-        case 2:
-          this.tagsSearchHandler(searchParams);
-          break;
-      }
+    this.flatLists = {};
   };
 
-  // onRefresh = (result) => {
-  //   let noResultsFound = result && result.length === 0;
-  //   this.setState({
-  //     refresh: false,
-  //     noResultsFound
-  //   });
-  // };
 
-  // shouldMakeApiCall = (searchParams) => {
-  //   //if(searchParams == "") return true;
-  //   searchParams = searchParams || this.state.searchParams;
-  //   if (searchParams.length == 1) {
-  //     return false;
-  //   }
-  //   return true;
-  // };
+  // region - search header methods and delegates
+  setSearchListHeaderRef = ( searchListHeaderRef ) => {
+    this.searchListHeaderRef = searchListHeaderRef;
+    //Future: if we have default search string, set it using searchListHeaderRef.setNativeProps
+  };
+
+  setSearchParams = (searchParams) => {
+    this.currentSearchTerm = searchParams;
+    this.refreshResults();
+  };
+
+  refreshResults = () => {
+    let tabIndx = this.currentIndex;
+    let tabData = TabsArray[ tabIndx ];
+    let currentTabUrl = this.getTabUrlForIndex( tabIndx );
+    let newTabUrl = this.getUrlForTab( tabData );
+
+    if ( !currentTabUrl || currentTabUrl !== newTabUrl ) {
+      // Force refresh
+      let tabFlatList = this.getTabFlatList( tabIndx );
+      tabFlatList.forcedRefresh(newTabUrl);
+    } else {
+      // Ignore.
+    }
+  };
+
+
+  getTabUrlForIndex = ( tabIndx ) => {
+    // Get the pagination from tab and get the url from pagination.
+    let tabFlatList = this.getTabFlatList( tabIndx );
+    if ( !tabFlatList ) {
+      return null;
+    }
+    console.log(tabFlatList, 'tabFlatListtabFlatListtabFlatListtabFlatListtabFlatList');
+    let paginationInstance = tabFlatList.getPagination();
+    if ( !paginationInstance ) {
+      return  null;
+    }
+    return paginationInstance.fetchUrl;
+  };
+
+  getTabFlatList = ( tabIndx ) => {
+    let tabData = TabsArray[ tabIndx ];
+    let tabId = tabData.id;
+    return this.flatLists[ tabId ];
+  };
+  // endregion
+
+  // region - Get Url for Tabs
+  getTopTabUrl = () => {
+    return this.getUrlForTab(TabMap.top);
+  };
+
+  getTagsTabUrl = () => {
+    return this.getUrlForTab(TabMap.tags);
+  };
+
+  getPeopleTabUrl = () => {
+    return this.getUrlForTab(TabMap.people);
+  };
+
+  getVideoTabUrl = () => {
+    return this.getUrlForTab(TabMap.video);
+  };
+
+  getUrlForTab = (tabData) => {
+    let baseUrl = tabData.baseUrl;
+
+    let params = tabData.params || {};
+    // Copy it.
+    params = Object.assign({}, params);
+
+    // Add query string
+    params[ tabData.queryParam ] = this.currentSearchTerm;
+
+    // Update when there is a bug.
+    return baseUrl + "?" + qs.stringify(params);
+  };
+  // endregion
+
+  // region - Tab Flatlist Management
+
+  setTopFlatListRef = ( elemRef ) => {
+    this.flatLists = this.flatLists || {};
+
+    let tabData = TabMap.top;
+    let tabId = tabData.id;
+    this.flatLists[ tabId ] = elemRef;
+  };
+  setPeopleFlatListRef = (elemRef) => {
+    this.flatLists = this.flatLists || {};
+
+    let tabData = TabMap.people;
+    let tabId = tabData.id;
+    this.flatLists[ tabId ] = elemRef;
+  };
+  setTagsFlatListRef = (elemRef) => {
+    console.log('elemRefelemRef', elemRef);
+    this.flatLists = this.flatLists || {};
+
+    let tabData = TabMap.tags;
+    let tabId = tabData.id;
+    this.flatLists[ tabId ] = elemRef;
+  };
+  setVideoFlatListRef = (elemRef) => {
+    this.flatLists = this.flatLists || {};
+
+    let tabData = TabMap.video;
+    let tabId = tabData.id;
+    this.flatLists[ tabId ] = elemRef;
+  };
+
+  // endregion
+
+  onChangeTab = (args) => {
+    this.currentIndex = args.i;
+    this.refreshResults();
+  }
 
   render() {
-    const tabStyle = NativeBaseTabTheme.tab;
-    const scTabStyle = NativeBaseTabTheme.scrollableTab;
+    if (this.isUserLoggedIn()){
+      return this.renderLoggedInView();
+    } else {
+      return this.renderLoggedOutView()
+    }
+  }
 
-    return this.props.userId && ( 
-      <SafeAreaView style={styles.container}> 
-            <SearchListHeader setSearchParams={this.setSearchParams} />
-            <Tabs renderTabBar={()=> 
-                  <ScrollableTab 
-                  //  style={{marginHorizontal: 10}}
-                  tabsContainerStyle={scTabStyle.tabsContainerStyle} 
-                  underlineStyle={scTabStyle.underlineStyle} />}
-                  onChangeTab={this.onChangeTab}
-                  initialPage={this.currentIndex}
-                  >
-              <Tab heading={TabMap[0].title} textStyle={tabStyle.textStyle}
-                                activeTextStyle={tabStyle.activeTextStyle} 
-                                activeTabStyle={tabStyle.activeTabStyle}
-                                tabStyle={tabStyle.tabStyle}
-                                style={tabStyle.style}>
-                <UserProfileFlatList userId={"1710"}/> 
-              </Tab>
-              <Tab heading={TabMap[1].title} textStyle={tabStyle.textStyle}
-                                activeTextStyle={tabStyle.activeTextStyle} 
-                                activeTabStyle={tabStyle.activeTabStyle}
-                                tabStyle={tabStyle.tabStyle}
-                                style={tabStyle.style}>
-                <UserProfileFlatList userId={"1710"}/>
-              </Tab>
-              <Tab heading={TabMap[2].title} textStyle={tabStyle.textStyle}
-                                activeTextStyle={tabStyle.activeTextStyle} 
-                                activeTabStyle={tabStyle.activeTabStyle}
-                                tabStyle={tabStyle.tabStyle}
-                                style={tabStyle.style}>
-                <TagsList ref={(elem) => this.tagsListRef = elem } getFetchUrl={this.getTagsUrl}  searchParams={this.state.searchTagsParams} />
-              </Tab>
-            </Tabs>
-    </SafeAreaView>  
+  renderLoggedOutView = () => {
+    return <View />
+  }
+
+  renderTabBar = () => {
+    const scTabStyle = NativeBaseTabTheme.scrollableTab;
+    return (<ScrollableTab
+        //  style={{marginHorizontal: 10}}
+        tabsContainerStyle={scTabStyle.tabsContainerStyle}
+        underlineStyle={scTabStyle.underlineStyle} />
     );
   }
 
-  getTagsUrl = () => {
-    return this.tagsUrl;
-  }
+  renderLoggedInView = () => {
+    const tabStyle = NativeBaseTabTheme.tab;
+    return <SafeAreaView style={styles.container}>
+      <SearchListHeader setSearchParams={this.setSearchParams} ref={this.setSearchListHeaderRef} />
+      <Tabs renderTabBar={this.renderTabBar}  onChangeTab={this.onChangeTab}>
+        <Tab heading={TabMap.top.title} textStyle={tabStyle.textStyle}
+             activeTextStyle={tabStyle.activeTextStyle}
+             activeTabStyle={tabStyle.activeTabStyle}
+             tabStyle={tabStyle.tabStyle}
+             style={tabStyle.style}>
+          <TagsList
+            getFetchUrl={this.getTopTabUrl}
+            ref={this.setTopFlatListRef}
+          />
+        </Tab>
+        <Tab heading={TabMap.people.title} textStyle={tabStyle.textStyle}
+             activeTextStyle={tabStyle.activeTextStyle}
+             activeTabStyle={tabStyle.activeTabStyle}
+             tabStyle={tabStyle.tabStyle}
+             style={tabStyle.style}>
+          <PeopleList
+            getFetchUrl={this.getPeopleTabUrl}
+            ref={this.setPeopleFlatListRef}
+          />
+        </Tab>
+        <Tab heading={TabMap.tags.title} textStyle={tabStyle.textStyle}
+             activeTextStyle={tabStyle.activeTextStyle}
+             activeTabStyle={tabStyle.activeTabStyle}
+             tabStyle={tabStyle.tabStyle}
+             style={tabStyle.style} >
+          <TagsList
+            getFetchUrl={this.getTagsTabUrl}
+            ref={this.setTagsFlatListRef}
+          />
+        </Tab>
+        <Tab heading={TabMap.video.title} textStyle={tabStyle.textStyle}
+             activeTextStyle={tabStyle.activeTextStyle}
+             activeTabStyle={tabStyle.activeTabStyle}
+             tabStyle={tabStyle.tabStyle}
+             style={tabStyle.style}>
 
-  getPeopleUrl = () => {
-    return this.peopleUrl;
-  }
+          <VideoCollections
+            ref={this.setVideoFlatListRef}
+            getFetchUrl={this.getVideoTabUrl}
+            navigation={this.props.navigation}
+          />
+        </Tab>
 
-  onChangeTab = (args) => {
-    this.currentIndex = args.i
-    console.log('---onChangeTab----', args);
+
+      </Tabs>
+    </SafeAreaView>
+
   }
 }
 

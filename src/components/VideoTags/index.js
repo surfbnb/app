@@ -68,7 +68,7 @@ class VideoTags extends PureComponent {
         // do nothing
     }
 
-    getBaseUrl = () => {
+    getFetchUrl = () => {
         return `/tags/${this.getTagId()}/videos`
 
     }
@@ -85,7 +85,8 @@ class VideoTags extends PureComponent {
                     onRef={(elem) => this.videoCollections = elem}
                     listHeaderComponent={this._headerComponent()}
                     beforeRefresh={this.beforeRefresh}
-                    getBaseUrl={this.getBaseUrl}
+                    getFetchUrl={this.getFetchUrl}
+                    navigation={this.props.navigation}
                    />
         } else {
             return <View style={{flex: 1 , backgroundColor: Colors.black}} />

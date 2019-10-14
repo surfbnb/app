@@ -1,16 +1,13 @@
 import React, { PureComponent } from 'react';
 import {
     View,
-    TouchableWithoutFeedback,
     FlatList,
     ActivityIndicator,
-    Text,
-    Dimensions,
-    Image
+
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 
-
+import TagsCell from './TagsCell';
 
 import Pagination from "../../services/Pagination";
 import Colors from "../../theme/styles/Colors";
@@ -19,12 +16,7 @@ class TagsList extends PureComponent {
     constructor(props){
         super(props);
         let list = [];
-        this.tagsPagination = new Pagination( this.props.getFetchUrl());
-        // if (this.shouldMakeApiCall()){
-        //     list = this.tagsPagination.getResults();
-        // }
-
-        this.setPaginationEvent();
+        // this.tagsPagination = new Pagination( this.props.getFetchUrl());
 
         this.state = {
             list,
@@ -34,104 +26,121 @@ class TagsList extends PureComponent {
         this.listRef = null ;
     }
 
-    shouldMakeApiCall = () =>{
-        console.log('shouldMakeApiCall------------------/////////////shouldMakeApiCall------------------/////////////');
-        return false;
-        console.log('Boolean(this.props.searchParams)', Boolean(this.props.searchParams));
-        return Boolean(this.props.searchParams);
-    }
-
-    setPaginationEvent(){
-        this.paginationEvent = this.tagsPagination.event;
-    }
 
     componentDidMount(){
-        this.updatePaginationEvent();
-
+        this.forcedRefresh();
     }
 
-    getEmptyComponent = () => {
-        if (this.state.list.length > 0 ){
-            return null;
-        }
-        console.log('getEmptyComponent ----------');
-        if (!this.state.refreshing && this.props.searchParams) {
-            //if (this.props.noResultsFound && !this.props.toRefresh)
-            return this.renderNoResults();
-            //}
-        }
+    componentWillUnmount() {
+        this.removePaginationListeners();
+    }
 
-        if (this.props.searchParams) {
-            return this.renderSearchingFor();
-        }
 
-        if(!this.props.searchParams){
-            return ( <View style={{ flex: 1,flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-                <ActivityIndicator style={{alignSelf:'center'}} size="small" color={Colors.greyLite} />
-            </View>);
-        }
-
-        return <View />;
+    getPagination = () => {
+        return this.tagsPagination;
     };
 
-    renderNoResults() {
-        return (
-            <View>
-                <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14, marginTop: 10 }}>
-                    No results found!
-                </Text>
-            </View>
-        );
+    // getEmptyComponent = () => {
+    //     if (this.state.list.length > 0 ){
+    //         return null;
+    //     }
+    //     console.log('getEmptyComponent ----------');
+    //     if (!this.state.refreshing && this.props.searchParams) {
+    //         //if (this.props.noResultsFound && !this.props.toRefresh)
+    //         return this.renderNoResults();
+    //         //}
+    //     }
+    //
+    //     if (this.props.searchParams) {
+    //         return this.renderSearchingFor();
+    //     }
+    //
+    //     if(!this.props.searchParams){
+    //         return ( <View style={{ flex: 1,flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+    //             <ActivityIndicator style={{alignSelf:'center'}} size="small" color={Colors.greyLite} />
+    //         </View>);
+    //     }
+    //
+    //     return <View />;
+    // };
+
+    // renderNoResults() {
+    //     return (
+    //         <View>
+    //             <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14, marginTop: 10 }}>
+    //                 No results found!
+    //             </Text>
+    //         </View>
+    //     );
+    // }
+
+
+    // renderSearchingFor() {
+    //     return (
+    //         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+    //             <ActivityIndicator size="small" color={Colors.greyLite} />
+    //             <Text style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}>
+    //                 {`Searching for "${decodeURIComponent(this.props.searchParams) || ''}"`}
+    //             </Text>
+    //         </View>
+    //     );
+    // }
+
+
+
+    // region - Pagination and Event Handlers
+
+    initPagination() {
+        // First, take care of existing Pagination if exists.
+        this.removePaginationListeners();
+
+        // Now, create a new one.
+        let fetchUrl = this.props.getFetchUrl();
+        this.tagsPagination = new Pagination(fetchUrl);
+        this.bindPaginationEvents();
     }
 
-
-    renderSearchingFor() {
-        return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                <ActivityIndicator size="small" color={Colors.greyLite} />
-                <Text style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}>
-                    {`Searching for "${decodeURIComponent(this.props.searchParams) || ''}"`}
-                </Text>
-            </View>
-        );
-    }
-
-
-    updatePaginationEvent(){
-        this.paginationEvent.on("onBeforeRefresh" , this.beforeRefresh.bind(this) );
-        this.paginationEvent.on("onRefresh" ,  this.onRefresh.bind(this) );
-        this.paginationEvent.on("onRefreshError" , this.onRefreshError.bind(this));
-        this.paginationEvent.on("onBeforeNext" , this.beforeNext.bind(this));
-        this.paginationEvent.on("onNext" , this.onNext.bind(this) );
-        this.paginationEvent.on("onNextError" , this.onNextError.bind(this));
-        if( this.props.refreshEvent) {
-            this.props.refreshEvent.on("refresh" , ()=> {
-                this.listRef.scrollToOffset({offset: 0});
-                this.refresh();
-            });
+    bindPaginationEvents(){
+        let pagination = this.tagsPagination;
+        if ( !pagination ) {
+            return;
         }
-        this.tagsPagination.initPagination();
-
-    }
-
-    componentWillUnmount(){
-        this.paginationEvent.removeListener('onBeforeRefresh');
-        this.paginationEvent.removeListener('onRefresh');
-        this.paginationEvent.removeListener('onRefreshError');
-        this.paginationEvent.removeListener('onBeforeNext');
-        this.paginationEvent.removeListener('onNext');
-        this.paginationEvent.removeListener('onNextError');
-        if( this.props.refreshEvent) {
-            this.props.refreshEvent.removeListener("refresh");
+        let paginationEvent = pagination.event;
+        if ( null === paginationEvent ) {
+            return;
         }
+
+        paginationEvent.on("onBeforeRefresh" , this.beforeRefresh.bind(this) );
+        paginationEvent.on("onRefresh" ,  this.onRefresh.bind(this) );
+        paginationEvent.on("onRefreshError" , this.onRefreshError.bind(this));
+        paginationEvent.on("onBeforeNext" , this.beforeNext.bind(this));
+        paginationEvent.on("onNext" , this.onNext.bind(this) );
+        paginationEvent.on("onNextError" , this.onNextError.bind(this));
     }
+
+    removePaginationListeners(){
+        let pagination = this.tagsPagination;
+        if ( !pagination ) {
+            return;
+        }
+        let paginationEvent = pagination.event;
+        if ( null === paginationEvent ) {
+            return;
+        }
+        paginationEvent.removeListener('onBeforeRefresh');
+        paginationEvent.removeListener('onRefresh');
+        paginationEvent.removeListener('onRefreshError');
+        paginationEvent.removeListener('onBeforeNext');
+        paginationEvent.removeListener('onNext');
+        paginationEvent.removeListener('onNextError');
+    }
+
+
+
 
 
     forcedRefresh (fetchUrl){
-        this.tagsPagination = new Pagination(fetchUrl);
-        this.setPaginationEvent();
-        this.updatePaginationEvent();
-        console.log('forcedRefresh------');
+        this.initPagination();
         this.refresh();
     }
 
@@ -178,8 +187,7 @@ class TagsList extends PureComponent {
     }
 
     refresh = () => {
-        console.log('refreshrefreshrefreshrefresh');
-        this.shouldMakeApiCall() && this.tagsPagination.refresh();
+        this.tagsPagination.refresh();
     }
 
     // isCurrentUser = () => {
@@ -189,7 +197,8 @@ class TagsList extends PureComponent {
     _keyExtractor = (item, index) => `id_${item}`;
 
     _renderItem = ({ item, index }) => {
-        return <Text> {item.text}</Text>;
+        console.log('itemmmmmmm', item);
+        return <TagsCell text={item.text} tagId={item.id} />;
     };
 
     renderFooter = () => {
@@ -229,4 +238,4 @@ class TagsList extends PureComponent {
 
 }
 
-export default  TagsList ;
+export default  TagsList;
