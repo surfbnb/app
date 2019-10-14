@@ -98,7 +98,19 @@ let stylesMap = {
       width: 25, 
       left: 10, 
       top: 14
-    }
+    },
+
+    crossIconWrapper: {
+      position: 'absolute',
+      left: 5,
+      width: 40,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 100
+    },
+
+    crossIconSkipFont: { width: 13, height: 12.6 }
  
 };
 
