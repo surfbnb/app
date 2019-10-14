@@ -6,10 +6,8 @@ import {
     Platform,
     Animated,
     Easing,
-    TouchableOpacity,
-    ScrollView,
-    Dimensions,
-    Image
+    Image,
+    BackHandler
   } from 'react-native';
 
 import TouchableButton from "../../theme/components/TouchableButton";
@@ -34,6 +32,33 @@ import Utilities from '../../services/Utilities';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
 import AppConfig from '../../constants/AppConfig';
 
+import NumberFormatter from "../../helpers/NumberFormatter";
+import CurrentUser from '../../models/CurrentUser';
+import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
+import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
+import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
+import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+
+const bottomSpace = getBottomSpace([true]),
+  extraPadding = 10,
+  safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
+
+const btnPreText = "Buy with Pepocoins";
+const btnPostText = "Confriming...";  
+
+/**TODO Start
+ * @Preshita Keyboard avoiding view
+ * @Preshita Appstore linking 
+ * @Preshita update store icon instead of remeeption icon in BalanceHeader file. 
+ * @Preshita App upgrade Screen UI
+ * @Preshita Complete dev test
+ * @Preshita Check your name below TODO's
+ * @Ashutosh confrim meta data to sdk
+ * @Ashutosh PepoConrs balance fetch and display
+ * @Ashutosh code refactor 
+ * @Ashutosh code detail review
+ *///TODO end 
+
 
 class Redemption extends PureComponent{
 
@@ -41,70 +66,93 @@ class Redemption extends PureComponent{
         super(props);
 
         this.state = {
-            btAmout: 0,
+            btAmount: 0,
             pepoCorns : 0,
-            balance: ReduxGetters.getBalance(),
+            balance: Pricer.getToBT(  ReduxGetters.getBalance() ) ,
             errorMsg: null,
             isLoading: true,
             isPurchasing : false,
             redemptionSuccess : false,
+            bottomPadding: safeAreaBottomSpace,
+            inputFieldsEditable: true,
+            exceBtnDisabled: false,
             rotate: new Animated.Value(0),
-            scale: new Animated.Value(0.1)
+            scale: new Animated.Value(0.1),
+            btnText: btnPreText
         }
-
-        this.isError =  false;
+       
+        this.priceOracle = Pricer.getPriceOracle();
+        this.numberFormatter = new NumberFormatter();
+       
         this.configResponse = null;
-        this.serverError = null;
         this.isAppUpdate = false;
     }
 
+    resetState() {
+        this.setState({
+          exceBtnDisabled: false,
+          redemptionSuccess: false,
+          isPurchasing: false,
+          isLoading: false,
+          btnText: btnPreText,
+          inputFieldsEditable: true,
+          errorMsg: null
+        });
+      }
+
     componentDidMount(){
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
         this.fetchRedemptionConfig();
     }
 
     componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
         this.onFetchRedemptionConfigSuccess = () => {};
-        this.onFetchRedemptionConfigError = () => {};
+        this.onFetchRedemptionConfigError = () => {};  
     }
 
-    fetchRedemptionConfig(){
+    fetchRedemptionConfig(  successCallback, errorCallback ){
         new PepoApi(DataContract.redemption.configApi)
         .get()
         .then((res)=> {
             if(res && res.success){
                 this.onFetchRedemptionConfigSuccess(res);
+                successCallback && successCallback(res);
             }else{
                 this.onFetchRedemptionConfigError(res);
+                errorCallback && errorCallback( res );
             }         
         }).catch((error) =>{
             this.onFetchRedemptionConfigError(error);
+            errorCallback && errorCallback( error );
         })
     }
 
     onFetchRedemptionConfigSuccess( res ){
         this.configResponse = res;
-        this.isError =  false ;
         this.isAppUpdate = this.__isAppUpdate(res); 
         this.setState({isLoading: false});
     }
 
     onFetchRedemptionConfigError( error ){
-        this.state.errorMsg = ostErrors.getErrorMessage( error  , "redemption_error");
-        this.isError = true ;
-        this.setState({isLoading: false});
+        this.onError(error, null , "redemption_error");
     }
 
     __isAppUpdate( ){
         return !!deepGet(this.configResponse , DataContract.redemption.isAppUpdateKeyPath);
     }
 
+    getPepoCornEntity(){
+       return deepGet(this.configResponse , `data.${deepGet(this.configResponse ,  DataContract.common.resultType)}` , {});
+    }
+
     getPepoCornsName(){
-        const pepoCornsEntity = deepGet(this.configResponse , `data.${deepGet(this.configResponse ,  DataContract.common.resultType)}` , {}); 
+        const pepoCornsEntity = this.getPepoCornEntity();
         return pepoCornsEntity[DataContract.redemption.pepoCornsNameKey] || AppConfig.redemption.pepoCornsName; 
     }
 
     getPepoCornsImageSource(){
-        const pepoCornsEntity = deepGet(this.configResponse , `data.${deepGet(this.configResponse ,  DataContract.common.resultType)}` , {}); 
+        const pepoCornsEntity = this.getPepoCornEntity();
         const imageSrc = pepoCornsEntity[DataContract.redemption.pepoCornsImageKey];
         if( imageSrc ){
             return {uri: imageSrc};
@@ -112,36 +160,258 @@ class Redemption extends PureComponent{
         return pepoCornsImg
     }
 
-    onPepoCornChange = (val) => {
-        //TODO 
+    getStep() {
+        const pepoCornsEntity = this.getPepoCornEntity();
+        let step = pepoCornsEntity[DataContract.redemption.pepoCornInputStep] || 1;
+        return Number( step );
+    }
+
+    getPepoInWeiPerStep(){
+        const pepoCornsEntity = this.getPepoCornEntity();
+        return pepoCornsEntity[DataContract.redemption.pepoInWeiPerStep];
+    }
+
+    getBeneficiaryAddress(){
+        const pepoCornsEntity = this.getPepoCornEntity();
+        return pepoCornsEntity[DataContract.redemption.pepoBeneficiaryAddress];
+    }
+
+    _keyboardShown(e) {
+        let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;
+    
+        if (this.state.bottomPadding == bottomPaddingValue) {
+          return;
+        }
+    
+        this.setState({
+          bottomPadding: bottomPaddingValue
+        });
+    }
+    
+    _keyboardHidden(e) {
+        if (this.state.bottomPadding == safeAreaBottomSpace) {
+          return;
+        }
+        this.setState({
+          bottomPadding: safeAreaBottomSpace
+        });
     }
 
     onPepoCornFocus = () => {
-        //TODO 
+        //TODO @Preshita
     }
 
-    onConfrim = () => {
+    onPepoCornChange = (val) => {
+        if (!this.numberFormatter.isValidInputProvided(val)) {
+            this.setState({
+              pepoCorns: val,
+              btAmount: 0,
+              errorMsg:  this.getErrorMessage(val)
+            });
+            return;
+          }
+
+        let formattedVal = this.numberFormatter.convertToValidFormat(val)
+        , fullStopval = this.numberFormatter.getFullStopValue(formattedVal)
+        , btVal = Pricer.getBtFromPepoCorns( fullStopval , this.getStep() ,  this.getPepoInWeiPerStep()) 
+        , forMattedbtVal = this.numberFormatter.getFormattedValue(btVal)
+        ;
+        this.setState({ btAmount: forMattedbtVal, pepoCorns: val , errorMsg: null   });
+    }
+
+    onConfirm = () => {
+        if (this.btValidationAndError()) {
+           this.beforeRedemption(); 
+           this.validatePricePoint();
+        }
+    };
+    
+    btValidationAndError() {
+        let btAmount = this.state.btAmount;
+        btAmount = this.numberFormatter.getFullStopValue(btAmount);
+        btAmount = btAmount && Number(btAmount);
+        if ( btAmount > this.state.balance) {
+            this.setState({errorMsg: ostErrors.getUIErrorMessage('max_pepocorns') });
+            return false;
+        }
+        return true;
+    }  
         
-    }
-
     beforeRedemption = () => {
-        this.setState({isPurchasing : true});
+        this.setState({
+            exceBtnDisabled: true,
+            inputFieldsEditable: false,
+            btnText: btnPostText,
+            isPurchasing: true,
+            errorMsg: null
+        });
     }
 
-    onRedemptionSuccess = (res) => {
-        this.setState({isPurchasing : false ,  redemptionSuccess : true});
+    validatePricePoint(){
+        const validateParams = this.getValidateParams();
+        new PepoApi(DataContract.redemption.validatePricePoint)
+        .get(validateParams)
+        .then((res)=> {
+            if(res && res.success){
+                this.onValidatePricePointSuccess(res);
+            }else{
+                this.onValidatePricePointError(res);  
+            }
+        })
+        .catch((error)=> {
+            this.onValidatePricePointError(res);  
+        })
     }
 
-    onRedemptionError = (error) => {
-        this.setState({isPurchasing : false ,  redemptionSuccess : false});
-    } 
-
-    onRedemptionWebViewClick = () => {
-        Utilities.onRedemptionWebViewClick();
+    getValidateParams() {
+        return {
+            pepo_amount_in_wei : Pricer.getToDecimal(this.state.btAmount),
+            pepocorn_amount: this.numberFormatter.getFullStopValue( this.state.pepoCorns ) ,
+            product_id: this.getPepoCornEntity()["id"],
+            pepo_usd_price_point: ReduxGetters.getUSDPrice() 
+        }
     }
 
-    onUpdateAppClick = () =>{
-        //TODO 
+    onValidatePricePointSuccess(res){
+        this.sendTransactionToSdk();
+    }
+
+    onValidatePricePointError(err){
+       this.fetchRedemptionConfig( () => {
+            this.resetState();
+            this.onError(err,  null , "price_point_validation_failed");
+       });
+    }
+
+    sendTransactionToSdk() {
+        let btVal = this.numberFormatter.getFullStopValue(this.state.btAmount);
+        const btInDecimal = Pricer.getToDecimal(btVal);
+        ensureDeivceAndSession(CurrentUser.getOstUserId(), btInDecimal, (device) => {
+          this._deviceUnauthorizedCallback(device);
+          }, (errorMessage, success) => {
+            this._ensureDeivceAndSessionCallback(errorMessage, success);
+        });
+    }
+
+    _deviceUnauthorizedCallback(device) {
+        this.closeModal();
+        setTimeout(()=> {
+            this.props.navigation.push("AuthDeviceDrawer" , {device: device});
+        },100)
+    }
+
+    _ensureDeivceAndSessionCallback(errorMessage, success) {
+        if (success) {
+    
+          let btVal = this.numberFormatter.getFullStopValue(this.state.btAmount);
+          const btInDecimal = Pricer.getToDecimal(btVal);
+    
+          return this._executeTransaction(btInDecimal);
+        }
+    
+        if (errorMessage) {
+          if (ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage) {
+            //Cancel the flow.
+            this.resetState();
+            return;
+          }
+    
+          // Else: Show the error message.
+          this.showError(errorMessage);
+        }
+    }
+
+    _executeTransaction(btInDecimal) {
+        this.workflow = new ExecuteTransactionWorkflow(this);
+        OstWalletSdk.executeTransaction(
+          CurrentUser.getOstUserId(),
+          [this.getBeneficiaryAddress()],
+          [btInDecimal],
+          AppConfig.ruleTypeMap.directTransfer,
+          this.getSdkMetaProperties(),
+          this.workflow
+        );
+      }
+    
+    getSdkMetaProperties() {
+        let details = "";
+        const metaProperties = clone(AppConfig.redemptionMetaProperties);
+        details += `pid_${this.getPepoCornEntity()['id']} `;
+        details += `pupp_${ReduxGetters.getUSDPrice()}`;
+        details += `pca_$${this.numberFormatter.getFullStopValue(this.state.pepoCorns)}` 
+        return metaProperties;
+    }
+
+    onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
+        Pricer.getBalance();
+        this.sendTransactionToPlatform(ostWorkflowContext, ostWorkflowEntity);
+    }
+
+    sendTransactionToPlatform(ostWorkflowContext, ostWorkflowEntity) {
+        const params = this.getSendTransactionPlatformData(ostWorkflowEntity);
+        new PepoApi('/ost-transactions')
+          .post(params)
+          .then((res) => {
+            if (res && res.success) {
+              this.onTransactionSuccess(res);
+            } else {
+              this.onError(res);
+            }
+          })
+          .catch((error) => {
+            this.onError(error);
+          })
+    }
+
+    getSendTransactionPlatformData( ostWorkflowEntity ){
+        return {
+            ost_transaction: deepGet(ostWorkflowEntity, 'entity'),
+            ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')
+          };
+    }
+    
+    onTransactionSuccess(res) {
+        this.redemptionSuccess = true;
+        this.resetState();
+    }
+
+    onError(error, ostWorkflowContext , errorKey) {
+        if (ostWorkflowContext) {
+          // workflow error.
+          const errorMsg = ostSdkErrors.getErrorMessage(ostWorkflowContext, error);
+          this.showError(errorMsg);
+          return;
+        }
+    
+        const errorMsg = ostErrors.getErrorMessage(error , errorKey);
+        if (errorMsg) {
+          this.showError(errorMsg);
+          return;
+        }
+        const errorDataMsg = deepGet(error, 'err.error_data[0].msg');
+        if (errorDataMsg) {
+          this.showError(errorDataMsg);
+          return;
+        }
+    }
+
+    showError(errorMessage) {
+        this.resetState();
+        this.setState({ errorMsg: errorMessage });
+    }
+
+    getErrorMessage(val) {
+        if (val && String(val).indexOf(',') > -1) {
+          return ostErrors.getUIErrorMessage('bt_amount_decimal_error');
+        }
+        if (val && String(val).split('.')[1] && String(val).split('.')[1].length > 2) {
+          return ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error');
+        }
+        let step = this.getStep();
+        if( (val%step) !== 0  ){
+            return `Please enter amount in multiples of ${step}`;
+        }
+        return ;
     }
 
     getAnimation(){
@@ -200,6 +470,7 @@ class Redemption extends PureComponent{
     }
 
     getAppUpdateMarkup = () => {
+        //TODO @Preshita , do the UI part as well
         return (
             <View style={inlineStyles.viewWrapper}>
                 <Image source={toastError} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
@@ -214,6 +485,7 @@ class Redemption extends PureComponent{
     }
 
     getSuccessMarkup = (msg) => {
+         //TODO @Preshita , do the UI part as well
         return (
             <View style={inlineStyles.successViewWrapper}>
                 <Image source={tx_success} style={[{ width: 164.6, height: 160, marginBottom: 20 }]}></Image>
@@ -230,6 +502,7 @@ class Redemption extends PureComponent{
     }
 
     getRedemptionMarkup = () => {
+        //TODO minor UI @Preshita , Unicorn icon 
         return (
             <View style={inlineStyles.viewWrapper}>
                 <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
@@ -242,7 +515,7 @@ class Redemption extends PureComponent{
                     <Text style={inlineStyles.heading2} >How many {this.getPepoCornsName()} do you want to buy?</Text>
                     <View style={inlineStyles.formInputWrapper}>
                         <FormInput
-                            editable={true}
+                            editable={this.state.inputFieldsEditable}
                             onChangeText={this.onPepoCornChange}
                             style={[Theme.TextInput.textInputStyle]}
                             value={this.state.pepoCorns}
@@ -257,16 +530,16 @@ class Redemption extends PureComponent{
                           {this.state.pepoCorns}  
                         </FormInput>
                         <View style={inlineStyles.valueIn}>
-                            <Text>Value in <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}{this.state.btAmout}</Text>
+                            <Text>Value in <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}{this.state.btAmount}</Text>
                         </View>
-                        {/* TODO error handling */}
-                        {/* <Text style={[{ textAlign: 'center', marginTop: 10 }, Theme.Errors.errorText]}> {this.state.errorMsg}</Text> */}
-                        <TouchableButton    TouchableStyles={[Theme.Button.btnPink , {width: "100%"}]}
+                        <Text style={[{ textAlign: 'center', marginTop: 10 }, Theme.Errors.errorText]}> {this.state.errorMsg}</Text>
+                        <TouchableButton    disabled={this.state.exceBtnDisabled}
+                                            TouchableStyles={[Theme.Button.btnPink , {width: "100%"}]}
                                             TextStyles={[Theme.Button.btnPinkText]}
-                                            text={"Buy with Pepocoins"}
+                                            text={this.state.btnText}
                                             onPress={MultipleClickHandler(() => this.onConfrim())}
                           />
-                        <Text style={inlineStyles.balanceText}>Your current balance: <Image style={{ width: 14, height: 14 }} source={pepo_icon}></Image>{' '}{this.toBt(this.state.balance)}</Text>  
+                        <Text style={inlineStyles.balanceText}>Your current balance: <Image style={{ width: 14, height: 14 }} source={pepo_icon}></Image>{' '}{this.state.balance}</Text>  
                    </View> 
                 </View>
             </View>
@@ -274,12 +547,9 @@ class Redemption extends PureComponent{
     }
 
     getMarkUp = () => {
-        return this.getRedemptionMarkup();
         this.getAnimation().stop() ;
         if(this.state.isLoading){
            return this.getLoadingMarkup();
-        }else if( this.isError ){
-            return this.getErrorMarkup();
         }else if( this.isAppUpdate ) {
             return this.getAppUpdateMarkup();
         }else if( this.state.redemptionSuccess ){
@@ -295,18 +565,13 @@ class Redemption extends PureComponent{
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
                 <View style={{ flex: 1, backgroundColor: 'transparent' }}>
                   <TouchableWithoutFeedback>
-                    <View style={[inlineStyles.container]}>
+                    <View style={[inlineStyles.container , { paddingBottom: this.state.bottomPadding }]}>
                         {this.getMarkUp()}
                     </View>
                   </TouchableWithoutFeedback>
                 </View>
             </TouchableWithoutFeedback>
         );
-    }
-
-    toBt( val ){
-        const priceOracle =  Pricer.getPriceOracle() ;
-        return priceOracle.fromDecimal( val ) || 0 ;
     }
 
     closeModal = () => {
@@ -316,8 +581,19 @@ class Redemption extends PureComponent{
         }
         return false;
     }
-  
 
+    handleBackButtonClick = () => {
+        return this.state.isPurchasing
+    }
+
+    onUpdateAppClick = () =>{
+        //TODO @Preshita
+    }
+
+    onRedemptionWebViewClick = () => {
+        Utilities.onRedemptionWebViewClick();
+    }
+  
 }
 
 

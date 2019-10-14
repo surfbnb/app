@@ -104,6 +104,12 @@ class Pricer {
     }
   }
 
+  getBtFromPepoCorns( pepoCorns , step , pepoInWeiPerStep){
+    if(!pepoCorns || !step || !pepoInWeiPerStep ) return 0;
+    pepoInWeiPerStep =  this.getToBT(pepoInWeiPerStep);
+    return Nummber( pepoInWeiPerStep ) * ( Number(pepoCorns) / Number(step));
+  }
+
 }
 
 export default new Pricer();

@@ -54,6 +54,11 @@ export default {
     name: 'profile'
   },
 
+  redemptionMetaProperties : {
+    type: 'user_to_company',
+    name: 'redemption'
+  },
+
   executeTransactionPrivacyType: {
     public: 'PUBLIC',
     private: 'PRIVATE'

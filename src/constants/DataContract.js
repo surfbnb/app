@@ -21,10 +21,14 @@ export default {
 
     redemption: {
         configApi : "/pepocorn-topups/info/",
-        fetchBalanceApi: "",
+        fetchPepoCornsBalanceApi: "",
+        validatePricePoint: "/pepocorn-topups/validate",
         isAppUpdateKeyPath: "data.app_upgrade",
         pepoCornsNameKey: "product_name",
-        pepoCornsImageKey: "product_image"
+        pepoCornsImageKey: "product_image",
+        pepoCornInputStep : "step",
+        pepoInWeiPerStep: "pepo_in_wei_per_step",
+        pepoBeneficiaryAddress: "pepo_beneficiary_address"
     },
 
     common: {

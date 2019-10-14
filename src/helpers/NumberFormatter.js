@@ -1,0 +1,83 @@
+import PepoNativeHelper from './PepoNativeHelper';
+
+class NumberFormatter {
+
+    constructor(config){
+        this.config = config;
+        this.groupSeparator = ',';
+        this.decimalSeparator = '.';
+        PepoNativeHelper.getGroupAndDecimalSeparators((groupSeparator, decimalSeparator)=> {
+            this.groupSeparator = groupSeparator;
+            this.decimalSeparator = decimalSeparator;
+      
+          }, (error)=> {
+            this.groupSeparator = ',';
+            this.decimalSeparator = '.';
+        })
+    }
+
+
+    isValidInputProvided(val) {
+        let separators = this.getDecimalGroupSeparators()
+          , decimalSeparator = separators[1]
+          , regex = new RegExp(['[^0-9'+decimalSeparator+']+'],'g')
+          , matchStrs = val.match(regex)
+        ;
+    
+        if (matchStrs && matchStrs.length > 0) {
+          return false;
+        }
+    
+        return true;
+      }
+    
+      getDecimalGroupSeparators(){
+        return [this.groupSeparator, this.decimalSeparator];
+      }
+    
+      convertToValidFormat(val) {
+    
+        let separators = this.getDecimalGroupSeparators()
+          , decimalSeparator = separators[1]
+          , regex = new RegExp(['[^0-9\\'+decimalSeparator+']+'],'g')
+        ;
+    
+        val = val.split(regex).join('');
+    
+        let splitArray = val.split(decimalSeparator);
+    
+        if (splitArray.length > 1) {
+          let firstVal = splitArray[0];
+          splitArray.shift();
+          let decimalVal = splitArray.join('');
+    
+          val = firstVal+decimalSeparator+decimalVal;
+        }
+    
+        return val
+      };
+    
+      getFullStopValue(val) {
+        let sperators = this.getDecimalGroupSeparators()
+          , decimalSeparator = sperators[1]
+        ;
+    
+        val = String(val).replace(decimalSeparator, '.');
+    
+        return val
+      }
+    
+      getFormattedValue(valTobeFormatted) {
+        let sperators = this.getDecimalGroupSeparators()
+          , decimalSeparator = sperators[1]
+        ;
+    
+        valTobeFormatted = valTobeFormatted.replace('.', decimalSeparator);
+    
+        return valTobeFormatted
+      }
+
+
+}
+
+export default NumberFormatter;

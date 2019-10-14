@@ -37,7 +37,9 @@ const UIErros = {
   top_not_available: "Topup not available at this time, we are looking into it. Please check back later.",
   delete_video_error:"Unable to delete Video at this moment.", 
   redemption_error : "Failed to redeem, please try again later",
-  redemption_low_balance : "You dont have enough balance for redemption"
+  redemption_low_balance : "You dont have enough balance for redemption", 
+  max_pepocorns: "You dont have enough balance to redeem this amount.",
+  price_point_validation_failed: "Price points have been updated please try again."
 };
 
 const UIWhitelistedErrorCode = {
