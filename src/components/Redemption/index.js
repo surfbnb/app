@@ -229,6 +229,7 @@ class Redemption extends PureComponent{
         , btVal = Pricer.getBtFromPepoCorns( fullStopval , this.getStep() ,  this.getPepoInWeiPerStep()) 
         , forMattedbtVal = this.numberFormatter.getFormattedValue(String(btVal))
         ;
+        forMattedbtVal =  Pricer.getToBT( forMattedbtVal , 5);
         this.setState({ btAmount: forMattedbtVal, pepoCorns: val , errorMsg: null   });
     }
 
