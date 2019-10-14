@@ -77,7 +77,7 @@ class Redemption extends PureComponent{
         this.state = {
             btAmount: 0,
             pepoCorns : 0,
-            balance: Pricer.getToBT(  ReduxGetters.getBalance() ) ,
+            balance: Pricer.getFromDecimal(  ReduxGetters.getBalance() ) ,
             errorMsg: null,
             isLoading: true,
             isPurchasing : false,
@@ -227,7 +227,7 @@ class Redemption extends PureComponent{
         let formattedVal = this.numberFormatter.convertToValidFormat(val)
         , fullStopval = this.numberFormatter.getFullStopValue(formattedVal)
         , btVal = Pricer.getBtFromPepoCorns( fullStopval , this.getStep() ,  this.getPepoInWeiPerStep()) 
-        , forMattedbtVal = this.numberFormatter.getFormattedValue(btVal)
+        , forMattedbtVal = this.numberFormatter.getFormattedValue(String(btVal))
         ;
         this.setState({ btAmount: forMattedbtVal, pepoCorns: val , errorMsg: null   });
     }
@@ -554,9 +554,7 @@ class Redemption extends PureComponent{
                             keyboardType="decimal-pad"
                             blurOnSubmit={true}
                             errorStyle={{display: "none"}}
-                            >
-                                {this.state.pepoCorns}
-                            </FormInput>
+                            />
                         </View>
                         <View style={inlineStyles.valueIn}>
                             <Text>Value in <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}{this.state.btAmount}</Text>
@@ -566,7 +564,7 @@ class Redemption extends PureComponent{
                                             TouchableStyles={[Theme.Button.btnPink , {width: "100%"}]}
                                             TextStyles={[Theme.Button.btnPinkText]}
                                             text={this.state.btnText}
-                                            onPress={MultipleClickHandler(() => this.onConfrim())}
+                                            onPress={MultipleClickHandler(() => this.onConfirm())}
                           />
                         <Text style={inlineStyles.balanceText}>Your current balance: <Image style={{ width: 14, height: 14 }} source={pepo_icon}></Image>{' '}{this.state.balance}</Text>  
                    </View> 
