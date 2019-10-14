@@ -58,6 +58,8 @@ import WalletDetails from './src/components/WalletSetting/WalletDetails';
 import AuthDeviceDrawer from './src/components/Home/AuthDeviceDrawer';
 import InAppBrowserComponent from './src/components/CommonComponents/InAppBrowser';
 import CouchMarks from './src/components/CouchMarks';
+import VideoTags from './src/components/VideoTags';
+import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
 
 const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserComponent' , 'CouchMarks'];
 
@@ -129,7 +131,9 @@ const HomePushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen
+    SupportersListScreen: SupportersListScreen,
+    VideoTags: VideoTags,
+    FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
     headerLayoutPreset: 'center'
@@ -161,7 +165,9 @@ const NotificationPushStack = createStackNavigator(
     UserVideoHistory: UserVideoHistory,
     VideoPlayer: VideoPlayer,
     SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen
+    SupportersListScreen: SupportersListScreen,
+    VideoTags: VideoTags,
+    FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
     headerLayoutPreset: 'center'
@@ -175,7 +181,7 @@ const NotificationStack = createStackNavigator(
     AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
     CaptureVideo: CaptureVideoStack,
-    InAppBrowserStack: InAppBrowserStack,
+    InAppBrowserStack: InAppBrowserStack
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -193,7 +199,9 @@ const ProfilePushStack = createStackNavigator(
     ReferAndEarn: ReferAndEarn,
     Invites: Invites,
     WalletSettingScreen: WalletSettingScreen,
-    WalletDetails: WalletDetails
+    WalletDetails: WalletDetails,
+    VideoTags: VideoTags,
+      FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
     headerLayoutPreset: 'center'
@@ -244,7 +252,9 @@ const SearchPushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
-    UserVideoHistory: UserVideoHistory
+    UserVideoHistory: UserVideoHistory,
+    VideoTags: VideoTags,
+      FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
     headerLayoutPreset: 'center'

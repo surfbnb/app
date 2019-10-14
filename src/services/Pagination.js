@@ -102,6 +102,7 @@ class Pagination {
     }
 
     getResults(){
+      console.log('========== getResults =============', this.fetchServices.getAllResults());
       return this.fetchServices.getAllResults() || [];
     }
 
