@@ -91,13 +91,11 @@ class Redemption extends PureComponent{
         }
 
         this.numberFormatter = new NumberFormatter();
-    }
 
         this.defaultState = {
             exceBtnDisabled: false,
             redemptionSuccess: false,
             isPurchasing: false,
-            isLoading: false,
             btnText: btnPreText,
             inputFieldsEditable: true,
             errorMsg: null
@@ -494,7 +492,7 @@ class Redemption extends PureComponent{
     }
 
     getAppUpdateCTAUrl(){
-        return  'itms-apps://itunes.apple.com/us/app/id${APP_STORE_LINK_ID}?mt=8';
+        return deepGet(this.configResponse , `${DataContract.redemption.appUpdateKeyPath}.${Platform.OS}.cta_url`);
     }
 
     getAppUpdateMarkup = () => {
