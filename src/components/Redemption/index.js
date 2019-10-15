@@ -172,7 +172,7 @@ class Redemption extends PureComponent{
     getStep() {
         const pepoCornsEntity = this.getPepoCornEntity();
         let step = pepoCornsEntity[DataContract.redemption.pepoCornInputStep] || 1;
-        return Number( step );
+        return step;
     }
 
     getPepoInWeiPerStep(){
@@ -251,8 +251,7 @@ class Redemption extends PureComponent{
 
         let pepoCorns = this.getTransactionalPepoCorns(this.state.pepoCorns),
             step = this.getStep();
-            pepoCorns = pepoCorns && Number( pepoCorns );
-        if( (pepoCorns%step) !== 0  ){
+        if( !Pricer.isValidPepocornStep(pepoCorns ,step) ){
             this.setState({errorMsg: `Please enter amount in multiples of ${step}`});
             return false;
         }

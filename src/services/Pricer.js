@@ -126,6 +126,18 @@ class Pricer {
     return this.getToBT( pepoCorns , precession )
   }
 
+  isValidPepocornStep( val ,  step ){
+    if(!val || !step) return true;
+    let valBN = BigNumber( val );
+    let remainder =  valBN.modulo(step);
+    remainder =  remainder && Number(remainder)
+    if( remainder == 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   fetchPepocornsBalance(){
     return new PepoApi(DataContract.redemption.fetchPepoCornsBalanceApi)
     .get()
