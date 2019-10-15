@@ -65,38 +65,38 @@ class OstSdkErrors {
         return errMsg || DEFAULT_ERROR_MSG;
       }
 
-      if ( OstWalletSdkHelper.isDeviceUnauthorizedError(ostError)) {
-        errorCode = USER_UNAUTHORIZED;
-
-        if ( allErrors[workflowType] ) {
-          errMsg = allErrors[workflowType][ errorCode ];
-        }
-
-        if ( !errMsg ) {
-          errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
-        }
-
-        if ( developerMode ) {
-          errMsg = errMsg + "\n\n(" + ostError.getApiInternalId() + ")"
-        }
-
-        return errMsg || DEFAULT_ERROR_MSG;
-      }
+      // if ( OstWalletSdkHelper.isDeviceUnauthorizedError(ostError)) {
+      //   errorCode = USER_UNAUTHORIZED;
+      //
+      //   if ( allErrors[workflowType] ) {
+      //     errMsg = allErrors[workflowType][ errorCode ];
+      //   }
+      //
+      //   if ( !errMsg ) {
+      //     errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
+      //   }
+      //
+      //   if ( developerMode ) {
+      //     errMsg = errMsg + "\n\n(" + ostError.getApiInternalId() + ")"
+      //   }
+      //
+      //   return errMsg || DEFAULT_ERROR_MSG;
+      // }
 
       if ( ostError.isApiError() ) {
 
-        if ( !developerMode ) {
-
-          errorCode = API_RESPONSE_ERROR;
-
-          if ( allErrors[workflowType] ) {
-            errMsg = allErrors[workflowType][ errorCode ];
-          }
-
-          if ( !errMsg ) {
-            errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
-          }
-        }
+        // if ( !developerMode ) {
+        //
+        //   errorCode = API_RESPONSE_ERROR;
+        //
+        //   if ( allErrors[workflowType] ) {
+        //     errMsg = allErrors[workflowType][ errorCode ];
+        //   }
+        //
+        //   if ( !errMsg ) {
+        //     errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
+        //   }
+        // }
 
         if ( !errMsg ) {
           let errData = ostError.getApiErrorData();
@@ -179,7 +179,7 @@ const allErrors = {
 
   },
   "AUTHORIZE_DEVICE_WITH_QR_CODE": {
-    API_RESPONSE_ERROR: "Something went wrong"
+   // API_RESPONSE_ERROR: "Something went wrong"
   },
   "AUTHORIZE_DEVICE_WITH_MNEMONICS": {
 
@@ -191,7 +191,7 @@ const allErrors = {
 
   },
   "RESET_PIN": {
-    API_RESPONSE_ERROR: "Something went wrong"
+   // API_RESPONSE_ERROR: "Something went wrong"
   },
   "LOGOUT_ALL_SESSIONS": {
 
@@ -200,7 +200,7 @@ const allErrors = {
 
   },
   "EXECUTE_TRANSACTION": {
-    API_RESPONSE_ERROR: "Something went wrong"
+   // API_RESPONSE_ERROR: "Something went wrong"
   }
 };
 
