@@ -214,9 +214,9 @@ class ReduxGetters {
     return deepGet(state, `user_video_entities.id_${id}.payload.user_id`);
   }
 
-  getUserVideoPayload(id, state) {
+  getTagsVideoPayload(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `user_video_entities.id_${id}.payload`)
+    return deepGet(state, `tag_video_entities.id_${id}.payload`)
   }
 
   getProfileImage(id, state) {
