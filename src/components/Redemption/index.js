@@ -396,7 +396,7 @@ class Redemption extends PureComponent{
     }
     
     onTransactionSuccess(res) {
-        this.redemptionSuccess = true;
+        this.state.redemptionSuccess = true;
         this.resetState();
     }
 
