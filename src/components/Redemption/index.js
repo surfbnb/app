@@ -509,11 +509,19 @@ class Redemption extends PureComponent{
                 <Text style={inlineStyles.appUpdateText}>
                     {this.getAppUpdateMessage()}
                 </Text>
-                <TouchableButton  TouchableStyles={[Theme.Button.btnPink]}
-                                    TextStyles={[Theme.Button.btnPinkText]}
+                <LinearGradient
+                            colors={['#ff7499', '#ff7499', '#ff5566']}
+                            locations={[0, 0.35, 1]}
+                            style={{ borderRadius: 3, borderWidth: 0, width: '100%'}}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            >
+                    <TouchableButton TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
+                                    TextStyles={[Theme.Button.btnPinkText, { fontSize: 14 }]}
                                     text={this.getAppUpdateCTAText()}
                                     onPress={MultipleClickHandler(() => this.onUpdateAppClick())}
                             />
+                </LinearGradient>
             </View>
         )
     }
@@ -545,7 +553,7 @@ class Redemption extends PureComponent{
     getRedemptionMarkup = () => {
         return (
                 <View style={inlineStyles.viewWrapper}>
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={()=> this.pepocornInput.refs.pepo_corns.blur()}>
                     <View style={inlineStyles.topWrapper}>
                         <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
                         <Image source={this.getPepoCornsImageSource()} style={inlineStyles.pepcornImageSkipFont}></Image>
@@ -561,16 +569,17 @@ class Redemption extends PureComponent{
                     <View style={inlineStyles.formInputWrapper}>
                         <Image source={pepoCornSmall} style={inlineStyles.textInputImage}/>
                         <FormInput
+                            ref={(ref) => this.pepocornInput = ref}
                             editable={this.state.inputFieldsEditable}
                             onChangeText={this.onPepoCornChange}
-                        style={[Theme.TextInput.textInputStyle, inlineStyles.formInputText]}
-                        value={this.state.pepoCorns}
-                        placeholder="Unicorns"
-                        fieldName="pepo_corns"
-                        placeholderTextColor= {Colors.darkGray}
-                        keyboardType="decimal-pad"
-                        blurOnSubmit={true}
-                        errorStyle={{display: "none"}}
+                            style={[Theme.TextInput.textInputStyle, inlineStyles.formInputText]}
+                            value={this.state.pepoCorns}
+                            placeholder="Unicorns"
+                            fieldName="pepo_corns"
+                            placeholderTextColor= {Colors.darkGray}
+                            keyboardType="decimal-pad"
+                            blurOnSubmit={true}
+                            errorStyle={{display: "none"}}
                         />
                     </View>
                     <View style={inlineStyles.valueIn}>
