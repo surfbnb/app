@@ -35,7 +35,7 @@ import ImageGallery from './src/components/ImageGallery';
 import BioScreen from './src/components/Bio';
 import CaptureVideo from './src/components/CaptureVideo';
 import NotificationScreen from './src/components/Notification';
-import { StatusBarManager } from './src/services/StatusBarManager';
+import { NavigationStateHandler } from './src/services/NavigationStateHandler';
 import CustomDrawerContent from './src/components/CustomDrawerContent';
 import AllowAccessModalScreen from './src/components/AllowAccessModalScreen';
 import VideoPlayer from './src/components/CommonComponents/VideoPlayer';
@@ -335,7 +335,7 @@ const AppContainer = createAppContainer(
 const RootNavigationContainer = () => (
   <Root>
     <AppContainer
-      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(prevState,currentState,action)}
+      onNavigationStateChange={(prevState, currentState, action) => NavigationStateHandler(prevState, currentState, action)}
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}
