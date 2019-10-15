@@ -14,6 +14,11 @@ let stylesMap = {
     padding: 12,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  username:{
+    fontSize : 13,
+    color : Colors.valhalla,
+    marginLeft: 10,
   }
 };
 
