@@ -45,6 +45,7 @@ import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helper
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import clone from 'lodash/clone';
+import { ostSdkErrors } from '../../services/OstSdkErrors';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -366,6 +367,7 @@ class Redemption extends PureComponent{
         let details = "" , separator=" ";
         details += `pid_${this.getPepoCornEntity()[DataContract.redemption.productIdKey]}${separator}`;
         details += `pupp_${ReduxGetters.getUSDPrice()}${separator}`;
+        //details += `pupp_${0}${separator}`;
         details += `pca_${this.getTransactionalPepoCorns(this.state.pepoCorns)}` 
         metaProperties["details"] = details;
         return metaProperties;
