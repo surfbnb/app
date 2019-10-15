@@ -207,7 +207,7 @@ let stylesMap = {
     },
 
     successLink :{
-      marginTop: 10,
+      marginTop: 20,
       color: Colors.wildWatermelon2
     }
  
