@@ -248,7 +248,7 @@ class CustomDrawerContent extends Component {
                 disabled={this.state.disableButtons}>
                 <View style={styles.itemParent}>
                   <Image style={{ height: 27, width: 27, resizeMode: 'contain' }} source={pepoCornsImg} />
-                  <Text style={styles.item}>{AppConfig.redemption.pepoCornsName} ({this.state.pepocorns})</Text>
+                  <Text style={styles.item}>{AppConfig.redemption.pepoCornsName}</Text>
                 </View>
             </TouchableOpacity>
           )} 
