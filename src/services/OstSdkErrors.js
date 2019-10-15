@@ -10,6 +10,8 @@ const DEFAULT_ERROR_MSG = "Something went wrong";
 const WORKFLOW_CANCELLED_MSG = "WORKFLOW_CANCELLED";
 const DEFAULT_CONTEXT = "_default";
 const DEVICE_OUT_OF_SYNC = "DEVICE_OUT_OF_SYNC";
+const API_RESPONSE_ERROR = "API_RESPONSE_ERROR";
+const USER_UNAUTHORIZED = "USER_UNAUTHORIZED";
 /**
  * OstSdkErrors
  * To get Message of OstError based on workflow type.
@@ -63,19 +65,54 @@ class OstSdkErrors {
         return errMsg || DEFAULT_ERROR_MSG;
       }
 
-      if ( ostError.isApiError() ) {
-        let errData = ostError.getApiErrorData();
-        if (errData && errData.length > 0) {
-          let firstErrMsg = errData[0];
-          errMsg = firstErrMsg.msg || DEFAULT_ERROR_MSG;
-        }else {
-          errMsg = ostError.getApiErrorMessage();
+      if ( OstWalletSdkHelper.isDeviceUnauthorizedError(ostError)) {
+        errorCode = USER_UNAUTHORIZED;
+
+        if ( allErrors[workflowType] ) {
+          errMsg = allErrors[workflowType][ errorCode ];
+        }
+
+        if ( !errMsg ) {
+          errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
         }
 
         if ( developerMode ) {
           errMsg = errMsg + "\n\n(" + ostError.getApiInternalId() + ")"
         }
-        return errMsg;
+
+        return errMsg || DEFAULT_ERROR_MSG;
+      }
+
+      if ( ostError.isApiError() ) {
+
+        if ( !developerMode ) {
+
+          errorCode = API_RESPONSE_ERROR;
+
+          if ( allErrors[workflowType] ) {
+            errMsg = allErrors[workflowType][ errorCode ];
+          }
+
+          if ( !errMsg ) {
+            errMsg = allErrors[DEFAULT_CONTEXT][ errorCode ];
+          }
+        }
+
+        if ( !errMsg ) {
+          let errData = ostError.getApiErrorData();
+          if (errData && errData.length > 0) {
+            let firstErrMsg = errData[0];
+            errMsg = firstErrMsg.msg || DEFAULT_ERROR_MSG;
+          }else {
+            errMsg = ostError.getApiErrorMessage();
+          }
+        }
+
+        if ( developerMode ) {
+          errMsg = errMsg + "\n\n(" + ostError.getApiInternalId() + ")"
+        }
+
+        return errMsg || DEFAULT_ERROR_MSG;
       }
 
       if ( !errorCode ) {
@@ -142,7 +179,7 @@ const allErrors = {
 
   },
   "AUTHORIZE_DEVICE_WITH_QR_CODE": {
-
+    API_RESPONSE_ERROR: "Something went wrong"
   },
   "AUTHORIZE_DEVICE_WITH_MNEMONICS": {
 
@@ -154,7 +191,7 @@ const allErrors = {
 
   },
   "RESET_PIN": {
-
+    API_RESPONSE_ERROR: "Something went wrong"
   },
   "LOGOUT_ALL_SESSIONS": {
 
@@ -163,11 +200,12 @@ const allErrors = {
 
   },
   "EXECUTE_TRANSACTION": {
-
+    API_RESPONSE_ERROR: "Something went wrong"
   }
 };
 
 const BaseErrorMessages = {
+  USER_UNAUTHORIZED: 'Device is not authorized. Please authorize device again.',
   DEVICE_OUT_OF_SYNC: 'Device time is out of sync. Please check the time on your device reflects current date and time.',
   NETWORK_ERROR: "Request could not be executed due to cancellation, a connectivity problem or timeout.",
 
@@ -289,4 +327,4 @@ const DeveloperErrorMessages = {
 
 const ostSdkErrors = new OstSdkErrors();
 
-export {ostSdkErrors, DEFAULT_CONTEXT, WORKFLOW_CANCELLED_MSG};
+export {ostSdkErrors, DEFAULT_CONTEXT, WORKFLOW_CANCELLED_MSG, API_RESPONSE_ERROR};
