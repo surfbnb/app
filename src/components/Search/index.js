@@ -25,7 +25,7 @@ const TabMap = {
     },
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No top data found',
+      "noResultsMsg": 'No results found. Please try again.',
       "isEmpty": true
     },
     renderNoResults :  (noResultsData) => {
@@ -41,7 +41,7 @@ const TabMap = {
     title: 'People',
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No people data found',
+      "noResultsMsg": 'No results found. Please try again.',
       "isEmpty": true
     },
     renderNoResults :  (noResultsData) => {
@@ -57,7 +57,7 @@ const TabMap = {
     title: 'Tags',
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No tag data found',
+      "noResultsMsg": 'No results found. Please try again.',
       "isEmpty": true
     },
     renderNoResults:  (noResultsData) => {
@@ -69,15 +69,14 @@ const TabMap = {
   },
   "video": {
     id: 'video',
-    baseUrl : '/tags/1/videos',
+    baseUrl : '/tags/52/videos',
     title: 'Video',
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No video data found',
+      "noResultsMsg": 'No results found. Please try again.',
       "isEmpty": true
     },
     renderNoResults :  (noResultsData) => {
-
       const oThis = TabMap.video;
       console.log('this.emptyData',oThis.noResultsData);
       noResultsData = noResultsData || oThis.noResultsData;
@@ -287,7 +286,7 @@ class SearchScreen extends PureComponent {
           <TopsList
             getFetchUrl={this.getTopTabUrl}
             ref={this.setTopFlatListRef}
-            getNoResultsData={TabMap.top.noResultsData}
+            noResultsData={TabMap.top.noResultsData}
             getNoResultsCell={TabMap.top.renderNoResults}
           />
         </Tab>
@@ -299,7 +298,7 @@ class SearchScreen extends PureComponent {
           <PeopleList
             getFetchUrl={this.getPeopleTabUrl}
             ref={this.setPeopleFlatListRef}
-            getNoResultsData={TabMap.people.noResultsData}
+            noResultsData={TabMap.people.noResultsData}
             getNoResultsCell={TabMap.people.renderNoResults}
           />
         </Tab>
@@ -311,7 +310,7 @@ class SearchScreen extends PureComponent {
           <TagsList
             getFetchUrl={this.getTagsTabUrl}
             ref={this.setTagsFlatListRef}
-            getNoResultsData={TabMap.tags.noResultsData}
+            noResultsData={TabMap.tags.noResultsData}
             getNoResultsCell={TabMap.tags.renderNoResults}
           />
         </Tab>
@@ -325,7 +324,7 @@ class SearchScreen extends PureComponent {
             ref={this.setVideoFlatListRef}
             getFetchUrl={this.getVideoTabUrl}
             navigation={this.props.navigation}
-            getNoResultsData={TabMap.video.noResultsData}
+            noResultsData={TabMap.video.noResultsData}
             getNoResultsCell={TabMap.video.renderNoResults}
           />
         </Tab>

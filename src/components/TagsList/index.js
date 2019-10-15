@@ -107,17 +107,9 @@ class TagsList extends PureComponent {
 
     getResultList(){
         let list = this.tagsPagination.getResults();
-        return list.length > 0 ? list : [this.props.getNoResultsData];
+        return list.length > 0 ? list : [this.props.noResultsData];
     }
 
-
-    // onPullToRefresh = () => {
-    //     fetchUser(this.props.userId , this.onUserFetch );
-    // }
-    //
-    // onUserFetch =(res) => {
-    //     this.props.onUserFetch && this.props.onUserFetch(res);
-    // }
 
     beforeRefresh = ( ) => {
         //this.props.beforeRefresh && this.props.beforeRefresh();
@@ -160,11 +152,24 @@ class TagsList extends PureComponent {
     //     return this.props.userId === CurrentUser.getUserId();
     // }
 
-    _keyExtractor = (item, index) => `id_${item}`;
+    _keyExtractor = (item, index) => {
+        return `id_${item.id}`
+    };
 
     _renderItem = ({ item, index }) => {
+      // Check if this is an empty cell.
+      if ( item.isEmpty) {
+        // Render no results cell here.
+        return this.props.getNoResultsCell(item);
+      } else {
+        // Render Tag cell
+        return this._renderTagCell({item,index});
+      }
+    };
+
+    _renderTagCell = ({ item, index }) => {
         // isEmpty came from configuration in Search/index.js
-        return <TagsCell text={item.text} tagId={item.id} isEmpty={item.isEmpty} emptyRenderFunction={this.props.getNoResultsCell} />;
+        return <TagsCell text={item.text} tagId={item.id} />;
     };
 
     renderFooter = () => {

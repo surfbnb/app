@@ -36,58 +36,9 @@ class PeopleList extends PureComponent {
     this.removePaginationListeners();
   }
 
-
   getPagination = () => {
     return this.peoplePagination;
   };
-
-  // getEmptyComponent = () => {
-  //     if (this.state.list.length > 0 ){
-  //         return null;
-  //     }
-  //     console.log('getEmptyComponent ----------');
-  //     if (!this.state.refreshing && this.props.searchParams) {
-  //         //if (this.props.noResultsFound && !this.props.toRefresh)
-  //         return this.renderNoResults();
-  //         //}
-  //     }
-  //
-  //     if (this.props.searchParams) {
-  //         return this.renderSearchingFor();
-  //     }
-  //
-  //     if(!this.props.searchParams){
-  //         return ( <View style={{ flex: 1,flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-  //             <ActivityIndicator style={{alignSelf:'center'}} size="small" color={Colors.greyLite} />
-  //         </View>);
-  //     }
-  //
-  //     return <View />;
-  // };
-
-  // renderNoResults() {
-  //     return (
-  //         <View>
-  //             <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14, marginTop: 10 }}>
-  //                 No results found!
-  //             </Text>
-  //         </View>
-  //     );
-  // }
-
-
-  // renderSearchingFor() {
-  //     return (
-  //         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-  //             <ActivityIndicator size="small" color={Colors.greyLite} />
-  //             <Text style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}>
-  //                 {`Searching for "${decodeURIComponent(this.props.searchParams) || ''}"`}
-  //             </Text>
-  //         </View>
-  //     );
-  // }
-
-
 
   // region - Pagination and Event Handlers
 
@@ -134,6 +85,7 @@ class PeopleList extends PureComponent {
     paginationEvent.removeListener('onBeforeNext');
     paginationEvent.removeListener('onNext');
     paginationEvent.removeListener('onNextError');
+    this.peoplePagination = null;
   }
 
 
@@ -161,10 +113,14 @@ class PeopleList extends PureComponent {
   }
 
   onRefresh = ( res ) => {
-    const list = this.peoplePagination.getResults()  ;
-    console.log('onRefresh',res);
-    this.props.onRefresh && this.props.onRefresh( list , res );
-    this.setState({ refreshing : false , list : list });
+    let results = this.peoplePagination.getResults()  ;
+    if ( !results || results.length < 1) {
+      // Create data for empty list.
+      results = [ this.props.noResultsData ];
+    }
+
+    this.props.onRefresh && this.props.onRefresh( results , res );
+    this.setState({ refreshing : false , list : results });
   }
 
   onRefreshError = ( error ) => {
@@ -189,16 +145,33 @@ class PeopleList extends PureComponent {
 
   refresh = () => {
     this.peoplePagination.refresh();
-  }
+  };
 
   // isCurrentUser = () => {
   //     return this.props.userId === CurrentUser.getUserId();
   // }
 
-  _keyExtractor = (item, index) => `id_${item}`;
+  _keyExtractor = (item, index) => {
+    return `id_${item.id}`;
+  };
 
-  _renderItem = ({ item, index }) => {
-    return <PeopleCell userId={item.payload.user_id} />;
+  _renderItem = ({item, index}) => {
+    // Check if this is an empty cell.
+    if ( item.isEmpty) {
+      // Render no results cell here.
+      return this.props.getNoResultsCell(item);
+    } else {
+      // Render People cell
+      return this._renderPeopleCell({item,index});
+    }
+  };
+
+  _renderPeopleCell = ({ item, index }) => {
+    return <PeopleCell
+            userId={item.payload.user_id}
+            isEmpty={item.isEmpty}
+            emptyRenderFunction={this.props.getNoResultsCell}
+            />;
   };
 
   renderFooter = () => {
@@ -213,7 +186,7 @@ class PeopleList extends PureComponent {
         {this.state.list.length > 0 && this.props.listHeaderSubComponent }
       </React.Fragment>
     )
-  }
+  };
 
   render(){
     return(

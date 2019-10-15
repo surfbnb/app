@@ -17,11 +17,22 @@ class VideoCollections extends PureComponent {
             loadingNext: false
         };
         this.listRef = null;
-    }
 
+
+
+        const ts = Date.now();
+        this.noResultsKeyProp = "video_collection_no_results_" + ts;
+        this.hasResultsKeyProp = "video_collection_has_results_" + ts;
+
+        this.numColumns = 2;
+        this.flatListKey = this.hasResultsKeyProp;
+    }
 
     componentDidMount(){
         this.forcedRefresh();
+        const ts = Date.now();
+        this.noResultsKeyProp = "video_collection_no_results_" + ts;
+        this.hasResultsKeyProp = "video_collection_has_results_" + ts;
     }
 
     componentWillUnmount() {
@@ -32,54 +43,6 @@ class VideoCollections extends PureComponent {
     getPagination = () => {
         return this.videoPagination;
     };
-
-    // getEmptyComponent = () => {
-    //     if (this.state.list.length > 0 ){
-    //         return null;
-    //     }
-    //     console.log('getEmptyComponent ----------');
-    //     if (!this.state.refreshing && this.props.searchParams) {
-    //         //if (this.props.noResultsFound && !this.props.toRefresh)
-    //         return this.renderNoResults();
-    //         //}
-    //     }
-    //
-    //     if (this.props.searchParams) {
-    //         return this.renderSearchingFor();
-    //     }
-    //
-    //     if(!this.props.searchParams){
-    //         return ( <View style={{ flex: 1,flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-    //             <ActivityIndicator style={{alignSelf:'center'}} size="small" color={Colors.greyLite} />
-    //         </View>);
-    //     }
-    //
-    //     return <View />;
-    // };
-
-    // renderNoResults() {
-    //     return (
-    //         <View>
-    //             <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14, marginTop: 10 }}>
-    //                 No results found!
-    //             </Text>
-    //         </View>
-    //     );
-    // }
-
-
-    // renderSearchingFor() {
-    //     return (
-    //         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-    //             <ActivityIndicator size="small" color={Colors.greyLite} />
-    //             <Text style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}>
-    //                 {`Searching for "${decodeURIComponent(this.props.searchParams) || ''}"`}
-    //             </Text>
-    //         </View>
-    //     );
-    // }
-
-
 
     // region - Pagination and Event Handlers
 
@@ -128,69 +91,75 @@ class VideoCollections extends PureComponent {
         paginationEvent.removeListener('onNextError');
     }
 
-
-
-
-
     forcedRefresh (fetchUrl){
         this.initPagination();
         this.refresh();
     }
 
-
-    // onPullToRefresh = () => {
-    //     fetchUser(this.props.userId , this.onUserFetch );
-    // }
-    //
-    // onUserFetch =(res) => {
-    //     this.props.onUserFetch && this.props.onUserFetch(res);
-    // }
-
     beforeRefresh = ( ) => {
         //this.props.beforeRefresh && this.props.beforeRefresh();
         //this.onPullToRefresh();
         this.setState({ refreshing : true });
-    }
+    };
 
     onRefresh = ( res ) => {
-        const list = this.videoPagination.getResults()  ;
-        console.log('onRefresh',res);
+        const list = this.getResultList();
         this.props.onRefresh && this.props.onRefresh( list , res );
-        this.setState({ refreshing : false , list : list });
-    }
+        this.setState({
+          refreshing : false,
+          list : list
+        });
+    };
 
     onRefreshError = ( error ) => {
         this.setState({ refreshing : false });
-    }
+    };
 
     beforeNext =() => {
         this.setState({ loadingNext : true });
-    }
+    };
 
     onNext = ( res  ) => {
-        this.setState({ loadingNext : false ,  list : this.videoPagination.getResults() });
+        this.setState({
+          loadingNext : false,
+          list : this.getResultList()
+        });
     }
 
     onNextError = ( error ) => {
         this.setState({ loadingNext : false });
-    }
+    };
 
     getNext = () => {
         this.videoPagination.getNext();
-    }
+    };
 
     refresh = () => {
         this.videoPagination.refresh();
+    };
+
+    _keyExtractor = (item, index) => {
+        return `id_${item.id}`;
     }
 
-    // isCurrentUser = () => {
-    //     return this.props.userId === CurrentUser.getUserId();
-    // }
-
-    _keyExtractor = (item, index) => `id_${item}`;
-
     _renderItem = ({ item, index }) => {
-        return (<VideoThumbnailItem payload={item.payload} index={index} onVideoClick={() => {this.onVideoClick(item.payload, index)}} />);
+      // Check if this is an empty cell.
+      if ( item.isEmpty) {
+        // Render no results cell here.
+        return this.props.getNoResultsCell(item);
+      } else {
+        // Render Video cell
+        return this._renderVideoCell({item,index});
+      }
+    };
+
+    _renderVideoCell = ({ item, index }) => {
+        return (<VideoThumbnailItem
+          payload={item.payload}
+          index={index}
+          onVideoClick={() => {this.onVideoClick(item.payload, index)}}
+          isEmpty={item.isEmpty}
+          emptyRenderFunction={this.props.getNoResultsCell}/>);
     };
 
 
@@ -215,23 +184,41 @@ class VideoCollections extends PureComponent {
               {this.state.list.length > 0 && this.props.listHeaderSubComponent }
           </React.Fragment>
         )
+    };
+
+    getResultList(){
+      let list = this.videoPagination.getResults();
+      if( list.length > 0 ){
+        this.numColumns = 2;
+        this.flatListKey = this.hasResultsKeyProp;
+        return list;
+      } else {
+        this.numColumns = 1;
+        this.flatListKey = this.noResultsKeyProp;
+        return [this.props.noResultsData];
+      }
     }
+
+    setListRef = (listRef) => {
+      this.listRef = listRef;
+    };
 
     render(){
         return (
           <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
               <FlatList
-                ref={(ref)=>  {this.listRef = ref } }
+                ref={this.setListRef}
                 ListHeaderComponent={this.listHeaderComponent()}
                 data={this.state.list}
                 onEndReached={this.getNext}
                 onRefresh={this.refresh}
                 keyExtractor={this._keyExtractor}
                 refreshing={this.state.refreshing}
-                onEndReachedThreshold={9}
+                onEndReachedThreshold={4}
                 renderItem={this._renderItem}
                 ListFooterComponent={this.renderFooter}
-                numColumns={2}
+                numColumns={this.numColumns}
+                key={this.flatListKey}
               />
           </SafeAreaView>
         );

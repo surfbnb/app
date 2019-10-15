@@ -8,6 +8,7 @@ import Colors from '../../theme/styles/Colors';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import PepoApi from "../../services/PepoApi";
 import deepGet from 'lodash/get';
+import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';
 
 
 
@@ -36,6 +37,10 @@ class VideoTags extends PureComponent {
 
     constructor(props) {
         super(props);
+        this.noResultsData = {
+            "noResultsMsg": 'No results found. Please try again.',
+            "isEmpty": true
+        };
     }
 
     componentDidMount() {
@@ -77,7 +82,10 @@ class VideoTags extends PureComponent {
         return this.props.navigation.getParam("tagId")
     }
 
-
+    renderNoResults = (noResultsData) => {
+        noResultsData = noResultsData || this.noResultsData;
+        return <EmptySearchResult  noResultsData={noResultsData}/>
+    };
 
     render() {
         if(this.getTagId()){
@@ -87,6 +95,8 @@ class VideoTags extends PureComponent {
                     beforeRefresh={this.beforeRefresh}
                     getFetchUrl={this.getFetchUrl}
                     navigation={this.props.navigation}
+                    noResultsData={this.noResultsData}
+                    getNoResultsCell={this.renderNoResults}
                    />
         } else {
             return <View style={{flex: 1 , backgroundColor: Colors.black}} />

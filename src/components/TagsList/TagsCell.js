@@ -11,19 +11,10 @@ const handleTagPress = (tagId, navigation) => {
     });
 };
 
-const showTag = (props) => {
-    return <TouchableWithoutFeedback onPress={() => handleTagPress(props.tagId, props.navigation)}>
-        <View style={{padding:10}} ><Text style={{fontSize: 16}}> #{props.text}</Text></View>
-    </TouchableWithoutFeedback>    ;
-};
-
 let TagCell =  (props) => {
-    if(props.isEmpty){
-        return props.emptyRenderFunction()
-    } else {
-        return showTag(props)
-    }
-
+  return <TouchableWithoutFeedback onPress={() => handleTagPress(props.tagId, props.navigation)}>
+    <View style={{padding:10}} ><Text style={{fontSize: 16}}> #{props.text}</Text></View>
+  </TouchableWithoutFeedback>;
 };
 
 export default withNavigation(TagCell);
