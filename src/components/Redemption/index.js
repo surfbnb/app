@@ -216,6 +216,16 @@ class Redemption extends PureComponent{
         });
     }
 
+    getTransactionalPepoCorns( val ){
+        const formattedVal = this.numberFormatter.convertToValidFormat(val)
+        return this.numberFormatter.getFullStopValue(formattedVal);
+    }
+
+    getTransactionalBtAmount(){
+        const pepoCorns = this.getTransactionalPepoCorns(this.state.pepoCorns)
+        return Pricer.getBtFromPepoCornsInWei(pepoCorns, this.getStep(), this.getPepoInWeiPerStep()) ; 
+    }
+
     onPepoCornChange = (val) => {
         if (!this.numberFormatter.isValidInputProvided(val)) {
             this.setState({
@@ -224,15 +234,12 @@ class Redemption extends PureComponent{
               errorMsg:  this.getErrorMessage(val)
             });
             return;
-          }
+        }
 
-        let formattedVal = this.numberFormatter.convertToValidFormat(val)
-        , fullStopval = this.numberFormatter.getFullStopValue(formattedVal)
-        , btVal = Pricer.getBtFromPepoCorns( fullStopval , this.getStep() ,  this.getPepoInWeiPerStep()) 
-        , forMattedbtVal = this.numberFormatter.getFormattedValue(String(btVal))
-        ;
-        forMattedbtVal =  Pricer.getToBT( forMattedbtVal , 5);
-        this.setState({ btAmount: forMattedbtVal, pepoCorns: val , errorMsg: null   });
+        let pepoCornsVal = this.getTransactionalPepoCorns( val )
+        , btVal = Pricer.getBtFromPepoCorns( pepoCornsVal , this.getStep() ,  this.getPepoInWeiPerStep()) 
+        , btFormatedVal = this.numberFormatter.getFormattedValue( btVal );
+        this.setState({ btAmount: btFormatedVal, pepoCorns: val , errorMsg: null });
     }
 
     onConfirm = () => {
@@ -243,11 +250,20 @@ class Redemption extends PureComponent{
     };
     
     btValidationAndError() {
-        let btAmount = this.state.btAmount;
-        btAmount = this.numberFormatter.getFullStopValue(btAmount);
+        let btAmountWei = this.getTransactionalBtAmount();
+        let btAmount= Pricer.getFromDecimal( btAmountWei ); 
         btAmount = btAmount && Number(btAmount);
-        if ( btAmount > this.state.balance) {
+        let balance = this.state.balance && Number(this.state.balance)
+        if ( btAmount > balance) {
             this.setState({errorMsg: ostErrors.getUIErrorMessage('max_pepocorns') });
+            return false;
+        }
+        
+        let pepoCorns = this.getTransactionalPepoCorns(this.state.pepoCorns),
+            step = this.getStep();
+            pepoCorns = pepoCorns && Number( pepoCorns );
+        if( (pepoCorns%step) !== 0  ){
+            this.setState({errorMsg: `Please enter amount in multiples of ${step}`});
             return false;
         }
         return true;
@@ -281,8 +297,8 @@ class Redemption extends PureComponent{
 
     getValidateParams() {
         return {
-            pepo_amount_in_wei : Pricer.getToDecimal(this.state.btAmount),
-            pepocorn_amount: this.numberFormatter.getFullStopValue( this.state.pepoCorns ) ,
+            pepo_amount_in_wei : this.getTransactionalBtAmount(),
+            pepocorn_amount: this.getTransactionalPepoCorns( this.state.pepoCorns ) ,
             product_id: this.getPepoCornEntity()[DataContract.redemption.productIdKey],
             pepo_usd_price_point: ReduxGetters.getUSDPrice()
         }
@@ -300,8 +316,7 @@ class Redemption extends PureComponent{
     }
 
     sendTransactionToSdk() {
-        let btVal = this.numberFormatter.getFullStopValue(this.state.btAmount);
-        const btInDecimal = Pricer.getToDecimal(btVal);
+        const btInDecimal = this.getTransactionalBtAmount();
         ensureDeivceAndSession(CurrentUser.getOstUserId(), btInDecimal, (device) => {
           this._deviceUnauthorizedCallback(device);
           }, (errorMessage, success) => {
@@ -318,10 +333,7 @@ class Redemption extends PureComponent{
 
     _ensureDeivceAndSessionCallback(errorMessage, success) {
         if (success) {
-    
-          let btVal = this.numberFormatter.getFullStopValue(this.state.btAmount);
-          const btInDecimal = Pricer.getToDecimal(btVal);
-    
+          const btInDecimal = this.getTransactionalBtAmount();
           return this._executeTransaction(btInDecimal);
         }
     
@@ -354,7 +366,7 @@ class Redemption extends PureComponent{
         let details = "" , separator=" ";
         details += `pid_${this.getPepoCornEntity()[DataContract.redemption.productIdKey]}${separator}`;
         details += `pupp_${ReduxGetters.getUSDPrice()}${separator}`;
-        details += `pca_${this.numberFormatter.getFullStopValue(this.state.pepoCorns)}` 
+        details += `pca_${this.getTransactionalPepoCorns(this.state.pepoCorns)}` 
         metaProperties["details"] = details;
         return metaProperties;
     }
@@ -427,10 +439,6 @@ class Redemption extends PureComponent{
         }
         if (val && String(val).split('.')[1] && String(val).split('.')[1].length > 2) {
           return ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error');
-        }
-        let step = this.getStep();
-        if( (val%step) !== 0  ){
-            return `Please enter amount in multiples of ${step}`;
         }
         return ;
     }
@@ -573,7 +581,7 @@ class Redemption extends PureComponent{
                                             text={this.state.btnText}
                                             onPress={MultipleClickHandler(() => this.onConfirm())}
                           />
-                        <Text style={inlineStyles.balanceText}>Your current balance: <Image style={{ width: 14, height: 14 }} source={pepo_icon}></Image>{' '}{this.state.balance}</Text>  
+                        <Text style={inlineStyles.balanceText}>Your current balance: <Image style={{ width: 14, height: 14 }} source={pepo_icon}></Image>{' '}{Pricer.getToBT(this.state.balance)}</Text>  
                    </View> 
                 </View>
             </View>

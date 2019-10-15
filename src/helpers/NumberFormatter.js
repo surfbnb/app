@@ -18,6 +18,7 @@ class NumberFormatter {
 
 
     isValidInputProvided(val) {
+        val  = val && String(val)
         let separators = this.getDecimalGroupSeparators()
           , decimalSeparator = separators[1]
           , regex = new RegExp(['[^0-9'+decimalSeparator+']+'],'g')
@@ -29,14 +30,14 @@ class NumberFormatter {
         }
     
         return true;
-      }
+    }
     
       getDecimalGroupSeparators(){
         return [this.groupSeparator, this.decimalSeparator];
       }
     
       convertToValidFormat(val) {
-    
+        val  = val && String(val)
         let separators = this.getDecimalGroupSeparators()
           , decimalSeparator = separators[1]
           , regex = new RegExp(['[^0-9\\'+decimalSeparator+']+'],'g')
@@ -58,16 +59,18 @@ class NumberFormatter {
       };
     
       getFullStopValue(val) {
+        val  = val && String(val)
         let sperators = this.getDecimalGroupSeparators()
           , decimalSeparator = sperators[1]
         ;
     
-        val = String(val).replace(decimalSeparator, '.');
+        val = val.replace(decimalSeparator, '.');
     
         return val
       }
     
       getFormattedValue(valTobeFormatted) {
+        valTobeFormatted  = valTobeFormatted && String(valTobeFormatted)
         let sperators = this.getDecimalGroupSeparators()
           , decimalSeparator = sperators[1]
         ;
