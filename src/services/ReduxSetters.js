@@ -26,6 +26,7 @@ const knownEntitiesDispatcherMap = {
   public_activity: 'upsertActivitiesEntities',
   user_activity: 'upsertActivitiesEntities',
   user_videos: 'upsertUserVideoEntities',
+  tag_videos: 'upsertTagVideoEntities',
   user_notifications: 'upsertUserNotifications',
   feeds: 'upsertHomeFeedEntities',
   notification_unread: 'notification_unread',
