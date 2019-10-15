@@ -35,7 +35,7 @@ let stylesMap = {
     successViewWrapper : {
       alignItems: 'center',
       justifyContent: 'center',
-      paddingTop: 40,
+      paddingVertical: 30,
       paddingHorizontal: 20
     },
 
@@ -86,7 +86,7 @@ let stylesMap = {
       backgroundColor: Colors.whisper,
       paddingVertical: 3,
       alignItems: 'center',
-      marginBottom: 10,
+      marginBottom: 5,
       borderBottomLeftRadius: 3,
       borderBottomRightRadius: 3
     },
