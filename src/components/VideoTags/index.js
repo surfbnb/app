@@ -7,6 +7,7 @@ import VideoCollections from '../VideoCollections';
 import Colors from '../../theme/styles/Colors';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import PepoApi from "../../services/PepoApi";
+import deepGet from 'lodash/get';
 
 
 
@@ -51,8 +52,7 @@ class VideoTags extends PureComponent {
             .get()
             .then((res)=>{
                 if (res && res.success){
-                    let hashTag = reduxGetter.getHashTag(this.getTagId());
-                    hashTag && this.props.navigation.setParams({ headerTitle: hashTag.text });
+                    this.props.navigation.setParams({ headerTitle: deepGet(res, 'data.tag.text') });
                 }
             })
     }

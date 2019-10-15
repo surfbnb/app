@@ -5,6 +5,7 @@ const knownEntitiesDispatcherMap = {
   ost_transaction: 'upsertTransactionEntities',
   gifs: 'upsertGiffyEntities',
   tags: 'upsertTagEntities',
+  tag_search_results:'upsertTagEntities',
   user_profiles: 'upsertUserProfileEntities',
   user_profile: 'upsertUserProfileEntities',
   user_stats: 'upsertUserStatEntities',

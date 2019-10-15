@@ -126,7 +126,7 @@ class FullScreenVideoCollection extends PureComponent{
     };
 
     _renderItem = ({ item, index }) => {
-        const payload = reduxGetters.getUserVideoPayload(item);
+        const payload = reduxGetters.getTagsVideoPayload(item);
         console.log("payload", payload);
         return  <FullScreeVideoRow shouldPlay={this.shouldPlay}
                                    isActive={index == this.state.activeIndex}

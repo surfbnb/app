@@ -122,7 +122,6 @@ export const upsertTagVideoEntities = (data) => ({
   payload: { tag_video_entities: data }
 });
 
-
 export const upsertImageEntities = (data) => ({ type: types.UPSERT_IMAGE_ENTITIES, payload: { image_entities: data } });
 
 export const upsertVideoContributionEntities = (data) => ({

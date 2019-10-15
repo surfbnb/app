@@ -33,6 +33,7 @@ class TagsList extends PureComponent {
 
     componentWillUnmount() {
         this.removePaginationListeners();
+        this.listRef = null;
     }
 
 
@@ -40,51 +41,9 @@ class TagsList extends PureComponent {
         return this.tagsPagination;
     };
 
-    // getEmptyComponent = () => {
-    //     if (this.state.list.length > 0 ){
-    //         return null;
-    //     }
-    //     console.log('getEmptyComponent ----------');
-    //     if (!this.state.refreshing && this.props.searchParams) {
-    //         //if (this.props.noResultsFound && !this.props.toRefresh)
-    //         return this.renderNoResults();
-    //         //}
-    //     }
-    //
-    //     if (this.props.searchParams) {
-    //         return this.renderSearchingFor();
-    //     }
-    //
-    //     if(!this.props.searchParams){
-    //         return ( <View style={{ flex: 1,flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-    //             <ActivityIndicator style={{alignSelf:'center'}} size="small" color={Colors.greyLite} />
-    //         </View>);
-    //     }
-    //
-    //     return <View />;
-    // };
-
-    // renderNoResults() {
-    //     return (
-    //         <View>
-    //             <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14, marginTop: 10 }}>
-    //                 No results found!
-    //             </Text>
-    //         </View>
-    //     );
-    // }
 
 
-    // renderSearchingFor() {
-    //     return (
-    //         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-    //             <ActivityIndicator size="small" color={Colors.greyLite} />
-    //             <Text style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}>
-    //                 {`Searching for "${decodeURIComponent(this.props.searchParams) || ''}"`}
-    //             </Text>
-    //         </View>
-    //     );
-    // }
+
 
 
 
@@ -133,6 +92,7 @@ class TagsList extends PureComponent {
         paginationEvent.removeListener('onBeforeNext');
         paginationEvent.removeListener('onNext');
         paginationEvent.removeListener('onNextError');
+        this.tagsPagination = null;
     }
 
 
@@ -142,6 +102,12 @@ class TagsList extends PureComponent {
     forcedRefresh (fetchUrl){
         this.initPagination();
         this.refresh();
+    }
+
+
+    getResultList(){
+        let list = this.tagsPagination.getResults();
+        return list.length > 0 ? list : [this.props.getNoResultsData];
     }
 
 
@@ -160,7 +126,7 @@ class TagsList extends PureComponent {
     }
 
     onRefresh = ( res ) => {
-        const list = this.tagsPagination.getResults()  ;
+        const list = this.getResultList() ;
         console.log('onRefresh',res);
         this.props.onRefresh && this.props.onRefresh( list , res );
         this.setState({ refreshing : false , list : list });
@@ -175,7 +141,7 @@ class TagsList extends PureComponent {
     }
 
     onNext = ( res  ) => {
-        this.setState({ loadingNext : false ,  list : this.tagsPagination.getResults() });
+        this.setState({ loadingNext : false ,  list : this.getResultList() });
     }
 
     onNextError = ( error ) => {
@@ -197,8 +163,8 @@ class TagsList extends PureComponent {
     _keyExtractor = (item, index) => `id_${item}`;
 
     _renderItem = ({ item, index }) => {
-        console.log('itemmmmmmm', item);
-        return <TagsCell text={item.text} tagId={item.id} />;
+        // isEmpty came from configuration in Search/index.js
+        return <TagsCell text={item.text} tagId={item.id} isEmpty={item.isEmpty} emptyRenderFunction={this.props.getNoResultsCell} />;
     };
 
     renderFooter = () => {
@@ -215,13 +181,15 @@ class TagsList extends PureComponent {
         )
     }
 
+    setFlatListRef = (ref) => {
+        this.listRef = ref;
+    }
+
     render(){
         return(
             <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
                 <FlatList
-                    ref={(ref)=>  {this.listRef = ref } }
-                    // style={{backgroundColor: 'red'}}
-                    //ListHeaderComponent={this.listHeaderComponent()}
+                    ref={this.setFlatListRef}
                     data={this.state.list}
                     onEndReached={this.getNext}
                     onRefresh={this.refresh}
@@ -229,8 +197,6 @@ class TagsList extends PureComponent {
                     refreshing={this.state.refreshing}
                     onEndReachedThreshold={9}
                     renderItem={this._renderItem}
-                    //ListFooterComponent={this.renderFooter}
-                    // numColumns={3}
                 />
             </SafeAreaView>
         );

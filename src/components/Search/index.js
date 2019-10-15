@@ -12,6 +12,8 @@ import TagsList from '../../components/TagsList';
 import PeopleList from '../../components/PeopleList';
 import qs from 'qs';
 import VideoCollections from "../VideoCollections";
+import TopsList from "../TopsList";
+import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';
 
 const TabMap = {
   "top": {
@@ -21,25 +23,66 @@ const TabMap = {
     "params": {
       "supported_entities": ["users", "tags"]
     },
-    "queryParam": "q"
+    "queryParam": "q",
+    "noResultsData": {
+      "noResultsMsg": 'No top data found',
+      "isEmpty": true
+    },
+    renderNoResults :  (noResultsData) => {
+      const oThis = TabMap.top;
+      console.log('this.emptyData',oThis.noResultsData);
+      noResultsData = noResultsData || oThis.noResultsData;
+      return <EmptySearchResult  noResultsData={noResultsData}/>
+    }
   },
   "people": {
     id: 'people',
     baseUrl : '/search/users',
     title: 'People',
-    "queryParam": "q"
+    "queryParam": "q",
+    "noResultsData": {
+      "noResultsMsg": 'No people data found',
+      "isEmpty": true
+    },
+    renderNoResults :  (noResultsData) => {
+      const oThis = TabMap.people;
+      console.log('this.emptyData',oThis.noResultsData);
+      noResultsData = noResultsData || oThis.noResultsData;
+      return <EmptySearchResult  noResultsData={noResultsData}/>
+    }
   },
   "tags": {
     id: 'tags',
     baseUrl : '/search/tags',
     title: 'Tags',
-    "queryParam": "q"
+    "queryParam": "q",
+    "noResultsData": {
+      "noResultsMsg": 'No tag data found',
+      "isEmpty": true
+    },
+    renderNoResults:  (noResultsData) => {
+      const oThis = TabMap.tags;
+      console.log('this.emptyData',oThis.noResultsData);
+      noResultsData = noResultsData || oThis.noResultsData;
+      return <EmptySearchResult  noResultsData={noResultsData}/>
+    }
   },
   "video": {
     id: 'video',
     baseUrl : '/tags/1/videos',
     title: 'Video',
-    "queryParam": "q"
+    "queryParam": "q",
+    "noResultsData": {
+      "noResultsMsg": 'No video data found',
+      "isEmpty": true
+    },
+    renderNoResults :  (noResultsData) => {
+
+      const oThis = TabMap.video;
+      console.log('this.emptyData',oThis.noResultsData);
+      noResultsData = noResultsData || oThis.noResultsData;
+      return <EmptySearchResult  noResultsData={noResultsData}/>
+    }
   }
 };
 
@@ -241,9 +284,11 @@ class SearchScreen extends PureComponent {
              activeTabStyle={tabStyle.activeTabStyle}
              tabStyle={tabStyle.tabStyle}
              style={tabStyle.style}>
-          <TagsList
+          <TopsList
             getFetchUrl={this.getTopTabUrl}
             ref={this.setTopFlatListRef}
+            getNoResultsData={TabMap.top.noResultsData}
+            getNoResultsCell={TabMap.top.renderNoResults}
           />
         </Tab>
         <Tab heading={TabMap.people.title} textStyle={tabStyle.textStyle}
@@ -254,6 +299,8 @@ class SearchScreen extends PureComponent {
           <PeopleList
             getFetchUrl={this.getPeopleTabUrl}
             ref={this.setPeopleFlatListRef}
+            getNoResultsData={TabMap.people.noResultsData}
+            getNoResultsCell={TabMap.people.renderNoResults}
           />
         </Tab>
         <Tab heading={TabMap.tags.title} textStyle={tabStyle.textStyle}
@@ -264,6 +311,8 @@ class SearchScreen extends PureComponent {
           <TagsList
             getFetchUrl={this.getTagsTabUrl}
             ref={this.setTagsFlatListRef}
+            getNoResultsData={TabMap.tags.noResultsData}
+            getNoResultsCell={TabMap.tags.renderNoResults}
           />
         </Tab>
         <Tab heading={TabMap.video.title} textStyle={tabStyle.textStyle}
@@ -276,6 +325,8 @@ class SearchScreen extends PureComponent {
             ref={this.setVideoFlatListRef}
             getFetchUrl={this.getVideoTabUrl}
             navigation={this.props.navigation}
+            getNoResultsData={TabMap.video.noResultsData}
+            getNoResultsCell={TabMap.video.renderNoResults}
           />
         </Tab>
 

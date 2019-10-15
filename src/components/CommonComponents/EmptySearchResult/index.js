@@ -9,10 +9,10 @@ export default class EmptySearchResult extends Component{
   }
 
   render(){
-    let displayMsg = this.props.message;
+    let noResultData = this.props.noResultsData;
     return(
       <View style={inlineStyles.emptyWrapper}>
-        <Text style={inlineStyles.msgStyle}>{displayMsg}</Text>
+        <Text style={inlineStyles.msgStyle}>{noResultData.noResultsMsg}</Text>
       </View>
     )
   }
