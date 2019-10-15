@@ -14,6 +14,7 @@ import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
 import AppConfig from '../constants/AppConfig';
 import InAppBrowser from './InAppBrowser';
+import PepoApi from './PepoApi';
 
 let os = Platform.OS || "";
 os =  os.toLowerCase();

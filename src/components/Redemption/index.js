@@ -56,20 +56,6 @@ const bottomSpace = getBottomSpace([true]),
 const btnPreText = "Buy with Pepocoins";
 const btnPostText = "Confirming...";
 
-/**TODO Start
- * @Preshita Keyboard avoiding view
- * @Preshita @sunil Appstore linking
- * @Preshita update store icon instead of remeeption icon in BalanceHeader file. --> Done
- * @Preshita App upgrade Screen UI--> done
- * @Preshita Complete dev test
- * @Preshita Check your name below TODO's
- * @Ashutosh confrim meta data to sdk
- * @Ashutosh PepoConrs balance fetch and display
- * @Ashutosh code refactor 
- * @Ashutosh code detail review
- *///TODO end 
-
-
 class Redemption extends PureComponent{
 
     constructor(props){
@@ -532,72 +518,82 @@ class Redemption extends PureComponent{
     }
 
     getSuccessMarkup = (msg) => {
-         //TODO @Preshita , do the UI part as well --> done
         return (
             <View style={inlineStyles.successViewWrapper}>
                 <Image source={tx_success} style={inlineStyles.successImageSkipFont}></Image>
                 <Text style={[inlineStyles.successText]}>
                     Success, you have {this.state.pepoCorns} new {this.getPepoCornsName()}, you can also view them in your settings menu.
                 </Text>
-                <TouchableButton  TouchableStyles={[Theme.Button.btnPink]}
-                                  TextStyles={[Theme.Button.btnPinkText]}
-                                  text={"Cash Out on Pepo.com"}
-                                  onPress={MultipleClickHandler(() => this.onRedemptionWebViewClick())}
-                          />
+                <LinearGradient
+                            colors={['#ff7499', '#ff7499', '#ff5566']}
+                            locations={[0, 0.35, 1]}
+                            style={{ borderRadius: 3, borderWidth: 0, width: '100%'}}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            >
+                    <TouchableButton TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
+                                    TextStyles={[Theme.Button.btnPinkText, { fontSize: 14 }]}
+                                    text={"Cash Out on Pepo.com"}
+                                    onPress={MultipleClickHandler(() => this.onRedemptionWebViewClick())}
+                            />
+                </LinearGradient>
             </View>
         )
     }
 
     getRedemptionMarkup = () => {
-        //TODO minor UI @Preshita , Unicorn icon --> done
         return (
-            <View style={inlineStyles.viewWrapper}>
-                <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
-                <Image source={this.getPepoCornsImageSource()} style={inlineStyles.pepcornImageSkipFont}></Image>
-                <Text style={inlineStyles.subText1}>
-                    {this.getPepoCornsName()} are elusive creatures that only exist in Pepo.{" "}
-                    {this.getPepoCornsName()} can be only be purchased with Pepo Coins
-                </Text>
+                <View style={inlineStyles.viewWrapper}>
+                <TouchableWithoutFeedback>
+                    <View style={inlineStyles.topWrapper}>
+                        <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
+                        <Image source={this.getPepoCornsImageSource()} style={inlineStyles.pepcornImageSkipFont}></Image>
+                        <Text style={inlineStyles.subText1}>
+                            {this.getPepoCornsName()} are elusive creatures that only exist in Pepo.{" "}
+                            {this.getPepoCornsName()} can be only be purchased with Pepo Coins
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
                 <View style={inlineStyles.subSection}>
                     <Text style={inlineStyles.heading2} >How many {this.getPepoCornsName()} do you want to buy?</Text>
                     <View style={{flex: 1}}>
-                       <View style={inlineStyles.formInputWrapper}>
-                         <Image source={pepoCornSmall} style={inlineStyles.textInputImage}/>
-                         <FormInput
+                    <View style={inlineStyles.formInputWrapper}>
+                        <Image source={pepoCornSmall} style={inlineStyles.textInputImage}/>
+                        <FormInput
                             editable={this.state.inputFieldsEditable}
                             onChangeText={this.onPepoCornChange}
-                            style={[Theme.TextInput.textInputStyle, inlineStyles.formInputText]}
-                            value={this.state.pepoCorns}
-                            placeholder="Pepocorns"
-                            fieldName="pepo_corns"
-                            placeholderTextColor= {Colors.darkGray}
-                            keyboardType="decimal-pad"
-                            blurOnSubmit={true}
-                            errorStyle={{display: "none"}}
-                            />
-                        </View>
-                        <View style={inlineStyles.valueIn}>
-                            <Text style={inlineStyles.valueInText}>Value in <Image style={inlineStyles.pepoIconSkipFont} source={pepo_icon}></Image>{' '}{this.state.btAmount}</Text>
-                        </View>
-                        <Text style={[inlineStyles.pepoErrorText, Theme.Errors.errorText]}> {this.state.errorMsg}</Text>
-                        <LinearGradient
-                            colors={['#ff7499', '#ff7499', '#ff5566']}
-                            locations={[0, 0.35, 1]}
-                            style={{ borderRadius: 3, borderWidth: 0, width: '100%' }}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 0 }}
-                            >
-                            <TouchableButton disabled={this.state.exceBtnDisabled}
-                                    TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
-                                    TextStyles={[Theme.Button.btnPinkText, { fontSize: 14 }]}
-                                    text={this.state.btnText}
-                                    onPress={MultipleClickHandler(() => this.onConfirm())}
-                            />
-                        </LinearGradient>
-                        <Text style={inlineStyles.balanceText}>Your Current balance: <Image style={inlineStyles.balanceTextImageSkipFont} source={pepo_icon}></Image>{' '}{Pricer.getToBT(this.state.balance)}</Text>
-                   </View> 
-                </View>
+                        style={[Theme.TextInput.textInputStyle, inlineStyles.formInputText]}
+                        value={this.state.pepoCorns}
+                        placeholder="Unicorns"
+                        fieldName="pepo_corns"
+                        placeholderTextColor= {Colors.darkGray}
+                        keyboardType="decimal-pad"
+                        blurOnSubmit={true}
+                        errorStyle={{display: "none"}}
+                        />
+                    </View>
+                    <View style={inlineStyles.valueIn}>
+                        <Text style={inlineStyles.valueInText}>Value in <Image style={inlineStyles.pepoIconSkipFont} source={pepo_icon}></Image>{' '}{this.state.btAmount}</Text>
+                    </View>
+                    <Text style={[inlineStyles.pepoErrorText, Theme.Errors.errorText]}> {this.state.errorMsg}</Text>
+                    <LinearGradient
+                        colors={['#ff7499', '#ff7499', '#ff5566']}
+                        locations={[0, 0.35, 1]}
+                        style={{ borderRadius: 3, borderWidth: 0, width: '100%' }}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        >
+                        <TouchableButton disabled={this.state.exceBtnDisabled}
+                                TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
+                                TextStyles={[Theme.Button.btnPinkText, { fontSize: 14 }]}
+                                text={this.state.btnText}
+                                onPress={MultipleClickHandler(() => this.onConfirm())}
+                        />
+                    </LinearGradient>
+                    <Text style={inlineStyles.balanceText}>Your Current balance: <Image style={inlineStyles.balanceTextImageSkipFont} source={pepo_icon}></Image>{' '}{Pricer.getToBT(this.state.balance)}</Text>
+                </View> 
             </View>
+        </View>
         );
     }
 
@@ -609,13 +605,12 @@ class Redemption extends PureComponent{
             return this.getErrorMarkup();
         }else if( this.isAppUpdate) {
             return this.getAppUpdateMarkup();
-        }else if( this.state.redemptionSuccess ){
+        }else if( this.state.redemptionSuccess){
             return this.getSuccessMarkup();
         }else{
             return this.getRedemptionMarkup();
         }
     }
-
 
     render(){
         return (
@@ -662,7 +657,7 @@ class Redemption extends PureComponent{
     }
 
     onRedemptionWebViewClick = () => {
-        Utilities.onRedemptionWebViewClick();
+        Utilities.openRedemptionWebView();
     }
   
 }

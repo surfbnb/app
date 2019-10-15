@@ -27,10 +27,16 @@ let stylesMap = {
       alignItems: "center"
     },
 
+    topWrapper :{
+      paddingHorizontal: 20,
+      alignItems: "center"
+    },
+
     successViewWrapper : {
       alignItems: 'center',
       justifyContent: 'center',
-      paddingTop: 40
+      paddingTop: 40,
+      paddingHorizontal: 20
     },
 
     appUpdateWrapper : {
@@ -42,7 +48,8 @@ let stylesMap = {
     successText : {
       textAlign: 'center',
       fontSize: 16 , 
-      marginBottom: 20
+      marginBottom: 20,
+      marginHorizontal: 30
     },
 
     redemtionWrapper :{ 
