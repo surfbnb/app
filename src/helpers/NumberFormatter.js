@@ -43,9 +43,9 @@ class NumberFormatter {
           , regex = new RegExp(['[^0-9\\'+decimalSeparator+']+'],'g')
         ;
     
-        val = val.split(regex).join('');
+        val = val && val.split(regex).join('');
     
-        let splitArray = val.split(decimalSeparator);
+        let splitArray = val && val.split(decimalSeparator);
     
         if (splitArray.length > 1) {
           let firstVal = splitArray[0];
@@ -64,7 +64,7 @@ class NumberFormatter {
           , decimalSeparator = sperators[1]
         ;
     
-        val = val.replace(decimalSeparator, '.');
+        val = val && val.replace(decimalSeparator, '.');
     
         return val
       }
