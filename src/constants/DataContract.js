@@ -22,6 +22,7 @@ export default {
     redemption: {
         configApi : "/pepocorn-topups/info/",
         fetchPepoCornsBalanceApi: "/pepocorn-topups/balance",
+        openRedemptionWebViewApi: "/redemptions/webview-url",
         validatePricePoint: "/pepocorn-topups/validate",
         appUpdateKeyPath: "data.app_upgrade",
         pepoCornsNameKey: "product_name",

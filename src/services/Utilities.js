@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, Linking } from 'react-native';
 import deepGet from 'lodash/get';
 
 import pricer from './Pricer';
@@ -13,8 +13,8 @@ import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
 import AppConfig from '../constants/AppConfig';
-import InAppBrowser from './InAppBrowser';
 import PepoApi from './PepoApi';
+import DataContract from '../constants/DataContract';
 
 let os = Platform.OS || "";
 os =  os.toLowerCase();
@@ -193,7 +193,7 @@ export default {
   },
 
   openRedemptionWebView() {
-    new PepoApi(`/redemptions/info`)
+    new PepoApi(DataContract.redemption.openRedemptionWebViewApi)
     .get()
     .then((res) => {
       let url =  deepGet(res, "data.redemption_info.url");
