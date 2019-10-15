@@ -150,5 +150,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+  <key>FirebaseDynamicLinksCustomDomains</key>
+  <array>
+    <string>https://testapp.stagingpepo.com/</string>
+  </array>
 </dict>
 </plist>

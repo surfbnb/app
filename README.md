@@ -31,6 +31,11 @@
     1. iOS: `ios/Pepo2/Pepo2.entitlements`
     2. Android: `android/app/src/main/AndroidManifest.xml`
 
+#### Dynamic linking
+1. Within app, update capabilites / manifest with deeplinking domain:
+    1. iOS: `ios/Pepo2/Info.plist` and `ios/Pepo2/Pepo2.entitlements` 
+    2. Android: `android/app/src/main/AndroidManifest.xml`
+
 ### Build Instructions (for iOS)
 
 - [ios-publish_app_production.md](iOS_production.md)
