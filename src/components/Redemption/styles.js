@@ -204,6 +204,11 @@ let stylesMap = {
       width: 12, 
       height: 12 ,
       alignSelf: 'center'
+    },
+
+    successLink :{
+      marginTop: 10,
+      color: Colors.wildWatermelon2
     }
  
 };
