@@ -1,8 +1,8 @@
 export default {
 
     payments: {
-        postPaymentAcknowledgeApi : "/top-up/", 
-        getAllProductsApi : '/top-up/products' , 
+        postPaymentAcknowledgeApi : "/top-up/",
+        getAllProductsApi : '/top-up/products' ,
         getTopUpStatusApi : "/top-up/",
         getPendingApi: "/top-up/pending",
         purchaseThresholdReachedKeyPath : "data.topup_limits_data.limit_reached",
@@ -10,7 +10,7 @@ export default {
         topUpEntityId : "id",
         startPollingKey : "start_polling",
         paymentAcknowledgeErrMsgKey :"err_message",
-        statusCodeBEAcknowledgeKey : "display_status", 
+        statusCodeBEAcknowledgeKey : "display_status",
         statusCodeBEAcknowledgeMap : {
             failed : "FAILED",
             processing : "PROCESSING",
@@ -31,6 +31,10 @@ export default {
         pepoInWeiPerStep: "pepo_in_wei_per_step",
         pepoBeneficiaryAddress: "pepo_beneficiary_address",
         productIdKey : "product_id"
+    },
+
+    support: {
+        infoApi: "/support/info"
     },
 
     common: {
