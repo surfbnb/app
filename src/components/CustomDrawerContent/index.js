@@ -44,7 +44,7 @@ class CustomDrawerContent extends Component {
 
   componentDidMount() {
     this._fetchToken();
-    this.fetchPepocorns();
+    //this.fetchPepocorns();
     this.updateMenuSettings();
   }
 
