@@ -314,6 +314,8 @@ class Redemption extends PureComponent{
 
     onValidatePricePointError(err){
        this.fetchRedemptionConfig( () => {
+            this.state.pepoCorns = 0 ;  
+            this.state.btAmount = 0;
             this.resetState();
             this.onError(err,  null , "price_point_validation_failed");
        });
