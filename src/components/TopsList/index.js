@@ -1,22 +1,27 @@
 import React, { PureComponent } from 'react';
 import {
-  View,
   SectionList,
   ActivityIndicator,
-
+  Text,
+  View
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 
 import TagsCell from '../TagsList/TagsCell';
 
-import Pagination from "../../services/Pagination";
+import Pagination from "../../services/MultiSection/MultiSectionPagination";
 import Colors from "../../theme/styles/Colors";
+import PeopleCell from "../PeopleList/PeopleCell";
 
+const titleKeyName = 'title',
+  dataKeyName = 'data',
+  NO_RESULT_KIND = 'no_result_kind'
+;
 class TopsList extends PureComponent {
   constructor(props){
     super(props);
     let list = [];
-    // this.tagsPagination = new Pagination( this.props.getFetchUrl());
+    // this.topPagination = new Pagination( this.props.getFetchUrl());
 
     this.state = {
       list,
@@ -37,71 +42,24 @@ class TopsList extends PureComponent {
 
 
   getPagination = () => {
-    return this.tagsPagination;
+    return this.topPagination;
   };
-
-  // getEmptyComponent = () => {
-  //     if (this.state.list.length > 0 ){
-  //         return null;
-  //     }
-  //     console.log('getEmptyComponent ----------');
-  //     if (!this.state.refreshing && this.props.searchParams) {
-  //         //if (this.props.noResultsFound && !this.props.toRefresh)
-  //         return this.renderNoResults();
-  //         //}
-  //     }
-  //
-  //     if (this.props.searchParams) {
-  //         return this.renderSearchingFor();
-  //     }
-  //
-  //     if(!this.props.searchParams){
-  //         return ( <View style={{ flex: 1,flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
-  //             <ActivityIndicator style={{alignSelf:'center'}} size="small" color={Colors.greyLite} />
-  //         </View>);
-  //     }
-  //
-  //     return <View />;
-  // };
-
-  // renderNoResults() {
-  //     return (
-  //         <View>
-  //             <Text style={{ alignSelf: 'center', color: Colors.greyLite, fontSize: 14, marginTop: 10 }}>
-  //                 No results found!
-  //             </Text>
-  //         </View>
-  //     );
-  // }
-
-
-  // renderSearchingFor() {
-  //     return (
-  //         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-  //             <ActivityIndicator size="small" color={Colors.greyLite} />
-  //             <Text style={{ marginLeft: 20, color: Colors.greyLite, fontSize: 14 }}>
-  //                 {`Searching for "${decodeURIComponent(this.props.searchParams) || ''}"`}
-  //             </Text>
-  //         </View>
-  //     );
-  // }
-
-
 
   // region - Pagination and Event Handlers
 
   initPagination() {
+    console.log('initPagination:initPaginationinitPagination');
     // First, take care of existing Pagination if exists.
     this.removePaginationListeners();
 
     // Now, create a new one.
     let fetchUrl = this.props.getFetchUrl();
-    this.tagsPagination = new Pagination(fetchUrl);
+    this.topPagination = new Pagination(fetchUrl);
     this.bindPaginationEvents();
   }
 
   bindPaginationEvents(){
-    let pagination = this.tagsPagination;
+    let pagination = this.topPagination;
     if ( !pagination ) {
       return;
     }
@@ -119,7 +77,7 @@ class TopsList extends PureComponent {
   }
 
   removePaginationListeners(){
-    let pagination = this.tagsPagination;
+    let pagination = this.topPagination;
     if ( !pagination ) {
       return;
     }
@@ -141,15 +99,6 @@ class TopsList extends PureComponent {
     this.refresh();
   }
 
-
-  // onPullToRefresh = () => {
-  //     fetchUser(this.props.userId , this.onUserFetch );
-  // }
-  //
-  // onUserFetch =(res) => {
-  //     this.props.onUserFetch && this.props.onUserFetch(res);
-  // }
-
   beforeRefresh = ( ) => {
     //this.props.beforeRefresh && this.props.beforeRefresh();
     //this.onPullToRefresh();
@@ -157,8 +106,8 @@ class TopsList extends PureComponent {
   };
 
   onRefresh = ( res ) => {
-    const list = this.tagsPagination.getResults();
-    console.log('onRefresh------get Top results', res );
+    const list = this.topPagination.getResults();
+    console.log('onRefresh------get Top results', list);
     this.props.onRefresh && this.props.onRefresh( list , res );
     this.setState({ refreshing : false , list : list });
   };
@@ -172,7 +121,7 @@ class TopsList extends PureComponent {
   };
 
   onNext = ( res  ) => {
-    this.setState({ loadingNext : false ,  list : this.tagsPagination.getResults() });
+    this.setState({ loadingNext : false ,  list : this.topPagination.getResults() });
   };
 
   onNextError = ( error ) => {
@@ -180,22 +129,23 @@ class TopsList extends PureComponent {
   };
 
   getNext = () => {
-    this.tagsPagination.getNext();
+    this.topPagination.getNext();
   };
 
   refresh = () => {
-    this.tagsPagination.refresh();
+    this.topPagination.refresh();
   };
 
-  // isCurrentUser = () => {
-  //     return this.props.userId === CurrentUser.getUserId();
-  // }
+  _keyExtractor = (item, index) => {
+    return `id_${item.id}`;
+  };
 
-  _keyExtractor = (item, index) => `id_${item}`;
-
-  _renderItem = ({ item, index }) => {
-    console.log('itemmmmmmm', item);
+  _renderTagItem = ({ item, index }) => {
     return <TagsCell text={item.text} tagId={item.id} />;
+  };
+
+  __renderUserItem = ({ item, index }) => {
+    return <PeopleCell userId={item.payload.user_id} />;
   };
 
   renderFooter = () => {
@@ -212,26 +162,80 @@ class TopsList extends PureComponent {
     )
   };
 
+  getRenderCell = (kind) => {
+    if (kind === 'tag'){
+      return this._renderTagItem;
+    } else if (kind === 'user'){
+      return this.__renderUserItem;
+    }
+  }
+
   getSectionsData = () => {
-    return [{title: 'test', data: ['a','b']}]
+    let sectionsArray = [],
+    topSectionsData = this.state.list;
+    for (let i = 0; i < topSectionsData.length; i++ ){
+      let section = topSectionsData[i];
+      let sectionData = section[dataKeyName];
+      if ( !sectionData || sectionData.length < 1) {
+        //ignore it.
+        continue;
+      }
+      sectionsArray.push({
+          data : section[dataKeyName],
+          title: section[titleKeyName],
+          kind:section.kind,
+          renderItem:this.getRenderCell(section.kind),
+
+      });
+    }
+
+    if ( sectionsArray.length < 1 ) {
+      // Create a dummy section to show no results cell.
+      sectionsArray.push({
+        data: [this.props.noResultsData],
+        kind: NO_RESULT_KIND,
+        renderItem: ({item, index}) => {
+          console.log("Rendering no results cell");
+          return this.props.getNoResultsCell(item);
+        },
+        title: NO_RESULT_KIND
+      })
+
+    }
+    console.log(sectionsArray, 'sectionsArray');
+    return sectionsArray;
   };
+
+  renderSectionHeader = ({section}) => {
+    console.log('section', section);
+
+    if (section.kind === NO_RESULT_KIND){
+      // return empty cell
+      return null;
+    } else {
+      return <View style={{padding: 12}}>
+        <Text style={{color:'rgb(42, 41, 59)', fontFamily:'AvenirNext-Medium', fontSize:14 }}>{section.title}</Text>
+      </View>;
+
+    }
+
+
+  }
 
   render(){
     return(
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
         <SectionList
-          ref={(ref)=>  {this.listRef = ref } }
-          // style={{backgroundColor: 'red'}}
-          //ListHeaderComponent={this.listHeaderComponent()}
+          ref={(ref)=>  {this.listRef = ref }}
           sections={this.getSectionsData()}
+          //extraData={this.state.list}
           onEndReached={this.getNext}
           onRefresh={this.refresh}
           keyExtractor={this._keyExtractor}
           refreshing={this.state.refreshing}
           onEndReachedThreshold={9}
-          renderItem={this._renderItem}
-          //ListFooterComponent={this.renderFooter}
-          // numColumns={3}
+          renderSectionHeader={  this.renderSectionHeader}
+          stickySectionHeadersEnabled={false}
         />
       </SafeAreaView>
     );
