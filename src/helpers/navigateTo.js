@@ -1,12 +1,20 @@
 import deepGet from 'lodash/get';
-import CurrentUser from '../models/CurrentUser';
 import NavigationService from '../services/NavigationService';
 import InAppBrowser from '../services/InAppBrowser';
 import { LoginPopoverActions } from '../components/LoginPopover';
-import Utilities from '../services/Utilities';
 import AppConfig from '../constants/AppConfig';
 import { upsertInviteCode } from '../actions';
 import Store from '../store';
+
+let CurrentUser;
+import('../models/CurrentUser').then((imports) => {
+  CurrentUser = imports.default;
+});
+
+let Utilities;
+import('../services/Utilities').then((imports) => {
+  Utilities = imports.default;
+});
 
 class NavigateTo {
   constructor() {

@@ -7,13 +7,17 @@ import inlineStyles from './styles';
 import Theme from '../../theme/styles';
 import Store from '../../store';
 import { showLoginPopover, hideLoginPopover } from '../../actions';
-import TwitterAuthService from '../../services/TwitterAuthService';
 import loggedOutLogo from '../../assets/logged-out-logo.png';
 import twitterBird from '../../assets/twitter-bird.png';
 import modalCross from '../../assets/modal-cross-icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
+
+let TwitterAuthService;
+import('../../services/TwitterAuthService').then((imports) => {
+  TwitterAuthService = imports.default;
+});
 
 const mapStateToProps = ({ login_popover }) => ({
   show: login_popover.show

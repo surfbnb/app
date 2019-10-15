@@ -14,8 +14,12 @@ import('../models/CurrentUser').then((imports) => {
   CurrentUser = imports.default;
 });
 
+let Utilities;
+import('./Utilities').then((imports) => {
+  Utilities = imports.default;
+});
+
 import TwitterAuth from './ExternalLogin/TwitterAuth';
-import Utilities from './Utilities';
 import AppConfig from '../constants/AppConfig';
 import NavigationService from './NavigationService';
 import { navigateTo } from '../helpers/navigateTo';
