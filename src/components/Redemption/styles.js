@@ -2,6 +2,11 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
+
+  outerContainer : { 
+    flex: 1, 
+    backgroundColor: 'transparent' 
+  },
     
   container: {
       backgroundColor: Colors.white,
@@ -71,10 +76,12 @@ let stylesMap = {
     },
 
     valueIn:{
-      backgroundColor: '#e0e5e1',
+      backgroundColor: Colors.whisper,
       paddingVertical: 3,
       alignItems: 'center',
-      marginBottom: 10
+      marginBottom: 10,
+      borderBottomLeftRadius: 3,
+      borderBottomRightRadius: 3
     },
 
     btnStyle : {
@@ -84,20 +91,33 @@ let stylesMap = {
 
     balanceText : {
       textAlign: "center",
+      alignItems: 'center',
       color: Colors.black,
-      marginTop: 10
+      marginTop: 15
+    },
+
+    valueInText : {
+      color: Colors.valhalla,
+      fontSize: 10
     },
 
     formInputWrapper : {
       position: 'relative'
     },
 
+    formInputText : {
+      paddingLeft: 34,
+      borderBottomRightRadius: 0,
+      borderBottomLeftRadius: 0,
+      borderColor: Colors.seaMist
+    },
+
     textInputImage : {
       position:'absolute', 
-      height: 25, 
-      width: 25, 
-      left: 10, 
-      top: 14
+      height: 23, 
+      width: 23, 
+      left: 8, 
+      top: 17
     },
 
     crossIconWrapper: {
@@ -110,7 +130,74 @@ let stylesMap = {
       zIndex: 100
     },
 
-    crossIconSkipFont: { width: 13, height: 12.6 }
+    crossIconSkipFont: { 
+      width: 13, 
+      height: 12.6 
+    },
+
+    loadingWrapper :{
+      margin: 60,
+      paddingHorizontal: 30
+    },
+
+    animationImageSkipFont : {
+      width: 40, 
+      height: 40, 
+      marginBottom: 20
+    },
+
+    loadingText : {
+      textAlign:'center'
+    },
+
+    errorImageSkipFont : {
+      width: 30, 
+      height: 30, 
+      marginBottom: 20
+    },
+
+    errorMessage : {
+      textAlign: "center"
+    },
+
+    appUpdateImageSkipFont : { 
+      height: 100, 
+      aspectRatio: 220/368, 
+      marginBottom: 20 
+    },
+
+    appUpdateText : {
+      marginBottom: 20,  
+      textAlign: 'center'
+    },
+
+    successImageSkipFont : { 
+      width: 164.6, 
+      height: 160, 
+      marginBottom: 20 
+    },
+
+    pepcornImageSkipFont : { 
+      width: 85, 
+      height: 85, 
+      marginBottom: 10
+    },
+
+    pepoIconSkipFont : { 
+      width: 8, 
+      height: 8
+    },
+
+    pepoErrorText : { 
+      textAlign: 'center', 
+      marginBottom: 10 
+    },
+
+    balanceTextImageSkipFont : { 
+      width: 12, 
+      height: 12 ,
+      alignSelf: 'center'
+    }
  
 };
 
