@@ -64,6 +64,7 @@ class Redemption extends PureComponent{
         this.configResponse = null;
         this.isAppUpdate = false;
         this.isConfigFetchError = false;
+        this.redemptionSuccess =  false;
 
         this.state = {
             btAmount: 0,
@@ -72,7 +73,6 @@ class Redemption extends PureComponent{
             errorMsg: null,
             isLoading: true,
             isPurchasing : false,
-            redemptionSuccess : false,
             bottomPadding: safeAreaBottomSpace,
             inputFieldsEditable: true,
             exceBtnDisabled: false,
@@ -85,7 +85,6 @@ class Redemption extends PureComponent{
 
         this.defaultState = {
             exceBtnDisabled: false,
-            redemptionSuccess: false,
             isPurchasing: false,
             btnText: btnPreText,
             inputFieldsEditable: true,
@@ -114,7 +113,6 @@ class Redemption extends PureComponent{
         this.onValidatePricePointSuccess = () => {};
         this.onValidatePricePointError = () => {};
         this.onTransactionSuccess = () => {};
-        this.redemptionSuccess = () => {};
         this.onError = () => {};
     }
 
@@ -396,7 +394,7 @@ class Redemption extends PureComponent{
     }
     
     onTransactionSuccess(res) {
-        this.state.redemptionSuccess = true;
+        this.redemptionSuccess = true;
         this.resetState();
     }
 
@@ -615,7 +613,7 @@ class Redemption extends PureComponent{
             return this.getErrorMarkup();
         }else if( this.isAppUpdate) {
             return this.getAppUpdateMarkup();
-        }else if( this.state.redemptionSuccess){
+        }else if( this.redemptionSuccess){
             return this.getSuccessMarkup();
         }else{
             return this.getRedemptionMarkup();
