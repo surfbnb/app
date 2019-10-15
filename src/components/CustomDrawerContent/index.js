@@ -28,6 +28,7 @@ import {WEB_ROOT, VIEW_END_POINT, TOKEN_ID} from "../../constants";
 import Pricer from '../../services/Pricer';
 import Utilities from '../../services/Utilities';
 import ReduxGetters from '../../services/ReduxGetters';
+import AppConfig from '../../constants/AppConfig';
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -247,7 +248,7 @@ class CustomDrawerContent extends Component {
                 disabled={this.state.disableButtons}>
                 <View style={styles.itemParent}>
                   <Image style={{ height: 27, width: 27, resizeMode: 'contain' }} source={pepoCornsImg} />
-                  <Text style={styles.item}>Pepocorns ({this.state.pepocorns})</Text>
+                  <Text style={styles.item}>{AppConfig.redemption.pepoCornsName} ({this.state.pepocorns})</Text>
                 </View>
             </TouchableOpacity>
           )} 

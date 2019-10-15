@@ -37,6 +37,7 @@ import AppUpgrade from '../../assets/app_upgrade.png';
 import Utilities from '../../services/Utilities';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
 import AppConfig from '../../constants/AppConfig';
+import LinearGradient from 'react-native-linear-gradient';
 
 import NumberFormatter from "../../helpers/NumberFormatter";
 import CurrentUser from '../../models/CurrentUser';
@@ -46,13 +47,14 @@ import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/Execut
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import clone from 'lodash/clone';
 import { ostSdkErrors } from '../../services/OstSdkErrors';
+import Colors from '../../theme/styles/Colors';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
   safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
 
 const btnPreText = "Buy with Pepocoins";
-const btnPostText = "Confriming...";  
+const btnPostText = "Confirming...";
 
 /**TODO Start
  * @Preshita Keyboard avoiding view
@@ -167,16 +169,17 @@ class Redemption extends PureComponent{
     }
 
     getPepoCornsName(){
-        const pepoCornsEntity = this.getPepoCornEntity();
-        return pepoCornsEntity[DataContract.redemption.pepoCornsNameKey] || AppConfig.redemption.pepoCornsName; 
+        // const pepoCornsEntity = this.getPepoCornEntity();
+        // return pepoCornsEntity[DataContract.redemption.pepoCornsNameKey] || AppConfig.redemption.pepoCornsName;
+        return AppConfig.redemption.pepoCornsName;
     }
 
     getPepoCornsImageSource(){
-        const pepoCornsEntity = this.getPepoCornEntity();
-        const imageSrc = pepoCornsEntity[DataContract.redemption.pepoCornsImageKey];
-        if( imageSrc ){
-            return {uri: imageSrc};
-        }
+        // const pepoCornsEntity = this.getPepoCornEntity();
+        // const imageSrc = pepoCornsEntity[DataContract.redemption.pepoCornsImageKey];
+        // if( imageSrc ){
+        //     return {uri: imageSrc};
+        // }
         return pepoCornsImg
     }
 
@@ -224,7 +227,7 @@ class Redemption extends PureComponent{
 
     getTransactionalBtAmount(){
         const pepoCorns = this.getTransactionalPepoCorns(this.state.pepoCorns)
-        return Pricer.getBtFromPepoCornsInWei(pepoCorns, this.getStep(), this.getPepoInWeiPerStep()) ; 
+        return Pricer.getBtFromPepoCornsInWei(pepoCorns, this.getStep(), this.getPepoInWeiPerStep()) ;
     }
 
     onPepoCornChange = (val) => {
@@ -238,7 +241,7 @@ class Redemption extends PureComponent{
         }
 
         let pepoCornsVal = this.getTransactionalPepoCorns( val )
-        , btVal = Pricer.getBtFromPepoCorns( pepoCornsVal , this.getStep() ,  this.getPepoInWeiPerStep()) 
+        , btVal = Pricer.getBtFromPepoCorns( pepoCornsVal , this.getStep() ,  this.getPepoInWeiPerStep())
         , btFormatedVal = this.numberFormatter.getFormattedValue( btVal );
         this.setState({ btAmount: btFormatedVal, pepoCorns: val , errorMsg: null });
     }
@@ -252,14 +255,14 @@ class Redemption extends PureComponent{
     
     btValidationAndError() {
         let btAmountWei = this.getTransactionalBtAmount();
-        let btAmount= Pricer.getFromDecimal( btAmountWei ); 
+        let btAmount= Pricer.getFromDecimal( btAmountWei );
         btAmount = btAmount && Number(btAmount);
         let balance = this.state.balance && Number(this.state.balance)
         if ( btAmount > balance) {
             this.setState({errorMsg: ostErrors.getUIErrorMessage('max_pepocorns') });
             return false;
         }
-        
+
         let pepoCorns = this.getTransactionalPepoCorns(this.state.pepoCorns),
             step = this.getStep();
             pepoCorns = pepoCorns && Number( pepoCorns );
@@ -368,7 +371,7 @@ class Redemption extends PureComponent{
         details += `pid_${this.getPepoCornEntity()[DataContract.redemption.productIdKey]}${separator}`;
         details += `pupp_${ReduxGetters.getUSDPrice()}${separator}`;
         //details += `pupp_${0}${separator}`;
-        details += `pca_${this.getTransactionalPepoCorns(this.state.pepoCorns)}` 
+        details += `pca_${this.getTransactionalPepoCorns(this.state.pepoCorns)}`
         metaProperties["details"] = details;
         return metaProperties;
     }
@@ -480,11 +483,11 @@ class Redemption extends PureComponent{
           };
           this.getAnimation().start() ;
         return (
-            <View style={inlineStyles.viewWrapper}>
+            <View style={[inlineStyles.viewWrapper, inlineStyles.loadingWrapper]}>
                 <Animated.Image
-                  style={[ animationStyle, {width: 40, height: 40, marginBottom: 20} ]}
+                  style={[ animationStyle, inlineStyles.animationImageSkipFont ]}
                   source={pepoTxIcon}/>
-                <Text> {msg || `Please wait, we are getting your ${this.getPepoCornsName()}` }</Text>
+                <Text style={inlineStyles.loadingText}> {msg || `Please wait, we are getting your ${this.getPepoCornsName()}` }</Text>
             </View>
         )
     }
@@ -492,8 +495,8 @@ class Redemption extends PureComponent{
     getErrorMarkup = (errorMsg) => {
         return (
             <View style={inlineStyles.viewWrapper}>
-                <Image source={toastError} style={{ width: 30, height: 30, marginBottom: 20}}></Image>
-                <Text style={{textAlign: "center"}}>
+                <Image source={toastError} style={inlineStyles.errorImageSkipFont}></Image>
+                <Text style={inlineStyles.errorMessage}>
                   {errorMsg || ostErrors.getUIErrorMessage("redemption_error")}
                 </Text>
             </View>
@@ -515,8 +518,8 @@ class Redemption extends PureComponent{
     getAppUpdateMarkup = () => {
         return (
             <View style={inlineStyles.viewWrapper}>
-                <Image source={AppUpgrade} style={{ height: 100, aspectRatio: 220/368, marginBottom: 20 }}></Image>
-                <Text style={{marginBottom: 20,  textAlign: 'center'}}>
+                <Image source={AppUpgrade} style={inlineStyles.appUpdateImageSkipFont}></Image>
+                <Text style={inlineStyles.appUpdateText}>
                     {this.getAppUpdateMessage()}
                 </Text>
                 <TouchableButton  TouchableStyles={[Theme.Button.btnPink]}
@@ -532,7 +535,7 @@ class Redemption extends PureComponent{
          //TODO @Preshita , do the UI part as well --> done
         return (
             <View style={inlineStyles.successViewWrapper}>
-                <Image source={tx_success} style={[{ width: 164.6, height: 160, marginBottom: 20 }]}></Image>
+                <Image source={tx_success} style={inlineStyles.successImageSkipFont}></Image>
                 <Text style={[inlineStyles.successText]}>
                     Success, you have {this.state.pepoCorns} new {this.getPepoCornsName()}, you can also view them in your settings menu.
                 </Text>
@@ -550,40 +553,48 @@ class Redemption extends PureComponent{
         return (
             <View style={inlineStyles.viewWrapper}>
                 <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
-                <Image source={this.getPepoCornsImageSource()} style={{ width: 80, height: 80, marginBottom: 20}}></Image>
+                <Image source={this.getPepoCornsImageSource()} style={inlineStyles.pepcornImageSkipFont}></Image>
                 <Text style={inlineStyles.subText1}>
                     {this.getPepoCornsName()} are elusive creatures that only exist in Pepo.{" "}
                     {this.getPepoCornsName()} can be only be purchased with Pepo Coins
                 </Text>
                 <View style={inlineStyles.subSection}>
                     <Text style={inlineStyles.heading2} >How many {this.getPepoCornsName()} do you want to buy?</Text>
-                    <View>
+                    <View style={{flex: 1}}>
                        <View style={inlineStyles.formInputWrapper}>
                          <Image source={pepoCornSmall} style={inlineStyles.textInputImage}/>
                          <FormInput
                             editable={this.state.inputFieldsEditable}
                             onChangeText={this.onPepoCornChange}
-                            style={[Theme.TextInput.textInputStyle, {paddingLeft: 35}]}
+                            style={[Theme.TextInput.textInputStyle, inlineStyles.formInputText]}
                             value={this.state.pepoCorns}
                             placeholder="Pepocorns"
                             fieldName="pepo_corns"
-                            placeholderTextColor="#ababab"
+                            placeholderTextColor= {Colors.darkGray}
                             keyboardType="decimal-pad"
                             blurOnSubmit={true}
                             errorStyle={{display: "none"}}
                             />
                         </View>
                         <View style={inlineStyles.valueIn}>
-                            <Text>Value in <Image style={{ width: 10, height: 10 }} source={pepo_icon}></Image>{' '}{this.state.btAmount}</Text>
+                            <Text style={inlineStyles.valueInText}>Value in <Image style={inlineStyles.pepoIconSkipFont} source={pepo_icon}></Image>{' '}{this.state.btAmount}</Text>
                         </View>
-                        <Text style={[{ textAlign: 'center', marginTop: 10 }, Theme.Errors.errorText]}> {this.state.errorMsg}</Text>
-                        <TouchableButton    disabled={this.state.exceBtnDisabled}
-                                            TouchableStyles={[Theme.Button.btnPink , {width: "100%"}]}
-                                            TextStyles={[Theme.Button.btnPinkText]}
-                                            text={this.state.btnText}
-                                            onPress={MultipleClickHandler(() => this.onConfirm())}
-                          />
-                        <Text style={inlineStyles.balanceText}>Your current balance: <Image style={{ width: 14, height: 14 }} source={pepo_icon}></Image>{' '}{Pricer.getToBT(this.state.balance)}</Text>  
+                        <Text style={[inlineStyles.pepoErrorText, Theme.Errors.errorText]}> {this.state.errorMsg}</Text>
+                        <LinearGradient
+                            colors={['#ff7499', '#ff7499', '#ff5566']}
+                            locations={[0, 0.35, 1]}
+                            style={{ borderRadius: 3, borderWidth: 0, width: '100%' }}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            >
+                            <TouchableButton disabled={this.state.exceBtnDisabled}
+                                    TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
+                                    TextStyles={[Theme.Button.btnPinkText, { fontSize: 14 }]}
+                                    text={this.state.btnText}
+                                    onPress={MultipleClickHandler(() => this.onConfirm())}
+                            />
+                        </LinearGradient>
+                        <Text style={inlineStyles.balanceText}>Your Current balance: <Image style={inlineStyles.balanceTextImageSkipFont} source={pepo_icon}></Image>{' '}{Pricer.getToBT(this.state.balance)}</Text>
                    </View> 
                 </View>
             </View>
@@ -596,7 +607,7 @@ class Redemption extends PureComponent{
            return this.getLoadingMarkup();
         }else if(this.isConfigFetchError){
             return this.getErrorMarkup();
-        }else if( this.isAppUpdate ) {
+        }else if( this.isAppUpdate) {
             return this.getAppUpdateMarkup();
         }else if( this.state.redemptionSuccess ){
             return this.getSuccessMarkup();
@@ -609,7 +620,7 @@ class Redemption extends PureComponent{
     render(){
         return (
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
-                <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+                <View style={inlineStyles.outerContainer}>
                   <TouchableWithoutFeedback>
                     <View style={[inlineStyles.container , { paddingBottom: this.state.bottomPadding }]}>
                         <View style={{position:'relative'}}>

@@ -243,6 +243,6 @@ export default {
   },
 
   redemption:{
-    pepoCornsName : "Pepocorns"
+    pepoCornsName : "Unicorns"
   }
 };
