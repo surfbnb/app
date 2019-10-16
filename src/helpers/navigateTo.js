@@ -47,8 +47,9 @@ class NavigateTo {
     } else if (goToObject && goToObject.pn == 'iu'){
       this.goToInvitedUsers(payload);
     } else if (goToObject && goToObject.pn == 'wv'){
-      // Checks to be added to break recurssion
       InAppBrowser.openBrowser(goToObject.v.wu)
+    }  else if (goToObject && goToObject.pn == 't'){
+      this.goToTagVideoPage(goToObject.v.tid, payload);
     }
   }
 
@@ -87,6 +88,12 @@ class NavigateTo {
     payload = payload || {};
     payload['userId'] = profileId;
     this.__push('SupportingListScreen', payload);
+  };
+
+  goToTagVideoPage = (tagId, payload) => {
+    payload = payload || {};
+    payload['tagId'] = tagId;
+    this.__push('VideoTags', payload);
   };
 
   goToSupporters = (profileId, payload) => {

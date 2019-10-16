@@ -46,7 +46,6 @@ export default class ConfirmPin extends Component {
       .finally(() => {
         LoadingModal.hide();
         this.props.navigation.navigate('HomeScreen');
-        this.props.navigation.push('CouchMarks');
       });
   }
 
