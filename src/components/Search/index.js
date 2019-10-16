@@ -308,6 +308,7 @@ class SearchScreen extends PureComponent {
             noResultsData={TabMap.top.noResultsData}
             getNoResultsCell={TabMap.top.renderNoResults}
             getSectionFetchUrl={this.getTopSectionFetchUrl}
+            navigation={this.props.navigation}
           />
         </Tab>
         <Tab heading={TabMap.people.title} textStyle={tabStyle.textStyle}

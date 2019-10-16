@@ -23,12 +23,18 @@ class FetchServices {
   }
 
   initVals() {
+
     this.isFetching = false;
     this.hasNextPage = true;
     this.nextPagePayload = null;
     this.results = [];
     this.meta = null;
     this.resultMap = {};
+
+    const seedData = this.options.seedData;
+    if ( seedData && seedData.length > 0) {
+      this.processResults( seedData );
+    }
   }
 
   getUrlParams() {
@@ -100,6 +106,10 @@ class FetchServices {
       // Invalid response.
       throw response;
     }
+    return this.processResults( results, response );
+  }
+
+  processResults(results, response) {
     let cleanedUpList = [];
     let cnt = 0,
       len = results.length;

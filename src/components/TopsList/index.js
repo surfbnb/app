@@ -13,6 +13,7 @@ import Pagination from "../../services/MultiSection/MultiSectionPagination";
 import Colors from "../../theme/styles/Colors";
 import PeopleCell from "../PeopleList/PeopleCell";
 import VideoThumbnailItem from "../CommonComponents/VideoThumbnailItem";
+import {FetchServices} from "../../services/FetchServices";
 
 const titleKeyName = 'title',
   dataKeyName = 'data',
@@ -151,6 +152,15 @@ class TopsList extends PureComponent {
 
   onVideoClick = (payload, index) => {
     console.log(payload, index, this.props.getSectionFetchUrl('videos'));
+    let fullVideoPageUrl = this.props.getSectionFetchUrl('videos');
+    let seedData = this.getVideoSectionsData();
+    const fetchService =   new FetchServices( fullVideoPageUrl, null ,  undefined , {seedData});
+    this.props.navigation.push("FullScreenVideoCollection", {
+      fetchServices : fetchService,
+      currentIndex: index,
+      payload,
+      baseUrl: fullVideoPageUrl
+    });
   };
 
 
@@ -189,16 +199,6 @@ class TopsList extends PureComponent {
       </View>
     );
 
-  }
-
-  _renderVideoItem1 = ({item, index}) => {
-    return <VideoThumbnailItem
-      payload={item.payload}
-      index={index}
-      //onVideoClick={() => {this.onVideoClick(item.payload, index)}}
-      //isEmpty={item.isEmpty}
-      //emptyRenderFunction={this.props.getNoResultsCell}
-    />
   };
 
   renderFooter = () => {
@@ -223,7 +223,16 @@ class TopsList extends PureComponent {
     } else if (kind === 'videos'){
       return this._renderVideoItem;
     }
-  }
+  };
+
+  getVideoSectionsData = () => {
+    let topSectionsData = this.getSectionsData();
+    let videoData = topSectionsData.filter((data)=>{
+      return data.kind === 'videos';
+    });
+    return videoData.length > 0 ? videoData[0].data : [];
+  };
+
 
   getSectionsData = () => {
     let sectionsArray = [],
@@ -243,8 +252,7 @@ class TopsList extends PureComponent {
 
       });
     }
-
-    if ( sectionsArray.length < 1 ) {
+    if ( sectionsArray.length < 1  && !this.state.refreshing) {
       // Create a dummy section to show no results cell.
       sectionsArray.push({
         data: [this.props.noResultsData],
