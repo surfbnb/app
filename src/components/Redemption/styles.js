@@ -119,7 +119,7 @@ let stylesMap = {
       borderColor: Colors.seaMist
     },
 
-    textInputImage : {
+    textInputImageSkipFont : {
       position:'absolute', 
       height: 23, 
       width: 23, 

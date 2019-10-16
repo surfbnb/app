@@ -200,6 +200,15 @@ export default {
       url && Linking.openURL(url);
     })
     .catch((error) => {});
+  },
+
+  getPepoCornsName(noOfPepoCorns){
+    const pepocornsName = AppConfig.redemption.pepoCornsName,
+    length              = pepocornsName.length;   
+    if(noOfPepoCorns && noOfPepoCorns <= 1){
+      return pepocornsName.substring(0, length - 1);
+    }
+    return pepocornsName;
   }
 
 };

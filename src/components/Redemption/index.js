@@ -155,10 +155,10 @@ class Redemption extends PureComponent{
        return deepGet(this.configResponse , `data.${deepGet(this.configResponse ,  DataContract.common.resultType)}` , {});
     }
 
-    getPepoCornsName(){
+    getPepoCornsName(noOfPepoCorns){
         // const pepoCornsEntity = this.getPepoCornEntity();
         // return pepoCornsEntity[DataContract.redemption.pepoCornsNameKey] || AppConfig.redemption.pepoCornsName;
-        return AppConfig.redemption.pepoCornsName;
+       return Utilities.getPepoCornsName(noOfPepoCorns);
     }
 
     getPepoCornsImageSource(){
@@ -546,7 +546,7 @@ class Redemption extends PureComponent{
             <View style={inlineStyles.successViewWrapper}>
                 <Image source={tx_success} style={inlineStyles.successImageSkipFont}></Image>
                 <Text style={[inlineStyles.successText]}>
-                    Success, you have {this.state.pepoCorns} new {this.getPepoCornsName()}, you can also view them in your settings menu.
+                    Success, you have {this.state.pepoCorns} new {this.getPepoCornsName(this.state.pepoCorns)}, you can also view them in your settings menu.
                 </Text>
                 <LinearGradient
                             colors={['#ff7499', '#ff7499', '#ff5566']}
@@ -583,7 +583,7 @@ class Redemption extends PureComponent{
                     <Text style={inlineStyles.heading2} >How many {this.getPepoCornsName()} do you want to buy?</Text>
                     <View style={{flex: 1}}>
                     <View style={inlineStyles.formInputWrapper}>
-                        <Image source={pepoCornSmall} style={inlineStyles.textInputImage}/>
+                        <Image source={pepoCornSmall} style={inlineStyles.textInputImageSkipFont}/>
                         <FormInput
                             ref={(ref) => this.pepocornInput = ref}
                             editable={this.state.inputFieldsEditable}
