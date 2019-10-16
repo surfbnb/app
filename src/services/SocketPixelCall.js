@@ -53,7 +53,7 @@ class SocketPixelCall {
       return;
     }
 
-    console.log("events", JSON.stringify(events) );
+    console.log(LOG, "events", JSON.stringify(events) );
 
     //Queue up if not able to send the event
     this.pushEventsInBuffer(events);

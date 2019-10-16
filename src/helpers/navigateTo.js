@@ -1,3 +1,5 @@
+import {Linking, Platform} from 'react-native';
+
 import deepGet from 'lodash/get';
 import CurrentUser from '../models/CurrentUser';
 import NavigationService from '../services/NavigationService';
@@ -7,6 +9,8 @@ import Utilities from '../services/Utilities';
 import AppConfig from '../constants/AppConfig';
 import { upsertInviteCode } from '../actions';
 import Store from '../store';
+import PepoApi from "../services/PepoApi";
+import DataContract from '../constants/DataContract';
 
 class NavigateTo {
   constructor() {
@@ -22,26 +26,58 @@ class NavigateTo {
   navigate(goToObject, navigation, payload) {
     goToObject = goToObject || {};
     this.setTopLevelNavigation(navigation);
-    if (goToObject && goToObject.pn == 'p') {
+    if (goToObject && goToObject.pn === 'p') {
       this.goToProfilePage(goToObject.v.puid, payload);
-    } else if (goToObject && goToObject.pn == 'cb') {
+    } else if (goToObject && goToObject.pn === 'cb') {
       this.goToSupporters(goToObject.v.puid, payload);
-    } else if (goToObject && goToObject.pn == 'v') {
+    } else if (goToObject && goToObject.pn === 'v') {
       this.goToVideo(goToObject.v.vid, payload);
-    } else if (goToObject && goToObject.pn == 'f') {
+    } else if (goToObject && goToObject.pn === 'f') {
       this.__navigate('Home', payload);
-    } else if (goToObject && goToObject.pn == 'nc') {
+    } else if (goToObject && goToObject.pn === 'nc') {
       this.__navigate('Notification', payload);
-    } else if (goToObject.pn == 'e') {
+    } else if (goToObject.pn === 'e') {
       this.__push('AddEmailScreen', payload);
-    } else if (goToObject && goToObject.pn == 'ct') {
+    } else if (goToObject && goToObject.pn === 'ct') {
       this.goToSupportings(goToObject.v.puid, payload);
-    } else if (goToObject && goToObject.pn == 'iu'){
+    } else if (goToObject && goToObject.pn === 'iu'){
       this.goToInvitedUsers(payload);
-    } else if (goToObject && goToObject.pn == 'wv'){
-      // Checks to be added to break recurssion
+    } else if (goToObject && goToObject.pn === 'wv'){
       InAppBrowser.openBrowser(goToObject.v.wu)
+    } else if (goToObject && goToObject.pn === 'su'){
+      this.goToSupport();
+    } else if (goToObject && goToObject.pn === 'sp'){
+      this.goToStore();
     }
+  }
+
+  goToSupport(){
+    new PepoApi(DataContract.support.infoApi)
+        .get()
+        .then((response) => {
+          if(response && response.success){
+            let result_type = deepGet(response, 'data.result_type'),
+                payload;
+            if(result_type){
+              payload = response.data[ result_type ];
+            }
+            payload && InAppBrowser.openBrowser( payload.url );
+          }
+        });
+  }
+
+  goToStore(){
+    new PepoApi(DataContract.redemption.openRedemptionWebViewApi)
+        .get()
+        .then((response)=> {
+          if(response && response.success){
+            let resultType = deepGet(response , `${DataContract.common.resultType}`) , 
+                data = deepGet(response, `data.${resultType}` ),
+                url = data && data.url;
+            ;
+            url && Linking.openURL(url);
+          }
+        });
   }
 
   goToSignUp(inviteCode, payload ){
@@ -55,7 +91,7 @@ class NavigateTo {
         Store.dispatch(upsertInviteCode(inviteCode));
     }
 }
-  
+
   goToInvitedUsers = (payload)=> {
     this.__push('Invites', payload);
   }
@@ -68,8 +104,8 @@ class NavigateTo {
       timeOut = 100;
       this.__navigate('NotificationScreen', payload);
     }
-    //Once migrated to react-navigation version 4 remove the settimeout code 
-    //as version 3 dosent provides navigation chaining. 
+    //Once migrated to react-navigation version 4 remove the settimeout code
+    //as version 3 dosent provides navigation chaining.
     setTimeout(()=> {
       this.__push('VideoPlayer', payload);
     }, timeOut)
@@ -115,7 +151,7 @@ class NavigateTo {
   }
 
   //Call this function if you want to navigate to screens only if logind user or webview redirects.
-  //Eg: UniversalLinkWorker or PushNotificationWorker 
+  //Eg: UniversalLinkWorker or PushNotificationWorker
   shouldNavigate( goToHome ){
     if(CurrentUser.isActiveUser() || this.isWebViewLink()) {
       this.__goToNavigationDecision( goToHome );
@@ -158,7 +194,7 @@ class NavigateTo {
     if (goTo && goTo.pn == 's') {
       this._setInviteCode(goTo.v.ic);
       return;
-    } 
+    }
     this.goTo = goTo;
   }
 

@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 import {connect} from 'react-redux';
-import { View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { View, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { Text, Image } from 'react-native';
 import pricer from '../../services/Pricer';
 import inlineStyles from './styles';
 import selfAmountWallet from '../../assets/pepo-amount-wallet.png';
 import topUpIcon from '../../assets/top-up-icon.png'
-import redeemIcon from '../../assets/redeem-icon.png'
 import inlineStyle from "../CommonComponents/UserInfo/styles";
 import LinearGradient from "react-native-linear-gradient";
 import { withNavigation } from 'react-navigation';
@@ -19,11 +18,11 @@ import { PurchaseLoader } from "../../helpers/PaymentEvents";
 import PollCurrentUserPendingPayments from "../../helpers/PollCurrentUserPendingPayments";
 import Toast from '../../theme/components/NotificationToast';
 import appConfig from "../../constants/AppConfig";
-import PepoApi from '../../services/PepoApi';
-import InAppBrowser from '../../services/InAppBrowser';
 import { ostErrors } from '../../services/OstErrors';
-import {OstWalletSdk} from "@ostdotcom/ost-wallet-sdk-react-native";
 import AppConfig from '../../constants/AppConfig';
+import MultipleClickHandler from '../../services/MultipleClickHandler';
+import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import pepoCornsImg from '../../assets/UnicornSmall.png';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -64,10 +63,13 @@ class BalanceHeader extends PureComponent {
     });
   }
 
-  toBt( val ){
+  __toBt( val ){
     const priceOracle =  pricer.getPriceOracle() ;
-    val = priceOracle.fromDecimal( val )  ;
-    return pricer.toDisplayAmount( priceOracle.toBt( val ) );
+    return priceOracle.fromDecimal( val ) || 0 ;
+  }
+
+  toBt( val ){
+    return pricer.toDisplayAmount( this.__toBt(val) );
   }
 
   toFiat( val ){
@@ -92,17 +94,22 @@ class BalanceHeader extends PureComponent {
     }
   }
 
-  openWebView = () => {
-    console.log('openWebView: open browser');
+  onRedemptionClick = () => {
+    if(!CurrentUser.isUserActivated()){
+      Toast.show({
+        text: ostErrors.getUIErrorMessage('user_not_active'),
+        buttonText: 'Okay'
+      });
+      return;
+    }
 
-    new PepoApi(`/redemptions/info`)
-    .get()
-    .then((res) => { setTimeout(() => {
-
-      res && res.data && InAppBrowser.openBrowser(res.data.redemption_info.url);
-    }, 0); })
-    .catch((error) => {});
-
+    OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
+      if(this.isDevicesAuthorized( device )){
+        this.props.navigation.push("RedemptiomScreen");
+      }else{
+        this.props.navigation.push("AuthDeviceDrawer" , {device: device});
+      }
+    })
   }
 
   getWalletIcon = () => {
@@ -135,10 +142,10 @@ class BalanceHeader extends PureComponent {
             end={{ x: 1, y: 0 }}
             style={{height: 20, width: 1, marginHorizontal: 8, marginTop: 16.5}}
           ></LinearGradient>
-          <TouchableOpacity onPress={this.openWebView}>
+          <TouchableOpacity onPress={MultipleClickHandler(() => this.onRedemptionClick())} >
             <View style={{alignItems: 'center'}}>
-              <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
-              <Text style={inlineStyles.redeemBalance}>Redeem</Text>
+              <Image style={{ width: 50, height: 50 }} source={pepoCornsImg}></Image>
+              <Text style={inlineStyles.redeemBalance}>{AppConfig.redemption.pepoCornsName}</Text>
             </View>
           </TouchableOpacity>
         </View>

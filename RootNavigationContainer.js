@@ -58,6 +58,7 @@ import WalletDetails from './src/components/WalletSetting/WalletDetails';
 import AuthDeviceDrawer from './src/components/Home/AuthDeviceDrawer';
 import InAppBrowserComponent from './src/components/CommonComponents/InAppBrowser';
 import CouchMarks from './src/components/CouchMarks';
+import RedemptiomScreen from './src/components/Redemption';
 
 const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserComponent' , 'CouchMarks'];
 
@@ -223,7 +224,8 @@ const ProfileStack = createStackNavigator(
     AuthDeviceDrawer: AuthDeviceDrawer,
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
-    StoreProductsScreen: StoreProductsScreen
+    StoreProductsScreen: StoreProductsScreen,
+    RedemptiomScreen: RedemptiomScreen 
   },
   {
     headerLayoutPreset: 'center',

@@ -16,6 +16,7 @@ import { shortenedFromNow } from '../../helpers/timestampHandling';
 import {navigateTo} from '../../helpers/navigateTo';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import playIcon from '../../assets/play_icon.png';
+import pepoCornsImg from '../../assets/Unicorn.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -165,30 +166,31 @@ class NotificationItem extends Component {
     }
   };
 
-  render() {
-    //
-    let headerWidth = '72%',
-      notificationInfoWidth = '20%';
-    if (
-      this.props.kind == AppConfig.notificationConstants.AppreciationKind ||
-        this.props.kind == AppConfig.notificationConstants.recoveryInitiate ||
-      AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)
-    ) {
-      headerWidth = '92%';
-      notificationInfoWidth = '0%';
+  getActivityIcon(){
+    if([AppConfig.notificationConstants.systemNotification, AppConfig.notificationConstants.airDropNotification, AppConfig.notificationConstants.topupNotification, AppConfig.notificationConstants.recoveryInitiate ].includes(this.props.kind)) {
+      return <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
+    }else if( AppConfig.pepoCornsActivityKinds.includes(this.props.kind)){
+      return <Image source={pepoCornsImg} style={styles.systemNotificationIconSkipFont} />
+    }else{
+      return <ProfilePicture pictureId={this.props.pictureId} />;
     }
+  }
 
+  render() {
+    let headerWidth = '92%',
+    notificationInfoWidth = '0%';
+    if (this.props.kind === AppConfig.notificationConstants.videoAddKind) {
+        headerWidth = '72%';
+        notificationInfoWidth = '20%';
+    }
+    
     return (
       <View style={{ minHeight: 25 }}>
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handleRowClick())}>
           <View>
             <View style={styles.txtWrapper}>
               <View style={{ width: '8%', marginRight: 4 }}>
-                {[AppConfig.notificationConstants.systemNotification, AppConfig.notificationConstants.airDropNotification, AppConfig.notificationConstants.topupNotification, AppConfig.notificationConstants.recoveryInitiate ].includes(this.props.kind) ? (
-                  <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
-                ) : (
-                  <ProfilePicture pictureId={this.props.pictureId} />
-                )}
+                {this.getActivityIcon()}
               </View>
               <View style={{ width: headerWidth, flexDirection: 'row' }}>
                 <View style={{ flexDirection: 'column' }}>

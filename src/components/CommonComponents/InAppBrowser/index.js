@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { WebView } from 'react-native-webview';
 import { SafeAreaView } from 'react-navigation';
-import {Image, TouchableOpacity, Text, View, Share, Platform} from 'react-native';
+import {Image, TouchableOpacity, Text, View, Share, Platform, KeyboardAvoidingView} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import ProgressBar from 'react-native-progress/Bar';
 
@@ -93,37 +93,39 @@ export default class InAppBrowserComponent extends Component {
     render() {
         return (
           <SafeAreaView style={{flex: 1}}>
-            {this.state.loadingProgress != 1 && 
-              <ProgressBar progress={this.state.loadingProgress} width={null} height={3}
-                  color={ Colors.pinkRed } useNativeDriver={ true} borderRadius = {0} borderWidth={0}/>}
-            <WebView
-                style={{flex:1}}
-                useWebKit={true}
-                allowsInlineMediaPlayback={true}
-                ref={ref => (this.webview = ref)}
-                source={{
-                    uri: this.url,
-                    headers: {
-                        'X-PEPO-DEVICE-OS': Platform.OS,
-                        'X-PEPO-DEVICE-OS-VERSION': String(DeviceInfo.getSystemVersion()),
-                        'X-PEPO-BUILD-NUMBER': String(DeviceInfo.getBuildNumber()),
-                        'X-PEPO-APP-VERSION': String(DeviceInfo.getVersion())
-                    }
-                }}
-                renderError={errorName => <View style={inlineStyles.webviewContent}><Text style={{fontSize: 20}}>Invalid Link</Text></View>}
-                onLoad={syntheticEvent => {
-                  const { nativeEvent } = syntheticEvent;
-                  this.setHeaderParams(nativeEvent.title, nativeEvent.url);
-                  this.setNavigation(nativeEvent);
-                }}
-                onLoadProgress={({ nativeEvent }) => {
-                  this.setState({
-                    loadingProgress : nativeEvent.progress
-                  })
-                }}
-            />
-            <BrowserFooter canGoBack={this.state.canGoBack} canGoForward={this.state.canGoForward} 
-                            goBack={this.goBack} goForward={this.goForward}/>
+              <KeyboardAvoidingView behavior={Platform.OS == 'android' ?'padding' :''} style={{ flex: 1 }} keyboardVerticalOffset={30}>
+                {this.state.loadingProgress != 1 &&
+                  <ProgressBar progress={this.state.loadingProgress} width={null} height={3}
+                      color={ Colors.pinkRed } useNativeDriver={ true} borderRadius = {0} borderWidth={0}/>}
+                <WebView
+                    style={{flex:1}}
+                    useWebKit={true}
+                    allowsInlineMediaPlayback={true}
+                    ref={ref => (this.webview = ref)}
+                    source={{
+                        uri: this.url,
+                        headers: {
+                            'X-PEPO-DEVICE-OS': Platform.OS,
+                            'X-PEPO-DEVICE-OS-VERSION': String(DeviceInfo.getSystemVersion()),
+                            'X-PEPO-BUILD-NUMBER': String(DeviceInfo.getBuildNumber()),
+                            'X-PEPO-APP-VERSION': String(DeviceInfo.getVersion())
+                        }
+                    }}
+                    renderError={errorName => <View style={inlineStyles.webviewContent}><Text style={{fontSize: 20}}>Invalid Link</Text></View>}
+                    onLoad={syntheticEvent => {
+                      const { nativeEvent } = syntheticEvent;
+                      this.setHeaderParams(nativeEvent.title, nativeEvent.url);
+                      this.setNavigation(nativeEvent);
+                    }}
+                    onLoadProgress={({ nativeEvent }) => {
+                      this.setState({
+                        loadingProgress : nativeEvent.progress
+                      })
+                    }}
+                />
+                <BrowserFooter canGoBack={this.state.canGoBack} canGoForward={this.state.canGoForward}
+                                goBack={this.goBack} goForward={this.goForward}/>
+              </KeyboardAvoidingView>
            </SafeAreaView>
         );
     }

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, Linking } from 'react-native';
 import deepGet from 'lodash/get';
 
 import pricer from './Pricer';
@@ -13,6 +13,8 @@ import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
 import AppConfig from '../constants/AppConfig';
+import PepoApi from './PepoApi';
+import DataContract from '../constants/DataContract';
 
 let os = Platform.OS || "";
 os =  os.toLowerCase();
@@ -188,5 +190,25 @@ export default {
       return text+"s" ; 
     }
     return text ;
+  },
+
+  openRedemptionWebView() {
+    new PepoApi(DataContract.redemption.openRedemptionWebViewApi)
+    .get()
+    .then((res) => {
+      let url =  deepGet(res, "data.redemption_info.url");
+      url && Linking.openURL(url);
+    })
+    .catch((error) => {});
+  },
+
+  getPepoCornsName(noOfPepoCorns){
+    const pepocornsName = AppConfig.redemption.pepoCornsName,
+    length              = pepocornsName.length;   
+    if(noOfPepoCorns && noOfPepoCorns <= 1){
+      return pepocornsName.substring(0, length - 1);
+    }
+    return pepocornsName;
   }
+
 };

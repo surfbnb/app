@@ -54,6 +54,11 @@ export default {
     name: 'profile'
   },
 
+  redemptionMetaProperties : {
+    type: 'user_to_company',
+    name: 'redemption'
+  },
+
   executeTransactionPrivacyType: {
     public: 'PUBLIC',
     private: 'PRIVATE'
@@ -235,5 +240,12 @@ export default {
     active : "active",
     inactive: "inactive",
     background : "background"
-  }
+  },
+
+  redemption:{
+    pepoCornsName : "Unicorns",
+    learnMoreLink : "https://intercom.help/pepo/en/articles/3418202-what-are-pepo-unicorns"
+  },
+
+  pepoCornsActivityKinds : ["CREDIT_PEPOCORN_SUCCESS" , "CREDIT_PEPOCORN_FAILURE"]
 };

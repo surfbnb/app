@@ -6,6 +6,9 @@ import PriceOracle from './PriceOracle';
 import ReduxGetter from "./ReduxGetters";
 import numeral from "numeral";
 import OstWalletSdkHelper from '../helpers/OstWalletSdkHelper';
+import PepoApi from './PepoApi';
+import DataContract from '../constants/DataContract';
+import BigNumber from 'bignumber.js';
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -100,8 +103,47 @@ class Pricer {
       return numeral( amount ).format('0', Math.floor);
     } else {
       return numeral( amount ).format('0a+', Math.floor)
-
     }
+  }
+
+  getBtFromPepoCornsInWei( pepoCorns , step , pepoInWeiPerStep){
+    if(!pepoCorns || !step || !pepoInWeiPerStep ) return "0";
+    let pepoInEthPerStep =  this.getFromDecimal(pepoInWeiPerStep); //Normalize to ETH
+    let pepoInEthPerStepBN = BigNumber( pepoInEthPerStep ); //Convert to BN 
+    let amountBn = BigNumber(pepoCorns).dividedBy(step) ;  //Get amount in BN
+    amountBn = pepoInEthPerStepBN.multipliedBy(amountBn).toString(10); //Get pepo in ETH
+    amountBn = this.getToDecimal( amountBn ); // Convert to WEI
+    return BigNumber(amountBn).toFixed(); // Ignore decimal places if any
+  }
+
+  getBtFromPepoCornsEth( pepoCorns , step , pepoInWeiPerStep  ){
+    pepoCorns = this.getBtFromPepoCornsInWei( pepoCorns , step , pepoInWeiPerStep  );
+    return this.getFromDecimal( pepoCorns );
+  }
+
+  getBtFromPepoCorns( pepoCorns , step , pepoInWeiPerStep , precession ){
+    pepoCorns = this.getBtFromPepoCornsEth( pepoCorns , step , pepoInWeiPerStep  );
+    return this.getToBT( pepoCorns , precession )
+  }
+
+  isValidPepocornStep( val ,  step ){
+    if(!val || !step) return true;
+    let valBN = BigNumber( val );
+    let remainder =  valBN.modulo(step);
+    remainder =  remainder && Number(remainder)
+    if( remainder == 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  fetchPepocornsBalance(){
+    return new PepoApi(DataContract.redemption.fetchPepoCornsBalanceApi)
+    .get()
+    .catch((error)=> {
+      //Silent Ignore
+    })
   }
 
 }
