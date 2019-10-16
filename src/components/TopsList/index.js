@@ -168,13 +168,12 @@ class TopsList extends PureComponent {
       let itemData = section.data[i];
       let itemKey = "top_list_" + i + "_" + itemData.id;
       items.push(
-        <TouchableWithoutFeedback onPress={() => this._handleVideoClick(section.kind, itemData.payload)}>
+
         <VideoThumbnailItem
         payload={itemData.payload}
         index={index} key={itemKey}
         onVideoClick={this.onVideoClick}
         />
-        </TouchableWithoutFeedback>
 
 
         )
@@ -193,7 +192,6 @@ class TopsList extends PureComponent {
   }
 
   _renderVideoItem1 = ({item, index}) => {
-    console.log(item, 'itemmmmmmm');
     return <VideoThumbnailItem
       payload={item.payload}
       index={index}
