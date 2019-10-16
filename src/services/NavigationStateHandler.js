@@ -12,6 +12,7 @@ const routesAnalyticsMap = {
   SetPinScreen: 'SetPin',
   ConfirmPinScreen: 'ConfirmPin',
   Home: 'HomeFeed',
+  HomeScreen: 'HomeFeed',
   Search: 'Search',
   Notification: 'Activity',
   Profile: 'MyProfile',
@@ -21,7 +22,6 @@ const routesAnalyticsMap = {
   SupportingListScreen: 'SupportingList',
   SupportersListScreen: 'SupportersList',
   UserVideoHistory: 'UsersProfile/VideoHistory',
-  ProfileDrawerNavigator: '',
   CaptureImageScreen: 'CaptureImage',
   ImageGalleryScreen: 'ImageGallery',
   StoreProductsScreen: 'InAppPurchase',
@@ -38,6 +38,7 @@ const routesAnalyticsMap = {
   AddEmailScreen: 'AddEmail',
   InAppBrowserComponent: 'InAppBrowser',
   FanVideoDetails: 'CaptureVideo/VideoDetails',
+  ProfileDrawerNavigator: '',
   SearchPushStack: '',
   AuthLoading: '',
   PinStack: '',
@@ -50,8 +51,7 @@ const routesAnalyticsMap = {
   NotificationPushStack: '',
   NotificationScreen: '',
   HomePushStack: '',
-  CouchMarks: '',
-  HomeScreen: ''
+  CouchMarks: ''
 };
 
 let currentState = null;
