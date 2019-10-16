@@ -6,7 +6,6 @@ import pricer from '../../services/Pricer';
 import inlineStyles from './styles';
 import selfAmountWallet from '../../assets/pepo-amount-wallet.png';
 import topUpIcon from '../../assets/top-up-icon.png'
-import redeemIcon from '../../assets/redeem_store.png'
 import inlineStyle from "../CommonComponents/UserInfo/styles";
 import LinearGradient from "react-native-linear-gradient";
 import { withNavigation } from 'react-navigation';
@@ -23,6 +22,7 @@ import { ostErrors } from '../../services/OstErrors';
 import AppConfig from '../../constants/AppConfig';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
+import pepoCornsImg from '../../assets/PepoCornPink.png';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -145,8 +145,8 @@ class BalanceHeader extends PureComponent {
           ></LinearGradient>
           <TouchableOpacity onPress={MultipleClickHandler(() => this.onRedemptionClick())} >
             <View style={{alignItems: 'center'}}>
-              <Image style={{ width: 50, height: 50 }} source={redeemIcon}></Image>
-              <Text style={inlineStyles.redeemBalance}>Store</Text>
+              <Image style={{ width: 50, height: 50 }} source={pepoCornsImg}></Image>
+              <Text style={inlineStyles.redeemBalance}>{AppConfig.redemption.pepoCornsName}</Text>
             </View>
           </TouchableOpacity>
         </View>

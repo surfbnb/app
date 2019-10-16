@@ -55,7 +55,7 @@ const bottomSpace = getBottomSpace([true]),
 
 const minPepoCornsVal  = 1;
 
-const btnPreText = "Buy with Pepocoins";
+const btnPreText = "Buy now";
 const btnPostText = "Confirming...";
 
 class Redemption extends PureComponent{
@@ -70,7 +70,7 @@ class Redemption extends PureComponent{
 
         this.state = {
             btAmount: 0,
-            pepoCorns : 0,
+            pepoCorns : 1,
             balance: Pricer.getFromDecimal(  ReduxGetters.getBalance() ) ,
             errorMsg: null,
             isLoading: true, //Default state is false, but to save 1 render cycle i have set it as True.
@@ -266,7 +266,7 @@ class Redemption extends PureComponent{
         let pepoCorns = this.getTransactionalPepoCorns(this.state.pepoCorns),
             step = this.getStep();
         if( !Pricer.isValidPepocornStep(pepoCorns ,step) ){
-            this.setState({errorMsg: `Please enter amount in multiples of ${step}`});
+            this.setState({errorMsg: "C'mon! You can't buy partial Unicorns."});
             return false;
         }
         return true;
@@ -551,7 +551,7 @@ class Redemption extends PureComponent{
             <View style={inlineStyles.successViewWrapper}>
                 <Image source={tx_success} style={inlineStyles.successImageSkipFont}></Image>
                 <Text style={[inlineStyles.successText]}>
-                    Success, you have {this.state.pepoCorns} new {this.getPepoCornsName(this.state.pepoCorns)}, you can also view them in your settings menu.
+                    Woohoo! You are the proud owner of {this.state.pepoCorns} new {this.getPepoCornsName(this.state.pepoCorns)}! Visit the Pepo.com Store to play with your {this.getPepoCornsName(this.state.pepoCorns)}.
                 </Text>
                 <LinearGradient
                             colors={['#ff7499', '#ff7499', '#ff5566']}
@@ -566,7 +566,7 @@ class Redemption extends PureComponent{
                                     onPress={this.closeModal}
                             />
                 </LinearGradient>
-                <Text style={inlineStyles.successLink} onPress={MultipleClickHandler(() => this.onRedemptionWebViewClick())}>Cash Out on Pepo.com</Text>
+                <Text style={inlineStyles.successLink} onPress={MultipleClickHandler(() => this.onRedemptionWebViewClick())}>Cash Out on Pepo.com Store</Text>
             </View>
         )
     }
@@ -579,13 +579,13 @@ class Redemption extends PureComponent{
                         <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
                         <Image source={this.getPepoCornsImageSource()} style={inlineStyles.pepcornImageSkipFont}></Image>
                         <Text style={inlineStyles.subText1}>
-                            {this.getPepoCornsName()} are elusive creatures that only exist in Pepo.{" "}
-                            {this.getPepoCornsName()} can be only be purchased with Pepo Coins
+                        {this.getPepoCornsName()} are elusive creatures inhabiting Pepo.{" "}
+                        Learn all about the benefits of owning {this.getPepoCornsName()}.
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={inlineStyles.subSection}>
-                    <Text style={inlineStyles.heading2} >How many {this.getPepoCornsName()} do you want to buy?</Text>
+                    <Text style={inlineStyles.heading2} >How many {this.getPepoCornsName()} do you want?</Text>
                     <View style={{flex: 1}}>
                     <View style={inlineStyles.formInputWrapper}>
                         <Image source={pepoCornSmall} style={inlineStyles.textInputImageSkipFont}/>
@@ -595,7 +595,7 @@ class Redemption extends PureComponent{
                             onChangeText={this.onPepoCornChange}
                             style={[Theme.TextInput.textInputStyle, inlineStyles.formInputText]}
                             value={this.state.pepoCorns}
-                            placeholder="Unicorns"
+                            placeholder={AppConfig.redemption.pepoCornsName}
                             fieldName="pepo_corns"
                             placeholderTextColor= {Colors.darkGray}
                             keyboardType="decimal-pad"
@@ -604,7 +604,7 @@ class Redemption extends PureComponent{
                         />
                     </View>
                     <View style={inlineStyles.valueIn}>
-                        <Text style={inlineStyles.valueInText}>Value in <Image style={inlineStyles.pepoIconSkipFont} source={pepo_icon}></Image>{' '}{this.state.btAmount}</Text>
+                        <Text style={inlineStyles.valueInText}>That'll cost <Image style={inlineStyles.pepoIconSkipFont} source={pepo_icon}></Image>{' '}{this.state.btAmount}</Text>
                     </View>
                     <Text style={[inlineStyles.pepoErrorText, Theme.Errors.errorText]}> {this.state.errorMsg}</Text>
                     <LinearGradient

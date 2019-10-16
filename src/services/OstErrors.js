@@ -37,10 +37,9 @@ const UIErros = {
   top_not_available: "Topup not available at this time, we are looking into it. Please check back later.",
   delete_video_error:"Unable to delete Video at this moment.", 
   redemption_error : "Failed to redeem, please try again later",
-  redemption_low_balance : "You dont have enough balance for redemption", 
-  max_pepocorns: "You dont have enough balance to redeem this amount.",
-  price_point_validation_failed: "Price points have been updated please try again.",
-  min_pepocorns: "Minimum amount allowed is 1."
+  max_pepocorns: `Sorry, you don't have enough Pepo Coins to buy this many ${Utilities.getPepoCornsName()}`,
+  price_point_validation_failed: `Sorry, you don't have enough Pepo Coins to buy this many ${Utilities.getPepoCornsName()}`,
+  min_pepocorns: `Minimum amount allowed is 1 ${Utilities.getPepoCornsName()}.`
 };
 
 const UIWhitelistedErrorCode = {
