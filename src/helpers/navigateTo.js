@@ -56,7 +56,7 @@ class NavigateTo {
         .get()
         .then((response) => {
           if(response && response.success){
-            let result_type = deepGet(response, 'response.data.result_type'),
+            let result_type = deepGet(response, 'data.result_type'),
                 payload;
             if(result_type){
               payload = response.data[ result_type ];
