@@ -67,12 +67,15 @@ class NavigateTo {
   }
 
   goToStore(){
-    new PepoApi(DataContract.redemption.configApi)
+    new PepoApi(DataContract.redemption.openRedemptionWebViewApi)
         .get()
         .then((response)=> {
           if(response && response.success){
-            let url = deepGet(response , `${DataContract.redemption.appUpdateKeyPath}.${Platform.OS}.cta_url`);
-            url && Linking.open(url);
+            let resultType = deepGet(response , `${DataContract.common.resultType}`) , 
+                data = deepGet(response, `data.${resultType}` ),
+                url = data && data.url;
+            ;
+            url && Linking.openURL(url);
           }
         });
   }
