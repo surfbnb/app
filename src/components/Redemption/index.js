@@ -447,6 +447,11 @@ class Redemption extends PureComponent{
         if (val && String(val).split('.')[1] && String(val).split('.')[1].length > 2) {
           return ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error');
         }
+
+        val = val && Number(val);
+        if(!val){
+            return ostErrors.getUIErrorMessage('min_pepocorns');
+        }
         return ;
     }
 

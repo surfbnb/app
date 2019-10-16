@@ -16,6 +16,7 @@ import { shortenedFromNow } from '../../helpers/timestampHandling';
 import {navigateTo} from '../../helpers/navigateTo';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import playIcon from '../../assets/play_icon.png';
+import pepoCornsImg from '../../assets/PepoCornActive.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -165,6 +166,16 @@ class NotificationItem extends Component {
     }
   };
 
+  getActivityIcon(){
+    if([AppConfig.notificationConstants.systemNotification, AppConfig.notificationConstants.airDropNotification, AppConfig.notificationConstants.topupNotification, AppConfig.notificationConstants.recoveryInitiate ].includes(this.props.kind)) {
+      return <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
+    }else if( AppConfig.pepoCornsActivityKinds.includes(this.props.kind)){
+      return <Image source={pepoCornsImg} style={styles.systemNotificationIconSkipFont} />
+    }else{
+      return <ProfilePicture pictureId={this.props.pictureId} />;
+    }
+  }
+
   render() {
     let headerWidth = '92%',
     notificationInfoWidth = '0%';
@@ -179,11 +190,7 @@ class NotificationItem extends Component {
           <View>
             <View style={styles.txtWrapper}>
               <View style={{ width: '8%', marginRight: 4 }}>
-                {[AppConfig.notificationConstants.systemNotification, AppConfig.notificationConstants.airDropNotification, AppConfig.notificationConstants.topupNotification, AppConfig.notificationConstants.recoveryInitiate ].includes(this.props.kind) ? (
-                  <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
-                ) : (
-                  <ProfilePicture pictureId={this.props.pictureId} />
-                )}
+                {this.getActivityIcon()}
               </View>
               <View style={{ width: headerWidth, flexDirection: 'row' }}>
                 <View style={{ flexDirection: 'column' }}>

@@ -244,5 +244,7 @@ export default {
 
   redemption:{
     pepoCornsName : "Unicorns"
-  }
+  },
+
+  pepoCornsActivityKinds : ["CREDIT_PEPOCORN_SUCCESS" , "CREDIT_PEPOCORN_FAILURE"]
 };
