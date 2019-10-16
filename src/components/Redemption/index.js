@@ -73,7 +73,7 @@ class Redemption extends PureComponent{
             pepoCorns : 0,
             balance: Pricer.getFromDecimal(  ReduxGetters.getBalance() ) ,
             errorMsg: null,
-            isLoading: true,
+            isLoading: true, //Default state is false, but to save 1 render cycle i have set it as True.
             isPurchasing : false,
             bottomPadding: safeAreaBottomSpace,
             inputFieldsEditable: true,
@@ -81,7 +81,7 @@ class Redemption extends PureComponent{
             rotate: new Animated.Value(0),
             scale: new Animated.Value(0.1),
             btnText: btnPreText
-        }
+        };
 
         this.numberFormatter = new NumberFormatter();
 
@@ -90,6 +90,7 @@ class Redemption extends PureComponent{
             isPurchasing: false,
             btnText: btnPreText,
             inputFieldsEditable: true,
+            isLoading: false,
             errorMsg: null
           }
     }
@@ -287,7 +288,7 @@ class Redemption extends PureComponent{
             }
         })
         .catch((error)=> {
-            this.onValidatePricePointError(res);  
+            this.onValidatePricePointError(error);
         })
     }
 
@@ -425,6 +426,7 @@ class Redemption extends PureComponent{
           this.showError(errorDataMsg);
           return;
         }
+        this.resetState();
     }
 
     showError(errorMessage) {
