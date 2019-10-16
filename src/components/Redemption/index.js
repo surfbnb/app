@@ -48,6 +48,7 @@ import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import clone from 'lodash/clone';
 import { ostSdkErrors } from '../../services/OstSdkErrors';
 import Colors from '../../theme/styles/Colors';
+import InAppBrowser from '../../services/InAppBrowser';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -586,8 +587,8 @@ class Redemption extends PureComponent{
                         <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
                         <Image source={this.getPepoCornsImageSource()} style={inlineStyles.pepcornImageSkipFont}></Image>
                         <Text style={inlineStyles.subText1}>
-                        {this.getPepoCornsName()} are elusive creatures inhabiting Pepo.{" "}
-                        Learn all about the benefits of owning {this.getPepoCornsName()}.
+                            {this.getPepoCornsName()} are elusive creatures inhabiting Pepo.{" "}
+                            <Text style={{color: Colors.wildWatermelon2}} onPress={MultipleClickHandler(() => InAppBrowser.openBrowser(AppConfig.redemption.learnMoreLink))}>Learn</Text> all about the benefits of owning {this.getPepoCornsName()}.
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
