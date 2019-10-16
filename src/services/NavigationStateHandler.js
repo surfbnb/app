@@ -81,6 +81,7 @@ export const NavigationStateHandler = (prevState, currentState, action) => {
   let routeName = NavigationService.findCurrentRoute(currentState);
   routesWithoutStatusBar.includes(routeName) ? StatusBarHide() : StatusBarShow();
 
+  // Analytics screen name Handler
   let analyticsAction = routesAnalyticsMap[action.routeName] && routesAnalyticsMap[action.routeName].trim();
   if(analyticsAction && analyticsAction !== ''){
     firebase.analytics().setCurrentScreen(analyticsAction);
