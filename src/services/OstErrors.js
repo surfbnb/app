@@ -39,7 +39,8 @@ const UIErros = {
   redemption_error : "Failed to redeem, please try again later",
   redemption_low_balance : "You dont have enough balance for redemption", 
   max_pepocorns: "You dont have enough balance to redeem this amount.",
-  price_point_validation_failed: "Price points have been updated please try again."
+  price_point_validation_failed: "Price points have been updated please try again.",
+  min_pepocorns: "Minimum amount allowed is 1."
 };
 
 const UIWhitelistedErrorCode = {

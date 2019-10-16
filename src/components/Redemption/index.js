@@ -53,6 +53,8 @@ const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
   safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
 
+const minPepoCornsVal  = 1;
+
 const btnPreText = "Buy with Pepocoins";
 const btnPostText = "Confirming...";
 
@@ -205,12 +207,12 @@ class Redemption extends PureComponent{
     }
 
     getTransactionalPepoCorns( val ){
-        const formattedVal = this.numberFormatter.convertToValidFormat(val)
+        const formattedVal = this.numberFormatter.convertToValidFormat(val);
         return this.numberFormatter.getFullStopValue(formattedVal);
     }
 
     getTransactionalBtAmount(){
-        const pepoCorns = this.getTransactionalPepoCorns(this.state.pepoCorns)
+        const pepoCorns = this.getTransactionalPepoCorns(this.state.pepoCorns);
         return Pricer.getBtFromPepoCornsInWei(pepoCorns, this.getStep(), this.getPepoInWeiPerStep()) ;
     }
 
@@ -226,8 +228,10 @@ class Redemption extends PureComponent{
 
         let pepoCornsVal = this.getTransactionalPepoCorns( val )
         , btVal = Pricer.getBtFromPepoCorns( pepoCornsVal , this.getStep() ,  this.getPepoInWeiPerStep())
-        , btFormatedVal = this.numberFormatter.getFormattedValue( btVal );
-        this.setState({ btAmount: btFormatedVal, pepoCorns: val , errorMsg: null });
+        , btFormatedVal = this.numberFormatter.getFormattedValue( btVal )
+        , formattedVal = this.numberFormatter.convertToValidFormat(val)
+        ;
+        this.setState({ btAmount: btFormatedVal, pepoCorns: formattedVal , errorMsg: null });
     }
 
     onConfirm = () => {
@@ -238,10 +242,15 @@ class Redemption extends PureComponent{
     };
     
     btValidationAndError() {
+        if( Number(this.state.pepoCorns) < minPepoCornsVal ){
+          this.setState({errorMsg: ostErrors.getUIErrorMessage('min_pepocorns') });
+          return false;
+        }
+
         let btAmountWei = this.getTransactionalBtAmount();
         let btAmount= Pricer.getFromDecimal( btAmountWei );
         btAmount = btAmount && Number(btAmount);
-        let balance = this.state.balance && Number(this.state.balance)
+        let balance = this.state.balance && Number(this.state.balance);
         if ( btAmount > balance) {
             this.setState({errorMsg: ostErrors.getUIErrorMessage('max_pepocorns') });
             return false;
