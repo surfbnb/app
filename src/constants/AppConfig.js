@@ -243,7 +243,8 @@ export default {
   },
 
   redemption:{
-    pepoCornsName : "Unicorns"
+    pepoCornsName : "Unicorns",
+    learnMoreLink : "https://intercom.help/pepo/en/articles/3418202-what-are-pepo-unicorns"
   },
 
   pepoCornsActivityKinds : ["CREDIT_PEPOCORN_SUCCESS" , "CREDIT_PEPOCORN_FAILURE"]
