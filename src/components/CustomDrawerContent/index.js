@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, Text, View, Image, ScrollView } from 'rea
 import { SafeAreaView } from 'react-navigation';
 import { OstWalletSdk} from '@ostdotcom/ost-wallet-sdk-react-native';
 import DeviceInfo from 'react-native-device-info';
+import { connect } from 'react-redux';
 
 import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
@@ -18,8 +19,6 @@ import tac from '../../assets/settings-terms-and-conditions.png';
 import pepoCornsImg from '../../assets/PepoCornActive.png';
 import Toast from '../../theme/components/NotificationToast';
 import multipleClickHandler from '../../services/MultipleClickHandler';
-
-import { connect } from 'react-redux';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper';
 import {ostErrors} from "../../services/OstErrors";
 import InAppBrowser from '../../services/InAppBrowser';
@@ -29,6 +28,7 @@ import Pricer from '../../services/Pricer';
 import Utilities from '../../services/Utilities';
 import ReduxGetters from '../../services/ReduxGetters';
 import AppConfig from '../../constants/AppConfig';
+import DataContract from '../../constants/DataContract';
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -66,7 +66,7 @@ class CustomDrawerContent extends Component {
 
   onPepocornFetchSuccess(res){
     this.setState({pepocorns: ReduxGetters.getPepocornBalance()})
-  } 
+  }
 
   updateMenuSettings = () => {
     this.updateUserName();
@@ -160,7 +160,7 @@ class CustomDrawerContent extends Component {
     // 1. Disable the button.
     this.setState({ disableButtons: true }, () => {
       //2. Make Api call.
-      new PepoApi('/support/info')
+      new PepoApi(DataContract.support.infoApi)
         .get()
         .then((response) => {
           if ( !response || !response.success || !response.data || !response.data.result_type ) {
@@ -226,7 +226,7 @@ class CustomDrawerContent extends Component {
 
   onPepocornsClick = () => {
     Utilities.openRedemptionWebView();
-  } 
+  }
 
   render() {
     return (
@@ -239,7 +239,7 @@ class CustomDrawerContent extends Component {
         >
 
         <View style={{paddingBottom: 80}}>
-          
+
           {CurrentUser.isUserActivated() && (
             <TouchableOpacity
                 onPress={multipleClickHandler(() => {
@@ -251,7 +251,7 @@ class CustomDrawerContent extends Component {
                   <Text style={styles.item}>{AppConfig.redemption.pepoCornsName}</Text>
                 </View>
             </TouchableOpacity>
-          )} 
+          )}
 
           <TouchableOpacity
             onPress={multipleClickHandler(() => {
@@ -274,7 +274,7 @@ class CustomDrawerContent extends Component {
               <Text style={styles.item}>Support</Text>
             </View>
           </TouchableOpacity>
-    
+
           <TouchableOpacity onPress={multipleClickHandler(() => {
             this.privacypolicy();
           })} disabled={this.state.disableButtons}>

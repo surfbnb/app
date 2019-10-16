@@ -549,10 +549,11 @@ class Redemption extends PureComponent{
                             >
                     <TouchableButton TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
                                     TextStyles={[Theme.Button.btnPinkText, { fontSize: 14 }]}
-                                    text={"Cash Out on Pepo.com"}
-                                    onPress={MultipleClickHandler(() => this.onRedemptionWebViewClick())}
+                                    text={"Ok"}
+                                    onPress={this.closeModal}
                             />
                 </LinearGradient>
+                <Text style={inlineStyles.successLink} onPress={MultipleClickHandler(() => this.onRedemptionWebViewClick())}>Cash Out on Pepo.com</Text>
             </View>
         )
     }
