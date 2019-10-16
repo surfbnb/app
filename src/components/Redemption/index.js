@@ -155,10 +155,10 @@ class Redemption extends PureComponent{
        return deepGet(this.configResponse , `data.${deepGet(this.configResponse ,  DataContract.common.resultType)}` , {});
     }
 
-    getPepoCornsName(){
+    getPepoCornsName(noOfPepoCorns){
         // const pepoCornsEntity = this.getPepoCornEntity();
         // return pepoCornsEntity[DataContract.redemption.pepoCornsNameKey] || AppConfig.redemption.pepoCornsName;
-        return AppConfig.redemption.pepoCornsName;
+       return Utilities.getPepoCornsName(noOfPepoCorns);
     }
 
     getPepoCornsImageSource(){
@@ -540,7 +540,7 @@ class Redemption extends PureComponent{
             <View style={inlineStyles.successViewWrapper}>
                 <Image source={tx_success} style={inlineStyles.successImageSkipFont}></Image>
                 <Text style={[inlineStyles.successText]}>
-                    Success, you have {this.state.pepoCorns} new {this.getPepoCornsName()}, you can also view them in your settings menu.
+                    Success, you have {this.state.pepoCorns} new {this.getPepoCornsName(this.state.pepoCorns)}, you can also view them in your settings menu.
                 </Text>
                 <LinearGradient
                             colors={['#ff7499', '#ff7499', '#ff5566']}
