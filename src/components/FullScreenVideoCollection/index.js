@@ -3,46 +3,53 @@ import {FlatList , View , TouchableOpacity, Image} from "react-native";
 import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
-
-import UserVideoHistoryRow from "./UserVideoHistoryRow";
-import TopStatus from "../../components/Home/TopStatus";
-
+import FullScreeVideoRow from "./FullScreeVideoRow";
 import inlineStyles from "./styles";
-import CurrentUser from "../../models/CurrentUser";
-
 import historyBack from '../../assets/user-video-history-back-icon.png';
 
 const maxVideosThreshold = 3;
 
-class UserVideoHistoryScreen extends PureComponent{
+class FullScreenVideoCollection extends PureComponent{
 
     static navigationOptions = (options) => {
         return {
-          header: null
+            header: null
         };
     };
 
     constructor(props){
         super(props);
-        this.userId =  this.props.navigation.getParam("userId");
-        this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory(), {} , this.props.navigation.getParam("fetchServices"));
-        this.paginationEvent = this.videoHistoryPagination.event;
+        this.setVideoPagination();
+        this.paginationEvent = this.getVideoPagination().event;
         this.currentIndex = this.props.navigation.getParam("currentIndex");
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
         this.flatlistRef = null;
 
         this.state = {
-            list : this.videoHistoryPagination.getList(),
+            list : this.getVideoPagination().getList(),
             activeIndex: this.currentIndex,
             refreshing : false,
             loadingNext: false
         };
-       this.isActiveScreen = true;
+        this.isActiveScreen = true;
     }
 
-    _fetchUrlVideoHistory(){
-        return `/users/${this.userId}/video-history` ;
+    getBaseUrl(){
+        return this.props.navigation.getParam("baseUrl");
+    }
+
+    getPassedFetchServices(){
+        return  this.props.navigation.getParam("fetchServices")
+    }
+
+    setVideoPagination(){
+        console.log("this.getBaseUrl()", this.getBaseUrl());
+        this.FullPagePagination = new Pagination( this.getBaseUrl(), null , this.getPassedFetchServices());
+    }
+
+    getVideoPagination(){
+        return this.FullPagePagination;
     }
 
     componentDidMount(){
@@ -60,9 +67,9 @@ class UserVideoHistoryScreen extends PureComponent{
             this.isActiveScreen = true ;
         });
 
-      this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
-        this.isActiveScreen =  false ;
-      });
+        this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
+            this.isActiveScreen =  false ;
+        });
     }
 
     componentWillUnmount(){
@@ -85,7 +92,7 @@ class UserVideoHistoryScreen extends PureComponent{
     }
 
     onRefresh = ( res ) => {
-        this.setState({ refreshing : false ,  list : this.videoHistoryPagination.getList() });
+        this.setState({ refreshing : false ,  list : this.getVideoPagination().getList() });
     }
 
     onRefreshError = ( error ) => {
@@ -98,7 +105,7 @@ class UserVideoHistoryScreen extends PureComponent{
     }
 
     onNext = ( res  ) => {
-        this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.getList() });
+        this.setState({ loadingNext : false ,  list : this.getVideoPagination().getList() });
     }
 
     onNextError = ( error ) => {
@@ -106,12 +113,12 @@ class UserVideoHistoryScreen extends PureComponent{
     }
 
     getNext = () => {
-      if(!this.isScrolled) return;
-      this.videoHistoryPagination.getNext();
+        if(!this.isScrolled) return;
+        this.getVideoPagination().getNext();
     }
 
     refresh = () => {
-      this.videoHistoryPagination.refresh();
+        this.getVideoPagination().refresh();
     }
 
     _keyExtractor = (item, index) => {
@@ -119,11 +126,12 @@ class UserVideoHistoryScreen extends PureComponent{
     };
 
     _renderItem = ({ item, index }) => {
-        const videoId = reduxGetters.getUserVideoId(item) ;
-        return  <UserVideoHistoryRow    shouldPlay={this.shouldPlay}
-                                        isActive={index == this.state.activeIndex}
-                                        doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
-                                        userId={this.userId} videoId={videoId}  /> ;
+        const payload = reduxGetters.getTagsVideoPayload(item);
+        console.log("payload", payload);
+        return  <FullScreeVideoRow shouldPlay={this.shouldPlay}
+                                   isActive={index == this.state.activeIndex}
+                                   doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
+                                   payload={payload}  /> ;
     };
 
     onViewableItemsChanged = (data) => {
@@ -147,30 +155,25 @@ class UserVideoHistoryScreen extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-       return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ;
-    }
-
-    isCurrentUser(){
-        return this.userId == CurrentUser.getUserId();
+        return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ;
     }
 
     closeVideo = () => {
         this.navigateBack();
-      };
+    };
 
     navigateBack() {
         this.props.navigation.goBack();
     }
 
     onScrollToTop = () => {
-       this.setActiveIndex();
+        this.setActiveIndex();
     }
 
     render() {
 
-        return(
+        return (
             <View style={{flex: 1}}>
-                {!this.isCurrentUser() &&  <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
@@ -190,7 +193,6 @@ class UserVideoHistoryScreen extends PureComponent{
                     style={[inlineStyles.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
-
                     initialScrollIndex={this.state.activeIndex}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
@@ -198,10 +200,10 @@ class UserVideoHistoryScreen extends PureComponent{
                 <TouchableOpacity onPress={this.closeVideo} style={inlineStyles.historyBackSkipFont}>
                     <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
                 </TouchableOpacity>
-             </View>
+            </View>
         );
     }
 
 }
 
-export default UserVideoHistoryScreen ;
+export default FullScreenVideoCollection ;

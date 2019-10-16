@@ -55,7 +55,7 @@ export default class UsersProfile extends Component {
 
   componentDidMount(){
     userActionEvents.on("onBlockUnblockAction" ,  ( params ) => {
-      this.listRef && this.listRef.refresh()
+      this.listRef && this.listRef.refresh();
     });
   }
 

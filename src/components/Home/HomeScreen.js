@@ -15,6 +15,7 @@ import { ifIphoneX } from 'react-native-iphone-x-helper';
 import {navigateTo} from "../../helpers/navigateTo";
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
+import utilities from "../../services/Utilities";
 
 const mapStateToProps = (state) => {
   return {
@@ -48,6 +49,7 @@ class HomeScreen extends Component {
         this.refresh(true, 0);
       }
     });
+    this.showCoachScreen();
     navigateTo.navigationDecision();
     CurrentUser.getEvent().on("onUserLogout" , ()=> {
       this.onLogout();
@@ -71,6 +73,20 @@ class HomeScreen extends Component {
       this.isActiveScreen =  false ;
     });
   };
+
+  showCoachScreen = () => {
+
+    utilities.getItem('show-coach-screen').then((data) => {
+      if (data !== 'true'){
+        utilities.saveItem(`show-coach-screen`, true);
+        this.props.navigation.push('CouchMarks');
+      } else {
+        // do nothing
+      }
+    });
+
+
+  }
 
   componentWillUpdate(nextProps) {
     if ( (nextProps.userId && this.props.userId !== nextProps.userId) || this.props.navigation.state.refresh) {

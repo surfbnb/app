@@ -1,12 +1,20 @@
 import deepGet from 'lodash/get';
-import CurrentUser from '../models/CurrentUser';
 import NavigationService from '../services/NavigationService';
 import InAppBrowser from '../services/InAppBrowser';
 import { LoginPopoverActions } from '../components/LoginPopover';
-import Utilities from '../services/Utilities';
 import AppConfig from '../constants/AppConfig';
 import { upsertInviteCode } from '../actions';
 import Store from '../store';
+
+let CurrentUser;
+import('../models/CurrentUser').then((imports) => {
+  CurrentUser = imports.default;
+});
+
+let Utilities;
+import('../services/Utilities').then((imports) => {
+  Utilities = imports.default;
+});
 
 class NavigateTo {
   constructor() {
@@ -39,8 +47,9 @@ class NavigateTo {
     } else if (goToObject && goToObject.pn == 'iu'){
       this.goToInvitedUsers(payload);
     } else if (goToObject && goToObject.pn == 'wv'){
-      // Checks to be added to break recurssion
       InAppBrowser.openBrowser(goToObject.v.wu)
+    }  else if (goToObject && goToObject.pn == 't'){
+      this.goToTagVideoPage(goToObject.v.tid, payload);
     }
   }
 
@@ -79,6 +88,12 @@ class NavigateTo {
     payload = payload || {};
     payload['userId'] = profileId;
     this.__push('SupportingListScreen', payload);
+  };
+
+  goToTagVideoPage = (tagId, payload) => {
+    payload = payload || {};
+    payload['tagId'] = tagId;
+    this.__push('VideoTags', payload);
   };
 
   goToSupporters = (profileId, payload) => {
