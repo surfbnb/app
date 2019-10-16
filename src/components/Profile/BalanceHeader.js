@@ -104,22 +104,13 @@ class BalanceHeader extends PureComponent {
       return;
     }
 
-    let btVal = this.__toBt(this.props.balance);
-    btVal =  Number( btVal )
-    if( btVal < 1 ){
-      Toast.show({
-        text: ostErrors.getUIErrorMessage('redemption_low_balance'),
-        buttonText: 'Okay'
-      });
-    }else{
-      OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
-        if(this.isDevicesAuthorized( device )){
-          this.props.navigation.push("RedemptiomScreen");
-        }else{
-          this.props.navigation.push("AuthDeviceDrawer" , {device: device});
-        }
-      })
-    }
+    OstWalletSdk.getCurrentDeviceForUserId(CurrentUser.getOstUserId(), ( device )=> {
+      if(this.isDevicesAuthorized( device )){
+        this.props.navigation.push("RedemptiomScreen");
+      }else{
+        this.props.navigation.push("AuthDeviceDrawer" , {device: device});
+      }
+    })
   }
 
   getWalletIcon = () => {

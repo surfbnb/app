@@ -63,7 +63,6 @@ class ProfileScreen extends PureComponent {
 
   componentDidMount() {
     this.getEmail();
-    Pricer.fetchPepocornsBalance();
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab5.childStack) {
         this.refresh();
