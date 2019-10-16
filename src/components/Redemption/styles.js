@@ -67,7 +67,7 @@ let stylesMap = {
       textAlign: "center",
       color: Colors.black,
       paddingBottom: 10,
-      fontSize: 12
+      fontSize: 14
     },
 
     subSection : {
@@ -76,7 +76,7 @@ let stylesMap = {
 
     heading2 : {
       textAlign: "center",
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: "500",
       color: Colors.black,
       marginBottom: 5
@@ -105,7 +105,7 @@ let stylesMap = {
 
     valueInText : {
       color: Colors.valhalla,
-      fontSize: 10
+      fontSize: 12
     },
 
     formInputWrapper : {
@@ -191,8 +191,8 @@ let stylesMap = {
     },
 
     pepoIconSkipFont : { 
-      width: 8, 
-      height: 8
+      width: 10, 
+      height: 10
     },
 
     pepoErrorText : { 
