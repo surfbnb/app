@@ -12,6 +12,7 @@ import TagsCell from '../TagsList/TagsCell';
 import Pagination from "../../services/MultiSection/MultiSectionPagination";
 import Colors from "../../theme/styles/Colors";
 import PeopleCell from "../PeopleList/PeopleCell";
+import VideoThumbnailItem from "../CommonComponents/VideoThumbnailItem";
 
 const titleKeyName = 'title',
   dataKeyName = 'data',
@@ -48,7 +49,6 @@ class TopsList extends PureComponent {
   // region - Pagination and Event Handlers
 
   initPagination() {
-    console.log('initPagination:initPaginationinitPagination');
     // First, take care of existing Pagination if exists.
     this.removePaginationListeners();
 
@@ -148,6 +148,61 @@ class TopsList extends PureComponent {
     return <PeopleCell userId={item.payload.user_id} />;
   };
 
+
+  onVideoClick = (payload, index) => {
+    console.log(payload, index, this.props.getSectionFetchUrl('videos'));
+  };
+
+
+  _renderVideoItem = ({ section, index }) => {
+    const numColumns = 2;
+
+    if (index % numColumns !== 0) return null;
+
+    const items = [];
+
+    for (let i = index; i < index + numColumns; i++) {
+      if (i >= section.data.length) {
+        break;
+      }
+      let itemData = section.data[i];
+      let itemKey = "top_list_" + i + "_" + itemData.id;
+      items.push(
+        <TouchableWithoutFeedback onPress={() => this._handleVideoClick(section.kind, itemData.payload)}>
+        <VideoThumbnailItem
+        payload={itemData.payload}
+        index={index} key={itemKey}
+        onVideoClick={this.onVideoClick}
+        />
+        </TouchableWithoutFeedback>
+
+
+        )
+    };
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between"
+        }}
+      >
+        {items}
+      </View>
+    );
+
+  }
+
+  _renderVideoItem1 = ({item, index}) => {
+    console.log(item, 'itemmmmmmm');
+    return <VideoThumbnailItem
+      payload={item.payload}
+      index={index}
+      //onVideoClick={() => {this.onVideoClick(item.payload, index)}}
+      //isEmpty={item.isEmpty}
+      //emptyRenderFunction={this.props.getNoResultsCell}
+    />
+  };
+
   renderFooter = () => {
     if (!this.state.loadingNext) return null;
     return <ActivityIndicator />;
@@ -167,6 +222,8 @@ class TopsList extends PureComponent {
       return this._renderTagItem;
     } else if (kind === 'user'){
       return this.__renderUserItem;
+    } else if (kind === 'videos'){
+      return this._renderVideoItem;
     }
   }
 

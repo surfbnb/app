@@ -30,11 +30,16 @@ const TabMap = {
     },
     renderNoResults :  (noResultsData) => {
       const oThis = TabMap.top;
-      console.log('this.emptyData',oThis.noResultsData);
       noResultsData = noResultsData || oThis.noResultsData;
       return <EmptySearchResult  noResultsData={noResultsData}/>
+    },
+    "sectionsConfig": {
+      "videos": {
+        "baseUrl": "/tags/52/videos",
+        "queryParam": "q"
+      }
     }
-  },
+    },
   "people": {
     id: 'people',
     baseUrl : '/search/users',
@@ -67,8 +72,8 @@ const TabMap = {
       return <EmptySearchResult  noResultsData={noResultsData}/>
     }
   },
-  "video": {
-    id: 'video',
+  "videos": {
+    id: 'videos',
     baseUrl : '/tags/52/videos',
     title: 'Video',
     "queryParam": "q",
@@ -77,7 +82,7 @@ const TabMap = {
       "isEmpty": true
     },
     renderNoResults :  (noResultsData) => {
-      const oThis = TabMap.video;
+      const oThis = TabMap.videos;
       console.log('this.emptyData',oThis.noResultsData);
       noResultsData = noResultsData || oThis.noResultsData;
       return <EmptySearchResult  noResultsData={noResultsData}/>
@@ -85,7 +90,7 @@ const TabMap = {
   }
 };
 
-const TabsArray = [TabMap.top, TabMap.people, TabMap.tags, TabMap.video];
+const TabsArray = [TabMap.top, TabMap.people, TabMap.tags, TabMap.videos];
 
 const mapStateToProps = (state) => {
   return {
@@ -166,7 +171,6 @@ class SearchScreen extends PureComponent {
     if ( !tabFlatList ) {
       return null;
     }
-    console.log(tabFlatList, 'tabFlatListtabFlatListtabFlatListtabFlatListtabFlatList');
     let paginationInstance = tabFlatList.getPagination();
     if ( !paginationInstance ) {
       return  null;
@@ -195,7 +199,7 @@ class SearchScreen extends PureComponent {
   };
 
   getVideoTabUrl = () => {
-    return this.getUrlForTab(TabMap.video);
+    return this.getUrlForTab(TabMap.videos);
   };
 
   getUrlForTab = (tabData) => {
@@ -230,7 +234,6 @@ class SearchScreen extends PureComponent {
     this.flatLists[ tabId ] = elemRef;
   };
   setTagsFlatListRef = (elemRef) => {
-    console.log('elemRefelemRef', elemRef);
     this.flatLists = this.flatLists || {};
 
     let tabData = TabMap.tags;
@@ -240,7 +243,7 @@ class SearchScreen extends PureComponent {
   setVideoFlatListRef = (elemRef) => {
     this.flatLists = this.flatLists || {};
 
-    let tabData = TabMap.video;
+    let tabData = TabMap.videos;
     let tabId = tabData.id;
     this.flatLists[ tabId ] = elemRef;
   };
@@ -250,7 +253,23 @@ class SearchScreen extends PureComponent {
   onChangeTab = (args) => {
     this.currentIndex = args.i;
     this.refreshResults();
-  }
+  };
+
+
+  getTopSectionFetchUrl = (kind, extraParams) => {
+    let sectionConfig = TabMap.top.sectionsConfig[kind];
+    let baseUrl = sectionConfig.baseUrl;
+    let params = sectionConfig.params || {};
+    extraParams = extraParams || {};
+    // Copy it.
+    params = Object.assign({}, params, extraParams);
+    // Add query string
+    params[ sectionConfig.queryParam ] = this.currentSearchTerm;
+    // Update when there is a bug.
+    return baseUrl + "?" + qs.stringify(params);
+  };
+
+
 
   render() {
     if (this.isUserLoggedIn()){
@@ -288,6 +307,7 @@ class SearchScreen extends PureComponent {
             ref={this.setTopFlatListRef}
             noResultsData={TabMap.top.noResultsData}
             getNoResultsCell={TabMap.top.renderNoResults}
+            getSectionFetchUrl={this.getTopSectionFetchUrl}
           />
         </Tab>
         <Tab heading={TabMap.people.title} textStyle={tabStyle.textStyle}
@@ -314,7 +334,7 @@ class SearchScreen extends PureComponent {
             getNoResultsCell={TabMap.tags.renderNoResults}
           />
         </Tab>
-        <Tab heading={TabMap.video.title} textStyle={tabStyle.textStyle}
+        <Tab heading={TabMap.videos.title} textStyle={tabStyle.textStyle}
              activeTextStyle={tabStyle.activeTextStyle}
              activeTabStyle={tabStyle.activeTabStyle}
              tabStyle={tabStyle.tabStyle}
@@ -324,8 +344,8 @@ class SearchScreen extends PureComponent {
             ref={this.setVideoFlatListRef}
             getFetchUrl={this.getVideoTabUrl}
             navigation={this.props.navigation}
-            noResultsData={TabMap.video.noResultsData}
-            getNoResultsCell={TabMap.video.renderNoResults}
+            noResultsData={TabMap.videos.noResultsData}
+            getNoResultsCell={TabMap.videos.renderNoResults}
           />
         </Tab>
 

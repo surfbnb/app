@@ -167,11 +167,15 @@ class NotificationItem extends Component {
 
   render() {
     //
-    let headerWidth = '92%',
-    notificationInfoWidth = '0%';
-    if (this.props.kind === AppConfig.notificationConstants.videoAddKind) {
-        headerWidth = '72%';
-        notificationInfoWidth = '20%';
+    let headerWidth = '72%',
+      notificationInfoWidth = '20%';
+    if (
+      this.props.kind == AppConfig.notificationConstants.AppreciationKind ||
+        this.props.kind == AppConfig.notificationConstants.recoveryInitiate ||
+      AppConfig.notificationConstants.showCoinComponentArray.includes(this.props.kind)
+    ) {
+      headerWidth = '92%';
+      notificationInfoWidth = '0%';
     }
 
     return (
