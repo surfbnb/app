@@ -577,7 +577,7 @@ class Redemption extends PureComponent{
                     <Text style={inlineStyles.heading2} >How many {this.getPepoCornsName()} do you want to buy?</Text>
                     <View style={{flex: 1}}>
                     <View style={inlineStyles.formInputWrapper}>
-                        <Image source={pepoCornSmall} style={inlineStyles.textInputImage}/>
+                        <Image source={pepoCornSmall} style={inlineStyles.textInputImageSkipFont}/>
                         <FormInput
                             ref={(ref) => this.pepocornInput = ref}
                             editable={this.state.inputFieldsEditable}
