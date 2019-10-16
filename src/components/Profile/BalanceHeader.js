@@ -22,7 +22,7 @@ import { ostErrors } from '../../services/OstErrors';
 import AppConfig from '../../constants/AppConfig';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
-import pepoCornsImg from '../../assets/PepoCornPink.png';
+import pepoCornsImg from '../../assets/UnicornSmall.png';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -95,7 +95,6 @@ class BalanceHeader extends PureComponent {
   }
 
   onRedemptionClick = () => {
-  
     if(!CurrentUser.isUserActivated()){
       Toast.show({
         text: ostErrors.getUIErrorMessage('user_not_active'),

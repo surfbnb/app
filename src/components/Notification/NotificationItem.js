@@ -16,7 +16,7 @@ import { shortenedFromNow } from '../../helpers/timestampHandling';
 import {navigateTo} from '../../helpers/navigateTo';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import playIcon from '../../assets/play_icon.png';
-import pepoCornsImg from '../../assets/PepoCornActive.png';
+import pepoCornsImg from '../../assets/Unicorn.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {

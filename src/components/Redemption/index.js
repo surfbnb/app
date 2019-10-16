@@ -29,7 +29,7 @@ import FormInput from '../../theme/components/FormInput';
 import pepoTxIcon from "../../assets/pepo-tx-icon.png";
 import pepo_icon from '../../assets/pepo-tx-icon.png';
 import toastError from '../../assets/toast_error.png';
-import pepoCornsImg from '../../assets/PepoCornActive.png';
+import pepoCornsImg from '../../assets/Unicorn.png';
 import pepoCornSmall from '../../assets/PepoCorn.png';
 import tx_success from '../../assets/transaction_success_star.png';
 import modalCross from '../../assets/modal-cross-icon.png';
