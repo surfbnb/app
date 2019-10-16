@@ -28,7 +28,6 @@ import Pricer from '../../services/Pricer';
 import Utilities from '../../services/Utilities';
 import ReduxGetters from '../../services/ReduxGetters';
 import DataContract from '../../constants/DataContract';
-import { LoadingModal } from '../../theme/components/LoadingModalCover';
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -181,11 +180,7 @@ class CustomDrawerContent extends Component {
         })
         .catch((response) => {
           // 3.f Enable the button.
-          this.setState({ disableButtons: false }, () => {
-            //4. Show error message.
-            let errorMessage = ostErrors.getErrorMessage(response);
-            LoadingModal.showFailureAlert(errorMessage, null, "Dismiss");
-          });
+          this.setState({ disableButtons: false })
         });
       });
   }
