@@ -54,6 +54,7 @@ const bottomSpace = getBottomSpace([true]),
   safeAreaBottomSpace = isIphoneX() ? bottomSpace : extraPadding;
 
 const minPepoCornsVal  = 1;
+const initialPepoCorn = "1";
 
 const btnPreText = "Buy now";
 const btnPostText = "Confirming...";
@@ -69,8 +70,8 @@ class Redemption extends PureComponent{
         this.redemptionSuccess =  false;
 
         this.state = {
-            btAmount: 0,
-            pepoCorns : 1,
+            btAmount: null,
+            pepoCorns : null,
             balance: Pricer.getFromDecimal(  ReduxGetters.getBalance() ) ,
             errorMsg: null,
             isLoading: true, //Default state is false, but to save 1 render cycle i have set it as True.
@@ -139,7 +140,7 @@ class Redemption extends PureComponent{
     onFetchRedemptionConfigSuccess( res ){
         this.configResponse = res;
         this.isAppUpdate = this.__isAppUpdate(res); 
-        this.setState({isLoading: false});
+        this.setState({isLoading: false , pepoCorns: initialPepoCorn , btAmount: this.getPepoDisplayVal(initialPepoCorn)});
     }
 
     onFetchRedemptionConfigError( error ){
@@ -226,13 +227,12 @@ class Redemption extends PureComponent{
             });
             return;
         }
+        this.setState({ btAmount: this.getPepoDisplayVal(val), pepoCorns: this.numberFormatter.convertToValidFormat(val) , errorMsg: null });
+    }
 
-        let pepoCornsVal = this.getTransactionalPepoCorns( val )
-        , btVal = Pricer.getBtFromPepoCorns( pepoCornsVal , this.getStep() ,  this.getPepoInWeiPerStep())
-        , btFormatedVal = this.numberFormatter.getFormattedValue( btVal )
-        , formattedVal = this.numberFormatter.convertToValidFormat(val)
-        ;
-        this.setState({ btAmount: btFormatedVal, pepoCorns: formattedVal , errorMsg: null });
+    getPepoDisplayVal( pepoCorns ){
+        let btVal = Pricer.getBtFromPepoCorns( this.getTransactionalPepoCorns( pepoCorns ) , this.getStep() ,  this.getPepoInWeiPerStep())
+        return this.numberFormatter.getFormattedValue( btVal );
     }
 
     onConfirm = () => {
@@ -313,8 +313,6 @@ class Redemption extends PureComponent{
 
     onValidatePricePointError(err){
        this.fetchRedemptionConfig( () => {
-            this.state.pepoCorns = 0 ;  
-            this.state.btAmount = 0;
             this.resetState();
             this.onError(err,  null , "price_point_validation_failed");
        });
