@@ -29,6 +29,7 @@ import Utilities from '../../services/Utilities';
 import ReduxGetters from '../../services/ReduxGetters';
 import AppConfig from '../../constants/AppConfig';
 import DataContract from '../../constants/DataContract';
+import { LoadingModal } from '../../theme/components/LoadingModalCover';
 
 class CustomDrawerContent extends Component {
   constructor(props) {
