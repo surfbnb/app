@@ -244,7 +244,7 @@ class Redemption extends PureComponent{
     
     btValidationAndError() {
 
-        if(!this.numberFormatter.isValidInputProvided(this.state.pepoCorns)){
+        if(this.state.pepoCorns && !this.numberFormatter.isValidInputProvided(this.state.pepoCorns)){
             //No need for error setState here , as input on change validation has already shown that error. 
             return;
         }
