@@ -243,6 +243,12 @@ class Redemption extends PureComponent{
     };
     
     btValidationAndError() {
+
+        if(!this.numberFormatter.isValidInputProvided(this.state.pepoCorns)){
+            //No need for error setState here , as input on change validation has already shown that error. 
+            return;
+        }
+
         if( Number(this.state.pepoCorns) < minPepoCornsVal ){
           this.setState({errorMsg: ostErrors.getUIErrorMessage('min_pepocorns') });
           return false;
