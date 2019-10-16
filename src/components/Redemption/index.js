@@ -197,6 +197,15 @@ class Redemption extends PureComponent{
         this.setState({
           bottomPadding: bottomPaddingValue
         });
+
+        if(Platform.OS == "android"){
+            let perVal = this.state.pepoCorns; 
+            this.setState({pepoCorns : "0"}, ()=> {
+                setTimeout(()=> {
+                    this.setState({pepoCorns: perVal});
+                }, 0 )
+            });
+        }
     }
     
     _keyboardHidden(e) {
@@ -447,7 +456,7 @@ class Redemption extends PureComponent{
         }
 
         val = val && Number(val);
-        if(!val){
+        if(!val || val < minPepoCornsVal ){
             return ostErrors.getUIErrorMessage('min_pepocorns');
         }
         return ;

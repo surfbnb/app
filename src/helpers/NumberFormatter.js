@@ -19,6 +19,7 @@ class NumberFormatter {
 
     isValidInputProvided(val) {
         val  = val && String(val)
+        val =  val.trim();
         let separators = this.getDecimalGroupSeparators()
           , decimalSeparator = separators[1]
           , regex = new RegExp(['[^0-9'+decimalSeparator+']+'],'g')
