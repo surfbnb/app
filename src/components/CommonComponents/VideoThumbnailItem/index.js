@@ -52,8 +52,8 @@ export default (props) => {
                 </View>
             </LinearGradient>
             <LinearGradient
-                colors={['transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']}
-                locations={[0, 0.5, 1]}
+                colors={['transparent', 'rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.3)']}
+                locations={[0,0.4, 1]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
                 style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', bottom: 0, left: 0}}

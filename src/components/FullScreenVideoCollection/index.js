@@ -6,6 +6,7 @@ import Pagination from "../../services/Pagination";
 import FullScreeVideoRow from "./FullScreeVideoRow";
 import inlineStyles from "./styles";
 import historyBack from '../../assets/user-video-history-back-icon.png';
+import TopStatus from "../Home/TopStatus";
 
 const maxVideosThreshold = 3;
 
@@ -174,6 +175,7 @@ class FullScreenVideoCollection extends PureComponent{
 
         return (
             <View style={{flex: 1}}>
+                {this.props.navigation.getParam("showBalanceFlier")  && <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}

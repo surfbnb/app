@@ -9,6 +9,7 @@ import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import PepoApi from "../../services/PepoApi";
 import deepGet from 'lodash/get';
 import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';
+import BackArrow from '../CommonComponents/BackArrow';
 
 
 
@@ -31,7 +32,8 @@ class VideoTags extends PureComponent {
                 },
                 shadowOpacity: 0.1,
                 shadowRadius: 3
-            }
+            },
+          headerBackImage: <BackArrow />
         };
     };
 
@@ -63,7 +65,6 @@ class VideoTags extends PureComponent {
     }
 
     componentWillUnmount() {
-        NavigationEmitter.removeListener('onRefresh');
         this.didFocus && this.didFocus.remove && this.didFocus.remove();
     }
 
@@ -87,6 +88,12 @@ class VideoTags extends PureComponent {
         return <EmptySearchResult  noResultsData={noResultsData}/>
     };
 
+    getExtraParams = () => {
+        return {
+            showBalanceFlier: true
+        };
+    };
+
     render() {
         if(this.getTagId()){
             return <VideoCollections
@@ -97,6 +104,7 @@ class VideoTags extends PureComponent {
                     navigation={this.props.navigation}
                     noResultsData={this.noResultsData}
                     getNoResultsCell={this.renderNoResults}
+                    extraParams={this.getExtraParams}
                    />
         } else {
             return <View style={{flex: 1 , backgroundColor: Colors.black}} />

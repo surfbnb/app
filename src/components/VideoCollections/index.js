@@ -4,6 +4,9 @@ import {SafeAreaView} from "react-navigation";
 import Pagination from "../../services/Pagination";
 import VideoThumbnailItem from '../../components/CommonComponents/VideoThumbnailItem';
 import { withNavigation } from 'react-navigation';
+import WalletBalanceFlyer from "../WalletBalanceFlyer";
+import TopStatus from "../Home/TopStatus";
+import CurrentUser from "../../models/CurrentUser";
 
 class VideoCollections extends PureComponent {
     constructor(props){
@@ -38,7 +41,6 @@ class VideoCollections extends PureComponent {
     componentWillUnmount() {
         this.removePaginationListeners();
     }
-
 
     getPagination = () => {
         return this.videoPagination;
@@ -169,7 +171,8 @@ class VideoCollections extends PureComponent {
             fetchServices : clonedInstance,
             currentIndex: index,
             payload,
-            baseUrl: this.props.getFetchUrl()
+            baseUrl: this.props.getFetchUrl(),
+            showBalanceFlier: this.props.extraParams && this.props.extraParams.showBalanceFlier
         });
     }
     renderFooter = () => {
@@ -199,6 +202,12 @@ class VideoCollections extends PureComponent {
       }
     }
 
+    scrollToTop(){
+        this.listRef.scrollToOffset({offset: 0});
+    }
+
+
+
     setListRef = (listRef) => {
       this.listRef = listRef;
     };
@@ -223,7 +232,6 @@ class VideoCollections extends PureComponent {
           </SafeAreaView>
         );
     }
-
 }
 
 export default VideoCollections  ;

@@ -7,7 +7,7 @@ const scrollableTabStyles = {
     },
     "underlineStyleSkipFont": {
         backgroundColor: Colors.primary,
-        height: 1
+        height: 2
     }
 };
 
@@ -18,7 +18,8 @@ const tabStyle = {
     },
     activeTextStyle :{
         color: Colors.primary,
-        fontSize: 25
+        fontSize: 25,
+        fontWeight : 'bold'
     },
     activeTabStyle : {backgroundColor: Colors.white},
     tabStyleSkipFont : {

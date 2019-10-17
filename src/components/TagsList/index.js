@@ -42,11 +42,6 @@ class TagsList extends PureComponent {
     };
 
 
-
-
-
-
-
     // region - Pagination and Event Handlers
 
     initPagination() {
@@ -95,8 +90,9 @@ class TagsList extends PureComponent {
         this.tagsPagination = null;
     }
 
-
-
+    scrollToTop(){
+        this.listRef.scrollToOffset({offset: 0});
+    }
 
 
     forcedRefresh (fetchUrl){
