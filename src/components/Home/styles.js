@@ -28,7 +28,7 @@ let stylesMap = {
       }
     )
   },
-  fullHeightWidth: {
+  fullHeightWidthSkipFont: {
     width: "100%",
     height: "100%"
   },

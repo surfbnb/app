@@ -287,8 +287,8 @@ class SearchScreen extends PureComponent {
     const scTabStyle = NativeBaseTabTheme.scrollableTab;
     return (<ScrollableTab
         //  style={{marginHorizontal: 10}}
-        tabsContainerStyle={scTabStyle.tabsContainerStyle}
-        underlineStyle={scTabStyle.underlineStyle} />
+        tabsContainerStyle={scTabStyle.tabsContainerStyleSkipFont}
+        underlineStyle={scTabStyle.underlineStyleSkipFont} />
     );
   }
 
@@ -300,7 +300,7 @@ class SearchScreen extends PureComponent {
         <Tab heading={TabMap.top.title} textStyle={tabStyle.textStyle}
              activeTextStyle={tabStyle.activeTextStyle}
              activeTabStyle={tabStyle.activeTabStyle}
-             tabStyle={tabStyle.tabStyle}
+             tabStyle={tabStyle.tabStyleSkipFont}
              style={tabStyle.style}>
           <TopsList
             getFetchUrl={this.getTopTabUrl}
@@ -314,7 +314,7 @@ class SearchScreen extends PureComponent {
         <Tab heading={TabMap.people.title} textStyle={tabStyle.textStyle}
              activeTextStyle={tabStyle.activeTextStyle}
              activeTabStyle={tabStyle.activeTabStyle}
-             tabStyle={tabStyle.tabStyle}
+             tabStyle={tabStyle.tabStyleSkipFont}
              style={tabStyle.style}>
           <PeopleList
             getFetchUrl={this.getPeopleTabUrl}
@@ -326,7 +326,7 @@ class SearchScreen extends PureComponent {
         <Tab heading={TabMap.tags.title} textStyle={tabStyle.textStyle}
              activeTextStyle={tabStyle.activeTextStyle}
              activeTabStyle={tabStyle.activeTabStyle}
-             tabStyle={tabStyle.tabStyle}
+             tabStyle={tabStyle.tabStyleSkipFont}
              style={tabStyle.style} >
           <TagsList
             getFetchUrl={this.getTagsTabUrl}
@@ -338,7 +338,7 @@ class SearchScreen extends PureComponent {
         <Tab heading={TabMap.videos.title} textStyle={tabStyle.textStyle}
              activeTextStyle={tabStyle.activeTextStyle}
              activeTabStyle={tabStyle.activeTabStyle}
-             tabStyle={tabStyle.tabStyle}
+             tabStyle={tabStyle.tabStyleSkipFont}
              style={tabStyle.style}>
 
           <VideoCollections
