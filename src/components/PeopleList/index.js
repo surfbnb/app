@@ -88,9 +88,9 @@ class PeopleList extends PureComponent {
     this.peoplePagination = null;
   }
 
-
-
-
+  scrollToTop(){
+    this.listRef.scrollToOffset({offset: 0});
+  }
 
   forcedRefresh (fetchUrl){
     this.initPagination();

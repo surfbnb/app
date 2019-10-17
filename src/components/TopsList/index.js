@@ -42,6 +42,10 @@ class TopsList extends PureComponent {
     this.removePaginationListeners();
   }
 
+  scrollToTop(){
+    this.listRef.scrollToLocation({itemIndex: 0, sectionIndex:0});
+  }
+
 
   getPagination = () => {
     return this.topPagination;
@@ -159,7 +163,8 @@ class TopsList extends PureComponent {
       fetchServices : fetchService,
       currentIndex: index,
       payload,
-      baseUrl: fullVideoPageUrl
+      baseUrl: fullVideoPageUrl,
+      showBalanceFlier: this.props.extraParams && this.props.extraParams.showBalanceFlier
     });
   };
 

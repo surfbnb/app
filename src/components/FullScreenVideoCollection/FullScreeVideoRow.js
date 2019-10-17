@@ -43,6 +43,16 @@ class FullScreeVideoRow extends PureComponent {
         shareVideo.perform();
     };
 
+    navigateToUserProfile = (e) => {
+        if (utilities.checkActiveUser()) {
+            if (this.userId == CurrentUser.getUserId()) {
+                this.props.navigation.navigate('ProfileScreen');
+            } else {
+                this.props.navigation.push('UsersProfileScreen', { userId: this.userId });
+            }
+        }
+    };
+
     render() {
         return (
             <View style={inlineStyles.fullScreen}>
@@ -71,14 +81,14 @@ class FullScreeVideoRow extends PureComponent {
                             <VideoAmountStat
                                 videoId={this.videoId}
                                 userId={this.userId}
-                                onWrapperClick={this.props.onWrapperClick}
+                                onWrapperClick={this.navigateToUserProfile}
                             />
                         </View>
 
                         <BottomStatus
                             userId={this.userId}
                             videoId={this.videoId}
-                            onWrapperClick={this.props.onWrapperClick}
+                            onWrapperClick={this.navigateToUserProfile}
                         />
                     </View>
                 )}

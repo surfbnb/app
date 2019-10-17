@@ -89,6 +89,12 @@ class VideoTags extends PureComponent {
         return <EmptySearchResult  noResultsData={noResultsData}/>
     };
 
+    getExtraParams = () => {
+        return {
+            showBalanceFlier: true
+        };
+    };
+
     render() {
         if(this.getTagId()){
             return <VideoCollections
@@ -99,6 +105,7 @@ class VideoTags extends PureComponent {
                     navigation={this.props.navigation}
                     noResultsData={this.noResultsData}
                     getNoResultsCell={this.renderNoResults}
+                    extraParams={this.getExtraParams}
                    />
         } else {
             return <View style={{flex: 1 , backgroundColor: Colors.black}} />

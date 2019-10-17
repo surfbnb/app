@@ -14,6 +14,8 @@ import qs from 'qs';
 import VideoCollections from "../VideoCollections";
 import TopsList from "../TopsList";
 import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';
+import NavigationEmitter from "../../helpers/TabNavigationEvent";
+import appConfig from "../../constants/AppConfig";
 
 const TabMap = {
   "top": {
@@ -38,6 +40,9 @@ const TabMap = {
         "baseUrl": "/tags/52/videos",
         "queryParam": "q"
       }
+    },
+    extraParams: {
+      showBalanceFlier: true
     }
     },
   "people": {
@@ -80,6 +85,9 @@ const TabMap = {
     "noResultsData": {
       "noResultsMsg": 'No results found. Please try again.',
       "isEmpty": true
+    },
+    extraParams: {
+      showBalanceFlier: true
     },
     renderNoResults :  (noResultsData) => {
       const oThis = TabMap.videos;
@@ -124,6 +132,25 @@ class SearchScreen extends PureComponent {
       this.initReferences();
     }
   }
+
+  componentDidMount() {
+    NavigationEmitter.on('onRefresh', (screen) => {
+      if (screen.screenName == appConfig.tabConfig.tab2.childStack) {
+        console.log('componentDidMount:childStack');
+        this.refreshOnDoubleTab();
+      }
+    });
+  }
+
+
+  refreshOnDoubleTab = () => {
+    let tabIndx = this.currentIndex;
+    let tabData = TabsArray[ tabIndx];
+    let newTabUrl = this.getUrlForTab( tabData );
+    let tabFlatList = this.getTabFlatList( tabIndx );
+    tabFlatList.forcedRefresh(newTabUrl);
+    tabFlatList.scrollToTop();
+  };
 
   initReferences = () =>{
     this.currentIndex = 0;
@@ -281,7 +308,7 @@ class SearchScreen extends PureComponent {
 
   renderLoggedOutView = () => {
     return <View />
-  }
+  };
 
   renderTabBar = () => {
     const scTabStyle = NativeBaseTabTheme.scrollableTab;
@@ -290,7 +317,7 @@ class SearchScreen extends PureComponent {
         tabsContainerStyle={scTabStyle.tabsContainerStyleSkipFont}
         underlineStyle={scTabStyle.underlineStyleSkipFont} />
     );
-  }
+  };
 
   renderLoggedInView = () => {
     const tabStyle = NativeBaseTabTheme.tab;
@@ -309,6 +336,7 @@ class SearchScreen extends PureComponent {
             getNoResultsCell={TabMap.top.renderNoResults}
             getSectionFetchUrl={this.getTopSectionFetchUrl}
             navigation={this.props.navigation}
+            extraParams={TabMap.top.extraParams}
           />
         </Tab>
         <Tab heading={TabMap.people.title} textStyle={tabStyle.textStyle}
@@ -347,13 +375,11 @@ class SearchScreen extends PureComponent {
             navigation={this.props.navigation}
             noResultsData={TabMap.videos.noResultsData}
             getNoResultsCell={TabMap.videos.renderNoResults}
+            extraParams={TabMap.videos.extraParams}
           />
         </Tab>
-
-
       </Tabs>
     </SafeAreaView>
-
   }
 }
 

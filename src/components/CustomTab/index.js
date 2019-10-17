@@ -71,6 +71,7 @@ function loginInFlow(navigation, tab) {
       console.log('Catch error');
     }
   } else {
+    console.log('loginInFlow :: -------------:: loginInFlow');
     clearTimeout(refreshTimeOut);
     refreshTimeOut = setTimeout(() => {
       NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
