@@ -17,13 +17,20 @@ import EmptySearchResult from '../../components/CommonComponents/EmptySearchResu
 import NavigationEmitter from "../../helpers/TabNavigationEvent";
 import appConfig from "../../constants/AppConfig";
 
+const tabStyle = NativeBaseTabTheme.tab,
+  USER_KIND = 'user',
+  TAG_KIND = 'tag',
+  VIDEO_KIND = 'video';
+
+
+
 const TabMap = {
   "top": {
     id: 'top',
     baseUrl: '/search/top',
     title: 'Top',
     "params": {
-      "supported_entities": ["users", "tags"]
+      "supported_entities": [USER_KIND, TAG_KIND, VIDEO_KIND]
     },
     "queryParam": "q",
     "noResultsData": {
@@ -43,10 +50,11 @@ const TabMap = {
     },
     extraParams: {
       showBalanceFlier: true
-    }
+    },
+    supported: true
     },
   "people": {
-    id: 'people',
+    id: USER_KIND,
     baseUrl : '/search/users',
     title: 'People',
     "queryParam": "q",
@@ -59,10 +67,11 @@ const TabMap = {
       console.log('this.emptyData',oThis.noResultsData);
       noResultsData = noResultsData || oThis.noResultsData;
       return <EmptySearchResult  noResultsData={noResultsData}/>
-    }
+    },
+    supported: true
   },
-  "tags": {
-    id: 'tags',
+  "tag": {
+    id: TAG_KIND,
     baseUrl : '/search/tags',
     title: 'Tags',
     "queryParam": "q",
@@ -71,14 +80,15 @@ const TabMap = {
       "isEmpty": true
     },
     renderNoResults:  (noResultsData) => {
-      const oThis = TabMap.tags;
+      const oThis = TabMap.tag;
       console.log('this.emptyData',oThis.noResultsData);
       noResultsData = noResultsData || oThis.noResultsData;
       return <EmptySearchResult  noResultsData={noResultsData}/>
-    }
+    },
+    supported: true
   },
   "videos": {
-    id: 'videos',
+    id: VIDEO_KIND,
     baseUrl : '/tags/52/videos',
     title: 'Video',
     "queryParam": "q",
@@ -91,14 +101,14 @@ const TabMap = {
     },
     renderNoResults :  (noResultsData) => {
       const oThis = TabMap.videos;
-      console.log('this.emptyData',oThis.noResultsData);
       noResultsData = noResultsData || oThis.noResultsData;
       return <EmptySearchResult  noResultsData={noResultsData}/>
-    }
+    },
+    supported: false
   }
 };
 
-const TabsArray = [TabMap.top, TabMap.people, TabMap.tags, TabMap.videos];
+const TabsArray = [TabMap.top, TabMap.people, TabMap.tag, TabMap.videos];
 
 const mapStateToProps = (state) => {
   return {
@@ -136,7 +146,6 @@ class SearchScreen extends PureComponent {
   componentDidMount() {
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab2.childStack) {
-        console.log('componentDidMount:childStack');
         this.refreshOnDoubleTab();
       }
     });
@@ -222,7 +231,7 @@ class SearchScreen extends PureComponent {
   };
 
   getTagsTabUrl = () => {
-    return this.getUrlForTab(TabMap.tags);
+    return this.getUrlForTab(TabMap.tag);
   };
 
   getPeopleTabUrl = () => {
@@ -267,7 +276,7 @@ class SearchScreen extends PureComponent {
   setTagsFlatListRef = (elemRef) => {
     this.flatLists = this.flatLists || {};
 
-    let tabData = TabMap.tags;
+    let tabData = TabMap.tag;
     let tabId = tabData.id;
     this.flatLists[ tabId ] = elemRef;
   };
@@ -323,65 +332,96 @@ class SearchScreen extends PureComponent {
     );
   };
 
+
+  showTopTab = () => {
+    if (TabMap.top.supported){
+      return  <Tab heading={TabMap.top.title} textStyle={tabStyle.textStyle}
+                   activeTextStyle={tabStyle.activeTextStyle}
+                   activeTabStyle={tabStyle.activeTabStyle}
+                   tabStyle={tabStyle.tabStyleSkipFont}
+                   style={tabStyle.style}>
+        <TopsList
+          getFetchUrl={this.getTopTabUrl}
+          ref={this.setTopFlatListRef}
+          noResultsData={TabMap.top.noResultsData}
+          getNoResultsCell={TabMap.top.renderNoResults}
+          getSectionFetchUrl={this.getTopSectionFetchUrl}
+          navigation={this.props.navigation}
+          extraParams={TabMap.top.extraParams}
+          supportedEntities={TabMap.top.params.supported_entities}
+        />
+      </Tab>
+    }
+    return null;
+  };
+
+
+  showPeopleTab = () => {
+    if (TabMap.people.supported) {
+      return <Tab heading={TabMap.people.title} textStyle={tabStyle.textStyle}
+                  activeTextStyle={tabStyle.activeTextStyle}
+                  activeTabStyle={tabStyle.activeTabStyle}
+                  tabStyle={tabStyle.tabStyleSkipFont}
+                  style={tabStyle.style}>
+        <PeopleList
+          getFetchUrl={this.getPeopleTabUrl}
+          ref={this.setPeopleFlatListRef}
+          noResultsData={TabMap.people.noResultsData}
+          getNoResultsCell={TabMap.people.renderNoResults}
+        />
+      </Tab>
+    }
+    return null;
+  };
+
+  showTagsTab = () => {
+    if (TabMap.tag.supported) {
+      return <Tab heading={TabMap.tag.title} textStyle={tabStyle.textStyle}
+                  activeTextStyle={tabStyle.activeTextStyle}
+                  activeTabStyle={tabStyle.activeTabStyle}
+                  tabStyle={tabStyle.tabStyleSkipFont}
+                  style={tabStyle.style}>
+        <TagsList
+          getFetchUrl={this.getTagsTabUrl}
+          ref={this.setTagsFlatListRef}
+          noResultsData={TabMap.tag.noResultsData}
+          getNoResultsCell={TabMap.tag.renderNoResults}
+        />
+      </Tab>
+    }
+    return null;
+  };
+
+  showVideoSection = () => {
+    if (TabMap.videos.supported) {
+      return <Tab heading={TabMap.videos.title} textStyle={tabStyle.textStyle}
+           activeTextStyle={tabStyle.activeTextStyle}
+           activeTabStyle={tabStyle.activeTabStyle}
+           tabStyle={tabStyle.tabStyleSkipFont}
+           style={tabStyle.style}>
+
+        <VideoCollections
+          ref={this.setVideoFlatListRef}
+          getFetchUrl={this.getVideoTabUrl}
+          navigation={this.props.navigation}
+          noResultsData={TabMap.videos.noResultsData}
+          getNoResultsCell={TabMap.videos.renderNoResults}
+          extraParams={TabMap.videos.extraParams}
+        />
+      </Tab>
+    }
+    return null;
+
+}
+
   renderLoggedInView = () => {
-    const tabStyle = NativeBaseTabTheme.tab;
     return <SafeAreaView style={styles.container}>
       <SearchListHeader setSearchParams={this.setSearchParams} ref={this.setSearchListHeaderRef} />
       <Tabs renderTabBar={this.renderTabBar}  onChangeTab={this.onChangeTab}>
-        <Tab heading={TabMap.top.title} textStyle={tabStyle.textStyle}
-             activeTextStyle={tabStyle.activeTextStyle}
-             activeTabStyle={tabStyle.activeTabStyle}
-             tabStyle={tabStyle.tabStyleSkipFont}
-             style={tabStyle.style}>
-          <TopsList
-            getFetchUrl={this.getTopTabUrl}
-            ref={this.setTopFlatListRef}
-            noResultsData={TabMap.top.noResultsData}
-            getNoResultsCell={TabMap.top.renderNoResults}
-            getSectionFetchUrl={this.getTopSectionFetchUrl}
-            navigation={this.props.navigation}
-            extraParams={TabMap.top.extraParams}
-          />
-        </Tab>
-        <Tab heading={TabMap.people.title} textStyle={tabStyle.textStyle}
-             activeTextStyle={tabStyle.activeTextStyle}
-             activeTabStyle={tabStyle.activeTabStyle}
-             tabStyle={tabStyle.tabStyleSkipFont}
-             style={tabStyle.style}>
-          <PeopleList
-            getFetchUrl={this.getPeopleTabUrl}
-            ref={this.setPeopleFlatListRef}
-            noResultsData={TabMap.people.noResultsData}
-            getNoResultsCell={TabMap.people.renderNoResults}
-          />
-        </Tab>
-        <Tab heading={TabMap.tags.title} textStyle={tabStyle.textStyle}
-             activeTextStyle={tabStyle.activeTextStyle}
-             activeTabStyle={tabStyle.activeTabStyle}
-             tabStyle={tabStyle.tabStyleSkipFont}
-             style={tabStyle.style} >
-          <TagsList
-            getFetchUrl={this.getTagsTabUrl}
-            ref={this.setTagsFlatListRef}
-            noResultsData={TabMap.tags.noResultsData}
-            getNoResultsCell={TabMap.tags.renderNoResults}
-          />
-        </Tab>
-        <Tab heading={TabMap.videos.title} textStyle={tabStyle.textStyle}
-             activeTextStyle={tabStyle.activeTextStyle}
-             activeTabStyle={tabStyle.activeTabStyle}
-             tabStyle={tabStyle.tabStyleSkipFont}
-             style={tabStyle.style}>
-
-          <VideoCollections
-            ref={this.setVideoFlatListRef}
-            getFetchUrl={this.getVideoTabUrl}
-            navigation={this.props.navigation}
-            noResultsData={TabMap.videos.noResultsData}
-            getNoResultsCell={TabMap.videos.renderNoResults}
-            extraParams={TabMap.videos.extraParams}
-          />
-        </Tab>
+        {this.showTopTab()}
+        {this.showPeopleTab()}
+        {this.showTagsTab()}
+        {this.showVideoSection()}
       </Tabs>
     </SafeAreaView>
   }

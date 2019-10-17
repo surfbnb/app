@@ -32,39 +32,38 @@ class MultiSectionFetchService extends FetchServices{
   };
 
 
-  temporaryManipulateTopData = async (data) => {
-    let knownResultType = "tag_videos";
-    let customResultType = "xyz";
-    data.search_categories.push({id: "sc_vr",
-      uts: 1571218577,
-      kind: "videos",
-      title: "Videos",
-      result_array: customResultType
-    });
-
-
-    let res  = await new PepoApi(`/tags/1/videos`).get();
-
-    for (let key in res.data){
-      if(key === 'result_type'){
-        continue;
-      } else if ( key === knownResultType ) {
-        data[customResultType] = res.data[knownResultType];
-        continue;
-      }
-      data[key]= res.data[key];
-    }
-    return data;
-  };
-
-
-
+  // temporaryManipulateTopData = async (data) => {
+  //   let knownResultType = "tag_videos";
+  //   let customResultType = "xyz";
+  //   data.search_categories.push({id: "sc_vr",
+  //     uts: 1571218577,
+  //     kind: "videos",
+  //     title: "Videos",
+  //     result_array: customResultType
+  //   });
+  //
+  //
+  //   let res  = await new PepoApi(`/tags/1/videos`).get();
+  //
+  //   for (let key in res.data){
+  //     if(key === 'result_type'){
+  //       continue;
+  //     } else if ( key === knownResultType ) {
+  //       data[customResultType] = res.data[knownResultType];
+  //       continue;
+  //     }
+  //     data[key]= res.data[key];
+  //   }
+  //   return data;
+  // };
 
 
 
-    async  processData(response) {
+
+
+
+  processData(response) {
     let data = response.data;
-    data = await this.temporaryManipulateTopData(data);
     let resultType = data.result_type;
     if (!resultType || !data[resultType]) {
       response.code_error = VCErrors.InvalidApiResponse;
