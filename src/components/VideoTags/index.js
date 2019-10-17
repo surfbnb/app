@@ -9,6 +9,7 @@ import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import PepoApi from "../../services/PepoApi";
 import deepGet from 'lodash/get';
 import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';
+import BackArrow from '../CommonComponents/BackArrow';
 
 
 
@@ -31,7 +32,8 @@ class VideoTags extends PureComponent {
                 },
                 shadowOpacity: 0.1,
                 shadowRadius: 3
-            }
+            },
+          headerBackImage: <BackArrow />
         };
     };
 
