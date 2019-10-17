@@ -1,13 +1,9 @@
 import React from 'react';
 import { View, Dimensions, Easing, Animated } from 'react-native';
 import { Root } from 'native-base';
-import {
-  createBottomTabNavigator,
-  createStackNavigator,
-  createSwitchNavigator,
-  createDrawerNavigator,
-  createAppContainer
-} from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import deepGet from 'lodash/get';
 
 import NavigationService from './src/services/NavigationService';
@@ -45,8 +41,8 @@ import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
 import WalletSettingScreen from './src/components/WalletSetting';
-import StoreProductsScreen from "./src/components/StoreProducts";
-import PaymentWorker from "./src/components/PaymentWorker";
+import StoreProductsScreen from './src/components/StoreProducts';
+import PaymentWorker from './src/components/PaymentWorker';
 import PushNotificationManager from './src/services/PushNotificationManager';
 import ReferAndEarn from './src/components/ReferAndEarn';
 import Invites from './src/components/Invites';
@@ -61,7 +57,14 @@ import CouchMarks from './src/components/CouchMarks';
 import VideoTags from './src/components/VideoTags';
 import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
 
-const customTabHiddenRoutes = ['CaptureVideo', 'FanVideoDetails', 'InviteCodeScreen', 'AddEmailScreen', 'InAppBrowserComponent' , 'CouchMarks'];
+const customTabHiddenRoutes = [
+  'CaptureVideo',
+  'FanVideoDetails',
+  'InviteCodeScreen',
+  'AddEmailScreen',
+  'InAppBrowserComponent',
+  'CouchMarks'
+];
 
 const modalStackConfig = {
   headerLayoutPreset: 'center',
@@ -115,7 +118,6 @@ const CaptureVideoStack = createStackNavigator(
   }
 );
 
-
 const InAppBrowserStack = createStackNavigator(
   {
     InAppBrowserComponent: InAppBrowserComponent
@@ -148,7 +150,7 @@ const HomeStack = createStackNavigator(
     InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen,
     InviteCodeScreen: InviteCodeScreen,
-    AuthDeviceDrawer : AuthDeviceDrawer,
+    AuthDeviceDrawer: AuthDeviceDrawer,
     AddEmailScreen: AddEmailScreen,
     CouchMarks: CouchMarks
   },
@@ -208,23 +210,9 @@ const ProfilePushStack = createStackNavigator(
   }
 );
 
-const ProfileDrawerNavigator = createDrawerNavigator(
-  {
-    ProfilePushStack: ProfilePushStack
-  },
-  {
-    drawerPosition: 'right',
-    drawerBackgroundColor: '#fff',
-    overlayColor: 'rgba(0, 0, 0, 0.8)',
-    drawerWidth: Dimensions.get('window').width - Dimensions.get('window').width / 5,
-    contentComponent: CustomDrawerContent,
-    drawerLockMode: 'locked-closed'
-  }
-);
-
 const ProfileStack = createStackNavigator(
   {
-    ProfileDrawerNavigator: ProfileDrawerNavigator,
+    ProfilePushStack: ProfilePushStack,
     CaptureImageScreen: CaptureImage,
     ImageGalleryScreen: ImageGallery,
     TransactionScreen: TransactionScreen,
@@ -321,7 +309,7 @@ const PinPushStack = createStackNavigator(
 
 const PinStack = createStackNavigator(
   {
-    PinPushStack : PinPushStack,
+    PinPushStack: PinPushStack,
     InAppBrowserStack: InAppBrowserStack
   },
   {
@@ -345,7 +333,7 @@ const AppContainer = createAppContainer(
 const RootNavigationContainer = () => (
   <Root>
     <AppContainer
-      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(prevState,currentState,action)}
+      onNavigationStateChange={(prevState, currentState, action) => StatusBarManager(prevState, currentState, action)}
       ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}

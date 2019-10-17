@@ -77,7 +77,7 @@ class NavigateTo {
       timeOut = 100;
       this.__navigate('NotificationScreen', payload);
     }
-    //Once migrated to react-navigation version 4 remove the settimeout code 
+    //TODO:Once migrated to react-navigation version 4 remove the settimeout code 
     //as version 3 dosent provides navigation chaining. 
     setTimeout(()=> {
       this.__push('VideoPlayer', payload);
