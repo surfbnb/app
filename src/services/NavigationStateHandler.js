@@ -4,7 +4,7 @@ import firebase from 'react-native-firebase';
 import Colors from "../theme/styles/Colors";
 import NavigationService from './NavigationService';
 
-const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory'];
+const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory', 'FullScreenVideoCollection'];
 const typesToIgnore = ['Navigation/COMPLETE_TRANSITION', 'Navigation/MARK_DRAWER_SETTLING', 'Navigation/MARK_DRAWER_IDLE', 'Navigation/DRAWER_CLOSED'];
 const routesAnalyticsMap = {
   InAppBrowserStack: 'InAppBrowser',
