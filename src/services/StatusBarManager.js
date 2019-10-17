@@ -2,7 +2,7 @@ import {StatusBar , Platform} from "react-native";
 import Colors from "../theme/styles/Colors";
 import NavigationService from './NavigationService';
 
-const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory'];
+const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory', 'FullScreenVideoCollection'];
 const typesToIgnore = ['Navigation/COMPLETE_TRANSITION'];
 
 let currentState = null;
