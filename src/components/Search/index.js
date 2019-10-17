@@ -142,6 +142,10 @@ class SearchScreen extends PureComponent {
     });
   }
 
+  componentWillUnmount() {
+    NavigationEmitter.removeListener('onRefresh');
+  }
+
 
   refreshOnDoubleTab = () => {
     let tabIndx = this.currentIndex;

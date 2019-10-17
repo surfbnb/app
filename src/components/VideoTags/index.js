@@ -65,7 +65,6 @@ class VideoTags extends PureComponent {
     }
 
     componentWillUnmount() {
-        NavigationEmitter.removeListener('onRefresh');
         this.didFocus && this.didFocus.remove && this.didFocus.remove();
     }
 
