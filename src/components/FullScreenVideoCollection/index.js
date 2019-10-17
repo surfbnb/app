@@ -44,12 +44,11 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     setVideoPagination(){
-        console.log("this.getBaseUrl()", this.getBaseUrl());
-        this.FullPagePagination = new Pagination( this.getBaseUrl(), null , this.getPassedFetchServices());
+        this.fullPagePagination = new Pagination( this.getBaseUrl(), null , this.getPassedFetchServices());
     }
 
     getVideoPagination(){
-        return this.FullPagePagination;
+        return this.fullPagePagination;
     }
 
     componentDidMount(){
@@ -113,7 +112,8 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     getNext = () => {
-        if(!this.isScrolled) return;
+        console.log('getNextgetNext',this.isScrolled);
+        // if(!this.isScrolled) return;
         this.getVideoPagination().getNext();
     }
 

@@ -2,10 +2,10 @@ import DefaultStyleGenerator from './DefaultStyleGenerator';
 import Colors from './Colors';
 
 const scrollableTabStyles = {
-    "tabsContainerStyle": {
+    "tabsContainerStyleSkipFont": {
         backgroundColor: Colors.white
     },
-    "underlineStyle": {
+    "underlineStyleSkipFont": {
         backgroundColor: Colors.primary,
         height: 1
     }
@@ -21,7 +21,7 @@ const tabStyle = {
         fontSize: 25
     },
     activeTabStyle : {backgroundColor: Colors.white},
-    tabStyle : {
+    tabStyleSkipFont : {
         backgroundColor: Colors.white
     },
     style : {backgroundColor:  Colors.white}

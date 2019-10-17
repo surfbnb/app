@@ -12,6 +12,8 @@ import TagsCell from '../TagsList/TagsCell';
 import Pagination from "../../services/MultiSection/MultiSectionPagination";
 import Colors from "../../theme/styles/Colors";
 import PeopleCell from "../PeopleList/PeopleCell";
+import VideoThumbnailItem from "../CommonComponents/VideoThumbnailItem";
+import {FetchServices} from "../../services/FetchServices";
 
 const titleKeyName = 'title',
   dataKeyName = 'data',
@@ -48,7 +50,6 @@ class TopsList extends PureComponent {
   // region - Pagination and Event Handlers
 
   initPagination() {
-    console.log('initPagination:initPaginationinitPagination');
     // First, take care of existing Pagination if exists.
     this.removePaginationListeners();
 
@@ -148,6 +149,58 @@ class TopsList extends PureComponent {
     return <PeopleCell userId={item.payload.user_id} />;
   };
 
+
+  onVideoClick = (payload, index) => {
+    console.log(payload, index, this.props.getSectionFetchUrl('videos'));
+    let fullVideoPageUrl = this.props.getSectionFetchUrl('videos');
+    let seedData = this.getVideoSectionsData();
+    const fetchService =   new FetchServices( fullVideoPageUrl, null ,  undefined , {seedData});
+    this.props.navigation.push("FullScreenVideoCollection", {
+      fetchServices : fetchService,
+      currentIndex: index,
+      payload,
+      baseUrl: fullVideoPageUrl
+    });
+  };
+
+
+  _renderVideoItem = ({ section, index }) => {
+    const numColumns = 2;
+
+    if (index % numColumns !== 0) return null;
+
+    const items = [];
+
+    for (let i = index; i < index + numColumns; i++) {
+      if (i >= section.data.length) {
+        break;
+      }
+      let itemData = section.data[i];
+      let itemKey = "top_list_" + i + "_" + itemData.id;
+      items.push(
+
+        <VideoThumbnailItem
+        payload={itemData.payload}
+        index={index} key={itemKey}
+        onVideoClick={this.onVideoClick}
+        />
+
+
+        )
+    };
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between"
+        }}
+      >
+        {items}
+      </View>
+    );
+
+  };
+
   renderFooter = () => {
     if (!this.state.loadingNext) return null;
     return <ActivityIndicator />;
@@ -167,8 +220,19 @@ class TopsList extends PureComponent {
       return this._renderTagItem;
     } else if (kind === 'user'){
       return this.__renderUserItem;
+    } else if (kind === 'videos'){
+      return this._renderVideoItem;
     }
-  }
+  };
+
+  getVideoSectionsData = () => {
+    let topSectionsData = this.getSectionsData();
+    let videoData = topSectionsData.filter((data)=>{
+      return data.kind === 'videos';
+    });
+    return videoData.length > 0 ? videoData[0].data : [];
+  };
+
 
   getSectionsData = () => {
     let sectionsArray = [],
@@ -188,8 +252,7 @@ class TopsList extends PureComponent {
 
       });
     }
-
-    if ( sectionsArray.length < 1 ) {
+    if ( sectionsArray.length < 1  && !this.state.refreshing) {
       // Create a dummy section to show no results cell.
       sectionsArray.push({
         data: [this.props.noResultsData],
