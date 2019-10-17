@@ -31,6 +31,7 @@ export const {
   updateIsPurchase,
   updatePricePoints,
   updateToken,
+  updatePepocorn,
   updateExecuteTransactionStatus,
   upsertVideoContributionEntities,
   upsertUserContributionEntities,
@@ -227,6 +228,10 @@ export const reducer = handleActions(
     [updateToken]: (state, action) => ({
       ...state,
       token: action.payload.token
+    }),
+    [updatePepocorn]: (state, action) => ({
+      ...state,
+      pepocorn: action.payload.pepocorn
     }),
     [updateExecuteTransactionStatus]: (state, action) => ({
       ...state,

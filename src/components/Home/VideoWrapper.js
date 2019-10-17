@@ -10,6 +10,7 @@ import PixelCall from '../../services/PixelCall';
 import {VideoPlayPauseEmitter} from '../../helpers/Emitters';
 import AppConfig from '../../constants/AppConfig';
 import socketPixelCall from './../../services/SocketPixelCall'
+import CurrentUser from "../../models/CurrentUser";
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -31,10 +32,25 @@ class VideoWrapper extends PureComponent {
     };
     this.isUserPaused = false;
     this.pausedOnNavigation = false;
-    this.isPixelCalledOnView = false;
     this.isPixelCalledOnEnd = false;
     this.minTimeConsideredForView = 1;
     this.source = {};
+
+    this.videoContext = {
+      userId: null,
+      videoId: null,
+      isEventCalledOnView: function (currentUserId, videoId) {
+        if (this.userId != currentUserId) return false;
+
+        if (this.videoId != videoId) return false;
+
+        return true;
+      },
+      eventFired: function (userId, videoId) {
+        this.userId = userId;
+        this.videoId = videoId;
+      },
+    };
   }
 
   componentDidMount() {
@@ -139,7 +155,11 @@ class VideoWrapper extends PureComponent {
   };
 
   onProgress = (params) => {
-    if (this.isPixelCalledOnView) return;
+    this.fireEvent(params);
+  };
+
+  fireEvent(params) {
+    if (this.videoContext.isEventCalledOnView(CurrentUser.getUserId(), this.props.video_id)) return;
     if (params.currentTime >= this.minTimeConsideredForView) {
       let pixelParams = {
         e_entity: 'video',
@@ -154,9 +174,9 @@ class VideoWrapper extends PureComponent {
 
       this.sendFeedVideoEvent(VIDEO_PLAY_START_EVENT_NAME);
 
-      this.isPixelCalledOnView = true;
+      this.videoContext.eventFired(CurrentUser.getUserId(), this.props.video_id);
     }
-  };
+  }
 
   sendFeedVideoEvent(eventKind) {
     let feedId = 0; // For non-feed video elements.

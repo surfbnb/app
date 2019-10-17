@@ -35,7 +35,11 @@ const UIErros = {
   email_error: 'Enter a valid email.',
   device_unathorized: "Your device is not authorized. Please authorized the device.",
   top_not_available: "Topup not available at this time, we are looking into it. Please check back later.",
-  delete_video_error:"Unable to delete Video at this moment."
+  delete_video_error:"Unable to delete Video at this moment.", 
+  redemption_error : "Failed to redeem, please try again later",
+  max_pepocorns: `Sorry, you don't have enough Pepo Coins to buy this many ${Utilities.getPepoCornsName()}`,
+  price_point_validation_failed: `Sorry, you don't have enough Pepo Coins to buy this many ${Utilities.getPepoCornsName()}`,
+  min_pepocorns: `Minimum amount allowed is 1 ${Utilities.getPepoCornsName()}.`
 };
 
 const UIWhitelistedErrorCode = {
@@ -63,7 +67,7 @@ class OstErrors {
       return;
     }
 
-    let errorMessage = deepGet(ostError, 'err.msg') || sdkErrors[generalErrorKey];
+    let errorMessage = deepGet(ostError, 'err.msg') || sdkErrors[generalErrorKey] || UIErros[generalErrorKey];
     if (errorMessage) {
       return errorMessage;
     }

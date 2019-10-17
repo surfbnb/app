@@ -34,7 +34,8 @@ const knownEntitiesDispatcherMap = {
   feed: 'upsertHomeFeedEntities',
   upsert_push_notification: 'upsertPushNotification',
   twitter_users : 'upsertTwitterEntities',
-  user_allowed_actions: 'upsertUserAllowedActionEntities'
+  user_allowed_actions: 'upsertUserAllowedActionEntities',
+  pepocorn_balance: 'updatePepocorn'
 };
 
 const dispatchEntities = (data) => {

@@ -393,7 +393,16 @@ class ReduxGetters {
   isVideoDeleted(id, state) {
     state = state || Store.getState();
     return deepGet(state, `video_entities.id_${id}.status`, '').toLowerCase() == appConfig.videoStatusMap.deleted;
+  }
 
+  getUSDPrice(state){
+    state = state || Store.getState();
+    return deepGet(state,  "price_points.OST.USD");
+  }
+
+  getPepocornBalance(state){
+    state = state || Store.getState();
+    return deepGet(state,  "pepocorn.balance" , 0);
   }
 
   getHashTag(id, state){
