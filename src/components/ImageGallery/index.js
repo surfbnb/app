@@ -69,7 +69,7 @@ class ImageGallery extends Component {
         );
       })
       .catch((err) => {
-        alert('Could not fetch photos!', err);
+        // Exception handled silently
       })
       .finally(() => {
         this.setState({
