@@ -38,6 +38,8 @@ const routesAnalyticsMap = {
   AddEmailScreen: 'AddEmail',
   InAppBrowserComponent: 'InAppBrowser',
   FanVideoDetails: 'CaptureVideo/VideoDetails',
+  VideoTags: 'Tags',
+  FullScreenVideoCollection: 'Tags/VideoHistory',
   ProfileDrawerNavigator: '',
   SearchPushStack: '',
   AuthLoading: '',
