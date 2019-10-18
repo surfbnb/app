@@ -73,7 +73,7 @@ class SearchListHeader extends Component {
           textContentType="none"
           //value={this.state.value}
           style={[Theme.TextInput.textInputStyle, styles.textInputUi]}
-          placeholder="Search People / Usernames"
+          placeholder="Search people or tags"
           returnKeyType="done"
           returnKeyLabel="Done"
           placeholderTextColor="rgba(42, 41, 59, 0.4)"

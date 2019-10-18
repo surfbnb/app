@@ -116,7 +116,7 @@ class VideoTags extends PureComponent {
                     navigation={this.props.navigation}
                     noResultsData={this.noResultsData}
                     getNoResultsCell={this.renderNoResults}
-                    extraParams={this.getExtraParams}
+                    extraParams={this.getExtraParams()}
                    />
         } else {
             return <View style={{flex: 1 , backgroundColor: Colors.black}} />
