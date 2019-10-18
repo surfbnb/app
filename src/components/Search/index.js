@@ -21,6 +21,7 @@ const tabStyle = NativeBaseTabTheme.tab,
   TAG_KIND = 'tag',
   VIDEO_KIND = 'video';
 
+const NO_OF_CHARS_TO_RESTRICT_SEARCH = 1;
 
 
 const TabMap = {
@@ -145,7 +146,7 @@ class SearchScreen extends PureComponent {
   componentDidMount() {
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab2.childStack) {
-        this.refreshOnDoubleTab();
+        this.shouldSearch() && this.refreshOnDoubleTab();
       }
     });
   }
@@ -154,6 +155,9 @@ class SearchScreen extends PureComponent {
     NavigationEmitter.removeListener('onRefresh');
   }
 
+  shouldSearch = () =>{
+    return  this.currentSearchTerm.length !== NO_OF_CHARS_TO_RESTRICT_SEARCH;
+  };
 
   refreshOnDoubleTab = () => {
     let tabIndx = this.currentIndex;
@@ -185,7 +189,7 @@ class SearchScreen extends PureComponent {
 
   setSearchParams = (searchParams) => {
     this.currentSearchTerm = searchParams;
-    this.refreshResults();
+    this.shouldSearch() && this.refreshResults();
   };
 
   refreshResults = () => {
