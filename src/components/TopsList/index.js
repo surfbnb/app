@@ -3,7 +3,8 @@ import {
   SectionList,
   ActivityIndicator,
   Text,
-  View
+  View,
+  Keyboard
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 
@@ -207,11 +208,6 @@ class TopsList extends PureComponent {
 
   };
 
-  renderFooter = () => {
-    if (!this.state.loadingNext) return null;
-    return <ActivityIndicator />;
-  };
-
   listHeaderComponent = () => {
     return (
       <React.Fragment>
@@ -301,6 +297,8 @@ class TopsList extends PureComponent {
           onRefresh={this.refresh}
           keyExtractor={this._keyExtractor}
           refreshing={this.state.refreshing}
+          onScrollBeginDrag={() => Keyboard.dismiss()}
+          keyboardShouldPersistTaps={'always'}
           onEndReachedThreshold={9}
           renderSectionHeader={  this.renderSectionHeader}
           stickySectionHeadersEnabled={false}

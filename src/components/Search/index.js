@@ -197,6 +197,7 @@ class SearchScreen extends PureComponent {
     if ( !currentTabUrl || currentTabUrl !== newTabUrl ) {
       // Force refresh
       let tabFlatList = this.getTabFlatList( tabIndx );
+      tabFlatList.scrollToTop();
       tabFlatList.forcedRefresh(newTabUrl);
     } else {
       // Ignore.

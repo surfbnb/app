@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import {
     View,
     FlatList,
-    ActivityIndicator,
+    ActivityIndicator, Keyboard,
 
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
@@ -198,6 +198,9 @@ class TagsList extends PureComponent {
                     refreshing={this.state.refreshing}
                     onEndReachedThreshold={9}
                     renderItem={this._renderItem}
+                    onScrollBeginDrag={() => Keyboard.dismiss()}
+                    keyboardShouldPersistTaps={'always'}
+                    ListFooterComponent={this.renderFooter}
                 />
             </SafeAreaView>
         );

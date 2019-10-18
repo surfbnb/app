@@ -75,17 +75,18 @@ class HomeScreen extends Component {
   };
 
   showCoachScreen = () => {
-
-    utilities.getItem('show-coach-screen').then((data) => {
-      if (data !== 'true'){
-        utilities.saveItem(`show-coach-screen`, true);
-        this.props.navigation.push('CouchMarks');
-      } else {
-        // do nothing
-      }
-    });
-
-
+    if (this.props.userId) {
+      utilities.saveItem(`show-coach-screen`, true);
+    } else {
+      utilities.getItem('show-coach-screen').then((data) => {
+        if (data !== 'true'){
+          utilities.saveItem(`show-coach-screen`, true);
+          this.props.navigation.push('CouchMarks');
+        } else {
+          // do nothing
+        }
+      });
+    }
   }
 
   componentWillUpdate(nextProps) {
