@@ -11,14 +11,26 @@ import deepGet from 'lodash/get';
 import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';
 import BackArrow from '../CommonComponents/BackArrow';
 
+const getPageTitle = (tagId, hashTag) => {
+  let pageTitle = "";
+  if ( typeof tagId !== 'undefined' || hashTag ) {
+    hashTag = hashTag || reduxGetter.getHashTag(tagId);
+    if ( hashTag && hashTag.text) {
+      pageTitle = `#${hashTag.text}`;
+    }
+  }
+  return pageTitle;
+}
 
 
 class VideoTags extends PureComponent {
     static navigationOptions = (options) => {
-        const name = options.navigation.getParam('headerTitle');
+        const tagId = options.navigation.getParam('tagId');
+        const pageTitle = getPageTitle(tagId);
+
         return {
             headerBackTitle: null,
-           title: name && `#${name}`,
+            title: pageTitle,
             headerTitleStyle: {
                 fontFamily: 'AvenirNext-Medium'
             },
@@ -46,20 +58,20 @@ class VideoTags extends PureComponent {
     }
 
     componentDidMount() {
-
         this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
-            let hashTag = reduxGetter.getHashTag(this.getTagId());
-            hashTag && this.props.navigation.setParams({ headerTitle: hashTag.text });
             this.getTagData();
         });
     }
 
     getTagData = () =>{
-        new PepoApi(`/tags/${this.getTagId()}`)
+        const tagId = this.getTagId();
+        new PepoApi(`/tags/${tagId}`)
             .get()
             .then((res)=>{
+                let hashTag = deepGet(res, 'data.tag');
+                const pageTitle = getPageTitle(tagId, hashTag);
                 if (res && res.success){
-                    this.props.navigation.setParams({ headerTitle: deepGet(res, 'data.tag.text') });
+                    this.props.navigation.setParams({ headerTitle: pageTitle });
                 }
             })
     }

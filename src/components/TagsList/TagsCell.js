@@ -7,7 +7,7 @@ import { withNavigation } from 'react-navigation';
 const handleTagPress = (tagId, navigation) => {
 
     navigation.push('VideoTags', {
-        tagId
+        "tagId": tagId
     });
 };
 

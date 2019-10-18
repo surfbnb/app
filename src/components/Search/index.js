@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import CurrentUser from '../../models/CurrentUser';
 import { Tab, Tabs, ScrollableTab } from 'native-base';
-import UserProfileFlatList from '../CommonComponents/UserProfileFlatList';
 import SearchListHeader from "./SearchListHeader";
 import styles from './styles';
 import NativeBaseTabTheme from "../../theme/styles/NativeBaseTabs";
