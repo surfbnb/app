@@ -10,7 +10,6 @@ import {SafeAreaView, withNavigation} from "react-navigation";
 import TagsCell from '../TagsList/TagsCell';
 
 import Pagination from "../../services/MultiSection/MultiSectionPagination";
-import Colors from "../../theme/styles/Colors";
 import PeopleCell from "../PeopleList/PeopleCell";
 import VideoThumbnailItem from "../CommonComponents/VideoThumbnailItem";
 import {FetchServices} from "../../services/FetchServices";
@@ -43,7 +42,9 @@ class TopsList extends PureComponent {
   }
 
   scrollToTop(){
-    this.listRef.scrollToLocation({itemIndex: 0, sectionIndex:0});
+    if ( this.getSectionsData().length > 0){
+      this.listRef.scrollToLocation({itemIndex: 0, sectionIndex:0});
+    }
   }
 
 
@@ -270,7 +271,6 @@ class TopsList extends PureComponent {
       })
 
     }
-    console.log(sectionsArray, 'sectionsArray');
     return sectionsArray;
   };
 
