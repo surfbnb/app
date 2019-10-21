@@ -109,8 +109,12 @@ class PeopleList extends PureComponent {
   beforeRefresh = ( ) => {
     //this.props.beforeRefresh && this.props.beforeRefresh();
     //this.onPullToRefresh();
-    this.setState({ refreshing : true });
-  }
+    let stateObject = {refreshing : true};
+    if (this.state.loadingNext) {
+      stateObject['loadingNext'] = false;
+    }
+    this.setState(stateObject);
+  };
 
   onRefresh = ( res ) => {
     let results = this.peoplePagination.getResults()  ;
@@ -128,6 +132,7 @@ class PeopleList extends PureComponent {
   }
 
   beforeNext =() => {
+    if (this.state.refreshing) return;
     this.setState({ loadingNext : true });
   }
 
@@ -175,6 +180,7 @@ class PeopleList extends PureComponent {
   };
 
   renderFooter = () => {
+    console.log(this.state.loadingNext, 'this.state.loadingNext ----------- this.state.loadingNext -----------');
     if (!this.state.loadingNext) return null;
     return <ActivityIndicator />;
   };

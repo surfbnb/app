@@ -109,7 +109,11 @@ class TopsList extends PureComponent {
   beforeRefresh = ( ) => {
     //this.props.beforeRefresh && this.props.beforeRefresh();
     //this.onPullToRefresh();
-    this.setState({ refreshing : true });
+    let stateObject = { refreshing : true };
+    if (this.state.loadingNext) {
+      stateObject['loadingNext'] = false;
+    }
+    this.setState(stateObject);
   };
 
   onRefresh = ( res ) => {
@@ -124,6 +128,7 @@ class TopsList extends PureComponent {
   };
 
   beforeNext =() => {
+    if (this.state.refreshing) return;
     this.setState({ loadingNext : true });
   };
 
