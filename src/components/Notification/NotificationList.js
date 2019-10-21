@@ -21,6 +21,7 @@ class NotificationList extends PureComponent {
     let idList = this.props.list;
     let list = {};
     let outputList = [];
+    let j = 0;
     for (let id of idList) {
       let timeStamp = reduxGetter.getNotificationTimestamp(id);
       let header = this.getHeader(timeStamp);
@@ -32,7 +33,9 @@ class NotificationList extends PureComponent {
     }
     for (let i = 0; i < 5; i++) {
       if (list[i]) {
+        list[i]['indx'] = j;
         outputList.push(list[i]);
+        j++;
       }
     }
     return outputList;
@@ -64,7 +67,7 @@ class NotificationList extends PureComponent {
   renderSectionHeader = (section) => {
     if (!section.section.title || section.section.data.length === 0) return null;
     return (
-      <View style={styles.sectionHeaderView}>
+      <View style={[styles.sectionHeaderView, section.section.indx !== 0 ?{ borderTopColor: '#eee', borderTopWidth: 1} : {}]}>
         <Text style={styles.sectionHeaderTitle}>{section.section.title} </Text>
       </View>
     );

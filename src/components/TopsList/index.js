@@ -44,7 +44,7 @@ class TopsList extends PureComponent {
 
   scrollToTop(){
     if ( this.getSectionsData().length > 0){
-      this.listRef.scrollToLocation({itemIndex: 0, sectionIndex:0});
+      this.listRef.scrollToLocation({itemIndex: 0, sectionIndex:0 , viewOffset: 100});
     }
   }
 
