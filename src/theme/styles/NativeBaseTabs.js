@@ -19,7 +19,7 @@ const tabStyle = {
     activeTextStyle :{
         color: Colors.primary,
         fontSize: 25,
-        fontWeight : 'bold'
+       // fontWeight : 'bold'
     },
     activeTabStyle : {backgroundColor: Colors.white},
     tabStyleSkipFont : {
