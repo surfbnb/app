@@ -3,10 +3,10 @@ import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
     videoStatsContainer: {
-        padding: 5,
         flexDirection: 'row',
-        alignItems: 'center',
-        width: '100%'
+        textAlign: 'right',
+        flex: 1, 
+        justifyContent: 'flex-end'
     },
     videoStatsTxt: {
         color: Colors.white,
@@ -24,12 +24,14 @@ let stylesMap = {
         color: Colors.white,
         fontSize: 14,
         fontFamily: 'AvenirNext-Regular',
-        fontWeight: '600'
+        fontWeight: '600',
+        marginLeft: 5
     },
 
     videoInfoContainer: {
         padding: 5,
-        width: '100%'
+        width: '100%',
+        marginBottom : 3
     },
 
     userNameStyle: {
