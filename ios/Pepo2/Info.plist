@@ -59,7 +59,7 @@
 	<true/>
 	<key>FirebaseDynamicLinksCustomDomains</key>
 	<array>
-		<string>https://testapp.stagingpepo.com/</string>
+		<string>https://app.stagingpepo.com/</string>
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
