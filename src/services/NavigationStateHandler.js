@@ -3,58 +3,11 @@ import firebase from 'react-native-firebase';
 
 import Colors from "../theme/styles/Colors";
 import NavigationService from './NavigationService';
+import AppConfig from '../constants/AppConfig';
 
 const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory', 'FullScreenVideoCollection'];
 const typesToIgnore = ['Navigation/COMPLETE_TRANSITION', 'Navigation/MARK_DRAWER_SETTLING', 'Navigation/MARK_DRAWER_IDLE', 'Navigation/DRAWER_CLOSED'];
-const routesAnalyticsMap = {
-  InAppBrowserStack: 'InAppBrowser',
-  UserActivatingScreen: 'UserActivating',
-  SetPinScreen: 'SetPin',
-  ConfirmPinScreen: 'ConfirmPin',
-  Home: 'HomeFeed',
-  HomeScreen: 'HomeFeed',
-  Search: 'Search',
-  Notification: 'Activity',
-  Profile: 'MyProfile',
-  CaptureVideo: 'CaptureVideo',
-  TransactionScreen: 'Transaction',
-  UsersProfileScreen: 'UsersProfile',
-  SupportingListScreen: 'SupportingList',
-  SupportersListScreen: 'SupportersList',
-  UserVideoHistory: 'UsersProfile/VideoHistory',
-  CaptureImageScreen: 'CaptureImage',
-  ImageGalleryScreen: 'ImageGallery',
-  StoreProductsScreen: 'InAppPurchase',
-  ProfileEdit: 'MyProfile/Edit',
-  BioScreen: 'MyProfile/Edit/Bio',
-  EmailScreen: 'MyProfile/Edit/Email',
-  ReferAndEarn: 'ReferAndEarn',
-  Invites: 'Invites',
-  WalletSettingScreen: 'WalletSetting',
-  WalletDetails: 'WalletDetails',
-  SayThanksScreen: 'SayThanks',
-  VideoPlayer: 'VideoPlayer',
-  InviteCodeScreen: 'InviteCode',
-  AddEmailScreen: 'AddEmail',
-  InAppBrowserComponent: 'InAppBrowser',
-  FanVideoDetails: 'CaptureVideo/VideoDetails',
-  VideoTags: 'Tags',
-  FullScreenVideoCollection: 'Tags/VideoHistory',
-  ProfileDrawerNavigator: '',
-  SearchPushStack: '',
-  AuthLoading: '',
-  PinStack: '',
-  CustomTabStack: '',
-  PinPushStack : '',
-  AuthDeviceDrawer: '',
-  SearchScreen: '',
-  ProfilePushStack: '',
-  ProfileScreen: '',
-  NotificationPushStack: '',
-  NotificationScreen: '',
-  HomePushStack: '',
-  CouchMarks: ''
-};
+const routesAnalyticsMap = AppConfig.routesAnalyticsMap;
 
 let currentState = null;
 const StatusBarShow = () => {
@@ -77,16 +30,25 @@ export const NavigationStateHandler = (prevState, currentState, action) => {
 
   if(typesToIgnore.includes(action.type)) return;
 
-  console.log('Navigation action ::', action);
+  let routeName = NavigationService.findCurrentRoute(currentState);
 
   // Status Bar Handler
-  let routeName = NavigationService.findCurrentRoute(currentState);
   routesWithoutStatusBar.includes(routeName) ? StatusBarHide() : StatusBarShow();
 
   // Analytics screen name Handler
-  let analyticsAction = routesAnalyticsMap[action.routeName] && routesAnalyticsMap[action.routeName].trim();
-  if(analyticsAction && analyticsAction !== ''){
-    firebase.analytics().setCurrentScreen(analyticsAction);
+  if(action.type === 'Navigation/BACK'){
+    // To ignore back actions
+    return;
   }
+  let analyticsAction = routesAnalyticsMap[routeName] && routesAnalyticsMap[routeName].trim();
+
+  if(!analyticsAction){
+    // Unhandled action
+    console.log("Unhandled action: ", action , "Unhandled routeName: " , routeName);
+    return;
+  }
+
+  console.log('firebase.analytics().setCurrentScreen() ::', analyticsAction);
+  firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);
 
 };

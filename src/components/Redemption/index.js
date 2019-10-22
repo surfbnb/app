@@ -12,6 +12,7 @@ import {
     Keyboard,
     TouchableOpacity
   } from 'react-native';
+import firebase from 'react-native-firebase';
 
 import TouchableButton from "../../theme/components/TouchableButton";
 import Theme from '../../theme/styles';
@@ -114,7 +115,7 @@ class Redemption extends PureComponent{
     componentWillUnmount(){
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
         this.onFetchRedemptionConfigSuccess = () => {};
-        this.onFetchRedemptionConfigError = () => {};  
+        this.onFetchRedemptionConfigError = () => {};
         this.onValidatePricePointSuccess = () => {};
         this.onValidatePricePointError = () => {};
         this.onTransactionSuccess = () => {};
@@ -131,7 +132,7 @@ class Redemption extends PureComponent{
             }else{
                 this.onFetchRedemptionConfigError(res);
                 errorCallback && errorCallback( res );
-            }         
+            }
         }).catch((error) =>{
             this.onFetchRedemptionConfigError(error);
             errorCallback && errorCallback( error );
@@ -140,7 +141,7 @@ class Redemption extends PureComponent{
 
     onFetchRedemptionConfigSuccess( res ){
         this.configResponse = res;
-        this.isAppUpdate = this.__isAppUpdate(res); 
+        this.isAppUpdate = this.__isAppUpdate(res);
         this.setState({isLoading: false , pepoCorns: initialPepoCorn , btAmount: this.getPepoDisplayVal(initialPepoCorn)});
     }
 
@@ -190,17 +191,17 @@ class Redemption extends PureComponent{
 
     _keyboardShown(e) {
         let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;
-    
+
         if (this.state.bottomPadding == bottomPaddingValue) {
           return;
         }
-    
+
         this.setState({
           bottomPadding: bottomPaddingValue
         });
 
         if(Platform.OS == "android"){
-            let perVal = this.state.pepoCorns; 
+            let perVal = this.state.pepoCorns;
             this.setState({pepoCorns : "0"}, ()=> {
                 setTimeout(()=> {
                     this.setState({pepoCorns: perVal});
@@ -208,7 +209,7 @@ class Redemption extends PureComponent{
             });
         }
     }
-    
+
     _keyboardHidden(e) {
         if (this.state.bottomPadding == safeAreaBottomSpace) {
           return;
@@ -247,15 +248,15 @@ class Redemption extends PureComponent{
 
     onConfirm = () => {
         if (this.btValidationAndError()) {
-           this.beforeRedemption(); 
+           this.beforeRedemption();
            this.validatePricePoint();
         }
     };
-    
+
     btValidationAndError() {
 
         if(this.state.pepoCorns && !this.numberFormatter.isValidInputProvided(this.state.pepoCorns)){
-            //No need for error setState here , as input on change validation has already shown that error. 
+            //No need for error setState here , as input on change validation has already shown that error.
             return;
         }
 
@@ -280,8 +281,8 @@ class Redemption extends PureComponent{
             return false;
         }
         return true;
-    }  
-        
+    }
+
     beforeRedemption = () => {
         this.setState({
             exceBtnDisabled: true,
@@ -300,7 +301,7 @@ class Redemption extends PureComponent{
             if(res && res.success){
                 this.onValidatePricePointSuccess(res);
             }else{
-                this.onValidatePricePointError(res);  
+                this.onValidatePricePointError(res);
             }
         })
         .catch((error)=> {
@@ -349,14 +350,14 @@ class Redemption extends PureComponent{
           const btInDecimal = this.getTransactionalBtAmount();
           return this._executeTransaction(btInDecimal);
         }
-    
+
         if (errorMessage) {
           if (ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage) {
             //Cancel the flow.
             this.resetState();
             return;
           }
-    
+
           // Else: Show the error message.
           this.showError(errorMessage);
         }
@@ -373,7 +374,7 @@ class Redemption extends PureComponent{
           this.workflow
         );
       }
-    
+
     getSdkMetaProperties() {
         const metaProperties = clone(AppConfig.redemptionMetaProperties);
         let details = "" , separator=" ";
@@ -416,10 +417,13 @@ class Redemption extends PureComponent{
             ost_transaction_uuid: deepGet(ostWorkflowEntity, 'entity.id')
           };
     }
-    
+
     onTransactionSuccess(res) {
         this.redemptionSuccess = true;
         this.resetState();
+        let analyticsAction = AppConfig.routesAnalyticsMap.RedemptionSuccess;
+        console.log('firebase.analytics().setCurrentScreen() ::', analyticsAction);
+        firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);
     }
 
     onError(error, ostWorkflowContext , errorKey) {
@@ -429,7 +433,7 @@ class Redemption extends PureComponent{
           this.showError(errorMsg);
           return;
         }
-    
+
         const errorMsg = ostErrors.getErrorMessage(error , errorKey);
         if (errorMsg) {
           this.showError(errorMsg);
@@ -630,7 +634,7 @@ class Redemption extends PureComponent{
                         />
                     </LinearGradient>
                     <Text style={inlineStyles.balanceText}>Your Current balance: <Image style={inlineStyles.balanceTextImageSkipFont} source={pepo_icon}></Image>{' '}{Pricer.getToBT(this.state.balance)}</Text>
-                </View> 
+                </View>
             </View>
         </View>
         );
@@ -698,7 +702,7 @@ class Redemption extends PureComponent{
     onRedemptionWebViewClick = () => {
         Utilities.openRedemptionWebView();
     }
-  
+
 }
 
 

@@ -41,9 +41,9 @@
                       android:host="stagingpepo.com"/>
                 <data android:scheme="http"
                       android:host="stagingpepo.com"/>
-                <data android:host="testapp.stagingpepo.com"
+                <data android:host="app.stagingpepo.com"
                       android:scheme="http"/>
-                <data android:host="testapp.stagingpepo.com"
+                <data android:host="app.stagingpepo.com"
                       android:scheme="https"/>
             </intent-filter>
         </activity>

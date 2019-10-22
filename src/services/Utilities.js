@@ -127,7 +127,7 @@ export default {
     if (!state) return null;
     let index = state.index,
       routes = state.routes;
-    if (!routes || recursiveMaxCount > 10) {
+    if (!routes || recursiveMaxCount > 50) {
       recursiveMaxCount = 0;
       return state.routeName;
     }
@@ -191,7 +191,7 @@ export default {
     if(!text) return text ;
     val =  Number( val );
     if( val > 1  ){
-      return text+"s" ; 
+      return text+"s" ;
     }
     return text ;
   },
@@ -208,7 +208,7 @@ export default {
 
   getPepoCornsName(noOfPepoCorns){
     const pepocornsName = AppConfig.redemption.pepoCornsName,
-    length              = pepocornsName.length;   
+    length              = pepocornsName.length;
     if(noOfPepoCorns && noOfPepoCorns <= 1){
       return pepocornsName.substring(0, length - 1);
     }

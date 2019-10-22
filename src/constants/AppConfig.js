@@ -247,5 +247,51 @@ export default {
     learnMoreLink : "https://intercom.help/pepo/en/articles/3418202-what-are-pepo-unicorns"
   },
 
-  pepoCornsActivityKinds : ["CREDIT_PEPOCORN_SUCCESS" , "CREDIT_PEPOCORN_FAILURE"]
+  pepoCornsActivityKinds : ["CREDIT_PEPOCORN_SUCCESS" , "CREDIT_PEPOCORN_FAILURE"],
+
+  routesAnalyticsMap: {
+    InAppBrowserStack: 'InAppBrowser',
+    UserActivatingScreen: 'UserActivating',
+    SetPinScreen: 'SetPin',
+    ConfirmPinScreen: 'ConfirmPin',
+    Home: 'HomeFeed',
+    HomeScreen: 'HomeFeed',
+    Search: 'Search',
+    SearchScreen: 'Search',
+    Notification: 'Activity',
+    NotificationScreen: 'Activity',
+    Profile: 'MyProfile',
+    ProfileScreen: 'MyProfile',
+    CaptureVideo: 'CaptureVideo',
+    TransactionScreen: 'Transaction',
+    TransactionSuccess: 'Transaction/Success',
+    UsersProfileScreen: 'UsersProfile',
+    SupportingListScreen: 'SupportingList',
+    SupportersListScreen: 'SupportersList',
+    UserVideoHistory: 'UsersProfile/VideoHistory',
+    CaptureImageScreen: 'CaptureImage',
+    ImageGalleryScreen: 'ImageGallery',
+    StoreProductsScreen: 'InAppPurchase',
+    ProfileEdit: 'MyProfile/Edit',
+    BioScreen: 'MyProfile/Edit/Bio',
+    EmailScreen: 'MyProfile/Edit/Email',
+    ReferAndEarn: 'ReferAndEarn',
+    Invites: 'Invites',
+    WalletSettingScreen: 'WalletSetting',
+    WalletDetails: 'WalletDetails',
+    SayThanksScreen: 'SayThanks',
+    VideoPlayer: 'VideoPlayer',
+    InviteCodeScreen: 'InviteCode',
+    AddEmailScreen: 'AddEmail',
+    InAppBrowserComponent: 'InAppBrowser',
+    FanVideoDetails: 'CaptureVideo/VideoDetails',
+    VideoTags: 'Tags',
+    FullScreenVideoCollection: 'Tags/VideoHistory',
+    RedemptiomScreen: 'Redemption',
+    RedemptionSuccess: 'Redemption/Success',
+    CouchMarks: 'CouchMarks',
+    AuthDeviceDrawer: 'DeviceUnauthorized',
+    TwitterLogin: 'TwitterLogin'
+  }
+
 };

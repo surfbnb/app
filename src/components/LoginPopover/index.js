@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, Modal, Text, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import TouchableButton from '../../theme/components/TouchableButton';
+import firebase from 'react-native-firebase';
 
+import TouchableButton from '../../theme/components/TouchableButton';
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
 import Store from '../../store';
@@ -13,6 +14,7 @@ import modalCross from '../../assets/modal-cross-icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
+import AppConfig from '../../constants/AppConfig';
 
 let TwitterAuthService;
 import('../../services/TwitterAuthService').then((imports) => {
@@ -165,6 +167,9 @@ export const LoginPopover = connect(mapStateToProps)(loginPopover);
 export const LoginPopoverActions = {
   show: () => {
     Store.dispatch(showLoginPopover());
+    let analyticsAction = AppConfig.routesAnalyticsMap.TwitterLogin;
+    console.log('firebase.analytics().setCurrentScreen() ::', analyticsAction);
+    firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);
   },
   hide: () => {
     Store.dispatch(hideLoginPopover());
