@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.9.3</string>
+	<string>0.9.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -26,6 +26,16 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>twitterkit-NEo4gEXzdQZaoTsqzpZvepfKb</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.pepo.staging</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.pepo.staging</string>
 			</array>
 		</dict>
 	</array>
@@ -47,6 +57,10 @@
 	</dict>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://app.stagingpepo.com/</string>
+	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>twitter</string>

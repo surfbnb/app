@@ -92,8 +92,8 @@ let stylesMap = {
   },
 
   sectionHeaderView: {
-    borderTopColor: '#eee',
-    borderTopWidth: 1,
+    // borderTopColor: '#eee',
+    // borderTopWidth: 1,
     marginHorizontal: 15,
     paddingTop: 15
   },

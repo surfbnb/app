@@ -214,6 +214,11 @@ class ReduxGetters {
     return deepGet(state, `user_video_entities.id_${id}.payload.user_id`);
   }
 
+  getTagsVideoPayload(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `tag_video_entities.id_${id}.payload`)
+  }
+
   getProfileImage(id, state) {
     state = state || Store.getState();
     return (
@@ -398,6 +403,11 @@ class ReduxGetters {
   getPepocornBalance(state){
     state = state || Store.getState();
     return deepGet(state,  "pepocorn.balance" , 0);
+  }
+
+  getHashTag(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `tag_entities.id_${id}`);
   }
 
 }

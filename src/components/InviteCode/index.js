@@ -30,7 +30,7 @@ class InviteCodeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inviteCode: this.props.invite_code || null,
+      inviteCode: null,
       isSubmitting: false,
       focus: false,
       general_error: null,
@@ -72,7 +72,7 @@ class InviteCodeScreen extends React.Component {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
 
     //Dont delete this code. This is a hack for android keyboard initial jump.
-    setTimeout(() => this.setState({inviteCode: "" , focus: true}), 0);
+    setTimeout(() => this.setState({inviteCode: this.props.invite_code || "", focus: true}), 0);
   }
 
   componentWillUnMount() {

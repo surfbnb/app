@@ -24,7 +24,7 @@ class UserVideoHistoryScreen extends PureComponent{
 
     constructor(props){
         super(props);
-        this.userId =  this.props.navigation.getParam("userId") ;
+        this.userId =  this.props.navigation.getParam("userId");
         this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory(), {} , this.props.navigation.getParam("fetchServices"));
         this.paginationEvent = this.videoHistoryPagination.event;
         this.currentIndex = this.props.navigation.getParam("currentIndex");
@@ -182,7 +182,6 @@ class UserVideoHistoryScreen extends PureComponent{
                     refreshing={this.state.refreshing}
                     keyExtractor={this._keyExtractor}
                     ref={(ref)=> {this.flatlistRef =  ref }}
-
                     onEndReachedThreshold={7}
                     onViewableItemsChanged={this.onViewableItemsChanged}
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}

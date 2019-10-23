@@ -89,8 +89,9 @@ class TagsInput extends PureComponent {
 
   openSuggestionsPanel(res) {
     if (!this.isTrackingStarted) return;
-    if (res && res.data && res.data.tags) {
-      this.setState({ data: res.data.tags });
+    if (res && res.success && res.data ) {
+      let resultType = res.data.result_type;
+      resultType && this.setState({ data: res.data[resultType]});
     }
   }
 

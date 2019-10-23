@@ -214,7 +214,7 @@ class VideoWrapper extends PureComponent {
             <Video
               poster={this.props.videoImgUrl}
               posterResizeMode={this.props.posterResizeMode || 'cover'}
-              style={[inlineStyles.fullHeightWidth, this.props.style]}
+              style={[inlineStyles.fullHeightWidthSkipFont, this.props.style]}
               paused={this.isPaused()}
               resizeMode={this.props.resizeMode || 'cover'}
               source={{ uri: this.props.videoUrl }}

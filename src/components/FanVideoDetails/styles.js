@@ -1,7 +1,7 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 import { Dimensions } from 'react-native';
-import { Header } from 'react-navigation';
+import { Header } from 'react-navigation-stack';
 
 import { getStatusBarHeight, getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 
@@ -54,7 +54,7 @@ let stylesMap = {
   suggestionTextWrapper: {
     marginTop: 20
   },
-  linkText: { color: Colors.softBlue, flex: 1}
+  linkText: { color: Colors.softBlue, flex: 1 }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

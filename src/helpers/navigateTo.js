@@ -1,16 +1,24 @@
 import {Linking, Platform} from 'react-native';
 
 import deepGet from 'lodash/get';
-import CurrentUser from '../models/CurrentUser';
 import NavigationService from '../services/NavigationService';
 import InAppBrowser from '../services/InAppBrowser';
 import { LoginPopoverActions } from '../components/LoginPopover';
-import Utilities from '../services/Utilities';
 import AppConfig from '../constants/AppConfig';
 import { upsertInviteCode } from '../actions';
 import Store from '../store';
 import PepoApi from "../services/PepoApi";
 import DataContract from '../constants/DataContract';
+
+let CurrentUser;
+import('../models/CurrentUser').then((imports) => {
+  CurrentUser = imports.default;
+});
+
+let Utilities;
+import('../services/Utilities').then((imports) => {
+  Utilities = imports.default;
+});
 
 class NavigateTo {
   constructor() {
@@ -48,6 +56,8 @@ class NavigateTo {
       this.goToSupport();
     } else if (goToObject && goToObject.pn === 'sp'){
       this.goToStore();
+    } else if (goToObject && goToObject.pn == 't'){
+      this.goToTagVideoPage(goToObject.v.tid, payload);
     }
   }
 
@@ -71,7 +81,7 @@ class NavigateTo {
         .get()
         .then((response)=> {
           if(response && response.success){
-            let resultType = deepGet(response , `${DataContract.common.resultType}`) , 
+            let resultType = deepGet(response , `${DataContract.common.resultType}`) ,
                 data = deepGet(response, `data.${resultType}` ),
                 url = data && data.url;
             ;
@@ -115,6 +125,12 @@ class NavigateTo {
     payload = payload || {};
     payload['userId'] = profileId;
     this.__push('SupportingListScreen', payload);
+  };
+
+  goToTagVideoPage = (tagId, payload) => {
+    payload = payload || {};
+    payload['tagId'] = tagId;
+    this.__push('VideoTags', payload);
   };
 
   goToSupporters = (profileId, payload) => {
