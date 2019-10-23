@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Linking } from 'react-native';
 import  deepGet from "lodash/get";
 import {connect} from "react-redux";
+import firebase from 'react-native-firebase';
 
 import CurrentUser from '../models/CurrentUser';
 import PepoApi from "./PepoApi";
@@ -19,15 +20,34 @@ class UniversalLinksManager extends PureComponent {
 
         // getInitialURL when app is closed and is being launched by universal link
         Linking.getInitialURL().then((url) => {
+            console.log('Linking.getInitialURL() ::', url);
             url && this._processURL(url);
         });
 
+        // getInitialLink when app is closed and is being launched by dynamic link
+        firebase.links()
+            .getInitialLink()
+            .then((url) => {
+                console.log('firebase.links().getInitialLink() ::', url);
+                url && this._processURL(url);
+            });
+
         // addEventListener on 'url' when app is in background and launched by universal link
-        Linking.addEventListener('url', this._handleOpenURL);
+        Linking.addEventListener('url', (e) => {
+            console.log('Linking :: event :: url ::', e.url);
+            this._handleOpenURL(e);
+        });
+
+        // onLink on 'url' when app is in background and launched by dynamic link
+        this.removeOnLink = firebase.links().onLink((url) => {
+            console.log('firebase.links() :: onLink() ::', url);
+            this._processURL(url);
+        });
     }
 
     componentWillUnmount() {
         Linking.removeEventListener('url', this._handleOpenURL);
+        this.removeOnLink();
     }
 
     _handleOpenURL(event) {

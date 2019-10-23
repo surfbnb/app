@@ -126,11 +126,16 @@ class ProfileScreen extends PureComponent {
   }
 
   onEdit = () => {
+
     this.props.navigation.push('ProfileEdit', {
       email: this.state.emailAddress,
       isVerifiedEmail: this.state.isVerifiedEmail ,
       onEmailSave : this.onEmailSave
     });
+
+
+
+
   };
 
   onEmailSave = ( email ) => {

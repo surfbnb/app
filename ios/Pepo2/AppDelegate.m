@@ -16,13 +16,17 @@
 #import <Firebase.h>
 #import "RNFirebaseMessaging.h"
 #import "RNFirebaseNotifications.h"
+#import "RNFirebaseLinks.h"
 #import <TrustKit/TrustKit.h>
 #import "React/RCTLinkingManager.h"
+
+static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIROptions defaultOptions].deepLinkURLScheme = CUSTOM_URL_SCHEME;
   [FIRApp configure];
   [RNFirebaseNotifications configure];
   [application registerForRemoteNotifications];
@@ -92,16 +96,28 @@
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
-  return [[Twitter sharedInstance] application:app openURL:url options:options];
+  BOOL handled;
+  
+  if ([[url absoluteString] hasPrefix:@"twitterkit-"]) {
+    handled = [[Twitter sharedInstance] application:app openURL:url options:options];
+     if (handled) {
+       return handled;
+     }
+  }
+ 
+  handled = [[RNFirebaseLinks instance] application:app openURL:url options:options];
+  if (handled) {
+    return handled;
+  }
+  
+  handled = [RCTLinkingManager application:app openURL:url options:options];
+  if (handled) {
+    return handled;
+  }
+  
+  return YES;
 }
 
-//This is used if iOS version is 8.0 or less. Most probably this one not needed. As we are using universal linking.
-//- (BOOL)application:(UIApplication *)application
-//            openURL:(NSURL *)url
-//            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-//{
-//  return [RCTLinkingManager application:application openURL:url options:options];
-//}
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
@@ -112,20 +128,22 @@
 #endif
 }
 
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-  return [RCTLinkingManager application:application openURL:url
-                      sourceApplication:sourceApplication annotation:annotation];
-}
-
 - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
  restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
 {
-  return [RCTLinkingManager application:application
-                   continueUserActivity:userActivity
-                     restorationHandler:restorationHandler];
+  BOOL handled = [[RNFirebaseLinks instance] application:application
+                                    continueUserActivity:userActivity
+                                      restorationHandler:restorationHandler];
+  
+  if ( handled ) {
+    return handled;
+  }
+
+  handled = [RCTLinkingManager application:application
+                           continueUserActivity:userActivity
+                             restorationHandler:restorationHandler];
+
+  return handled;
 }
 
 

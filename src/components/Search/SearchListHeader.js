@@ -10,27 +10,52 @@ class SearchListHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: ''
+        isEmpty: true
     };
+    this.textInputRef = null;
   }
 
   onChangeText = (text) => {
-    this.props.setSearchParams(text);
-    this.setState({
-      value: text || ''
-    });
+    clearTimeout(this.searchThrottle);
+    this.searchThrottle = setTimeout(()=>{
+        this.updateIsEmptyState( text );
+        this.props.setSearchParams(text);
+    }, 300);
   };
 
   clearSearch = () => {
     this.props.setSearchParams("");
-    this.setState({
-      value: ''
-    });
+    this.setInputText("");
   };
 
-  render() {
+    setTextInputRef = (textInputRef) => {
+        this.textInputRef = textInputRef;
+        if ( this.props.initialSearchText ) {
+            this.setInputText( this.props.initialSearchText );
+        }
+    };
+
+    updateIsEmptyState = ( searchText ) => {
+        const isEmpty = !searchText || searchText.length < 1;
+        if( this.state.isEmpty !== isEmpty) {
+            this.setState({
+                isEmpty: isEmpty
+            });
+        }
+    };
+
+    setInputText = ( text ) => {
+        if ( this.textInputRef ) {
+            this.textInputRef.setNativeProps({
+                "text": text
+            });
+        }
+        this.updateIsEmptyState( text );
+    };
+
+    render() {
     return (
-      <View style={{ position: 'relative', justifyContent: 'center', marginBottom: 10 }}>
+      <View style={{ position: 'relative', justifyContent: 'center', paddingHorizontal: 10 }}>
         <TouchableOpacity
           style={[
             styles.iconsPos,
@@ -44,18 +69,18 @@ class SearchListHeader extends Component {
         </TouchableOpacity>
         <TextInput
           editable={true}
-          ref="search_query"
+          ref={this.setTextInputRef}
           textContentType="none"
-          value={this.state.value}
+          //value={this.state.value}
           style={[Theme.TextInput.textInputStyle, styles.textInputUi]}
-          placeholder="Search People / Usernames"
+          placeholder="Search people or tags"
           returnKeyType="done"
           returnKeyLabel="Done"
           placeholderTextColor="rgba(42, 41, 59, 0.4)"
           onChangeText={this.onChangeText}
           autocomplete="off"
         />
-        {this.state.value ? (
+        {!this.state.isEmpty ? (
           <TouchableOpacity
             style={[styles.iconsPos, { right: 0, justifyContent: 'center' }]}
             onPress={this.clearSearch}

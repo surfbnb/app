@@ -8,13 +8,12 @@ import {
   Image,
   Keyboard,
   BackHandler,
-  TouchableWithoutFeedback,
-  NativeModules,
-  Platform
+  TouchableWithoutFeedback
 } from 'react-native';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
 import BigNumber from 'bignumber.js';
 import clone from 'lodash/clone';
+import firebase from 'react-native-firebase';
 
 import FormInput from '../../theme/components/FormInput';
 import Theme from '../../theme/styles';
@@ -24,7 +23,7 @@ import deepGet from 'lodash/get';
 import PepoApi from '../../services/PepoApi';
 import CurrentUser from '../../models/CurrentUser';
 import utilities from '../../services/Utilities';
-import appConfig from '../../constants/AppConfig';
+import AppConfig from '../../constants/AppConfig';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import inlineStyles from './Style';
 import { ostErrors } from '../../services/OstErrors';
@@ -37,7 +36,6 @@ import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
 import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
 import ReduxGetters from '../../services/ReduxGetters';
-import DeviceInfo from 'react-native-device-info';
 import PepoNativeHelper from '../../helpers/PepoNativeHelper';
 
 const bottomSpace = getBottomSpace([true]),
@@ -405,7 +403,7 @@ class TransactionScreen extends Component {
       CurrentUser.getOstUserId(),
       [this.toUser.ost_token_holder_address],
       [btInDecimal],
-      appConfig.ruleTypeMap.directTransfer,
+      AppConfig.ruleTypeMap.directTransfer,
       this.getSdkMetaProperties(),
       this.workflow
     );
@@ -413,7 +411,7 @@ class TransactionScreen extends Component {
 
   getSdkMetaProperties() {
     let details = '';
-    const metaProperties = clone(appConfig.metaProperties);
+    const metaProperties = clone(AppConfig.metaProperties);
     if (this.videoId) {
       metaProperties['name'] = 'video';
       details = `vi_${this.videoId} `;
@@ -481,6 +479,9 @@ class TransactionScreen extends Component {
       });
       this.resetState();
     }, 300);
+    let analyticsAction = AppConfig.routesAnalyticsMap.TransactionSuccess;
+    console.log('firebase.analytics().setCurrentScreen() ::', analyticsAction);
+    firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);
   }
 
   resetState() {

@@ -7,7 +7,6 @@ import reduxGetters from './ReduxGetters';
 import appConfig from '../constants/AppConfig';
 
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
-import CurrentUser from '../models/CurrentUser';
 import { LoginPopoverActions } from '../components/LoginPopover';
 import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
@@ -15,6 +14,11 @@ import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScree
 import AppConfig from '../constants/AppConfig';
 import PepoApi from './PepoApi';
 import DataContract from '../constants/DataContract';
+
+let CurrentUser;
+import('../models/CurrentUser').then((imports) => {
+  CurrentUser = imports.default;
+});
 
 let os = Platform.OS || "";
 os =  os.toLowerCase();
@@ -123,7 +127,7 @@ export default {
     if (!state) return null;
     let index = state.index,
       routes = state.routes;
-    if (!routes || recursiveMaxCount > 10) {
+    if (!routes || recursiveMaxCount > 50) {
       recursiveMaxCount = 0;
       return state.routeName;
     }
@@ -187,7 +191,7 @@ export default {
     if(!text) return text ;
     val =  Number( val );
     if( val > 1  ){
-      return text+"s" ; 
+      return text+"s" ;
     }
     return text ;
   },
@@ -204,7 +208,7 @@ export default {
 
   getPepoCornsName(noOfPepoCorns){
     const pepocornsName = AppConfig.redemption.pepoCornsName,
-    length              = pepocornsName.length;   
+    length              = pepocornsName.length;
     if(noOfPepoCorns && noOfPepoCorns <= 1){
       return pepocornsName.substring(0, length - 1);
     }
