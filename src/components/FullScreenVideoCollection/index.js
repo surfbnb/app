@@ -14,6 +14,7 @@ class FullScreenVideoCollection extends PureComponent{
 
     static navigationOptions = (options) => {
         return {
+            headerBackTitle: null,
             header: null
         };
     };
