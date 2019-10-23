@@ -90,7 +90,7 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>Application uses calender</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Allow access to your camera</string>
+	<string>The app allows you to record and share 30 second video updates.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Applications uses Face ID to verify your identity</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -98,7 +98,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Application uses location</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Please allow access to microphone</string>
+	<string>The app allows you to record and share 30 second video updates.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Application uses accelerometer</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
