@@ -283,7 +283,7 @@ class TopsList extends PureComponent {
       return null;
     } else {
       return <View style={{padding: 12}}>
-        <Text style={{color:'rgb(42, 41, 59)', fontFamily:'AvenirNext-Medium', fontSize:14 }}>{section.title}</Text>
+        <Text style={{color:'rgb(42, 41, 59)', fontFamily:'AvenirNext-DemiBold', fontSize:14 }}>{section.title}</Text>
       </View>;
 
     }

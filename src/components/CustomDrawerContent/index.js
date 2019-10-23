@@ -264,7 +264,7 @@ class CustomDrawerContent extends Component {
           })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
               <Image style={{ height: 29, width: 29, resizeMode: 'contain' }} source={helpIcon} />
-              <Text style={styles.item}>Support</Text>
+              <Text style={styles.item}>Support & Feedback</Text>
             </View>
           </TouchableOpacity>
 
@@ -282,7 +282,7 @@ class CustomDrawerContent extends Component {
           })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
               <Image style={{ height: 24, width: 25.5, resizeMode: 'contain' }} source={tac} />
-              <Text style={styles.item}>Terms and conditions</Text>
+              <Text style={styles.item}>Terms and Conditions</Text>
             </View>
           </TouchableOpacity>
 
@@ -328,7 +328,7 @@ class CustomDrawerContent extends Component {
       <TouchableOpacity onPress={this.initWallet}>
         <View style={[styles.itemParent]}>
           <Image style={{ height: 26.6, width: 29, resizeMode: 'contain'  }} source={pepoAmountWallet} />
-          <Text style={styles.item}>Wallet settings</Text>
+          <Text style={styles.item}>Wallet Settings</Text>
         </View>
       </TouchableOpacity>
     );

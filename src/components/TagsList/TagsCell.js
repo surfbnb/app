@@ -13,7 +13,7 @@ const handleTagPress = (tagId, navigation) => {
 
 let TagCell =  (props) => {
   return <TouchableWithoutFeedback onPress={() => handleTagPress(props.tagId, props.navigation)}>
-    <View style={{padding:10}} ><Text style={{fontSize: 16}}> #{props.text}</Text></View>
+    <View style={{padding:10}} ><Text style={{fontSize: 14}}> #{props.text}</Text></View>
   </TouchableWithoutFeedback>;
 };
 
