@@ -257,8 +257,11 @@ class TransactionScreen extends Component {
       return ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error');
     }
     btAmount = btAmount && Number(btAmount);
-    if (!btAmount || btAmount < validMinAmount || btAmount > this.state.balance) {
+    if (!btAmount || btAmount < validMinAmount) {
       return ostErrors.getUIErrorMessage('bt_amount_error');
+    }
+    if( btAmount && btAmount > this.state.balance ){
+      return ostErrors.getUIErrorMessage('bt_exceeds_bal_amount_error');
     }
 
     return undefined;

@@ -39,7 +39,8 @@ const UIErros = {
   redemption_error : "Failed to redeem, please try again later",
   max_pepocorns: `Sorry, you don't have enough Pepo Coins to buy this many ${Utilities.getPepoCornsName()}`,
   price_point_validation_failed: `Sorry, you don't have enough Pepo Coins to buy this many ${Utilities.getPepoCornsName()}`,
-  min_pepocorns: `Minimum amount allowed is 1 ${Utilities.getPepoCornsName()}.`
+  min_pepocorns: `Minimum amount allowed is 1 ${Utilities.getPepoCornsName()}.`,
+  bt_exceeds_bal_amount_error : `Sorry, you don't have enough Pepo Coins for this transactions.`
 };
 
 const UIWhitelistedErrorCode = {
