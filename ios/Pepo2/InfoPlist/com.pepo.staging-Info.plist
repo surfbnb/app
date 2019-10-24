@@ -1,144 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>Pepo Staging</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>0.9.4</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>twitterkit-NEo4gEXzdQZaoTsqzpZvepfKb</string>
-			</array>
-		</dict>
-	</array>
-	<key>CFBundleVersion</key>
-	<string>18</string>
-	<key>Fabric</key>
 	<dict>
-		<key>APIKey</key>
-		<string>e500ef3e75c9fb12689f830748bd17e7bfae62a5</string>
-		<key>Kits</key>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>en</string>
+		<key>CFBundleDisplayName</key>
+		<string>Pepo Staging</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>$(PRODUCT_NAME)</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>0.9.4</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleURLTypes</key>
 		<array>
 			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>twitterkit-NEo4gEXzdQZaoTsqzpZvepfKb</string>
+				</array>
+			</dict>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>com.pepo.staging</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.pepo.staging</string>
+				</array>
 			</dict>
 		</array>
-	</dict>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<true/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>twitter</string>
-		<string>twitterauth</string>
-	</array>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-		<key>NSExceptionDomains</key>
+		<key>CFBundleVersion</key>
+		<string>18</string>
+		<key>Fabric</key>
 		<dict>
-			<key>localhost</key>
+			<key>APIKey</key>
+			<string>e500ef3e75c9fb12689f830748bd17e7bfae62a5</string>
+			<key>Kits</key>
+			<array>
+				<dict>
+					<key>KitInfo</key>
+					<dict/>
+					<key>KitName</key>
+					<string>Crashlytics</string>
+				</dict>
+			</array>
+		</dict>
+		<key>FirebaseAppDelegateProxyEnabled</key>
+		<true/>
+		<key>FirebaseDynamicLinksCustomDomains</key>
+		<array>
+			<string>https://app.stagingpepo.com/</string>
+		</array>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>twitter</string>
+			<string>twitterauth</string>
+		</array>
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+			<key>NSExceptionDomains</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
+				<key>localhost</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+				</dict>
 			</dict>
 		</dict>
+		<key>NSAppleMusicUsageDescription</key>
+		<string>Application uses apple music</string>
+		<key>NSBluetoothAlwaysUsageDescription</key>
+		<string>Application uses bluetooth</string>
+		<key>NSBluetoothPeripheralUsageDescription</key>
+		<string>Application users bluetooth</string>
+		<key>NSCalendarsUsageDescription</key>
+		<string>Application uses calender</string>
+		<key>NSCameraUsageDescription</key>
+		<string>The app allows you to record and share 30 second video updates.</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Applications uses Face ID to verify your identity</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>Application uses location</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Application uses location</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>The app allows you to record and share 30 second video updates.</string>
+		<key>NSMotionUsageDescription</key>
+		<string>Application uses accelerometer</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>Please allow access to photo library to select your profile picture</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Please allow access to photo library to select your profile picture</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>Application uses speech recognition</string>
+		<key>UIAppFonts</key>
+		<array>
+			<string>Lato-Black.ttf</string>
+			<string>Lato-BlackItalic.ttf</string>
+			<string>Lato-Bold.ttf</string>
+			<string>Lato-BoldItalic.ttf</string>
+			<string>Lato-Hairline.ttf</string>
+			<string>Lato-HairlineItalic.ttf</string>
+			<string>Lato-Italic.ttf</string>
+			<string>Lato-Light.ttf</string>
+			<string>Lato-LightItalic.ttf</string>
+			<string>Lato-Regular.ttf</string>
+			<string>AntDesign.ttf</string>
+			<string>Entypo.ttf</string>
+			<string>EvilIcons.ttf</string>
+			<string>Feather.ttf</string>
+			<string>FontAwesome.ttf</string>
+			<string>FontAwesome5_Brands.ttf</string>
+			<string>FontAwesome5_Regular.ttf</string>
+			<string>FontAwesome5_Solid.ttf</string>
+			<string>Foundation.ttf</string>
+			<string>Ionicons.ttf</string>
+			<string>MaterialCommunityIcons.ttf</string>
+			<string>MaterialIcons.ttf</string>
+			<string>Octicons.ttf</string>
+			<string>Roboto_medium.ttf</string>
+			<string>Roboto.ttf</string>
+			<string>rubicon-icon-font.ttf</string>
+			<string>SimpleLineIcons.ttf</string>
+			<string>Zocial.ttf</string>
+		</array>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>remote-notification</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIRequiredDeviceCapabilities</key>
+		<array>
+			<string>armv7</string>
+		</array>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+		</array>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false/>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Application uses apple music</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Application uses bluetooth</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Application users bluetooth</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>Application uses calender</string>
-	<key>NSCameraUsageDescription</key>
-	<string>The app allows you to record and share 30 second video updates.</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Applications uses Face ID to verify your identity</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Application uses location</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Application uses location</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>The app allows you to record and share 30 second video updates.</string>
-	<key>NSMotionUsageDescription</key>
-	<string>Application uses accelerometer</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Please allow access to photo library to select your profile picture</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please allow access to photo library to select your profile picture</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Application uses speech recognition</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Lato-Black.ttf</string>
-		<string>Lato-BlackItalic.ttf</string>
-		<string>Lato-Bold.ttf</string>
-		<string>Lato-BoldItalic.ttf</string>
-		<string>Lato-Hairline.ttf</string>
-		<string>Lato-HairlineItalic.ttf</string>
-		<string>Lato-Italic.ttf</string>
-		<string>Lato-Light.ttf</string>
-		<string>Lato-LightItalic.ttf</string>
-		<string>Lato-Regular.ttf</string>
-		<string>AntDesign.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>Roboto_medium.ttf</string>
-		<string>Roboto.ttf</string>
-		<string>rubicon-icon-font.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
-	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-</dict>
 </plist>

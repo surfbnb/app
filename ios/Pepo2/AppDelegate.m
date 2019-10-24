@@ -21,6 +21,8 @@
 #import "React/RCTLinkingManager.h"
 
 static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
+//static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.v2.sandbox";
+//static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.v2.production";
 
 @implementation AppDelegate
 
