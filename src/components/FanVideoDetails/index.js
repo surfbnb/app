@@ -26,6 +26,7 @@ import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { StackActions } from 'react-navigation';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -126,7 +127,9 @@ class FanVideoDetails extends Component {
     Store.dispatch(
       upsertRecordedVideo({ video_desc: this.state.videoDesc, video_link: this.state.videoLink, do_upload: true })
     );
-    this.props.navigation.navigate('HomeScreen');
+    this.props.navigation.dispatch(StackActions.popToTop());
+    this.props.navigation.dispatch(StackActions.popToTop());
+    this.props.navigation.navigate('HomeScreen'); 
   };
 
   onChangeDesc = (desc) => {

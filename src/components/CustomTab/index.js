@@ -57,11 +57,7 @@ function loginInFlow(navigation, tab) {
     return;
   }
   if (currentTabIndex == undefined || currentTabIndex == null) return;
-  if (tabBeforeCaptureVideo != null &&  currentTabIndex == tabBeforeCaptureVideo ){    
-    navigation.dispatch(StackActions.popToTop());
-    navigation.dispatch(StackActions.popToTop());
-    tabBeforeCaptureVideo = null;   
-  } else if (previousTabIndex !== currentTabIndex) {       
+  if (previousTabIndex !== currentTabIndex) {       
     tab.rootStack == 'Notification' && refreshActivity(tab.childStack);
     navigation.navigate(tab.rootStack);
   } else if (utilities.getLastChildRoutename(navigation.state) !== tab.childStack) {
