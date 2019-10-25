@@ -172,7 +172,20 @@ class NotificationItem extends Component {
     }else if( AppConfig.pepoCornsActivityKinds.includes(this.props.kind)){
       return <Image source={pepoCornsImg} style={styles.systemNotificationIconSkipFont} />
     }else{
-      return <ProfilePicture pictureId={this.props.pictureId} />;
+      let includesObj  = this.props.heading && this.props.heading["includes"] || {} ,
+          userObj ;
+      for(let key in includesObj ){
+        userObj = includesObj[key] || null;
+        break ;
+      }
+      if(userObj){
+        return <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.includesTextNavigate(userObj))}>
+                  <View><ProfilePicture pictureId={this.props.pictureId} /></View>
+               </TouchableWithoutFeedback>
+      }else {
+        return <ProfilePicture pictureId={this.props.pictureId} />;
+      }
+
     }
   }
 
