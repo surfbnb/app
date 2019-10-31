@@ -35,6 +35,7 @@ class VideoWrapper extends PureComponent {
     this.isPixelCalledOnEnd = false;
     this.minTimeConsideredForView = 1;
     this.source = {};
+    this.currentPauseStatus = true; //Default value.
 
     this.videoContext = {
       userId: null,
@@ -113,6 +114,11 @@ class VideoWrapper extends PureComponent {
   playVideo() {
     if (this.props.isActive && this.state.paused) {
       this.setState({ paused: false });
+      return;
+    } 
+    if ( this.isPaused() != this.currentPauseStatus ) {
+      //Force render.
+      this.forceUpdate();
     }
   }
 
@@ -206,6 +212,13 @@ class VideoWrapper extends PureComponent {
     this.isPixelCalledOnEnd = true;
   };
 
+  getIsVideoPausedStatus = () => {
+    //NOTE: NEVER CALL THIS METHOD FROM ANYWHERE ELSE>
+    //CALLED from paused prop of video.
+    this.currentPauseStatus = this.isPaused();
+    return this.currentPauseStatus;
+  }
+
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.onPausePlayBtnClicked}>
@@ -215,7 +228,7 @@ class VideoWrapper extends PureComponent {
               poster={this.props.videoImgUrl}
               posterResizeMode={this.props.posterResizeMode || 'cover'}
               style={[inlineStyles.fullHeightWidthSkipFont, this.props.style]}
-              paused={this.isPaused()}
+              paused={this.getIsVideoPausedStatus()}
               resizeMode={this.props.resizeMode || 'cover'}
               source={{ uri: this.props.videoUrl }}
               repeat={this.props.repeat || true}
