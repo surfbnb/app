@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
 import inlineStyles from './styles';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import reduxGetter from '../../services/ReduxGetters';
 
 import multipleClickHandler from '../../services/MultipleClickHandler';
@@ -32,30 +32,57 @@ class BottomStatus extends PureComponent {
 
   onLinkClick = () => {
     InAppBrowser.openBrowser(this.props.link);
-  }
+  };
+
+  onTagPressed = (tag) => {
+    let videoDescriptionId = reduxGetter.getVideoDescriptionId(this.props.videoId);
+    let entity = reduxGetter.getTappedIncludesEntity(videoDescriptionId, tag);
+    this.props.onDescriptionClick && this.props.onDescriptionClick(entity, tag);
+  };
 
   render() {
     return (
       <View style={inlineStyles.bottomBg}>
-        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onWrapperClick())} pointerEvents={'auto'}>
+
           <View style={{ paddingTop: 8, paddingBottom: 5 }}>
+          <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onWrapperClick())} pointerEvents={'auto'}>
             <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
               {`@${this.props.userName}`}
             </Text>
+            </TouchableWithoutFeedback>
             {this.props.description ? (
               <Text
                 style={[{ fontSize: 14, flexWrap: 'wrap', fontFamily: 'AvenirNext-Regular', textAlign: 'left' }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={3}
               >
-                {this.props.description}
+                {this.props.description.split(' ').map((item) => {
+                  if (item.startsWith('#')) {
+                    return(
+                      <Text
+                        style={[inlineStyles.bottomBgTxt,{
+                          fontSize: 14,
+                          flexWrap: 'wrap',
+                          fontFamily: 'AvenirNext-Regular',
+                          textAlign: 'left'
+                        }]}
+                        numberOfLines={1}
+                        onPress={()=>{this.onTagPressed(item)}}
+                      >
+                        {item + " "}
+                      </Text>
+                    );
+                  }else {
+                    return(<Text> {item + " "} </Text>);
+                  }
+                })}
               </Text>
             ) : (
                 <React.Fragment />
               )
             }
           </View>
-        </TouchableWithoutFeedback>
+
         {this.props.link ? (
           <TouchableWithoutFeedback
             onPress={multipleClickHandler(() => {
@@ -76,7 +103,7 @@ class BottomStatus extends PureComponent {
         )}
       </View>
     );
-  }
+  };
 }
 
 export default connect(mapStateToProps)(withNavigation(BottomStatus));
