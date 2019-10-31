@@ -117,6 +117,12 @@ class ReduxGetters {
     return deepGet(state, `video_stat_entities.id_${id}.description_id`);
   }
 
+  getTappedIncludesEntity(videoId, tappedText) {
+    let state = Store.getState();
+    return deepGet(state, `video_description_entities.id_${videoId}.includes.${tappedText}`);
+  }
+
+
   getVideoLink(id, state) {
     state = state || Store.getState();
     return unescape(deepGet(state, `link_entities.id_${id}.url`));
