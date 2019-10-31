@@ -9,13 +9,14 @@ class TagsInput extends PureComponent {
     super(props);
     this.state = {
       data: [],
-      value: this.props.initialValue,
       keyword: ''
     };
+    this.value = this.props.initialValue;
     this.reqTimer = 0;
     this.wordIndex = -1;
     this.indexWord = null;
     this.isTrackingStarted = false;
+    this.customTextInputRef = null;
   }
 
   fetchHashTags = (keyword) => {
@@ -66,10 +67,15 @@ class TagsInput extends PureComponent {
     this.changeValue(val);
   };
 
+  setCustomInputRef = ( ref )=> {
+    this.customTextInputRef = ref;
+  }
+
   changeValue = (val) => {
-    this.setState({
-      value: val
+    this.customTextInputRef.textInputRef.setNativeProps({
+      "text": val
     });
+    this.value = val;
     this.props.onChangeVal(val);
   };
 
@@ -123,11 +129,11 @@ class TagsInput extends PureComponent {
 
   onSuggestionTap(item) {
     this.closeSuggestionsPanel();
-    const wordToReplace = this.getWordAtIndex(this.state.value, this.wordIndex),
+    const wordToReplace = this.getWordAtIndex(this.value, this.wordIndex),
       isHashTag = this.isHashTag(wordToReplace);
     if (isHashTag) {
-      const startIndex = this.getStartIndex(this.state.value, this.wordIndex),
-        endIndex = this.getEndIndex(this.state.value, this.wordIndex),
+      const startIndex = this.getStartIndex(this.value, this.wordIndex),
+        endIndex = this.getEndIndex(this.value, this.wordIndex),
         replaceString = ` #${item.text} `,
         newString = this.replaceBetween(startIndex, endIndex, replaceString);
       this.changeValue(newString);
@@ -135,7 +141,7 @@ class TagsInput extends PureComponent {
   }
 
   replaceBetween(start, end, replaceString) {
-    return this.state.value.substring(0, start) + replaceString + this.state.value.substring(end);
+    return this.value.substring(0, start) + replaceString + this.value.substring(end);
   }
 
   getStartIndex(text, index) {
@@ -175,10 +181,11 @@ class TagsInput extends PureComponent {
         renderItem={this._renderItem}
         ListHeaderComponent={
           <CustomTextInput
+            ref={this.setCustomInputRef}
             textInputStyles={this.props.textInputStyles}
-            value={this.state.value}
+            value={this.value}
             submitEvent={() => {
-              this.props.submitEvent(this.state.value);
+              this.props.submitEvent(this.value);
             }}
             locationGetter={this.locationGetter}
             onChangeText={this.onChangeText}

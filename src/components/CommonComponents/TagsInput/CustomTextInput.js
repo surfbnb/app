@@ -8,12 +8,29 @@ const MAX_LENGTH = 500;
 class CustomTextInput extends PureComponent {
   constructor(props) {
     super(props);
+    this.textInputRef = null;
   }
+
+  setTextInputRef = (textInputRef) => {
+    this.textInputRef = textInputRef;
+    if ( this.props.value ) {
+        this.setInputText( this.props.value );
+    }
+  };
+
+  setInputText = ( text ) => {
+    if ( this.textInputRef ) {
+        this.textInputRef.setNativeProps({
+            "text": text
+        });
+    }
+  };
 
   render() {
     return (
       <View style={{ backgroundColor: 'white' }}>
         <TextInput
+          ref={this.setTextInputRef}
           style={[Theme.TextInput.textInputStyle, this.props.textInputStyles]}
           onSelectionChange={this.props.locationGetter}
           onChangeText={(value) => {
@@ -21,7 +38,6 @@ class CustomTextInput extends PureComponent {
           }}
           multiline={true}
           autoFocus={this.props.autoFocus}
-          value={this.props.value}
           placeholder={this.props.placeholderText}
           multiline={true}
           numberOfLines={3}
