@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
 import inlineStyles from './styles';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import reduxGetter from '../../services/ReduxGetters';
 
 import multipleClickHandler from '../../services/MultipleClickHandler';
@@ -43,16 +43,14 @@ class BottomStatus extends PureComponent {
   render() {
     return (
       <View style={inlineStyles.bottomBg}>
-        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onWrapperClick())} pointerEvents={'auto'}>
-          <View style={{ paddingTop: 8, paddingBottom: 5 }}>
 
+          <View style={{ paddingTop: 8, paddingBottom: 5 }}>
+          <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onWrapperClick())} pointerEvents={'auto'}>
             <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
               {`@${this.props.userName}`}
             </Text>
-          </View>
             </TouchableWithoutFeedback>
-
-        {this.props.description ? (
+            {this.props.description ? (
               <Text
                 style={[{ fontSize: 14, flexWrap: 'wrap', fontFamily: 'AvenirNext-Regular', textAlign: 'left' }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}
@@ -83,6 +81,7 @@ class BottomStatus extends PureComponent {
                 <React.Fragment />
               )
             }
+          </View>
 
         {this.props.link ? (
           <TouchableWithoutFeedback
