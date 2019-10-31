@@ -16,11 +16,12 @@ const maxVideosThreshold = 3;
 
 class UserVideoHistoryScreen extends PureComponent{
 
-    static navigationOptions = (options) => {
-        return {
-          header: null
-        };
+  static navigationOptions = (options) => {
+    return {
+      headerBackTitle: null,
+      header: null
     };
+  };
 
     constructor(props){
         super(props);
