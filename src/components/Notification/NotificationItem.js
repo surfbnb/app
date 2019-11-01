@@ -29,7 +29,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-let textStyling = {fontWeight: '600'};
+let textStyling = {fontWeight: '600', backgroundColor: '#00ff00'};
 if( Platform.OS == "android"){
   textStyling['fontFamily'] = 'AvenirNext-Medium';
 }
@@ -96,7 +96,7 @@ class NotificationItem extends Component {
         onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}
           key={i}
         >
-          <Text style={textStyling}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
+          <Text style={textStyling}> {unescape(heading.includes[item]['display_text'] || item)}</Text>
         </TouchableWithoutFeedback>
       ) : (
         item.split(/(\s+)/).map((element, id) => {
@@ -180,7 +180,9 @@ class NotificationItem extends Component {
       }
       if(userObj){
         return <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.includesTextNavigate(userObj))}>
-                  <View><ProfilePicture pictureId={this.props.pictureId} /></View>
+                  <View style={{paddingLeft: 12, paddingRight: 4, paddingVertical: 10, width: 46, backgroundColor: '#0000ff'}}>
+                    <ProfilePicture pictureId={this.props.pictureId} />
+                  </View>
                </TouchableWithoutFeedback>
       }else {
         return <ProfilePicture pictureId={this.props.pictureId} />;
@@ -202,10 +204,10 @@ class NotificationItem extends Component {
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handleRowClick())}>
           <View>
             <View style={styles.txtWrapper}>
-              <View style={{ width: '8%', marginRight: 4 }}>
+              <View style={{overflow:'hidden'}}>
                 {this.getActivityIcon()}
               </View>
-              <View style={{ width: headerWidth, flexDirection: 'row' }}>
+              <View style={{ width: headerWidth, flexDirection: 'row', backgroundColor: '#ff0000' }}>
                 <View style={{ flexDirection: 'column' }}>
                   <View style={styles.item}>
                     {this.getHeading()}

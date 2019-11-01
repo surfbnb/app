@@ -7,7 +7,8 @@ let stylesMap = {
     marginLeft: 4,
     marginRight: 4,
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    backgroundColor: '#0ffff0'
   },
 
   txtWrapper: {
@@ -15,7 +16,7 @@ let stylesMap = {
     paddingTop: 10,
     paddingBottom: 10,
     paddingRight: 12,
-    paddingLeft: 12,
+    paddingLeft: 0, /* The remaining 12 px is assigned for icon click area. */
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%'
