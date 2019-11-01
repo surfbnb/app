@@ -39,6 +39,7 @@ class HomeScreen extends Component {
     };
     this.listRef = null;
     this.isActiveScreen = false;
+    this.shouldPullToRefesh = false;
   }
 
   componentDidMount = () => {
@@ -133,11 +134,18 @@ class HomeScreen extends Component {
       flatListRef && flatListRef.scrollToIndex({ index: 0 });
       Platform.OS == 'android' && flatListHocRef.forceSetActiveIndex(0);
     }
-    setTimeout(() => {
-      if (isRefesh) {
+
+    this.shouldPullToRefesh = isRefesh;
+  };
+
+  onScrollMovementEnd = (currentIndex) => {
+    if (currentIndex === 0 && this.shouldPullToRefesh) {
+      const  flatlistProps = deepGet(this, 'listRef.flatListHocRef.props');
+      setTimeout(() => {
+        this.shouldPullToRefesh = false;
         flatlistProps.refresh();
-      }
-    }, timeOut);
+      }, 0);
+    }
   };
 
   onLogout = () => {
@@ -186,6 +194,9 @@ class HomeScreen extends Component {
           fetchUrl={'/feeds'}
           beforeRefresh={this.beforeRefresh}
           shouldPlay={this.shouldPlay}
+          onScrollEnd ={(currentIndex) => {
+            this.onScrollMovementEnd(currentIndex);
+          }}
         />
       </View>
     );
