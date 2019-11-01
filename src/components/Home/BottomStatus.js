@@ -63,9 +63,9 @@ class BottomStatus extends PureComponent {
                         style={[inlineStyles.bottomBgTxt,{
                           fontSize: 14,
                           flexWrap: 'wrap',
-                          fontFamily: 'AvenirNext-Regular',
+                          fontFamily: 'AvenirNext-DemiBold',
                           textAlign: 'left',
-                          fontWeight : '700'
+                          fontStyle:'italic'
                         }]}
                         numberOfLines={1}
                         onPress={()=>{this.onTagPressed(item)}}
