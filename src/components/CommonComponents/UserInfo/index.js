@@ -145,8 +145,7 @@ class UserInfo extends React.PureComponent {
             <Text style={inlineStyle.numericInfoText}>Received</Text>
           </View>
         </View>
-        {!!this.props.bio && <Text style={{marginTop: 20}}>
-
+        {!!this.props.bio && <Text style={inlineStyle.bioSectionWrapper}>
           {this.props.bio.split(' ').map((item) => {
 
             let onPressFunc = () => {};
@@ -164,8 +163,8 @@ class UserInfo extends React.PureComponent {
               </Text>
             );
           })}
+        </Text>}
 
-          </Text>}
         {!!this.props.link && (
           <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginHorizontal: 20, marginTop: 10}}>
             <Text ellipsizeMode={'tail'} numberOfLines={1}>

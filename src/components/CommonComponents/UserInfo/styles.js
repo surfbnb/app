@@ -32,11 +32,13 @@ let stylesMap = {
     fontFamily: 'AvenirNext-DemiBold'
   },
   bioSection: {
-    textAlign: 'center',
-    marginTop: 20,
-    paddingHorizontal: 30,
     color: Colors.valhalla,
     fontSize: 14
+  },
+  bioSectionWrapper: {
+    marginTop: 20,
+    marginHorizontal: 30,
+    textAlign: 'center'
   },
   numericInfoWrapper: {
     marginTop: 20,
