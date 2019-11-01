@@ -57,17 +57,19 @@ class HomeFeedRow extends PureComponent {
   };
 
   onDescriptionClick = ( tapEntity , tapText ) => {
-    if (!tapEntity) {
-      return;
-    }
+    if (utilities.checkActiveUser()) {
+      if (!tapEntity) {
+        return;
+      }
 
-    if( tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', {
-        "tagId": tapEntity.id
-      });
-    }
+      if( tapEntity.kind === 'tags'){
+        this.props.navigation.push('VideoTags', {
+          "tagId": tapEntity.id
+        });
+      }
 
-  }
+    }
+  };
 
 
   render() {
