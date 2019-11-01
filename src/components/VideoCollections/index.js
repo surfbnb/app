@@ -172,8 +172,7 @@ class VideoCollections extends PureComponent {
             currentIndex: index,
             payload,
             baseUrl: this.props.getFetchUrl(),
-            showBalanceFlier: this.props.extraParams && this.props.extraParams.showBalanceFlier,
-            refTagId: this.props.extraParams.tagId
+            showBalanceFlier: this.props.extraParams && this.props.extraParams.showBalanceFlier
         });
     }
     renderFooter = () => {

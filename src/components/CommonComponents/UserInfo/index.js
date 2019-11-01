@@ -156,7 +156,7 @@ class UserInfo extends React.PureComponent {
 
             return(
               <Text
-                style={inlineStyle.bioSection}
+                style={[inlineStyle.bioSection,item.startsWith('#')? {fontWeight : '700'}:'']}
                 onPress={()=> {onPressFunc(item)} }
               >
                 {item + " "}

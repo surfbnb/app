@@ -58,10 +58,6 @@ class FullScreeVideoRow extends PureComponent {
       return;
     }
 
-    if(tapEntity.id === this.props.refTagId){
-      return;
-    }
-
     if( tapEntity.kind === 'tags'){
       this.props.navigation.push('VideoTags', {
         "tagId": tapEntity.id

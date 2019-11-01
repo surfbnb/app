@@ -134,7 +134,7 @@ class FullScreenVideoCollection extends PureComponent{
                                    isActive={index == this.state.activeIndex}
                                    doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                    payload={payload}
-                                    refTagId = {this.props.navigation.state.params.refTagId}/> ;
+                                    /> ;
     };
 
     onViewableItemsChanged = (data) => {

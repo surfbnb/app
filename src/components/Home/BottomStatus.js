@@ -64,16 +64,15 @@ class BottomStatus extends PureComponent {
                           fontSize: 14,
                           flexWrap: 'wrap',
                           fontFamily: 'AvenirNext-Regular',
-                          textAlign: 'left'
+                          textAlign: 'left',
+                          fontWeight : '700'
                         }]}
                         numberOfLines={1}
                         onPress={()=>{this.onTagPressed(item)}}
-                      >
-                        {item + " "}
-                      </Text>
+                      >{item+" "}</Text>
                     );
                   }else {
-                    return(<Text> {item + " "} </Text>);
+                    return(<Text>{item+ " "}</Text>);
                   }
                 })}
               </Text>
