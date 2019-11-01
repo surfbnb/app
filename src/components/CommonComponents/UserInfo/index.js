@@ -149,14 +149,15 @@ class UserInfo extends React.PureComponent {
           {this.props.bio.split(' ').map((item) => {
 
             let onPressFunc = () => {};
-
-            if (item.startsWith('#')) {
+            let style = [inlineStyle.bioSection];
+            if (item.startsWith('#') && reduxGetter.isValidBioTag(this.props.userId, item)) {
               onPressFunc = this.onTagPressed;
+              style.push({fontStyle:'italic',fontFamily:'AvenirNext-DemiBold'});
             }
 
             return(
               <Text
-                style={[inlineStyle.bioSection,item.startsWith('#')? {fontStyle:'italic',fontFamily:'AvenirNext-DemiBold'}:'']}
+                style={style}
                 onPress={()=> {onPressFunc(item)} }
               >
                 {item + " "}

@@ -24,6 +24,7 @@ const mapStateToProps = (state, ownProps) => {
 class BottomStatus extends PureComponent {
   constructor(props) {
     super(props);
+    this.videoDescriptionId = reduxGetter.getVideoDescriptionId(this.props.videoId);
   }
 
   onWrapperClick = (e) => {
@@ -35,8 +36,7 @@ class BottomStatus extends PureComponent {
   };
 
   onTagPressed = (tag) => {
-    let videoDescriptionId = reduxGetter.getVideoDescriptionId(this.props.videoId);
-    let entity = reduxGetter.getTappedIncludesEntity(videoDescriptionId, tag);
+    let entity = reduxGetter.getTappedIncludesEntity(this.videoDescriptionId, tag);
     this.props.onDescriptionClick && this.props.onDescriptionClick(entity, tag);
   };
 
@@ -57,7 +57,7 @@ class BottomStatus extends PureComponent {
                 numberOfLines={3}
               >
                 {this.props.description.split(' ').map((item) => {
-                  if (item.startsWith('#')) {
+                  if (item.startsWith('#') && reduxGetter.isValidTag(this.videoDescriptionId, item)) {
                     return(
                       <Text
                         style={[inlineStyles.bottomBgTxt,{

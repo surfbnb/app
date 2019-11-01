@@ -83,8 +83,14 @@ class ReduxGetters {
   }
 
   getBioIncudes(userId, tappedText) {
+    let lowercasedTappedText = tappedText.toLowerCase();
     let state =  Store.getState();
-    return deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${tappedText}`);
+    return deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${lowercasedTappedText}`);
+  }
+
+  isValidBioTag(userId, tappedText) {
+    let entity = this.getBioIncudes(userId, tappedText);
+    return !!entity
   }
 
   canBlockUser(id ,state){
@@ -123,10 +129,15 @@ class ReduxGetters {
   }
 
   getTappedIncludesEntity(videoId, tappedText) {
+    let lowercasedText = tappedText.toLowerCase();
     let state = Store.getState();
-    return deepGet(state, `video_description_entities.id_${videoId}.includes.${tappedText}`);
+    return deepGet(state, `video_description_entities.id_${videoId}.includes.${lowercasedText}`);
   }
 
+  isValidTag(videoId, tappedText) {
+    let entity = this.getTappedIncludesEntity(videoId, tappedText);
+    return !!entity
+  }
 
   getVideoLink(id, state) {
     state = state || Store.getState();
