@@ -96,6 +96,10 @@ class UserInfo extends React.PureComponent {
     }
   };
 
+  isValidBioTag(userId, tappedText) {
+    let entity = reduxGetter.getBioIncudes(userId, tappedText);
+    return !!entity;
+  }
 
 
   render() {
@@ -150,19 +154,25 @@ class UserInfo extends React.PureComponent {
 
             let onPressFunc = () => {};
             let style = [inlineStyle.bioSection];
-            if (item.startsWith('#') && reduxGetter.isValidBioTag(this.props.userId, item)) {
+            if (item.startsWith('#') && this.isValidBioTag(this.props.userId, item)) {
               onPressFunc = this.onTagPressed;
-              style.push({fontStyle:'italic',fontFamily:'AvenirNext-DemiBold'});
+              style.push({fontFamily:'AvenirNext-DemiBold'});
+              let tagText = item.replace("#", "");
+              return(
+                <Text
+                  style={style}
+                  onPress={()=> {onPressFunc(item)} }
+                >
+                  <Text style={{fontStyle:'italic'}}>#</Text>{tagText + " "}
+                </Text>
+              );
+
+
             }
 
-            return(
-              <Text
-                style={style}
-                onPress={()=> {onPressFunc(item)} }
-              >
-                {item + " "}
-              </Text>
-            );
+            // Default return
+            return(<Text style={style}>{item+ " "}</Text>);
+
           })}
         </Text>}
 

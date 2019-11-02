@@ -40,6 +40,11 @@ class BottomStatus extends PureComponent {
     this.props.onDescriptionClick && this.props.onDescriptionClick(entity, tag);
   };
 
+  isValidTag(videoId, tappedText) {
+    let entity = reduxGetter.getTappedIncludesEntity(videoId, tappedText);
+    return !!entity
+  }
+
   render() {
     return (
       <View style={inlineStyles.bottomBg}>
@@ -57,19 +62,19 @@ class BottomStatus extends PureComponent {
                 numberOfLines={3}
               >
                 {this.props.description.split(' ').map((item) => {
-                  if (item.startsWith('#') && reduxGetter.isValidTag(this.videoDescriptionId, item)) {
+                  if (item.startsWith('#') && this.isValidTag(this.videoDescriptionId, item)) {
+                    let tagText = item.replace("#", "");
                     return(
                       <Text
                         style={[inlineStyles.bottomBgTxt,{
                           fontSize: 14,
                           flexWrap: 'wrap',
                           fontFamily: 'AvenirNext-DemiBold',
-                          textAlign: 'left',
-                          fontStyle:'italic'
+                          textAlign: 'left'
                         }]}
                         numberOfLines={1}
                         onPress={()=>{this.onTagPressed(item)}}
-                      >{item+" "}</Text>
+                      ><Text style={{fontStyle:'italic'}}>#</Text>{tagText+" "}</Text>
                     );
                   }else {
                     return(<Text>{item+ " "}</Text>);

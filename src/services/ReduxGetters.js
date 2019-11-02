@@ -88,14 +88,9 @@ class ReduxGetters {
     return deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${lowercasedTappedText}`);
   }
 
-  isValidBioTag(userId, tappedText) {
-    let entity = this.getBioIncudes(userId, tappedText);
-    return !!entity
-  }
-
   canBlockUser(id ,state){
     state = state || Store.getState();
-    return !!deepGet(state, `user_allowed_action_entities.id_${id}.can_block` , true) ; 
+    return !!deepGet(state, `user_allowed_action_entities.id_${id}.can_block` , true) ;
   }
 
   getEmail(id, state) {
@@ -132,11 +127,6 @@ class ReduxGetters {
     let lowercasedText = tappedText.toLowerCase();
     let state = Store.getState();
     return deepGet(state, `video_description_entities.id_${videoId}.includes.${lowercasedText}`);
-  }
-
-  isValidTag(videoId, tappedText) {
-    let entity = this.getTappedIncludesEntity(videoId, tappedText);
-    return !!entity
   }
 
   getVideoLink(id, state) {
