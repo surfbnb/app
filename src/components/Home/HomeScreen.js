@@ -136,8 +136,16 @@ class HomeScreen extends Component {
       Platform.OS == 'android' && flatListHocRef.forceSetActiveIndex(0);
     }
 
-    this.shouldPullToRefesh = isRefesh;
-   this.onScrollMovementEnd(activeIndex);
+    if (Platform.OS == 'android'){
+      setTimeout(() => {
+        if (isRefesh) {
+          flatlistProps.refresh();
+        }
+      }, timeOut);
+    } else {
+      this.shouldPullToRefesh = isRefesh;
+      this.onScrollMovementEnd(activeIndex);
+    }
   };
 
   onScrollMovementEnd = (currentIndex) => {
