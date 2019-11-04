@@ -1,4 +1,5 @@
 import { NavigationActions , StackActions } from 'react-navigation';
+import deepGet from 'lodash/get';
 
 let _navigator;
 
@@ -18,6 +19,13 @@ function navigate(routeName, params) {
       params
     })
   );
+}
+
+function getActiveTab(){
+  let activeIndex = deepGet(_navigator , 'state.nav.index'),
+      tabIndex = deepGet(_navigator , `state.nav.routes[${activeIndex}].index`),
+      route = deepGet(_navigator , `state.nav.routes[${activeIndex}].routes[${tabIndex}]`);
+  return route && route["routeName"];
 }
 
 const findCurrentRoute = (navState) => {
@@ -47,5 +55,6 @@ export default {
   setTopLevelNavigator,
   getTopLevelNavigator,
   findCurrentRoute,
+  getActiveTab,
   reset
 };

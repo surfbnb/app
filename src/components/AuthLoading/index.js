@@ -45,6 +45,7 @@ export default class AuthLoading extends Component {
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();
+        CurrentUser.setSyncState(true);
         this.props.navigation.navigate('HomeScreen');
       })
       .catch(() => {
