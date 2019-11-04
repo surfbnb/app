@@ -126,6 +126,7 @@ class HomeScreen extends Component {
 
   refresh = (isRefesh, timeOut) => {
     timeOut = timeOut || 0;
+    let activeIndex = deepGet(this.listRef, 'flatListHocRef.state.activeIndex');
     const flatListHocRef = deepGet(this, 'listRef.flatListHocRef'),
       flatlistProps = deepGet(this, 'listRef.flatListHocRef.props'),
       flatListRef = deepGet(this, 'listRef.flatListHocRef.flatlistRef'),
@@ -136,6 +137,7 @@ class HomeScreen extends Component {
     }
 
     this.shouldPullToRefesh = isRefesh;
+   this.onScrollMovementEnd(activeIndex);
   };
 
   onScrollMovementEnd = (currentIndex) => {
