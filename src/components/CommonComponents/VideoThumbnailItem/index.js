@@ -12,9 +12,6 @@ import Pricer from "../../../services/Pricer";
 import deepGet from 'lodash/get';
 import ProfilePicture from "../../ProfilePicture";
 
-
-
-
 let getVideoBtAmount = (videoId) => {
     return Pricer.displayAmountWithKFomatter( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
 }
@@ -27,7 +24,7 @@ export default (props) => {
         videoDesc =reduxGetters.getVideoDescription(reduxGetters.getVideoDescriptionId(videoId));
 
 
-    return <TouchableWithoutFeedback onPress={multipleClickHandler(() => { props.onVideoClick(videoId, props.index );} )}
+    return <TouchableWithoutFeedback onPress={multipleClickHandler(() => { props.onVideoClick && props.onVideoClick(videoId, props.index );} )}
     >
         <View>
             <FastImage style={{
@@ -40,14 +37,6 @@ export default (props) => {
                            uri: imageUrl,
                            priority: FastImage.priority.high
                        }}/>
-            <LinearGradient
-                colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
-                locations={[0, 0.5, 1]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-                style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, alignItems: 'flex-end'}}
-            >  
-            </LinearGradient>
             <LinearGradient
                 colors={['transparent', 'rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.3)']}
                 locations={[0,0.4, 1]}
