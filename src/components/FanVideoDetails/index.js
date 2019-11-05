@@ -26,6 +26,7 @@ import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { StackActions } from 'react-navigation';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -72,9 +73,9 @@ class FanVideoDetails extends Component {
 
   constructor(props) {
     super(props);
+    this.videoDesc = this.props.recordedVideo.video_desc;
+    this.videoLink = this.props.recordedVideo.video_link;
     this.state = {
-      videoDesc: '',
-      videoLink: '',
       viewStyle: {
         paddingBottom: 10
       },
@@ -124,28 +125,25 @@ class FanVideoDetails extends Component {
    // if (!this.validLink()) return;
    utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
     Store.dispatch(
-      upsertRecordedVideo({ video_desc: this.state.videoDesc, video_link: this.state.videoLink, do_upload: true })
+      upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, do_upload: true })
     );
-    this.props.navigation.navigate('HomeScreen');
+    this.props.navigation.dispatch(StackActions.popToTop());
+    this.props.navigation.dispatch(StackActions.popToTop());
+    this.props.navigation.navigate('HomeScreen'); 
   };
 
   onChangeDesc = (desc) => {
-    this.setState({
-      videoDesc: desc
-    });
-    //Done for the value to be accessible in static navigationOptions
-    this.props.navigation.setParams({
+    this.videoDesc = desc;
+     //Done for the value to be accessible in static navigationOptions
+     this.props.navigation.setParams({
       videoDesc: desc
     });
   };
 
   onChangeLink = (link) => {
-    this.setState({
-      videoLink: link,
-      error: ''
-    });
-    //Done for the value to be accessible in static navigationOptions
-    this.props.navigation.setParams({
+    this.videoLink = link;
+     //Done for the value to be accessible in static navigationOptions
+     this.props.navigation.setParams({
       videoLink: link
     });
   };
@@ -157,10 +155,10 @@ class FanVideoDetails extends Component {
   };
 
   validLink = () => {
-    if (!this.state.videoLink) return true;
+    if (!this.videoLink) return true;
     //synced with backend
     if (
-      !this.state.videoLink.match(
+      !this.videoLink.match(
         /^(http(s)?:\/\/)([a-zA-Z0-9-_@:%+~#=]{1,256}\.)+[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=*]*)$/i
       )
     ) {

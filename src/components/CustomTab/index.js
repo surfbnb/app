@@ -28,7 +28,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 let previousTabIndex = 0;
-let tabBeforeCaptureVideo = null;
 
 function onTabPressed(navigation, tab) {
   if (CurrentUser.getOstUserId()) {
@@ -38,30 +37,16 @@ function onTabPressed(navigation, tab) {
   }
 }
 
-function getStackbeforeVideoCapture(index) {
-  for (let config in appConfig.tabConfig){
-    if ( appConfig.tabConfig[config].navigationIndex == index ){
-      return appConfig.tabConfig[config];
-    }
-  }
-
-}
-
 let refreshTimeOut = 0;
 
 function loginInFlow(navigation, tab) {
   let currentTabIndex = tab.navigationIndex;
-  if (tab.rootStack === 'CaptureVideo') {
-    tabBeforeCaptureVideo = previousTabIndex;    
+  if (tab.rootStack === 'CaptureVideo') { 
     utilities.handleVideoUploadModal(previousTabIndex, navigation);
     return;
   }
   if (currentTabIndex == undefined || currentTabIndex == null) return;
-  if (tabBeforeCaptureVideo != null &&  currentTabIndex == tabBeforeCaptureVideo ){    
-    navigation.dispatch(StackActions.popToTop());
-    navigation.dispatch(StackActions.popToTop());
-    tabBeforeCaptureVideo = null;   
-  } else if (previousTabIndex !== currentTabIndex) {       
+  if (previousTabIndex !== currentTabIndex) {       
     tab.rootStack == 'Notification' && refreshActivity(tab.childStack);
     navigation.navigate(tab.rootStack);
   } else if (utilities.getLastChildRoutename(navigation.state) !== tab.childStack) {

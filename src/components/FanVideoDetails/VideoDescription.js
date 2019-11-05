@@ -7,15 +7,10 @@ import TagsInput from '../CommonComponents/TagsInput';
 class VideoDescription extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      value: this.props.initialValue
-    };
+    this.value = this.props.initialValue;
   }
 
   onChangeValue = (value) => {
-    this.setState({
-      value
-    });
     this.props.onChangeDesc(value);
   };
 
@@ -26,7 +21,7 @@ class VideoDescription extends PureComponent {
       <View style={{ flex: 1 }}>
         <TagsInput
           horizontal={false}
-          initialValue={this.props.initialValue}
+          initialValue={this.value}
           onChangeVal={this.onChangeValue}
           placeholderText="Add a description. You can include #tags."
           submitEvent={this.submitEvent}

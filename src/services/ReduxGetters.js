@@ -82,9 +82,15 @@ class ReduxGetters {
     return unescape(deepGet(state, `user_profile_entities.id_${id}.bio.text`));
   }
 
+  getBioIncudes(userId, tappedText) {
+    let lowercasedTappedText = tappedText.toLowerCase();
+    let state =  Store.getState();
+    return deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${lowercasedTappedText}`);
+  }
+
   canBlockUser(id ,state){
     state = state || Store.getState();
-    return !!deepGet(state, `user_allowed_action_entities.id_${id}.can_block` , true) ; 
+    return !!deepGet(state, `user_allowed_action_entities.id_${id}.can_block` , true) ;
   }
 
   getEmail(id, state) {
@@ -115,6 +121,12 @@ class ReduxGetters {
   getVideoDescriptionId(id, state) {
     state = state || Store.getState();
     return deepGet(state, `video_stat_entities.id_${id}.description_id`);
+  }
+
+  getTappedIncludesEntity(videoId, tappedText) {
+    let lowercasedText = tappedText.toLowerCase();
+    let state = Store.getState();
+    return deepGet(state, `video_description_entities.id_${videoId}.includes.${lowercasedText}`);
   }
 
   getVideoLink(id, state) {

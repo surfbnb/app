@@ -56,6 +56,21 @@ class HomeFeedRow extends PureComponent {
     }
   };
 
+  onDescriptionClick = ( tapEntity , tapText ) => {
+    if (utilities.checkActiveUser()) {
+      if (!tapEntity) {
+        return;
+      }
+
+      if( tapEntity.kind === 'tags'){
+        this.props.navigation.push('VideoTags', {
+          "tagId": tapEntity.id
+        });
+      }
+
+    }
+  };
+
 
   render() {
     return (
@@ -90,7 +105,7 @@ class HomeFeedRow extends PureComponent {
             />
           </View>
 
-          <BottomStatus userId={this.userId} videoId={this.videoId} onWrapperClick={this.navigateToUserProfile} />
+          <BottomStatus userId={this.userId} videoId={this.videoId} onWrapperClick={this.navigateToUserProfile} onDescriptionClick={this.onDescriptionClick} />
         </View>
       </View>
     );

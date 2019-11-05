@@ -16,6 +16,7 @@ import InAppBrowser from '../../../services/InAppBrowser';
 import profileLink from '../../../assets/profile_link.png';
 import twitterLink from '../../../assets/twitter_link.png';
 import Utilities from '../../../services/Utilities';
+import inlineStyles from '../../Home/styles';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -82,6 +83,25 @@ class UserInfo extends React.PureComponent {
     );
   };
 
+  onTagPressed = (tag) => {
+    let entity = reduxGetter.getBioIncudes(this.props.userId, tag);
+    if (!entity) {
+      return;
+    }
+
+    if(entity.kind === 'tags'){
+      this.props.navigation.push('VideoTags', {
+        "tagId": entity.id
+      });
+    }
+  };
+
+  isValidBioTag(userId, tappedText) {
+    let entity = reduxGetter.getBioIncudes(userId, tappedText);
+    return !!entity;
+  }
+
+
   render() {
     return (
       <View style={{ alignItems: 'center', paddingTop: 30}}>
@@ -129,7 +149,33 @@ class UserInfo extends React.PureComponent {
             <Text style={inlineStyle.numericInfoText}>Received</Text>
           </View>
         </View>
-        {!!this.props.bio && <Text style={inlineStyle.bioSection}>{this.props.bio}</Text>}
+        {!!this.props.bio && <Text style={inlineStyle.bioSectionWrapper}>
+          {this.props.bio.split(' ').map((item) => {
+
+            let onPressFunc = () => {};
+            let style = [inlineStyle.bioSection];
+            if (item.startsWith('#') && this.isValidBioTag(this.props.userId, item)) {
+              onPressFunc = this.onTagPressed;
+              style.push({fontFamily:'AvenirNext-DemiBold'});
+              let tagText = item.replace("#", "");
+              return(
+                <Text
+                  style={style}
+                  onPress={()=> {onPressFunc(item)} }
+                >
+                  <Text style={{fontStyle:'italic'}}>#</Text>{tagText + " "}
+                </Text>
+              );
+
+
+            }
+
+            // Default return
+            return(<Text style={style}>{item+ " "}</Text>);
+
+          })}
+        </Text>}
+
         {!!this.props.link && (
           <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginHorizontal: 20, marginTop: 10}}>
             <Text ellipsizeMode={'tail'} numberOfLines={1}>

@@ -10,6 +10,7 @@ import PepoApi from "../../services/PepoApi";
 import deepGet from 'lodash/get';
 import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';
 import BackArrow from '../CommonComponents/BackArrow';
+import DataContract from "../../constants/DataContract";
 
 const getPageTitle = (tagId, hashTag) => {
   let pageTitle = "";
@@ -26,7 +27,8 @@ const getPageTitle = (tagId, hashTag) => {
 class VideoTags extends PureComponent {
     static navigationOptions = (options) => {
         const tagId = options.navigation.getParam('tagId');
-        const pageTitle = getPageTitle(tagId);
+        const hashTag = options.navigation.getParam('hashTag') || null;
+        const pageTitle = getPageTitle(tagId, hashTag);
 
         return {
             headerBackTitle: null,
@@ -68,10 +70,10 @@ class VideoTags extends PureComponent {
         new PepoApi(`/tags/${tagId}`)
             .get()
             .then((res)=>{
-                let hashTag = deepGet(res, 'data.tag');
-                const pageTitle = getPageTitle(tagId, hashTag);
+                let result_type = deepGet(res, DataContract.common.resultType),
+                hashTag = deepGet(res, `data.${result_type}` );
                 if (res && res.success){
-                    this.props.navigation.setParams({ headerTitle: pageTitle });
+                    this.props.navigation.setParams({ hashTag: hashTag });
                 }
             })
     }
