@@ -96,7 +96,7 @@ class NotificationItem extends Component {
         onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}
           key={i}
         >
-          <Text style={textStyling}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
+          <Text style={textStyling}> {unescape(heading.includes[item]['display_text'] || item)}</Text>
         </TouchableWithoutFeedback>
       ) : (
         item.split(/(\s+)/).map((element, id) => {
@@ -168,9 +168,17 @@ class NotificationItem extends Component {
 
   getActivityIcon(){
     if([AppConfig.notificationConstants.systemNotification, AppConfig.notificationConstants.airDropNotification, AppConfig.notificationConstants.topupNotification, AppConfig.notificationConstants.recoveryInitiate ].includes(this.props.kind)) {
-      return <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
+      return(
+        <View style={styles.activityIcon}>
+          <Image source={PepoPinkIcon} style={styles.systemNotificationIconSkipFont} />
+        </View>
+        )
     }else if( AppConfig.pepoCornsActivityKinds.includes(this.props.kind)){
-      return <Image source={pepoCornsImg} style={styles.systemNotificationIconSkipFont} />
+      return (
+        <View style={styles.activityIcon}>
+          <Image source={pepoCornsImg} style={styles.systemNotificationIconSkipFont} />
+        </View>
+      )
     }else{
       let includesObj  = this.props.heading && this.props.heading["includes"] || {} ,
           userObj ;
@@ -180,10 +188,17 @@ class NotificationItem extends Component {
       }
       if(userObj){
         return <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.includesTextNavigate(userObj))}>
-                  <View><ProfilePicture pictureId={this.props.pictureId} /></View>
+                  <View style={styles.activityIcon}>
+                    <ProfilePicture pictureId={this.props.pictureId} />
+                  </View>
                </TouchableWithoutFeedback>
       }else {
-        return <ProfilePicture pictureId={this.props.pictureId} />;
+        return(
+          <View style={styles.activityIcon}>
+            <ProfilePicture pictureId={this.props.pictureId} />;
+          </View>
+        )
+
       }
 
     }
@@ -201,13 +216,13 @@ class NotificationItem extends Component {
       <View style={{ minHeight: 25 }}>
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handleRowClick())}>
           <View>
-            <View style={styles.txtWrapper}>
-              <View style={{ width: '8%', marginRight: 4 }}>
+            <View style={[styles.txtWrapper]}>
+              <View>
                 {this.getActivityIcon()}
               </View>
-              <View style={{ width: headerWidth, flexDirection: 'row' }}>
+              <View style={{ flex: this.props.kind === AppConfig.notificationConstants.videoAddKind ? 6 : 2, flexDirection: 'row'}}>
                 <View style={{ flexDirection: 'column' }}>
-                  <View style={styles.item}>
+                  <View style={styles.descriptionText}>
                     {this.getHeading()}
                     {this.showPepoAmout()}
                     <Text style={styles.timeStamp}>
@@ -218,7 +233,11 @@ class NotificationItem extends Component {
                   {this.showIfFailed()}
                 </View>
               </View>
-              <View style={{ width:notificationInfoWidth}}>{this.notificationInfo()}</View>
+              {this.props.kind === AppConfig.notificationConstants.videoAddKind ?
+                  <View
+                    style={{ flex: 1 }}>{this.notificationInfo()}
+                  </View>
+                : <React.Fragment></React.Fragment>}
             </View>
             {this.showSayThanks()}
           </View>

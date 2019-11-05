@@ -3,19 +3,19 @@ import Colors from '../../theme/styles/Colors';
 import {Dimensions} from "react-native";
 
 let stylesMap = {
-  item: {
-    marginLeft: 4,
-    marginRight: 4,
+
+  descriptionText: {
+    marginLeft: 0,
+    marginRight: 0,
     flexDirection: 'row',
     flexWrap: 'wrap'
   },
 
   txtWrapper: {
     flex: 1,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingRight: 12,
-    paddingLeft: 12,
+    paddingVertical: 10,
+    paddingRight: 10,
+    paddingLeft: 0, /* The remaining 10 px is assigned for icon click area. */
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%'
@@ -134,6 +134,12 @@ let stylesMap = {
   headingText: {
     fontWeight: '600',
     fontFamily: 'AvenirNext-Medium'
+  },
+  activityIcon :{
+    paddingLeft: 10,
+    paddingRight: 4,
+    paddingVertical: 10,
+    width: 46
   }
 
 
