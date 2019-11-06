@@ -193,7 +193,7 @@ class UserProfileFlatList extends PureComponent {
                     onEndReachedThreshold={9}
                     renderItem={this._renderItem}
                     ListFooterComponent={this.renderFooter}
-                    numColumns={3}
+                    numColumns={2}
                 />
             </SafeAreaView>
         );
