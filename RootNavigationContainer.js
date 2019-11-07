@@ -56,6 +56,7 @@ import CouchMarks from './src/components/CouchMarks';
 import RedemptiomScreen from './src/components/Redemption';
 import VideoTags from './src/components/VideoTags';
 import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
+import VideoReplies from './src/components/VideoReplies';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -132,6 +133,7 @@ const HomePushStack = createStackNavigator(
     HomeScreen: HomeScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
+    VideoReplies: VideoReplies,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
@@ -165,6 +167,7 @@ const NotificationPushStack = createStackNavigator(
     NotificationScreen: NotificationScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
+    VideoReplies: VideoReplies,
     VideoPlayer: VideoPlayer,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
@@ -192,6 +195,7 @@ const ProfilePushStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
     UserVideoHistory: UserVideoHistory,
+    VideoReplies: VideoReplies,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
@@ -242,6 +246,7 @@ const SearchPushStack = createStackNavigator(
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
+    VideoReplies: VideoReplies,
     VideoTags: VideoTags,
       FullScreenVideoCollection: FullScreenVideoCollection
   },

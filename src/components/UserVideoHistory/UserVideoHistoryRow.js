@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import VideoWrapper from '../Home/VideoWrapper';
 import ShareIcon from "../CommonComponents/ShareIcon";
@@ -15,7 +15,6 @@ import ShareVideo from '../../services/shareVideo';
 import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
-import OptionsIcon from '../../assets/options_self_video.png';
 import ReplyVideo from '../CommonComponents/ReplyVideo';
 
 

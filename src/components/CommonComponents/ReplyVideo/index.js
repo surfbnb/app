@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import {TouchableOpacity , Image, View, Text} from "react-native";
 import { connect } from 'react-redux';
+import {withNavigation} from "react-navigation";
 
 import reduxGetter from '../../../services/ReduxGetters';
 import inlineStyles from './styles';
@@ -40,7 +41,7 @@ class ReplyVideo extends PureComponent {
     };
 
     replyVideo = ()=> {
-        
+        this.props.navigation.push('VideoReplies');
     };
 
     render(){
@@ -58,4 +59,4 @@ class ReplyVideo extends PureComponent {
 
 };
 
-export default connect(mapStateToProps)(ReplyVideo);
+export default connect(mapStateToProps)(withNavigation(ReplyVideo));
