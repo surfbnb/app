@@ -58,7 +58,7 @@ class FullScreenVideoCollection extends PureComponent{
 
         return {
             transitionSpec: {
-              duration: 300,
+              duration: 400,
               easing: Easing.out(Easing.poly(4)),
               timing: Animated.timing
             },
@@ -107,10 +107,6 @@ class FullScreenVideoCollection extends PureComponent{
               // Translate Y
               // -- compute vertical padding.
               let verticalPadding = (windowHeight - thumbnailHeight) / 2;
-              if ( isCurrent ) {
-
-              }
-
               // -- apply magical formulla.
               let translateYVal =  (thumbnailY - verticalPadding) / scaleYFactor;
 
@@ -123,6 +119,15 @@ class FullScreenVideoCollection extends PureComponent{
                   inputRange: [index - 1, index, index + 1],
                   outputRange: [translateYVal, 0, 0]
               });
+
+              console.log("transform",
+                "\n ---translateYVal", translateYVal, 
+                "\n ---thumbnailWidth", thumbnailWidth, 
+                "\n ---thumbnailX", thumbnailX,
+                "\n ---scaleXFactor", scaleXFactor,
+                "\n ---scaleYFactor", scaleYFactor,
+                "\n ---layoutWidth", layoutWidth,
+                "\n ---windowHeight", windowHeight);
 
               return { transform: [transforms] };
             }

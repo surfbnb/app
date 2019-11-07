@@ -1,4 +1,4 @@
-import {Dimensions, Image, Text, TouchableWithoutFeedback, View} from "react-native";
+import {Platform, Dimensions, Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import Colors from "../../../theme/styles/Colors";
@@ -17,7 +17,8 @@ let getVideoBtAmount = (videoId) => {
 }
 
 export default (props) => {
-    const videoId =  deepGet(props, 'payload.video_id'),
+    const isAndroid = "android" === Platform.OS,
+        videoId =  deepGet(props, 'payload.video_id'),
         userId = deepGet(props, 'payload.user_id')
         userName = reduxGetters.getUserName(userId),
         imageUrl = reduxGetters.getVideoImgUrl(videoId,null, AppConfig.userVideos.userScreenCoverImageWidth),
@@ -35,14 +36,49 @@ export default (props) => {
     //click handler
     const onPressHandler = multipleClickHandler(() => {
         console.log("onPressHandler.compRef", compRef);
-        props.onVideoClick && props.onVideoClick(videoId, props.index, compRef);
+        compRef.measure((x,y,width,height,pageX,pageY) => {
+            const videoThumbnailMesurements = {
+                "x": x,
+                "y": y,
+                "width": width,
+                "height": height,
+                "pageX": pageX,
+                "pageY": pageY
+            };
+            triggerOnPressCallback(videoThumbnailMesurements);
+        });
+        
     });
+
+    const triggerOnPressCallback = (measurements) => {
+        console.log("videoThumbnailMesurements",
+            "\n--- x", measurements.x,
+            "\n--- y", measurements.y,
+            "\n--- width", measurements.width,
+            "\n--- height", measurements.height,
+            "\n--- pageX", measurements.pageX,
+            "\n--- pageY", measurements.pageY
+        );
+        props.onVideoClick && props.onVideoClick(videoId, props.index, measurements);
+    };
     
+    
+    let onLayoutCallback = null;
+    // if ( isAndroid ) {
+    //     onLayoutCallback = ( syntheticEvent ) => {
+    //         const nativeEvent = syntheticEvent.nativeEvent;
+    //         const viewLayout = nativeEvent.layout;
+    //         console.log("onLayoutCallback viewLayout", viewLayout);
+    //         console.log("nativeEvent", nativeEvent);
+    //     }
+    // }
+    
+
 
     //End: Temp Code.
     
-    return (<View ref={setCompRef}><TouchableWithoutFeedback onPress={onPressHandler}>
-        <View>
+    return (<View ref={setCompRef} onLayout={onLayoutCallback} collapsable={false} ><TouchableWithoutFeedback onPress={onPressHandler} collapsable={false} >
+        <View collapsable={false}>
             <FastImage style={{
                 width: (Dimensions.get('window').width - 6) / 2,
                 aspectRatio:9/16,
@@ -60,7 +96,7 @@ export default (props) => {
                 end={{ x: 0, y: 1 }}
                 style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', bottom: 0, left: 0}}
             >
-                <View style={inlineStyles.videoInfoContainer}> 
+                <View style={inlineStyles.videoInfoContainer} collapsable={false}> 
                      <Text style={inlineStyles.videoDescStyle} ellipsizeMode={'tail'} numberOfLines={3}>{videoDesc}</Text>
                      <View style={{flex:1, flexDirection: "row" , marginTop: 5}}>
                         <View style={{flex: 3, flexDirection: "row"}}>

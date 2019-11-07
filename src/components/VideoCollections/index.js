@@ -159,17 +159,7 @@ class VideoCollections extends PureComponent {
 
 
 
-    onVideoClick = (payload, index, compRef) => {
-        console.log("onVideoClick compRef", compRef);
-      compRef.measure((x,y,width,height,pageX,pageY) => {
-        console.log("------ Here I am. This is me. ------");
-        console.log("cell x", x);
-        console.log("cell y", y);
-        console.log("cell width", width);
-        console.log("cell height", height);
-        console.log("cell pageX", pageX);
-        console.log("cell pageY", pageY);
-
+    onVideoClick = (payload, index, videoThumbnailMesurements) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
         this.props.navigation.push("FullScreenVideoCollection", {
             "fetchServices" : clonedInstance,
@@ -177,20 +167,8 @@ class VideoCollections extends PureComponent {
             "payload": payload,
             "baseUrl": this.props.getFetchUrl(),
             "showBalanceFlier": this.props.extraParams && this.props.extraParams.showBalanceFlier,
-            "videoThumbnailMesurements": {
-                "x": x,
-                "y": y,
-                "width": width,
-                "height": height,
-                "pageX": pageX,
-                "pageY": pageY
-            }
+            "videoThumbnailMesurements": videoThumbnailMesurements
         });
-
-        
-      })
-
-
     }
     renderFooter = () => {
         if (!this.state.loadingNext) return null;
