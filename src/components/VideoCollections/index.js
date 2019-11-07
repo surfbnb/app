@@ -152,21 +152,45 @@ class VideoCollections extends PureComponent {
         return (<VideoThumbnailItem
           payload={item.payload}
           index={index}
-          onVideoClick={() => {this.onVideoClick(item.payload, index)}}
+          onVideoClick={(videoId, index, compRef) => {this.onVideoClick(item.payload, index, compRef)}}
           isEmpty={item.isEmpty}
           emptyRenderFunction={this.props.getNoResultsCell}/>);
     };
 
 
-    onVideoClick = (payload, index) => {
+
+    onVideoClick = (payload, index, compRef) => {
+        console.log("onVideoClick compRef", compRef);
+      compRef.measure((x,y,width,height,pageX,pageY) => {
+        console.log("------ Here I am. This is me. ------");
+        console.log("cell x", x);
+        console.log("cell y", y);
+        console.log("cell width", width);
+        console.log("cell height", height);
+        console.log("cell pageX", pageX);
+        console.log("cell pageY", pageY);
+
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
         this.props.navigation.push("FullScreenVideoCollection", {
-            fetchServices : clonedInstance,
-            currentIndex: index,
-            payload,
-            baseUrl: this.props.getFetchUrl(),
-            showBalanceFlier: this.props.extraParams && this.props.extraParams.showBalanceFlier
+            "fetchServices" : clonedInstance,
+            "currentIndex": index,
+            "payload": payload,
+            "baseUrl": this.props.getFetchUrl(),
+            "showBalanceFlier": this.props.extraParams && this.props.extraParams.showBalanceFlier,
+            "videoThumbnailMesurements": {
+                "x": x,
+                "y": y,
+                "width": width,
+                "height": height,
+                "pageX": pageX,
+                "pageY": pageY
+            }
         });
+
+        
+      })
+
+
     }
     renderFooter = () => {
         if (!this.state.loadingNext) return null;

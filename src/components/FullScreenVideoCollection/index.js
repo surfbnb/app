@@ -1,23 +1,120 @@
 import React , {PureComponent} from "react";
-import {FlatList , View , TouchableOpacity, Image} from "react-native";
+import {FlatList , View , TouchableOpacity, Image, Easing, Animated} from "react-native";
 import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
 import FullScreeVideoRow from "./FullScreeVideoRow";
-import inlineStyles from "./styles";
+import inlineStyles from "./newStyles";
 import historyBack from '../../assets/user-video-history-back-icon.png';
 import TopStatus from "../Home/TopStatus";
+import { CUSTOM_TAB_Height } from '../../theme/constants';
+import { StackViewTransitionConfigs } from 'react-navigation-stack';
 
 const maxVideosThreshold = 3;
+const windowHeight = inlineStyles.fullScreen.height;
 
 class FullScreenVideoCollection extends PureComponent{
 
     static navigationOptions = (options) => {
+        console.log("FullScreenVideoCollection.navigationOptions called!");
         return {
             headerBackTitle: null,
-            header: null
+            header: null,
+            headerShown: false
         };
     };
+
+
+    /* Begin: - My transition code. */
+    static transitionConfig = (transitionProps, prevTransitionProps) => { 
+
+        const defaultTransitionConfig = StackViewTransitionConfigs.defaultTransitionConfig(
+            transitionProps,
+            prevTransitionProps,
+            true
+        );
+
+        console.log("StackViewTransitionConfigs", StackViewTransitionConfigs);
+
+        const currentRoute = transitionProps.scene.route;
+        const params = currentRoute.params;
+        if ( !params.videoThumbnailMesurements ) {
+            console.log("videoThumbnailMesurements not found. params", params);
+            // Show default animation.
+            return null;
+        }
+        console.log("videoThumbnailMesurements", params.videoThumbnailMesurements);
+
+        let thumbnailY = params.videoThumbnailMesurements.pageY;
+        let thumbnailX = params.videoThumbnailMesurements.pageX;
+        let thumbnailWidth = params.videoThumbnailMesurements.width;
+        let thumbnailHeight = params.videoThumbnailMesurements.height;
+
+        return {
+            transitionSpec: {
+              duration: 300,
+              easing: Easing.out(Easing.poly(4)),
+              timing: Animated.timing
+            },
+            screenInterpolator: (sceneProps) => {              
+              if ( !sceneProps.scene.isActive ) {
+                // Do nothing.
+                return {};
+              }
+
+              const { layout, position, scene } = sceneProps;
+              const { index } = scene;
+              const transforms = {};
+
+              // Calculate scale Y
+              const scaleYFactor = thumbnailHeight/windowHeight;
+              // Scale Y transform 
+              transforms.scaleY  = position.interpolate({
+                inputRange: [index - 1, index, index + 1],
+                outputRange: [scaleYFactor, 1, 1]
+              });
+
+
+              // Calculate scale X
+              const layoutWidth = layout.initWidth;
+              const scaleXFactor = thumbnailWidth/layoutWidth;
+              // Scale X transform 
+              transforms.scaleX  = position.interpolate({
+                inputRange: [index - 1, index, index + 1],
+                outputRange: [scaleXFactor, 1, 1]
+              });              
+              
+              // Translate X 
+              if ( thumbnailX > 0 ) {
+                  transforms.translateX = position.interpolate({
+                      inputRange: [index - 1, index, index + 1],
+                      outputRange: [thumbnailX, 0, 0]
+                  });
+              } else {
+                  // Move the thumbnail to left.
+                  transforms.translateX = position.interpolate({
+                      inputRange: [index - 1, index, index + 1],
+                      outputRange: [-thumbnailWidth, 0, 0]
+                  });
+              }
+
+              // Translate Y
+              // -- compute vertical padding.
+              let verticalPadding = (windowHeight - thumbnailHeight) / 2;
+
+              // -- apply magical formulla.
+              let translateYVal =  (thumbnailY - verticalPadding) / scaleYFactor;
+
+              transforms.translateY = position.interpolate({
+                  inputRange: [index - 1, index, index + 1],
+                  outputRange: [translateYVal, 0, 0]
+              });
+
+              return { transform: [transforms] };
+            }
+        };
+    };
+    /* End: - My transition code */
 
     constructor(props){
         super(props);

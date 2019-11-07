@@ -23,9 +23,25 @@ export default (props) => {
         imageUrl = reduxGetters.getVideoImgUrl(videoId,null, AppConfig.userVideos.userScreenCoverImageWidth),
         videoDesc =reduxGetters.getVideoDescription(reduxGetters.getVideoDescriptionId(videoId));
 
+    //Begin: Temp Code.
 
-    return <TouchableWithoutFeedback onPress={multipleClickHandler(() => { props.onVideoClick && props.onVideoClick(videoId, props.index );} )}
-    >
+    // Temp thing - change this when using proper component.
+    let compRef = null;
+    const setCompRef = (ref) => {
+        compRef = ref;
+        console.log("compRef set");
+    };
+
+    //click handler
+    const onPressHandler = multipleClickHandler(() => {
+        console.log("onPressHandler.compRef", compRef);
+        props.onVideoClick && props.onVideoClick(videoId, props.index, compRef);
+    });
+    
+
+    //End: Temp Code.
+    
+    return (<View ref={setCompRef}><TouchableWithoutFeedback onPress={onPressHandler}>
         <View>
             <FastImage style={{
                 width: (Dimensions.get('window').width - 6) / 2,
@@ -60,5 +76,5 @@ export default (props) => {
             </LinearGradient>
 
         </View>
-    </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback></View>);
 }

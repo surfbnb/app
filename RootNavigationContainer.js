@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Dimensions, Easing, Animated } from 'react-native';
 import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator, StackViewTransitionConfigs } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import deepGet from 'lodash/get';
 
@@ -63,7 +63,8 @@ const customTabHiddenRoutes = [
   'InviteCodeScreen',
   'AddEmailScreen',
   'InAppBrowserComponent',
-  'CouchMarks'
+  'CouchMarks',
+  'FullScreenVideoCollection'
 ];
 
 const modalStackConfig = {
@@ -107,6 +108,33 @@ const txModalConfig = {
     }
   })
 };
+
+// Begin - FullScreenVideoCollection transition feature.
+const generalTransitionConfig = (transitionProps, prevTransitionProps, isModal) => {
+  const currentRoute = transitionProps.scene.route;
+  let transitionConfig = null;
+  switch(currentRoute.routeName) {
+    case 'FullScreenVideoCollection':
+      transitionConfig = FullScreenVideoCollection.transitionConfig(transitionProps, prevTransitionProps, isModal);
+      break;
+  }
+
+  if ( null == transitionConfig ) {
+    transitionConfig = defaultTransitionConfig(transitionProps, prevTransitionProps, isModal);
+  }
+
+  return transitionConfig;  
+};
+
+const defaultTransitionConfig = (transitionProps, prevTransitionProps, isModal) => {
+  return StackViewTransitionConfigs.defaultTransitionConfig(
+    transitionProps,
+    prevTransitionProps,
+    isModal
+  );
+};
+
+
 
 const CaptureVideoStack = createStackNavigator(
   {
@@ -203,7 +231,7 @@ const ProfilePushStack = createStackNavigator(
     WalletSettingScreen: WalletSettingScreen,
     WalletDetails: WalletDetails,
     VideoTags: VideoTags,
-      FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
     headerLayoutPreset: 'center'
@@ -228,7 +256,7 @@ const ProfileStack = createStackNavigator(
     mode: 'modal',
     navigationOptions: ({ navigation }) => {
       return {
-        tabBarVisible: deepGet(navigation, 'state.index') === 0
+        tabBarVisible: deepGet(navigation, 'state.index') === 0,
       };
     },
     ...txModalConfig
@@ -243,10 +271,18 @@ const SearchPushStack = createStackNavigator(
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
     VideoTags: VideoTags,
-      FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    transitionConfig: generalTransitionConfig,
+    navigationOptions: ({ navigation }) => {
+      console.log("SearchPushStack navigationOptions called");
+      const routeName = utilities.getLastChildRoutename(navigation.state);
+      return {
+        tabBarVisible: !customTabHiddenRoutes.includes(routeName)
+      };
+    }
   }
 );
 

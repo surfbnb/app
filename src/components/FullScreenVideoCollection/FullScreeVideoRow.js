@@ -12,7 +12,7 @@ import CurrentUser from '../../models/CurrentUser';
 import BottomStatus from '../Home/BottomStatus';
 import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 import ShareVideo from '../../services/shareVideo';
-import inlineStyles from './styles';
+import inlineStyles from './newStyles';
 
 import utilities from '../../services/Utilities';
 import OptionsIcon from '../../assets/options_self_video.png';
@@ -21,12 +21,8 @@ import OptionsIcon from '../../assets/options_self_video.png';
 class FullScreeVideoRow extends PureComponent {
     constructor(props) {
         super(props);
-        console.log("this.props", this.props);
         this.userId = deepGet(this.props.payload, 'user_id');
         this.videoId = deepGet(this.props.payload, 'video_id');
-
-
-
     }
 
     refetchVideo = () => {
