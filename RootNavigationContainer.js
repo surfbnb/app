@@ -203,7 +203,7 @@ const ProfilePushStack = createStackNavigator(
     WalletSettingScreen: WalletSettingScreen,
     WalletDetails: WalletDetails,
     VideoTags: VideoTags,
-      FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
     headerLayoutPreset: 'center'

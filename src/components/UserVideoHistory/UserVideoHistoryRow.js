@@ -16,6 +16,7 @@ import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
 import OptionsIcon from '../../assets/options_self_video.png';
+import ReplyVideo from '../CommonComponents/ReplyVideo';
 
 
 class UserVideoHistoryRow extends PureComponent {
@@ -84,6 +85,7 @@ class UserVideoHistoryRow extends PureComponent {
                   userId={this.props.userId}
                   videoId={this.props.videoId}
                 />
+                <ReplyVideo videoId={this.videoId} userId={this.userId}/>
                 <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} />
                 <ReportVideo  userId={this.props.userId} videoId={this.props.videoId} />
               </View>

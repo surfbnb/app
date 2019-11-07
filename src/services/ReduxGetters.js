@@ -57,6 +57,7 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `twitter_entities.id_${id}.handle`);
   }
+
   getUserTwitterHandleLink(id, state) {
     state = state || Store.getState();
     return deepGet(state, `twitter_entities.id_${id}.link`);
@@ -420,6 +421,16 @@ class ReduxGetters {
   getHashTag(id, state){
     state = state || Store.getState();
     return deepGet(state, `tag_entities.id_${id}`);
+  }
+
+  getVideoReplyCount(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.reply_count`, 0);
+  }
+
+  getVideoReplyAmount(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.reply_amount`, 0);
   }
 
 }
