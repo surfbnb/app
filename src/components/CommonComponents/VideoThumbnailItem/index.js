@@ -30,7 +30,6 @@ export default (props) => {
     let compRef = null;
     const setCompRef = (ref) => {
         compRef = ref;
-        console.log("compRef set");
     };
 
     //click handler

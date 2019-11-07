@@ -75,7 +75,7 @@ class FullScreenVideoCollection extends PureComponent{
               // Calculate scale Y
               const scaleYFactor = thumbnailHeight/windowHeight;
               // Scale Y transform 
-              transforms.scaleY  = position.interpolate({
+              const scaleYTransform  = position.interpolate({
                 inputRange: [index - 1, index, index + 1],
                 outputRange: [scaleYFactor, 1, 1]
               });
@@ -85,20 +85,21 @@ class FullScreenVideoCollection extends PureComponent{
               const layoutWidth = layout.initWidth;
               const scaleXFactor = thumbnailWidth/layoutWidth;
               // Scale X transform 
-              transforms.scaleX  = position.interpolate({
+              const scaleXTransform  = position.interpolate({
                 inputRange: [index - 1, index, index + 1],
                 outputRange: [scaleXFactor, 1, 1]
               });              
               
               // Translate X 
+              let translateXTransform;
               if ( thumbnailX > 0 ) {
-                  transforms.translateX = position.interpolate({
+                  translateXTransform = position.interpolate({
                       inputRange: [index - 1, index, index + 1],
                       outputRange: [thumbnailX, 0, 0]
                   });
               } else {
                   // Move the thumbnail to left.
-                  transforms.translateX = position.interpolate({
+                  translateXTransform = position.interpolate({
                       inputRange: [index - 1, index, index + 1],
                       outputRange: [-thumbnailWidth, 0, 0]
                   });
@@ -115,7 +116,7 @@ class FullScreenVideoCollection extends PureComponent{
                 translateYVal = translateYVal + (CUSTOM_TAB_Height * scaleYFactor);
               }
 
-              transforms.translateY = position.interpolate({
+              const translateYTransform = position.interpolate({
                   inputRange: [index - 1, index, index + 1],
                   outputRange: [translateYVal, 0, 0]
               });
@@ -129,7 +130,14 @@ class FullScreenVideoCollection extends PureComponent{
                 "\n ---layoutWidth", layoutWidth,
                 "\n ---windowHeight", windowHeight);
 
-              return { transform: [transforms] };
+              return { 
+                transform: [
+                  {"scaleX": scaleXTransform},
+                  {"scaleY": scaleYTransform},
+                  {"translateX": translateXTransform},
+                  {"translateY": translateYTransform}
+                ]
+              };
             }
         };
     };
@@ -145,7 +153,7 @@ class FullScreenVideoCollection extends PureComponent{
         this.flatlistRef = null;
 
         this.state = {
-            list : this.getVideoPagination().getList(),
+            list : this.getVideoPagination().getResults(),
             activeIndex: this.currentIndex,
             refreshing : false,
             loadingNext: false
@@ -209,7 +217,9 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     onRefresh = ( res ) => {
-        this.setState({ refreshing : false ,  list : this.getVideoPagination().getList() });
+      let paginationService = this.getVideoPagination();
+      let resultList = paginationService.getResults();
+      this.setState({ refreshing : false ,  list : resultList });
     }
 
     onRefreshError = ( error ) => {
@@ -222,7 +232,9 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     onNext = ( res  ) => {
-        this.setState({ loadingNext : false ,  list : this.getVideoPagination().getList() });
+        let paginationService = this.getVideoPagination();
+        let resultList = paginationService.getResults();
+        this.setState({ loadingNext : false ,  list : resultList });
     }
 
     onNextError = ( error ) => {
@@ -230,7 +242,6 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     getNext = () => {
-        console.log('getNextgetNext',this.isScrolled);
         // if(!this.isScrolled) return;
         this.getVideoPagination().getNext();
     }
@@ -240,12 +251,11 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     _keyExtractor = (item, index) => {
-        return `id_${item}`;
-    };
+        return `id_${item.id}`;
+    }
 
     _renderItem = ({ item, index }) => {
-        const payload = reduxGetters.getTagsVideoPayload(item);
-        console.log("payload", payload);
+        const payload = item.payload;
         return  <FullScreeVideoRow shouldPlay={this.shouldPlay}
                                    isActive={index == this.state.activeIndex}
                                    doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
