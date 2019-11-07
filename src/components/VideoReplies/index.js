@@ -9,7 +9,7 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import {SafeAreaView, withNavigation} from "react-navigation";
+import {SafeAreaView} from "react-navigation";
 import FastImage from 'react-native-fast-image';
 import LinearGradient from "react-native-linear-gradient";
 
@@ -59,7 +59,7 @@ const HeaderLeft = (props) => {
     );
   };
 
-class VideoReplyFlatList extends PureComponent {
+class VideoRepliesScreen extends PureComponent {
     static navigationOptions = (props) => {
         return {
           headerStyle: inlineStyles.headerStyles,
@@ -71,7 +71,7 @@ class VideoReplyFlatList extends PureComponent {
 
     constructor(props){
         super(props);
-        this.videoReplyPagination = new Pagination( this._fetchUrlVideoHistory() );
+        this.videoReplyPagination = new Pagination( this._fetchUrlVideoReplies() );
         this.paginationEvent = this.videoReplyPagination.event;
 
         this.state = {
@@ -110,8 +110,9 @@ class VideoReplyFlatList extends PureComponent {
         }
     }
 
-    _fetchUrlVideoHistory(){
-        return `/users/${this.props.userId}/video-history` ;
+    _fetchUrlVideoReplies(){
+      const userId = this.props.navigation.getParam('userId');
+      return `/users/${userId}/video-history`;
     }
 
     getVideoBtAmount(videoId){
@@ -232,7 +233,7 @@ class VideoReplyFlatList extends PureComponent {
 
     onVideoClick = ( item, index  ) => {
         const clonedInstance = this.videoReplyPagination.fetchServices.cloneInstance();
-        this.props.navigation.push("UserVideoHistory", {
+        this.props.navigation.push("VideoReplyList", {
           fetchServices : clonedInstance,
           currentIndex: index,
           userId: this.props.userId
@@ -270,4 +271,4 @@ class VideoReplyFlatList extends PureComponent {
 
 }
 
-export default withNavigation( VideoReplyFlatList );
+export default VideoRepliesScreen;

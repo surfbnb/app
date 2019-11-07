@@ -41,7 +41,7 @@ class ReplyVideo extends PureComponent {
     };
 
     replyVideo = ()=> {
-        this.props.navigation.push('VideoReplies');
+        this.props.navigation.push('VideoReplies',{'userId': this.props.userId });
     };
 
     render(){

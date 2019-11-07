@@ -57,6 +57,7 @@ import RedemptiomScreen from './src/components/Redemption';
 import VideoTags from './src/components/VideoTags';
 import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
 import VideoReplies from './src/components/VideoReplies';
+import VideoReplyList from './src/components/VideoReplies/VideoReplyList';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -64,7 +65,9 @@ const customTabHiddenRoutes = [
   'InviteCodeScreen',
   'AddEmailScreen',
   'InAppBrowserComponent',
-  'CouchMarks'
+  'CouchMarks',
+  'VideoReplies',
+  'VideoReplyList'
 ];
 
 const modalStackConfig = {
@@ -134,6 +137,7 @@ const HomePushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
+    VideoReplyList: VideoReplyList,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
@@ -168,6 +172,7 @@ const NotificationPushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
+    VideoReplyList: VideoReplyList,
     VideoPlayer: VideoPlayer,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
@@ -196,6 +201,7 @@ const ProfilePushStack = createStackNavigator(
     ProfileScreen: ProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
+    VideoReplyList: VideoReplyList,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
@@ -247,6 +253,7 @@ const SearchPushStack = createStackNavigator(
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
+    VideoReplyList: VideoReplyList,
     VideoTags: VideoTags,
       FullScreenVideoCollection: FullScreenVideoCollection
   },
