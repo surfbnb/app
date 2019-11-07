@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, Image, Alert, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, Alert, TouchableWithoutFeedback, View } from 'react-native';
 import { ActionSheet } from 'native-base';
 import inlineStyles from './styles';
 import Toast from '../../../theme/components/NotificationToast';
-import UserProfileOptions from '../../../assets/user_profile_options.png';
 import PepoApi from '../../../services/PepoApi';
 import elipses from "../../../assets/elipses_video_in_profile.png";
 import {ostErrors} from "../../../services/OstErrors";

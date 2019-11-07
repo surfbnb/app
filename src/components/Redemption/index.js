@@ -47,7 +47,7 @@ import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helper
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import clone from 'lodash/clone';
-import { ostSdkErrors } from '../../services/OstSdkErrors';
+import { ostSdkErrors, WORKFLOW_CANCELLED_MSG } from '../../services/OstSdkErrors';
 import Colors from '../../theme/styles/Colors';
 import InAppBrowser from '../../services/InAppBrowser';
 
@@ -191,11 +191,11 @@ class Redemption extends PureComponent{
 
     _keyboardShown(e) {
         let bottomPaddingValue = deepGet(e, 'endCoordinates.height') || 350;
-    
+
         if (this.state.bottomPadding == bottomPaddingValue) {
           return;
         }
-    
+
         this.setState({
           bottomPadding: bottomPaddingValue
         });
@@ -209,7 +209,7 @@ class Redemption extends PureComponent{
             });
         }
     }
-    
+
     _keyboardHidden(e) {
         if (this.state.bottomPadding == safeAreaBottomSpace) {
           return;
@@ -252,7 +252,7 @@ class Redemption extends PureComponent{
            this.validatePricePoint();
         }
     };
-    
+
     btValidationAndError() {
 
         if(this.state.pepoCorns && !this.numberFormatter.isValidInputProvided(this.state.pepoCorns)){
@@ -282,7 +282,7 @@ class Redemption extends PureComponent{
         }
         return true;
     }
-    
+
     beforeRedemption = () => {
         this.setState({
             exceBtnDisabled: true,
@@ -350,14 +350,14 @@ class Redemption extends PureComponent{
           const btInDecimal = this.getTransactionalBtAmount();
           return this._executeTransaction(btInDecimal);
         }
-    
+
         if (errorMessage) {
           if (ON_USER_CANCLLED_ERROR_MSG === errorMessage || WORKFLOW_CANCELLED_MSG === errorMessage) {
             //Cancel the flow.
             this.resetState();
             return;
           }
-    
+
           // Else: Show the error message.
           this.showError(errorMessage);
         }
@@ -374,7 +374,7 @@ class Redemption extends PureComponent{
           this.workflow
         );
       }
-    
+
     getSdkMetaProperties() {
         const metaProperties = clone(AppConfig.redemptionMetaProperties);
         let details = "" , separator=" ";
@@ -702,7 +702,7 @@ class Redemption extends PureComponent{
     onRedemptionWebViewClick = () => {
         Utilities.openRedemptionWebView();
     }
-  
+
 }
 
 

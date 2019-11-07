@@ -62,8 +62,9 @@ class BioScreen extends PureComponent {
           textInputStyles={inlineStyles.multilineTextInput}
           maxLength={300}
           autoFocus={true}
-        />
-        <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
+        >
+          <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
+        </TagsInput>
       </ScrollView>
     );
   }

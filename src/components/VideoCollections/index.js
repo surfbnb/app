@@ -3,16 +3,11 @@ import { ActivityIndicator , FlatList} from "react-native";
 import {SafeAreaView} from "react-navigation";
 import Pagination from "../../services/Pagination";
 import VideoThumbnailItem from '../../components/CommonComponents/VideoThumbnailItem';
-import { withNavigation } from 'react-navigation';
-import WalletBalanceFlyer from "../WalletBalanceFlyer";
-import TopStatus from "../Home/TopStatus";
-import CurrentUser from "../../models/CurrentUser";
 
 class VideoCollections extends PureComponent {
     constructor(props){
         super(props);
         let list = [];
-        // this.videoPagination = new Pagination( this.props.getFetchUrl());
 
         this.state = {
             list,
@@ -20,8 +15,6 @@ class VideoCollections extends PureComponent {
             loadingNext: false
         };
         this.listRef = null;
-
-
 
         const ts = Date.now();
         this.noResultsKeyProp = "video_collection_no_results_" + ts;
