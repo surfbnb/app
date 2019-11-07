@@ -26,7 +26,7 @@ class FullScreenVideoCollection extends PureComponent{
 
 
     /* Begin: - My transition code. */
-    static transitionConfig = (transitionProps, prevTransitionProps) => { 
+    static transitionConfig = (transitionProps, prevTransitionProps, isModal, isCurrent) => { 
 
         const defaultTransitionConfig = StackViewTransitionConfigs.defaultTransitionConfig(
             transitionProps,
@@ -34,10 +34,16 @@ class FullScreenVideoCollection extends PureComponent{
             true
         );
 
-        console.log("StackViewTransitionConfigs", StackViewTransitionConfigs);
+        
+        let sceneRoute;   
+        console.log("isCurrent", isCurrent);
+        if ( isCurrent ) {
+          sceneRoute = transitionProps.scene.route;      
+        } else if (prevTransitionProps) {
+          sceneRoute = prevTransitionProps.scene.route;   
+        }
+        const params = sceneRoute.params;
 
-        const currentRoute = transitionProps.scene.route;
-        const params = currentRoute.params;
         if ( !params.videoThumbnailMesurements ) {
             console.log("videoThumbnailMesurements not found. params", params);
             // Show default animation.
@@ -57,7 +63,7 @@ class FullScreenVideoCollection extends PureComponent{
               timing: Animated.timing
             },
             screenInterpolator: (sceneProps) => {              
-              if ( !sceneProps.scene.isActive ) {
+              if ( "FullScreenVideoCollection" !== sceneProps.scene.route.routeName ) {
                 // Do nothing.
                 return {};
               }
@@ -101,9 +107,17 @@ class FullScreenVideoCollection extends PureComponent{
               // Translate Y
               // -- compute vertical padding.
               let verticalPadding = (windowHeight - thumbnailHeight) / 2;
+              if ( isCurrent ) {
+
+              }
 
               // -- apply magical formulla.
               let translateYVal =  (thumbnailY - verticalPadding) / scaleYFactor;
+
+              // -- as bottom tab bar is a pain, manuplate it.
+              if ( !isCurrent ) {
+                translateYVal = translateYVal + (CUSTOM_TAB_Height * scaleYFactor);
+              }
 
               transforms.translateY = position.interpolate({
                   inputRange: [index - 1, index, index + 1],

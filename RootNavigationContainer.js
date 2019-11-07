@@ -110,20 +110,46 @@ const txModalConfig = {
 };
 
 // Begin - FullScreenVideoCollection transition feature.
+
+// customTransitionConfigs is a map of route names 
+// and custom transitionConfig methods.
+const customTransitionConfigs = {
+  "FullScreenVideoCollection": FullScreenVideoCollection.transitionConfig
+};
+
+const getCustomTransitionConfig = (transitionProps) => {
+  if ( null == transitionProps ) {
+    return null;
+  }
+  let sceneRouteName = transitionProps.scene.route.routeName;
+  console.log("sceneRouteName", sceneRouteName, customTransitionConfigs[ sceneRouteName ]);
+  return customTransitionConfigs[ sceneRouteName ];
+};
+
+
 const generalTransitionConfig = (transitionProps, prevTransitionProps, isModal) => {
   const currentRoute = transitionProps.scene.route;
   let transitionConfig = null;
-  switch(currentRoute.routeName) {
-    case 'FullScreenVideoCollection':
-      transitionConfig = FullScreenVideoCollection.transitionConfig(transitionProps, prevTransitionProps, isModal);
-      break;
-  }
+  
 
+  // Check for custom transitionConfig for current transitionProps 
+  transitionConfig = getCustomTransitionConfig( transitionProps );
+  let isCurrent = true;
+
+  // Check for custom transitionConfig for previous transitionProps
   if ( null == transitionConfig ) {
-    transitionConfig = defaultTransitionConfig(transitionProps, prevTransitionProps, isModal);
+    transitionConfig = getCustomTransitionConfig( prevTransitionProps );
+    isCurrent = false;
   }
 
-  return transitionConfig;  
+  // If none are found use default.
+  if ( null == transitionConfig ) {
+    transitionConfig = defaultTransitionConfig;
+    isCurrent = null;
+  }
+
+  // call the transitionConfig method and return the output.
+  return transitionConfig(transitionProps, prevTransitionProps, isModal, isCurrent);
 };
 
 const defaultTransitionConfig = (transitionProps, prevTransitionProps, isModal) => {
