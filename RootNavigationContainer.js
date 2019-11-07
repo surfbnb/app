@@ -192,7 +192,14 @@ const HomePushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    transitionConfig: generalTransitionConfig,
+    navigationOptions: ({ navigation }) => {
+      const routeName = utilities.getLastChildRoutename(navigation.state);
+      return {
+        tabBarVisible: !customTabHiddenRoutes.includes(routeName)
+      };
+    }
   }
 );
 
@@ -226,7 +233,14 @@ const NotificationPushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    transitionConfig: generalTransitionConfig,
+    navigationOptions: ({ navigation }) => {
+      const routeName = utilities.getLastChildRoutename(navigation.state);
+      return {
+        tabBarVisible: !customTabHiddenRoutes.includes(routeName)
+      };
+    }
   }
 );
 
@@ -260,7 +274,16 @@ const ProfilePushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    transitionConfig: generalTransitionConfig,
+    navigationOptions: ({ navigation }) => {
+      const routeName = utilities.getLastChildRoutename(navigation.state);
+      console.log("ProfilePushStack :: navigationOptions routeName:", routeName);
+      console.log("!customTabHiddenRoutes.includes(routeName)", !customTabHiddenRoutes.includes(routeName));
+      return {
+        tabBarVisible: !customTabHiddenRoutes.includes(routeName)
+      };
+    }
   }
 );
 
@@ -303,7 +326,6 @@ const SearchPushStack = createStackNavigator(
     headerLayoutPreset: 'center',
     transitionConfig: generalTransitionConfig,
     navigationOptions: ({ navigation }) => {
-      console.log("SearchPushStack navigationOptions called");
       const routeName = utilities.getLastChildRoutename(navigation.state);
       return {
         tabBarVisible: !customTabHiddenRoutes.includes(routeName)
