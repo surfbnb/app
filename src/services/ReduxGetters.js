@@ -425,12 +425,17 @@ class ReduxGetters {
 
   getVideoReplyCount(id, state){
     state = state || Store.getState();
-    return deepGet(state, `video_stat_entities.id_${id}.reply_count`, 0);
+    return deepGet(state, `video_stat_entities.id_${id}.total_replies`, 0);
   }
 
   getVideoReplyAmount(id, state){
     state = state || Store.getState();
-    return deepGet(state, `video_stat_entities.id_${id}.reply_amount`, 0);
+    return deepGet(state, `video_stat_entities.id_${id}.per_reply_amount_in_wei`, 0);
+  }
+
+  getVideoReplyAllowed(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.is_reply_allowed`, 0);
   }
 
 }

@@ -18,7 +18,8 @@ const mapStateToProps = (state , ownProps) => {
     isCurrentUserActivated : CurrentUser.isUserActivated(),
     balance : state.balance,
     requiredPepo : reduxGetter.getVideoReplyAmount(ownProps.videoId, state),
-    videoReplyCount : reduxGetter.getVideoReplyCount(ownProps.videoId, state)
+    videoReplyCount : reduxGetter.getVideoReplyCount(ownProps.videoId, state),
+    isReplyAllowed : reduxGetter.getVideoReplyAllowed(ownProps.videoId, state)
   }
 };
 
@@ -29,7 +30,7 @@ class ReplyVideo extends PureComponent {
     };
 
     isDisabled = () => {
-        return this.props.isCreatorApproved != 1 || !this.props.isVideoUserActivated || !this.props.isCurrentUserActivated || !this.hasSufficientBalance();
+        return !this.props.isReplyAllowed || this.props.isCreatorApproved != 1 || !this.props.isVideoUserActivated || !this.props.isCurrentUserActivated || !this.hasSufficientBalance();
     };
 
     hasSufficientBalance = () => {
