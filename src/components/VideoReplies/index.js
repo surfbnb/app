@@ -33,9 +33,9 @@ const HeaderLeft = (props) => {
         onPress={() => {
           props.navigation.goBack();
         }}
-        style={inlineStyles.crossIconWrapper}
+        style={inlineStyles.iconWrapper}
       >
-        <Image style={inlineStyles.crossIconSkipFont} source={crossIcon}></Image>
+        <Image style={inlineStyles.iconSkipFont} source={crossIcon}></Image>
       </TouchableOpacity>
     );
   };
@@ -43,8 +43,8 @@ const HeaderLeft = (props) => {
   const HeaderRight = (props) => {
     return (<TouchableOpacity onPress={()=>{
         props.navigation.push('CaptureVideo')
-    }} style={inlineStyles.crossIconWrapper} >
-        <Image style={[styles.crossIconSkipFont]} source={plusIcon} />
+    }} style={inlineStyles.iconWrapper} >
+        <Image style={[styles.iconSkipFont]} source={plusIcon} />
     </TouchableOpacity>)
   };
   
@@ -188,7 +188,7 @@ class VideoRepliesScreen extends PureComponent {
           <View>
 
             <FastImage style={{
-                width: (Dimensions.get('window').width - 6) / 3,
+                width: (Dimensions.get('window').width - 6) / 2,
                 aspectRatio:9/16,
                 margin: 1,
                 backgroundColor: imageUrl ? Colors.white : Colors.gainsboro
@@ -202,7 +202,7 @@ class VideoRepliesScreen extends PureComponent {
               locations={[0, 0.5, 1]}
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
-              style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', top: 0, left: 0, alignItems: 'flex-end'}}
+              style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, alignItems: 'flex-end'}}
             >
                 { this.isCurrentUser() && <View style={inlineStyles.deleteButton}>
                 <DeleteVideo videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
@@ -213,7 +213,7 @@ class VideoRepliesScreen extends PureComponent {
               locations={[0, 0.5, 1]}
               start={{ x: 0, y: 0 }}
               end={{ x: 0, y: 1 }}
-              style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', bottom: 0, left: 0}}
+              style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', bottom: 0, left: 0}}
             >
               <View style={inlineStyles.videoStatsContainer}>
                 <Image style={{height: 15, width: 15}} source={pepoWhiteIcon} />

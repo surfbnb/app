@@ -21,7 +21,7 @@ let stylesMap = {
         height: 60,
         width: 60
       },
-      crossIconSkipFont: {
+      iconSkipFont: {
         height: 20,
         width: 20
       },
