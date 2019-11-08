@@ -39,44 +39,56 @@ class VideoRecorder extends Component {
       progress: 0,
       recordingInProgress: false,
       acceptedCameraTnC: this.props.acceptedCameraTnC,
-      cameraFrontMode: true
+      cameraFrontMode: true,
+      isLocalVideoPresent: false
     };
     this.camera = null;
-    this.recordedVideo = null;
+    this.recordedVideoObj = reduxGetters.getRecordedVideo();
   }
 
   _handleAppStateChange = (nextAppState) => {
     nextAppState === 'background' && this.cancleVideoHandling();
   };
 
+
+  isStaleReduxObjectPresent(){
+     let acceptableKeys = ['reply_obj', 'video_type'];
+     for (let key in this.recordedVideoObj) {
+      if (! acceptableKeys.includes(key)){
+        return true;
+      }
+     }
+     return false;
+  }
+
   async componentDidMount() {
-    if (this.props.acceptedCameraTnC === null) {
-      utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
-        this.setState({ acceptedCameraTnC: terms });
-      });
-    }
+
+    // if (!this.props.isVideoTypeReply) {
+    //   if (this.props.acceptedCameraTnC === null) {
+    //     utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
+    //       this.setState({ acceptedCameraTnC: terms });
+    //     });
+    //   }
+    // }
+
     BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
     AppState.addEventListener('change', this._handleAppStateChange);
     if (this.props.actionSheetOnRecordVideo) {
-      let recordedVideoObj = reduxGetters.getRecordedVideo();
-      this.recordedVideo = recordedVideoObj.raw_video;
-      let isFileExists = false;
+      let isFileExists = await this.ifLocalVideoPresent();
       const oThis = this;
-
-      // this.showActionSheet();
-      if (this.recordedVideo) {
-        isFileExists = await RNFS.exists(this.recordedVideo);
-      }
       if (isFileExists) {
+        this.setState({ isLocalVideoPresent: true });
         setTimeout(function() {
           oThis.showActionSheet();
         }, 100);
-      } else if (Object.keys(recordedVideoObj).length > 0) {
+      } else if (this.isStaleReduxObjectPresent()) {
         Store.dispatch(
           upsertRecordedVideo({
             do_discard: true
           })
         );
+      } else {
+        this.props.saveVideoPrimaryInfo();
       }
     }
   }
@@ -85,7 +97,7 @@ class VideoRecorder extends Component {
     ActionSheet.show(
       {
         options: ACTION_SHEET_BUTTONS,
-        title: 'You have already recorded video'
+        title: this.props.getActionSheetText(this.recordedVideoObj)
       },
       (buttonIndex) => {
         if (buttonIndex == ACTION_SHEET_RESHOOT_INDEX) {
@@ -98,7 +110,7 @@ class VideoRecorder extends Component {
           );
         } else if (buttonIndex == ACTION_SHEET_CONTINUE_INDEX) {
           //navigate to previous page
-          this.props.goToPreviewScreen(this.recordedVideo);
+          this.props.proceedWithExistingVideo(this.recordedVideoObj);
         }
       }
     );
@@ -129,6 +141,72 @@ class VideoRecorder extends Component {
     this.setState({ cameraFrontMode: !this.state.cameraFrontMode });
   };
 
+
+  ifLocalVideoPresent = async  () => {
+    let recordedVideo = this.recordedVideoObj.raw_video;
+    let isFileExists = false;
+    if (recordedVideo) {
+      isFileExists = await RNFS.exists(recordedVideo);
+    }
+    return isFileExists;
+  };
+
+
+  showCoachForPosting = () => {
+    // If already recorded video present in local, do not show coach.
+    console.log('showCoachForPosting :::');
+    if (this.state.isLocalVideoPresent) return;
+
+    if (this.props.isVideoTypeReply) {
+      // TODO: return coach for posting
+      // if (no video reply present) { return Coach }
+    } else {
+      if (this.state.acceptedCameraTnC !== 'true'){
+        return <View style={styles.backgroundStyle}>
+          <View style={{ padding: 26 }}>
+            <Text style={styles.headerText}>Submit your first video</Text>
+
+            <Text style={styles.smallText}>
+              Create a 30 second video update. Share what you're working on, what excites you, or anything on your
+              mind.
+            </Text>
+
+            <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
+
+            <Text style={styles.headerText}>Approval process</Text>
+
+            <Text style={styles.smallText}>
+              The Pepo team will review your first video before it is shared publicly. We'll get in touch with you
+              ASAP!
+            </Text>
+
+            <LinearGradient
+              colors={['#ff7499', '#ff5566']}
+              locations={[0, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
+            >
+              <TouchableOpacity
+                onPress={this.acceptCameraTerms}
+                style={[Theme.Button.btn, { borderWidth: 0 }]}
+              >
+                <Text style={[
+                  Theme.Button.btnPinkText,
+                  { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+                ]}>
+                  Get Started
+                </Text>
+              </TouchableOpacity>
+            </LinearGradient>
+
+          </View>
+        </View>
+
+      }
+    }
+  };
+
   cameraView() {
     return (
       <View style={styles.container}>
@@ -154,48 +232,7 @@ class VideoRecorder extends Component {
           defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
           defaultMuted={false}
         >
-          {this.state.acceptedCameraTnC != 'true' && (
-            <View style={styles.backgroundStyle}>
-              <View style={{ padding: 26 }}>
-                <Text style={styles.headerText}>Submit your first video</Text>
-
-                <Text style={styles.smallText}>
-                  Create a 30 second video update. Share what you're working on, what excites you, or anything on your
-                  mind.
-                </Text>
-
-                <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
-
-                <Text style={styles.headerText}>Approval process</Text>
-
-                <Text style={styles.smallText}>
-                  The Pepo team will review your first video before it is shared publicly. We'll get in touch with you
-                  ASAP!
-                </Text>
-
-                <LinearGradient
-                  colors={['#ff7499', '#ff5566']}
-                  locations={[0, 1]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
-                >
-                  <TouchableOpacity
-                    onPress={this.acceptCameraTerms}
-                    style={[Theme.Button.btn, { borderWidth: 0 }]}
-                  >
-                    <Text style={[
-                      Theme.Button.btnPinkText,
-                      { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
-                    ]}>
-                      Get Started
-                    </Text>
-                  </TouchableOpacity>
-                </LinearGradient>
-
-              </View>
-            </View>
-          )}
+          {this.showCoachForPosting()}
           {this.showCameraActions()}
         </RNCamera>
       </View>
