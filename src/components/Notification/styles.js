@@ -13,7 +13,7 @@ let stylesMap = {
 
   txtWrapper: {
     flex: 1,
-    paddingVertical: 10,
+    // paddingVertical: 10,
     paddingRight: 10,
     paddingLeft: 0, /* The remaining 10 px is assigned for icon click area. */
     flexDirection: 'row',
