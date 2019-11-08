@@ -25,13 +25,13 @@ os =  os.toLowerCase();
 
 let recursiveMaxCount = 0;
 
-let checkVideoPermission = function(navigation) {
+let checkVideoPermission = function(navigation, params ) {
   CameraPermissionsApi.requestPermission('camera').then((cameraResult) => {
     CameraPermissionsApi.requestPermission('microphone').then((microphoneResult) => {
       if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
         console.log('checkVideoPermission:cameraResult', cameraResult);
         console.log('checkVideoPermission:microphoneResult', microphoneResult);
-        navigation.navigate('CaptureVideo');
+        navigation.navigate('CaptureVideo', params);
       } else if (
         (Platform.OS == 'ios' && (cameraResult == 'denied' || microphoneResult == 'denied')) ||
         cameraResult == 'restricted' ||
@@ -135,15 +135,23 @@ export default {
     return this.getLastChildRoutename(routes[index]);
   },
 
-  handleVideoUploadModal(previousTabIndex, navigation) {
+  getActiveTab( navigation ){
+    if( !navigation ) return ;
+    let activeIndex = deepGet(navigation , 'state.index'),
+        route = deepGet(navigation , `state.routes[${activeIndex}]`);
+    return route && route["routeName"];
+  },
+
+  handleVideoUploadModal(previousTabIndex, navigation, params = {}) {
     if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
+      // TODO: check if video or reply and accordingly emit corresponding event.
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
     } else if (reduxGetters.getVideoProcessingStatus() == true) {
       Toast.show({
         text: 'Video uploading in progress.'
       });
     } else {
-      checkVideoPermission(navigation);
+      checkVideoPermission(navigation, params);
     }
   },
 

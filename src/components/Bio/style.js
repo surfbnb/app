@@ -5,18 +5,32 @@ let stylesMap = {
   multilineTextInput:{
     height : 100 ,
     textAlignVertical:'top',
-    paddingTop:20
+    padding: 15,
+    paddingTop: 15,
+    marginTop: 0
   },
   suggestionText:{
-    fontWeight:"normal",
+    fontFamily: 'AvenirNext-Regular',
     color:Colors.midNightblue,
-    fontSize:18
+    fontSize:16
+  },
+  dropDownStyle: {
+    width: '100%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.5,
+    elevation: 1
   },
   suggestionTextWrapper : {
-    marginTop:20
+    marginVertical: 9
   },
   countStyle:{
     fontSize:10,
+    marginTop: 5,
     textAlign:'right'
   }
 };

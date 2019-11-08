@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import {View, Text} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import BackArrow from '../CommonComponents/BackArrow';
@@ -51,8 +51,9 @@ class BioScreen extends PureComponent {
 
   render() {
     return (
-      <ScrollView style={{ padding: 20 }} >
+      <View style={{ marginHorizontal: 15, marginTop: 20 }} >
         <TagsInput
+          dropdownStyle={inlineStyles.dropDownStyle}
           horizontal={this.props.horizontal}
           initialValue={this.initialVal}
           onChangeVal={this.onChangeVal}
@@ -62,10 +63,9 @@ class BioScreen extends PureComponent {
           textInputStyles={inlineStyles.multilineTextInput}
           maxLength={300}
           autoFocus={true}
-        >
-          <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
-        </TagsInput>
-      </ScrollView>
+        />
+        <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
+      </View>
     );
   }
 }

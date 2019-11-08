@@ -31,7 +31,7 @@ class VideoLink extends Component {
           ellipsizeMode={'tail'}
           returnKeyType="done"
           returnKeyLabel="Done"
-          placeholder="Add a link (optional)"
+          placeholder="Add a link to your video"
           onChangeText={this.onChangeValue}
           value={this.state.value}
           autoCapitalize={'none'}

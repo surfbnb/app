@@ -43,18 +43,28 @@ let stylesMap = {
     marginLeft: 10,
     marginTop: 0,
     padding: 0,
+    paddingTop: 0,
+    position: 'relative',
     paddingLeft: 0,
     height: 100
   },
+  dropDownStyle: {
+    marginLeft: -90,
+    width: Dimensions.get('window').width,
+    shadowColor: '#000',
+    shadowOffset: { width: -1, height: 1 },
+    shadowOpacity: 0.2,
+    elevation: 1
+  },
   suggestionText: {
-    fontWeight: 'bold',
     color: Colors.midNightblue,
-    fontSize: 18
+    fontSize: 16,
+    fontFamily: 'AvenirNext-Regular'
   },
   suggestionTextWrapper: {
-    marginTop: 20
+    marginVertical: 9
   },
-  linkText: { color: Colors.softBlue, flex: 1 }
+  linkText: { color: Colors.softBlue, flex: 3}
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
