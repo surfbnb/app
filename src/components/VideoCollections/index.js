@@ -199,8 +199,6 @@ class VideoCollections extends PureComponent {
         this.listRef.scrollToOffset({offset: 0});
     }
 
-
-
     setListRef = (listRef) => {
       this.listRef = listRef;
     };

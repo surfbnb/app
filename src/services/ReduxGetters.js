@@ -435,7 +435,7 @@ class ReduxGetters {
 
   getVideoReplyAllowed(id, state){
     state = state || Store.getState();
-    return deepGet(state, `video_stat_entities.id_${id}.is_reply_allowed`, 0);
+    return deepGet(state, `video_stat_entities.id_${id}.is_reply_allowed`, true);
   }
 
 }

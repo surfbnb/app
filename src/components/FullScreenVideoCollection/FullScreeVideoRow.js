@@ -22,12 +22,8 @@ import ReplyVideo from '../CommonComponents/ReplyVideo';
 class FullScreeVideoRow extends PureComponent {
     constructor(props) {
         super(props);
-        console.log("this.props", this.props);
         this.userId = deepGet(this.props.payload, 'user_id');
         this.videoId = deepGet(this.props.payload, 'video_id');
-
-
-
     }
 
     refetchVideo = () => {
