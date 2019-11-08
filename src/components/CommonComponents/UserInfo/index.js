@@ -103,6 +103,10 @@ class UserInfo extends React.PureComponent {
 
 
   render() {
+
+    let processingString = this.props.bio;
+    let hasTagArray = processingString.match(/#\w+/g) || [];
+
     return (
       <View style={{ alignItems: 'center', paddingTop: 30}}>
         <NavigationEvents onDidFocus={this.onDidFocus} />
@@ -150,31 +154,44 @@ class UserInfo extends React.PureComponent {
           </View>
         </View>
         {!!this.props.bio && <Text style={inlineStyle.bioSectionWrapper}>
-          {this.props.bio.split(' ').map((item) => {
 
-            let onPressFunc = () => {};
-            let style = [inlineStyle.bioSection];
-            if (item.startsWith('#') && this.isValidBioTag(this.props.userId, item)) {
-              onPressFunc = this.onTagPressed;
-              style.push({fontFamily:'AvenirNext-DemiBold'});
-              let tagText = item.replace("#", "");
-              return(
-                <Text
-                  style={style}
-                  onPress={()=> {onPressFunc(item)} }
-                >
-                  <Text style={{fontStyle:'italic'}}>#</Text>{tagText + " "}
+          {(hasTagArray.map((hashTag) => {
+
+            let tagLocation = processingString.search(hashTag);
+            let prevText = processingString.slice(0, tagLocation);
+
+            let newProcessingText = processingString.slice(tagLocation + hashTag.length);
+            processingString = newProcessingText;
+
+            if (this.isValidBioTag(this.props.userId, hashTag)) {
+              let tagText = hashTag.replace("#", "");
+              return (
+                <Text>
+                  {prevText}
+                  <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
+                        numberOfLines={1}
+                        onPress={() => {
+                          this.onTagPressed(hashTag)
+                        }}>
+                    <Text style={{fontStyle: 'italic'}}>#</Text>
+                    {tagText}
+                  </Text>
                 </Text>
+
               );
-
-
+            } else {
+              return (
+                <Text>
+                  {prevText + hashTag}
+                </Text>
+              )
             }
+          }))
+          }
+          <Text>{processingString}</Text>
 
-            // Default return
-            return(<Text style={style}>{item+ " "}</Text>);
-
-          })}
-        </Text>}
+        </Text>
+        }
 
         {!!this.props.link && (
           <View style={{flexDirection:'row', alignItems:'center',justifyContent:'center', marginHorizontal: 20, marginTop: 10}}>

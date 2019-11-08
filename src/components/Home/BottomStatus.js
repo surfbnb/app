@@ -46,6 +46,10 @@ class BottomStatus extends PureComponent {
   }
 
   render() {
+
+    let processingString = this.props.description;
+    let hasTagArray = processingString.match(/#\w+/g) || [];
+
     return (
       <View style={inlineStyles.bottomBg}>
 
@@ -61,25 +65,42 @@ class BottomStatus extends PureComponent {
                 ellipsizeMode={'tail'}
                 numberOfLines={3}
               >
-                {this.props.description.split(' ').map((item) => {
-                  if (item.startsWith('#') && this.isValidTag(this.videoDescriptionId, item)) {
-                    let tagText = item.replace("#", "");
-                    return(
-                      <Text
-                        style={[inlineStyles.bottomBgTxt,{
-                          fontSize: 14,
-                          flexWrap: 'wrap',
-                          fontFamily: 'AvenirNext-DemiBold',
-                          textAlign: 'left'
-                        }]}
-                        numberOfLines={1}
-                        onPress={()=>{this.onTagPressed(item)}}
-                      ><Text style={{fontStyle:'italic'}}>#</Text>{tagText+" "}</Text>
+
+                {(hasTagArray.map((hashTag) => {
+
+                  let tagLocation = processingString.search(hashTag);
+                  let prevText = processingString.slice(0, tagLocation);
+
+                  let newProcessingText = processingString.slice(tagLocation + hashTag.length);
+                  processingString = newProcessingText;
+
+                  if (this.isValidTag(this.videoDescriptionId, hashTag)) {
+                    let tagText = hashTag.replace("#", "");
+                    return (
+                      <Text>
+                        {prevText}
+                        <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
+                              numberOfLines={1}
+                              onPress={() => {
+                                this.onTagPressed(hashTag)
+                              }}>
+                          <Text style={{fontStyle: 'italic'}}>#</Text>
+                          {tagText}
+                        </Text>
+                      </Text>
+
                     );
-                  }else {
-                    return(<Text>{item+ " "}</Text>);
+                  } else {
+                    return (
+                      <Text>
+                        {prevText + hashTag}
+                      </Text>
+                    )
                   }
-                })}
+                }))
+                }
+                <Text>{processingString}</Text>
+
               </Text>
             ) : (
                 <React.Fragment />
