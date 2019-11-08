@@ -57,7 +57,7 @@ export default class AuthLoading extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="default" />
+        <StatusBar barStyle="dark-content" />
       </View>
     );
   }
