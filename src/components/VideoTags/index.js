@@ -101,7 +101,7 @@ class VideoTags extends PureComponent {
 
     getExtraParams = () => {
         return {
-            showBalanceFlier: true
+            showBalanceFlyer: true
         };
     };
 

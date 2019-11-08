@@ -177,7 +177,7 @@ class FullScreenVideoCollection extends PureComponent{
 
         return (
             <View style={{flex: 1}}>
-                {this.props.navigation.getParam("showBalanceFlier")  && <TopStatus />}
+                {this.props.navigation.getParam("showBalanceFlyer")  && <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}

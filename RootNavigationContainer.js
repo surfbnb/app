@@ -57,7 +57,7 @@ import RedemptiomScreen from './src/components/Redemption';
 import VideoTags from './src/components/VideoTags';
 import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
 import VideoReplies from './src/components/VideoReplies';
-import VideoReplyList from './src/components/VideoReplies/VideoReplyList';
+import VideoRepliesFullScreen from './src/components/VideoRepliesFullScreen';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -67,7 +67,7 @@ const customTabHiddenRoutes = [
   'InAppBrowserComponent',
   'CouchMarks',
   'VideoReplies',
-  'VideoReplyList'
+  'VideoRepliesFullScreen'
 ];
 
 const modalStackConfig = {
@@ -137,7 +137,7 @@ const HomePushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
-    VideoReplyList: VideoReplyList,
+    VideoRepliesFullScreen: VideoRepliesFullScreen,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
@@ -172,7 +172,7 @@ const NotificationPushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
-    VideoReplyList: VideoReplyList,
+    VideoRepliesFullScreen: VideoRepliesFullScreen,
     VideoPlayer: VideoPlayer,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
@@ -201,7 +201,7 @@ const ProfilePushStack = createStackNavigator(
     ProfileScreen: ProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
-    VideoReplyList: VideoReplyList,
+    VideoRepliesFullScreen: VideoRepliesFullScreen,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
@@ -253,7 +253,7 @@ const SearchPushStack = createStackNavigator(
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
-    VideoReplyList: VideoReplyList,
+    VideoRepliesFullScreen: VideoRepliesFullScreen,
     VideoTags: VideoTags,
       FullScreenVideoCollection: FullScreenVideoCollection
   },

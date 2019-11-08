@@ -1,49 +1,90 @@
 import React , {PureComponent} from "react";
-import {FlatList , View , TouchableOpacity, Image} from "react-native";
+import {FlatList , View , TouchableOpacity, Image, Text, StatusBar} from "react-native";
 import deepGet from "lodash/get";
-import reduxGetters from "../../services/ReduxGetters";
+
 import Pagination from "../../services/Pagination";
-
-import UserVideoHistoryRow from "../UserVideoHistory/UserVideoHistoryRow";
-import TopStatus from "../../components/Home/TopStatus";
-
 import inlineStyles from "./styles";
-import CurrentUser from "../../models/CurrentUser";
-
-import historyBack from '../../assets/user-video-history-back-icon.png';
+import backIcon from '../../assets/back-arrow.png';
+import plusIcon from '../../assets/user-video-capture-icon-selected.png';
+import VideoReply from "./VideoReply";
 
 const maxVideosThreshold = 3;
-
-class VideoReplyList extends PureComponent{
-
-  static navigationOptions = (options) => {
-    return {
-      headerBackTitle: null,
-      header: null
-    };
+const HeaderLeft = (props) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          props.navigation.goBack();
+        }}
+        style={inlineStyles.iconWrapper}
+      >
+        <Image style={inlineStyles.iconSkipFont} source={backIcon}></Image>
+      </TouchableOpacity>
+    );
   };
+  
+  const HeaderRight = (props) => {
+    return (<TouchableOpacity onPress={()=>{
+        props.navigation.push('CaptureVideo')
+    }} style={inlineStyles.iconWrapper} >
+        <Image style={[inlineStyles.iconSkipFont]} source={plusIcon} />
+    </TouchableOpacity>)
+  };
+  
+  const HeaderTitle = (props) => {
+    return (
+      <View>
+        <Text numberOfLines={1} style={inlineStyles.headerText}>
+        Replies to Frankie
+        </Text>
+        <Text style={inlineStyles.headerSubText}>Send a reply with Pepo5</Text>
+      </View>
+    );
+  };
+
+class VideoRepliesFullScreen extends PureComponent{
+
+    static navigationOptions = (props) => {
+        return {
+            headerBackTitle: null,
+            headerStyle: inlineStyles.headerStyles,
+            headerLeft: <HeaderLeft {...props} />,
+            headerRight: <HeaderRight {...props} />,
+            headerTitle: <HeaderTitle {...props} />
+        };
+    };
 
     constructor(props){
         super(props);
-        this.userId =  this.props.navigation.getParam("userId");
-        this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory(), {} , this.props.navigation.getParam("fetchServices"));
-        this.paginationEvent = this.videoHistoryPagination.event;
+        this.setVideoPagination();
+        this.paginationEvent = this.getVideoPagination().event;
         this.currentIndex = this.props.navigation.getParam("currentIndex");
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
         this.flatlistRef = null;
 
         this.state = {
-            list : this.videoHistoryPagination.getList(),
+            list : this.getVideoPagination().getResults(),
             activeIndex: this.currentIndex,
             refreshing : false,
             loadingNext: false
         };
-       this.isActiveScreen = true;
+        this.isActiveScreen = true;
     }
 
-    _fetchUrlVideoHistory(){
-        return `/users/${this.userId}/video-history` ;
+    getBaseUrl(){
+        return this.props.navigation.getParam("baseUrl");
+    }
+
+    getPassedFetchServices(){
+        return  this.props.navigation.getParam("fetchServices")
+    }
+
+    setVideoPagination(){
+        this.fullPagePagination = new Pagination( this.getBaseUrl(), null , this.getPassedFetchServices());
+    }
+
+    getVideoPagination(){
+        return this.fullPagePagination;
     }
 
     componentDidMount(){
@@ -61,9 +102,9 @@ class VideoReplyList extends PureComponent{
             this.isActiveScreen = true ;
         });
 
-      this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
-        this.isActiveScreen =  false ;
-      });
+        this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
+            this.isActiveScreen =  false ;
+        });
     }
 
     componentWillUnmount(){
@@ -86,7 +127,9 @@ class VideoReplyList extends PureComponent{
     }
 
     onRefresh = ( res ) => {
-        this.setState({ refreshing : false ,  list : this.videoHistoryPagination.getList() });
+      let paginationService = this.getVideoPagination();
+      let resultList = paginationService.getResults();
+      this.setState({ refreshing : false ,  list : resultList });
     }
 
     onRefreshError = ( error ) => {
@@ -99,7 +142,9 @@ class VideoReplyList extends PureComponent{
     }
 
     onNext = ( res  ) => {
-        this.setState({ loadingNext : false ,  list : this.videoHistoryPagination.getList() });
+        let paginationService = this.getVideoPagination();
+        let resultList = paginationService.getResults();
+        this.setState({ loadingNext : false ,  list : resultList });
     }
 
     onNextError = ( error ) => {
@@ -107,24 +152,25 @@ class VideoReplyList extends PureComponent{
     }
 
     getNext = () => {
-      if(!this.isScrolled) return;
-      this.videoHistoryPagination.getNext();
+        // if(!this.isScrolled) return;
+        this.getVideoPagination().getNext();
     }
 
     refresh = () => {
-      this.videoHistoryPagination.refresh();
+        this.getVideoPagination().refresh();
     }
 
     _keyExtractor = (item, index) => {
-        return `id_${item}`;
-    };
+        return `id_${item.id}`;
+    }
 
     _renderItem = ({ item, index }) => {
-        const videoId = reduxGetters.getUserVideoId(item) ;
-        return  <UserVideoHistoryRow    shouldPlay={this.shouldPlay}
-                                        isActive={index == this.state.activeIndex}
-                                        doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
-                                        userId={this.userId} videoId={videoId}  /> ;
+        const payload = item.payload;
+        return  <VideoReply shouldPlay={this.shouldPlay}
+                                   isActive={index == this.state.activeIndex}
+                                   doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
+                                   payload={payload}
+                                    /> ;
     };
 
     onViewableItemsChanged = (data) => {
@@ -148,30 +194,26 @@ class VideoReplyList extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-       return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ;
-    }
-
-    isCurrentUser(){
-        return this.userId == CurrentUser.getUserId();
+        return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ;
     }
 
     closeVideo = () => {
         this.navigateBack();
-      };
+    };
 
     navigateBack() {
         this.props.navigation.goBack();
     }
 
     onScrollToTop = () => {
-       this.setActiveIndex();
+        this.setActiveIndex();
     }
 
     render() {
 
-        return(
+        return (
             <View style={{flex: 1}}>
-                {!this.isCurrentUser() &&  <TopStatus />}
+                <StatusBar translucent={true} backgroundColor={'transparent'} />
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
@@ -191,18 +233,14 @@ class VideoReplyList extends PureComponent{
                     style={[inlineStyles.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
-
                     initialScrollIndex={this.state.activeIndex}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
-                <TouchableOpacity onPress={this.closeVideo} style={inlineStyles.historyBackSkipFont}>
-                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-                </TouchableOpacity>
-             </View>
+            </View>
         );
     }
 
 }
 
-export default VideoReplyList ;
+export default VideoRepliesFullScreen ;

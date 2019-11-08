@@ -171,7 +171,7 @@ class TopsList extends PureComponent {
       currentIndex: index,
       payload,
       baseUrl: fullVideoPageUrl,
-      showBalanceFlier: this.props.extraParams && this.props.extraParams.showBalanceFlier
+      showBalanceFlyer: this.props.extraParams && this.props.extraParams.showBalanceFlyer
     });
   };
 
