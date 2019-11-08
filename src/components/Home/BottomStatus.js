@@ -71,8 +71,7 @@ class BottomStatus extends PureComponent {
                   let tagLocation = processingString.search(hashTag);
                   let prevText = processingString.slice(0, tagLocation);
 
-                  let newProcessingText = processingString.slice(tagLocation + hashTag.length);
-                  processingString = newProcessingText;
+                  processingString = processingString.slice(tagLocation + hashTag.length);
 
                   if (this.isValidTag(this.videoDescriptionId, hashTag)) {
                     let tagText = hashTag.replace("#", "");

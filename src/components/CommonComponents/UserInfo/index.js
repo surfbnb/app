@@ -160,8 +160,7 @@ class UserInfo extends React.PureComponent {
             let tagLocation = processingString.search(hashTag);
             let prevText = processingString.slice(0, tagLocation);
 
-            let newProcessingText = processingString.slice(tagLocation + hashTag.length);
-            processingString = newProcessingText;
+            processingString = processingString.slice(tagLocation + hashTag.length);
 
             if (this.isValidBioTag(this.props.userId, hashTag)) {
               let tagText = hashTag.replace("#", "");
