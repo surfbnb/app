@@ -72,7 +72,7 @@ class CaptureVideo extends Component {
   }
 
 
-  proceedWithExistingVideo(recordedVideoObj) {
+  proceedWithExistingVideo = (recordedVideoObj) => {
     this.videoType = recordedVideoObj.video_type || VideoTypesConfig.post.type;
     this.setState ({
       recordingScreen: false,
