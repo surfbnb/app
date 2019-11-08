@@ -80,6 +80,7 @@ class CaptureVideo extends Component {
     });
   }
 
+
   saveVideoPrimaryInfo = () => {
     if (this.isVideoTypeReply) {
       this.videoType =  VideoTypesConfig.reply.type;
