@@ -37,7 +37,7 @@ const mapStateToProps = (state, ownProps) => {
 class FanVideoDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Post',
+      title: 'Details',
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
@@ -199,11 +199,12 @@ class FanVideoDetails extends Component {
             </TouchableOpacity>
             <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
           </View>
-          <View style={[styles.videoDescriptionItem, { alignItems: 'center', paddingVertical: 5 }]}>
+          <View style={[styles.videoDescriptionItem, { alignItems: 'center', paddingVertical: 10, paddingHorizontal: 12, zIndex: -1 }]}>
+            <Text style={{flex: 1}}>Link</Text>
             <VideoLink initialValue={this.props.recordedVideo.video_link} onChangeLink={this.onChangeLink} />
           </View>
         </View>
-        <View>
+        <View style={{zIndex: -1}}>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center', marginBottom: 10 }]}>{this.state.error}</Text>
           <LinearGradient
             colors={['#ff7499', '#ff5566']}
@@ -216,7 +217,7 @@ class FanVideoDetails extends Component {
               TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
               TextStyles={[Theme.Button.btnPinkText]}
               style={{marginBottom: 20}}
-              text="SHARE"
+              text="Post"
               onPress={multipleClickHandler(() => {
                 this.enableStartUploadFlag();
               })}

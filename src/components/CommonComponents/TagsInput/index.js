@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-import { TouchableOpacity, FlatList } from 'react-native';
+import {TouchableOpacity, FlatList, View, Dimensions} from 'react-native';
 
 import PepoApi from '../../../services/PepoApi';
 import CustomTextInput from './CustomTextInput';
+import ReduxGetters from '../../../services/ReduxGetters';
+import deepGet from 'lodash/get';
 
 class TagsInput extends PureComponent {
   constructor(props) {
@@ -33,6 +35,20 @@ class TagsInput extends PureComponent {
     }, 300);
   };
 
+  fetchMentions = (keyword) => {
+    clearTimeout(this.reqTimer);
+    const reqParam = keyword.substr(1);
+    this.reqTimer = setTimeout(() => {
+      if (!reqParam) return;
+      new PepoApi('/search/at-mention')
+        .get('q=' + reqParam)
+        .then((res) => {
+          this.openSuggestionsPanel(res);
+        })
+        .catch((error) => {});
+    }, 300);
+  };
+
   getWordAtIndex(str, pos) {
     // Perform type conversions.
     str = String(str);
@@ -55,17 +71,20 @@ class TagsInput extends PureComponent {
       currentIndexChar = val.charAt(location),
       isValidChar = this.isValidChar(currentIndexChar),
       wordAtIndex = this.getWordAtIndex(val, location),
-      isHashTag = this.isHashTag(wordAtIndex);
-    if (isValidChar && isHashTag) {
+      isHashTag = this.isHashTag(wordAtIndex),
+      isMention = this.isMention(wordAtIndex);
+    if (isValidChar && isHashTag || isMention) {
       this.wordIndex = location;
       this.indexWord = wordAtIndex;
       this.startTracking();
-      this.fetchHashTags(wordAtIndex);
+      isHashTag && this.fetchHashTags(wordAtIndex);
+      isMention && this.fetchMentions(wordAtIndex);
     } else {
       this.closeSuggestionsPanel();
     }
     this.changeValue(val);
   };
+
 
   setCustomInputRef = ( ref )=> {
     this.customTextInputRef = ref;
@@ -80,9 +99,17 @@ class TagsInput extends PureComponent {
   };
 
   isHashTag(val) {
-    const hastagRegex = /(?:\s|^)#[A-Za-z0-9\-\.\_]+(?:\s|$)/g;
-    return hastagRegex.test(val);
-  }
+      const hastagRegex = /(?:\s|^)#[A-Za-z0-9\-\.\_]+(?:\s|$)/g;
+      return hastagRegex.test(val);
+  };
+
+  isMention(val){
+    if(this.props.mentions && this.props.mentions.includes("@")) {
+      const mentionRegex = /(?:\s|^)@[A-Za-z0-9\-\.\_]+(?:\s|$)/g;
+      return mentionRegex.test(val);
+    }
+    return false;
+  };
 
   isValidChar(val) {
     const spaceRegex = /\s/g;
@@ -121,7 +148,7 @@ class TagsInput extends PureComponent {
   _renderItem = ({ item }) => {
     const SearchResultRowComponent = this.props.searchResultRowComponent;
     return (
-      <TouchableOpacity onPress={() => this.onSuggestionTap(item)}>
+      <TouchableOpacity onPress={() => this.onSuggestionTap(item)} style={{paddingLeft: 8}}>
         <SearchResultRowComponent val={item.text} />
       </TouchableOpacity>
     );
@@ -172,34 +199,38 @@ class TagsInput extends PureComponent {
 
   render() {
     return (
-      <FlatList
-        keyboardShouldPersistTaps={'always'}
-        horizontal={this.props.horizontal}
-        enableEmptySections={true}
-        data={this.state.data}
-        keyExtractor={this._keyExtractor}
-        renderItem={this._renderItem}
-        ListHeaderComponent={
-          <React.Fragment>
-            <CustomTextInput
-              ref={this.setCustomInputRef}
-              textInputStyles={this.props.textInputStyles}
-              value={this.value}
-              submitEvent={() => {
-                this.props.submitEvent(this.value);
-              }}
-              locationGetter={this.locationGetter}
-              onChangeText={this.onChangeText}
-              placeholderText={this.props.placeholderText}
-              autoFocus={this.props.autoFocus}
-              maxLength={this.props.maxLength}
-            />
-            {this.props.children}
-          </React.Fragment>
-          
-        }
-        stickyHeaderIndices={[0]}
-      />
+      <React.Fragment>
+        <CustomTextInput
+          ref={this.setCustomInputRef}
+          textInputStyles={[this.props.textInputStyles, this.props.inputBoxStyle]}
+          value={this.value}
+          submitEvent={() => {
+            this.props.submitEvent(this.value);
+          }}
+          locationGetter={this.locationGetter}
+          onChangeText={this.onChangeText}
+          placeholderText={this.props.placeholderText}
+          autoFocus={this.props.autoFocus}
+          maxLength={this.props.maxLength}
+        />
+        <View
+          style={[{
+            position: 'absolute',
+            top: 122,
+            maxHeight: Dimensions.get('window').height * 0.275,
+            backgroundColor: '#fff',
+          } , this.props.dropdownStyle ]}>
+          <FlatList
+            keyboardShouldPersistTaps={'always'}
+            bounces={false}
+            horizontal={this.props.horizontal}
+            enableEmptySections={true}
+            data={this.state.data}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+          />
+        </View>
+      </React.Fragment>
     );
   }
 }
