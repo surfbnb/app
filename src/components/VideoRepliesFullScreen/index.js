@@ -7,6 +7,23 @@ import inlineStyles from "./styles";
 import backIcon from '../../assets/back-arrow.png';
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import VideoReply from "./VideoReply";
+import NavigationService from "../../services/NavigationService";
+import utilities from '../../services/Utilities';
+
+
+
+const navigateToCamera = (navigation) => {
+    let activeTab = NavigationService.getActiveTab();
+    let params = {
+        videoTypeReply: true,
+        videoId: navigation.getParam('payload').video_id,
+        userId: navigation.getParam('payload').user_id,
+        amount: navigation.getParam('amount'),
+        videoReplyCount: navigation.getParam('videoReplyCount')
+    };
+    console.log('params:::VideoRepliesFullScreen', params);
+    utilities.handleVideoUploadModal(activeTab, navigation, params);
+};
 
 const maxVideosThreshold = 3;
 const HeaderLeft = (props) => {
@@ -24,7 +41,7 @@ const HeaderLeft = (props) => {
   
   const HeaderRight = (props) => {
     return (<TouchableOpacity onPress={()=>{
-        props.navigation.push('CaptureVideo')
+        navigateToCamera(props.navigation);
     }} style={inlineStyles.iconWrapper} >
         <Image style={[inlineStyles.iconSkipFont]} source={plusIcon} />
     </TouchableOpacity>)
@@ -36,7 +53,7 @@ const HeaderLeft = (props) => {
         <Text numberOfLines={1} style={inlineStyles.headerText}>
         Replies to Frankie
         </Text>
-        <Text style={inlineStyles.headerSubText}>Send a reply with Pepo5</Text>
+        <Text style={inlineStyles.headerSubText}>Send a reply with Pepo 5</Text>
       </View>
     );
   };

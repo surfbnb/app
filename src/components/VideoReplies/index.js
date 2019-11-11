@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import {
   View,
+  FlatList,
+  ActivityIndicator,
   Text,
   Image,
   TouchableOpacity,
@@ -11,9 +13,24 @@ import {SafeAreaView} from "react-navigation";
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import inlineStyles from './styles';
 import crossIcon from '../../assets/cross_icon.png';
-
-
 import VideoReplyList from "./list";
+import VideoThumbnailItem from '../CommonComponents/VideoThumbnailItem';
+import NavigationService from "../../services/NavigationService";
+import utilities from "../../services/Utilities";
+
+
+const navigateToCamera = (navigation) => {
+  let activeTab = NavigationService.getActiveTab();
+  let params = {
+      videoTypeReply: true,
+      videoId: navigation.getParam('videoId'),
+      userId: navigation.getParam('userId'),
+      amount: navigation.getParam('amount'),
+      videoReplyCount: navigation.getParam('videoReplyCount')
+  };
+  utilities.handleVideoUploadModal(activeTab, navigation, params);
+};
+
 
 const HeaderLeft = (props) => {
     return (
@@ -29,8 +46,8 @@ const HeaderLeft = (props) => {
   };
   
   const HeaderRight = (props) => {
-    return (<TouchableOpacity onPress={()=>{
-        props.navigation.push('CaptureVideo')
+    return (<TouchableOpacity onPress={()=> {
+      navigateToCamera(props.navigation);
     }} style={inlineStyles.iconWrapper} >
         <Image style={[inlineStyles.iconSkipFont]} source={plusIcon} />
     </TouchableOpacity>)
@@ -61,15 +78,19 @@ class VideoRepliesScreen extends PureComponent {
       super(props);
         this.userId = props.navigation.getParam('userId');
         this.videoId = props.navigation.getParam('videoId');
+        this.amount = props.navigation.getParam('amount');
+        this.videoReplyCount = props.navigation.getParam('videoReplyCount');
         this.fetchUrl = props.navigation.getParam('fetchUrl');
+        this.listHeaderComponent = props.navigation.getParam('listHeaderComponent');
+        this.listHeaderSubComponent = props.navigation.getParam('listHeaderSubComponent');
     }
 
     componentDidMount(){
-      
+
     }
 
     componentWillUnmount() {
-       
+
     }
 
     render(){

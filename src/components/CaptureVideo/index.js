@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import VideoRecorder from '../VideoRecorder';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
-import FanVideoDetails from '../FanVideoDetails';
 import Store from "../../store";
 import {upsertRecordedVideo} from "../../actions";
 import utilities from '../../services/Utilities';
@@ -29,14 +28,14 @@ class CaptureVideo extends Component {
       actionSheetOnRecordVideo: true,
       modalVisible: true,
       acceptedCameraTnC: null,
-      showReplyCoachScreen: false
+      hasVideoReplies: false
     };
     this.isVideoTypeReply = null;
     this.replyReceiverUserId = null;
     this.replyReceiverVideoId = null;
     this.amountToSendWithReply = null;
     this.videoType = null;
-
+    this.proceedWithExisting = null;
     this.setReplyVideoParams();
 
   }
@@ -48,16 +47,16 @@ class CaptureVideo extends Component {
           this.setState({ acceptedCameraTnC: terms });
         });
     }
-
   }
 
   setReplyVideoParams(){
     this.isVideoTypeReply = this.props.navigation.getParam("videoTypeReply");
+    console.log('setReplyVideoParams', this.isVideoTypeReply );
     if (this.isVideoTypeReply){
-      this.replyReceiverUserId = this.props.navigation.getParam("replyReceiverUserId");
-      this.replyReceiverVideoId = this.props.navigation.getParam("replyReceiverVideoId");
-      this.amountToSendWithReply = this.props.navigation.getParam("amountToSendWithReply");
-      this.setState({showReplyCoachScreen: this.props.navigation.getParam("showReplyCoachScreen")});
+      this.replyReceiverUserId = this.props.navigation.getParam("userId");
+      this.replyReceiverVideoId = this.props.navigation.getParam("videoId");
+      this.amountToSendWithReply = this.props.navigation.getParam("amount");
+      this.setState({hasVideoReplies: this.props.navigation.getParam("videoReplyCount") > 0  });
     } else {
       // Do nothing.
     }
@@ -67,36 +66,43 @@ class CaptureVideo extends Component {
     this.setState({
       recordingScreen: true,
       actionSheetOnRecordVideo: false,
-      acceptedCameraTnC: 'true'
+      acceptedCameraTnC: 'true',
+      hasVideoReplies: true
     });
   }
 
 
   proceedWithExistingVideo = (recordedVideoObj) => {
+    this.proceedWithExisting = true;
     this.videoType = recordedVideoObj.video_type || VideoTypesConfig.post.type;
+    this.isVideoTypeReply  = this.videoType ===  VideoTypesConfig.reply.type;
     this.setState ({
       recordingScreen: false,
       videoUri: recordedVideoObj.raw_video
     });
-  }
-
-
-  saveVideoPrimaryInfo = () => {
-    if (this.isVideoTypeReply) {
-      this.videoType =  VideoTypesConfig.reply.type;
-      Store.dispatch(upsertRecordedVideo({ video_type: VideoTypesConfig.reply.type, reply_obj: this.getReplyOptions()}));
-    } else {
-      this.videoType =  VideoTypesConfig.post.type;
-      Store.dispatch(upsertRecordedVideo({ video_type: VideoTypesConfig.post.type  }));
-    }
   };
 
 
-  goToDetailsScreen() {
+  saveVideoPrimaryInfo = () => {
+   this.videoType = this.isVideoTypeReply ? VideoTypesConfig.reply.type : VideoTypesConfig.post.type;
+   Store.dispatch(upsertRecordedVideo(this.getPrimaryVideoInfo()));
+  };
+
+
+  getPrimaryVideoInfo = () => {
+      if (this.proceedWithExisting) return {};
+
+    return this.videoType ===  VideoTypesConfig.reply.type ?
+      { video_type: VideoTypesConfig.reply.type, reply_obj: this.getReplyOptions()} :
+      { video_type: VideoTypesConfig.post.type };
+  };
+
+
+  goToDetailsScreen () {
     if (this.videoType ===  VideoTypesConfig.post.type){
-      this.props.navigation.push('FanVideoDetails');
+      this.props.navigation.push('FanVideoDetails', this.getPrimaryVideoInfo());
     } else if (this.videoType ===  VideoTypesConfig.reply.type){
-      this.props.navigation.push('FanVideoReplyDetails');
+      this.props.navigation.push('FanVideoReplyDetails', this.getPrimaryVideoInfo());
     }
   }
 
@@ -150,6 +156,7 @@ class CaptureVideo extends Component {
           getActionSheetText={this.getActionSheetText}
           navigation={this.props.navigation}
           isVideoTypeReply={this.isVideoTypeReply}
+          hasVideoReplies={this.state.hasVideoReplies}
 
         />
       );
@@ -165,6 +172,7 @@ class CaptureVideo extends Component {
           goToDetailsScreen={() => {
             this.goToDetailsScreen();
           }}
+          saveVideoPrimaryInfo={this.saveVideoPrimaryInfo}
           cachedvideoUrl={this.state.videoUri}
           navigation={this.props.navigation}
         />

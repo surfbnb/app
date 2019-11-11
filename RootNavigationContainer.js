@@ -39,6 +39,8 @@ import { NotificationToastComponent } from './src/theme/components/NotificationT
 import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
+import FanVideoReplyDetails from './src/components/FanVideoReplyDetails';
+
 import WalletSettingScreen from './src/components/WalletSetting';
 import StoreProductsScreen from './src/components/StoreProducts';
 import PaymentWorker from './src/components/PaymentWorker';
@@ -62,6 +64,7 @@ import VideoRepliesFullScreen from './src/components/VideoRepliesFullScreen';
 const customTabHiddenRoutes = [
   'CaptureVideo',
   'FanVideoDetails',
+  'FanVideoReplyDetails',
   'InviteCodeScreen',
   'AddEmailScreen',
   'InAppBrowserComponent',
@@ -115,7 +118,8 @@ const txModalConfig = {
 const CaptureVideoStack = createStackNavigator(
   {
     CaptureVideo: CaptureVideo,
-    FanVideoDetails: FanVideoDetails
+    FanVideoDetails: FanVideoDetails,
+    FanVideoReplyDetails: FanVideoReplyDetails
   },
   {
     headerLayoutPreset: 'center'
