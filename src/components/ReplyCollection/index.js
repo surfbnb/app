@@ -152,7 +152,11 @@ class VideoReplyList extends PureComponent {
             "fetchServices" : clonedInstance,
             "currentIndex": index,
             "payload": payload,
-            "baseUrl": this.props.fetchUrl
+            "baseUrl": this.props.fetchUrl,
+            "amount": this.props.amount,
+            "videoReplyCount": this.props.videoReplyCount,
+            'parentUserId': this.props.userId,
+            'parentVideoId': this.props.videoId
         });
     }
     renderFooter = () => {

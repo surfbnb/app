@@ -59,7 +59,7 @@ import RedemptiomScreen from './src/components/Redemption';
 import VideoTags from './src/components/VideoTags';
 import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
 import VideoReplies from './src/components/VideoReplies';
-import VideoRepliesFullScreen from './src/components/VideoRepliesFullScreen';
+import FullScreenReplyCollection from './src/components/FullScreenReplyCollection';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -70,7 +70,7 @@ const customTabHiddenRoutes = [
   'InAppBrowserComponent',
   'CouchMarks',
   'VideoReplies',
-  'VideoRepliesFullScreen'
+  'FullScreenReplyCollection'
 ];
 
 const modalStackConfig = {
@@ -141,7 +141,7 @@ const HomePushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
-    VideoRepliesFullScreen: VideoRepliesFullScreen,
+    FullScreenReplyCollection: FullScreenReplyCollection,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
@@ -176,7 +176,7 @@ const NotificationPushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
-    VideoRepliesFullScreen: VideoRepliesFullScreen,
+    FullScreenReplyCollection: FullScreenReplyCollection,
     VideoPlayer: VideoPlayer,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
@@ -205,7 +205,7 @@ const ProfilePushStack = createStackNavigator(
     ProfileScreen: ProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
-    VideoRepliesFullScreen: VideoRepliesFullScreen,
+    FullScreenReplyCollection: FullScreenReplyCollection,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
@@ -257,7 +257,7 @@ const SearchPushStack = createStackNavigator(
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
     VideoReplies: VideoReplies,
-    VideoRepliesFullScreen: VideoRepliesFullScreen,
+    FullScreenReplyCollection: FullScreenReplyCollection,
     VideoTags: VideoTags,
       FullScreenVideoCollection: FullScreenVideoCollection
   },

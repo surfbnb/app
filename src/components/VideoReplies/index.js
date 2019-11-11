@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
   View,
-  FlatList,
-  ActivityIndicator,
   Text,
   Image,
   TouchableOpacity,
@@ -13,22 +11,21 @@ import {SafeAreaView} from "react-navigation";
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import inlineStyles from './styles';
 import crossIcon from '../../assets/cross_icon.png';
-import VideoReplyList from "./list";
-import VideoThumbnailItem from '../CommonComponents/VideoThumbnailItem';
+import ReplyCollection from '../ReplyCollection';
 import NavigationService from "../../services/NavigationService";
 import utilities from "../../services/Utilities";
 
 
 const navigateToCamera = (navigation) => {
-  let activeTab = NavigationService.getActiveTab();
-  let params = {
-      videoTypeReply: true,
-      videoId: navigation.getParam('videoId'),
-      userId: navigation.getParam('userId'),
-      amount: navigation.getParam('amount'),
-      videoReplyCount: navigation.getParam('videoReplyCount')
-  };
-  utilities.handleVideoUploadModal(activeTab, navigation, params);
+    let activeTab = NavigationService.getActiveTab();
+    let params = {
+        videoTypeReply: true,
+        videoId: navigation.getParam('videoId'),
+        userId: navigation.getParam('userId'),
+        amount: navigation.getParam('amount'),
+        videoReplyCount: navigation.getParam('videoReplyCount')
+    };
+    utilities.handleVideoUploadModal(activeTab, navigation, params);
 };
 
 
@@ -97,10 +94,9 @@ class VideoRepliesScreen extends PureComponent {
         return (
           <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
             <StatusBar translucent={true} backgroundColor={'transparent'} />
-             <VideoReplyList  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
-                              videoReplyCount={this.videoReplyCount}
-                              amount={this.amount}
-
+             <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
+                               videoReplyCount={this.videoReplyCount}
+                               amount={this.amount}
              />
           </SafeAreaView>
         );

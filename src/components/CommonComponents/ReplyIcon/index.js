@@ -10,6 +10,8 @@ import pricer from '../../../services/Pricer';
 import reply_video from '../../../assets/reply_video.png';
 import Utilities from '../../../services/Utilities';
 import CurrentUser from '../../../models/CurrentUser';
+import NavigationService from "../../../services/NavigationService";
+import utilities from "../../../services/Utilities";
 
 const mapStateToProps = (state , ownProps) => {
   return {
@@ -30,7 +32,7 @@ class ReplyIcon extends PureComponent {
     };
 
     isDisabled = () => {
-        return !this.props.isReplyAllowed || this.props.isCreatorApproved != 1 || !this.props.isVideoUserActivated || !this.props.isCurrentUserActivated || !this.hasSufficientBalance();
+        return !this.props.isReplyAllowed || !this.props.isVideoUserActivated || !this.props.isCurrentUserActivated || !this.hasSufficientBalance();
     };
 
     hasSufficientBalance = () => {
@@ -42,12 +44,27 @@ class ReplyIcon extends PureComponent {
     };
 
     replyVideo = ()=> {
-        this.props.navigation.push('VideoReplies',
-        {'videoId': this.props.videoId ,
-         'userId': this.props.userId,
-         'fetchUrl': `/videos/${this.props.videoId}/replies`
-        });
-    };
+        if (this.props.videoReplyCount > 0 || true){
+          this.props.navigation.push('VideoReplies',
+            {'videoId': this.props.videoId ,
+              'userId': this.props.userId,
+              'amount': this.props.requiredPepo,
+              'videoReplyCount': 1,
+              'fetchUrl': `/videos/${this.props.videoId}/replies`
+            });
+        } else {
+          let activeTab = NavigationService.getActiveTab();
+          let params = {
+            videoTypeReply: true,
+            videoId: this.props.videoId,
+            userId: this.props.userId,
+            amount: this.props.requiredPepo,
+            videoReplyCount: this.props.videoReplyCount
+          };
+          utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
+        }
+  
+      };
 
     render(){
         return (
