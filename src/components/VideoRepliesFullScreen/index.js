@@ -16,8 +16,8 @@ const navigateToCamera = (navigation) => {
     let activeTab = NavigationService.getActiveTab();
     let params = {
         videoTypeReply: true,
-        videoId: navigation.getParam('payload').video_id,
-        userId: navigation.getParam('payload').user_id,
+        videoId: navigation.getParam('parentVideoId'),
+        userId: navigation.getParam('parentUserId'),
         amount: navigation.getParam('amount'),
         videoReplyCount: navigation.getParam('videoReplyCount')
     };

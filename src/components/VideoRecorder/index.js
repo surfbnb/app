@@ -170,17 +170,14 @@ class VideoRecorder extends Component {
       if (! this.state.hasVideoReplies){
         // Show video
         return <View style={styles.backgroundStyle}>
-          <View style={{ padding: 26, justifyContent: 'center' }}>
+          <View style={{ padding: 26, alignItems: 'center'}}>
 
-            <Text style={styles.smallText}>
+            <Text style={[styles.smallText, {fontWeight: '600'}]}>
               Post a reply
             </Text>
 
-            <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
 
-            <Text style={styles.headerText}>Approval process</Text>
-
-            <Text style={styles.smallText}>
+            <Text style={[styles.miniText, {textAlign: 'center'}]}>
               Be the first one to reply to @annikpolit’s video, once you postt the reply you will pay 5 Pepo Coins
             </Text>
 

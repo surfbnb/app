@@ -97,7 +97,11 @@ class VideoRepliesScreen extends PureComponent {
         return (
           <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
             <StatusBar translucent={true} backgroundColor={'transparent'} />
-             <VideoReplyList  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl} />
+             <VideoReplyList  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
+                              videoReplyCount={this.videoReplyCount}
+                              amount={this.amount}
+
+             />
           </SafeAreaView>
         );
     }

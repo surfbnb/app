@@ -182,7 +182,11 @@ class VideoReplyList extends PureComponent {
             "payload": payload,
             "baseUrl": this.props.fetchUrl,
             "showBalanceFlyer": this.showBalanceFlyer,
-            "videoThumbnailMeasurements": videoThumbnailMeasurements
+            "videoThumbnailMeasurements": videoThumbnailMeasurements,
+            "amount": this.props.amount,
+            "videoReplyCount": this.props.videoReplyCount,
+            'parentUserId': this.props.userId,
+            'parentVideoId': this.props.videoId
         });
     }
     renderFooter = () => {
