@@ -31,6 +31,7 @@ class NavigateTo {
     this.navigation = navigation;
   }
 
+  //navigation is a mandatory param
   navigate(goToObject, navigation, payload) {
     goToObject = goToObject || {};
     this.setTopLevelNavigation(navigation);
@@ -110,7 +111,7 @@ class NavigateTo {
     let timeOut = 0 ;
     payload = payload || {};
     payload['videoId'] = vId;
-    if(Utilities.getActiveTab(this.navigation) != "Notification"){
+    if(NavigationService.getActiveTab() != "Notification"){
       timeOut = 100;
       this.__navigate('NotificationScreen', payload);
     }

@@ -32,6 +32,7 @@ import('../components/CommonComponents/FlyerHOC').then((pack) => {
 class CurrentUser {
   constructor() {
     this.userId = null;
+    this.isSync =  false;
     this.event = new EventEmitter();
   }
 
@@ -281,6 +282,14 @@ class CurrentUser {
 
   _getCurrentUserIdKey() {
     return 'current_user_id';
+  }
+
+  setSyncState( state ){
+    this.isSync = !!state; 
+  }
+
+  getSyncState(  ){
+    return this.isSync ;  
   }
 
   isUserActivated(emit) {

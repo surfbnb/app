@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import VideoRecorder from '../VideoRecorder';
+import { View } from 'react-native';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
 import FanVideoDetails from '../FanVideoDetails';
+import KeepAwake from 'react-native-keep-awake';
+
+
 
 class CaptureVideo extends Component {
   static navigationOptions = {
@@ -80,7 +84,10 @@ class CaptureVideo extends Component {
   }
 
   render() {
-    return this.getCurrentView();
+    return <View style={{flex:1 }}>
+      <KeepAwake />
+      {this.getCurrentView()}
+    </View>
   }
 }
 

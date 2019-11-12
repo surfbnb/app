@@ -24,6 +24,7 @@ import LinearGradient from "react-native-linear-gradient";
 import CurrentUser from "../../../models/CurrentUser";
 import DeleteVideo from "../DeleteVideo";
 import Colors from '../../../theme/styles/Colors';
+import VideoThumbnailItem from '../VideoThumbnailItem';
 
 
 class UserProfileFlatList extends PureComponent {
@@ -47,13 +48,12 @@ class UserProfileFlatList extends PureComponent {
         this.paginationEvent.on("onBeforeNext" , this.beforeNext.bind(this));
         this.paginationEvent.on("onNext" , this.onNext.bind(this) );
         this.paginationEvent.on("onNextError" , this.onNextError.bind(this));
-        if( this.props.refreshEvent) {
-          this.props.refreshEvent.on("refresh" , ()=> {
-            this.listRef.scrollToOffset({offset: 0});
-            this.refresh();
-          });
-        }
         this.videoHistoryPagination.initPagination();
+    }
+
+    forceRefresh(){
+      this.listRef.scrollToOffset({offset: 0});
+      this.refresh();
     }
 
     componentWillUnmount(){
@@ -137,50 +137,22 @@ class UserProfileFlatList extends PureComponent {
     _keyExtractor = (item, index) => `id_${item}`;
 
     _renderItem = ({ item, index }) => {
-      const videoId = reduxGetters.getUserVideoId(item),
-            imageUrl = reduxGetters.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth ) ;
-      return (
-        <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.onVideoClick( item, index ); } )}
-        >
-          <View>
-
-            <FastImage style={{
-                width: (Dimensions.get('window').width - 6) / 3,
-                aspectRatio:9/16,
-                margin: 1,
-                backgroundColor: imageUrl ? Colors.white : Colors.gainsboro
-            }}
-                       source={{
-                        uri: imageUrl,
-                        priority: FastImage.priority.high
-                       }}/>
-            <LinearGradient
-              colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
-              locations={[0, 0.5, 1]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 0, y: 1 }}
-              style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', top: 0, left: 0, alignItems: 'flex-end'}}
-            >
-                { this.isCurrentUser() && <View style={inlineStyles.deleteButton}>
-                <DeleteVideo videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
-              </View>}
-            </LinearGradient>
-            <LinearGradient
-              colors={['transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']}
-              locations={[0, 0.5, 1]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 0, y: 1 }}
-              style={{width: (Dimensions.get('window').width - 6) / 3, margin: 1, position: 'absolute', bottom: 0, left: 0}}
-            >
-              <View style={inlineStyles.videoStatsContainer}>
-                <Image style={{height: 15, width: 15}} source={pepoWhiteIcon} />
-                <Text style={inlineStyles.videoStatsTxt}>{this.getVideoBtAmount(videoId)}</Text>
-              </View>
-            </LinearGradient>
-
-          </View>
-        </TouchableWithoutFeedback>
-      );
+      const videoId = reduxGetters.getUserVideoId(item);
+      return (<View style={{position: 'relative'}}>
+                 {this.isCurrentUser() && <LinearGradient
+                      colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
+                      locations={[0, 0.5, 1]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 0, y: 1 }}
+                      style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
+                    >
+                    <View style={inlineStyles.deleteButton}>
+                        <DeleteVideo videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
+                    </View>
+                  </LinearGradient>}
+                  <VideoThumbnailItem payload={{video_id:videoId, user_id: this.props.userId }} 
+                                      index={index}  onVideoClick={() => {this.onVideoClick(item, index)}}/>
+                </View>);
     };
 
     renderFooter = () => {
@@ -220,7 +192,7 @@ class UserProfileFlatList extends PureComponent {
                     onEndReachedThreshold={9}
                     renderItem={this._renderItem}
                     ListFooterComponent={this.renderFooter}
-                    numColumns={3}
+                    numColumns={2}
                 />
             </SafeAreaView>
         );

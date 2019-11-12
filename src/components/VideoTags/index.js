@@ -1,11 +1,8 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import {  View  } from 'react-native';
-import CurrentUser from '../../models/CurrentUser';
 import reduxGetter from '../../services/ReduxGetters';
 import VideoCollections from '../VideoCollections';
 import Colors from '../../theme/styles/Colors';
-import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import PepoApi from "../../services/PepoApi";
 import deepGet from 'lodash/get';
 import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';

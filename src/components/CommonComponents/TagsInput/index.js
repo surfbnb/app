@@ -180,19 +180,23 @@ class TagsInput extends PureComponent {
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem}
         ListHeaderComponent={
-          <CustomTextInput
-            ref={this.setCustomInputRef}
-            textInputStyles={this.props.textInputStyles}
-            value={this.value}
-            submitEvent={() => {
-              this.props.submitEvent(this.value);
-            }}
-            locationGetter={this.locationGetter}
-            onChangeText={this.onChangeText}
-            placeholderText={this.props.placeholderText}
-            autoFocus={this.props.autoFocus}
-            maxLength={this.props.maxLength}
-          />
+          <React.Fragment>
+            <CustomTextInput
+              ref={this.setCustomInputRef}
+              textInputStyles={this.props.textInputStyles}
+              value={this.value}
+              submitEvent={() => {
+                this.props.submitEvent(this.value);
+              }}
+              locationGetter={this.locationGetter}
+              onChangeText={this.onChangeText}
+              placeholderText={this.props.placeholderText}
+              autoFocus={this.props.autoFocus}
+              maxLength={this.props.maxLength}
+            />
+            {this.props.children}
+          </React.Fragment>
+          
         }
         stickyHeaderIndices={[0]}
       />

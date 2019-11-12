@@ -52,7 +52,6 @@ class ProfileScreen extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.refreshEvent = new EventEmitter();
     this.state = {
       emailAddress: '',
       isVerifiedEmail: false,
@@ -112,17 +111,12 @@ class ProfileScreen extends PureComponent {
   componentDidUpdate(prevProps) {
     if (this.props.userId && this.props.userId != prevProps.userId) {
       this.props.navigation.setParams({ headerTitle: reduxGetter.getName(CurrentUser.getUserId()) });
-      //Be careful before removing this function. It will stop loading the user videos.
-      //Ideally should have been in UserProfileFlatList, but sinces it commonly used
-      //for User Profile and Current User profile not changing this code for now.
-      //Will do it ref based later.
-      //I should have never taken an event based approch for component to component interaction. My bad.
       this.refresh();
     }
   }
 
   refresh() {
-    this.refreshEvent.emit('refresh');
+    this.listRef.forceRefresh();
   }
 
   onEdit = () => {
@@ -132,9 +126,6 @@ class ProfileScreen extends PureComponent {
       isVerifiedEmail: this.state.isVerifiedEmail ,
       onEmailSave : this.onEmailSave
     });
-
-
-
 
   };
 
@@ -192,10 +183,7 @@ class ProfileScreen extends PureComponent {
     if(this.props.userId){
       return  <CustomDrawer openDrawer={this.state.openDrawer} navigation={this.props.navigation} onClose={this.onClose}>
                 <UserProfileFlatList
-                      refreshEvent={this.refreshEvent}
-                      ref={(ref) => {
-                        this.flatlistRef = ref;
-                      }}
+                      onRef={(elem) => this.listRef = elem}
                       listHeaderComponent={this._headerComponent()}
                       beforeRefresh={this.beforeRefresh}
                       onRefresh={this.onRefresh}
