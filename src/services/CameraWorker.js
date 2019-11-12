@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import RNFS from 'react-native-fs';
 import Store from '../store';
+import deepGet from 'lodash/get';
 
 import {
   upsertRecordedVideo,
@@ -166,9 +167,10 @@ class CameraWorker extends PureComponent {
 
 
   postReplyVideoToPepoApi = async () => {
-    let replyDetailId = this.props.recorded_video.reply_obj.replyDetailId;
+    let replyDetailId = deepGet(this.props.recorded_video , 'reply_obj.replyDetailId' ),
+      parentVideoId =  deepGet(this.props.recorded_video , 'reply_obj.replyReceiverVideoId');
 
-    if (replyDetailId){
+    if (replyDetailId || !parentVideoId) {
       // we have reply
       return true
     }
@@ -201,7 +203,8 @@ class CameraWorker extends PureComponent {
         image_width: appConfig.cameraConstants.VIDEO_WIDTH,
         image_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         video_size: videoSize,
-        per_reply_amount_in_wei: String(this.props.recorded_video.reply_amount)
+        parent_kind: 'video',
+        parent_id: parentVideoId
       };
 
       let payload = payloadWithoutImage;
@@ -214,19 +217,15 @@ class CameraWorker extends PureComponent {
         };
       }
 
-      new PepoApi(`/users/${this.props.currentUserId}/fan-video`)
+      new PepoApi(`/replies`)
         .post(payload)
         .then((responseData) => {
           if (responseData.success && responseData.data) {
             console.log('Video uploaded Successfully');
-            Toast.show({
-              text: 'Your video uploaded successfully.',
-              icon: 'success',
-              imageUri: this.props.recorded_video.cover_image
-            });
+            // save reply_detail_id
+
             Store.dispatch(
               upsertRecordedVideo({
-                do_discard: true,
                 pepo_api_posting: false
               })
             );

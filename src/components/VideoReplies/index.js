@@ -113,7 +113,7 @@ class VideoRepliesScreen extends PureComponent {
           amount: this.amount,
           videoReplyCount: this.videoReplyCount
       };
-      utilities.handleVideoUploadModal(activeTab, navigation, params);
+      utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
     }
 
     onData = ( data ) => {
