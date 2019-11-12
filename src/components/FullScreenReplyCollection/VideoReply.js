@@ -11,7 +11,6 @@ import CurrentUser from '../../models/CurrentUser';
 
 import BottomStatus from '../Home/BottomStatus';
 import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
-import ShareVideo from '../../services/shareVideo';
 import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
@@ -21,21 +20,14 @@ class VideoReply extends PureComponent {
     constructor(props) {
         super(props);
         this.userId = deepGet(this.props.payload, 'user_id');
-        this.replyId = deepGet(this.props.payload, 'video_id');//reply_id replace
+        this.replyId = deepGet(this.props.payload, 'video_id');
     }
 
     refetchVideoReply = () => {
-        //TODO @preshita
-        new PepoApi(`/videos/${this.videoId}`)// new PepoApi(`/replies/${this.replyId}`)
+        new PepoApi(`/replies/${this.replyId}`)
             .get()
             .then((res) => {})
             .catch((error) => {});
-    };
-
-    //TODO  @preshita move to share icon
-    shareVideo = () => {
-        let shareVideo = new ShareVideo(this.replyId);
-        shareVideo.perform();
     };
 
     //TODO  @preshita move to bottom status 

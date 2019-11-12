@@ -10,12 +10,15 @@ let stylesMap = {
       backgroundColor: '#fff',
     },
     dragHandler: {
-      alignSelf: 'stretch',
+      position: 'absolute',
       height: 65,
+      top: -65,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#fff',
+      backgroundColor: Colors.white,
       flexDirection: 'row',
+      zIndex: 9,
+      width: '100%',
       borderTopLeftRadius: 30,
       borderTopRightRadius: 30,
       overflow: 'hidden'

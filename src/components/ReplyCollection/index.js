@@ -7,10 +7,15 @@ import {
   View
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
+import deepGet from "lodash/get";
+import LinearGradient from "react-native-linear-gradient";
 
 import Pagination from "../../services/Pagination";
 import VideoThumbnailItem from '../CommonComponents/VideoThumbnailItem';
-import deepGet from "lodash/get";
+import DeleteVideo from "../CommonComponents/DeleteVideo";
+import inlineStyles from './styles';
+import CurrentUser from '../../models/CurrentUser';
+import DataContract from '../../constants/DataContract';
 
 
 class VideoReplyList extends PureComponent {
@@ -31,6 +36,15 @@ class VideoReplyList extends PureComponent {
     componentDidMount(){
         this.initPagination();
         this.refresh();
+        this.bindEvents();
+    }
+
+    bindEvents(){
+        
+    }
+
+    fetchVideoReply = ()=> {
+
     }
 
     componentWillUnmount() {
@@ -138,13 +152,48 @@ class VideoReplyList extends PureComponent {
     };
 
     _renderVideoCell = ({ item, index }) => {
-        //TODO Let ask BE for same payload
-        const payload = { user_id : deepGet(item, "payload.user_id") ,  video_id: deepGet(item, "payload.reply_detail_id")}
-        return (<VideoThumbnailItem
+        //TODO Let ask BE for same payload 
+        const userId = deepGet(item, "payload.user_id");
+        const videoId = deepGet(item, "payload.reply_detail_id");
+        const payload = { user_id : userId ,  video_id: videoId}
+        return (<View style={{position: 'relative'}}>
+        {this.isCurrentUser( userId ) && <LinearGradient
+             colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
+             locations={[0, 0.5, 1]}
+             start={{ x: 0, y: 0 }}
+             end={{ x: 0, y: 1 }}
+             style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
+           >
+           <View style={inlineStyles.deleteButton}>
+               <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
+           </View>
+         </LinearGradient>}
+         <VideoThumbnailItem
           payload={payload}
           index={index}
-          onVideoClick={() => {this.onVideoClick(payload, index)}}/>);
+          onVideoClick={() => {this.onVideoClick(payload, index)}}/>
+          </View>);
     };
+
+    isCurrentUser = ( userId ) => {
+        return userId === CurrentUser.getUserId();
+    }
+
+    removeVideo = (videoId, index) => {
+        if (index > -1) {
+            this.videoPagination.deleteItem(videoId , "payload.reply_detail_id");
+            let array = [...this.state.list]; // make a separate copy of the array
+            array.splice(index, 1);
+            this.setState({list: array});
+        }
+    }
+
+    addVideo = ( item ) => {
+        this.videoPagination.addItems( item );
+        let array = [...this.state.list]; // make a separate copy of the array
+        array.unshift( item );
+        this.setState({list: array});
+    }
 
     onVideoClick = (payload, index) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();

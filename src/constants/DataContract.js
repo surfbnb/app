@@ -41,7 +41,10 @@ export default {
       validateReply: "replies/validate-upload", 
       getReplyListApi : (id) => {
         return `/videos/${id}/replies`
-      }
+      },
+      getDeleteVideoReplyApi : (id) => {
+        return `/replies/${id}/delete`;
+    }
     },
 
     common: {
@@ -54,6 +57,12 @@ export default {
 
     tags: {
        userTags: "/tags"
+    },
+
+    videos: {
+        getDeleteVideoApi : (id) => {
+            return `/videos/${id}/delete`;
+        }
     }
 }
 
