@@ -544,7 +544,7 @@ class TransactionScreen extends Component {
           }
         }}
       >
-        <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+        <View style={{ flex: 1, backgroundColor:  'rgba(0,0,0,0.5)' }}>
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
               <View style={inlineStyles.headerWrapper}>

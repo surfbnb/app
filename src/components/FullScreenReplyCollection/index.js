@@ -8,7 +8,7 @@ import backIcon from '../../assets/back-arrow.png';
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import VideoReply from "./VideoReply";import NavigationService from "../../services/NavigationService";
 import utilities from '../../services/Utilities';
-
+import crossIcon from '../../assets/cross_icon.png';
 
 
 const navigateToCamera = (navigation) => {
@@ -29,11 +29,11 @@ const HeaderLeft = (props) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          props.navigation.goBack();
+          props.navigation.goBack(null);
         }}
         style={inlineStyles.iconWrapper}
       >
-        <Image style={inlineStyles.iconSkipFont} source={backIcon}></Image>
+        <Image style={inlineStyles.iconSkipFont} source={crossIcon}></Image>
       </TouchableOpacity>
     );
   };
