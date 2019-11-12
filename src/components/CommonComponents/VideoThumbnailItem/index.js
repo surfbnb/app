@@ -18,7 +18,7 @@ let getVideoBtAmount = (videoId) => {
 
 export default (props) => {
     const videoId =  deepGet(props, 'payload.video_id'),
-        userId = deepGet(props, 'payload.user_id')
+        userId = deepGet(props, 'payload.user_id'),
         userName = reduxGetters.getUserName(userId),
         imageUrl = reduxGetters.getVideoImgUrl(videoId,null, AppConfig.userVideos.userScreenCoverImageWidth),
         videoDesc =reduxGetters.getVideoDescription(reduxGetters.getVideoDescriptionId(videoId));
@@ -28,7 +28,7 @@ export default (props) => {
     >
         <View>
             <FastImage style={{
-                width: (Dimensions.get('window').width - 6) / 2,
+                width: (Dimensions.get('window').width - 4) / 2,
                 aspectRatio:9/16,
                 margin: 1,
                 backgroundColor: imageUrl ? Colors.white : Colors.gainsboro

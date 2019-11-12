@@ -5,7 +5,8 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Animated
+  Animated,
+  StatusBar
 } from "react-native";
 import {SafeAreaView} from "react-navigation";
 
@@ -92,6 +93,8 @@ class VideoRepliesScreen extends PureComponent {
 
     render(){
         return (
+          <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
+            <StatusBar translucent={true} backgroundColor={'transparent'} />
             <SlidingUpPanel ref={c => (this._panel = c)}
                 animatedValue={this.animatedValue}
                 ref={c => (this._panel = c)}
@@ -102,7 +105,7 @@ class VideoRepliesScreen extends PureComponent {
                 showBackdrop={this.state.showBackdrop}
                 snappingPoints={[0, this.initialHeight, height]}>
               {dragHandler => (
-                <View style={[inlineStyles.container, {backgroundColor: "#fff"}]}>
+                <View style={[inlineStyles.container]}>
                   <View style={inlineStyles.dragHandler} {...dragHandler}>
                     
                     <TouchableOpacity onPress={this.onCrossIconClick} style={inlineStyles.iconWrapper} >
@@ -118,17 +121,20 @@ class VideoRepliesScreen extends PureComponent {
                     </View>
                     
                     <TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >
-                        <Image style={[inlineStyles.iconSkipFont]} source={plusIcon} />
+                        <Image style={[inlineStyles.iconSkipFont, {height: 25, width: 25}]} source={plusIcon} />
                     </TouchableOpacity>
 
                   </View>
-                  <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
-                                    videoReplyCount={this.videoReplyCount}
-                                    amount={this.amount}
-                  />
+                  <View containerStyle={{backgroundColor: '#fff'}}>
+                    <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
+                                      videoReplyCount={this.videoReplyCount}
+                                      amount={this.amount}
+                    />
+                  </View>
                 </View>
               )}
             </SlidingUpPanel>
+          </SafeAreaView>
         );
     }
 

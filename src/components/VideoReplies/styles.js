@@ -6,29 +6,34 @@ let stylesMap = {
       flex: 1,
       zIndex: 1,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      backgroundColor: '#fff',
     },
     dragHandler: {
       alignSelf: 'stretch',
-      height: 80,
+      height: 65,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#fff',
       flexDirection: 'row',
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 30,
+      overflow: 'hidden'
     },
     iconWrapper: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        height: 60,
-        width: 60
+        height: 50,
+        width: 50
       },
       iconSkipFont: {
-        height: 20,
-        width: 20
+        height: 16,
+        width: 16
       },
       repliesTxt: {
-        flex: 4
+        flex: 4,
+        alignItems: 'center'
       },
       headerStyles: {
         backgroundColor: Colors.white,
@@ -42,10 +47,13 @@ let stylesMap = {
         shadowRadius: 3
       },
       headerText:{
-          fontWeight: '600'
+        fontFamily: 'AvenirNext-Medium',
+        color: Colors.valhalla,
+        fontSize: 18
       },
       headerSubText:{
-          fontSize: 12
+        fontSize: 12,
+        color: 'rgba(42, 41, 59, 0.7)'
       }
 };
 

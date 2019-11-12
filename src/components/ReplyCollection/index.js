@@ -135,7 +135,7 @@ class VideoReplyList extends PureComponent {
     };
 
     _renderVideoCell = ({ item, index }) => {
-        //TODO Let ask BE for same payload 
+        //TODO Let ask BE for same payload
         const payload = { user_id : deepGet(item, "payload.user_id") ,  video_id: deepGet(item, "payload.reply_detail_id")}
         return (<VideoThumbnailItem
           payload={payload}
@@ -145,7 +145,7 @@ class VideoReplyList extends PureComponent {
 
     onVideoClick = (payload, index) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
-        //TODO @ashutosh to understand 
+        //TODO @ashutosh to understand
         this.props.navigation.push("FullScreenReplyCollection", {
             "fetchServices" : clonedInstance,
             "currentIndex": index,
@@ -178,7 +178,8 @@ class VideoReplyList extends PureComponent {
 
     render(){
         return (
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
+            <StatusBar translucent={true} backgroundColor={'transparent'} />
               <FlatList
                 ref={this.setListRef}
                 data={this.state.list}
