@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import {
   FlatList,
   ActivityIndicator,
-  View,
-  Dimensions
+  Text,
+  StatusBar,
+  View
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 import deepGet from "lodash/get";
@@ -16,6 +17,7 @@ import inlineStyles from './styles';
 import CurrentUser from '../../models/CurrentUser';
 import DataContract from '../../constants/DataContract';
 
+
 class VideoReplyList extends PureComponent {
 
     constructor(props){
@@ -23,7 +25,7 @@ class VideoReplyList extends PureComponent {
 
         this.state = {
             list : [],
-            refreshing : false,
+            refreshing : true,
             loadingNext: false
         };
         this.listRef = null;
@@ -228,7 +230,8 @@ class VideoReplyList extends PureComponent {
 
     render(){
         return (
-              <FlatList
+            <FlatList
+                style={{flex:1, width: "100%"}}
                 ref={this.setListRef}
                 data={this.state.list}
                 onEndReached={this.getNext}
@@ -239,7 +242,7 @@ class VideoReplyList extends PureComponent {
                 renderItem={this._renderItem}
                 ListFooterComponent={this.renderFooter}
                 numColumns={this.numColumns}
-              />
+            />
         );
     }
 
