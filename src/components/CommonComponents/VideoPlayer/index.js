@@ -10,6 +10,7 @@ import video_not_available from '../../../assets/video-not-available.png';
 import Utilities from '../../../services/Utilities';
 import CurrentUser from '../../../models/CurrentUser';
 import reduxGetter from '../../../services/ReduxGetters';
+import Colors from "../../../theme/styles/Colors";
 
 class VideoPlayer extends Component {
 
@@ -94,7 +95,7 @@ class VideoPlayer extends Component {
                 </View>
         }else{
           return (
-            <View style={{flex:1}}>
+            <View style={{flex:1, backgroundColor: Colors.black}}>
               <TopStatus />
               <VideoRowComponent doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
                                  videoId={this.videoId} userId={this.state.userId}
