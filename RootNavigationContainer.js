@@ -3,6 +3,7 @@ import { View, Dimensions, Easing, Animated } from 'react-native';
 import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator , StackViewTransitionConfigs} from 'react-navigation-stack';
+import NavigationAnimation from "./src/helpers/NavigationAnimation";
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import deepGet from 'lodash/get';
 
@@ -85,34 +86,25 @@ const modalStackConfig = {
   }
 };
 
-const txModalConfig = {
+const txModalConfig = { 
   transparentCard: true,
   cardStyle: { backgroundColor: 'rgba(0,0,0,0)' },
   gesturesEnabled: false,
-  transitionConfig: () => ({
-    transitionSpec: {
-      duration: 300,
-      easing: Easing.out(Easing.poly(4)),
-      timing: Animated.timing
-    },
-    screenInterpolator: (sceneProps) => {
-      const { layout, position, scene } = sceneProps;
-      const { index } = scene;
-
-      const height = layout.initHeight;
-      const translateY = position.interpolate({
-        inputRange: [index - 1, index, index + 1],
-        outputRange: [height, 0, 0]
-      });
-
-      const opacity = position.interpolate({
-        inputRange: [index - 1, index - 0.99, index],
-        outputRange: [0, 1, 1]
-      });
-
-      return { opacity, transform: [{ translateY }] };
+  transitionConfig: (transitionProps, prevTransitionProps) => {    
+    const scenes = transitionProps["scenes"];
+    const prevScene = scenes[scenes.length - 2];
+    const nextScene = scenes[scenes.length - 1];
+    if (prevScene
+      && prevScene.route.routeName === 'VideoReplies'
+      && nextScene.route.routeName === 'FullScreenReplyCollection') {
+      return  NavigationAnimation.zoomIn();
+    } else if (prevScene
+      && prevScene.route.routeName === 'FullScreenReplyCollection'
+      && nextScene.route.routeName === 'VideoReplies') {
+      return  NavigationAnimation.zoomOut();
     }
-  })
+    return  NavigationAnimation.defaultTransition();
+  }
 };
 
 
