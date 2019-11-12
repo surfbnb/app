@@ -11,7 +11,6 @@ import CurrentUser from '../../models/CurrentUser';
 
 import BottomStatus from '../Home/BottomStatus';
 import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
-import ShareVideo from '../../services/shareVideo';
 import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
@@ -33,12 +32,6 @@ class FullScreeVideoRow extends PureComponent {
             .catch((error) => {});
     };
 
-
-
-    shareVideo = () => {
-        let shareVideo = new ShareVideo(this.videoId);
-        shareVideo.perform();
-    };
 
     navigateToUserProfile = (e) => {
         if (utilities.checkActiveUser()) {

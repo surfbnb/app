@@ -26,6 +26,7 @@ import DeleteVideo from "../DeleteVideo";
 import Colors from '../../../theme/styles/Colors';
 import CommonStyle from "../../../theme/styles/Common"
 import VideoThumbnailItem from '../VideoThumbnailItem';
+import DataContract from '../../../constants/DataContract';
 
 
 class UserProfileFlatList extends PureComponent {
@@ -149,7 +150,7 @@ class UserProfileFlatList extends PureComponent {
                       style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
                     >
                     <View style={inlineStyles.deleteButton}>
-                        <DeleteVideo videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
+                        <DeleteVideo fetchUrl={DataContract.videos.getDeleteVideoApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
                     </View>
                   </LinearGradient>}
                   <VideoThumbnailItem payload={{video_id:videoId, user_id: this.props.userId }} 

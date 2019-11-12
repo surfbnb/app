@@ -11,7 +11,6 @@ import CurrentUser from '../../models/CurrentUser';
 
 import BottomStatus from '../Home/BottomStatus';
 import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
-import ShareVideo from '../../services/shareVideo';
 import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
@@ -44,11 +43,6 @@ class UserVideoHistoryRow extends PureComponent {
   isCurrentUser() {
     return this.props.userId == CurrentUser.getUserId();
   }
-
-  shareVideo = () => {
-    let shareVideo = new ShareVideo(this.props.videoId);
-    shareVideo.perform();
-  };
 
   onDescriptionClick = ( tapEntity , tapText ) => {
 
