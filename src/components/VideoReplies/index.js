@@ -5,8 +5,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Animated,
-  StatusBar
+  Animated
 } from "react-native";
 import {SafeAreaView} from "react-navigation";
 
@@ -61,7 +60,7 @@ class VideoRepliesScreen extends PureComponent {
     }
 
     componentWillUnmount() {
-      onAnimatedValueChange= () => {};
+      this.onAnimatedValueChange= () => {};
       this.animatedValue.removeListener(this.listener)
     }
 
@@ -91,45 +90,52 @@ class VideoRepliesScreen extends PureComponent {
       utilities.handleVideoUploadModal(activeTab, navigation, params);
     }
 
+    onData = ( data ) => {
+        this.dataLoaded = true;
+    }
+
     render(){
         return (
-            <SlidingUpPanel ref={c => (this._panel = c)}
-                animatedValue={this.animatedValue}
-                ref={c => (this._panel = c)}
-                draggableRange={{
-                  top: height - topPadding - bottomPadding, //TODO check is top expand
-                  bottom: 0
-                }}
-                showBackdrop={this.state.showBackdrop}
-                snappingPoints={[0, this.initialHeight, height]}>
-              {dragHandler => (
+          <SlidingUpPanel ref={c => (this._panel = c)}
+              animatedValue={this.animatedValue}
+              ref={c => (this._panel = c)}
+              draggableRange={{
+                top: height - topPadding - bottomPadding, //TODO check is top expand
+                bottom: 0
+              }}
+              showBackdrop={this.state.showBackdrop}
+              snappingPoints={[0, this.initialHeight, height]}>
+            {dragHandler => (
+              <React.Fragment>
+                <View style={{backgroundColor: '#fff', height: 65, borderTopLeftRadius: 30, borderTopRightRadius: 30, overflow: 'hidden'}}></View>
                 <View style={[inlineStyles.container]}>
                   <View style={inlineStyles.dragHandler} {...dragHandler}>
-                    
                     <TouchableOpacity onPress={this.onCrossIconClick} style={[inlineStyles.iconWrapper]} >
-                        <Image style={inlineStyles.iconSkipFont} source={crossIcon}></Image>
+                      <Image style={inlineStyles.iconSkipFont} source={crossIcon}></Image>
                     </TouchableOpacity>
-                    
+
                     <View style={inlineStyles.repliesTxt}>
                       <Text numberOfLines={1} style={inlineStyles.headerText}>
-                      Replies to Frankie
+                        Replies to Frankie
                       </Text>
                       {/* {TODO integration pending} */}
                       <Text style={inlineStyles.headerSubText}>Send a reply with Pepo5</Text>
                     </View>
-                    
+
                     <TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >
-                        <Image style={[inlineStyles.iconSkipFont, {height: 25, width: 25}]} source={plusIcon} />
+                      <Image style={[inlineStyles.iconSkipFont, {height: 25, width: 25}]} source={plusIcon} />
                     </TouchableOpacity>
 
                   </View>
-                    <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
-                                      videoReplyCount={this.videoReplyCount}
-                                      amount={this.amount}
-                    />
+                  <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
+                                    onData={this.onData}
+                                    videoReplyCount={this.videoReplyCount}
+                                    amount={this.amount}
+                  />
                 </View>
-              )}
-            </SlidingUpPanel>
+              </React.Fragment>
+            )}
+          </SlidingUpPanel>
         );
     }
 
