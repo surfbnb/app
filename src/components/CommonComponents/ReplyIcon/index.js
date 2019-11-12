@@ -25,7 +25,7 @@ const mapStateToProps = (state , ownProps) => {
   }
 };
 
-class ReplyVideo extends PureComponent {
+class ReplyIcon extends PureComponent {
 
    constructor(props){
      super(props);
@@ -44,27 +44,27 @@ class ReplyVideo extends PureComponent {
     };
 
     replyVideo = ()=> {
-      if (this.props.videoReplyCount > 0){
-        this.props.navigation.push('VideoReplies',
-          {'videoId': this.props.videoId ,
-            'userId': this.props.userId,
-            'amount': this.props.requiredPepo,
-            'videoReplyCount': this.props.videoReplyCount,
-            'fetchUrl': `/videos/${this.props.videoId}/replies`
-          });
-      } else {
-        let activeTab = NavigationService.getActiveTab();
-        let params = {
-          videoTypeReply: true,
-          videoId: this.props.videoId,
-          userId: this.props.userId,
-          amount: this.props.requiredPepo,
-          videoReplyCount: this.props.videoReplyCount
-        };
-        utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
-      }
-
-    };
+        if (this.props.videoReplyCount > 0 || true){
+          this.props.navigation.push('VideoReplies',
+            {'videoId': this.props.videoId ,
+              'userId': this.props.userId,
+              'amount': this.props.requiredPepo,
+              'videoReplyCount': 1,
+              'fetchUrl': `/videos/${this.props.videoId}/replies`
+            });
+        } else {
+          let activeTab = NavigationService.getActiveTab();
+          let params = {
+            videoTypeReply: true,
+            videoId: this.props.videoId,
+            userId: this.props.userId,
+            amount: this.props.requiredPepo,
+            videoReplyCount: this.props.videoReplyCount
+          };
+          utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
+        }
+  
+      };
 
     render(){
         return (
@@ -81,4 +81,4 @@ class ReplyVideo extends PureComponent {
 
 };
 
-export default connect(mapStateToProps)(withNavigation(ReplyVideo));
+export default connect(mapStateToProps)(withNavigation(ReplyIcon));

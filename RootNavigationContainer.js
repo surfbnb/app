@@ -39,6 +39,8 @@ import { NotificationToastComponent } from './src/theme/components/NotificationT
 import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
+import FanVideoReplyDetails from './src/components/FanVideoReplyDetails';
+
 import WalletSettingScreen from './src/components/WalletSetting';
 import StoreProductsScreen from './src/components/StoreProducts';
 import PaymentWorker from './src/components/PaymentWorker';
@@ -57,17 +59,18 @@ import RedemptiomScreen from './src/components/Redemption';
 import VideoTags from './src/components/VideoTags';
 import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
 import VideoReplies from './src/components/VideoReplies';
-import VideoRepliesFullScreen from './src/components/VideoRepliesFullScreen';
+import FullScreenReplyCollection from './src/components/FullScreenReplyCollection';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
   'FanVideoDetails',
+  'FanVideoReplyDetails',
   'InviteCodeScreen',
   'AddEmailScreen',
   'InAppBrowserComponent',
   'CouchMarks',
   'VideoReplies',
-  'VideoRepliesFullScreen'
+  'FullScreenReplyCollection'
 ];
 
 const modalStackConfig = {
@@ -131,13 +134,14 @@ let dynamicModalTransition = (transitionProps, prevTransitionProps) => {
 //TODO find a way for conditional transparentCard config
 const slidingUpConfig = {
   transparentCard: true,
-  transitionConfig: dynamicModalTransition 
+  transitionConfig: dynamicModalTransition
 }
 
 const CaptureVideoStack = createStackNavigator(
   {
     CaptureVideo: CaptureVideo,
-    FanVideoDetails: FanVideoDetails
+    FanVideoDetails: FanVideoDetails,
+    FanVideoReplyDetails: FanVideoReplyDetails
   },
   {
     headerLayoutPreset: 'center'
@@ -159,14 +163,15 @@ const HomePushStack = createStackNavigator(
     HomeScreen: HomeScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    VideoRepliesFullScreen: VideoRepliesFullScreen,
+    VideoReplies: VideoReplies,
+    FullScreenReplyCollection: FullScreenReplyCollection,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
     VideoReplies:VideoReplies ,
     FullScreenVideoCollection: FullScreenVideoCollection
   },
-  { 
+  {
     initialRouteName: 'HomeScreen',
     headerLayoutPreset: 'center' ,
     ...slidingUpConfig
@@ -196,7 +201,8 @@ const NotificationPushStack = createStackNavigator(
     NotificationScreen: NotificationScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    VideoRepliesFullScreen: VideoRepliesFullScreen,
+    VideoReplies: VideoReplies,
+    FullScreenReplyCollection: FullScreenReplyCollection,
     VideoPlayer: VideoPlayer,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
@@ -226,7 +232,8 @@ const ProfilePushStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    VideoRepliesFullScreen: VideoRepliesFullScreen,
+    VideoReplies: VideoReplies,
+    FullScreenReplyCollection: FullScreenReplyCollection,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UsersProfileScreen: UsersProfileScreen,
@@ -279,7 +286,8 @@ const SearchPushStack = createStackNavigator(
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
-    VideoRepliesFullScreen: VideoRepliesFullScreen,
+    VideoReplies: VideoReplies,
+    FullScreenReplyCollection: FullScreenReplyCollection,
     VideoTags: VideoTags,
       FullScreenVideoCollection: FullScreenVideoCollection
   },

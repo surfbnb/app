@@ -1,14 +1,13 @@
 import { Dimensions, StatusBar, NativeModules } from 'react-native';
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
-import { ifIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
-import { Header } from 'react-navigation-stack';
+import { ifIphoneX, getBottomSpace , getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 import  NotchHelper from "../../helpers/NotchHelper";
+import { HEADER_HEIGHT } from '../../theme/constants';
 const {width, height} = Dimensions.get('window');
-const statusBarHeight = StatusBar.currentHeight;
+const statusBarHeight = StatusBar.currentHeight || 20;
 
-console.log("header", Header.HEIGHT);
 
 let RNDeviceInfo = NativeModules.RNDeviceInfo;
 let modalDeviceName = RNDeviceInfo.model === "Redmi Note 7 Pro" && RNDeviceInfo.brand === "xiaomi";
@@ -17,16 +16,15 @@ let btmSpace = modalDeviceName ? 5 : 0;
 let stylesMap = {
     fullScreen: {
         width: width,
-        flex:1,
         ...ifIphoneX(
             {
-                height: height  - getBottomSpace([true]) - Header.HEIGHT - statusBarHeight
+                height: height  - HEADER_HEIGHT - getStatusBarHeight(true)
             },
             {
                 height:
                     NotchHelper.hasNotch()
-                        ? height - statusBarHeight - btmSpace - Header.HEIGHT
-                        : height - Header.HEIGHT - statusBarHeight
+                        ? height + statusBarHeight - btmSpace - HEADER_HEIGHT
+                        : height - statusBarHeight - HEADER_HEIGHT
             }
         )
     },
@@ -105,7 +103,8 @@ let stylesMap = {
           height: 1
         },
         shadowOpacity: 0.1,
-        shadowRadius: 3
+        shadowRadius: 3,
+        height: HEADER_HEIGHT
       },
       headerText:{
           fontWeight: '600'

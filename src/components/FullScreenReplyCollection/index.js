@@ -6,9 +6,7 @@ import Pagination from "../../services/Pagination";
 import inlineStyles from "./styles";
 import backIcon from '../../assets/back-arrow.png';
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
-import VideoReply from "./VideoReply";
-import CommonStyle from "../../theme/styles/Common";
-import NavigationService from "../../services/NavigationService";
+import VideoReply from "./VideoReply";import NavigationService from "../../services/NavigationService";
 import utilities from '../../services/Utilities';
 
 
@@ -54,12 +52,12 @@ const HeaderLeft = (props) => {
         <Text numberOfLines={1} style={inlineStyles.headerText}>
         Replies to Frankie
         </Text>
-        <Text style={inlineStyles.headerSubText}>Send a reply with Pepo 5</Text>
+        <Text style={inlineStyles.headerSubText}>Send a reply with Pepo5</Text>
       </View>
     );
   };
 
-class VideoRepliesFullScreen extends PureComponent{
+class FullScreenReplyCollection extends PureComponent{
 
     static navigationOptions = (props) => {
         return {
@@ -230,7 +228,7 @@ class VideoRepliesFullScreen extends PureComponent{
     render() {
 
         return (
-            <View style={CommonStyle.viewContainer}>
+            <View style={{flex: 1}}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                 <FlatList
                     snapToAlignment={"top"}
@@ -261,4 +259,4 @@ class VideoRepliesFullScreen extends PureComponent{
 
 }
 
-export default VideoRepliesFullScreen ;
+export default FullScreenReplyCollection ;

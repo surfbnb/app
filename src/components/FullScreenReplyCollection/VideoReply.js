@@ -48,7 +48,7 @@ class VideoReply extends PureComponent {
         }
     };
 
-  onDescriptionClick = ( tapEntity , tapText ) => {
+  onDescriptionClick = ( tapEntity  ) => {
     if (!tapEntity) {
       return;
     }

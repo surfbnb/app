@@ -39,6 +39,7 @@ class VideoRecorder extends Component {
       progress: 0,
       recordingInProgress: false,
       acceptedCameraTnC: this.props.acceptedCameraTnC,
+      hasVideoReplies: this.props.hasVideoReplies,
       cameraFrontMode: true,
       isLocalVideoPresent: false
     };
@@ -108,6 +109,7 @@ class VideoRecorder extends Component {
               do_discard: true
             })
           );
+          this.props.saveVideoPrimaryInfo();
         } else if (buttonIndex == ACTION_SHEET_CONTINUE_INDEX) {
           //navigate to previous page
           this.props.proceedWithExistingVideo(this.recordedVideoObj);
@@ -137,6 +139,12 @@ class VideoRecorder extends Component {
     });
   };
 
+  replyToVideo = () => {
+    this.setState({
+      hasVideoReplies: true
+    });
+  };
+
   flipCamera = () => {
     this.setState({ cameraFrontMode: !this.state.cameraFrontMode });
   };
@@ -159,6 +167,43 @@ class VideoRecorder extends Component {
 
     if (this.props.isVideoTypeReply) {
       // TODO: return coach for posting
+      if (! this.state.hasVideoReplies){
+        // Show video
+        return <View style={styles.backgroundStyle}>
+          <View style={{ padding: 26, alignItems: 'center'}}>
+
+            <Text style={[styles.smallText, {fontWeight: '600'}]}>
+              Post a reply
+            </Text>
+
+
+            <Text style={[styles.miniText, {textAlign: 'center'}]}>
+              Be the first one to reply to @annikpolit’s video, once you postt the reply you will pay 5 Pepo Coins
+            </Text>
+
+            <LinearGradient
+              colors={['#ff7499', '#ff5566']}
+              locations={[0, 1]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
+            >
+              <TouchableOpacity
+                onPress={this.replyToVideo}
+                style={[Theme.Button.btn, { borderWidth: 0 }]}
+              >
+                <Text style={[
+                  Theme.Button.btnPinkText,
+                  { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+                ]}>
+                  Reply
+                </Text>
+              </TouchableOpacity>
+            </LinearGradient>
+
+          </View>
+        </View>
+      }
       // if (no video reply present) { return Coach }
     } else {
       if (this.state.acceptedCameraTnC !== 'true'){
@@ -239,8 +284,26 @@ class VideoRecorder extends Component {
     );
   }
 
+
+  shouldShowActionButtons = () => {
+
+    if (this.state.isLocalVideoPresent){
+      // If local video present, coach screen will not be seen. So we need to show action buttons.
+      return true;
+    }
+
+    if (this.props.isVideoTypeReply){
+      // If video type is reply and has video replies then we will not show coach and we need to show action buttons
+      return this.state.hasVideoReplies;
+    } else {
+      // If video type is post and terms and conditions are accepted then we will not show coach and we need to show action buttons
+      return this.state.acceptedCameraTnC === 'true';
+    }
+
+  };
+
   showCameraActions = () => {
-    if (this.state.acceptedCameraTnC == 'true') {
+    if (this.shouldShowActionButtons()) {
       return (
         <React.Fragment>
           <ProgressBar

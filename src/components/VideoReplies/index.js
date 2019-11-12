@@ -12,6 +12,9 @@ import {SafeAreaView} from "react-navigation";
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import inlineStyles from './styles';
 import crossIcon from '../../assets/cross_icon.png';
+import ReplyCollection from '../ReplyCollection';
+import NavigationService from "../../services/NavigationService";
+import utilities from "../../services/Utilities";
 
 import SlidingUpPanel from "../CommonComponents/SlidingUpPanel";
 
@@ -22,7 +25,18 @@ const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
 
-import VideoReplyList from "./list";
+const navigateToCamera = (navigation) => {
+    let activeTab = NavigationService.getActiveTab();
+    let params = {
+        videoTypeReply: true,
+        videoId: navigation.getParam('videoId'),
+        userId: navigation.getParam('userId'),
+        amount: navigation.getParam('amount'),
+        videoReplyCount: navigation.getParam('videoReplyCount')
+    };
+    utilities.handleVideoUploadModal(activeTab, navigation, params);
+};
+
 
 
 class VideoRepliesScreen extends PureComponent {
@@ -36,10 +50,12 @@ class VideoRepliesScreen extends PureComponent {
 
     constructor(props){
       super(props);
-      this.userId = props.navigation.getParam('userId');
-      this.videoId = props.navigation.getParam('videoId');
-      this.fetchUrl = props.navigation.getParam('fetchUrl');
-      this.initialHeight =  height/1.5;
+        this.userId = props.navigation.getParam('userId');
+        this.videoId = props.navigation.getParam('videoId');
+        this.amount = props.navigation.getParam('amount');
+        this.videoReplyCount = props.navigation.getParam('videoReplyCount');
+        this.fetchUrl = props.navigation.getParam('fetchUrl');
+        this.initialHeight =  height/1.5;
       this.animatedValue = new Animated.Value(this.initialHeight) ;
       this.listener = null;
       this.panelAnimateTimeOut = 0 ;
@@ -75,7 +91,7 @@ class VideoRepliesScreen extends PureComponent {
     }
 
     openCamera = () => {
-      this.props.navigation.push('CaptureVideo'); 
+      this.props.navigation.push('CaptureVideo');
     }
 
     render(){
@@ -84,7 +100,7 @@ class VideoRepliesScreen extends PureComponent {
                 animatedValue={this.animatedValue}
                 ref={c => (this._panel = c)}
                 draggableRange={{
-                  top: height - topPadding - bottomPadding, //TODO check is top expand 
+                  top: height - topPadding - bottomPadding, //TODO check is top expand
                   bottom: 0
                 }}
                 showBackdrop={this.state.showBackdrop}
@@ -110,7 +126,10 @@ class VideoRepliesScreen extends PureComponent {
                     </TouchableOpacity>
 
                   </View>
-                  <VideoReplyList  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl} />
+                  <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
+                                    videoReplyCount={this.videoReplyCount}
+                                    amount={this.amount}
+                  />
                 </View>
               )}
             </SlidingUpPanel>

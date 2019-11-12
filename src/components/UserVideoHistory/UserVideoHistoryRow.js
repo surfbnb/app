@@ -15,7 +15,7 @@ import ShareVideo from '../../services/shareVideo';
 import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
-import ReplyVideo from '../CommonComponents/ReplyVideo';
+import ReplyIcon from '../CommonComponents/ReplyIcon';
 
 
 class UserVideoHistoryRow extends PureComponent {
@@ -84,7 +84,7 @@ class UserVideoHistoryRow extends PureComponent {
                   userId={this.props.userId}
                   videoId={this.props.videoId}
                 />
-                <ReplyVideo videoId={this.props.videoId} userId={this.props.userId}/>
+                <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
                 <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} />
                 <ReportVideo  userId={this.props.userId} videoId={this.props.videoId} />
               </View>

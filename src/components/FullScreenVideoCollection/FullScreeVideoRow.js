@@ -16,7 +16,7 @@ import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
 import OptionsIcon from '../../assets/options_self_video.png';
-import ReplyVideo from '../CommonComponents/ReplyVideo';
+import ReplyIcon from '../CommonComponents/ReplyIcon';
 
 
 class FullScreeVideoRow extends PureComponent {
@@ -84,7 +84,7 @@ class FullScreeVideoRow extends PureComponent {
                                     userId={this.userId}
                                     videoId={this.videoId}
                                 />
-                                <ReplyVideo videoId={this.videoId} userId={this.userId}/>
+                                <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                                 <ShareIcon  userId={this.userId} videoId={this.videoId} />
                                 <ReportVideo  userId={this.userId} videoId={this.videoId} />
                             </View>

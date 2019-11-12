@@ -28,7 +28,9 @@ const recordedVideoStates = [
   'cover_image',
   's3_cover_image',
   'video_desc',
-  'video_link'
+  'video_link',
+  'video_type',
+  'reply_obj'
 ];
 
 const processingStatuses = [

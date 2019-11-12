@@ -1,25 +1,15 @@
 import React, { PureComponent } from 'react';
 import {
-  View,
   FlatList,
   ActivityIndicator,
-  Text,
-  Image,
-  TouchableOpacity,
   StatusBar
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 
 import Pagination from "../../services/Pagination";
-import plusIcon from '../../assets/user-video-capture-icon-selected.png';
-import inlineStyles from './styles';
-import crossIcon from '../../assets/cross_icon.png';
 import VideoThumbnailItem from '../CommonComponents/VideoThumbnailItem';
 
-
-
 class VideoReplyList extends PureComponent {
-  
 
     constructor(props){
       super(props);
@@ -31,21 +21,11 @@ class VideoReplyList extends PureComponent {
         };
         this.listRef = null;
 
-        const ts = Date.now();
-        this.noResultsKeyProp = "video_collection_no_results_" + ts;
-        this.hasResultsKeyProp = "video_collection_has_results_" + ts;
-
         this.numColumns = 2;
-        this.flatListKey = this.hasResultsKeyProp;
-        this.listHeaderComponent =null;
-        this.listHeaderSubComponent = null;
     }
 
     componentDidMount(){
         this.forcedRefresh();
-        const ts = Date.now();
-        this.noResultsKeyProp = "video_collection_no_results_" + ts;
-        this.hasResultsKeyProp = "video_collection_has_results_" + ts;
     }
 
     componentWillUnmount() {
@@ -63,7 +43,7 @@ class VideoReplyList extends PureComponent {
         this.removePaginationListeners();
 
         // Now, create a new one.
-        let fetchUrl = `/users/${this.props.userId}/video-history`//this.fetchUrl;
+        let fetchUrl = this.props.fetchUrl;
         this.videoPagination = new Pagination(fetchUrl);
         this.bindPaginationEvents();
     }
@@ -153,36 +133,30 @@ class VideoReplyList extends PureComponent {
     }
 
     _renderItem = ({ item, index }) => {
-      // Check if this is an empty cell.
-      if ( item.isEmpty) {
-        // Render no results cell here.
-        return this.props.getNoResultsCell(item);
-      } else {
         // Render Video cell
         return this._renderVideoCell({item,index});
-      }
     };
 
     _renderVideoCell = ({ item, index }) => {
         return (<VideoThumbnailItem
           payload={item.payload}
           index={index}
-          onVideoClick={(videoId, index, compRef) => {this.onVideoClick(item.payload, index, compRef)}}
-          isEmpty={item.isEmpty}
-          emptyRenderFunction={this.props.getNoResultsCell}/>);
+          onVideoClick={(videoId, index, compRef) => {this.onVideoClick(item.payload, index, compRef)}}/>);
     };
 
 
 
-    onVideoClick = (payload, index, videoThumbnailMeasurements) => {
+    onVideoClick = (payload, index) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
-        this.props.navigation.push("VideoRepliesFullScreen", {
+        this.props.navigation.push("FullScreenReplyCollection", {
             "fetchServices" : clonedInstance,
             "currentIndex": index,
             "payload": payload,
             "baseUrl": this.props.fetchUrl,
-            "showBalanceFlyer": this.showBalanceFlyer,
-            "videoThumbnailMeasurements": videoThumbnailMeasurements
+            "amount": this.props.amount,
+            "videoReplyCount": this.props.videoReplyCount,
+            'parentUserId': this.props.userId,
+            'parentVideoId': this.props.videoId
         });
     }
     renderFooter = () => {
@@ -190,26 +164,12 @@ class VideoReplyList extends PureComponent {
         return <ActivityIndicator />;
     };
 
-    getListHeaderComponent = () => {
-        return (
-          <React.Fragment>
-              {this.listHeaderComponent}
-              {this.state.list.length > 0 && this.listHeaderSubComponent }
-          </React.Fragment>
-        )
-    };
-
     getResultList(){
       let list = this.videoPagination.getResults();
       if( list.length > 0 ){
         this.numColumns = 2;
-        this.flatListKey = this.hasResultsKeyProp;
         return list;
-      } else {
-        this.numColumns = 1;
-        this.flatListKey = this.noResultsKeyProp;
-        return [this.props.noResultsData];
-      }
+      } 
     }
 
     scrollToTop(){
@@ -226,7 +186,6 @@ class VideoReplyList extends PureComponent {
             <StatusBar translucent={true} backgroundColor={'transparent'} />
               <FlatList
                 ref={this.setListRef}
-                ListHeaderComponent={this.getListHeaderComponent()}
                 data={this.state.list}
                 onEndReached={this.getNext}
                 onRefresh={this.refresh}
@@ -236,7 +195,6 @@ class VideoReplyList extends PureComponent {
                 renderItem={this._renderItem}
                 ListFooterComponent={this.renderFooter}
                 numColumns={this.numColumns}
-                key={this.flatListKey}
               />
           </SafeAreaView>
         );

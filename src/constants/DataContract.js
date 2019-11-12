@@ -37,6 +37,10 @@ export default {
         infoApi: "/support/info"
     },
 
+    replies: {
+      validateReply: "replies/validate-upload"
+    },
+
     common: {
         resultType : "data.result_type"
     }
