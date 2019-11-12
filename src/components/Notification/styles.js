@@ -8,7 +8,8 @@ let stylesMap = {
     marginLeft: 0,
     marginRight: 0,
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    minWidth: '100%'
   },
 
   txtWrapper: {
