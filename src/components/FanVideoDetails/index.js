@@ -134,9 +134,7 @@ class FanVideoDetails extends Component {
   enableStartUploadFlag = () => {
    // if (!this.validLink()) return;
     this.clearErrors();
-    this.validateData().then((res)=>{
-
-   console.log('CurrentUser.getUserId()CurrentUser.getUserId()', CurrentUser.getUserId());
+    this.validateData().then((res) => {
    utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
     Store.dispatch(
       upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, reply_amount: this.replyAmount, do_upload: true })
