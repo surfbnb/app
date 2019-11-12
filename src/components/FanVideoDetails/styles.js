@@ -31,6 +31,26 @@ let stylesMap = {
     paddingHorizontal: 15,
     paddingVertical: 20
   },
+  videoLinkItem: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#ccd3cd',
+    paddingBottom: 16,
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    zIndex: -1
+  },
+  videoAmountItem: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#ccd3cd',
+
+    alignItems: 'center',
+    paddingBottom: 16,
+    paddingHorizontal: 12,
+    zIndex: -1
+
+  },
   videoDescription: {
     color: 'rgba(42, 41, 59, 0.8)',
     // flex: 1,

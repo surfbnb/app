@@ -38,13 +38,14 @@ export default {
     },
 
     replies: {
-      validateReply: "replies/validate-upload", 
+      validateReply: "/replies/validate-upload",
       getReplyListApi : (id) => {
         return `/videos/${id}/replies`
       },
       getDeleteVideoReplyApi : (id) => {
         return `/replies/${id}/delete`;
-    }
+    },
+    validatePost: "/videos/validate-upload"
     },
 
     common: {

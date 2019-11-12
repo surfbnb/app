@@ -92,7 +92,9 @@ class FanVideoReplyDetails extends Component {
       viewStyle: {
         paddingBottom: 10
       },
-      error: null
+      error: null,
+      linkError: null,
+      descError : null
     };
   }
   _keyboardShown = (e) => {
@@ -135,6 +137,7 @@ class FanVideoReplyDetails extends Component {
   }
 
   enableStartUploadFlag = () => {
+    this.clearErrors();
    this.validateData().then((res)=>{
      Store.dispatch(
        upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, do_upload: true })
@@ -144,10 +147,31 @@ class FanVideoReplyDetails extends Component {
      this.props.navigation.navigate('HomeScreen');
    }).catch((err)=>{
      // show error on UI.
+     this.showError(err);
    }) ;
+  };
 
 
+  showError = (err) => {
+    for (let error of err.error_data){
+      switch (error.parameter) {
+        case "link":
+          this.setState({linkError: error.msg});
+          break;
+        case "video_description":
+          this.setState({descError: error.msg});
+          break;
+      }
+    }
+  };
 
+
+  clearErrors = () => {
+    this.setState({
+      linkError: null,
+      descError: null,
+      error: null
+    });
   };
 
 
@@ -156,7 +180,7 @@ class FanVideoReplyDetails extends Component {
     params['video_description'] = this.videoDesc;
     params['link'] = this.videoLink;
     params['parent_kind'] = 'video';
-    params['parent_id'] = this.replyObject.parent_video_id;
+    params['parent_id'] = this.replyObject.replyReceiverVideoId;
 
     return new Promise((resolve, reject) => {
       new PepoApi(DataContract.replies.validateReply)
@@ -165,7 +189,7 @@ class FanVideoReplyDetails extends Component {
           if (res && res.success){
             return resolve(res);
           } else {
-            return reject(res);
+            return reject(res.err);
           }
         })
     });
@@ -219,7 +243,7 @@ class FanVideoReplyDetails extends Component {
   };
 
   getAmountToSend  = () => {
-   return this.replyObject.amount_to_send || 0;
+   return this.replyObject.amountToSendWithReply || 0;
   };
 
   render() {
@@ -246,10 +270,12 @@ class FanVideoReplyDetails extends Component {
             </TouchableOpacity>
             <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
           </View>
-          <View style={[styles.videoDescriptionItem, { alignItems: 'center', paddingVertical: 10, paddingHorizontal: 12, zIndex: -1 }]}>
+          <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.descError }</Text>
+          <View style={ styles.videoLinkItem} >
             <Text style={{flex: 1}}>Link</Text>
             <VideoLink initialValue={this.props.recordedVideo.video_link} onChangeLink={this.onChangeLink} />
           </View>
+          <Text style={[Theme.Errors.errorText, { alignSelf: 'center'}]}>{this.state.linkError }</Text>
         </View>
         <View style={{zIndex: -1}}>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center', marginBottom: 10 }]}>{this.state.error}</Text>

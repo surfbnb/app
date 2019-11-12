@@ -48,6 +48,15 @@ let stylesMap = {
     paddingLeft: 0,
     height: 100
   },
+  videoLinkItem: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#ccd3cd',
+    paddingBottom: 16,
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    zIndex: -1
+  },
   dropDownStyle: {
     marginLeft: -90,
     width: Dimensions.get('window').width,

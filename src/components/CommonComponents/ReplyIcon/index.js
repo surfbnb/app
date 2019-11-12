@@ -40,7 +40,7 @@ class ReplyIcon extends PureComponent {
         return this.getWeiToNumber(this.props.balance) >= this.getWeiToNumber(this.props.requiredPepo);
     };
 
-    getWeiToNumber = ( val ) => { //Move this to utilities 
+    getWeiToNumber = ( val ) => { //Move this to utilities
         return val && Math.floor(Number(pricer.getFromDecimal(val))) || 0;
     };
 
@@ -52,12 +52,12 @@ class ReplyIcon extends PureComponent {
         return;
       }
 
-      if (this.props.videoReplyCount > 0 || true){ //TODO remove || true
+      if (this.props.videoReplyCount > 0 ){
         this.props.navigation.push('VideoReplies',
           {'videoId': this.props.videoId ,
             'userId': this.props.userId,
             'amount': this.props.requiredPepo,
-            'videoReplyCount': this.props.videoReplyCount || 1 //TODO @preshita remove this
+            'videoReplyCount': this.props.videoReplyCount
           });
       } else {
         let activeTab = NavigationService.getActiveTab();

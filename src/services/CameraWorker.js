@@ -29,6 +29,7 @@ const recordedVideoStates = [
   's3_cover_image',
   'video_desc',
   'video_link',
+  'reply_amount',
   'video_type',
   'reply_obj'
 ];
@@ -120,18 +121,169 @@ class CameraWorker extends PureComponent {
       console.log(
         'processVideo :: Got upload consent. Uploading video and cover image to s3 and attempting post Video with Cover Image...'
       );
-      this.updateProfileViewRawVideo();
-      await this.uploadVideo();
-      await this.uploadCoverImage();
-      await this.postVideoWithCoverImage();
+      await this.processVideoBasedOnType ();
+
     }
   }
 
-  updateProfileViewRawVideo() {
-    if (this.props.recorded_video.cover_image && !this.props.recorded_video.video_s3_upload_processing) {
-      // this.updateProfileViewVideo(this.props.recorded_video.cover_image, this.props.recorded_video.raw_video);
+
+  processVideoBasedOnType = async () => {
+    let videoType = this.props.recorded_video.video_type;
+    if (! videoType){
+      return;
     }
-  }
+    if (videoType === 'post'){
+        await this.processPostVideo();
+    } else if (videoType === 'reply'){
+       await this.processReplyVideo();
+    }
+  };
+
+
+  processPostVideo = async () => {
+    await this.uploadVideo();
+    await this.uploadCoverImage();
+    await this.postVideoToPepoApi();
+  };
+
+
+  processReplyVideo = async () => {
+    let sessionCreated = await this.sessionHandling();
+
+    if (! sessionCreated){
+      return ;
+    }
+    await this.uploadReplyVideo();
+
+
+  };
+
+  uploadReplyVideo = async () => {
+    await this.uploadVideo();
+    await this.uploadCoverImage();
+    await this.postReplyVideoToPepoApi();
+  };
+
+
+  postReplyVideoToPepoApi = async () => {
+    let replyDetailId = this.props.recorded_video.reply_obj.replyDetailId;
+
+    if (replyDetailId){
+      // we have reply
+      return true
+    }
+    if (
+      this.props.recorded_video.s3_video &&
+      !this.props.recorded_video.pepo_api_posting &&
+      !this.postToPepoApi
+    ) {
+      this.postToPepoApi = true;
+      let videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);
+      let videoSize = videoInfo.size;
+      let imageInfo, imageSize;
+      if(this.props.recorded_video.cover_image !== INVALID){
+        imageInfo = await RNFS.stat(this.props.recorded_video.cover_image);
+        imageSize = imageInfo.size;
+      }
+
+      Store.dispatch(
+        upsertRecordedVideo({
+          pepo_api_posting: true
+        })
+      );
+
+      let payloadWithoutImage = {
+        video_url: this.props.recorded_video.s3_video,
+        video_description: this.props.recorded_video.video_desc,
+        link: this.props.recorded_video.video_link,
+        video_width: appConfig.cameraConstants.VIDEO_WIDTH,
+        video_height: appConfig.cameraConstants.VIDEO_HEIGHT,
+        image_width: appConfig.cameraConstants.VIDEO_WIDTH,
+        image_height: appConfig.cameraConstants.VIDEO_HEIGHT,
+        video_size: videoSize,
+        per_reply_amount_in_wei: String(this.props.recorded_video.reply_amount)
+      };
+
+      let payload = payloadWithoutImage;
+
+      if(this.props.recorded_video.cover_image !== INVALID){
+        payload = {
+          ...payload,
+          poster_image_url: this.props.recorded_video.s3_cover_image,
+          image_size: imageSize
+        };
+      }
+
+      new PepoApi(`/users/${this.props.currentUserId}/fan-video`)
+        .post(payload)
+        .then((responseData) => {
+          if (responseData.success && responseData.data) {
+            console.log('Video uploaded Successfully');
+            Toast.show({
+              text: 'Your video uploaded successfully.',
+              icon: 'success',
+              imageUri: this.props.recorded_video.cover_image
+            });
+            Store.dispatch(
+              upsertRecordedVideo({
+                do_discard: true,
+                pepo_api_posting: false
+              })
+            );
+          } else {
+            videoUploaderComponent.emit('hide');
+            Store.dispatch(videoInProcessing(false));
+          }
+          this.postToPepoApi = false;
+        })
+        .catch(() => {
+          this.postToPepoApi = false;
+          Store.dispatch(
+            upsertRecordedVideo({
+              pepo_api_posting: false
+            })
+          );
+          Toast.show({
+            text: 'Video upload failed - Try Again',
+            icon: 'error'
+          });
+        });
+    }
+
+
+    // here we will get reply_id
+
+
+  };
+
+
+
+
+
+
+
+  sessionHandling = async  () => {
+    let isSessionActive = await this.checkForActiveSession();
+    if (isSessionActive){
+        return true;
+    } else {
+       return await this.activateSession();
+    }
+  };
+
+
+  checkForActiveSession = async () => {
+      // check If session active
+  };
+
+  activateSession = async () => {
+   // Activate session.
+  };
+
+
+
+
+
 
   async cleanUp() {
     // stop ffmpge processing
@@ -337,7 +489,7 @@ class CameraWorker extends PureComponent {
     return uploadToS3.perform();
   }
 
-  async postVideoWithCoverImage() {
+  async postVideoToPepoApi() {
     if (
       this.props.recorded_video.s3_video &&
       !this.props.recorded_video.pepo_api_posting &&
@@ -366,7 +518,8 @@ class CameraWorker extends PureComponent {
         video_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         image_width: appConfig.cameraConstants.VIDEO_WIDTH,
         image_height: appConfig.cameraConstants.VIDEO_HEIGHT,
-        video_size: videoSize
+        video_size: videoSize,
+        per_reply_amount_in_wei: String(this.props.recorded_video.reply_amount)
       };
 
       let payload = payloadWithoutImage;
@@ -395,6 +548,9 @@ class CameraWorker extends PureComponent {
                 pepo_api_posting: false
               })
             );
+          } else {
+            videoUploaderComponent.emit('hide');
+            Store.dispatch(videoInProcessing(false));
           }
           this.postToPepoApi = false;
         })
