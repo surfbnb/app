@@ -118,12 +118,17 @@ const txModalConfig = {
 
 const IOS_MODAL_ROUTES = ['VideoReplies'];
 let dynamicModalTransition = (transitionProps, prevTransitionProps) => {
-  const isModal = IOS_MODAL_ROUTES.some(
-    screenName =>
-      screenName === transitionProps.scene.route.routeName ||
-      (prevTransitionProps &&
-        screenName === prevTransitionProps.scene.route.routeName)
-  );
+  let isModal = false;
+  const scene = transitionProps.scene;
+  let routeName = scene.route.routeName;
+  if( IOS_MODAL_ROUTES.includes(routeName) ) {
+    let sceneLen = transitionProps.scenes.length;
+    if ( sceneLen && transitionProps.scenes[sceneLen - 1] === scene ) {
+      isModal = true;
+    } else {
+      console.log("transitionProps===== :: ignoring modal transition");
+    }
+  }
   return StackViewTransitionConfigs.defaultTransitionConfig(
     transitionProps,
     prevTransitionProps,
