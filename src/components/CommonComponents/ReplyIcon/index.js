@@ -22,7 +22,8 @@ const mapStateToProps = (state , ownProps) => {
     balance : state.balance,
     requiredPepo : reduxGetter.getVideoReplyAmount(ownProps.videoId, state),
     videoReplyCount : reduxGetter.getVideoReplyCount(ownProps.videoId, state),
-    isReplyAllowed : reduxGetter.getVideoReplyAllowed(ownProps.videoId, state)
+    isReplyAllowed : reduxGetter.getVideoReplyAllowed(ownProps.videoId, state),
+    userName : reduxGetter.getUserName(ownProps.userId)
   }
 };
 
@@ -56,6 +57,7 @@ class ReplyIcon extends PureComponent {
         this.props.navigation.push('VideoReplies',
           {'videoId': this.props.videoId ,
             'userId': this.props.userId,
+            'userName': this.props.userName,
             'amount': this.props.requiredPepo,
             'videoReplyCount': this.props.videoReplyCount
           });

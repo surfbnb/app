@@ -2,11 +2,10 @@ import React, { PureComponent } from 'react';
 import {
   FlatList,
   ActivityIndicator,
-  Text,
-  StatusBar,
+  Dimensions,
   View
 } from "react-native";
-import {SafeAreaView, withNavigation} from "react-navigation";
+import { withNavigation} from "react-navigation";
 import deepGet from "lodash/get";
 import LinearGradient from "react-native-linear-gradient";
 
@@ -16,6 +15,8 @@ import DeleteVideo from "../CommonComponents/DeleteVideo";
 import inlineStyles from './styles';
 import CurrentUser from '../../models/CurrentUser';
 import DataContract from '../../constants/DataContract';
+import { VideoReplyEmitter } from '../../helpers/Emitters';
+import PepoApi from '../../services/PepoApi';
 
 
 class VideoReplyList extends PureComponent {
@@ -40,11 +41,18 @@ class VideoReplyList extends PureComponent {
     }
 
     bindEvents(){
-        
+        VideoReplyEmitter.on('videoUploaded', ( payload )=>{
+            this.fetchVideoReply( payload.videoId );
+        })
     }
 
-    fetchVideoReply = ()=> {
-
+    fetchVideoReply = (id)=> {
+        new PepoApi(DataContract.replies.getSingleVideoReplyApi(id))
+        .get()
+        .then((res)=> {
+            let newVideoReply  = res.data['result_type'];
+            this.addVideo( newVideoReply );
+        })
     }
 
     componentWillUnmount() {

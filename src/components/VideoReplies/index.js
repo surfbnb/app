@@ -7,9 +7,9 @@ import {
   Dimensions,
   Animated
 } from "react-native";
-import {SafeAreaView} from "react-navigation";
 
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
+import pepoIcon from "../../assets/pepo-tx-icon.png";
 import inlineStyles from './styles';
 import crossIcon from '../../assets/cross_icon.png';
 import ReplyCollection from '../ReplyCollection';
@@ -38,6 +38,7 @@ class VideoRepliesScreen extends PureComponent {
     constructor(props){
       super(props);
         this.userId = props.navigation.getParam('userId');
+        this.userName = props.navigation.getParam('userName');
         this.videoId = props.navigation.getParam('videoId');
         this.amount = props.navigation.getParam('amount');
         this.videoReplyCount = props.navigation.getParam('videoReplyCount');
@@ -84,8 +85,8 @@ class VideoRepliesScreen extends PureComponent {
           videoTypeReply: true,
           videoId: this.videoId,
           userId: this.userId,
-          amount: navigation.getParam('amount'),
-          videoReplyCount: navigation.getParam('videoReplyCount')
+          amount: this.amount,
+          videoReplyCount: this.videoReplyCount
       };
       utilities.handleVideoUploadModal(activeTab, navigation, params);
     }
@@ -116,10 +117,12 @@ class VideoRepliesScreen extends PureComponent {
 
                     <View style={inlineStyles.repliesTxt}>
                       <Text numberOfLines={1} style={inlineStyles.headerText}>
-                        Replies to Frankie
+                        Replies to {this.userName}
                       </Text>
                       {/* {TODO integration pending} */}
-                      <Text style={inlineStyles.headerSubText}>Send a reply with Pepo5</Text>
+                      <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
+                      <Image style={{height: 10, width: 10}} source={pepoIcon} />
+                       {this.amount}</Text>
                     </View>
 
                     <TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >

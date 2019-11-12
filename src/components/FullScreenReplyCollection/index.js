@@ -5,10 +5,13 @@ import deepGet from "lodash/get";
 import Pagination from "../../services/Pagination";
 import inlineStyles from "./styles";
 import backIcon from '../../assets/back-arrow.png';
+import pepoIcon from '../../assets/pepo-tx-icon.png';
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import VideoReply from "./VideoReply";import NavigationService from "../../services/NavigationService";
 import utilities from '../../services/Utilities';
 import crossIcon from '../../assets/cross_icon.png';
+import ReduxGetters from "../../services/ReduxGetters";
+
 
 
 const navigateToCamera = (navigation) => {
@@ -47,12 +50,16 @@ const HeaderLeft = (props) => {
   };
   
   const HeaderTitle = (props) => {
+      let  userId = props.navigation.getParam('parentUserId'),
+            userName = ReduxGetters.getUserName(userId);
     return (
       <View>
         <Text numberOfLines={1} style={inlineStyles.headerText}>
-        Replies to Frankie
+        Replies to {userName}
         </Text>
-        <Text style={inlineStyles.headerSubText}>Send a reply with Pepo5</Text>
+        <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
+        <Image style={{height: 10, width: 10}} source={pepoIcon} />
+        {props.navigation.getParam('amount')}</Text>
       </View>
     );
   };
