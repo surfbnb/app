@@ -1,16 +1,20 @@
 import React, { PureComponent } from 'react';
-import {TouchableOpacity, FlatList, View, Dimensions} from 'react-native';
+import {TouchableOpacity, FlatList, View, Dimensions, Text} from 'react-native';
 
 import PepoApi from '../../../services/PepoApi';
 import CustomTextInput from './CustomTextInput';
 import ReduxGetters from '../../../services/ReduxGetters';
 import deepGet from 'lodash/get';
+import DataContract from "../../../constants/DataContract";
+import inlineStyles from "./styles";
+import ProfilePicture from "../../ProfilePicture";
 
 class TagsInput extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      hashTagsData: [],
+      mentionsData: [],
       keyword: ''
     };
     this.value = this.props.initialValue;
@@ -26,10 +30,10 @@ class TagsInput extends PureComponent {
     const reqParam = keyword.substr(1);
     this.reqTimer = setTimeout(() => {
       if (!reqParam) return;
-      new PepoApi('/tags')
+      new PepoApi(DataContract.tags.userTags)
         .get('q=' + reqParam)
         .then((res) => {
-          this.openSuggestionsPanel(res);
+          this.openTagsPanel(res);
         })
         .catch((error) => {});
     }, 300);
@@ -40,10 +44,10 @@ class TagsInput extends PureComponent {
     const reqParam = keyword.substr(1);
     this.reqTimer = setTimeout(() => {
       if (!reqParam) return;
-      new PepoApi('/search/at-mention')
+      new PepoApi(DataContract.mentions.userMentions)
         .get('q=' + reqParam)
         .then((res) => {
-          this.openSuggestionsPanel(res);
+          this.openMentionsPanel(res);
         })
         .catch((error) => {});
     }, 300);
@@ -103,8 +107,12 @@ class TagsInput extends PureComponent {
       return hastagRegex.test(val);
   };
 
+  inIncludeMentions(){
+    return this.props.mentions && this.props.mentions.includes("@");
+  }
+
   isMention(val){
-    if(this.props.mentions && this.props.mentions.includes("@")) {
+    if(this.inIncludeMentions()) {
       const mentionRegex = /(?:\s|^)@[A-Za-z0-9\-\.\_]+(?:\s|$)/g;
       return mentionRegex.test(val);
     }
@@ -120,19 +128,25 @@ class TagsInput extends PureComponent {
     this.location = event && event.nativeEvent && event.nativeEvent.selection && event.nativeEvent.selection.start;
   };
 
-  openSuggestionsPanel(res) {
+  openTagsPanel(res) {
     if (!this.isTrackingStarted) return;
-    if (res && res.success && res.data ) {
-      let resultType = res.data.result_type;
-      resultType && this.setState({ data: res.data[resultType]});
+    if ( deepGet(res , "data.meta.search_kind") === "tags" ) {
+      let resultTypeTags = res.data.result_type;
+      resultTypeTags && this.setState({ mentionsData:[], hashTagsData: res.data[resultTypeTags]});
+    }
+  }
+
+  openMentionsPanel(res) {
+    if (!this.isTrackingStarted) return;
+    if ( deepGet(res , "data.meta.search_kind") == "users") {
+      let resultTypeMentions = res.data.result_type;
+      resultTypeMentions && this.setState({hashTagsData:[], mentionsData: res.data[resultTypeMentions]});
     }
   }
 
   closeSuggestionsPanel() {
     this.stopStracking();
-    if (this.state.data.length > 0) {
-      this.setState({ data: [] });
-    }
+    this.setState({ hashTagsData: [], mentionsData: [] });
   }
 
   startTracking() {
@@ -145,16 +159,25 @@ class TagsInput extends PureComponent {
 
   _keyExtractor = (item, index) => `id_${item.id}`;
 
-  _renderItem = ({ item }) => {
-    const SearchResultRowComponent = this.props.searchResultRowComponent;
+  _renderHashTagItem = ({ item }) => {
+    const HashRow = this.props.hashResultRowComponent || HashResultRowComponent ;
     return (
-      <TouchableOpacity onPress={() => this.onSuggestionTap(item)} style={{paddingLeft: 8}}>
-        <SearchResultRowComponent val={item.text} />
+      <TouchableOpacity onPress={() => this.onHashSuggestionTap(item)} style={{paddingLeft: 8}}>
+        <HashRow val={item.text} />
       </TouchableOpacity>
     );
   };
 
-  onSuggestionTap(item) {
+  _renderMentionsItem = ({ item }) => {
+    const MentionRow = this.props.mentionResultRowComponent || MentionResultRowComponent ;
+    return (
+      <TouchableOpacity onPress={() => this.onMentionSuggestionTap(item)} style={{paddingLeft: 8}}>
+        <MentionRow userName={item.user_name} name={item.name} userId={item.id} />
+      </TouchableOpacity>
+    );
+  };
+
+  onHashSuggestionTap(item ) {
     this.closeSuggestionsPanel();
     const wordToReplace = this.getWordAtIndex(this.value, this.wordIndex),
       isHashTag = this.isHashTag(wordToReplace);
@@ -162,6 +185,19 @@ class TagsInput extends PureComponent {
       const startIndex = this.getStartIndex(this.value, this.wordIndex),
         endIndex = this.getEndIndex(this.value, this.wordIndex),
         replaceString = ` #${item.text} `,
+        newString = this.replaceBetween(startIndex, endIndex, replaceString);
+      this.changeValue(newString);
+    }
+  }
+
+  onMentionSuggestionTap(item ) {
+    this.closeSuggestionsPanel();
+    const wordToReplace = this.getWordAtIndex(this.value, this.wordIndex),
+      isMention = this.isMention(wordToReplace);
+    if (isMention) {
+      const startIndex = this.getStartIndex(this.value, this.wordIndex),
+        endIndex = this.getEndIndex(this.value, this.wordIndex),
+        replaceString = ` @${item.user_name} `,
         newString = this.replaceBetween(startIndex, endIndex, replaceString);
       this.changeValue(newString);
     }
@@ -197,6 +233,14 @@ class TagsInput extends PureComponent {
     return endIndex;
   }
 
+  isHastagData(){
+    return this.state.hashTagsData && this.state.hashTagsData.length > 0 ;
+  }
+
+  isMentionsData(){
+    return this.state.mentionsData && this.state.mentionsData.length > 0 ;
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -217,22 +261,53 @@ class TagsInput extends PureComponent {
           style={[{
             position: 'absolute',
             top: 122,
-            maxHeight: Dimensions.get('window').height * 0.275,
+            maxHeight: Dimensions.get('window').height - 300,
             backgroundColor: '#fff',
           } , this.props.dropdownStyle ]}>
-          <FlatList
-            keyboardShouldPersistTaps={'always'}
-            bounces={false}
-            horizontal={this.props.horizontal}
-            enableEmptySections={true}
-            data={this.state.data}
-            keyExtractor={this._keyExtractor}
-            renderItem={this._renderItem}
-          />
+          {this.isHastagData() ?
+            <FlatList
+              // keyboardDismissMode={"on-drag"}
+              keyboardShouldPersistTaps={'always'}
+              bounces={false}
+              horizontal={this.props.horizontal}
+              enableEmptySections={true}
+              data={this.state.hashTagsData}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderHashTagItem}
+            /> : this.isMentionsData() && (
+                <FlatList
+              keyboardDismissMode={"on-drag"}
+              keyboardShouldPersistTaps={'always'}
+              bounces={false}
+              horizontal={this.props.horizontal}
+              enableEmptySections={true}
+              data={this.state.mentionsData}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderMentionsItem}
+            />
+            )
+          }
         </View>
       </React.Fragment>
     );
   }
 }
+
+
+const HashResultRowComponent = (props) => (
+  <View style={inlineStyles.suggestionTextWrapper}>
+    <Text style={inlineStyles.suggestionText}>{`#${props.val}`}</Text>
+  </View>
+);
+
+const MentionResultRowComponent = (props) => (
+  <View style={[inlineStyles.suggestionTextWrapper, {flexDirection: 'row', alignItems: 'center'}]}>
+    <ProfilePicture userId={props.userId} style={{height: 40, width: 40, borderRadius: 20}}/>
+    <View style={{marginLeft: 10}}>
+      <Text style={[inlineStyles.suggestionText, inlineStyles.mentionsTitle]}>{`${props.name}`}</Text>
+      <Text style={[inlineStyles.suggestionText, inlineStyles.mentionSubTitle]}>{`@${props.userName}`}</Text>
+    </View>
+  </View>
+);
 
 export default TagsInput;

@@ -61,22 +61,15 @@ class BioScreen extends PureComponent {
             onChangeVal={this.onChangeVal}
             placeholderText="Bio"
             submitEvent={this.submitEvent}
-            searchResultRowComponent={SearchResultRowComponent}
             textInputStyles={inlineStyles.multilineTextInput}
             maxLength={300}
             autoFocus={true}
           />
           <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
         </View>
-      </View>  
+      </View>
     );
   }
 }
-
-const SearchResultRowComponent = (props) => (
-  <View style={inlineStyles.suggestionTextWrapper}>
-    <Text style={inlineStyles.suggestionText}>{`#${props.val}`}</Text>
-  </View>
-);
 
 export default withNavigation(BioScreen);

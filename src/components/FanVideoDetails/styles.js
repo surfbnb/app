@@ -56,14 +56,6 @@ let stylesMap = {
     shadowOpacity: 0.2,
     elevation: 1
   },
-  suggestionText: {
-    color: Colors.midNightblue,
-    fontSize: 16,
-    fontFamily: 'AvenirNext-Regular'
-  },
-  suggestionTextWrapper: {
-    marginVertical: 9
-  },
   linkText: { color: Colors.softBlue, flex: 3}
 };
 

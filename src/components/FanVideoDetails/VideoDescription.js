@@ -25,7 +25,6 @@ class VideoDescription extends PureComponent {
           onChangeVal={this.onChangeValue}
           placeholderText="Write something about  your video"
           submitEvent={this.submitEvent}
-          searchResultRowComponent={SearchResultRowComponent}
           textInputStyles={inlineStyles.videoDescription}
           dropdownStyle={inlineStyles.dropDownStyle}
           maxLength={110}
@@ -36,11 +35,5 @@ class VideoDescription extends PureComponent {
     );
   }
 }
-
-const SearchResultRowComponent = (props) => (
-  <View style={inlineStyles.suggestionTextWrapper}>
-    <Text style={inlineStyles.suggestionText}>{`#${props.val}`}</Text>
-  </View>
-);
 
 export default VideoDescription;

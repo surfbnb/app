@@ -43,6 +43,14 @@ export default {
 
     common: {
         resultType : "data.result_type"
+    },
+
+    mentions: {
+        userMentions: "/search/users-mention"
+    },
+
+    tags: {
+       userTags: "/tags"
     }
 }
 

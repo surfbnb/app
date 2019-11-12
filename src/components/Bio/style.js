@@ -9,13 +9,11 @@ let stylesMap = {
     paddingTop: 15,
     marginTop: 0
   },
-  suggestionText:{
-    fontFamily: 'AvenirNext-Regular',
-    color:Colors.midNightblue,
-    fontSize:16
-  },
   dropDownStyle: {
+    position: 'absolute',
+    top: 99,
     width: '100%',
+    zIndex: 1,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -24,9 +22,6 @@ let stylesMap = {
     shadowOpacity: 0.2,
     shadowRadius: 1.5,
     elevation: 1
-  },
-  suggestionTextWrapper : {
-    marginVertical: 9
   },
   countStyle:{
     fontSize:10,
