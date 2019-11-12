@@ -2,13 +2,16 @@ import React, { PureComponent } from 'react';
 import {
   FlatList,
   ActivityIndicator,
-  StatusBar
+  Text,
+  StatusBar,
+  View
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
 
 import Pagination from "../../services/Pagination";
 import VideoThumbnailItem from '../CommonComponents/VideoThumbnailItem';
 import deepGet from "lodash/get";
+
 
 class VideoReplyList extends PureComponent {
 
@@ -17,7 +20,7 @@ class VideoReplyList extends PureComponent {
 
         this.state = {
             list : [],
-            refreshing : false,
+            refreshing : true,
             loadingNext: false
         };
         this.listRef = null;
@@ -178,7 +181,8 @@ class VideoReplyList extends PureComponent {
 
     render(){
         return (
-              <FlatList
+            <FlatList
+                style={{flex:1, width: "100%"}}
                 ref={this.setListRef}
                 data={this.state.list}
                 onEndReached={this.getNext}
@@ -189,7 +193,7 @@ class VideoReplyList extends PureComponent {
                 renderItem={this._renderItem}
                 ListFooterComponent={this.renderFooter}
                 numColumns={this.numColumns}
-              />
+            />
         );
     }
 
