@@ -41,6 +41,7 @@ class VideoList extends PureComponent {
 
   onMomentumScrollEndCallback = () => {
     this.setActiveIndex();
+    this.props.onScrollEnd && this.props.onScrollEnd(currentIndex);
   };
 
   onScrollToTop = () => {

@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@ostdotcom/ost-wallet-sdk-react-native": "2.3.7-alpha.1",
+    "@ostdotcom/ost-wallet-sdk-react-native": "2.3.7-alpha.3",
     "@react-native-community/async-storage": "1.6.1",
     "@react-native-community/cameraroll": "1.1.1",
     "@react-native-community/netinfo": "3.2.1",
@@ -52,7 +52,8 @@
     "redux": "4.0.1",
     "redux-actions": "2.6.5",
     "redux-logger": "3.0.6",
-    "socket.io-client": "2.2.0"
+    "socket.io-client": "2.2.0",
+    "react-native-keep-awake": "4.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",

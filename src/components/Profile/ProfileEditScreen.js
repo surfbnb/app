@@ -32,6 +32,7 @@ import BackArrow from '../CommonComponents/BackArrow';
 import LinearGradient from 'react-native-linear-gradient';
 import pendingConfirmEmail from '../../assets/verify_email_error.png';
 import confirmedEmail from '../../assets/verify_email_success.png';
+import {fetchUser} from "../../helpers/helpers";
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
@@ -205,7 +206,7 @@ class ProfileEdit extends React.PureComponent {
     if (!userProfileEntity) return;
     if (typeof this.state.bio != 'undefined') {
       const bio = userProfileEntity['bio'] || {};
-      bio['text'] = this.state.bio;
+      bio['text'] = this.state.bio+" ";
       userProfileEntity['bio'] = bio;
     }
 
@@ -227,6 +228,7 @@ class ProfileEdit extends React.PureComponent {
 
   onSubmit() {
     this.clearErrors();
+
     if (this.validateProfileInput()) {
       this.setState({ btnText: btnPostText });
       return new PepoApi(`/users/${CurrentUser.getUserId()}/profile`)
@@ -235,6 +237,7 @@ class ProfileEdit extends React.PureComponent {
           this.setState({ btnText: btnPreText });
           if (res && res.success) {
             this.updateProfileData();
+            fetchUser(CurrentUser.getUserId());
             return;
           } else {
             this.onServerError(res);

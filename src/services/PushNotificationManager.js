@@ -130,7 +130,7 @@ class PushNotificationManager extends PureComponent {
     let gotoObject = JSON.parse(notificationData.goto);
     if (Object.keys(gotoObject).length < 0) return;
     navigateTo.setGoTo(gotoObject);
-    navigateTo.shouldNavigate();
+    CurrentUser.getSyncState() &&  navigateTo.shouldNavigate();
     if (CurrentUser.isActiveUser()) {
       gotoObject && gotoObject.pn == 'nc' && this.refreshActivity('NotificationScreen');
     }
@@ -139,9 +139,6 @@ class PushNotificationManager extends PureComponent {
   refreshActivity(screenName){
       NavigationEmitter.emit('onRefresh', { screenName });
   }
-
-
-
 
   clearNotifications() {
     if (Platform.OS == 'ios') {
