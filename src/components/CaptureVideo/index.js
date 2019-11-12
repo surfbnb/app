@@ -37,15 +37,24 @@ class CaptureVideo extends Component {
     this.videoType = null;
     this.proceedWithExisting = null;
     this.setReplyVideoParams();
+    this.showCoachForVideoRecord();
 
   }
 
   componentDidMount () {
 
+
+  }
+
+
+  showCoachForVideoRecord() {
+    const oThis = this;
     if (! this.isVideoTypeReply) {
-        utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
-          this.setState({ acceptedCameraTnC: terms });
-        });
+      utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
+        console.log(terms, 'acceptedCameraTnCacceptedCameraTnCacceptedCameraTnCacceptedCameraTnC');
+        oThis.setState({ acceptedCameraTnC: terms });
+        console.log('acceptedCameraTnC:::acceptedCameraTnC', oThis.state.acceptedCameraTnC);
+      });
     }
   }
 

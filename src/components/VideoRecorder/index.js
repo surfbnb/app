@@ -22,10 +22,11 @@ import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/camera-cross-icon.png';
 import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
-import utilities from '../../services/Utilities';
-import CurrentUser from '../../models/CurrentUser';
+import deepGet from 'lodash/get';
 import LinearGradient from "react-native-linear-gradient";
 import Theme from "../../theme/styles";
+import multipleClickHandler from "../../services/MultipleClickHandler";
+import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -51,6 +52,18 @@ class VideoRecorder extends Component {
     nextAppState === 'background' && this.cancleVideoHandling();
   };
 
+  componentWillReceiveProps( nextProps ){
+    let newState;
+    if( nextProps.acceptedCameraTnC != this.state.acceptedCameraTnC ){
+     this.setState({acceptedCameraTnC: nextProps.acceptedCameraTnC })
+    }
+
+    if ( nextProps.hasVideoReplies != this.state.hasVideoReplies ) {
+      this.setState({hasVideoReplies: nextProps.hasVideoReplies })
+    }
+  }
+
+
 
   isStaleReduxObjectPresent(){
      let acceptableKeys = ['reply_obj', 'video_type'];
@@ -63,14 +76,6 @@ class VideoRecorder extends Component {
   }
 
   async componentDidMount() {
-
-    // if (!this.props.isVideoTypeReply) {
-    //   if (this.props.acceptedCameraTnC === null) {
-    //     utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
-    //       this.setState({ acceptedCameraTnC: terms });
-    //     });
-    //   }
-    // }
 
     BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
     AppState.addEventListener('change', this._handleAppStateChange);
@@ -159,10 +164,18 @@ class VideoRecorder extends Component {
     return isFileExists;
   };
 
+  getPepoAmount = () => {
+    return  deepGet(this.recordedVideoObj, 'reply_obj.amountToSendWithReply');
+  };
+
+  getUserName = () => {
+    let userId = deepGet(this.recordedVideoObj, 'reply_obj.replyReceiverUserId');
+    return reduxGetters.getUserName(userId)
+  };
+
 
   showCoachForPosting = () => {
     // If already recorded video present in local, do not show coach.
-    console.log('showCoachForPosting :::');
     if (this.state.isLocalVideoPresent) return;
 
     if (this.props.isVideoTypeReply) {
@@ -178,7 +191,7 @@ class VideoRecorder extends Component {
 
 
             <Text style={[styles.miniText, {textAlign: 'center'}]}>
-              Be the first one to reply to @annikpolit’s video, once you postt the reply you will pay 5 Pepo Coins
+              Be the first one to reply to @{this.getUserName()}’s video, once you postt the reply you will pay {this.getPepoAmount()} Pepo Coins
             </Text>
 
             <LinearGradient
@@ -188,17 +201,16 @@ class VideoRecorder extends Component {
               end={{ x: 1, y: 0 }}
               style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
             >
-              <TouchableOpacity
-                onPress={this.replyToVideo}
-                style={[Theme.Button.btn, { borderWidth: 0 }]}
-              >
-                <Text style={[
-                  Theme.Button.btnPinkText,
-                  { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
-                ]}>
-                  Reply
-                </Text>
-              </TouchableOpacity>
+              <TouchableButton
+                TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
+                TextStyles={[Theme.Button.btnPinkText]}
+                style={{marginBottom: 20}}
+                textBeforeImage='Reply | '
+                textAfterImage={this.getPepoAmount()}
+                onPress={multipleClickHandler(() => {
+                  this.replyToVideo();
+                })}
+              />
             </LinearGradient>
 
           </View>
@@ -206,7 +218,10 @@ class VideoRecorder extends Component {
       }
       // if (no video reply present) { return Coach }
     } else {
+      console.log(this.state.acceptedCameraTnC, 'this.state.acceptedCameraTnC-----------');
       if (this.state.acceptedCameraTnC !== 'true'){
+        console.log('=========----============-----------');
+
         return <View style={styles.backgroundStyle}>
           <View style={{ padding: 26 }}>
             <Text style={styles.headerText}>Submit your first video</Text>
