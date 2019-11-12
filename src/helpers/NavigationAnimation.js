@@ -1,5 +1,6 @@
 
-import { Easing, Animated } from 'react-native';
+import { Easing, Animated,Platform } from 'react-native';
+
 
 export default {
     zoomIn: ( duration=300 ) =>{ 
@@ -13,7 +14,9 @@ export default {
         screenInterpolator: ({ position, scene }) => {
           const { index } = scene;
           let start = 0;
-        
+          if (Platform.OS !== 'ios') {
+            start = 0.005
+          }
     
           const scale = position.interpolate({
             inputRange: [index - 1, index],
