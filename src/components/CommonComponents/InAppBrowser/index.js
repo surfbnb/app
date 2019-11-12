@@ -12,6 +12,7 @@ import ForwardActive from '../../../assets/ForwardActive.png';
 import BrowserMenu from './BrowserMenu';
 import { getHostName } from '../../../helpers/helpers';
 import Colors from '../../../theme/styles/Colors';
+import CommonStyle from '../../../theme/styles/Common';
 
 export default class InAppBrowserComponent extends Component {
   static navigationOptions = (props) => {
@@ -92,7 +93,7 @@ export default class InAppBrowserComponent extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={CommonStyle.viewContainer}>
         <KeyboardAvoidingView behavior={Platform.OS == 'android' ?'padding' :''} style={{ flex: 1 }} keyboardVerticalOffset={30}>
           {this.state.loadingProgress != 1 && (
             <ProgressBar

@@ -16,6 +16,7 @@ import { fetchUser } from '../../helpers/helpers';
 import utilities from '../../services/Utilities';
 import inlineStyles from './styles';
 import UserProfileActionSheet from './userProfileActionSheet';
+import CommonStyle from "../../theme/styles/Common";
 
 import EventEmitter from "eventemitter3";
 const userActionEvents = new EventEmitter();
@@ -97,7 +98,7 @@ export default class UsersProfile extends Component {
       )
     }else{
       return (
-        <React.Fragment>
+        <View style={CommonStyle.viewContainer}>
           <UserProfileFlatList
             listHeaderComponent={this._headerComponent()}
             onUserFetch={this.onUserResponse}
@@ -111,7 +112,7 @@ export default class UsersProfile extends Component {
           >
             <Image style={{ height: 57, width: 57 }} source={p_tx_img} />
           </TouchableOpacity>
-        </React.Fragment>
+        </View>
       );
     }
   }

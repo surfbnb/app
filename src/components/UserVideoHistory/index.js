@@ -9,6 +9,7 @@ import TopStatus from "../../components/Home/TopStatus";
 
 import inlineStyles from "./styles";
 import CurrentUser from "../../models/CurrentUser";
+import CommonStyle from "../../theme/styles/Common";
 
 import historyBack from '../../assets/user-video-history-back-icon.png';
 
@@ -170,7 +171,7 @@ class UserVideoHistoryScreen extends PureComponent{
     render() {
 
         return(
-            <View style={{flex: 1}}>
+            <View style={CommonStyle.viewContainer}>
                 {!this.isCurrentUser() &&  <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}

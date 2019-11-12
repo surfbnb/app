@@ -24,6 +24,7 @@ import LinearGradient from "react-native-linear-gradient";
 import CurrentUser from "../../../models/CurrentUser";
 import DeleteVideo from "../DeleteVideo";
 import Colors from '../../../theme/styles/Colors';
+import CommonStyle from "../../../theme/styles/Common"
 import VideoThumbnailItem from '../VideoThumbnailItem';
 
 
@@ -181,7 +182,7 @@ class UserProfileFlatList extends PureComponent {
 
     render(){
         return(
-            <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
+            <SafeAreaView forceInset={{ top: 'never' }} style={CommonStyle.viewContainer}>
                 <FlatList
                     ref={(ref)=>  {this.listRef = ref } }
                     ListHeaderComponent={this.listHeaderComponent()}

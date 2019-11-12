@@ -5,6 +5,7 @@ import { withNavigation } from 'react-navigation';
 import BackArrow from '../CommonComponents/BackArrow';
 import TagsInput from '../CommonComponents/TagsInput';
 import Colors from '../../theme/styles/Colors';
+import CommonStyle from '../../theme/styles/Common';
 import inlineStyles from './style';
 
 class BioScreen extends PureComponent {
@@ -51,21 +52,23 @@ class BioScreen extends PureComponent {
 
   render() {
     return (
-      <View style={{ marginHorizontal: 15, marginTop: 20 }} >
-        <TagsInput
-          dropdownStyle={inlineStyles.dropDownStyle}
-          horizontal={this.props.horizontal}
-          initialValue={this.initialVal}
-          onChangeVal={this.onChangeVal}
-          placeholderText="Bio"
-          submitEvent={this.submitEvent}
-          searchResultRowComponent={SearchResultRowComponent}
-          textInputStyles={inlineStyles.multilineTextInput}
-          maxLength={300}
-          autoFocus={true}
-        />
-        <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
-      </View>
+      <View style={CommonStyle.viewContainer}>
+        <View style={{ marginHorizontal: 15, marginTop: 20 }} >
+          <TagsInput
+            dropdownStyle={inlineStyles.dropDownStyle}
+            horizontal={this.props.horizontal}
+            initialValue={this.initialVal}
+            onChangeVal={this.onChangeVal}
+            placeholderText="Bio"
+            submitEvent={this.submitEvent}
+            searchResultRowComponent={SearchResultRowComponent}
+            textInputStyles={inlineStyles.multilineTextInput}
+            maxLength={300}
+            autoFocus={true}
+          />
+          <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
+        </View>
+      </View>  
     );
   }
 }

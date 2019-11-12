@@ -7,6 +7,7 @@ import FullScreeVideoRow from "./FullScreeVideoRow";
 import inlineStyles from "./styles";
 import historyBack from '../../assets/user-video-history-back-icon.png';
 import TopStatus from "../Home/TopStatus";
+import CommonStyle from "../../theme/styles/Common";
 
 const maxVideosThreshold = 3;
 
@@ -176,7 +177,7 @@ class FullScreenVideoCollection extends PureComponent{
     render() {
 
         return (
-            <View style={{flex: 1}}>
+            <View style={CommonStyle.viewContainer}>
                 {this.props.navigation.getParam("showBalanceFlyer")  && <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}

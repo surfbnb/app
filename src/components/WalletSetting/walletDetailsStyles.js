@@ -5,6 +5,7 @@ let stylesMap = {
 
   list: {
     flex: 1,
+    backgroundColor: Colors.white
   },
   title: {
     color: Colors.grey,

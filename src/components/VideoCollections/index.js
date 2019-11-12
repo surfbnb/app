@@ -4,6 +4,8 @@ import {SafeAreaView} from "react-navigation";
 import Pagination from "../../services/Pagination";
 import VideoThumbnailItem from '../../components/CommonComponents/VideoThumbnailItem';
 
+import CommonStyle from "../../theme/styles/Common";
+
 class VideoCollections extends PureComponent {
     constructor(props){
         super(props);
@@ -205,7 +207,7 @@ class VideoCollections extends PureComponent {
 
     render(){
         return (
-          <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
+          <SafeAreaView forceInset={{ top: 'never' }} style={CommonStyle.viewContainer}>
               <FlatList
                 ref={this.setListRef}
                 ListHeaderComponent={this.listHeaderComponent()}

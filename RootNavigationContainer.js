@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Dimensions, Easing, Animated } from 'react-native';
 import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator , StackViewTransitionConfigs} from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import deepGet from 'lodash/get';
 
@@ -112,6 +112,28 @@ const txModalConfig = {
   })
 };
 
+
+const IOS_MODAL_ROUTES = ['VideoReplies'];
+let dynamicModalTransition = (transitionProps, prevTransitionProps) => {
+  const isModal = IOS_MODAL_ROUTES.some(
+    screenName =>
+      screenName === transitionProps.scene.route.routeName ||
+      (prevTransitionProps &&
+        screenName === prevTransitionProps.scene.route.routeName)
+  );
+  return StackViewTransitionConfigs.defaultTransitionConfig(
+    transitionProps,
+    prevTransitionProps,
+    isModal
+  );
+};
+
+//TODO find a way for conditional transparentCard config
+const slidingUpConfig = {
+  transparentCard: true,
+  transitionConfig: dynamicModalTransition 
+}
+
 const CaptureVideoStack = createStackNavigator(
   {
     CaptureVideo: CaptureVideo,
@@ -131,20 +153,23 @@ const InAppBrowserStack = createStackNavigator(
   }
 );
 
+
 const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    VideoReplies: VideoReplies,
     VideoRepliesFullScreen: VideoRepliesFullScreen,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
+    VideoReplies:VideoReplies ,
     FullScreenVideoCollection: FullScreenVideoCollection
   },
-  {
-    headerLayoutPreset: 'center'
+  { 
+    initialRouteName: 'HomeScreen',
+    headerLayoutPreset: 'center' ,
+    ...slidingUpConfig
   }
 );
 
@@ -171,7 +196,6 @@ const NotificationPushStack = createStackNavigator(
     NotificationScreen: NotificationScreen,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    VideoReplies: VideoReplies,
     VideoRepliesFullScreen: VideoRepliesFullScreen,
     VideoPlayer: VideoPlayer,
     SupportingListScreen: SupportingListScreen,
@@ -180,7 +204,8 @@ const NotificationPushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    ...slidingUpConfig
   }
 );
 
@@ -191,6 +216,7 @@ const NotificationStack = createStackNavigator(
     AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
     CaptureVideo: CaptureVideoStack,
+    VideoReplies: VideoReplies,
     InAppBrowserStack: InAppBrowserStack
   },
   { ...modalStackConfig, ...txModalConfig }
@@ -200,7 +226,6 @@ const ProfilePushStack = createStackNavigator(
   {
     ProfileScreen: ProfileScreen,
     UserVideoHistory: UserVideoHistory,
-    VideoReplies: VideoReplies,
     VideoRepliesFullScreen: VideoRepliesFullScreen,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
@@ -216,7 +241,8 @@ const ProfilePushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    ...slidingUpConfig
   }
 );
 
@@ -230,6 +256,7 @@ const ProfileStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen,
+    VideoReplies: VideoReplies,
     RedemptiomScreen: RedemptiomScreen
   },
   {
@@ -252,13 +279,13 @@ const SearchPushStack = createStackNavigator(
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
-    VideoReplies: VideoReplies,
     VideoRepliesFullScreen: VideoRepliesFullScreen,
     VideoTags: VideoTags,
       FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    ...slidingUpConfig
   }
 );
 
@@ -268,6 +295,7 @@ const SearchStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     TransactionScreen: TransactionScreen,
+    VideoReplies: VideoReplies,
     AuthDeviceDrawer: AuthDeviceDrawer
   },
   {

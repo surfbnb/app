@@ -7,6 +7,7 @@ import inlineStyles from "./styles";
 import backIcon from '../../assets/back-arrow.png';
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import VideoReply from "./VideoReply";
+import CommonStyle from "../../theme/styles/Common";
 
 const maxVideosThreshold = 3;
 const HeaderLeft = (props) => {
@@ -212,7 +213,7 @@ class VideoRepliesFullScreen extends PureComponent{
     render() {
 
         return (
-            <View style={{flex: 1}}>
+            <View style={CommonStyle.viewContainer}>
                 <StatusBar translucent={true} backgroundColor={'transparent'} />
                 <FlatList
                     snapToAlignment={"top"}

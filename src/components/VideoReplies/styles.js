@@ -2,6 +2,20 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
+    container: {
+      flex: 1,
+      zIndex: 1,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    dragHandler: {
+      alignSelf: 'stretch',
+      height: 80,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+      flexDirection: 'row',
+    },
     iconWrapper: {
         flex: 1,
         alignItems: 'center',
@@ -12,6 +26,9 @@ let stylesMap = {
       iconSkipFont: {
         height: 20,
         width: 20
+      },
+      repliesTxt: {
+        flex: 4
       },
       headerStyles: {
         backgroundColor: Colors.white,

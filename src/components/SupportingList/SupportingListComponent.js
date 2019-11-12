@@ -5,6 +5,7 @@ import Pricer from "../../services/Pricer";
 import reduxGetters from "../../services/ReduxGetters";
 import User from '../Users/User';
 import EmptyList from '../EmptyFriendsList/EmptyList';
+import CommonStyle from "../../theme/styles/Common";
 
 class SupportingList extends PureComponent {
 
@@ -30,7 +31,7 @@ class SupportingList extends PureComponent {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={CommonStyle.viewContainer}>
         <FlatList
           data={this.props.list}
           onEndReached={this.props.getNext}

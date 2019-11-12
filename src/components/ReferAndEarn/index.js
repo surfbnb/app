@@ -14,6 +14,7 @@ import BackArrow from '../CommonComponents/BackArrow';
 import { ScrollView } from 'react-native-gesture-handler';
 import PepoApi from '../../services/PepoApi';
 import { WEB_ROOT } from '../../constants/index';
+import CommonStyle from "../../theme/styles/Common";
 
 class ReferAndEarn extends Component {
   static navigationOptions = (options) => {
@@ -116,7 +117,7 @@ class ReferAndEarn extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={CommonStyle.viewContainer}>
         {this.state.pendingInvites != 0 ? (
           <React.Fragment>
             <View style={[styles.wrapper, styles.topWrapper, { flex: 0.3 }]}>
