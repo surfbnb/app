@@ -93,8 +93,6 @@ class VideoRepliesScreen extends PureComponent {
 
     render(){
         return (
-          <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
-            <StatusBar translucent={true} backgroundColor={'transparent'} />
             <SlidingUpPanel ref={c => (this._panel = c)}
                 animatedValue={this.animatedValue}
                 ref={c => (this._panel = c)}
@@ -125,16 +123,13 @@ class VideoRepliesScreen extends PureComponent {
                     </TouchableOpacity>
 
                   </View>
-                  <View containerStyle={{backgroundColor: '#fff'}}>
                     <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
                                       videoReplyCount={this.videoReplyCount}
                                       amount={this.amount}
                     />
-                  </View>
                 </View>
               )}
             </SlidingUpPanel>
-          </SafeAreaView>
         );
     }
 
