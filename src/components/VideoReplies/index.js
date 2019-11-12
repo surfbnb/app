@@ -108,7 +108,7 @@ class VideoRepliesScreen extends PureComponent {
                 <View style={[inlineStyles.container]}>
                   <View style={inlineStyles.dragHandler} {...dragHandler}>
                     
-                    <TouchableOpacity onPress={this.onCrossIconClick} style={inlineStyles.iconWrapper} >
+                    <TouchableOpacity onPress={this.onCrossIconClick} style={[inlineStyles.iconWrapper]} >
                         <Image style={inlineStyles.iconSkipFont} source={crossIcon}></Image>
                     </TouchableOpacity>
                     

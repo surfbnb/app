@@ -178,8 +178,6 @@ class VideoReplyList extends PureComponent {
 
     render(){
         return (
-          <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
-            <StatusBar translucent={true} backgroundColor={'transparent'} />
               <FlatList
                 ref={this.setListRef}
                 data={this.state.list}
@@ -192,7 +190,6 @@ class VideoReplyList extends PureComponent {
                 ListFooterComponent={this.renderFooter}
                 numColumns={this.numColumns}
               />
-          </SafeAreaView>
         );
     }
 
