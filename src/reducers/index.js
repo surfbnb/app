@@ -25,6 +25,8 @@ export const {
   upsertUserStatEntities,
   upsertVideoEntities,
   upsertVideoStatEntities,
+  upsertVideoReplyEntities,
+  upsertVideoReplyStatEntities,
   upsertImageEntities,
   upsertHomeFeedEntities,
   updateBalance,
@@ -68,6 +70,8 @@ const defaultState = {
   link_entities: {},
   video_entities: {},
   video_stat_entities: {},
+  video_reply_entities: {},
+  video_reply_stat_entities: {},
   video_description_entities: {},
   image_entities: {},
   home_feed_entities: {},
@@ -99,6 +103,8 @@ const logoutDefault = {
   link_entities: {},
   video_entities: {},
   video_stat_entities: {},
+  video_reply_entities: {},
+  video_reply_stat_entities: {},
   video_description_entities: {},
   image_entities: {},
   home_feed_entities: {},
@@ -172,6 +178,14 @@ export const reducer = handleActions(
     [upsertVideoStatEntities]: (state, action) => ({
       ...state,
       video_stat_entities: assignIn({}, state.video_stat_entities, action.payload.video_stat_entities)
+    }),
+    [upsertVideoReplyEntities]: (state, action) => ({
+      ...state,
+      video_reply_entities: assignIn({}, state.video_reply_entities, action.payload.video_reply_entities)
+    }),
+    [upsertVideoReplyStatEntities]: (state, action) => ({
+      ...state,
+      video_reply_stat_entities: assignIn({}, state.video_reply_stat_entities, action.payload.video_reply_stat_entities)
     }),
     [upsertVideoDescriptionEntities]: (state, action) => ({
       ...state,

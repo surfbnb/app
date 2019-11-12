@@ -31,16 +31,18 @@ class ReplyIcon extends PureComponent {
      super(props);
     };
 
+    //TODO @preshita login popover open
+
     isDisabled = () => {
         return !this.props.isReplyAllowed || !this.props.isVideoUserActivated || !this.props.isCurrentUserActivated || !this.hasSufficientBalance();
     };
 
     hasSufficientBalance = () => {
-        return this.getBalanceToNumber() >= this.props.requiredPepo ? true : false;
+        return this.getWeiToNumber(this.props.balance) >= this.getWeiToNumber(this.props.requiredPepo);
     };
 
-    getBalanceToNumber = () => {
-        return (this.props.balance && Math.floor(Number(pricer.getFromDecimal(this.props.balance)))) || 0;
+    getWeiToNumber = ( val ) => { //Move this to utilities 
+        return val && Math.floor(Number(pricer.getFromDecimal(val))) || 0;
     };
 
     replyVideo = ()=> {
@@ -49,8 +51,7 @@ class ReplyIcon extends PureComponent {
             {'videoId': this.props.videoId ,
               'userId': this.props.userId,
               'amount': this.props.requiredPepo,
-              'videoReplyCount': 1,
-              'fetchUrl': `/videos/${this.props.videoId}/replies`
+              'videoReplyCount': this.props.videoReplyCount || 1 //TODO @preshita remove this
             });
         } else {
           let activeTab = NavigationService.getActiveTab();

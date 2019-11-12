@@ -20,24 +20,11 @@ import SlidingUpPanel from "../CommonComponents/SlidingUpPanel";
 
 
 import { getInset } from 'react-native-safe-area-view';
+import DataContract from '../../constants/DataContract';
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
-
-const navigateToCamera = (navigation) => {
-    let activeTab = NavigationService.getActiveTab();
-    let params = {
-        videoTypeReply: true,
-        videoId: navigation.getParam('videoId'),
-        userId: navigation.getParam('userId'),
-        amount: navigation.getParam('amount'),
-        videoReplyCount: navigation.getParam('videoReplyCount')
-    };
-    utilities.handleVideoUploadModal(activeTab, navigation, params);
-};
-
-
 
 class VideoRepliesScreen extends PureComponent {
 
@@ -54,11 +41,11 @@ class VideoRepliesScreen extends PureComponent {
         this.videoId = props.navigation.getParam('videoId');
         this.amount = props.navigation.getParam('amount');
         this.videoReplyCount = props.navigation.getParam('videoReplyCount');
-        this.fetchUrl = props.navigation.getParam('fetchUrl');
+        this.fetchUrl = DataContract.replies.getReplyListApi(this.videoId);
         this.initialHeight =  height/1.5;
-      this.animatedValue = new Animated.Value(this.initialHeight) ;
-      this.listener = null;
-      this.panelAnimateTimeOut = 0 ;
+        this.animatedValue = new Animated.Value(this.initialHeight) ;
+        this.listener = null;
+        this.panelAnimateTimeOut = 0 ;
 
       this.state = {
         showBackdrop : false
@@ -91,7 +78,16 @@ class VideoRepliesScreen extends PureComponent {
     }
 
     openCamera = () => {
-      this.props.navigation.push('CaptureVideo');
+      let activeTab = NavigationService.getActiveTab();
+      //TODO @mayur move it to a function , If possible change this to string 
+      let params = {
+          videoTypeReply: true,
+          videoId: this.videoId,
+          userId: this.userId,
+          amount: navigation.getParam('amount'),
+          videoReplyCount: navigation.getParam('videoReplyCount')
+      };
+      utilities.handleVideoUploadModal(activeTab, navigation, params);
     }
 
     render(){

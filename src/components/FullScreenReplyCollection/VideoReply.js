@@ -25,19 +25,20 @@ class VideoReply extends PureComponent {
     }
 
     refetchVideoReply = () => {
+        //TODO @preshita
         new PepoApi(`/videos/${this.videoId}`)// new PepoApi(`/replies/${this.replyId}`)
             .get()
             .then((res) => {})
             .catch((error) => {});
     };
 
-
-
+    //TODO  @preshita move to share icon
     shareVideo = () => {
         let shareVideo = new ShareVideo(this.replyId);
         shareVideo.perform();
     };
 
+    //TODO  @preshita move to bottom status 
     navigateToUserProfile = (e) => {
         if (utilities.checkActiveUser()) {
             if (this.userId == CurrentUser.getUserId()) {
@@ -48,6 +49,7 @@ class VideoReply extends PureComponent {
         }
     };
 
+    //TODO  @preshita move to bottom status
   onDescriptionClick = ( tapEntity  ) => {
     if (!tapEntity) {
       return;
@@ -60,6 +62,8 @@ class VideoReply extends PureComponent {
     }
 
   }
+
+  //Required from Backend , we need video  stats entity 
 
     render() {
         return (

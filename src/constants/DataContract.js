@@ -38,7 +38,10 @@ export default {
     },
 
     replies: {
-      validateReply: "replies/validate-upload"
+      validateReply: "replies/validate-upload", 
+      getReplyListApi : (id) => {
+        return `/videos/${id}/replies`
+      }
     },
 
     common: {

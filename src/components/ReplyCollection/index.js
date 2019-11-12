@@ -8,6 +8,7 @@ import {SafeAreaView, withNavigation} from "react-navigation";
 
 import Pagination from "../../services/Pagination";
 import VideoThumbnailItem from '../CommonComponents/VideoThumbnailItem';
+import deepGet from "lodash/get";
 
 class VideoReplyList extends PureComponent {
 
@@ -25,7 +26,8 @@ class VideoReplyList extends PureComponent {
     }
 
     componentDidMount(){
-        this.forcedRefresh();
+        this.initPagination();
+        this.refresh();
     }
 
     componentWillUnmount() {
@@ -83,11 +85,6 @@ class VideoReplyList extends PureComponent {
         paginationEvent.removeListener('onNextError');
     }
 
-    forcedRefresh (fetchUrl){
-        this.initPagination();
-        this.refresh();
-    }
-
     beforeRefresh = ( ) => {
         this.setState({ refreshing : true });
     };
@@ -138,16 +135,17 @@ class VideoReplyList extends PureComponent {
     };
 
     _renderVideoCell = ({ item, index }) => {
+        //TODO Let ask BE for same payload 
+        const payload = { user_id : deepGet(item, "payload.user_id") ,  video_id: deepGet(item, "payload.reply_detail_id")}
         return (<VideoThumbnailItem
-          payload={item.payload}
+          payload={payload}
           index={index}
-          onVideoClick={(videoId, index, compRef) => {this.onVideoClick(item.payload, index, compRef)}}/>);
+          onVideoClick={() => {this.onVideoClick(payload, index)}}/>);
     };
-
-
 
     onVideoClick = (payload, index) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
+        //TODO @ashutosh to understand 
         this.props.navigation.push("FullScreenReplyCollection", {
             "fetchServices" : clonedInstance,
             "currentIndex": index,
@@ -159,17 +157,15 @@ class VideoReplyList extends PureComponent {
             'parentVideoId': this.props.videoId
         });
     }
+
+
     renderFooter = () => {
         if (!this.state.loadingNext) return null;
         return <ActivityIndicator />;
     };
 
     getResultList(){
-      let list = this.videoPagination.getResults();
-      if( list.length > 0 ){
-        this.numColumns = 2;
-        return list;
-      } 
+      return this.videoPagination.getResults();
     }
 
     scrollToTop(){
@@ -182,8 +178,7 @@ class VideoReplyList extends PureComponent {
 
     render(){
         return (
-          <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
-            <StatusBar translucent={true} backgroundColor={'transparent'} />
+          <SafeAreaView style={{ flex: 1 }}>
               <FlatList
                 ref={this.setListRef}
                 data={this.state.list}
