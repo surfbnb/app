@@ -26,6 +26,8 @@ import {ensureDeivceAndSession, ON_USER_CANCLLED_ERROR_MSG} from "../helpers/Tra
 import pricer from "./Pricer";
 import {VideoPlayPauseEmitter} from "../helpers/Emitters";
 import DataContract from "../constants/DataContract";
+import {TransactionExecutor} from './TransactionExecutor';
+import { ostSdkErrors } from '../services/OstSdkErrors';
 
 const recordedVideoStates = [
   'raw_video',
@@ -37,8 +39,7 @@ const recordedVideoStates = [
   'video_link',
   'reply_amount',
   'video_type',
-  'reply_obj',
-  'go_for_tx'
+  'reply_obj'
 ];
 
 const processingStatuses = [
@@ -166,17 +167,53 @@ class CameraWorker extends PureComponent {
 
   };
 
+  onRequestAcknowledge = ( ostWorkflowContext, ostWorkflowEntity ) => {
+    console.log('CameraWorker.onRequestAcknowledge');
+    Toast.show({
+      text: 'Your video uploaded successfully.',
+      icon: 'success',
+      imageUri: this.props.recorded_video.cover_image
+    });
+    Store.dispatch(
+      upsertRecordedVideo({
+        do_discard: true,
+        pepo_api_posting: false
+      })
+    );
+  };
+
+  onFlowInterrupt = (ostWorkflowContext, error) => {
+    console.log('CameraWorker.onFlowInterrupt', ostWorkflowContext, error);
+    videoUploaderComponent.emit('hide');
+    Store.dispatch(videoInProcessing(false));
+    Toast.show({
+      text: ostSdkErrors.getErrorMessage(ostWorkflowContext, error),
+      icon: 'error'
+    });
+  };
+
   executeTransaction = () => {
+
     let goForTx = this.props.recorded_video.go_for_tx;
-    if (! goForTx){
+    let receiverUserId = deepGet (this.props.recorded_video, 'reply_obj.replyReceiverUserId');
+    let amountToSendWithReply = deepGet(this.props.recorded_video, 'reply_obj.amountToSendWithReply');
+    if (! goForTx || ! receiverUserId || ! amountToSendWithReply ){
       return;
     }
+    console.log('CameraWorker.executeTransaction');
+
+
+    let callbacks = {onRequestAcknowledge: this.onRequestAcknowledge, onFlowInterrupt: this.onFlowInterrupt};
+
+    let txExecutor = new TransactionExecutor({}, callbacks);
+    txExecutor.sendTransactionToSdk( '10', receiverUserId, false);
     // todo : Execute transaction code. call clean up after that.
 
   };
 
 
   uploadReplyVideo = async () => {
+    console.log('CameraWorker.uploadReplyVideo');
     await this.uploadVideo();
     await this.uploadCoverImage();
     await this.postReplyVideoToPepoApi()  ;
@@ -184,13 +221,16 @@ class CameraWorker extends PureComponent {
 
 
   postReplyVideoToPepoApi = async () => {
+
     let readyForTx = deepGet(this.props.recorded_video , 'go_for_tx' ),
       parentVideoId =  deepGet(this.props.recorded_video , 'reply_obj.replyReceiverVideoId');
 
     if ( readyForTx || !parentVideoId ) {
+
       // we have reply OR we dont have video Id
       return true
     }
+    console.log('I ammmmmmmhereeeee', this.props.recorded_video.s3_video,  this.props.recorded_video.pepo_api_posting, this.postToPepoApi );
 
     if (
       this.props.recorded_video.s3_video &&
@@ -205,7 +245,7 @@ class CameraWorker extends PureComponent {
         imageInfo = await RNFS.stat(this.props.recorded_video.cover_image);
         imageSize = imageInfo.size;
       }
-
+      console.log('CameraWorker.postReplyVideoToPepoApi');
       Store.dispatch(
         upsertRecordedVideo({
           pepo_api_posting: true
@@ -244,20 +284,20 @@ class CameraWorker extends PureComponent {
         .post(payload)
         .then((responseData) => {
           if (responseData.success && responseData.data) {
-            console.log('Video uploaded Successfully');
+            console.log('reply sent Successfully to Pepo Api');
             let resultType = deepGet(responseData, DataContract.common.resultType),
               reply = deepGet(responseData, `data.${resultType}` );
 
             if (reply && reply.length > 0 ){
               let replyObj = deepGet(this.props.recorded_video , 'reply_obj' );
-                  replyObj['replyDetailId'] = reply[0].id;
+                  replyObj['replyDetailId'] = reply[0].payload.reply_detail_id;
                 Store.dispatch(
                 upsertRecordedVideo({
                   pepo_api_posting: false,
                   reply_obj: replyObj,
                   go_for_tx: true
                 })
-              )
+              );
             } else {
               Store.dispatch(
                 upsertRecordedVideo({
@@ -265,10 +305,12 @@ class CameraWorker extends PureComponent {
                 })
               )
             }
-
-
-
           } else {
+            Toast.show({
+              text: responseData.err.msg,
+              icon: 'error'
+
+            });
             videoUploaderComponent.emit('hide');
             Store.dispatch(videoInProcessing(false));
           }
@@ -287,25 +329,7 @@ class CameraWorker extends PureComponent {
           });
         });
     }
-    // here we will get reply_id
   };
-
-
-
-
-
-
-
-
-
-  activateSession = async () => {
-   // Activate session.
-  };
-
-
-
-
-
 
   async cleanUp() {
     // stop ffmpge processing

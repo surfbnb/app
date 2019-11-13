@@ -1,7 +1,9 @@
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import {ensureDeivceAndSession} from '../helpers/TransactionHelper';
 import ExecuteTransactionWorkflow from '../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
-
+import Pricer from "../services/Pricer";
+import deepGet from 'lodash/get';
+import PepoApi from '../services/PepoApi';
 import CurrentUser from "../models/CurrentUser";
 import AppConfig from '../constants/AppConfig';
 import ReduxGetters from './ReduxGetters';
@@ -34,7 +36,7 @@ class TransactionExecutor {
     }
 
     sendTransactionToSdk(btAmount=0 , toUserId , validateSession=true  ) {
-        const btInDecimal = pricer.getToDecimal(btAmount);
+        const btInDecimal = Pricer.getToDecimal(btAmount);
         this.setToUser( toUserId );
 
         if( !validateSession ){
