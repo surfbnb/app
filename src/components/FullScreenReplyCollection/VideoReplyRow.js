@@ -13,9 +13,6 @@ import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoReplySupporterStat from '../CommonComponents/VideoSupporterStat/VideoReplySupporterStat';
 
 import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
-import inlineStyles from './styles';
-
-import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
