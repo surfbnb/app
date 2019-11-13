@@ -7,21 +7,19 @@ let stylesMap = {
       zIndex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#fff',
+      backgroundColor: Colors.white,
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 30,
+      overflow: 'hidden'
     },
     dragHandler: {
-      position: 'absolute',
       height: 65,
-      top: -65,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: Colors.white,
       flexDirection: 'row',
       zIndex: 9,
-      width: '100%',
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
-      overflow: 'hidden'
+      width: '100%'
     },
     iconWrapper: {
         flex: 1,
