@@ -9,12 +9,12 @@ import PepoApi from '../../services/PepoApi';
 import CurrentUser from '../../models/CurrentUser';
 
 import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
-import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
@@ -69,7 +69,7 @@ class UserVideoHistoryRow extends PureComponent {
                 <ReportVideo  userId={this.props.userId} videoId={this.props.videoId} />
               </View>
 
-              <VideoAmountStat
+              <VideoSupporterStat
                 videoId={this.props.videoId}
                 userId={this.props.userId}
               />

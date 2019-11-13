@@ -9,13 +9,13 @@ import reduxGetter from '../../services/ReduxGetters';
 import CurrentUser from '../../models/CurrentUser';
 
 import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
-import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 
 import inlineStyles from './styles';
 import utilities from '../../services/Utilities';
 import ReportVideo from "../CommonComponents/ReportVideo";
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 
 
 class HomeFeedRow extends PureComponent {
@@ -70,7 +70,7 @@ class HomeFeedRow extends PureComponent {
                 <ReportVideo  userId={this.userId} videoId={this.videoId} />
               </View>
 
-            <VideoAmountStat
+            <VideoSupporterStat
               videoId={this.videoId}
               userId={this.userId}
               pageName="feed"

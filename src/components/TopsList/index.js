@@ -12,7 +12,7 @@ import TagsCell from '../TagsList/TagsCell';
 
 import Pagination from "../../services/MultiSection/MultiSectionPagination";
 import PeopleCell from "../PeopleList/PeopleCell";
-import VideoThumbnailItem from "../CommonComponents/VideoThumbnailItem";
+import VideoThumbnail from "../CommonComponents/VideoThumbnail/VideoThumbnail";
 import {FetchServices} from "../../services/FetchServices";
 
 const titleKeyName = 'title',
@@ -191,7 +191,7 @@ class TopsList extends PureComponent {
       let itemKey = "top_list_" + i + "_" + itemData.id;
       items.push(
 
-        <VideoThumbnailItem
+        <VideoThumbnail
         payload={itemData.payload}
         index={index} key={itemKey}
         onVideoClick={this.onVideoClick}

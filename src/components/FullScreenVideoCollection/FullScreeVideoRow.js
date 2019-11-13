@@ -8,11 +8,11 @@ import PepoApi from '../../services/PepoApi';
 import deepGet from 'lodash/get';
 
 import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
-import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 import inlineStyles from './styles';
 
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 
 
 class FullScreeVideoRow extends PureComponent {
@@ -55,7 +55,7 @@ class FullScreeVideoRow extends PureComponent {
                                 <ReportVideo  userId={this.userId} videoId={this.videoId} />
                             </View>
 
-                            <VideoAmountStat
+                            <VideoSupporterStat
                                 videoId={this.videoId}
                                 userId={this.userId}
                             />

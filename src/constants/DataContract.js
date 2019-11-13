@@ -48,7 +48,10 @@ export default {
         validatePost: "/videos/validate-upload",
         getSingleVideoReplyApi : (id) => {
             return `/replies/${id}`;
-        }
+        },
+        videoReplyKind: {
+            video: "VIDEO"
+        } 
     },
 
     common: {
@@ -66,7 +69,10 @@ export default {
     videos: {
         getDeleteVideoApi : (id) => {
             return `/videos/${id}/delete`;
-        }
+        },
+        videoKind: {
+            reply : "VIDEO_REPLY"
+        },
     }
 }
 

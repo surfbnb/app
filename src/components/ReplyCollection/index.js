@@ -10,13 +10,14 @@ import deepGet from "lodash/get";
 import LinearGradient from "react-native-linear-gradient";
 
 import Pagination from "../../services/Pagination";
-import VideoThumbnailItem from '../CommonComponents/VideoThumbnailItem';
 import DeleteVideo from "../CommonComponents/DeleteVideo";
 import inlineStyles from './styles';
 import CurrentUser from '../../models/CurrentUser';
 import DataContract from '../../constants/DataContract';
 import { VideoReplyEmitter } from '../../helpers/Emitters';
 import PepoApi from '../../services/PepoApi';
+import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
+import ReduxGetters from '../../services/ReduxGetters';
 
 
 class VideoReplyList extends PureComponent {
@@ -160,28 +161,35 @@ class VideoReplyList extends PureComponent {
     };
 
     _renderVideoCell = ({ item, index }) => {
-        //TODO Let ask BE for same payload 
-        const userId = deepGet(item, "payload.user_id");
-        const videoId = deepGet(item, "payload.reply_detail_id");
-        const payload = { user_id : userId ,  video_id: videoId}
-        return (<View style={{position: 'relative'}}>
-        {this.isCurrentUser( userId ) && <LinearGradient
-             colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
-             locations={[0, 0.5, 1]}
-             start={{ x: 0, y: 0 }}
-             end={{ x: 0, y: 1 }}
-             style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
-           >
-           <View style={inlineStyles.deleteButton}>
-               <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
-           </View>
-         </LinearGradient>}
-         <VideoThumbnailItem
-          payload={payload}
-          index={index}
-          onVideoClick={() => {this.onVideoClick(payload, index)}}/>
-          </View>);
+        return this.renderThumbnailItem(item , index)
     };
+
+    renderThumbnailItem ( item , index ){
+        const kind  = deepGet( item , "kind");
+        if( kind == DataContract.videos.videoKind.reply){
+            const userId = deepGet(item, "payload.user_id");
+            const reply_detail_id = deepGet(item,'payload.reply_detail_id');
+            const videoId = ReduxGetters.getVideoReplyId(reply_detail_id);
+            const replyKind = ReduxGetters.getVideoReplyKind(reply_detail_id);
+            if(replyKind == DataContract.replies.videoReplyKind.video) {
+                return (<View style={{position: 'relative'}}>
+                {this.isCurrentUser( userId ) && <LinearGradient
+                     colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
+                     locations={[0, 0.5, 1]}
+                     start={{ x: 0, y: 0 }}
+                     end={{ x: 0, y: 1 }}
+                     style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
+                   >
+                   <View style={inlineStyles.deleteButton}>
+                       <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
+                   </View>
+                 </LinearGradient>}
+                    <ReplyThumbnail  payload={item.payload}  index={index}
+                    onVideoClick={() => {this.onVideoClick(index)}}/>
+                  </View>);
+            }
+        }
+    }
 
     isCurrentUser = ( userId ) => {
         return userId === CurrentUser.getUserId();
@@ -203,13 +211,12 @@ class VideoReplyList extends PureComponent {
         this.setState({list: array});
     }
 
-    onVideoClick = (payload, index) => {
+    onVideoClick = ( index ) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
         //TODO @ashutosh to understand
         this.props.navigation.push("FullScreenReplyCollection", {
             "fetchServices" : clonedInstance,
             "currentIndex": index,
-            "payload": payload,
             "baseUrl": this.props.fetchUrl,
             "amount": this.props.amount,
             "videoReplyCount": this.props.videoReplyCount,

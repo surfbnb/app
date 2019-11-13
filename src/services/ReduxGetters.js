@@ -42,6 +42,10 @@ class ReduxGetters {
     state = state || Store.getState();
     size = size || appConfig.videoConstant.videoImageWidth;
     let posterImageId = deepGet(state, `video_entities.id_${id}.poster_image_id`);
+    return this.getImageUrl(posterImageId, state, size);
+  }
+
+  getImageUrl( posterImageId, state, size) {
     return (
       deepGet(state, `image_entities.id_${posterImageId}.resolutions.${size}.url`) ||
       deepGet(state, `image_entities.id_${posterImageId}.resolutions.original.url`)
@@ -107,6 +111,11 @@ class ReduxGetters {
   getVideoBt(id, state) {
     state = state || Store.getState();
     return deepGet(state, `video_stat_entities.id_${id}.total_amount_raised_in_wei`);
+  }
+
+  getVideoReplyBt(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_reply_stat_entities.id_${id}.total_amount_raised_in_wei`);
   }
 
   getVideoStats(id, state) {
@@ -425,17 +434,37 @@ class ReduxGetters {
 
   getVideoReplyCount(id, state){
     state = state || Store.getState();
-    return deepGet(state, `video_stat_entities.id_${id}.total_replies`, 0);
+    return deepGet(state, `video_reply_stat_entities.id_${id}.total_replies`, 0);
   }
 
   getVideoReplyAmount(id, state){
     state = state || Store.getState();
-    return deepGet(state, `video_stat_entities.id_${id}.per_reply_amount_in_wei`, 0);
+    return deepGet(state, `video_reply_stat_entities.id_${id}.per_reply_amount_in_wei`, 0);
   }
 
   getVideoReplyAllowed(id, state){
     state = state || Store.getState();
-    return deepGet(state, `video_stat_entities.id_${id}.is_reply_allowed`, true);
+    return deepGet(state, `video_reply_stat_entities.id_${id}.is_reply_allowed`, true);
+  }
+
+  getVideoReplyKind(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_reply_stat_entities.id_${id}.entity_kind`);
+  }
+
+  getVideoReplyId(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_reply_stat_entities.id_${id}.entity_id`);
+  }
+
+  getVideoReplyDescriptionId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_reply_stat_entities.id_${id}.description_id`);
+  }
+
+  getVideoReplyBt(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_reply_stat_entities.id_${id}.total_amount_raised_in_wei`);
   }
 
 }

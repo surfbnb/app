@@ -190,7 +190,7 @@ class FullScreenReplyCollection extends PureComponent{
 
     _renderItem = ({ item, index }) => {
         const payload = { user_id : deepGet(item, "payload.user_id") ,  video_id: deepGet(item, "payload.reply_detail_id")}
-        return  <VideoReplyRow        shouldPlay={this.shouldPlay}
+        return  <VideoReplyRow     shouldPlay={this.shouldPlay}
                                    isActive={index == this.state.activeIndex}
                                    doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                    payload={payload}

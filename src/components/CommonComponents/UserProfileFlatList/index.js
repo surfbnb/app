@@ -25,7 +25,7 @@ import CurrentUser from "../../../models/CurrentUser";
 import DeleteVideo from "../DeleteVideo";
 import Colors from '../../../theme/styles/Colors';
 import CommonStyle from "../../../theme/styles/Common"
-import VideoThumbnailItem from '../VideoThumbnailItem';
+import VideoThumbnail from '../../CommonComponents/VideoThumbnail/VideoThumbnail';
 import DataContract from '../../../constants/DataContract';
 
 
@@ -153,7 +153,7 @@ class UserProfileFlatList extends PureComponent {
                         <DeleteVideo fetchUrl={DataContract.videos.getDeleteVideoApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
                     </View>
                   </LinearGradient>}
-                  <VideoThumbnailItem payload={{video_id:videoId, user_id: this.props.userId }} 
+                  <VideoThumbnail payload={{video_id:videoId, user_id: this.props.userId }} 
                                       index={index}  onVideoClick={() => {this.onVideoClick(item, index)}}/>
                 </View>);
     };

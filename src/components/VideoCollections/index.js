@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import { ActivityIndicator , FlatList} from "react-native";
 import {SafeAreaView} from "react-navigation";
 import Pagination from "../../services/Pagination";
-import VideoThumbnailItem from '../../components/CommonComponents/VideoThumbnailItem';
 
 import CommonStyle from "../../theme/styles/Common";
+import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
 
 class VideoCollections extends PureComponent {
     constructor(props){
@@ -151,7 +151,7 @@ class VideoCollections extends PureComponent {
     };
 
     _renderVideoCell = ({ item, index }) => {
-        return (<VideoThumbnailItem
+        return (<VideoThumbnail
           payload={item.payload}
           index={index}
           onVideoClick={() => {this.onVideoClick(item.payload, index)}}
@@ -170,6 +170,7 @@ class VideoCollections extends PureComponent {
             showBalanceFlyer: this.props.extraParams && this.props.extraParams.showBalanceFlyer
         });
     }
+    
     renderFooter = () => {
         if (!this.state.loadingNext) return null;
         return <ActivityIndicator />;
