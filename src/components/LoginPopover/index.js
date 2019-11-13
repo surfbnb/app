@@ -107,17 +107,11 @@ class loginPopover extends React.Component {
                     >
                       Meet the people shaping the crypto movement.
                     </Text>
-                    <Text style={inlineStyles.desc}>
-                      Pepo is currently invite only.
-                    </Text>
-                    <Text style={inlineStyles.desc}>
-                      Connect Twitter to see if you have access.
-                    </Text>
                     <TouchableButton
                       TouchableStyles={[
                         Theme.Button.btnSoftBlue,
                         {
-                          marginTop: 30,
+                          marginTop: 15,
                           flexDirection: 'row',
                           height: 55,
                           alignItems: 'center',
