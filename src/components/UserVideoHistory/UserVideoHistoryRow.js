@@ -8,7 +8,7 @@ import PepoApi from '../../services/PepoApi';
 
 import CurrentUser from '../../models/CurrentUser';
 
-import BottomStatus from '../Home/BottomStatus';
+import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
 import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 import inlineStyles from './styles';
 
@@ -75,7 +75,7 @@ class UserVideoHistoryRow extends PureComponent {
               />
             </View>
 
-            <BottomStatus
+            <VideoBottomStatus
               userId={this.props.userId}
               videoId={this.props.videoId}
             />

@@ -8,7 +8,7 @@ import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
 import CurrentUser from '../../models/CurrentUser';
 
-import BottomStatus from './BottomStatus';
+import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
 import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 
 import inlineStyles from './styles';
@@ -16,6 +16,7 @@ import utilities from '../../services/Utilities';
 import ReportVideo from "../CommonComponents/ReportVideo";
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -76,7 +77,7 @@ class HomeFeedRow extends PureComponent {
             />
           </View>
 
-          <BottomStatus userId={this.userId} videoId={this.videoId} />
+          <VideoBottomStatus userId={this.userId} videoId={this.videoId} />
         </View>
       </View>
     );

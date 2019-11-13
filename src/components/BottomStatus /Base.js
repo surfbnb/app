@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
-import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
 import inlineStyles from './styles';
@@ -11,17 +10,6 @@ import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
 import Utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
-
-const mapStateToProps = (state, ownProps) => {
-  return {
-    userName: reduxGetter.getUserName(ownProps.userId, state),
-    name: reduxGetter.getName(ownProps.userId, state),
-    description: reduxGetter.getVideoDescription(reduxGetter.getVideoDescriptionId(ownProps.videoId, state), state),
-    link: reduxGetter.getVideoLink(reduxGetter.getVideoLinkId(ownProps.videoId, state), state),
-    supporters: reduxGetter.getVideoSupporters(ownProps.videoId),
-    totalBt: reduxGetter.getVideoBt(ownProps.videoId, state)
-  };
-};
 
 class BottomStatus extends PureComponent {
   constructor(props) {
@@ -131,4 +119,4 @@ class BottomStatus extends PureComponent {
   };
 }
 
-export default connect(mapStateToProps)(withNavigation(BottomStatus));
+export default withNavigation(BottomStatus);
