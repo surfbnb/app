@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
+import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
-import VideoWrapper from './VideoWrapper';
+import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
@@ -16,7 +16,6 @@ import utilities from '../../services/Utilities';
 import ReportVideo from "../CommonComponents/ReportVideo";
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
-
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -51,7 +50,7 @@ class HomeFeedRow extends PureComponent {
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
-        <VideoWrapper
+        <FanVideo
           userId={this.userId}
           videoId={this.videoId}
           feedId={this.props.feedId}

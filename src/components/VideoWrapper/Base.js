@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
 import { TouchableWithoutFeedback, AppState, View, Image, ActivityIndicator } from 'react-native';
-import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import Video from 'react-native-video';
 import inlineStyles from './styles';
-import reduxGetter from '../../services/ReduxGetters';
 import playIcon from '../../assets/play_icon.png';
 import PixelCall from '../../services/PixelCall';
 import {VideoPlayPauseEmitter} from '../../helpers/Emitters';
@@ -12,18 +10,11 @@ import AppConfig from '../../constants/AppConfig';
 import socketPixelCall from './../../services/SocketPixelCall'
 import CurrentUser from "../../models/CurrentUser";
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    videoImgUrl: reduxGetter.getVideoImgUrl(ownProps.videoId, state),
-    videoUrl: reduxGetter.getVideoUrl(ownProps.videoId, state),
-    loginPopover: ownProps.isActive && state.login_popover.show
-  };
-};
 
 const VIDEO_PLAY_START_EVENT_NAME = "video_play_start";
 const VIDEO_PLAY_END_EVENT_NAME = "video_play_end";
 
-class VideoWrapper extends PureComponent {
+class Base extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -248,7 +239,7 @@ class VideoWrapper extends PureComponent {
   }
 }
 
-VideoWrapper.defaultProps = {
+Base.defaultProps = {
   shouldPlay: function(){
     return true;
   },
@@ -256,4 +247,4 @@ VideoWrapper.defaultProps = {
   isActive: true
 };
 
-export default connect(mapStateToProps)(withNavigation(VideoWrapper));
+export default withNavigation(Base);

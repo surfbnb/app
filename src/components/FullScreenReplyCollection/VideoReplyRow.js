@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import VideoWrapper from '../Home/VideoWrapper';
+import FanVideo from "../VideoWrapper/FanVideo";
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
@@ -12,6 +12,7 @@ import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 import inlineStyles from './styles';
 
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+
 
 
 class VideoReplyRow extends PureComponent {
@@ -33,7 +34,7 @@ class VideoReplyRow extends PureComponent {
     render() {
         return (
             <View style={inlineStyles.fullScreen}>
-                <VideoWrapper
+                <FanVideo
                     shouldPlay={this.props.shouldPlay}
                     userId={this.userId}
                     videoId={this.replyId}

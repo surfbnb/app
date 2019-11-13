@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import VideoWrapper from '../Home/VideoWrapper';
+import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
-
 
 import CurrentUser from '../../models/CurrentUser';
 
@@ -16,7 +15,6 @@ import inlineStyles from './styles';
 import utilities from '../../services/Utilities';
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
-
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
@@ -48,7 +46,7 @@ class UserVideoHistoryRow extends PureComponent {
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
-        <VideoWrapper
+        <FanVideo
           shouldPlay={this.props.shouldPlay}
           userId={this.props.userId}
           videoId={this.props.videoId}
