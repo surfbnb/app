@@ -30,31 +30,6 @@ class VideoReplyRow extends PureComponent {
             .catch((error) => {});
     };
 
-    //TODO  @preshita move to bottom status 
-    navigateToUserProfile = (e) => {
-        if (utilities.checkActiveUser()) {
-            if (this.userId == CurrentUser.getUserId()) {
-                this.props.navigation.navigate('ProfileScreen');
-            } else {
-                this.props.navigation.push('UsersProfileScreen', { userId: this.userId });
-            }
-        }
-    };
-
-    //TODO  @preshita move to bottom status
-  onDescriptionClick = ( tapEntity  ) => {
-    if (!tapEntity) {
-      return;
-    }
-
-    if( tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', {
-        "tagId": tapEntity.id
-      });
-    }
-
-  }
-
   //Required from Backend , we need video  stats entity 
 
     render() {
@@ -85,15 +60,12 @@ class VideoReplyRow extends PureComponent {
                             <VideoAmountStat
                                 videoId={this.replyId}
                                 userId={this.userId}
-                                onWrapperClick={this.navigateToUserProfile}
                             />
                         </View>
 
                         <BottomStatus
                             userId={this.userId}
                             videoId={this.replyId}
-                            onWrapperClick={this.navigateToUserProfile}
-                            onDescriptionClick={this.onDescriptionClick}
                         />
                     </View>
                 )}

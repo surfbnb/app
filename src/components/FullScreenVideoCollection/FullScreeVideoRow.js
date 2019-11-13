@@ -32,30 +32,6 @@ class FullScreeVideoRow extends PureComponent {
             .catch((error) => {});
     };
 
-
-    navigateToUserProfile = (e) => {
-        if (utilities.checkActiveUser()) {
-            if (this.userId == CurrentUser.getUserId()) {
-                this.props.navigation.navigate('ProfileScreen');
-            } else {
-                this.props.navigation.push('UsersProfileScreen', { userId: this.userId });
-            }
-        }
-    };
-
-  onDescriptionClick = ( tapEntity , tapText ) => {
-    if (!tapEntity) {
-      return;
-    }
-
-    if( tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', {
-        "tagId": tapEntity.id
-      });
-    }
-
-  }
-
     render() {
         return (
             <View style={inlineStyles.fullScreen}>
@@ -85,15 +61,12 @@ class FullScreeVideoRow extends PureComponent {
                             <VideoAmountStat
                                 videoId={this.videoId}
                                 userId={this.userId}
-                                onWrapperClick={this.navigateToUserProfile}
                             />
                         </View>
 
                         <BottomStatus
                             userId={this.userId}
                             videoId={this.videoId}
-                            onWrapperClick={this.navigateToUserProfile}
-                            onDescriptionClick={this.onDescriptionClick}
                         />
                     </View>
                 )}

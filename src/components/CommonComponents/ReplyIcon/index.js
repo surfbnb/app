@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {TouchableWithoutFeedback , Image, View, Text} from "react-native";
+import {TouchableOpacity , Image, View, Text} from "react-native";
 import { connect } from 'react-redux';
 import {withNavigation} from "react-navigation";
 
@@ -53,7 +53,7 @@ class ReplyIcon extends PureComponent {
         return;
       }
 
-      if (this.props.videoReplyCount > 0 ){
+      if (this.props.videoReplyCount > 0){
         this.props.navigation.push('VideoReplies',
           {'videoId': this.props.videoId ,
             'userId': this.props.userId,
@@ -79,11 +79,11 @@ class ReplyIcon extends PureComponent {
         return (
         <View>
             <Text style={inlineStyles.videoReplyCount}>{this.props.videoReplyCount}</Text>
-            <TouchableWithoutFeedback pointerEvents={'auto'}
+            <TouchableOpacity pointerEvents={'auto'}
                             style={inlineStyles.replyIconWrapper}
                             onPress={multipleClickHandler(() => this.replyVideo())} >
                 <Image style={{ aspectRatio: 124/100, height: 35 }} source={reply_video} />
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         </View>);
     }
 

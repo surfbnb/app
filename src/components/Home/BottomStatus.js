@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
 import inlineStyles from './styles';
-import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import reduxGetter from '../../services/ReduxGetters';
 
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
+import Utilities from '../../services/Utilities';
+import CurrentUser from '../../models/CurrentUser';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -27,17 +29,13 @@ class BottomStatus extends PureComponent {
     this.videoDescriptionId = reduxGetter.getVideoDescriptionId(this.props.videoId);
   }
 
-  onWrapperClick = (e) => {
-    this.props.onWrapperClick && this.props.onWrapperClick();
-  };
-
   onLinkClick = () => {
     InAppBrowser.openBrowser(this.props.link);
   };
 
   onTagPressed = (tag) => {
     let entity = reduxGetter.getTappedIncludesEntity(this.videoDescriptionId, tag);
-    this.props.onDescriptionClick && this.props.onDescriptionClick(entity, tag);
+    this.onDescriptionClick(entity, tag);
   };
 
   isValidTag(videoId, tappedText) {
@@ -45,12 +43,35 @@ class BottomStatus extends PureComponent {
     return !!entity
   }
 
+   //TODO  @preshita move to bottom status 
+  navigateToUserProfile = () => {
+    if (Utilities.checkActiveUser()) {
+        if (this.props.userId == CurrentUser.getUserId()) {
+            this.props.navigation.navigate('ProfileScreen');
+        } else {
+            this.props.navigation.push('UsersProfileScreen', { userId: this.props.userId });
+        }
+    }
+  };
+
+  //TODO  @preshita move to bottom status
+  onDescriptionClick = ( tapEntity  ) => {
+    if (!tapEntity) {
+      return;
+    }
+    if( tapEntity.kind === 'tags'){
+      this.props.navigation.push('VideoTags', {
+        "tagId": tapEntity.id
+      });
+    }
+  }
+
   render() {
     return (
       <View style={inlineStyles.bottomBg}>
 
           <View style={{ paddingTop: 8, paddingBottom: 5 }}>
-          <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onWrapperClick())} pointerEvents={'auto'}>
+          <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())} pointerEvents={'auto'}>
             <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
               {`@${this.props.userName}`}
             </Text>
