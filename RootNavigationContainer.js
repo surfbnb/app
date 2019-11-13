@@ -112,7 +112,8 @@ const CaptureVideoStack = createStackNavigator(
   {
     CaptureVideo: CaptureVideo,
     FanVideoDetails: FanVideoDetails,
-    FanVideoReplyDetails: FanVideoReplyDetails
+    FanVideoReplyDetails: FanVideoReplyDetails,
+    WalletSettingScreen: WalletSettingScreen
   },
   {
     headerLayoutPreset: 'center'

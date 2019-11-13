@@ -29,6 +29,9 @@ import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { StackActions } from 'react-navigation';
 import PepoApi from "../../services/PepoApi";
 import DataContract from "../../constants/DataContract";
+import pricer from "../../services/Pricer";
+import {ensureDeivceAndSession} from "../../helpers/TransactionHelper";
+import Toast from "../../theme/components/NotificationToast";
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -136,15 +139,56 @@ class FanVideoReplyDetails extends Component {
     this.keyboardDidHideListener.remove();
   }
 
+  ensureSession = () => {
+    return new Promise((resolve, reject)=> {
+      let btAmount = this.getAmountToSend();
+      const btInDecimal = pricer.getToDecimal(btAmount);
+      ensureDeivceAndSession(CurrentUser.getOstUserId(), btInDecimal, (device) => {
+        this._deviceUnauthorizedCallback(device);
+        reject();
+      }, (errorMessage, success) => {
+        if ( success ) {
+          return resolve();
+        } else {
+          Toast.show({
+            text: errorMessage,
+            icon: 'error'
+          });
+          return reject()
+        }
+      });
+    });
+
+    // check If session active
+  };
+
+
+  _deviceUnauthorizedCallback = (device) => {
+    this.props.navigation.push('AuthDeviceDrawer', { device });
+  };
+
+
+
+
   enableStartUploadFlag = () => {
     this.clearErrors();
-   this.validateData().then((res)=>{
-     Store.dispatch(
-       upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, do_upload: true })
-     );
-     this.props.navigation.dispatch(StackActions.popToTop());
-     this.props.navigation.dispatch(StackActions.popToTop());
-     this.props.navigation.navigate('HomeScreen');
+    this.validateData().then((res) => {
+
+     this.ensureSession().then(() => {
+
+       Store.dispatch(
+         upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, do_upload: true })
+       );
+       this.props.navigation.dispatch(StackActions.popToTop());
+       this.props.navigation.dispatch(StackActions.popToTop());
+       this.props.navigation.navigate('HomeScreen');
+
+     }).catch(()=> {
+
+     });
+
+
+
    }).catch((err)=>{
      // show error on UI.
      this.showError(err);
