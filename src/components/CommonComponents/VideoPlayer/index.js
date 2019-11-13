@@ -77,7 +77,6 @@ class VideoPlayer extends Component {
         if (this.state.userId == CurrentUser.getUserId()) {
           this.props.navigation.navigate('ProfileScreen');
         } else {
-          this.isActiveScreen = false;
           this.props.navigation.push('UsersProfileScreen', { userId: this.state.userId });
         }
       }

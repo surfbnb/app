@@ -16,7 +16,7 @@ import inlineStyles from './styles';
 import utilities from '../../services/Utilities';
 
 
-class VideoReply extends PureComponent {
+class VideoReplyRow extends PureComponent {
     constructor(props) {
         super(props);
         this.userId = deepGet(this.props.payload, 'user_id');
@@ -102,4 +102,4 @@ class VideoReply extends PureComponent {
     }
 }
 
-export default withNavigation(VideoReply);
+export default withNavigation(VideoReplyRow);
