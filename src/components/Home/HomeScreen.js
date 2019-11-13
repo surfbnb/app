@@ -16,6 +16,7 @@ import {navigateTo} from "../../helpers/navigateTo";
 import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
 import utilities from "../../services/Utilities";
+import reduxGetter from '../../services/ReduxGetters';
 
 const mapStateToProps = (state) => {
   return {
@@ -165,6 +166,16 @@ class HomeScreen extends Component {
       updateFlatList && updateFlatList([]);
   }
 
+
+  getUploadingText = () => {
+    let videoType = reduxGetter.getRecordedVideoType();
+    if (videoType === 'post'){
+      return "Uploading Video";
+    } else if (videoType === 'reply'){
+      return "Posting reply";
+    }
+  };
+
   beforeRefresh = () => {
     Pricer.getBalance();
   };
@@ -190,7 +201,7 @@ class HomeScreen extends Component {
               ),
               left: 10
             }}
-            displayText="Uploading Video"
+            displayText={this.getUploadingText()}
             extendDirection="right"
             extend={true}
             id={2}

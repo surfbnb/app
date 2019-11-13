@@ -144,7 +144,6 @@ export default {
 
   handleVideoUploadModal(previousTabIndex, navigation, params = {}) {
     if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
-      // TODO: check if video or reply and accordingly emit corresponding event.
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
     } else if (reduxGetters.getVideoProcessingStatus() == true) {
       Toast.show({

@@ -23,6 +23,7 @@ import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 
 import { getInset } from 'react-native-safe-area-view';
 import DataContract from '../../constants/DataContract';
+import reduxGetters from "../../services/ReduxGetters";
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
@@ -66,7 +67,7 @@ class VideoRepliesScreen extends PureComponent {
       setTimeout(()=> {
         this.setState({
           showBackdrop: true,
-          videoUploaderVisible: true//find from redux @mayur
+          videoUploaderVisible: reduxGetters.getVideoProcessingStatus() // find from redux @mayur
         });
 
       }, 300)
