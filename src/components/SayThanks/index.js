@@ -20,6 +20,7 @@ import Theme from '../../theme/styles';
 import Colors from '../../theme/styles/Colors';
 import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
 import Toast from '../../theme/components/NotificationToast';
+import CommonStyle from '../../theme/styles/Common';
 
 const bottomSpace = getBottomSpace([true]),
     extraPadding = 10,
@@ -197,7 +198,7 @@ class SayThanks extends Component {
           }
         }}
       >
-        <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+        <View style={CommonStyle.modalViewContainer}>
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
               {this.state.gettingTweetInfo && (

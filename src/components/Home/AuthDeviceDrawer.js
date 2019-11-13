@@ -10,6 +10,7 @@ import infoIcon from '../../assets/toast_error.png';
 import Theme from "../../theme/styles";
 import modalCross from '../../assets/modal-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
+import CommonStyle from '../../theme/styles/Common';
 
 
 
@@ -128,7 +129,7 @@ export default class AuthDeviceDrawer extends PureComponent {
     let config = this._getViewConfig();
     return(
       <TouchableWithoutFeedback onPressIn={this.closeModal}>
-        <View style = {inlineStyles.parent}>
+        <View style = {CommonStyle.modalViewContainer}>
 
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.popupContainer, { paddingBottom: 0 }]} >

@@ -6,8 +6,7 @@ let stylesMap = {
   container: {
     paddingBottom: 0,
     paddingTop: Platform.OS === 'ios' ? 30 : 20,
-    flex: 1,
-    backgroundColor: Colors.white
+    flex: 1
   },
   textInputUi: {
     marginTop: 0,

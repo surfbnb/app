@@ -50,6 +50,7 @@ import clone from 'lodash/clone';
 import { ostSdkErrors, WORKFLOW_CANCELLED_MSG } from '../../services/OstSdkErrors';
 import Colors from '../../theme/styles/Colors';
 import InAppBrowser from '../../services/InAppBrowser';
+import CommonStyle from '../../theme/styles/Common';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -658,7 +659,7 @@ class Redemption extends PureComponent{
     render(){
         return (
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
-                <View style={inlineStyles.outerContainer}>
+                <View style={CommonStyle.modalViewContainer}>
                   <TouchableWithoutFeedback>
                     <View style={[inlineStyles.container , { paddingBottom: this.state.bottomPadding }]}>
                         <View style={{position:'relative'}}>

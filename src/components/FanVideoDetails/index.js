@@ -30,12 +30,19 @@ import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { StackActions } from 'react-navigation';
 import PepoApi from "../../services/PepoApi";
 import DataContract from "../../constants/DataContract";
+import NumberInput from "../CommonComponents/NumberInput";
+import NumberFormatter from "../../helpers/NumberFormatter";
+import pricer from '../../services/Pricer';
+import PepoPinkIcon from '../../assets/pepo-tx-icon.png';
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    balance : state.balance,
     recordedVideo: reduxGetter.getRecordedVideo()
   };
 };
+
+const DEFAUT_BT_VALUE = 10;
 
 class FanVideoDetails extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -80,6 +87,8 @@ class FanVideoDetails extends Component {
     this.videoDesc = this.props.recordedVideo.video_desc;
     this.videoLink = this.props.recordedVideo.video_link;
     this.replyAmount = this.props.recordedVideo.reply_amount;
+    this.priceOracle = pricer.getPriceOracle();
+    this.numberFormatter = new NumberFormatter();
     this.state = {
       viewStyle: {
         paddingBottom: 10
@@ -87,9 +96,12 @@ class FanVideoDetails extends Component {
       error: null,
       amountError: null,
       linkError: null,
-      descError : null
+      descError : null,
+      usdVal : this.getUSDValue(DEFAUT_BT_VALUE)
 
     };
+
+
   }
   _keyboardShown = (e) => {
     let keyboardHeight = deepGet(e, 'endCoordinates.height') || 350;
@@ -244,6 +256,25 @@ class FanVideoDetails extends Component {
     });
   };
 
+  onErrorCallBack = ( errMsg ) =>{
+    this.setState({
+      amountError : errMsg
+    })
+  }
+
+  onChangeText = ( value )=>{
+    let formattedUsdVal = this.getUSDValue( value );
+    this.setState({
+      usdVal : formattedUsdVal,
+      amountError : ""
+    });
+  }
+  getUSDValue = (value ) =>{
+    let usdVal          = this.priceOracle.btToFiat(value),
+      formattedUsdVal =  this.numberFormatter.getFormattedValue( usdVal );
+    return formattedUsdVal;
+  }
+
   render() {
     let imageUrl = this.props.recordedVideo.cover_image;
     return (
@@ -276,8 +307,18 @@ class FanVideoDetails extends Component {
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center'}]}>{this.state.linkError }</Text>
           <View style={styles.videoAmountItem}>
             <Text style={{width: 130}}>Set Price for replies</Text>
-
-            <TextInput keyboardType={'numeric'} style={{flex: 1}} onChangeText={this.replyAmountChange} placeholder={'10'} value={this.props.recordedVideo.reply_amount} />
+            <Image source={PepoPinkIcon} style={{marginLeft:5,height:13,width:13}}/>
+            <View style={styles.replyAmtWrapper}>
+              <NumberInput
+                value = {DEFAUT_BT_VALUE}
+                max = {this.props.balance}
+                onErrorCallBack = {this.onErrorCallBack}
+                onChangeText = {this.onChangeText}
+              />
+              <Text>
+                ${this.state.usdVal}
+              </Text>
+            </View>
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.amountError }</Text>
 

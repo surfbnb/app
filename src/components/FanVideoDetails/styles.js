@@ -76,7 +76,12 @@ let stylesMap = {
     shadowOpacity: 0.2,
     elevation: 1
   },
-  linkText: { color: Colors.softBlue, flex: 3}
+  linkText: { color: Colors.softBlue, flex: 3},
+  replyAmtWrapper : {
+    flex:1,
+    flexDirection:"row",
+    justifyContent:'space-between',
+    alignItems:'center'}
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

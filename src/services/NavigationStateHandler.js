@@ -5,7 +5,7 @@ import Colors from "../theme/styles/Colors";
 import NavigationService from './NavigationService';
 import AppConfig from '../constants/AppConfig';
 
-const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory', 'FullScreenVideoCollection'];
+const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory', "VideoReplies",   'FullScreenVideoCollection'];
 const typesToIgnore = ['Navigation/COMPLETE_TRANSITION', 'Navigation/MARK_DRAWER_SETTLING', 'Navigation/MARK_DRAWER_IDLE', 'Navigation/DRAWER_CLOSED'];
 const routesAnalyticsMap = AppConfig.routesAnalyticsMap;
 
