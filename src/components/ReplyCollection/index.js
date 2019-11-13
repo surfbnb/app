@@ -246,6 +246,7 @@ class VideoReplyList extends PureComponent {
     render(){
         return (
             <FlatList
+                contentContainerStyle={{paddingBottom: this.props.listBottomPadding}}
                 style={{flex:1, width: "100%"}}
                 ref={this.setListRef}
                 data={this.state.list}
