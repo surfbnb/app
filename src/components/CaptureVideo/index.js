@@ -93,6 +93,7 @@ class CaptureVideo extends Component {
 
 
   saveVideoPrimaryInfo = () => {
+   this.proceedWithExisting = false;
    this.videoType = this.isVideoTypeReply ? VideoTypesConfig.reply.type : VideoTypesConfig.post.type;
    Store.dispatch(upsertRecordedVideo(this.getPrimaryVideoInfo()));
   };

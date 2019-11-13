@@ -4,6 +4,7 @@ import RNFS from 'react-native-fs';
 import Store from '../store';
 import deepGet from 'lodash/get';
 
+
 import {
   upsertRecordedVideo,
   clearRecordedVideo,
@@ -21,6 +22,10 @@ import videoUploaderComponent from './CameraWorkerEventEmitter';
 import createObjectForRedux from '../helpers/createObjectForRedux';
 import Toast from '../theme/components/NotificationToast';
 import CurrentUser from '../models/CurrentUser';
+import {ensureDeivceAndSession, ON_USER_CANCLLED_ERROR_MSG} from "../helpers/TransactionHelper";
+import pricer from "./Pricer";
+import {VideoPlayPauseEmitter} from "../helpers/Emitters";
+import DataContract from "../constants/DataContract";
 
 const recordedVideoStates = [
   'raw_video',
@@ -32,7 +37,8 @@ const recordedVideoStates = [
   'video_link',
   'reply_amount',
   'video_type',
-  'reply_obj'
+  'reply_obj',
+  'go_for_tx'
 ];
 
 const processingStatuses = [
@@ -149,31 +155,43 @@ class CameraWorker extends PureComponent {
 
 
   processReplyVideo = async () => {
-    let sessionCreated = await this.sessionHandling();
-
-    if (! sessionCreated){
-      return ;
-    }
+    // let sessionCreated = await this.ensureSession();
+    //
+    // if (! sessionCreated) {
+    //   return ;
+    // }
     await this.uploadReplyVideo();
+    await this.executeTransaction()
 
 
   };
+
+  executeTransaction = () => {
+    let goForTx = this.props.recorded_video.go_for_tx;
+    if (! goForTx){
+      return;
+    }
+    // todo : Execute transaction code. call clean up after that.
+
+  };
+
 
   uploadReplyVideo = async () => {
     await this.uploadVideo();
     await this.uploadCoverImage();
-    await this.postReplyVideoToPepoApi();
+    await this.postReplyVideoToPepoApi()  ;
   };
 
 
   postReplyVideoToPepoApi = async () => {
-    let replyDetailId = deepGet(this.props.recorded_video , 'reply_obj.replyDetailId' ),
+    let readyForTx = deepGet(this.props.recorded_video , 'go_for_tx' ),
       parentVideoId =  deepGet(this.props.recorded_video , 'reply_obj.replyReceiverVideoId');
 
-    if (replyDetailId || !parentVideoId) {
-      // we have reply
+    if ( readyForTx || !parentVideoId ) {
+      // we have reply OR we dont have video Id
       return true
     }
+
     if (
       this.props.recorded_video.s3_video &&
       !this.props.recorded_video.pepo_api_posting &&
@@ -217,18 +235,39 @@ class CameraWorker extends PureComponent {
         };
       }
 
+      let replyDetailId = deepGet(this.props.recorded_video , 'reply_obj.replyDetailId' );
+      if (replyDetailId) {
+        payload['reply_detail_id'] = replyDetailId;
+      }
+
       new PepoApi(`/replies`)
         .post(payload)
         .then((responseData) => {
           if (responseData.success && responseData.data) {
             console.log('Video uploaded Successfully');
-            // save reply_detail_id
+            let resultType = deepGet(responseData, DataContract.common.resultType),
+              reply = deepGet(responseData, `data.${resultType}` );
 
-            Store.dispatch(
-              upsertRecordedVideo({
-                pepo_api_posting: false
-              })
-            );
+            if (reply && reply.length > 0 ){
+              let replyObj = deepGet(this.props.recorded_video , 'reply_obj' );
+                  replyObj['replyDetailId'] = reply[0].id;
+                Store.dispatch(
+                upsertRecordedVideo({
+                  pepo_api_posting: false,
+                  reply_obj: replyObj,
+                  go_for_tx: true
+                })
+              )
+            } else {
+              Store.dispatch(
+                upsertRecordedVideo({
+                  pepo_api_posting: false
+                })
+              )
+            }
+
+
+
           } else {
             videoUploaderComponent.emit('hide');
             Store.dispatch(videoInProcessing(false));
@@ -248,11 +287,7 @@ class CameraWorker extends PureComponent {
           });
         });
     }
-
-
     // here we will get reply_id
-
-
   };
 
 
@@ -261,19 +296,7 @@ class CameraWorker extends PureComponent {
 
 
 
-  sessionHandling = async  () => {
-    let isSessionActive = await this.checkForActiveSession();
-    if (isSessionActive){
-        return true;
-    } else {
-       return await this.activateSession();
-    }
-  };
 
-
-  checkForActiveSession = async () => {
-      // check If session active
-  };
 
   activateSession = async () => {
    // Activate session.
@@ -593,6 +616,6 @@ class CameraWorker extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ recorded_video }) => ({ recorded_video, currentUserId: CurrentUser.getUserId() });
+const mapStateToProps = ({ recorded_video }) => ({ recorded_video, currentUserId: CurrentUser.getUserId(), currentOstUserId: CurrentUser.getOstUserId() });
 
 export default connect(mapStateToProps)(CameraWorker);

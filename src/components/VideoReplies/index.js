@@ -158,7 +158,6 @@ class VideoRepliesScreen extends PureComponent {
                 snappingPoints={[0, this.initialHeight, height]}>
               {dragHandler => (
                 <React.Fragment>
-                  <View style={{backgroundColor: '#fff', height: 65, borderTopLeftRadius: 30, borderTopRightRadius: 30, overflow: 'hidden'}}></View>
                   <View style={[inlineStyles.container]}>
                     <View style={inlineStyles.dragHandler} {...dragHandler}>
                       <TouchableOpacity onPress={this.onCrossIconClick} style={[inlineStyles.iconWrapper]} >
