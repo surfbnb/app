@@ -13,16 +13,19 @@ import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoReplySupporterStat from '../CommonComponents/VideoSupporterStat/VideoReplySupporterStat';
 
 import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
+import DataContract from '../../constants/DataContract';
+import ReduxGetters from '../../services/ReduxGetters';
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
         super(props);
-        this.userId = deepGet(this.props.payload, 'user_id');
-        this.replyId = deepGet(this.props.payload, 'video_id');
+        this.userId = deepGet(this.props.item, 'payload.user_id');
+        this.replyId = deepGet(this.props.item,`payload.${DataContract.replies.replyDetailIdKey}`); 
+        this.videoId = ReduxGetters.getVideoReplyId(this.replyId);
     }
 
     refetchVideoReply = () => {
-        new PepoApi(`/replies/${this.replyId}`)
+        new PepoApi(`/replies/${this.videoId}`)
             .get()
             .then((res) => {})
             .catch((error) => {});
@@ -36,12 +39,12 @@ class VideoReplyRow extends PureComponent {
                 <FanVideo
                     shouldPlay={this.props.shouldPlay}
                     userId={this.userId}
-                    videoId={this.replyId}
+                    videoId={this.videoId}
                     doRender={this.props.doRender}
                     isActive={this.props.isActive}
                 />
 
-                {!!this.replyId && !!this.userId && (
+                {!!this.videoId && !!this.userId && (
                     <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
                         <View style={inlineStyles.touchablesBtns}>
 
@@ -49,21 +52,24 @@ class VideoReplyRow extends PureComponent {
                                 <PepoTxBtn
                                     resyncDataDelegate={this.refetchVideoReply}
                                     userId={this.userId}
-                                    videoId={this.replyId}
+                                    videoId={this.videoId}
+                                    replyId={this.replyId}
                                 />
-                                <ShareIcon  userId={this.userId} videoId={this.replyId} />
-                                <ReportVideo  userId={this.userId} videoId={this.replyId} />
+                                <ShareIcon  userId={this.userId} videoId={this.videoId}  />
+                                <ReportVideo  userId={this.userId} videoId={this.videoId} />
                             </View>
 
                             <VideoReplySupporterStat
-                                videoId={this.replyId}
+                                videoId={this.videoId}
                                 userId={this.userId}
+                                replyId={this.replyId}
                             />
                         </View>
 
                         <VideoBottomStatus
                             userId={this.userId}
-                            videoId={this.replyId}
+                            videoId={this.videoId}
+                            replyId={this.replyId}
                         />
                     </View>
                 )}

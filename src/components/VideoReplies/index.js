@@ -23,7 +23,7 @@ import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 
 import { getInset } from 'react-native-safe-area-view';
 import DataContract from '../../constants/DataContract';
-import reduxGetters from "../../services/ReduxGetters";
+import ReduxGetters from '../../services/ReduxGetters';
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
@@ -43,10 +43,10 @@ class VideoRepliesScreen extends PureComponent {
     constructor(props){
       super(props);
         this.userId = props.navigation.getParam('userId');
-        this.userName = props.navigation.getParam('userName');
         this.videoId = props.navigation.getParam('videoId');
-        this.amount = props.navigation.getParam('amount');
-        this.videoReplyCount = props.navigation.getParam('videoReplyCount');
+        this.amount = ReduxGetters.getVideoReplyAmount(this.videoId );
+        this.videoReplyCount = ReduxGetters.getVideoReplyCount(this.videoId);
+
         this.fetchUrl = DataContract.replies.getReplyListApi(this.videoId);
         this.initialHeight =  height/1.5;
         this.animatedValue = new Animated.Value(this.initialHeight) ;
@@ -67,7 +67,7 @@ class VideoRepliesScreen extends PureComponent {
       setTimeout(()=> {
         this.setState({
           showBackdrop: true,
-          videoUploaderVisible: reduxGetters.getVideoProcessingStatus() // find from redux @mayur
+          videoUploaderVisible: ReduxGetters.getVideoProcessingStatus() // find from redux @mayur
         });
 
       }, 300)

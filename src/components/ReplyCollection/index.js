@@ -18,20 +18,19 @@ import { VideoReplyEmitter } from '../../helpers/Emitters';
 import PepoApi from '../../services/PepoApi';
 import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
 import ReduxGetters from '../../services/ReduxGetters';
+import Utilities from '../../services/Utilities';
 
 
 class VideoReplyList extends PureComponent {
 
     constructor(props){
       super(props);
-
         this.state = {
             list : [],
             refreshing : true,
             loadingNext: false
         };
         this.listRef = null;
-
         this.numColumns = 2;
     }
 
@@ -56,6 +55,13 @@ class VideoReplyList extends PureComponent {
         })
     }
 
+    addVideo = ( item ) => {
+        this.videoPagination.addItems( item );
+        let array = [...this.state.list]; // make a separate copy of the array
+        array.unshift( item );
+        this.setState({list: array});
+    }
+
     componentWillUnmount() {
         this.removePaginationListeners();
     }
@@ -64,7 +70,6 @@ class VideoReplyList extends PureComponent {
         return this.videoPagination;
     };
 
-    // region - Pagination and Event Handlers
 
     initPagination() {
         // First, take care of existing Pagination if exists.
@@ -165,30 +170,29 @@ class VideoReplyList extends PureComponent {
     };
 
     renderThumbnailItem ( item , index ){
-        const kind  = deepGet( item , "kind");
-        if( kind == DataContract.videos.videoKind.reply){
-            const userId = deepGet(item, "payload.user_id");
-            const reply_detail_id = deepGet(item,'payload.reply_detail_id');
-            const videoId = ReduxGetters.getVideoReplyId(reply_detail_id);
-            const replyKind = ReduxGetters.getVideoReplyKind(reply_detail_id);
-            if(replyKind == DataContract.replies.videoReplyKind.video) {
-                return (<View style={{position: 'relative'}}>
-                {this.isCurrentUser( userId ) && <LinearGradient
-                     colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
-                     locations={[0, 0.5, 1]}
-                     start={{ x: 0, y: 0 }}
-                     end={{ x: 0, y: 1 }}
-                     style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
-                   >
-                   <View style={inlineStyles.deleteButton}>
-                       <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
-                   </View>
-                 </LinearGradient>}
-                    <ReplyThumbnail  payload={item.payload}  index={index}
-                    onVideoClick={() => {this.onVideoClick(index)}}/>
-                  </View>);
-            }
-        }
+       if(Utilities.getVideoReplyKind( item ) == DataContract.replies.videoReplyKind.video){
+           return this._renderVideoReplyThumbnail( item, index );
+       }           
+    }
+
+    _renderVideoReplyThumbnail( item, index ) {
+        const userId = deepGet(item, "payload.user_id");
+        const reply_detail_id = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`); 
+        const videoId = ReduxGetters.getVideoReplyId(reply_detail_id);
+        return (<View style={{position: 'relative'}}>
+        {this.isCurrentUser( userId ) && <LinearGradient
+             colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
+             locations={[0, 0.5, 1]}
+             start={{ x: 0, y: 0 }}
+             end={{ x: 0, y: 1 }}
+             style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
+           >
+           <View style={inlineStyles.deleteButton}>
+               <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
+           </View>
+         </LinearGradient>}
+            <ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(index)}}/>
+          </View>);
     }
 
     isCurrentUser = ( userId ) => {
@@ -202,13 +206,6 @@ class VideoReplyList extends PureComponent {
             array.splice(index, 1);
             this.setState({list: array});
         }
-    }
-
-    addVideo = ( item ) => {
-        this.videoPagination.addItems( item );
-        let array = [...this.state.list]; // make a separate copy of the array
-        array.unshift( item );
-        this.setState({list: array});
     }
 
     onVideoClick = ( index ) => {

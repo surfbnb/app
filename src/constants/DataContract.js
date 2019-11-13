@@ -51,7 +51,8 @@ export default {
         },
         videoReplyKind: {
             video: "VIDEO"
-        } 
+        },
+        replyDetailIdKey: 'reply_detail_id'
     },
 
     common: {
@@ -73,6 +74,7 @@ export default {
         videoKind: {
             reply : "VIDEO_REPLY"
         },
+        kindKey: "kind"
     }
 }
 

@@ -13,16 +13,16 @@ import CurrentUser from '../../../models/CurrentUser';
 import NavigationService from "../../../services/NavigationService";
 import utilities from "../../../services/Utilities";
 import { LoginPopoverActions } from '../../LoginPopover';
+import Pricer from '../../../services/Pricer';
 
 const mapStateToProps = (state , ownProps) => {
   return {
-    isCreatorApproved :  reduxGetter.isCreatorApproved(ownProps.userId),
     isVideoUserActivated : Utilities.isUserActivated(reduxGetter.getUserActivationStatus(ownProps.userId)),
     isCurrentUserActivated : CurrentUser.isUserActivated(),
     balance : state.balance,
     requiredPepo : reduxGetter.getVideoReplyAmount(ownProps.videoId, state),
-    videoReplyCount : reduxGetter.getVideoReplyCount(ownProps.videoId, state),
-    isReplyAllowed : reduxGetter.getVideoReplyAllowed(ownProps.videoId, state),
+    videoReplyCount : reduxGetter.getVideoReplyCount(ownProps.videoId, state), //@Preshita TODO verify data 
+    isReplyAllowed : reduxGetter.getVideoReplyAllowed(ownProps.videoId, state), //@Preshita TODO verify data 
     userName : reduxGetter.getUserName(ownProps.userId)
   }
 };
@@ -38,11 +38,7 @@ class ReplyIcon extends PureComponent {
     };
 
     hasSufficientBalance = () => {
-        return this.getWeiToNumber(this.props.balance) >= this.getWeiToNumber(this.props.requiredPepo);
-    };
-
-    getWeiToNumber = ( val ) => { //Move this to utilities
-        return val && Math.floor(Number(pricer.getFromDecimal(val))) || 0;
+        return Pricer.getWeiToNumber(this.props.balance) >= Pricer.getWeiToNumber(this.props.requiredPepo);
     };
 
     replyVideo = ()=> {
@@ -53,13 +49,10 @@ class ReplyIcon extends PureComponent {
         return;
       }
 
-      if (this.props.videoReplyCount > 0){
+      if (this.props.videoReplyCount > 0 || true){
         this.props.navigation.push('VideoReplies',
           {'videoId': this.props.videoId ,
-            'userId': this.props.userId,
-            'userName': this.props.userName,
-            'amount': this.props.requiredPepo,
-            'videoReplyCount': this.props.videoReplyCount
+            'userId': this.props.userId
           });
       } else {
         let activeTab = NavigationService.getActiveTab();
