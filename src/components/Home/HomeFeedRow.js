@@ -47,32 +47,6 @@ class HomeFeedRow extends PureComponent {
     }
   };
 
-  navigateToUserProfile = (e) => {
-    if (utilities.checkActiveUser()) {
-      if (this.userId == CurrentUser.getUserId()) {
-        this.props.navigation.navigate('ProfileScreen');
-      } else {
-        this.props.navigation.push('UsersProfileScreen', { userId: this.userId });
-      }
-    }
-  };
-
-  onDescriptionClick = ( tapEntity , tapText ) => {
-    if (utilities.checkActiveUser()) {
-      if (!tapEntity) {
-        return;
-      }
-
-      if( tapEntity.kind === 'tags'){
-        this.props.navigation.push('VideoTags', {
-          "tagId": tapEntity.id
-        });
-      }
-
-    }
-  };
-
-
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
@@ -101,13 +75,12 @@ class HomeFeedRow extends PureComponent {
 
             <VideoAmountStat
               videoId={this.videoId}
-              onWrapperClick={this.navigateToUserProfile}
               userId={this.userId}
               pageName="feed"
             />
           </View>
 
-          <BottomStatus userId={this.userId} videoId={this.videoId} onWrapperClick={this.navigateToUserProfile} onDescriptionClick={this.onDescriptionClick} />
+          <BottomStatus userId={this.userId} videoId={this.videoId} />
         </View>
       </View>
     );

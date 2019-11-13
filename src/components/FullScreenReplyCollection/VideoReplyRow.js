@@ -16,7 +16,7 @@ import inlineStyles from './styles';
 import utilities from '../../services/Utilities';
 
 
-class VideoReply extends PureComponent {
+class VideoReplyRow extends PureComponent {
     constructor(props) {
         super(props);
         this.userId = deepGet(this.props.payload, 'user_id');
@@ -29,31 +29,6 @@ class VideoReply extends PureComponent {
             .then((res) => {})
             .catch((error) => {});
     };
-
-    //TODO  @preshita move to bottom status 
-    navigateToUserProfile = (e) => {
-        if (utilities.checkActiveUser()) {
-            if (this.userId == CurrentUser.getUserId()) {
-                this.props.navigation.navigate('ProfileScreen');
-            } else {
-                this.props.navigation.push('UsersProfileScreen', { userId: this.userId });
-            }
-        }
-    };
-
-    //TODO  @preshita move to bottom status
-  onDescriptionClick = ( tapEntity  ) => {
-    if (!tapEntity) {
-      return;
-    }
-
-    if( tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', {
-        "tagId": tapEntity.id
-      });
-    }
-
-  }
 
   //Required from Backend , we need video  stats entity 
 
@@ -85,15 +60,12 @@ class VideoReply extends PureComponent {
                             <VideoAmountStat
                                 videoId={this.replyId}
                                 userId={this.userId}
-                                onWrapperClick={this.navigateToUserProfile}
                             />
                         </View>
 
                         <BottomStatus
                             userId={this.userId}
                             videoId={this.replyId}
-                            onWrapperClick={this.navigateToUserProfile}
-                            onDescriptionClick={this.onDescriptionClick}
                         />
                     </View>
                 )}
@@ -102,4 +74,4 @@ class VideoReply extends PureComponent {
     }
 }
 
-export default withNavigation(VideoReply);
+export default withNavigation(VideoReplyRow);

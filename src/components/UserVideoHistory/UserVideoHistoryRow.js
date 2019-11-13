@@ -44,19 +44,6 @@ class UserVideoHistoryRow extends PureComponent {
     return this.props.userId == CurrentUser.getUserId();
   }
 
-  onDescriptionClick = ( tapEntity , tapText ) => {
-
-    if (!tapEntity) {
-      return;
-    }
-
-    if(tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', {
-        "tagId": tapEntity.id
-      });
-    }
-  };
-
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
@@ -86,15 +73,12 @@ class UserVideoHistoryRow extends PureComponent {
               <VideoAmountStat
                 videoId={this.props.videoId}
                 userId={this.props.userId}
-                onWrapperClick={this.props.onWrapperClick}
               />
             </View>
 
             <BottomStatus
               userId={this.props.userId}
               videoId={this.props.videoId}
-              onWrapperClick={this.props.onWrapperClick}
-              onDescriptionClick={this.onDescriptionClick}
             />
           </View>
         )}

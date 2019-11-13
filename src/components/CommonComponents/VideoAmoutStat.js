@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import reduxGetter from '../../services/ReduxGetters';
 
@@ -10,6 +11,7 @@ import inlineStyles from '../Home/styles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import Utilities from "../../services/Utilities";
+import CurrentUser from '../../models/CurrentUser';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -30,13 +32,19 @@ class VideoAmountStat extends PureComponent {
     return (priceOracle && priceOracle.btToFiat(btAmount, 2)) || 0;
   }
 
-    onWrapperClick = (e) => {
-        this.props.onWrapperClick && this.props.onWrapperClick();
-    };
+  navigateToUserProfile = () => {
+    if (Utilities.checkActiveUser()) {
+        if (this.props.userId == CurrentUser.getUserId()) {
+            this.props.navigation.navigate('ProfileScreen');
+        } else {
+            this.props.navigation.push('UsersProfileScreen', { userId: this.props.userId });
+        }
+    }
+  };
 
   render() {
     return (
-        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.onWrapperClick())} pointerEvents={'auto'}>
+        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())} pointerEvents={'auto'}>
       <View style={[inlineStyles.raisedSupported]}>
         {/*{*/}
         {/*<View*/}
@@ -65,4 +73,4 @@ class VideoAmountStat extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps)(VideoAmountStat);
+export default connect(mapStateToProps)(withNavigation(VideoAmountStat));
