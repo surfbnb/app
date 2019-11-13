@@ -5,17 +5,15 @@ import VideoWrapper from '../Home/VideoWrapper';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
-import TransactionPepoButton from '../Home/TransactionPepoButton';
 import deepGet from 'lodash/get';
-import CurrentUser from '../../models/CurrentUser';
+
 
 import BottomStatus from '../Home/BottomStatus';
 import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
 import inlineStyles from './styles';
 
-import utilities from '../../services/Utilities';
-import OptionsIcon from '../../assets/options_self_video.png';
 import ReplyIcon from '../CommonComponents/ReplyIcon';
+import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 
 
 class FullScreeVideoRow extends PureComponent {
@@ -48,7 +46,7 @@ class FullScreeVideoRow extends PureComponent {
                         <View style={inlineStyles.touchablesBtns}>
 
                             <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                                <TransactionPepoButton
+                                <PepoTxBtn
                                     resyncDataDelegate={this.refetchVideo}
                                     userId={this.userId}
                                     videoId={this.videoId}

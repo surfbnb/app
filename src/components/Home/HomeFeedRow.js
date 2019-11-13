@@ -6,7 +6,6 @@ import VideoWrapper from './VideoWrapper';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
-import TransactionPepoButton from './TransactionPepoButton';
 import CurrentUser from '../../models/CurrentUser';
 
 import BottomStatus from './BottomStatus';
@@ -16,6 +15,8 @@ import inlineStyles from './styles';
 import utilities from '../../services/Utilities';
 import ReportVideo from "../CommonComponents/ReportVideo";
 import ReplyIcon from '../CommonComponents/ReplyIcon';
+import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -63,11 +64,7 @@ class HomeFeedRow extends PureComponent {
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
               <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <TransactionPepoButton
-                  resyncDataDelegate={this.refetchFeed}
-                  userId={this.userId}
-                  videoId={this.videoId}
-                />
+                <PepoTxBtn  resyncDataDelegate={this.refetchFeed} userId={this.userId} videoId={this.videoId}/>
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                 <ShareIcon videoId={this.videoId} userId={this.userId} />
                 <ReportVideo  userId={this.userId} videoId={this.videoId} />

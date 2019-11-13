@@ -5,7 +5,7 @@ import VideoWrapper from '../Home/VideoWrapper';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
-import TransactionPepoButton from '../Home/TransactionPepoButton';
+
 
 import CurrentUser from '../../models/CurrentUser';
 
@@ -15,6 +15,7 @@ import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
 import ReplyIcon from '../CommonComponents/ReplyIcon';
+import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 
 
 class UserVideoHistoryRow extends PureComponent {
@@ -60,7 +61,7 @@ class UserVideoHistoryRow extends PureComponent {
             <View style={inlineStyles.touchablesBtns}>
 
               <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <TransactionPepoButton
+                <PepoTxBtn
                   resyncDataDelegate={this.refetchVideo}
                   userId={this.props.userId}
                   videoId={this.props.videoId}
