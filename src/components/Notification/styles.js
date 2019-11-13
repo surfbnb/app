@@ -14,7 +14,7 @@ let stylesMap = {
 
   txtWrapper: {
     flex: 1,
-    paddingVertical: 7,
+    paddingVertical: 10,
     paddingRight: 10,
     paddingLeft: 0, /* The remaining 10 px is assigned for icon click area. */
     flexDirection: 'row',
@@ -140,7 +140,7 @@ let stylesMap = {
   activityIcon :{
     paddingLeft: 10,
     paddingRight: 4,
-    paddingVertical: 10,
+    paddingVertical: 0,
     width: 46
   }
 
