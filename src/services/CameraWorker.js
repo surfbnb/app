@@ -220,7 +220,7 @@ class CameraWorker extends PureComponent {
     if (! goForTx || ! receiverUserId || doDiscard ){
       return;
     }
-    if ( receiverUserId === this.props.currentUserId || ! amountToSendWithReply) {
+    if ( receiverUserId === this.props.currentUserId || ! Number(amountToSendWithReply)) {
       this.videoUploadedSuccessCallback();
       return;
     };
