@@ -100,12 +100,22 @@ class loginPopover extends React.Component {
                       style={[
                         inlineStyles.desc,
                         {
-                          fontWeight: '500',
-                          marginBottom: 5
+                          fontWeight: '500'
                         }
                       ]}
                     >
-                      Meet the people shaping the crypto movement.
+                      Meet the people shaping the
+                    </Text>
+                    <Text
+                      style={[
+                        inlineStyles.desc,
+                        {
+                          fontWeight: '500',
+                          marginBottom: 15
+                        }
+                      ]}
+                    >
+                       crypto movement.
                     </Text>
                     <TouchableButton
                       TouchableStyles={[
@@ -116,7 +126,8 @@ class loginPopover extends React.Component {
                           height: 55,
                           alignItems: 'center',
                           justifyContent: 'center',
-                          width: '85%'
+                          width: '85%',
+                          marginBottom: 10
                         },
                         this.state.disableLoginBtn ? Theme.Button.disabled : null
                       ]}
