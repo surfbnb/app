@@ -20,9 +20,9 @@ const mapStateToProps = (state , ownProps) => {
     isVideoUserActivated : Utilities.isUserActivated(reduxGetter.getUserActivationStatus(ownProps.userId)),
     isCurrentUserActivated : CurrentUser.isUserActivated(),
     balance : state.balance,
-    requiredPepo : reduxGetter.getReplyAmount(ownProps.videoId, state),
-    videoReplyCount : reduxGetter.getReplyCount(ownProps.videoId, state),
-    isReplyAllowed : reduxGetter.getReplyAllowed(ownProps.videoId, state),
+    requiredPepo : reduxGetter.getBtAmountForReply(ownProps.videoId, state),
+    videoReplyCount : reduxGetter.getVideoReplyCount(ownProps.videoId, state),
+    isReplyAllowed : reduxGetter.isReplyAllowed(ownProps.videoId, state),
     userName : reduxGetter.getUserName(ownProps.userId)
   }
 };

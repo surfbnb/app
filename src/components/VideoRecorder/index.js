@@ -27,6 +27,7 @@ import LinearGradient from "react-native-linear-gradient";
 import Theme from "../../theme/styles";
 import multipleClickHandler from "../../services/MultipleClickHandler";
 import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
+import Pricer from "../../services/Pricer";
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -165,11 +166,12 @@ class VideoRecorder extends Component {
   };
 
   getPepoAmount = () => {
-    return  deepGet(this.recordedVideoObj, 'reply_obj.amountToSendWithReply');
+    let amount = reduxGetters.getBtAmountForReply(this.props.videoId);
+    return Pricer.getToBT(Pricer.getFromDecimal(amount), 2);
   };
 
   getUserName = () => {
-    let userId = deepGet(this.recordedVideoObj, 'reply_obj.replyReceiverUserId');
+    let userId = reduxGetters.getVideoCreatorUserId(this.props.videoId);
     return reduxGetters.getUserName(userId)
   };
 
@@ -218,7 +220,6 @@ class VideoRecorder extends Component {
       }
       // if (no video reply present) { return Coach }
     } else {
-      console.log(this.state.acceptedCameraTnC, 'this.state.acceptedCameraTnC-----------');
       if (this.state.acceptedCameraTnC !== 'true'){
         console.log('=========----============-----------');
 

@@ -41,19 +41,14 @@ class CaptureVideo extends Component {
 
   }
 
-  componentDidMount () {
-
-
-  }
+  componentDidMount () {}
 
 
   showCoachForVideoRecord() {
     const oThis = this;
     if (! this.isVideoTypeReply) {
       utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
-        console.log(terms, 'acceptedCameraTnCacceptedCameraTnCacceptedCameraTnCacceptedCameraTnC');
         oThis.setState({ acceptedCameraTnC: terms });
-        console.log('acceptedCameraTnC:::acceptedCameraTnC', oThis.state.acceptedCameraTnC);
       });
     }
   }
@@ -167,6 +162,7 @@ class CaptureVideo extends Component {
           navigation={this.props.navigation}
           isVideoTypeReply={this.isVideoTypeReply}
           hasVideoReplies={this.state.hasVideoReplies}
+          videoId={this.replyReceiverVideoId}
 
         />
       );

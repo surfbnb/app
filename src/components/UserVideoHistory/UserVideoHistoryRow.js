@@ -8,7 +8,7 @@ import PepoApi from '../../services/PepoApi';
 
 import CurrentUser from '../../models/CurrentUser';
 
-import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
+import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';

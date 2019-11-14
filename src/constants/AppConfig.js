@@ -54,6 +54,11 @@ export default {
     name: 'profile'
   },
 
+  replyMetaProperties: {
+    type: 'user_to_user',
+    name: 'reply_on_video'
+  },
+
   redemptionMetaProperties : {
     type: 'user_to_company',
     name: 'redemption'

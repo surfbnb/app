@@ -78,7 +78,7 @@ class FanVideoDetails extends Component {
   static saveToRedux = (navigation) => {
     let desc = navigation.state.params.videoDesc,
       link = navigation.state.params.videoLink,
-      amount =  navigation.state.params.replyAmount;
+      amount =  pricer.getToDecimal(navigation.state.params.replyAmount);
     Store.dispatch(upsertRecordedVideo({ video_desc: desc, video_link: link, reply_amount:amount  }));
   };
 
@@ -149,7 +149,10 @@ class FanVideoDetails extends Component {
     this.validateData().then((res) => {
    utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
     Store.dispatch(
-      upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, reply_amount: this.replyAmount, do_upload: true })
+      upsertRecordedVideo({ video_desc: this.videoDesc,
+        video_link: this.videoLink,
+        reply_amount: pricer.getToDecimal(this.replyAmount),
+        do_upload: true })
     );
     this.props.navigation.dispatch(StackActions.popToTop());
     this.props.navigation.dispatch(StackActions.popToTop());
@@ -248,27 +251,24 @@ class FanVideoDetails extends Component {
   };
 
 
-  replyAmountChange = (amount) => {
-    this.replyAmount = amount;
-    //Done for the value to be accessible in static navigationOptions
-    this.props.navigation.setParams({
-      replyAmount: amount
-    });
-  };
-
   onErrorCallBack = ( errMsg ) =>{
     this.setState({
       amountError : errMsg
     })
   }
 
-  onChangeText = ( value )=>{
+  replyAmountChange = ( value )=>{
+    this.replyAmount = value;
     let formattedUsdVal = this.getUSDValue( value );
+    //Done for the value to be accessible in static navigationOptions
+    this.props.navigation.setParams({
+      replyAmount: value
+    });
     this.setState({
       usdVal : formattedUsdVal,
       amountError : ""
     });
-  }
+  };
   getUSDValue = (value ) =>{
     let usdVal          = this.priceOracle.btToFiat(value),
       formattedUsdVal =  this.numberFormatter.getFormattedValue( usdVal );
@@ -313,7 +313,7 @@ class FanVideoDetails extends Component {
                 value = {DEFAUT_BT_VALUE}
                 max = {this.props.balance}
                 onErrorCallBack = {this.onErrorCallBack}
-                onChangeText = {this.onChangeText}
+                onChangeText = {this.replyAmountChange}
               />
               <Text>
                 ${this.state.usdVal}

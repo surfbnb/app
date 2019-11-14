@@ -168,24 +168,30 @@ class FanVideoReplyDetails extends Component {
   };
 
 
+  giveUploadConsent = () => {
+    Store.dispatch(
+      upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, do_upload: true })
+    );
+    this.props.navigation.dispatch(StackActions.popToTop());
+    this.props.navigation.dispatch(StackActions.popToTop());
+    this.props.navigation.navigate('HomeScreen');
+  };
+
+
 
 
   enableStartUploadFlag = () => {
     this.clearErrors();
     this.validateData().then((res) => {
-
-     this.ensureSession().then(() => {
-
-       Store.dispatch(
-         upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, do_upload: true })
-       );
-       this.props.navigation.dispatch(StackActions.popToTop());
-       this.props.navigation.dispatch(StackActions.popToTop());
-       this.props.navigation.navigate('HomeScreen');
-
-     }).catch(()=> {
-
-     });
+      let videoOwnerId = this.replyObject.replyReceiverUserId;
+      if (videoOwnerId === CurrentUser.getUserId()){
+        this.giveUploadConsent();
+        return;
+      }
+      this.ensureSession().then(() => {
+       this.giveUploadConsent();
+      }).catch(()=> {
+      });
 
 
 
@@ -287,7 +293,8 @@ class FanVideoReplyDetails extends Component {
   };
 
   getAmountToSend  = () => {
-   return this.replyObject.amountToSendWithReply || 0;
+   let amount = this.replyObject.amountToSendWithReply ;
+    return pricer.getToBT(pricer.getFromDecimal(amount), 2);
   };
 
   render() {

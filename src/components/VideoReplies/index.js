@@ -26,6 +26,7 @@ import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 import { getInset } from 'react-native-safe-area-view';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
+import Pricer from "../../services/Pricer";
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
@@ -46,8 +47,8 @@ class VideoRepliesScreen extends PureComponent {
       super(props);
         this.userId = props.navigation.getParam('userId');
         this.videoId = props.navigation.getParam('videoId');
-        this.amount = ReduxGetters.getReplyAmount(this.videoId );
-        this.videoReplyCount = ReduxGetters.getReplyCount(this.videoId);
+        this.amount = ReduxGetters.getBtAmountForReply(this.videoId );
+        this.videoReplyCount = ReduxGetters.getVideoReplyCount(this.videoId);
 
         this.fetchUrl = DataContract.replies.getReplyListApi(this.videoId);
         this.initialHeight =  height/1.5;
@@ -69,7 +70,7 @@ class VideoRepliesScreen extends PureComponent {
       setTimeout(()=> {
         this.setState({
           showBackdrop: true,
-          videoUploaderVisible: ReduxGetters.getVideoProcessingStatus() // find from redux @mayur
+          videoUploaderVisible: ReduxGetters.getVideoProcessingStatus()
         });
 
       }, 300)
@@ -80,8 +81,8 @@ class VideoRepliesScreen extends PureComponent {
     componentWillUnmount() {
       this.onAnimatedValueChange= () => {};
       this.animatedValue.removeListener(this.listener);
-      videoUploaderComponent.removeListener('show');
-      videoUploaderComponent.removeListener('hide');
+      //videoUploaderComponent.removeListener('show');
+      //videoUploaderComponent.removeListener('hide');
     }
 
     showVideoUploader = () => {
@@ -184,7 +185,7 @@ class VideoRepliesScreen extends PureComponent {
                           {/* {TODO integration pending} */}
                           <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
                           <Image style={{height: 10, width: 10}} source={pepoIcon} />
-                          {this.amount}</Text>
+                          { Pricer.getToBT(Pricer.getFromDecimal(this.amount), 2)}</Text>
                         </View>
 
                         <TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >

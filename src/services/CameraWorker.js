@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import RNFS from 'react-native-fs';
 import Store from '../store';
 import deepGet from 'lodash/get';
+import clone from 'lodash/clone';
 
 
 import {
@@ -28,7 +29,7 @@ import {VideoPlayPauseEmitter} from "../helpers/Emitters";
 import DataContract from "../constants/DataContract";
 import {TransactionExecutor} from './TransactionExecutor';
 import { ostSdkErrors } from '../services/OstSdkErrors';
-
+import AppConfig from '../constants/AppConfig';
 const recordedVideoStates = [
   'raw_video',
   'compressed_video',
@@ -167,8 +168,8 @@ class CameraWorker extends PureComponent {
 
   };
 
-  onRequestAcknowledge = ( ostWorkflowContext, ostWorkflowEntity ) => {
-    console.log('CameraWorker.onRequestAcknowledge');
+  videoUploadedSuccessCallback = ( ostWorkflowContext, ostWorkflowEntity ) => {
+    console.log('CameraWorker.videoUploadedSuccessCallback');
     Toast.show({
       text: 'Your video uploaded successfully.',
       icon: 'success',
@@ -192,21 +193,46 @@ class CameraWorker extends PureComponent {
     });
   };
 
+
+  getSdkMetaProperties = () => {
+    const metaProperties = clone(AppConfig.replyMetaProperties);
+    let parentVideoId =  deepGet(this.props.recorded_video , 'reply_obj.replyReceiverVideoId'),
+    replyDetailId = deepGet(this.props.recorded_video , 'reply_obj.replyDetailId')
+    ;
+
+    if (! parentVideoId || ! replyDetailId ){
+      return ;
+    }
+
+    let details = `vi_${parentVideoId}`;
+    details += `rdi_${replyDetailId}`;
+    metaProperties['details'] = details;
+    return metaProperties;
+  };
+
+
   executeTransaction = () => {
 
-    let goForTx = this.props.recorded_video.go_for_tx;
-    let receiverUserId = deepGet (this.props.recorded_video, 'reply_obj.replyReceiverUserId');
-    let amountToSendWithReply = deepGet(this.props.recorded_video, 'reply_obj.amountToSendWithReply');
-    if (! goForTx || ! receiverUserId || ! amountToSendWithReply ){
+    let goForTx = this.props.recorded_video.go_for_tx,
+      doDiscard = this.props.recorded_video.do_discard,
+    receiverUserId = deepGet (this.props.recorded_video, 'reply_obj.replyReceiverUserId'),
+    amountToSendWithReply = deepGet(this.props.recorded_video, 'reply_obj.amountToSendWithReply');
+    if (! goForTx || ! receiverUserId || doDiscard ){
       return;
     }
+    if ( receiverUserId === this.props.currentUserId || ! amountToSendWithReply) {
+      this.videoUploadedSuccessCallback();
+      return;
+    };
+    videoUploaderComponent.emit('show');
     console.log('CameraWorker.executeTransaction');
 
 
-    let callbacks = {onRequestAcknowledge: this.onRequestAcknowledge, onFlowInterrupt: this.onFlowInterrupt};
+    let callbacks = {onRequestAcknowledge: this.videoUploadedSuccessCallback, onFlowInterrupt: this.onFlowInterrupt};
+    let config = {metaProperties: this.getSdkMetaProperties()};
 
     let txExecutor = new TransactionExecutor({}, callbacks);
-    txExecutor.sendTransactionToSdk( '10', receiverUserId, false);
+    txExecutor.sendTransactionToSdk( amountToSendWithReply, receiverUserId, false);
     // todo : Execute transaction code. call clean up after that.
 
   };
@@ -226,11 +252,9 @@ class CameraWorker extends PureComponent {
       parentVideoId =  deepGet(this.props.recorded_video , 'reply_obj.replyReceiverVideoId');
 
     if ( readyForTx || !parentVideoId ) {
-
       // we have reply OR we dont have video Id
       return true
     }
-    console.log('I ammmmmmmhereeeee', this.props.recorded_video.s3_video,  this.props.recorded_video.pepo_api_posting, this.postToPepoApi );
 
     if (
       this.props.recorded_video.s3_video &&
