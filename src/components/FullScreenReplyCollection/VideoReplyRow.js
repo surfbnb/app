@@ -12,7 +12,7 @@ import inlineStyles from './styles';
 import ReplyPepoTxBtn from '../PepoTransactionButton/ReplyPepoTxBtn';
 import VideoReplySupporterStat from '../CommonComponents/VideoSupporterStat/VideoReplySupporterStat';
 
-import ReplyVideoBottomStatus from '../BottomStatus /ReplyVideoBottomStatus';
+import ReplyVideoBottomStatus from '../BottomStatus/ReplyVideoBottomStatus';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
 

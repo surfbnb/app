@@ -7,7 +7,7 @@ import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
 import deepGet from 'lodash/get';
 
-import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
+import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 import inlineStyles from './styles';
 
 import ReplyIcon from '../CommonComponents/ReplyIcon';

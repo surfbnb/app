@@ -35,8 +35,8 @@ class TransactionExecutor {
         this.callbacks =  callbacks || {};
     }
 
-    sendTransactionToSdk(btAmount=0 , toUserId , validateSession=true  ) {
-        const btInDecimal = Pricer.getToDecimal(btAmount);
+    sendTransactionToSdk(btInDecimal, toUserId , validateSession=true  ) {
+        if(!btInDecimal) return ;
         this.setToUser( toUserId );
 
         if( !validateSession ){

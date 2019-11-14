@@ -128,6 +128,26 @@ class ReduxGetters {
     return deepGet(state, `video_stat_entities.id_${id}.description_id`);
   }
 
+  getVideoReplyCount(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.total_replies`, 0);
+  }
+
+  getBtAmountForReply(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.per_reply_amount_in_wei`, 0);
+  }
+
+  isReplyAllowed(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.is_reply_allowed`, true);
+  }
+
+  getVideoCreatorUserId(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.creator_user_id`, true);
+  }
+
   getTappedIncludesEntity(videoId, tappedText) {
     let lowercasedText = tappedText.toLowerCase();
     let state = Store.getState();
@@ -443,21 +463,6 @@ class ReduxGetters {
   getReplyBt(id, state) {
     state = state || Store.getState();
     return deepGet(state, `reply_detail_entities.id_${id}.total_amount_raised_in_wei`);
-  }
-
-  getReplyCount(id, state){
-    state = state || Store.getState();
-    return deepGet(state, `reply_detail_entities.id_${id}.total_replies`, 0);
-  }
-
-  getReplyAmount(id, state){
-    state = state || Store.getState();
-    return deepGet(state, `reply_detail_entities.id_${id}.per_reply_amount_in_wei`, 0);
-  }
-
-  getReplyAllowed(id, state){
-    state = state || Store.getState();
-    return deepGet(state, `reply_detail_entities.id_${id}.is_reply_allowed`, true);
   }
 
   getReplyKind(id, state){
