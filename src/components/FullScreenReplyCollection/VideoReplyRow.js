@@ -22,7 +22,7 @@ class VideoReplyRow extends PureComponent {
         super(props);
         this.userId = deepGet(this.props.item, 'payload.user_id');
         this.replyId = deepGet(this.props.item,`payload.${DataContract.replies.replyDetailIdKey}`);
-        this.videoId = ReduxGetters.getVideoReplyId(this.replyId);
+        this.videoId = ReduxGetters.getReplyEntityId(this.replyId);
     }
 
     refetchVideoReply = () => {

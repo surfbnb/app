@@ -44,8 +44,8 @@ class VideoRepliesScreen extends PureComponent {
       super(props);
         this.userId = props.navigation.getParam('userId');
         this.videoId = props.navigation.getParam('videoId');
-        this.amount = ReduxGetters.getVideoReplyAmount(this.videoId );
-        this.videoReplyCount = ReduxGetters.getVideoReplyCount(this.videoId);
+        this.amount = ReduxGetters.getReplyAmount(this.videoId );
+        this.videoReplyCount = ReduxGetters.getReplyCount(this.videoId);
 
         this.fetchUrl = DataContract.replies.getReplyListApi(this.videoId);
         this.initialHeight =  height/1.5;

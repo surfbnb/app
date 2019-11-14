@@ -220,7 +220,7 @@ export default {
     const kind  = deepGet( item , DataContract.videos.kindKey); 
     if( kind == DataContract.videos.videoKind.reply){
         const reply_detail_id = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`); 
-        const replyKind = ReduxGetters.getVideoReplyKind(reply_detail_id);
+        const replyKind = ReduxGetters.getReplyKind(reply_detail_id);
         return replyKind;
     }
   }
