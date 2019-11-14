@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
-import { withNavigation } from 'react-navigation';
 
 import inlineStyles from './styles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -14,7 +13,6 @@ import CurrentUser from '../../models/CurrentUser';
 class BottomStatus extends PureComponent {
   constructor(props) {
     super(props);
-    this.videoDescriptionId = reduxGetter.getVideoDescriptionId(this.props.videoId);
   }
 
   onLinkClick = () => {
@@ -22,12 +20,12 @@ class BottomStatus extends PureComponent {
   };
 
   onTagPressed = (tag) => {
-    let entity = reduxGetter.getTappedIncludesEntity(this.videoDescriptionId, tag);
+    let entity = reduxGetter.getTappedIncludesEntity(this.props.entityDescriptionId, tag);
     this.onDescriptionClick(entity, tag);
   };
 
-  isValidTag(videoId, tappedText) {
-    let entity = reduxGetter.getTappedIncludesEntity(videoId, tappedText);
+  isValidTag(descriptionId, tappedText) {
+    let entity = reduxGetter.getTappedIncludesEntity(descriptionId, tappedText);
     return !!entity
   }
 
@@ -71,7 +69,7 @@ class BottomStatus extends PureComponent {
                 numberOfLines={3}
               >
                 {this.props.description.split(' ').map((item) => {
-                  if (item.startsWith('#') && this.isValidTag(this.videoDescriptionId, item)) {
+                  if (item.startsWith('#') && this.isValidTag(this.props.entityDescriptionId, item)) {
                     let tagText = item.replace("#", "");
                     return(
                       <Text
@@ -119,4 +117,4 @@ class BottomStatus extends PureComponent {
   };
 }
 
-export default withNavigation(BottomStatus);
+export default BottomStatus;

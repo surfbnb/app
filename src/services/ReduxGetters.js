@@ -485,6 +485,11 @@ class ReduxGetters {
     return deepGet(state, `video_reply_stat_entities.id_${id}.total_contributed_by`);
   }
 
+  getReplyLinkId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_reply_stat_entities.id_${id}.link_ids[0]`);
+  }
+
   isReplySupported(id, state) {
     state = state || Store.getState();
     let val = deepGet(state, `video_reply_stat_entities.id_${id}`);

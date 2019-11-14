@@ -71,13 +71,13 @@ class HomeFeedRow extends PureComponent {
               </View>
 
             <VideoSupporterStat
-              videoId={this.videoId}
+              entityId={this.videoId}
               userId={this.userId}
               pageName="feed"
             />
           </View>
 
-          <VideoBottomStatus userId={this.userId} videoId={this.videoId} />
+          <VideoBottomStatus userId={this.userId} entityId={this.videoId} />
         </View>
       </View>
     );

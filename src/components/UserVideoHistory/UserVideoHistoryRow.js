@@ -70,14 +70,14 @@ class UserVideoHistoryRow extends PureComponent {
               </View>
 
               <VideoSupporterStat
-                videoId={this.props.videoId}
+                entityId={this.props.videoId}
                 userId={this.props.userId}
               />
             </View>
 
             <VideoBottomStatus
               userId={this.props.userId}
-              videoId={this.props.videoId}
+              entityId={this.props.videoId}
             />
           </View>
         )}

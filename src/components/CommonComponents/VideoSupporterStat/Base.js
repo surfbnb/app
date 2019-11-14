@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
-import { withNavigation } from 'react-navigation';
 
 import pricer from '../../../services/Pricer';
 import inlineStyles from '../../Home/styles';
@@ -9,7 +8,7 @@ import multipleClickHandler from '../../../services/MultipleClickHandler';
 import Utilities from "../../../services/Utilities";
 import CurrentUser from '../../../models/CurrentUser';
 
-class VideoSupporterStat extends PureComponent {
+class Base extends PureComponent {
   constructor(props) {
     super(props);
   }
@@ -34,18 +33,6 @@ class VideoSupporterStat extends PureComponent {
     return (
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())} pointerEvents={'auto'}>
       <View style={[inlineStyles.raisedSupported]}>
-        {/*{*/}
-        {/*<View*/}
-        {/*ellipsizeMode={'tail'}*/}
-        {/*numberOfLines={1}*/}
-        {/*>*/}
-        {/*<Text*/}
-        {/*style={[inlineStyles.raisedSupportedTxt]}*/}
-        {/*ellipsizeMode={'tail'}*/}
-        {/*numberOfLines={1}*/}
-        {/*>${`${ pricer.toDisplayAmount(this.btToFiat(this.props.totalBt))}`}{' '}<Text style={{letterSpacing: 0.8, fontFamily: 'AvenirNext-Regular', fontSize: 13}}>RAISED</Text></Text>*/}
-        {/*</View>*/}
-        {/*}*/}
         {
           <View ellipsizeMode={'tail'} numberOfLines={1}>
             <Text style={[inlineStyles.raisedSupportedTxt]} ellipsizeMode={'tail'} numberOfLines={1}>
@@ -61,4 +48,4 @@ class VideoSupporterStat extends PureComponent {
   }
 }
 
-export default withNavigation(VideoSupporterStat);
+export default Base;

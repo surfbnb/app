@@ -12,9 +12,10 @@ import inlineStyles from './styles';
 import ReplyPepoTxBtn from '../PepoTransactionButton/ReplyPepoTxBtn';
 import VideoReplySupporterStat from '../CommonComponents/VideoSupporterStat/VideoReplySupporterStat';
 
-import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
+import ReplyVideoBottomStatus from '../BottomStatus /ReplyVideoBottomStatus';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
+
 
 
 class VideoReplyRow extends PureComponent {
@@ -61,15 +62,13 @@ class VideoReplyRow extends PureComponent {
 
                             <VideoReplySupporterStat
                                 videoId={this.videoId}
-                                userId={this.userId}
-                                replyId={this.replyId}
+                                entityId={this.replyId}
                             />
                         </View>
 
-                        <VideoBottomStatus
+                        <ReplyVideoBottomStatus
                             userId={this.userId}
-                            videoId={this.videoId}
-                            replyId={this.replyId}
+                            entityId={this.replyId}
                         />
                     </View>
                 )}

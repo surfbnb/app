@@ -2,21 +2,15 @@ import { connect } from 'react-redux';
 
 import reduxGetter from '../../../services/ReduxGetters';
 import Base from './Base';
+import { withNavigation } from 'react-navigation';
 
 
 const mapStateToProps = (state, ownProps) => {
   return {
     supporters: reduxGetter.getUserSupporters(ownProps.userId, state),
-    totalBt: reduxGetter.getVideoBt(ownProps.videoId, state)
+    totalBt: reduxGetter.getVideoBt(ownProps.entityId, state)
   };
 };
 
-class VideoAmountStat extends Base {
-  constructor(props) {
-    super(props);
-  }
-}
 
-
-
-export default connect(mapStateToProps)(Base);
+export default connect(mapStateToProps)( withNavigation ( Base) );

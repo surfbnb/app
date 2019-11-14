@@ -56,14 +56,14 @@ class FullScreeVideoRow extends PureComponent {
                             </View>
 
                             <VideoSupporterStat
-                                videoId={this.videoId}
+                                entityId={this.videoId}
                                 userId={this.userId}
                             />
                         </View>
 
                         <VideoBottomStatus
                             userId={this.userId}
-                            videoId={this.videoId}
+                            entityId={this.videoId}
                         />
                     </View>
                 )}
