@@ -107,6 +107,7 @@ export const upsertVideoStatEntities = (data) => ({
   payload: { video_stat_entities: data }
 });
 
+//@Preshita Dont put this in redux 
 export const upsertVideoReplyEntities = (data) => ({
   type: types.UPSERT_VIDEO_REPLY_ENTITIES,
   payload: { video_reply_entities: data }

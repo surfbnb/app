@@ -3,9 +3,6 @@ import { TouchableWithoutFeedback, View } from 'react-native';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import Toast from '../../theme/components/NotificationToast';
 import deepGet from 'lodash/get';
-import clone from 'lodash/clone';
-
-import { withNavigation } from 'react-navigation';
 
 import CurrentUser from '../../models/CurrentUser';
 import PepoButton from './PepoButton';
@@ -13,7 +10,7 @@ import appConfig from '../../constants/AppConfig';
 import PepoApi from '../../services/PepoApi';
 import pricer from '../../services/Pricer';
 import Store from '../../store';
-import { updateExecuteTransactionStatus, updateBalance, upsertVideoStatEntities } from '../../actions';
+import { updateExecuteTransactionStatus, updateBalance } from '../../actions';
 import ExecuteTransactionWorkflow from '../../services/OstWalletCallbacks/ExecuteTransactionWorkFlow';
 import reduxGetter from '../../services/ReduxGetters';
 import { ostErrors } from '../../services/OstErrors';
@@ -33,7 +30,7 @@ class Base extends PureComponent {
 
   isDisabled = () => {
     return (
-       this.props.userId == CurrentUser.getUserId() || !this.isBalance() || !this.props.isCurrentUserActivated || this.props.disabled || !this.props.isVideoUserActivated
+       this.props.userId == CurrentUser.getUserId() || !this.isBalance() || !this.props.isCurrentUserActivated || this.props.disabled || !this.props.isEntityUserActivated
     );
   };
 
@@ -110,12 +107,7 @@ class Base extends PureComponent {
   }
 
   getSdkMetaProperties() {
-    const metaProperties = clone(appConfig.metaProperties);
-    if (this.props.videoId) {
-      metaProperties['name'] = 'video';
-      metaProperties['details'] = `vi_${this.props.videoId}`;
-    }
-    return metaProperties;
+    throw "Overwrite";
   }
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
@@ -124,16 +116,7 @@ class Base extends PureComponent {
   }
 
   getDropPixel(){
-      return {
-        e_entity: 'video',
-        e_action: 'contribution',
-        e_data_json: {
-          video_id: this.props.videoId,
-          profile_user_id: this.props.userId,
-          amount: this.btAmount
-        },
-        p_type: 'feed'
-      }
+    throw "Overwrite";
   }
 
   dropPixel() {
@@ -190,21 +173,11 @@ class Base extends PureComponent {
       Store.dispatch(updateBalance(balance));
     }
 
-    let videoStats = reduxGetter.getVideoStats(this.props.videoId),
-      updateVideoStats = false;
-    if (totalBt && totalBt > 0) {
-      videoStats['total_amount_raised_in_wei'] = Pricer.getToDecimal(totalBt);
-      updateVideoStats = true;
-    }
+    this.reduxEntityUpdate( totalBt, supporters );
+  }
 
-    if (supporters && !this.props.isSupporting) {
-      videoStats['total_contributed_by'] = supporters;
-      updateVideoStats = true;
-    }
-
-    if (updateVideoStats) {
-      Store.dispatch(upsertVideoStatEntities(utilities._getEntityFromObj(videoStats)));
-    }
+  reduxEntityUpdate( totalBt, supporters  ){
+     throw "OverWrite";
   }
 
   onPressOut = (btAmount, totalBt) => {
@@ -256,7 +229,7 @@ class Base extends PureComponent {
           <PepoButton
             count={this.getBtAmount()}
             isSelected={this.props.isSupporting || this.localSupported}
-            id={this.props.videoId}
+            id={this.props.entityId}
             disabled={this.isDisabled()}
             maxCount={this.getBalanceToNumber()}
             onMaxReached={this.onMaxReached}
@@ -268,4 +241,4 @@ class Base extends PureComponent {
   }
 }
 
-export default withNavigation(Base);
+export default Base;

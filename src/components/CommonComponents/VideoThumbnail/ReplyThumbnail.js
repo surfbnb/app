@@ -12,10 +12,10 @@ class ReplyThumbnail extends PureComponent {
   render(){
     const replyId = deepGet(this.props , "payload.reply_detail_id"),
      userId = deepGet(this.props , "payload.user_id") ,
-     videoId = reduxGetters.getVideoReplyId( replyId ),
+     videoId = reduxGetters.getReplyEntityId( replyId ),
      userName = reduxGetters.getUserName(userId),
      imageUrl = reduxGetters.getVideoImgUrl(videoId, null,  AppConfig.userVideos.userScreenCoverImageWidth) ,
-     videoDesc = reduxGetters.getVideoDescription(reduxGetters.getVideoReplyDescriptionId(videoId))
+     videoDesc = reduxGetters.getVideoDescription(reduxGetters.getReplyDescriptionId(videoId))
      ;
     return <Base  userName={userName} imageUrl={imageUrl} videoDesc={videoDesc} {...this.props} />;
   }

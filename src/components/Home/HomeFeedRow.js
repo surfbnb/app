@@ -64,7 +64,7 @@ class HomeFeedRow extends PureComponent {
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
               <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <PepoTxBtn  resyncDataDelegate={this.refetchFeed} userId={this.userId} videoId={this.videoId}/>
+                <PepoTxBtn  resyncDataDelegate={this.refetchFeed} userId={this.userId} entityId={this.videoId}/>
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                 <ShareIcon videoId={this.videoId} userId={this.userId} />
                 <ReportVideo  userId={this.userId} videoId={this.videoId} />

@@ -7,7 +7,7 @@ import Base from './Base';
 const mapStateToProps = (state, ownProps) => {
   return {
     supporters: reduxGetter.getUserSupporters(ownProps.userId, state),
-    totalBt: reduxGetter.getVideoReplyBt(ownProps.videoId, state)
+    totalBt: reduxGetter.getReplyBt(ownProps.videoId, state)
   };
 };
 

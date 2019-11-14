@@ -48,7 +48,7 @@ class FullScreeVideoRow extends PureComponent {
                                 <PepoTxBtn
                                     resyncDataDelegate={this.refetchVideo}
                                     userId={this.userId}
-                                    videoId={this.videoId}
+                                    entityId={this.videoId}
                                 />
                                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                                 <ShareIcon  userId={this.userId} videoId={this.videoId} />

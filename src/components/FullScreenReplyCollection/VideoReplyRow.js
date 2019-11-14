@@ -9,10 +9,11 @@ import deepGet from 'lodash/get';
 
 import inlineStyles from './styles';
 
-import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+import ReplyPepoTxBtn from '../PepoTransactionButton/ReplyPepoTxBtn';
 import VideoReplySupporterStat from '../CommonComponents/VideoSupporterStat/VideoReplySupporterStat';
 
 import VideoBottomStatus from '../BottomStatus /VideoBottomStatus';
+
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
@@ -46,10 +47,10 @@ class VideoReplyRow extends PureComponent {
                         <View style={inlineStyles.touchablesBtns}>
 
                             <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                                <PepoTxBtn
+                                <ReplyPepoTxBtn
                                     resyncDataDelegate={this.refetchVideoReply}
                                     userId={this.userId}
-                                    videoId={this.replyId}
+                                    entityId={this.replyId}
                                 />
                                 <ShareIcon  userId={this.userId} videoId={this.replyId} />
                                 <ReportVideo  userId={this.userId} videoId={this.replyId} />

@@ -62,7 +62,7 @@ class UserVideoHistoryRow extends PureComponent {
                 <PepoTxBtn
                   resyncDataDelegate={this.refetchVideo}
                   userId={this.props.userId}
-                  videoId={this.props.videoId}
+                  entityId={this.props.videoId}
                 />
                 <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
                 <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} />

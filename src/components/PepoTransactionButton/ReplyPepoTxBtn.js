@@ -1,20 +1,24 @@
-import { updateExecuteTransactionStatus, updateBalance, upsertVideoStatEntities } from '../../actions';
-import reduxGetter from "../../services/ReduxGetters";
-import CurrentUser from "../../models/CurrentUser";
-import utilities from "../../services/Utilities";
 import { connect } from 'react-redux';
+import clone from 'lodash/clone';
+import CurrentUser from '../../models/CurrentUser';
+import appConfig from '../../constants/AppConfig';
 import Store from '../../store';
+import { upsertVideoReplyStatEntities } from '../../actions';
+import reduxGetter from '../../services/ReduxGetters';
+import Pricer from '../../services/Pricer';
+import utilities from '../../services/Utilities';
+import { withNavigation } from 'react-navigation';
+
 import Base from "./Base";
 
 const mapStateToProps = (state, ownProps) => ({
     balance: state.balance,
     disabled: state.executeTransactionDisabledStatus,
-    isVideoUserActivated: utilities.isUserActivated(reduxGetter.getUserActivationStatus(ownProps.userId)),
+    isEntityUserActivated: utilities.isUserActivated(reduxGetter.getUserActivationStatus(ownProps.userId)),
     isCurrentUserActivated: CurrentUser.isUserActivated() ,
-    supporters: "", //TODO
-    isSupporting:"", //TODO
-    totalBt: "", //TODO
-    videoId : "", //TODO
+    supporters: reduxGetter.getReplySupporters(ownProps.entityId),
+    isSupporting: reduxGetter.isReplySupported(ownProps.entityId) , 
+    totalBt: reduxGetter.getReplyBt(ownProps.entityId), 
   });
 
 class ReplyPepoTxBtn extends Base {
@@ -25,20 +29,18 @@ class ReplyPepoTxBtn extends Base {
 
     getSdkMetaProperties() {
       const metaProperties = clone(appConfig.metaProperties);
-      if (this.props.videoId) {
-        metaProperties['name'] = 'pepo_on_reply';
-        metaProperties['details'] = `rdi_${this.props.replyId}`;
-      }
+      metaProperties['name'] = 'pepo_on_reply';
+      metaProperties['details'] = `rdi_${this.props.entityId}`;
       return metaProperties;
     }
 
     getDropPixel(){
-      //TODO 
+      //TODO confrim with @JUNISHA 
       return {
         e_entity: 'video',
         e_action: 'contribution',
         e_data_json: {
-          video_id: this.props.videoId,
+          reply_id: this.props.entityId,
           profile_user_id: this.props.userId,
           amount: this.btAmount
         },
@@ -46,34 +48,25 @@ class ReplyPepoTxBtn extends Base {
       }
     }
 
-    reduxUpdate(isTXBtnDisabled, balance, totalBt, supporters) {
-      //TODO
-      if (isTXBtnDisabled !== undefined) {
-        Store.dispatch(updateExecuteTransactionStatus(isTXBtnDisabled));
-      }
-  
-      if (balance) {
-        balance = pricer.getToDecimal(balance);
-        Store.dispatch(updateBalance(balance));
-      }
-  
-      let videoStats = reduxGetter.getVideoStats(this.props.videoId),
-        updateVideoStats = false;
+    reduxEntityUpdate(  totalBt, supporters ){
+      let replyDetails = reduxGetter.getReplyEntity(this.props.entityId),
+          updateEntity = false
+      ;
       if (totalBt && totalBt > 0) {
         videoStats['total_amount_raised_in_wei'] = Pricer.getToDecimal(totalBt);
-        updateVideoStats = true;
+        updateEntity = true;
       }
-  
+
       if (supporters && !this.props.isSupporting) {
-        videoStats['total_contributed_by'] = supporters;
-        updateVideoStats = true;
+        replyDetails['total_contributed_by'] = supporters;
+        updateEntity = true;
       }
-  
-      if (updateVideoStats) {
-        Store.dispatch(upsertVideoStatEntities(utilities._getEntityFromObj(videoStats)));
+
+      if (updateEntity) {
+        Store.dispatch(upsertVideoReplyStatEntities(utilities._getEntityFromObj(replyDetails)));
       }
     }
 
 }
 
-export default connect(mapStateToProps)(ReplyPepoTxBtn);
+export default connect(mapStateToProps)( withNavigation(  ReplyPepoTxBtn ));

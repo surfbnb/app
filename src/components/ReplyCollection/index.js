@@ -169,8 +169,8 @@ class VideoReplyList extends PureComponent {
         if( kind == DataContract.videos.videoKind.reply){
             const userId = deepGet(item, "payload.user_id");
             const reply_detail_id = deepGet(item,'payload.reply_detail_id');
-            const videoId = ReduxGetters.getVideoReplyId(reply_detail_id);
-            const replyKind = ReduxGetters.getVideoReplyKind(reply_detail_id);
+            const videoId = ReduxGetters.getReplyEntityId(reply_detail_id);
+            const replyKind = ReduxGetters.getReplyKind(reply_detail_id);
             if(replyKind == DataContract.replies.videoReplyKind.video) {
                 return (<View style={{position: 'relative'}}>
                 {this.isCurrentUser( userId ) && <LinearGradient
