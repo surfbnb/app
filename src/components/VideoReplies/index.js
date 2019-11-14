@@ -5,8 +5,10 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Animated
-} from "react-native";
+  Animated, Platform ,
+  StatusBar
+} from 'react-native';
+
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
@@ -162,7 +164,7 @@ class VideoRepliesScreen extends PureComponent {
                   }}
                   ref={c => (this._panel = c)}
                   draggableRange={{
-                    top: height - finalPadding, //TODO check is top expand
+                    top: height - topPadding, //TODO check is top expand
                     bottom: 0
                   }}
                   showBackdrop={this.state.showBackdrop}
@@ -194,7 +196,8 @@ class VideoRepliesScreen extends PureComponent {
                                         onData={this.onData}
                                         videoReplyCount={this.videoReplyCount}
                                         amount={this.amount}
-                                        listBottomPadding={this.state.currentHeight > this.initialHeight? 0 : listBottomPadding}
+                                        listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding : listBottomPadding}
+
                       />
                     </View>
                   </React.Fragment>
