@@ -3,7 +3,7 @@ import clone from 'lodash/clone';
 import CurrentUser from '../../models/CurrentUser';
 import appConfig from '../../constants/AppConfig';
 import Store from '../../store';
-import { upsertVideoReplyStatEntities } from '../../actions';
+import { upsertReplyDetailEntities } from '../../actions';
 import reduxGetter from '../../services/ReduxGetters';
 import Pricer from '../../services/Pricer';
 import utilities from '../../services/Utilities';
@@ -63,7 +63,7 @@ class ReplyPepoTxBtn extends Base {
       }
 
       if (updateEntity) {
-        Store.dispatch(upsertVideoReplyStatEntities(utilities._getEntityFromObj(replyDetails)));
+        Store.dispatch(upsertReplyDetailEntities(utilities._getEntityFromObj(replyDetails)));
       }
     }
 

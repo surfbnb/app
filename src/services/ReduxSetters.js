@@ -15,7 +15,7 @@ const knownEntitiesDispatcherMap = {
   videos: 'upsertVideoEntities',
   video_details: 'upsertVideoStatEntities',
   video_replies: 'upsertVideoReplyEntities',
-  reply_details: 'upsertVideoReplyStatEntities',
+  reply_details: 'upsertReplyDetailEntities',
   images: 'upsertImageEntities',
   current_user_video_contributions: 'upsertVideoContributionEntities',
   current_user_user_contributions: 'upsertUserContributionEntities',

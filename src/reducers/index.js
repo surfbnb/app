@@ -25,8 +25,7 @@ export const {
   upsertUserStatEntities,
   upsertVideoEntities,
   upsertVideoStatEntities,
-  upsertVideoReplyEntities,
-  upsertVideoReplyStatEntities,
+  upsertReplyDetailEntities,
   upsertImageEntities,
   upsertHomeFeedEntities,
   updateBalance,
@@ -70,8 +69,7 @@ const defaultState = {
   link_entities: {},
   video_entities: {},
   video_stat_entities: {},
-  video_reply_entities: {},
-  video_reply_stat_entities: {},
+  reply_detail_entities: {},
   video_description_entities: {},
   image_entities: {},
   home_feed_entities: {},
@@ -103,8 +101,7 @@ const logoutDefault = {
   link_entities: {},
   video_entities: {},
   video_stat_entities: {},
-  video_reply_entities: {},
-  video_reply_stat_entities: {},
+  reply_detail_entities: {},
   video_description_entities: {},
   image_entities: {},
   home_feed_entities: {},
@@ -179,13 +176,9 @@ export const reducer = handleActions(
       ...state,
       video_stat_entities: assignIn({}, state.video_stat_entities, action.payload.video_stat_entities)
     }),
-    [upsertVideoReplyEntities]: (state, action) => ({
+    [upsertReplyDetailEntities]: (state, action) => ({
       ...state,
-      video_reply_entities: assignIn({}, state.video_reply_entities, action.payload.video_reply_entities)
-    }),
-    [upsertVideoReplyStatEntities]: (state, action) => ({
-      ...state,
-      video_reply_stat_entities: assignIn({}, state.video_reply_stat_entities, action.payload.video_reply_stat_entities)
+      reply_detail_entities: assignIn({}, state.reply_detail_entities, action.payload.reply_detail_entities)
     }),
     [upsertVideoDescriptionEntities]: (state, action) => ({
       ...state,
