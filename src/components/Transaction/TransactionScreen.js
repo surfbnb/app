@@ -37,6 +37,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
 import ReduxGetters from '../../services/ReduxGetters';
 import PepoNativeHelper from '../../helpers/PepoNativeHelper';
+import CommonStyle from '../../theme/styles/Common';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -544,7 +545,7 @@ class TransactionScreen extends Component {
           }
         }}
       >
-        <View style={{ flex: 1, backgroundColor:  'rgba(0,0,0,0.5)' }}>
+        <View style={CommonStyle.modalViewContainer}>
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
               <View style={inlineStyles.headerWrapper}>

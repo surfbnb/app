@@ -23,10 +23,13 @@ import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 
 import { getInset } from 'react-native-safe-area-view';
 import DataContract from '../../constants/DataContract';
+import ReduxGetters from '../../services/ReduxGetters';
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
+const finalPadding = topPadding - bottomPadding;
+const listBottomPadding = height - (height/1.5);
 
 class VideoRepliesScreen extends PureComponent {
 
@@ -40,20 +43,22 @@ class VideoRepliesScreen extends PureComponent {
     constructor(props){
       super(props);
         this.userId = props.navigation.getParam('userId');
-        this.userName = props.navigation.getParam('userName');
         this.videoId = props.navigation.getParam('videoId');
-        this.amount = props.navigation.getParam('amount');
-        this.videoReplyCount = props.navigation.getParam('videoReplyCount');
+        this.amount = ReduxGetters.getVideoReplyAmount(this.videoId );
+        this.videoReplyCount = ReduxGetters.getVideoReplyCount(this.videoId);
+
         this.fetchUrl = DataContract.replies.getReplyListApi(this.videoId);
         this.initialHeight =  height/1.5;
         this.animatedValue = new Animated.Value(this.initialHeight) ;
         this.listener = null;
         this.panelAnimateTimeOut = 0 ;
 
+
       this.state = {
         showBackdrop : false,
         videoUploaderVisible: false,
-        videoUploaderText: 'Posting reply'
+        videoUploaderText: 'Posting reply',
+        currentHeight : this.initialHeight
       }
     }
 
@@ -62,10 +67,10 @@ class VideoRepliesScreen extends PureComponent {
       setTimeout(()=> {
         this.setState({
           showBackdrop: true,
-          videoUploaderVisible: true//find from redux @mayur
+          videoUploaderVisible: ReduxGetters.getVideoProcessingStatus() // find from redux @mayur
         });
 
-      }, 500)
+      }, 300)
       videoUploaderComponent.on('show', this.showVideoUploader);
       videoUploaderComponent.on('hide', this.hideVideoUploader);
     }
@@ -146,48 +151,55 @@ class VideoRepliesScreen extends PureComponent {
                   id={3}
                 />
               )}
-            <SlidingUpPanel ref={c => (this._panel = c)}
-                containerStyle={{zIndex: 99}}
-                animatedValue={this.animatedValue}
-                ref={c => (this._panel = c)}
-                draggableRange={{
-                  top: height - topPadding - bottomPadding, //TODO check is top expand
-                  bottom: 0
-                }}
-                showBackdrop={this.state.showBackdrop}
-                snappingPoints={[0, this.initialHeight, height]}>
-              {dragHandler => (
-                <React.Fragment>
-                  <View style={[inlineStyles.container]}>
-                    <View style={inlineStyles.dragHandler} {...dragHandler}>
-                      <TouchableOpacity onPress={this.onCrossIconClick} style={[inlineStyles.iconWrapper]} >
-                        <Image style={inlineStyles.iconSkipFont} source={crossIcon}></Image>
-                      </TouchableOpacity>
+              <SlidingUpPanel ref={c => (this._panel = c)}
+                  containerStyle={{zIndex: 99}}
+                  animatedValue={this.animatedValue}
+                  onMomentumDragEnd={(value) => {
+                    this.setState({
+                      currentHeight : value
+                    })
 
-                      <View style={inlineStyles.repliesTxt}>
-                        <Text numberOfLines={1} style={inlineStyles.headerText}>
-                          Replies to {this.userName}
-                        </Text>
-                        {/* {TODO integration pending} */}
-                        <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
-                        <Image style={{height: 10, width: 10}} source={pepoIcon} />
-                        {this.amount}</Text>
+                  }}
+                  ref={c => (this._panel = c)}
+                  draggableRange={{
+                    top: height - finalPadding, //TODO check is top expand
+                    bottom: 0
+                  }}
+                  showBackdrop={this.state.showBackdrop}
+                  snappingPoints={[0, this.initialHeight, height]}>
+                {dragHandler => (
+                  <React.Fragment>
+                    <View style={[inlineStyles.container]}>
+                      <View style={inlineStyles.dragHandler} {...dragHandler}>
+                        <TouchableOpacity onPress={this.onCrossIconClick} style={[inlineStyles.iconWrapper]} >
+                          <Image style={inlineStyles.iconSkipFont} source={crossIcon}></Image>
+                        </TouchableOpacity>
+
+                        <View style={inlineStyles.repliesTxt}>
+                          <Text numberOfLines={1} style={inlineStyles.headerText}>
+                            Replies to {this.userName}
+                          </Text>
+                          {/* {TODO integration pending} */}
+                          <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
+                          <Image style={{height: 10, width: 10}} source={pepoIcon} />
+                          {this.amount}</Text>
+                        </View>
+
+                        <TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >
+                          <Image style={[inlineStyles.iconSkipFont, {height: 25, width: 25}]} source={plusIcon} />
+                        </TouchableOpacity>
+
                       </View>
-
-                      <TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >
-                        <Image style={[inlineStyles.iconSkipFont, {height: 25, width: 25}]} source={plusIcon} />
-                      </TouchableOpacity>
-
+                      <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
+                                        onData={this.onData}
+                                        videoReplyCount={this.videoReplyCount}
+                                        amount={this.amount}
+                                        listBottomPadding={this.state.currentHeight > this.initialHeight? 0 : listBottomPadding}
+                      />
                     </View>
-                    <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
-                                      onData={this.onData}
-                                      videoReplyCount={this.videoReplyCount}
-                                      amount={this.amount}
-                    />
-                  </View>
-                </React.Fragment>
-              )}
-            </SlidingUpPanel>
+                  </React.Fragment>
+                )}
+              </SlidingUpPanel>
           </React.Fragment>
         );
     }

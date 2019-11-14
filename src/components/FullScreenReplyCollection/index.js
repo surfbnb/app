@@ -4,7 +4,6 @@ import deepGet from "lodash/get";
 
 import Pagination from "../../services/Pagination";
 import inlineStyles from "./styles";
-import backIcon from '../../assets/back-arrow.png';
 import pepoIcon from '../../assets/pepo-tx-icon.png';
 import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import VideoReplyRow from "./VideoReplyRow";
@@ -12,6 +11,8 @@ import NavigationService from "../../services/NavigationService";
 import utilities from '../../services/Utilities';
 import crossIcon from '../../assets/cross_icon.png';
 import ReduxGetters from "../../services/ReduxGetters";
+import Utilities from "../../services/Utilities";
+import DataContract from "../../constants/DataContract";
 
 
 
@@ -189,13 +190,18 @@ class FullScreenReplyCollection extends PureComponent{
     }
 
     _renderItem = ({ item, index }) => {
-        const payload = { user_id : deepGet(item, "payload.user_id") ,  video_id: deepGet(item, "payload.reply_detail_id")}
-        return  <VideoReplyRow     shouldPlay={this.shouldPlay}
-                                   isActive={index == this.state.activeIndex}
-                                   doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
-                                   payload={payload}
-                                    /> ;
+        if(Utilities.getVideoReplyKind( item ) == DataContract.replies.videoReplyKind.video){
+            return this._renderVideoReplyRow( item, index );
+        } 
     };
+
+    _renderVideoReplyRow(item, index){
+        return  <VideoReplyRow  shouldPlay={this.shouldPlay}
+                                isActive={index == this.state.activeIndex}
+                                doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
+                                item={item}
+         /> ;
+    }
 
     onViewableItemsChanged = (data) => {
         this.currentIndex = deepGet(data, 'viewableItems[0].index') || 0;

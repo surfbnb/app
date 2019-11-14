@@ -106,6 +106,10 @@ class Pricer {
     }
   }
 
+  getWeiToNumber = ( val ) => { 
+    return val && Math.floor(Number(this.getFromDecimal(val))) || 0;
+  } ;
+
   getBtFromPepoCornsInWei( pepoCorns , step , pepoInWeiPerStep){
     if(!pepoCorns || !step || !pepoInWeiPerStep ) return "0";
     let pepoInEthPerStep =  this.getFromDecimal(pepoInWeiPerStep); //Normalize to ETH

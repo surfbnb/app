@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions, Easing, Animated } from 'react-native';
+import { View, Dimensions, Easing, Animated , Platform} from 'react-native';
 import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator , StackViewTransitionConfigs} from 'react-navigation-stack';
@@ -98,7 +98,8 @@ const txModalConfig = {
       && prevScene.route.routeName === 'VideoReplies'
       && nextScene.route.routeName === 'FullScreenReplyCollection') {
       return  NavigationAnimation.zoomIn();
-    } else if (prevScene
+    }
+    else if (prevScene
       && prevScene.route.routeName === 'FullScreenReplyCollection'
       && nextScene.route.routeName === 'VideoReplies') {
       return  NavigationAnimation.zoomOut();

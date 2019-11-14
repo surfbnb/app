@@ -175,6 +175,12 @@ class ReduxGetters {
     return deepGet(Store.getState(), `recorded_video`);
   }
 
+  getRecordedVideoType() {
+    return deepGet(Store.getState(), `recorded_video.video_type`);
+  }
+
+
+
   getRecordedVideoCurrentProcess() {
     let processing = [];
     if (deepGet(Store.getState(), `recorded_video.cover_capture_processing`)) {
@@ -191,6 +197,7 @@ class ReduxGetters {
     }
     return processing.join(', ');
   }
+
 
   getUserCoverVideoId(id, state) {
     state = state || Store.getState();

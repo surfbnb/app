@@ -14,6 +14,7 @@ import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScree
 import AppConfig from '../constants/AppConfig';
 import PepoApi from './PepoApi';
 import DataContract from '../constants/DataContract';
+import ReduxGetters from './ReduxGetters';
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -144,7 +145,6 @@ export default {
 
   handleVideoUploadModal(previousTabIndex, navigation, params = {}) {
     if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
-      // TODO: check if video or reply and accordingly emit corresponding event.
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
     } else if (reduxGetters.getVideoProcessingStatus() == true) {
       Toast.show({
@@ -214,6 +214,15 @@ export default {
       return pepocornsName.substring(0, length - 1);
     }
     return pepocornsName;
+  },
+
+  getVideoReplyKind( item ) {
+    const kind  = deepGet( item , DataContract.videos.kindKey); 
+    if( kind == DataContract.videos.videoKind.reply){
+        const reply_detail_id = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`); 
+        const replyKind = ReduxGetters.getVideoReplyKind(reply_detail_id);
+        return replyKind;
+    }
   }
 
 };

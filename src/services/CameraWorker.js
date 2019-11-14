@@ -283,6 +283,12 @@ class CameraWorker extends PureComponent {
       new PepoApi(`/replies`)
         .post(payload)
         .then((responseData) => {
+          Store.dispatch(
+            upsertRecordedVideo({
+              pepo_api_posting: false
+            })
+          );
+
           if (responseData.success && responseData.data) {
             console.log('reply sent Successfully to Pepo Api');
             let resultType = deepGet(responseData, DataContract.common.resultType),
@@ -293,23 +299,15 @@ class CameraWorker extends PureComponent {
                   replyObj['replyDetailId'] = reply[0].payload.reply_detail_id;
                 Store.dispatch(
                 upsertRecordedVideo({
-                  pepo_api_posting: false,
                   reply_obj: replyObj,
                   go_for_tx: true
                 })
               );
-            } else {
-              Store.dispatch(
-                upsertRecordedVideo({
-                  pepo_api_posting: false
-                })
-              )
             }
           } else {
             Toast.show({
               text: responseData.err.msg,
               icon: 'error'
-
             });
             videoUploaderComponent.emit('hide');
             Store.dispatch(videoInProcessing(false));
