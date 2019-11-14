@@ -480,7 +480,7 @@ class ReduxGetters {
     return deepGet(state, `video_reply_stat_entities.id_${id}.total_amount_raised_in_wei`);
   }
 
-  getReplySupporters(){
+  getReplySupporters(id , state){
     state = state || Store.getState();
     return deepGet(state, `video_reply_stat_entities.id_${id}.total_contributed_by`);
   }
