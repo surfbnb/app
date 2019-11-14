@@ -18,10 +18,10 @@ import { VideoReplyEmitter } from '../../helpers/Emitters';
 import PepoApi from '../../services/PepoApi';
 import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
 import ReduxGetters from '../../services/ReduxGetters';
-import Utilities from '../../services/Utilities';
+import entityHelper from '../../helpers/EntityHelper';
 
 
-class VideoReplyList extends PureComponent {
+class ReplyCollection extends PureComponent {
 
     constructor(props){
       super(props);
@@ -170,9 +170,11 @@ class VideoReplyList extends PureComponent {
     };
 
     renderThumbnailItem ( item , index ){
-       if(Utilities.getVideoReplyKind( item ) == DataContract.replies.videoReplyKind.video){
-           return this._renderVideoReplyThumbnail( item, index );
-       }
+       if(entityHelper.isVideoReplyEntity( item )){
+           if(entityHelper.isReplyVideoTypeEntity(item)){
+            return this._renderVideoReplyThumbnail( item, index );
+           }
+       }           
     }
 
     _renderVideoReplyThumbnail( item, index ) {
@@ -261,4 +263,4 @@ class VideoReplyList extends PureComponent {
 
 }
 
-export default  withNavigation( VideoReplyList );
+export default  withNavigation( ReplyCollection );

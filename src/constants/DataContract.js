@@ -72,7 +72,8 @@ export default {
             return `/videos/${id}/delete`;
         },
         videoKind: {
-            reply : "VIDEO_REPLY"
+            reply : "VIDEO_REPLY",
+            video:"FAN_UPDATE"
         },
         kindKey: "kind"
     }

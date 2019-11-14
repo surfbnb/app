@@ -5,6 +5,7 @@ import Pagination from "../../services/Pagination";
 
 import CommonStyle from "../../theme/styles/Common";
 import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
+import entityHelper from '../../helpers/EntityHelper';
 
 class VideoCollections extends PureComponent {
     constructor(props){
@@ -151,13 +152,43 @@ class VideoCollections extends PureComponent {
     };
 
     _renderVideoCell = ({ item, index }) => {
-        return (<VideoThumbnail
-          payload={item.payload}
-          index={index}
-          onVideoClick={() => {this.onVideoClick(item.payload, index)}}
-          isEmpty={item.isEmpty}
-          emptyRenderFunction={this.props.getNoResultsCell}/>);
+        if(entityHelper.isVideoReplyEntity( item )){
+            if(entityHelper.isReplyVideoTypeEntity(item)){
+             return this._renderVideoReplyThumbnail( item, index );
+            }
+        } else if( entityHelper.isVideoEntity( item )) {
+           return this._renderVideoThumbnail( item, index);
+        } 
     };
+
+    _renderVideoReplyThumbnail( item, index ) {
+        const userId = deepGet(item, "payload.user_id");
+        const reply_detail_id = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`); 
+        const videoId = ReduxGetters.getReplyId(reply_detail_id);
+        return (<View style={{position: 'relative'}}>
+        {this.isCurrentUser( userId ) && <LinearGradient
+             colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
+             locations={[0, 0.5, 1]}
+             start={{ x: 0, y: 0 }}
+             end={{ x: 0, y: 1 }}
+             style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
+           >
+           <View style={inlineStyles.deleteButton}>
+               <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
+           </View>
+         </LinearGradient>}
+            <ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(index)}}/>
+          </View>);
+    }
+
+    _renderVideoThumbnail( item, index){
+        return (<VideoThumbnail
+            payload={item.payload}
+            index={index}
+            onVideoClick={() => {this.onVideoClick(item.payload, index)}}
+            isEmpty={item.isEmpty}
+            emptyRenderFunction={this.props.getNoResultsCell}/>);
+    }
 
 
     onVideoClick = (payload, index) => {

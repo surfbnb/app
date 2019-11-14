@@ -214,15 +214,6 @@ export default {
       return pepocornsName.substring(0, length - 1);
     }
     return pepocornsName;
-  },
-
-  getVideoReplyKind( item ) {
-    const kind  = deepGet( item , DataContract.videos.kindKey); 
-    if( kind == DataContract.videos.videoKind.reply){
-        const reply_detail_id = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`); 
-        const replyKind = ReduxGetters.getReplyKind(reply_detail_id);
-        return replyKind;
-    }
   }
 
 };

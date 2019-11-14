@@ -11,8 +11,7 @@ import NavigationService from "../../services/NavigationService";
 import utilities from '../../services/Utilities';
 import crossIcon from '../../assets/cross_icon.png';
 import ReduxGetters from "../../services/ReduxGetters";
-import Utilities from "../../services/Utilities";
-import DataContract from "../../constants/DataContract";
+import entityHelper from "../../helpers/EntityHelper";
 
 
 
@@ -190,9 +189,11 @@ class FullScreenReplyCollection extends PureComponent{
     }
 
     _renderItem = ({ item, index }) => {
-        if(Utilities.getVideoReplyKind( item ) == DataContract.replies.videoReplyKind.video){
-            return this._renderVideoReplyRow( item, index );
-        } 
+        if(entityHelper.isVideoReplyEntity( item )){
+            if(entityHelper.isReplyVideoTypeEntity(item)){
+                return this._renderVideoReplyRow( item, index );
+            } 
+        }
     };
 
     _renderVideoReplyRow(item, index){
