@@ -72,19 +72,9 @@ class VideoPlayer extends Component {
       }
     };
 
-    navigateToUserProfile = (e) => {
-      if (Utilities.checkActiveUser()) {
-        if (this.state.userId == CurrentUser.getUserId()) {
-          this.props.navigation.navigate('ProfileScreen');
-        } else {
-          this.isActiveScreen = false;
-          this.props.navigation.push('UsersProfileScreen', { userId: this.state.userId });
-        }
-      }
-    };
-
     render() {
         if(this.state.isDeleted){
+          // {TODO @Preshita move to common component }
          return <View style={inlineStyles.container}>
                   <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
                     <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
@@ -97,8 +87,8 @@ class VideoPlayer extends Component {
             <View style={{flex:1}}>
               <TopStatus />
               <VideoRowComponent doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
-                                 videoId={this.videoId} userId={this.state.userId}
-                                 onWrapperClick={this.navigateToUserProfile}/>
+                                 videoId={this.videoId} userId={this.state.userId}/>
+             {/* // {TODO @Preshita move to common component } */}
               <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
                 <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
               </TouchableOpacity>

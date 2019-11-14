@@ -62,6 +62,7 @@ class VideoReplyRow extends PureComponent {
 
                             <VideoReplySupporterStat
                                 entityId={this.replyDetailId}
+                                userId={this.userId}
                             />
                         </View>
 

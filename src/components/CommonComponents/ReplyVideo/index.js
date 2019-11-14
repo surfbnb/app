@@ -12,6 +12,7 @@ import Utilities from '../../../services/Utilities';
 import CurrentUser from '../../../models/CurrentUser';
 import NavigationService from "../../../services/NavigationService";
 import utilities from "../../../services/Utilities";
+import DataContract from '../../../constants/DataContract';
 
 const mapStateToProps = (state , ownProps) => {
   return {
@@ -50,7 +51,7 @@ class ReplyVideo extends PureComponent {
             'userId': this.props.userId,
             'amount': this.props.requiredPepo,
             'videoReplyCount': this.props.videoReplyCount,
-            'fetchUrl': `/videos/${this.props.videoId}/replies`
+            'fetchUrl': DataContract.replies.getReplyListApi(this.videoId)
           });
       } else {
         let activeTab = NavigationService.getActiveTab();

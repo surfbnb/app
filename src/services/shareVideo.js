@@ -12,7 +12,6 @@ class ShareVideo {
   perform() {
     return new Promise((resolve, reject) => {
       new PepoApi(this.url).get().then((res) => {
-        console.log(res, 'videos/:video_id/share in then');
         this.shareTray(res);
       });
     });
