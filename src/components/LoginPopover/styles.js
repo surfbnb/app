@@ -10,9 +10,9 @@ let stylesMap = {
     backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: Dimensions.get('window').height / 2,
+    minHeight: Dimensions.get('window').height / 2.3,
     paddingTop: 50,
-    paddingBottom: 30,
+    paddingBottom: 40,
     position: 'absolute',
     width: '100%',
     borderTopRightRadius: 20,
@@ -40,7 +40,8 @@ let stylesMap = {
     color: Colors.dark,
     fontSize: 18,
     lineHeight: 26,
-    textAlign: 'center'
+    textAlign: 'center',
+    width: '85%'
   },
   tocPp: {
     width: '85%',
