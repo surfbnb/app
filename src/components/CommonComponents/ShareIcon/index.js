@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import {TouchableOpacity , Image} from "react-native";
 import { connect } from 'react-redux';
 import reduxGetter from '../../../services/ReduxGetters';
-import inlineStyles from './styles';
 import multipleClickHandler from "../../../services/MultipleClickHandler";
 import ShareVideo from "../../../services/shareVideo";
 
@@ -22,7 +21,7 @@ class ShareIcon extends PureComponent {
     };
 
   shareVideo = () => {
-    let shareVideo = new ShareVideo(this.props.videoId);
+    let shareVideo = new ShareVideo(this.props.entityId, this.props.url);
     shareVideo.perform();
   };
 

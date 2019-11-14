@@ -16,6 +16,7 @@ import ReportVideo from "../CommonComponents/ReportVideo";
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
+import DataContract from '../../constants/DataContract';
 
 
 class HomeFeedRow extends PureComponent {
@@ -66,7 +67,7 @@ class HomeFeedRow extends PureComponent {
               <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
                 <PepoTxBtn  resyncDataDelegate={this.refetchFeed} userId={this.userId} entityId={this.videoId}/>
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
-                <ShareIcon videoId={this.videoId} userId={this.userId} />
+                <ShareIcon videoId={this.videoId} userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)} />
                 <ReportVideo  userId={this.userId} videoId={this.videoId} />
               </View>
 

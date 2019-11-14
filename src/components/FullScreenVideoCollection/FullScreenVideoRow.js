@@ -13,6 +13,7 @@ import inlineStyles from './styles';
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
+import DataContract from '../../constants/DataContract';
 
 
 class FullScreeVideoRow extends PureComponent {
@@ -51,7 +52,7 @@ class FullScreeVideoRow extends PureComponent {
                                     entityId={this.videoId}
                                 />
                                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
-                                <ShareIcon  userId={this.userId} videoId={this.videoId} />
+                                <ShareIcon  userId={this.userId} videoId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
                                 <ReportVideo  userId={this.userId} videoId={this.videoId} />
                             </View>
 

@@ -76,6 +76,15 @@ export default {
             video:"FAN_UPDATE"
         },
         kindKey: "kind"
+    },
+
+    share: {
+        getVideoShareApi: ( id ) => {
+            return `/videos/${id}/share`;
+        },
+        getVideoReplyShareApi: ( id ) => {
+            return `/replies/${id}/share`;
+        }
     }
 }
 

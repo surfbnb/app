@@ -22,12 +22,12 @@ class VideoReplyRow extends PureComponent {
     constructor(props) {
         super(props);
         this.userId = deepGet(this.props.item, 'payload.user_id');
-        this.replyId = deepGet(this.props.item,`payload.${DataContract.replies.replyDetailIdKey}`);
-        this.videoId = ReduxGetters.getReplyEntityId(this.replyId);
+        this.replyDetailId = deepGet(this.props.item,`payload.${DataContract.replies.replyDetailIdKey}`);
+        this.videoId = ReduxGetters.getReplyEntityId(this.replyDetailId);
     }
 
     refetchVideoReply = () => {
-        new PepoApi(`/replies/${this.videoId}`)
+        new PepoApi(`/replies/${this.replyDetailId}`)
             .get()
             .then((res) => {})
             .catch((error) => {});
@@ -54,21 +54,20 @@ class VideoReplyRow extends PureComponent {
                                 <ReplyPepoTxBtn
                                     resyncDataDelegate={this.refetchVideoReply}
                                     userId={this.userId}
-                                    entityId={this.replyId}
+                                    entityId={this.replyDetailId}
                                 />
-                                <ShareIcon  userId={this.userId} videoId={this.videoId}  />
-                                <ReportVideo  userId={this.userId} videoId={this.videoId} />
+                                <ShareIcon  userId={this.userId} entityId={this.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.replyDetailId)}/>
+                                <ReportVideo  userId={this.userId} entityId={this.replyDetailId}/>
                             </View>
 
                             <VideoReplySupporterStat
-                                videoId={this.videoId}
-                                entityId={this.replyId}
+                                entityId={this.replyDetailId}
                             />
                         </View>
 
                         <ReplyVideoBottomStatus
                             userId={this.userId}
-                            entityId={this.replyId}
+                            entityId={this.replyDetailId}
                         />
                     </View>
                 )}
