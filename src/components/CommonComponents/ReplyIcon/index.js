@@ -49,7 +49,7 @@ class ReplyIcon extends PureComponent {
         return;
       }
 
-      if (this.props.videoReplyCount > 0 || true){
+      if ( this.props.videoReplyCount > 0 ) {
         this.props.navigation.push('VideoReplies',
           {'videoId': this.props.videoId ,
             'userId': this.props.userId
