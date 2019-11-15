@@ -35,6 +35,10 @@ export default {
     deleted: 'deleted'
   },
 
+  replyStatusMap:{
+    deleted: 'deleted'
+  },
+
   deviceStatusMap: {
     registered: 'registered',
     authorizing: 'authorizing',

@@ -14,6 +14,7 @@ import ReduxGetters from "../../services/ReduxGetters";
 import entityHelper from "../../helpers/EntityHelper";
 import {getVideoReplyObject} from "../../helpers/cameraHelper";
 import Pricer from "../../services/Pricer";
+import DataContract from "../../constants/DataContract";
 
 
 
@@ -192,10 +193,13 @@ class FullScreenReplyCollection extends PureComponent{
     };
 
     _renderVideoReplyRow(item, index){
+        let userId = deepGet(item,'payload.user_id'),
+            replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
         return  <VideoReplyRow  shouldPlay={this.shouldPlay}
                                 isActive={index == this.state.activeIndex}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
-                                item={item.payload}
+                                userId={userId}
+                                replyDetailId={replyDetailId}
          /> ;
     }
 

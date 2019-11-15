@@ -436,7 +436,7 @@ class ReduxGetters {
 
   isVideoDeleted(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `video_entities.id_${id}.status`, '').toLowerCase() == appConfig.videoStatusMap.deleted;
+    return deepGet(state, `video_stat_entities.id_${id}.status`, '').toLowerCase() == appConfig.videoStatusMap.deleted;
   }
 
   getUSDPrice(state){
@@ -502,6 +502,10 @@ class ReduxGetters {
     return !!val;
   }
 
+  isVideoEntityDeleted(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.status`, '').toLowerCase() == appConfig.replyStatusMap.deleted;
+  }
 }
 
 export default new ReduxGetters();

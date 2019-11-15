@@ -1,6 +1,7 @@
 import React , {PureComponent} from "react";
 import {FlatList , View , TouchableOpacity, Image} from "react-native";
 import deepGet from "lodash/get";
+
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
 import FullScreenVideoRow from "./FullScreenVideoRow";
@@ -9,6 +10,7 @@ import historyBack from '../../assets/user-video-history-back-icon.png';
 import TopStatus from "../Home/TopStatus";
 import CommonStyle from "../../theme/styles/Common";
 import entityHelper from '../../helpers/EntityHelper';
+import DataContract from "../../constants/DataContract";
 
 const maxVideosThreshold = 3;
 
@@ -143,10 +145,13 @@ class FullScreenVideoCollection extends PureComponent{
     };
 
     _renderVideoReplyRow(item, index){
+        let userId = deepGet(item,'payload.user_id'),
+            replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
         return  <VideoReplyRow  shouldPlay={this.shouldPlay}
                                 isActive={index == this.state.activeIndex}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
-                                item={item.payload}
+                                userId={userId}
+                                replyDetailId={replyDetailId}
          /> ;
     }
 

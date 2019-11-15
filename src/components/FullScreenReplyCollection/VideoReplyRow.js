@@ -16,18 +16,13 @@ import ReplyVideoBottomStatus from '../BottomStatus/ReplyVideoBottomStatus';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
 
-
-
 class VideoReplyRow extends PureComponent {
     constructor(props) {
         super(props);
-        this.userId = deepGet(this.props.payload, 'user_id');
-        this.replyDetailId = deepGet(this.props.payload,`${DataContract.replies.replyDetailIdKey}`);
-        this.videoId = ReduxGetters.getReplyEntityId(this.replyDetailId);
     }
 
     refetchVideoReply = () => {
-        new PepoApi(`/replies/${this.replyDetailId}`)
+        new PepoApi(`/replies/${this.props.replyDetailId}`)
             .get()
             .then((res) => {})
             .catch((error) => {});
@@ -36,39 +31,42 @@ class VideoReplyRow extends PureComponent {
   //Required from Backend , we need video  stats entity 
 
     render() {
+        let userId = this.props.userId,
+            replyDetailId = this.props.replyDetailId,
+            videoId = ReduxGetters.getReplyEntityId(replyDetailId);
         return (
             <View style={inlineStyles.fullScreen}>
                 <FanVideo
                     shouldPlay={this.props.shouldPlay}
-                    userId={this.userId}
-                    videoId={this.videoId}
+                    userId={userId}
+                    videoId={videoId}
                     doRender={this.props.doRender}
                     isActive={this.props.isActive}
                 />
 
-                {!!this.videoId && !!this.userId && (
+                {!!videoId && !!userId && (
                     <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
                         <View style={inlineStyles.touchablesBtns}>
 
                             <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
                                 <ReplyPepoTxBtn
                                     resyncDataDelegate={this.refetchVideoReply}
-                                    userId={this.userId}
-                                    entityId={this.replyDetailId}
+                                    userId={userId}
+                                    entityId={replyDetailId}
                                 />
-                                <ShareIcon  userId={this.userId} entityId={this.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.replyDetailId)} />
-                                <ReportVideo  userId={this.userId} reportEntityId={this.replyId} reportKind={'reply'} />
+                                <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
+                                <ReportVideo  userId={userId} reportEntityId={this.replyId} reportKind={'reply'} />
                             </View>
 
                             <VideoReplySupporterStat
-                                entityId={this.replyDetailId}
-                                userId={this.userId}
+                                entityId={replyDetailId}
+                                userId={userId}
                             />
                         </View>
 
                         <ReplyVideoBottomStatus
-                            userId={this.userId}
-                            entityId={this.replyDetailId}
+                            userId={userId}
+                            entityId={replyDetailId}
                         />
                     </View>
                 )}

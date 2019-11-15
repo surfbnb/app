@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {View,Image,TouchableOpacity, Text} from 'react-native';
+import React, { PureComponent } from 'react';
+import {View,Image,TouchableOpacity} from 'react-native';
 import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
@@ -8,9 +8,12 @@ import inlineStyles from './styles'
 import historyBack from "../../../assets/user-video-history-back-icon.png";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
+import ReduxGetters from '../../../services/ReduxGetters';
+import DataContract from '../../../constants/DataContract';
 import DeletedVideoInfo from '../DeletedVideoInfo';
+import VideoReplyRow from '../../FullScreenReplyCollection/VideoReplyRow';
 
-class VideoPlayer extends Component {
+class VideoReplyPlayer extends PureComponent {
 
     static navigationOptions = ({navigation, navigationOptions}) => {
         return {
@@ -21,10 +24,11 @@ class VideoPlayer extends Component {
 
     constructor(props){
         super(props);
-        this.videoId =  this.props.navigation.getParam('videoId');
+        this.replyDetailId =  this.props.navigation.getParam('replyDetailId');
+        this.videoId = ReduxGetters.getReplyEntityId(this.replyDetailId); //Check for entity deleted 
         this.state = {
           userId :  this.props.navigation.getParam('userId') || null,
-          isDeleted : reduxGetter.isVideoDeleted(this.videoId)
+          isDeleted : reduxGetter.isVideoEntityDeleted(this.videoId)
         };
         this.refetchVideo();
         this.isActiveScreen = true;
@@ -52,7 +56,7 @@ class VideoPlayer extends Component {
 
     refetchVideo = () => {
       if (this.state.isDeleted) return;
-      new PepoApi(`/videos/${this.videoId}`)
+      new PepoApi(DataContract.replies.getSingleVideoReplyApi(this.replyDetailId))
         .get()
         .then((res) => { this.onRefetchVideo(res) })
         .catch((error) => {});
@@ -73,14 +77,17 @@ class VideoPlayer extends Component {
 
     render() {
         if(this.state.isDeleted){
-          // {TODO @Preshita move to common component }
          return <DeletedVideoInfo/>
         }else{
           return (
             <View style={{flex:1}}>
               <TopStatus />
-              <VideoRowComponent doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
-                                 videoId={this.videoId} userId={this.state.userId}/>
+              <VideoReplyRow shouldPlay={this.shouldPlay}
+                    isActive={true}
+                    doRender={true}
+                    userId={this.state.userId}
+                    replyDetailId={this.replyDetailId}
+              />
              {/* // {TODO @Preshita move to common component } */}
               <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
                 <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
@@ -91,4 +98,4 @@ class VideoPlayer extends Component {
     }
 }
 
-export default  VideoPlayer ;
+export default  VideoReplyPlayer ;

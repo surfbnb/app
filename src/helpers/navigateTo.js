@@ -41,6 +41,8 @@ class NavigateTo {
       this.goToSupporters(goToObject.v.puid, payload);
     } else if (goToObject && goToObject.pn === 'v') {
       this.goToVideo(goToObject.v.vid, payload);
+    }else if (goToObject && goToObject.pn === 'rd') {
+      this.goToVideoReply(goToObject.v.rdi, payload);
     } else if (goToObject && goToObject.pn === 'f') {
       this.__navigate('Home', payload);
     } else if (goToObject && goToObject.pn === 'nc') {
@@ -119,6 +121,21 @@ class NavigateTo {
     //as version 3 dosent provides navigation chaining.
     setTimeout(()=> {
       this.__push('VideoPlayer', payload);
+    }, timeOut)
+  };
+
+  goToVideoReply = (rdId, payload) => {
+    let timeOut = 0 ;
+    payload = payload || {};
+    payload['replyDetailId'] = rdId;
+    if(NavigationService.getActiveTab() != "Notification"){
+      timeOut = 100;
+      this.__navigate('NotificationScreen', payload);
+    }
+    //Once migrated to react-navigation version 4 remove the settimeout code
+    //as version 3 dosent provides navigation chaining.
+    setTimeout(()=> {
+      this.__push('VideoReplyPlayer', payload);
     }, timeOut)
   };
 

@@ -53,7 +53,7 @@ class ReplyPepoTxBtn extends Base {
           updateEntity = false
       ;
       if (totalBt && totalBt > 0) {
-        videoStats['total_amount_raised_in_wei'] = Pricer.getToDecimal(totalBt);
+        replyDetails['total_amount_raised_in_wei'] = Pricer.getToDecimal(totalBt);
         updateEntity = true;
       }
 

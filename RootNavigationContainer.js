@@ -61,6 +61,7 @@ import VideoTags from './src/components/VideoTags';
 import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
 import VideoReplies from './src/components/VideoReplies';
 import FullScreenReplyCollection from './src/components/FullScreenReplyCollection';
+import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -187,6 +188,7 @@ const NotificationPushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
