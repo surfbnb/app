@@ -3,83 +3,65 @@ import {View,Text,TextInput} from 'react-native';
 
 import NumberFormatter from '../../../helpers/NumberFormatter';
 import { ostErrors } from '../../../services/OstErrors';
+import Theme from '../../../theme/styles';
 
 export default class NumberInput extends PureComponent{
     constructor( props ){
         super( props );
-        
-        this.min = 1;
-        this.max = 500;
-        if(props.min){
-            this.min = props.min;
-        }
-        if(props.max){
-          this.max = props.max
-        }
         this.state={
             value       : props.value,
-            errorMsg    : ""
-        }
+            errorMsg    : null
+        };
         this.numberFormatter = new NumberFormatter();
-        
-        
     }
-    isValidInput(val){
-        let errorMsg = this.getErrorMessage(val);
-        if(errorMsg){
-          this.props.onErrorCallBack(errorMsg);
-            this.setState({
-                value: val,
-                valueError: errorMsg
-              });
-              return false;
-        }else{
 
-            this.setState({
-                value: val,
-                valueError: ""
-              });
-              return true;
+    validateAndSet(val){
+        let errMsg = null;
+        if (!this.numberFormatter.isValidInputProvided(val)) {
+          errMsg = this.getErrorMessage( val );
         }
-        
-    }
-  onChangeText(value) {
-      console.log("value",value)
-      let formattedVal = this.numberFormatter.convertToValidFormat(value)
-        , val = this.numberFormatter.getFullStopValue(formattedVal);
-          this.props.onChangeText(val);
-        if(this.isValidInput(value)){
-          this.setState({value : val});
-        }
+        this.setState({
+          value: val,
+          valueError: errMsg
+        });
     }
 
     getErrorMessage( val ){
-        if (val && String(val).indexOf(',') > -1) {
-            return ostErrors.getUIErrorMessage('bt_amount_decimal_error');
-          }
-          if (val && String(val).split('.')[1] && String(val).split('.')[1].length > 2) {
-            return ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error');
-          }
-          val = val && Number(val);
-          if (!val || val < this.min) {
-            return ostErrors.getUIErrorMessage('bt_amount_error');
-          }
-          if( val && val > this.max ){
-            return ostErrors.getUIErrorMessage('bt_exceeds_bal_amount_error');
-          }
-      
-          return undefined;
+      if (val && String(val).indexOf(',') > -1) {
+        return ostErrors.getUIErrorMessage('bt_amount_decimal_error');
+      }
+      else if (val && String(val).split('.')[1] && String(val).split('.')[1].length > 2) {
+        return ostErrors.getUIErrorMessage('bt_amount_decimal_allowed_error');
+      } else {
+        return "invalid input";
+      }
+    }
+
+    onChangeText(value) {
+      let formattedVal = this.numberFormatter.convertToValidFormat(value)
+        , val = this.numberFormatter.getFullStopValue(formattedVal)
+      ;
+        this.validateAndSet(value);
+        this.props.onChangeText && this.props.onChangeText(val);
     }
 
     render(){
         return(
-            <View>
+          <React.Fragment>
+            <View style={{flex:1,flexDirection:"column",alignItem:'flex-start',justifyContent:'center'}}>
                 <TextInput
-                onChangeText={(value) => {this.onChangeText(value)}}
-                keyboardType = 'decimal-pad'
-                >{this.state.value}
-                </TextInput>
+                  onChangeText={(value) => {this.onChangeText(value)}}
+                  value = {this.props.value}
+                  keyboardType = 'decimal-pad'
+
+                />
+                <Text style={[Theme.Errors.errorText ,  this.props.errorStyle]}>
+                  { this.props.errorMsg || this.state.valueError }
+                </Text>
             </View>
+          </React.Fragment>
         )
     }
 }
+
+

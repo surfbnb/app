@@ -56,8 +56,8 @@ class VideoReplyRow extends PureComponent {
                                     userId={this.userId}
                                     entityId={this.replyDetailId}
                                 />
-                                <ShareIcon  userId={this.userId} entityId={this.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.replyDetailId)}/>
-                                <ReportVideo  userId={this.userId} entityId={this.replyDetailId}/>
+                                <ShareIcon  userId={this.userId} entityId={this.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.replyDetailId)} />
+                                <ReportVideo  userId={this.userId} reportEntityId={this.replyId} reportKind={'reply'} />
                             </View>
 
                             <VideoReplySupporterStat

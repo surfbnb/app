@@ -53,7 +53,7 @@ class FullScreeVideoRow extends PureComponent {
                                 />
                                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                                 <ShareIcon  userId={this.userId} videoId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
-                                <ReportVideo  userId={this.userId} videoId={this.videoId} />
+                                <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
                             </View>
 
                             <VideoSupporterStat

@@ -34,6 +34,8 @@ import NumberInput from "../CommonComponents/NumberInput";
 import NumberFormatter from "../../helpers/NumberFormatter";
 import pricer from '../../services/Pricer';
 import PepoPinkIcon from '../../assets/pepo-tx-icon.png';
+import { ostErrors } from '../../services/OstErrors';
+import AppConfig from '../../constants/AppConfig'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -42,7 +44,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const DEFAUT_BT_VALUE = 10;
+const DEFAUT_BT_VALUE = AppConfig.default_bt_amt;
 
 class FanVideoDetails extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -89,6 +91,8 @@ class FanVideoDetails extends Component {
     this.replyAmount = this.props.recordedVideo.reply_amount || DEFAUT_BT_VALUE;
     this.priceOracle = pricer.getPriceOracle();
     this.numberFormatter = new NumberFormatter();
+    this.max =  props.balance;
+    this.min = 0;
     this.state = {
       viewStyle: {
         paddingBottom: 10
@@ -97,7 +101,8 @@ class FanVideoDetails extends Component {
       amountError: null,
       linkError: null,
       descError : null,
-      usdVal : this.getUSDValue(DEFAUT_BT_VALUE)
+      usdVal : this.getUSDValue(DEFAUT_BT_VALUE),
+      replyAmt : null
 
     };
 
@@ -145,22 +150,35 @@ class FanVideoDetails extends Component {
 
   enableStartUploadFlag = () => {
    // if (!this.validLink()) return;
-    this.clearErrors();
-    this.validateData().then((res) => {
-   utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
-    Store.dispatch(
-      upsertRecordedVideo({ video_desc: this.videoDesc,
+    if(this.state.replyAmt > this.max){
+        this.setState({
+          amountError : `Maximum value is ${this.props.max}`
+        })
+    }else if( this.state.replyAmt < this.min ){
+      this.setState({
+        amountError : `Minimum value is ${this.props.min}`
+      })
+    }else{
+      this.setState({
+        amountError : ""
+      })
+      this.clearErrors();
+      this.validateData().then((res) => {
+        utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
+        Store.dispatch(
+          upsertRecordedVideo({ video_desc: this.videoDesc,
         video_link: this.videoLink,
         reply_amount: pricer.getToDecimal(this.replyAmount),
         do_upload: true })
-    );
-    this.props.navigation.dispatch(StackActions.popToTop());
-    this.props.navigation.dispatch(StackActions.popToTop());
-    this.props.navigation.navigate('HomeScreen');
-    }).catch((err)=>{
-      // show error on UI.
-      this.showError(err);
-    });
+        );
+        this.props.navigation.dispatch(StackActions.popToTop());
+        this.props.navigation.dispatch(StackActions.popToTop());
+        this.props.navigation.navigate('HomeScreen');
+      }).catch((err)=>{
+        // show error on UI.
+        this.showError(err);
+      });
+    }
   };
 
   clearErrors = () => {
@@ -266,7 +284,7 @@ class FanVideoDetails extends Component {
     });
     this.setState({
       usdVal : formattedUsdVal,
-      amountError : ""
+      replyAmt : value
     });
   };
   getUSDValue = (value ) =>{
@@ -311,8 +329,6 @@ class FanVideoDetails extends Component {
             <View style={styles.replyAmtWrapper}>
               <NumberInput
                 value = {DEFAUT_BT_VALUE}
-                max = {this.props.balance}
-                onErrorCallBack = {this.onErrorCallBack}
                 onChangeText = {this.replyAmountChange}
               />
               <Text>

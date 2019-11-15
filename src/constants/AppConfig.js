@@ -297,6 +297,7 @@ export default {
     CouchMarks: 'CouchMarks',
     AuthDeviceDrawer: 'DeviceUnauthorized',
     TwitterLogin: 'TwitterLogin'
-  }
+  },
+  default_bt_amt : 10
 
 };

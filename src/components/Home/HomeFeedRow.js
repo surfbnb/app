@@ -68,7 +68,7 @@ class HomeFeedRow extends PureComponent {
                 <PepoTxBtn  resyncDataDelegate={this.refetchFeed} userId={this.userId} entityId={this.videoId}/>
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                 <ShareIcon videoId={this.videoId} userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)} />
-                <ReportVideo  userId={this.userId} videoId={this.videoId} />
+                <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
               </View>
 
             <VideoSupporterStat
