@@ -80,7 +80,7 @@ class FanVideoDetails extends Component {
   static saveToRedux = (navigation) => {
     let desc = navigation.state.params.videoDesc,
       link = navigation.state.params.videoLink,
-      amount =  pricer.getToDecimal(navigation.state.params.replyAmount);
+      amount =  navigation.state.params.replyAmount;
     Store.dispatch(upsertRecordedVideo({ video_desc: desc, video_link: link, reply_amount:amount  }));
   };
 
@@ -88,7 +88,7 @@ class FanVideoDetails extends Component {
     super(props);
     this.videoDesc = this.props.recordedVideo.video_desc;
     this.videoLink = this.props.recordedVideo.video_link;
-    this.replyAmount = this.props.recordedVideo.reply_amount || DEFAUT_BT_VALUE;
+    this.replyAmount = this.props.recordedVideo.reply_amount || pricer.getToDecimal(DEFAUT_BT_VALUE);
     this.priceOracle = pricer.getPriceOracle();
     this.numberFormatter = new NumberFormatter();
     this.max =  props.balance;
@@ -101,7 +101,7 @@ class FanVideoDetails extends Component {
       amountError: null,
       linkError: null,
       descError : null,
-      usdVal : this.getUSDValue(DEFAUT_BT_VALUE),
+      usdVal : this.weiToUSD(this.replyAmount),
       replyAmt : null
 
     };
@@ -213,7 +213,7 @@ class FanVideoDetails extends Component {
     let params = {};
     params['video_description'] = this.videoDesc;
     params['link'] = this.videoLink;
-    params['per_reply_amount_in_wei'] = pricer.getToDecimal(this.replyAmount);
+    params['per_reply_amount_in_wei'] = this.replyAmount;
     return new Promise((resolve, reject) => {
       new PepoApi(DataContract.replies.validatePost)
         .post(params)
@@ -279,8 +279,8 @@ class FanVideoDetails extends Component {
   }
 
   replyAmountChange = ( value )=>{
-    this.replyAmount = value;
-    let formattedUsdVal = this.getUSDValue( value );
+    this.replyAmount = pricer.getToDecimal(value);
+    let formattedUsdVal = this.weiToUSD( pricer.getToDecimal(value) );
     //Done for the value to be accessible in static navigationOptions
     this.props.navigation.setParams({
       replyAmount: value
@@ -290,14 +290,16 @@ class FanVideoDetails extends Component {
       replyAmt : value
     });
   };
-  getUSDValue = (value ) =>{
-    let usdVal          = this.priceOracle.btToFiat(value),
+  weiToUSD = (value ) =>{
+    let weiToBt =  pricer.getFromDecimal(value, 2),
+      usdVal          = this.priceOracle.btToFiat(weiToBt),
       formattedUsdVal =  this.numberFormatter.getFormattedValue( usdVal );
     return formattedUsdVal;
   }
 
   render() {
-    let imageUrl = this.props.recordedVideo.cover_image;
+    let imageUrl = this.props.recordedVideo.cover_image,
+    value = pricer.getFromDecimal(this.replyAmount, 2) ;
     return (
       <ScrollView
         contentContainerStyle={[styles.container, this.state.viewStyle]}
@@ -331,7 +333,7 @@ class FanVideoDetails extends Component {
             <Image source={PepoPinkIcon} style={{marginLeft:5,height:13,width:13, marginRight: 3}}/>
             <View style={styles.replyAmtWrapper}>
               <NumberInput
-                value = {DEFAUT_BT_VALUE}
+                value = {value}
                 onChangeText = {this.replyAmountChange}
                 style={{flexBasis: '50%', paddingRight: 6}}
                 errorStyle={[styles.errorStyle]}

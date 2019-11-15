@@ -100,8 +100,10 @@ class CameraWorker extends PureComponent {
   }
 
   VideoUploadStatusToProcessing = () => {
-    Store.dispatch(videoInProcessing(true));
-    videoUploaderComponent.emit('show');
+    if (this.props.recorded_video.do_upload){
+      Store.dispatch(videoInProcessing(true));
+      videoUploaderComponent.emit('show');
+    };
   };
 
   VideoUploadStatusToNotProcessing = () => {
@@ -596,7 +598,7 @@ class CameraWorker extends PureComponent {
         image_width: appConfig.cameraConstants.VIDEO_WIDTH,
         image_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         video_size: videoSize,
-        per_reply_amount_in_wei: pricer.getToDecimal(this.props.recorded_video.reply_amount)
+        per_reply_amount_in_wei: this.props.recorded_video.reply_amount
       };
 
       let payload = payloadWithoutImage;

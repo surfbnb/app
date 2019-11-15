@@ -51,7 +51,7 @@ export default class NumberInput extends PureComponent{
             <View style={{flex:1,flexDirection:"column",alignItem:'flex-start',justifyContent:'center'}}>
                 <TextInput
                   onChangeText={(value) => {this.onChangeText(value)}}
-                  value = {this.props.value}
+                  value = {String(this.props.value)}
                   keyboardType = 'decimal-pad'
 
                 />
