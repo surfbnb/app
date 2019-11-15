@@ -322,25 +322,27 @@ class FanVideoDetails extends Component {
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.descError }</Text>
           <View style={ styles.videoLinkItem} >
-            <Text style={{width: 130}}>Link</Text>
+            <Text style={{width: 135}}>Link</Text>
             <VideoLink initialValue={this.props.recordedVideo.video_link} onChangeLink={this.onChangeLink} />
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center'}]}>{this.state.linkError }</Text>
           <View style={styles.videoAmountItem}>
             <Text style={{width: 130}}>Set Price for replies</Text>
-            <Image source={PepoPinkIcon} style={{marginLeft:5,height:13,width:13}}/>
+            <Image source={PepoPinkIcon} style={{marginLeft:5,height:13,width:13, marginRight: 3}}/>
             <View style={styles.replyAmtWrapper}>
               <NumberInput
                 value = {DEFAUT_BT_VALUE}
                 onChangeText = {this.replyAmountChange}
+                style={{flexBasis: '50%', paddingRight: 6}}
+                errorStyle={[styles.errorStyle]}
+                numberOfLines={1} ellipsizeMode={'tail'}
               />
-              <Text>
+              <Text style={{flexBasis: '50%', textAlign: 'right', color: '#ff5566'}} numberOfLines={1} ellipsizeMode={'tail'}>
                 ${this.state.usdVal}
               </Text>
             </View>
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.amountError }</Text>
-
         </View>
         <View style={{zIndex: -1}}>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center', marginBottom: 10 }]}>{this.state.error}</Text>

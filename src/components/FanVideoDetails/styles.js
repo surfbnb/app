@@ -81,7 +81,13 @@ let stylesMap = {
     flex:1,
     flexDirection:"row",
     justifyContent:'space-between',
-    alignItems:'center'}
+    alignItems:'center'
+  },
+  errorStyle: {
+    width: 0,
+    flex: 0,
+    height: 0
+  }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
