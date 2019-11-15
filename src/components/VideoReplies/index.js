@@ -60,7 +60,6 @@ class VideoRepliesScreen extends PureComponent {
       this.state = {
         showBackdrop : false,
         videoUploaderVisible: false,
-        videoUploaderText: 'Posting reply',
         currentHeight : this.initialHeight
       }
     }
@@ -105,11 +104,21 @@ class VideoRepliesScreen extends PureComponent {
           this.props.navigation.goBack();
         }
       } , 10)
-    }
+    };
 
     onCrossIconClick = () => {
       this._panel.hide();
+    };
+
+  getUploadingText = () => {
+    let videoType = ReduxGetters.getRecordedVideoType();
+    if (videoType === 'post'){
+      return "Uploading Video";
+    } else if (videoType === 'reply'){
+      return "Posting reply";
     }
+  }
+  ;
 
     openCamera = () => {
       let activeTab = NavigationService.getActiveTab();
@@ -148,7 +157,7 @@ class VideoRepliesScreen extends PureComponent {
                     left: 10,
                     zIndex: 9
                   }}
-                  displayText={this.state.videoUploaderText}
+                  displayText={this.getUploadingText()}
                   extendDirection="right"
                   extend={true}
                   id={3}

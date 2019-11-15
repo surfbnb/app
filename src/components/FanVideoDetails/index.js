@@ -106,7 +106,10 @@ class FanVideoDetails extends Component {
 
     };
 
-
+    if (! props.recordedVideo.video_type ) {
+      let videoType = this.props.navigation.getParam('video_type');
+      Store.dispatch(upsertRecordedVideo({ video_type: videoType }));
+    }
   }
   _keyboardShown = (e) => {
     let keyboardHeight = deepGet(e, 'endCoordinates.height') || 350;
@@ -168,7 +171,7 @@ class FanVideoDetails extends Component {
         Store.dispatch(
           upsertRecordedVideo({ video_desc: this.videoDesc,
         video_link: this.videoLink,
-        reply_amount: pricer.getToDecimal(this.replyAmount),
+        reply_amount: this.replyAmount,
         do_upload: true })
         );
         this.props.navigation.dispatch(StackActions.popToTop());
