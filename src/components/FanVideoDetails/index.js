@@ -86,7 +86,7 @@ class FanVideoDetails extends Component {
     super(props);
     this.videoDesc = this.props.recordedVideo.video_desc;
     this.videoLink = this.props.recordedVideo.video_link;
-    this.replyAmount = this.props.recordedVideo.reply_amount;
+    this.replyAmount = this.props.recordedVideo.reply_amount || DEFAUT_BT_VALUE;
     this.priceOracle = pricer.getPriceOracle();
     this.numberFormatter = new NumberFormatter();
     this.state = {
@@ -192,7 +192,7 @@ class FanVideoDetails extends Component {
     let params = {};
     params['video_description'] = this.videoDesc;
     params['link'] = this.videoLink;
-    params['per_reply_amount_in_wei'] = this.replyAmount;
+    params['per_reply_amount_in_wei'] = pricer.getToDecimal(this.replyAmount);
     return new Promise((resolve, reject) => {
       new PepoApi(DataContract.replies.validatePost)
         .post(params)
