@@ -34,11 +34,9 @@ export default class CouchMarks extends Component {
 
                     <View style={{flexDirection:'row', alignItems: 'center', width: '100%'}}>
                         <View style={{flexDirection:'row', flex: 1, flexWrap: 'wrap', alignItems: 'center'}}>
-                            <Text>
-                              <Text style={styles.smallText }>Press and hold</Text>{' '}
-                              <Image source={PepoIcon} style={{height: 14, width:14}}/>{' '}
-                              <Text style={styles.smallText }>to show how much you like it</Text>
-                            </Text>
+                          <Text style={[styles.smallText, {marginRight: 5}]}>Press and hold</Text>
+                          <Image source={PepoIcon} style={{ height: 14, width:14 }}/>
+                          <Text style={[styles.smallText]}>to reward makers with Pepo Coins</Text>
                         </View>
                         <Image source={PepoIcon} style={{height: 41, width:41, marginHorizontal: 10}}/>
                     </View>

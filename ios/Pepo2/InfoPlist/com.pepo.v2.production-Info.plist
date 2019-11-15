@@ -9,7 +9,7 @@
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
-		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<string>com.pepo.v2.production</string>
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
@@ -40,7 +40,7 @@
 			</dict>
 		</array>
 		<key>CFBundleVersion</key>
-		<string>20</string>
+		<string>22</string>
 		<key>Fabric</key>
 		<dict>
 			<key>APIKey</key>

@@ -48,13 +48,12 @@ class UserProfileFlatList extends PureComponent {
         this.paginationEvent.on("onBeforeNext" , this.beforeNext.bind(this));
         this.paginationEvent.on("onNext" , this.onNext.bind(this) );
         this.paginationEvent.on("onNextError" , this.onNextError.bind(this));
-        if( this.props.refreshEvent) {
-          this.props.refreshEvent.on("refresh" , ()=> {
-            this.listRef.scrollToOffset({offset: 0});
-            this.refresh();
-          });
-        }
         this.videoHistoryPagination.initPagination();
+    }
+
+    forceRefresh(){
+      this.listRef.scrollToOffset({offset: 0});
+      this.refresh();
     }
 
     componentWillUnmount(){
