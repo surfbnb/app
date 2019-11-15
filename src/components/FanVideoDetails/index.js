@@ -155,11 +155,11 @@ class FanVideoDetails extends Component {
    // if (!this.validLink()) return;
     if(this.state.replyAmt > this.max){
         this.setState({
-          amountError : `Maximum value is ${this.props.max}`
+          amountError : `Maximum value is ${this.max}`
         })
     }else if( this.state.replyAmt < this.min ){
       this.setState({
-        amountError : `Minimum value is ${this.props.min}`
+        amountError : `Minimum value is ${this.min}`
       })
     }else{
       this.setState({
