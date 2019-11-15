@@ -21,8 +21,8 @@ import ReduxGetters from '../../services/ReduxGetters';
 class VideoReplyRow extends PureComponent {
     constructor(props) {
         super(props);
-        this.userId = deepGet(this.props.item, 'payload.user_id');
-        this.replyDetailId = deepGet(this.props.item,`payload.${DataContract.replies.replyDetailIdKey}`);
+        this.userId = deepGet(this.props.payload, 'user_id');
+        this.replyDetailId = deepGet(this.props.payload,`${DataContract.replies.replyDetailIdKey}`);
         this.videoId = ReduxGetters.getReplyEntityId(this.replyDetailId);
     }
 

@@ -200,7 +200,7 @@ class FullScreenReplyCollection extends PureComponent{
         return  <VideoReplyRow  shouldPlay={this.shouldPlay}
                                 isActive={index == this.state.activeIndex}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
-                                item={item}
+                                item={item.payload}
          /> ;
     }
 
