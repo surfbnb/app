@@ -55,7 +55,6 @@ class CaptureVideo extends Component {
 
   setReplyVideoParams(){
     this.isVideoTypeReply = this.props.navigation.getParam("videoTypeReply");
-    console.log('setReplyVideoParams', this.isVideoTypeReply );
     if (this.isVideoTypeReply){
       this.replyReceiverUserId = this.props.navigation.getParam("userId");
       this.replyReceiverVideoId = this.props.navigation.getParam("videoId");
