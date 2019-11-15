@@ -12,20 +12,14 @@ import utilities from '../../services/Utilities';
 import crossIcon from '../../assets/cross_icon.png';
 import ReduxGetters from "../../services/ReduxGetters";
 import entityHelper from "../../helpers/EntityHelper";
+import {getVideoReplyObject} from "../../helpers/cameraHelper";
 import Pricer from "../../services/Pricer";
 
 
 
 const navigateToCamera = (navigation) => {
     let activeTab = NavigationService.getActiveTab();
-    let params = {
-        videoTypeReply: true,
-        videoId: navigation.getParam('parentVideoId'),
-        userId: navigation.getParam('parentUserId'),
-        amount: navigation.getParam('amount'),
-        videoReplyCount: navigation.getParam('videoReplyCount')
-    };
-    console.log('params:::VideoRepliesFullScreen', params);
+    let params = getVideoReplyObject ( navigation.getParam('parentVideoId') , navigation.getParam('parentUserId'));
     utilities.handleVideoUploadModal(activeTab, navigation, params);
 };
 
@@ -53,8 +47,7 @@ const HeaderLeft = (props) => {
   
   const HeaderTitle = (props) => {
       let  userId = props.navigation.getParam('parentUserId'),
-            userName = ReduxGetters.getUserName(userId),
-            amount = props.navigation.getParam('amount') ;
+            userName = ReduxGetters.getUserName(userId);
     return (
       <View>
         <Text numberOfLines={1} style={inlineStyles.headerText}>
@@ -62,7 +55,7 @@ const HeaderLeft = (props) => {
         </Text>
         <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
         <Image style={{height: 10, width: 10}} source={pepoIcon} />
-        { Pricer.getToBT(Pricer.getFromDecimal(amount), 2)}</Text>
+            { Pricer.getToBT(Pricer.getFromDecimal(props.navigation.getParam('amount')), 2)}</Text>
       </View>
     );
   };

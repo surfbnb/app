@@ -218,7 +218,6 @@ class ReplyCollection extends PureComponent {
             "currentIndex": index,
             "baseUrl": this.props.fetchUrl,
             "amount": this.props.amount,
-            "videoReplyCount": this.props.videoReplyCount,
             'parentUserId': this.props.userId,
             'parentVideoId': this.props.videoId
         });

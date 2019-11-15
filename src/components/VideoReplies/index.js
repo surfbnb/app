@@ -27,6 +27,8 @@ import { getInset } from 'react-native-safe-area-view';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
 import Pricer from "../../services/Pricer";
+import {getVideoReplyObject} from "../../helpers/cameraHelper";
+
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
@@ -50,6 +52,7 @@ class VideoRepliesScreen extends PureComponent {
         this.userName = props.navigation.getParam('userName');
         this.amount = ReduxGetters.getBtAmountForReply(this.videoId );
         this.videoReplyCount = ReduxGetters.getVideoReplyCount(this.videoId);
+        this.userName = ReduxGetters.getUserName(this.userId);
         this.fetchUrl = DataContract.replies.getReplyListApi(this.videoId);
         this.initialHeight =  height/1.5;
         this.animatedValue = new Animated.Value(this.initialHeight) ;
@@ -123,13 +126,7 @@ class VideoRepliesScreen extends PureComponent {
     openCamera = () => {
       let activeTab = NavigationService.getActiveTab();
       //TODO @mayur move it to a function , If possible change this to string 
-      let params = {
-          videoTypeReply: true,
-          videoId: this.videoId,
-          userId: this.userId,
-          amount: this.amount,
-          videoReplyCount: this.videoReplyCount
-      };
+      let params =  getVideoReplyObject ( this.videoId , this.userId) ;
       utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
     }
 

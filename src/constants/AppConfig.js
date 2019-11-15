@@ -298,6 +298,11 @@ export default {
     AuthDeviceDrawer: 'DeviceUnauthorized',
     TwitterLogin: 'TwitterLogin'
   },
-  default_bt_amt : 10
+  default_bt_amt : 10,
+
+  videoTypes: {
+    post : 'post',
+    reply: 'reply'
+  }
 
 };

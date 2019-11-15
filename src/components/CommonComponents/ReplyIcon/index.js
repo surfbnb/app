@@ -14,6 +14,7 @@ import NavigationService from "../../../services/NavigationService";
 import utilities from "../../../services/Utilities";
 import { LoginPopoverActions } from '../../LoginPopover';
 import Pricer from '../../../services/Pricer';
+import {getVideoReplyObject} from "../../../helpers/cameraHelper";
 
 const mapStateToProps = (state , ownProps) => {
   return {
@@ -57,13 +58,7 @@ class ReplyIcon extends PureComponent {
           });
       } else {
         let activeTab = NavigationService.getActiveTab();
-        let params = {
-          videoTypeReply: true,
-          videoId: this.props.videoId,
-          userId: this.props.userId,
-          amount: this.props.requiredPepo,
-          videoReplyCount: this.props.videoReplyCount
-        };
+        let params = getVideoReplyObject(this.props.videoId, this.props.userId);
         utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
       }
 

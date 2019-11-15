@@ -89,8 +89,6 @@ class FanVideoReplyDetails extends Component {
       this.replyObject = props.recordedVideo.reply_obj;
     }
 
-
-    console.log(this.replyObject, 'this.replyObject:::this.replyObject:::this.replyObject');
     this.state = {
       viewStyle: {
         paddingBottom: 10
