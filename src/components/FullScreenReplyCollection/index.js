@@ -12,6 +12,7 @@ import utilities from '../../services/Utilities';
 import crossIcon from '../../assets/cross_icon.png';
 import ReduxGetters from "../../services/ReduxGetters";
 import entityHelper from "../../helpers/EntityHelper";
+import Pricer from "../../services/Pricer";
 
 
 
@@ -52,7 +53,8 @@ const HeaderLeft = (props) => {
   
   const HeaderTitle = (props) => {
       let  userId = props.navigation.getParam('parentUserId'),
-            userName = ReduxGetters.getUserName(userId);
+            userName = ReduxGetters.getUserName(userId),
+            amount = props.navigation.getParam('amount') ;
     return (
       <View>
         <Text numberOfLines={1} style={inlineStyles.headerText}>
@@ -60,7 +62,7 @@ const HeaderLeft = (props) => {
         </Text>
         <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
         <Image style={{height: 10, width: 10}} source={pepoIcon} />
-        {props.navigation.getParam('amount')}</Text>
+        { Pricer.getToBT(Pricer.getFromDecimal(amount), 2)}</Text>
       </View>
     );
   };

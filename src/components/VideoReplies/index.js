@@ -189,7 +189,7 @@ class VideoRepliesScreen extends PureComponent {
 
                         <View style={inlineStyles.repliesTxt}>
                           <Text numberOfLines={1} style={inlineStyles.headerText}>
-                            Replies to {this.userName}
+                            Replies to {ReduxGetters.getUserName(this.userId)}
                           </Text>
                           {/* {TODO integration pending} */}
                           <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
