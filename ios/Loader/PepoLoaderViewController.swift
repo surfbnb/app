@@ -320,16 +320,23 @@ import OstWalletSdk
   }
   
   func showSuccessAlert(workflowContext: OstWorkflowContext,
-                        contextEntity: OstContextEntity?) {
+                        contextEntity: OstContextEntity?,
+                        workflowConfig: [String : Any]) {
     closeProgressAnimation()
     
     alertIcon.image = UIImage(named: "SuccessIcon")
-    alertMessageLabel.text = "SuccessIcon"
-    dismissButton.isHidden = true
     
+    var loaderString = ""
+    if let ackTextHash = workflowConfig["success"] as? [String: String],
+      let text = ackTextHash["text"] {
+      loaderString = text
+    }
+    
+    dismissButton.isHidden = true
+    alertMessageLabel.text = loaderString
     perform(#selector(closeLoader), with: nil, afterDelay: 4)
     
-    view.layoutIfNeeded()
+    self.alertContainerView.layoutIfNeeded()
   }
   
   func showFailureAlert(workflowContext: OstWorkflowContext,
@@ -340,6 +347,7 @@ import OstWalletSdk
     let errorMessage = OstSdkErrorHelper.shared.getErrorMessage(for: workflowContext, andError: error)
     alertMessageLabel.text = errorMessage
     dismissButton.setTitle("Close", for: .normal)
+    dismissButton.isHidden = false
     
     self.alertContainerView.layoutIfNeeded()
   }
@@ -371,7 +379,7 @@ import OstWalletSdk
   
   @objc public  func onAcknowledge(workflowConfig: [String: Any]) {
     var loaderString = "Waiting for confirmation..."
-    if let ackTextHash = workflowConfig["acknowledge_text"] as? [String: String],
+    if let ackTextHash = workflowConfig["acknowledge"] as? [String: String],
       let text = ackTextHash["text"] {
       loaderString = text
     }
@@ -389,7 +397,8 @@ import OstWalletSdk
     ostLoaderComplectionDelegate = loaderComplectionDelegate
     
     showSuccessAlert(workflowContext: workflowContext,
-                     contextEntity: contextEntity)
+                     contextEntity: contextEntity,
+                     workflowConfig: workflowConfig)
   }
   
   @objc public   func onFailure(workflowContext: OstWorkflowContext,
