@@ -55,8 +55,9 @@ import OstWalletSdk
   
   let progressBarView: UIView = {
     let view = UIView(frame: .zero)
-    view.backgroundColor = .red
+    view.backgroundColor = UIColor(red: (255/255),green: (116/255), blue: (153/255), alpha: 1)
     view.clipsToBounds = true
+    view.layer.cornerRadius = 3
     view.translatesAutoresizingMaskIntoConstraints = false
     
     return view
