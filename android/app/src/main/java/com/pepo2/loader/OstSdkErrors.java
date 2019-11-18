@@ -83,7 +83,7 @@ public class OstSdkErrors {
 
         if (ostError.isApiError()) {
             OstApiError ostApiError = (OstApiError) ostError;
-            if (null == errMsg) {
+            if (TextUtils.isEmpty(errMsg)) {
                 List<OstApiError.ApiErrorData> apiErrorDataList = ostApiError.getErrorData();
                 if (null != apiErrorDataList && apiErrorDataList.size() > 0) {
                     OstApiError.ApiErrorData apiErrorData = apiErrorDataList.get(0);
@@ -110,7 +110,7 @@ public class OstSdkErrors {
             errMsg = ALL_ERRORS.optJSONObject(DEFAULT_CONTEXT).optString(errorCode);
         }
 
-        if ( developerMode && null != errorCode) {
+        if ( developerMode && !TextUtils.isEmpty(errorCode)) {
             if ( TextUtils.isEmpty(errMsg) ) {
                 if (null == errMsg) errMsg =  DEFAULT_ERROR_MSG;
             }
