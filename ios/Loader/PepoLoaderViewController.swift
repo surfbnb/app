@@ -26,6 +26,7 @@ import OstWalletSdk
     let label = UILabel(frame: .zero)
     label.textColor = .white
     label.text = "Processing..."
+    label.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
     label.numberOfLines = 0
     label.textAlignment = .center
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -84,6 +85,7 @@ import OstWalletSdk
     let label = UILabel(frame: .zero)
     label.textColor = .white
     label.text = ""
+    label.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
     label.numberOfLines = 0
     label.textAlignment = .center
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -94,7 +96,7 @@ import OstWalletSdk
   let dismissButton: UIButton = {
     let button = UIButton()
     
-    button.backgroundColor = .red
+    button.backgroundColor = UIColor(red: (255/255),green: (116/255), blue: (153/255), alpha: 1)
     button.layer.cornerRadius = 5
     button.setTitleColor(.white, for: .normal)
     button.clipsToBounds = true
@@ -129,10 +131,17 @@ import OstWalletSdk
   override public func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    animateLoader()
+    self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+    UIView.transition(with: self.view, duration: 0.3, options: .transitionCrossDissolve, animations: {[weak self] in
+      self?.view.isHidden = false
+    }, completion: {[unowned self] (_) in
+        self.animateLoader()
+    })
   }
   
   func config() {
+    
+    self.view.isHidden = true
     
     dismissButton.addTarget(self, action: #selector(dismissButtonTapped(_:)), for: .touchUpInside)
     
@@ -168,12 +177,10 @@ import OstWalletSdk
   func closeLoader() {
     NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(closeLoader), object: nil)
     
-    UIView.transition(with: self.view, duration: 0.4, options: .transitionCrossDissolve, animations: {[weak self] in
+    UIView.transition(with: self.view, duration: 0.3, options: .transitionCrossDissolve, animations: {[weak self] in
       self?.view.isHidden = true
     }) { (_) in
-      self.dismiss(animated: true, completion: {[weak self] in
-        self?.ostLoaderComplectionDelegate?.dismissWorkflow()
-      })
+        self.ostLoaderComplectionDelegate?.dismissWorkflow()
     }
   }
   
@@ -292,7 +299,7 @@ import OstWalletSdk
       return
     }
     leftAnchor?.constant =  self.progressBarBackgroundView.frame.width + 50
-    UIView.animate(withDuration: 1.2, animations: {[weak self] in
+    UIView.animate(withDuration: 1, animations: {[weak self] in
       self?.view.layoutIfNeeded()
     }) {[weak self] (_) in
       self?.leftAnchor?.constant =  -50

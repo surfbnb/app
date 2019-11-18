@@ -47,7 +47,7 @@ import Foundation
   class func getErrorMessages() -> [String: Any]? {
     var finalResponse: [String: Any]? = nil
     
-    if let fileContent = self.getFileContent(fileName: "ErrorMessages",
+    if let fileContent = self.getFileContent(fileName: "SdkErrors",
                                              ofType: "json") {
       //Convert file content into JSON object
         finalResponse = try? self.toJSONObject(fileContent) as! [String: Any]

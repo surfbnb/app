@@ -8,7 +8,6 @@
   "PERFORM_QR_ACTION": {
   },
   "AUTHORIZE_DEVICE_WITH_QR_CODE": {
-    
   },
   "AUTHORIZE_DEVICE_WITH_MNEMONICS": {
   },
@@ -17,14 +16,12 @@
   "ABORT_DEVICE_RECOVERY": {
   },
   "RESET_PIN": {
-    
   },
   "LOGOUT_ALL_SESSIONS": {
   },
   "UPDATE_BIOMETRIC_PREFERENCE": {
   },
   "EXECUTE_TRANSACTION": {
-    
   },
   "__DEFAULT_CONTEXT": {
     "USER_UNAUTHORIZED": "Device is not authorized. Please authorize device again.",
@@ -41,14 +38,14 @@
     "OUT_OF_MEMORY_ERROR": "Device is running low on memory. Reduce the number of App running on your device and re-enter the pin",
     "WORKFLOW_FAILED": "Something went wrong, please try again",
     "WORKFLOW_VIEW_DESTROYED": "The application interrupted the workflow. The view got terminated while performing the workflow",
-    
+    // Rare Errors
     "DEVICE_UNAUTHORIZED": "Unable to perform the operation as the device not authorized. For details on how to authorize a device please visit https://dev.ost.com/platform/docs/sdk/references ",
     "DEVICE_CAN_NOT_BE_REVOKED": "Cannot complete the revoke device operation. Only an authorized device can be revoked. Please ensure you are trying to revoke a valid device and re-submit the request.",
     "WORKFLOW_CANCELED": "WORKFLOW_CANCELLED",
     "WORKFLOW_CANCELLED": "WORKFLOW_CANCELLED"
   },
   "__DEVELOPER_ERROR_MSG": {
-    
+    //Developer Errors
     "SDK_ERROR": "An internal SDK error has occurred.",
     "INVALID_CERTIFICATE": "Certificate provided by Ost platform is invalid Or it has been compromised. Please re-try in some other network and if the problem persists contact support@ost.com .",
     "INVALID_USER_ID": "Unable to recognize the user id. Please inspect for what is being sent, rectify and re-submit.",
@@ -93,7 +90,7 @@
     "INVALID_AMOUNT": "INVALID_AMOUNT",
     "INVALID_WORKFLOW": "INVALID_WORKFLOW",
     "INVALID_RECOVERY_ADDRESS": "INVALID_RECOVERY_ADDRESS",
-    
+    //Future
     "USER_PASSPHRASE_VALIDATION_LOCKED": "Can not validate user passphrase because of too many wrong attempts.",
     "UNKNOWN": "Unknown error"
   }

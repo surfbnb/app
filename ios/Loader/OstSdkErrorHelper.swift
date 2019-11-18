@@ -87,7 +87,7 @@ import OstWalletSdk
         }
         
         if nil == errMsg {
-          errMsg = (allErrors[DEFAULT_CONTEXT] as! [String: String])[ errorCode ];
+          errMsg = (allErrors[DEFAULT_CONTEXT] as? [String: String])?[ errorCode ];
         }
         
         if ( developerMode && nil != errMsg) {

@@ -8,6 +8,7 @@
   "PERFORM_QR_ACTION": {
   },
   "AUTHORIZE_DEVICE_WITH_QR_CODE": {
+    // API_RESPONSE_ERROR: "Something went wrong"
   },
   "AUTHORIZE_DEVICE_WITH_MNEMONICS": {
   },
@@ -16,12 +17,14 @@
   "ABORT_DEVICE_RECOVERY": {
   },
   "RESET_PIN": {
+    // API_RESPONSE_ERROR: "Something went wrong"
   },
   "LOGOUT_ALL_SESSIONS": {
   },
   "UPDATE_BIOMETRIC_PREFERENCE": {
   },
   "EXECUTE_TRANSACTION": {
+    // API_RESPONSE_ERROR: "Something went wrong"
   },
   "__DEFAULT_CONTEXT": {
     "USER_UNAUTHORIZED": "Device is not authorized. Please authorize device again.",
