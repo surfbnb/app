@@ -1,0 +1,390 @@
+/*
+ Copyright © 2019 OST.com Inc
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+import UIKit
+import OstWalletSdk
+
+@objc public class PepoLoaderViewController: UIViewController, OstWorkflowLoader {
+  
+  //MARK: - Progress Components
+  let heartImageView: UIImageView  = {
+    let imageView = UIImageView(frame: .zero)
+    imageView.image =  UIImage(named: "PepoWhiteIcon")
+    imageView.contentMode = .scaleAspectFit
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    return imageView
+  }()
+  
+  let messageLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.textColor = .white
+    label.text = "Processing..."
+    label.numberOfLines = 0
+    label.textAlignment = .center
+    label.translatesAutoresizingMaskIntoConstraints = false
+    
+    return label
+  }()
+  
+  let progressContainerView: UIView = {
+    let view = UIView(frame: .zero)
+    view.backgroundColor = .clear
+    view.clipsToBounds = true
+    view.translatesAutoresizingMaskIntoConstraints = false
+    
+    return view
+  }()
+  
+  let progressBarBackgroundView: UIView = {
+    let view = UIView(frame: .zero)
+    view.backgroundColor = .white
+    view.layer.cornerRadius = 3
+    view.clipsToBounds = true
+    view.translatesAutoresizingMaskIntoConstraints = false
+    
+    return view
+  }()
+  
+  let progressBarView: UIView = {
+    let view = UIView(frame: .zero)
+    view.backgroundColor = .red
+    view.clipsToBounds = true
+    view.translatesAutoresizingMaskIntoConstraints = false
+    
+    return view
+  }()
+  
+  //MARK: - Alert Components
+  let alertContainerView: UIView = {
+    let view = UIView(frame: .zero)
+    view.backgroundColor = .clear
+    view.clipsToBounds = true
+    view.isHidden = true
+    view.translatesAutoresizingMaskIntoConstraints = false
+    
+    return view
+  }()
+  
+  let alertIcon: UIImageView  = {
+    let imageView = UIImageView(frame: .zero)
+    imageView.image = UIImage(named: "")
+    imageView.contentMode = .scaleAspectFit
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    return imageView
+  }()
+  
+  let alertMessageLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.textColor = .white
+    label.text = ""
+    label.numberOfLines = 0
+    label.textAlignment = .center
+    label.translatesAutoresizingMaskIntoConstraints = false
+    
+    return label
+  }()
+  
+  let dismissButton: UIButton = {
+    let button = UIButton()
+    
+    button.backgroundColor = .red
+    button.layer.cornerRadius = 5
+    button.setTitleColor(.white, for: .normal)
+    button.clipsToBounds = true
+    button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 14, bottom: 5, right: 14)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    
+    return button
+  }()
+  
+  //MARK: - Variables
+  var leftAnchor: NSLayoutConstraint? = nil
+  var shouldCloseProgressAnimation: Bool = false
+  var ostLoaderComplectionDelegate: OstLoaderCompletionDelegate? = nil
+  var isAlertView: Bool = false
+  
+  //MARK: - View Life Cycle
+  deinit {
+    print("\(String(describing: self)) :: deinit")
+  }
+  
+  override public func viewDidLoad() {
+    super.viewDidLoad()
+    UIView.animate(withDuration: 0.3) {[weak self] in
+      self?.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+    }
+    
+    config()
+    addSubviews()
+    addLayoutConstraints()
+  }
+  
+  override public func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    animateLoader()
+  }
+  
+  func config() {
+    
+    dismissButton.addTarget(self, action: #selector(dismissButtonTapped(_:)), for: .touchUpInside)
+    
+    let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+    tap.numberOfTapsRequired = 1
+    self.view.addGestureRecognizer(tap)
+  }
+  
+  func addSubviews() {
+    self.view.addSubview(progressContainerView)
+    self.view.addSubview(alertContainerView)
+    
+    //Progress view
+    progressContainerView.addSubview(heartImageView)
+    progressContainerView.addSubview(messageLabel)
+    progressContainerView.addSubview(progressBarBackgroundView)
+    progressBarBackgroundView.addSubview(progressBarView)
+    
+    //Alert view
+    alertContainerView.addSubview(alertIcon)
+    alertContainerView.addSubview(alertMessageLabel)
+    alertContainerView.addSubview(dismissButton)
+    
+  }
+  
+  //MARK: - Actions
+  @objc
+  func dismissButtonTapped(_ sender: Any) {
+    closeLoader()
+  }
+  
+  @objc
+  func closeLoader() {
+    NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(closeLoader), object: nil)
+    
+    UIView.transition(with: self.view, duration: 0.4, options: .transitionCrossDissolve, animations: {[weak self] in
+      self?.view.isHidden = true
+    }) { (_) in
+      self.dismiss(animated: true, completion: {[weak self] in
+        self?.ostLoaderComplectionDelegate?.dismissWorkflow()
+      })
+    }
+  }
+  
+  @objc
+  func viewTapped() {
+    if isAlertView {
+      closeLoader()
+    }
+  }
+  
+  //MARK: - Add Layout
+  func addLayoutConstraints() {
+    //Progress Container
+    containerViewConstraints()
+    heartImageViewConstraints()
+    messageLabelConstraints()
+    progressBarBackgroundViewConstraints()
+    progressBarViewConstraints()
+    
+    let lastView = progressBarBackgroundView
+    lastView.bottomAlignWithParent()
+    
+    //Alert Container
+    alertContainerViewConstraints()
+    alertIconViewConstraints()
+    alertMessageLabelConstraints()
+    dismissButtonConstraints()
+    
+    let alertLastView = dismissButton
+    alertLastView.bottomAlignWithParent()
+  }
+  
+  func containerViewConstraints() {
+    progressContainerView.leftAlignWithParent()
+    progressContainerView.rightAlignWithParent()
+    progressContainerView.centerYAlignWithParent()
+  }
+  
+  func heartImageViewConstraints() {
+    heartImageView.topAlignWithParent(multiplier: 1, constant: 10)
+    heartImageView.centerXAlignWithParent()
+  }
+  
+  func messageLabelConstraints() {
+    messageLabel.placeBelow(toItem: heartImageView, constant: 20)
+    messageLabel.applyBlockElementConstraints(horizontalMargin: 20)
+  }
+  
+  func progressBarBackgroundViewConstraints() {
+    progressBarBackgroundView.placeBelow(toItem: messageLabel, constant: 20)
+    progressBarBackgroundView.setW375Width(width: 200)
+    progressBarBackgroundView.setFixedHeight(multiplier: 1, constant: 6)
+    progressBarBackgroundView.centerXAlignWithParent()
+  }
+  
+  func progressBarViewConstraints() {
+    leftAnchor = progressBarView.leftAnchor.constraint(equalTo: progressBarView.superview!.leftAnchor, constant: -50)
+    leftAnchor?.isActive = true
+    progressBarView.topAnchor.constraint(equalTo: progressBarView.superview!.topAnchor).isActive = true
+    progressBarView.bottomAnchor.constraint(equalTo: progressBarView.superview!.bottomAnchor).isActive = true
+    progressBarView.setW375Width(width: 50)
+  }
+  
+  //MARK: - Alert Constraints
+  func alertContainerViewConstraints() {
+    alertContainerView.leftAlignWithParent()
+    alertContainerView.rightAlignWithParent()
+    alertContainerView.centerYAlignWithParent()
+  }
+  
+  func alertIconViewConstraints() {
+    alertIcon.topAlignWithParent(multiplier: 1, constant: 10)
+    alertIcon.centerXAlignWithParent()
+  }
+  
+  func alertMessageLabelConstraints() {
+    alertMessageLabel.placeBelow(toItem: alertIcon, constant: 16)
+    alertMessageLabel.applyBlockElementConstraints(horizontalMargin: 20)
+  }
+  
+  func dismissButtonConstraints() {
+    //        dismissButton.topAlign(toItem: alertMessageLabel, constant: 40)
+    dismissButton.topAnchor.constraint(equalTo: alertMessageLabel.bottomAnchor, constant: 20).isActive = true
+    dismissButton.setW375Width(width: 200)
+    dismissButton.centerXAlignWithParent()
+  }
+  
+  //MARK: - Animate
+  
+  func animateLoader() {
+    indefinateProgressBarAnimation()
+    UIView.animate(withDuration: 0.6, animations: {[weak self] in
+      self?.heartImageView.transform = CGAffineTransform(rotationAngle: CGFloat(-210))
+    }) { (isCompleted) in
+      UIView.animate(withDuration: 0.3, animations: {[weak self] in
+        self?.heartImageView.transform = CGAffineTransform(rotationAngle: CGFloat(205))
+      }) {[weak self] (isCompleted) in
+        self?.heartPumpingAnimation()
+      }
+    }
+  }
+  
+  func heartPumpingAnimation() {
+    let animation = CABasicAnimation(keyPath: "transform.scale")
+    animation.duration = 0.6
+    animation.repeatCount = Float.infinity
+    animation.autoreverses = true
+    animation.fromValue = 1
+    animation.toValue = 1.2
+    animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
+    heartImageView.layer.add(animation, forKey: "transform.scale")
+  }
+  
+  func indefinateProgressBarAnimation() {
+    if shouldCloseProgressAnimation {
+      return
+    }
+    leftAnchor?.constant =  self.progressBarBackgroundView.frame.width + 50
+    UIView.animate(withDuration: 1.2, animations: {[weak self] in
+      self?.view.layoutIfNeeded()
+    }) {[weak self] (_) in
+      self?.leftAnchor?.constant =  -50
+      self?.view.layoutIfNeeded()
+      self?.indefinateProgressBarAnimation()
+    }
+  }
+  
+  //MARK: - Pepo Alert
+  
+  func closeProgressAnimation() {
+    heartImageView.layer.removeAnimation(forKey: "transform.scale")
+    shouldCloseProgressAnimation = true
+    isAlertView = true
+    
+    progressContainerView.isHidden = true
+    alertContainerView.isHidden = false
+  }
+  
+  func showSuccessAlert(workflowContext: OstWorkflowContext,
+                        contextEntity: OstContextEntity?) {
+    closeProgressAnimation()
+    
+    alertIcon.image = UIImage(named: "SuccessIcon")
+    alertMessageLabel.text = "SuccessIcon"
+    dismissButton.isHidden = true
+    
+    perform(#selector(closeLoader), with: nil, afterDelay: 4)
+    
+    view.layoutIfNeeded()
+  }
+  
+  func showFailureAlert(workflowContext: OstWorkflowContext,
+                        error: OstError) {
+    closeProgressAnimation()
+    
+    alertIcon.image = UIImage(named: "FailureIcon")
+    let errorMessage = OstSdkErrorHelper.shared.getErrorMessage(for: workflowContext, andError: error)
+    alertMessageLabel.text = errorMessage
+    dismissButton.setTitle("Close", for: .normal)
+    
+    self.alertContainerView.layoutIfNeeded()
+  }
+  
+  
+  //MARK: - OstWorkflowLoader
+  @objc public func onInitLoader(workflowConfig: [String: Any]) {
+    var loaderString: String = "Initializing..."
+    
+    if let initLoaderData = workflowConfig["initial_loader"] as? [String: String],
+      let text = initLoaderData["text"] {
+      loaderString = text
+    }
+    messageLabel.text = loaderString
+  }
+  
+  @objc public  func onPostAuthentication(workflowConfig: [String: Any]) {
+    var loaderString: String = "Processing..."
+    
+    if let initLoaderData = workflowConfig["loader"] as? [String: String],
+      let text = initLoaderData["text"] {
+      loaderString = text
+    }
+    
+    DispatchQueue.main.async {[weak self] in
+      self?.messageLabel.text = loaderString
+    }
+  }
+  
+  @objc public  func onAcknowledge(workflowConfig: [String: Any]) {
+    messageLabel.text = "Waiting for confirmation..."
+  }
+  
+  @objc public  func onSuccess(workflowContext: OstWorkflowContext,
+                               contextEntity: OstContextEntity,
+                               workflowConfig: [String : Any],
+                               loaderComplectionDelegate: OstLoaderCompletionDelegate) {
+    
+    ostLoaderComplectionDelegate = loaderComplectionDelegate
+    
+    showSuccessAlert(workflowContext: workflowContext,
+                     contextEntity: contextEntity)
+  }
+  
+  @objc public   func onFailure(workflowContext: OstWorkflowContext,
+                                error: OstError,
+                                workflowConfig: [String : Any],
+                                loaderComplectionDelegate: OstLoaderCompletionDelegate) {
+    
+    ostLoaderComplectionDelegate = loaderComplectionDelegate
+    
+    showFailureAlert(workflowContext: workflowContext,
+                     error: error)
+  }
+}
