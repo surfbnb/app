@@ -22,6 +22,6 @@ public class LoaderManager implements OstLoaderDelegate {
 
     @Override
     public boolean waitForFinalization(OstWorkflowContext.WORKFLOW_TYPE workflowType) {
-        return false;
+        return true;
     }
 }
