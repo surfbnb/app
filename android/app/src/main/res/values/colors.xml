@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    <color name="pinkRed">#ef5869</color>
+   <color name="transparent_gray">#33000000</color>
 </resources>
