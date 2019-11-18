@@ -47,6 +47,12 @@ export default {
     },
     "initial_loader": {
       "text": "Initializing..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "User Activated"
     }
   },
 
@@ -70,6 +76,12 @@ export default {
     },
     "initial_loader": {
       "text": "Initializing..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "Session added"
     }
   },
 
@@ -106,6 +118,12 @@ export default {
     },
     "initial_loader": {
       "text": "Fetching Device List..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "Device recovery initiated"
     }
   },
 
@@ -129,6 +147,12 @@ export default {
     },
     "initial_loader": {
       "text": "Initializing..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "Aborted recovery"
     }
   },
 
@@ -166,6 +190,12 @@ export default {
     },
     "initial_loader": {
       "text": "Fetching Device List..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "Device revoked"
     }
   },
 
@@ -189,6 +219,12 @@ export default {
     },
     "initial_loader": {
       "text": "Initializing..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "Biometric updated"
     }
   },
 
@@ -242,6 +278,12 @@ export default {
     },
     "initial_loader": {
       "text": "Processing...."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "PIN has been successfully reset"
     }
   },
 
@@ -277,6 +319,12 @@ export default {
     },
     "initial_loader": {
       "text": "Fetching mnemonics..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": ""
     }
   },
 
@@ -318,6 +366,12 @@ export default {
     },
     "initial_loader": {
       "text": "Initializing..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "Device authorized"
     }
   },
   "show_add_device_qr": {
@@ -345,6 +399,12 @@ export default {
     },
     "initial_loader": {
       "text": "Initializing..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "Device authorized"
     }
   },
   "authorize_device_via_qr": {
@@ -378,6 +438,12 @@ export default {
     },
     "initial_loader": {
       "text": "Initializing..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "Device authorized"
     }
   },
 
@@ -401,6 +467,12 @@ export default {
     },
     "initial_loader": {
       "text": "Initializing..."
+    },
+    "acknowledge": {
+      "text": "Waiting for confirmation"
+    },
+    "success":{
+      "text": "Transaction executed"
     }
   }
 }

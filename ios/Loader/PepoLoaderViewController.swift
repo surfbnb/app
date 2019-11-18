@@ -370,7 +370,15 @@ import OstWalletSdk
   }
   
   @objc public  func onAcknowledge(workflowConfig: [String: Any]) {
-    messageLabel.text = "Waiting for confirmation..."
+    var loaderString = "Waiting for confirmation..."
+    if let ackTextHash = workflowConfig["acknowledge_text"] as? [String: String],
+      let text = ackTextHash["text"] {
+      loaderString = text
+    }
+    
+    DispatchQueue.main.async {[weak self] in
+      self?.messageLabel.text = loaderString
+    }
   }
   
   @objc public  func onSuccess(workflowContext: OstWorkflowContext,

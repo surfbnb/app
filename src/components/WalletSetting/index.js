@@ -76,7 +76,7 @@ class WalletSettingList extends PureComponent {
       optionIds.abortRecovery,
       "Cancelling recovery",
       "Waiting for confirmation",
-      "Aborted recovery ");
+      "Aborted recovery");
 
     this._createEventLoaderData(
       optionIds.viewMnemonics,
