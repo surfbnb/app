@@ -80,7 +80,14 @@ public class OstSdkErrors {
 
             return errMsg;
         }
+        if (ostError.isApiError() && ((OstApiError)ostError).isApiSignerUnauthorized()) {
+            if (TextUtils.isEmpty(errMsg)) {
+                errMsg = ALL_ERRORS.optJSONObject(DEFAULT_CONTEXT).optString(errorCode);
+            }
+            if (null == errMsg) errMsg = DEFAULT_ERROR_MSG;
 
+            return errMsg;
+        }
         if (ostError.isApiError()) {
             OstApiError ostApiError = (OstApiError) ostError;
             if (TextUtils.isEmpty(errMsg)) {
@@ -126,5 +133,7 @@ public class OstSdkErrors {
 
     }
 
-
+    public boolean isApiSignerUnauthorized(OstError ostError) {
+        return (ostError.isApiError() && ((OstApiError)ostError).isApiSignerUnauthorized());
+    }
 }

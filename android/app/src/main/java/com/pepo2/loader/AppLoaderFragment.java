@@ -1,8 +1,6 @@
 package com.pepo2.loader;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -14,12 +12,14 @@ import android.widget.TextView;
 
 import com.ost.walletsdk.ui.loader.LoaderFragment;
 import com.ost.walletsdk.ui.loader.OstWorkflowLoader;
+import com.ost.walletsdk.ui.uicomponents.uiutils.content.StringConfig;
 import com.ost.walletsdk.ui.workflow.OstLoaderCompletionDelegate;
 import com.ost.walletsdk.workflows.OstContextEntity;
 import com.ost.walletsdk.workflows.OstWorkflowContext;
 import com.ost.walletsdk.workflows.errors.OstError;
 import com.pepo2.R;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -83,16 +83,17 @@ public class AppLoaderFragment extends LoaderFragment implements OstWorkflowLoad
 
     @Override
     public void onAcknowledge(JSONObject contentConfig) {
-        mLoaderTextView.setText("Request Acknowledged");
+        StringConfig stringConfig = StringConfig.instance(contentConfig.optJSONObject("acknowledge"));
+        mLoaderTextView.setText(stringConfig.getString());
     }
 
     @Override
-    public void onSuccess(OstWorkflowContext ostWorkflowContext, OstContextEntity ostContextEntity, final OstLoaderCompletionDelegate delegate) {
+    public void onSuccess(OstWorkflowContext ostWorkflowContext, OstContextEntity ostContextEntity, JSONObject contentConfig, final OstLoaderCompletionDelegate delegate) {
         if (mViewActive) {
 
             hideLoader();
 
-            showSuccessStatus(ostWorkflowContext, ostContextEntity);
+            showSuccessStatus(ostWorkflowContext, ostContextEntity, contentConfig);
 
             mViewGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -104,12 +105,12 @@ public class AppLoaderFragment extends LoaderFragment implements OstWorkflowLoad
     }
 
     @Override
-    public void onFailure(OstWorkflowContext ostWorkflowContext, OstError ostError, final OstLoaderCompletionDelegate delegate) {
+    public void onFailure(OstWorkflowContext ostWorkflowContext, OstError ostError, JSONObject contentConfig, final OstLoaderCompletionDelegate delegate) {
         if (mViewActive) {
 
             hideLoader();
 
-            showFailureStatus(ostWorkflowContext, ostError);
+            showFailureStatus(ostWorkflowContext, ostError, delegate);
 
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
@@ -127,22 +128,44 @@ public class AppLoaderFragment extends LoaderFragment implements OstWorkflowLoad
         mStatusImageView.setVisibility(View.GONE);
     }
 
-    private void showSuccessStatus(OstWorkflowContext ostWorkflowContext, OstContextEntity ostContextEntity) {
+    private void showSuccessStatus(OstWorkflowContext ostWorkflowContext, OstContextEntity ostContextEntity, JSONObject contentConfig) {
         mStatusImageView.setVisibility(View.VISIBLE);
         mStatusButton.setVisibility(View.GONE);
         mLoaderTextView.setVisibility(View.VISIBLE);
-        mLoaderTextView.setText("Success");
+
+
+        StringConfig stringConfig = StringConfig.instance(contentConfig.optJSONObject("success"));
+        mLoaderTextView.setText(stringConfig.getString());
 
         mStatusImageView.setBackground(getResources().getDrawable(R.drawable.toast_success, null));
     }
 
-    private void showFailureStatus(OstWorkflowContext ostWorkflowContext, OstError ostError) {
+    private void showFailureStatus(OstWorkflowContext ostWorkflowContext, OstError ostError, OstLoaderCompletionDelegate delegate) {
         mStatusImageView.setVisibility(View.VISIBLE);
         mStatusButton.setVisibility(View.VISIBLE);
         mLoaderTextView.setVisibility(View.VISIBLE);
 
         mLoaderTextView.setText(new OstSdkErrors().getErrorMessage(ostWorkflowContext, ostError));
         mStatusImageView.setBackground(getResources().getDrawable(R.drawable.toast_error, null));
+
+        if (new OstSdkErrors().isApiSignerUnauthorized(ostError)) {
+            mStatusButton.setText("Logout");
+            mStatusButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JSONObject params = new JSONObject();
+                    try {
+                        params.put("functionName", "logout");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    PepoEventEmitter.getInstance().sendEvent(params);
+                    delegate.dismissWorkflow();
+                }
+            });
+            return;
+        }
         mStatusButton.setText("Dismiss");
     }
 
