@@ -34,7 +34,8 @@ let stylesMap = {
       },
       repliesTxt: {
         flex: 4,
-        alignItems: 'center'
+        alignItems: 'center',
+        marginRight:50          //equal to crossIcon width in order to maintain text in center
       },
       headerStyles: {
         backgroundColor: Colors.white,
@@ -55,7 +56,32 @@ let stylesMap = {
       headerSubText:{
         fontSize: 12,
         color: 'rgba(42, 41, 59, 0.7)'
-      }
+      },
+      addReplyView : {
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'flex-start',
+        width:'100%',
+        height:54,
+        shadowColor:'#000',
+        elevation: 8,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,shadowRadius: 1,
+        position:'absolute',
+        bottom:0,
+        zIndex:9999,
+        backgroundColor:Colors.white,
+        paddingVertical:18,
+        paddingHorizontal:12
+    },
+    addReplyText : {
+        color:Colors.black,
+        marginLeft:10
+    },
+    addReplyImageDimension : {
+        height:10,
+        width:15
+    }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

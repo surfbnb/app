@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { TextInput } from 'react-native';
+import { TextInput, TouchableOpacity, Image } from 'react-native';
 
 import styles from './styles';
+import CloseIcon from '../../assets/modal-cross-icon.png';
 
 class VideoLink extends Component {
   constructor(props) {
@@ -22,6 +23,13 @@ class VideoLink extends Component {
     );
   };
 
+  onLinkCrossIconClick = () =>{
+    console.log("in click function")
+      this.setState({
+        value : ""
+      })
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -36,6 +44,9 @@ class VideoLink extends Component {
           value={this.state.value}
           autoCapitalize={'none'}
         />
+        <TouchableOpacity onPress={this.onLinkCrossIconClick}>
+          <Image source={CloseIcon} style={{height:13,width:13}}></Image>
+        </TouchableOpacity>
       </React.Fragment>
     );
   }
