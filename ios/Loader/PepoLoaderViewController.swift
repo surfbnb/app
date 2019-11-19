@@ -405,34 +405,36 @@ import OstWalletSdk
     }
   }
   
-  @objc public  func onSuccess(workflowContext: OstWorkflowContext,
+  @objc public
+  func onSuccess(workflowContext: OstWorkflowContext,
                                contextEntity: OstContextEntity,
                                workflowConfig: [String : Any],
-                               loaderComplectionDelegate: OstLoaderCompletionDelegate) {
+                               loaderCompletionDelegate: OstLoaderCompletionDelegate) {
     
     self.workflowContext = workflowContext
     self.contextEntity = contextEntity
     
-    ostLoaderComplectionDelegate = loaderComplectionDelegate
+    ostLoaderComplectionDelegate = loaderCompletionDelegate
     
     showSuccessAlert(workflowContext: workflowContext,
                      contextEntity: contextEntity,
                      workflowConfig: workflowConfig)
   }
   
-  @objc public   func onFailure(workflowContext: OstWorkflowContext,
+  @objc public
+  func onFailure(workflowContext: OstWorkflowContext,
                                 error: OstError,
                                 workflowConfig: [String : Any],
-                                loaderComplectionDelegate: OstLoaderCompletionDelegate) {
+                                loaderCompletionDelegate: OstLoaderCompletionDelegate) {
     self.workflowContext = workflowContext
     self.error = error
     setIsApiSignerUnauthorized()
     
     if isApiSignerUnauthorized {
-      loaderComplectionDelegate.dismissWorkflow();
+      loaderCompletionDelegate.dismissWorkflow();
       return;
     }
-    ostLoaderComplectionDelegate = loaderComplectionDelegate
+    ostLoaderComplectionDelegate = loaderCompletionDelegate
     
     showFailureAlert(workflowContext: workflowContext,
                      error: error)
