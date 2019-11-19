@@ -119,7 +119,7 @@ class WalletSettingController {
       //ToDo: Show the error and close the wallet settings.
       this._onDeviceFetch({
         "local_device": localDevice,
-        "resut_type": "local_device"
+        "result_type": "local_device"
       });
     });
   }
