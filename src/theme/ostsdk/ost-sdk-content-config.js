@@ -407,7 +407,7 @@ export default {
       "text": "Device authorized"
     }
   },
-  "authorize_device_via_qr": {
+  "scan_qr_to_authorize_device": {
     "verify_device": {
       "lead_label": {
         "text": "Authorize New Device"

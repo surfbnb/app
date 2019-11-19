@@ -342,25 +342,9 @@ class WalletSettingController {
         return null;
     }
 
-    this.subscribePepoEvent(workflowId);
     this.currentWorkflow = this._createWorkflowInfo(workflowId, optionId);
 
     return this.currentWorkflow;
-  }
-
-  subscribePepoEvent(workflowId) {
-    PepoNativeHelper.subscribeForEvent("logout", (callback) => {
-        let callbackType = callback.callbackType;
-        if (callbackType.toLowerCase() === "logout") {
-          this.logoutUser()
-        }
-    });
-  }
-
-  logoutUser() {
-    CurrentUser.logout({
-      device_id: DeviceInfo.getUniqueID()
-    });
   }
 
   getActiveWorkflowInfo() {

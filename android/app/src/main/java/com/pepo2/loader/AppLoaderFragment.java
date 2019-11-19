@@ -149,21 +149,7 @@ public class AppLoaderFragment extends LoaderFragment implements OstWorkflowLoad
         mStatusImageView.setBackground(getResources().getDrawable(R.drawable.toast_error, null));
 
         if (new OstSdkErrors().isApiSignerUnauthorized(ostError)) {
-            mStatusButton.setText("Logout");
-            mStatusButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    JSONObject params = new JSONObject();
-                    try {
-                        params.put("functionName", "logout");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    PepoEventEmitter.getInstance().sendEvent(params);
-                    delegate.dismissWorkflow();
-                }
-            });
+            delegate.dismissWorkflow();
             return;
         }
         mStatusButton.setText("Dismiss");
