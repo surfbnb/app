@@ -23,9 +23,6 @@ import videoUploaderComponent from './CameraWorkerEventEmitter';
 import createObjectForRedux from '../helpers/createObjectForRedux';
 import Toast from '../theme/components/NotificationToast';
 import CurrentUser from '../models/CurrentUser';
-import {ensureDeivceAndSession, ON_USER_CANCLLED_ERROR_MSG} from "../helpers/TransactionHelper";
-import pricer from "./Pricer";
-import {VideoPlayPauseEmitter} from "../helpers/Emitters";
 import DataContract from "../constants/DataContract";
 import {TransactionExecutor} from './TransactionExecutor';
 import { ostSdkErrors } from '../services/OstSdkErrors';
@@ -192,7 +189,8 @@ class CameraWorker extends PureComponent {
     Store.dispatch(
       upsertRecordedVideo({
         do_discard: true,
-        pepo_api_posting: false
+        pepo_api_posting: false,
+        executing_tx: false
       })
     );
   };
@@ -217,7 +215,7 @@ class CameraWorker extends PureComponent {
       return ;
     }
 
-    let details = `vi_${parentVideoId}`;
+    let details = `vi_${parentVideoId} `;
     details += `rdi_${replyDetailId}`;
     metaProperties['details'] = details;
     return metaProperties;
@@ -228,15 +226,19 @@ class CameraWorker extends PureComponent {
 
     let goForTx = this.props.recorded_video.go_for_tx,
       doDiscard = this.props.recorded_video.do_discard,
+      executingTx = this.props.recorded_video.executing_tx,
     receiverUserId = deepGet (this.props.recorded_video, 'reply_obj.replyReceiverUserId'),
     amountToSendWithReply = deepGet(this.props.recorded_video, 'reply_obj.amountToSendWithReply');
-    if (! goForTx || ! receiverUserId || doDiscard ){
+    if (! goForTx || ! receiverUserId || doDiscard || executingTx ){
       return;
     }
     if ( receiverUserId === this.props.currentUserId || ! Number(amountToSendWithReply)) {
       this.videoUploadedSuccessCallback();
       return;
     };
+    upsertRecordedVideo({
+      executing_tx: true
+    });
     this.VideoUploadStatusToProcessing();
     console.log('CameraWorker.executeTransaction');
 
@@ -244,7 +246,7 @@ class CameraWorker extends PureComponent {
     let callbacks = {onRequestAcknowledge: this.videoUploadedSuccessCallback, onFlowInterrupt: this.onFlowInterrupt};
     let config = {metaProperties: this.getSdkMetaProperties()};
 
-    let txExecutor = new TransactionExecutor({}, callbacks);
+    let txExecutor = new TransactionExecutor(config, callbacks);
     txExecutor.sendTransactionToSdk( amountToSendWithReply, receiverUserId, false);
     // todo : Execute transaction code. call clean up after that.
 
@@ -507,7 +509,7 @@ class CameraWorker extends PureComponent {
         })
       );
       this.VideoUploadStatusToProcessing();
-      this.uploadToS3(this.props.recorded_video.compressed_video, 'video')
+      return this.uploadToS3(this.props.recorded_video.compressed_video, 'video')
         .then((s3Video) => {
           console.log('uploadVideo success :: s3Video', s3Video);
           Store.dispatch(
@@ -542,7 +544,7 @@ class CameraWorker extends PureComponent {
         })
       );
 
-      this.uploadToS3(this.props.recorded_video.cover_image, 'image')
+     return this.uploadToS3(this.props.recorded_video.cover_image, 'image')
         .then((s3CoverImage) => {
           console.log('uploadCoverImage success :: s3CoverImage', s3CoverImage);
           Store.dispatch(
@@ -611,7 +613,7 @@ class CameraWorker extends PureComponent {
         };
       }
 
-      new PepoApi(`/users/${this.props.currentUserId}/fan-video`)
+      return new PepoApi(`/users/${this.props.currentUserId}/fan-video`)
         .post(payload)
         .then((responseData) => {
           if (responseData.success && responseData.data) {
