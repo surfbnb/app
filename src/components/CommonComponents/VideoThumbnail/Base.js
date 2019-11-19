@@ -1,40 +1,32 @@
 import {Dimensions, Image, Text, TouchableWithoutFeedback, View} from "react-native";
-import React from 'react';
+import React, { PureComponent } from 'react';
 import FastImage from 'react-native-fast-image';
 import Colors from "../../../theme/styles/Colors";
 import LinearGradient from "react-native-linear-gradient";
 import pepoWhiteIcon from "../../../assets/pepo-white-icon.png";
 import inlineStyles from "./style";
-import reduxGetters from "../../../services/ReduxGetters";
-import AppConfig from "../../../constants/AppConfig";
 import multipleClickHandler from '../../../services/MultipleClickHandler'
-import Pricer from "../../../services/Pricer";
-import deepGet from 'lodash/get';
 import ProfilePicture from "../../ProfilePicture";
 
-let getVideoBtAmount = (videoId) => {
-    return Pricer.displayAmountWithKFomatter( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
-}
 
-export default (props) => {
-    const videoId =  deepGet(props, 'payload.video_id'),
-        userId = deepGet(props, 'payload.user_id')
-        userName = reduxGetters.getUserName(userId),
-        imageUrl = reduxGetters.getVideoImgUrl(videoId,null, AppConfig.userVideos.userScreenCoverImageWidth),
-        videoDesc =reduxGetters.getVideoDescription(reduxGetters.getVideoDescriptionId(videoId));
+class Base extends PureComponent {
 
+    constructor(props){
+        super(props);
+    }
 
-    return <TouchableWithoutFeedback onPress={multipleClickHandler(() => { props.onVideoClick && props.onVideoClick(videoId, props.index );} )}
+    render(){
+        return <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.props.onVideoClick && this.props.onVideoClick()} )}
     >
         <View>
             <FastImage style={{
-                width: (Dimensions.get('window').width - 6) / 2,
+                width: (Dimensions.get('window').width - 4) / 2,
                 aspectRatio:9/16,
                 margin: 1,
-                backgroundColor: imageUrl ? Colors.white : Colors.gainsboro
+                backgroundColor: this.props.imageUrl ? Colors.white : Colors.gainsboro
             }}
                        source={{
-                           uri: imageUrl,
+                           uri: this.props.imageUrl,
                            priority: FastImage.priority.high
                        }}/>
             <LinearGradient
@@ -45,15 +37,15 @@ export default (props) => {
                 style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', bottom: 0, left: 0}}
             >
                 <View style={inlineStyles.videoInfoContainer}> 
-                     <Text style={inlineStyles.videoDescStyle} ellipsizeMode={'tail'} numberOfLines={3}>{videoDesc}</Text>
+                     <Text style={inlineStyles.videoDescStyle} ellipsizeMode={'tail'} numberOfLines={3}>{this.props.videoDesc}</Text>
                      <View style={{flex:1, flexDirection: "row" , marginTop: 5}}>
                         <View style={{flex: 3, flexDirection: "row"}}>
-                            <ProfilePicture userId={userId} style={{height: 18, width: 18, borderWidth: 1, borderColor: 'white'}} />
-                            <Text style={inlineStyles.videoUserNameStyle} ellipsizeMode={'tail'} numberOfLines={1}>@{userName}</Text>
+                            <ProfilePicture userId={this.props.userId} style={{height: 18, width: 18, borderWidth: 1, borderColor: 'white'}} />
+                            <Text style={inlineStyles.videoUserNameStyle} ellipsizeMode={'tail'} numberOfLines={1}>@{this.props.userName}</Text>
                         </View>
                         <View style={[inlineStyles.videoStatsContainer]}>
                             <Image style={{height: 12, width: 12, marginTop: 2}} source={pepoWhiteIcon} />
-                            <Text style={inlineStyles.videoStatsTxt}>{getVideoBtAmount(videoId)}</Text>
+                            <Text style={inlineStyles.videoStatsTxt}>{this.props.btAmount}</Text>
                         </View>
                      </View>        
                 </View>
@@ -61,4 +53,8 @@ export default (props) => {
 
         </View>
     </TouchableWithoutFeedback>
+    }
+
 }
+
+export default Base;

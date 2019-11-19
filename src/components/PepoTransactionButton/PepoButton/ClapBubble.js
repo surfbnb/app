@@ -1,8 +1,5 @@
 import * as React from "react";
 import {
-  Text,
-  View,
-  TouchableOpacity,
   StyleSheet,
   Image,
   Easing,
@@ -64,7 +61,6 @@ export default class ClapBubble extends React.Component {
     };
     return (
       <Animated.View style={[animationStyle, styles.clapbubble]}>
-        {/*<Text style={styles.clapText}>+ {this.props.count}</Text>*/}
         <Image style={{height: 40,width: 40}} source={Heart}></Image>
       </Animated.View>
     );
@@ -73,7 +69,6 @@ export default class ClapBubble extends React.Component {
 const styles = StyleSheet.create({
   clapbubble: {
     elevation: 4,
-    // backgroundColor:Colors.primary ,
     height: 40,
     width: 40,
     borderRadius: 20,

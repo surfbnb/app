@@ -32,7 +32,7 @@ class ReportVideo extends PureComponent {
 
     reportVideo = () => {
         new PepoApi('/report')
-            .post({report_entity_kind: 'video', report_entity_id: this.props.videoId })
+            .post({report_entity_kind: this.props.reportKind, report_entity_id: this.props.reportEntityId })
             .then((response) => {
                 if (response && response.success){
                     Toast.show({text:'Video reported successfully!', icon: 'success' });

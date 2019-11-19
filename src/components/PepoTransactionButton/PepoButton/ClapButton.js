@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, Easing, View, Vibration } from 'react-native';
+import { Animated, Easing, View } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 import pepo_tx_img from '../../../assets/pepo_anim_btn.png';

@@ -21,7 +21,7 @@ export default class DeleteVideo extends Component {
 
     deleteUser = () => {
         if(!this.props.videoId) return;
-        new PepoApi(`/videos/${this.props.videoId}/delete`)
+        new PepoApi(this.props.fetchUrl)
             .post()
             .then((response) => {
 

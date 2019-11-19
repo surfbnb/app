@@ -1,22 +1,21 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import VideoWrapper from '../Home/VideoWrapper';
+import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
-import TransactionPepoButton from '../Home/TransactionPepoButton';
 
 import CurrentUser from '../../models/CurrentUser';
 
-import BottomStatus from '../Home/BottomStatus';
-import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
-import ShareVideo from '../../services/shareVideo';
+import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 import inlineStyles from './styles';
 
 import utilities from '../../services/Utilities';
-import OptionsIcon from '../../assets/options_self_video.png';
-
+import ReplyIcon from '../CommonComponents/ReplyIcon';
+import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
+import DataContract from '../../constants/DataContract';
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
@@ -45,28 +44,10 @@ class UserVideoHistoryRow extends PureComponent {
     return this.props.userId == CurrentUser.getUserId();
   }
 
-  shareVideo = () => {
-    let shareVideo = new ShareVideo(this.props.videoId);
-    shareVideo.perform();
-  };
-
-  onDescriptionClick = ( tapEntity , tapText ) => {
-
-    if (!tapEntity) {
-      return;
-    }
-
-    if(tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', {
-        "tagId": tapEntity.id
-      });
-    }
-  };
-
   render() {
     return (
       <View style={inlineStyles.fullScreen}>
-        <VideoWrapper
+        <FanVideo
           shouldPlay={this.props.shouldPlay}
           userId={this.props.userId}
           videoId={this.props.videoId}
@@ -79,27 +60,25 @@ class UserVideoHistoryRow extends PureComponent {
             <View style={inlineStyles.touchablesBtns}>
 
               <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <TransactionPepoButton
+                <PepoTxBtn
                   resyncDataDelegate={this.refetchVideo}
                   userId={this.props.userId}
-                  videoId={this.props.videoId}
+                  entityId={this.props.videoId}
                 />
-                <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} />
-                <ReportVideo  userId={this.props.userId} videoId={this.props.videoId} />
+                <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
+                <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.videoId)} />
+                <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
               </View>
 
-              <VideoAmountStat
-                videoId={this.props.videoId}
+              <VideoSupporterStat
+                entityId={this.props.videoId}
                 userId={this.props.userId}
-                onWrapperClick={this.props.onWrapperClick}
               />
             </View>
 
-            <BottomStatus
+            <VideoBottomStatus
               userId={this.props.userId}
-              videoId={this.props.videoId}
-              onWrapperClick={this.props.onWrapperClick}
-              onDescriptionClick={this.onDescriptionClick}
+              entityId={this.props.videoId}
             />
           </View>
         )}

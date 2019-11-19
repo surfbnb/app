@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Dimensions, Easing, Animated } from 'react-native';
+import { View, Dimensions, Easing, Animated , Platform} from 'react-native';
 import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator , StackViewTransitionConfigs} from 'react-navigation-stack';
+import NavigationAnimation from "./src/helpers/NavigationAnimation";
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import deepGet from 'lodash/get';
 
@@ -39,6 +40,8 @@ import { NotificationToastComponent } from './src/theme/components/NotificationT
 import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
+import FanVideoReplyDetails from './src/components/FanVideoReplyDetails';
+
 import WalletSettingScreen from './src/components/WalletSetting';
 import StoreProductsScreen from './src/components/StoreProducts';
 import PaymentWorker from './src/components/PaymentWorker';
@@ -56,14 +59,20 @@ import CouchMarks from './src/components/CouchMarks';
 import RedemptiomScreen from './src/components/Redemption';
 import VideoTags from './src/components/VideoTags';
 import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
+import VideoReplies from './src/components/VideoReplies';
+import FullScreenReplyCollection from './src/components/FullScreenReplyCollection';
+import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
   'FanVideoDetails',
+  'FanVideoReplyDetails',
   'InviteCodeScreen',
   'AddEmailScreen',
   'InAppBrowserComponent',
-  'CouchMarks'
+  'CouchMarks',
+  'VideoReplies',
+  'FullScreenReplyCollection'
 ];
 
 const modalStackConfig = {
@@ -78,40 +87,35 @@ const modalStackConfig = {
   }
 };
 
-const txModalConfig = {
+const txModalConfig = { 
   transparentCard: true,
-  cardStyle: { backgroundColor: 'rgba(0,0,0,0.5)' },
+  cardStyle: { backgroundColor: 'rgba(0,0,0,0)' },
   gesturesEnabled: false,
-  transitionConfig: () => ({
-    transitionSpec: {
-      duration: 300,
-      easing: Easing.out(Easing.poly(4)),
-      timing: Animated.timing
-    },
-    screenInterpolator: (sceneProps) => {
-      const { layout, position, scene } = sceneProps;
-      const { index } = scene;
-
-      const height = layout.initHeight;
-      const translateY = position.interpolate({
-        inputRange: [index - 1, index, index + 1],
-        outputRange: [height, 0, 0]
-      });
-
-      const opacity = position.interpolate({
-        inputRange: [index - 1, index - 0.99, index],
-        outputRange: [0, 1, 1]
-      });
-
-      return { opacity, transform: [{ translateY }] };
+  transitionConfig: (transitionProps, prevTransitionProps) => {    
+    const scenes = transitionProps["scenes"];
+    const prevScene = scenes[scenes.length - 2];
+    const nextScene = scenes[scenes.length - 1];
+    if (prevScene
+      && prevScene.route.routeName === 'VideoReplies'
+      && nextScene.route.routeName === 'FullScreenReplyCollection') {
+      return  NavigationAnimation.zoomIn();
     }
-  })
+    else if (prevScene
+      && prevScene.route.routeName === 'FullScreenReplyCollection'
+      && nextScene.route.routeName === 'VideoReplies') {
+      return  NavigationAnimation.zoomOut();
+    }
+    return  NavigationAnimation.defaultTransition();
+  }
 };
+
 
 const CaptureVideoStack = createStackNavigator(
   {
     CaptureVideo: CaptureVideo,
-    FanVideoDetails: FanVideoDetails
+    FanVideoDetails: FanVideoDetails,
+    FanVideoReplyDetails: FanVideoReplyDetails,
+    WalletSettingScreen: WalletSettingScreen
   },
   {
     headerLayoutPreset: 'center'
@@ -127,6 +131,21 @@ const InAppBrowserStack = createStackNavigator(
   }
 );
 
+const FullScreenReplyStack = createStackNavigator(
+  {
+    FullScreenReplyCollection: FullScreenReplyCollection,
+    UsersProfileScreen: UsersProfileScreen,
+    UserVideoHistory: UserVideoHistory,
+    SupportingListScreen: SupportingListScreen,
+    SupportersListScreen: SupportersListScreen,
+    VideoTags: VideoTags,
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
+
 const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
@@ -138,7 +157,8 @@ const HomePushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
-    headerLayoutPreset: 'center'
+    initialRouteName: 'HomeScreen',
+    headerLayoutPreset: 'center' 
   }
 );
 
@@ -152,6 +172,8 @@ const HomeStack = createStackNavigator(
     InviteCodeScreen: InviteCodeScreen,
     AuthDeviceDrawer: AuthDeviceDrawer,
     AddEmailScreen: AddEmailScreen,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyStack,
     CouchMarks: CouchMarks
   },
   {
@@ -166,6 +188,7 @@ const NotificationPushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
@@ -183,6 +206,8 @@ const NotificationStack = createStackNavigator(
     AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
     CaptureVideo: CaptureVideoStack,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyStack,
     InAppBrowserStack: InAppBrowserStack
   },
   { ...modalStackConfig, ...txModalConfig }
@@ -203,7 +228,7 @@ const ProfilePushStack = createStackNavigator(
     WalletSettingScreen: WalletSettingScreen,
     WalletDetails: WalletDetails,
     VideoTags: VideoTags,
-      FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
     headerLayoutPreset: 'center'
@@ -220,6 +245,8 @@ const ProfileStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen,
+    VideoReplies: VideoReplies,
+    FullScreenReplyCollection: FullScreenReplyStack,
     RedemptiomScreen: RedemptiomScreen
   },
   {
@@ -243,7 +270,7 @@ const SearchPushStack = createStackNavigator(
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
     VideoTags: VideoTags,
-      FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection
   },
   {
     headerLayoutPreset: 'center'
@@ -256,6 +283,8 @@ const SearchStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     TransactionScreen: TransactionScreen,
+    VideoReplies: VideoReplies,
+    FullScreenReplyCollection: FullScreenReplyStack,
     AuthDeviceDrawer: AuthDeviceDrawer
   },
   {

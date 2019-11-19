@@ -49,7 +49,7 @@ const TabMap = {
       }
     },
     extraParams: {
-      showBalanceFlier: true
+      showBalanceFlyer: true
     },
     supported: true
     },
@@ -97,7 +97,7 @@ const TabMap = {
       "isEmpty": true
     },
     extraParams: {
-      showBalanceFlier: true
+      showBalanceFlyer: true
     },
     renderNoResults :  (noResultsData) => {
       const oThis = TabMap.videos;

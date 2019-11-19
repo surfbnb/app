@@ -26,6 +26,7 @@ import toastError from '../../assets/toast_error.png';
 import pepoIcon from '../../assets/self-amount-pepo-icon.png';
 import mailIcon from '../../assets/mail-filled.png';
 import { ostErrors } from '../../services/OstErrors';
+import CommonStyle from '../../theme/styles/Common';
 
 class StoreProductsScreen extends PureComponent{
 
@@ -279,7 +280,7 @@ class StoreProductsScreen extends PureComponent{
     render(){
         return (
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
-                <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+                <View style={CommonStyle.modalViewContainer}>
                   <TouchableWithoutFeedback>
                     <View style={[inlineStyles.container]}>
                         {/*<View style={inlineStyles.dragger}></View>*/}

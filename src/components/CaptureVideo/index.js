@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import VideoRecorder from '../VideoRecorder';
 import { View } from 'react-native';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
-import FanVideoDetails from '../FanVideoDetails';
 import KeepAwake from 'react-native-keep-awake';
 
+import Store from "../../store";
+import {upsertRecordedVideo} from "../../actions";
+import utilities from '../../services/Utilities';
+import CurrentUser from '../../models/CurrentUser';
+import AppConfig from '../../constants/AppConfig';
 
 
 class CaptureVideo extends Component {
@@ -13,32 +17,113 @@ class CaptureVideo extends Component {
   };
   constructor(props) {
     super(props);
+    let videoReplyCount = props.navigation.getParam("videoReplyCount");
     this.state = {
       recordingScreen: true,
       videoUri: '',
       actionSheetOnRecordVideo: true,
       modalVisible: true,
-      acceptedCameraTnC: null
+      acceptedCameraTnC: null,
+      hasVideoReplies: videoReplyCount && videoReplyCount > 0
     };
+    this.replyReceiverUserId = null;
+    this.replyReceiverVideoId = null;
+    this.amountToSendWithReply = null;
+    this.videoType = null;
+    this.proceedWithExisting = null;
+    this.setReplyVideoParams();
+    this.showCoachForVideoRecord();
+
+  }
+
+  componentDidMount () {}
+
+
+  showCoachForVideoRecord() {
+    const oThis = this;
+    if (this.isVideoTypePost()) {
+      utilities.getItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`).then((terms) => {
+        oThis.setState({ acceptedCameraTnC: terms });
+      });
+    }
+  }
+
+  setReplyVideoParams(){
+    this.videoType = this.props.navigation.getParam("videoType");
+    if (this.isVideoTypeReply()){
+      this.replyReceiverUserId = this.props.navigation.getParam("userId");
+      this.replyReceiverVideoId = this.props.navigation.getParam("videoId");
+      this.amountToSendWithReply = this.props.navigation.getParam("amount");
+
+    } else {
+      // Do nothing.
+    }
+  }
+
+  isVideoTypePost(){
+    return this.videoType === AppConfig.videoTypes.post;
+  }
+
+  isVideoTypeReply = () => {
+    return this.videoType === AppConfig.videoTypes.reply;
   }
 
   goToRecordScreen() {
     this.setState({
       recordingScreen: true,
       actionSheetOnRecordVideo: false,
-      acceptedCameraTnC: 'true'
+      acceptedCameraTnC: 'true',
+      hasVideoReplies: true
     });
   }
 
-  goToPreviewScreen(videoUri) {
-    this.setState({
+
+  proceedWithExistingVideo = (recordedVideoObj) => {
+    this.proceedWithExisting = true;
+    this.videoType = recordedVideoObj.video_type || AppConfig.videoTypes.post ;
+    this.setState ({
       recordingScreen: false,
-      videoUri
+      videoUri: recordedVideoObj.raw_video
     });
+  };
+
+
+  saveVideoPrimaryInfo = () => {
+   this.proceedWithExisting = false;
+
+   Store.dispatch(upsertRecordedVideo(this.getPrimaryVideoInfo()));
+  };
+
+
+  getPrimaryVideoInfo = () => {
+      if (this.proceedWithExisting) return {};
+
+      if (this.isVideoTypeReply()){
+        return { video_type: AppConfig.videoTypes.reply , reply_obj: this.getReplyOptions()};
+      } else if (this.isVideoTypePost()) {
+        return { video_type: AppConfig.videoTypes.post };
+      }
+
+  };
+
+
+  goToDetailsScreen () {
+    if (this.videoType ===  AppConfig.videoTypes.post ){
+      this.props.navigation.push('FanVideoDetails', this.getPrimaryVideoInfo());
+    } else if (this.videoType ===  AppConfig.videoTypes.reply ){
+      this.props.navigation.push('FanVideoReplyDetails', this.getPrimaryVideoInfo());
+    }
   }
 
-  goToDetailsScreen() {
-    this.props.navigation.push('FanVideoDetails');
+  getReplyOptions(){
+    // Reply options are received to View when user click on Record video (Plus icon).
+    let replyOptions = {};
+    if ( this.isVideoTypeReply()) {
+      replyOptions['replyReceiverUserId'] = this.replyReceiverUserId;
+      replyOptions['replyReceiverVideoId'] = this.replyReceiverVideoId;
+      replyOptions['amountToSendWithReply']= this.amountToSendWithReply;
+    }
+    return replyOptions;
   }
 
   modalRequestClose = () => {
@@ -49,6 +134,22 @@ class CaptureVideo extends Component {
     }
   };
 
+  getActionSheetText = (videoObject) => {
+    if (videoObject.video_type ===AppConfig.videoTypes.reply ){
+      return 'get language from UX';
+    } else if (videoObject.video_type === AppConfig.videoTypes.post ) {
+      return 'You have already recorded video';
+    }
+  };
+
+  goToPreviewScreen = (videoUri) => {
+    this.setState({
+      recordingScreen: false,
+      videoUri
+    });
+  };
+
+
   getCurrentView() {
     if (this.state.recordingScreen) {
       return (
@@ -57,11 +158,16 @@ class CaptureVideo extends Component {
             this.videoRecorder = recorder;
           }}
           acceptedCameraTnC={this.state.acceptedCameraTnC}
-          goToPreviewScreen={(videoUri) => {
-            this.goToPreviewScreen(videoUri);
-          }}
+          proceedWithExistingVideo={this.proceedWithExistingVideo}
+          saveVideoPrimaryInfo={this.saveVideoPrimaryInfo}
+          goToPreviewScreen={this.goToPreviewScreen}
           actionSheetOnRecordVideo={this.state.actionSheetOnRecordVideo}
+          getActionSheetText={this.getActionSheetText}
           navigation={this.props.navigation}
+          isVideoTypeReply={this.isVideoTypeReply()}
+          hasVideoReplies={this.state.hasVideoReplies}
+          videoId={this.replyReceiverVideoId}
+
         />
       );
     } else {
@@ -76,6 +182,7 @@ class CaptureVideo extends Component {
           goToDetailsScreen={() => {
             this.goToDetailsScreen();
           }}
+          saveVideoPrimaryInfo={this.saveVideoPrimaryInfo}
           cachedvideoUrl={this.state.videoUri}
           navigation={this.props.navigation}
         />

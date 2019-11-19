@@ -4,6 +4,7 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 let stylesMap = {
   container: {
     flex: 1,
+    backgroundColor: Colors.white,
     marginVertical: 20,
     marginHorizontal: 10
   },

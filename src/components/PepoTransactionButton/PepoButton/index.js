@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback
 } from "react-native";
 import ClapBubble from "./ClapBubble";
-import inlineStyles from '../styles'
+import inlineStyles from '../styles';
 import ClapButton from "./ClapButton";
 import appConfig from "../../../constants/AppConfig";
 import Pricer from "../../../services/Pricer";

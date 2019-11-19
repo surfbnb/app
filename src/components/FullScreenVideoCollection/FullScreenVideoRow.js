@@ -1,32 +1,26 @@
 import React, { PureComponent } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import VideoWrapper from '../Home/VideoWrapper';
+import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
-import TransactionPepoButton from '../Home/TransactionPepoButton';
 import deepGet from 'lodash/get';
-import CurrentUser from '../../models/CurrentUser';
 
-import BottomStatus from '../Home/BottomStatus';
-import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
-import ShareVideo from '../../services/shareVideo';
+import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 import inlineStyles from './styles';
 
-import utilities from '../../services/Utilities';
-import OptionsIcon from '../../assets/options_self_video.png';
+import ReplyIcon from '../CommonComponents/ReplyIcon';
+import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
+import DataContract from '../../constants/DataContract';
 
 
 class FullScreeVideoRow extends PureComponent {
     constructor(props) {
         super(props);
-        console.log("this.props", this.props);
         this.userId = deepGet(this.props.payload, 'user_id');
         this.videoId = deepGet(this.props.payload, 'video_id');
-
-
-
     }
 
     refetchVideo = () => {
@@ -36,40 +30,10 @@ class FullScreeVideoRow extends PureComponent {
             .catch((error) => {});
     };
 
-
-
-    shareVideo = () => {
-        let shareVideo = new ShareVideo(this.videoId);
-        shareVideo.perform();
-    };
-
-    navigateToUserProfile = (e) => {
-        if (utilities.checkActiveUser()) {
-            if (this.userId == CurrentUser.getUserId()) {
-                this.props.navigation.navigate('ProfileScreen');
-            } else {
-                this.props.navigation.push('UsersProfileScreen', { userId: this.userId });
-            }
-        }
-    };
-
-  onDescriptionClick = ( tapEntity , tapText ) => {
-    if (!tapEntity) {
-      return;
-    }
-
-    if( tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', {
-        "tagId": tapEntity.id
-      });
-    }
-
-  }
-
     render() {
         return (
             <View style={inlineStyles.fullScreen}>
-                <VideoWrapper
+                <FanVideo
                     shouldPlay={this.props.shouldPlay}
                     userId={this.userId}
                     videoId={this.videoId}
@@ -82,27 +46,25 @@ class FullScreeVideoRow extends PureComponent {
                         <View style={inlineStyles.touchablesBtns}>
 
                             <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                                <TransactionPepoButton
+                                <PepoTxBtn
                                     resyncDataDelegate={this.refetchVideo}
                                     userId={this.userId}
-                                    videoId={this.videoId}
+                                    entityId={this.videoId}
                                 />
-                                <ShareIcon  userId={this.userId} videoId={this.videoId} />
-                                <ReportVideo  userId={this.userId} videoId={this.videoId} />
+                                <ReplyIcon videoId={this.videoId} userId={this.userId}/>
+                                <ShareIcon  userId={this.userId} videoId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
+                                <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
                             </View>
 
-                            <VideoAmountStat
-                                videoId={this.videoId}
+                            <VideoSupporterStat
+                                entityId={this.videoId}
                                 userId={this.userId}
-                                onWrapperClick={this.navigateToUserProfile}
                             />
                         </View>
 
-                        <BottomStatus
+                        <VideoBottomStatus
                             userId={this.userId}
-                            videoId={this.videoId}
-                            onWrapperClick={this.navigateToUserProfile}
-                            onDescriptionClick={this.onDescriptionClick}
+                            entityId={this.videoId}
                         />
                     </View>
                 )}

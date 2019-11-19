@@ -42,7 +42,7 @@ let refreshTimeOut = 0;
 function loginInFlow(navigation, tab) {
   let currentTabIndex = tab.navigationIndex;
   if (tab.rootStack === 'CaptureVideo') { 
-    utilities.handleVideoUploadModal(previousTabIndex, navigation);
+    utilities.handleVideoUploadModal(previousTabIndex, navigation, {videoType: appConfig.videoTypes.post });
     return;
   }
   if (currentTabIndex == undefined || currentTabIndex == null) return;

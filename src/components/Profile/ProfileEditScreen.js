@@ -358,7 +358,8 @@ class ProfileEdit extends React.PureComponent {
         contentContainerStyle={{
           marginTop: 10,
           padding: 15,
-          paddingBottom: 50
+          paddingBottom: 50,
+          backgroundColor: Colors.white
         }}
         showsVerticalScrollIndicator={false}
       >

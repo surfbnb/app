@@ -1,12 +1,16 @@
 import React , {PureComponent} from "react";
 import {FlatList , View , TouchableOpacity, Image} from "react-native";
 import deepGet from "lodash/get";
+
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
-import FullScreeVideoRow from "./FullScreeVideoRow";
+import FullScreenVideoRow from "./FullScreenVideoRow";
 import inlineStyles from "./styles";
 import historyBack from '../../assets/user-video-history-back-icon.png';
 import TopStatus from "../Home/TopStatus";
+import CommonStyle from "../../theme/styles/Common";
+import entityHelper from '../../helpers/EntityHelper';
+import DataContract from "../../constants/DataContract";
 
 const maxVideosThreshold = 3;
 
@@ -29,7 +33,7 @@ class FullScreenVideoCollection extends PureComponent{
         this.flatlistRef = null;
 
         this.state = {
-            list : this.getVideoPagination().getList(),
+            list : this.getVideoPagination().getResults(),
             activeIndex: this.currentIndex,
             refreshing : false,
             loadingNext: false
@@ -93,7 +97,7 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     onRefresh = ( res ) => {
-        this.setState({ refreshing : false ,  list : this.getVideoPagination().getList() });
+        this.setState({ refreshing : false ,  list : this.getVideoPagination().getResults() });
     }
 
     onRefreshError = ( error ) => {
@@ -106,7 +110,7 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     onNext = ( res  ) => {
-        this.setState({ loadingNext : false ,  list : this.getVideoPagination().getList() });
+        this.setState({ loadingNext : false ,  list : this.getVideoPagination().getResults() });
     }
 
     onNextError = ( error ) => {
@@ -130,12 +134,34 @@ class FullScreenVideoCollection extends PureComponent{
     _renderItem = ({ item, index }) => {
         const payload = reduxGetters.getTagsVideoPayload(item);
         console.log("payload", payload);
-        return  <FullScreeVideoRow shouldPlay={this.shouldPlay}
-                                   isActive={index == this.state.activeIndex}
-                                   doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
-                                   payload={payload}
-                                    /> ;
+        if(entityHelper.isVideoReplyEntity( item )){
+            if(entityHelper.isReplyVideoTypeEntity(item)){
+             return this._renderVideoReplyRow( item, index );
+            }
+        } else if( entityHelper.isVideoEntity( item )) {
+           return this._renderVideoRow( item, index);
+        } 
+        
     };
+
+    _renderVideoReplyRow(item, index){
+        let userId = deepGet(item,'payload.user_id'),
+            replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
+        return  <VideoReplyRow  shouldPlay={this.shouldPlay}
+                                isActive={index == this.state.activeIndex}
+                                doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
+                                userId={userId}
+                                replyDetailId={replyDetailId}
+         /> ;
+    }
+
+    _renderVideoRow( item, index ){
+        return  <FullScreenVideoRow shouldPlay={this.shouldPlay}
+                    isActive={index == this.state.activeIndex}
+                    doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
+                    payload={item.payload}
+         /> ;
+    }
 
     onViewableItemsChanged = (data) => {
         this.currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
@@ -176,8 +202,8 @@ class FullScreenVideoCollection extends PureComponent{
     render() {
 
         return (
-            <View style={{flex: 1}}>
-                {this.props.navigation.getParam("showBalanceFlier")  && <TopStatus />}
+            <View style={CommonStyle.viewContainer}>
+                {this.props.navigation.getParam("showBalanceFlyer")  && <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}

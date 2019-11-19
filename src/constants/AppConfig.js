@@ -35,6 +35,10 @@ export default {
     deleted: 'deleted'
   },
 
+  replyStatusMap:{
+    deleted: 'deleted'
+  },
+
   deviceStatusMap: {
     registered: 'registered',
     authorizing: 'authorizing',
@@ -52,6 +56,11 @@ export default {
   metaProperties: {
     type: 'user_to_user',
     name: 'profile'
+  },
+
+  replyMetaProperties: {
+    type: 'user_to_user',
+    name: 'reply_on_video'
   },
 
   redemptionMetaProperties : {
@@ -292,6 +301,12 @@ export default {
     CouchMarks: 'CouchMarks',
     AuthDeviceDrawer: 'DeviceUnauthorized',
     TwitterLogin: 'TwitterLogin'
+  },
+  default_bt_amt : 10,
+
+  videoTypes: {
+    post : 'post',
+    reply: 'reply'
   }
 
 };

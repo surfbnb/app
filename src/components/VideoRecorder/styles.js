@@ -93,6 +93,14 @@ let stylesMap = {
     fontFamily: 'AvenirNext-Medium'
   },
 
+  miniText: {
+    color: Colors.white,
+    fontSize: 16,
+    letterSpacing: 0.5,
+    marginTop: 14,
+    fontFamily: 'AvenirNext-Medium'
+  },
+
   headerText: {
     color: Colors.white,
     fontWeight: '600',

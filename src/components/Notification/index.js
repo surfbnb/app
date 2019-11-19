@@ -18,6 +18,9 @@ import {PushNotificationMethods} from '../../services/PushNotificationManager'
 import AndroidOpenSettings from "react-native-android-open-settings";
 import LinearGradient from "react-native-linear-gradient";
 import Theme from "../../theme/styles";
+
+import CommonStyle from "../../theme/styles/Common";
+
 const mapStateToProps = (state) => {
   return {
     userId: CurrentUser.getUserId(),
@@ -197,7 +200,7 @@ class NotificationScreen extends Component {
   render() {
     return (
       this.props.userId && (
-        <View style={{flex:1}}>
+        <View style={CommonStyle.viewContainer}>
           <NotificationList
             ref={(ref) => {
               this.listRef = ref;

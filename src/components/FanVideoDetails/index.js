@@ -6,7 +6,8 @@ import {
   View,
   Text,
   Keyboard,
-  ScrollView
+  ScrollView,
+  TextInput
 } from 'react-native';
 import deepGet from 'lodash/get';
 import utilities from '../../services/Utilities';
@@ -27,17 +28,28 @@ import { upsertRecordedVideo } from '../../actions';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { StackActions } from 'react-navigation';
+import PepoApi from "../../services/PepoApi";
+import DataContract from "../../constants/DataContract";
+import NumberInput from "../CommonComponents/NumberInput";
+import NumberFormatter from "../../helpers/NumberFormatter";
+import pricer from '../../services/Pricer';
+import PepoPinkIcon from '../../assets/pepo-tx-icon.png';
+import { ostErrors } from '../../services/OstErrors';
+import AppConfig from '../../constants/AppConfig'
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    balance : state.balance,
     recordedVideo: reduxGetter.getRecordedVideo()
   };
 };
 
+const DEFAUT_BT_VALUE = AppConfig.default_bt_amt;
+
 class FanVideoDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Post',
+      title: 'Details',
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
@@ -67,20 +79,37 @@ class FanVideoDetails extends Component {
 
   static saveToRedux = (navigation) => {
     let desc = navigation.state.params.videoDesc,
-      link = navigation.state.params.videoLink;
-    Store.dispatch(upsertRecordedVideo({ video_desc: desc, video_link: link }));
+      link = navigation.state.params.videoLink,
+      amount =  navigation.state.params.replyAmount;
+    Store.dispatch(upsertRecordedVideo({ video_desc: desc, video_link: link, reply_amount:amount  }));
   };
 
   constructor(props) {
     super(props);
     this.videoDesc = this.props.recordedVideo.video_desc;
     this.videoLink = this.props.recordedVideo.video_link;
+    this.replyAmount = this.props.recordedVideo.reply_amount || pricer.getToDecimal(DEFAUT_BT_VALUE);
+    this.priceOracle = pricer.getPriceOracle();
+    this.numberFormatter = new NumberFormatter();
+    this.max =  props.balance;
+    this.min = 0;
     this.state = {
       viewStyle: {
         paddingBottom: 10
       },
-      error: null
+      error: null,
+      amountError: null,
+      linkError: null,
+      descError : null,
+      usdVal : this.weiToUSD(this.replyAmount),
+      replyAmt : null
+
     };
+
+    if (! props.recordedVideo.video_type ) {
+      let videoType = this.props.navigation.getParam('video_type');
+      Store.dispatch(upsertRecordedVideo({ video_type: videoType }));
+    }
   }
   _keyboardShown = (e) => {
     let keyboardHeight = deepGet(e, 'endCoordinates.height') || 350;
@@ -110,7 +139,8 @@ class FanVideoDetails extends Component {
   componentDidMount() {
     this.props.navigation.setParams({
       videoDesc: this.props.recordedVideo.video_desc,
-      videoLink: this.props.recordedVideo.video_link
+      videoLink: this.props.recordedVideo.video_link,
+      replyAmount:  this.props.recordedVideo.reply_amount
     });
   }
 
@@ -123,14 +153,80 @@ class FanVideoDetails extends Component {
 
   enableStartUploadFlag = () => {
    // if (!this.validLink()) return;
-   utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
-    Store.dispatch(
-      upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, do_upload: true })
-    );
-    this.props.navigation.dispatch(StackActions.popToTop());
-    this.props.navigation.dispatch(StackActions.popToTop());
-    this.props.navigation.navigate('HomeScreen'); 
+    if(this.state.replyAmt > this.max){
+        this.setState({
+          amountError : `Maximum value is ${this.max}`
+        })
+    }else if( this.state.replyAmt < this.min ){
+      this.setState({
+        amountError : `Minimum value is ${this.min}`
+      })
+    }else{
+      this.setState({
+        amountError : ""
+      })
+      this.clearErrors();
+      this.validateData().then((res) => {
+        utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
+        Store.dispatch(
+          upsertRecordedVideo({ video_desc: this.videoDesc,
+        video_link: this.videoLink,
+        reply_amount: this.replyAmount,
+        do_upload: true })
+        );
+        this.props.navigation.dispatch(StackActions.popToTop());
+        this.props.navigation.dispatch(StackActions.popToTop());
+        this.props.navigation.navigate('HomeScreen');
+      }).catch((err)=>{
+        // show error on UI.
+        this.showError(err);
+      });
+    }
   };
+
+  clearErrors = () => {
+    this.setState({
+      linkError: null,
+      descError: null,
+      amountError: null,
+      error: null
+    });
+  };
+
+  showError = (err) => {
+    for (let error of err.error_data){
+      switch (error.parameter) {
+        case "link":
+          this.setState({linkError: error.msg});
+          break;
+        case "video_description":
+          this.setState({descError: error.msg});
+          break;
+        case "per_reply_amount_in_wei":
+          this.setState({amountError: error.msg});
+          break;
+      }
+    }
+  };
+
+  validateData = () => {
+    let params = {};
+    params['video_description'] = this.videoDesc;
+    params['link'] = this.videoLink;
+    params['per_reply_amount_in_wei'] = this.replyAmount;
+    return new Promise((resolve, reject) => {
+      new PepoApi(DataContract.replies.validatePost)
+        .post(params)
+        .then((res)=>{
+          if (res && res.success){
+            return resolve(res);
+          } else {
+            return reject(res.err);
+          }
+        })
+    });
+  };
+
 
   onChangeDesc = (desc) => {
     this.videoDesc = desc;
@@ -175,8 +271,35 @@ class FanVideoDetails extends Component {
     return true;
   };
 
+
+  onErrorCallBack = ( errMsg ) =>{
+    this.setState({
+      amountError : errMsg
+    })
+  }
+
+  replyAmountChange = ( value )=>{
+    this.replyAmount = pricer.getToDecimal(value);
+    let formattedUsdVal = this.weiToUSD( pricer.getToDecimal(value) );
+    //Done for the value to be accessible in static navigationOptions
+    this.props.navigation.setParams({
+      replyAmount: value
+    });
+    this.setState({
+      usdVal : formattedUsdVal,
+      replyAmt : value
+    });
+  };
+  weiToUSD = (value ) =>{
+    let weiToBt =  pricer.getFromDecimal(value, 2),
+      usdVal          = this.priceOracle.btToFiat(weiToBt),
+      formattedUsdVal =  this.numberFormatter.getFormattedValue( usdVal );
+    return formattedUsdVal;
+  }
+
   render() {
-    let imageUrl = this.props.recordedVideo.cover_image;
+    let imageUrl = this.props.recordedVideo.cover_image,
+    value = pricer.getFromDecimal(this.replyAmount, 2) ;
     return (
       <ScrollView
         contentContainerStyle={[styles.container, this.state.viewStyle]}
@@ -199,11 +322,31 @@ class FanVideoDetails extends Component {
             </TouchableOpacity>
             <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
           </View>
-          <View style={[styles.videoDescriptionItem, { alignItems: 'center', paddingVertical: 5 }]}>
+          <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.descError }</Text>
+          <View style={ styles.videoLinkItem} >
+            <Text style={{width: 135}}>Link</Text>
             <VideoLink initialValue={this.props.recordedVideo.video_link} onChangeLink={this.onChangeLink} />
           </View>
+          <Text style={[Theme.Errors.errorText, { alignSelf: 'center'}]}>{this.state.linkError }</Text>
+          <View style={styles.videoAmountItem}>
+            <Text style={{width: 130}}>Set Price for replies</Text>
+            <Image source={PepoPinkIcon} style={{marginLeft:5,height:13,width:13, marginRight: 3}}/>
+            <View style={styles.replyAmtWrapper}>
+              <NumberInput
+                value = {value}
+                onChangeText = {this.replyAmountChange}
+                style={{flexBasis: '50%', paddingRight: 6}}
+                errorStyle={[styles.errorStyle]}
+                numberOfLines={1} ellipsizeMode={'tail'}
+              />
+              <Text style={{flexBasis: '50%', textAlign: 'right', color: '#ff5566'}} numberOfLines={1} ellipsizeMode={'tail'}>
+                ${this.state.usdVal}
+              </Text>
+            </View>
+          </View>
+          <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.amountError }</Text>
         </View>
-        <View>
+        <View style={{zIndex: -1}}>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center', marginBottom: 10 }]}>{this.state.error}</Text>
           <LinearGradient
             colors={['#ff7499', '#ff5566']}
@@ -216,7 +359,7 @@ class FanVideoDetails extends Component {
               TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
               TextStyles={[Theme.Button.btnPinkText]}
               style={{marginBottom: 20}}
-              text="SHARE"
+              text="Post"
               onPress={multipleClickHandler(() => {
                 this.enableStartUploadFlag();
               })}
