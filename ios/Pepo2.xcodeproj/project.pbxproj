@@ -100,6 +100,7 @@
 		4BAC2692237FED5D00CE4B34 /* PepoLoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC2691237FED5D00CE4B34 /* PepoLoaderManager.swift */; };
 		4BAC2694237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC2693237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift */; };
 		4BAC274823827B5C00CE4B34 /* SdkErrors.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BAC274723827B5C00CE4B34 /* SdkErrors.json */; };
+		4BAC27CA2382D6C100CE4B34 /* PepoEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC27C92382D6C100CE4B34 /* PepoEventEmitter.m */; };
 		4BDACD0B23018F0100CF8294 /* libRNTwitterSignIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 776EEED922E1F1F400BE1922 /* libRNTwitterSignIn.a */; };
 		4BDACD6323019EE600CF8294 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005F9BA822E1CA9600A4B00D /* libRCTImageResizer.a */; };
 		4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C73F122E880BD00FE1B04 /* libReactNativePermissions.a */; };
@@ -737,6 +738,8 @@
 		4BAC2691237FED5D00CE4B34 /* PepoLoaderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepoLoaderManager.swift; sourceTree = "<group>"; };
 		4BAC2693237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIVIew+NSLayoutConstraintHelper.swift"; sourceTree = "<group>"; };
 		4BAC274723827B5C00CE4B34 /* SdkErrors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SdkErrors.json; sourceTree = "<group>"; };
+		4BAC27C82382D6C100CE4B34 /* PepoEventEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PepoEventEmitter.h; sourceTree = "<group>"; };
+		4BAC27C92382D6C100CE4B34 /* PepoEventEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PepoEventEmitter.m; sourceTree = "<group>"; };
 		4BFFD401232D3D930033959D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5E7E0A527AF64DDB95B586B0 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SMXCrashlytics.xcodeproj; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -1158,6 +1161,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				000D4D7A233CD19D003403E6 /* PepoNativeHelper.h */,
 				000D4D7B233CD19D003403E6 /* PepoNativeHelper.m */,
+				4BAC27C82382D6C100CE4B34 /* PepoEventEmitter.h */,
+				4BAC27C92382D6C100CE4B34 /* PepoEventEmitter.m */,
 			);
 			name = Pepo2;
 			sourceTree = "<group>";
@@ -2262,6 +2267,7 @@
 				00B7D5822332992B0035BC00 /* OstRNSdkUICallbackManager.m in Sources */,
 				00B7D57B2332992B0035BC00 /* OstVerifyDataWrap.m in Sources */,
 				00B7D5802332992B0035BC00 /* OstMessageBus.m in Sources */,
+				4BAC27CA2382D6C100CE4B34 /* PepoEventEmitter.m in Sources */,
 				000D4D7C233CD19D003403E6 /* PepoNativeHelper.m in Sources */,
 				00B7D5832332992B0035BC00 /* OstWalletRnSdkUI.m in Sources */,
 				00B7D57C2332992B0035BC00 /* OstDeviceRegisteredWrap.m in Sources */,

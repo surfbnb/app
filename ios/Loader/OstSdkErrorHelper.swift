@@ -61,6 +61,10 @@ import OstWalletSdk
             return errMsg ?? DEFAULT_ERROR_MSG;
         }
         else if error.isApiError {
+            if (error as? OstApiError)?.isApiSignerUnauthorized() ?? false {
+              return "Device is not authorized. Please authorize device again."
+            }
+          
             if ( nil == errMsg ) {
                 if let errorInfo = error.errorInfo,
                     let errData = (errorInfo["err"] as? [String: Any])?["error_data"] as? [[String: Any]]{

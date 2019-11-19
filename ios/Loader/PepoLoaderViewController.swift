@@ -112,6 +112,10 @@ import OstWalletSdk
   var shouldCloseProgressAnimation: Bool = false
   var ostLoaderComplectionDelegate: OstLoaderCompletionDelegate? = nil
   var isAlertView: Bool = false
+  var isApiSignerUnauthorized: Bool = false
+  var workflowContext: OstWorkflowContext? = nil
+  var error: OstError? = nil
+  var contextEntity: OstContextEntity? = nil
   
   //MARK: - View Life Cycle
   deinit {
@@ -171,6 +175,12 @@ import OstWalletSdk
   //MARK: - Actions
   @objc
   func dismissButtonTapped(_ sender: Any) {
+    if isApiSignerUnauthorized {
+      let params:[AnyHashable: Any] = ["callbackType": "logout"]
+      
+      let instance: PepoEventEmitter = PepoEventEmitter.sharedInstance() as! PepoEventEmitter
+      instance.sendEvent(withParams: params, forWorkflowId: "logout")
+    }
     closeLoader()
   }
   
@@ -187,7 +197,7 @@ import OstWalletSdk
   
   @objc
   func viewTapped() {
-    if isAlertView {
+    if isAlertView && !isApiSignerUnauthorized {
       closeLoader()
     }
   }
@@ -263,7 +273,6 @@ import OstWalletSdk
   }
   
   func dismissButtonConstraints() {
-    //        dismissButton.topAlign(toItem: alertMessageLabel, constant: 40)
     dismissButton.topAnchor.constraint(equalTo: alertMessageLabel.bottomAnchor, constant: 20).isActive = true
     dismissButton.setW375Width(width: 200)
     dismissButton.centerXAlignWithParent()
@@ -347,7 +356,13 @@ import OstWalletSdk
     alertIcon.image = UIImage(named: "FailureIcon")
     let errorMessage = OstSdkErrorHelper.shared.getErrorMessage(for: workflowContext, andError: error)
     alertMessageLabel.text = errorMessage
-    dismissButton.setTitle("Close", for: .normal)
+    
+    if isApiSignerUnauthorized {
+      dismissButton.setTitle("Logout", for: .normal)
+    }else {
+      dismissButton.setTitle("Close", for: .normal)
+    }
+    
     dismissButton.isHidden = false
     
     self.alertContainerView.layoutIfNeeded()
@@ -395,6 +410,9 @@ import OstWalletSdk
                                workflowConfig: [String : Any],
                                loaderComplectionDelegate: OstLoaderCompletionDelegate) {
     
+    self.workflowContext = workflowContext
+    self.contextEntity = contextEntity
+    
     ostLoaderComplectionDelegate = loaderComplectionDelegate
     
     showSuccessAlert(workflowContext: workflowContext,
@@ -406,10 +424,23 @@ import OstWalletSdk
                                 error: OstError,
                                 workflowConfig: [String : Any],
                                 loaderComplectionDelegate: OstLoaderCompletionDelegate) {
+    self.workflowContext = workflowContext
+    self.error = error
+    setIsApiSignerUnauthorized()
     
+    if isApiSignerUnauthorized {
+      loaderComplectionDelegate.dismissWorkflow();
+      return;
+    }
     ostLoaderComplectionDelegate = loaderComplectionDelegate
     
     showFailureAlert(workflowContext: workflowContext,
                      error: error)
+  }
+  
+  func setIsApiSignerUnauthorized() {
+    if let apiError = self.error as? OstApiError {
+      isApiSignerUnauthorized = apiError.isApiSignerUnauthorized()
+    }
   }
 }
