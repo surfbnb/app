@@ -18,9 +18,6 @@ class WorkflowDelegate extends OstWalletUIWorkflowCallback {
 
   flowInterrupt(ostWorkflowContext , ostError)  {
     // Check if device is unauthorized.
-    this.onUnauthorized(ostWorkflowContext, ostError );
-    return;
-
     if (OstWalletSdkHelper.isDeviceUnauthorizedError(ostError)) {
       this.onUnauthorized(ostWorkflowContext, ostError );
     }
