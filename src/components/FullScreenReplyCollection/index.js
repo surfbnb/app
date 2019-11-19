@@ -203,6 +203,10 @@ class FullScreenReplyCollection extends PureComponent{
          /> ;
     }
 
+    scrollToIndex = ( index )=>{
+        this.flatlistRef.scrollToIndex({index: index});
+    }
+
     onViewableItemsChanged = (data) => {
         this.currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
     }
