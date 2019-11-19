@@ -5,7 +5,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Animated, Platform ,
+  Animated, Platform ,TouchableWithoutFeedback,
   StatusBar
 } from 'react-native';
 
@@ -28,13 +28,17 @@ import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
 import Pricer from "../../services/Pricer";
 import {getVideoReplyObject} from "../../helpers/cameraHelper";
+import Colors from '../../theme/styles/Colors';
+import VideoReplyIcon from '../../assets/reply_video_icon.png';
 
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
 const finalPadding = topPadding - bottomPadding;
-const listBottomPadding = height - (height/1.5);
+const bottomReplyViewHeight = 54;
+const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
+
 
 class VideoRepliesScreen extends PureComponent {
 
@@ -194,22 +198,32 @@ class VideoRepliesScreen extends PureComponent {
                           { Pricer.getToBT(Pricer.getFromDecimal(this.amount), 2)}</Text>
                         </View>
 
-                        <TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >
-                          <Image style={[inlineStyles.iconSkipFont, {height: 25, width: 25}]} source={plusIcon} />
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >*/}
+                          {/*<Image style={[inlineStyles.iconSkipFont, {height: 25, width: 25}]} source={plusIcon} />*/}
+                        {/*</TouchableOpacity>*/}
 
                       </View>
                       <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
                                         onData={this.onData}
                                         videoReplyCount={this.videoReplyCount}
                                         amount={this.amount}
-                                        listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding : listBottomPadding}
+                                        listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding+bottomReplyViewHeight : listBottomPadding}
 
                       />
                     </View>
                   </React.Fragment>
+
                 )}
               </SlidingUpPanel>
+            <TouchableWithoutFeedback onPress={this.openCamera}>
+              <View style={inlineStyles.addReplyView}>
+                <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimension}></Image>
+                <Text style={inlineStyles.addReplyText}>
+                  Add a reply...
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+
           </React.Fragment>
         );
     }
