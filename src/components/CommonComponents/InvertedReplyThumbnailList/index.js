@@ -193,7 +193,7 @@ class InvertedReplyList extends Component {
   render() {
 
     return <FlatList
-      style={{height: '100%'}}
+      style={{height:500, width:80}}
     ref={this.setListRef}
     ListHeaderComponent={this.listHeaderComponent()}
     ItemSeparatorComponent={this.getItemSeperatorComponent}
@@ -207,7 +207,6 @@ class InvertedReplyList extends Component {
     ListFooterComponent={this.renderFooter}
     numColumns={this.numColumns}
     key={this.flatListKey}
-    inverted={true}
     nestedScrollEnabled={true}
     />
   }

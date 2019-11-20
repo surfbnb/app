@@ -53,26 +53,26 @@ class HomeFeedRow extends PureComponent {
 
   render() {
     return (
-      <View style={[inlineStyles.fullScreen,  {position: "relative"} ]}>
+      <View style={[inlineStyles.fullScreen, {position: 'relative'} ]}>
 
-        <View style={{position: "absolute" , top: 50,  left: 0 , zIndex: 9 ,  height: 500, width:100}}>
-          {/*<FlatList style={{height: "100%", width:"100%"}}*/}
-          {/*          nestedScrollEnabled={true}*/}
-          {/*          data={[1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]}*/}
-          {/*          renderItem={this._renderChildItem} />*/}
-          < InvertedReplyList  videoId={this.videoId} userId={this.userId}/>
-        </View>
-
-
-
-        {/*<View style={inlineStyles.listContainer} >*/}
-        {/*  <View style={inlineStyles.invertedList}  >*/}
-        {/*    <View style={{ minWidth: '20%', alignSelf: 'flex-start' }}>*/}
-        {/*      < InvertedReplyList  videoId={this.videoId} userId={this.userId}/>*/}
-        {/*    </View>*/}
-        {/*  </View>*/}
-
+        {/*<View style={{position: "absolute" , top: 50,  left: 0 , zIndex: 9 ,  height: 500, width:100}}>*/}
+        {/*  /!*<FlatList style={{height: "100%", width:"100%"}}*!/*/}
+        {/*  /!*          nestedScrollEnabled={true}*!/*/}
+        {/*  /!*          data={[1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]}*!/*/}
+        {/*  /!*          renderItem={this._renderChildItem} />*!/*/}
+        {/*  < InvertedReplyList  videoId={this.videoId} userId={this.userId}/>*/}
         {/*</View>*/}
+
+
+
+        <View style={inlineStyles.listContainer} >
+          {/*<View style={inlineStyles.invertedList}  >*/}
+            <View style={{ minWidth: '20%', alignSelf: 'flex-start' }}>
+              < InvertedReplyList  videoId={this.videoId} userId={this.userId}/>
+            </View>
+          {/*</View>*/}
+
+        </View>
 
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>

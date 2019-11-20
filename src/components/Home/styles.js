@@ -38,9 +38,8 @@ let stylesMap = {
     zIndex: 1
   },
     invertedList: {
-      alignSelf: 'flex-start',
+
       // marginBottom: -15,
-      zIndex: 1
     },
   pepoTxCount: {
     fontSize: 18,
@@ -63,7 +62,11 @@ let stylesMap = {
     listContainer: {
       width: width,
       position: 'absolute',
-      bottom: height * 0.05 + 20,
+      bottom: height * 0.05 + 50,
+      left: 10,
+      zIndex: 9,
+      alignSelf: 'flex-start',
+      height: height - 200
     },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
