@@ -24,9 +24,7 @@ class VideoLink extends Component {
   };
 
   onLinkCrossIconClick = () =>{
-      this.setState({
-        value : ""
-      })
+    this.onChangeValue("");
   }
 
   render() {
