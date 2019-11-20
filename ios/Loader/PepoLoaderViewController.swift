@@ -139,8 +139,8 @@ import OstWalletSdk
     self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
     UIView.transition(with: self.view, duration: 0.3, options: .transitionCrossDissolve, animations: {[weak self] in
       self?.view.isHidden = false
-    }, completion: {[unowned self] (_) in
-        self.animateLoader()
+    }, completion: {[weak self] (_) in
+        self?.animateLoader()
     })
   }
   
