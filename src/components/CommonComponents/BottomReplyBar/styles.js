@@ -10,8 +10,7 @@ let stylesMap = {
         paddingHorizontal: 10,
         justifyContent: 'center',
         borderTopWidth: 0.5,
-        borderColor: 'rgba(151, 151, 151, 0.6)',
-        marginTop: 5
+        borderColor: 'rgba(151, 151, 151, 0.6)'
     },
     text: {
         color: Colors.white,
