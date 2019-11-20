@@ -41,26 +41,26 @@ class ReplyCollection extends PureComponent {
     }
 
     bindEvents(){
-        // VideoReplyEmitter.on('videoUploaded', ( payload )=>{
-        //     this.fetchVideoReply( payload.videoId );
-        // })
+        VideoReplyEmitter.on('videoUploaded', ( payload )=>{
+            this.fetchVideoReply( payload.videoId );
+        })
     }
 
-    // fetchVideoReply = (id)=> {
-    //     new PepoApi(DataContract.replies.getSingleVideoReplyApi(id))
-    //     .get()
-    //     .then((res)=> {
-    //         let newVideoReply  = res.data['result_type'];
-    //         this.addVideo( newVideoReply );
-    //     })
-    // }
+    fetchVideoReply = (id)=> {
+        new PepoApi(DataContract.replies.getSingleVideoReplyApi(id))
+        .get()
+        .then((res)=> {
+            let newVideoReply  = res.data['result_type'];
+            this.addVideo( newVideoReply );
+        })
+    }
 
-    // addVideo = ( item ) => {
-    //     this.videoPagination.addItems( item );
-    //     let array = [...this.state.list]; // make a separate copy of the array
-    //     array.unshift( item );
-    //     this.setState({list: array});
-    // }
+    addVideo = ( item ) => {
+        this.videoPagination.addItems( item );
+        let array = [...this.state.list]; // make a separate copy of the array
+        array.unshift( item );
+        this.setState({list: array});
+    }
 
     componentWillUnmount() {
         this.removePaginationListeners();
