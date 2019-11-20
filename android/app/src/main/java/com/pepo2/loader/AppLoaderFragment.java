@@ -1,6 +1,8 @@
 package com.pepo2.loader;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -95,10 +97,20 @@ public class AppLoaderFragment extends LoaderFragment implements OstWorkflowLoad
 
             showSuccessStatus(ostWorkflowContext, ostContextEntity, contentConfig);
 
+            Runnable dismissWorkflow = new Runnable() {
+                @Override
+                public void run() {
+                    if (null != delegate) delegate.dismissWorkflow();
+                }
+            };
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(dismissWorkflow,3000);
+
             mViewGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     delegate.dismissWorkflow();
+                    handler.removeCallbacks(dismissWorkflow);
                 }
             });
         }

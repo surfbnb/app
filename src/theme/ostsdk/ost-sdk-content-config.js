@@ -434,7 +434,7 @@ export default {
       }
     },
     "loader": {
-      "text": "Authoring Device..."
+      "text": "Authorizing Device..."
     },
     "initial_loader": {
       "text": "Initializing..."
