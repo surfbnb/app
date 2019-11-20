@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import {TouchableOpacity, FlatList, View, Dimensions, Text} from 'react-native';
+import { View, Dimensions, Text} from 'react-native';
+import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import PepoApi from '../../../services/PepoApi';
 import CustomTextInput from './CustomTextInput';
-import ReduxGetters from '../../../services/ReduxGetters';
 import deepGet from 'lodash/get';
 import DataContract from "../../../constants/DataContract";
 import inlineStyles from "./styles";
@@ -264,29 +264,31 @@ class TagsInput extends PureComponent {
             maxHeight: Dimensions.get('window').height - 300,
             backgroundColor: '#fff',
           } , this.props.dropdownStyle ]}>
-          {this.isHastagData() ?
-            <FlatList
-              // keyboardDismissMode={"on-drag"}
-              keyboardShouldPersistTaps={'always'}
-              bounces={false}
-              horizontal={this.props.horizontal}
-              enableEmptySections={true}
-              data={this.state.hashTagsData}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderHashTagItem}
-            /> : this.isMentionsData() && (
-                <FlatList
-              keyboardDismissMode={"on-drag"}
-              keyboardShouldPersistTaps={'always'}
-              bounces={false}
-              horizontal={this.props.horizontal}
-              enableEmptySections={true}
-              data={this.state.mentionsData}
-              keyExtractor={this._keyExtractor}
-              renderItem={this._renderMentionsItem}
-            />
-            )
-          }
+            <TouchableWithoutFeedback>
+              {this.isHastagData() ?
+              <FlatList
+                // keyboardDismissMode={"on-drag"}
+                keyboardShouldPersistTaps={'always'}
+                bounces={false}
+                horizontal={this.props.horizontal}
+                enableEmptySections={true}
+                data={this.state.hashTagsData}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderHashTagItem}
+              /> : this.isMentionsData() && (
+                  <FlatList
+                keyboardDismissMode={"on-drag"}
+                keyboardShouldPersistTaps={'always'}
+                bounces={false}
+                horizontal={this.props.horizontal}
+                enableEmptySections={true}
+                data={this.state.mentionsData}
+                keyExtractor={this._keyExtractor}
+                renderItem={this._renderMentionsItem}
+              />
+              )
+            }
+            </TouchableWithoutFeedback>
         </View>
       </React.Fragment>
     );

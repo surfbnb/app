@@ -24,10 +24,7 @@ class VideoLink extends Component {
   };
 
   onLinkCrossIconClick = () =>{
-    console.log("in click function")
-      this.setState({
-        value : ""
-      })
+    this.onChangeValue("");
   }
 
   render() {
@@ -44,9 +41,9 @@ class VideoLink extends Component {
           value={this.state.value}
           autoCapitalize={'none'}
         />
-        <TouchableOpacity onPress={this.onLinkCrossIconClick}>
+        {this.state.value ? <TouchableOpacity onPress={this.onLinkCrossIconClick}>
           <Image source={CloseIcon} style={{height:13,width:13}}></Image>
-        </TouchableOpacity>
+        </TouchableOpacity> : <React.Fragment/>}
       </React.Fragment>
     );
   }
