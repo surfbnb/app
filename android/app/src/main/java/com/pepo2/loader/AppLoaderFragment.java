@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.ost.walletsdk.ui.loader.LoaderFragment;
+import com.ost.walletsdk.ui.loader.OstLoaderFragment;
 import com.ost.walletsdk.ui.loader.OstWorkflowLoader;
 import com.ost.walletsdk.ui.uicomponents.uiutils.content.StringConfig;
 import com.ost.walletsdk.ui.workflow.OstLoaderCompletionDelegate;
@@ -21,11 +21,10 @@ import com.ost.walletsdk.workflows.OstWorkflowContext;
 import com.ost.walletsdk.workflows.errors.OstError;
 import com.pepo2.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class AppLoaderFragment extends LoaderFragment implements OstWorkflowLoader {
+public class AppLoaderFragment extends OstLoaderFragment implements OstWorkflowLoader {
     private HeartBeatView heartBeatView;
     private boolean mViewActive;
     private String mLoaderString = "Loading...";

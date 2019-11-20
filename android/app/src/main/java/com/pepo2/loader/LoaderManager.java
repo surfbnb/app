@@ -1,7 +1,7 @@
 package com.pepo2.loader;
 
-import com.ost.walletsdk.ui.loader.LoaderFragment;
 import com.ost.walletsdk.ui.loader.OstLoaderDelegate;
+import com.ost.walletsdk.ui.loader.OstLoaderFragment;
 import com.ost.walletsdk.workflows.OstWorkflowContext;
 
 public class LoaderManager implements OstLoaderDelegate {
@@ -16,7 +16,7 @@ public class LoaderManager implements OstLoaderDelegate {
     }
 
     @Override
-    public LoaderFragment getLoader(OstWorkflowContext.WORKFLOW_TYPE workflowType) {
+    public OstLoaderFragment getLoader(OstWorkflowContext.WORKFLOW_TYPE workflowType) {
         return AppLoaderFragment.newInstance();
     }
 
