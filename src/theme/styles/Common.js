@@ -20,7 +20,7 @@ const styles = {
       backgroundColor:  'rgba(0,0,0,0.5)'
     },
     fullScreenVideoSafeAreaContainer: {
-      flex:1,  backgroundColor: '#333333',
+      flex:1,  backgroundColor: Colors.gray,
     },
     fullScreen: {
       width: width,

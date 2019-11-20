@@ -26,5 +26,6 @@ export default {
   rhino: "#34445b",
   snow: '#FBFBFB',
   green: '#0F9D58',
-  nobel: '#979797'
+  nobel: '#979797',
+  gray:"#333333"
 };

@@ -6,7 +6,7 @@ let stylesMap = {
     wrapper : {
         flex: 1, 
         height: CUSTOM_TAB_Height, 
-        backgroundColor: '#333333',
+        backgroundColor: Colors.gray,
         paddingHorizontal: 10,
         justifyContent: 'center',
         borderTopWidth: 0.5,
