@@ -53,8 +53,7 @@ class ReplyIcon extends PureComponent {
       if ( this.props.videoReplyCount > 0 ) {
         this.props.navigation.push('VideoReplies',
           {'videoId': this.props.videoId ,
-            'userId': this.props.userId ,
-            'userName' : this.props.userName
+            'userId': this.props.userId
           });
       } else {
         let activeTab = NavigationService.getActiveTab();

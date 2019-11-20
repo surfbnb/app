@@ -54,7 +54,6 @@ class VideoRecorder extends Component {
   };
 
   componentWillReceiveProps( nextProps ){
-    let newState;
     if( nextProps.acceptedCameraTnC != this.state.acceptedCameraTnC ){
      this.setState({acceptedCameraTnC: nextProps.acceptedCameraTnC })
     }

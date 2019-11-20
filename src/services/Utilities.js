@@ -144,9 +144,10 @@ export default {
   },
 
   handleVideoUploadModal(previousTabIndex, navigation, params = {}) {
-    if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
+    //todo: @mayur toast and flyer logic change.
+    if (reduxGetters.getVideoProcessingStatus()  && previousTabIndex == 0) {
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
-    } else if (reduxGetters.getVideoProcessingStatus() == true) {
+    } else if (reduxGetters.getVideoProcessingStatus()) {
       Toast.show({
         text: 'Video uploading in progress.'
       });

@@ -20,7 +20,7 @@ import DataContract from "../../constants/DataContract";
 
 const navigateToCamera = (navigation) => {
     let activeTab = NavigationService.getActiveTab();
-    let params = getVideoReplyObject ( navigation.getParam('parentVideoId') , navigation.getParam('parentUserId'));
+    let params = getVideoReplyObject ( navigation.getParam('videoId') , navigation.getParam('userId'));
     utilities.handleVideoUploadModal(activeTab, navigation, params);
 };
 
@@ -47,7 +47,7 @@ const HeaderLeft = (props) => {
   };
   
   const HeaderTitle = (props) => {
-      let  userId = props.navigation.getParam('parentUserId'),
+      let  userId = props.navigation.getParam('userId'),
             userName = ReduxGetters.getUserName(userId);
     return (
       <View>
@@ -56,7 +56,7 @@ const HeaderLeft = (props) => {
         </Text>
         <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
         <Image style={{height: 10, width: 10}} source={pepoIcon} />
-            { Pricer.getToBT(Pricer.getFromDecimal(props.navigation.getParam('amount')), 2)}</Text>
+            { Pricer.getToBT(Pricer.getFromDecimal( ReduxGetters.getBtAmountForReply( props.navigation.getParam('videoId'))), 2)}</Text>
       </View>
     );
   };

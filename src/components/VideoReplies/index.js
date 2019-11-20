@@ -53,9 +53,6 @@ class VideoRepliesScreen extends PureComponent {
       super(props);
         this.userId = props.navigation.getParam('userId');
         this.videoId = props.navigation.getParam('videoId');
-        this.amount = ReduxGetters.getBtAmountForReply(this.videoId );
-        this.videoReplyCount = ReduxGetters.getVideoReplyCount(this.videoId);
-        this.userName = ReduxGetters.getUserName(this.userId);
         this.fetchUrl = DataContract.replies.getReplyListApi(this.videoId);
         this.initialHeight =  height/1.5;
         this.animatedValue = new Animated.Value(this.initialHeight) ;
@@ -128,7 +125,6 @@ class VideoRepliesScreen extends PureComponent {
 
     openCamera = () => {
       let activeTab = NavigationService.getActiveTab();
-      //TODO @mayur move it to a function , If possible change this to string 
       let params =  getVideoReplyObject ( this.videoId , this.userId) ;
       utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
     }
@@ -194,7 +190,7 @@ class VideoRepliesScreen extends PureComponent {
                           {/* {TODO integration pending} */}
                           <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
                           <Image style={{height: 10, width: 10}} source={pepoIcon} />
-                          { Pricer.getToBT(Pricer.getFromDecimal(this.amount), 2)}</Text>
+                          { Pricer.getToBT(Pricer.getFromDecimal(ReduxGetters.getBtAmountForReply(this.videoId )), 2)}</Text>
                         </View>
 
                         {/*<TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >*/}
@@ -204,11 +200,15 @@ class VideoRepliesScreen extends PureComponent {
                       </View>
                       <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
                                         onData={this.onData}
-                                        videoReplyCount={this.videoReplyCount}
-                                        amount={this.amount}
                                         listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding+bottomReplyViewHeight : listBottomPadding}
 
                       />
+
+                      <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
+                                        listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding : listBottomPadding}
+
+                      />
+
                     </View>
                   </React.Fragment>
 
@@ -231,3 +231,5 @@ class VideoRepliesScreen extends PureComponent {
 
 
 export default VideoRepliesScreen;
+
+

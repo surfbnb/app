@@ -18,6 +18,8 @@ import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
 
+import InvertedReplyList from '../CommonComponents/InvertedReplyThumbnailList';
+
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -51,20 +53,32 @@ class HomeFeedRow extends PureComponent {
 
   render() {
     return (
-      <View style={inlineStyles.fullScreen}>
-        <FanVideo
-          userId={this.userId}
-          videoId={this.videoId}
-          feedId={this.props.feedId}
-          doRender={this.props.doRender}
-          isActive={this.props.isActive}
-          shouldPlay={this.props.shouldPlay}
-        />
+      <View style={[inlineStyles.fullScreen,  {position: "relative"} ]}>
+
+        <View style={{position: "absolute" , top: 50,  left: 0 , zIndex: 9 ,  height: 500, width:100}}>
+          {/*<FlatList style={{height: "100%", width:"100%"}}*/}
+          {/*          nestedScrollEnabled={true}*/}
+          {/*          data={[1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]}*/}
+          {/*          renderItem={this._renderChildItem} />*/}
+          < InvertedReplyList  videoId={this.videoId} userId={this.userId}/>
+        </View>
+
+
+
+        {/*<View style={inlineStyles.listContainer} >*/}
+        {/*  <View style={inlineStyles.invertedList}  >*/}
+        {/*    <View style={{ minWidth: '20%', alignSelf: 'flex-start' }}>*/}
+        {/*      < InvertedReplyList  videoId={this.videoId} userId={this.userId}/>*/}
+        {/*    </View>*/}
+        {/*  </View>*/}
+
+        {/*</View>*/}
 
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+            <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+              {/*< InvertedReplyList  videoId={this.videoId} userId={this.userId}/>*/}
                 <PepoTxBtn  resyncDataDelegate={this.refetchFeed} userId={this.userId} entityId={this.videoId}/>
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                 <ShareIcon videoId={this.videoId} userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)} />
@@ -77,7 +91,6 @@ class HomeFeedRow extends PureComponent {
               pageName="feed"
             />
           </View>
-
           <VideoBottomStatus userId={this.userId} entityId={this.videoId} />
         </View>
       </View>

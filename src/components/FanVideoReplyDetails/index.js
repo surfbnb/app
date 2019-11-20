@@ -9,7 +9,6 @@ import {
   ScrollView
 } from 'react-native';
 import deepGet from 'lodash/get';
-import utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
 import styles from './styles';
 import VideoDescription from '../FanVideoDetails/VideoDescription';
@@ -180,6 +179,7 @@ class FanVideoReplyDetails extends Component {
 
   enableStartUploadFlag = () => {
     this.clearErrors();
+    //todo @mayur button text change to validating or similar
     this.validateData().then((res) => {
       let videoOwnerId = this.replyObject.replyReceiverUserId;
       if (videoOwnerId === CurrentUser.getUserId()){
@@ -225,8 +225,10 @@ class FanVideoReplyDetails extends Component {
 
   validateData = () => {
     let params = {};
+    //todo : @mayur put strings in data contract file
     params['video_description'] = this.videoDesc;
     params['link'] = this.videoLink;
+
     params['parent_kind'] = 'video';
     params['parent_id'] = this.replyObject.replyReceiverVideoId;
 
@@ -263,27 +265,6 @@ class FanVideoReplyDetails extends Component {
     this.setState({
       error
     });
-  };
-
-  validLink = () => {
-    if (!this.videoLink) return true;
-    //synced with backend
-    if (
-      !this.videoLink.match(
-        /^(http(s)?:\/\/)([a-zA-Z0-9-_@:%+~#=]{1,256}\.)+[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=*]*)$/i
-      )
-    ) {
-      this.setState(
-        {
-          error: 'Invalid link'
-        },
-        () => {
-          this.setError(this.state.error);
-        }
-      );
-      return false;
-    }
-    return true;
   };
 
   getButtonText =() => {
