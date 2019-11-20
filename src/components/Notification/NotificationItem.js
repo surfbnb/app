@@ -204,10 +204,23 @@ class NotificationItem extends Component {
     }
   }
 
+  shouldShowVideo = () => {
+    let videoKinds = [
+      AppConfig.notificationConstants.videoAddKind,
+      AppConfig.notificationConstants.userMention,
+      AppConfig.notificationConstants.replyUserMention,
+      AppConfig.notificationConstants.replySenderWithAmount,
+      AppConfig.notificationConstants.replySenderWithoutAmount,
+      AppConfig.notificationConstants.replyReceiverWithAmount,
+      AppConfig.notificationConstants.replyReceiverWithoutAmount
+    ]
+    return videoKinds.includes(this.props.kind);
+  }
+
   render() {
     let headerWidth = '92%',
     notificationInfoWidth = '0%';
-    if (this.props.kind === AppConfig.notificationConstants.videoAddKind) {
+    if (this.shouldShowVideo()) {
         headerWidth = '72%';
         notificationInfoWidth = '20%';
     }
@@ -220,7 +233,7 @@ class NotificationItem extends Component {
               <View>
                 {this.getActivityIcon()}
               </View>
-              <View style={{ flex: this.props.kind === AppConfig.notificationConstants.videoAddKind ? 6 : 2, flexDirection: 'row'}}>
+              <View style={{ flex: this.shouldShowVideo() ? 6 : 2, flexDirection: 'row'}}>
                 <View style={{ flexDirection: 'column' }}>
                   <View style={styles.descriptionText}>
                     {this.getHeading()}
@@ -233,7 +246,7 @@ class NotificationItem extends Component {
                   {this.showIfFailed()}
                 </View>
               </View>
-              {this.props.kind === AppConfig.notificationConstants.videoAddKind ?
+              {  this.shouldShowVideo()  ?
                   <View
                     style={{ flex: 1 }}>{this.notificationInfo()}
                   </View>
