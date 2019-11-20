@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00029B4323329B55009E6919 /* TrustKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B76D86A2318FAAC007316D4 /* TrustKit.framework */; };
 		00029B4423329B63009E6919 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
@@ -99,8 +100,8 @@
 		4BAC268F237FEA3C00CE4B34 /* OstSdkErrorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC268B237FEA3C00CE4B34 /* OstSdkErrorHelper.swift */; };
 		4BAC2692237FED5D00CE4B34 /* PepoLoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC2691237FED5D00CE4B34 /* PepoLoaderManager.swift */; };
 		4BAC2694237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC2693237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift */; };
-		4BAC274823827B5C00CE4B34 /* SdkErrors.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BAC274723827B5C00CE4B34 /* SdkErrors.json */; };
 		4BAC27CA2382D6C100CE4B34 /* PepoEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC27C92382D6C100CE4B34 /* PepoEventEmitter.m */; };
+		4BAC285C23852BC500CE4B34 /* SdkErrors.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BAC285B23852BC500CE4B34 /* SdkErrors.json */; };
 		4BDACD0B23018F0100CF8294 /* libRNTwitterSignIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 776EEED922E1F1F400BE1922 /* libRNTwitterSignIn.a */; };
 		4BDACD6323019EE600CF8294 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005F9BA822E1CA9600A4B00D /* libRCTImageResizer.a */; };
 		4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C73F122E880BD00FE1B04 /* libReactNativePermissions.a */; };
@@ -737,9 +738,9 @@
 		4BAC268B237FEA3C00CE4B34 /* OstSdkErrorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OstSdkErrorHelper.swift; sourceTree = "<group>"; };
 		4BAC2691237FED5D00CE4B34 /* PepoLoaderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepoLoaderManager.swift; sourceTree = "<group>"; };
 		4BAC2693237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIVIew+NSLayoutConstraintHelper.swift"; sourceTree = "<group>"; };
-		4BAC274723827B5C00CE4B34 /* SdkErrors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SdkErrors.json; sourceTree = "<group>"; };
 		4BAC27C82382D6C100CE4B34 /* PepoEventEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PepoEventEmitter.h; sourceTree = "<group>"; };
 		4BAC27C92382D6C100CE4B34 /* PepoEventEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PepoEventEmitter.m; sourceTree = "<group>"; };
+		4BAC285B23852BC500CE4B34 /* SdkErrors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SdkErrors.json; sourceTree = "<group>"; };
 		4BFFD401232D3D930033959D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5E7E0A527AF64DDB95B586B0 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SMXCrashlytics.xcodeproj; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -1239,7 +1240,7 @@
 		4BAC2645237FEA2400CE4B34 /* Loader */ = {
 			isa = PBXGroup;
 			children = (
-				4BAC274723827B5C00CE4B34 /* SdkErrors.json */,
+				4BAC285B23852BC500CE4B34 /* SdkErrors.json */,
 				4BAC2693237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift */,
 				4BAC2691237FED5D00CE4B34 /* PepoLoaderManager.swift */,
 				4BAC2689237FEA3C00CE4B34 /* ContentFetcher.swift */,
@@ -2172,7 +2173,7 @@
 				45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */,
 				8F9432A3D84C40EB9B2A7B63 /* Lato-Regular.ttf in Resources */,
 				6C300736152B4242B645C0CA /* AntDesign.ttf in Resources */,
-				4BAC274823827B5C00CE4B34 /* SdkErrors.json in Resources */,
+				4BAC285C23852BC500CE4B34 /* SdkErrors.json in Resources */,
 				DA3BF552A5D24AFFBB497D4A /* Entypo.ttf in Resources */,
 				4720B1815AA646A98064A0C8 /* EvilIcons.ttf in Resources */,
 				071D8A4777714474AAD30981 /* Feather.ttf in Resources */,
