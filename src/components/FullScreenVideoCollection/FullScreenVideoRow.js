@@ -72,7 +72,7 @@ class FullScreeVideoRow extends PureComponent {
                             </View>
                         )}
                     </View>
-                <BottomReplyBar   serId={this.userId}  videoId={this.videoId}/>     
+                <BottomReplyBar   userId={this.userId}  videoId={this.videoId}/>     
             </View>
         );
     }

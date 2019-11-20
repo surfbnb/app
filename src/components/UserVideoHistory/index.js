@@ -6,8 +6,6 @@ import Pagination from "../../services/Pagination";
 
 import UserVideoHistoryRow from "./UserVideoHistoryRow";
 import TopStatus from "../../components/Home/TopStatus";
-
-import inlineStyles from "./styles";
 import CurrentUser from "../../models/CurrentUser";
 import CommonStyle from "../../theme/styles/Common";
 

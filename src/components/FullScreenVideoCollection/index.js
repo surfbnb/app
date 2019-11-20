@@ -5,8 +5,7 @@ import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
 import FullScreenVideoRow from "./FullScreenVideoRow";
-import inlineStyles from "./styles";
-import historyBack from '../../assets/user-video-history-back-icon.png';
+import FloatingBackArrow from "../CommonComponents/FlotingBackArrow";
 import TopStatus from "../Home/TopStatus";
 import CommonStyle from "../../theme/styles/Common";
 import entityHelper from '../../helpers/EntityHelper';
@@ -228,9 +227,7 @@ class FullScreenVideoCollection extends PureComponent{
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
-                <TouchableOpacity onPress={this.closeVideo} style={inlineStyles.historyBackSkipFont}>
-                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-                </TouchableOpacity>
+                <FloatingBackArrow/>
             </View>
         );
     }

@@ -35,6 +35,11 @@ const styles = {
       )
     },
 
+    fullHeightWidth: {
+      width: "100%",
+      height: "100%"
+    },
+
     videoWrapperfullScreen: {
       width: width,
       ...ifIphoneX(
