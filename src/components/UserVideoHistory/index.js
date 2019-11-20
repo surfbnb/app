@@ -11,7 +11,7 @@ import inlineStyles from "./styles";
 import CurrentUser from "../../models/CurrentUser";
 import CommonStyle from "../../theme/styles/Common";
 
-import historyBack from '../../assets/user-video-history-back-icon.png';
+import FlotingBackArrow from "../CommonComponents/FlotingBackArrow";
 
 const maxVideosThreshold = 3;
 
@@ -149,7 +149,7 @@ class UserVideoHistoryScreen extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-       return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ;
+       return {length: CommonStyle.fullScreen.height, offset: CommonStyle.fullScreen.height * index, index} ;
     }
 
     isCurrentUser(){
@@ -189,17 +189,14 @@ class UserVideoHistoryScreen extends PureComponent{
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                     onMomentumScrollBegin={this.onMomentumScrollBeginCallback}
                     renderItem={this._renderItem}
-                    style={[inlineStyles.fullScreen , {backgroundColor: "#000"}]}
+                    style={[CommonStyle.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
-
                     initialScrollIndex={this.state.activeIndex}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
-                <TouchableOpacity onPress={this.closeVideo} style={inlineStyles.historyBackSkipFont}>
-                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-                </TouchableOpacity>
+                <FlotingBackArrow/>
              </View>
         );
     }

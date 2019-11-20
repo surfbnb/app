@@ -1,5 +1,6 @@
 import React , {PureComponent} from "react";
 import {FlatList , View , TouchableOpacity, Image, Text, StatusBar} from "react-native";
+import FloatingBackArrow from "../CommonComponents/FlotingBackArrow";
 import deepGet from "lodash/get";
 
 import Pagination from "../../services/Pagination";
@@ -15,61 +16,16 @@ import entityHelper from "../../helpers/EntityHelper";
 import {getVideoReplyObject} from "../../helpers/cameraHelper";
 import Pricer from "../../services/Pricer";
 import DataContract from "../../constants/DataContract";
-
-
-
-const navigateToCamera = (navigation) => {
-    let activeTab = NavigationService.getActiveTab();
-    let params = getVideoReplyObject ( navigation.getParam('parentVideoId') , navigation.getParam('parentUserId'));
-    utilities.handleVideoUploadModal(activeTab, navigation, params);
-};
+import CommonStyle from "../../theme/styles/Common";
 
 const maxVideosThreshold = 3;
-const HeaderLeft = (props) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          props.navigation.goBack(null);
-        }}
-        style={inlineStyles.iconWrapper}
-      >
-        <Image style={inlineStyles.iconSkipFont} source={crossIcon}></Image>
-      </TouchableOpacity>
-    );
-  };
-  
-  const HeaderRight = (props) => {
-    return (<TouchableOpacity onPress={()=>{
-        navigateToCamera(props.navigation);
-    }} style={inlineStyles.iconWrapper} >
-        <Image style={[inlineStyles.iconSkipFont]} source={plusIcon} />
-    </TouchableOpacity>)
-  };
-  
-  const HeaderTitle = (props) => {
-      let  userId = props.navigation.getParam('parentUserId'),
-            userName = ReduxGetters.getUserName(userId);
-    return (
-      <View>
-        <Text numberOfLines={1} style={inlineStyles.headerText}>
-        Replies to {userName}
-        </Text>
-        <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
-        <Image style={{height: 10, width: 10}} source={pepoIcon} />
-            { Pricer.getToBT(Pricer.getFromDecimal(props.navigation.getParam('amount')), 2)}</Text>
-      </View>
-    );
-  };
 
 class FullScreenReplyCollection extends PureComponent{
 
     static navigationOptions = (props) => {
         return {
             headerBackTitle: null,
-            headerStyle: inlineStyles.headerStyles,
-            headerLeft: <HeaderLeft {...props} />,
-            headerRight: <HeaderRight {...props} />,
-            headerTitle: <HeaderTitle {...props} />
+            header: null
         };
     };
 
@@ -117,7 +73,7 @@ class FullScreenReplyCollection extends PureComponent{
 
         //This is an hack for reset scroll for flatlist. Need to debug a bit more.
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
-            const offset =  this.state.activeIndex > 0 ? inlineStyles.fullScreen.height * this.state.activeIndex :  0 ;
+            const offset =  this.state.activeIndex > 0 ? CommonStyle.fullScreen.height * this.state.activeIndex :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
             this.isActiveScreen = true ;
         });
@@ -228,7 +184,7 @@ class FullScreenReplyCollection extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-        return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ;
+        return {length: CommonStyle.fullScreen.height, offset: CommonStyle.fullScreen.height * index, index} ;
     }
 
     closeVideo = () => {
@@ -246,8 +202,7 @@ class FullScreenReplyCollection extends PureComponent{
     render() {
 
         return (
-            <View style={{flex: 1}}>
-                <StatusBar translucent={true} backgroundColor={'transparent'} />
+            <View style={CommonStyle.viewContainer}>
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
@@ -264,13 +219,14 @@ class FullScreenReplyCollection extends PureComponent{
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                     onMomentumScrollBegin={this.onMomentumScrollBeginCallback}
                     renderItem={this._renderItem}
-                    style={[inlineStyles.fullScreen , {backgroundColor: "#000"}]}
+                    style={[CommonStyle.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
                     initialScrollIndex={this.state.activeIndex}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
+                <FloatingBackArrow/>
             </View>
         );
     }

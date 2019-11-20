@@ -16,6 +16,8 @@ import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
+import BottomReplyBar from '../CommonComponents/BottomReplyBar';
+import CommonStyle from "../../theme/styles/Common";
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
@@ -46,42 +48,47 @@ class UserVideoHistoryRow extends PureComponent {
 
   render() {
     return (
-      <View style={inlineStyles.fullScreen}>
-        <FanVideo
-          shouldPlay={this.props.shouldPlay}
-          userId={this.props.userId}
-          videoId={this.props.videoId}
-          doRender={this.props.doRender}
-          isActive={this.props.isActive}
-        />
+      <View style={CommonStyle.fullScreen}>
+                
+                <View style={CommonStyle.videoWrapperfullScreen}>
+                    <FanVideo
+                      shouldPlay={this.props.shouldPlay}
+                      userId={this.props.userId}
+                      videoId={this.props.videoId}
+                      doRender={this.props.doRender}
+                      isActive={this.props.isActive}
+                    />
 
-        {!!this.props.videoId && !!this.props.userId && (
-          <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-            <View style={inlineStyles.touchablesBtns}>
+                    {!!this.props.videoId && !!this.props.userId && (
+                      <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
+                        <View style={inlineStyles.touchablesBtns}>
 
-              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <PepoTxBtn
-                  resyncDataDelegate={this.refetchVideo}
-                  userId={this.props.userId}
-                  entityId={this.props.videoId}
-                />
-                <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
-                <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.videoId)} />
-                <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
-              </View>
+                          <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                            <PepoTxBtn
+                              resyncDataDelegate={this.refetchVideo}
+                              userId={this.props.userId}
+                              entityId={this.props.videoId}
+                            />
+                            <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
+                            <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.videoId)} />
+                            <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
+                          </View>
 
-              <VideoSupporterStat
-                entityId={this.props.videoId}
-                userId={this.props.userId}
-              />
-            </View>
+                          <VideoSupporterStat
+                            entityId={this.props.videoId}
+                            userId={this.props.userId}
+                          />
+                        </View>
 
-            <VideoBottomStatus
-              userId={this.props.userId}
-              entityId={this.props.videoId}
-            />
-          </View>
-        )}
+                        <VideoBottomStatus
+                          userId={this.props.userId}
+                          entityId={this.props.videoId}
+                        />
+                      </View>
+                    )}
+                  </View> 
+                  
+            <BottomReplyBar  userId={this.props.userId}  videoId={this.props.videoId}/> 
       </View>
     );
   }
