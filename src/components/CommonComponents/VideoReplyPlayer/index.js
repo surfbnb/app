@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import {View} from 'react-native';
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
@@ -11,6 +10,7 @@ import DeletedVideoInfo from '../DeletedVideoInfo';
 import VideoReplyRow from '../../FullScreenReplyCollection/VideoReplyRow';
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import CommonStyles from "../../../theme/styles/Common";
+import { SafeAreaView } from "react-navigation";
 
 class VideoReplyPlayer extends PureComponent {
 
@@ -79,7 +79,7 @@ class VideoReplyPlayer extends PureComponent {
          return <DeletedVideoInfo/>
         }else{
           return (
-            <View style={[{flex:1}, CommonStyles.fullScreen]}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={ CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
               <VideoReplyRow shouldPlay={this.shouldPlay}
                     isActive={true}
@@ -88,7 +88,7 @@ class VideoReplyPlayer extends PureComponent {
                     replyDetailId={this.replyDetailId}
               />
              <FlotingBackArrow />
-            </View>
+            </SafeAreaView>
           )
         }
     }

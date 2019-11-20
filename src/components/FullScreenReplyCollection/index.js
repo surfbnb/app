@@ -1,5 +1,5 @@
 import React , {PureComponent} from "react";
-import {FlatList , View } from "react-native";
+import {FlatList  } from "react-native";
 import FloatingBackArrow from "../CommonComponents/FlotingBackArrow";
 import deepGet from "lodash/get";
 
@@ -8,6 +8,7 @@ import VideoReplyRow from "./VideoReplyRow";
 import entityHelper from "../../helpers/EntityHelper";
 import DataContract from "../../constants/DataContract";
 import CommonStyle from "../../theme/styles/Common";
+import { SafeAreaView } from "react-navigation";
 
 const maxVideosThreshold = 3;
 
@@ -193,7 +194,7 @@ class FullScreenReplyCollection extends PureComponent{
     render() {
 
         return (
-            <View style={CommonStyle.viewContainer}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
@@ -218,7 +219,7 @@ class FullScreenReplyCollection extends PureComponent{
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
                 <FloatingBackArrow/>
-            </View>
+            </SafeAreaView>
         );
     }
 

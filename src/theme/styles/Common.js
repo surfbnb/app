@@ -19,12 +19,14 @@ const styles = {
       flex:1,
       backgroundColor:  'rgba(0,0,0,0.5)'
     },
-
+    fullScreenVideoSafeAreaContainer: {
+      flex:1,  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    },
     fullScreen: {
       width: width,
       ...ifIphoneX(
         {
-          height: height
+          height: height - getBottomSpace([true])
         },
         {
           height:
@@ -35,16 +37,11 @@ const styles = {
       )
     },
 
-    fullHeightWidth: {
-      width: "100%",
-      height: "100%"
-    },
-
     videoWrapperfullScreen: {
       width: width,
       ...ifIphoneX(
         {
-          height: height - CUSTOM_TAB_Height 
+          height: height - CUSTOM_TAB_Height - getBottomSpace([true])
         },
         {
           height:
@@ -53,7 +50,12 @@ const styles = {
               : height - CUSTOM_TAB_Height
         }
       )
-    }
+    },
+
+    fullHeightWidth: {
+      width: "100%",
+      height: "100%"
+    },
 };
 
 export default CommonStyle = DefaultStyleGenerator.generate(styles);

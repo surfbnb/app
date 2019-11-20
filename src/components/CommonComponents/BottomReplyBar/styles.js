@@ -9,7 +9,7 @@ let stylesMap = {
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         paddingHorizontal: 10,
         justifyContent: 'center',
-        borderTopWidth: 1,
+        borderTopWidth: 0.5,
         borderColor: 'rgba(151, 151, 151, 0.6)',
         marginTop: 5
     },

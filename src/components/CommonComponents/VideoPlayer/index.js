@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {View} from 'react-native';
 import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
@@ -9,6 +8,7 @@ import reduxGetter from '../../../services/ReduxGetters';
 import DeletedVideoInfo from '../DeletedVideoInfo';
 import CommonStyles from "../../../theme/styles/Common";
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
+import { SafeAreaView } from "react-navigation";
 
 class VideoPlayer extends Component {
 
@@ -76,12 +76,12 @@ class VideoPlayer extends Component {
          return <DeletedVideoInfo/>
         }else{
           return (
-            <View style={[{flex:1 }, CommonStyles.fullScreen]}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
               <VideoRowComponent doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
                                  videoId={this.videoId} userId={this.state.userId}/>
              <FlotingBackArrow />
-            </View>
+            </SafeAreaView>
           )
         }
     }
