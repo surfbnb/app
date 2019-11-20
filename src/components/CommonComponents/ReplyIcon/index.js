@@ -7,7 +7,7 @@ import reduxGetter from '../../../services/ReduxGetters';
 import inlineStyles from './styles';
 import multipleClickHandler from "../../../services/MultipleClickHandler";
 import pricer from '../../../services/Pricer';
-import reply_video from '../../../assets/reply_video.png';
+import reply_video from '../../../assets/video_reply.png';
 import Utilities from '../../../services/Utilities';
 import CurrentUser from '../../../models/CurrentUser';
 import NavigationService from "../../../services/NavigationService";

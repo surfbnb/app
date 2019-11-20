@@ -1,7 +1,9 @@
 import reduxGetter from "../services/ReduxGetters";
 import AppConfig from '../constants/AppConfig'
+import NavigationService from "../services/NavigationService";
+import Utilities from "../services/Utilities";
 
-let getVideoReplyObject = (videoId, creatorUserId) => {
+const getVideoReplyObject = (videoId, creatorUserId) => {
   return {
     videoType : AppConfig.videoTypes.reply,
     videoId: videoId,
@@ -12,4 +14,10 @@ let getVideoReplyObject = (videoId, creatorUserId) => {
 };
 
 
-export { getVideoReplyObject }
+const navigateToCamera = (videoId , userId , navigation) => {
+  let activeTab = NavigationService.getActiveTab();
+  let params = getVideoReplyObject ( videoId , userId);
+  Utilities.handleVideoUploadModal(activeTab, navigation, params);
+};
+
+export { getVideoReplyObject  , navigateToCamera }

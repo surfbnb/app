@@ -152,19 +152,7 @@ class FanVideoDetails extends Component {
   }
 
   enableStartUploadFlag = () => {
-   // if (!this.validLink()) return;
-    if(this.state.replyAmt > this.max){
-        this.setState({
-          amountError : `Maximum value is ${this.max}`
-        })
-    }else if( this.state.replyAmt < this.min ){
-      this.setState({
-        amountError : `Minimum value is ${this.min}`
-      })
-    }else{
-      this.setState({
-        amountError : ""
-      })
+
       this.clearErrors();
       this.validateData().then((res) => {
         utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
@@ -181,7 +169,6 @@ class FanVideoDetails extends Component {
         // show error on UI.
         this.showError(err);
       });
-    }
   };
 
   clearErrors = () => {

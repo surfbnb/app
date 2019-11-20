@@ -11,6 +11,7 @@ import TopStatus from "../Home/TopStatus";
 import CommonStyle from "../../theme/styles/Common";
 import entityHelper from '../../helpers/EntityHelper';
 import DataContract from "../../constants/DataContract";
+import VideoReplyRow from "../FullScreenReplyCollection/VideoReplyRow";
 
 const maxVideosThreshold = 3;
 
@@ -67,7 +68,7 @@ class FullScreenVideoCollection extends PureComponent{
 
         //This is an hack for reset scroll for flatlist. Need to debug a bit more.
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
-            const offset =  this.state.activeIndex > 0 ? inlineStyles.fullScreen.height * this.state.activeIndex :  0 ;
+            const offset =  this.state.activeIndex > 0 ? CommonStyle.fullScreen.height * this.state.activeIndex :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
             this.isActiveScreen = true ;
         });
@@ -184,7 +185,7 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-        return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ;
+        return {length: CommonStyle.fullScreen.height, offset: CommonStyle.fullScreen.height * index, index} ;
     }
 
     closeVideo = () => {
@@ -220,7 +221,7 @@ class FullScreenVideoCollection extends PureComponent{
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                     onMomentumScrollBegin={this.onMomentumScrollBeginCallback}
                     renderItem={this._renderItem}
-                    style={[inlineStyles.fullScreen , {backgroundColor: "#000"}]}
+                    style={[CommonStyle.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
                     initialScrollIndex={this.state.activeIndex}

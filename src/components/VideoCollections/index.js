@@ -5,6 +5,7 @@ import Pagination from "../../services/Pagination";
 
 import CommonStyle from "../../theme/styles/Common";
 import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
+import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
 import entityHelper from '../../helpers/EntityHelper';
 
 class VideoCollections extends PureComponent {
