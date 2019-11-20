@@ -60,7 +60,7 @@ let stylesMap = {
     bottom: 0
   },
     listContainer: {
-      width: width,
+      // width: width,
       position: 'absolute',
       bottom: height * 0.05 + 50,
       left: 10,

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import FanVideo from '../VideoWrapper/FanVideo';

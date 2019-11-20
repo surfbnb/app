@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View} from 'react-native';
+import { Text, View, ScrollView, ListView} from 'react-native';
 import Pagination from "../../../services/Pagination";
 import PeopleCell from "../../PeopleList/PeopleCell";
 import CustomTextInput from "../TagsInput/CustomTextInput";
@@ -116,6 +116,7 @@ class InvertedReplyList extends Component {
 
     this.props.onRefresh && this.props.onRefresh( results , res );
     this.setState({ refreshing : false , list : results });
+    // this.setState({ refreshing : false , list :[results[0], results[1]]  });
     this.setState({ refreshing : false });
   }
 
@@ -192,8 +193,9 @@ class InvertedReplyList extends Component {
 
   render() {
 
+    // return <ScrollView style={{height:'100%', width:'100%'}}>
     return <FlatList
-      style={{height:500, width:80}}
+      style={{height:'100%', width: '100%'}}
     ref={this.setListRef}
     ListHeaderComponent={this.listHeaderComponent()}
     ItemSeparatorComponent={this.getItemSeperatorComponent}
@@ -209,6 +211,8 @@ class InvertedReplyList extends Component {
     key={this.flatListKey}
     nestedScrollEnabled={true}
     />
+
+
   }
 }
 
