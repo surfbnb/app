@@ -25,6 +25,7 @@ export default class PepoApi {
         'User-Agent': DeviceInfo.getUserAgent(),
         'X-PEPO-DEVICE-OS': Platform.OS,
         'X-PEPO-DEVICE-OS-VERSION': DeviceInfo.getSystemVersion(),
+        'X-PEPO-DEVICE-ID': DeviceInfo.getUniqueID(),
         'X-PEPO-BUILD-NUMBER': DeviceInfo.getBuildNumber(),
         'X-PEPO-APP-VERSION': DeviceInfo.getVersion()
       }

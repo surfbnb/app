@@ -2,8 +2,8 @@ import {Platform, Dimensions} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import qs from 'qs';
 import assignIn from 'lodash/assignIn';
-import Store from '../store';
 import { TRACKER_ENDPOINT } from '../constants/index';
+import CurrentUser from "../models/CurrentUser";
 
 const keyAliasMap = {
   t_version: 'v',
@@ -48,11 +48,6 @@ const staticData = {
   user_agent: DeviceInfo.getUserAgent()
 };
 
-if(Store.getState().current_user.id){
-  staticData.u_id = Store.getState().current_user.id;
-  staticData.e_data_json.user_id = Store.getState().current_user.id;
-}
-
 const makeCompactData = params => {
   let compactData = {};
   for(var key in params){
@@ -66,7 +61,14 @@ const makeCompactData = params => {
 export default (data) => {
 
   // Extend outer data with staticData
-  let pixelData = assignIn({}, staticData, data);
+  let pixelData = assignIn({}, staticData, data),
+      currentUserId = CurrentUser.getUserId();
+
+  // Add user context (if any)
+  if(currentUserId){
+    pixelData.u_id = currentUserId;
+    pixelData.e_data_json.user_id = currentUserId;
+  }
 
   // Compact data
   let compactData = makeCompactData(pixelData);

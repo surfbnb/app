@@ -65,7 +65,12 @@ class HomeFeedRow extends PureComponent {
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
               <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <PepoTxBtn  resyncDataDelegate={this.refetchFeed} userId={this.userId} entityId={this.videoId}/>
+                <PepoTxBtn
+                    resyncDataDelegate={this.refetchFeed}
+                    userId={this.userId}
+                    entityId={this.videoId}
+                    getPixelDropData={() => {p_type: 'feed'}}
+                />
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                 <ShareIcon videoId={this.videoId} userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)} />
                 <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />

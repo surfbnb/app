@@ -3,6 +3,7 @@ import { TouchableWithoutFeedback, View } from 'react-native';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import Toast from '../../theme/components/NotificationToast';
 import deepGet from 'lodash/get';
+import assignIn from "lodash/assignIn";
 
 import CurrentUser from '../../models/CurrentUser';
 import PepoButton from './PepoButton';
@@ -120,7 +121,7 @@ class Base extends PureComponent {
   }
 
   dropPixel() {
-    //TODO @Ashutosh , confrim from @Akshay 
+    //TODO @Ashutosh , confrim from @Akshay
     PixelCall(this.getDropPixel());
   }
 
@@ -241,5 +242,11 @@ class Base extends PureComponent {
     );
   }
 }
+
+Base.defaultProps = {
+  getPixelDropData: () => {
+    throw "error";
+  }
+};
 
 export default Base;

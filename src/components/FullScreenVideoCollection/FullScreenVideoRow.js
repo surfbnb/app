@@ -34,7 +34,7 @@ class FullScreeVideoRow extends PureComponent {
     render() {
         return (
             <View style={CommonStyle.fullScreen}>
-                
+
                 <View style={CommonStyle.videoWrapperfullScreen}>
                         <FanVideo
                             shouldPlay={this.props.shouldPlay}
@@ -53,6 +53,7 @@ class FullScreeVideoRow extends PureComponent {
                                             resyncDataDelegate={this.refetchVideo}
                                             userId={this.userId}
                                             entityId={this.videoId}
+                                            getPixelDropData={() => {p_type: 'tag'}} // @todo to confirm this
                                         />
                                         <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                                         <ShareIcon  userId={this.userId} videoId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
@@ -68,11 +69,12 @@ class FullScreeVideoRow extends PureComponent {
                                 <VideoBottomStatus
                                     userId={this.userId}
                                     entityId={this.videoId}
+                                    getPixelDropData={() => {p_type: 'feed'}}
                                 />
                             </View>
                         )}
                     </View>
-                <BottomReplyBar   userId={this.userId}  videoId={this.videoId}/>     
+                <BottomReplyBar   userId={this.userId}  videoId={this.videoId}/>
             </View>
         );
     }
