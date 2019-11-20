@@ -232,7 +232,7 @@ import OstWalletSdk
   
   func heartImageViewConstraints() {
     heartImageView.topAlignWithParent(multiplier: 1, constant: 10)
-    heartImageView.setW375Width(width: 30)
+    heartImageView.setW375Width(width: 40)
     heartImageView.setAspectRatio(widthByHeight: 1)
     heartImageView.centerXAlignWithParent()
   }
@@ -266,6 +266,8 @@ import OstWalletSdk
   
   func alertIconViewConstraints() {
     alertIcon.topAlignWithParent(multiplier: 1, constant: 10)
+    alertIcon.setW375Width(width: 45)
+    alertIcon.setAspectRatio(widthByHeight: 1)
     alertIcon.centerXAlignWithParent()
   }
   
