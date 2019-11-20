@@ -186,11 +186,11 @@ class CameraWorker extends PureComponent {
       icon: 'success',
       imageUri: this.props.recorded_video.cover_image
     });
+    this.executingTx = false;
     Store.dispatch(
       upsertRecordedVideo({
         do_discard: true,
-        pepo_api_posting: false,
-        executing_tx: false
+        pepo_api_posting: false
       })
     );
   };
@@ -198,6 +198,7 @@ class CameraWorker extends PureComponent {
   onFlowInterrupt = (ostWorkflowContext, error) => {
     console.log('CameraWorker.onFlowInterrupt', ostWorkflowContext, error);
     this.VideoUploadStatusToNotProcessing();
+    this.executingTx = false;
     Toast.show({
       text: ostSdkErrors.getErrorMessage(ostWorkflowContext, error),
       icon: 'error'
@@ -226,19 +227,16 @@ class CameraWorker extends PureComponent {
 
     let goForTx = this.props.recorded_video.go_for_tx,
       doDiscard = this.props.recorded_video.do_discard,
-      executingTx = this.props.recorded_video.executing_tx,
     receiverUserId = deepGet (this.props.recorded_video, 'reply_obj.replyReceiverUserId'),
     amountToSendWithReply = deepGet(this.props.recorded_video, 'reply_obj.amountToSendWithReply');
-    if (! goForTx || ! receiverUserId || doDiscard || executingTx ){
+    if (! goForTx || ! receiverUserId || doDiscard || this.executingTx ){
       return;
     }
+    this.executingTx = true;
     if ( receiverUserId === this.props.currentUserId || ! Number(amountToSendWithReply)) {
       this.videoUploadedSuccessCallback();
       return;
     };
-    upsertRecordedVideo({
-      executing_tx: true
-    });
     this.VideoUploadStatusToProcessing();
     console.log('CameraWorker.executeTransaction');
 
