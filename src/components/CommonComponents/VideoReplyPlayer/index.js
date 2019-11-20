@@ -1,17 +1,16 @@
 import React, { PureComponent } from 'react';
-import {View,Image,TouchableOpacity} from 'react-native';
-import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
+import {View} from 'react-native';
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
-import inlineStyles from './styles'
-import historyBack from "../../../assets/user-video-history-back-icon.png";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
 import ReduxGetters from '../../../services/ReduxGetters';
 import DataContract from '../../../constants/DataContract';
 import DeletedVideoInfo from '../DeletedVideoInfo';
 import VideoReplyRow from '../../FullScreenReplyCollection/VideoReplyRow';
+import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
+import CommonStyles from "../../../theme/styles/Common";
 
 class VideoReplyPlayer extends PureComponent {
 
@@ -80,7 +79,7 @@ class VideoReplyPlayer extends PureComponent {
          return <DeletedVideoInfo/>
         }else{
           return (
-            <View style={{flex:1}}>
+            <View style={[{flex:1}, CommonStyles.fullScreen]}>
               <TopStatus />
               <VideoReplyRow shouldPlay={this.shouldPlay}
                     isActive={true}
@@ -88,10 +87,7 @@ class VideoReplyPlayer extends PureComponent {
                     userId={this.state.userId}
                     replyDetailId={this.replyDetailId}
               />
-             {/* // {TODO @Preshita move to common component } */}
-              <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
-                <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-              </TouchableOpacity>
+             <FlotingBackArrow />
             </View>
           )
         }

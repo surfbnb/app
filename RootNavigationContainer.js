@@ -74,7 +74,9 @@ const customTabHiddenRoutes = [
   'VideoReplies',
   'FullScreenReplyCollection', 
   'FullScreenVideoCollection',
-  'UserVideoHistory'
+  'UserVideoHistory',
+  'VideoPlayer',
+  'VideoReplyPlayer'
 ];
 
 const modalStackConfig = {
