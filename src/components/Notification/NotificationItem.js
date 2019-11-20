@@ -125,7 +125,7 @@ class NotificationItem extends Component {
   };
 
   notificationInfo = () => {
-    if (this.props.kind == AppConfig.notificationConstants.videoAddKind) {
+    if (this.shouldShowVideo()) {
       return this.showVideoComponent();
     }
   };

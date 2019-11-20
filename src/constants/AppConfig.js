@@ -175,8 +175,9 @@ export default {
       PROFILE_TX_SEND_FAILURE,
       VIDEO_TX_SEND_FAILURE,
       AIRDROP_DONE,
-      TOPUP_DONE
-
+      TOPUP_DONE,
+      REPLY_SENDER_WITH_AMOUNT,
+      REPLY_RECEIVER_WITH_AMOUNT
     ],
     whitelistedNotificationKinds: [
       PROFILE_TX_SEND_SUCCESS,
