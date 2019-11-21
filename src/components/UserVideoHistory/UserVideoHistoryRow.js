@@ -85,7 +85,7 @@ class UserVideoHistoryRow extends PureComponent {
 
   render() {
     return (
-      <View style={[inlineStyles.fullScreen, {position: 'relative'} ]}>
+      <View style={inlineStyles.fullScreen}>
         <FanVideo
           shouldPlay={this.props.shouldPlay}
           userId={this.props.userId}
@@ -94,20 +94,13 @@ class UserVideoHistoryRow extends PureComponent {
           isActive={this.props.isActive}
         />
 
-        <View style={inlineStyles.listContainer} >
-            <View style={{ minWidth: '20%', alignSelf: 'flex-start' }}>
-              <InvertedReplyList videoId={this.props.videoId} userId={this.props.userId}/>
-            </View>
-        </View>
-
         {!!this.props.videoId && !!this.props.userId && (
           <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
 
             <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-
               <View style={{   left: 10, zIndex: 9, minWidth: '20%', alignSelf: 'flex-start', bottom:60 }}>
-                <InvertedReplyList  videoId={this.videoId}
-                                    userId={this.userId}
+                <InvertedReplyList  videoId={this.props.videoId}
+                                    userId={this.props.userId}
                                     doRender={this.props.doRender}
                                     availableHeight={this.state.yCoordinateOfReportButton}/>
               </View>
@@ -127,19 +120,17 @@ class UserVideoHistoryRow extends PureComponent {
                 <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
                 </View>
               </View>
-
               <VideoSupporterStat
-                entityId={this.props.videoId}
+                entityId={this.props.video}
                 userId={this.props.userId}
               />
             </View>
             </View>
 
-              <VideoBottomStatus
-                userId={this.props.userId}
-                entityId={this.props.videoId}
-              />
-            </View>
+            <VideoBottomStatus
+              userId={this.props.userId}
+              entityId={this.props.videoId}
+            />
           </View>
         )}
       </View>
