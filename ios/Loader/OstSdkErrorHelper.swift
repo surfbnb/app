@@ -72,9 +72,6 @@ import OstWalletSdk
             errMsg = (firstErrMsg["msg"] as? String) ?? DEFAULT_ERROR_MSG;
           }
         }
-        if nil == errMsg {
-          errMsg = (error as! OstApiError).getApiErrorMessage();
-        }
         
         if ( developerMode && nil != errMsg) {
           if let internalId: String = (error as? OstApiError)?.getApiInternalId() {

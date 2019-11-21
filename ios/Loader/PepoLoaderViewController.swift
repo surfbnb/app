@@ -109,7 +109,6 @@ import OstWalletSdk
   
   //MARK: - Variables
   var leftAnchor: NSLayoutConstraint? = nil
-  var shouldCloseProgressAnimation: Bool = false
   var ostLoaderComplectionDelegate: OstLoaderCompletionDelegate? = nil
   var isAlertView: Bool = false
   var isApiSignerUnauthorized: Bool = false
@@ -169,7 +168,6 @@ import OstWalletSdk
     alertContainerView.addSubview(alertIcon)
     alertContainerView.addSubview(alertMessageLabel)
     alertContainerView.addSubview(dismissButton)
-    
   }
   
   //MARK: - Actions
@@ -238,7 +236,7 @@ import OstWalletSdk
   }
   
   func messageLabelConstraints() {
-    messageLabel.placeBelow(toItem: heartImageView, constant: 20)
+    messageLabel.placeBelow(toItem: heartImageView, constant: 30)
     messageLabel.applyBlockElementConstraints(horizontalMargin: 20)
   }
   
@@ -286,10 +284,10 @@ import OstWalletSdk
   
   func animateLoader() {
     indefinateProgressBarAnimation()
-    UIView.animate(withDuration: 0.6, animations: {[weak self] in
+    UIView.animate(withDuration: 0.4, animations: {[weak self] in
       self?.heartImageView.transform = CGAffineTransform(rotationAngle: CGFloat(-210))
     }) { (isCompleted) in
-      UIView.animate(withDuration: 0.3, animations: {[weak self] in
+      UIView.animate(withDuration: 0.2, animations: {[weak self] in
         self?.heartImageView.transform = CGAffineTransform(rotationAngle: CGFloat(205))
       }) {[weak self] (isCompleted) in
         self?.heartPumpingAnimation()
@@ -299,7 +297,7 @@ import OstWalletSdk
   
   func heartPumpingAnimation() {
     let animation = CABasicAnimation(keyPath: "transform.scale")
-    animation.duration = 0.6
+    animation.duration = 0.5
     animation.repeatCount = Float.infinity
     animation.autoreverses = true
     animation.fromValue = 1
@@ -309,24 +307,22 @@ import OstWalletSdk
   }
   
   func indefinateProgressBarAnimation() {
-    if shouldCloseProgressAnimation {
-      return
-    }
-    leftAnchor?.constant =  self.progressBarBackgroundView.frame.width + 50
-    UIView.animate(withDuration: 1, animations: {[weak self] in
-      self?.view.layoutIfNeeded()
-    }) {[weak self] (_) in
-      self?.leftAnchor?.constant =  -50
-      self?.view.layoutIfNeeded()
-      self?.indefinateProgressBarAnimation()
-    }
+    let animation = CABasicAnimation(keyPath: "transform.translation.x")
+    animation.duration = 0.6
+    animation.repeatCount = Float.infinity
+    animation.autoreverses = false
+    animation.fromValue = -50
+    animation.toValue = self.progressBarBackgroundView.frame.width + 50
+    animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
+    progressBarView.layer.add(animation, forKey: "transform.translation.x")
   }
   
   //MARK: - Pepo Alert
   
   func closeProgressAnimation() {
     heartImageView.layer.removeAnimation(forKey: "transform.scale")
-    shouldCloseProgressAnimation = true
+    progressBarView.layer.removeAnimation(forKey: "transform.translation.x")
+    
     isAlertView = true
     
     progressContainerView.isHidden = true
