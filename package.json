@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "copy-assets": "node -e \"fs.copyFileSync('./src/SdkErrors.json','./android/app/src/main/assets/SdkErrors.json'); fs.copyFileSync('./src/SdkErrors.json','./ios/Loader/SdkErrors.json')\"",
     "test": "jest",
-    "postinstall": "echo \"Coping assets...\" && npm run copy-assets"
+    "postinstall": "echo \"Copying assets...\" && npm run copy-assets"
   },
   "dependencies": {
     "@ostdotcom/ost-wallet-sdk-react-native": "2.3.7-alpha.3",
