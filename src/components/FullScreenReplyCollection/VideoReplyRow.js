@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { View , Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import FanVideo from "../VideoWrapper/FanVideo";
 import ShareIcon from "../CommonComponents/ShareIcon";
@@ -20,49 +20,18 @@ import CommonStyle from "../../theme/styles/Common";
 import assignIn from 'lodash/assignIn';
 import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 
+import AppConfig from "../../constants/AppConfig";
+
+
+const AREA = AppConfig.MaxDescriptionArea;
+const height = AREA / Dimensions.get('window').width + 20;
+
 class VideoReplyRow extends PureComponent {
     constructor(props) {
         super(props);
         this.parentVideoId = ReduxGetters.getReplyParentVideoId( this.props.replyDetailId );
         this.parentUserId =  ReduxGetters.getReplyParentUserId( this.props.replyDetailId );
-      this.state = {
-        yCoordinateOfReportButton : 0
-      };
     }
-
-
-  componentDidMount() {
-    setTimeout(()=>{
-      this.measureWindow();
-    }, 10);
-  };
-
-
-  componentDidUpdate(prevProps) {
-
-    if (prevProps.isActive !== this.props.isActive){
-      this.measureWindow();
-    }
-
-  };
-
-  measureWindow = () => {
-    if (this.props.isActive === true){
-      console.log('measureWindow:::isActive true', this.videoId);
-      this.reportViewRef.measureInWindow(this.calculateYCoordinateOfReportButton);
-    }
-  };
-
-
-  calculateYCoordinateOfReportButton = (ox, oy, width, height) => {
-    this.setState({yCoordinateOfReportButton: oy});
-    console.log('============== measurePosition ==============' );
-    console.log('ox',ox);
-    console.log('oy',oy);
-    console.log('width',width);
-    console.log('height',height);
-    console.log('============== measurePosition ==============' );
-  };
 
 
   refetchVideoReply = () => {
@@ -89,6 +58,17 @@ class VideoReplyRow extends PureComponent {
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
 
                 <View style={CommonStyle.videoWrapperfullScreen}>
+
+                  <View style={{position: "absolute" , left: 10 , bottom : height, zIndex: 9 }}>
+                    <InvertedReplyList  videoId={parentVideoId}
+                                        userId={parentUserId}
+                                        doRender={this.props.doRender}
+                                        paginationService={this.props.paginationService}
+                                        onChildClickDelegate={this.props.onChildClickDelegate}
+                                        currentIndex={this.props.currentIndex}
+                    />
+                  </View>
+
                     <FanVideo
                         shouldPlay={this.props.shouldPlay}
                         userId={userId}
@@ -100,17 +80,6 @@ class VideoReplyRow extends PureComponent {
 
                     {!!videoId && !!userId && (
                         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-                            <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-                                <View style={{   left: 10, zIndex: 9, minWidth: '20%', alignSelf: 'flex-start', bottom:60 }}>
-                                    <InvertedReplyList  videoId={parentVideoId}
-                                                        userId={parentUserId}
-                                                        doRender={this.props.doRender}
-                                                        availableHeight={this.state.yCoordinateOfReportButton}
-                                                        paginationService={this.props.paginationService}
-                                                        onChildClickDelegate={this.props.onChildClickDelegate}
-                                                        currentIndex={this.props.currentIndex}
-                                    />
-                                </View>
 
                             <View style={inlineStyles.touchablesBtns}>
 
@@ -132,7 +101,6 @@ class VideoReplyRow extends PureComponent {
                                       entityId={replyDetailId}
                                       userId={userId}
                                   />
-                              </View>
                               </View>
                             <ReplyVideoBottomStatus
                                 userId={userId}

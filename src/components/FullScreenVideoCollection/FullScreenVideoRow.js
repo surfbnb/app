@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image , Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
@@ -17,6 +17,14 @@ import DataContract from '../../constants/DataContract';
 import BottomReplyBar from '../CommonComponents/BottomReplyBar';
 import assignIn from 'lodash/assignIn';
 
+
+import AppConfig from "../../constants/AppConfig";
+import CommonStyle from "../../theme/styles/Common";
+import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
+
+
+const AREA = AppConfig.MaxDescriptionArea;
+const height = AREA / Dimensions.get('window').width + 20;
 
 class FullScreeVideoRow extends PureComponent {
     constructor(props) {
@@ -40,9 +48,17 @@ class FullScreeVideoRow extends PureComponent {
 
     render() {
         return (
-            <View style={CommonStyle.fullScreen}>
+          <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
 
                 <View style={CommonStyle.videoWrapperfullScreen}>
+
+                      <View style={{position: "absolute" , left: 10 , bottom : height, zIndex: 9 }}>
+                        <InvertedReplyList  videoId={this.videoId}
+                                            userId={this.userId}
+                                            listKey={`${this.props.listKey}-InvertedReplyList`}
+                                           />
+                      </View>
+
                         <FanVideo
                             shouldPlay={this.props.shouldPlay}
                             userId={this.userId}

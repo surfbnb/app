@@ -320,6 +320,8 @@ export default {
   videoTypes: {
     post : 'post',
     reply: 'reply'
-  }
+  },
+
+  MaxDescriptionArea: 35250
 
 };

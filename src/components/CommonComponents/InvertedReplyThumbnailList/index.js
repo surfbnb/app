@@ -5,6 +5,7 @@ import Pagination from "../../../services/Pagination";
 import ReplyThumbnailItem from './ReplyThumbnailItem'
 import {FlatList} from 'react-native-gesture-handler';
 import ReplyHelper from '../../../helpers/ReplyHelper';
+import AppConfig from "../../../constants/AppConfig";
 
 const ITEM_HEIGHT = 55;
 
@@ -190,23 +191,26 @@ class InvertedReplyList extends Component {
 
   getItemSeperatorComponent = () => {
     return <View style={{backgroundColor: 'white', height: 25, width: 1, alignSelf:'center'}} />
+  };
+
+  getAvailableHeight = () => {
+    const area = AppConfig.MaxDescriptionArea;
+    let height = ( area / Dimensions.get('window').width ) + 20,
+      availableHeight = Dimensions.get('window').height - height - 50;
+    return availableHeight;
   }
 
+
   getListHeight = () => {
-
-    let noOfItems = this.state.list.length ;
-    if (this.props.availableHeight > 0 && noOfItems > 0){
-
+    let availableHeight = this.getAvailableHeight();
+    let noOfItems = this.state.list.length;
+    if (noOfItems > 0){
       let heightOfElements = noOfItems * 30,
         heightOfSeparator =   (noOfItems - 1 ) * 25,
-        availableScreenHeight =  this.props.availableHeight - 50,
         heightOfFlatList = heightOfElements + heightOfSeparator;
-      if (availableScreenHeight < heightOfFlatList ){
-        return availableScreenHeight;
-      }
-      return heightOfFlatList;
+      return availableHeight > heightOfFlatList ? heightOfFlatList : availableHeight;
     }
-    return 0;
+    return availableHeight;
   };
 
   getItemLayout= (data, index) => {
@@ -214,12 +218,12 @@ class InvertedReplyList extends Component {
   }
 
   render() {
-    let height = this.getListHeight();
-    return height > 0 ?
-      <FlatList style={{ height: height, width: '100%', minHeight:0, flexGrow:0, flexShrink:0}}
+      console.log("InvertedReplyList :: this.props.listKey", this.props.listKey);
+        return   <FlatList style={{ height: this.getListHeight(), width: '100%'}}
         ref={this.setListRef}
         ItemSeparatorComponent={this.getItemSeperatorComponent}
         data={this.state.list}
+        listKey={this.props.listKey}
         onEndReached={this.getNext}
         onRefresh={this.refresh}
         keyExtractor={this._keyExtractor}
@@ -233,12 +237,13 @@ class InvertedReplyList extends Component {
         initialScrollIndex={this.props.currentIndex}
         getItemLayout={this.getItemLayout}
         onScrollToIndexFailed={this.onScrollToIndexFailed}
-    />: <React.Fragment />
+    />
   }
 }
 
 InvertedReplyList.defaultProps = {
-  paginationService : null
+  paginationService : null,
+  doRender: true
 };
 
 //make this component available to the app

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, ScrollView } from 'react-native';
+import {View, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import FanVideo from '../VideoWrapper/FanVideo';
@@ -18,14 +18,15 @@ import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupp
 import DataContract from '../../constants/DataContract';
 
 import InvertedReplyList from '../CommonComponents/InvertedReplyThumbnailList';
+import AppConfig from "../../constants/AppConfig";
+
+const AREA = AppConfig.MaxDescriptionArea;
+const height = AREA / Dimensions.get('window').width + 20;
 
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
     super(props);
-    this.state ={
-      yCoordinateOfReportButton : 0
-    }
   }
 
   get userId() {
@@ -54,42 +55,16 @@ class HomeFeedRow extends PureComponent {
   }
 
 
-  componentDidMount() {
-    setTimeout(()=>{
-      this.measureWindow();
-    }, 10);
-  };
-
-
-  componentDidUpdate(prevProps) {
-
-    if (prevProps.isActive !== this.props.isActive){
-      this.measureWindow();
-    }
-
-  };
-
-  measureWindow = () => {
-    if (this.props.isActive === true){
-      console.log('measureWindow:::isActive true', this.videoId);
-      this.reportViewRef.measureInWindow(this.calculateYCoordinateOfReportButton);
-    }
-  };
-
-
-  calculateYCoordinateOfReportButton = (ox, oy, width, height) => {
-    this.setState({yCoordinateOfReportButton: oy});
-    console.log('============== measurePosition ==============' );
-    console.log('ox',ox);
-    console.log('oy',oy);
-    console.log('width',width);
-    console.log('height',height);
-    console.log('============== measurePosition ==============' );
-  };
-
   render() {
     return (
-      <View style={[inlineStyles.fullScreen, {position: 'relative'} ]}>
+      <View style={[inlineStyles.fullScreen,  {position: "relative"} ]}>
+
+        <View style={{ position: "absolute" , left: 10 , bottom : height, zIndex: 9  }}>
+          <InvertedReplyList  videoId={this.videoId}
+                              userId={this.userId}
+                              doRender={this.props.doRender}
+          />
+        </View>
 
         <FanVideo
           shouldPlay={this.props.shouldPlay}
@@ -99,19 +74,7 @@ class HomeFeedRow extends PureComponent {
           isActive={this.props.isActive}
           getPixelDropData={this.getPixelDropData}
         />
-
-
-
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-          <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-
-            <View style={{   left: 10, zIndex: 9, minWidth: '20%', alignSelf: 'flex-start', bottom:60 }}>
-              <InvertedReplyList  videoId={this.videoId}
-                                   userId={this.userId}
-                                   doRender={this.props.doRender}
-                                   availableHeight={this.state.yCoordinateOfReportButton}/>
-            </View>
-
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
               <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
@@ -138,7 +101,7 @@ class HomeFeedRow extends PureComponent {
               pageName="feed"
             />
           </View>
-          </View>
+
           <VideoBottomStatus userId={this.userId} entityId={this.videoId} />
         </View>
       </View>

@@ -130,7 +130,9 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     _keyExtractor = (item, index) => {
-        return `id_${item}`;
+        let keyStr = `id_${item.id}`;
+        console.log("keyStr", keyStr);
+        return keyStr;
     };
 
     _renderItem = ({ item, index }) => {
@@ -164,8 +166,11 @@ class FullScreenVideoCollection extends PureComponent{
 
     _renderVideoReplyRow(item, index){
         let userId = deepGet(item,'payload.user_id'),
-            replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
+            replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`),
+            rowKey = this._keyExtractor(item, index)
+        ;
         return  <VideoReplyRow  shouldPlay={this.shouldPlay}
+                                listKey={`${rowKey}-video-row`}
                                 isActive={index == this.state.activeIndex}
                                 getPixelDropData={this.getReplyPixelDrop}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
@@ -176,7 +181,9 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     _renderVideoRow( item, index ){
+        let rowKey = this._keyExtractor(item, index);
         return  <FullScreenVideoRow shouldPlay={this.shouldPlay}
+                    listKey={`${rowKey}-full-screen-video-row`}
                     isActive={index == this.state.activeIndex}
                     getPixelDropData={this.getPixelDropData}
                     doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
@@ -226,6 +233,7 @@ class FullScreenVideoCollection extends PureComponent{
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
                 {this.props.navigation.getParam("showBalanceFlyer")  && <TopStatus />}
                 <FlatList
+                    listKey={"some-dummy-key-to-be-changed-passed-as-props"}
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
                     pagingEnabled={true}
