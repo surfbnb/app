@@ -50,7 +50,7 @@ const staticData = {
   mobile_app_version: DeviceInfo.getVersion()
 };
 
-const mandatoryKeys = ['e_entity', 'e_action', 'p_type', 'p_name'];
+const mandatoryKeys = ['e_entity', 'e_action', 'p_type'];
 
 const makeCompactData = params => {
   let compactData = {};
@@ -76,7 +76,13 @@ export default (data) => {
   // Validate and bail out on fail
   for(var mi = 0; mi < mandatoryKeys.length; mi++){
     if(!pixelData[mandatoryKeys[mi]]){
-      console.log(`PixelCall validation failed for ${mandatoryKeys[mi]}`);
+      console.log(`PixelCall validation failed. Mandatory key ${mandatoryKeys[mi]} missing.`);
+      return;
+    }
+  }
+  for(var key in pixelData){
+    if (pixelData.hasOwnProperty(key) && !pixelData[key]) {
+      console.log(`PixelCall validation failed. Invalid value of ${mandatoryKeys[mi]}.`);
       return;
     }
   }
