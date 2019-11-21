@@ -29,7 +29,6 @@ const keyAliasMap = {
   device_width: 'dw',
   device_height: 'dh',
   user_agent: 'ua',
-  mobile_app_version: 'mav',
   e_data_json: 'ed'
 };
 
@@ -51,6 +50,8 @@ const staticData = {
   mobile_app_version: DeviceInfo.getVersion()
 };
 
+const mandatoryKeys = ['e_entity', 'e_action', 'p_type', 'p_name'];
+
 const makeCompactData = params => {
   let compactData = {};
   for(var key in params){
@@ -65,14 +66,19 @@ const makeCompactData = params => {
 export default (data) => {
 
   // Extend outer data with staticData
-  let pixelData = assignIn({}, staticData, data),
-      currentUserId = CurrentUser.getUserId();
+  let pixelData = assignIn({}, staticData, data);
 
   // Add user context (if any) else bail out
-  if(currentUserId){
-    pixelData.u_id = currentUserId;
-  } else {
-    return;
+  let currentUserId = CurrentUser.getUserId();
+  if(!currentUserId) return;
+  pixelData.u_id = currentUserId;
+
+  // Validate and bail out on fail
+  for(var mi = 0; mi < mandatoryKeys.length; mi++){
+    if(!pixelData[mandatoryKeys[mi]]){
+      console.log(`PixelCall validation failed for ${mandatoryKeys[mi]}`);
+      return;
+    }
   }
 
   // Compact data
