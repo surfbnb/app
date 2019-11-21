@@ -106,7 +106,7 @@ class Base extends PureComponent {
     if (this.props.isActive && this.state.paused) {
       this.setState({ paused: false });
       return;
-    } 
+    }
     if ( this.isPaused() != this.currentPauseStatus ) {
       //Force render.
       this.forceUpdate();
@@ -201,6 +201,8 @@ class Base extends PureComponent {
     };
     PixelCall(pixelParams);
     this.isPixelCalledOnEnd = true;
+
+    this.sendFeedVideoEvent(VIDEO_PLAY_END_EVENT_NAME);
   };
 
   getIsVideoPausedStatus = () => {

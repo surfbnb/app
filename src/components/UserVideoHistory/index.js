@@ -1,17 +1,16 @@
 import React , {PureComponent} from "react";
-import {FlatList , View , TouchableOpacity, Image} from "react-native";
+import {FlatList} from "react-native";
 import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
 
 import UserVideoHistoryRow from "./UserVideoHistoryRow";
 import TopStatus from "../../components/Home/TopStatus";
-
-import inlineStyles from "./styles";
 import CurrentUser from "../../models/CurrentUser";
 import CommonStyle from "../../theme/styles/Common";
 
 import FlotingBackArrow from "../CommonComponents/FlotingBackArrow";
+import { SafeAreaView } from "react-navigation";
 
 const maxVideosThreshold = 3;
 
@@ -171,7 +170,7 @@ class UserVideoHistoryScreen extends PureComponent{
     render() {
 
         return(
-            <View style={CommonStyle.viewContainer}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
                 {!this.isCurrentUser() &&  <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}
@@ -197,7 +196,7 @@ class UserVideoHistoryScreen extends PureComponent{
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
                 <FlotingBackArrow/>
-             </View>
+             </SafeAreaView>
         );
     }
 

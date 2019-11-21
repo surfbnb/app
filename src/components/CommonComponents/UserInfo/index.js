@@ -16,7 +16,6 @@ import InAppBrowser from '../../../services/InAppBrowser';
 import profileLink from '../../../assets/profile_link.png';
 import twitterLink from '../../../assets/twitter_link.png';
 import Utilities from '../../../services/Utilities';
-import inlineStyles from '../../Home/styles';
 
 const mapStateToProps = (state, ownProps) => {
   return {

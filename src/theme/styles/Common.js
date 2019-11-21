@@ -1,4 +1,4 @@
-import { ifIphoneX , getStatusBarHeight , getBottomSpace} from 'react-native-iphone-x-helper';
+import { ifIphoneX  , getBottomSpace} from 'react-native-iphone-x-helper';
 import { Dimensions, StatusBar , NativeModules } from 'react-native';
 
 import  NotchHelper from "../../helpers/NotchHelper";
@@ -7,6 +7,7 @@ let RNDeviceInfo = NativeModules.RNDeviceInfo;
 let modalDeviceName = RNDeviceInfo.model === "Redmi Note 7 Pro" && RNDeviceInfo.brand === "xiaomi";
 let btmSpace = modalDeviceName ? 5 : 0;
 import { CUSTOM_TAB_Height } from '../../theme/constants';
+const statusBarHeight = StatusBar.currentHeight;
 
 import DefaultStyleGenerator from './DefaultStyleGenerator';
 import Colors from './Colors';
@@ -19,12 +20,14 @@ const styles = {
       flex:1,
       backgroundColor:  'rgba(0,0,0,0.5)'
     },
-
+    fullScreenVideoSafeAreaContainer: {
+      flex:1,  backgroundColor: Colors.gray,
+    },
     fullScreen: {
       width: width,
       ...ifIphoneX(
         {
-          height: height
+          height: height - getBottomSpace([true])
         },
         {
           height:
@@ -39,7 +42,7 @@ const styles = {
       width: width,
       ...ifIphoneX(
         {
-          height: height - CUSTOM_TAB_Height 
+          height: height - CUSTOM_TAB_Height - getBottomSpace([true])
         },
         {
           height:
@@ -48,7 +51,12 @@ const styles = {
               : height - CUSTOM_TAB_Height
         }
       )
-    }
+    },
+
+    fullHeightWidth: {
+      width: "100%",
+      height: "100%"
+    },
 };
 
 export default CommonStyle = DefaultStyleGenerator.generate(styles);

@@ -1,17 +1,17 @@
 import React , {PureComponent} from "react";
-import {FlatList , View , TouchableOpacity, Image} from "react-native";
+import {FlatList} from "react-native";
 import deepGet from "lodash/get";
 
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
 import FullScreenVideoRow from "./FullScreenVideoRow";
-import inlineStyles from "./styles";
-import historyBack from '../../assets/user-video-history-back-icon.png';
+import FloatingBackArrow from "../CommonComponents/FlotingBackArrow";
 import TopStatus from "../Home/TopStatus";
 import CommonStyle from "../../theme/styles/Common";
 import entityHelper from '../../helpers/EntityHelper';
 import DataContract from "../../constants/DataContract";
 import VideoReplyRow from "../FullScreenReplyCollection/VideoReplyRow";
+import { SafeAreaView } from "react-navigation";
 
 const maxVideosThreshold = 3;
 
@@ -203,7 +203,7 @@ class FullScreenVideoCollection extends PureComponent{
     render() {
 
         return (
-            <View style={CommonStyle.viewContainer}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
                 {this.props.navigation.getParam("showBalanceFlyer")  && <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}
@@ -228,10 +228,8 @@ class FullScreenVideoCollection extends PureComponent{
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
-                <TouchableOpacity onPress={this.closeVideo} style={inlineStyles.historyBackSkipFont}>
-                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-                </TouchableOpacity>
-            </View>
+                <FloatingBackArrow/>
+            </SafeAreaView>
         );
     }
 

@@ -5,6 +5,7 @@ import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
+import findCurrentRoute from '../../services/NavigationService';
 
 import CurrentUser from '../../models/CurrentUser';
 
@@ -46,10 +47,18 @@ class UserVideoHistoryRow extends PureComponent {
     return this.props.userId == CurrentUser.getUserId();
   }
 
+  getPType() {
+    if(findCurrentRoute(this.props.navigation.state) === 'VideoPlayer'){
+      return 'video_player';
+    } else {
+      return 'user_profile';
+    }
+  }
+
   render() {
     return (
       <View style={CommonStyle.fullScreen}>
-                
+
                 <View style={CommonStyle.videoWrapperfullScreen}>
                     <FanVideo
                       shouldPlay={this.props.shouldPlay}
@@ -68,6 +77,7 @@ class UserVideoHistoryRow extends PureComponent {
                               resyncDataDelegate={this.refetchVideo}
                               userId={this.props.userId}
                               entityId={this.props.videoId}
+                              getPixelDropData={() => {p_type: this.getPType()}}
                             />
                             <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
                             <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.videoId)} />
@@ -86,9 +96,9 @@ class UserVideoHistoryRow extends PureComponent {
                         />
                       </View>
                     )}
-                  </View> 
-                  
-            <BottomReplyBar  userId={this.props.userId}  videoId={this.props.videoId}/> 
+                  </View>
+
+            <BottomReplyBar  userId={this.props.userId}  videoId={this.props.videoId}/>
       </View>
     );
   }

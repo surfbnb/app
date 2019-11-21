@@ -1,22 +1,14 @@
 import React , {PureComponent} from "react";
-import {FlatList , View , TouchableOpacity, Image, Text, StatusBar} from "react-native";
+import {FlatList  } from "react-native";
 import FloatingBackArrow from "../CommonComponents/FlotingBackArrow";
 import deepGet from "lodash/get";
 
 import Pagination from "../../services/Pagination";
-import inlineStyles from "./styles";
-import pepoIcon from '../../assets/pepo-tx-icon.png';
-import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import VideoReplyRow from "./VideoReplyRow";
-import NavigationService from "../../services/NavigationService";
-import utilities from '../../services/Utilities';
-import crossIcon from '../../assets/cross_icon.png';
-import ReduxGetters from "../../services/ReduxGetters";
 import entityHelper from "../../helpers/EntityHelper";
-import {getVideoReplyObject} from "../../helpers/cameraHelper";
-import Pricer from "../../services/Pricer";
 import DataContract from "../../constants/DataContract";
 import CommonStyle from "../../theme/styles/Common";
+import { SafeAreaView } from "react-navigation";
 
 const maxVideosThreshold = 3;
 
@@ -202,7 +194,7 @@ class FullScreenReplyCollection extends PureComponent{
     render() {
 
         return (
-            <View style={CommonStyle.viewContainer}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
@@ -227,7 +219,7 @@ class FullScreenReplyCollection extends PureComponent{
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
                 <FloatingBackArrow/>
-            </View>
+            </SafeAreaView>
         );
     }
 
