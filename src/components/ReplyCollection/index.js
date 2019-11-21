@@ -212,14 +212,10 @@ class ReplyCollection extends PureComponent {
 
     onVideoClick = ( index ) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
-        //TODO @ashutosh to understand
         this.props.navigation.push("FullScreenReplyCollection", {
             "fetchServices" : clonedInstance,
             "currentIndex": index,
-            "baseUrl": this.props.fetchUrl,
-            "amount": this.props.amount,
-            'parentUserId': this.props.userId,
-            'parentVideoId': this.props.videoId
+            "baseUrl": this.props.fetchUrl
         });
     }
 

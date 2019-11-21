@@ -5,13 +5,11 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Animated, Platform ,TouchableWithoutFeedback,
-  StatusBar
+  Animated ,TouchableWithoutFeedback
 } from 'react-native';
 
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 
-import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import pepoIcon from "../../assets/pepo-tx-icon.png";
 import inlineStyles from './styles';
 import crossIcon from '../../assets/cross_icon.png';
@@ -28,14 +26,12 @@ import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
 import Pricer from "../../services/Pricer";
 import {getVideoReplyObject, replyPreValidationAndMessage} from "../../helpers/cameraHelper";
-import Colors from '../../theme/styles/Colors';
 import VideoReplyIcon from '../../assets/reply_video_icon.png';
 
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
-const finalPadding = topPadding - bottomPadding;
 const bottomReplyViewHeight = 54;
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
 
@@ -86,8 +82,8 @@ class VideoRepliesScreen extends PureComponent {
     componentWillUnmount() {
       this.onAnimatedValueChange= () => {};
       this.animatedValue.removeListener(this.listener);
-      //videoUploaderComponent.removeListener('show');
-      //videoUploaderComponent.removeListener('hide');
+      videoUploaderComponent.removeListener('show');
+      videoUploaderComponent.removeListener('hide');
     }
 
     showVideoUploader = () => {

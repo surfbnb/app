@@ -180,6 +180,8 @@ class CameraWorker extends PureComponent {
   };
 
   videoUploadedSuccessCallback = ( ostWorkflowContext, ostWorkflowEntity ) => {
+    //todo @ashutosh
+    let replyDetailId = deepGet(this.props.recorded_video , 'reply_obj.replyDetailId')
     console.log('CameraWorker.videoUploadedSuccessCallback');
     Toast.show({
       text: 'Your video uploaded successfully.',

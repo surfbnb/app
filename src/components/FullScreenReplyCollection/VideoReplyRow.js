@@ -5,6 +5,7 @@ import FanVideo from "../VideoWrapper/FanVideo";
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import BottomReplyBar from "../CommonComponents/BottomReplyBar";
+import ReplyIcon from "../CommonComponents/ReplyIcon";
 import PepoApi from '../../services/PepoApi';
 
 import inlineStyles from './styles';
@@ -20,6 +21,8 @@ import CommonStyle from "../../theme/styles/Common";
 class VideoReplyRow extends PureComponent {
     constructor(props) {
         super(props);
+        this.parentVideoId = ReduxGetters.getReplyParentVideoId( this.props.replyDetailId );
+        this.parentUserId =  ReduxGetters.getReplyParentUserId( this.props.replyDetailId );
     }
 
     refetchVideoReply = () => {
@@ -28,8 +31,6 @@ class VideoReplyRow extends PureComponent {
             .then((res) => {})
             .catch((error) => {});
     };
-
-  //Required from Backend , we need video  stats entity 
 
     render() {
         let userId = this.props.userId,
@@ -57,6 +58,7 @@ class VideoReplyRow extends PureComponent {
                                         userId={userId}
                                         entityId={replyDetailId}
                                     />
+                                    <ReplyIcon userId={this.parentUserId}  videoId={this.parentVideoId} />
                                     <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
                                     <ReportVideo  userId={userId} reportEntityId={this.replyId} reportKind={'reply'} />
                                 </View>
@@ -76,7 +78,7 @@ class VideoReplyRow extends PureComponent {
 
                 </View>
 
-                <BottomReplyBar  userId={userId}  videoId={videoId} />
+                <BottomReplyBar  userId={this.parentUserId}  videoId={this.parentVideoId} />
             </View>
         );
     }
