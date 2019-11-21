@@ -186,11 +186,11 @@ class CameraWorker extends PureComponent {
       icon: 'success',
       imageUri: this.props.recorded_video.cover_image
     });
+    this.executeTx = false;
     Store.dispatch(
       upsertRecordedVideo({
         do_discard: true,
         pepo_api_posting: false,
-        executing_tx: false
       })
     );
   };
@@ -229,13 +229,15 @@ class CameraWorker extends PureComponent {
       executingTx = this.props.recorded_video.executing_tx,
     receiverUserId = deepGet (this.props.recorded_video, 'reply_obj.replyReceiverUserId'),
     amountToSendWithReply = deepGet(this.props.recorded_video, 'reply_obj.amountToSendWithReply');
-    if (! goForTx || ! receiverUserId || doDiscard || executingTx ){
+    if (! goForTx || ! receiverUserId || doDiscard || this.executeTx ){
       return;
     }
+    this.executeTx = true;
     if ( receiverUserId === this.props.currentUserId || ! Number(amountToSendWithReply)) {
       this.videoUploadedSuccessCallback();
       return;
     };
+
     upsertRecordedVideo({
       executing_tx: true
     });

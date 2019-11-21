@@ -24,6 +24,9 @@ import InvertedReplyList from '../CommonComponents/InvertedReplyThumbnailList';
 class HomeFeedRow extends PureComponent {
   constructor(props) {
     super(props);
+    this.state ={
+      yCoordinateOfReportButton : 0
+    }
   }
 
   get userId() {
@@ -51,38 +54,77 @@ class HomeFeedRow extends PureComponent {
     }
   };
 
+  componentDidMount() {
+    setTimeout(()=>{
+      this.measureWindow();
+    }, 10);
+  };
+
+
+  componentDidUpdate(prevProps) {
+
+    if (prevProps.isActive !== this.props.isActive){
+      this.measureWindow();
+    }
+
+  };
+
+  measureWindow = () => {
+    if (this.props.isActive === true){
+      console.log('measureWindow:::isActive true', this.videoId);
+      this.reportViewRef.measureInWindow(this.calculateYCoordinateOfReportButton);
+    }
+  };
+
+
+  calculateYCoordinateOfReportButton = (ox, oy, width, height) => {
+    this.setState({yCoordinateOfReportButton: oy});
+    console.log('============== measurePosition ==============' );
+    console.log('ox',ox);
+    console.log('oy',oy);
+    console.log('width',width);
+    console.log('height',height);
+    console.log('============== measurePosition ==============' );
+  };
+
   render() {
     return (
       <View style={[inlineStyles.fullScreen, {position: 'relative'} ]}>
 
-        {/*<View style={{position: "absolute" , top: 50,  left: 0 , zIndex: 9 ,  height: 500, width:100}}>*/}
-        {/*  /!*<FlatList style={{height: "100%", width:"100%"}}*!/*/}
-        {/*  /!*          nestedScrollEnabled={true}*!/*/}
-        {/*  /!*          data={[1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]}*!/*/}
-        {/*  /!*          renderItem={this._renderChildItem} />*!/*/}
-        {/*  < InvertedReplyList  videoId={this.videoId} userId={this.userId}/>*/}
-        {/*</View>*/}
+        <FanVideo
+          shouldPlay={this.props.shouldPlay}
+          userId={this.userId}
+          videoId={this.videoId}
+          doRender={this.props.doRender}
+          isActive={this.props.isActive}
+        />
 
 
-
-        <View style={inlineStyles.listContainer} >
-          {/*<View style={inlineStyles.invertedList}  >*/}
-            <View style={{ minWidth: '20%', alignSelf: 'flex-start' }}>
-              < InvertedReplyList  videoId={this.videoId} userId={this.userId}/>
-            </View>
-          {/*</View>*/}
-
-        </View>
 
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
+          <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
+
+            <View style={{   left: 10, zIndex: 9, minWidth: '20%', alignSelf: 'flex-start', bottom:60 }}>
+              <InvertedReplyList  videoId={this.videoId}
+                                   userId={this.userId}
+                                   doRender={this.props.doRender}
+                                   availableHeight={this.state.yCoordinateOfReportButton}/>
+            </View>
+
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-            <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+            <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }} >
               {/*< InvertedReplyList  videoId={this.videoId} userId={this.userId}/>*/}
                 <PepoTxBtn  resyncDataDelegate={this.refetchFeed} userId={this.userId} entityId={this.videoId}/>
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
-                <ShareIcon videoId={this.videoId} userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)} />
+
+                <ShareIcon videoId={this.videoId}
+                           userId={this.userId}
+                           url={DataContract.share.getVideoShareApi(this.videoId)}
+                />
+                <View ref={(ref)=> {this.reportViewRef = ref }} onLayout={()=>{}} >
                 <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
+                </View>
               </View>
 
             <VideoSupporterStat
@@ -90,6 +132,7 @@ class HomeFeedRow extends PureComponent {
               userId={this.userId}
               pageName="feed"
             />
+          </View>
           </View>
           <VideoBottomStatus userId={this.userId} entityId={this.videoId} />
         </View>

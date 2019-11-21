@@ -65,8 +65,8 @@ let stylesMap = {
       bottom: height * 0.05 + 50,
       left: 10,
       zIndex: 9,
-      alignSelf: 'flex-start',
-      height: height - 200
+      // alignSelf: 'flex-start',
+      //height: height - 200
     },
   bottomBg: {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',

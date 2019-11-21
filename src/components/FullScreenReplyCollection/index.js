@@ -201,6 +201,7 @@ class FullScreenReplyCollection extends PureComponent{
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
                                 replyDetailId={replyDetailId}
+                                paginationService ={this.getVideoPagination()}
                                 onChildClickDelegate={this.childClickHandler}
          /> ;
     }

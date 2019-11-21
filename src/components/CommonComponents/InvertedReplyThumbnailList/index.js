@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { View, ScrollView} from 'react-native';
+import { Text, View, ScrollView, ListView, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
-
 import Pagination from "../../../services/Pagination";
 import ReplyThumbnailItem from './ReplyThumbnailItem'
 import {FlatList} from 'react-native-gesture-handler';
@@ -15,18 +14,31 @@ class InvertedReplyList extends Component {
 
   constructor(props) {
     super(props);
+    this.paginationService = null;
+    this.hasInitialData =  true;
+    this.setPagination();
+
     this.state = {
-      list: [],
+      list: this.paginationService.getResults(),
       refreshing : false,
       loadingNext: false
     };
+
     this.listRef = null;
     this.onItemClick = null;
-    this.invertedlistPagination = null;
   }
 
   setClickHandlers = ()=> {
     this.onItemClick = this.props.onChildClickDelegate || this.defaultChildClickHandler;
+  }
+
+  getPagination = () => {
+    return this.paginationService;
+  };
+
+  componentDidMount () {
+    this.bindPaginationEvents();
+    this.setClickHandlers();
   }
 
   defaultChildClickHandler = ( index )=> {
@@ -37,35 +49,40 @@ class InvertedReplyList extends Component {
     ReplyHelper.openRepliesList(parentUserId, parentVideoId, clonedInstance, index, navigation);
   };
 
+
+  setPagination() {
+    let fetchUrl = this.getFetchUrl();
+    this.paginationService = this.props.paginationService;
+    if( !this.paginationService || !( this.paginationService instanceof  Pagination)){
+      this.paginationService = new Pagination(fetchUrl);
+      if( this.props.doRender ){
+        this.initPagination()
+      }else {
+        //Load data later
+        this.hasInitialData = false;
+      }
+    }
+  }
+
   componentWillUnmount() {
     this.removePaginationListeners();
     this.onItemClick = ()=> {};
   }
+  componentDidUpdate(prevProps, prevState ) {
+    if( this.props.doRender && this.props.doRender !== prevProps.doRender &&  !this.hasInitialData  ){
+      this.initPagination();
+    }
+  }
 
-  getPagination = () => {
-    return this.invertedlistPagination;
-  };
-
-  getFetchUrl = () => {
-    // return `/videos/${3847}/replies`;
-    return `/videos/${this.props.videoId}/replies`;
-  };
 
   // region - Pagination and Event Handlers
 
-  initPagination() {
-    // First, take care of existing Pagination if exists.
-    this.removePaginationListeners();
-    console.log('initPagination');
-    // Now, create a new one.
-    let fetchUrl = this.getFetchUrl();
-    console.log('fetchUrl',fetchUrl);
-    this.invertedlistPagination = new Pagination(fetchUrl);
-    this.bindPaginationEvents();
+  initPagination(){
+    this.getPagination().initPagination();
   }
 
   bindPaginationEvents(){
-    let pagination = this.invertedlistPagination;
+    let pagination = this.getPagination();
     if ( !pagination ) {
       return;
     }
@@ -83,7 +100,7 @@ class InvertedReplyList extends Component {
   }
 
   removePaginationListeners(){
-    let pagination = this.invertedlistPagination;
+    let pagination = this.getPagination();
     if ( !pagination ) {
       return;
     }
@@ -97,25 +114,19 @@ class InvertedReplyList extends Component {
     paginationEvent.removeListener('onBeforeNext');
     paginationEvent.removeListener('onNext');
     paginationEvent.removeListener('onNextError');
-    this.invertedlistPagination = null;
   }
+
+  getFetchUrl = () => {
+    return `/videos/${3847}/replies`;
+    return `/videos/${this.props.videoId}/replies`;
+  };
 
   scrollToTop(){
     this.listRef.scrollToOffset({offset: 0});
   }
 
-
-  // onPullToRefresh = () => {
-  //     fetchUser(this.props.userId , this.onUserFetch );
-  // }
-  //
-  // onUserFetch =(res) => {
-  //     this.props.onUserFetch && this.props.onUserFetch(res);
-  // }
-
   beforeRefresh = ( ) => {
-    //this.props.beforeRefresh && this.props.beforeRefresh();
-    //this.onPullToRefresh();
+    this.props.beforeRefresh && this.props.beforeRefresh();
     let stateObject = {refreshing : true};
     if (this.state.loadingNext) {
       stateObject['loadingNext'] = false;
@@ -124,16 +135,10 @@ class InvertedReplyList extends Component {
   };
 
   onRefresh = ( res ) => {
-    let results = this.invertedlistPagination.getResults()  ;
-    // if ( !results || results.length < 1) {
-    //   // Create data for empty list.
-    //   results = [ this.props.noResultsData ];
-    // }
-
+    let results = this.getPagination().getResults()  ;
     this.props.onRefresh && this.props.onRefresh( results , res );
     this.setState({ refreshing : false , list : results });
-    // this.setState({ refreshing : false , list :[results[0], results[1]]  });
-    this.setState({ refreshing : false });
+    // this.setState({ refreshing : false , list : [results[0], results[1]] });
   }
 
   onRefreshError = ( error ) => {
@@ -146,7 +151,7 @@ class InvertedReplyList extends Component {
   }
 
   onNext = ( res  ) => {
-    this.setState({ loadingNext : false ,  list : this.invertedlistPagination.getResults() });
+    this.setState({ loadingNext : false ,  list : this.getPagination().getResults() });
   }
 
   onNextError = ( error ) => {
@@ -154,31 +159,21 @@ class InvertedReplyList extends Component {
   }
 
   getNext = () => {
-    this.invertedlistPagination.getNext();
+    this.getPagination().getNext();
   }
 
   refresh = () => {
-    this.invertedlistPagination.refresh();
+    this.getPagination().refresh();
   };
-
-  // isCurrentUser = () => {
-  //     return this.props.userId === CurrentUser.getUserId();
-  // }
 
   _keyExtractor = (item, index) => {
     return `id_${item.id}`;
   };
 
   _renderItem = ({item, index}) => {
-    // Check if this is an empty cell.
-    return <ReplyThumbnailItem payload={item.payload} parentUserId={this.props.userId} onClickHandler={()=>{this.onItemClick(index)}} />;
-    // if ( item.isEmpty) {
-    //   // Render no results cell here.
-    //   return this.props.getNoResultsCell(item);
-    // } else {
-    //   // Render People cell
-    //   return this._renderThumbnailCell({item,index});
-    // }
+
+    return <ReplyThumbnailItem payload={item.payload}  onClickHandler={()=>{this.onItemClick(index)}}  />;
+
   };
 
 
@@ -186,48 +181,52 @@ class InvertedReplyList extends Component {
     this.listRef = ref;
   };
 
-  componentDidMount () {
-    console.log('InvertedReplyList::InvertedReplyListcomponentDidMount');
-    this.initPagination();
-    this.refresh();
-    this.setClickHandlers();
-  }
-
-  listHeaderComponent = () => {
-      if (this.props.HeaderComponent){
-        let HeaderComponent = this.props.HeaderComponent;
-        return <HeaderComponent onClickHandler={this.onParentClick}/>
-      }
-  };
-
   getItemSeperatorComponent = () => {
     return <View style={{backgroundColor: 'white', height: 25, width: 1, alignSelf:'center'}} />
   }
 
+  getListHeight = () => {
+
+    let noOfItems = this.state.list.length ;
+    if (this.props.availableHeight > 0 && noOfItems > 0){
+
+      let heightOfElements = noOfItems * 30,
+        heightOfSeparator =   (noOfItems - 1 ) * 25,
+        availableScreenHeight =  this.props.availableHeight - 50,
+        heightOfFlatList = heightOfElements + heightOfSeparator;
+      if (availableScreenHeight < heightOfFlatList ){
+        return availableScreenHeight;
+      }
+      return heightOfFlatList;
+    }
+    return 0;
+  };
+
+
   render() {
-
-    return <ScrollView style={{height: 500, width:'100%'}}>
-     <FlatList
-    style={{height: '100%', width: '100%'}}
-    ref={this.setListRef}
-    ListHeaderComponent={this.listHeaderComponent()}
-    ItemSeparatorComponent={this.getItemSeperatorComponent}
-    data={this.state.list}
-    onEndReached={this.getNext}
-    onRefresh={this.refresh}
-    keyExtractor={this._keyExtractor}
-    refreshing={this.state.refreshing}
-    onEndReachedThreshold={4}
-    renderItem={this._renderItem}
-    ListFooterComponent={this.renderFooter}
-    numColumns={this.numColumns}
-    key={this.flatListKey}
-    nestedScrollEnabled={true}
-    />
-</ScrollView>
-
+    let height = this.getListHeight();
+    return height > 0 ?
+      <FlatList style={{ height: height, width: '100%', minHeight:0, flexGrow:0, flexShrink:0}}
+        ref={this.setListRef}
+        ItemSeparatorComponent={this.getItemSeperatorComponent}
+        data={this.state.list}
+        onEndReached={this.getNext}
+        onRefresh={this.refresh}
+        keyExtractor={this._keyExtractor}
+        refreshing={this.state.refreshing}
+        onEndReachedThreshold={4}
+        renderItem={this._renderItem}
+        ListFooterComponent={this.renderFooter}
+        numColumns={this.numColumns}
+        key={this.flatListKey}
+        nestedScrollEnabled={true}
+    />: <React.Fragment />
   }
 }
+
+InvertedReplyList.defaultProps = {
+  paginationService : null
+};
 
 //make this component available to the app
 export default withNavigation(InvertedReplyList);

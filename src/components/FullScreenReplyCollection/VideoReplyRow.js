@@ -14,7 +14,7 @@ import VideoReplySupporterStat from '../CommonComponents/VideoSupporterStat/Vide
 import ReplyVideoBottomStatus from '../BottomStatus/ReplyVideoBottomStatus';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
-import InvertedReplyList from '../CommonComponents/InvertedReplyThumbnailList';
+import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
@@ -82,6 +82,11 @@ class VideoReplyRow extends PureComponent {
             </View>
         );
     }
+}
+
+
+VideoReplyRow.defaultProps = {
+    paginationService : null
 }
 
 export default withNavigation(VideoReplyRow);
