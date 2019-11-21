@@ -44,7 +44,7 @@ class InvertedReplyList extends Component {
   defaultChildClickHandler = ( index )=> {
     const parentVideoId = this.props.videoId,
           parentUserId = this.props.userId,
-          clonedInstance = this.invertedlistPagination.fetchServices.cloneInstance(),
+          clonedInstance = this.getPagination().fetchServices.cloneInstance(),
           navigation = this.props.navigation;
     ReplyHelper.openRepliesList(parentUserId, parentVideoId, clonedInstance, index, navigation);
   };
@@ -117,7 +117,6 @@ class InvertedReplyList extends Component {
   }
 
   getFetchUrl = () => {
-    return `/videos/${3847}/replies`;
     return `/videos/${this.props.videoId}/replies`;
   };
 

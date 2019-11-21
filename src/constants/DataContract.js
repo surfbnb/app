@@ -53,7 +53,8 @@ export default {
             video: "VIDEO"
         },
         replyDetailIdKey: 'reply_detail_id',
-        parentVideoIdKey: 'parent_id'
+        parentVideoIdKey: 'parent_id',
+        creatorUserIdKey: 'creator_user_id'
     },
 
     common: {
