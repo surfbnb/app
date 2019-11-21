@@ -111,7 +111,21 @@ let stylesMap = {
       },
       headerSubText:{
           fontSize: 12
-      }
+      },
+      bottomContainer: {
+        width: width,
+        position: 'absolute',
+        bottom: 0
+      },
+    listContainer: {
+        // width: width,
+        position: 'absolute',
+        bottom: height * 0.05 + 50,
+        left: 10,
+        zIndex: 9,
+        alignSelf: 'flex-start',
+        height: height - 200
+    }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

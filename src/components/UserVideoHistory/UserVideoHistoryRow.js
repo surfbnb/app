@@ -16,6 +16,7 @@ import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
+import InvertedReplyList from '../CommonComponents/InvertedReplyThumbnailList';
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
@@ -46,7 +47,7 @@ class UserVideoHistoryRow extends PureComponent {
 
   render() {
     return (
-      <View style={inlineStyles.fullScreen}>
+      <View style={[inlineStyles.fullScreen, {position: 'relative'} ]}>
         <FanVideo
           shouldPlay={this.props.shouldPlay}
           userId={this.props.userId}
@@ -55,31 +56,39 @@ class UserVideoHistoryRow extends PureComponent {
           isActive={this.props.isActive}
         />
 
-        {!!this.props.videoId && !!this.props.userId && (
-          <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-            <View style={inlineStyles.touchablesBtns}>
+        <View style={inlineStyles.listContainer} >
+            <View style={{ minWidth: '20%', alignSelf: 'flex-start' }}>
+              <InvertedReplyList videoId={this.props.videoId} userId={this.props.userId}/>
+            </View>
+        </View>
 
-              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <PepoTxBtn
-                  resyncDataDelegate={this.refetchVideo}
-                  userId={this.props.userId}
+        {!!this.props.videoId && !!this.props.userId && (
+           <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
+            <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
+              <View style={inlineStyles.touchablesBtns}>
+
+                <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                  <PepoTxBtn
+                    resyncDataDelegate={this.refetchVideo}
+                    userId={this.props.userId}
+                    entityId={this.props.videoId}
+                  />
+                  <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
+                  <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.videoId)} />
+                  <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
+                </View>
+
+                <VideoSupporterStat
                   entityId={this.props.videoId}
+                  userId={this.props.userId}
                 />
-                <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
-                <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.videoId)} />
-                <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
               </View>
 
-              <VideoSupporterStat
-                entityId={this.props.videoId}
+              <VideoBottomStatus
                 userId={this.props.userId}
+                entityId={this.props.videoId}
               />
             </View>
-
-            <VideoBottomStatus
-              userId={this.props.userId}
-              entityId={this.props.videoId}
-            />
           </View>
         )}
       </View>

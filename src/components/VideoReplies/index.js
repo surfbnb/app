@@ -203,12 +203,6 @@ class VideoRepliesScreen extends PureComponent {
                                         listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding+bottomReplyViewHeight : listBottomPadding}
 
                       />
-
-                      <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
-                                        listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding : listBottomPadding}
-
-                      />
-
                     </View>
                   </React.Fragment>
 

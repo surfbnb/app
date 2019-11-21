@@ -5,7 +5,6 @@ import FanVideo from "../VideoWrapper/FanVideo";
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
-import deepGet from 'lodash/get';
 
 import inlineStyles from './styles';
 
@@ -15,6 +14,7 @@ import VideoReplySupporterStat from '../CommonComponents/VideoSupporterStat/Vide
 import ReplyVideoBottomStatus from '../BottomStatus/ReplyVideoBottomStatus';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
+import InvertedReplyList from '../CommonComponents/InvertedReplyThumbnailList';
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
@@ -33,9 +33,10 @@ class VideoReplyRow extends PureComponent {
     render() {
         let userId = this.props.userId,
             replyDetailId = this.props.replyDetailId,
-            videoId = ReduxGetters.getReplyEntityId(replyDetailId);
+            videoId = ReduxGetters.getReplyEntityId(replyDetailId),
+            parentVideoId = ReduxGetters.getReplyEntity( replyDetailId )[DataContract.replies.parentVideoIdKey];
         return (
-            <View style={inlineStyles.fullScreen}>
+            <View style={[inlineStyles.fullScreen, {position: 'relative'} ]}>
                 <FanVideo
                     shouldPlay={this.props.shouldPlay}
                     userId={userId}
@@ -44,30 +45,38 @@ class VideoReplyRow extends PureComponent {
                     isActive={this.props.isActive}
                 />
 
+                <View style={inlineStyles.listContainer} >
+                    <View style={{ minWidth: '20%', alignSelf: 'flex-start' }}>
+                    <InvertedReplyList videoId={parentVideoId} userId={userId} onChildClickDelegate={this.props.onChildClickDelegate}/>
+                    </View>
+                </View>
+
                 {!!videoId && !!userId && (
                     <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-                        <View style={inlineStyles.touchablesBtns}>
+                        <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
+                            <View style={inlineStyles.touchablesBtns}>
 
-                            <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                                <ReplyPepoTxBtn
-                                    resyncDataDelegate={this.refetchVideoReply}
-                                    userId={userId}
+                                <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                                    <ReplyPepoTxBtn
+                                        resyncDataDelegate={this.refetchVideoReply}
+                                        userId={userId}
+                                        entityId={replyDetailId}
+                                    />
+                                    <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
+                                    <ReportVideo  userId={userId} reportEntityId={this.replyId} reportKind={'reply'} />
+                                </View>
+
+                                <VideoReplySupporterStat
                                     entityId={replyDetailId}
+                                    userId={userId}
                                 />
-                                <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
-                                <ReportVideo  userId={userId} reportEntityId={this.replyId} reportKind={'reply'} />
                             </View>
 
-                            <VideoReplySupporterStat
-                                entityId={replyDetailId}
+                            <ReplyVideoBottomStatus
                                 userId={userId}
+                                entityId={replyDetailId}
                             />
                         </View>
-
-                        <ReplyVideoBottomStatus
-                            userId={userId}
-                            entityId={replyDetailId}
-                        />
                     </View>
                 )}
             </View>

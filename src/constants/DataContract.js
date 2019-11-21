@@ -52,7 +52,8 @@ export default {
         videoReplyKind: {
             video: "VIDEO"
         },
-        replyDetailIdKey: 'reply_detail_id'
+        replyDetailIdKey: 'reply_detail_id',
+        parentVideoIdKey: 'parent_id'
     },
 
     common: {

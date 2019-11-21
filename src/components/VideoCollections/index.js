@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { ActivityIndicator , FlatList} from "react-native";
 import {SafeAreaView} from "react-navigation";
 import Pagination from "../../services/Pagination";
+import deepGet from 'lodash/get';
 
 import CommonStyle from "../../theme/styles/Common";
 import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';

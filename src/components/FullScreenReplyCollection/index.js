@@ -48,7 +48,8 @@ const HeaderLeft = (props) => {
   
   const HeaderTitle = (props) => {
       let  userId = props.navigation.getParam('userId'),
-            userName = ReduxGetters.getUserName(userId);
+            userName = ReduxGetters.getUserName(userId),
+            amount = Pricer.getToBT(Pricer.getFromDecimal( ReduxGetters.getBtAmountForReply( props.navigation.getParam('videoId'))), 2);
     return (
       <View>
         <Text numberOfLines={1} style={inlineStyles.headerText}>
@@ -56,7 +57,7 @@ const HeaderLeft = (props) => {
         </Text>
         <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
         <Image style={{height: 10, width: 10}} source={pepoIcon} />
-            { Pricer.getToBT(Pricer.getFromDecimal( ReduxGetters.getBtAmountForReply( props.navigation.getParam('videoId'))), 2)}</Text>
+            { amount }</Text>
       </View>
     );
   };
@@ -200,7 +201,12 @@ class FullScreenReplyCollection extends PureComponent{
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
                                 replyDetailId={replyDetailId}
+                                onChildClickDelegate={this.childClickHandler}
          /> ;
+    }
+
+    childClickHandler = ( index )=> {
+        this.scrollToIndex( index );
     }
 
     scrollToIndex = ( index )=>{

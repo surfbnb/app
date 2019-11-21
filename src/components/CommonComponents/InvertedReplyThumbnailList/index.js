@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, ListView} from 'react-native';
+import { View, ScrollView} from 'react-native';
+import { withNavigation } from 'react-navigation';
+
 import Pagination from "../../../services/Pagination";
-import PeopleCell from "../../PeopleList/PeopleCell";
-import CustomTextInput from "../TagsInput/CustomTextInput";
 import ReplyThumbnailItem from './ReplyThumbnailItem'
 import {FlatList} from 'react-native-gesture-handler';
+import ReplyHelper from '../../../helpers/ReplyHelper';
+
 class InvertedReplyList extends Component {
 
   static navigationOptions = {
@@ -19,11 +21,25 @@ class InvertedReplyList extends Component {
       loadingNext: false
     };
     this.listRef = null;
-    console.log('InvertedReplyList::InvertedReplyList');
-
+    this.onItemClick = null;
+    this.invertedlistPagination = null;
   }
+
+  setClickHandlers = ()=> {
+    this.onItemClick = this.props.onChildClickDelegate || this.defaultChildClickHandler;
+  }
+
+  defaultChildClickHandler = ( index )=> {
+    const parentVideoId = this.props.videoId,
+          parentUserId = this.props.userId,
+          clonedInstance = this.invertedlistPagination.fetchServices.cloneInstance(),
+          navigation = this.props.navigation;
+    ReplyHelper.openRepliesList(parentUserId, parentVideoId, clonedInstance, index, navigation);
+  };
+
   componentWillUnmount() {
     this.removePaginationListeners();
+    this.onItemClick = ()=> {};
   }
 
   getPagination = () => {
@@ -31,7 +47,7 @@ class InvertedReplyList extends Component {
   };
 
   getFetchUrl = () => {
-    return `/videos/${3847}/replies`;
+    // return `/videos/${3847}/replies`;
     return `/videos/${this.props.videoId}/replies`;
   };
 
@@ -150,14 +166,12 @@ class InvertedReplyList extends Component {
   // }
 
   _keyExtractor = (item, index) => {
-    console.log('_keyExtractor',item);
     return `id_${item.id}`;
   };
 
   _renderItem = ({item, index}) => {
     // Check if this is an empty cell.
-    console.log('_renderThumbnailCell---', item);
-    return <ReplyThumbnailItem payload={item.payload} />;
+    return <ReplyThumbnailItem payload={item.payload} parentUserId={this.props.userId} onClickHandler={()=>{this.onItemClick(index)}} />;
     // if ( item.isEmpty) {
     //   // Render no results cell here.
     //   return this.props.getNoResultsCell(item);
@@ -176,12 +190,13 @@ class InvertedReplyList extends Component {
     console.log('InvertedReplyList::InvertedReplyListcomponentDidMount');
     this.initPagination();
     this.refresh();
+    this.setClickHandlers();
   }
 
   listHeaderComponent = () => {
       if (this.props.HeaderComponent){
         let HeaderComponent = this.props.HeaderComponent;
-        return <HeaderComponent />
+        return <HeaderComponent onClickHandler={this.onParentClick}/>
       }
   };
 
@@ -189,13 +204,11 @@ class InvertedReplyList extends Component {
     return <View style={{backgroundColor: 'white', height: 25, width: 1, alignSelf:'center'}} />
   }
 
-
-
   render() {
 
-    // return <ScrollView style={{height:'100%', width:'100%'}}>
-    return <FlatList
-      style={{height:'100%', width: '100%'}}
+    return <ScrollView style={{height: 500, width:'100%'}}>
+     <FlatList
+    style={{height: '100%', width: '100%'}}
     ref={this.setListRef}
     ListHeaderComponent={this.listHeaderComponent()}
     ItemSeparatorComponent={this.getItemSeperatorComponent}
@@ -211,10 +224,10 @@ class InvertedReplyList extends Component {
     key={this.flatListKey}
     nestedScrollEnabled={true}
     />
-
+</ScrollView>
 
   }
 }
 
 //make this component available to the app
-export default InvertedReplyList;
+export default withNavigation(InvertedReplyList);
