@@ -308,7 +308,7 @@ import OstWalletSdk
   
   func indefinateProgressBarAnimation() {
     let animation = CABasicAnimation(keyPath: "transform.translation.x")
-    animation.duration = 0.6
+    animation.duration = 0.8
     animation.repeatCount = Float.infinity
     animation.autoreverses = false
     animation.fromValue = -50
