@@ -20,7 +20,7 @@ class ReferAndEarn extends Component {
   static navigationOptions = (options) => {
     return {
       headerBackTitle: null,
-      headerTitle: 'Refer and Earn',
+      headerTitle: 'Invite',
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,

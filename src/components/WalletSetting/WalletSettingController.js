@@ -5,6 +5,9 @@ import deepGet from "lodash/get";
 import appConfig from '../../constants/AppConfig';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper'
 import { DEFAULT_SESSION_KEY_EXPIRY_TIME, DEFAULT_SPENDING_LIMIT } from '../../constants';
+import PepoNativeHelper from '../../helpers/PepoNativeHelper';
+import DeviceInfo from "react-native-device-info/deviceinfo";
+
 
 const optionIds = {
   walletDetails: 'walletDetails',
@@ -116,7 +119,7 @@ class WalletSettingController {
       //ToDo: Show the error and close the wallet settings.
       this._onDeviceFetch({
         "local_device": localDevice,
-        "resut_type": "local_device"
+        "result_type": "local_device"
       });
     });
   }

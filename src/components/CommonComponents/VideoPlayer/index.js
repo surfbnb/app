@@ -5,6 +5,7 @@ import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
+import Colors from "../../../theme/styles/Colors";
 import DeletedVideoInfo from '../DeletedVideoInfo';
 import CommonStyles from "../../../theme/styles/Common";
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
@@ -80,7 +81,7 @@ class VideoPlayer extends Component {
               <TopStatus />
               <VideoRowComponent doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
                                  videoId={this.videoId} userId={this.state.userId}/>
-             <FlotingBackArrow />
+              <FlotingBackArrow />
             </SafeAreaView>
           )
         }

@@ -4,6 +4,10 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
+import com.corbt.keepawake.KCKeepAwakePackage;
+import com.ost.walletsdk.ui.OstWalletUI;
+import com.pepo2.loader.LoaderManager;
+import com.pepo2.loader.OstSdkErrors;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.dooboolab.RNIap.RNIapPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
@@ -55,6 +59,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new PepoNativePackage(),
             new MainReactPackage(),
+            new KCKeepAwakePackage(),
             new RNCWebViewPackage(),
             new RNIapPackage(),
             new RNReactNativeHapticFeedbackPackage(),
@@ -99,5 +104,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     Fabric.with(this, new Crashlytics());
+    OstWalletUI.setLoaderManager(LoaderManager.getInstance());
+    OstSdkErrors.init(getApplicationContext());
   }
 }
