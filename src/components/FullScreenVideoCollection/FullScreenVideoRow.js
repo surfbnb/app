@@ -62,7 +62,6 @@ class FullScreeVideoRow extends PureComponent {
                                             userId={this.userId}
                                             entityId={this.videoId}
                                             getPixelDropData={this.getPixelDropData}
-                                            getPixelDropData={() => {p_type: 'tag'}} // @todo to confirm this
                                         />
                                         <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                                         <ShareIcon  userId={this.userId} videoId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
