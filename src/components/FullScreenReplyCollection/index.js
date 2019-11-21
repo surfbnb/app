@@ -140,11 +140,22 @@ class FullScreenReplyCollection extends PureComponent{
         }
     };
 
+    getPixelDropData = ( replyDetailId ) => {
+        return () => {
+            return {
+                e_entity: 'reply',
+                p_type: 'video_reply',
+                p_name: replyDetailId
+              };
+        }
+    } 
+
     _renderVideoReplyRow(item, index){
         let userId = deepGet(item,'payload.user_id'),
             replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
         return  <VideoReplyRow  shouldPlay={this.shouldPlay}
                                 isActive={index == this.state.activeIndex}
+                                getPixelDropData={this.getPixelDropData(replyDetailId)}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
                                 replyDetailId={replyDetailId}

@@ -117,7 +117,8 @@ class Base extends PureComponent {
   }
 
   getDropPixel(){
-    throw "Overwrite";
+    console.log("getDropPixel is mandatory to be implemented in Transaction button");
+    return {};
   }
 
   dropPixel() {
@@ -244,8 +245,9 @@ class Base extends PureComponent {
 }
 
 Base.defaultProps = {
-  getPixelDropData: () => {
-    throw "error";
+  getPixelDropData: function(){
+    console.warn("getPixelDropData props is mandatory for Video component");
+    return {};
   }
 };
 

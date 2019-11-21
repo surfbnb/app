@@ -74,6 +74,14 @@ class VideoReplyPlayer extends PureComponent {
       }
     };
 
+    getPixelDropData = () => {
+      return pixelParams = {
+        e_entity: 'reply',
+        p_type: 'single_reply',
+        p_name: this.replyDetailId,
+      };
+    } 
+
     render() {
         if(this.state.isDeleted){
          return <DeletedVideoInfo/>
@@ -86,6 +94,7 @@ class VideoReplyPlayer extends PureComponent {
                     doRender={true}
                     userId={this.state.userId}
                     replyDetailId={this.replyDetailId}
+                    getPixelDropData={this.getPixelDropData}
               />
              <FlotingBackArrow />
             </SafeAreaView>

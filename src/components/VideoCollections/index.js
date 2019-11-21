@@ -196,6 +196,7 @@ class VideoCollections extends PureComponent {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
         this.props.navigation.push("FullScreenVideoCollection", {
             fetchServices : clonedInstance,
+            tagId: this.props.tagId,
             currentIndex: index,
             payload,
             baseUrl: this.props.getFetchUrl(),

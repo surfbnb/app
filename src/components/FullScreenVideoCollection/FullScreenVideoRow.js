@@ -15,6 +15,7 @@ import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
 import BottomReplyBar from '../CommonComponents/BottomReplyBar';
+import assignIn from 'lodash/assignIn';
 
 
 class FullScreeVideoRow extends PureComponent {
@@ -31,6 +32,12 @@ class FullScreeVideoRow extends PureComponent {
             .catch((error) => {});
     };
 
+    getPixelDropData = () => {
+        const parentData =  this.props.getPixelDropData(); 
+        const pixelParams = { e_entity: 'video' , video_id : this.videoId};
+        return assignIn({}, pixelParams, parentData);
+    } 
+
     render() {
         return (
             <View style={CommonStyle.fullScreen}>
@@ -42,6 +49,7 @@ class FullScreeVideoRow extends PureComponent {
                             videoId={this.videoId}
                             doRender={this.props.doRender}
                             isActive={this.props.isActive}
+                            getPixelDropData={this.getPixelDropData}
                         />
 
                         {!!this.videoId && !!this.userId && (
@@ -53,6 +61,7 @@ class FullScreeVideoRow extends PureComponent {
                                             resyncDataDelegate={this.refetchVideo}
                                             userId={this.userId}
                                             entityId={this.videoId}
+                                            getPixelDropData={this.getPixelDropData}
                                             getPixelDropData={() => {p_type: 'tag'}} // @todo to confirm this
                                         />
                                         <ReplyIcon videoId={this.videoId} userId={this.userId}/>
@@ -79,5 +88,13 @@ class FullScreeVideoRow extends PureComponent {
         );
     }
 }
+
+FullScreeVideoRow.defaultProps = {
+    getPixelDropData: function(){
+      console.warn("getPixelDropData props is mandatory for Video component");
+      return {};
+    }
+  };
+  
 
 export default withNavigation(FullScreeVideoRow);

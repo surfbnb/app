@@ -17,6 +17,7 @@ import ReplyVideoBottomStatus from '../BottomStatus/ReplyVideoBottomStatus';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
 import CommonStyle from "../../theme/styles/Common";
+import assignIn from 'lodash/assignIn';
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
@@ -32,6 +33,12 @@ class VideoReplyRow extends PureComponent {
             .catch((error) => {});
     };
 
+    getPixelDropData = () => {
+        const parentData =  this.props.getPixelDropData(); 
+        const pixelParams = { e_entity: 'reply' , parent_video_id : this.parentVideoId ,  reply_detail_id :this.props.replyDetailId  };
+        return assignIn({}, pixelParams, parentData);
+    } 
+
     render() {
         let userId = this.props.userId,
             replyDetailId = this.props.replyDetailId,
@@ -46,6 +53,7 @@ class VideoReplyRow extends PureComponent {
                         videoId={videoId}
                         doRender={this.props.doRender}
                         isActive={this.props.isActive}
+                        getPixelDropData={this.getPixelDropData}
                     />
 
                     {!!videoId && !!userId && (
@@ -57,6 +65,7 @@ class VideoReplyRow extends PureComponent {
                                         resyncDataDelegate={this.refetchVideoReply}
                                         userId={userId}
                                         entityId={replyDetailId}
+                                        getPixelDropData={this.getPixelDropData}
                                     />
                                     <ReplyIcon userId={this.parentUserId}  videoId={this.parentVideoId} />
                                     <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
@@ -83,5 +92,12 @@ class VideoReplyRow extends PureComponent {
         );
     }
 }
+
+VideoReplyRow.defaultProps = {
+    getPixelDropData: function(){
+      console.warn("getPixelDropData props is mandatory for Video component");
+      return {};
+    }
+  };
 
 export default withNavigation(VideoReplyRow);

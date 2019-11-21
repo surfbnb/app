@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
+import UserVideoHistoryRow from "../../UserVideoHistory/UserVideoHistoryRow";
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
@@ -71,6 +71,13 @@ class VideoPlayer extends Component {
       }
     };
 
+    getPixelDropData = () => {
+      return pixelParams = {
+        p_type: 'single_video',
+        p_name: this.videoId
+      };
+    }
+
     render() {
         if(this.state.isDeleted){
          return <DeletedVideoInfo/>
@@ -78,8 +85,8 @@ class VideoPlayer extends Component {
           return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
-              <VideoRowComponent doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
-                                 videoId={this.videoId} userId={this.state.userId}/>
+              <UserVideoHistoryRow doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
+                                 videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}/>
              <FlotingBackArrow />
             </SafeAreaView>
           )

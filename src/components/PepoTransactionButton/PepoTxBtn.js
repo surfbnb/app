@@ -41,11 +41,8 @@ class PepoTxBtn extends Base {
         defaultData = {
           e_entity: 'video',
           e_action: 'contribution',
-          e_data_json: {
-            video_id: this.props.entityId,
-            profile_user_id: this.props.userId,
-            amount: this.btAmount
-          }
+          video_id: this.props.entityId,
+          amount: this.btAmount
         };
     return assignIn({}, specificData, defaultData);
   }

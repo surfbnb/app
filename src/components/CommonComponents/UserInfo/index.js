@@ -51,15 +51,12 @@ class UserInfo extends React.PureComponent {
   }
 
   onDidFocus = (payload) => {
-    let pixelParams = {
+    PixelCall({
       e_entity: 'page',
       e_action: 'view',
-      e_data_json: {
-        profile_user_id: this.props.userId
-      },
-      p_type: 'user_profile'
-    };
-    PixelCall(pixelParams);
+      p_type: 'user_profile',
+      p_name: this.props.userId
+    });
   };
 
   goToSupporting = () => {

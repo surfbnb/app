@@ -119,9 +119,17 @@ class UserVideoHistoryScreen extends PureComponent{
         return `id_${item}`;
     };
 
+    getPixelDropData = () => {
+        return pixelParams = {
+          p_type: 'user_profile',
+          p_name: this.userId
+        };
+    } 
+
     _renderItem = ({ item, index }) => {
         const videoId = reduxGetters.getUserVideoId(item) ;
         return  <UserVideoHistoryRow    shouldPlay={this.shouldPlay}
+                                        getPixelDropData={this.getPixelDropData}
                                         isActive={index == this.state.activeIndex}
                                         doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                         userId={this.userId} videoId={videoId}  /> ;

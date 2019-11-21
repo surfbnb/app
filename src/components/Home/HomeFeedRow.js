@@ -6,12 +6,11 @@ import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
-import CurrentUser from '../../models/CurrentUser';
+import assignIn from 'lodash/assignIn';
 
 import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 
 import inlineStyles from './styles';
-import utilities from '../../services/Utilities';
 import ReportVideo from "../CommonComponents/ReportVideo";
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
@@ -39,6 +38,16 @@ class HomeFeedRow extends PureComponent {
       .catch((error) => {});
   };
 
+  getPixelDropData = () => {
+    const parentData =  this.props.getPixelDropData && this.props.getPixelDropData() || {}; 
+    const pixelParams = {
+      e_entity: 'video',
+      p_type: 'feed',
+      video_id: this.videoId,
+    };
+    return assignIn({}, pixelParams, parentData);
+  } 
+
 
   render() {
     return (
@@ -50,6 +59,7 @@ class HomeFeedRow extends PureComponent {
           doRender={this.props.doRender}
           isActive={this.props.isActive}
           shouldPlay={this.props.shouldPlay}
+          getPixelDropData={this.getPixelDropData}
         />
 
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
@@ -60,7 +70,7 @@ class HomeFeedRow extends PureComponent {
                     resyncDataDelegate={this.refetchFeed}
                     userId={this.userId}
                     entityId={this.videoId}
-                    getPixelDropData={() => {p_type: 'feed'}}
+                    getPixelDropData={this.getPixelDropData}
                 />
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                 <ShareIcon videoId={this.videoId} userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)} />
@@ -80,5 +90,6 @@ class HomeFeedRow extends PureComponent {
     );
   }
 }
+
 
 export default withNavigation(HomeFeedRow);

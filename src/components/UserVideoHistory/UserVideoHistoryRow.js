@@ -16,6 +16,7 @@ import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupp
 import DataContract from '../../constants/DataContract';
 import BottomReplyBar from '../CommonComponents/BottomReplyBar';
 import CommonStyle from "../../theme/styles/Common";
+import assignIn from 'lodash/assignIn';
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
@@ -31,6 +32,15 @@ class UserVideoHistoryRow extends PureComponent {
       return this.pageType = 'video_player';
     }
   }
+
+  getPixelDropData = () => {
+    const parentData =  this.props.getPixelDropData() ; 
+    const pixelParams = {
+      e_entity: 'video',
+      video_id: this.props.videoId,
+    };
+    return assignIn({}, pixelParams, parentData);
+  } 
 
   refetchVideo = () => {
     new PepoApi(`/videos/${this.props.videoId}`)
@@ -50,6 +60,7 @@ class UserVideoHistoryRow extends PureComponent {
                       videoId={this.props.videoId}
                       doRender={this.props.doRender}
                       isActive={this.props.isActive}
+                      getPixelDropData={this.getPixelDropData}
                     />
 
                     {!!this.props.videoId && !!this.props.userId && (
@@ -61,7 +72,7 @@ class UserVideoHistoryRow extends PureComponent {
                               resyncDataDelegate={this.refetchVideo}
                               userId={this.props.userId}
                               entityId={this.props.videoId}
-                              getPixelDropData={() => {p_type:this.pageType}}
+                              getPixelDropData={this.getPixelDropData}
                             />
                             <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
                             <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.videoId)} />
@@ -88,5 +99,12 @@ class UserVideoHistoryRow extends PureComponent {
     );
   }
 }
+
+UserVideoHistoryRow.defaultProps = {
+  getPixelDropData: function(){
+    console.warn("getPixelDropData props is mandatory for UserVideoHistoryRow component");
+    return {};
+  }
+};
 
 export default withNavigation(UserVideoHistoryRow);

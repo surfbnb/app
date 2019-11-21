@@ -40,11 +40,8 @@ class ReplyPepoTxBtn extends Base {
             defaultData = {
                 e_entity: 'reply',
                 e_action: 'contribution',
-                e_data_json: {
-                    reply_id: this.props.entityId,
-                    profile_user_id: this.props.userId,
-                    amount: this.btAmount
-                }
+                reply_detail_id: this.props.entityId,
+                amount: this.btAmount
             };
         return assignIn({}, specificData, defaultData);
     }

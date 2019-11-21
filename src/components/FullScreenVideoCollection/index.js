@@ -29,6 +29,7 @@ class FullScreenVideoCollection extends PureComponent{
         this.setVideoPagination();
         this.paginationEvent = this.getVideoPagination().event;
         this.currentIndex = this.props.navigation.getParam("currentIndex");
+        this.tagId = this.props.navigation.getParam("tagId");
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
         this.flatlistRef = null;
@@ -145,11 +146,28 @@ class FullScreenVideoCollection extends PureComponent{
         
     };
 
+    getPixelDropData = () => {
+        return pixelParams = {
+          e_entity: 'video',
+          p_type: 'tag',
+          p_name: this.tagId,
+        };
+    } 
+
+    getReplyPixelDrop = () => {
+        return pixelParams = {
+          e_entity: 'reply',
+          p_type: 'tag',
+          p_name: this.tagId,
+        };
+    } 
+
     _renderVideoReplyRow(item, index){
         let userId = deepGet(item,'payload.user_id'),
             replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
         return  <VideoReplyRow  shouldPlay={this.shouldPlay}
                                 isActive={index == this.state.activeIndex}
+                                getPixelDropData={this.getReplyPixelDrop}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
                                 replyDetailId={replyDetailId}
@@ -159,6 +177,7 @@ class FullScreenVideoCollection extends PureComponent{
     _renderVideoRow( item, index ){
         return  <FullScreenVideoRow shouldPlay={this.shouldPlay}
                     isActive={index == this.state.activeIndex}
+                    getPixelDropData={this.getPixelDropData}
                     doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                     payload={item.payload}
          /> ;
