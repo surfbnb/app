@@ -1,4 +1,4 @@
-import { ifIphoneX , getStatusBarHeight , getBottomSpace} from 'react-native-iphone-x-helper';
+import { ifIphoneX  , getBottomSpace} from 'react-native-iphone-x-helper';
 import { Dimensions, StatusBar , NativeModules } from 'react-native';
 
 import  NotchHelper from "../../helpers/NotchHelper";
@@ -7,6 +7,7 @@ let RNDeviceInfo = NativeModules.RNDeviceInfo;
 let modalDeviceName = RNDeviceInfo.model === "Redmi Note 7 Pro" && RNDeviceInfo.brand === "xiaomi";
 let btmSpace = modalDeviceName ? 5 : 0;
 import { CUSTOM_TAB_Height } from '../../theme/constants';
+const statusBarHeight = StatusBar.currentHeight;
 
 import DefaultStyleGenerator from './DefaultStyleGenerator';
 import Colors from './Colors';
