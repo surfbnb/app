@@ -72,7 +72,11 @@ const customTabHiddenRoutes = [
   'InAppBrowserComponent',
   'CouchMarks',
   'VideoReplies',
-  'FullScreenReplyCollection'
+  'FullScreenReplyCollection', 
+  'FullScreenVideoCollection',
+  'UserVideoHistory',
+  'VideoPlayer',
+  'VideoReplyPlayer'
 ];
 
 const modalStackConfig = {

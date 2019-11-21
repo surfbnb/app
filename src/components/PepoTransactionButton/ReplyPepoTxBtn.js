@@ -10,6 +10,7 @@ import utilities from '../../services/Utilities';
 import { withNavigation } from 'react-navigation';
 
 import Base from "./Base";
+import assignIn from "lodash/assignIn";
 
 const mapStateToProps = (state, ownProps) => ({
     balance: state.balance,
@@ -17,8 +18,8 @@ const mapStateToProps = (state, ownProps) => ({
     isEntityUserActivated: utilities.isUserActivated(reduxGetter.getUserActivationStatus(ownProps.userId)),
     isCurrentUserActivated: CurrentUser.isUserActivated() ,
     supporters: reduxGetter.getReplySupporters(ownProps.entityId),
-    isSupporting: reduxGetter.isReplySupported(ownProps.entityId) , 
-    totalBt: reduxGetter.getReplyBt(ownProps.entityId), 
+    isSupporting: reduxGetter.isReplySupported(ownProps.entityId) ,
+    totalBt: reduxGetter.getReplyBt(ownProps.entityId),
   });
 
 class ReplyPepoTxBtn extends Base {
@@ -35,17 +36,14 @@ class ReplyPepoTxBtn extends Base {
     }
 
     getDropPixel(){
-      //TODO confrim with @JUNISHA 
-      return {
-        e_entity: 'video',
-        e_action: 'contribution',
-        e_data_json: {
-          reply_id: this.props.entityId,
-          profile_user_id: this.props.userId,
-          amount: this.btAmount
-        },
-        p_type: 'reply'
-      }
+        let specificData = this.props.getPixelDropData(),
+            defaultData = {
+                e_entity: 'reply',
+                e_action: 'contribution',
+                reply_detail_id: this.props.entityId,
+                amount: this.btAmount
+            };
+        return assignIn({}, specificData, defaultData);
     }
 
     reduxEntityUpdate(  totalBt, supporters ){

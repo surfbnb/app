@@ -506,6 +506,16 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `reply_detail_entities.id_${id}.status`, '').toLowerCase() == appConfig.replyStatusMap.deleted;
   }
+
+  getReplyParentVideoId(id ,  state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.parent_id`);
+  }
+
+  getReplyParentUserId(id , state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.creator_user_id`);
+  }
 }
 
 export default new ReduxGetters();

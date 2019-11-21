@@ -5,13 +5,11 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Animated, Platform ,TouchableWithoutFeedback,
-  StatusBar
+  Animated ,TouchableWithoutFeedback
 } from 'react-native';
 
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 
-import plusIcon from '../../assets/user-video-capture-icon-selected.png';
 import pepoIcon from "../../assets/pepo-tx-icon.png";
 import inlineStyles from './styles';
 import crossIcon from '../../assets/cross_icon.png';
@@ -27,15 +25,13 @@ import { getInset } from 'react-native-safe-area-view';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
 import Pricer from "../../services/Pricer";
-import {getVideoReplyObject} from "../../helpers/cameraHelper";
-import Colors from '../../theme/styles/Colors';
+import {getVideoReplyObject, replyPreValidationAndMessage} from "../../helpers/cameraHelper";
 import VideoReplyIcon from '../../assets/reply_video_icon.png';
 
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
-const finalPadding = topPadding - bottomPadding;
 const bottomReplyViewHeight = 54;
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
 
@@ -83,8 +79,8 @@ class VideoRepliesScreen extends PureComponent {
     componentWillUnmount() {
       this.onAnimatedValueChange= () => {};
       this.animatedValue.removeListener(this.listener);
-      //videoUploaderComponent.removeListener('show');
-      //videoUploaderComponent.removeListener('hide');
+      videoUploaderComponent.removeListener('show');
+      videoUploaderComponent.removeListener('hide');
     }
 
     showVideoUploader = () => {
@@ -124,9 +120,11 @@ class VideoRepliesScreen extends PureComponent {
   ;
 
     openCamera = () => {
-      let activeTab = NavigationService.getActiveTab();
-      let params =  getVideoReplyObject ( this.videoId , this.userId) ;
-      utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
+      if( replyPreValidationAndMessage( this.videoId , this.userId ) ){
+        let activeTab = NavigationService.getActiveTab();
+        let params =  getVideoReplyObject ( this.videoId , this.userId) ;
+        utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
+      }
     }
 
     onData = ( data ) => {

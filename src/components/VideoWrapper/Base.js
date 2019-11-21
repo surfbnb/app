@@ -9,6 +9,7 @@ import {VideoPlayPauseEmitter} from '../../helpers/Emitters';
 import AppConfig from '../../constants/AppConfig';
 import socketPixelCall from './../../services/SocketPixelCall'
 import CurrentUser from "../../models/CurrentUser";
+import assignIn from 'lodash/assignIn';
 
 
 const VIDEO_PLAY_START_EVENT_NAME = "video_play_start";
@@ -106,7 +107,7 @@ class Base extends PureComponent {
     if (this.props.isActive && this.state.paused) {
       this.setState({ paused: false });
       return;
-    } 
+    }
     if ( this.isPaused() != this.currentPauseStatus ) {
       //Force render.
       this.forceUpdate();
@@ -158,19 +159,11 @@ class Base extends PureComponent {
   fireEvent(params) {
     if (this.videoContext.isEventCalledOnView(CurrentUser.getUserId(), this.props.video_id)) return;
     if (params.currentTime >= this.minTimeConsideredForView) {
-      let pixelParams = {
-        e_entity: 'video',
-        e_action: 'view',
-        e_data_json: {
-          video_id: this.props.videoId,
-          profile_user_id: this.props.userId
-        },
-        p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
-      };
+      const parentData =  this.props.getPixelDropData() ; 
+      let pixelParams = {  e_action: 'view' };
+      pixelParams = assignIn({}, pixelParams, parentData);
       PixelCall(pixelParams);
-
       this.sendFeedVideoEvent(VIDEO_PLAY_START_EVENT_NAME);
-
       this.videoContext.eventFired(CurrentUser.getUserId(), this.props.video_id);
     }
   }
@@ -190,17 +183,13 @@ class Base extends PureComponent {
 
   onEnd = (params) => {
     if (this.isPixelCalledOnEnd) return;
-    let pixelParams = {
-      e_entity: 'video',
-      e_action: 'full_viewed',
-      e_data_json: {
-        video_id: this.props.videoId,
-        profile_user_id: this.props.userId
-      },
-      p_type: this.props.navigation.state.routeName === 'HomeScreen' ? 'feed' : 'user_profile'
-    };
+    const parentData =  this.props.getPixelDropData() ; 
+    let pixelParams = {   e_action: 'full_viewed', };
+    pixelParams = assignIn({}, pixelParams, parentData);
     PixelCall(pixelParams);
     this.isPixelCalledOnEnd = true;
+
+    this.sendFeedVideoEvent(VIDEO_PLAY_END_EVENT_NAME);
   };
 
   getIsVideoPausedStatus = () => {
@@ -242,6 +231,10 @@ class Base extends PureComponent {
 Base.defaultProps = {
   shouldPlay: function(){
     return true;
+  },
+  getPixelDropData: function(){
+    console.warn("getPixelDropData props is mandatory for Video component");
+    return {};
   },
   doRender: true ,
   isActive: true

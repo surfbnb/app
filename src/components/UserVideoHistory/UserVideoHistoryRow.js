@@ -6,24 +6,44 @@ import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
 
-import CurrentUser from '../../models/CurrentUser';
-
 import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 import inlineStyles from './styles';
 
-import utilities from '../../services/Utilities';
+import Utilities from '../../services/Utilities';
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
+import BottomReplyBar from '../CommonComponents/BottomReplyBar';
+import CommonStyle from "../../theme/styles/Common";
+import assignIn from 'lodash/assignIn';
 import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
     super(props);
+    this.isUserNavigate = false;
+    this.pageType = "user_profile";
+    this.pageInit();
     this.state = {
       yCoordinateOfReportButton : 0
     };
+  }
+
+  pageInit = () => {
+    if( Utilities.getLastChildRoutename(this.props.navigation.state) === 'VideoPlayer'){
+      this.isUserNavigate = true;
+      return this.pageType = 'video_player';
+    }
+  }
+
+  getPixelDropData = () => {
+    const parentData =  this.props.getPixelDropData() ;
+    const pixelParams = {
+      e_entity: 'video',
+      video_id: this.props.videoId,
+    };
+    return assignIn({}, pixelParams, parentData);
   }
 
   componentDidMount() {
@@ -68,74 +88,71 @@ class UserVideoHistoryRow extends PureComponent {
       .catch((error) => {});
   };
 
-  navigateToTransactionScreen = (e) => {
-    if (this.isCurrentUser()) return;
-    if (utilities.checkActiveUser() && CurrentUser.isUserActivated(true)) {
-      this.props.navigation.push('TransactionScreen', {
-        toUserId: this.props.userId,
-        videoId: this.props.videoId,
-        requestAcknowledgeDelegate: this.refetchVideo
-      });
-    }
-  };
-
-  isCurrentUser() {
-    return this.props.userId == CurrentUser.getUserId();
-  }
-
   render() {
     return (
-      <View style={inlineStyles.fullScreen}>
-        <FanVideo
-          shouldPlay={this.props.shouldPlay}
-          userId={this.props.userId}
-          videoId={this.props.videoId}
-          doRender={this.props.doRender}
-          isActive={this.props.isActive}
-        />
+      <View style={CommonStyle.fullScreen}>
 
-        {!!this.props.videoId && !!this.props.userId && (
-          <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
+                <View style={CommonStyle.videoWrapperfullScreen}>
+                    <FanVideo
+                      shouldPlay={this.props.shouldPlay}
+                      userId={this.props.userId}
+                      videoId={this.props.videoId}
+                      doRender={this.props.doRender}
+                      isActive={this.props.isActive}
+                      getPixelDropData={this.getPixelDropData}
+                    />
 
-            <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-              <View style={{   left: 10, zIndex: 9, minWidth: '20%', alignSelf: 'flex-start', bottom:60 }}>
-                <InvertedReplyList  videoId={this.props.videoId}
-                                    userId={this.props.userId}
-                                    doRender={this.props.doRender}
-                                    availableHeight={this.state.yCoordinateOfReportButton}/>
-              </View>
+                    {!!this.props.videoId && !!this.props.userId && (
+                      <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
 
+                      <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
+                          <View style={{   left: 10, zIndex: 9, minWidth: '20%', alignSelf: 'flex-start', bottom:60 }}>
+                              <InvertedReplyList  videoId={this.props.videoId}
+                                                  userId={this.props.userId}
+                                                  doRender={this.props.doRender}
+                                                  availableHeight={this.state.yCoordinateOfReportButton}/>
+                          </View>
 
-            <View style={inlineStyles.touchablesBtns}>
+                        <View style={inlineStyles.touchablesBtns}>
 
-              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <PepoTxBtn
-                  resyncDataDelegate={this.refetchVideo}
-                  userId={this.props.userId}
-                  entityId={this.props.videoId}
-                />
-                <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
-                <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.props.videoId)} />
-                <View ref={(ref)=> {this.reportViewRef = ref }} onLayout={()=>{}} >
-                <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
-                </View>
-              </View>
-              <VideoSupporterStat
-                entityId={this.props.video}
-                userId={this.props.userId}
-              />
-            </View>
-            </View>
+                          <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                            <PepoTxBtn
+                              resyncDataDelegate={this.refetchVideo}
+                              userId={this.props.userId}
+                              entityId={this.props.videoId}
+                              getPixelDropData={this.getPixelDropData}
+                            />
+                            <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
+                            <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.videoId)} />
+                            <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
+                          </View>
 
-            <VideoBottomStatus
-              userId={this.props.userId}
-              entityId={this.props.videoId}
-            />
-          </View>
-        )}
+                          <VideoSupporterStat
+                            entityId={this.props.videoId}
+                            userId={this.props.userId}
+                          />
+                        </View>
+                      </View>
+                        <VideoBottomStatus
+                          userId={this.props.userId}
+                          entityId={this.props.videoId}
+                          isUserNavigate={this.isUserNavigate}
+                        />
+                      </View>
+                    )}
+                  </View>
+
+            <BottomReplyBar  userId={this.props.userId}  videoId={this.props.videoId}/>
       </View>
     );
   }
 }
+
+UserVideoHistoryRow.defaultProps = {
+  getPixelDropData: function(){
+    console.warn("getPixelDropData props is mandatory for UserVideoHistoryRow component");
+    return {};
+  }
+};
 
 export default withNavigation(UserVideoHistoryRow);

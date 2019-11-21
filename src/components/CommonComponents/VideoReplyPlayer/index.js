@@ -1,17 +1,16 @@
 import React, { PureComponent } from 'react';
-import {View,Image,TouchableOpacity} from 'react-native';
-import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
-import inlineStyles from './styles'
-import historyBack from "../../../assets/user-video-history-back-icon.png";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
 import ReduxGetters from '../../../services/ReduxGetters';
 import DataContract from '../../../constants/DataContract';
 import DeletedVideoInfo from '../DeletedVideoInfo';
 import VideoReplyRow from '../../FullScreenReplyCollection/VideoReplyRow';
+import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
+import CommonStyles from "../../../theme/styles/Common";
+import { SafeAreaView } from "react-navigation";
 
 class VideoReplyPlayer extends PureComponent {
 
@@ -75,25 +74,31 @@ class VideoReplyPlayer extends PureComponent {
       }
     };
 
+    getPixelDropData = () => {
+      return pixelParams = {
+        e_entity: 'reply',
+        p_type: 'single_reply',
+        p_name: this.replyDetailId,
+      };
+    }
+
     render() {
         if(this.state.isDeleted){
          return <DeletedVideoInfo/>
         }else{
           return (
-            <View style={{flex:1}}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={ CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
               <VideoReplyRow shouldPlay={this.shouldPlay}
                     isActive={true}
                     doRender={true}
                     userId={this.state.userId}
                     replyDetailId={this.replyDetailId}
-                    currentIndex={0}
+                    currentIndex={0}//Set it in default props
+                    getPixelDropData={this.getPixelDropData}
               />
-             {/* // {TODO @Preshita move to common component } */}
-              <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
-                <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-              </TouchableOpacity>
-            </View>
+             <FlotingBackArrow />
+            </SafeAreaView>
           )
         }
     }

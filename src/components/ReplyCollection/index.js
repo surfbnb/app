@@ -215,9 +215,7 @@ class ReplyCollection extends PureComponent {
         this.props.navigation.push("FullScreenReplyCollection", {
             "fetchServices" : clonedInstance,
             "currentIndex": index,
-            "baseUrl": this.props.fetchUrl,
-            'userId': this.props.userId,
-            'videoId': this.props.videoId
+            "baseUrl": this.props.fetchUrl
         });
     }
 

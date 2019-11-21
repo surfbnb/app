@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import {View,Image,TouchableOpacity, Text} from 'react-native';
-import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
+import UserVideoHistoryRow from "../../UserVideoHistory/UserVideoHistoryRow";
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
-import inlineStyles from './styles'
-import historyBack from "../../../assets/user-video-history-back-icon.png";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
 import DeletedVideoInfo from '../DeletedVideoInfo';
+import CommonStyles from "../../../theme/styles/Common";
+import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
+import { SafeAreaView } from "react-navigation";
 
 class VideoPlayer extends Component {
 
@@ -71,21 +71,24 @@ class VideoPlayer extends Component {
       }
     };
 
+    getPixelDropData = () => {
+      return pixelParams = {
+        p_type: 'single_video',
+        p_name: this.videoId
+      };
+    }
+
     render() {
         if(this.state.isDeleted){
-          // {TODO @Preshita move to common component }
          return <DeletedVideoInfo/>
         }else{
           return (
-            <View style={{flex:1}}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
-              <VideoRowComponent doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
-                                 videoId={this.videoId} userId={this.state.userId}/>
-             {/* // {TODO @Preshita move to common component } */}
-              <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
-                <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-              </TouchableOpacity>
-            </View>
+              <UserVideoHistoryRow doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
+                                 videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}/>
+             <FlotingBackArrow />
+            </SafeAreaView>
           )
         }
     }

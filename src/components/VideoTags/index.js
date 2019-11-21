@@ -118,6 +118,7 @@ class VideoTags extends PureComponent {
                     navigation={this.props.navigation}
                     noResultsData={this.noResultsData}
                     getNoResultsCell={this.renderNoResults}
+                    tagId={this.getTagId()}
                     extraParams={this.getExtraParams()}
                    />
         } else {

@@ -29,8 +29,8 @@ class BottomStatus extends PureComponent {
     return !!entity
   }
 
-   //TODO  @preshita move to bottom status 
   navigateToUserProfile = () => {
+    if(!this.props.isUserNavigate) return;
     if (Utilities.checkActiveUser()) {
         if (this.props.userId == CurrentUser.getUserId()) {
             this.props.navigation.navigate('ProfileScreen');
@@ -40,7 +40,6 @@ class BottomStatus extends PureComponent {
     }
   };
 
-  //TODO  @preshita move to bottom status
   onDescriptionClick = ( tapEntity  ) => {
     if (!tapEntity) {
       return;
@@ -115,6 +114,10 @@ class BottomStatus extends PureComponent {
       </View>
     );
   };
+}
+
+BottomStatus.defaultProps = {
+  isUserNavigate : true
 }
 
 export default BottomStatus;

@@ -1,17 +1,17 @@
 import React , {PureComponent} from "react";
-import {FlatList , View , TouchableOpacity, Image} from "react-native";
+import {FlatList} from "react-native";
 import deepGet from "lodash/get";
 
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
 import FullScreenVideoRow from "./FullScreenVideoRow";
-import inlineStyles from "./styles";
-import historyBack from '../../assets/user-video-history-back-icon.png';
+import FloatingBackArrow from "../CommonComponents/FlotingBackArrow";
 import TopStatus from "../Home/TopStatus";
 import CommonStyle from "../../theme/styles/Common";
 import entityHelper from '../../helpers/EntityHelper';
 import DataContract from "../../constants/DataContract";
-import VideoReplyRow from "../../components/FullScreenReplyCollection/VideoReplyRow";
+import VideoReplyRow from "../FullScreenReplyCollection/VideoReplyRow";
+import { SafeAreaView } from "react-navigation";
 
 const maxVideosThreshold = 3;
 
@@ -29,6 +29,7 @@ class FullScreenVideoCollection extends PureComponent{
         this.setVideoPagination();
         this.paginationEvent = this.getVideoPagination().event;
         this.currentIndex = this.props.navigation.getParam("currentIndex");
+        this.tagId = this.props.navigation.getParam("tagId");
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
         this.flatlistRef = null;
@@ -68,7 +69,7 @@ class FullScreenVideoCollection extends PureComponent{
 
         //This is an hack for reset scroll for flatlist. Need to debug a bit more.
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
-            const offset =  this.state.activeIndex > 0 ? inlineStyles.fullScreen.height * this.state.activeIndex :  0 ;
+            const offset =  this.state.activeIndex > 0 ? CommonStyle.fullScreen.height * this.state.activeIndex :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
             this.isActiveScreen = true ;
         });
@@ -145,11 +146,28 @@ class FullScreenVideoCollection extends PureComponent{
         
     };
 
+    getPixelDropData = () => {
+        return pixelParams = {
+          e_entity: 'video',
+          p_type: 'tag',
+          p_name: this.tagId,
+        };
+    }
+
+    getReplyPixelDrop = () => {
+        return pixelParams = {
+          e_entity: 'reply',
+          p_type: 'tag',
+          p_name: this.tagId,
+        };
+    }
+
     _renderVideoReplyRow(item, index){
         let userId = deepGet(item,'payload.user_id'),
             replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
         return  <VideoReplyRow  shouldPlay={this.shouldPlay}
                                 isActive={index == this.state.activeIndex}
+                                getPixelDropData={this.getReplyPixelDrop}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
                                 replyDetailId={replyDetailId}
@@ -160,6 +178,7 @@ class FullScreenVideoCollection extends PureComponent{
     _renderVideoRow( item, index ){
         return  <FullScreenVideoRow shouldPlay={this.shouldPlay}
                     isActive={index == this.state.activeIndex}
+                    getPixelDropData={this.getPixelDropData}
                     doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                     payload={item.payload}
          /> ;
@@ -186,7 +205,7 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-        return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ;
+        return {length: CommonStyle.fullScreen.height, offset: CommonStyle.fullScreen.height * index, index} ;
     }
 
     closeVideo = () => {
@@ -204,7 +223,7 @@ class FullScreenVideoCollection extends PureComponent{
     render() {
 
         return (
-            <View style={CommonStyle.viewContainer}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
                 {this.props.navigation.getParam("showBalanceFlyer")  && <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}
@@ -222,17 +241,15 @@ class FullScreenVideoCollection extends PureComponent{
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                     onMomentumScrollBegin={this.onMomentumScrollBeginCallback}
                     renderItem={this._renderItem}
-                    style={[inlineStyles.fullScreen , {backgroundColor: "#000"}]}
+                    style={[CommonStyle.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
                     initialScrollIndex={this.state.activeIndex}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
-                <TouchableOpacity onPress={this.closeVideo} style={inlineStyles.historyBackSkipFont}>
-                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-                </TouchableOpacity>
-            </View>
+                <FloatingBackArrow/>
+            </SafeAreaView>
         );
     }
 

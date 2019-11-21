@@ -6,12 +6,11 @@ import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
-import CurrentUser from '../../models/CurrentUser';
+import assignIn from 'lodash/assignIn';
 
 import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 
 import inlineStyles from './styles';
-import utilities from '../../services/Utilities';
 import ReportVideo from "../CommonComponents/ReportVideo";
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
@@ -44,15 +43,16 @@ class HomeFeedRow extends PureComponent {
       .catch((error) => {});
   };
 
-  navigateToTransactionScreen = (e) => {
-    if (utilities.checkActiveUser() && CurrentUser.isUserActivated(true)) {
-      this.props.navigation.push('TransactionScreen', {
-        toUserId: this.userId,
-        videoId: reduxGetter.getHomeFeedVideoId(this.props.feedId),
-        requestAcknowledgeDelegate: this.refetchFeed
-      });
-    }
-  };
+  getPixelDropData = () => {
+    const parentData =  this.props.getPixelDropData && this.props.getPixelDropData() || {};
+    const pixelParams = {
+      e_entity: 'video',
+      p_type: 'feed',
+      video_id: this.videoId,
+    };
+    return assignIn({}, pixelParams, parentData);
+  }
+
 
   componentDidMount() {
     setTimeout(()=>{
@@ -97,6 +97,7 @@ class HomeFeedRow extends PureComponent {
           videoId={this.videoId}
           doRender={this.props.doRender}
           isActive={this.props.isActive}
+          getPixelDropData={this.getPixelDropData}
         />
 
 
@@ -113,9 +114,13 @@ class HomeFeedRow extends PureComponent {
 
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-            <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }} >
-              {/*< InvertedReplyList  videoId={this.videoId} userId={this.userId}/>*/}
-                <PepoTxBtn  resyncDataDelegate={this.refetchFeed} userId={this.userId} entityId={this.videoId}/>
+              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                <PepoTxBtn
+                    resyncDataDelegate={this.refetchFeed}
+                    userId={this.userId}
+                    entityId={this.videoId}
+                    getPixelDropData={this.getPixelDropData}
+                />
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
 
                 <ShareIcon videoId={this.videoId}
@@ -140,5 +145,6 @@ class HomeFeedRow extends PureComponent {
     );
   }
 }
+
 
 export default withNavigation(HomeFeedRow);
