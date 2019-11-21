@@ -6,6 +6,8 @@ import ReplyThumbnailItem from './ReplyThumbnailItem'
 import {FlatList} from 'react-native-gesture-handler';
 import ReplyHelper from '../../../helpers/ReplyHelper';
 
+const ITEM_HEIGHT = 55;
+
 class InvertedReplyList extends Component {
 
   static navigationOptions = {
@@ -68,12 +70,19 @@ class InvertedReplyList extends Component {
     this.removePaginationListeners();
     this.onItemClick = ()=> {};
   }
+
   componentDidUpdate(prevProps, prevState ) {
     if( this.props.doRender && this.props.doRender !== prevProps.doRender &&  !this.hasInitialData  ){
       this.initPagination();
     }
+    if(this.props.currentIndex != prevProps.currentIndex){
+      this.listRef && this.listRef.scrollToIndex({index : this.props.currentIndex});
+    }
   }
 
+  onScrollToIndexFailed =( info) => {
+    console.log("======onScrollToIndexFailed=====" , info );
+  }
 
   // region - Pagination and Event Handlers
 
@@ -175,7 +184,6 @@ class InvertedReplyList extends Component {
 
   };
 
-
   setListRef = (ref) => {
     this.listRef = ref;
   };
@@ -201,6 +209,9 @@ class InvertedReplyList extends Component {
     return 0;
   };
 
+  getItemLayout= (data, index) => {
+    return {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index} ;
+  }
 
   render() {
     let height = this.getListHeight();
@@ -219,6 +230,9 @@ class InvertedReplyList extends Component {
         numColumns={this.numColumns}
         key={this.flatListKey}
         nestedScrollEnabled={true}
+        initialScrollIndex={this.props.currentIndex}
+        getItemLayout={this.getItemLayout}
+        onScrollToIndexFailed={this.onScrollToIndexFailed}
     />: <React.Fragment />
   }
 }

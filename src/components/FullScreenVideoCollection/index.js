@@ -153,6 +153,7 @@ class FullScreenVideoCollection extends PureComponent{
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
                                 replyDetailId={replyDetailId}
+                                currentIndex={this.currentIndex}
          /> ;
     }
 

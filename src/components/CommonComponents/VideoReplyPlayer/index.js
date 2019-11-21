@@ -87,6 +87,7 @@ class VideoReplyPlayer extends PureComponent {
                     doRender={true}
                     userId={this.state.userId}
                     replyDetailId={this.replyDetailId}
+                    currentIndex={0}
               />
              {/* // {TODO @Preshita move to common component } */}
               <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>

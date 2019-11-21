@@ -203,6 +203,7 @@ class FullScreenReplyCollection extends PureComponent{
                                 replyDetailId={replyDetailId}
                                 paginationService ={this.getVideoPagination()}
                                 onChildClickDelegate={this.childClickHandler}
+                                currentIndex={this.state.activeIndex}
          /> ;
     }
 
@@ -212,6 +213,7 @@ class FullScreenReplyCollection extends PureComponent{
 
     scrollToIndex = ( index )=>{
         this.flatlistRef.scrollToIndex({index: index});
+        this.setActiveIndex();
     }
 
     onViewableItemsChanged = (data) => {

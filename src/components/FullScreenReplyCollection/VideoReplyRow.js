@@ -95,6 +95,8 @@ class VideoReplyRow extends PureComponent {
                                               doRender={this.props.doRender}
                                               availableHeight={this.state.yCoordinateOfReportButton}
                                               paginationService={this.props.paginationService}
+                                              onChildClickDelegate={this.props.onChildClickDelegate}
+                                              currentIndex={this.props.currentIndex}
                           />
                         </View>
 
