@@ -88,16 +88,15 @@ const _getWorkflowDelegate = function (callback) {
   let delegate = CurrentUser.newPassphraseDelegate();
   //
   delegate.requestAcknowledged = (ostWorkflowContext, ostContextEntity) => {
-    LoadingModal.show("Creating Session...");
+    // LoadingModal.show("Creating Session...");
   };
 
   delegate.flowComplete = (ostWorkflowContext, ostContextEntity) => {
-    LoadingModal.hide();
     callback(null, true);
   };
 
   const onSdkError = (ostWorkflowContext, ostError) => {
-    LoadingModal.hide();
+    // LoadingModal.hide();
     let errorMessage = ostSdkErrors.getErrorMessage(ostWorkflowContext, ostError);
     callback(errorMessage, false);
   };
@@ -107,12 +106,12 @@ const _getWorkflowDelegate = function (callback) {
   delegate.workflowFailed = onSdkError;
   delegate.userCancelled = (ostWorkflowContext, ostError) => {
     //Do nothing.
-    LoadingModal.hide();
+    // LoadingModal.hide();
     callback(ON_USER_CANCLLED_ERROR_MSG, false);
   };
 
   delegate.saltFetchFailed = ( response ) => {
-    LoadingModal.hide();
+    // LoadingModal.hide();
     let errorMessage = ostErrors.getErrorMessage( response );
     callback(errorMessage, false);
   };

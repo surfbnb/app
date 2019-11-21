@@ -17,7 +17,7 @@ import OstWalletSdk
     
     //MARK: - OstLoaderDelegate
     @objc public
-    func getLoader(workflowType: OstWorkflowType) -> OstWorkflowLoader {
+    func getLoader(workflowType: OstWorkflowType) -> OstWorkflowLoader? {
         return PepoLoaderViewController()
     }
     
