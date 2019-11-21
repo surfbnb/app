@@ -39,15 +39,6 @@ class HomeFeedRow extends PureComponent {
       .catch((error) => {});
   };
 
-  navigateToTransactionScreen = (e) => {
-    if (utilities.checkActiveUser() && CurrentUser.isUserActivated(true)) {
-      this.props.navigation.push('TransactionScreen', {
-        toUserId: this.userId,
-        videoId: reduxGetter.getHomeFeedVideoId(this.props.feedId),
-        requestAcknowledgeDelegate: this.refetchFeed
-      });
-    }
-  };
 
   render() {
     return (

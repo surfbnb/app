@@ -5,14 +5,11 @@ import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
-import findCurrentRoute from '../../services/NavigationService';
-
-import CurrentUser from '../../models/CurrentUser';
 
 import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 import inlineStyles from './styles';
 
-import utilities from '../../services/Utilities';
+import Utilities from '../../services/Utilities';
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
@@ -23,6 +20,16 @@ import CommonStyle from "../../theme/styles/Common";
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
     super(props);
+    this.isUserNavigate = false;
+    this.pageType = "user_profile";
+    this.pageInit();
+  }
+
+  pageInit = () => {
+    if( Utilities.getLastChildRoutename(this.props.navigation.state) === 'VideoPlayer'){
+      this.isUserNavigate = true;
+      return this.pageType = 'video_player';
+    }
   }
 
   refetchVideo = () => {
@@ -31,29 +38,6 @@ class UserVideoHistoryRow extends PureComponent {
       .then((res) => {})
       .catch((error) => {});
   };
-
-  navigateToTransactionScreen = (e) => {
-    if (this.isCurrentUser()) return;
-    if (utilities.checkActiveUser() && CurrentUser.isUserActivated(true)) {
-      this.props.navigation.push('TransactionScreen', {
-        toUserId: this.props.userId,
-        videoId: this.props.videoId,
-        requestAcknowledgeDelegate: this.refetchVideo
-      });
-    }
-  };
-
-  isCurrentUser() {
-    return this.props.userId == CurrentUser.getUserId();
-  }
-
-  getPType() {
-    if(findCurrentRoute(this.props.navigation.state) === 'VideoPlayer'){
-      return 'video_player';
-    } else {
-      return 'user_profile';
-    }
-  }
 
   render() {
     return (
@@ -77,7 +61,7 @@ class UserVideoHistoryRow extends PureComponent {
                               resyncDataDelegate={this.refetchVideo}
                               userId={this.props.userId}
                               entityId={this.props.videoId}
-                              getPixelDropData={() => {p_type: this.getPType()}}
+                              getPixelDropData={() => {p_type:this.pageType}}
                             />
                             <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
                             <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.videoId)} />
@@ -93,6 +77,7 @@ class UserVideoHistoryRow extends PureComponent {
                         <VideoBottomStatus
                           userId={this.props.userId}
                           entityId={this.props.videoId}
+                          isUserNavigate={this.isUserNavigate}
                         />
                       </View>
                     )}

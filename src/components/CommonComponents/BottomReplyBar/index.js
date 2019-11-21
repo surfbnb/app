@@ -5,7 +5,7 @@ import inlineStyles from './styles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import cameraIconWhite from '../../../assets/reply-video-white.png';
 
-import {navigateToCamera} from "../../../helpers/cameraHelper";
+import {navigateToCamera, replyPreValidationAndMessage} from "../../../helpers/cameraHelper";
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 
 class BottomReplyBar extends PureComponent {
@@ -15,7 +15,9 @@ class BottomReplyBar extends PureComponent {
         }
 
         replyVideo =( ) => {
-            navigateToCamera( this.props.videoId ,  this.props.userId ,  this.props.navigation )
+            if( replyPreValidationAndMessage( this.props.videoId ,  this.props.userId) )  {
+                navigateToCamera( this.props.videoId ,  this.props.userId ,  this.props.navigation ) ;
+            }       
         }
 
         render(){

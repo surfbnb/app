@@ -27,7 +27,7 @@ import { getInset } from 'react-native-safe-area-view';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
 import Pricer from "../../services/Pricer";
-import {getVideoReplyObject} from "../../helpers/cameraHelper";
+import {getVideoReplyObject, replyPreValidationAndMessage} from "../../helpers/cameraHelper";
 import Colors from '../../theme/styles/Colors';
 import VideoReplyIcon from '../../assets/reply_video_icon.png';
 
@@ -127,10 +127,11 @@ class VideoRepliesScreen extends PureComponent {
   ;
 
     openCamera = () => {
-      let activeTab = NavigationService.getActiveTab();
-      //TODO @mayur move it to a function , If possible change this to string 
-      let params =  getVideoReplyObject ( this.videoId , this.userId) ;
-      utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
+      if( replyPreValidationAndMessage( this.videoId , this.userId ) ){
+        let activeTab = NavigationService.getActiveTab();
+        let params =  getVideoReplyObject ( this.videoId , this.userId) ;
+        utilities.handleVideoUploadModal(activeTab, this.props.navigation, params);
+      }
     }
 
     onData = ( data ) => {

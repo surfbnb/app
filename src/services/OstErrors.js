@@ -40,7 +40,9 @@ const UIErros = {
   max_pepocorns: `Sorry, you don't have enough Pepo Coins to buy this many ${Utilities.getPepoCornsName()}`,
   price_point_validation_failed: `Sorry, you don't have enough Pepo Coins to buy this many ${Utilities.getPepoCornsName()}`,
   min_pepocorns: `Minimum amount allowed is 1 ${Utilities.getPepoCornsName()}.`,
-  bt_exceeds_bal_amount_error : `Sorry, you don't have enough Pepo Coins for this transactions.`
+  bt_exceeds_bal_amount_error : `Sorry, you don't have enough Pepo Coins for this transactions.`, 
+  video_reply_not_allowed: 'Reply is not allowed for this video.',
+  video_reply_not_allowed_low_bal: "Insufficient balance for reply"
 };
 
 const UIWhitelistedErrorCode = {
