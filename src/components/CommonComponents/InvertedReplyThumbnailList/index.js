@@ -184,7 +184,7 @@ class InvertedReplyList extends Component {
   _renderItem = ({item, index}) => {
 
     return <View style={{alignSelf:'center'}}>
-              <ReplyThumbnailItem payload={item.payload}  onClickHandler={()=>{this.onItemClick(index, item)}}  />
+              <ReplyThumbnailItem payload={item.payload} onClickHandler={()=>{this.onItemClick(index, item)}} isActive={()=>{return this.isActive( index )} }/>
           </View>;
 
   };

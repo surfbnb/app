@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
 
@@ -7,6 +6,7 @@ import ProfilePicture from "../../ProfilePicture";
 import reduxGetters from '../../../services/ReduxGetters';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AppConfig from '../../../constants/AppConfig';
+import multipleClickHandler from '../../../services/MultipleClickHandler';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -24,7 +24,8 @@ class ReplyThumbnailItem extends Component {
   }
 
   render() {
-    return <TouchableOpacity onPress={this.props.onClickHandler} style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive() && inlineStyle.active]}>
+    return <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})} 
+                  style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive() && inlineStyle.active]}>
               <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
           </TouchableOpacity>
   }
