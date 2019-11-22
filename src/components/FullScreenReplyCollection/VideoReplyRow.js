@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
-import { View , Dimensions} from 'react-native';
+import { View , Dimensions, TouchableOpacity} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import FanVideo from "../VideoWrapper/FanVideo";
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import BottomReplyBar from "../CommonComponents/BottomReplyBar";
-import ReplyIcon from "../CommonComponents/ReplyIcon";
 import PepoApi from '../../services/PepoApi';
 
 import inlineStyles from './styles';
@@ -22,6 +21,7 @@ import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 
 import AppConfig from "../../constants/AppConfig";
 import ProfilePicture from "../ProfilePicture";
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 
 const marginTopForParentIcon = 15;
@@ -38,7 +38,8 @@ const mapStateToProps = (state, ownProps) => {
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
-        super(props);
+      super(props);
+      this.onParentClickDelegate = this.props.onParentClickDelegate || this.defaultParentClickHandler;
     }
 
   refetchVideoReply = () => {
@@ -49,9 +50,16 @@ class VideoReplyRow extends PureComponent {
     };
 
     getPixelDropData = () => {
-        const parentData =  this.props.getPixelDropData(); 
+        const parentData =  this.props.getPixelDropData();
         const pixelParams = { e_entity: 'reply' , parent_video_id : this.props.parentVideoId ,  reply_detail_id :this.props.replyDetailId  };
         return assignIn({}, pixelParams, parentData);
+    }
+
+    defaultParentClickHandler(){
+      this.props.navigation.push('VideoPlayer', {
+        userId: this.parentUserId,
+        videoId: this.parentVideoId
+      })
     }
 
     render() {
@@ -95,15 +103,17 @@ class VideoReplyRow extends PureComponent {
                                         entityId={this.props.replyDetailId}
                                         getPixelDropData={this.getPixelDropData}
                                     />
-                                    <ProfilePicture userId={this.props.parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
-                                      width: AppConfig.thumbnailListConstants.parentIconWidth,
-                                      borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
-                                      marginVertical: 12
-                                    }}
-                                    />
-                                    <ShareIcon  userId={this.props.userId} entityId={this.props.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)} />
-                                    <ReportVideo  userId={this.props.userId} reportEntityId={this.replyId} reportKind={'reply'} />
-                                </View>
+                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentClickDelegate()})}>
+                                      <ProfilePicture userId={parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
+                                        width: AppConfig.thumbnailListConstants.parentIconWidth,
+                                        borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
+                                        marginVertical: 12
+                                      }}
+                                      />
+                                    </TouchableOpacity>
+                                    <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
+                                    <ReportVideo  userId={userId} reportEntityId={this.replyId} reportKind={'reply'} />
+                                 </View>
 
                                 <VideoReplySupporterStat
                                     entityId={this.props.replyDetailId}

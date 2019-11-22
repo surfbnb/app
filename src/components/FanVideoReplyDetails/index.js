@@ -142,6 +142,9 @@ class FanVideoReplyDetails extends Component {
     return new Promise((resolve, reject)=> {
       let btAmount = this.getAmountToSend();
       const btInDecimal = pricer.getToDecimal(btAmount);
+      if (btAmount === '0'){
+        return resolve();
+      }
       ensureDeivceAndSession(CurrentUser.getOstUserId(), btInDecimal, (device) => {
         this._deviceUnauthorizedCallback(device);
         reject();
