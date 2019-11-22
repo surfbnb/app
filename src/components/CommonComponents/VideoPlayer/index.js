@@ -9,6 +9,7 @@ import DeletedVideoInfo from '../DeletedVideoInfo';
 import CommonStyles from "../../../theme/styles/Common";
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import { SafeAreaView } from "react-navigation";
+import Colors from "../../../theme/styles/Colors";
 
 class VideoPlayer extends Component {
 
