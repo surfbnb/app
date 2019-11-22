@@ -6,12 +6,11 @@ import deepGet from 'lodash/get';
 import ProfilePicture from "../../ProfilePicture";
 import reduxGetters from '../../../services/ReduxGetters';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import ReduxGetters from '../../../services/ReduxGetters';
 import AppConfig from '../../../constants/AppConfig';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-      seen: ReduxGetters.getReplyEntitySeen( deepGet(ownProps.payload,'reply_detail_id'))
+      seen: reduxGetters.getReplyEntitySeen( reduxGetters.getReplyEntityId(deepGet(ownProps.payload,'reply_detail_id')))
     };
 };
 
@@ -25,10 +24,8 @@ class ReplyThumbnailItem extends Component {
   }
 
   render() {
-    return <TouchableOpacity onPress={this.props.onClickHandler}>
-            <View style={[inlineStyle.shadowWrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive() && inlineStyle.active]}>
+    return <TouchableOpacity onPress={this.props.onClickHandler} style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive() && inlineStyle.active]}>
               <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
-            </View>
           </TouchableOpacity>
   }
 }
@@ -42,10 +39,10 @@ const inlineStyle= {
     borderWidth: 2,
     borderColor: '#fff'
   },
-  shadowWrapperStyle: {
+  wrapperStyle: {
     width: 60,
     height: 60,
-    borderRadius: 30
+    backgroundColor: 'transparent'
   },
   active: {
     shadowColor: '#fff',

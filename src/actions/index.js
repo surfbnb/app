@@ -112,6 +112,11 @@ export const upsertReplyDetailEntities = (data) => ({
   payload: { reply_detail_entities: data }
 });
 
+export const upsertCurrentUserVideoRelationEntities = (data) => ({
+  type: types.UPSERT_CURRENT_USER_VIDEO_RELATION_ENTITIES,
+  payload: { current_user_video_relation_entities: data }
+});
+
 export const upsertHomeFeedEntities = (data) => ({
   type: types.UPSERT_HOME_FEED_ENTITIES,
   payload: { home_feed_entities: data }

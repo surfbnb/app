@@ -454,7 +454,6 @@ class ReduxGetters {
     return deepGet(state, `tag_entities.id_${id}`);
   }
 
-
   getReplyEntity(id, state) {
     state = state || Store.getState();
     return deepGet(state, `reply_detail_entities.id_${id}`);
@@ -475,9 +474,14 @@ class ReduxGetters {
     return deepGet(state, `reply_detail_entities.id_${id}.entity_id`);
   }
 
+  getCurrentUserVideoRelationEntity(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `current_user_video_relation_entities.id_${id}`);
+  }
+
   getReplyEntitySeen(id, state){
     state = state || Store.getState();
-    return deepGet(state, `reply_detail_entities.id_${id}.seen`, false);
+    return deepGet(state, `current_user_video_relation_entities.id_${id}.has_seen`);
   }
 
   getReplyDescriptionId(id, state) {

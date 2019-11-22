@@ -177,6 +177,8 @@ class FullScreenReplyCollection extends PureComponent{
     }
 
     onViewableItemsChanged = (data) => {
+        let item = deepGet(data, 'viewableItems[0].item');
+        item && ReplyHelper.updateEntitySeen( item );
         this.currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
     }
 
