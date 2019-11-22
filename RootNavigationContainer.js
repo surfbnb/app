@@ -140,6 +140,7 @@ const InAppBrowserStack = createStackNavigator(
 const FullScreenReplyStack = createStackNavigator(
   {
     FullScreenReplyCollection: FullScreenReplyCollection,
+    FullScreenVideoCollection: FullScreenVideoCollection,
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     SupportingListScreen: SupportingListScreen,
