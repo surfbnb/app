@@ -62,6 +62,7 @@ class VideoRepliesScreen extends PureComponent {
 
       this.state = {
         showBackdrop : false,
+        addRepliesVisible : true,
         videoUploaderVisible: false,
         currentHeight : this.initialHeight
       }
@@ -95,7 +96,7 @@ class VideoRepliesScreen extends PureComponent {
   
     hideVideoUploader = () => {
       this.setState({
-        videoUploaderVisible: false
+        videoUploaderVisible: false 
       });
     };
 
@@ -103,6 +104,7 @@ class VideoRepliesScreen extends PureComponent {
       clearTimeout(this.panelAnimateTimeOut);
       this.panelAnimateTimeOut =  setTimeout(()=> {
         if( value < 10){
+          this.state.addRepliesVisible =  false;
           this.hideVideoUploader();
           this.props.navigation.goBack();
         }
@@ -206,15 +208,16 @@ class VideoRepliesScreen extends PureComponent {
 
                 )}
               </SlidingUpPanel>
-            <TouchableWithoutFeedback onPress={this.openCamera}>
-              <View style={inlineStyles.addReplyView}>
-                <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimension}></Image>
-                <Text style={inlineStyles.addReplyText}>
-                  Add a reply...
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
-
+              {this.state.addRepliesVisible && (
+                 <TouchableWithoutFeedback onPress={this.openCamera}>
+                 <View style={inlineStyles.addReplyView}>
+                   <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimension}></Image>
+                   <Text style={inlineStyles.addReplyText}>
+                     Add a reply...
+                   </Text>
+                 </View>
+               </TouchableWithoutFeedback>
+              )}
           </React.Fragment>
         );
     }
