@@ -62,8 +62,8 @@ class VideoReplyRow extends PureComponent {
                 <View style={CommonStyle.videoWrapperfullScreen}>
 
                   <View style={{position: "absolute" , left: 10 , bottom : height, zIndex: 9 }}>
-                    <InvertedReplyList  videoId={parentVideoId}
-                                        userId={parentUserId}
+                    <InvertedReplyList  videoId={this.props.parentVideoId}
+                                        userId={this.props.parentUserId}
                                         doRender={this.props.doRender}
                                         paginationService={this.props.paginationService}
                                         onChildClickDelegate={this.props.onChildClickDelegate}
