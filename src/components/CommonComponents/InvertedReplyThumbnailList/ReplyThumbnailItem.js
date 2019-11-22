@@ -7,6 +7,7 @@ import ProfilePicture from "../../ProfilePicture";
 import reduxGetters from '../../../services/ReduxGetters';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ReduxGetters from '../../../services/ReduxGetters';
+import AppConfig from '../../../constants/AppConfig';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -33,10 +34,9 @@ class ReplyThumbnailItem extends Component {
 }
 
 const inlineStyle= {
-  iconStyle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25
+  iconStyle: { height: AppConfig.thumbnailListConstants.iconHeight,
+            width: AppConfig.thumbnailListConstants.iconWidth,
+            borderRadius: AppConfig.thumbnailListConstants.iconWidth/ 2
   },
   borderStyle: {
     borderWidth: 2,

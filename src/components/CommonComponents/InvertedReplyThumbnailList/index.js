@@ -8,7 +8,8 @@ import {FlatList} from 'react-native-gesture-handler';
 import ReplyHelper from '../../../helpers/ReplyHelper';
 import AppConfig from "../../../constants/AppConfig";
 
-const ITEM_HEIGHT = 55;
+//
+const ITEM_HEIGHT = AppConfig.thumbnailListConstants.iconHeight +  AppConfig.thumbnailListConstants.iconWidth;
 
 class InvertedReplyList extends Component {
 
@@ -182,8 +183,10 @@ class InvertedReplyList extends Component {
 
   _renderItem = ({item, index}) => {
 
-    return <ReplyThumbnailItem payload={item.payload} onClickHandler={()=>{this.onItemClick(index, item)}} isActive={()=>{return this.isActive( index )} }/>
-    
+    return <View style={{alignSelf:'center'}}>
+              <ReplyThumbnailItem payload={item.payload}  onClickHandler={()=>{this.onItemClick(index, item)}}  />
+          </View>;
+
   };
 
   isActive = ( index )=>{
@@ -195,14 +198,15 @@ class InvertedReplyList extends Component {
   };
 
   getItemSeperatorComponent = () => {
-    return <View style={{backgroundColor: 'white', height: 25, width: 1, alignSelf:'center'}} />
+    return <View style={{backgroundColor: 'white', height: AppConfig.thumbnailListConstants.separatorHeight, width: 1, alignSelf:'center'}} />
   };
 
   getAvailableHeight = () => {
     const area = AppConfig.MaxDescriptionArea;
     let height = ( area / Dimensions.get('window').width ) + 20,
-      availableHeight = Dimensions.get('window').height - height - 50;
-    return availableHeight;
+      //70 is height of top section
+      availableHeight =   AppConfig.VideoScreenObject.height - height - 70 ;
+    return this.props.parentIconHeight ? availableHeight - this.props.parentIconHeight : availableHeight;
   }
 
 
@@ -210,8 +214,8 @@ class InvertedReplyList extends Component {
     let availableHeight = this.getAvailableHeight();
     let noOfItems = this.state.list.length;
     if (noOfItems > 0){
-      let heightOfElements = noOfItems * 30,
-        heightOfSeparator =   (noOfItems - 1 ) * 25,
+      let heightOfElements = noOfItems * AppConfig.thumbnailListConstants.iconHeight,
+        heightOfSeparator =   (noOfItems - 1 ) *  AppConfig.thumbnailListConstants.separatorHeight,
         heightOfFlatList = heightOfElements + heightOfSeparator;
       return availableHeight > heightOfFlatList ? heightOfFlatList : availableHeight;
     }
@@ -239,6 +243,7 @@ class InvertedReplyList extends Component {
         numColumns={this.numColumns}
         key={this.flatListKey}
         nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={false}
         initialScrollIndex={this.props.currentIndex}
         getItemLayout={this.getItemLayout}
         onScrollToIndexFailed={this.onScrollToIndexFailed}

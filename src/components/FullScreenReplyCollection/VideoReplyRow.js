@@ -21,8 +21,10 @@ import assignIn from 'lodash/assignIn';
 import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 
 import AppConfig from "../../constants/AppConfig";
+import ProfilePicture from "../ProfilePicture";
 
 
+const marginTopForParentIcon = 15;
 const AREA = AppConfig.MaxDescriptionArea;
 const height = AREA / Dimensions.get('window').width + 20;
 
@@ -66,6 +68,12 @@ class VideoReplyRow extends PureComponent {
                                         paginationService={this.props.paginationService}
                                         onChildClickDelegate={this.props.onChildClickDelegate}
                                         currentIndex={this.props.currentIndex}
+                                        parentIconHeight={AppConfig.thumbnailListConstants.parentIconHeight + marginTopForParentIcon }
+                    />
+                    <ProfilePicture userId={parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
+                      width: AppConfig.thumbnailListConstants.parentIconWidth,
+                      borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
+                      marginTop: marginTopForParentIcon }}
                     />
                   </View>
 

@@ -47,11 +47,6 @@ let stylesMap = {
     txElem: {
         marginBottom: 20
     },
-    bottomContainer: {
-        width: width,
-        position: 'absolute',
-        bottom: 0
-    },
     bottomBg: {
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         borderTopLeftRadius: 20,

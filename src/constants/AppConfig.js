@@ -3,6 +3,16 @@ import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
 import twitterDisconnectIcon from '../assets/drawer-twitter-icon.png';
 import defaultLinkIcon from '../assets/default_link_icon.png';
 import feedLinkIcon from '../assets/Link.png';
+import {getBottomSpace, ifIphoneX} from "react-native-iphone-x-helper";
+import {CUSTOM_TAB_Height} from "../theme/constants";
+import NotchHelper from "../helpers/NotchHelper";
+import {Dimensions, NativeModules, StatusBar} from "react-native";
+
+const statusBarHeight = StatusBar.currentHeight;
+const {height} = Dimensions.get('window');
+let RNDeviceInfo = NativeModules.RNDeviceInfo;
+let modalDeviceName = RNDeviceInfo.model === "Redmi Note 7 Pro" && RNDeviceInfo.brand === "xiaomi";
+let btmSpace = modalDeviceName ? 5 : 0;
 
 const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
   PROFILE_TX_RECEIVE_SUCCESS = 'PROFILE_TX_RECEIVE_SUCCESS',
@@ -322,6 +332,26 @@ export default {
     reply: 'reply'
   },
 
-  MaxDescriptionArea: 35250
+  MaxDescriptionArea: 35250,
+  thumbnailListConstants: {
+    separatorHeight: 25,
+    iconHeight:35,
+    iconWidth: 35,
+    parentIconHeight: 50,
+    parentIconWidth: 50
+  },
+  VideoScreenObject : {
+    ...ifIphoneX(
+      {
+        height: height - CUSTOM_TAB_Height - getBottomSpace([true])
+      },
+      {
+        height:
+          NotchHelper.hasNotch()
+            ? height + statusBarHeight - CUSTOM_TAB_Height - btmSpace
+            : height - CUSTOM_TAB_Height
+      }
+    )
+  }
 
 };
