@@ -6,8 +6,7 @@ import {
   View,
   Text,
   Keyboard,
-  ScrollView,
-  TextInput
+  ScrollView
 } from 'react-native';
 import deepGet from 'lodash/get';
 import utilities from '../../services/Utilities';
@@ -34,8 +33,9 @@ import NumberInput from "../CommonComponents/NumberInput";
 import NumberFormatter from "../../helpers/NumberFormatter";
 import pricer from '../../services/Pricer';
 import PepoPinkIcon from '../../assets/pepo-tx-icon.png';
-import { ostErrors } from '../../services/OstErrors';
 import AppConfig from '../../constants/AppConfig'
+
+//TODO setParams dont use 
 
 const mapStateToProps = (state, ownProps) => {
   return {

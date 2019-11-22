@@ -13,21 +13,12 @@ import CurrentUser from '../../models/CurrentUser';
 class BottomStatus extends PureComponent {
   constructor(props) {
     super(props);
+    this.videoDescriptionId = reduxGetter.getVideoDescriptionId(this.props.entityId);
   }
 
   onLinkClick = () => {
     InAppBrowser.openBrowser(this.props.link);
   };
-
-  onTagPressed = (tag) => {
-    let entity = reduxGetter.getTappedIncludesEntity(this.props.entityDescriptionId, tag);
-    this.onDescriptionClick(entity, tag);
-  };
-
-  isValidTag(descriptionId, tappedText) {
-    let entity = reduxGetter.getTappedIncludesEntity(descriptionId, tappedText);
-    return !!entity
-  }
 
   navigateToUserProfile = () => {
     if(!this.props.isUserNavigate) return;
@@ -40,21 +31,83 @@ class BottomStatus extends PureComponent {
     }
   };
 
-  onDescriptionClick = ( tapEntity  ) => {
+  isValidTag(descriptionId, tappedText) {
+    if(tappedText.indexOf('#') != 0 ) return false;
+    return this.isValidIncludes( descriptionId, tappedText );
+  }
+
+  isValidMention(descriptionId, tappedText) {
+    if(tappedText.indexOf('@') != 0 ) return false;
+    return this.isValidIncludes( descriptionId, tappedText );
+  }
+
+  isValidIncludes(descriptionId, tappedText){
+    return !!reduxGetter.getTappedIncludesEntity(descriptionId, tappedText);
+  }
+
+  getHashTagMarkup( item , prevText ){
+    const tagText = item.replace("#", "");
+    return (
+      <Text>
+        {prevText}
+        <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
+              numberOfLines={1}
+              onPress={() => {
+                this.onIncludesPressed(item)
+              }}>
+          <Text style={{fontStyle: 'italic'}}>#</Text>
+          {tagText}
+        </Text>
+      </Text>
+    );
+  }
+
+  getMentionMarkup( item , prevText ){
+    const mentionText = item.replace("@", "");
+    return (
+      <Text>
+        {prevText}
+        <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
+              numberOfLines={1}
+              onPress={() => {
+                this.onIncludesPressed(item)
+              }}>
+          <Text style={{fontStyle: 'italic'}}>@</Text>
+          {mentionText}
+        </Text>
+      </Text>
+    );
+  }
+
+  onIncludesPressed = (tag) => {
+    let tapEntity = reduxGetter.getTappedIncludesEntity(this.props.entityDescriptionId, tag);
     if (!tapEntity) {
       return;
     }
+
     if( tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', {
-        "tagId": tapEntity.id
-      });
+      this.props.navigation.push('VideoTags', { "tagId": tapEntity.id });
+      return;
     }
+
+    if( tapEntity.kind === 'users'){
+      this.props.navigation.push('UsersProfileScreen', { userId: tapEntity.id });
+      return;
+    }
+  };
+
+  getTextMarkup( item  , prevText){
+    return (
+      <Text>
+        {prevText + item}
+      </Text>
+    )
   }
 
   render() {
 
     let processingString = this.props.description;
-    let hasTagArray = processingString.match(/#\w+/g) || [];
+    let includesArray = processingString.match(/(#|@)\w+/g) || [];
 
     return (
       <View style={inlineStyles.bottomBg}>
@@ -72,38 +125,19 @@ class BottomStatus extends PureComponent {
                 numberOfLines={3}
               >
 
-                {(hasTagArray.map((hashTag) => {
-
-                  let tagLocation = processingString.search(hashTag);
+                {(includesArray.map((item) => {
+                  let tagLocation = processingString.search(item);
                   let prevText = processingString.slice(0, tagLocation);
-
-                  processingString = processingString.slice(tagLocation + hashTag.length);
-
-                  if (this.isValidTag(this.videoDescriptionId, hashTag)) {
-                    let tagText = hashTag.replace("#", "");
-                    return (
-                      <Text>
-                        {prevText}
-                        <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
-                              numberOfLines={1}
-                              onPress={() => {
-                                this.onTagPressed(hashTag)
-                              }}>
-                          <Text style={{fontStyle: 'italic'}}>#</Text>
-                          {tagText}
-                        </Text>
-                      </Text>
-
-                    );
-                  } else {
-                    return (
-                      <Text>
-                        {prevText + hashTag}
-                      </Text>
-                    )
+                  processingString = processingString.slice(tagLocation + item.length);
+                  if (this.isValidTag(this.videoDescriptionId, item)) {
+                    return this.getHashTagMarkup(item, prevText);
+                  } if( this.isValidMention(this.videoDescriptionId ,  item) ){
+                    return this.getMentionMarkup(item, prevText);
+                  }else {
+                    return this.getHashTagMarkup(item, prevText);
                   }
-                }))
-                }
+                }))}
+                
                 <Text>{processingString}</Text>
 
               </Text>

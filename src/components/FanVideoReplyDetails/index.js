@@ -9,7 +9,6 @@ import {
   ScrollView
 } from 'react-native';
 import deepGet from 'lodash/get';
-import utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
 import styles from './styles';
 import VideoDescription from '../FanVideoDetails/VideoDescription';
@@ -32,6 +31,8 @@ import DataContract from "../../constants/DataContract";
 import pricer from "../../services/Pricer";
 import {ensureDeivceAndSession} from "../../helpers/TransactionHelper";
 import Toast from "../../theme/components/NotificationToast";
+
+//TODO setParams dont use 
 
 const mapStateToProps = (state, ownProps) => {
   return {
