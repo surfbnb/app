@@ -68,13 +68,9 @@ class VideoReplyRow extends PureComponent {
                                         paginationService={this.props.paginationService}
                                         onChildClickDelegate={this.props.onChildClickDelegate}
                                         currentIndex={this.props.currentIndex}
-                                        parentIconHeight={AppConfig.thumbnailListConstants.parentIconHeight + marginTopForParentIcon }
+                                        // parentIconHeight={AppConfig.thumbnailListConstants.parentIconHeight + marginTopForParentIcon }
                     />
-                    <ProfilePicture userId={parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
-                      width: AppConfig.thumbnailListConstants.parentIconWidth,
-                      borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
-                      marginTop: marginTopForParentIcon }}
-                    />
+
                   </View>
 
                     <FanVideo
@@ -98,7 +94,16 @@ class VideoReplyRow extends PureComponent {
                                         entityId={replyDetailId}
                                         getPixelDropData={this.getPixelDropData}
                                     />
-                                    <ReplyIcon userId={this.parentUserId}  videoId={this.parentVideoId} />
+                                  <ProfilePicture userId={parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
+                                    width: AppConfig.thumbnailListConstants.parentIconWidth,
+                                    borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
+                                    marginVertical: 12
+                                  }}
+                                  />
+
+
+
+                                    {/*<ReplyIcon userId={this.parentUserId}  videoId={this.parentVideoId} />*/}
                                     <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
                                     <View ref={(ref)=> {this.reportViewRef = ref }} onLayout={()=>{}} >
                                       <ReportVideo  userId={userId} reportEntityId={this.replyId} reportKind={'reply'} />

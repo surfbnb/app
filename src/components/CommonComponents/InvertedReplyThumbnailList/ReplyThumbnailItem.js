@@ -24,7 +24,7 @@ class ReplyThumbnailItem extends Component {
   }
 
   render() {
-    return <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})} 
+    return <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
                   style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive() && inlineStyle.active]}>
               <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
           </TouchableOpacity>
@@ -32,38 +32,42 @@ class ReplyThumbnailItem extends Component {
 }
 
 const inlineStyle= {
-  iconStyle: { height: AppConfig.thumbnailListConstants.iconHeight,
-            width: AppConfig.thumbnailListConstants.iconWidth,
-            borderRadius: AppConfig.thumbnailListConstants.iconWidth/ 2
+  iconStyle: { height: AppConfig.thumbnailListConstants.iconHeight - 8,
+            width: AppConfig.thumbnailListConstants.iconWidth - 8,
+            borderRadius: (AppConfig.thumbnailListConstants.iconWidth - 8)/ 2
   },
   borderStyle: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#fff'
   },
   wrapperStyle: {
-    width: 60,
-    height: 60,
-    backgroundColor: 'transparent'
+    width: AppConfig.thumbnailListConstants.iconWidth  ,
+    height:AppConfig.thumbnailListConstants.iconHeight  ,
+    borderRadius: (AppConfig.thumbnailListConstants.iconWidth   )/ 2,
+    padding: 4
   },
   active: {
     shadowColor: '#fff',
-    shadowOffset: {
-      width: -5,
-      height: 3
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
-    shadowRadius: 15,
-    borderRadius: 30
+    shadowRadius: 4,
+    elevation: 5
   },
   unseen: {
+
     shadowColor: 'red',
-    shadowOffset: {
-      width: -5,
-      height: 3
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
-    shadowRadius: 15,
-    borderRadius: 30
+    shadowRadius: 4,
+    elevation: 5
+    // shadowColor: 'red',
+    // shadowOffset: {
+    //   width: 1,
+    //   height: 1
+    // },
+    // shadowOpacity: 1,
+    // shadowRadius: 15,
+    // borderRadius: 30
   }
 }
 

@@ -335,8 +335,10 @@ export default {
   MaxDescriptionArea: 35250,
   thumbnailListConstants: {
     separatorHeight: 25,
-    iconHeight:35,
-    iconWidth: 35,
+    // this is height of profile icon + shadow around it.
+    iconHeight:44,
+    // this is width of profile icon + shadow around it.
+    iconWidth: 44,
     parentIconHeight: 50,
     parentIconWidth: 50
   },
