@@ -57,8 +57,8 @@ class VideoReplyRow extends PureComponent {
 
     defaultParentClickHandler(){
       this.props.navigation.push('VideoPlayer', {
-        userId: this.parentUserId,
-        videoId: this.parentVideoId
+        userId: this.props.parentUserId,
+        videoId: this.props.parentVideoId
       })
     }
 
@@ -104,15 +104,15 @@ class VideoReplyRow extends PureComponent {
                                         getPixelDropData={this.getPixelDropData}
                                     />
                                     <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentClickDelegate()})}>
-                                      <ProfilePicture userId={parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
+                                      <ProfilePicture userId={this.props.parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
                                         width: AppConfig.thumbnailListConstants.parentIconWidth,
                                         borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
                                         marginVertical: 12
                                       }}
                                       />
                                     </TouchableOpacity>
-                                    <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
-                                    <ReportVideo  userId={userId} reportEntityId={this.replyId} reportKind={'reply'} />
+                                    <ShareIcon  userId={this.props.userId} entityId={this.props.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)} />
+                                    <ReportVideo  userId={this.props.userId} reportEntityId={this.replyId} reportKind={'reply'} />
                                  </View>
 
                                 <VideoReplySupporterStat
