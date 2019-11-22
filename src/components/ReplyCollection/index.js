@@ -178,11 +178,10 @@ class ReplyCollection extends PureComponent {
     }
 
     _renderVideoReplyThumbnail( item, index ) {
-        const userId = deepGet(item, "payload.user_id");
         const reply_detail_id = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
         const videoId = ReduxGetters.getReplyEntityId(reply_detail_id);
         return (<View style={{position: 'relative'}}>
-        {this.isCurrentUser( userId ) && <LinearGradient
+        {ReduxGetters.getCanDeleteVideo( videoId ) && <LinearGradient
              colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
              locations={[0, 0.5, 1]}
              start={{ x: 0, y: 0 }}
@@ -218,7 +217,6 @@ class ReplyCollection extends PureComponent {
             "baseUrl": this.props.fetchUrl
         });
     }
-
 
     renderFooter = () => {
         if (!this.state.loadingNext) return null;

@@ -10,7 +10,7 @@ import multipleClickHandler from '../../../services/MultipleClickHandler';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-      seen: reduxGetters.getReplyEntitySeen( reduxGetters.getReplyEntityId(deepGet(ownProps.payload,'reply_detail_id')))
+      seen: reduxGetters.isVideoSeen( reduxGetters.getReplyEntityId(deepGet(ownProps.payload,'reply_detail_id')))
     };
 };
 
