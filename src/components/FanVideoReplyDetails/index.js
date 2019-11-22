@@ -32,6 +32,8 @@ import pricer from "../../services/Pricer";
 import {ensureDeivceAndSession} from "../../helpers/TransactionHelper";
 import Toast from "../../theme/components/NotificationToast";
 
+//TODO setParams dont use 
+
 const mapStateToProps = (state, ownProps) => {
   return {
     recordedVideo: reduxGetter.getRecordedVideo()

@@ -27,6 +27,7 @@ import DataContract from "../constants/DataContract";
 import {TransactionExecutor} from './TransactionExecutor';
 import { ostSdkErrors } from '../services/OstSdkErrors';
 import AppConfig from '../constants/AppConfig';
+import { fetchVideo } from '../helpers/helpers';
 const recordedVideoStates = [
   'raw_video',
   'compressed_video',
@@ -180,8 +181,6 @@ class CameraWorker extends PureComponent {
   };
 
   videoUploadedSuccessCallback = ( ostWorkflowContext, ostWorkflowEntity ) => {
-    //todo @ashutosh
-    let replyDetailId = deepGet(this.props.recorded_video , 'reply_obj.replyDetailId');
     console.log('CameraWorker.videoUploadedSuccessCallback');
     Toast.show({
       text: 'Your video uploaded successfully.',
@@ -195,6 +194,12 @@ class CameraWorker extends PureComponent {
         pepo_api_posting: false,
       })
     );
+    this.fetchParentVideo();
+  };
+
+  fetchParentVideo = () => {
+    const videoId = deepGet(this.props.recorded_video , 'reply_obj.replyReceiverVideoId');
+    fetchVideo( videoId  );
   };
 
   onFlowInterrupt = (ostWorkflowContext, error) => {

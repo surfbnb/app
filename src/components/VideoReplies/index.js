@@ -41,7 +41,8 @@ class VideoRepliesScreen extends PureComponent {
     static navigationOptions = ({ navigation, navigationOptions }) => {
       return {
         header: null,
-        headerBackTitle: null
+        headerBackTitle: null,
+        gesturesEnabled: false
       };
     };
 
@@ -58,6 +59,7 @@ class VideoRepliesScreen extends PureComponent {
 
       this.state = {
         showBackdrop : false,
+        addRepliesVisible : true,
         videoUploaderVisible: false,
         currentHeight : this.initialHeight
       }
@@ -91,7 +93,7 @@ class VideoRepliesScreen extends PureComponent {
   
     hideVideoUploader = () => {
       this.setState({
-        videoUploaderVisible: false
+        videoUploaderVisible: false 
       });
     };
 
@@ -99,6 +101,7 @@ class VideoRepliesScreen extends PureComponent {
       clearTimeout(this.panelAnimateTimeOut);
       this.panelAnimateTimeOut =  setTimeout(()=> {
         if( value < 10){
+          this.state.addRepliesVisible =  false;
           this.hideVideoUploader();
           this.props.navigation.goBack();
         }
@@ -168,7 +171,7 @@ class VideoRepliesScreen extends PureComponent {
                   }}
                   ref={c => (this._panel = c)}
                   draggableRange={{
-                    top: height - topPadding, //TODO check is top expand
+                    top: height - topPadding,
                     bottom: 0
                   }}
                   showBackdrop={this.state.showBackdrop}
@@ -185,16 +188,10 @@ class VideoRepliesScreen extends PureComponent {
                           <Text numberOfLines={1} style={inlineStyles.headerText}>
                             Replies to {ReduxGetters.getUserName(this.userId)}
                           </Text>
-                          {/* {TODO integration pending} */}
                           <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
                           <Image style={{height: 10, width: 10}} source={pepoIcon} />
                           { Pricer.getToBT(Pricer.getFromDecimal(ReduxGetters.getBtAmountForReply(this.videoId )), 2)}</Text>
                         </View>
-
-                        {/*<TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >*/}
-                          {/*<Image style={[inlineStyles.iconSkipFont, {height: 25, width: 25}]} source={plusIcon} />*/}
-                        {/*</TouchableOpacity>*/}
-
                       </View>
                       <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
                                         onData={this.onData}
@@ -206,15 +203,16 @@ class VideoRepliesScreen extends PureComponent {
 
                 )}
               </SlidingUpPanel>
-            <TouchableWithoutFeedback onPress={this.openCamera}>
-              <View style={inlineStyles.addReplyView}>
-                <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimension}></Image>
-                <Text style={inlineStyles.addReplyText}>
-                  Add a reply...
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
-
+              {this.state.addRepliesVisible && (
+                 <TouchableWithoutFeedback onPress={this.openCamera}>
+                 <View style={inlineStyles.addReplyView}>
+                   <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimension}></Image>
+                   <Text style={inlineStyles.addReplyText}>
+                     Add a reply...
+                   </Text>
+                 </View>
+               </TouchableWithoutFeedback>
+              )}
           </React.Fragment>
         );
     }

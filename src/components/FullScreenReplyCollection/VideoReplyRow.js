@@ -27,12 +27,18 @@ import ProfilePicture from "../ProfilePicture";
 const marginTopForParentIcon = 15;
 const AREA = AppConfig.MaxDescriptionArea;
 const height = AREA / Dimensions.get('window').width + 20;
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        parentVideoId : ReduxGetters.getReplyParentVideoId( ownProps.replyDetailId ,state ),
+        parentUserId :  ReduxGetters.getReplyParentUserId(ownProps.replyDetailId , state )
+    };
+  };
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
         super(props);
-        this.parentVideoId = ReduxGetters.getReplyParentVideoId( this.props.replyDetailId );
-        this.parentUserId =  ReduxGetters.getReplyParentUserId( this.props.replyDetailId );
     }
 
   refetchVideoReply = () => {
@@ -43,18 +49,13 @@ class VideoReplyRow extends PureComponent {
     };
 
     getPixelDropData = () => {
-        const parentData =  this.props.getPixelDropData();
-        const pixelParams = { e_entity: 'reply' , parent_video_id : this.parentVideoId ,  reply_detail_id :this.props.replyDetailId  };
+        const parentData =  this.props.getPixelDropData(); 
+        const pixelParams = { e_entity: 'reply' , parent_video_id : this.props.parentVideoId ,  reply_detail_id :this.props.replyDetailId  };
         return assignIn({}, pixelParams, parentData);
     }
 
     render() {
-        let userId = this.props.userId,
-            replyDetailId = this.props.replyDetailId,
-            videoId = ReduxGetters.getReplyEntityId(replyDetailId),
-            parentVideoId = ReduxGetters.getReplyEntity( replyDetailId )[DataContract.replies.parentVideoIdKey],
-          parentUserId = ReduxGetters.getReplyEntity(replyDetailId)[DataContract.replies.creatorUserIdKey];
-        ;
+        const videoId = ReduxGetters.getReplyEntityId(this.props.replyDetailId);
         return (
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
 
@@ -75,14 +76,14 @@ class VideoReplyRow extends PureComponent {
 
                     <FanVideo
                         shouldPlay={this.props.shouldPlay}
-                        userId={userId}
+                        userId={this.props.userId}
                         videoId={videoId}
                         doRender={this.props.doRender}
                         isActive={this.props.isActive}
                         getPixelDropData={this.getPixelDropData}
                     />
 
-                    {!!videoId && !!userId && (
+                    {!!videoId && !!this.props.userId && (
                         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
 
                             <View style={inlineStyles.touchablesBtns}>
@@ -90,34 +91,29 @@ class VideoReplyRow extends PureComponent {
                                 <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
                                     <ReplyPepoTxBtn
                                         resyncDataDelegate={this.refetchVideoReply}
-                                        userId={userId}
-                                        entityId={replyDetailId}
+                                        userId={this.props.userId}
+                                        entityId={this.props.replyDetailId}
                                         getPixelDropData={this.getPixelDropData}
                                     />
-                                  <ProfilePicture userId={parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
-                                    width: AppConfig.thumbnailListConstants.parentIconWidth,
-                                    borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
-                                    marginVertical: 12
-                                  }}
-                                  />
+                                    <ProfilePicture userId={this.props.parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
+                                      width: AppConfig.thumbnailListConstants.parentIconWidth,
+                                      borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
+                                      marginVertical: 12
+                                    }}
+                                    />
+                                    <ShareIcon  userId={this.props.userId} entityId={this.props.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)} />
+                                    <ReportVideo  userId={this.props.userId} reportEntityId={this.replyId} reportKind={'reply'} />
+                                </View>
 
+                                <VideoReplySupporterStat
+                                    entityId={this.props.replyDetailId}
+                                    userId={this.props.userId}
+                                />
+                            </View>
 
-
-                                    {/*<ReplyIcon userId={this.parentUserId}  videoId={this.parentVideoId} />*/}
-                                    <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
-                                    <View ref={(ref)=> {this.reportViewRef = ref }} onLayout={()=>{}} >
-                                      <ReportVideo  userId={userId} reportEntityId={this.replyId} reportKind={'reply'} />
-                                    </View>
-                                    </View>
-
-                                  <VideoReplySupporterStat
-                                      entityId={replyDetailId}
-                                      userId={userId}
-                                  />
-                              </View>
                             <ReplyVideoBottomStatus
-                                userId={userId}
-                                entityId={replyDetailId}
+                                userId={this.props.userId}
+                                entityId={this.props.replyDetailId}
                             />
                         </View>
                         
@@ -125,7 +121,7 @@ class VideoReplyRow extends PureComponent {
 
                 </View>
 
-                <BottomReplyBar  userId={this.parentUserId}  videoId={this.parentVideoId} />
+                <BottomReplyBar  userId={this.props.parentUserId}  videoId={this.props.parentVideoId} />
             </View>
         );
     }
@@ -139,4 +135,4 @@ VideoReplyRow.defaultProps = {
     paginationService : null
   };
 
-export default withNavigation(VideoReplyRow);
+export default connect(mapStateToProps)(withNavigation(VideoReplyRow));

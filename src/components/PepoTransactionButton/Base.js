@@ -122,7 +122,7 @@ class Base extends PureComponent {
   }
 
   dropPixel() {
-    //TODO @Ashutosh , confrim from @Akshay
+
     PixelCall(this.getDropPixel());
   }
 

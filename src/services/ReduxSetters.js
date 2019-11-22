@@ -8,7 +8,6 @@ const knownEntitiesDispatcherMap = {
   tag_search_results:'upsertTagEntities',
   user_search_results:'upsertUserEntities',
   user_profiles: 'upsertUserProfileEntities',
-  user_profile: 'upsertUserProfileEntities',
   user_stats: 'upsertUserStatEntities',
   links: 'upsertLinkEntities',
   video_descriptions: 'upsertVideoDescriptionEntities',
@@ -42,13 +41,35 @@ const knownEntitiesDispatcherMap = {
   pepocorn_balance: 'updatePepocorn'
 };
 
+// This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.
+const knownSinglularEntityMap = {
+  "user_profile": "user_profiles"
+};
+
 const dispatchEntities = (data) => {
   if (!data) return;
-  for (let entity in data) {
-    data.hasOwnProperty(entity) &&
-      Actions[knownEntitiesDispatcherMap[entity]] &&
-      Store.dispatch(Actions[knownEntitiesDispatcherMap[entity]](getEntities(data[entity])));
-  }
+  for (let entity in data) { if (data.hasOwnProperty(entity)) {
+
+    let reduxAction = knownEntitiesDispatcherMap[entity];
+    let entitiesData = data[entity];
+
+
+      if ( null == reduxAction ) {
+        // Try know singular entity.
+        let entityCollectionKey = knownSinglularEntityMap[entity];
+        if ( entityCollectionKey ) {
+          // Manipulate the data.
+          entitiesData = [entitiesData];
+          // Manipulate the redux action.
+          reduxAction = knownEntitiesDispatcherMap[entityCollectionKey];
+        }
+      }
+
+      if ( Actions[reduxAction] ) {
+        Store.dispatch(Actions[reduxAction](getEntities(entitiesData)));
+      }
+
+  }}
 };
 
 const getEntities = (entities, key = 'id') => {

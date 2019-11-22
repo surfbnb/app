@@ -2,10 +2,10 @@ import AppConfig from '../constants/AppConfig'
 import NavigationService from "../services/NavigationService";
 import Utilities from "../services/Utilities";
 import CurrentUser from "../models/CurrentUser";
-import { Toast } from "native-base";
 import { ostErrors } from "../services/OstErrors";
 import Pricer from "../services/Pricer";
 import ReduxGetters from "../services/ReduxGetters";
+import Toast from  '../theme/components/NotificationToast';
 
 const getVideoReplyObject = (videoId, creatorUserId) => {
   return {

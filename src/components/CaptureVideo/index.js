@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import VideoRecorder from '../VideoRecorder';
+import { View } from 'react-native';
 import PreviewRecordedVideo from '../PreviewRecordedVideo';
 import Store from "../../store";
 import {upsertRecordedVideo} from "../../actions";
 import utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
 import AppConfig from '../../constants/AppConfig';
+
+import FanVideoDetails from '../FanVideoDetails';
+import KeepAwake from 'react-native-keep-awake';
+
 
 
 class CaptureVideo extends Component {
@@ -188,7 +193,10 @@ class CaptureVideo extends Component {
   }
 
   render() {
-    return this.getCurrentView();
+    return <View style={{flex:1 }}>
+      <KeepAwake />
+      {this.getCurrentView()}
+    </View>
   }
 }
 

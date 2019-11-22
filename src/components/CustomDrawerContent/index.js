@@ -147,7 +147,6 @@ class CustomDrawerContent extends Component {
   };
 
   initWallet = () => {
-    //TODO: Navigation should push instead of navigate
     this.props.navigation.navigate('WalletSettingScreen');
   };
 
@@ -254,7 +253,7 @@ class CustomDrawerContent extends Component {
           >
             <View style={styles.itemParent}>
               <Image style={{ height: 29, width: 26.6, resizeMode: 'contain' }} source={referAndEarn} />
-              <Text style={styles.item}>Refer and Earn</Text>
+              <Text style={styles.item}>Invite</Text>
             </View>
           </TouchableOpacity>
           {this.renderWalletSetting()}

@@ -334,7 +334,6 @@ class TransactionScreen extends Component {
     );
   }
 
-  //TODO , NOT SURE if bug comes this also will have to connected via redux.
   onBalance(balance, res) {
     balance = pricer.getFromDecimal(balance);
     balance = Number(PriceOracle.toBt(balance)) || 0;

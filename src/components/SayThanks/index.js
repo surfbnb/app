@@ -5,8 +5,7 @@ import {
   Keyboard,
   BackHandler,
   ActivityIndicator,
-  TouchableWithoutFeedback,
-  Switch
+  TouchableWithoutFeedback
 } from 'react-native';
 import { connect } from 'react-redux';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
@@ -157,7 +156,6 @@ class SayThanks extends Component {
                           thanksMessage: this.tweeterHandle ? `@${this.tweeterHandle} ${this.state.thanksMessage}`: this.state.thanksMessage
                         });
                       } else {
-                        //TODO: show error
                         if (resp.err.msg) {
                           Toast.show({ text: resp.err.msg, icon: 'error' });
                         }

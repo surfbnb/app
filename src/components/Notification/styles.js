@@ -8,7 +8,8 @@ let stylesMap = {
     marginLeft: 0,
     marginRight: 0,
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    minWidth: '100%'
   },
 
   txtWrapper: {
@@ -95,7 +96,8 @@ let stylesMap = {
     // borderTopColor: '#eee',
     // borderTopWidth: 1,
     marginHorizontal: 15,
-    paddingTop: 15
+    paddingTop: 15,
+    marginTop: 5
   },
 
 
@@ -138,7 +140,7 @@ let stylesMap = {
   activityIcon :{
     paddingLeft: 10,
     paddingRight: 4,
-    paddingVertical: 10,
+    paddingVertical: 0,
     width: 46
   }
 

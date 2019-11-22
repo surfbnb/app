@@ -11,6 +11,7 @@ import VideoReplyRow from '../../FullScreenReplyCollection/VideoReplyRow';
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import CommonStyles from "../../../theme/styles/Common";
 import { SafeAreaView } from "react-navigation";
+import { fetchVideo } from '../../../helpers/helpers';
 
 class VideoReplyPlayer extends PureComponent {
 
@@ -58,7 +59,7 @@ class VideoReplyPlayer extends PureComponent {
       new PepoApi(DataContract.replies.getSingleVideoReplyApi(this.replyDetailId))
         .get()
         .then((res) => { this.onRefetchVideo(res) })
-        .catch((error) => {});
+        .catch((error) => {});   
     };
 
     onRefetchVideo = ( res ) => {
@@ -66,6 +67,7 @@ class VideoReplyPlayer extends PureComponent {
         this.setState({isDeleted: true});
         return;
       }
+      this.fetchParentVideo( res );
       const users = deepGet(res , "data.users") || {} ,
             userKeys =  Object.keys(users) || [] ,
             userId = userKeys[0] || null;
@@ -73,6 +75,11 @@ class VideoReplyPlayer extends PureComponent {
         this.setState({ userId : userId});
       }
     };
+
+    fetchParentVideo = (res) => {
+      const parentVideoId =  deepGet(res, `data.reply_details.${this.replyDetailId}.parent_id` );
+      fetchVideo(parentVideoId);
+    }
 
     getPixelDropData = () => {
       return pixelParams = {

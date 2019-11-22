@@ -130,7 +130,7 @@ class ReduxGetters {
 
   getVideoReplyCount(id, state){
     state = state || Store.getState();
-    return deepGet(state, `video_stat_entities.id_${id}.total_replies`, 0);
+    return deepGet(state, `video_stat_entities.id_${id}.total_video_replies`, 0);
   }
 
   getBtAmountForReply(id, state){
