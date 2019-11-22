@@ -134,7 +134,7 @@ class BottomStatus extends PureComponent {
                   } if( this.isValidMention(this.videoDescriptionId ,  item) ){
                     return this.getMentionMarkup(item, prevText);
                   }else {
-                    return this.getHashTagMarkup(item, prevText);
+                    return this.getTextMarkup(item, prevText);
                   }
                 }))}
                 
