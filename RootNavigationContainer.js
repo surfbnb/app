@@ -144,6 +144,8 @@ const FullScreenReplyStack = createStackNavigator(
     UserVideoHistory: UserVideoHistory,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
+    VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
   },
   {
