@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
-import { View , Dimensions} from 'react-native';
+import { View , Dimensions, TouchableOpacity} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import FanVideo from "../VideoWrapper/FanVideo";
 import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import BottomReplyBar from "../CommonComponents/BottomReplyBar";
-import ReplyIcon from "../CommonComponents/ReplyIcon";
 import PepoApi from '../../services/PepoApi';
 
 import inlineStyles from './styles';
@@ -22,6 +21,7 @@ import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 
 import AppConfig from "../../constants/AppConfig";
 import ProfilePicture from "../ProfilePicture";
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 
 const marginTopForParentIcon = 15;
@@ -33,6 +33,7 @@ class VideoReplyRow extends PureComponent {
         super(props);
         this.parentVideoId = ReduxGetters.getReplyParentVideoId( this.props.replyDetailId );
         this.parentUserId =  ReduxGetters.getReplyParentUserId( this.props.replyDetailId );
+        this.onParentClickDelegate = this.props.onParentClickDelegate || this.defaultParentClickHandler;
     }
 
   refetchVideoReply = () => {
@@ -48,11 +49,17 @@ class VideoReplyRow extends PureComponent {
         return assignIn({}, pixelParams, parentData);
     }
 
+    defaultParentClickHandler(){
+      this.props.navigation.push('VideoPlayer', {
+        userId: this.parentUserId,
+        videoId: this.parentVideoId
+      })
+    }
+
     render() {
         let userId = this.props.userId,
             replyDetailId = this.props.replyDetailId,
             videoId = ReduxGetters.getReplyEntityId(replyDetailId),
-            parentVideoId = ReduxGetters.getReplyEntity( replyDetailId )[DataContract.replies.parentVideoIdKey],
           parentUserId = ReduxGetters.getReplyEntity(replyDetailId)[DataContract.replies.creatorUserIdKey];
         ;
         return (
@@ -61,7 +68,7 @@ class VideoReplyRow extends PureComponent {
                 <View style={CommonStyle.videoWrapperfullScreen}>
 
                   <View style={{position: "absolute" , left: 10 , bottom : height, zIndex: 9 }}>
-                    <InvertedReplyList  videoId={parentVideoId}
+                    <InvertedReplyList  videoId={this.parentVideoId}
                                         userId={parentUserId}
                                         doRender={this.props.doRender}
                                         paginationService={this.props.paginationService}
@@ -94,14 +101,14 @@ class VideoReplyRow extends PureComponent {
                                         entityId={replyDetailId}
                                         getPixelDropData={this.getPixelDropData}
                                     />
-                                  <ProfilePicture userId={parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
-                                    width: AppConfig.thumbnailListConstants.parentIconWidth,
-                                    borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
-                                    marginVertical: 12
-                                  }}
-                                  />
-
-
+                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentClickDelegate()})}>
+                                      <ProfilePicture userId={parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
+                                      width: AppConfig.thumbnailListConstants.parentIconWidth,
+                                      borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
+                                      marginVertical: 12
+                                      }}
+                                      />
+                                    </TouchableOpacity>
 
                                     {/*<ReplyIcon userId={this.parentUserId}  videoId={this.parentVideoId} />*/}
                                     <ShareIcon  userId={userId} entityId={replyDetailId} url={DataContract.share.getVideoReplyShareApi(replyDetailId)} />
