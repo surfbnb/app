@@ -35,7 +35,6 @@ class VideoReplyRow extends PureComponent {
         this.parentUserId =  ReduxGetters.getReplyParentUserId( this.props.replyDetailId );
     }
 
-
   refetchVideoReply = () => {
         new PepoApi(`/replies/${this.props.replyDetailId}`)
             .get()
@@ -69,6 +68,7 @@ class VideoReplyRow extends PureComponent {
                                         onChildClickDelegate={this.props.onChildClickDelegate}
                                         currentIndex={this.props.currentIndex}
                                         // parentIconHeight={AppConfig.thumbnailListConstants.parentIconHeight + marginTopForParentIcon }
+                                        showActiveIndicator={true}
                     />
 
                   </View>

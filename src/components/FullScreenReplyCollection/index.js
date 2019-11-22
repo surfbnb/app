@@ -27,6 +27,7 @@ class FullScreenReplyCollection extends PureComponent{
         this.setVideoPagination();
         this.paginationEvent = this.getVideoPagination().event;
         this.currentIndex = this.props.navigation.getParam("currentIndex");
+        this.parentClickHandler = this.props.navigation.getParam("parentClickHandler");
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
         this.flatlistRef = null;
@@ -162,6 +163,7 @@ class FullScreenReplyCollection extends PureComponent{
                                 replyDetailId={replyDetailId}
                                 paginationService ={this.getVideoPagination()}
                                 onChildClickDelegate={this.childClickHandler}
+                                onParentClickDelegate={this.parentClickHandler}
                                 currentIndex={this.state.activeIndex}
          /> ;
     }

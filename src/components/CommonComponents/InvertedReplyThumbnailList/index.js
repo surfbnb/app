@@ -7,6 +7,7 @@ import ReplyThumbnailItem from './ReplyThumbnailItem'
 import {FlatList} from 'react-native-gesture-handler';
 import ReplyHelper from '../../../helpers/ReplyHelper';
 import AppConfig from "../../../constants/AppConfig";
+import DataContract from '../../../constants/DataContract';
 
 //
 const ITEM_HEIGHT = AppConfig.thumbnailListConstants.iconHeight +  AppConfig.thumbnailListConstants.iconWidth;
@@ -47,12 +48,14 @@ class InvertedReplyList extends Component {
   }
 
   defaultChildClickHandler = ( index, item )=> {
-    const parentVideoId = this.props.videoId,
-          parentUserId = this.props.userId,
-          clonedInstance = this.getPagination().fetchServices.cloneInstance(),
-          navigation = this.props.navigation;
+    const baseUrl = DataContract.replies.getReplyListApi(this.props.videoId),
+          clonedInstance = this.getPagination().fetchServices.cloneInstance();
     ReplyHelper.updateEntitySeen( item );
-    ReplyHelper.openRepliesList(parentUserId, parentVideoId, clonedInstance, index, navigation);
+    this.props.navigation.push('FullScreenReplyCollection',{
+      "fetchServices": clonedInstance,
+      "currentIndex":index,
+      "baseUrl": baseUrl
+    });
   };
 
   setPagination() {
@@ -79,7 +82,7 @@ class InvertedReplyList extends Component {
       this.initPagination();
     }
     if(this.props.currentIndex != prevProps.currentIndex){
-      this.listRef && this.listRef.scrollToIndex({index : this.props.currentIndex});
+      this.listRef && this.listRef.scrollToIndex({index : this.props.currentIndex, viewOffset: 50, viewPosition: 0});
     }
   }
 
@@ -190,7 +193,7 @@ class InvertedReplyList extends Component {
   };
 
   isActive = ( index )=>{
-    return this.props.currentIndex == index;
+    return this.props.showActiveIndicator && this.props.currentIndex == index;
   }
 
   setListRef = (ref) => {
@@ -254,7 +257,8 @@ class InvertedReplyList extends Component {
 InvertedReplyList.defaultProps = {
   paginationService : null,
   doRender: true,
-  currentIndex: 0
+  currentIndex: 0,
+  showActiveIndicator: false
 };
 
 //make this component available to the app
