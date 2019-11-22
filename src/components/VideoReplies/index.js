@@ -41,7 +41,8 @@ class VideoRepliesScreen extends PureComponent {
     static navigationOptions = ({ navigation, navigationOptions }) => {
       return {
         header: null,
-        headerBackTitle: null
+        headerBackTitle: null,
+        gesturesEnabled: false
       };
     };
 
@@ -171,7 +172,7 @@ class VideoRepliesScreen extends PureComponent {
                   }}
                   ref={c => (this._panel = c)}
                   draggableRange={{
-                    top: height - topPadding, //TODO check is top expand
+                    top: height - topPadding,
                     bottom: 0
                   }}
                   showBackdrop={this.state.showBackdrop}
@@ -188,16 +189,10 @@ class VideoRepliesScreen extends PureComponent {
                           <Text numberOfLines={1} style={inlineStyles.headerText}>
                             Replies to {ReduxGetters.getUserName(this.userId)}
                           </Text>
-                          {/* {TODO integration pending} */}
                           <Text style={inlineStyles.headerSubText}>Send a reply with{' '}
                           <Image style={{height: 10, width: 10}} source={pepoIcon} />
                           { Pricer.getToBT(Pricer.getFromDecimal(this.amount), 2)}</Text>
                         </View>
-
-                        {/*<TouchableOpacity onPress={this.openCamera} style={inlineStyles.iconWrapper} >*/}
-                          {/*<Image style={[inlineStyles.iconSkipFont, {height: 25, width: 25}]} source={plusIcon} />*/}
-                        {/*</TouchableOpacity>*/}
-
                       </View>
                       <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
                                         onData={this.onData}

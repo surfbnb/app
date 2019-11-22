@@ -114,7 +114,7 @@ class AddEmailScreen extends React.Component {
   };
 
   onSuccess(res) {
-    //TODO show success screen
+
     this.setState({
       emailSent: true
     });
