@@ -475,6 +475,11 @@ class ReduxGetters {
     return deepGet(state, `reply_detail_entities.id_${id}.entity_id`);
   }
 
+  getReplyEntitySeen(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.seen`, false);
+  }
+
   getReplyDescriptionId(id, state) {
     state = state || Store.getState();
     return deepGet(state, `reply_detail_entities.id_${id}.description_id`);

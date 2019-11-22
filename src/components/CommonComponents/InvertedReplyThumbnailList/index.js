@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, ListView, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
+
 import Pagination from "../../../services/Pagination";
 import ReplyThumbnailItem from './ReplyThumbnailItem'
 import {FlatList} from 'react-native-gesture-handler';
@@ -44,14 +45,14 @@ class InvertedReplyList extends Component {
     this.setClickHandlers();
   }
 
-  defaultChildClickHandler = ( index )=> {
+  defaultChildClickHandler = ( index, item )=> {
     const parentVideoId = this.props.videoId,
           parentUserId = this.props.userId,
           clonedInstance = this.getPagination().fetchServices.cloneInstance(),
           navigation = this.props.navigation;
+    ReplyHelper.updateEntitySeen( item );
     ReplyHelper.openRepliesList(parentUserId, parentVideoId, clonedInstance, index, navigation);
   };
-
 
   setPagination() {
     let fetchUrl = this.getFetchUrl();
@@ -181,9 +182,13 @@ class InvertedReplyList extends Component {
 
   _renderItem = ({item, index}) => {
 
-    return <ReplyThumbnailItem payload={item.payload}  onClickHandler={()=>{this.onItemClick(index)}}  />;
-
+    return <ReplyThumbnailItem payload={item.payload} onClickHandler={()=>{this.onItemClick(index, item)}} isActive={()=>{return this.isActive( index )} }/>
+    
   };
+
+  isActive = ( index )=>{
+    return this.props.currentIndex == index;
+  }
 
   setListRef = (ref) => {
     this.listRef = ref;
@@ -243,7 +248,8 @@ class InvertedReplyList extends Component {
 
 InvertedReplyList.defaultProps = {
   paginationService : null,
-  doRender: true
+  doRender: true,
+  currentIndex: 0
 };
 
 //make this component available to the app

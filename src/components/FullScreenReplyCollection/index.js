@@ -9,6 +9,7 @@ import entityHelper from "../../helpers/EntityHelper";
 import DataContract from "../../constants/DataContract";
 import CommonStyle from "../../theme/styles/Common";
 import { SafeAreaView } from "react-navigation";
+import ReplyHelper from "../../helpers/ReplyHelper";
 
 const maxVideosThreshold = 3;
 
@@ -165,7 +166,8 @@ class FullScreenReplyCollection extends PureComponent{
          /> ;
     }
 
-    childClickHandler = ( index )=> {
+    childClickHandler = ( index, item )=> {
+        ReplyHelper.updateEntitySeen( item );
         this.scrollToIndex( index );
     }
 
