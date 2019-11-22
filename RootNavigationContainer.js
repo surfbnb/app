@@ -104,11 +104,6 @@ const txModalConfig = {
       && nextScene.route.routeName === 'FullScreenReplyCollection') {
       return  NavigationAnimation.zoomIn();
     }
-    else if (prevScene
-      && prevScene.route.routeName === 'FullScreenReplyCollection'
-      && nextScene.route.routeName === 'VideoReplies') {
-      return  NavigationAnimation.zoomOut();
-    }
     return  NavigationAnimation.defaultTransition();
   }
 };
