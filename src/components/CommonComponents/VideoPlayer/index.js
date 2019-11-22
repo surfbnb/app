@@ -9,7 +9,7 @@ import DeletedVideoInfo from '../DeletedVideoInfo';
 import CommonStyles from "../../../theme/styles/Common";
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import { SafeAreaView } from "react-navigation";
-import Colors from "../../../theme/styles/Colors";
+import { fetchVideo } from '../../../helpers/helpers';
 
 class VideoPlayer extends Component {
 
@@ -53,10 +53,7 @@ class VideoPlayer extends Component {
 
     refetchVideo = () => {
       if (this.state.isDeleted) return;
-      new PepoApi(`/videos/${this.videoId}`)
-        .get()
-        .then((res) => { this.onRefetchVideo(res) })
-        .catch((error) => {});
+      fetchVideo( this.videoId , this.onRefetchVideo );
     };
 
     onRefetchVideo = ( res ) => {
