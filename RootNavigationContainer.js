@@ -159,6 +159,8 @@ const HomePushStack = createStackNavigator(
     UserVideoHistory: UserVideoHistory,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
+    VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
     FullScreenVideoCollection: FullScreenVideoCollection
   },
@@ -230,6 +232,8 @@ const ProfilePushStack = createStackNavigator(
     BioScreen: BioScreen,
     EmailScreen: EmailScreen,
     ReferAndEarn: ReferAndEarn,
+    VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     Invites: Invites,
     WalletSettingScreen: WalletSettingScreen,
     WalletDetails: WalletDetails,
@@ -275,6 +279,8 @@ const SearchPushStack = createStackNavigator(
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
+    VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
     FullScreenVideoCollection: FullScreenVideoCollection
   },

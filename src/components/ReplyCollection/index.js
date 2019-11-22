@@ -214,8 +214,13 @@ class ReplyCollection extends PureComponent {
         this.props.navigation.push("FullScreenReplyCollection", {
             "fetchServices" : clonedInstance,
             "currentIndex": index,
-            "baseUrl": this.props.fetchUrl
+            "baseUrl": this.props.fetchUrl,
+            "parentClickHandler": this.parentClickHandler
         });
+    }
+
+    parentClickHandler(){
+        this.props.navigation.goBack(null);
     }
 
     renderFooter = () => {
