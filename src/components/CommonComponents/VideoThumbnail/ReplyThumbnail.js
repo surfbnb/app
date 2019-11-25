@@ -10,9 +10,9 @@ class ReplyThumbnail extends PureComponent {
     super(props);
   }
 
-  getVideoStats(videoId) {
-    let videoBt = reduxGetters.getVideoBt(videoId);
-    return Pricer.getFromDecimal(videoBt) || 0;
+  getReplyStats(replyId) {
+    let replyBt = reduxGetters.getReplyBt(replyId);
+    return Pricer.getFromDecimal(replyBt) || 0;
   }
 
   render(){
@@ -22,9 +22,9 @@ class ReplyThumbnail extends PureComponent {
      userName = reduxGetters.getUserName(userId),
      imageUrl = reduxGetters.getVideoImgUrl(videoId, null,  AppConfig.userVideos.userScreenCoverImageWidth) ,
      videoDesc = reduxGetters.getVideoDescription(reduxGetters.getReplyDescriptionId(videoId)) ,
-     videoBtAmount = this.getVideoStats(videoId)
+     replyBtAmount = this.getReplyStats(replyId)
      ;
-    return <Base  userName={userName} imageUrl={imageUrl} videoDesc={videoDesc} btAmount={videoBtAmount} {...this.props} />;
+    return <Base  userName={userName} imageUrl={imageUrl} videoDesc={videoDesc} btAmount={replyBtAmount} {...this.props} />;
   }
 }
 export default ReplyThumbnail;
