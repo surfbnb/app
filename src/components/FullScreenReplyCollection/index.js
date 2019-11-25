@@ -76,6 +76,12 @@ class FullScreenReplyCollection extends PureComponent{
         this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
             this.isActiveScreen =  false ;
         });
+
+        //If there is no getPassedFetchServices passed that means its a fresh view. 
+        //So load data 
+        if(!this.getPassedFetchServices()){
+            this.refresh();
+        }
     }
 
     componentWillUnmount(){

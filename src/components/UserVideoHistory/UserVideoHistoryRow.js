@@ -19,7 +19,7 @@ import CommonStyle from "../../theme/styles/Common";
 import assignIn from 'lodash/assignIn';
 import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 import AppConfig from "../../constants/AppConfig";
-import BubbleList from "../CommonComponents/BubbleList";
+import BubbleList from '../CommonComponents/BubbleList';
 
 
 const AREA = AppConfig.MaxDescriptionArea;
@@ -78,11 +78,11 @@ class UserVideoHistoryRow extends PureComponent {
                         <View style={inlineStyles.touchablesBtns}>
 
                           <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
-                            {/*<InvertedReplyList  videoId={this.props.videoId}*/}
-                            {/*                    userId={this.props.userId}*/}
-                            {/*                    doRender={this.props.doRender}*/}
-                            {/*/>*/}
-                            <BubbleList  videoId={this.props.videoId}   doRender={this.props.doRender} />
+                            {/* <InvertedReplyList  videoId={this.props.videoId}
+                                                userId={this.props.userId}
+                                                doRender={this.props.doRender}
+                            /> */}
+                            <BubbleList videoId={this.videoId} doRender={this.props.doRender} onClickHandler={this.props.bubbleClickHandler} />
                           </View>
 
                           <View style={{ minWidth: '20%' }}>

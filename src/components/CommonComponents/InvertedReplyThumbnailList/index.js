@@ -55,12 +55,17 @@ class InvertedReplyList extends PureComponent {
     this.setClickHandlers();
   }
 
+  bubbleClickHandler = ()=> {
+    this.props.navigation.goBack(null);
+  }
+
   parentClickHandler =()=>{
     const parentVideoId = this.props.videoId,
           parentUserId = ReduxGetters.getVideoCreatorUserId(parentVideoId);
     this.props.navigation.push('VideoPlayer', {
       userId: parentUserId,
-      videoId: parentVideoId
+      videoId: parentVideoId,
+      bubbleClickHandler: this.bubbleClickHandler
     });
   }
 
@@ -82,7 +87,7 @@ class InvertedReplyList extends PureComponent {
     if( !this.paginationService || !( this.paginationService instanceof  Pagination)){
       this.paginationService = new Pagination(fetchUrl);
       if( this.props.doRender ){
-        this.initPagination()
+        this.initPagination();
       }else {
         //Load data later
         this.hasInitialData = false;

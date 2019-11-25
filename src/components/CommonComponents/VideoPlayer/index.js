@@ -23,6 +23,7 @@ class VideoPlayer extends Component {
     constructor(props){
         super(props);
         this.videoId =  this.props.navigation.getParam('videoId');
+        this.bubbleClickHandler =  this.props.navigation.getParam('bubbleClickHandler');
         this.state = {
           userId :  this.props.navigation.getParam('userId') || null,
           isDeleted : reduxGetter.isVideoDeleted(this.videoId)
@@ -84,7 +85,8 @@ class VideoPlayer extends Component {
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
               <UserVideoHistoryRow doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
-                                 videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}/>
+                                 videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}
+                                 bubbleClickHandler={this.bubbleClickHandler}/>
              <FlotingBackArrow />
             </SafeAreaView>
           )
