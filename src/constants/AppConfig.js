@@ -323,7 +323,9 @@ export default {
     RedemptionSuccess: 'Redemption/Success',
     CouchMarks: 'CouchMarks',
     AuthDeviceDrawer: 'DeviceUnauthorized',
-    TwitterLogin: 'TwitterLogin'
+    TwitterLogin: 'TwitterLogin',
+    FullScreenReplyCollection: 'FullScreenReplyCollection',
+    VideoReplies: 'VideoReplies'
   },
   default_bt_amt : 10,
 

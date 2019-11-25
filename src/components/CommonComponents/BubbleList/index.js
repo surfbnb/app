@@ -28,7 +28,6 @@ class BubbleList extends PureComponent {
       list: []
     };
     this.getDataWhileLoading();
-    this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId);
     this.onClickHandler = this.props.onClickHandler || this.defaultClickHandler;
   }
 
@@ -53,6 +52,7 @@ class BubbleList extends PureComponent {
           let result_type = deepGet(apiResponse, DataContract.common.resultType),
             list = deepGet(apiResponse, `data.${result_type}` ),
             listToShowOnUI = list.reverse().slice(0,NO_OF_ITEMS_TO_SHOW);
+            this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId)
             this.setState({ list : listToShowOnUI } );
         }
 
@@ -83,10 +83,12 @@ class BubbleList extends PureComponent {
   moreReplyText = () => {
 
     let list = this.state.list;
-    if (list.length <= this.replyCount  ){
-      return '';
+    if (! this.replyCount || ! list.length){
+      return ''
     }
-    return `+ ${this.replyCount - list.length} Replies`;
+    if (this.replyCount > list.length){
+      return ` + ${this.replyCount - list.length} Replies`;
+    }
   };
 
   defaultClickHandler= ()=> {

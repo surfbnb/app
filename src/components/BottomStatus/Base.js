@@ -13,7 +13,6 @@ import CurrentUser from '../../models/CurrentUser';
 class BottomStatus extends PureComponent {
   constructor(props) {
     super(props);
-    this.videoDescriptionId = reduxGetter.getVideoDescriptionId(this.props.entityId);
   }
 
   onLinkClick = () => {
@@ -129,15 +128,15 @@ class BottomStatus extends PureComponent {
                   let tagLocation = processingString.search(item);
                   let prevText = processingString.slice(0, tagLocation);
                   processingString = processingString.slice(tagLocation + item.length);
-                  if (this.isValidTag(this.videoDescriptionId, item)) {
+                  if (this.isValidTag(this.props.entityDescriptionId, item)) {
                     return this.getHashTagMarkup(item, prevText);
-                  } if( this.isValidMention(this.videoDescriptionId ,  item) ){
+                  } if( this.isValidMention(this.props.entityDescriptionId ,  item) ){
                     return this.getMentionMarkup(item, prevText);
                   }else {
                     return this.getTextMarkup(item, prevText);
                   }
                 }))}
-                
+
                 <Text>{processingString}</Text>
 
               </Text>

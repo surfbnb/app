@@ -21,6 +21,7 @@ import assignIn from 'lodash/assignIn';
 import AppConfig from "../../constants/AppConfig";
 import CommonStyle from "../../theme/styles/Common";
 import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
+import BubbleList from "../CommonComponents/BubbleList";
 
 
 const AREA = AppConfig.MaxDescriptionArea;
@@ -66,10 +67,11 @@ class FullScreeVideoRow extends PureComponent {
                                 <View style={inlineStyles.touchablesBtns}>
 
                                   <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
-                                    <InvertedReplyList  videoId={this.videoId}
-                                                        userId={this.userId}
-                                                        listKey={`${this.props.listKey}-InvertedReplyList`}
-                                    />
+                                    {/*<InvertedReplyList  videoId={this.videoId}*/}
+                                    {/*                    userId={this.userId}*/}
+                                    {/*                    listKey={`${this.props.listKey}-InvertedReplyList`}*/}
+                                    {/*/>*/}
+                                    <BubbleList  videoId={this.videoId}   doRender={this.props.doRender} />
                                   </View>
 
                                   <View style={{ minWidth: '20%' }}>
