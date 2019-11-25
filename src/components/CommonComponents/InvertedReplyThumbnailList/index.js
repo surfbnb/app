@@ -82,7 +82,7 @@ class InvertedReplyList extends Component {
       this.initPagination();
     }
     if(this.props.currentIndex != prevProps.currentIndex){
-      this.listRef && this.listRef.scrollToIndex({index : this.props.currentIndex, viewOffset: 50, viewPosition: 0});
+      this.listRef && this.listRef.scrollToIndex({index : this.props.currentIndex, viewOffset: 100, viewPosition: 0});
     }
   }
 
