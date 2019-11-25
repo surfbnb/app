@@ -182,7 +182,7 @@ class UserProfileFlatList extends PureComponent {
 
     render(){
         return(
-            <SafeAreaView forceInset={{ top: 'never' }} style={CommonStyle.viewContainer}>
+            <SafeAreaView forceInset={{ bottom: 'never' }} style={CommonStyle.viewContainer}>
                 <FlatList
                     ref={(ref)=>  {this.listRef = ref } }
                     ListHeaderComponent={this.listHeaderComponent()}
