@@ -16,7 +16,7 @@ const StatusBarShow = () => {
     StatusBar.setTranslucent(false);
   }
 
-  if(Platform.OS == "ios"){
+  if(Platform.OS === "ios"){
     StatusBar.setBarStyle("dark-content")
   }
 
