@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
 import inlineStyles from './styles';
-import { Text, View, ScrollView, ListView, Dimensions} from 'react-native';
+import { Text, View, TouchableOpacity, ListView, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import Pagination from "../../../services/Pagination";
-import {FlatList} from 'react-native-gesture-handler';
 import ReplyHelper from '../../../helpers/ReplyHelper';
 import AppConfig from "../../../constants/AppConfig";
 import DataContract from '../../../constants/DataContract';
@@ -12,6 +11,7 @@ import PepoApi from "../../../services/PepoApi";
 import deepGet from "lodash/get";
 import ProfilePicture from "../../ProfilePicture";
 import reduxGetter from "../../../services/ReduxGetters";
+import multipleClickHandler from '../../../services/MultipleClickHandler';
 
 //
 const NO_OF_ITEMS_TO_SHOW = 3;
@@ -28,7 +28,8 @@ class BubbleList extends PureComponent {
       list: []
     };
     this.getDataWhileLoading();
-    this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId)
+    this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId);
+    this.onClickHandler = this.props.onClickHandler || this.defaultClickHandler;
   }
 
   componentDidUpdate(prevProps, prevState ) {
@@ -64,7 +65,6 @@ class BubbleList extends PureComponent {
 
 
   getFetchUrl = () => {
-    return `/videos/${4266}/replies`;
     return `/videos/${this.props.videoId}/replies`;
   };
 
@@ -89,9 +89,18 @@ class BubbleList extends PureComponent {
     return `+ ${this.replyCount - list.length} Replies`;
   };
 
+  defaultClickHandler= ()=> {
+    const baseUrl = DataContract.replies.getReplyListApi(this.props.videoId);
+    this.props.navigation.push('FullScreenReplyCollection',{
+      "baseUrl": baseUrl
+    });
+  }
+
   render() {
     return <View style={inlineStyles.bubbleContainer}>
-        <View style={{flexDirection: 'row-reverse', marginRight: 5}}>{this.getBubbleListJSX()}</View>
+        <TouchableOpacity onPress={multipleClickHandler(() => {this.onClickHandler()})} 
+             style={{flexDirection: 'row-reverse', marginRight: 5}}>{this.getBubbleListJSX()}
+        </TouchableOpacity>
         <Text style={inlineStyles.repliesTxt}>{this.moreReplyText()}</Text>
       </View>
   }
@@ -99,4 +108,4 @@ class BubbleList extends PureComponent {
 
 
 //make this component available to the app
-export default BubbleList;
+export default withNavigation(BubbleList);
