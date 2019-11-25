@@ -23,7 +23,7 @@ class VideoDescription extends PureComponent {
           horizontal={false}
           initialValue={this.value}
           onChangeVal={this.onChangeValue}
-          placeholderText="Write something about  your video"
+          placeholderText="Write something about your video"
           submitEvent={this.submitEvent}
           textInputStyles={inlineStyles.videoDescription}
           dropdownStyle={inlineStyles.dropDownStyle}

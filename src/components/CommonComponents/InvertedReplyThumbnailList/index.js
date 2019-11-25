@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {View, Dimensions} from 'react-native';
+import { Text, View, ScrollView, ListView, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import Pagination from "../../../services/Pagination";
@@ -25,7 +25,7 @@ class InvertedReplyList extends PureComponent {
     this.setPagination();
 
     this.state = {
-      list: this.paginationService.getResults(),
+      list: this.getInitialList(),
       refreshing : false,
       loadingNext: false
     };
@@ -34,9 +34,16 @@ class InvertedReplyList extends PureComponent {
     this.onItemClick = null;
   }
 
+  getInitialList = () => {
+    if (this.props.paginationService){
+      return this.paginationService.getResults();
+    }
+    return [];
+  };
+
   setClickHandlers = ()=> {
     this.onItemClick = this.props.onChildClickDelegate || this.defaultChildClickHandler;
-  }
+  };
 
   getPagination = () => {
     return this.paginationService;
@@ -140,6 +147,7 @@ class InvertedReplyList extends PureComponent {
   }
 
   beforeRefresh = ( ) => {
+    console.log('beforeRefresh')
     this.props.beforeRefresh && this.props.beforeRefresh();
     let stateObject = {refreshing : true};
     if (this.state.loadingNext) {
@@ -222,7 +230,7 @@ class InvertedReplyList extends PureComponent {
         heightOfFlatList = heightOfElements + heightOfSeparator;
       return availableHeight > heightOfFlatList ? heightOfFlatList : availableHeight;
     }
-    return availableHeight;
+    return 0;
   };
 
   getItemLayout= (data, index) => {
@@ -243,9 +251,7 @@ class InvertedReplyList extends PureComponent {
         onEndReachedThreshold={4}
         renderItem={this._renderItem}
         ListFooterComponent={this.renderFooter}
-        numColumns={this.numColumns}
         key={this.flatListKey}
-        nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         initialScrollIndex={this.props.currentIndex}
         getItemLayout={this.getItemLayout}
