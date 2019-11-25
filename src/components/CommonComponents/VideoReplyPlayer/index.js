@@ -101,7 +101,6 @@ class VideoReplyPlayer extends PureComponent {
                     doRender={true}
                     userId={this.state.userId}
                     replyDetailId={this.replyDetailId}
-                    currentIndex={0}//Set it in default props
                     getPixelDropData={this.getPixelDropData}
               />
              <FlotingBackArrow />

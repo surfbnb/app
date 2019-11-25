@@ -69,19 +69,19 @@ class VideoReplyRow extends PureComponent {
 
                 <View style={CommonStyle.videoWrapperfullScreen}>
 
-                  <View style={{position: "absolute" , left: 10 , bottom : height, zIndex: 9 }}>
+                  {this.props.parentVideoId && (
+                    <View style={{position: "absolute" , left: 10 , bottom : height, zIndex: 9 }}>
                     <InvertedReplyList  videoId={this.props.parentVideoId}
-                                        userId={this.props.parentUserId}
                                         doRender={this.props.doRender}
                                         paginationService={this.props.paginationService}
                                         onChildClickDelegate={this.props.onChildClickDelegate}
                                         currentIndex={this.props.currentIndex}
-                                        // parentIconHeight={AppConfig.thumbnailListConstants.parentIconHeight + marginTopForParentIcon }
                                         showActiveIndicator={true}
                     />
 
                   </View>
-
+                  )}
+          
                     <FanVideo
                         shouldPlay={this.props.shouldPlay}
                         userId={this.props.userId}
