@@ -48,7 +48,7 @@ class BubbleList extends PureComponent {
         if (apiResponse.success ){
           let result_type = deepGet(apiResponse, DataContract.common.resultType),
             list = deepGet(apiResponse, `data.${result_type}` ),
-            listToShowOnUI = list.reverse().slice(0,NO_OF_ITEMS_TO_SHOW);
+            listToShowOnUI = list.slice(0,NO_OF_ITEMS_TO_SHOW);
             this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId)
             this.setState({ list : listToShowOnUI } );
         }
