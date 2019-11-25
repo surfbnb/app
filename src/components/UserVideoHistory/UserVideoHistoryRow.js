@@ -82,7 +82,7 @@ class UserVideoHistoryRow extends PureComponent {
                                                 userId={this.props.userId}
                                                 doRender={this.props.doRender}
                             /> */}
-                            <BubbleList videoId={this.videoId} doRender={this.props.doRender} onClickHandler={this.props.bubbleClickHandler} />
+                            <BubbleList videoId={this.props.videoId} doRender={this.props.doRender} onClickHandler={this.props.bubbleClickHandler} />
                           </View>
 
                           <View style={{ minWidth: '20%' }}>
