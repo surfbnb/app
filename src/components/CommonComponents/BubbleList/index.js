@@ -24,8 +24,8 @@ class BubbleList extends PureComponent {
     super(props);
     this.state = {
       list: []
-    }
-    this.hasInitialData =  true;
+    };
+    this.hasInitialData =  false;
     this.getDataWhileLoading()
   }
 
@@ -38,8 +38,8 @@ class BubbleList extends PureComponent {
 
   getDataWhileLoading(){
     if (this.props.doRender){
-      this.getListData()
-      this.hasInitialData = false;
+      this.getListData();
+      this.hasInitialData = true;
     }
   };
 
@@ -82,7 +82,6 @@ class BubbleList extends PureComponent {
   };
 
   render() {
-    console.log('getBubbleListJSX: render');
     return <View style={{flexDirection: 'row' }}>{this.getBubbleListJSX()}</View>
   }
 }
