@@ -19,6 +19,7 @@ import DataContract from '../../constants/DataContract';
 
 import InvertedReplyList from '../CommonComponents/InvertedReplyThumbnailList';
 import AppConfig from "../../constants/AppConfig";
+import BubbleList from "../CommonComponents/BubbleList";
 
 const AREA = AppConfig.MaxDescriptionArea;
 const height = AREA / Dimensions.get('window').width + 20;
@@ -59,13 +60,6 @@ class HomeFeedRow extends PureComponent {
     return (
       <View style={[inlineStyles.fullScreen,  {position: "relative"} ]}>
 
-        <View style={{ position: "absolute" , left: 10 , bottom : height, zIndex: 9  }}>
-          <InvertedReplyList  videoId={this.videoId}
-                              userId={this.userId}
-                              doRender={this.props.doRender}
-          />
-        </View>
-
         <FanVideo
           shouldPlay={this.props.shouldPlay}
           userId={this.userId}
@@ -75,28 +69,41 @@ class HomeFeedRow extends PureComponent {
           getPixelDropData={this.getPixelDropData}
         />
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
+
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+            <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
+              {/*<InvertedReplyList  videoId={this.videoId}*/}
+              {/*                    userId={this.userId}*/}
+              {/*                    doRender={this.props.doRender}*/}
+              {/*                    style={{justifyContent: 'flex-end'}}*/}
+              {/*/>*/}
+              <BubbleList  videoId={this.videoId}   doRender={this.props.doRender} />
+            </View>
+
+            <View style={{ minWidth: '20%' }}>
+              <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
                 <PepoTxBtn
-                    resyncDataDelegate={this.refetchFeed}
-                    userId={this.userId}
-                    entityId={this.videoId}
-                    getPixelDropData={this.getPixelDropData}
+                  resyncDataDelegate={this.refetchFeed}
+                  userId={this.userId}
+                  entityId={this.videoId}
+                  getPixelDropData={this.getPixelDropData}
                 />
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
 
                 <ShareIcon  userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
                 <View ref={(ref)=> {this.reportViewRef = ref }} onLayout={()=>{}} >
-                <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
+                  <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
                 </View>
               </View>
 
-            <VideoSupporterStat
-              entityId={this.videoId}
-              userId={this.userId}
-              pageName="feed"
-            />
+              <VideoSupporterStat
+                entityId={this.videoId}
+                userId={this.userId}
+                pageName="feed"
+              />
+            </View>
+
           </View>
 
           <VideoBottomStatus userId={this.userId} entityId={this.videoId} />

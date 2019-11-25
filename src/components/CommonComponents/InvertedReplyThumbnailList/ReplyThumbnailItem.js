@@ -64,7 +64,8 @@ const inlineStyle= {
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
+    overflow: 'hidden'
     // shadowColor: 'red',
     // shadowOffset: {
     //   width: 1,

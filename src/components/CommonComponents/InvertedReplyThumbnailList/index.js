@@ -239,7 +239,7 @@ class InvertedReplyList extends PureComponent {
 
   render() {
       console.log("InvertedReplyList :: this.props.listKey", this.props.listKey);
-        return   <FlatList style={{ height: this.getListHeight(), width: '100%'}}
+        return   <FlatList style={{ maxHeight: this.getListHeight(), width: '100%'}}
         ref={this.setListRef}
         ItemSeparatorComponent={this.getItemSeperatorComponent}
         data={this.state.list}
