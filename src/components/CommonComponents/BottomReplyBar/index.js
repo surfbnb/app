@@ -15,6 +15,7 @@ class BottomReplyBar extends PureComponent {
         }
 
         replyVideo =( ) => {
+            if(!this.props.videoId || !this.props.userId) return;
             if( replyPreValidationAndMessage( this.props.videoId ,  this.props.userId) )  {
                 navigateToCamera( this.props.videoId ,  this.props.userId ,  this.props.navigation ) ;
             }       
