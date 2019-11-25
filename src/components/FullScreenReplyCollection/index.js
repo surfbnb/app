@@ -10,6 +10,7 @@ import DataContract from "../../constants/DataContract";
 import CommonStyle from "../../theme/styles/Common";
 import { SafeAreaView } from "react-navigation";
 import ReplyHelper from "../../helpers/ReplyHelper";
+import TopStatus from "../Home/TopStatus";
 
 const maxVideosThreshold = 3;
 
@@ -220,6 +221,7 @@ class FullScreenReplyCollection extends PureComponent{
 
         return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
+                <TopStatus />
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}

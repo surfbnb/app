@@ -44,6 +44,7 @@ class FanVideoReplyDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Post',
+      headerBackTitle: null,
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
