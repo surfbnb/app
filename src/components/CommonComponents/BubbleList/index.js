@@ -72,7 +72,7 @@ class BubbleList extends PureComponent {
   getBubbleListJSX = () => {
     let listToRender = this.state.list;
     return listToRender.length?listToRender.map((item) => {
-      return <View style={[inlineStyles.bubbleShadow, {marginLeft: -15}]}>
+      return <View style={[inlineStyles.bubbleShadow, {marginLeft: -20}]}>
         <ProfilePicture userId={this.props.parentUserId}
                         style={inlineStyles.bubbleSize}
         />
