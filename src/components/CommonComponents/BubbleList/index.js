@@ -1,11 +1,8 @@
 import React, { PureComponent } from 'react';
 import inlineStyles from './styles';
-import { Text, View, TouchableOpacity, ListView, Dimensions} from 'react-native';
+import { Text, View, TouchableOpacity} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
-import Pagination from "../../../services/Pagination";
-import ReplyHelper from '../../../helpers/ReplyHelper';
-import AppConfig from "../../../constants/AppConfig";
 import DataContract from '../../../constants/DataContract';
 import PepoApi from "../../../services/PepoApi";
 import deepGet from "lodash/get";
@@ -72,8 +69,9 @@ class BubbleList extends PureComponent {
   getBubbleListJSX = () => {
     let listToRender = this.state.list;
     return listToRender.length?listToRender.map((item) => {
+      let userId = deepGet(item,'payload.user_id');
       return <View style={[inlineStyles.bubbleShadow, {marginLeft: -20}]}>
-        <ProfilePicture userId={this.props.parentUserId}
+        <ProfilePicture userId={userId}
                         style={inlineStyles.bubbleSize}
         />
       </View>
