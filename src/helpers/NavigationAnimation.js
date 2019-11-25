@@ -19,8 +19,8 @@ export default {
           }
     
           const scale = position.interpolate({
-            inputRange: [index - 1, index],
-            outputRange: [start, 1],
+            inputRange: [index - 1, index , index + 1],
+            outputRange: [start, 1 , 1],
           });
     
           return { transform: [{ scale }] };

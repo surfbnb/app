@@ -99,18 +99,18 @@ const txModalConfig = {
     const scenes = transitionProps["scenes"];
     const prevScene = scenes[scenes.length - 2];
     const nextScene = scenes[scenes.length - 1];
-    if(Platform.OS == "ios"){
-      if (prevScene
-        && prevScene.route.routeName === 'VideoReplies'
-        && nextScene.route.routeName === 'FullScreenReplyCollection') {
-        return  NavigationAnimation.zoomIn();
-      }
-      else if (prevScene
-        && prevScene.route.routeName === 'FullScreenReplyCollection'
-        && nextScene.route.routeName === 'VideoReplies') {
-        return  NavigationAnimation.zoomOut();
-      }
-    }
+    // if(Platform.OS == "ios"){
+    //   if (prevScene
+    //     && prevScene.route.routeName === 'VideoReplies'
+    //     && nextScene.route.routeName === 'FullScreenReplyCollection') {
+    //     return  NavigationAnimation.zoomIn();
+    //   }
+    //   else if (prevScene
+    //     && prevScene.route.routeName === 'FullScreenReplyCollection'
+    //     && nextScene.route.routeName === 'VideoReplies') {
+    //     return  NavigationAnimation.zoomOut();
+    //   }
+    // }
     return  NavigationAnimation.defaultTransition();
   }
 };
