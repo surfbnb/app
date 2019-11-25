@@ -174,9 +174,9 @@ class FanVideoReplyDetails extends Component {
     Store.dispatch(
       upsertRecordedVideo({ video_desc: this.videoDesc, video_link: this.videoLink, do_upload: true })
     );
-    this.props.navigation.dispatch(StackActions.popToTop());
-    this.props.navigation.dispatch(StackActions.popToTop());
-    this.props.navigation.navigate('HomeScreen');
+    const popAction = StackActions.pop(1);
+    this.props.navigation.dispatch(popAction);
+    this.props.navigation.dispatch(popAction);
   };
 
 
