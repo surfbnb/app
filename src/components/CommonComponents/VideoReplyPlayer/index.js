@@ -4,7 +4,6 @@ import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
-import ReduxGetters from '../../../services/ReduxGetters';
 import DataContract from '../../../constants/DataContract';
 import DeletedVideoInfo from '../DeletedVideoInfo';
 import VideoReplyRow from '../../FullScreenReplyCollection/VideoReplyRow';
@@ -25,7 +24,7 @@ class VideoReplyPlayer extends PureComponent {
     constructor(props){
         super(props);
         this.replyDetailId =  this.props.navigation.getParam('replyDetailId');
-        this.videoId = ReduxGetters.getReplyEntityId(this.replyDetailId); //Check for entity deleted 
+        this.videoId = reduxGetter.getReplyEntityId(this.replyDetailId); //Check for entity deleted 
         this.state = {
           userId :  this.props.navigation.getParam('userId') || null,
           isDeleted : reduxGetter.isVideoEntityDeleted(this.videoId)
@@ -89,6 +88,14 @@ class VideoReplyPlayer extends PureComponent {
       };
     }
 
+    parentClickHandler =()=>{
+      const parentVideoId =  reduxGetter.getReplyParentVideoId(this.replyDetailId);
+      this.props.navigation.push('VideoPlayer', {
+        userId: this.state.userId,
+        videoId: parentVideoId
+      });
+    }
+
     render() {
         if(this.state.isDeleted){
          return <DeletedVideoInfo/>
@@ -102,6 +109,7 @@ class VideoReplyPlayer extends PureComponent {
                     userId={this.state.userId}
                     replyDetailId={this.replyDetailId}
                     getPixelDropData={this.getPixelDropData}
+                    parentClickHandler={this.parentClickHandler}
               />
              <FlotingBackArrow />
             </SafeAreaView>

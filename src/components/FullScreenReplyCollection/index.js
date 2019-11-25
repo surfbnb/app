@@ -164,8 +164,9 @@ class FullScreenReplyCollection extends PureComponent{
                                 replyDetailId={replyDetailId}
                                 paginationService ={this.getVideoPagination()}
                                 onChildClickDelegate={this.childClickHandler}
-                                onParentClickDelegate={this.parentClickHandler}
+                                parentClickHandler={this.parentClickHandler}
                                 currentIndex={this.state.activeIndex}
+                                // conditional delegate
          /> ;
     }
 
@@ -176,7 +177,7 @@ class FullScreenReplyCollection extends PureComponent{
 
     scrollToIndex = ( index )=>{
         this.flatlistRef.scrollToIndex({index: index});
-        this.setActiveIndex();
+        this.setActiveIndex( index );
     }
 
     onViewableItemsChanged = (data) => {
@@ -185,8 +186,9 @@ class FullScreenReplyCollection extends PureComponent{
         this.currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
     }
 
-    setActiveIndex() {
-        this.setState({ activeIndex: this.currentIndex });
+    setActiveIndex( index  ) {
+        index = index || this.currentIndex;
+        this.setState({ activeIndex: index });
     }
 
     onMomentumScrollEndCallback = () => {

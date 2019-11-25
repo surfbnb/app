@@ -39,7 +39,7 @@ const mapStateToProps = (state, ownProps) => {
 class VideoReplyRow extends PureComponent {
     constructor(props) {
       super(props);
-      this.onParentClickDelegate = this.props.onParentClickDelegate || this.defaultParentClickHandler;
+      this.onParentClickDelegate = this.props.parentClickHandler || this.defaultParentClickHandler;
     }
 
   refetchVideoReply = () => {
@@ -56,10 +56,7 @@ class VideoReplyRow extends PureComponent {
     }
 
     defaultParentClickHandler(){
-      this.props.navigation.push('VideoPlayer', {
-        userId: this.props.parentUserId,
-        videoId: this.props.parentVideoId
-      })
+      this.props.navigation.goBack(null);
     }
 
     render() {
