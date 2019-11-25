@@ -532,6 +532,11 @@ class ReduxGetters {
     return deepGet(state, `video_stat_entities.id_${parentId}.creator_user_id`);
   }
 
+  getLoginPopOverProps(state) {
+    state = state || Store.getState();
+    return deepGet(state, `login_popover`);    
+  }
+
 }
 
 export default new ReduxGetters();

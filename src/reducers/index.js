@@ -10,6 +10,7 @@ export const {
   hideModalCover,
   showLoginPopover,
   hideLoginPopover,
+  showConnectingLoginPopover,
   showToast,
   hideToast,
   upsertUserEntities,
@@ -125,10 +126,14 @@ export const reducer = handleActions(
   {
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [showModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
+    
     [showLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
+    [showConnectingLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
+    [hideLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
+
     [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [hideModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
-    [hideLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
+    
     [showToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [hideToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [upsertUserEntities]: (state, action) => ({
