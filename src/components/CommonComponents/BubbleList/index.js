@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import inlineStyles from './styles';
 import { Text, View, ScrollView, ListView, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
@@ -71,13 +72,11 @@ class BubbleList extends PureComponent {
   getBubbleListJSX = () => {
     let listToRender = this.state.list;
     return listToRender.length?listToRender.map((item) => {
-      return <ProfilePicture userId={this.props.parentUserId}
-      //                 style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
-      //   width: AppConfig.thumbnailListConstants.parentIconWidth,
-      //   borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
-      //   marginVertical: 12
-      // }}
-      />
+      return <View style={[inlineStyles.bubbleShadow, {marginLeft: -15}]}>
+        <ProfilePicture userId={this.props.parentUserId}
+                        style={inlineStyles.bubbleSize}
+        />
+      </View>
     }): <></> ;
   };
 
@@ -91,9 +90,9 @@ class BubbleList extends PureComponent {
   };
 
   render() {
-    return <View style={{flexDirection:'row'}}>
-        <View style={{flexDirection: 'row' }}>{this.getBubbleListJSX()}</View>
-        <View><Text>{this.moreReplyText()}</Text></View>
+    return <View style={inlineStyles.bubbleContainer}>
+        <View style={{flexDirection: 'row-reverse', marginRight: 5}}>{this.getBubbleListJSX()}</View>
+        <Text style={inlineStyles.repliesTxt}>{this.moreReplyText()}</Text>
       </View>
   }
 }
