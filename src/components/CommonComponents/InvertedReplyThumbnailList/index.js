@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Text, View, ScrollView, ListView, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
@@ -12,7 +12,7 @@ import DataContract from '../../../constants/DataContract';
 //
 const ITEM_HEIGHT = AppConfig.thumbnailListConstants.iconHeight +  AppConfig.thumbnailListConstants.iconWidth;
 
-class InvertedReplyList extends Component {
+class InvertedReplyList extends PureComponent {
 
   static navigationOptions = {
     header: null
@@ -25,7 +25,7 @@ class InvertedReplyList extends Component {
     this.setPagination();
 
     this.state = {
-      list: this.paginationService.getResults(),
+      list: this.getInitialList(),
       refreshing : false,
       loadingNext: false
     };
@@ -34,9 +34,16 @@ class InvertedReplyList extends Component {
     this.onItemClick = null;
   }
 
+  getInitialList = () => {
+    if (this.props.paginationService){
+      return this.paginationService.getResults();
+    }
+    return [];
+  };
+
   setClickHandlers = ()=> {
     this.onItemClick = this.props.onChildClickDelegate || this.defaultChildClickHandler;
-  }
+  };
 
   getPagination = () => {
     return this.paginationService;
@@ -140,6 +147,7 @@ class InvertedReplyList extends Component {
   }
 
   beforeRefresh = ( ) => {
+    console.log('beforeRefresh')
     this.props.beforeRefresh && this.props.beforeRefresh();
     let stateObject = {refreshing : true};
     if (this.state.loadingNext) {
@@ -222,7 +230,7 @@ class InvertedReplyList extends Component {
         heightOfFlatList = heightOfElements + heightOfSeparator;
       return availableHeight > heightOfFlatList ? heightOfFlatList : availableHeight;
     }
-    return availableHeight;
+    return 0;
   };
 
   getItemLayout= (data, index) => {
@@ -243,9 +251,7 @@ class InvertedReplyList extends Component {
         onEndReachedThreshold={4}
         renderItem={this._renderItem}
         ListFooterComponent={this.renderFooter}
-        numColumns={this.numColumns}
         key={this.flatListKey}
-        nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         initialScrollIndex={this.props.currentIndex}
         getItemLayout={this.getItemLayout}
