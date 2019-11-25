@@ -27,19 +27,35 @@ export const showLoginPopover = () => ({
   type: types.SHOW_LOGIN_POPOVER,
   payload: {
     login_popover: {
-      show: true
+      show: true,
+      isTwitterConnecting: false
     }
   }
 });
 
-export const hideLoginPopover = () => ({
-  type: types.HIDE_LOGIN_POPOVER,
-  payload: {
-    login_popover: {
-      show: false
+export const hideLoginPopover = () => {
+  return {
+    type: types.HIDE_LOGIN_POPOVER,
+    payload: {
+      login_popover: {
+        show: false,
+        isTwitterConnecting: false
+      }
     }
-  }
-});
+  };
+};
+
+export const showConnectingLoginPopover = () => {
+  return {
+    type: types.SHOW_CONNECTING_LOGIN_POPOVER,
+    payload: {
+      login_popover: {
+        show: true,
+        isTwitterConnecting: true
+      }
+    }
+  };
+};
 
 export const updateCurrentUser = (current_user) => ({
   type: types.UPDATE_CURRENT_USER,

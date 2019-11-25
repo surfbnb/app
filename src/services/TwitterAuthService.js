@@ -1,5 +1,5 @@
 import deepGet from 'lodash/get';
-
+import ReduxGetter from "./ReduxGetters";
 import Toast from '../theme/components/NotificationToast';
 import { upsertInviteCode } from '../actions';
 import Store from '../store';
@@ -29,6 +29,9 @@ class TwitterAuthService {
   signUp() {
     TwitterAuth.signIn()
       .then(async (params) => {
+        // Disable the Pop-Up.
+        LoginPopoverActions.showConnecting();
+
         if (params) {
           let inviteCode = await Utilities.getItem(AppConfig.appInstallInviteCodeASKey);
           if (inviteCode) {
@@ -50,7 +53,6 @@ class TwitterAuthService {
             });
         } else {
           LoginPopoverActions.hide();
-          console.log('No user data!');
         }
       })
       .catch((error) => {
