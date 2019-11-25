@@ -68,19 +68,6 @@ class VideoReplyRow extends PureComponent {
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
 
                 <View style={CommonStyle.videoWrapperfullScreen}>
-
-                  {this.props.parentVideoId && (
-                    <View style={{position: "absolute" , left: 10 , bottom : height, zIndex: 9 }}>
-                    <InvertedReplyList  videoId={this.props.parentVideoId}
-                                        doRender={this.props.doRender}
-                                        paginationService={this.props.paginationService}
-                                        onChildClickDelegate={this.props.onChildClickDelegate}
-                                        currentIndex={this.props.currentIndex}
-                                        showActiveIndicator={true}
-                    />
-
-                  </View>
-                  )}
           
                     <FanVideo
                         shouldPlay={this.props.shouldPlay}
@@ -94,9 +81,23 @@ class VideoReplyRow extends PureComponent {
                     {!!videoId && !!this.props.userId && (
                         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
 
-                            <View style={inlineStyles.touchablesBtns}>
+                            <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-                                <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                              {this.props.parentVideoId && (
+                                <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
+                                  <InvertedReplyList  videoId={this.props.parentVideoId}
+                                                      doRender={this.props.doRender}
+                                                      paginationService={this.props.paginationService}
+                                                      onChildClickDelegate={this.props.onChildClickDelegate}
+                                                      currentIndex={this.props.currentIndex}
+                                                      showActiveIndicator={true}
+                                  />
+
+                                </View>
+                              )}
+
+                              <View style={{ minWidth: '20%' }}>
+                                <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
                                     <ReplyPepoTxBtn
                                         resyncDataDelegate={this.refetchVideoReply}
                                         userId={this.props.userId}
@@ -121,6 +122,7 @@ class VideoReplyRow extends PureComponent {
                                     entityId={this.props.replyDetailId}
                                     userId={this.props.userId}
                                 />
+                              </View>
                             </View>
 
                             <ReplyVideoBottomStatus

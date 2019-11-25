@@ -52,13 +52,6 @@ class FullScreeVideoRow extends PureComponent {
 
                 <View style={CommonStyle.videoWrapperfullScreen}>
 
-                      <View style={{position: "absolute" , left: 10 , bottom : height, zIndex: 9 }}>
-                        <InvertedReplyList  videoId={this.videoId}
-                                            userId={this.userId}
-                                            listKey={`${this.props.listKey}-InvertedReplyList`}
-                                           />
-                      </View>
-
                         <FanVideo
                             shouldPlay={this.props.shouldPlay}
                             userId={this.userId}
@@ -72,7 +65,15 @@ class FullScreeVideoRow extends PureComponent {
                             <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
                                 <View style={inlineStyles.touchablesBtns}>
 
-                                    <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                                  <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
+                                    <InvertedReplyList  videoId={this.videoId}
+                                                        userId={this.userId}
+                                                        listKey={`${this.props.listKey}-InvertedReplyList`}
+                                    />
+                                  </View>
+
+                                  <View style={{ minWidth: '20%' }}>
+                                    <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
                                         <PepoTxBtn
                                             resyncDataDelegate={this.refetchVideo}
                                             userId={this.userId}
@@ -88,6 +89,7 @@ class FullScreeVideoRow extends PureComponent {
                                         entityId={this.videoId}
                                         userId={this.userId}
                                     />
+                                  </View>
                                 </View>
 
                                 <VideoBottomStatus

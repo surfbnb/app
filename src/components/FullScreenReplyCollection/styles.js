@@ -29,9 +29,15 @@ let stylesMap = {
         )
     },
     touchablesBtns: {
-        alignSelf: 'flex-end',
-        marginBottom: -15,
-        zIndex: 1
+      alignItems: 'flex-end',
+      marginBottom: -10,
+      zIndex: 1,
+      flexDirection: 'row'
+    },
+    invertedList: {
+      marginRight: 'auto',
+      minWidth: '20%',
+      marginBottom: 40
     },
     pepoTxCount: {
         fontSize: 18,
@@ -111,11 +117,6 @@ let stylesMap = {
       },
       headerSubText:{
           fontSize: 12
-      },
-      bottomContainer: {
-        width: width,
-        position: 'absolute',
-        bottom: 0
       },
     listContainer: {
         // width: width,

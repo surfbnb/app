@@ -262,17 +262,7 @@ const ProfileStack = createStackNavigator(
     FullScreenReplyCollection: FullScreenReplyStack,
     RedemptiomScreen: RedemptiomScreen
   },
-  {
-    headerLayoutPreset: 'center',
-    headerMode: 'none',
-    mode: 'modal',
-    navigationOptions: ({ navigation }) => {
-      return {
-        tabBarVisible: deepGet(navigation, 'state.index') === 0
-      };
-    },
-    ...txModalConfig
-  }
+  { ...modalStackConfig, ...txModalConfig }
 );
 
 const SearchPushStack = createStackNavigator(

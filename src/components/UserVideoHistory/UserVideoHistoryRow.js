@@ -62,13 +62,6 @@ class UserVideoHistoryRow extends PureComponent {
 
                 <View style={CommonStyle.videoWrapperfullScreen}>
 
-                  <View style={{position: "absolute" , left: 10 , bottom : height, zIndex: 9 }}>
-                    <InvertedReplyList  videoId={this.props.videoId}
-                                        userId={this.props.userId}
-                                        doRender={this.props.doRender}
-                    />
-                  </View>
-
                     <FanVideo
                       shouldPlay={this.props.shouldPlay}
                       userId={this.props.userId}
@@ -83,7 +76,15 @@ class UserVideoHistoryRow extends PureComponent {
 
                         <View style={inlineStyles.touchablesBtns}>
 
-                          <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
+                          <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
+                            <InvertedReplyList  videoId={this.props.videoId}
+                                                userId={this.props.userId}
+                                                doRender={this.props.doRender}
+                            />
+                          </View>
+
+                          <View style={{ minWidth: '20%' }}>
+                            <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
                             <PepoTxBtn
                               resyncDataDelegate={this.refetchVideo}
                               userId={this.props.userId}
@@ -99,6 +100,7 @@ class UserVideoHistoryRow extends PureComponent {
                             entityId={this.props.videoId}
                             userId={this.props.userId}
                           />
+                        </View>
                         </View>
 
                         <VideoBottomStatus

@@ -33,9 +33,15 @@ let stylesMap = {
     height: "100%"
   },
   touchablesBtns: {
-    alignSelf: 'flex-end',
-    marginBottom: -15,
-    zIndex: 1
+    alignItems: 'flex-end',
+    marginBottom: -10,
+    zIndex: 1,
+    flexDirection: 'row'
+  },
+  invertedList: {
+    marginRight: 'auto',
+    minWidth: '20%',
+    marginBottom: 40
   },
   pepoTxCount: {
     fontSize: 18,
@@ -118,11 +124,6 @@ let stylesMap = {
     height :10,
     width:23,
     zIndex: 1,
-  },
-  bottomContainer: {
-    width: width,
-    position: 'absolute',
-    bottom: 0
   },
 listContainer: {
     // width: width,
