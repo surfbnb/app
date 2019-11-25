@@ -184,6 +184,9 @@ class VideoRecorder extends Component {
       if (! this.state.hasVideoReplies){
         // Show video
         return <View style={styles.backgroundStyle}>
+          <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
+            <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
+          </TouchableOpacity>
           <View style={{ padding: 26, alignItems: 'center'}}>
 
             <Text style={[styles.smallText, {fontWeight: '600'}]}>
