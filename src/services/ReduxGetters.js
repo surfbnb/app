@@ -151,7 +151,7 @@ class ReduxGetters {
   getTappedIncludesEntity(videoId, tappedText) {
     let lowercasedText = tappedText.toLowerCase();
     let state = Store.getState();
-    return deepGet(state, `video_description_entities.id_${videoId}.includes.${lowercasedText}`);
+    return deepGet(state, `video_description_entities.id_${videoId}.includes.${lowercasedText}`) || deepGet(state, `video_description_entities.id_${videoId}.includes.${tappedText}`);
   }
 
   getVideoLink(id, state) {
