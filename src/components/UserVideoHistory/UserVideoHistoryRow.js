@@ -91,7 +91,7 @@ class UserVideoHistoryRow extends PureComponent {
                               getPixelDropData={this.getPixelDropData}
                             />
                             <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
-                            <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.props.videoId)} />
+                            <ShareIcon  userId={this.props.userId} url={DataContract.share.getVideoShareApi(this.props.videoId)} />
                             <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
                           </View>
 

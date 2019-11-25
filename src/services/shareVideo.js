@@ -1,12 +1,10 @@
 import PepoApi from './PepoApi';
-
-import { Share, Platform } from 'react-native';
-import DataContract from '../constants/DataContract';
+import { Share } from 'react-native';
 
 class ShareVideo {
-  constructor(entityId, url) {
-    this.entityId = entityId;
+  constructor(url , entityId) {
     this.url = url;
+    this.entityId = entityId;
   }
 
   perform() {

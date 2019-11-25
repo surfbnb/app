@@ -111,7 +111,9 @@ class VideoReplyRow extends PureComponent {
                                       }}
                                       />
                                     </TouchableOpacity>
-                                    <ShareIcon  userId={this.props.userId} entityId={this.props.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)} />
+                                    <ShareIcon  userId={this.props.userId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)}
+                                                isDisabled={() => {return false}}
+                                                 />
                                     <ReportVideo  userId={this.props.userId} reportEntityId={this.replyId} reportKind={'reply'} />
                                  </View>
 

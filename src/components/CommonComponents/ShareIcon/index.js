@@ -21,23 +21,25 @@ class ShareIcon extends PureComponent {
     };
 
   shareVideo = () => {
-    let shareVideo = new ShareVideo(this.props.entityId, this.props.url);
+    let shareVideo = new ShareVideo(this.props.url);
     shareVideo.perform();
-  };
-
-  isDisabled = () => {
-     return this.props.isCreatorApproved != 1;
   };
 
   render(){
     return (<TouchableOpacity pointerEvents={'auto'}
-                              disabled={this.isDisabled()}
+                              disabled={this.props.isDisabled.call(this)}
                               style={{marginBottom: 15, height: 50, width: 50, alignItems: 'center', justifyContent: 'center'}}
                               onPress={multipleClickHandler(() => this.shareVideo())} >
-              <Image style={{ height: 35, width: 36.5 }} source={this.isDisabled() ? share_icon_disabled : share_icon} />
+              <Image style={{ height: 35, width: 36.5 }} source={this.props.isDisabled.call(this) ? share_icon_disabled : share_icon} />
           </TouchableOpacity>);
   }
 
 };
+
+ShareIcon.defaultProps = {
+  isDisabled: function() {
+    return this.props.isCreatorApproved != 1;
+  }
+}
 
 export default connect(mapStateToProps)(ShareIcon);

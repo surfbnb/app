@@ -80,7 +80,7 @@ class FullScreeVideoRow extends PureComponent {
                                             getPixelDropData={this.getPixelDropData}
                                         />
                                         <ReplyIcon videoId={this.videoId} userId={this.userId}/>
-                                        <ShareIcon  userId={this.userId} videoId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
+                                        <ShareIcon  userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
                                         <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
                                     </View>
 

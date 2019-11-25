@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Text, View, ScrollView, ListView, Dimensions} from 'react-native';
+import React, { PureComponent } from 'react';
+import {View, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import Pagination from "../../../services/Pagination";
@@ -12,7 +12,7 @@ import DataContract from '../../../constants/DataContract';
 //
 const ITEM_HEIGHT = AppConfig.thumbnailListConstants.iconHeight +  AppConfig.thumbnailListConstants.iconWidth;
 
-class InvertedReplyList extends Component {
+class InvertedReplyList extends PureComponent {
 
   static navigationOptions = {
     header: null
