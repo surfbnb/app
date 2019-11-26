@@ -129,14 +129,14 @@ export const reducer = handleActions(
   {
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [showModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
-    
+
     [showLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
     [showConnectingLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
     [hideLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
 
     [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [hideModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
-    
+
     [showToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [hideToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [upsertUserEntities]: (state, action) => ({
@@ -247,10 +247,22 @@ export const reducer = handleActions(
       ...state,
       balance: action.payload.isPurchase
     }),
-    [updatePricePoints]: (state, action) => ({
-      ...state,
-      price_points: action.payload.price_points
-    }),
+    [updatePricePoints]: (state, action) => {
+      //Make sure price_points is not null;
+      if (!action.payload.price_points) {
+        return {...state};
+      }
+
+      // Make sure response has keys;
+      if ( !Object.keys(action.payload.price_points).length ) {
+        return {...state};
+      }
+
+      return {
+        ...state,
+        price_points: action.payload.price_points
+      };
+    },
     [updateToken]: (state, action) => ({
       ...state,
       token: action.payload.token
