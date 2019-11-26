@@ -47,7 +47,7 @@ class BubbleList extends PureComponent {
     if( this.props.doRender && this.props.doRender !== prevProps.doRender  ){
       this.getListData();
     }
-    if (this.props.replyCount |= prevProps.replyCount){
+    if (this.props.replyCount != prevProps.replyCount){
       this.getListData();
     }
   }
