@@ -35,7 +35,7 @@ import pricer from '../../services/Pricer';
 import PepoPinkIcon from '../../assets/pepo-tx-icon.png';
 import AppConfig from '../../constants/AppConfig'
 
-//TODO setParams dont use 
+//TODO setParams dont use
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -88,7 +88,7 @@ class FanVideoDetails extends Component {
     super(props);
     this.videoDesc = this.props.recordedVideo.video_desc;
     this.videoLink = this.props.recordedVideo.video_link;
-    this.replyAmount = this.props.recordedVideo.reply_amount || pricer.getToDecimal(DEFAUT_BT_VALUE);
+    this.replyAmount = pricer.getToDecimal(this.props.recordedVideo.reply_amount || DEFAUT_BT_VALUE);
     this.priceOracle = pricer.getPriceOracle();
     this.numberFormatter = new NumberFormatter();
     this.max =  props.balance;
