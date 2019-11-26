@@ -325,6 +325,7 @@ export default {
     AuthDeviceDrawer: 'DeviceUnauthorized',
     TwitterLogin: 'TwitterLogin',
     FullScreenReplyCollection: 'FullScreenReplyCollection',
+    VideoReplyPlayer: 'VideoReplyPlayer',
     VideoReplies: 'VideoReplies'
   },
   default_bt_amt : 10,
