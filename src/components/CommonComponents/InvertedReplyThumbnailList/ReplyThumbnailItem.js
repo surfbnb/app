@@ -48,7 +48,7 @@ const inlineStyle= {
   wrapperStyle: {
     width: AppConfig.thumbnailListConstants.iconWidth  ,
     height:AppConfig.thumbnailListConstants.iconHeight  ,
-    borderRadius: (AppConfig.thumbnailListConstants.iconWidth   )/ 2,
+    borderRadius: (AppConfig.thumbnailListConstants.iconWidth)/ 2,
     padding: 4
   },
   active: {
@@ -56,24 +56,16 @@ const inlineStyle= {
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
+    overflow: 'hidden'
   },
   unseen: {
-
     shadowColor: 'red',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 4,
     elevation: 5,
     overflow: 'hidden'
-    // shadowColor: 'red',
-    // shadowOffset: {
-    //   width: 1,
-    //   height: 1
-    // },
-    // shadowOpacity: 1,
-    // shadowRadius: 15,
-    // borderRadius: 30
   }
 }
 

@@ -8,7 +8,7 @@ import {
   Animated ,TouchableWithoutFeedback
 } from 'react-native';
 
-import { ifIphoneX } from 'react-native-iphone-x-helper';
+import {getBottomSpace, ifIphoneX} from 'react-native-iphone-x-helper';
 
 import pepoIcon from "../../assets/pepo-tx-icon.png";
 import inlineStyles from './styles';
@@ -32,8 +32,11 @@ const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
-const bottomReplyViewHeight = 54;
+const bottomReplyViewHeight = 89;
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
+
+const bottomSpace = getBottomSpace([true]);
+console.log('bottomSpace', bottomSpace);
 
 
 class VideoRepliesScreen extends PureComponent {
@@ -206,10 +209,12 @@ class VideoRepliesScreen extends PureComponent {
               {this.state.addRepliesVisible && (
                  <TouchableWithoutFeedback onPress={this.openCamera}>
                  <View style={inlineStyles.addReplyView}>
-                   <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimension}></Image>
-                   <Text style={inlineStyles.addReplyText}>
-                     Add a reply...
-                   </Text>
+                   <View style={inlineStyles.addReplyInnerView}>
+                     <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimension}></Image>
+                     <Text style={inlineStyles.addReplyText}>
+                       Add a reply...
+                     </Text>
+                   </View>
                  </View>
                </TouchableWithoutFeedback>
               )}

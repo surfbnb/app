@@ -1,5 +1,6 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
+import {ifIphoneX} from "react-native-iphone-x-helper";
 
 let stylesMap = {
     container: {
@@ -58,11 +59,14 @@ let stylesMap = {
         color: 'rgba(42, 41, 59, 0.7)'
       },
       addReplyView : {
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'flex-start',
         width:'100%',
-        height:54,
+        ...ifIphoneX(
+          {
+            height: 89
+          },
+          {
+            height: 54
+          }),
         shadowColor:'#000',
         elevation: 8,
         shadowOffset: { width: 0, height: 1 },
@@ -70,9 +74,15 @@ let stylesMap = {
         position:'absolute',
         bottom:0,
         zIndex:9999,
-        backgroundColor:Colors.white,
-        paddingVertical:18,
-        paddingHorizontal:12
+        backgroundColor:Colors.white
+    },
+    addReplyInnerView:{
+      height: 54,
+      width: '100%',
+      flexDirection:'row',
+      alignItems: 'center',
+      paddingHorizontal:12,
+      backgroundColor:Colors.white,
     },
     addReplyText : {
         color:Colors.black,
