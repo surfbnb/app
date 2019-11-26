@@ -14,7 +14,7 @@ const getVideoReplyObject = (videoId, creatorUserId) => {
     userId: creatorUserId,
     amount: ReduxGetters.getBtAmountForReply(videoId),
     videoReplyCount: ReduxGetters.getVideoReplyCount(videoId),
-    isChargeble: true //|| ReduxGetters.isVideoIsChargeable(videoId)
+    isChargeble: ReduxGetters.isVideoIsChargeable(videoId)
   };
 };
 
