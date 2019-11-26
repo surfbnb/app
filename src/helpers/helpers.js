@@ -34,7 +34,7 @@ function fetchUser(userId, onResponse, errorCallback, finallyCallback) {
 }
 
 function fetchVideo( videoId , onResponse, onError, onComplete ){
-  new PepoApi(`/videos/${videoId}`)
+  return new PepoApi(`/videos/${videoId}`)
     .get()
     .then((res) => {
       onResponse && onResponse(res);

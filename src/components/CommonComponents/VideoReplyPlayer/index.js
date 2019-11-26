@@ -24,12 +24,12 @@ class VideoReplyPlayer extends PureComponent {
     constructor(props){
         super(props);
         this.replyDetailId =  this.props.navigation.getParam('replyDetailId');
-        this.videoId = reduxGetter.getReplyEntityId(this.replyDetailId); //Check for entity deleted 
         this.state = {
           userId :  this.props.navigation.getParam('userId') || null,
-          isDeleted : reduxGetter.isVideoEntityDeleted(this.videoId)
+          isLoading: true,
+          isDeleted : false
         };
-        this.refetchVideo();
+        this.fetchReply();
         this.isActiveScreen = true;
     }
 
@@ -44,7 +44,7 @@ class VideoReplyPlayer extends PureComponent {
     }
 
     componentWillUnmount(){
-      this.onRefetchVideo = () => {};
+      this.onReplyFetch = () => {};
       this.willFocusSubscription && this.willFocusSubscription.remove();
       this.willBlurSubscription && this.willBlurSubscription.remove();
     }
@@ -53,32 +53,26 @@ class VideoReplyPlayer extends PureComponent {
       return this.isActiveScreen;
     };
 
-    refetchVideo = () => {
+    fetchReply = () => {
       if (this.state.isDeleted) return;
       new PepoApi(DataContract.replies.getSingleVideoReplyApi(this.replyDetailId))
         .get()
-        .then((res) => { this.onRefetchVideo(res) })
+        .then((res) => { this.onReplyFetch(res) })
         .catch((error) => {});   
     };
 
-    onRefetchVideo = ( res ) => {
+    onReplyFetch = ( res ) => {
       if(Utilities.isEntityDeleted(res)){
         this.setState({isDeleted: true});
         return;
       }
-      this.fetchParentVideo( res );
       const users = deepGet(res , "data.users") || {} ,
             userKeys =  Object.keys(users) || [] ,
             userId = userKeys[0] || null;
       if(userId){
-        this.setState({ userId : userId});
+        this.setState({ userId : userId ,  isLoading : false});
       }
     };
-
-    fetchParentVideo = (res) => {
-      const parentVideoId =  deepGet(res, `data.reply_details.${this.replyDetailId}.parent_id` );
-      fetchVideo(parentVideoId);
-    }
 
     getPixelDropData = () => {
       return pixelParams = {
@@ -103,14 +97,15 @@ class VideoReplyPlayer extends PureComponent {
           return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={ CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
-              <VideoReplyRow shouldPlay={this.shouldPlay}
+              {!this.state.isLoading && ( <VideoReplyRow shouldPlay={this.shouldPlay}
                     isActive={true}
                     doRender={true}
                     userId={this.state.userId}
+                    parentVideoId={this.state.parentVideoId}
                     replyDetailId={this.replyDetailId}
                     getPixelDropData={this.getPixelDropData}
                     parentClickHandler={this.parentClickHandler}
-              />
+              />)}
              <FlotingBackArrow />
             </SafeAreaView>
           )

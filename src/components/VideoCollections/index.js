@@ -162,7 +162,7 @@ class VideoCollections extends PureComponent {
     };
 
     _renderVideoReplyThumbnail( item, index ) {
-        return (<ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(index)}}/>);
+        return (<ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(item.payload,index)}}/>);
     }
 
     _renderVideoThumbnail( item, index){

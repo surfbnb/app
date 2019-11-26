@@ -164,6 +164,15 @@ class FullScreenVideoCollection extends PureComponent{
         };
     }
 
+    parentClickHandler =(replyDetailId)=>{
+        const parentVideoId =  reduxGetters.getReplyParentVideoId(replyDetailId),
+                parentUserId = reduxGetters.getReplyParentUserId(replyDetailId );
+        this.props.navigation.push('VideoPlayer', {
+          userId: parentUserId,
+          videoId: parentVideoId
+        });
+      }
+
     _renderVideoReplyRow(item, index){
         let userId = deepGet(item,'payload.user_id'),
             replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`),
@@ -176,7 +185,7 @@ class FullScreenVideoCollection extends PureComponent{
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
                                 replyDetailId={replyDetailId}
-                                currentIndex={this.currentIndex}
+                                parentClickHandler={()=>{this.parentClickHandler(replyDetailId)}}
          /> ;
     }
 

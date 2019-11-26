@@ -26,7 +26,7 @@ class VideoPlayer extends Component {
         this.bubbleClickHandler =  this.props.navigation.getParam('bubbleClickHandler');
         this.state = {
           userId :  this.props.navigation.getParam('userId') || null,
-          isDeleted : reduxGetter.isVideoDeleted(this.videoId)
+          isDeleted : false
         };
         this.refetchVideo();
         this.isActiveScreen = true;

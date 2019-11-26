@@ -4,6 +4,7 @@ import {withNavigation} from 'react-navigation';
 
 import video_not_available from '../../../assets/video-not-available.png';
 import historyBack from "../../../assets/user-video-history-back-icon.png";
+import inlineStyles from './styles';
 
 class DeletedVideoInfo extends PureComponent{
     constructor(props){

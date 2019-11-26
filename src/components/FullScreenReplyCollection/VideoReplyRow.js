@@ -6,6 +6,7 @@ import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import BottomReplyBar from "../CommonComponents/BottomReplyBar";
 import PepoApi from '../../services/PepoApi';
+import deepGet from 'lodash/get';
 
 import inlineStyles from './styles';
 
@@ -27,20 +28,55 @@ import multipleClickHandler from '../../services/MultipleClickHandler';
 const marginTopForParentIcon = 15;
 const AREA = AppConfig.MaxDescriptionArea;
 const height = AREA / Dimensions.get('window').width + 20;
-import { connect } from 'react-redux';
-
-const mapStateToProps = (state, ownProps) => {
-    return {
-        parentVideoId : ReduxGetters.getReplyParentVideoId( ownProps.replyDetailId ,state ),
-        parentUserId :  ReduxGetters.getReplyParentUserId(ownProps.replyDetailId , state )
-    };
-  };
+import { fetchVideo } from '../../helpers/helpers';
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
       super(props);
+      this.state = {
+        parentVideoId : ReduxGetters.getReplyParentVideoId( props.replyDetailId ),
+        parentUserId  : ReduxGetters.getReplyParentUserId( props.replyDetailId )
+      }
       this.onParentClickDelegate = this.props.parentClickHandler || this.defaultParentClickHandler;
     }
+
+   componentDidMount(){
+     if(this.props.doRender && this.state.parentVideoId && !this.state.parentUserId ){
+       this.fetchParentVideo = fetchVideo(this.state.parentVideoId, this.onParentVideoFetch , null , this.onParentVideoFetchComplete);
+     }
+   } 
+
+   componentDidUpdate(prevProps){
+    if(!this.fetchParentVideo && this.props.doRender && this.props.doRender !== prevProps.doRender  && !this.state.parentUserId ){
+      fetchVideo(this.state.parentVideoId, this.onParentVideoFetch ,  null , this.onParentVideoFetchComplete);
+    }
+   }
+
+   componentWillUnmount(){
+     this.onParentVideoFetch = () => {};
+     this.onParentVideoFetchComplete = () => {};
+   }
+
+   onParentProfileIconClick() {
+     if(this.state.parentVideoId){
+      this.onParentClickDelegate();
+     }
+   }
+   
+   onParentVideoFetchComplete() {
+     this.fetchParentVideo =  null;
+   }
+
+   onParentVideoFetch = (res) => {
+    const users = deepGet(res , "data.users") || {} ,
+    userKeys =  Object.keys(users) || [] ,
+    userId = userKeys[0] || null;
+    if(userId){
+      this.setState({
+        parentUserId: userId
+      });
+    } 
+   }
 
   refetchVideoReply = () => {
         new PepoApi(`/replies/${this.props.replyDetailId}`)
@@ -51,7 +87,7 @@ class VideoReplyRow extends PureComponent {
 
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
-        const pixelParams = { e_entity: 'reply' , parent_video_id : this.props.parentVideoId ,  reply_detail_id :this.props.replyDetailId  };
+        const pixelParams = { e_entity: 'reply' , parent_video_id : this.state.parentVideoId ,  reply_detail_id :this.props.replyDetailId  };
         return assignIn({}, pixelParams, parentData);
     }
 
@@ -80,9 +116,9 @@ class VideoReplyRow extends PureComponent {
 
                             <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-                              {this.props.parentVideoId && (
+                              {this.state.parentVideoId && (
                                 <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
-                                  <InvertedReplyList  videoId={this.props.parentVideoId}
+                                  <InvertedReplyList  videoId={this.state.parentVideoId}
                                                       doRender={this.props.doRender}
                                                       paginationService={this.props.paginationService}
                                                       onChildClickDelegate={this.props.onChildClickDelegate}
@@ -101,8 +137,8 @@ class VideoReplyRow extends PureComponent {
                                         entityId={this.props.replyDetailId}
                                         getPixelDropData={this.getPixelDropData}
                                     />
-                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentClickDelegate()})}>
-                                      <ProfilePicture userId={this.props.parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
+                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentProfileIconClick()})}>
+                                      <ProfilePicture userId={this.state.parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
                                         width: AppConfig.thumbnailListConstants.parentIconWidth,
                                         borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
                                         marginVertical: 12
@@ -132,7 +168,7 @@ class VideoReplyRow extends PureComponent {
 
                 </View>
 
-                <BottomReplyBar  userId={this.props.parentUserId}  videoId={this.props.parentVideoId} />
+                <BottomReplyBar  userId={this.state.parentUserId}  videoId={this.state.parentVideoId} />
             </View>
         );
     }
@@ -143,7 +179,8 @@ VideoReplyRow.defaultProps = {
       console.warn("getPixelDropData props is mandatory for Video component");
       return {};
     },
-    paginationService : null
+    paginationService : null,
+    currentIndex: 0
   };
 
-export default connect(mapStateToProps)(withNavigation(VideoReplyRow));
+export default withNavigation(VideoReplyRow)

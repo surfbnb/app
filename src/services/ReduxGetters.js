@@ -434,11 +434,6 @@ class ReduxGetters {
     return deepGet(state, `user_entities.id_${id}.status`, '').toLowerCase() == appConfig.userStatusMap.inActive;
   }
 
-  isVideoDeleted(id, state) {
-    state = state || Store.getState();
-    return deepGet(state, `video_stat_entities.id_${id}.status`, '').toLowerCase() == appConfig.videoStatusMap.deleted;
-  }
-
   getUSDPrice(state){
     state = state || Store.getState();
     return deepGet(state,  "price_points.OST.USD");
@@ -514,11 +509,6 @@ class ReduxGetters {
     let val = deepGet(state, `reply_detail_entities.id_${id}`);
     val = val && Number(val);
     return !!val;
-  }
-
-  isVideoEntityDeleted(id, state) {
-    state = state || Store.getState();
-    return deepGet(state, `reply_detail_entities.id_${id}.status`, '').toLowerCase() == appConfig.replyStatusMap.deleted;
   }
 
   getReplyParentVideoId(id ,  state){
