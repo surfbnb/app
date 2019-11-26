@@ -41,7 +41,7 @@ class VideoRecorder extends Component {
       progress: 0,
       recordingInProgress: false,
       acceptedCameraTnC: this.props.acceptedCameraTnC,
-      hasVideoReplies: this.props.hasVideoReplies,
+      showLightBoxOnReply: this.props.showLightBoxOnReply,
       cameraFrontMode: true,
       isLocalVideoPresent: false
     };
@@ -58,8 +58,8 @@ class VideoRecorder extends Component {
      this.setState({acceptedCameraTnC: nextProps.acceptedCameraTnC })
     }
 
-    if ( nextProps.hasVideoReplies != this.state.hasVideoReplies ) {
-      this.setState({hasVideoReplies: nextProps.hasVideoReplies })
+    if ( nextProps.showLightBoxOnReply != this.state.showLightBoxOnReply ) {
+      this.setState({showLightBoxOnReply: nextProps.showLightBoxOnReply })
     }
   }
 
@@ -146,7 +146,7 @@ class VideoRecorder extends Component {
 
   replyToVideo = () => {
     this.setState({
-      hasVideoReplies: true
+      showLightBoxOnReply: false
     });
   };
 
@@ -181,7 +181,7 @@ class VideoRecorder extends Component {
 
     if (this.props.isVideoTypeReply) {
       // TODO: return coach for posting
-      if (! this.state.hasVideoReplies){
+      if (this.state.showLightBoxOnReply){
         // Show video
         return <View style={styles.backgroundStyle}>
           <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
@@ -312,7 +312,7 @@ class VideoRecorder extends Component {
 
     if (this.props.isVideoTypeReply){
       // If video type is reply and has video replies then we will not show coach and we need to show action buttons
-      return this.state.hasVideoReplies;
+      return ! this.state.showLightBoxOnReply;
     } else {
       // If video type is post and terms and conditions are accepted then we will not show coach and we need to show action buttons
       return this.state.acceptedCameraTnC === 'true';

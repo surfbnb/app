@@ -484,6 +484,12 @@ class ReduxGetters {
     return  !!Number( deepGet(state, `current_user_video_relation_entities.id_${id}.can_delete` , 0) );
   }
 
+  isVideoIsChargeable(id, state){
+    state = state || Store.getState();
+    return  !!Number( deepGet(state, `current_user_video_relation_entities.id_${id}.is_reply_chargeable` , 0) );
+
+  }
+
   getReplyDescriptionId(id, state) {
     state = state || Store.getState();
     return deepGet(state, `reply_detail_entities.id_${id}.description_id`);

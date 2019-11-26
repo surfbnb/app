@@ -136,6 +136,7 @@ class CameraWorker extends PureComponent {
 
     if (this.props.recorded_video.do_upload) {
       if (!ReduxGetters.getVideoProcessingStatus()) {
+        console.log('-----------------------processVideo:::VideoUploadStatusToProcessing------------------------------------');
         this.VideoUploadStatusToProcessing();
       }
 
@@ -169,6 +170,10 @@ class CameraWorker extends PureComponent {
 
 
   processReplyVideo = async () => {
+    console.log(
+      '-----processReplyVideo--------'
+    );
+
     // let sessionCreated = await this.ensureSession();
     //
     // if (! sessionCreated) {
@@ -204,6 +209,14 @@ class CameraWorker extends PureComponent {
 
   onFlowInterrupt = (ostWorkflowContext, error) => {
     console.log('CameraWorker.onFlowInterrupt', ostWorkflowContext, error);
+    console.log('-----------------------onFlowInterrupt:::VideoUploadStatusToNotProcessing------------------------------------');
+    Store.dispatch(
+      upsertRecordedVideo({
+        do_upload: false,
+        go_for_tx: false
+      })
+    );
+    this.executeTx = false;
     this.VideoUploadStatusToNotProcessing();
     this.executingTx = false;
     Toast.show({
@@ -229,8 +242,20 @@ class CameraWorker extends PureComponent {
     return metaProperties;
   };
 
+  isReplyChargeable = () => {
+    let isChargeable = deepGet (this.props.recorded_video, 'reply_obj.isChargeble'),
+        amountToSendWithReply = deepGet(this.props.recorded_video, 'reply_obj.amountToSendWithReply');
+      return isChargeable && amountToSendWithReply != '0';
+  };
+
 
   executeTransaction = () => {
+
+    console.log('executeTransaction-------');
+    console.log(goForTx,'goForTx');
+    console.log(receiverUserId,'receiverUserId');
+    console.log(doDiscard,'doDiscard');
+    console.log(goForTx,'goForTx');
 
     let goForTx = this.props.recorded_video.go_for_tx,
       doDiscard = this.props.recorded_video.do_discard,
@@ -240,16 +265,19 @@ class CameraWorker extends PureComponent {
       return;
     }
     this.executeTx = true;
-    if ( receiverUserId === this.props.currentUserId || ! Number(amountToSendWithReply)) {
+    console.log('-----------------------executeTransaction:::VideoUploadStatusToProcessing------------------------------------');
+    this.VideoUploadStatusToProcessing();
+    console.log('CameraWorker.executeTransaction');
+
+    if (! this.isReplyChargeable()) {
       this.videoUploadedSuccessCallback();
       return;
-    };
+    }
 
     upsertRecordedVideo({
       executing_tx: true
     });
-    this.VideoUploadStatusToProcessing();
-    console.log('CameraWorker.executeTransaction');
+
 
 
     let callbacks = {onRequestAcknowledge: this.videoUploadedSuccessCallback, onFlowInterrupt: this.onFlowInterrupt};
@@ -357,7 +385,14 @@ class CameraWorker extends PureComponent {
               text: responseData.err.msg,
               icon: 'error'
             });
+            console.log('-----------------------/replies:::VideoUploadStatusToNotProcessing------------------------------------');
             this.VideoUploadStatusToNotProcessing();
+            Store.dispatch(
+              upsertRecordedVideo({
+                do_upload: false
+              })
+            );
+            this.executeTx = false;
           }
           this.postToPepoApi = false;
         })
@@ -378,6 +413,7 @@ class CameraWorker extends PureComponent {
 
   async cleanUp() {
     // stop ffmpge processing
+    console.log('-----------------------cleanUp:::VideoUploadStatusToNotProcessing------------------------------------');
     this.VideoUploadStatusToNotProcessing();
     FfmpegProcesser.cancel();
     // remove files from cache,
@@ -453,6 +489,7 @@ class CameraWorker extends PureComponent {
             compression_processing: true
           })
         );
+        console.log('-----------------------compressVideo:::VideoUploadStatusToProcessing------------------------------------');
         this.VideoUploadStatusToProcessing();
         FfmpegProcesser.init(this.props.recorded_video.raw_video);
 
@@ -517,6 +554,7 @@ class CameraWorker extends PureComponent {
           video_s3_upload_processing: true
         })
       );
+      console.log('-----------------------uploadVideo:::VideoUploadStatusToProcessing------------------------------------');
       this.VideoUploadStatusToProcessing();
       return this.uploadToS3(this.props.recorded_video.compressed_video, 'video')
         .then((s3Video) => {
@@ -639,6 +677,7 @@ class CameraWorker extends PureComponent {
               })
             );
           } else {
+            console.log('-----------------------/fanvideo:::VideoUploadStatusToNotProcessing------------------------------------');
             this.VideoUploadStatusToNotProcessing();
           }
           this.postToPepoApi = false;

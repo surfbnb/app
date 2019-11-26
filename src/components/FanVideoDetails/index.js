@@ -102,7 +102,8 @@ class FanVideoDetails extends Component {
       linkError: null,
       descError : null,
       usdVal : this.weiToUSD(this.replyAmount),
-      replyAmt : null
+      replyAmt : null,
+      buttonText: 'Post'
 
     };
 
@@ -142,7 +143,9 @@ class FanVideoDetails extends Component {
       videoLink: this.props.recordedVideo.video_link,
       replyAmount:  this.props.recordedVideo.reply_amount
     });
+
   }
+
 
   componentWillUnmount() {
     this.keyboardWillShowListener.remove();
@@ -154,6 +157,7 @@ class FanVideoDetails extends Component {
   enableStartUploadFlag = () => {
 
       this.clearErrors();
+      this.setState({buttonText: 'Posting...'});
       this.validateData().then((res) => {
         utilities.saveItem(`${CurrentUser.getUserId()}-accepted-camera-t-n-c`, true);
         Store.dispatch(
@@ -164,9 +168,11 @@ class FanVideoDetails extends Component {
         );
         this.props.navigation.dispatch(StackActions.popToTop());
         this.props.navigation.dispatch(StackActions.popToTop());
+        this.setState({buttonText: 'Post'});
         this.props.navigation.navigate('HomeScreen');
       }).catch((err)=>{
         // show error on UI.
+        this.setState({buttonText: 'Post'});
         this.showError(err);
       });
   };
@@ -346,7 +352,7 @@ class FanVideoDetails extends Component {
               TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
               TextStyles={[Theme.Button.btnPinkText]}
               style={{marginBottom: 20}}
-              text="Post"
+              text={this.state.buttonText}
               onPress={multipleClickHandler(() => {
                 this.enableStartUploadFlag();
               })}

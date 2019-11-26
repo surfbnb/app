@@ -33,7 +33,9 @@ import {ensureDeivceAndSession, ON_USER_CANCLLED_ERROR_MSG} from "../../helpers/
 import Toast from "../../theme/components/NotificationToast";
 import { WORKFLOW_CANCELLED_MSG } from '../../services/OstSdkErrors';
 
-//TODO setParams dont use 
+//TODO setParams dont use
+
+const PROCESSING_TEXT = 'Processing...';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -98,7 +100,8 @@ class FanVideoReplyDetails extends Component {
       },
       error: null,
       linkError: null,
-      descError : null
+      descError : null,
+      buttonText: null
     };
   }
   _keyboardShown = (e) => {
@@ -131,7 +134,16 @@ class FanVideoReplyDetails extends Component {
       videoDesc: this.props.recordedVideo.video_desc,
       videoLink: this.props.recordedVideo.video_link
     });
+    this.setState({buttonText: this.setButtonText()});
   }
+
+  setButtonText = () => {
+    if (! this.checkIfReplyChargeable()){
+      return 'Reply';
+    }
+    return null;
+  };
+
 
   componentWillUnmount() {
     this.keyboardWillShowListener.remove();
@@ -140,11 +152,17 @@ class FanVideoReplyDetails extends Component {
     this.keyboardDidHideListener.remove();
   }
 
+  checkIfReplyChargeable = () => {
+    let btAmount = this.getAmountToSend();
+    return this.replyObject.isChargeble && btAmount != '0';
+  };
+
+
   ensureSession = () => {
     return new Promise((resolve, reject)=> {
       let btAmount = this.getAmountToSend();
       const btInDecimal = pricer.getToDecimal(btAmount);
-      if (btAmount === '0'){
+      if (! this.checkIfReplyChargeable()) {
         return resolve();
       }
       ensureDeivceAndSession(CurrentUser.getOstUserId(), btInDecimal, (device) => {
@@ -189,6 +207,8 @@ class FanVideoReplyDetails extends Component {
   enableStartUploadFlag = () => {
     this.clearErrors();
     //todo @mayur button text change to validating or similar
+    let buttonText = this.state.buttonText;
+    this.setState({buttonText: PROCESSING_TEXT});
     this.validateData().then((res) => {
       let videoOwnerId = this.replyObject.replyReceiverUserId;
       if (videoOwnerId === CurrentUser.getUserId()){
@@ -199,11 +219,10 @@ class FanVideoReplyDetails extends Component {
        this.giveUploadConsent();
       }).catch(()=> {
       });
-
-
-
+      this.setState({buttonText: buttonText});
    }).catch((err)=>{
      // show error on UI.
+     this.setState({buttonText: buttonText});
      this.showError(err);
    }) ;
   };
@@ -276,9 +295,6 @@ class FanVideoReplyDetails extends Component {
     });
   };
 
-  getButtonText =() => {
-    return "Reply | "
-  };
 
   getAmountToSend  = () => {
    let amount = this.replyObject.amountToSendWithReply ;
@@ -329,6 +345,8 @@ class FanVideoReplyDetails extends Component {
               TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
               TextStyles={[Theme.Button.btnPinkText]}
               style={{marginBottom: 20}}
+              // if buttonText is passed, it has priority over textBeforeImage & textAfterImage.
+              buttonText={this.state.buttonText}
               textBeforeImage='Reply | '
               textAfterImage={this.getAmountToSend()}
               onPress={multipleClickHandler(() => {
