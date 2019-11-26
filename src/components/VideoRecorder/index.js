@@ -20,6 +20,7 @@ import { ActionSheet, Button } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/camera-cross-icon.png';
+import closeIconWhite from '../../assets/cross-icon-white.png';
 import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
 import deepGet from 'lodash/get';
@@ -185,7 +186,7 @@ class VideoRecorder extends Component {
         // Show video
         return <View style={styles.backgroundStyle}>
           <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
-            <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
+            <Image style={styles.closeIconSkipFont} source={closeIconWhite}></Image>
           </TouchableOpacity>
           <View style={{ padding: 26, alignItems: 'center'}}>
 
