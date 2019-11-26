@@ -19,6 +19,7 @@ import PepoApi from '../../services/PepoApi';
 import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
 import ReduxGetters from '../../services/ReduxGetters';
 import entityHelper from '../../helpers/EntityHelper';
+import { fetchVideo } from '../../helpers/helpers';
 
 
 class ReplyCollection extends PureComponent {
@@ -202,6 +203,8 @@ class ReplyCollection extends PureComponent {
     }
 
     removeVideo = (id, index) => {
+        const videoId = ReduxGetters.getReplyEntityId(id);
+        videoId && fetchVideo(videoId);
         if (index > -1) {
             this.videoPagination.deleteItem(id , "payload.reply_detail_id");
             let array = [...this.state.list]; // make a separate copy of the array
