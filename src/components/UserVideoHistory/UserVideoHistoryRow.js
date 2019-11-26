@@ -78,10 +78,6 @@ class UserVideoHistoryRow extends PureComponent {
                         <View style={inlineStyles.touchablesBtns}>
 
                           <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
-                            {/* <InvertedReplyList  videoId={this.props.videoId}
-                                                userId={this.props.userId}
-                                                doRender={this.props.doRender}
-                            /> */}
                             <BubbleList videoId={this.props.videoId} doRender={this.props.doRender} onClickHandler={this.props.bubbleClickHandler} />
                           </View>
 

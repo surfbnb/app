@@ -67,10 +67,6 @@ class FullScreeVideoRow extends PureComponent {
                                 <View style={inlineStyles.touchablesBtns}>
 
                                   <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
-                                    {/* <InvertedReplyList  videoId={this.videoId}
-                                                        userId={this.userId}
-                                                        listKey={`${this.props.listKey}-InvertedReplyList`}
-                                    /> */}
                                     <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
                                   </View>
 
