@@ -141,7 +141,9 @@ class VideoReplyRow extends PureComponent {
                                       <ProfilePicture userId={this.state.parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
                                         width: AppConfig.thumbnailListConstants.parentIconWidth,
                                         borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
-                                        marginVertical: 12
+                                        marginVertical: 12,
+                                        borderColor: 'white',
+                                        borderWidth: 1
                                       }}
                                       />
                                     </TouchableOpacity>

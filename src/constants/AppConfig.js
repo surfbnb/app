@@ -342,8 +342,8 @@ export default {
     iconHeight:44,
     // this is width of profile icon + shadow around it.
     iconWidth: 44,
-    parentIconHeight: 50,
-    parentIconWidth: 50
+    parentIconHeight: 40,
+    parentIconWidth: 40
   },
   VideoScreenObject : {
     ...ifIphoneX(
