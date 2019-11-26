@@ -189,7 +189,7 @@ class ReplyCollection extends PureComponent {
              style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
            >
            <View style={inlineStyles.deleteButton}>
-               <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} 
+               <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(reply_detail_id)} 
                             removeVideo={ () => {this.removeVideo(reply_detail_id , index )}} />
            </View>
          </LinearGradient>}
