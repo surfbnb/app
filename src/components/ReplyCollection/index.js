@@ -180,9 +180,8 @@ class ReplyCollection extends PureComponent {
 
     _renderVideoReplyThumbnail( item, index ) {
         const reply_detail_id = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
-        const videoId = ReduxGetters.getReplyEntityId(reply_detail_id);
         return (<View style={{position: 'relative'}}>
-        {ReduxGetters.getCanDeleteVideo( videoId ) && <LinearGradient
+        {ReduxGetters.getCanDeleteReply( reply_detail_id ) && <LinearGradient
              colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
              locations={[0, 0.5, 1]}
              start={{ x: 0, y: 0 }}

@@ -2,16 +2,17 @@ import deepGet from 'lodash/get';
 
 import store from '../store';
 import ReduxGetters from "../services/ReduxGetters";
-import { upsertCurrentUserVideoRelationEntities } from '../reducers';
+import { upsertCurrentUserReplyDetailRelationEntities } from '../reducers';
 import Utilities from '../services/Utilities';
+import DataContract from '../constants/DataContract';
 
 
 function updateEntitySeen (item) {
-    const entityId = ReduxGetters.getReplyEntityId(deepGet(item,'payload.reply_detail_id'));
-    let currentUserVideoRelationEntity = ReduxGetters.getCurrentUserVideoRelationEntity( entityId );
-    if(currentUserVideoRelationEntity){
-      currentUserVideoRelationEntity['has_seen'] = true;
-      store.dispatch(upsertCurrentUserVideoRelationEntities(Utilities._getEntityFromObj(currentUserVideoRelationEntity)));
+    const replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
+    let currentUserReplyDetailRelationEntity = ReduxGetters.getReplyDetailRelationEntity( replyDetailId );
+    if(currentUserReplyDetailRelationEntity){
+      currentUserReplyDetailRelationEntity['has_seen'] = true;
+      store.dispatch(upsertCurrentUserReplyDetailRelationEntities(Utilities._getEntityFromObj(currentUserReplyDetailRelationEntity)));
     } 
   }
 
