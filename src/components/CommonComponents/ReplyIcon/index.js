@@ -5,7 +5,7 @@ import {withNavigation} from "react-navigation";
 import reduxGetter from '../../../services/ReduxGetters';
 import inlineStyles from './styles';
 import multipleClickHandler from "../../../services/MultipleClickHandler";
-import reply_video from '../../../assets/video_reply.png';
+import reply_video from '../../../assets/video-reply.png';
 import Utilities from '../../../services/Utilities';
 import NavigationService from "../../../services/NavigationService";
 import utilities from "../../../services/Utilities";
@@ -47,7 +47,7 @@ class ReplyIcon extends PureComponent {
             <TouchableOpacity pointerEvents={'auto'}
                             style={inlineStyles.replyIconWrapper}
                             onPress={multipleClickHandler(() => this.replyVideo())} >
-                <Image style={{ aspectRatio: 124/100, height: 35 }} source={reply_video} />
+                <Image style={{ width: 38, height: 31.3 }} source={reply_video} />
             </TouchableOpacity>
         </React.Fragment>);
     }

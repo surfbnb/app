@@ -64,7 +64,7 @@ class FullScreeVideoRow extends PureComponent {
 
                         {!!this.videoId && !!this.userId && (
                             <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-                                <View style={inlineStyles.touchablesBtns}>
+                                <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
                                   <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
                                     <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
