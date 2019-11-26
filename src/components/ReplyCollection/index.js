@@ -189,7 +189,8 @@ class ReplyCollection extends PureComponent {
              style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
            >
            <View style={inlineStyles.deleteButton}>
-               <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
+               <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} 
+                            removeVideo={ () => {this.removeVideo(reply_detail_id , index )}} />
            </View>
          </LinearGradient>}
             <ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(index)}}/>
@@ -200,9 +201,9 @@ class ReplyCollection extends PureComponent {
         return userId === CurrentUser.getUserId();
     }
 
-    removeVideo = (videoId, index) => {
+    removeVideo = (id, index) => {
         if (index > -1) {
-            this.videoPagination.deleteItem(videoId , "payload.reply_detail_id");
+            this.videoPagination.deleteItem(id , "payload.reply_detail_id");
             let array = [...this.state.list]; // make a separate copy of the array
             array.splice(index, 1);
             this.setState({list: array});

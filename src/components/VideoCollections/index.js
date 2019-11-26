@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { ActivityIndicator , FlatList} from "react-native";
 import {SafeAreaView} from "react-navigation";
 import Pagination from "../../services/Pagination";
-import deepGet from 'lodash/get';
 
 import CommonStyle from "../../theme/styles/Common";
 import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
@@ -97,8 +96,7 @@ class VideoCollections extends PureComponent {
     }
 
     beforeRefresh = ( ) => {
-        //this.props.beforeRefresh && this.props.beforeRefresh();
-        //this.onPullToRefresh();
+        this.props.beforeRefresh && this.props.beforeRefresh();
         this.setState({ refreshing : true });
     };
 
@@ -164,23 +162,7 @@ class VideoCollections extends PureComponent {
     };
 
     _renderVideoReplyThumbnail( item, index ) {
-        const userId = deepGet(item, "payload.user_id");
-        const reply_detail_id = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`); 
-        const videoId = ReduxGetters.getReplyId(reply_detail_id);
-        return (<View style={{position: 'relative'}}>
-        {this.isCurrentUser( userId ) && <LinearGradient
-             colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
-             locations={[0, 0.5, 1]}
-             start={{ x: 0, y: 0 }}
-             end={{ x: 0, y: 1 }}
-             style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
-           >
-           <View style={inlineStyles.deleteButton}>
-               <DeleteVideo fetchUrl={DataContract.replies.getDeleteVideoReplyApi(videoId)} videoId={videoId} removeVideo={ (videoId) => {this.removeVideo(videoId , index )}} />
-           </View>
-         </LinearGradient>}
-            <ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(index)}}/>
-          </View>);
+        return (<ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(index)}}/>);
     }
 
     _renderVideoThumbnail( item, index){
