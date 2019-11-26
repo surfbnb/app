@@ -7,6 +7,8 @@ import Pricer from "../services/Pricer";
 import ReduxGetters from "../services/ReduxGetters";
 import Toast from  '../theme/components/NotificationToast';
 
+
+// creatorUserId is mandatory as without it token holder address can not be accessed.
 const getVideoReplyObject = (videoId, creatorUserId) => {
   return {
     videoType : AppConfig.videoTypes.reply,
