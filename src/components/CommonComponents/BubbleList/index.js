@@ -10,6 +10,7 @@ import multipleClickHandler from '../../../services/MultipleClickHandler';
 import {FetchServices} from "../../../services/FetchServices";
 import SingleBubble from '../SingleBubble';
 import {connect} from "react-redux";
+import Utilities from '../../../services/Utilities';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -83,9 +84,6 @@ class BubbleList extends PureComponent {
 
   };
 
-
-
-
   getBubbleListJSX = () => {
     let listToRender = this.state.list;
     return listToRender.length? listToRender.map((item) => {
@@ -118,9 +116,14 @@ class BubbleList extends PureComponent {
         });
   }
 
+  onIconClick = () => {
+    if(!Utilities.checkActiveUser()) return; 
+    this.onClickHandler();
+  } 
+
   render() {
     return <View style={inlineStyles.bubbleContainer}>
-        <TouchableOpacity onPress={multipleClickHandler(() => {this.onClickHandler()})}
+        <TouchableOpacity onPress={multipleClickHandler(() => {this.onIconClick()})}
              style={{flexDirection: 'row-reverse', marginRight: 5}}>{this.getBubbleListJSX()}
         </TouchableOpacity>
         {/*<Text style={inlineStyles.repliesTxt}>{this.moreReplyText()}</Text>*/}
