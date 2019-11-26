@@ -11,7 +11,17 @@ import reduxGetter from "../../../services/ReduxGetters";
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import {FetchServices} from "../../../services/FetchServices";
 import SingleBubble from '../SingleBubble';
+import {connect} from "react-redux";
+import reduxGetters from '../../../services/ReduxGetters';
 
+
+
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    replyCount : reduxGetter.getVideoReplyCount(ownProps.videoId)
+  };
+};
 
 
 //
@@ -35,6 +45,9 @@ class BubbleList extends PureComponent {
 
   componentDidUpdate(prevProps, prevState ) {
     if( this.props.doRender && this.props.doRender !== prevProps.doRender  ){
+      this.getListData();
+    }
+    if (this.props.replyCount |= prevProps.replyCount){
       this.getListData();
     }
   }
@@ -68,7 +81,7 @@ class BubbleList extends PureComponent {
 
   onRefresh = (res) => {
     let listToBeShownOnUI = this.fetchServices.getAllResults().slice(0,NO_OF_ITEMS_TO_SHOW);
-    this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId)
+    this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId);
     this.setState({ list : listToBeShownOnUI } );
 
   };
@@ -113,11 +126,11 @@ class BubbleList extends PureComponent {
         <TouchableOpacity onPress={multipleClickHandler(() => {this.onClickHandler()})} 
              style={{flexDirection: 'row-reverse', marginRight: 5}}>{this.getBubbleListJSX()}
         </TouchableOpacity>
-        <Text style={inlineStyles.repliesTxt}>{this.moreReplyText()}</Text>
+        {/*<Text style={inlineStyles.repliesTxt}>{this.moreReplyText()}</Text>*/}
       </View>
   }
 }
 
 
 //make this component available to the app
-export default withNavigation(BubbleList);
+export default connect(mapStateToProps)(withNavigation(BubbleList)) ;
