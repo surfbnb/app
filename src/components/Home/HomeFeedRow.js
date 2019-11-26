@@ -92,9 +92,7 @@ class HomeFeedRow extends PureComponent {
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
 
                 <ShareIcon  userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
-                <View ref={(ref)=> {this.reportViewRef = ref }} onLayout={()=>{}} >
-                  <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
-                </View>
+                <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
               </View>
 
               <VideoSupporterStat

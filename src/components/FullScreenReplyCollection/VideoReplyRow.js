@@ -112,7 +112,7 @@ class VideoReplyRow extends PureComponent {
                                     <ShareIcon  userId={this.props.userId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)}
                                                 isDisabled={() => {return false}}
                                                  />
-                                    <ReportVideo  userId={this.props.userId} reportEntityId={this.replyId} reportKind={'reply'} />
+                                    <ReportVideo  userId={this.props.userId} reportEntityId={this.props.replyDetailId} reportKind={'reply'} />
                                  </View>
 
                                 <VideoReplySupporterStat
