@@ -29,8 +29,9 @@ import { StackActions } from 'react-navigation';
 import PepoApi from "../../services/PepoApi";
 import DataContract from "../../constants/DataContract";
 import pricer from "../../services/Pricer";
-import {ensureDeivceAndSession} from "../../helpers/TransactionHelper";
+import {ensureDeivceAndSession, ON_USER_CANCLLED_ERROR_MSG} from "../../helpers/TransactionHelper";
 import Toast from "../../theme/components/NotificationToast";
+import { WORKFLOW_CANCELLED_MSG } from '../../services/OstSdkErrors';
 
 //TODO setParams dont use 
 
@@ -153,10 +154,12 @@ class FanVideoReplyDetails extends Component {
         if ( success ) {
           return resolve();
         } else {
-          Toast.show({
-            text: errorMessage,
-            icon: 'error'
-          });
+          if (ON_USER_CANCLLED_ERROR_MSG !== errorMessage && WORKFLOW_CANCELLED_MSG !== errorMessage) {
+            Toast.show({
+              text: errorMessage,
+              icon: 'error'
+            });
+          }
           return reject()
         }
       });
