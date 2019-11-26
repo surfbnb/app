@@ -7,7 +7,7 @@ import inlineStyles from './styles';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    seen: reduxGetters.isVideoSeen( reduxGetters.getReplyEntityId(ownProps.replyDetailId))
+    seen: reduxGetters.isReplySeen(ownProps.replyDetailId)
   };
 };
 

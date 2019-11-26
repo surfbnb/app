@@ -469,19 +469,24 @@ class ReduxGetters {
     return deepGet(state, `reply_detail_entities.id_${id}.entity_id`);
   }
 
-  getCurrentUserVideoRelationEntity(id, state){
+  getVideoRelationEntity(id, state){
     state = state || Store.getState();
     return deepGet(state, `current_user_video_relation_entities.id_${id}`);
   }
 
-  isVideoSeen(id, state){
+  getReplyDetailRelationEntity(id, state){
     state = state || Store.getState();
-    return deepGet(state, `current_user_video_relation_entities.id_${id}.has_seen`);
+    return deepGet(state, `current_user_reply_detail_relation_entities.id_${id}`);
   }
 
-  getCanDeleteVideo(id, state){
+  isReplySeen(id, state){
     state = state || Store.getState();
-    return  !!Number( deepGet(state, `current_user_video_relation_entities.id_${id}.can_delete` , 0) );
+    return deepGet(state, `current_user_reply_detail_relation_entities.id_${id}.has_seen`);
+  }
+
+  getCanDeleteReply(id, state){
+    state = state || Store.getState();
+    return  !!Number( deepGet(state, `current_user_reply_detail_relation_entities.id_${id}.can_delete` , 0) );
   }
 
   isVideoIsChargeable(id, state){
