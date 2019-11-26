@@ -14,7 +14,7 @@ let stylesMap = {
     borderRadius: 20
   },
 
-  bubbleSize: {
+  bubbleSizeSkipFont: {
     height: 38,
     width: 38,
     borderColor: 'white',

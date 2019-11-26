@@ -10,6 +10,7 @@ import CommonStyles from "../../../theme/styles/Common";
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import { SafeAreaView } from "react-navigation";
 import { fetchVideo } from '../../../helpers/helpers';
+import DataContract from '../../../constants/DataContract';
 
 class VideoPlayer extends Component {
 
@@ -25,7 +26,7 @@ class VideoPlayer extends Component {
         this.videoId =  this.props.navigation.getParam('videoId');
         this.bubbleClickHandler =  this.props.navigation.getParam('bubbleClickHandler');
         this.state = {
-          userId :  this.props.navigation.getParam('userId') || null,
+          userId : reduxGetter.getVideoCreatorUserId(this.videoId) || null,
           isDeleted : false
         };
         this.refetchVideo();
@@ -62,11 +63,12 @@ class VideoPlayer extends Component {
         this.setState({isDeleted: true});
         return;
       }
-      const users = deepGet(res , "data.users") || {} ,
-            userKeys =  Object.keys(users) || [] ,
-            userId = userKeys[0] || null;
-      if(userId){
-        this.setState({ userId : userId});
+      const video_details = deepGet(res, `data.${DataContract.videos.videoDetailsKey}`),
+            item = video_details[this.videoId];
+      if( item ){
+        this.setState({
+          userId: item[DataContract.videos.creatorUserIdKey]
+        })
       }
     };
 

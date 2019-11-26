@@ -47,7 +47,7 @@ class BottomStatus extends PureComponent {
   getHashTagMarkup( item , prevText ){
     const tagText = item.replace("#", "");
     return (
-      <Text>
+      <Text key={tagText}>
         {prevText}
         <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
               numberOfLines={1}
@@ -64,7 +64,7 @@ class BottomStatus extends PureComponent {
   getMentionMarkup( item , prevText ){
     const mentionText = item.replace("@", "");
     return (
-      <Text>
+      <Text key={mentionText}>
         {prevText}
         <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
               numberOfLines={1}
@@ -97,7 +97,7 @@ class BottomStatus extends PureComponent {
 
   getTextMarkup( item  , prevText){
     return (
-      <Text>
+      <Text key={item}>
         {prevText + item}
       </Text>
     )

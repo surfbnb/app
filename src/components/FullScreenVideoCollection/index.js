@@ -186,6 +186,7 @@ class FullScreenVideoCollection extends PureComponent{
                                 userId={userId}
                                 replyDetailId={replyDetailId}
                                 parentClickHandler={()=>{this.parentClickHandler(replyDetailId)}}
+                                showActiveIndicator={true}
          /> ;
     }
 

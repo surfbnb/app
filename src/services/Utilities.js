@@ -11,14 +11,15 @@ import { LoginPopoverActions } from '../components/LoginPopover';
 import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
-import AppConfig from '../constants/AppConfig';
-import PepoApi from './PepoApi';
+import AppConfig from '../constants/AppConfig';;
 import DataContract from '../constants/DataContract';
-import ReduxGetters from './ReduxGetters';
 
-let CurrentUser;
+let CurrentUser, PepoApi;
 import('../models/CurrentUser').then((imports) => {
   CurrentUser = imports.default;
+});
+import('./PepoApi').then((imports) => {
+  PepoApi = imports.default;
 });
 
 let os = Platform.OS || "";

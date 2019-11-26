@@ -73,11 +73,6 @@ class HomeFeedRow extends PureComponent {
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
             <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
-              {/*<InvertedReplyList  videoId={this.videoId}*/}
-              {/*                    userId={this.userId}*/}
-              {/*                    doRender={this.props.doRender}*/}
-              {/*                    style={{justifyContent: 'flex-end'}}*/}
-              {/*/>*/}
               <BubbleList  videoId={this.videoId}   doRender={this.props.doRender} />
             </View>
 
