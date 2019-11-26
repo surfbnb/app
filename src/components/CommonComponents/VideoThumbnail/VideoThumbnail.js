@@ -23,7 +23,7 @@ class VideoThumbnail extends PureComponent {
      videoDesc = reduxGetters.getVideoDescription(reduxGetters.getVideoDescriptionId(videoId)) ,
      videoBtAmount = this.getVideoStats(videoId)
      ;
-    return <Base  userName={userName} imageUrl={imageUrl} videoDesc={videoDesc} btAmount={videoBtAmount} {...this.props} />;
+    return <Base  userName={userName} imageUrl={imageUrl} videoDesc={videoDesc} btAmount={videoBtAmount} userId={userId} {...this.props} />;
   }
 }
 export default VideoThumbnail;
