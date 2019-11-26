@@ -74,15 +74,15 @@ class VideoRepliesScreen extends PureComponent {
         });
 
       }, 300)
-      videoUploaderComponent.on('show', this.showVideoUploader);
-      videoUploaderComponent.on('hide', this.hideVideoUploader);
+      videoUploaderComponent.on('show.videoReplies', this.showVideoUploader);
+      videoUploaderComponent.on('hide.videoReplies', this.hideVideoUploader);
     }
 
     componentWillUnmount() {
       this.onAnimatedValueChange= () => {};
       this.animatedValue.removeListener(this.listener);
-      videoUploaderComponent.removeListener('show');
-      videoUploaderComponent.removeListener('hide');
+      videoUploaderComponent.removeListener('show.videoReplies');
+      videoUploaderComponent.removeListener('hide.videoReplies');
     }
 
     showVideoUploader = () => {

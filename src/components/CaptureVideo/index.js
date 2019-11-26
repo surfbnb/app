@@ -19,14 +19,14 @@ class CaptureVideo extends Component {
   };
   constructor(props) {
     super(props);
-    let videoReplyCount = props.navigation.getParam("videoReplyCount");
+    let isChargeble = props.navigation.getParam("isChargeble");
     this.state = {
       recordingScreen: true,
       videoUri: '',
       actionSheetOnRecordVideo: true,
       modalVisible: true,
       acceptedCameraTnC: null,
-      hasVideoReplies: videoReplyCount && videoReplyCount > 0
+      showLightBoxOnReply: isChargeble
     };
     this.replyReceiverUserId = null;
     this.replyReceiverVideoId = null;
@@ -56,6 +56,7 @@ class CaptureVideo extends Component {
       this.replyReceiverUserId = this.props.navigation.getParam("userId");
       this.replyReceiverVideoId = this.props.navigation.getParam("videoId");
       this.amountToSendWithReply = this.props.navigation.getParam("amount");
+      this.isChargeble = this.props.navigation.getParam("isChargeble");
 
     } else {
       // Do nothing.
@@ -75,7 +76,7 @@ class CaptureVideo extends Component {
       recordingScreen: true,
       actionSheetOnRecordVideo: false,
       acceptedCameraTnC: 'true',
-      hasVideoReplies: true
+      showLightBoxOnReply: false
     });
   }
 
@@ -123,7 +124,8 @@ class CaptureVideo extends Component {
     if ( this.isVideoTypeReply()) {
       replyOptions['replyReceiverUserId'] = this.replyReceiverUserId;
       replyOptions['replyReceiverVideoId'] = this.replyReceiverVideoId;
-      replyOptions['amountToSendWithReply']= this.amountToSendWithReply;
+      replyOptions['amountToSendWithReply'] = this.amountToSendWithReply;
+      replyOptions['isChargeble'] = this.isChargeble;
     }
     return replyOptions;
   }
@@ -167,7 +169,7 @@ class CaptureVideo extends Component {
           getActionSheetText={this.getActionSheetText}
           navigation={this.props.navigation}
           isVideoTypeReply={this.isVideoTypeReply()}
-          hasVideoReplies={this.state.hasVideoReplies}
+          showLightBoxOnReply={this.state.showLightBoxOnReply}
           videoId={this.replyReceiverVideoId}
 
         />
