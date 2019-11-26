@@ -9,7 +9,7 @@ const mapStateToProps = (state, ownProps) => {
       name: reduxGetter.getName(ownProps.userId, state),
       entityDescriptionId : reduxGetter.getReplyDescriptionId(ownProps.entityId),
       description: reduxGetter.getVideoDescription(reduxGetter.getReplyDescriptionId(ownProps.entityId, state), state),
-      link: reduxGetter.getVideoLink(reduxGetter.getVideoLinkId(ownProps.entityId, state), state),
+      link: reduxGetter.getVideoLink(reduxGetter.getReplyLinkId(ownProps.entityId, state), state),
       supporters: reduxGetter.getReplySupporters(ownProps.entityId),
       totalBt: reduxGetter.getReplyBt(ownProps.entityId, state)
     };
