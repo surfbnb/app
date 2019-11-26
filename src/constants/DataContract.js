@@ -54,7 +54,8 @@ export default {
         },
         replyDetailIdKey: 'reply_detail_id',
         parentVideoIdKey: 'parent_id',
-        creatorUserIdKey: 'creator_user_id'
+        creatorUserIdKey: 'creator_user_id',
+        replyDetailsKey: 'reply_details'
     },
 
     common: {
@@ -77,7 +78,9 @@ export default {
             reply : "VIDEO_REPLY",
             video:"FAN_UPDATE"
         },
-        kindKey: "kind"
+        kindKey: "kind",
+        creatorUserIdKey: 'creator_user_id',
+        videoDetailsKey: 'video_details'
     },
 
     share: {

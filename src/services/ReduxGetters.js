@@ -516,6 +516,11 @@ class ReduxGetters {
     return deepGet(state, `reply_detail_entities.id_${id}.parent_id`);
   }
 
+  getReplyUserId(id ,  state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.creator_user_id`);
+  }
+
   getReplyParentUserId(id , state){
     state = state || Store.getState();
     let parentId = deepGet(state, `reply_detail_entities.id_${id}.parent_id`);

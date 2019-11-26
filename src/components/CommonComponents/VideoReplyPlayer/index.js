@@ -10,7 +10,6 @@ import VideoReplyRow from '../../FullScreenReplyCollection/VideoReplyRow';
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import CommonStyles from "../../../theme/styles/Common";
 import { SafeAreaView } from "react-navigation";
-import { fetchVideo } from '../../../helpers/helpers';
 
 class VideoReplyPlayer extends PureComponent {
 
@@ -25,7 +24,7 @@ class VideoReplyPlayer extends PureComponent {
         super(props);
         this.replyDetailId =  this.props.navigation.getParam('replyDetailId');
         this.state = {
-          userId :  this.props.navigation.getParam('userId') || null,
+          userId :  reduxGetter.getReplyUserId( this.replyDetailId  ) || null,
           isLoading: true,
           isDeleted : false
         };
@@ -66,11 +65,10 @@ class VideoReplyPlayer extends PureComponent {
         this.setState({isDeleted: true});
         return;
       }
-      const users = deepGet(res , "data.users") || {} ,
-            userKeys =  Object.keys(users) || [] ,
-            userId = userKeys[0] || null;
-      if(userId){
-        this.setState({ userId : userId ,  isLoading : false});
+      const replyDetails = deepGet(res , `data.${DataContract.replies.replyDetailsKey}`) ,
+            item = replyDetails[this.replyDetailId]
+      if(item){
+        this.setState({ userId : item[DataContract.replies.creatorUserIdKey],  isLoading : false});
       }
     };
 
