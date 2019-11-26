@@ -6,13 +6,15 @@ import PriceOracle from './PriceOracle';
 import ReduxGetter from "./ReduxGetters";
 import numeral from "numeral";
 import OstWalletSdkHelper from '../helpers/OstWalletSdkHelper';
-import PepoApi from './PepoApi';
 import DataContract from '../constants/DataContract';
 import BigNumber from 'bignumber.js';
 
-let CurrentUser;
+let CurrentUser, PepoApi;
 import('../models/CurrentUser').then((imports) => {
   CurrentUser = imports.default;
+});
+import('./PepoApi').then((imports) => {
+  PepoApi = imports.default;
 });
 
 let ostErrors;
@@ -110,14 +112,14 @@ class Pricer {
     }
   }
 
-  getWeiToNumber = ( val ) => { 
+  getWeiToNumber = ( val ) => {
     return val && Math.floor(Number(this.getFromDecimal(val))) || 0;
   } ;
 
   getBtFromPepoCornsInWei( pepoCorns , step , pepoInWeiPerStep){
     if(!pepoCorns || !step || !pepoInWeiPerStep ) return "0";
     let pepoInEthPerStep =  this.getFromDecimal(pepoInWeiPerStep); //Normalize to ETH
-    let pepoInEthPerStepBN = BigNumber( pepoInEthPerStep ); //Convert to BN 
+    let pepoInEthPerStepBN = BigNumber( pepoInEthPerStep ); //Convert to BN
     let amountBn = BigNumber(pepoCorns).dividedBy(step) ;  //Get amount in BN
     amountBn = pepoInEthPerStepBN.multipliedBy(amountBn).toString(10); //Get pepo in ETH
     amountBn = this.getToDecimal( amountBn ); // Convert to WEI

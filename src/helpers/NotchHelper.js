@@ -1,6 +1,10 @@
 import {NativeModules} from "react-native";
 const RNDeviceInfo = NativeModules.RNDeviceInfo;
-import PepoApi from "../services/PepoApi";
+
+let PepoApi;
+import('../services/PepoApi').then((imports) => {
+  PepoApi = imports.default;
+});
 
 let devicesWithNotch =  [
   {

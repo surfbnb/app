@@ -4,18 +4,12 @@ import { Text, View, TouchableOpacity} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import DataContract from '../../../constants/DataContract';
-import PepoApi from "../../../services/PepoApi";
 import deepGet from "lodash/get";
-import ProfilePicture from "../../ProfilePicture";
 import reduxGetter from "../../../services/ReduxGetters";
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import {FetchServices} from "../../../services/FetchServices";
 import SingleBubble from '../SingleBubble';
 import {connect} from "react-redux";
-import reduxGetters from '../../../services/ReduxGetters';
-
-
-
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -94,7 +88,7 @@ class BubbleList extends PureComponent {
     return listToRender.length? listToRender.map((item) => {
       let userId = deepGet(item,'payload.user_id'),
       replyDetailId=deepGet(item,'payload.reply_detail_id');
-      return <SingleBubble userId={userId} replyDetailId={replyDetailId}  />
+      return <SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId}  />
     }): <></> ;
   };
 
@@ -123,7 +117,7 @@ class BubbleList extends PureComponent {
 
   render() {
     return <View style={inlineStyles.bubbleContainer}>
-        <TouchableOpacity onPress={multipleClickHandler(() => {this.onClickHandler()})} 
+        <TouchableOpacity onPress={multipleClickHandler(() => {this.onClickHandler()})}
              style={{flexDirection: 'row-reverse', marginRight: 5}}>{this.getBubbleListJSX()}
         </TouchableOpacity>
         {/*<Text style={inlineStyles.repliesTxt}>{this.moreReplyText()}</Text>*/}
