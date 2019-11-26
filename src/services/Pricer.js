@@ -94,6 +94,10 @@ class Pricer {
 
   toDisplayAmount(amount) {
     if(isNaN(amount)) return amount;
+    if(amount <= 0.0000001 ){
+      amount = parseInt(amount);
+      amount  = amount.toFixed(2);
+    }
     return numeral(amount).format('0[.]00a') || 0;
   }
 
