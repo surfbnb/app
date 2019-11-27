@@ -10,6 +10,7 @@ import Utilities from '../../../services/Utilities';
 import NavigationService from "../../../services/NavigationService";
 import utilities from "../../../services/Utilities";
 import {getVideoReplyObject, replyPreValidationAndMessage} from "../../../helpers/cameraHelper";
+import Pricer from "../../../services/Pricer";
 
 const mapStateToProps = (state , ownProps) => {
   return {
@@ -43,7 +44,7 @@ class ReplyIcon extends PureComponent {
     render(){
         return (
         <React.Fragment>
-            <Text style={inlineStyles.videoReplyCount}>{this.props.videoReplyCount}</Text>
+            <Text style={inlineStyles.videoReplyCount}>{Pricer.toDisplayAmount(this.props.videoReplyCount)}</Text>
             <TouchableOpacity pointerEvents={'auto'}
                             style={inlineStyles.replyIconWrapper}
                             onPress={multipleClickHandler(() => this.replyVideo())} >
