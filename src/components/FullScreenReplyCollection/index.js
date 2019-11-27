@@ -27,7 +27,7 @@ class FullScreenReplyCollection extends PureComponent{
         super(props);
         this.setVideoPagination();
         this.paginationEvent = this.getVideoPagination().event;
-        this.currentIndex = this.props.navigation.getParam("currentIndex");
+        this.currentIndex = this.props.navigation.getParam("currentIndex") || 0;
         this.parentClickHandler = this.props.navigation.getParam("parentClickHandler");
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
