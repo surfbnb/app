@@ -25,13 +25,13 @@ class ReplyThumbnailItem extends Component {
 
   render() {
     return <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
-                  style={[ this.isActiveOrUnseen() && inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive() && inlineStyle.active]}>
+                  style={[ this.isActiveOrUnseen() && inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive && inlineStyle.active]}>
               <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
           </TouchableOpacity>
   }
 
   isActiveOrUnseen = () => {
-    return ! this.props.seen || this.props.isActive();
+    return !this.props.seen || this.props.isActive;
   }
 
 }
@@ -53,15 +53,15 @@ const inlineStyle= {
   },
   active: {
     shadowColor: '#fff',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 4,
     elevation: 5,
     overflow: 'hidden'
   },
   unseen: {
-    shadowColor: 'red',
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#ff5566',
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 4,
     elevation: 5,

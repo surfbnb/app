@@ -155,7 +155,7 @@ class InvertedReplyList extends PureComponent {
   }
 
   getFetchUrl = () => {
-    return `/videos/${this.props.videoId}/replies`;
+    return DataContract.replies.getReplyListApi(this.props.videoId);
   };
 
   scrollToTop(){
@@ -209,15 +209,16 @@ class InvertedReplyList extends PureComponent {
   };
 
   _renderItem = ({item, index}) => {
-
     return <View style={{alignSelf:'center'}}>
-              <ReplyThumbnailItem payload={item.payload} onClickHandler={()=>{this.onItemClick(index, item)}} isActive={()=>{return this.isActive( index )} }/>
+              <ReplyThumbnailItem payload={item.payload} onClickHandler={()=>{this.onItemClick(index, item)}} isActive={this.isActiveEntity( index , item)} />
           </View>;
-
   };
 
-  isActive = ( index )=>{
-    return this.props.showActiveIndicator && this.props.currentIndex == index;
+  isActiveEntity = ( index , item )=>{
+    if(typeof this.props.isActiveEntity == "function" ){
+      return this.props.isActiveEntity(this.props.fullVideoReplyId , item , index) ;
+    }
+    return this.props.currentIndex == index;
   }
 
   setListRef = (ref) => {
@@ -279,8 +280,7 @@ class InvertedReplyList extends PureComponent {
 InvertedReplyList.defaultProps = {
   paginationService : null,
   doRender: true,
-  currentIndex: 0,
-  showActiveIndicator: false
+  currentIndex: 0
 };
 
 //make this component available to the app

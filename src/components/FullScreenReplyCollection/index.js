@@ -172,7 +172,6 @@ class FullScreenReplyCollection extends PureComponent{
                                 onChildClickDelegate={this.childClickHandler}
                                 parentClickHandler={this.parentClickHandler}
                                 currentIndex={this.state.activeIndex}
-                                showActiveIndicator={true}
                                 // conditional delegate
          /> ;
     }
