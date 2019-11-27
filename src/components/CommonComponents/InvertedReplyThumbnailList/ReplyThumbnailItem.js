@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
+import {View} from 'react-native';
 
 import ProfilePicture from "../../ProfilePicture";
 import reduxGetters from '../../../services/ReduxGetters';
@@ -23,11 +24,29 @@ class ReplyThumbnailItem extends Component {
     this.userId = reduxGetters.getReplyEntity(this.replyDetailId).creator_user_id;
   }
 
+  _renderTopMiniSeperator() {
+    //NOTE: Deliberately treating cellIndex as falsey.
+    if (!this.props.cellIndex) {
+      return null;
+    }
+
+    return <View style={[inlineStyle.miniSeparator,{top:0}]}></View>
+  }
+  _renderBottomMiniSeperator() {
+    if (this.props.cellIndex == this.props.totalCells - 1) {
+      return null;
+    }
+    return <View style={[inlineStyle.miniSeparator,{bottom:0}]}></View>
+  }
   render() {
-    return <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
-                  style={[ this.isActiveOrUnseen() && inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive && inlineStyle.active]}>
+    return <View style={{position: "relative"}}>
+            {this._renderTopMiniSeperator()}
+            <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
+                  style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive && inlineStyle.active]}>
               <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
-          </TouchableOpacity>
+            </TouchableOpacity>
+            {this._renderBottomMiniSeperator()}
+          </View>
   }
 
   isActiveOrUnseen = () => {
@@ -49,25 +68,29 @@ const inlineStyle= {
     width: AppConfig.thumbnailListConstants.iconWidth  ,
     height:AppConfig.thumbnailListConstants.iconHeight  ,
     borderRadius: (AppConfig.thumbnailListConstants.iconWidth)/ 2,
-    padding: 4
+    padding: 4,
+    shadowColor: 'transparent',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 5,
+    overflow: 'hidden',
   },
   active: {
     shadowColor: '#fff',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 5,
-    overflow: 'hidden'
   },
   unseen: {
-    shadowColor: '#ff5566',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 5,
-    overflow: 'hidden'
+    shadowColor: 'red',
+  },
+  miniSeparator: {
+    position: 'absolute',
+    left: '50%',
+    width: 1,
+    marginLeft: -0.5,
+    backgroundColor: 'white',
+    height: 4
   }
-}
+};
 
 //make this component available to the app
 export default connect(mapStateToProps)(ReplyThumbnailItem);

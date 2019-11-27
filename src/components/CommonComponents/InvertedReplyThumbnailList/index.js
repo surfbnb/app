@@ -210,7 +210,13 @@ class InvertedReplyList extends PureComponent {
 
   _renderItem = ({item, index}) => {
     return <View style={{alignSelf:'center'}}>
-              <ReplyThumbnailItem payload={item.payload} onClickHandler={()=>{this.onItemClick(index, item)}} isActive={this.isActiveEntity( index , item)} />
+              <ReplyThumbnailItem
+                payload={item.payload}
+                onClickHandler={()=>{this.onItemClick(index, item)}}
+                isActive={this.isActiveEntity( index , item)}
+                cellIndex={index}
+                totalCells={this.state.list.length}
+              />
           </View>;
   };
 
