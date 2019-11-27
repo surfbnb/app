@@ -106,8 +106,7 @@ const _getWorkflowDelegate = function (callback) {
   delegate.userCancelled = (ostWorkflowContext, ostError) => {
     //Do nothing.
     LoadingModal.hide();
-    let userCancelledMsg = ostErrors.getErrorMessage(ostError);
-    callback(userCancelledMsg, false);
+    callback(ON_USER_CANCLLED_ERROR_MSG, false);
   };
 
   delegate.saltFetchFailed = ( response ) => {
