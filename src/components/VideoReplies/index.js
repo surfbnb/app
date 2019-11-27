@@ -201,7 +201,7 @@ class VideoRepliesScreen extends PureComponent {
 
                         <View style={inlineStyles.repliesTxt}>
                           <Text numberOfLines={1} style={inlineStyles.headerText}>
-                            Replies to {ReduxGetters.getUserName(this.userId)}
+                            {ReduxGetters.getVideoReplyCount(this.videoId)} Repl{ReduxGetters.getVideoReplyCount(this.videoId) > 1 ? 'ies' : 'y'}
                           </Text>
                           {/*<Text style={inlineStyles.headerSubText}>Send a reply with{' '}*/}
                           {/*<Image style={{height: 10, width: 10}} source={pepoIcon} />*/}
