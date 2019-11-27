@@ -308,7 +308,8 @@ class FanVideoReplyDetails extends Component {
         contentContainerStyle={[styles.container, this.state.viewStyle]}
         keyboardShouldPersistTaps={'handled'}
         enableOnAndroid
-        eyboardOpeningTime={0}
+        bounces={false}
+        keyboardOpeningTime={0}
       >
         <View>
           <View style={[styles.videoDescriptionItem]}>
