@@ -171,7 +171,12 @@ class FullScreenVideoCollection extends PureComponent{
           userId: parentUserId,
           videoId: parentVideoId
         });
-      }
+    }
+
+    isActiveEntity = (fullVideoReplyId , item , index)=> {
+    let replyId = deepGet(item, `payload.${DataContract.replies.replyDetailIdKey}`)
+        return fullVideoReplyId == replyId;
+    }
 
     _renderVideoReplyRow(item, index){
         let userId = deepGet(item,'payload.user_id'),
@@ -186,7 +191,7 @@ class FullScreenVideoCollection extends PureComponent{
                                 userId={userId}
                                 replyDetailId={replyDetailId}
                                 parentClickHandler={()=>{this.parentClickHandler(replyDetailId)}}
-                                showActiveIndicator={true}
+                                isActiveEntity={this.isActiveEntity}
          /> ;
     }
 

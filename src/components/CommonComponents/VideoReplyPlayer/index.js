@@ -88,6 +88,11 @@ class VideoReplyPlayer extends PureComponent {
       });
     }
 
+    isActiveEntity = (fullVideoReplyId , item , index)=> {
+      let replyId = deepGet(item, `payload.${DataContract.replies.replyDetailIdKey}`)
+        return fullVideoReplyId == replyId;
+    }
+
     render() {
         if(this.state.isDeleted){
          return <DeletedVideoInfo/>
@@ -103,6 +108,7 @@ class VideoReplyPlayer extends PureComponent {
                     replyDetailId={this.replyDetailId}
                     getPixelDropData={this.getPixelDropData}
                     parentClickHandler={this.parentClickHandler}
+                    isActiveEntity={this.isActiveEntity}
               />)}
              <FlotingBackArrow />
             </SafeAreaView>

@@ -123,7 +123,8 @@ class VideoReplyRow extends PureComponent {
                                                       paginationService={this.props.paginationService}
                                                       onChildClickDelegate={this.props.onChildClickDelegate}
                                                       currentIndex={this.props.currentIndex}
-                                                      showActiveIndicator={this.props.showActiveIndicator}
+                                                      isActiveEntity={this.props.isActiveEntity}
+                                                      fullVideoReplyId={this.props.replyDetailId}
                                   />
 
                                 </View>
