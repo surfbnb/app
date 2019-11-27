@@ -38,7 +38,8 @@ export default {
   logoutTimeOut : 2000,
 
   beKnownErrorCodeMaps : {
-    entityDeleted: "not_found"
+    entityDeleted: "not_found",
+    validateUploadError: "precondition_failed"
   },
 
   userStatusMap: {

@@ -5,6 +5,7 @@ import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from 'react-nati
 import PepoApi from '../../../services/PepoApi';
 import CustomTextInput from './CustomTextInput';
 import deepGet from 'lodash/get';
+import unescape from 'lodash/unescape';
 import DataContract from "../../../constants/DataContract";
 import inlineStyles from "./styles";
 import ProfilePicture from "../../ProfilePicture";
@@ -163,7 +164,8 @@ class TagsInput extends PureComponent {
     const HashRow = this.props.hashResultRowComponent || HashResultRowComponent ;
     return (
       <TouchableOpacity onPress={() => this.onHashSuggestionTap(item)} style={{paddingLeft: 8}}>
-        <HashRow val={item.text} />
+        {/* Hashtags do not include special character like '&' today, but unescaped if they start supporting*/}
+        <HashRow val={unescape(item.text)} />
       </TouchableOpacity>
     );
   };
@@ -172,7 +174,7 @@ class TagsInput extends PureComponent {
     const MentionRow = this.props.mentionResultRowComponent || MentionResultRowComponent ;
     return (
       <TouchableOpacity onPress={() => this.onMentionSuggestionTap(item)} style={{paddingLeft: 8}}>
-        <MentionRow userName={item.user_name} name={item.name} userId={item.id} />
+        <MentionRow userName={unescape(item.user_name)} name={unescape(item.name)} userId={item.id} />
       </TouchableOpacity>
     );
   };

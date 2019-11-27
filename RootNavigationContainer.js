@@ -121,7 +121,8 @@ const CaptureVideoStack = createStackNavigator(
     CaptureVideo: CaptureVideo,
     FanVideoDetails: FanVideoDetails,
     FanVideoReplyDetails: FanVideoReplyDetails,
-    WalletSettingScreen: WalletSettingScreen
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails
   },
   {
     headerLayoutPreset: 'center'
@@ -148,6 +149,8 @@ const FullScreenReplyStack = createStackNavigator(
     VideoPlayer: VideoPlayer,
     VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails
   },
   {
     headerLayoutPreset: 'center'
@@ -165,7 +168,9 @@ const HomePushStack = createStackNavigator(
     VideoPlayer: VideoPlayer,
     VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
-    FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails
   },
   {
     initialRouteName: 'HomeScreen',
@@ -203,7 +208,9 @@ const NotificationPushStack = createStackNavigator(
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
-    FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails,
   },
   {
     headerLayoutPreset: 'center'
@@ -275,7 +282,9 @@ const SearchPushStack = createStackNavigator(
     VideoPlayer: VideoPlayer,
     VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
-    FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails,
   },
   {
     headerLayoutPreset: 'center'

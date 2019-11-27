@@ -32,6 +32,7 @@ import pricer from "../../services/Pricer";
 import {ensureDeivceAndSession, ON_USER_CANCLLED_ERROR_MSG} from "../../helpers/TransactionHelper";
 import Toast from "../../theme/components/NotificationToast";
 import { WORKFLOW_CANCELLED_MSG } from '../../services/OstSdkErrors';
+import AppConfig from '../../constants/AppConfig';
 
 //TODO setParams dont use
 
@@ -238,6 +239,10 @@ class FanVideoReplyDetails extends Component {
           this.setState({descError: error.msg});
           break;
       }
+    }
+    const status = deepGet(err , "code") || "";
+    if(status.toLowerCase() == AppConfig.beKnownErrorCodeMaps.validateUploadError){
+      this.setState({error: err.msg});
     }
   };
 
