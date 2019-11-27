@@ -4,8 +4,8 @@ import { CUSTOM_TAB_Height } from "../../../theme/constants";
 
 let stylesMap = {
     wrapper : {
-        flex: 1, 
-        height: CUSTOM_TAB_Height, 
+        flex: 1,
+        height: CUSTOM_TAB_Height,
         backgroundColor: Colors.darkShadeOfGray,
         paddingHorizontal: 10,
         justifyContent: 'center',
@@ -17,7 +17,7 @@ let stylesMap = {
         marginLeft: 10,
         fontFamily: 'AvenirNext-Medium'
     },
-    replyIcon : {
+    replyIconSkipFont : {
         height:10,
         width:15
     }

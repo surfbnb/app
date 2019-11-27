@@ -161,7 +161,7 @@ class UserInfo extends React.PureComponent {
             if (this.isValidBioTag(this.props.userId, hashTag)) {
               let tagText = hashTag.replace("#", "");
               return (
-                <Text>
+                <Text key={hashTag}>
                   {prevText}
                   <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
                         numberOfLines={1}
@@ -176,7 +176,7 @@ class UserInfo extends React.PureComponent {
               );
             } else {
               return (
-                <Text>
+                <Text key={hashTag}>
                   {prevText + hashTag}
                 </Text>
               )

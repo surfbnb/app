@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity, Image , Dimensions} from 'react-native';
+import { View , Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import FanVideo from '../VideoWrapper/FanVideo';
 import ShareIcon from "../CommonComponents/ShareIcon";
@@ -20,7 +20,6 @@ import assignIn from 'lodash/assignIn';
 
 import AppConfig from "../../constants/AppConfig";
 import CommonStyle from "../../theme/styles/Common";
-import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 import BubbleList from "../CommonComponents/BubbleList";
 
 
@@ -42,10 +41,10 @@ class FullScreeVideoRow extends PureComponent {
     };
 
     getPixelDropData = () => {
-        const parentData =  this.props.getPixelDropData(); 
+        const parentData =  this.props.getPixelDropData();
         const pixelParams = { e_entity: 'video' , video_id : this.videoId};
         return assignIn({}, pixelParams, parentData);
-    } 
+    }
 
     render() {
         return (
@@ -110,6 +109,6 @@ FullScreeVideoRow.defaultProps = {
       return {};
     }
   };
-  
+
 
 export default withNavigation(FullScreeVideoRow);

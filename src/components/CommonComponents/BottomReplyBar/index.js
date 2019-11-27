@@ -18,7 +18,7 @@ class BottomReplyBar extends PureComponent {
             if(!this.props.videoId || !this.props.userId) return;
             if( replyPreValidationAndMessage( this.props.videoId ,  this.props.userId) )  {
                 navigateToCamera( this.props.videoId ,  this.props.userId ,  this.props.navigation ) ;
-            }       
+            }
         }
 
         render(){
@@ -26,11 +26,11 @@ class BottomReplyBar extends PureComponent {
                 <View style={inlineStyles.wrapper}>
                     <TouchableWithoutFeedback  onPress={multipleClickHandler(() =>this.replyVideo())} >
                          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Image source={cameraIconWhite} style={inlineStyles.replyIcon}></Image>
+                            <Image source={cameraIconWhite} style={inlineStyles.replyIconSkipFont}></Image>
                             <Text style={inlineStyles.text}>Add a reply...</Text>
-                         </View>                       
+                         </View>
                     </TouchableWithoutFeedback>
-                </View>    
+                </View>
             );
 
         }
