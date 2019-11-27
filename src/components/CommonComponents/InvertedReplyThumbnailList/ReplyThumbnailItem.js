@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
 import {View} from 'react-native';
+import { Platform } from 'react-native';
 
 import ProfilePicture from "../../ProfilePicture";
 import reduxGetters from '../../../services/ReduxGetters';
@@ -58,29 +59,46 @@ class ReplyThumbnailItem extends Component {
 const inlineStyle= {
   iconStyle: { height: AppConfig.thumbnailListConstants.iconHeight - 8,
             width: AppConfig.thumbnailListConstants.iconWidth - 8,
-            borderRadius: (AppConfig.thumbnailListConstants.iconWidth - 8)/ 2
+            borderRadius: (AppConfig.thumbnailListConstants.iconWidth - 8)/ 2,
+    ...Platform.select({
+      android: {
+        marginLeft: -4,
+        marginTop: -4,
+      },
+    })
   },
   borderStyle: {
     borderWidth: 1,
     borderColor: '#fff'
   },
   wrapperStyle: {
-    width: AppConfig.thumbnailListConstants.iconWidth  ,
-    height:AppConfig.thumbnailListConstants.iconHeight  ,
+    width: AppConfig.thumbnailListConstants.iconWidth,
+    height:AppConfig.thumbnailListConstants.iconHeight,
     borderRadius: (AppConfig.thumbnailListConstants.iconWidth)/ 2,
     padding: 4,
     shadowColor: 'transparent',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 4,
-    elevation: 5,
     overflow: 'hidden',
+    ...Platform.select({
+      android: {
+        borderWidth: 2,
+        borderColor: 'transparent',
+        width: AppConfig.thumbnailListConstants.iconWidth - 4,
+        height:AppConfig.thumbnailListConstants.iconHeight - 4,
+        zIndex: 1,
+        borderRadius: (AppConfig.thumbnailListConstants.iconWidth - 4) / 2
+      },
+    })
   },
   active: {
     shadowColor: '#fff',
+    borderColor: '#fff',
   },
   unseen: {
     shadowColor: 'red',
+    borderColor: 'red',
   },
   miniSeparator: {
     position: 'absolute',
