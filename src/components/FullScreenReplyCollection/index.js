@@ -77,8 +77,8 @@ class FullScreenReplyCollection extends PureComponent{
             this.isActiveScreen =  false ;
         });
 
-        //If there is no getPassedFetchServices passed that means its a fresh view. 
-        //So load data 
+        //If there is no getPassedFetchServices passed that means its a fresh view.
+        //So load data
         if(!this.getPassedFetchServices()){
             this.refresh();
         }
@@ -145,7 +145,7 @@ class FullScreenReplyCollection extends PureComponent{
         if(entityHelper.isVideoReplyEntity( item )){
             if(entityHelper.isReplyVideoTypeEntity(item)){
                 return this._renderVideoReplyRow( item, index );
-            } 
+            }
         }
     };
 
@@ -193,8 +193,10 @@ class FullScreenReplyCollection extends PureComponent{
     }
 
     setActiveIndex( index  ) {
-        index = index || this.currentIndex;
-        this.setState({ activeIndex: index });
+        if( typeof index === "number"){
+            this.currentIndex =  index;
+        }
+        this.setState({ activeIndex:  this.currentIndex });
     }
 
     onMomentumScrollEndCallback = () => {
