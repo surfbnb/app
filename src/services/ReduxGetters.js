@@ -54,7 +54,7 @@ class ReduxGetters {
 
   getUserName(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `user_entities.id_${id}.user_name`);
+    return deepGet(state, `user_entities.id_${id}.user_name`, "");
   }
 
   getUserTwitterHandle(id, state) {

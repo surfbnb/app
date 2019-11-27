@@ -117,9 +117,10 @@ class BottomStatus extends PureComponent {
 
           <View style={{ paddingTop: 8, paddingBottom: 5 }}>
           <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())} pointerEvents={'auto'}>
-            <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
-              {`@${this.props.userName}`}
-            </Text>
+            {!!this.props.userName && 
+              <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
+                {`@${this.props.userName}`}
+              </Text>}
             </TouchableWithoutFeedback>
             {this.props.description ? (
               <Text
