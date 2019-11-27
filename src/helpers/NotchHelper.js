@@ -128,6 +128,10 @@ let devicesWithNotch =  [
     "model": "COR-AL00"
   },
   {
+    "brand": "HONOR",
+    "model": "JSN-L42"
+  },
+  {
     "brand": "OnePlus",
     "model": "ONEPLUS A6010"
   }
