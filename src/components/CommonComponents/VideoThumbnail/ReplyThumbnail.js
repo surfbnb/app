@@ -21,7 +21,7 @@ class ReplyThumbnail extends PureComponent {
      videoId = reduxGetters.getReplyEntityId( replyId ),
      userName = reduxGetters.getUserName(userId),
      imageUrl = reduxGetters.getVideoImgUrl(videoId, null,  AppConfig.userVideos.userScreenCoverImageWidth) ,
-     videoDesc = reduxGetters.getVideoDescription(reduxGetters.getReplyDescriptionId(videoId)) ,
+     videoDesc = reduxGetters.getVideoDescription(reduxGetters.getReplyDescriptionId(replyId)) ,
      replyBtAmount = this.getReplyStats(replyId)
      ;
     return <Base userId={userId} userName={userName} imageUrl={imageUrl} videoDesc={videoDesc} btAmount={replyBtAmount} {...this.props} />;

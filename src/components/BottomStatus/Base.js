@@ -90,7 +90,11 @@ class BottomStatus extends PureComponent {
     }
 
     if( tapEntity.kind === 'users'){
-      this.props.navigation.push('UsersProfileScreen', { userId: tapEntity.id });
+      if (tapEntity.id == CurrentUser.getUserId()) {
+        this.props.navigation.navigate('ProfileScreen');
+      }else{
+        this.props.navigation.push('UsersProfileScreen', { userId: tapEntity.id });
+      }
       return;
     }
   };
