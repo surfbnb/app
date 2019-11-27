@@ -19,6 +19,7 @@ const knownEntitiesDispatcherMap = {
   current_user_reply_detail_relations: 'upsertCurrentUserReplyDetailRelationEntities',
   images: 'upsertImageEntities',
   current_user_video_contributions: 'upsertVideoContributionEntities',
+  current_user_reply_detail_contributions: 'upsertReplyContributionEntities',
   current_user_user_contributions: 'upsertUserContributionEntities',
   price_points: 'updatePricePoints',
   token: 'updateToken',

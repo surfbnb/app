@@ -527,7 +527,7 @@ class ReduxGetters {
 
   isReplySupported(id, state) {
     state = state || Store.getState();
-    let val = deepGet(state, `reply_detail_entities.id_${id}`);
+    let val = deepGet(state, `reply_contribution_entities.id_${id}`);
     val = val && Number(val);
     return !!val;
   }

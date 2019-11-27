@@ -38,6 +38,7 @@ export const {
   updatePepocorn,
   updateExecuteTransactionStatus,
   upsertVideoContributionEntities,
+  upsertReplyContributionEntities,
   upsertUserContributionEntities,
   upsertRecordedVideo,
   clearRecordedVideo,
@@ -229,6 +230,14 @@ export const reducer = handleActions(
         {},
         state.video_contribution_entities,
         action.payload.video_contribution_entities
+      )
+    }),
+    [upsertReplyContributionEntities]: (state, action) => ({
+      ...state,
+      reply_contribution_entities: assignIn(
+        {},
+        state.reply_contribution_entities,
+        action.payload.reply_contribution_entities
       )
     }),
     [upsertUserContributionEntities]: (state, action) => ({

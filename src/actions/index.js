@@ -160,6 +160,13 @@ export const upsertVideoContributionEntities = (data) => ({
   payload: { video_contribution_entities: data }
 });
 
+
+export const upsertReplyContributionEntities = (data) => ({
+  type: types.UPSERT_REPLY_CONTRIBUTION_ENTITIES,
+  payload: { reply_contribution_entities: data }
+});
+
+
 export const upsertUserContributionEntities = (data) => ({
   type: types.UPSERT_USER_CONTRIBUTION_ENTITIES,
   payload: { user_contribution_entities: data }
