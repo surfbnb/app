@@ -5,8 +5,8 @@ let stylesMap = {
   container: {
     flex: 1,
     backgroundColor: Colors.white,
-    marginVertical: 20,
-    marginHorizontal: 10
+    paddingVertical: 20,
+    paddingHorizontal: 10
   },
   resend: {
     color: Colors.valhalla,
