@@ -35,9 +35,9 @@ class TransactionExecutor {
         this.callbacks =  callbacks || {};
     }
 
-    sendTransactionToSdk(btInDecimal, toUserId , validateSession=true  ) {
+    sendTransactionToSdk(btInDecimal, toTokenHolderAddress , validateSession=true  ) {
         if(!btInDecimal) return ;
-        this.setToUser( toUserId );
+        this.toTokenHolderAddress = toTokenHolderAddress;
 
         if( !validateSession ){
             return this._executeTransaction(btInDecimal);
@@ -48,10 +48,6 @@ class TransactionExecutor {
         }, (errorMessage, success) => {
           this._ensureDeivceAndSessionCallback(btInDecimal,errorMessage, success);
         });
-    }
-
-    setToUser( toUserId ){
-        this.toUser = ReduxGetters.getUser( toUserId ) || {};
     }
 
     _deviceUnauthorizedCallback(device){
@@ -73,7 +69,7 @@ class TransactionExecutor {
         this.workflow = new ExecuteTransactionWorkflow(this);
         OstWalletSdk.executeTransaction(
           CurrentUser.getOstUserId(),
-          [this.toUser.ost_token_holder_address],
+          [this.toTokenHolderAddress],
           [btInDecimal],
           this.config.ruleName || AppConfig.ruleTypeMap.directTransfer,
           this.getSdkMetaProperties(),

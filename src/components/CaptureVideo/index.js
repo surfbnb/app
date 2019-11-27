@@ -57,6 +57,7 @@ class CaptureVideo extends Component {
       this.replyReceiverVideoId = this.props.navigation.getParam("videoId");
       this.amountToSendWithReply = this.props.navigation.getParam("amount");
       this.isChargeble = this.props.navigation.getParam("isChargeble");
+      this.toTokenHolderAddress = this.props.navigation.getParam("toTokenHolderAddress");
 
     } else {
       // Do nothing.
@@ -126,6 +127,7 @@ class CaptureVideo extends Component {
       replyOptions['replyReceiverVideoId'] = this.replyReceiverVideoId;
       replyOptions['amountToSendWithReply'] = this.amountToSendWithReply;
       replyOptions['isChargeble'] = this.isChargeble;
+      replyOptions['toTokenHolderAddress'] = this.toTokenHolderAddress;
     }
     return replyOptions;
   }
