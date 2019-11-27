@@ -276,6 +276,8 @@ class FanVideoDetails extends Component {
 
   replyAmountChange = ( value )=>{
     this.replyAmount = pricer.getToDecimal(value);
+    if (isNaN(this.replyAmount)) this.replyAmount = "";
+
     let formattedUsdVal = this.weiToUSD( pricer.getToDecimal(value) );
     //Done for the value to be accessible in static navigationOptions
     this.props.navigation.setParams({
