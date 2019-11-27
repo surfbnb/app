@@ -20,9 +20,6 @@ import { LoginPopoverActions } from '../../components/LoginPopover';
 import appConfig from '../../constants/AppConfig';
 import reduxGetter from '../../services/ReduxGetters';
 import Colors from '../../theme/styles/Colors';
-import NavigationService from '../../services/NavigationService';
-
-const commonStack = ["FullScreenReplyCollection"];
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -54,17 +51,9 @@ function loginInFlow(navigation, tab) {
     navigation.navigate(tab.rootStack);
   } else if (utilities.getLastChildRoutename(navigation.state) !== tab.childStack) {
     try {
-      let popStackCount =  NavigationService.getStackNumber(navigation.state.routes , tab.navigationIndex, 0 , commonStack.splice(0) );
-      if(!popStackCount){
-        navigation.dispatch(StackActions.popToTop());
-        return;
-      }
-      popStackCount++;
-      for(let cnt = 0 ; cnt <= popStackCount ; cnt++){
-          navigation.dispatch(StackActions.popToTop());
-      }
-    } catch {
-      console.log('Catch error');
+      navigation.dispatch(StackActions.popToTop());
+    } catch(e) {
+      console.log('Catch error', e);
     }
   } else {
     clearTimeout(refreshTimeOut);
