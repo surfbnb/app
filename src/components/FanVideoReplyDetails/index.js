@@ -230,6 +230,7 @@ class FanVideoReplyDetails extends Component {
 
 
   showError = (err) => {
+    if(!err.error_data) return;
     for (let error of err.error_data){
       switch (error.parameter) {
         case "link":
@@ -274,6 +275,9 @@ class FanVideoReplyDetails extends Component {
           } else {
             return reject(res.err);
           }
+        })
+        .catch((err)=>{
+          return reject(err);
         })
     });
   };

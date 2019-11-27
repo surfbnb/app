@@ -188,6 +188,7 @@ class FanVideoDetails extends Component {
   };
 
   showError = (err) => {
+    if(!err.error_data) return;
     for (let error of err.error_data){
       switch (error.parameter) {
         case "link":
