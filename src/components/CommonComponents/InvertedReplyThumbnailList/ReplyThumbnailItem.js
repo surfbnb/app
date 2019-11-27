@@ -41,12 +41,12 @@ class ReplyThumbnailItem extends Component {
   }
   render() {
     return <View style={{position: "relative"}}>
-            {this._renderTopMiniSeperator()}
+            {/*{this._renderTopMiniSeperator()}*/}
             <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
                   style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive && inlineStyle.active]}>
               <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
             </TouchableOpacity>
-            {this._renderBottomMiniSeperator()}
+            {/*{this._renderBottomMiniSeperator()}*/}
           </View>
   }
 

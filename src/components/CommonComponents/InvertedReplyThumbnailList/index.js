@@ -232,7 +232,7 @@ class InvertedReplyList extends PureComponent {
   };
 
   getItemSeperatorComponent = () => {
-    return <View style={{backgroundColor: 'white', height: AppConfig.thumbnailListConstants.separatorHeight, width: 1, alignSelf:'center'}} />
+    return <View style={{backgroundColor: 'white',marginTop:-4,marginBottom:-4, height: AppConfig.thumbnailListConstants.separatorHeight, width: 1, alignSelf:'center'}} />
   };
 
   getAvailableHeight = () => {
