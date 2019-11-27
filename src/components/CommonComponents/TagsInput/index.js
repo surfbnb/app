@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Dimensions, Text} from 'react-native';
+import { View, Dimensions, Text, Animated} from 'react-native';
 import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import PepoApi from '../../../services/PepoApi';
@@ -133,7 +133,16 @@ class TagsInput extends PureComponent {
     if (!this.isTrackingStarted) return;
     if ( deepGet(res , "data.meta.search_kind") === "tags" ) {
       let resultTypeTags = res.data.result_type;
-      resultTypeTags && this.setState({ mentionsData:[], hashTagsData: res.data[resultTypeTags]});
+      if ( !resultTypeTags ) {
+        return;
+      }
+      let results = res.data[resultTypeTags];
+      this.setState({ mentionsData:[], hashTagsData: results});
+      if ( results && results.length ) {
+        this.triggerOnSuggestionsPanelOpen();  
+      } else {
+        this.triggerOnSuggestionsPanelClose();
+      }
     }
   }
 
@@ -141,13 +150,36 @@ class TagsInput extends PureComponent {
     if (!this.isTrackingStarted) return;
     if ( deepGet(res , "data.meta.search_kind") == "users") {
       let resultTypeMentions = res.data.result_type;
-      resultTypeMentions && this.setState({hashTagsData:[], mentionsData: res.data[resultTypeMentions]});
+      if ( !resultTypeMentions ) {
+        return;
+      }
+      let results = res.data[resultTypeMentions];
+      this.setState({hashTagsData:[], mentionsData: results});
+      this.triggerOnSuggestionsPanelOpen();
+      if ( results && results.length ) {
+        this.triggerOnSuggestionsPanelOpen();  
+      } else {
+        this.triggerOnSuggestionsPanelClose();
+      }
     }
   }
 
   closeSuggestionsPanel() {
     this.stopStracking();
     this.setState({ hashTagsData: [], mentionsData: [] });
+    this.triggerOnSuggestionsPanelClose();
+  }
+
+  triggerOnSuggestionsPanelOpen() {
+    if( this.props.onSuggestionsPanelOpen ) {
+      this.props.onSuggestionsPanelOpen();
+    }
+  }
+
+  triggerOnSuggestionsPanelClose() {
+    if ( this.props.onSuggestionsPanelClose ) {
+      this.props.onSuggestionsPanelClose();  
+    }
   }
 
   startTracking() {
@@ -266,10 +298,9 @@ class TagsInput extends PureComponent {
             maxHeight: Dimensions.get('window').height - 300,
             backgroundColor: '#fff',
           } , this.props.dropdownStyle ]}>
-            <TouchableWithoutFeedback>
               {this.isHastagData() ?
               <FlatList
-                // keyboardDismissMode={"on-drag"}
+                keyboardDismissMode={"on-drag"}
                 keyboardShouldPersistTaps={'always'}
                 bounces={false}
                 horizontal={this.props.horizontal}
@@ -290,7 +321,6 @@ class TagsInput extends PureComponent {
               />
               )
             }
-            </TouchableWithoutFeedback>
         </View>
       </React.Fragment>
     );

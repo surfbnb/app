@@ -102,7 +102,8 @@ class FanVideoReplyDetails extends Component {
       error: null,
       linkError: null,
       descError : null,
-      buttonText: null
+      buttonText: null,
+      isSuggestOpen: false
     };
   }
   _keyboardShown = (e) => {
@@ -310,6 +311,26 @@ class FanVideoReplyDetails extends Component {
     return pricer.getToBT(pricer.getFromDecimal(amount), 2);
   };
 
+
+  pointerEventForInPageElement() {
+    if ( this.state.isSuggestOpen ) {
+      return "none";
+    }
+    return "auto";
+  };
+
+  onSuggestionsPanelClose = () => {
+    this.setState({
+      isSuggestOpen: false
+    });
+  };
+
+  onSuggestionsPanelOpen = () => {
+    this.setState({
+      isSuggestOpen: true
+    });
+  };
+
   render() {
     let imageUrl = this.props.recordedVideo.cover_image;
     return (
@@ -333,16 +354,22 @@ class FanVideoReplyDetails extends Component {
                 <Image style={styles.playIconSkipFont} source={playIcon} />
               </ImageBackground>
             </TouchableOpacity>
-            <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
+            <VideoDescription 
+              initialValue={this.props.recordedVideo.video_desc} 
+              onChangeDesc={this.onChangeDesc} 
+              onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
+              onSuggestionsPanelClose={this.onSuggestionsPanelClose}
+            />
           </View>
+
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.descError }</Text>
-          <View style={ styles.videoLinkItem} >
+          <View style={styles.videoLinkItem} pointerEvents={this.pointerEventForInPageElement()}>
             <Text style={{flex: 1}}>Link</Text>
             <VideoLink initialValue={this.props.recordedVideo.video_link} onChangeLink={this.onChangeLink} />
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center'}]}>{this.state.linkError }</Text>
         </View>
-        <View style={{zIndex: -1}}>
+        <View style={{zIndex: -1}} pointerEvents={this.pointerEventForInPageElement()}>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center', marginBottom: 10 }]}>{this.state.error}</Text>
           <LinearGradient
             colors={['#ff7499', '#ff5566']}
