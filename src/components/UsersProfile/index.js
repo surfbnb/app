@@ -23,8 +23,9 @@ const userActionEvents = new EventEmitter();
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
+    const name = navigation.getParam('headerTitle') || reduxGetter.getName(navigation.getParam('userId'));
     return {
-      title: reduxGetter.getName(navigation.getParam('userId')),
+      title: name,
       headerBackTitle: null,
       headerStyle: {
         backgroundColor: '#ffffff',
@@ -81,7 +82,17 @@ export default class UsersProfile extends Component {
   onUserResponse = ( res ) => {
     if(utilities.isEntityDeleted(res)){
       this.setState({isDeleted: true});
+      return
     }
+    let userName = "";
+
+    const data = res.data
+      , users = data.users
+      , user = users[this.userId]
+    ;
+
+    userName = user["name"];
+    this.props.navigation.setParams({ headerTitle:  userName});
   }
 
   _headerComponent() {
