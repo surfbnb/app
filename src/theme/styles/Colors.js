@@ -27,5 +27,6 @@ export default {
   snow: '#FBFBFB',
   green: '#0F9D58',
   nobel: '#979797',
-  gray:"#333333"
+  gray:"#333333",
+  darkShadeOfGray: '#111111'
 };

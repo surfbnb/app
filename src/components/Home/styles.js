@@ -47,7 +47,7 @@ let stylesMap = {
     fontSize: 18,
     color: Colors.white,
     alignSelf: 'center',
-    marginBottom: 8,
+    marginBottom: 5,
     textShadowColor: 'rgba(0, 0, 0, 0.65)',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 1,

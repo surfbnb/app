@@ -88,11 +88,7 @@ class FanVideoDetails extends Component {
     super(props);
     this.videoDesc = this.props.recordedVideo.video_desc;
     this.videoLink = this.props.recordedVideo.video_link;
-    if (this.props.recordedVideo.reply_amount){
-      this.replyAmount = this.props.recordedVideo.reply_amount;
-    } else {
-      this.replyAmount = pricer.getToDecimal(DEFAUT_BT_VALUE);
-    }
+    this.replyAmount = this.props.recordedVideo.reply_amount ? this.props.recordedVideo.reply_amount : pricer.getToDecimal(DEFAUT_BT_VALUE);
 
     this.priceOracle = pricer.getPriceOracle();
     this.numberFormatter = new NumberFormatter();
@@ -283,7 +279,7 @@ class FanVideoDetails extends Component {
     let formattedUsdVal = this.weiToUSD( pricer.getToDecimal(value) );
     //Done for the value to be accessible in static navigationOptions
     this.props.navigation.setParams({
-      replyAmount: value
+      replyAmount: this.replyAmount
     });
     this.setState({
       usdVal : formattedUsdVal,
