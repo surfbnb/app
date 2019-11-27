@@ -17,6 +17,7 @@ import utilities from '../../services/Utilities';
 import inlineStyles from './styles';
 import UserProfileActionSheet from './userProfileActionSheet';
 import CommonStyle from "../../theme/styles/Common";
+import deepGet from "lodash/get";
 
 import EventEmitter from "eventemitter3";
 const userActionEvents = new EventEmitter();
@@ -84,14 +85,7 @@ export default class UsersProfile extends Component {
       this.setState({isDeleted: true});
       return
     }
-    let userName = "";
-
-    const data = res.data
-      , users = data.users
-      , user = users[this.userId]
-    ;
-
-    userName = user["name"];
+    let userName =  deepGet(res,  `data.users.${this.userId}.name` , "");
     this.props.navigation.setParams({ headerTitle:  userName});
   }
 
