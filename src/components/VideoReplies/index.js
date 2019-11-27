@@ -94,19 +94,23 @@ class VideoRepliesScreen extends PureComponent {
       });
     };
   
-    hideVideoUploader = () => {
+    hideVideoUploader = ( otherStates, callback ) => {
+      otherStates = otherStates || {};
       this.setState({
+        ...otherStates,
         videoUploaderVisible: false 
-      });
+      }, callback);
     };
 
     onAnimatedValueChange = ({ value }) => {
       clearTimeout(this.panelAnimateTimeOut);
       this.panelAnimateTimeOut =  setTimeout(()=> {
         if( value < 10){
-          this.state.addRepliesVisible =  false;
-          this.hideVideoUploader();
-          this.props.navigation.goBack();
+          this.hideVideoUploader({
+            addRepliesVisible: false
+          },() => {
+            this.props.navigation.goBack();  
+          });
         }
       } , 10)
     };
@@ -136,6 +140,14 @@ class VideoRepliesScreen extends PureComponent {
     onData = ( data ) => {
         this.dataLoaded = true;
     }
+
+    getWrapViewStyles = () => {
+      let wrapStyles = {};
+      if ( !this.state.addRepliesVisible ) {
+        wrapStyles.display = "none";
+      }
+      return wrapStyles;
+    };
 
     render(){
         return (
@@ -181,7 +193,7 @@ class VideoRepliesScreen extends PureComponent {
                   snappingPoints={[0, this.initialHeight, height]}>
                 {dragHandler => (
                   <React.Fragment>
-                    <View style={[inlineStyles.container]}>
+                    <View style={[inlineStyles.container, this.getWrapViewStyles()]}>
                       <View style={inlineStyles.dragHandler} {...dragHandler}>
                         <TouchableOpacity onPress={this.onCrossIconClick} style={[inlineStyles.iconWrapper]} >
                           <Image style={inlineStyles.iconSkipFont} source={crossIcon}></Image>
