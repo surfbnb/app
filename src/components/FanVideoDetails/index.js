@@ -88,7 +88,12 @@ class FanVideoDetails extends Component {
     super(props);
     this.videoDesc = this.props.recordedVideo.video_desc;
     this.videoLink = this.props.recordedVideo.video_link;
-    this.replyAmount = pricer.getToDecimal(this.props.recordedVideo.reply_amount || DEFAUT_BT_VALUE);
+    if (this.props.recordedVideo.reply_amount){
+      this.replyAmount = this.props.recordedVideo.reply_amount;
+    } else {
+      this.replyAmount = pricer.getToDecimal(DEFAUT_BT_VALUE);
+    }
+
     this.priceOracle = pricer.getPriceOracle();
     this.numberFormatter = new NumberFormatter();
     this.max =  props.balance;
@@ -216,7 +221,9 @@ class FanVideoDetails extends Component {
           } else {
             return reject(res.err);
           }
-        })
+        }).catch((err)=>{
+          return reject(err);
+      })
     });
   };
 
