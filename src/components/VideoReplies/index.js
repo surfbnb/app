@@ -8,7 +8,7 @@ import {
   Animated ,TouchableWithoutFeedback
 } from 'react-native';
 
-import {getBottomSpace, ifIphoneX} from 'react-native-iphone-x-helper';
+import {getBottomSpace, ifIphoneX, isIphoneX} from 'react-native-iphone-x-helper';
 
 import pepoIcon from "../../assets/pepo-tx-icon.png";
 import inlineStyles from './styles';
@@ -32,7 +32,7 @@ const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
-const bottomReplyViewHeight = 89;
+const bottomReplyViewHeight = isIphoneX() ? 89 : 54;
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
 
 const bottomSpace = getBottomSpace([true]);
