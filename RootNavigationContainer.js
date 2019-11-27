@@ -96,24 +96,21 @@ const txModalConfig = {
   cardStyle: { backgroundColor: 'rgba(0,0,0,0)' },
   gesturesEnabled: false,
   transitionConfig: (transitionProps, prevTransitionProps) => {    
-    const scenes = transitionProps["scenes"];
-    const prevScene = scenes[scenes.length - 2];
-    const nextScene = scenes[scenes.length - 1];
-    // if(Platform.OS == "ios"){
-    //   if (prevScene
-    //     && prevScene.route.routeName === 'VideoReplies'
-    //     && nextScene.route.routeName === 'FullScreenReplyCollection') {
-    //     return  NavigationAnimation.zoomIn();
-    //   }
-    //   else if (prevScene
-    //     && prevScene.route.routeName === 'FullScreenReplyCollection'
-    //     && nextScene.route.routeName === 'VideoReplies') {
-    //     return  NavigationAnimation.zoomOut();
-    //   }
-    // }
     return  NavigationAnimation.defaultTransition();
   }
 };
+
+const cardStackConfig = {
+  transparentCard: true,
+  cardStyle: { backgroundColor: 'rgba(0,0,0,0)' },
+  transitionConfig: ( transitionProps, prevTransitionProps ) => {
+    const scenes = transitionProps["scenes"];
+    const nextScene = scenes[scenes.length - 1];
+    if (nextScene.route.routeName === 'VideoReplies') {
+      return  NavigationAnimation.fromBottom();
+    }
+  }
+}
 
 
 const CaptureVideoStack = createStackNavigator(
@@ -138,26 +135,6 @@ const InAppBrowserStack = createStackNavigator(
   }
 );
 
-const FullScreenReplyStack = createStackNavigator(
-  {
-    FullScreenReplyCollection: FullScreenReplyCollection,
-    FullScreenVideoCollection: FullScreenVideoCollection,
-    UsersProfileScreen: UsersProfileScreen,
-    UserVideoHistory: UserVideoHistory,
-    SupportingListScreen: SupportingListScreen,
-    SupportersListScreen: SupportersListScreen,
-    VideoPlayer: VideoPlayer,
-    VideoReplyPlayer: VideoReplyPlayer,
-    VideoTags: VideoTags,
-    WalletSettingScreen: WalletSettingScreen,
-    WalletDetails: WalletDetails
-  },
-  {
-    headerLayoutPreset: 'center'
-  }
-);
-
-
 const HomePushStack = createStackNavigator(
   {
     HomeScreen: HomeScreen,
@@ -168,13 +145,16 @@ const HomePushStack = createStackNavigator(
     VideoPlayer: VideoPlayer,
     VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
-    FullScreenVideoCollection: FullScreenVideoCollection,
     WalletSettingScreen: WalletSettingScreen,
-    WalletDetails: WalletDetails
+    WalletDetails: WalletDetails,
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyCollection
   },
   {
     initialRouteName: 'HomeScreen',
-    headerLayoutPreset: 'center' 
+    headerLayoutPreset: 'center' ,
+    ...cardStackConfig
   }
 );
 
@@ -188,8 +168,6 @@ const HomeStack = createStackNavigator(
     InviteCodeScreen: InviteCodeScreen,
     AuthDeviceDrawer: AuthDeviceDrawer,
     AddEmailScreen: AddEmailScreen,
-    VideoReplies:VideoReplies ,
-    FullScreenReplyCollection: FullScreenReplyStack,
     CouchMarks: CouchMarks
   },
   {
@@ -208,12 +186,15 @@ const NotificationPushStack = createStackNavigator(
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
-    FullScreenVideoCollection: FullScreenVideoCollection,
     WalletSettingScreen: WalletSettingScreen,
     WalletDetails: WalletDetails,
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    ...cardStackConfig
   }
 );
 
@@ -224,8 +205,6 @@ const NotificationStack = createStackNavigator(
     AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
     CaptureVideo: CaptureVideoStack,
-    VideoReplies:VideoReplies ,
-    FullScreenReplyCollection: FullScreenReplyStack,
     InAppBrowserStack: InAppBrowserStack
   },
   { ...modalStackConfig, ...txModalConfig }
@@ -248,10 +227,13 @@ const ProfilePushStack = createStackNavigator(
     WalletSettingScreen: WalletSettingScreen,
     WalletDetails: WalletDetails,
     VideoTags: VideoTags,
-    FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    ...cardStackConfig
   }
 );
 
@@ -265,8 +247,6 @@ const ProfileStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen,
-    VideoReplies: VideoReplies,
-    FullScreenReplyCollection: FullScreenReplyStack,
     RedemptiomScreen: RedemptiomScreen
   },
   { ...modalStackConfig, ...txModalConfig }
@@ -282,12 +262,15 @@ const SearchPushStack = createStackNavigator(
     VideoPlayer: VideoPlayer,
     VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
-    FullScreenVideoCollection: FullScreenVideoCollection,
     WalletSettingScreen: WalletSettingScreen,
     WalletDetails: WalletDetails,
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyCollection,
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    ...cardStackConfig
   }
 );
 
@@ -297,8 +280,6 @@ const SearchStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     TransactionScreen: TransactionScreen,
-    VideoReplies: VideoReplies,
-    FullScreenReplyCollection: FullScreenReplyStack,
     AuthDeviceDrawer: AuthDeviceDrawer
   },
   {
