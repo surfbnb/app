@@ -17,14 +17,16 @@ import utilities from '../../services/Utilities';
 import inlineStyles from './styles';
 import UserProfileActionSheet from './userProfileActionSheet';
 import CommonStyle from "../../theme/styles/Common";
+import deepGet from "lodash/get";
 
 import EventEmitter from "eventemitter3";
 const userActionEvents = new EventEmitter();
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
+    const name = navigation.getParam('headerTitle') || reduxGetter.getName(navigation.getParam('userId'));
     return {
-      title: reduxGetter.getName(navigation.getParam('userId')),
+      title: name,
       headerBackTitle: null,
       headerStyle: {
         backgroundColor: '#ffffff',
@@ -81,7 +83,10 @@ export default class UsersProfile extends Component {
   onUserResponse = ( res ) => {
     if(utilities.isEntityDeleted(res)){
       this.setState({isDeleted: true});
+      return
     }
+    let userName =  deepGet(res,  `data.users.${this.userId}.name` , "");
+    this.props.navigation.setParams({ headerTitle:  userName});
   }
 
   _headerComponent() {

@@ -79,6 +79,8 @@ class BottomStatus extends PureComponent {
   }
 
   onIncludesPressed = (tag) => {
+    if(!Utilities.checkActiveUser()) return;
+
     let tapEntity = reduxGetter.getTappedIncludesEntity(this.props.entityDescriptionId, tag);
     if (!tapEntity) {
       return;
@@ -116,8 +118,8 @@ class BottomStatus extends PureComponent {
       <View style={inlineStyles.bottomBg}>
 
           <View style={{ paddingTop: 8, paddingBottom: 5 }}>
-          <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())} pointerEvents={'auto'}>
-            {!!this.props.userName &&
+            <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())} pointerEvents={'auto'}>
+              {!!this.props.userName &&
               <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
                 {`@${this.props.userName}`}
               </Text>}

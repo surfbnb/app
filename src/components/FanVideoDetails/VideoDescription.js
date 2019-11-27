@@ -20,6 +20,8 @@ class VideoDescription extends PureComponent {
     return (
       <View style={{ flex: 1 }}>
         <TagsInput
+          onSuggestionsPanelOpen={this.props.onSuggestionsPanelOpen}
+          onSuggestionsPanelClose={this.props.onSuggestionsPanelClose}
           horizontal={false}
           initialValue={this.value}
           onChangeVal={this.onChangeValue}

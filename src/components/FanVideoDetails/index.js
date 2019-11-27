@@ -104,8 +104,8 @@ class FanVideoDetails extends Component {
       descError : null,
       usdVal : this.weiToUSD(this.replyAmount),
       replyAmt : null,
-      buttonText: 'Post'
-
+      buttonText: 'Post',
+      isSuggestOpen: false
     };
 
     if (! props.recordedVideo.video_type ) {
@@ -188,6 +188,7 @@ class FanVideoDetails extends Component {
   };
 
   showError = (err) => {
+    if(!err.error_data) return;
     for (let error of err.error_data){
       switch (error.parameter) {
         case "link":
@@ -295,6 +296,25 @@ class FanVideoDetails extends Component {
     return formattedUsdVal;
   }
 
+  pointerEventForInPageElement() {
+    if ( this.state.isSuggestOpen ) {
+      return "none";
+    }
+    return "auto";
+  }
+
+  onSuggestionsPanelClose = () => {
+    this.setState({
+      isSuggestOpen: false
+    });
+  }
+
+  onSuggestionsPanelOpen = () => {
+    this.setState({
+      isSuggestOpen: true
+    });
+  }
+
   render() {
     let imageUrl = this.props.recordedVideo.cover_image,
     value = pricer.getFromDecimal(this.replyAmount, 2) ;
@@ -319,15 +339,20 @@ class FanVideoDetails extends Component {
                 <Image style={styles.playIconSkipFont} source={playIcon} />
               </ImageBackground>
             </TouchableOpacity>
-            <VideoDescription initialValue={this.props.recordedVideo.video_desc} onChangeDesc={this.onChangeDesc} />
+            <VideoDescription 
+              initialValue={this.props.recordedVideo.video_desc} 
+              onChangeDesc={this.onChangeDesc} 
+              onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
+              onSuggestionsPanelClose={this.onSuggestionsPanelClose}
+            />
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.descError }</Text>
-          <View style={ styles.videoLinkItem} >
+          <View style={styles.videoLinkItem} pointerEvents={this.pointerEventForInPageElement()}>
             <Text style={{width: 135}}>Link</Text>
             <VideoLink initialValue={this.props.recordedVideo.video_link} onChangeLink={this.onChangeLink} />
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center'}]}>{this.state.linkError }</Text>
-          <View style={styles.videoAmountItem}>
+          <View style={styles.videoAmountItem} pointerEvents={this.pointerEventForInPageElement()}>
             <Text style={{width: 130}}>Set Price for replies</Text>
             <Image source={PepoPinkIcon} style={{marginLeft:5,height:13,width:13, marginRight: 3}}/>
             <View style={styles.replyAmtWrapper}>
@@ -345,7 +370,7 @@ class FanVideoDetails extends Component {
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.amountError }</Text>
         </View>
-        <View style={{zIndex: -1}}>
+        <View style={{zIndex: -1}} pointerEvents={this.pointerEventForInPageElement()}>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center', marginBottom: 10 }]}>{this.state.error}</Text>
           <LinearGradient
             colors={['#ff7499', '#ff5566']}
