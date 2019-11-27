@@ -251,11 +251,6 @@ class CameraWorker extends PureComponent {
 
   executeTransaction = () => {
 
-    console.log('executeTransaction-------');
-    console.log(goForTx,'goForTx');
-    console.log(receiverUserId,'receiverUserId');
-    console.log(doDiscard,'doDiscard');
-    console.log(goForTx,'goForTx');
 
     let goForTx = this.props.recorded_video.go_for_tx,
       doDiscard = this.props.recorded_video.do_discard,
