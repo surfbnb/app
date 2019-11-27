@@ -53,15 +53,15 @@ const inlineStyle= {
   },
   active: {
     shadowColor: '#fff',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 4,
     elevation: 5,
     overflow: 'hidden'
   },
   unseen: {
-    shadowColor: 'red',
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#ff5566',
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 4,
     elevation: 5,
