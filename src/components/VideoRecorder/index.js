@@ -196,7 +196,7 @@ class VideoRecorder extends Component {
 
 
             <Text style={[styles.miniText, {textAlign: 'center'}]}>
-              Be the first one to reply to @{this.getUserName()}’s video. Once you post the reply, you will pay {this.getPepoAmount()} Pepo Coins
+              You are replying to @{this.getUserName()}’s video. Once you post the reply, you will pay {this.getPepoAmount()} Pepo Coins
             </Text>
 
             <LinearGradient

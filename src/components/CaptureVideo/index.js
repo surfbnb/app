@@ -7,10 +7,10 @@ import {upsertRecordedVideo} from "../../actions";
 import utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
 import AppConfig from '../../constants/AppConfig';
-
+import deepGet from 'lodash/get';
 import FanVideoDetails from '../FanVideoDetails';
 import KeepAwake from 'react-native-keep-awake';
-
+import reduxGetters from "../../services/ReduxGetters";
 
 
 class CaptureVideo extends Component {
@@ -69,7 +69,7 @@ class CaptureVideo extends Component {
 
   isVideoTypeReply = () => {
     return this.videoType === AppConfig.videoTypes.reply;
-  }
+  };
 
   goToRecordScreen() {
     this.setState({
@@ -130,6 +130,11 @@ class CaptureVideo extends Component {
     return replyOptions;
   }
 
+  getName(){
+    return reduxGetters.getUserName(deepGet (reduxGetters.getRecordedVideo(),'reply_obj.replyReceiverUserId'));
+  }
+
+
   modalRequestClose = () => {
     if (this.state.recordingScreen) {
       this.props.navigation.goBack();
@@ -140,7 +145,7 @@ class CaptureVideo extends Component {
 
   getActionSheetText = (videoObject) => {
     if (videoObject.video_type ===AppConfig.videoTypes.reply ){
-      return 'get language from UX';
+      return 'You were replying to ' + this.getName();
     } else if (videoObject.video_type === AppConfig.videoTypes.post ) {
       return 'You have already recorded video';
     }
