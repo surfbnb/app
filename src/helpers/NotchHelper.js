@@ -1,11 +1,6 @@
 import {NativeModules} from "react-native";
 const RNDeviceInfo = NativeModules.RNDeviceInfo;
 
-let PepoApi;
-import('../services/PepoApi').then((imports) => {
-  PepoApi = imports.default;
-});
-
 let devicesWithNotch =  [
   {
     "brand": "Apple",
@@ -140,15 +135,17 @@ let devicesWithNotch =  [
 class NotchHelper {
 
   syncList(){
-    let listUrl = "https://d3attjoi5jlede.cloudfront.net/pepo-app/devices-list/notch-devices.json";
-    new PepoApi(listUrl).get().then((res)=> {
-      const devices = res && res.devices;
-      if( devices && devices instanceof Array && devices.length < 1 ) {
-        devicesWithNotch = devices;
-      }
-    }).catch((error)=> {
-      console.log("ignore")
-    })
+    fetch(`https://d3attjoi5jlede.cloudfront.net/pepo-app/devices-list/notch-devices-1.json?${Date.now()}`)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const devices = responseJson && responseJson.devices;
+        if( devices && devices instanceof Array && devices.length > 0 ) {
+          devicesWithNotch = devices;
+        }
+      })
+      .catch((error) => {
+        console.log("Notch helper fetch error ignored");
+      });
   }
 
   hasNotch() {
