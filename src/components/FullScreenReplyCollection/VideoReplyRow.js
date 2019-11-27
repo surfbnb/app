@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { View , Dimensions, TouchableOpacity} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import FanVideo from "../VideoWrapper/FanVideo";
-import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import BottomReplyBar from "../CommonComponents/BottomReplyBar";
 import PepoApi from '../../services/PepoApi';
@@ -29,6 +28,7 @@ const marginTopForParentIcon = 15;
 const AREA = AppConfig.MaxDescriptionArea;
 const height = AREA / Dimensions.get('window').width + 20;
 import { fetchVideo } from '../../helpers/helpers';
+import ReplyShareIcon from '../CommonComponents/ShareIcon/ReplyShare';
 
 class VideoReplyRow extends PureComponent {
     constructor(props) {
@@ -148,9 +148,7 @@ class VideoReplyRow extends PureComponent {
                                       }}
                                       />
                                     </TouchableOpacity>
-                                    <ShareIcon  userId={this.props.userId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)}
-                                                isDisabled={() => {return false}}
-                                                 />
+                                    <ReplyShareIcon  entityId={this.props.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)}/>
                                     <ReportVideo  userId={this.props.userId} reportEntityId={this.props.replyDetailId} reportKind={'reply'} />
                                  </View>
 

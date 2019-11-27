@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { View, Dimensions } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import FanVideo from '../VideoWrapper/FanVideo';
-import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
 
@@ -20,6 +19,7 @@ import assignIn from 'lodash/assignIn';
 import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 import AppConfig from "../../constants/AppConfig";
 import BubbleList from '../CommonComponents/BubbleList';
+import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
 
 
 const AREA = AppConfig.MaxDescriptionArea;
@@ -90,7 +90,7 @@ class UserVideoHistoryRow extends PureComponent {
                               getPixelDropData={this.getPixelDropData}
                             />
                             <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
-                            <ShareIcon  userId={this.props.userId} url={DataContract.share.getVideoShareApi(this.props.videoId)} />
+                            <VideoShareIcon entityId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.props.videoId)} />
                             <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
                           </View>
 

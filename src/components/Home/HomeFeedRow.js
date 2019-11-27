@@ -3,7 +3,6 @@ import {View, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import FanVideo from '../VideoWrapper/FanVideo';
-import ShareIcon from "../CommonComponents/ShareIcon";
 import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
 import assignIn from 'lodash/assignIn';
@@ -16,14 +15,7 @@ import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
-
-import InvertedReplyList from '../CommonComponents/InvertedReplyThumbnailList';
-import AppConfig from "../../constants/AppConfig";
-import BubbleList from "../CommonComponents/BubbleList";
-
-const AREA = AppConfig.MaxDescriptionArea;
-const height = AREA / Dimensions.get('window').width + 20;
-
+import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -72,10 +64,6 @@ class HomeFeedRow extends PureComponent {
 
           <View style={[inlineStyles.touchablesBtns, {justifyContent: 'flex-end'}]} pointerEvents={'box-none'}>
 
-            {/* <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
-              <BubbleList  videoId={this.videoId}   doRender={this.props.doRender} />
-            </View> */}
-
             <View style={{ minWidth: '20%' }}>
               <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
                 <PepoTxBtn
@@ -85,8 +73,7 @@ class HomeFeedRow extends PureComponent {
                   getPixelDropData={this.getPixelDropData}
                 />
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
-
-                <ShareIcon  userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
+                <VideoShareIcon  entityId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
                 <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
               </View>
 

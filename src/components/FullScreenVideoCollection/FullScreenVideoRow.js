@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { View , Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import FanVideo from '../VideoWrapper/FanVideo';
-import ShareIcon from "../CommonComponents/ShareIcon";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
 import deepGet from 'lodash/get';
@@ -21,6 +20,7 @@ import assignIn from 'lodash/assignIn';
 import AppConfig from "../../constants/AppConfig";
 import CommonStyle from "../../theme/styles/Common";
 import BubbleList from "../CommonComponents/BubbleList";
+import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
 
 
 const AREA = AppConfig.MaxDescriptionArea;
@@ -78,7 +78,7 @@ class FullScreeVideoRow extends PureComponent {
                                             getPixelDropData={this.getPixelDropData}
                                         />
                                         <ReplyIcon videoId={this.videoId} userId={this.userId}/>
-                                        <ShareIcon  userId={this.userId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
+                                        <VideoShareIcon  entityId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
                                         <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
                                     </View>
 

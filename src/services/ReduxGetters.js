@@ -495,6 +495,16 @@ class ReduxGetters {
 
   }
 
+  isReplyShareable(id ,  state){
+    state = state || Store.getState();
+    return !!Number( deepGet(state, `current_user_reply_detail_relation_entities.id_${id}.is_shareable` , 0));
+  }
+
+  isVideoShareable(id ,state){
+    state = state || Store.getState();
+    return  !!Number( deepGet(state, `current_user_video_relation_entities.id_${id}.is_shareable` , 0) );
+  }
+
   getReplyDescriptionId(id, state) {
     state = state || Store.getState();
     return deepGet(state, `reply_detail_entities.id_${id}.description_id`);
