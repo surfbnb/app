@@ -53,7 +53,7 @@ export default class NumberInput extends PureComponent{
                   onChangeText={(value) => {this.onChangeText(value)}}
                   value = {String(this.props.value)}
                   keyboardType = 'decimal-pad'
-
+                  style={{paddingVertical: 0}}
                 />
                 <Text style={[Theme.Errors.errorText ,  this.props.errorStyle]}>
                   { this.props.errorMsg || this.state.valueError }

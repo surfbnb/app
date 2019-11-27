@@ -76,7 +76,7 @@ let stylesMap = {
     shadowOpacity: 0.2,
     elevation: 1
   },
-  linkText: { color: Colors.softBlue, flex: 3},
+  linkText: { color: Colors.softBlue, flex: 3, paddingVertical: 0},
   replyAmtWrapper : {
     flex:1,
     flexDirection:"row",
