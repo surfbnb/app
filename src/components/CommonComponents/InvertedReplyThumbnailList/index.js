@@ -105,7 +105,7 @@ class InvertedReplyList extends PureComponent {
       this.initPagination();
     }
     if(this.props.currentIndex != prevProps.currentIndex){
-      this.listRef && this.listRef.scrollToIndex({index : this.props.currentIndex, viewOffset: 100, viewPosition: 0});
+      this.listRef && this.listRef.scrollToIndex({index : this.props.currentIndex, viewOffset: 100, viewPosition: 0.5});
     }
   }
 
@@ -279,7 +279,7 @@ class InvertedReplyList extends PureComponent {
         initialScrollIndex={this.props.currentIndex}
         getItemLayout={this.getItemLayout}
         onScrollToIndexFailed={this.onScrollToIndexFailed}
-    />
+        />
   }
 }
 
