@@ -72,9 +72,9 @@ class HomeFeedRow extends PureComponent {
 
           <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-            <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
+            {/* <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
               <BubbleList  videoId={this.videoId}   doRender={this.props.doRender} />
-            </View>
+            </View> */}
 
             <View style={{ minWidth: '20%' }}>
               <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
