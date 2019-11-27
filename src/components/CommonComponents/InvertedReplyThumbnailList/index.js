@@ -9,6 +9,7 @@ import ReplyHelper from '../../../helpers/ReplyHelper';
 import AppConfig from "../../../constants/AppConfig";
 import DataContract from '../../../constants/DataContract';
 import ReduxGetters from '../../../services/ReduxGetters';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 //
 const ITEM_HEIGHT = AppConfig.thumbnailListConstants.iconHeight +  AppConfig.thumbnailListConstants.iconWidth;
@@ -239,7 +240,7 @@ class InvertedReplyList extends PureComponent {
     const area = AppConfig.MaxDescriptionArea;
     let height = ( area / Dimensions.get('window').width ) + 20,
       //70 is height of top section
-      availableHeight =   AppConfig.VideoScreenObject.height - height - 70 ;
+      availableHeight =   AppConfig.VideoScreenObject.height - height - (isIphoneX ? 116 : 70) ;
     return this.props.parentIconHeight ? availableHeight - this.props.parentIconHeight : availableHeight;
   }
 

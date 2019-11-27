@@ -36,8 +36,6 @@ const bottomReplyViewHeight = isIphoneX() ? 89 : 54;
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
 
 const bottomSpace = getBottomSpace([true]);
-console.log('bottomSpace', bottomSpace);
-
 
 class VideoRepliesScreen extends PureComponent {
 
