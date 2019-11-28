@@ -240,7 +240,7 @@ class InvertedReplyList extends PureComponent {
     const area = AppConfig.MaxDescriptionArea;
     let height = ( area / Dimensions.get('window').width ) + 20,
       //70 is height of top section
-      availableHeight =   AppConfig.VideoScreenObject.height - height - (isIphoneX ? 116 : 70) ;
+      availableHeight =   AppConfig.VideoScreenObject.height - height - (isIphoneX ? 78 : Platform.OS === 'ios' ? 28 : 80) ;
     return this.props.parentIconHeight ? availableHeight - this.props.parentIconHeight : availableHeight;
   }
 

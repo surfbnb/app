@@ -112,7 +112,7 @@ const cardStackConfig = {
       return  NavigationAnimation.fromBottom();
     }
 
-    if(Platform.OS = "ios"){
+    if(Platform.OS == "ios"){
       if (prevScene
         && prevScene.route.routeName === 'VideoReplies'
         && nextScene.route.routeName === 'FullScreenReplyCollection') {
