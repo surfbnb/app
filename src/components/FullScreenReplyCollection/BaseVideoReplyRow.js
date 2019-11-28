@@ -86,7 +86,12 @@ class BaseVideoReplyRow extends PureComponent {
 
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
-        const pixelParams = { e_entity: 'reply' , parent_video_id : this.state.parentVideoId ,  reply_detail_id :this.props.replyDetailId  };
+        const pixelParams = {
+            e_entity: 'reply',
+            parent_video_id : this.state.parentVideoId,
+            p_name: this.state.parentVideoId,
+            reply_detail_id :this.props.replyDetailId
+        };
         return assignIn({}, pixelParams, parentData);
     }
 

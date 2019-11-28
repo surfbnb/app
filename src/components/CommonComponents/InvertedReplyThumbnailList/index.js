@@ -235,8 +235,36 @@ class InvertedReplyList extends PureComponent {
     this.listRef = ref;
   };
 
-  getItemSeperatorComponent = () => {
-    return <View style={{backgroundColor: 'white',marginTop:-4,marginBottom:-4, height: AppConfig.thumbnailListConstants.separatorHeight, width: 1, alignSelf:'center'}} />
+  getItemSeperatorComponent = ({leadingItem}) => {
+    let styles = {backgroundColor: 'white',
+      height: AppConfig.thumbnailListConstants.separatorHeight,
+      width: 1,
+      alignSelf:'center'
+    };
+
+    // Leading Item
+    let leadingItemIndex = this.state.list.indexOf(leadingItem);
+    let isLeadingSelected = this.isActiveEntity( leadingItemIndex , leadingItem);
+    let isLeadingSeen = ReduxGetters.isReplySeen( deepGet(leadingItem.payload,'reply_detail_id'));
+
+    //Top margin is needed if and only if the leading cell is seen and is not selected.
+    if ( isLeadingSeen && !isLeadingSelected ) {
+      //Leading does not have border.
+      styles.marginTop = AppConfig.thumbnailListConstants.marginTop;
+    }
+
+    let trailingItemIndex = leadingItemIndex + 1;
+    let trailingItem = this.state.list[trailingItemIndex];
+    let isTrailingSelected = this.isActiveEntity( trailingItemIndex , trailingItem);
+    let isTrailingSeen = ReduxGetters.isReplySeen( deepGet(trailingItem.payload,'reply_detail_id'));
+
+    //Bottom margin is needed if and only if the trailing cell is seen and is not selected.
+    if ( isTrailingSeen && !isTrailingSelected ) {
+      //Trailing cell does not have border.
+      styles.marginBottom = AppConfig.thumbnailListConstants.marginBottom;
+    }
+
+    return <View style={styles} />
   };
 
   getAvailableHeight = () => {

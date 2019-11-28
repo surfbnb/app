@@ -92,12 +92,12 @@ class VideoRepliesScreen extends PureComponent {
         videoUploaderVisible: true
       });
     };
-  
+
     hideVideoUploader = ( otherStates, callback ) => {
       otherStates = otherStates || {};
       this.setState({
         ...otherStates,
-        videoUploaderVisible: false 
+        videoUploaderVisible: false
       }, callback);
     };
 
@@ -108,7 +108,7 @@ class VideoRepliesScreen extends PureComponent {
           this.hideVideoUploader({
             addRepliesVisible: false
           },() => {
-            this.props.navigation.goBack();  
+            this.props.navigation.goBack();
           });
         }
       } , 10)
@@ -227,7 +227,7 @@ class VideoRepliesScreen extends PureComponent {
                  <TouchableWithoutFeedback onPress={this.openCamera}>
                  <View style={inlineStyles.addReplyView}>
                    <View style={inlineStyles.addReplyInnerView}>
-                     <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimension}></Image>
+                     <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimensionSkipFont}></Image>
                      <Text style={inlineStyles.addReplyText}>
                        Add a reply...
                      </Text>

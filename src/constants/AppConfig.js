@@ -340,11 +340,15 @@ export default {
   thumbnailListConstants: {
     separatorHeight: 25,
     // this is height of profile icon + shadow around it.
-    iconHeight:54,
+    iconHeight: 48,
     // this is width of profile icon + shadow around it.
-    iconWidth: 54,
+    iconWidth: 48,
     parentIconHeight: 46,
-    parentIconWidth: 46
+    parentIconWidth: 46,
+    borderWidth: 2,
+    // this is Margin to place an icon element on top and bottom of the bordered(both red and white colored) wrapper
+    marginTop: -4,
+    marginBottom: -4
   },
   VideoScreenObject : {
     ...ifIphoneX(
