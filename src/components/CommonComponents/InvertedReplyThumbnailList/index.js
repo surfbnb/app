@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, View, ScrollView, ListView, Dimensions} from 'react-native';
+import { Text, View, ScrollView, ListView, Dimensions, Platform} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import Pagination from "../../../services/Pagination";
