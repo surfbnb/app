@@ -147,15 +147,14 @@ class loginPopover extends React.Component {
                     />
                     <View style={inlineStyles.tocPp}>
                       <Text style={{textAlign: 'center'}}>
-                        <Text style={inlineStyles.termsTextBlack}>By signing up, you confirm that you agree to
-                          our </Text>
+                        <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
                         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
                           this.closeModal();
                           InAppBrowser.openBrowser(
                             `${WEB_ROOT}/terms`
                           );
                         })}>Terms of use </Text>
-                        <Text style={inlineStyles.termsTextBlack}>and have read and agree to our </Text>
+                        <Text style={inlineStyles.termsTextBlack}>and </Text>
                         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
                           this.closeModal();
                           InAppBrowser.openBrowser(
