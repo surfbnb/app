@@ -88,7 +88,7 @@ let stylesMap = {
         color:Colors.black,
         marginLeft:10
     },
-    addReplyImageDimension : {
+    addReplyImageDimensionSkipFont : {
         height:10,
         width:15
     }

@@ -131,7 +131,6 @@ class FullScreenVideoCollection extends PureComponent{
 
     _keyExtractor = (item, index) => {
         let keyStr = `id_${item.id}`;
-        console.log("keyStr", keyStr);
         return keyStr;
     };
 
