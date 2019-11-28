@@ -193,7 +193,7 @@ class ReplyCollection extends PureComponent {
                             removeVideo={ () => {this.removeVideo(reply_detail_id , index )}} />
            </View>
          </LinearGradient>}
-            <ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(index)}}/>
+            <ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(index , item)}}/>
           </View>);
     }
 
@@ -212,7 +212,7 @@ class ReplyCollection extends PureComponent {
         }
     }
 
-    onVideoClick = ( index ) => {
+    onVideoClick = ( index , item) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
         this.props.navigation.push("FullScreenReplyCollection", {
             "fetchServices" : clonedInstance,

@@ -11,6 +11,8 @@ import CommonStyle from "../../theme/styles/Common";
 import { SafeAreaView } from "react-navigation";
 import ReplyHelper from "../../helpers/ReplyHelper";
 import TopStatus from "../Home/TopStatus";
+import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
+import NoPendantsVideoReplyRow from "./NoPendantsVideoReplyRow";
 
 const maxVideosThreshold = 3;
 
@@ -162,7 +164,8 @@ class FullScreenReplyCollection extends PureComponent{
     _renderVideoReplyRow(item, index){
         let userId = deepGet(item,'payload.user_id'),
             replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
-        return  <VideoReplyRow  shouldPlay={this.shouldPlay}
+        return  <NoPendantsVideoReplyRow
+                                shouldPlay={this.shouldPlay}
                                 isActive={index == this.state.activeIndex}
                                 getPixelDropData={this.getPixelDropData(replyDetailId)}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
@@ -228,21 +231,16 @@ class FullScreenReplyCollection extends PureComponent{
     }
 
     render() {
-
         return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreenVideoSafeAreaContainer, {position: "relative"}]}>
                 <TopStatus />
                 
-                {/* <View style={{position: "absolute" , top: 50, left: 0}}>
-                    <InvertedReplyList  videoId={this.state.parentVideoId}
-                                        doRender={this.props.doRender}
-                                        paginationService={this.props.paginationService}
-                                        onChildClickDelegate={this.props.onChildClickDelegate}
-                                        currentIndex={this.props.currentIndex}
-                                        isActiveEntity={this.props.isActiveEntity}
-                                        fullVideoReplyId={this.props.replyDetailId}
+                <View style={{position: "absolute" , top: 100, left: 0 , zIndex:9}}>
+                    <InvertedReplyList  paginationService={this.getVideoPagination()}
+                                        onChildClickDelegate={this.childClickHandler}
+                                        currentIndex={this.state.activeIndex}
                                   />
-                </View>     */}
+                </View>    
 
                 <FlatList
                     snapToAlignment={"top"}

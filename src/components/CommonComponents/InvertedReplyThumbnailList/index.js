@@ -10,6 +10,7 @@ import AppConfig from "../../../constants/AppConfig";
 import DataContract from '../../../constants/DataContract';
 import ReduxGetters from '../../../services/ReduxGetters';
 import { isIphoneX } from 'react-native-iphone-x-helper';
+import deepGet from "lodash/get";
 
 //
 const ITEM_HEIGHT = AppConfig.thumbnailListConstants.iconHeight +  AppConfig.thumbnailListConstants.iconWidth;
@@ -60,25 +61,27 @@ class InvertedReplyList extends PureComponent {
     this.props.navigation.goBack(null);
   }
 
-  parentClickHandler =()=>{
-    const parentVideoId = this.props.videoId,
-          parentUserId = ReduxGetters.getVideoCreatorUserId(parentVideoId);
-    this.props.navigation.push('VideoPlayer', {
-      userId: parentUserId,
-      videoId: parentVideoId,
-      bubbleClickHandler: this.bubbleClickHandler
-    });
+  getParentClickHandler =( videoId )=>{
+    return () => {
+      parentUserId = ReduxGetters.getVideoCreatorUserId(videoId);
+      this.props.navigation.push('VideoPlayer', {
+        userId: parentUserId,
+        videoId: videoId,
+        bubbleClickHandler: this.bubbleClickHandler
+      });
+    }
   }
 
   defaultChildClickHandler = ( index, item )=> {
-    const baseUrl = DataContract.replies.getReplyListApi(this.props.videoId),
+    const videoId = ReduxGetters.getReplyParentVideoId(deepGet(item ,  "payload.reply_detail_id"));
+          baseUrl = DataContract.replies.getReplyListApi(videoId),
           clonedInstance = this.getPagination().fetchServices.cloneInstance();
     ReplyHelper.updateEntitySeen( item );
     this.props.navigation.push('FullScreenReplyCollection',{
       "fetchServices": clonedInstance,
       "currentIndex":index,
       "baseUrl": baseUrl,
-      "parentClickHandler": this.parentClickHandler
+      "parentClickHandler": this.getParentClickHandler( videoId )
     });
   };
 

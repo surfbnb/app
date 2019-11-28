@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { View , Dimensions, TouchableOpacity} from 'react-native';
-import { withNavigation } from 'react-navigation';
 import FanVideo from "../VideoWrapper/FanVideo";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import BottomReplyBar from "../CommonComponents/BottomReplyBar";
@@ -98,7 +97,7 @@ class BaseVideoReplyRow extends PureComponent {
     _renderInvertedFlatList = () => {
       if( this.state.parentVideoId ){
         return (
-          <View style={inlineStyles.invertedList} pointerEvents={'box-none'}>
+          <View style={inlineStyles.invertedList}>
               <InvertedReplyList  videoId={this.state.parentVideoId}
                                   doRender={this.props.doRender}
                                   paginationService={this.props.paginationService}
@@ -136,8 +135,8 @@ class BaseVideoReplyRow extends PureComponent {
 
                               {this._renderInvertedFlatList()}
 
-                              <View style={{ minWidth: '20%' }}>
-                                <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
+                              <View style={{ minWidth: '20%' , marginLeft: "auto"}} pointerEvents={'box-none'}>
+                                <View style={{alignItems: 'flex-end', marginRight: 10}} pointerEvents={'box-none'}>
                                     <ReplyPepoTxBtn
                                         resyncDataDelegate={this.refetchVideoReply}
                                         userId={this.props.userId}
