@@ -105,10 +105,21 @@ const cardStackConfig = {
   cardStyle: { backgroundColor: 'rgba(0,0,0,0)' },
   transitionConfig: ( transitionProps, prevTransitionProps ) => {
     const scenes = transitionProps["scenes"];
+    const prevScene = scenes[scenes.length - 2];
     const nextScene = scenes[scenes.length - 1];
+
     if (nextScene.route.routeName === 'VideoReplies') {
       return  NavigationAnimation.fromBottom();
     }
+
+    if(Platform.OS = "ios"){
+      if (prevScene
+        && prevScene.route.routeName === 'VideoReplies'
+        && nextScene.route.routeName === 'FullScreenReplyCollection') {
+        return  NavigationAnimation.fromBottom();
+      }
+    }
+    
   }
 }
 
