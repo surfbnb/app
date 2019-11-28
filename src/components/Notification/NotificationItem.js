@@ -183,8 +183,10 @@ class NotificationItem extends Component {
       let includesObj  = this.props.heading && this.props.heading["includes"] || {} ,
           userObj ;
       for(let key in includesObj ){
-        userObj = includesObj[key] || null;
-        break ;
+        if ( includesObj[key] && includesObj[key].kind === 'users'){
+          userObj = includesObj[key] || null;
+          break;
+        }
       }
       if(userObj){
         return <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.includesTextNavigate(userObj))}>
@@ -195,7 +197,7 @@ class NotificationItem extends Component {
       }else {
         return(
           <View style={styles.activityIcon}>
-            <ProfilePicture pictureId={this.props.pictureId} />;
+            <ProfilePicture pictureId={this.props.pictureId} />
           </View>
         )
 
