@@ -147,7 +147,7 @@ class CaptureVideo extends Component {
 
   getActionSheetText = (videoObject) => {
     if (videoObject.video_type ===AppConfig.videoTypes.reply ){
-      return 'You were replying to ' + this.getName();
+      return 'You have a pre-recorded reply';
     } else if (videoObject.video_type === AppConfig.videoTypes.post ) {
       return 'You have already recorded video';
     }
