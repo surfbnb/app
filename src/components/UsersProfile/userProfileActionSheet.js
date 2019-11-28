@@ -18,7 +18,7 @@ const ACTION_SHEET_BLOCK_UNBLOCK_INDEX = 1;
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        canBlockUser: ReduxGetters.canBlockUser(ownProps.userId , state) 
+        canBlockUser: ReduxGetters.canBlockUser(ownProps.userId , state)
     };
 };
 
@@ -37,12 +37,12 @@ class UserProfileActionSheet extends PureComponent {
                 }
             })
             .catch((err) => {
-                console.log('Report user failed', err);
+                Toast.show({text: `Unable to report user right now.`, icon: 'error' });
             });
     }
 
     blockUser = () => {
-        const oThis =this;
+        const oThis = this;
         new PepoApi(`/users/${this.props.userId}/block`)
         .post()
         .then((response) => {
@@ -50,11 +50,11 @@ class UserProfileActionSheet extends PureComponent {
                 oThis.onBlockUnblockSuccessToast(true);
                 oThis.onBlockUnBlockSuccess(true);
             }else{
-                oThis.onBlockUnblockErrorToast(true); 
+                oThis.onBlockUnblockErrorToast(true);
             }
         })
         .catch((err) => {
-            oThis.onBlockUnblockErrorToast(true); 
+            oThis.onBlockUnblockErrorToast(true);
         });
     }
 
@@ -67,11 +67,11 @@ class UserProfileActionSheet extends PureComponent {
                 oThis.onBlockUnblockSuccessToast();
                 oThis.onBlockUnBlockSuccess();
             }else{
-                oThis.onBlockUnblockErrorToast(); 
+                oThis.onBlockUnblockErrorToast();
             }
         })
         .catch((err) => {
-            oThis.onBlockUnblockErrorToast(); 
+            oThis.onBlockUnblockErrorToast();
         });
     }
 
@@ -116,7 +116,7 @@ class UserProfileActionSheet extends PureComponent {
                 }
             ],
             {cancelable: true},
-        ); 
+        );
     }
 
     showActionSheet = () => {
@@ -124,7 +124,7 @@ class UserProfileActionSheet extends PureComponent {
             blockAction = this.showBlockAlert;
         if(!this.props.canBlockUser){
             actionOptions  = ['Report', 'Unblock' ,'Cancel'] ; //Mutate via code later.
-            blockAction =  this.unBlockUser; 
+            blockAction =  this.unBlockUser;
         }
         ActionSheet.show(
             {
