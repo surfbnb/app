@@ -235,10 +235,9 @@ class FullScreenReplyCollection extends PureComponent{
             <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreenVideoSafeAreaContainer, {position: "relative"}]}>
                 <TopStatus />
                 
-                <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 ,  marginRight: 'auto', minWidth: '20%'}}>
+                <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight(), marginRight: 'auto', minWidth: '20%'}}>
                     <InvertedReplyList  paginationService={this.getVideoPagination()}
                                         onChildClickDelegate={this.childClickHandler}
-                                        bottomRounding={50}
                                         currentIndex={this.state.activeIndex}
                                   />
                 </View>    

@@ -13,7 +13,7 @@ import deepGet from "lodash/get";
 import Utilities from '../../../services/Utilities';
 
 
-const ITEM_HEIGHT = AppConfig.thumbnailListConstants.iconHeight;
+const ITEM_HEIGHT = AppConfig.thumbnailListConstants.cellHeight();
 const ITEM_SEPERATOR_HEIGHT = AppConfig.thumbnailListConstants.separatorHeight;
 
 class InvertedReplyList extends PureComponent {
@@ -276,11 +276,11 @@ class InvertedReplyList extends PureComponent {
     let availableHeight = this.getAvailableHeight();
     let noOfItems = this.state.list.length;
     if (noOfItems > 0){
-      let heightOfElements = noOfItems * AppConfig.thumbnailListConstants.iconHeight,
+      let heightOfElements = noOfItems * ITEM_HEIGHT,
         heightOfSeparator =   (noOfItems - 1 ) *  AppConfig.thumbnailListConstants.separatorHeight,
         heightOfFlatList = heightOfElements + heightOfSeparator ,
         finalHeight = availableHeight > heightOfFlatList ? heightOfFlatList : availableHeight;
-      return finalHeight - this.props.bottomRounding;
+      return finalHeight;
     }
     return 0;
   };
@@ -297,7 +297,7 @@ class InvertedReplyList extends PureComponent {
 
   render() {
       console.log("InvertedReplyList :: this.props.listKey", this.props.listKey);
-        return   <FlatList style={{ height: this.getListHeight(), width: '100%'}}
+        return   <FlatList style={{ height: this.getListHeight(), width: '100%' , position: "absolute" , bottom: 0}}
         ref={this.setListRef}
         ItemSeparatorComponent={this.getItemSeperatorComponent}
         data={this.state.list}

@@ -61,47 +61,20 @@ const inlineStyle= {
             width: AppConfig.thumbnailListConstants.iconWidth - 8,
             borderRadius: (AppConfig.thumbnailListConstants.iconWidth - 8)/ 2,
             marginLeft: -2,
-            marginTop: -2,
-    // ...Platform.select({
-    //   android: {
-    //     marginLeft: -4,
-    //     marginTop: -4,
-    //   },
-    // })
+            marginTop: -2
   },
-  // borderStyle: {
-  //   borderWidth: 1,
-  //   borderColor: '#fff'
-  // },
   wrapperStyle: {
     width: AppConfig.thumbnailListConstants.iconWidth,
     height: AppConfig.thumbnailListConstants.iconHeight,
     borderRadius: (AppConfig.thumbnailListConstants.iconWidth)/ 2,
     padding: 4,
     borderWidth: AppConfig.thumbnailListConstants.borderWidth,
-    borderColor: 'transparent',
-    // shadowColor: 'transparent',
-    // shadowOffset: { width: 0, height: 0 },
-    // shadowOpacity: 1,
-    // shadowRadius: 4,
-    // overflow: 'hidden',
-    // ...Platform.select({
-    //   android: {
-    //     borderWidth: 2,
-    //     borderColor: 'transparent',
-    //     width: AppConfig.thumbnailListConstants.iconWidth - 4,
-    //     height:AppConfig.thumbnailListConstants.iconHeight - 4,
-    //     zIndex: 1,
-    //     borderRadius: (AppConfig.thumbnailListConstants.iconWidth - 4) / 2
-    //   },
-    // })
+    borderColor: 'rgba(255, 255, 255, 0)',
   },
   active: {
-    shadowColor: '#fff',
-    borderColor: '#fff'
+    borderColor: '#fff',
   },
   unseen: {
-    shadowColor: 'red',
     borderColor: 'red'
   },
   miniSeparator: {
