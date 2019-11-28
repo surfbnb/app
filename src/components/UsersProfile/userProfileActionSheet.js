@@ -34,6 +34,8 @@ class UserProfileActionSheet extends PureComponent {
             .then((response) => {
                 if (response && response.success){
                     Toast.show({text:'User reported successfully!', icon: 'success' });
+                } else {
+                    Toast.show({text: `Unable to report user right now.`, icon: 'error' });
                 }
             })
             .catch((err) => {
