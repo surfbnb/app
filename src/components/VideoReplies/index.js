@@ -62,7 +62,8 @@ class VideoRepliesScreen extends PureComponent {
         showBackdrop : false,
         addRepliesVisible : true,
         videoUploaderVisible: false,
-        currentHeight : this.initialHeight
+        currentHeight : this.initialHeight,
+        videoReplyCount : ReduxGetters.getVideoReplyCount(this.videoId)
       }
     }
 
@@ -147,6 +148,12 @@ class VideoRepliesScreen extends PureComponent {
       return wrapStyles;
     };
 
+    onRefresh = ()=> {
+      this.setState({
+        videoReplyCount : ReduxGetters.getVideoReplyCount(this.videoId)
+      })
+    };
+
     render(){
         return (
           <React.Fragment>
@@ -199,7 +206,7 @@ class VideoRepliesScreen extends PureComponent {
 
                         <View style={inlineStyles.repliesTxt}>
                           <Text numberOfLines={1} style={inlineStyles.headerText}>
-                            {ReduxGetters.getVideoReplyCount(this.videoId)} Repl{ReduxGetters.getVideoReplyCount(this.videoId) > 1 ? 'ies' : 'y'}
+                            {this.state.videoReplyCount} Repl{this.state.videoReplyCount > 1 ? 'ies' : 'y'}
                           </Text>
                           {/*<Text style={inlineStyles.headerSubText}>Send a reply with{' '}*/}
                           {/*<Image style={{height: 10, width: 10}} source={pepoIcon} />*/}
@@ -209,7 +216,7 @@ class VideoRepliesScreen extends PureComponent {
                       <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
                                         onData={this.onData}
                                         listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding+bottomReplyViewHeight : listBottomPadding}
-
+                                        onRefresh={this.onRefresh}
                       />
                     </View>
                   </React.Fragment>
