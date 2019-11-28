@@ -29,7 +29,7 @@ import Theme from "../../theme/styles";
 import multipleClickHandler from "../../services/MultipleClickHandler";
 import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 import Pricer from "../../services/Pricer";
-const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue with already recorded'];
+const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_FACTOR = 0.01;
@@ -170,9 +170,9 @@ class VideoRecorder extends Component {
     return Pricer.getToBT(Pricer.getFromDecimal(amount), 2);
   };
 
-  getUserName = () => {
+  getUserFullName = () => {
     let userId = reduxGetters.getVideoCreatorUserId(this.props.videoId);
-    return reduxGetters.getUserName(userId)
+    return reduxGetters.getName(userId)
   };
 
 
@@ -196,7 +196,7 @@ class VideoRecorder extends Component {
 
 
             <Text style={[styles.miniText, {textAlign: 'center'}]}>
-              You are replying to @{this.getUserName()}’s video. Once you post the reply, you will pay {this.getPepoAmount()} Pepo Coins
+              Reply to {this.getUserFullName()}'s video for {this.getPepoAmount()} Pepo Coins
             </Text>
 
             <LinearGradient
