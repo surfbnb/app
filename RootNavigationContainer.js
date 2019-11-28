@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Platform} from 'react-native';
+import { View } from 'react-native';
 import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-import { createStackNavigator , StackViewTransitionConfigs} from 'react-navigation-stack';
+import { createStackNavigator } from 'react-navigation-stack';
 import NavigationAnimation from "./src/helpers/NavigationAnimation";
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import deepGet from 'lodash/get';
 
 import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
@@ -41,7 +40,6 @@ import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
 import FanVideoReplyDetails from './src/components/FanVideoReplyDetails';
-
 import WalletSettingScreen from './src/components/WalletSetting';
 import StoreProductsScreen from './src/components/StoreProducts';
 import PaymentWorker from './src/components/PaymentWorker';
@@ -72,7 +70,7 @@ const customTabHiddenRoutes = [
   'InAppBrowserComponent',
   'CouchMarks',
   'VideoReplies',
-  'FullScreenReplyCollection', 
+  'FullScreenReplyCollection',
   'FullScreenVideoCollection',
   'UserVideoHistory',
   'VideoPlayer',
@@ -91,11 +89,11 @@ const modalStackConfig = {
   }
 };
 
-const txModalConfig = { 
+const txModalConfig = {
   transparentCard: true,
   cardStyle: { backgroundColor: 'rgba(0,0,0,0)' },
   gesturesEnabled: false,
-  transitionConfig: (transitionProps, prevTransitionProps) => {    
+  transitionConfig: (transitionProps, prevTransitionProps) => {
     return  NavigationAnimation.defaultTransition();
   }
 };
