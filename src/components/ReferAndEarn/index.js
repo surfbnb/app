@@ -127,7 +127,7 @@ class ReferAndEarn extends Component {
                     style={[styles.heading, { textAlign: 'center' }]}
                   >{`You have ${this.state.inviteText} invites remaining`}</Text>
                   <Text style={styles.content}>
-                    Pepo is currently invite only. Invite your friends and you will get 5% commission on their earnings.
+                    Invite your friends and you will get 5% commission on their earnings.
                   </Text>
                 </View>
               </ImageBackground>
