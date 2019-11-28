@@ -48,7 +48,7 @@ class ReplyIcon extends PureComponent {
             <TouchableOpacity pointerEvents={'auto'}
                             style={inlineStyles.replyIconWrapper}
                             onPress={multipleClickHandler(() => this.replyVideo())} >
-                <Image style={{ width: 38, height: 31.3 }} source={reply_video} />
+                <Image style={{ width: 35.5, height: 30.5 }} source={reply_video} />
             </TouchableOpacity>
         </React.Fragment>);
     }
