@@ -25,28 +25,12 @@ class ReplyThumbnailItem extends Component {
     this.userId = reduxGetters.getReplyEntity(this.replyDetailId).creator_user_id;
   }
 
-  _renderTopMiniSeperator() {
-    //NOTE: Deliberately treating cellIndex as falsey.
-    if (!this.props.cellIndex) {
-      return null;
-    }
-
-    return <View style={[inlineStyle.miniSeparator,{top:0}]}></View>
-  }
-  _renderBottomMiniSeperator() {
-    if (this.props.cellIndex == this.props.totalCells - 1) {
-      return null;
-    }
-    return <View style={[inlineStyle.miniSeparator,{bottom:0}]}></View>
-  }
   render() {
     return <View style={{position: "relative"}}>
-            {/*{this._renderTopMiniSeperator()}*/}
             <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
                   style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive && inlineStyle.active]}>
               <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
             </TouchableOpacity>
-            {/*{this._renderBottomMiniSeperator()}*/}
           </View>
   }
 
@@ -76,14 +60,6 @@ const inlineStyle= {
   },
   unseen: {
     borderColor: 'red'
-  },
-  miniSeparator: {
-    position: 'absolute',
-    left: '50%',
-    width: 1,
-    marginLeft: -0.5,
-    backgroundColor: 'white',
-    height: 4
   }
 };
 
