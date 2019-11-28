@@ -44,7 +44,7 @@ class VideoReplyRow extends PureComponent {
      if(this.props.doRender && this.state.parentVideoId && !this.state.parentUserId ){
        this.fetchParentVideo = fetchVideo(this.state.parentVideoId, this.onParentVideoFetch , null , this.onParentVideoFetchComplete);
      }
-   } 
+   }
 
    componentDidUpdate(prevProps){
     if(!this.fetchParentVideo && this.props.doRender && this.props.doRender !== prevProps.doRender  && !this.state.parentUserId ){
@@ -62,7 +62,7 @@ class VideoReplyRow extends PureComponent {
       this.onParentClickDelegate();
      }
    }
-   
+
    onParentVideoFetchComplete() {
      this.fetchParentVideo =  null;
    }
@@ -75,7 +75,7 @@ class VideoReplyRow extends PureComponent {
       this.setState({
         parentUserId: userId
       });
-    } 
+    }
    }
 
   refetchVideoReply = () => {
@@ -87,7 +87,12 @@ class VideoReplyRow extends PureComponent {
 
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
-        const pixelParams = { e_entity: 'reply' , parent_video_id : this.state.parentVideoId ,  reply_detail_id :this.props.replyDetailId  };
+        const pixelParams = {
+            e_entity: 'reply',
+            parent_video_id : this.state.parentVideoId,
+            p_name: this.state.parentVideoId,
+            reply_detail_id :this.props.replyDetailId
+        };
         return assignIn({}, pixelParams, parentData);
     }
 
@@ -101,7 +106,7 @@ class VideoReplyRow extends PureComponent {
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
 
                 <View style={CommonStyle.videoWrapperfullScreen}>
-          
+
                     <FanVideo
                         shouldPlay={this.props.shouldPlay}
                         userId={this.props.userId}
@@ -164,7 +169,7 @@ class VideoReplyRow extends PureComponent {
                                 entityId={this.props.replyDetailId}
                             />
                         </View>
-                        
+
                     )}
 
                 </View>

@@ -153,8 +153,7 @@ class FullScreenReplyCollection extends PureComponent{
         return () => {
             return {
                 e_entity: 'reply',
-                p_type: 'video_reply',
-                p_name: replyDetailId
+                p_type: 'video_reply'
               };
         }
     }

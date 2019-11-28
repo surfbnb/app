@@ -144,12 +144,12 @@ class FullScreenVideoCollection extends PureComponent{
             }
         } else if( entityHelper.isVideoEntity( item )) {
            return this._renderVideoRow( item, index);
-        } 
-        
+        }
+
     };
 
     getPixelDropData = () => {
-        return pixelParams = {
+        return {
           e_entity: 'video',
           p_type: 'tag',
           p_name: this.tagId,
@@ -157,7 +157,7 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     getReplyPixelDrop = () => {
-        return pixelParams = {
+        return {
           e_entity: 'reply',
           p_type: 'tag',
           p_name: this.tagId,
