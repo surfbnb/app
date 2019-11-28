@@ -431,6 +431,9 @@ class CameraWorker extends PureComponent {
 
   async cleanUp() {
     // stop ffmpge processing
+    if (this.isCleanUpCalled){
+      return;
+    }
     this.isCleanUpCalled = true;
     console.log('cleanUp:::VideoUploadStatusToNotProcessing');
     this.VideoUploadStatusToNotProcessing();

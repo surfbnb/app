@@ -336,7 +336,7 @@ class FanVideoReplyDetails extends Component {
     return (
       <ScrollView
         contentContainerStyle={[styles.container, this.state.viewStyle]}
-        keyboardShouldPersistTaps={'handled'}
+        keyboardShouldPersistTaps={ this.state.isSuggestOpen ? 'always': 'handled'}
         enableOnAndroid
         bounces={false}
         keyboardOpeningTime={0}
