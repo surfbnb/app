@@ -18,6 +18,7 @@ import inlineStyles from './styles';
 import UserProfileActionSheet from './userProfileActionSheet';
 import CommonStyle from "../../theme/styles/Common";
 import deepGet from "lodash/get";
+import unescape from'lodash/unescape';
 
 import EventEmitter from "eventemitter3";
 const userActionEvents = new EventEmitter();
@@ -86,7 +87,7 @@ export default class UsersProfile extends Component {
       return
     }
     let userName =  deepGet(res,  `data.users.${this.userId}.name` , "");
-    this.props.navigation.setParams({ headerTitle:  userName});
+    this.props.navigation.setParams({ headerTitle:  unescape(userName)});
   }
 
   _headerComponent() {
