@@ -23,7 +23,7 @@ class FetchServices {
   }
 
   initVals() {
-
+    //NOTE: If adding removing vals from here, update cloneWithData method.
     this.isFetching = false;
     this.hasNextPage = true;
     this.nextPagePayload = null;
@@ -158,6 +158,20 @@ class FetchServices {
   clone() {
     let Constructor = this.constructor;
     return new Constructor(this.url, this.extraParams, this.id, this.options);
+  }
+
+  cloneWithData() {
+    let Constructor = this.constructor;
+    let newInstance = new Constructor(this.url, this.extraParams, this.id);
+    const seedData = this.result;
+
+    newInstance.processResults( this.results || []);
+    newInstance.isFetching = false;
+    newInstance.hasNextPage = this.hasNextPage;
+    newInstance.nextPagePayload = this.nextPagePayload;
+    newInstance.meta = Object.assign({}, this.meta);
+    console.log("newInstance.results.length", newInstance.results.length);
+    return newInstance;
   }
 
   cloneInstance(){
