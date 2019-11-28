@@ -255,6 +255,15 @@ class CameraWorker extends PureComponent {
       return isChargeable && amountToSendWithReply != '0';
   };
 
+  onPlatfromAcknowledgeComplete = (videoId) => {    
+    new PepoApi(`/videos/${videoId}`)
+      .get()
+      .then((res) => {})
+      .catch((error) => {});
+  };
+
+
+
 
   executeTransaction = () => {
 
@@ -266,7 +275,8 @@ class CameraWorker extends PureComponent {
       doDiscard = this.props.recorded_video.do_discard,
     receiverUserId = deepGet (this.props.recorded_video, 'reply_obj.replyReceiverUserId'),
     amountToSendWithReply = deepGet(this.props.recorded_video, 'reply_obj.amountToSendWithReply'),
-      toTokenHolderAddress = deepGet(this.props.recorded_video,'reply_obj.toTokenHolderAddress' );
+      toTokenHolderAddress = deepGet(this.props.recorded_video,'reply_obj.toTokenHolderAddress' ),
+      parentVideoId =  deepGet(this.props.recorded_video , 'reply_obj.replyReceiverVideoId');
     if (! goForTx || ! receiverUserId || doDiscard || this.executeTx ){
       return;
     }
@@ -285,10 +295,14 @@ class CameraWorker extends PureComponent {
     });
 
 
-        let callbacks = {onRequestAcknowledge: this.videoUploadedSuccessCallback, onFlowInterrupt: this.onFlowInterrupt};
-        let config = {metaProperties: this.getSdkMetaProperties()};
-        let txExecutor = new TransactionExecutor(config, callbacks);
-        txExecutor.sendTransactionToSdk( amountToSendWithReply, toTokenHolderAddress, false);
+    let callbacks = {
+      onRequestAcknowledge: this.videoUploadedSuccessCallback, 
+        onFlowInterrupt: this.onFlowInterrupt, 
+        onPlatfromAcknowledgeComplete: () => {this.onPlatfromAcknowledgeComplete(parentVideoId)}
+        };
+    let config = {metaProperties: this.getSdkMetaProperties()};
+    let txExecutor = new TransactionExecutor(config, callbacks);
+    txExecutor.sendTransactionToSdk( amountToSendWithReply, toTokenHolderAddress, false);
     // todo : Execute transaction code. call clean up after that.
 
   };
