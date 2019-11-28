@@ -1,5 +1,5 @@
 import React , {PureComponent} from "react";
-import {FlatList  } from "react-native";
+import {FlatList ,View } from "react-native";
 import FloatingBackArrow from "../CommonComponents/FlotingBackArrow";
 import deepGet from "lodash/get";
 
@@ -230,8 +230,20 @@ class FullScreenReplyCollection extends PureComponent{
     render() {
 
         return (
-            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreenVideoSafeAreaContainer, {position: "relative"}]}>
                 <TopStatus />
+                
+                <View style={{position: "absolute" , top: 50, left: 0}}>
+                    <InvertedReplyList  videoId={this.state.parentVideoId}
+                                        doRender={this.props.doRender}
+                                        paginationService={this.props.paginationService}
+                                        onChildClickDelegate={this.props.onChildClickDelegate}
+                                        currentIndex={this.props.currentIndex}
+                                        isActiveEntity={this.props.isActiveEntity}
+                                        fullVideoReplyId={this.props.replyDetailId}
+                                  />
+                </View>    
+
                 <FlatList
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
