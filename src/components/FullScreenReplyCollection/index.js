@@ -233,7 +233,7 @@ class FullScreenReplyCollection extends PureComponent{
             <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreenVideoSafeAreaContainer, {position: "relative"}]}>
                 <TopStatus />
                 
-                <View style={{position: "absolute" , top: 50, left: 0}}>
+                {/* <View style={{position: "absolute" , top: 50, left: 0}}>
                     <InvertedReplyList  videoId={this.state.parentVideoId}
                                         doRender={this.props.doRender}
                                         paginationService={this.props.paginationService}
@@ -242,7 +242,7 @@ class FullScreenReplyCollection extends PureComponent{
                                         isActiveEntity={this.props.isActiveEntity}
                                         fullVideoReplyId={this.props.replyDetailId}
                                   />
-                </View>    
+                </View>     */}
 
                 <FlatList
                     snapToAlignment={"top"}
