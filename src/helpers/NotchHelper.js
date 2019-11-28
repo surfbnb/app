@@ -1,5 +1,4 @@
-import {NativeModules} from "react-native";
-const RNDeviceInfo = NativeModules.RNDeviceInfo;
+import DeviceInfo from 'react-native-device-info';
 
 let devicesWithNotch =  [
   {
@@ -135,7 +134,7 @@ let devicesWithNotch =  [
 class NotchHelper {
 
   syncList(){
-    fetch(`https://d3attjoi5jlede.cloudfront.net/pepo-app/devices-list/notch-devices-1.json?${Date.now()}`)
+    fetch(`https://d3attjoi5jlede.cloudfront.net/pepo-app/devices-list/notch-devices.json?${Date.now()}`)
       .then((response) => response.json())
       .then((responseJson) => {
         const devices = responseJson && responseJson.devices;
@@ -148,8 +147,21 @@ class NotchHelper {
       });
   }
 
+  hasNotchRemote(){
+      if(devicesWithNotch.length > 0){
+          return (
+              devicesWithNotch.findIndex(
+                  item =>
+                      item.brand.toLowerCase() === DeviceInfo.getBrand().toLowerCase() &&
+                      (item.model.toLowerCase() === DeviceInfo.getDeviceName().toLowerCase() || item.model.toLowerCase() === DeviceInfo.getModel().toLowerCase())
+              ) !== -1
+          );
+      }
+      return false;
+  }
+
   hasNotch() {
-    return devicesWithNotch.findIndex(item => item.brand === RNDeviceInfo.brand && (  item.model === RNDeviceInfo.deviceName || item.model === RNDeviceInfo.model )) !== -1;
+    return DeviceInfo.hasNotch() || this.hasNotchRemote();
   }
 
 }
