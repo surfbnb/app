@@ -268,6 +268,7 @@ class FullScreenVideoCollection extends PureComponent{
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
                     initialScrollIndex={this.state.activeIndex}
+                    nestedScrollEnabled={true}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
