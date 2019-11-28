@@ -56,7 +56,7 @@ export default {
         "text": "Authorize New Session"
       },
       "lead_label": {
-        "text": "Add a 6-digit PIN to secure your wallet"
+        "text": "Enter your 6-digit PIN to verify wallet"
       },
       "info_label":{
         "text":  ""
