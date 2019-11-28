@@ -13,6 +13,7 @@ import ReplyHelper from "../../helpers/ReplyHelper";
 import TopStatus from "../Home/TopStatus";
 import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 import NoPendantsVideoReplyRow from "./NoPendantsVideoReplyRow";
+import Utilities from "../../services/Utilities";
 
 const maxVideosThreshold = 3;
 
@@ -234,9 +235,10 @@ class FullScreenReplyCollection extends PureComponent{
             <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreenVideoSafeAreaContainer, {position: "relative"}]}>
                 <TopStatus />
                 
-                <View style={{position: "absolute" , top: 100, left: 0 , zIndex:9}}>
+                <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 ,  marginRight: 'auto', minWidth: '20%'}}>
                     <InvertedReplyList  paginationService={this.getVideoPagination()}
                                         onChildClickDelegate={this.childClickHandler}
+                                        bottomRounding={50}
                                         currentIndex={this.state.activeIndex}
                                   />
                 </View>    

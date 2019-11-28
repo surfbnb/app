@@ -9,11 +9,12 @@ import ReplyHelper from '../../../helpers/ReplyHelper';
 import AppConfig from "../../../constants/AppConfig";
 import DataContract from '../../../constants/DataContract';
 import ReduxGetters from '../../../services/ReduxGetters';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 import deepGet from "lodash/get";
+import Utilities from '../../../services/Utilities';
 
-//
-const ITEM_HEIGHT = AppConfig.thumbnailListConstants.iconHeight +  AppConfig.thumbnailListConstants.iconWidth;
+
+const ITEM_HEIGHT = AppConfig.thumbnailListConstants.iconHeight;
+const ITEM_SEPERATOR_HEIGHT = AppConfig.thumbnailListConstants.separatorHeight;
 
 class InvertedReplyList extends PureComponent {
 
@@ -268,13 +269,8 @@ class InvertedReplyList extends PureComponent {
   };
 
   getAvailableHeight = () => {
-    const area = AppConfig.MaxDescriptionArea;
-    let height = ( area / Dimensions.get('window').width ) + 20,
-      //70 is height of top section
-      availableHeight =   AppConfig.VideoScreenObject.height - height - (isIphoneX ? 78 : Platform.OS === 'ios' ? 28 : 80) ;
-    return this.props.parentIconHeight ? availableHeight - this.props.parentIconHeight : availableHeight;
+    return Utilities.getPendantAvailableHeight();
   }
-
 
   getListHeight = () => {
     let availableHeight = this.getAvailableHeight();
@@ -282,19 +278,26 @@ class InvertedReplyList extends PureComponent {
     if (noOfItems > 0){
       let heightOfElements = noOfItems * AppConfig.thumbnailListConstants.iconHeight,
         heightOfSeparator =   (noOfItems - 1 ) *  AppConfig.thumbnailListConstants.separatorHeight,
-        heightOfFlatList = heightOfElements + heightOfSeparator;
-      return availableHeight > heightOfFlatList ? heightOfFlatList : availableHeight;
+        heightOfFlatList = heightOfElements + heightOfSeparator ,
+        finalHeight = availableHeight > heightOfFlatList ? heightOfFlatList : availableHeight;
+      return finalHeight - this.props.bottomRounding;
     }
     return 0;
   };
 
   getItemLayout= (data, index) => {
-    return {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index} ;
+    let itemLength = ITEM_SEPERATOR_HEIGHT + ITEM_HEIGHT - 8;
+    let itemOffset = index * (itemLength);
+    return {
+      length: itemLength, 
+      offset: itemOffset, 
+      index: index
+    };
   }
 
   render() {
       console.log("InvertedReplyList :: this.props.listKey", this.props.listKey);
-        return   <FlatList style={{ maxHeight: this.getListHeight(), width: '100%'}}
+        return   <FlatList style={{ height: this.getListHeight(), width: '100%'}}
         ref={this.setListRef}
         ItemSeparatorComponent={this.getItemSeperatorComponent}
         data={this.state.list}
@@ -318,7 +321,8 @@ class InvertedReplyList extends PureComponent {
 InvertedReplyList.defaultProps = {
   paginationService : null,
   doRender: true,
-  currentIndex: 0
+  currentIndex: 0,
+  bottomRounding: 0
 };
 
 //make this component available to the app
