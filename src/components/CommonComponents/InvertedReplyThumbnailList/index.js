@@ -269,7 +269,8 @@ class InvertedReplyList extends PureComponent {
   };
 
   getAvailableHeight = () => {
-    return Utilities.getPendantAvailableHeight();
+    let availableHeight = Utilities.getPendantAvailableHeight();
+    return availableHeight - this.props.bottomRounding;
   }
 
   getListHeight = () => {
@@ -297,7 +298,7 @@ class InvertedReplyList extends PureComponent {
 
   render() {
       console.log("InvertedReplyList :: this.props.listKey", this.props.listKey);
-        return   <FlatList style={{ height: this.getListHeight(), width: '100%' , position: "absolute" , bottom: 10}}
+        return   <FlatList style={{ height: this.getListHeight(), width: '100%' , position: "absolute" , bottom: this.props.bottomRounding}}
         ref={this.setListRef}
         ItemSeparatorComponent={this.getItemSeperatorComponent}
         data={this.state.list}
@@ -322,7 +323,7 @@ InvertedReplyList.defaultProps = {
   paginationService : null,
   doRender: true,
   currentIndex: 0,
-  bottomRounding: 0
+  bottomRounding: 10
 };
 
 //make this component available to the app

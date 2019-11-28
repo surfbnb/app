@@ -238,6 +238,7 @@ class FullScreenReplyCollection extends PureComponent{
                 <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight(), marginRight: 'auto', minWidth: '20%'}}>
                     <InvertedReplyList  paginationService={this.getVideoPagination()}
                                         onChildClickDelegate={this.childClickHandler}
+                                        bottomRounding={50}
                                         currentIndex={this.state.activeIndex}
                                   />
                 </View>    
