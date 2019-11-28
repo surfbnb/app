@@ -348,7 +348,10 @@ export default {
     borderWidth: 2,
     // this is Margin to place an icon element on top and bottom of the bordered(both red and white colored) wrapper
     marginTop: -4,
-    marginBottom: -4
+    marginBottom: -4,
+    cellHeight: function() {
+      return this.iconHeight + (2 * this.borderWidth);
+    }
   },
   VideoScreenObject : {
     ...ifIphoneX(
