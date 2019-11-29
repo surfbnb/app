@@ -140,7 +140,7 @@ class BaseVideoReplyRow extends PureComponent {
                               {this._renderInvertedFlatList()}
 
                               <View style={{ minWidth: '20%' , marginLeft: "auto"}} pointerEvents={'box-none'}>
-                                <View style={{alignItems: 'flex-end', marginRight: 10}} pointerEvents={'box-none'}>
+                                <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}} pointerEvents={'box-none'}>
                                     <ReplyPepoTxBtn
                                         resyncDataDelegate={this.refetchVideoReply}
                                         userId={this.props.userId}
