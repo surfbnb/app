@@ -20,7 +20,9 @@ let stylesMap = {
       backgroundColor: Colors.white,
       flexDirection: 'row',
       zIndex: 9,
-      width: '100%'
+      width: '100%',
+      borderBottomWidth: 0.4,
+      borderColor: 'rgba(0, 0, 0, 0.3)'
     },
     iconWrapper: {
         flex: 1,

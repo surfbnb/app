@@ -82,6 +82,7 @@ class TransactionExecutor {
     }
 
     onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
+        Pricer.getBalance();
         this.sendTransactionToPlatform(ostWorkflowEntity);
         this.callbacks.onRequestAcknowledge && this.callbacks.onRequestAcknowledge( ostWorkflowContext, ostWorkflowEntity );
     }
