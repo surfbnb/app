@@ -40,25 +40,23 @@ class ReplyThumbnailItem extends Component {
 
 }
 
-const outterBorderWidth     = AppConfig.thumbnailListConstants.borderWidth;
-const outterRingDiameter    = AppConfig.thumbnailListConstants.iconHeight;
-const transparentGap        = AppConfig.thumbnailListConstants.transparentGap;
-
-const profileImageDiameter = outterRingDiameter - (2 * (outterBorderWidth + transparentGap ));
-
+const outerRingDiameter = AppConfig.thumbnailListConstants.outerRingDiameter;
+const outerBorderWidth = AppConfig.thumbnailListConstants.outerBorderWidth;
+const transparentGap = AppConfig.thumbnailListConstants.transparentGap;
+const iconImageDiameter = AppConfig.thumbnailListConstants.iconImageDiameter();
 
 const inlineStyle= {
-  iconStyle: { height: profileImageDiameter,
-            width: profileImageDiameter,
-            borderRadius: profileImageDiameter/ 2,
+  iconStyle: { height: iconImageDiameter,
+            width: iconImageDiameter,
+            borderRadius: iconImageDiameter/ 2,
             marginLeft: transparentGap,
             marginTop: transparentGap
   },
   wrapperStyle: {
-    width: outterRingDiameter,
-    height: outterRingDiameter,
-    borderRadius: outterRingDiameter/ 2,
-    borderWidth: outterBorderWidth,
+    width: outerRingDiameter,
+    height: outerRingDiameter,
+    borderRadius: outerRingDiameter/ 2,
+    borderWidth: outerBorderWidth,
     borderColor: 'transparent',
   },
   active: {
