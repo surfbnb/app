@@ -237,11 +237,14 @@ class InvertedReplyList extends PureComponent {
   };
 
   getItemSeperatorComponent = ({leadingItem}) => {
-    let styles = {backgroundColor: 'white',
+    let styles = {
+      backgroundColor: AppConfig.thumbnailListConstants.separatorColor,
       height: AppConfig.thumbnailListConstants.separatorHeight,
-      width: 1,
+      width: AppConfig.thumbnailListConstants.separatorWidth,
       alignSelf:'center'
     };
+
+    const separatorMargin = AppConfig.thumbnailListConstants.separatorMargin();
 
     // Leading Item
     let leadingItemIndex = this.state.list.indexOf(leadingItem);
@@ -251,7 +254,8 @@ class InvertedReplyList extends PureComponent {
     //Top margin is needed if and only if the leading cell is seen and is not selected.
     if ( isLeadingSeen && !isLeadingSelected ) {
       //Leading does not have border.
-      styles.marginTop = AppConfig.thumbnailListConstants.marginTop;
+      styles.marginTop = -1 * separatorMargin;
+      styles.height = styles.height + separatorMargin;
     }
 
     let trailingItemIndex = leadingItemIndex + 1;
@@ -262,7 +266,8 @@ class InvertedReplyList extends PureComponent {
     //Bottom margin is needed if and only if the trailing cell is seen and is not selected.
     if ( isTrailingSeen && !isTrailingSelected ) {
       //Trailing cell does not have border.
-      styles.marginBottom = AppConfig.thumbnailListConstants.marginBottom;
+      styles.marginBottom = -1 * separatorMargin;
+      styles.height = styles.height + separatorMargin;
     }
 
     return <View style={styles} />

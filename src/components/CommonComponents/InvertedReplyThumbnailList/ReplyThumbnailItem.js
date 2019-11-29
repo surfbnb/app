@@ -25,28 +25,12 @@ class ReplyThumbnailItem extends Component {
     this.userId = reduxGetters.getReplyEntity(this.replyDetailId).creator_user_id;
   }
 
-  _renderTopMiniSeperator() {
-    //NOTE: Deliberately treating cellIndex as falsey.
-    if (!this.props.cellIndex) {
-      return null;
-    }
-
-    return <View style={[inlineStyle.miniSeparator,{top:0}]}></View>
-  }
-  _renderBottomMiniSeperator() {
-    if (this.props.cellIndex == this.props.totalCells - 1) {
-      return null;
-    }
-    return <View style={[inlineStyle.miniSeparator,{bottom:0}]}></View>
-  }
   render() {
     return <View style={{position: "relative"}}>
-            {/*{this._renderTopMiniSeperator()}*/}
             <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
                   style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive && inlineStyle.active]}>
               <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
             </TouchableOpacity>
-            {/*{this._renderBottomMiniSeperator()}*/}
           </View>
   }
 
@@ -56,34 +40,30 @@ class ReplyThumbnailItem extends Component {
 
 }
 
+const outerRingDiameter = AppConfig.thumbnailListConstants.outerRingDiameter;
+const outerBorderWidth = AppConfig.thumbnailListConstants.outerBorderWidth;
+const transparentGap = AppConfig.thumbnailListConstants.transparentGap;
+const iconImageDiameter = AppConfig.thumbnailListConstants.iconImageDiameter();
+
 const inlineStyle= {
-  iconStyle: { height: AppConfig.thumbnailListConstants.iconHeight - 8,
-            width: AppConfig.thumbnailListConstants.iconWidth - 8,
-            borderRadius: (AppConfig.thumbnailListConstants.iconWidth - 8)/ 2,
-            marginLeft: -2,
-            marginTop: -2
+  iconStyle: { height: iconImageDiameter,
+            width: iconImageDiameter,
+            borderRadius: iconImageDiameter/ 2,
+            marginLeft: transparentGap,
+            marginTop: transparentGap
   },
   wrapperStyle: {
-    width: AppConfig.thumbnailListConstants.iconWidth,
-    height: AppConfig.thumbnailListConstants.iconHeight,
-    borderRadius: (AppConfig.thumbnailListConstants.iconWidth)/ 2,
-    padding: 4,
-    borderWidth: AppConfig.thumbnailListConstants.borderWidth,
-    borderColor: 'rgba(255, 255, 255, 0)',
+    width: outerRingDiameter,
+    height: outerRingDiameter,
+    borderRadius: outerRingDiameter/ 2,
+    borderWidth: outerBorderWidth,
+    borderColor: 'transparent',
   },
   active: {
     borderColor: '#fff',
   },
   unseen: {
-    borderColor: 'red'
-  },
-  miniSeparator: {
-    position: 'absolute',
-    left: '50%',
-    width: 1,
-    marginLeft: -0.5,
-    backgroundColor: 'white',
-    height: 4
+    borderColor: '#FD8691'
   }
 };
 

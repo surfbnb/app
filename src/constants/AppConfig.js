@@ -338,20 +338,44 @@ export default {
 
   MaxDescriptionArea: 35250,
   thumbnailListConstants: {
-    separatorHeight: 25,
-    // this is height of profile icon + shadow around it.
-    iconHeight: 48,
-    // this is width of profile icon + shadow around it.
-    iconWidth: 48,
-    parentIconHeight: 46,
-    parentIconWidth: 46,
-    borderWidth: 2,
-    // this is Margin to place an icon element on top and bottom of the bordered(both red and white colored) wrapper
-    marginTop: -4,
-    marginBottom: -4,
+
+    
+    // NOTE: Outer Circle Configs.
+    // -----------------------------------------------------------------------
+    // 1. outerRingDiameter - Replaces old iconHeight/iconWidth.
+    // 
+    // 2. borderWidth       - The border width is applied outside the 
+    //                        this iconHeight (Diameter).
+    // 
+    // 3. transparentGap    - Gap between the inner edge of Outer-Circle 
+    //                        and icon itself.
+    //                        
+    // 4. iconImageDiameter - Diameter of icon Image is computed 
+    //                        using outerRingDiameter, outerBorderWidth 
+    //                        and transparentGap.
+    // -----------------------------------------------------------------------
+    outerRingDiameter: 48,
+    outerBorderWidth: 2,
+    transparentGap: 2,
+    iconImageDiameter: function () {
+      return this.outerRingDiameter - (2 * (this.outerBorderWidth + this.transparentGap ));
+    },
+
+    // cellHeight - Gives actual height of cell. 
     cellHeight: function() {
-      return this.iconHeight + (2 * this.borderWidth);
-    }
+      return this.outerRingDiameter + (2 * this.outerBorderWidth);
+    },
+
+    separatorHeight: 25,
+    separatorWidth: 1,
+    separatorColor: 'white',
+    //separatorMargin - Margin to draw over the transparent outer ring (to be applied in negative);
+    separatorMargin: function () {
+      return this.outerBorderWidth + this.transparentGap;
+    },
+
+    parentIconHeight: 46,
+    parentIconWidth: 46
   },
   VideoScreenObject : {
     ...ifIphoneX(
