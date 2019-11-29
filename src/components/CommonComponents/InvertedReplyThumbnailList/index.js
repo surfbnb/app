@@ -239,7 +239,7 @@ class InvertedReplyList extends PureComponent {
   getItemSeperatorComponent = ({leadingItem}) => {
     let styles = {backgroundColor: 'red',
       height: AppConfig.thumbnailListConstants.separatorHeight,
-      width: 20,
+      width: AppConfig.thumbnailListConstants.separatorWidth,
       alignSelf:'center'
     };
 

@@ -59,7 +59,7 @@ const inlineStyle= {
     height: outterRingDiameter,
     borderRadius: outterRingDiameter/ 2,
     borderWidth: outterBorderWidth,
-    borderColor: 'rgba(255, 255, 0, 1)',
+    borderColor: 'transparent',
   },
   active: {
     borderColor: '#fff',

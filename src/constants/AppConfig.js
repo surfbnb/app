@@ -339,6 +339,7 @@ export default {
   MaxDescriptionArea: 35250,
   thumbnailListConstants: {
     separatorHeight: 25,
+    separatorWidth: 1,
     // this is height of profile icon + shadow around it.
     iconHeight: 48,
     // this is width of profile icon + shadow around it.
@@ -346,7 +347,8 @@ export default {
     parentIconHeight: 46,
     parentIconWidth: 46,
     borderWidth: 2,
-    transparentGap: 10,
+    transparentGap: 2,
+
     // this is Margin to place an icon element on top and bottom of the bordered(both red and white colored) wrapper
     cellHeight: function() {
       return this.iconHeight + (2 * this.borderWidth);
