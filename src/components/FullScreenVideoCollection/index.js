@@ -206,7 +206,10 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     onViewableItemsChanged = (data) => {
-        this.currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
+        const currentIndex = deepGet(data, 'viewableItems[0].index'); 
+        if("number" === typeof currentIndex ){
+            this.currentIndex = currentIndex;
+        }
     }
 
     setActiveIndex() {

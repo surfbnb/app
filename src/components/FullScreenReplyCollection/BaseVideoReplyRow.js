@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View , Dimensions, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity} from 'react-native';
 import FanVideo from "../VideoWrapper/FanVideo";
 import ReportVideo from "../CommonComponents/ReportVideo";
 import BottomReplyBar from "../CommonComponents/BottomReplyBar";
@@ -21,11 +21,6 @@ import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 import AppConfig from "../../constants/AppConfig";
 import ProfilePicture from "../ProfilePicture";
 import multipleClickHandler from '../../services/MultipleClickHandler';
-
-
-const marginTopForParentIcon = 15;
-const AREA = AppConfig.MaxDescriptionArea;
-const height = AREA / Dimensions.get('window').width + 20;
 import { fetchVideo } from '../../helpers/helpers';
 import ReplyShareIcon from '../CommonComponents/ShareIcon/ReplyShare';
 
@@ -34,7 +29,7 @@ class BaseVideoReplyRow extends PureComponent {
       super(props);
       this.state = {
         parentVideoId : ReduxGetters.getReplyParentVideoId( props.replyDetailId ),
-        parentUserId  : ReduxGetters.getReplyParentUserId( props.replyDetailId )
+        parentUserId  : ReduxGetters.getReplyParentUserId( props.replyDetailId ) 
       }
       this.onParentClickDelegate = this.props.parentClickHandler || this.defaultParentClickHandler;
     }
@@ -99,7 +94,7 @@ class BaseVideoReplyRow extends PureComponent {
     }
 
     _renderInvertedFlatList = () => {
-      if( this.state.parentVideoId ){
+      if( this.state.parentVideoId && this.props.isActive ){
         return (
           <View style={inlineStyles.invertedList}>
               <InvertedReplyList  videoId={this.state.parentVideoId}
