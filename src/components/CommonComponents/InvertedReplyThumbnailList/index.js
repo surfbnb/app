@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Text, View, ScrollView, ListView, Dimensions, Platform} from 'react-native';
+import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import deepGet from "lodash/get";
 
 import Pagination from "../../../services/Pagination";
 import ReplyThumbnailItem from './ReplyThumbnailItem'
@@ -9,7 +10,6 @@ import ReplyHelper from '../../../helpers/ReplyHelper';
 import AppConfig from "../../../constants/AppConfig";
 import DataContract from '../../../constants/DataContract';
 import ReduxGetters from '../../../services/ReduxGetters';
-import deepGet from "lodash/get";
 import Utilities from '../../../services/Utilities';
 
 
@@ -64,7 +64,7 @@ class InvertedReplyList extends PureComponent {
 
   getParentClickHandler =( videoId )=>{
     return () => {
-      parentUserId = ReduxGetters.getVideoCreatorUserId(videoId);
+      let parentUserId = ReduxGetters.getVideoCreatorUserId(videoId);
       this.props.navigation.push('VideoPlayer', {
         userId: parentUserId,
         videoId: videoId,
@@ -74,7 +74,7 @@ class InvertedReplyList extends PureComponent {
   }
 
   defaultChildClickHandler = ( index, item )=> {
-    const videoId = ReduxGetters.getReplyParentVideoId(deepGet(item ,  "payload.reply_detail_id"));
+    const videoId = ReduxGetters.getReplyParentVideoId(deepGet(item ,  "payload.reply_detail_id")),
           baseUrl = DataContract.replies.getReplyListApi(videoId),
           clonedInstance = this.getPagination().fetchServices.cloneInstance();
     ReplyHelper.updateEntitySeen( item );
@@ -292,11 +292,11 @@ class InvertedReplyList extends PureComponent {
   };
 
   getItemLayout= (data, index) => {
-    let itemLength = ITEM_SEPERATOR_HEIGHT + ITEM_HEIGHT - 8;
+    let itemLength = ITEM_SEPERATOR_HEIGHT + ITEM_HEIGHT;
     let itemOffset = index * (itemLength);
     return {
-      length: itemLength, 
-      offset: itemOffset, 
+      length: itemLength,
+      offset: itemOffset,
       index: index
     };
   }

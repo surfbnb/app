@@ -54,7 +54,9 @@ class FullScreenReplyCollection extends PureComponent{
     }
 
     setVideoPagination(){
-        this.fullPagePagination = new Pagination( this.getBaseUrl(), null , this.getPassedFetchServices());
+        let fetchService = this.getPassedFetchServices();
+        fetchService = fetchService.cloneWithData();
+        this.fullPagePagination = new Pagination( this.getBaseUrl(), null , fetchService);
     }
 
     getVideoPagination(){
@@ -175,7 +177,6 @@ class FullScreenReplyCollection extends PureComponent{
                                 onChildClickDelegate={this.childClickHandler}
                                 parentClickHandler={this.parentClickHandler}
                                 currentIndex={this.state.activeIndex}
-                                // conditional delegate
          /> ;
     }
 
@@ -185,21 +186,25 @@ class FullScreenReplyCollection extends PureComponent{
     }
 
     scrollToIndex = ( index )=>{
-        this.flatlistRef.scrollToIndex({index: index});
-        this.setActiveIndex( index );
+        this.setActiveIndex( index, () => {
+            this.flatlistRef.scrollToIndex({index: index});
+        });
     }
 
     onViewableItemsChanged = (data) => {
         let item = deepGet(data, 'viewableItems[0].item');
         item && ReplyHelper.updateEntitySeen( item );
-        this.currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
+        let currentIndex = deepGet(data, 'viewableItems[0].index');
+        if ( "number" === typeof currentIndex ) {
+            this.currentIndex = currentIndex;
+        }
     }
 
-    setActiveIndex( index  ) {
+    setActiveIndex( index, callback  ) {
         if( typeof index === "number"){
             this.currentIndex =  index;
         }
-        this.setState({ activeIndex:  this.currentIndex });
+        this.setState({ activeIndex:  this.currentIndex }, callback);
     }
 
     onMomentumScrollEndCallback = () => {
