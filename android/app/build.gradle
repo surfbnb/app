@@ -126,8 +126,8 @@ android {
         applicationId "com.pepo.staging"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
-        versionName "0.9.6"
+        versionCode 20
+        versionName "1.0.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {

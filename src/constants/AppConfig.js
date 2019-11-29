@@ -3,12 +3,28 @@ import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
 import twitterDisconnectIcon from '../assets/drawer-twitter-icon.png';
 import defaultLinkIcon from '../assets/default_link_icon.png';
 import feedLinkIcon from '../assets/Link.png';
+import {getBottomSpace, ifIphoneX} from "react-native-iphone-x-helper";
+import {CUSTOM_TAB_Height} from "../theme/constants";
+import NotchHelper from "../helpers/NotchHelper";
+import {Dimensions, NativeModules, StatusBar} from "react-native";
+
+const statusBarHeight = StatusBar.currentHeight;
+const {height} = Dimensions.get('window');
+let RNDeviceInfo = NativeModules.RNDeviceInfo;
+let modalDeviceName = RNDeviceInfo.model === "Redmi Note 7 Pro" && RNDeviceInfo.brand === "xiaomi";
+let btmSpace = modalDeviceName ? 5 : 0;
 
 const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
   PROFILE_TX_RECEIVE_SUCCESS = 'PROFILE_TX_RECEIVE_SUCCESS',
   VIDEO_TX_SEND_SUCCESS = 'VIDEO_TX_SEND_SUCCESS',
   VIDEO_TX_RECEIVE_SUCCESS = 'VIDEO_TX_RECEIVE_SUCCESS',
   VIDEO_ADD = 'VIDEO_ADD',
+  USER_MENTION = 'USER_MENTION',
+  REPLY_USER_MENTION = 'REPLY_USER_MENTION',
+  REPLY_SENDER_WITH_AMOUNT = 'REPLY_SENDER_WITH_AMOUNT',
+  REPLY_SENDER_WITHOUT_AMOUNT = 'REPLY_SENDER_WITHOUT_AMOUNT',
+  REPLY_RECEIVER_WITH_AMOUNT = 'REPLY_RECEIVER_WITH_AMOUNT',
+  REPLY_RECEIVER_WITHOUT_AMOUNT = 'REPLY_RECEIVER_WITHOUT_AMOUNT',
   CONTRIBUTION_THANKS = 'CONTRIBUTION_THANKS',
   SYSTEM_NOTIFICATION = 'SYSTEM_NOTIFICATION',
   PROFILE_TX_SEND_FAILURE = 'PROFILE_TX_SEND_FAILURE',
@@ -22,7 +38,8 @@ export default {
   logoutTimeOut : 2000,
 
   beKnownErrorCodeMaps : {
-    entityDeleted: "not_found"
+    entityDeleted: "not_found",
+    validateUploadError: "precondition_failed"
   },
 
   userStatusMap: {
@@ -32,6 +49,10 @@ export default {
   },
 
   videoStatusMap:{
+    deleted: 'deleted'
+  },
+
+  replyStatusMap:{
     deleted: 'deleted'
   },
 
@@ -52,6 +73,11 @@ export default {
   metaProperties: {
     type: 'user_to_user',
     name: 'profile'
+  },
+
+  replyMetaProperties: {
+    type: 'user_to_user',
+    name: 'reply_on_video'
   },
 
   redemptionMetaProperties : {
@@ -141,6 +167,12 @@ export default {
     videoTxSendKind: VIDEO_TX_SEND_SUCCESS,
     videoTxReceiveKind: VIDEO_TX_RECEIVE_SUCCESS,
     videoAddKind: VIDEO_ADD,
+    userMention: USER_MENTION,
+    replyUserMention: REPLY_USER_MENTION,
+    replySenderWithAmount: REPLY_SENDER_WITH_AMOUNT,
+    replySenderWithoutAmount: REPLY_SENDER_WITHOUT_AMOUNT,
+    replyReceiverWithAmount: REPLY_RECEIVER_WITH_AMOUNT,
+    replyReceiverWithoutAmount: REPLY_RECEIVER_WITHOUT_AMOUNT,
     AppreciationKind: CONTRIBUTION_THANKS,
     systemNotification: SYSTEM_NOTIFICATION,
     airDropNotification: AIRDROP_DONE,
@@ -154,8 +186,9 @@ export default {
       PROFILE_TX_SEND_FAILURE,
       VIDEO_TX_SEND_FAILURE,
       AIRDROP_DONE,
-      TOPUP_DONE
-
+      TOPUP_DONE,
+      REPLY_SENDER_WITH_AMOUNT,
+      REPLY_RECEIVER_WITH_AMOUNT
     ],
     whitelistedNotificationKinds: [
       PROFILE_TX_SEND_SUCCESS,
@@ -291,7 +324,71 @@ export default {
     RedemptionSuccess: 'Redemption/Success',
     CouchMarks: 'CouchMarks',
     AuthDeviceDrawer: 'DeviceUnauthorized',
-    TwitterLogin: 'TwitterLogin'
+    TwitterLogin: 'TwitterLogin',
+    FullScreenReplyCollection: 'FullScreenReplyCollection',
+    VideoReplyPlayer: 'VideoReplyPlayer',
+    VideoReplies: 'VideoReplies'
+  },
+  default_bt_amt : 10,
+
+  videoTypes: {
+    post : 'post',
+    reply: 'reply'
+  },
+
+  MaxDescriptionArea: 35250,
+  thumbnailListConstants: {
+
+    
+    // NOTE: Outer Circle Configs.
+    // -----------------------------------------------------------------------
+    // 1. outerRingDiameter - Replaces old iconHeight/iconWidth.
+    // 
+    // 2. borderWidth       - The border width is applied outside the 
+    //                        this iconHeight (Diameter).
+    // 
+    // 3. transparentGap    - Gap between the inner edge of Outer-Circle 
+    //                        and icon itself.
+    //                        
+    // 4. iconImageDiameter - Diameter of icon Image is computed 
+    //                        using outerRingDiameter, outerBorderWidth 
+    //                        and transparentGap.
+    // -----------------------------------------------------------------------
+    outerRingDiameter: 48,
+    outerBorderWidth: 2,
+    transparentGap: 2,
+    iconImageDiameter: function () {
+      return this.outerRingDiameter - (2 * (this.outerBorderWidth + this.transparentGap ));
+    },
+
+    // cellHeight - Gives actual height of cell. 
+    cellHeight: function() {
+      return this.outerRingDiameter + (2 * this.outerBorderWidth);
+    },
+
+    separatorHeight: 25,
+    separatorWidth: 1,
+    separatorColor: 'white',
+    //separatorMargin - Margin to draw over the transparent outer ring (to be applied in negative);
+    separatorMargin: function () {
+      return this.outerBorderWidth + this.transparentGap;
+    },
+
+    parentIconHeight: 46,
+    parentIconWidth: 46
+  },
+  VideoScreenObject : {
+    ...ifIphoneX(
+      {
+        height: height - CUSTOM_TAB_Height - getBottomSpace([true])
+      },
+      {
+        height:
+          NotchHelper.hasNotch()
+            ? height + statusBarHeight - CUSTOM_TAB_Height - btmSpace
+            : height - CUSTOM_TAB_Height
+      }
+    )
   }
 
 };

@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Dimensions, Easing, Animated } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import NavigationAnimation from "./src/helpers/NavigationAnimation";
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import deepGet from 'lodash/get';
 
 import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
@@ -39,6 +39,7 @@ import { NotificationToastComponent } from './src/theme/components/NotificationT
 import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
 import FanVideoDetails from './src/components/FanVideoDetails';
+import FanVideoReplyDetails from './src/components/FanVideoReplyDetails';
 import WalletSettingScreen from './src/components/WalletSetting';
 import StoreProductsScreen from './src/components/StoreProducts';
 import PaymentWorker from './src/components/PaymentWorker';
@@ -56,14 +57,24 @@ import CouchMarks from './src/components/CouchMarks';
 import RedemptiomScreen from './src/components/Redemption';
 import VideoTags from './src/components/VideoTags';
 import FullScreenVideoCollection from './src/components/FullScreenVideoCollection';
+import VideoReplies from './src/components/VideoReplies';
+import FullScreenReplyCollection from './src/components/FullScreenReplyCollection';
+import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
   'FanVideoDetails',
+  'FanVideoReplyDetails',
   'InviteCodeScreen',
   'AddEmailScreen',
   'InAppBrowserComponent',
-  'CouchMarks'
+  'CouchMarks',
+  'VideoReplies',
+  'FullScreenReplyCollection',
+  'FullScreenVideoCollection',
+  'UserVideoHistory',
+  'VideoPlayer',
+  'VideoReplyPlayer'
 ];
 
 const modalStackConfig = {
@@ -80,38 +91,44 @@ const modalStackConfig = {
 
 const txModalConfig = {
   transparentCard: true,
-  cardStyle: { backgroundColor: 'rgba(0,0,0,0.5)' },
+  cardStyle: { backgroundColor: 'rgba(0,0,0,0)' },
   gesturesEnabled: false,
-  transitionConfig: () => ({
-    transitionSpec: {
-      duration: 300,
-      easing: Easing.out(Easing.poly(4)),
-      timing: Animated.timing
-    },
-    screenInterpolator: (sceneProps) => {
-      const { layout, position, scene } = sceneProps;
-      const { index } = scene;
-
-      const height = layout.initHeight;
-      const translateY = position.interpolate({
-        inputRange: [index - 1, index, index + 1],
-        outputRange: [height, 0, 0]
-      });
-
-      const opacity = position.interpolate({
-        inputRange: [index - 1, index - 0.99, index],
-        outputRange: [0, 1, 1]
-      });
-
-      return { opacity, transform: [{ translateY }] };
-    }
-  })
+  transitionConfig: (transitionProps, prevTransitionProps) => {
+    return  NavigationAnimation.defaultTransition();
+  }
 };
+
+const cardStackConfig = {
+  transparentCard: true,
+  cardStyle: { backgroundColor: 'rgba(0,0,0,0)' },
+  transitionConfig: ( transitionProps, prevTransitionProps ) => {
+    const scenes = transitionProps["scenes"];
+    const prevScene = scenes[scenes.length - 2];
+    const nextScene = scenes[scenes.length - 1];
+
+    if (nextScene.route.routeName === 'VideoReplies') {
+      return  NavigationAnimation.fromBottom();
+    }
+
+    if(Platform.OS == "ios"){
+      if (prevScene
+        && prevScene.route.routeName === 'VideoReplies'
+        && nextScene.route.routeName === 'FullScreenReplyCollection') {
+        return  NavigationAnimation.fromBottom();
+      }
+    }
+    
+  }
+}
+
 
 const CaptureVideoStack = createStackNavigator(
   {
     CaptureVideo: CaptureVideo,
-    FanVideoDetails: FanVideoDetails
+    FanVideoDetails: FanVideoDetails,
+    FanVideoReplyDetails: FanVideoReplyDetails,
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails
   },
   {
     headerLayoutPreset: 'center'
@@ -134,11 +151,19 @@ const HomePushStack = createStackNavigator(
     UserVideoHistory: UserVideoHistory,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
+    VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
-    FullScreenVideoCollection: FullScreenVideoCollection
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails,
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyCollection
   },
   {
-    headerLayoutPreset: 'center'
+    initialRouteName: 'HomeScreen',
+    headerLayoutPreset: 'center' ,
+    ...cardStackConfig
   }
 );
 
@@ -166,13 +191,19 @@ const NotificationPushStack = createStackNavigator(
     UsersProfileScreen: UsersProfileScreen,
     UserVideoHistory: UserVideoHistory,
     VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     VideoTags: VideoTags,
-    FullScreenVideoCollection: FullScreenVideoCollection
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails,
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    ...cardStackConfig
   }
 );
 
@@ -199,14 +230,19 @@ const ProfilePushStack = createStackNavigator(
     BioScreen: BioScreen,
     EmailScreen: EmailScreen,
     ReferAndEarn: ReferAndEarn,
+    VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     Invites: Invites,
     WalletSettingScreen: WalletSettingScreen,
     WalletDetails: WalletDetails,
     VideoTags: VideoTags,
-      FullScreenVideoCollection: FullScreenVideoCollection
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyCollection
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    ...cardStackConfig
   }
 );
 
@@ -222,17 +258,7 @@ const ProfileStack = createStackNavigator(
     StoreProductsScreen: StoreProductsScreen,
     RedemptiomScreen: RedemptiomScreen
   },
-  {
-    headerLayoutPreset: 'center',
-    headerMode: 'none',
-    mode: 'modal',
-    navigationOptions: ({ navigation }) => {
-      return {
-        tabBarVisible: deepGet(navigation, 'state.index') === 0
-      };
-    },
-    ...txModalConfig
-  }
+  { ...modalStackConfig, ...txModalConfig }
 );
 
 const SearchPushStack = createStackNavigator(
@@ -242,11 +268,18 @@ const SearchPushStack = createStackNavigator(
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
     UserVideoHistory: UserVideoHistory,
+    VideoPlayer: VideoPlayer,
+    VideoReplyPlayer: VideoReplyPlayer,
     VideoTags: VideoTags,
-      FullScreenVideoCollection: FullScreenVideoCollection
+    WalletSettingScreen: WalletSettingScreen,
+    WalletDetails: WalletDetails,
+    FullScreenVideoCollection: FullScreenVideoCollection,
+    VideoReplies:VideoReplies ,
+    FullScreenReplyCollection: FullScreenReplyCollection,
   },
   {
-    headerLayoutPreset: 'center'
+    headerLayoutPreset: 'center',
+    ...cardStackConfig
   }
 );
 

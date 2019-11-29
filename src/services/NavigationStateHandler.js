@@ -5,7 +5,7 @@ import Colors from "../theme/styles/Colors";
 import NavigationService from './NavigationService';
 import AppConfig from '../constants/AppConfig';
 
-const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory', 'FullScreenVideoCollection'];
+const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory', 'VideoReplies', 'FullScreenVideoCollection', 'FullScreenReplyCollection', 'VideoReplyPlayer'];
 const typesToIgnore = ['Navigation/COMPLETE_TRANSITION', 'Navigation/MARK_DRAWER_SETTLING', 'Navigation/MARK_DRAWER_IDLE', 'Navigation/DRAWER_CLOSED'];
 const routesAnalyticsMap = AppConfig.routesAnalyticsMap;
 
@@ -16,7 +16,7 @@ const StatusBarShow = () => {
     StatusBar.setTranslucent(false);
   }
 
-  if(Platform.OS == "ios"){
+  if(Platform.OS === "ios"){
     StatusBar.setBarStyle("dark-content")
   }
 

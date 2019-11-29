@@ -14,6 +14,7 @@ import { ostErrors } from '../../services/OstErrors';
 import Colors from '../../theme/styles/Colors';
 import CurrentUser from '../../models/CurrentUser';
 import { navigateTo } from '../../helpers/navigateTo';
+import CommonStyle from '../../theme/styles/Common';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -113,7 +114,7 @@ class AddEmailScreen extends React.Component {
   };
 
   onSuccess(res) {
-    //TODO show success screen
+
     this.setState({
       emailSent: true
     });
@@ -214,7 +215,7 @@ class AddEmailScreen extends React.Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.closeModal}>
-        <View style={inlineStyles.parent}>
+        <View style={CommonStyle.modalViewContainer}>
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
               {!this.state.emailSent ? this.emailSignUp() : this.confirmEmail()}

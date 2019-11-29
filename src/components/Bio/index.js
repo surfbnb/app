@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import {View, Text} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import BackArrow from '../CommonComponents/BackArrow';
 import TagsInput from '../CommonComponents/TagsInput';
 import Colors from '../../theme/styles/Colors';
+import CommonStyle from '../../theme/styles/Common';
 import inlineStyles from './style';
 
 class BioScreen extends PureComponent {
@@ -51,29 +52,24 @@ class BioScreen extends PureComponent {
 
   render() {
     return (
-      <ScrollView style={{ padding: 20 }} >
-        <TagsInput
-          horizontal={this.props.horizontal}
-          initialValue={this.initialVal}
-          onChangeVal={this.onChangeVal}
-          placeholderText="Bio"
-          submitEvent={this.submitEvent}
-          searchResultRowComponent={SearchResultRowComponent}
-          textInputStyles={inlineStyles.multilineTextInput}
-          maxLength={300}
-          autoFocus={true}
-        >
+      <View style={CommonStyle.viewContainer}>
+        <View style={{ marginHorizontal: 15, marginTop: 20 }} >
+          <TagsInput
+            dropdownStyle={inlineStyles.dropDownStyle}
+            horizontal={this.props.horizontal}
+            initialValue={this.initialVal}
+            onChangeVal={this.onChangeVal}
+            placeholderText="Bio"
+            submitEvent={this.submitEvent}
+            textInputStyles={inlineStyles.multilineTextInput}
+            maxLength={300}
+            autoFocus={true}
+          />
           <Text style={inlineStyles.countStyle}>{this.state.count} /300</Text>
-        </TagsInput>
-      </ScrollView>
+        </View>
+      </View>
     );
   }
 }
-
-const SearchResultRowComponent = (props) => (
-  <View style={inlineStyles.suggestionTextWrapper}>
-    <Text style={inlineStyles.suggestionText}>{`#${props.val}`}</Text>
-  </View>
-);
 
 export default withNavigation(BioScreen);

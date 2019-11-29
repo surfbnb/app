@@ -16,10 +16,6 @@ let stylesMap = {
     shadowRadius: 1,
     elevation: 5,
     alignItems: 'center'
-    // borderColor: 'rgba(0, 0, 0, 0.25)',
-    // borderWidth: 1,
-    // borderBottomWidth: 0,
-    // elevation: 8
   },
   tapArea:{
     minHeight: 55,
@@ -28,17 +24,9 @@ let stylesMap = {
   tabElementSkipFont: {
     alignSelf: 'center',
     marginHorizontal: 20,
-    // marginVertical: 10,
     height: 35,
     width: 35
   }
-  // tabElementFriendsSkipFont: {
-  //   alignSelf: 'center',
-  //   marginHorizontal: 20,
-  //   marginVertical: 10,
-  //   height: 22,
-  //   width: 35
-  // }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

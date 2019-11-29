@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import {  View  } from 'react-native';
+import qs from 'qs';
+
 import reduxGetter from '../../services/ReduxGetters';
 import VideoCollections from '../VideoCollections';
 import Colors from '../../theme/styles/Colors';
@@ -79,16 +81,17 @@ class VideoTags extends PureComponent {
         this.didFocus && this.didFocus.remove && this.didFocus.remove();
     }
 
-
-
     _headerComponent() {
         // do nothing
     }
 
-    getFetchUrl = () => {
-        return `/tags/${this.getTagId()}/videos`
-
-    }
+    getFetchUrl = () => {        
+        let baseUrl = `/tags/${this.getTagId()}/allvideos`;
+        let params = {
+            supported_entities: ['videos', 'replies']
+          };                                
+        return baseUrl + "?" + qs.stringify(params);
+    };
 
     getTagId = () => {
         return this.props.navigation.getParam("tagId")
@@ -101,7 +104,7 @@ class VideoTags extends PureComponent {
 
     getExtraParams = () => {
         return {
-            showBalanceFlier: true
+            showBalanceFlyer: true
         };
     };
 
@@ -115,6 +118,7 @@ class VideoTags extends PureComponent {
                     navigation={this.props.navigation}
                     noResultsData={this.noResultsData}
                     getNoResultsCell={this.renderNoResults}
+                    tagId={this.getTagId()}
                     extraParams={this.getExtraParams()}
                    />
         } else {

@@ -1,16 +1,16 @@
 import React , {PureComponent} from "react";
-import {FlatList , View , TouchableOpacity, Image} from "react-native";
+import {FlatList} from "react-native";
 import deepGet from "lodash/get";
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
 
 import UserVideoHistoryRow from "./UserVideoHistoryRow";
 import TopStatus from "../../components/Home/TopStatus";
-
-import inlineStyles from "./styles";
 import CurrentUser from "../../models/CurrentUser";
+import CommonStyle from "../../theme/styles/Common";
 
-import historyBack from '../../assets/user-video-history-back-icon.png';
+import FlotingBackArrow from "../CommonComponents/FlotingBackArrow";
+import { SafeAreaView } from "react-navigation";
 
 const maxVideosThreshold = 3;
 
@@ -56,7 +56,7 @@ class UserVideoHistoryScreen extends PureComponent{
 
         //This is an hack for reset scroll for flatlist. Need to debug a bit more.
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
-            const offset =  this.state.activeIndex > 0 ? inlineStyles.fullScreen.height * this.state.activeIndex :  0 ;
+            const offset =  this.state.activeIndex > 0 ? CommonStyle.fullScreen.height * this.state.activeIndex :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
             this.isActiveScreen = true ;
         });
@@ -119,9 +119,17 @@ class UserVideoHistoryScreen extends PureComponent{
         return `id_${item}`;
     };
 
+    getPixelDropData = () => {
+        return pixelParams = {
+          p_type: 'user_profile',
+          p_name: this.userId
+        };
+    } 
+
     _renderItem = ({ item, index }) => {
         const videoId = reduxGetters.getUserVideoId(item) ;
         return  <UserVideoHistoryRow    shouldPlay={this.shouldPlay}
+                                        getPixelDropData={this.getPixelDropData}
                                         isActive={index == this.state.activeIndex}
                                         doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                         userId={this.userId} videoId={videoId}  /> ;
@@ -148,7 +156,7 @@ class UserVideoHistoryScreen extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-       return {length: inlineStyles.fullScreen.height, offset: inlineStyles.fullScreen.height * index, index} ;
+       return {length: CommonStyle.fullScreen.height, offset: CommonStyle.fullScreen.height * index, index} ;
     }
 
     isCurrentUser(){
@@ -170,7 +178,7 @@ class UserVideoHistoryScreen extends PureComponent{
     render() {
 
         return(
-            <View style={{flex: 1}}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
                 {!this.isCurrentUser() &&  <TopStatus />}
                 <FlatList
                     snapToAlignment={"top"}
@@ -188,18 +196,15 @@ class UserVideoHistoryScreen extends PureComponent{
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                     onMomentumScrollBegin={this.onMomentumScrollBeginCallback}
                     renderItem={this._renderItem}
-                    style={[inlineStyles.fullScreen , {backgroundColor: "#000"}]}
+                    style={[CommonStyle.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
-
                     initialScrollIndex={this.state.activeIndex}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
-                <TouchableOpacity onPress={this.closeVideo} style={inlineStyles.historyBackSkipFont}>
-                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-                </TouchableOpacity>
-             </View>
+                <FlotingBackArrow/>
+             </SafeAreaView>
         );
     }
 

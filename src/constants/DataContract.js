@@ -37,8 +37,59 @@ export default {
         infoApi: "/support/info"
     },
 
+    replies: {
+        validateReply: "/replies/validate-upload",
+        getReplyListApi : (id) => {
+            return `/videos/${id}/replies`
+        },
+        getDeleteVideoReplyApi : (id) => {
+            return `/replies/${id}/delete`;
+        },
+        validatePost: "/videos/validate-upload",
+        getSingleVideoReplyApi : (id) => {
+            return `/replies/${id}`;
+        },
+        videoReplyKind: {
+            video: "VIDEO"
+        },
+        replyDetailIdKey: 'reply_detail_id',
+        parentVideoIdKey: 'parent_id',
+        creatorUserIdKey: 'creator_user_id',
+        replyDetailsKey: 'reply_details'
+    },
+
     common: {
         resultType : "data.result_type"
+    },
+
+    mentions: {
+        userMentions: "/search/users-mention"
+    },
+
+    tags: {
+       userTags: "/tags"
+    },
+
+    videos: {
+        getDeleteVideoApi : (id) => {
+            return `/videos/${id}/delete`;
+        },
+        videoKind: {
+            reply : "VIDEO_REPLY",
+            video:"FAN_UPDATE"
+        },
+        kindKey: "kind",
+        creatorUserIdKey: 'creator_user_id',
+        videoDetailsKey: 'video_details'
+    },
+
+    share: {
+        getVideoShareApi: ( id ) => {
+            return `/videos/${id}/share`;
+        },
+        getVideoReplyShareApi: ( id ) => {
+            return `/replies/${id}/share`;
+        }
     }
 }
 

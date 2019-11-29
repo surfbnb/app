@@ -10,6 +10,7 @@ export const {
   hideModalCover,
   showLoginPopover,
   hideLoginPopover,
+  showConnectingLoginPopover,
   showToast,
   hideToast,
   upsertUserEntities,
@@ -25,6 +26,9 @@ export const {
   upsertUserStatEntities,
   upsertVideoEntities,
   upsertVideoStatEntities,
+  upsertReplyDetailEntities,
+  upsertCurrentUserVideoRelationEntities,
+  upsertCurrentUserReplyDetailRelationEntities,
   upsertImageEntities,
   upsertHomeFeedEntities,
   updateBalance,
@@ -34,6 +38,7 @@ export const {
   updatePepocorn,
   updateExecuteTransactionStatus,
   upsertVideoContributionEntities,
+  upsertReplyContributionEntities,
   upsertUserContributionEntities,
   upsertRecordedVideo,
   clearRecordedVideo,
@@ -68,6 +73,9 @@ const defaultState = {
   link_entities: {},
   video_entities: {},
   video_stat_entities: {},
+  reply_detail_entities: {},
+  current_user_video_relation_entities: {},
+  current_user_reply_detail_relation_entities: {},
   video_description_entities: {},
   image_entities: {},
   home_feed_entities: {},
@@ -99,6 +107,9 @@ const logoutDefault = {
   link_entities: {},
   video_entities: {},
   video_stat_entities: {},
+  reply_detail_entities: {},
+  current_user_video_relation_entities: {},
+  current_user_reply_detail_relation_entities: {},
   video_description_entities: {},
   image_entities: {},
   home_feed_entities: {},
@@ -119,10 +130,14 @@ export const reducer = handleActions(
   {
     [showModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [showModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
+
     [showLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
+    [showConnectingLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
+    [hideLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
+
     [hideModal]: (state, action) => ({ ...state, modal: action.payload.modal }),
     [hideModalCover]: (state, action) => ({ ...state, modal_cover: action.payload.modal_cover }),
-    [hideLoginPopover]: (state, action) => ({ ...state, login_popover: action.payload.login_popover }),
+
     [showToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [hideToast]: (state, action) => ({ ...state, toast: action.payload.toast }),
     [upsertUserEntities]: (state, action) => ({
@@ -173,6 +188,18 @@ export const reducer = handleActions(
       ...state,
       video_stat_entities: assignIn({}, state.video_stat_entities, action.payload.video_stat_entities)
     }),
+    [upsertReplyDetailEntities]: (state, action) => ({
+      ...state,
+      reply_detail_entities: assignIn({}, state.reply_detail_entities, action.payload.reply_detail_entities)
+    }),
+    [upsertCurrentUserVideoRelationEntities]: (state, action) => ({
+      ...state,
+      current_user_video_relation_entities: assignIn({}, state.current_user_video_relation_entities, action.payload.current_user_video_relation_entities)
+    }),
+    [upsertCurrentUserReplyDetailRelationEntities]: (state, action) => ({
+      ...state,
+      current_user_reply_detail_relation_entities: assignIn({}, state.current_user_reply_detail_relation_entities, action.payload.current_user_reply_detail_relation_entities)
+    }),
     [upsertVideoDescriptionEntities]: (state, action) => ({
       ...state,
       video_description_entities: assignIn(
@@ -205,6 +232,14 @@ export const reducer = handleActions(
         action.payload.video_contribution_entities
       )
     }),
+    [upsertReplyContributionEntities]: (state, action) => ({
+      ...state,
+      reply_contribution_entities: assignIn(
+        {},
+        state.reply_contribution_entities,
+        action.payload.reply_contribution_entities
+      )
+    }),
     [upsertUserContributionEntities]: (state, action) => ({
       ...state,
       user_contribution_entities: assignIn(
@@ -221,10 +256,22 @@ export const reducer = handleActions(
       ...state,
       balance: action.payload.isPurchase
     }),
-    [updatePricePoints]: (state, action) => ({
-      ...state,
-      price_points: action.payload.price_points
-    }),
+    [updatePricePoints]: (state, action) => {
+      //Make sure price_points is not null;
+      if (!action.payload.price_points) {
+        return {...state};
+      }
+
+      // Make sure response has keys;
+      if ( !Object.keys(action.payload.price_points).length ) {
+        return {...state};
+      }
+
+      return {
+        ...state,
+        price_points: action.payload.price_points
+      };
+    },
     [updateToken]: (state, action) => ({
       ...state,
       token: action.payload.token

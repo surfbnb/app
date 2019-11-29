@@ -31,6 +31,26 @@ let stylesMap = {
     paddingHorizontal: 15,
     paddingVertical: 20
   },
+  videoLinkItem: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#ccd3cd',
+    paddingBottom: 16,
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    zIndex: -1
+  },
+  videoAmountItem: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#ccd3cd',
+
+    alignItems: 'center',
+    paddingBottom: 16,
+    paddingHorizontal: 12,
+    zIndex: -1
+
+  },
   videoDescription: {
     color: 'rgba(42, 41, 59, 0.8)',
     // flex: 1,
@@ -43,18 +63,31 @@ let stylesMap = {
     marginLeft: 10,
     marginTop: 0,
     padding: 0,
+    paddingTop: 0,
+    position: 'relative',
     paddingLeft: 0,
     height: 100
   },
-  suggestionText: {
-    fontWeight: 'bold',
-    color: Colors.midNightblue,
-    fontSize: 18
+  dropDownStyle: {
+    marginLeft: -90,
+    width: Dimensions.get('window').width,
+    shadowColor: '#000',
+    shadowOffset: { width: -1, height: 1 },
+    shadowOpacity: 0.2,
+    elevation: 1
   },
-  suggestionTextWrapper: {
-    marginTop: 20
+  linkText: { color: Colors.softBlue, flex: 3, paddingVertical: 0},
+  replyAmtWrapper : {
+    flex:1,
+    flexDirection:"row",
+    justifyContent:'space-between',
+    alignItems:'center'
   },
-  linkText: { color: Colors.softBlue, flex: 1 }
+  errorStyle: {
+    width: 0,
+    flex: 0,
+    height: 0
+  }
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

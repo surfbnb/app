@@ -1,6 +1,8 @@
 import io from 'socket.io-client';
-import PepoApi from '../services/PepoApi';
+import { YellowBox } from 'react-native';
 import deepGet from 'lodash/get';
+
+import PepoApi from '../services/PepoApi';
 
 import { upsertNotificationUnread } from '../actions';
 import Store from '../store';
@@ -23,6 +25,11 @@ export default class PepoSocket {
     this.socket = null;
     this.isConnecting = false;
     this.attempt = 0;
+    // Supress un-actionable warnings
+    YellowBox.ignoreWarnings(['Setting a timer']);
+    YellowBox.ignoreWarnings([
+      'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
+    ])
   }
 
   setConnectionParams(response) {

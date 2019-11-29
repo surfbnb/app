@@ -5,11 +5,21 @@ const btPrecession = 2;
 
 export default class PriceOracle {
   constructor(token, pricePoints) {
-    if (!token || !token.conversion_factor || !pricePoints) {
-      return null;
+    if ( !token ) {
+      //Assign token to an empty object so that fallback values apply.
+      token = {};
     }
-    this.conversionFactor = token.conversion_factor;
+    if ( !pricePoints ) {
+      //Assign pricePoints to an empty object so that fallback values apply.
+      pricePoints = {};
+    }
+
+    ///NOTE: If you are wondering why fall back is 1, Ask Ashutosh.
+    this.conversionFactor = token.conversion_factor || 1;
+
+    ///NOTE: If you are wondering why fall back is 18, Ask Ashutosh.
     this.decimals = token.decimal || 18;
+
     this.usdPricePoint = pricePoints['USD'];
   }
 

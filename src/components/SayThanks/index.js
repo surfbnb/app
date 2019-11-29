@@ -5,8 +5,7 @@ import {
   Keyboard,
   BackHandler,
   ActivityIndicator,
-  TouchableWithoutFeedback,
-  Switch
+  TouchableWithoutFeedback
 } from 'react-native';
 import { connect } from 'react-redux';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
@@ -20,6 +19,7 @@ import Theme from '../../theme/styles';
 import Colors from '../../theme/styles/Colors';
 import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
 import Toast from '../../theme/components/NotificationToast';
+import CommonStyle from '../../theme/styles/Common';
 
 const bottomSpace = getBottomSpace([true]),
     extraPadding = 10,
@@ -156,7 +156,6 @@ class SayThanks extends Component {
                           thanksMessage: this.tweeterHandle ? `@${this.tweeterHandle} ${this.state.thanksMessage}`: this.state.thanksMessage
                         });
                       } else {
-                        //TODO: show error
                         if (resp.err.msg) {
                           Toast.show({ text: resp.err.msg, icon: 'error' });
                         }
@@ -197,7 +196,7 @@ class SayThanks extends Component {
           }
         }}
       >
-        <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+        <View style={CommonStyle.modalViewContainer}>
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
               {this.state.gettingTweetInfo && (

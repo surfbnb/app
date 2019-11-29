@@ -99,10 +99,10 @@ class PreviewRecordedVideo extends Component {
               do_discard: true
             })
           );
+          this.props.saveVideoPrimaryInfo();
           this.props.goToRecordScreen();
         } else if (buttonIndex == ACTION_SHEET_DESCTRUCTIVE_INDEX) {
           this.props.navigation.goBack(null);
-          // videoUploaderComponent.emit('hide');
           Store.dispatch(
             upsertRecordedVideo({
               do_discard: true

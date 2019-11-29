@@ -5,6 +5,7 @@ import { Platform } from 'react-native';
 let stylesMap = {
   container: {
     paddingBottom: 0,
+    backgroundColor: Colors.white,
     paddingTop: Platform.OS === 'ios' ? 30 : 20,
     flex: 1
   },

@@ -1,6 +1,4 @@
-import {NativeModules} from "react-native";
-const RNDeviceInfo = NativeModules.RNDeviceInfo;
-import PepoApi from "../services/PepoApi";
+import DeviceInfo from 'react-native-device-info';
 
 let devicesWithNotch =  [
   {
@@ -124,6 +122,10 @@ let devicesWithNotch =  [
     "model": "COR-AL00"
   },
   {
+    "brand": "HONOR",
+    "model": "JSN-L42"
+  },
+  {
     "brand": "OnePlus",
     "model": "ONEPLUS A6010"
   }
@@ -132,19 +134,34 @@ let devicesWithNotch =  [
 class NotchHelper {
 
   syncList(){
-    let listUrl = "https://d3attjoi5jlede.cloudfront.net/pepo-app/devices-list/notch-devices.json";
-    new PepoApi(listUrl).get().then((res)=> {
-      const devices = res && res.devices;
-      if( devices && devices instanceof Array && devices.length < 1 ) {
-        devicesWithNotch = devices;
+    fetch(`https://d3attjoi5jlede.cloudfront.net/pepo-app/devices-list/notch-devices.json?${Date.now()}`)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const devices = responseJson && responseJson.devices;
+        if( devices && devices instanceof Array && devices.length > 0 ) {
+          devicesWithNotch = devices;
+        }
+      })
+      .catch((error) => {
+        console.log("Notch helper fetch error ignored");
+      });
+  }
+
+  hasNotchRemote(){
+      if(devicesWithNotch.length > 0){
+          return (
+              devicesWithNotch.findIndex(
+                  item =>
+                      item.brand.toLowerCase() === DeviceInfo.getBrand().toLowerCase() &&
+                      (item.model.toLowerCase() === DeviceInfo.getDeviceName().toLowerCase() || item.model.toLowerCase() === DeviceInfo.getModel().toLowerCase())
+              ) !== -1
+          );
       }
-    }).catch((error)=> {
-      console.log("ignore")
-    })
+      return false;
   }
 
   hasNotch() {
-    return devicesWithNotch.findIndex(item => item.brand === RNDeviceInfo.brand && (  item.model === RNDeviceInfo.deviceName || item.model === RNDeviceInfo.model )) !== -1;
+    return DeviceInfo.hasNotch() || this.hasNotchRemote();
   }
 
 }

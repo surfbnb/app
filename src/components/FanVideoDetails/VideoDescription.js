@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import {View, Text} from 'react-native';
 
 import inlineStyles from './styles';
 import TagsInput from '../CommonComponents/TagsInput';
@@ -20,25 +20,22 @@ class VideoDescription extends PureComponent {
     return (
       <View style={{ flex: 1 }}>
         <TagsInput
+          onSuggestionsPanelOpen={this.props.onSuggestionsPanelOpen}
+          onSuggestionsPanelClose={this.props.onSuggestionsPanelClose}
           horizontal={false}
           initialValue={this.value}
           onChangeVal={this.onChangeValue}
-          placeholderText="Add a description. You can include #tags."
+          placeholderText="Write something about your video"
           submitEvent={this.submitEvent}
-          searchResultRowComponent={SearchResultRowComponent}
           textInputStyles={inlineStyles.videoDescription}
+          dropdownStyle={inlineStyles.dropDownStyle}
           maxLength={110}
           autoFocus={false}
+          mentions={["#" ,  "@"]}
         />
       </View>
     );
   }
 }
-
-const SearchResultRowComponent = (props) => (
-  <View style={inlineStyles.suggestionTextWrapper}>
-    <Text style={inlineStyles.suggestionText}>{`#${props.val}`}</Text>
-  </View>
-);
 
 export default VideoDescription;
