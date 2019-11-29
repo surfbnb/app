@@ -44,15 +44,15 @@ class WalletSettingController {
   }
 
   _initializeOptions() {
-    this._createOptionsData(optionIds.addSession, "Add Session", "Add Session to do transaction");
-    this._createOptionsData(optionIds.walletDetails, "Wallet Details", "View your wallet details");
-    this._createOptionsData(optionIds.recoverDevice, "Recover Device", "Recover your device");
-    this._createOptionsData(optionIds.abortRecovery, "Abort Device Recovery", "Abort Device Recovery");
-    this._createOptionsData(optionIds.resetPin, "Reset Pin", "Reset your wallet pin");
+    this._createOptionsData(optionIds.addSession, "Add Session", "Add Session to do transaction.");
+    this._createOptionsData(optionIds.walletDetails, "Wallet Details", "View your wallet details.");
+    this._createOptionsData(optionIds.recoverDevice, "Recover Device", "Recover your device.");
+    this._createOptionsData(optionIds.abortRecovery, "Abort Device Recovery", "Abort Device Recovery.");
+    this._createOptionsData(optionIds.resetPin, "Reset Pin", "Reset your wallet pin.");
     this._createOptionsData(optionIds.viewMnemonics, "Show Mnemonics", "While not required, writing down your 12 word mnemonic phrase provides an additional backup in case you forget your PIN.");
-    this._createOptionsData(optionIds.authorizeWithMnemonics, "Authorize Device with Mnemonics", "Authorize current device by using mnemonics");
+    this._createOptionsData(optionIds.authorizeWithMnemonics, "Authorize Device with Mnemonics", "Authorize current device by using mnemonics.");
     this._createOptionsData(optionIds.authorizeWithQR, "Add Another Device", "Scan QR Code to add another device.");
-    this._createOptionsData(optionIds.showQR, "Show Device QR Code", "Scan QR Code from the device authorized device to authorize this device");
+    this._createOptionsData(optionIds.showQR, "Show Device QR Code", "Scan QR Code from the device authorized device to authorize this device.");
     this._createOptionsData(optionIds.updateBiometricPreference, "Enable Biometric", "Use biometrics to authorize new Sessions and to confirm high value transactions.");
   }
 
