@@ -346,11 +346,13 @@ export default {
     parentIconHeight: 46,
     parentIconWidth: 46,
     borderWidth: 2,
+    transparentGap: 10,
     // this is Margin to place an icon element on top and bottom of the bordered(both red and white colored) wrapper
-    marginTop: -4,
-    marginBottom: -4,
     cellHeight: function() {
       return this.iconHeight + (2 * this.borderWidth);
+    },
+    separatorMargin: function () {
+      return (this.borderWidth + this.transparentGap);
     }
   },
   VideoScreenObject : {
