@@ -67,14 +67,13 @@ class BaseVideoReplyRow extends PureComponent {
    }
 
    onParentVideoFetch = (res) => {
-    const users = deepGet(res , "data.users") || {} ,
-    userKeys =  Object.keys(users) || [] ,
-    userId = userKeys[0] || null;
-    if(userId){
+    const video_details = deepGet(res, `data.${DataContract.videos.videoDetailsKey}`),
+    item = video_details[this.state.parentVideoId];
+    if( item ){
       this.setState({
-        parentUserId: userId
-      });
-    } 
+        parentUserId: item[DataContract.videos.creatorUserIdKey]
+      })
+    }
    }
 
   refetchVideoReply = () => {
