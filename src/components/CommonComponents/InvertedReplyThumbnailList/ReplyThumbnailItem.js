@@ -63,7 +63,7 @@ const inlineStyle= {
     borderColor: '#fff',
   },
   unseen: {
-    borderColor: 'red'
+    borderColor: '#FD8691'
   }
 };
 
