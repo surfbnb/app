@@ -19,14 +19,13 @@ export default class DeleteVideo extends Component {
         super(props);
     }
 
-    deleteUser = () => {
-        if(!this.props.videoId) return;
-        new PepoApi(`/videos/${this.props.videoId}/delete`)
+    deleteEntity = () => {
+        if(!this.props.fetchUrl) return;
+        new PepoApi(this.props.fetchUrl)
             .post()
             .then((response) => {
-
                 if (response && response.success){
-                    this.props.removeVideo && this.props.removeVideo(this.props.videoId);
+                    this.props.removeVideo && this.props.removeVideo();
                     Toast.show({text:'Video deleted successfully!', icon: 'success'});
                 } else {
                     Toast.show({text:ostErrors.getUIErrorMessage('delete_video_error'), icon: 'error'});
@@ -43,7 +42,7 @@ export default class DeleteVideo extends Component {
             '',
             'Are you sure to delete video?',
             [
-                {text: 'Delete', onPress: () =>  this.deleteUser() },
+                {text: 'Delete', onPress: () =>  this.deleteEntity() },
                 {
                     text: 'Cancel',
                     style: 'cancel'

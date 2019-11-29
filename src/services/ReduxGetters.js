@@ -42,6 +42,10 @@ class ReduxGetters {
     state = state || Store.getState();
     size = size || appConfig.videoConstant.videoImageWidth;
     let posterImageId = deepGet(state, `video_entities.id_${id}.poster_image_id`);
+    return this.getImageUrl(posterImageId, state, size);
+  }
+
+  getImageUrl( posterImageId, state, size) {
     return (
       deepGet(state, `image_entities.id_${posterImageId}.resolutions.${size}.url`) ||
       deepGet(state, `image_entities.id_${posterImageId}.resolutions.original.url`)
@@ -50,13 +54,14 @@ class ReduxGetters {
 
   getUserName(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `user_entities.id_${id}.user_name`);
+    return deepGet(state, `user_entities.id_${id}.user_name`, "");
   }
 
   getUserTwitterHandle(id, state) {
     state = state || Store.getState();
     return deepGet(state, `twitter_entities.id_${id}.handle`);
   }
+
   getUserTwitterHandleLink(id, state) {
     state = state || Store.getState();
     return deepGet(state, `twitter_entities.id_${id}.link`);
@@ -123,10 +128,30 @@ class ReduxGetters {
     return deepGet(state, `video_stat_entities.id_${id}.description_id`);
   }
 
+  getVideoReplyCount(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.total_video_replies`, 0);
+  }
+
+  getBtAmountForReply(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.per_reply_amount_in_wei`, 0);
+  }
+
+  isReplyAllowed(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.is_reply_allowed`, true);
+  }
+
+  getVideoCreatorUserId(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.creator_user_id`, true);
+  }
+
   getTappedIncludesEntity(videoId, tappedText) {
     let lowercasedText = tappedText.toLowerCase();
     let state = Store.getState();
-    return deepGet(state, `video_description_entities.id_${videoId}.includes.${lowercasedText}`);
+    return deepGet(state, `video_description_entities.id_${videoId}.includes.${lowercasedText}`) || deepGet(state, `video_description_entities.id_${videoId}.includes.${tappedText}`);
   }
 
   getVideoLink(id, state) {
@@ -170,6 +195,12 @@ class ReduxGetters {
     return deepGet(Store.getState(), `recorded_video`);
   }
 
+  getRecordedVideoType() {
+    return deepGet(Store.getState(), `recorded_video.video_type`);
+  }
+
+
+
   getRecordedVideoCurrentProcess() {
     let processing = [];
     if (deepGet(Store.getState(), `recorded_video.cover_capture_processing`)) {
@@ -186,6 +217,7 @@ class ReduxGetters {
     }
     return processing.join(', ');
   }
+
 
   getUserCoverVideoId(id, state) {
     state = state || Store.getState();
@@ -402,11 +434,6 @@ class ReduxGetters {
     return deepGet(state, `user_entities.id_${id}.status`, '').toLowerCase() == appConfig.userStatusMap.inActive;
   }
 
-  isVideoDeleted(id, state) {
-    state = state || Store.getState();
-    return deepGet(state, `video_entities.id_${id}.status`, '').toLowerCase() == appConfig.videoStatusMap.deleted;
-  }
-
   getUSDPrice(state){
     state = state || Store.getState();
     return deepGet(state,  "price_points.OST.USD");
@@ -420,6 +447,110 @@ class ReduxGetters {
   getHashTag(id, state){
     state = state || Store.getState();
     return deepGet(state, `tag_entities.id_${id}`);
+  }
+
+  getReplyEntity(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}`);
+  }
+
+  getReplyBt(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.total_amount_raised_in_wei`);
+  }
+
+  getReplyKind(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.entity_kind`);
+  }
+
+  getReplyEntityId(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.entity_id`);
+  }
+
+  getVideoRelationEntity(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `current_user_video_relation_entities.id_${id}`);
+  }
+
+  getReplyDetailRelationEntity(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `current_user_reply_detail_relation_entities.id_${id}`);
+  }
+
+  isReplySeen(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `current_user_reply_detail_relation_entities.id_${id}.has_seen`);
+  }
+
+  getCanDeleteReply(id, state){
+    state = state || Store.getState();
+    return  !!Number( deepGet(state, `current_user_reply_detail_relation_entities.id_${id}.can_delete` , 0) );
+  }
+
+  isVideoIsChargeable(id, state){
+    state = state || Store.getState();
+    return  !!Number( deepGet(state, `current_user_video_relation_entities.id_${id}.is_reply_chargeable` , 0) );
+
+  }
+
+  isReplyShareable(id ,  state){
+    state = state || Store.getState();
+    return !!Number( deepGet(state, `current_user_reply_detail_relation_entities.id_${id}.is_shareable` , 0));
+  }
+
+  isVideoShareable(id ,state){
+    state = state || Store.getState();
+    return  !!Number( deepGet(state, `current_user_video_relation_entities.id_${id}.is_shareable` , 0) );
+  }
+
+  getReplyDescriptionId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.description_id`);
+  }
+
+  getReplyBt(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.total_amount_raised_in_wei`);
+  }
+
+  getReplySupporters(id , state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.total_contributed_by`);
+  }
+
+  getReplyLinkId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.link_ids[0]`);
+  }
+
+  isReplySupported(id, state) {
+    state = state || Store.getState();
+    let val = deepGet(state, `reply_contribution_entities.id_${id}`);
+    val = val && Number(val);
+    return !!val;
+  }
+
+  getReplyParentVideoId(id ,  state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.parent_id`);
+  }
+
+  getReplyUserId(id ,  state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.creator_user_id`);
+  }
+
+  getReplyParentUserId(id , state){
+    state = state || Store.getState();
+    let parentId = deepGet(state, `reply_detail_entities.id_${id}.parent_id`);
+    return deepGet(state, `video_stat_entities.id_${parentId}.creator_user_id`);
+  }
+
+  getLoginPopOverProps(state) {
+    state = state || Store.getState();
+    return deepGet(state, `login_popover`);    
   }
 
 }

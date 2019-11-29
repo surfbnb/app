@@ -1,16 +1,15 @@
 import PepoApi from './PepoApi';
-
-import { Share, Platform } from 'react-native';
+import { Share } from 'react-native';
 
 class ShareVideo {
-  constructor(videoId) {
-    this.videoId = videoId;
+  constructor(url , entityId) {
+    this.url = url;
+    this.entityId = entityId;
   }
 
   perform() {
     return new Promise((resolve, reject) => {
-      new PepoApi(`/videos/${this.videoId}/share`).get().then((res) => {
-        console.log(res, 'videos/:video_id/share in then');
+      new PepoApi(this.url).get().then((res) => {
         this.shareTray(res);
       });
     });

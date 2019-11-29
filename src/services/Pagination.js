@@ -111,6 +111,10 @@ class Pagination {
         console.log("this.fetchServices.results" ,this.fetchServices.results );
     }
 
+    addItems( items ) {
+      this.getResults().unshift( items );
+    }
+
   };
 
 

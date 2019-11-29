@@ -27,19 +27,35 @@ export const showLoginPopover = () => ({
   type: types.SHOW_LOGIN_POPOVER,
   payload: {
     login_popover: {
-      show: true
+      show: true,
+      isTwitterConnecting: false
     }
   }
 });
 
-export const hideLoginPopover = () => ({
-  type: types.HIDE_LOGIN_POPOVER,
-  payload: {
-    login_popover: {
-      show: false
+export const hideLoginPopover = () => {
+  return {
+    type: types.HIDE_LOGIN_POPOVER,
+    payload: {
+      login_popover: {
+        show: false,
+        isTwitterConnecting: false
+      }
     }
-  }
-});
+  };
+};
+
+export const showConnectingLoginPopover = () => {
+  return {
+    type: types.SHOW_CONNECTING_LOGIN_POPOVER,
+    payload: {
+      login_popover: {
+        show: true,
+        isTwitterConnecting: true
+      }
+    }
+  };
+};
 
 export const updateCurrentUser = (current_user) => ({
   type: types.UPDATE_CURRENT_USER,
@@ -107,6 +123,21 @@ export const upsertVideoStatEntities = (data) => ({
   payload: { video_stat_entities: data }
 });
 
+export const upsertReplyDetailEntities = (data) => ({
+  type: types.UPSERT_REPLY_DETAIL_ENTITIES,
+  payload: { reply_detail_entities: data }
+});
+
+export const upsertCurrentUserVideoRelationEntities = (data) => ({
+  type: types.UPSERT_CURRENT_USER_VIDEO_RELATION_ENTITIES,
+  payload: { current_user_video_relation_entities: data }
+});
+
+export const upsertCurrentUserReplyDetailRelationEntities = (data) => ({
+  type: types.UPSERT_CURRENT_USER_REPLY_DETAIL_RELATION_ENTITIES,
+  payload: { current_user_reply_detail_relation_entities: data }
+});
+
 export const upsertHomeFeedEntities = (data) => ({
   type: types.UPSERT_HOME_FEED_ENTITIES,
   payload: { home_feed_entities: data }
@@ -128,6 +159,13 @@ export const upsertVideoContributionEntities = (data) => ({
   type: types.UPSERT_VIDEO_CONTRIBUTION_ENTITIES,
   payload: { video_contribution_entities: data }
 });
+
+
+export const upsertReplyContributionEntities = (data) => ({
+  type: types.UPSERT_REPLY_CONTRIBUTION_ENTITIES,
+  payload: { reply_contribution_entities: data }
+});
+
 
 export const upsertUserContributionEntities = (data) => ({
   type: types.UPSERT_USER_CONTRIBUTION_ENTITIES,

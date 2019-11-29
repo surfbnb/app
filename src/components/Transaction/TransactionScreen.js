@@ -37,6 +37,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helpers/TransactionHelper';
 import ReduxGetters from '../../services/ReduxGetters';
 import PepoNativeHelper from '../../helpers/PepoNativeHelper';
+import CommonStyle from '../../theme/styles/Common';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -333,7 +334,6 @@ class TransactionScreen extends Component {
     );
   }
 
-  //TODO , NOT SURE if bug comes this also will have to connected via redux.
   onBalance(balance, res) {
     balance = pricer.getFromDecimal(balance);
     balance = Number(PriceOracle.toBt(balance)) || 0;
@@ -431,22 +431,13 @@ class TransactionScreen extends Component {
   }
 
   dropPixel() {
-    let pixelParams = {
+    PixelCall({
+      e_entity: 'user',
       e_action: 'contribution',
-      e_data_json: {
-        profile_user_id: this.toUser.id,
-        amount: this.state.btAmount
-      }
-    };
-    if (this.videoId) {
-      pixelParams.e_entity = 'video';
-      pixelParams.e_data_json.video_id = this.videoId;
-      pixelParams.p_type = 'feed';
-    } else {
-      pixelParams.e_entity = 'user_profile';
-      pixelParams.p_type = 'user_profile';
-    }
-    PixelCall(pixelParams);
+      p_type: 'user_profile',
+      p_name: this.toUser.id,
+      amount: this.state.btAmount
+    });
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
@@ -544,7 +535,7 @@ class TransactionScreen extends Component {
           }
         }}
       >
-        <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+        <View style={CommonStyle.modalViewContainer}>
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
               <View style={inlineStyles.headerWrapper}>

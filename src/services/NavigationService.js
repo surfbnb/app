@@ -43,6 +43,26 @@ const findCurrentRoute = (navState) => {
   }
 }
 
+const getStackNumber = (routes , index , num , whiteListedStacks) => {
+  if (typeof index !== "number" || !whiteListedStacks.length) {
+    return num;
+  } else {
+    const currentRoute = routes[index] || {};
+    const innerRoutes = currentRoute["routes"] || []
+    for(let cnt = 0 ;  cnt < innerRoutes.length ; cnt++){
+      const route = innerRoutes[cnt]; 
+      const routeName = route["routeName"];
+      const indexOfItem = whiteListedStacks.indexOf(routeName);
+      if(indexOfItem > -1){
+        num ++;
+        whiteListedStacks.splice(indexOfItem, 1);
+      }
+      num = getStackNumber( route["routes"], route["index"], num  , whiteListedStacks);
+    } 
+    return num;
+  }
+}
+
 function reset(navigation) {
   if(!navigation) return;
    navigation.dispatch(StackActions.popToTop("Notification"));
@@ -56,5 +76,6 @@ export default {
   getTopLevelNavigator,
   findCurrentRoute,
   getActiveTab,
+  getStackNumber,
   reset
 };

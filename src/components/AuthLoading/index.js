@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar, Alert, Platform, Linking } from 'react-native';
+import { View, StatusBar, Alert } from 'react-native';
 
 import Toast from '../../theme/components/NotificationToast';
 import styles from './styles';

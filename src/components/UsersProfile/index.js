@@ -16,14 +16,18 @@ import { fetchUser } from '../../helpers/helpers';
 import utilities from '../../services/Utilities';
 import inlineStyles from './styles';
 import UserProfileActionSheet from './userProfileActionSheet';
+import CommonStyle from "../../theme/styles/Common";
+import deepGet from "lodash/get";
+import unescape from'lodash/unescape';
 
 import EventEmitter from "eventemitter3";
 const userActionEvents = new EventEmitter();
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
+    const name = navigation.getParam('headerTitle') || reduxGetter.getName(navigation.getParam('userId'));
     return {
-      title: reduxGetter.getName(navigation.getParam('userId')),
+      title: name,
       headerBackTitle: null,
       headerStyle: {
         backgroundColor: '#ffffff',
@@ -80,7 +84,10 @@ export default class UsersProfile extends Component {
   onUserResponse = ( res ) => {
     if(utilities.isEntityDeleted(res)){
       this.setState({isDeleted: true});
+      return
     }
+    let userName =  deepGet(res,  `data.users.${this.userId}.name` , "");
+    this.props.navigation.setParams({ headerTitle:  unescape(userName)});
   }
 
   _headerComponent() {
@@ -97,7 +104,7 @@ export default class UsersProfile extends Component {
       )
     }else{
       return (
-        <React.Fragment>
+        <View style={CommonStyle.viewContainer}>
           <UserProfileFlatList
             listHeaderComponent={this._headerComponent()}
             onUserFetch={this.onUserResponse}
@@ -111,7 +118,7 @@ export default class UsersProfile extends Component {
           >
             <Image style={{ height: 57, width: 57 }} source={p_tx_img} />
           </TouchableOpacity>
-        </React.Fragment>
+        </View>
       );
     }
   }

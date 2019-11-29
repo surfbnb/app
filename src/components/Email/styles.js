@@ -4,8 +4,9 @@ import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 let stylesMap = {
   container: {
     flex: 1,
-    marginVertical: 20,
-    marginHorizontal: 10
+    backgroundColor: Colors.white,
+    paddingVertical: 20,
+    paddingHorizontal: 10
   },
   resend: {
     color: Colors.valhalla,

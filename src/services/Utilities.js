@@ -1,23 +1,25 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { Alert, Platform, Linking } from 'react-native';
+import { Alert, Platform, Linking , Dimensions } from 'react-native';
 import deepGet from 'lodash/get';
 
 import pricer from './Pricer';
 import reduxGetters from './ReduxGetters';
-import appConfig from '../constants/AppConfig';
 
 import { FlyerEventEmitter } from '../components/CommonComponents/FlyerHOC';
 import { LoginPopoverActions } from '../components/LoginPopover';
 import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
-import AppConfig from '../constants/AppConfig';
-import PepoApi from './PepoApi';
+import AppConfig from '../constants/AppConfig';;
 import DataContract from '../constants/DataContract';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
-let CurrentUser;
+let CurrentUser, PepoApi;
 import('../models/CurrentUser').then((imports) => {
   CurrentUser = imports.default;
+});
+import('./PepoApi').then((imports) => {
+  PepoApi = imports.default;
 });
 
 let os = Platform.OS || "";
@@ -25,13 +27,13 @@ os =  os.toLowerCase();
 
 let recursiveMaxCount = 0;
 
-let checkVideoPermission = function(navigation) {
+let checkVideoPermission = function(navigation, params ) {
   CameraPermissionsApi.requestPermission('camera').then((cameraResult) => {
     CameraPermissionsApi.requestPermission('microphone').then((microphoneResult) => {
       if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
         console.log('checkVideoPermission:cameraResult', cameraResult);
         console.log('checkVideoPermission:microphoneResult', microphoneResult);
-        navigation.navigate('CaptureVideo');
+        navigation.navigate('CaptureVideo', params);
       } else if (
         (Platform.OS == 'ios' && (cameraResult == 'denied' || microphoneResult == 'denied')) ||
         cameraResult == 'restricted' ||
@@ -84,7 +86,7 @@ export default {
 
   getTokenSymbolImageConfig() {
     let symbol = pricer.getTokenSymbol();
-    return appConfig['tokenSymbols'][symbol];
+    return AppConfig['tokenSymbols'][symbol];
   },
 
   _getIDList(resultData, key = 'id') {
@@ -120,7 +122,7 @@ export default {
 
   isUserActivated(status) {
     status = status || '';
-    return status.toLowerCase() == appConfig.userStatusMap.activated;
+    return status.toLowerCase() == AppConfig.userStatusMap.activated;
   },
 
   getLastChildRoutename(state) {
@@ -135,15 +137,23 @@ export default {
     return this.getLastChildRoutename(routes[index]);
   },
 
-  handleVideoUploadModal(previousTabIndex, navigation) {
-    if (reduxGetters.getVideoProcessingStatus() == true && previousTabIndex == 0) {
+  getActiveTab( navigation ){
+    if( !navigation ) return ;
+    let activeIndex = deepGet(navigation , 'state.index'),
+        route = deepGet(navigation , `state.routes[${activeIndex}]`);
+    return route && route["routeName"];
+  },
+
+  handleVideoUploadModal(previousTabIndex, navigation, params = {}) {
+    //todo: @mayur toast and flyer logic change.
+    if (reduxGetters.getVideoProcessingStatus()  && previousTabIndex == 0) {
       FlyerEventEmitter.emit('onShowProfileFlyer', { id: 2 });
-    } else if (reduxGetters.getVideoProcessingStatus() == true) {
+    } else if (reduxGetters.getVideoProcessingStatus()) {
       Toast.show({
         text: 'Video uploading in progress.'
       });
     } else {
-      checkVideoPermission(navigation);
+      checkVideoPermission(navigation, params);
     }
   },
 
@@ -206,6 +216,21 @@ export default {
       return pepocornsName.substring(0, length - 1);
     }
     return pepocornsName;
+  },
+
+  getPendantAvailableHeight(){
+    const area = AppConfig.MaxDescriptionArea;
+    let height = ( area / Dimensions.get('window').width ) + 20;
+      //70 is height of top section
+    return AppConfig.VideoScreenObject.height - height - (isIphoneX ? 78 : Platform.OS === 'ios' ? 28 : 80) ;
+  } ,
+
+  getPendantTop(){
+    if( isIphoneX ){
+      return 60 + 45; 
+    }else{
+      return 30+45;
+    }
   }
 
 };

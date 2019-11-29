@@ -32,7 +32,7 @@ class ReportVideo extends PureComponent {
 
     reportVideo = () => {
         new PepoApi('/report')
-            .post({report_entity_kind: 'video', report_entity_id: this.props.videoId })
+            .post({report_entity_kind: this.props.reportKind, report_entity_id: this.props.reportEntityId })
             .then((response) => {
                 if (response && response.success){
                     Toast.show({text:'Video reported successfully!', icon: 'success' });
@@ -87,7 +87,7 @@ class ReportVideo extends PureComponent {
 
     render(){
         return  this.isVisible() && (<TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem}
-                                  style={{marginBottom: 20, height: 20, width: 30, alignItems: 'center', justifyContent: 'center'}}
+                                  style={{marginBottom: 20, height: 24, width: 50, alignItems: 'center', justifyContent: 'center'}}
                                   onPress={multipleClickHandler(() => this.showActionSheet())} >
             <Image style={{ height: 12, width: 30 }} source={report_icon} />
         </TouchableOpacity>)

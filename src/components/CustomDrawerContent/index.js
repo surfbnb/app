@@ -147,7 +147,6 @@ class CustomDrawerContent extends Component {
   };
 
   initWallet = () => {
-    //TODO: Navigation should push instead of navigate
     this.props.navigation.navigate('WalletSettingScreen');
   };
 

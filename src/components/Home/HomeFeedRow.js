@@ -1,20 +1,21 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
+import {View, Dimensions} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
-import VideoWrapper from './VideoWrapper';
-import ShareIcon from "../CommonComponents/ShareIcon";
+import FanVideo from '../VideoWrapper/FanVideo';
 import PepoApi from '../../services/PepoApi';
 import reduxGetter from '../../services/ReduxGetters';
-import TransactionPepoButton from './TransactionPepoButton';
-import CurrentUser from '../../models/CurrentUser';
+import assignIn from 'lodash/assignIn';
 
-import BottomStatus from './BottomStatus';
-import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
+import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 
 import inlineStyles from './styles';
-import utilities from '../../services/Utilities';
 import ReportVideo from "../CommonComponents/ReportVideo";
+import ReplyIcon from '../CommonComponents/ReplyIcon';
+import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
+import DataContract from '../../constants/DataContract';
+import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -36,80 +37,61 @@ class HomeFeedRow extends PureComponent {
       .catch((error) => {});
   };
 
-  navigateToTransactionScreen = (e) => {
-    if (utilities.checkActiveUser() && CurrentUser.isUserActivated(true)) {
-      this.props.navigation.push('TransactionScreen', {
-        toUserId: this.userId,
-        videoId: reduxGetter.getHomeFeedVideoId(this.props.feedId),
-        requestAcknowledgeDelegate: this.refetchFeed
-      });
-    }
-  };
-
-  navigateToUserProfile = (e) => {
-    if (utilities.checkActiveUser()) {
-      if (this.userId == CurrentUser.getUserId()) {
-        this.props.navigation.navigate('ProfileScreen');
-      } else {
-        this.props.navigation.push('UsersProfileScreen', { userId: this.userId });
-      }
-    }
-  };
-
-  onDescriptionClick = ( tapEntity , tapText ) => {
-    if (utilities.checkActiveUser()) {
-      if (!tapEntity) {
-        return;
-      }
-
-      if( tapEntity.kind === 'tags'){
-        this.props.navigation.push('VideoTags', {
-          "tagId": tapEntity.id
-        });
-      }
-
-    }
-  };
+  getPixelDropData = () => {
+    const parentData =  this.props.getPixelDropData && this.props.getPixelDropData() || {};
+    const pixelParams = {
+      e_entity: 'video',
+      p_type: 'feed',
+      video_id: this.videoId,
+    };
+    return assignIn({}, pixelParams, parentData);
+  }
 
 
   render() {
     return (
-      <View style={inlineStyles.fullScreen}>
-        <VideoWrapper
+      <View style={[inlineStyles.fullScreen,  {position: "relative"} ]}>
+
+        <FanVideo
+          shouldPlay={this.props.shouldPlay}
           userId={this.userId}
           videoId={this.videoId}
-          feedId={this.props.feedId}
           doRender={this.props.doRender}
           isActive={this.props.isActive}
-          shouldPlay={this.props.shouldPlay}
+          getPixelDropData={this.getPixelDropData}
         />
-
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-          <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <TransactionPepoButton
+          <View style={[inlineStyles.touchablesBtns, {justifyContent: 'flex-end'}]} pointerEvents={'box-none'}>
+
+            <View style={{ minWidth: '20%' }}>
+              <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
+                <PepoTxBtn
                   resyncDataDelegate={this.refetchFeed}
                   userId={this.userId}
-                  videoId={this.videoId}
+                  entityId={this.videoId}
+                  getPixelDropData={this.getPixelDropData}
                 />
-                <ShareIcon videoId={this.videoId} userId={this.userId} />
-                <ReportVideo  userId={this.userId} videoId={this.videoId} />
+                <ReplyIcon videoId={this.videoId} userId={this.userId}/>
+                <VideoShareIcon  entityId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
+                <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
               </View>
 
-            <VideoAmountStat
-              videoId={this.videoId}
-              onWrapperClick={this.navigateToUserProfile}
-              userId={this.userId}
-              pageName="feed"
-            />
+              <VideoSupporterStat
+                entityId={this.videoId}
+                userId={this.userId}
+                pageName="feed"
+              />
+            </View>
+
           </View>
 
-          <BottomStatus userId={this.userId} videoId={this.videoId} onWrapperClick={this.navigateToUserProfile} onDescriptionClick={this.onDescriptionClick} />
+          <VideoBottomStatus userId={this.userId} entityId={this.videoId} />
         </View>
       </View>
     );
   }
 }
+
 
 export default withNavigation(HomeFeedRow);

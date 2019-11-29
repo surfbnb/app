@@ -1,12 +1,10 @@
 import BigNumber from 'bignumber.js';
-import {OstWalletSdk, OstWalletSdkUI, OstJsonApi} from '@ostdotcom/ost-wallet-sdk-react-native';
+import {OstWalletSdk, OstWalletSdkUI} from '@ostdotcom/ost-wallet-sdk-react-native';
 import {
   IS_PRODUCTION, DEFAULT_SESSION_KEY_EXPIRY_TIME, DEFAULT_SPENDING_LIMIT, MAX_SPENDING_LIMIT,
   HIGH_SPEND_SESSION_KEY_EXPIRY_TIME, MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME
 } from '../constants';
 import CurrentUser from "../models/CurrentUser";
-import pricer from '../services/Pricer';
-import Toast from '../theme/components/NotificationToast';
 import {LoadingModal} from '../theme/components/LoadingModalCover';
 import {ostSdkErrors, WORKFLOW_CANCELLED_MSG} from '../services/OstSdkErrors';
 import {ostErrors} from "../services/OstErrors";
@@ -14,7 +12,7 @@ import {VideoPlayPauseEmitter} from './Emitters'
 
 
 const ON_USER_CANCLLED_ERROR_MSG = WORKFLOW_CANCELLED_MSG;
-const DEVICE_UNAUTHORIZED_ERROR_MSG = "Your device is not authorized to perform transactions";;
+const DEVICE_UNAUTHORIZED_ERROR_MSG = "Your device is not authorized to perform transactions";
 const bnDefaultSpendingLimit = new BigNumber(DEFAULT_SPENDING_LIMIT);
 const bnMaxSpendingLimit = new BigNumber(MAX_SPENDING_LIMIT);
 const bnOne = new BigNumber(1);

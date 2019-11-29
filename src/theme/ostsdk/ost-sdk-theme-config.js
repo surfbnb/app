@@ -91,7 +91,7 @@ export default {
       "tint_color": colors.paynesGrey
     },
     "back":{
-      "tint_color": "#438bad"
+      "tint_color": colors.paynesGrey
     }
   },
 

@@ -1,7 +1,6 @@
 /**
  * @format
  */
-import * as foo from "./src/helpers/Logger";
 import { AppRegistry } from 'react-native';
 import AppContainer from './AppContainer';
 import { name as appName } from './app.json';

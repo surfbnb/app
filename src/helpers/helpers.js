@@ -33,6 +33,20 @@ function fetchUser(userId, onResponse, errorCallback, finallyCallback) {
     });
 }
 
+function fetchVideo( videoId , onResponse, onError, onComplete ){
+  return new PepoApi(`/videos/${videoId}`)
+    .get()
+    .then((res) => {
+      onResponse && onResponse(res);
+    })
+    .catch((error) => {
+      onError && onError(error);
+    })
+    .finally(() => {
+      onComplete && onComplete();
+    });
+}
+
 function getSocialIcon(url, screen) {
   let hostName = url && url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?([^:\/?\n]+)/im);
   if ( !hostName || hostName.length < 2) {
@@ -53,4 +67,4 @@ function getHostName( url ){
   return url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/im)[1];
 }
 
-export { fetchUser, getHostName };
+export { fetchUser, getHostName , fetchVideo};

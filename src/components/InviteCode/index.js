@@ -18,6 +18,7 @@ import Utilities from '../../services/Utilities';
 import AppConfig from '../../constants/AppConfig';
 import { upsertInviteCode } from '../../actions';
 import Store from '../../store';
+import CommonStyle from '../../theme/styles/Common';
 
 
 const mapStateToProps = ({ invite_code }) => ({ invite_code });
@@ -183,7 +184,7 @@ class InviteCodeScreen extends React.Component {
   render() {
     return (
       <TouchableWithoutFeedback onPressIn={this.closeModal}>
-        <View style={inlineStyles.parent}>
+        <View style={CommonStyle.modalViewContainer}>
           <TouchableWithoutFeedback>
             <View style={[inlineStyles.container, { paddingBottom: this.state.bottomPadding }]}>
               <Text style={[inlineStyles.desc, { marginBottom: 10, fontSize: 18 }]}>

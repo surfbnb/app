@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import {View,Image,TouchableOpacity, Text} from 'react-native';
-import VideoRowComponent from "../../UserVideoHistory/UserVideoHistoryRow";
+import UserVideoHistoryRow from "../../UserVideoHistory/UserVideoHistoryRow";
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
-import inlineStyles from './styles'
-import historyBack from "../../../assets/user-video-history-back-icon.png";
-import video_not_available from '../../../assets/video-not-available.png';
 import Utilities from '../../../services/Utilities';
-import CurrentUser from '../../../models/CurrentUser';
 import reduxGetter from '../../../services/ReduxGetters';
-import Colors from "../../../theme/styles/Colors";
+import DeletedVideoInfo from '../DeletedVideoInfo';
+import CommonStyles from "../../../theme/styles/Common";
+import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
+import { SafeAreaView } from "react-navigation";
+import { fetchVideo } from '../../../helpers/helpers';
+import DataContract from '../../../constants/DataContract';
 
 class VideoPlayer extends Component {
 
@@ -24,9 +24,10 @@ class VideoPlayer extends Component {
     constructor(props){
         super(props);
         this.videoId =  this.props.navigation.getParam('videoId');
+        this.bubbleClickHandler =  this.props.navigation.getParam('bubbleClickHandler');
         this.state = {
-          userId :  this.props.navigation.getParam('userId') || null,
-          isDeleted : reduxGetter.isVideoDeleted(this.videoId)
+          userId : reduxGetter.getVideoCreatorUserId(this.videoId) || null,
+          isDeleted : false
         };
         this.refetchVideo();
         this.isActiveScreen = true;
@@ -54,10 +55,7 @@ class VideoPlayer extends Component {
 
     refetchVideo = () => {
       if (this.state.isDeleted) return;
-      new PepoApi(`/videos/${this.videoId}`)
-        .get()
-        .then((res) => { this.onRefetchVideo(res) })
-        .catch((error) => {});
+      fetchVideo( this.videoId , this.onRefetchVideo );
     };
 
     onRefetchVideo = ( res ) => {
@@ -65,45 +63,34 @@ class VideoPlayer extends Component {
         this.setState({isDeleted: true});
         return;
       }
-      const users = deepGet(res , "data.users") || {} ,
-            userKeys =  Object.keys(users) || [] ,
-            userId = userKeys[0] || null;
-      if(userId){
-        this.setState({ userId : userId});
+      const video_details = deepGet(res, `data.${DataContract.videos.videoDetailsKey}`),
+            item = video_details[this.videoId];
+      if( item ){
+        this.setState({
+          userId: item[DataContract.videos.creatorUserIdKey]
+        })
       }
     };
 
-    navigateToUserProfile = (e) => {
-      if (Utilities.checkActiveUser()) {
-        if (this.state.userId == CurrentUser.getUserId()) {
-          this.props.navigation.navigate('ProfileScreen');
-        } else {
-          this.isActiveScreen = false;
-          this.props.navigation.push('UsersProfileScreen', { userId: this.state.userId });
-        }
-      }
-    };
+    getPixelDropData = () => {
+      return pixelParams = {
+        p_type: 'single_video',
+        p_name: this.videoId
+      };
+    }
 
     render() {
         if(this.state.isDeleted){
-         return <View style={inlineStyles.container}>
-                  <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
-                    <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-                  </TouchableOpacity>
-                  <Image style={inlineStyles.imgSizeSkipFont} source={video_not_available} />
-                  <Text style={inlineStyles.desc}>Looks like the Video you were looking for isn’t available and might have been deleted by the creator!</Text>
-                </View>
+         return <DeletedVideoInfo/>
         }else{
           return (
-            <View style={{flex:1, backgroundColor: Colors.black}}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
-              <VideoRowComponent doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
-                                 videoId={this.videoId} userId={this.state.userId}
-                                 onWrapperClick={this.navigateToUserProfile}/>
-              <TouchableOpacity onPressOut={()=>this.props.navigation.goBack()} style={inlineStyles.historyBackSkipFont}>
-                <Image style={{ width: 14.5, height: 22 }} source={historyBack} />
-              </TouchableOpacity>
-            </View>
+              <UserVideoHistoryRow doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
+                                 videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}
+                                 bubbleClickHandler={this.bubbleClickHandler}/>
+             <FlotingBackArrow />
+            </SafeAreaView>
           )
         }
     }

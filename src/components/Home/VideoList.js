@@ -84,6 +84,7 @@ class VideoList extends PureComponent {
         onScrollToTop={this.onScrollToTop}
         onScrollToIndexFailed={this.onScrollToIndexFailed}
         ref={(ref) => (this.flatlistRef = ref)}
+
       />
     );
   }

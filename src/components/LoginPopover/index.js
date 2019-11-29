@@ -7,10 +7,11 @@ import TouchableButton from '../../theme/components/TouchableButton';
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
 import Store from '../../store';
-import { showLoginPopover, hideLoginPopover } from '../../actions';
+import { showLoginPopover, hideLoginPopover, showConnectingLoginPopover } from '../../actions';
 import loggedOutLogo from '../../assets/logged-out-logo.png';
 import twitterBird from '../../assets/twitter-bird.png';
 import modalCross from '../../assets/modal-cross-icon.png';
+import ReduxGetter from "../../services/ReduxGetters";
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
@@ -21,9 +22,12 @@ import('../../services/TwitterAuthService').then((imports) => {
   TwitterAuthService = imports.default;
 });
 
-const mapStateToProps = ({ login_popover }) => ({
-  show: login_popover.show
-});
+const mapStateToProps = ({ login_popover }) => {
+  return {
+    show: login_popover.show,
+    isTwitterConnecting: login_popover.isTwitterConnecting
+  }
+};
 
 const btnPreText = 'Connect with Twitter';
 const btnPostText = 'Connecting...';
@@ -32,38 +36,42 @@ class loginPopover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      disableLoginBtn: false,
-      btnText: btnPreText
+      disableLoginBtn: false
     };
-    this.isTwitterConnecting = false;
   }
 
   componentWillUnmount() {
     this.state.disableLoginBtn = false;
-    this.state.btnText = btnPreText;
-    this.isTwitterConnecting = false;
+    
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.show && this.props.show !== prevProps.show) {
-      this.setState({ disableLoginBtn: false, btnText: btnPreText });
-      this.isTwitterConnecting = false;
+    if ( this.props.isTwitterConnecting && this.props.isTwitterConnecting !== prevProps.isTwitterConnecting ) {
+      this.setState({ disableLoginBtn: true });
+    } else if (this.props.show && this.props.show !== prevProps.show) {
+      this.setState({ disableLoginBtn: false });
     }
   }
 
   onSignUp = () => {
-    this.setState({ disableLoginBtn: true, btnText: btnPostText });
-    this.isTwitterConnecting = true;
+    this.setState({ disableLoginBtn: true });
     TwitterAuthService.signUp();
   };
 
   //Use this function if needed to handle hardware back handling for android.
   closeModal = () => {
-    if (!this.isTwitterConnecting) {
+    if (!this.props.isTwitterConnecting) {
       Store.dispatch(hideLoginPopover());
     }
     return true;
   };
+
+  getConnectBtnText = () => {
+    if ( this.props.isTwitterConnecting || this.state.disableLoginBtn) {
+      return btnPostText;
+    } 
+    return btnPreText;
+  }
 
   render() {
     return (
@@ -75,7 +83,6 @@ class loginPopover extends React.Component {
             visible={this.props.show}
             coverScreen={false}
             hasBackdrop={true}
-            onRequestClose={() => console.log('onRequestClose')}
           >
             <TouchableWithoutFeedback onPressIn={this.closeModal}>
               <View style={inlineStyles.parent}>
@@ -132,7 +139,7 @@ class loginPopover extends React.Component {
                         this.state.disableLoginBtn ? Theme.Button.disabled : null
                       ]}
                       TextStyles={[Theme.Button.btnPinkText, { fontSize: 18 }]}
-                      text={this.state.btnText}
+                      text={this.getConnectBtnText()}
                       onPress={this.onSignUp}
                       source={twitterBird}
                       imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
@@ -140,15 +147,14 @@ class loginPopover extends React.Component {
                     />
                     <View style={inlineStyles.tocPp}>
                       <Text style={{textAlign: 'center'}}>
-                        <Text style={inlineStyles.termsTextBlack}>By signing up, you confirm that you agree to
-                          our </Text>
+                        <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
                         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
                           this.closeModal();
                           InAppBrowser.openBrowser(
                             `${WEB_ROOT}/terms`
                           );
                         })}>Terms of use </Text>
-                        <Text style={inlineStyles.termsTextBlack}>and have read and agree to our </Text>
+                        <Text style={inlineStyles.termsTextBlack}>and </Text>
                         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
                           this.closeModal();
                           InAppBrowser.openBrowser(
@@ -170,11 +176,21 @@ class loginPopover extends React.Component {
 
 export const LoginPopover = connect(mapStateToProps)(loginPopover);
 export const LoginPopoverActions = {
+  _track: () => {
+    let analyticsAction = AppConfig.routesAnalyticsMap.TwitterLogin;
+    firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);    
+  },
   show: () => {
     Store.dispatch(showLoginPopover());
-    let analyticsAction = AppConfig.routesAnalyticsMap.TwitterLogin;
-    console.log('firebase.analytics().setCurrentScreen() ::', analyticsAction);
-    firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);
+    LoginPopoverActions._track();
+  },
+  showConnecting: () => {
+    let loginPopoverProps = ReduxGetter.getLoginPopOverProps();
+    if ( !loginPopoverProps || !loginPopoverProps.show ) {
+      //Track.
+      LoginPopoverActions._track();
+    }
+    Store.dispatch(showConnectingLoginPopover());
   },
   hide: () => {
     Store.dispatch(hideLoginPopover());

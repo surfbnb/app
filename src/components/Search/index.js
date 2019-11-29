@@ -49,7 +49,7 @@ const TabMap = {
       }
     },
     extraParams: {
-      showBalanceFlier: true
+      showBalanceFlyer: true
     },
     supported: true
     },
@@ -97,7 +97,7 @@ const TabMap = {
       "isEmpty": true
     },
     extraParams: {
-      showBalanceFlier: true
+      showBalanceFlyer: true
     },
     renderNoResults :  (noResultsData) => {
       const oThis = TabMap.videos;
@@ -136,10 +136,9 @@ class SearchScreen extends PureComponent {
     return prevProps.userId !== this.props.userId;
   }
 
-
   componentDidUpdate(prevProps){
     if(this.isUserUpdated(prevProps)) {
-      this.initReferences();
+      //this.initReferences();
     }
   }
 
@@ -164,8 +163,9 @@ class SearchScreen extends PureComponent {
     let tabData = TabsArray[ tabIndx];
     let newTabUrl = this.getUrlForTab( tabData );
     let tabFlatList = this.getTabFlatList( tabIndx );
+    if(!tabFlatList) return;
     tabFlatList.forcedRefresh(newTabUrl);
-    tabFlatList.scrollToTop();
+    tabFlatList && tabFlatList.scrollToTop();
   };
 
   initReferences = () =>{
@@ -201,6 +201,7 @@ class SearchScreen extends PureComponent {
     if ( !currentTabUrl || currentTabUrl !== newTabUrl ) {
       // Force refresh
       let tabFlatList = this.getTabFlatList( tabIndx );
+      if(!tabFlatList) return;
       tabFlatList.scrollToTop();
       tabFlatList.forcedRefresh(newTabUrl);
     } else {
@@ -319,12 +320,13 @@ class SearchScreen extends PureComponent {
     if (this.isUserLoggedIn()){
       return this.renderLoggedInView();
     } else {
+      this.initReferences();
       return this.renderLoggedOutView()
     }
   }
 
   renderLoggedOutView = () => {
-    return <View />
+    return  <React.Fragment />
   };
 
   renderTabBar = () => {

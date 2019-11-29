@@ -2,7 +2,11 @@ import React, { PureComponent } from 'react';
 import { ActivityIndicator , FlatList} from "react-native";
 import {SafeAreaView} from "react-navigation";
 import Pagination from "../../services/Pagination";
-import VideoThumbnailItem from '../../components/CommonComponents/VideoThumbnailItem';
+
+import CommonStyle from "../../theme/styles/Common";
+import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
+import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
+import entityHelper from '../../helpers/EntityHelper';
 
 class VideoCollections extends PureComponent {
     constructor(props){
@@ -92,8 +96,7 @@ class VideoCollections extends PureComponent {
     }
 
     beforeRefresh = ( ) => {
-        //this.props.beforeRefresh && this.props.beforeRefresh();
-        //this.onPullToRefresh();
+        this.props.beforeRefresh && this.props.beforeRefresh();
         this.setState({ refreshing : true });
     };
 
@@ -149,25 +152,41 @@ class VideoCollections extends PureComponent {
     };
 
     _renderVideoCell = ({ item, index }) => {
-        return (<VideoThumbnailItem
-          payload={item.payload}
-          index={index}
-          onVideoClick={() => {this.onVideoClick(item.payload, index)}}
-          isEmpty={item.isEmpty}
-          emptyRenderFunction={this.props.getNoResultsCell}/>);
+        if(entityHelper.isVideoReplyEntity( item )){
+            if(entityHelper.isReplyVideoTypeEntity(item)){
+             return this._renderVideoReplyThumbnail( item, index );
+            }
+        } else if( entityHelper.isVideoEntity( item )) {
+           return this._renderVideoThumbnail( item, index);
+        } 
     };
+
+    _renderVideoReplyThumbnail( item, index ) {
+        return (<ReplyThumbnail  payload={item.payload}  index={index} onVideoClick={() => {this.onVideoClick(item.payload,index)}}/>);
+    }
+
+    _renderVideoThumbnail( item, index){
+        return (<VideoThumbnail
+            payload={item.payload}
+            index={index}
+            onVideoClick={() => {this.onVideoClick(item.payload, index)}}
+            isEmpty={item.isEmpty}
+            emptyRenderFunction={this.props.getNoResultsCell}/>);
+    }
 
 
     onVideoClick = (payload, index) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
         this.props.navigation.push("FullScreenVideoCollection", {
             fetchServices : clonedInstance,
+            tagId: this.props.tagId,
             currentIndex: index,
             payload,
             baseUrl: this.props.getFetchUrl(),
-            showBalanceFlier: this.props.extraParams && this.props.extraParams.showBalanceFlier
+            showBalanceFlyer: this.props.extraParams && this.props.extraParams.showBalanceFlyer
         });
     }
+    
     renderFooter = () => {
         if (!this.state.loadingNext) return null;
         return <ActivityIndicator />;
@@ -199,15 +218,13 @@ class VideoCollections extends PureComponent {
         this.listRef.scrollToOffset({offset: 0});
     }
 
-
-
     setListRef = (listRef) => {
       this.listRef = listRef;
     };
 
     render(){
         return (
-          <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
+          <SafeAreaView forceInset={{ top: 'never' }} style={CommonStyle.viewContainer}>
               <FlatList
                 ref={this.setListRef}
                 ListHeaderComponent={this.listHeaderComponent()}

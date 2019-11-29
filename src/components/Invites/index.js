@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Text, SafeAreaView } from 'react-native';
 
-import styles from './styles';
 import Colors from '../../theme/styles/Colors';
 import BackArrow from '../CommonComponents/BackArrow';
 import InvitesList from './InvitesList';
-import CurrentUser from '../../models/CurrentUser';
+import CommonStyle from "../../theme/styles/Common";
 
 class Invites extends Component {
   static navigationOptions = (options) => {
@@ -46,7 +45,7 @@ class Invites extends Component {
 
   render() {
     return (
-      <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
+      <SafeAreaView forceInset={{ top: 'never' }} style={CommonStyle.viewContainer}>
         <InvitesList
           fetchUrl={`/invites`}
           onRefresh={this.onRefresh}

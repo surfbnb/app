@@ -1,27 +1,54 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import VideoWrapper from '../Home/VideoWrapper';
-import ShareIcon from "../CommonComponents/ShareIcon";
+import FanVideo from '../VideoWrapper/FanVideo';
 import ReportVideo from "../CommonComponents/ReportVideo";
 import PepoApi from '../../services/PepoApi';
-import TransactionPepoButton from '../Home/TransactionPepoButton';
 
-import CurrentUser from '../../models/CurrentUser';
-
-import BottomStatus from '../Home/BottomStatus';
-import VideoAmountStat from '../CommonComponents/VideoAmoutStat';
-import ShareVideo from '../../services/shareVideo';
+import VideoBottomStatus from '../BottomStatus/VideoBottomStatus';
 import inlineStyles from './styles';
 
-import utilities from '../../services/Utilities';
-import OptionsIcon from '../../assets/options_self_video.png';
+import Utilities from '../../services/Utilities';
+import ReplyIcon from '../CommonComponents/ReplyIcon';
+import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
+import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
+import DataContract from '../../constants/DataContract';
+import BottomReplyBar from '../CommonComponents/BottomReplyBar';
+import CommonStyle from "../../theme/styles/Common";
+import assignIn from 'lodash/assignIn';
+import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
+import AppConfig from "../../constants/AppConfig";
+import BubbleList from '../CommonComponents/BubbleList';
+import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
 
+
+const AREA = AppConfig.MaxDescriptionArea;
+const height = AREA / Dimensions.get('window').width + 20;
 
 class UserVideoHistoryRow extends PureComponent {
   constructor(props) {
     super(props);
+    this.isUserNavigate = false;
+    this.pageType = "user_profile";
+    this.pageInit();
   }
+
+  pageInit = () => {
+    if( Utilities.getLastChildRoutename(this.props.navigation.state) === 'VideoPlayer'){
+      this.isUserNavigate = true;
+      return this.pageType = 'video_player';
+    }
+  }
+
+  getPixelDropData = () => {
+    const parentData =  this.props.getPixelDropData() ;
+    const pixelParams = {
+      e_entity: 'video',
+      video_id: this.props.videoId,
+    };
+    return assignIn({}, pixelParams, parentData);
+  }
+
 
   refetchVideo = () => {
     new PepoApi(`/videos/${this.props.videoId}`)
@@ -30,82 +57,68 @@ class UserVideoHistoryRow extends PureComponent {
       .catch((error) => {});
   };
 
-  navigateToTransactionScreen = (e) => {
-    if (this.isCurrentUser()) return;
-    if (utilities.checkActiveUser() && CurrentUser.isUserActivated(true)) {
-      this.props.navigation.push('TransactionScreen', {
-        toUserId: this.props.userId,
-        videoId: this.props.videoId,
-        requestAcknowledgeDelegate: this.refetchVideo
-      });
-    }
-  };
-
-  isCurrentUser() {
-    return this.props.userId == CurrentUser.getUserId();
-  }
-
-  shareVideo = () => {
-    let shareVideo = new ShareVideo(this.props.videoId);
-    shareVideo.perform();
-  };
-
-  onDescriptionClick = ( tapEntity , tapText ) => {
-
-    if (!tapEntity) {
-      return;
-    }
-
-    if(tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', {
-        "tagId": tapEntity.id
-      });
-    }
-  };
-
   render() {
     return (
-      <View style={inlineStyles.fullScreen}>
-        <VideoWrapper
-          shouldPlay={this.props.shouldPlay}
-          userId={this.props.userId}
-          videoId={this.props.videoId}
-          doRender={this.props.doRender}
-          isActive={this.props.isActive}
-        />
+      <View style={CommonStyle.fullScreen}>
 
-        {!!this.props.videoId && !!this.props.userId && (
-          <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
-            <View style={inlineStyles.touchablesBtns}>
+                <View style={CommonStyle.videoWrapperfullScreen}>
 
-              <View style={{ minWidth: '20%', alignItems: 'center', alignSelf: 'flex-end' }}>
-                <TransactionPepoButton
-                  resyncDataDelegate={this.refetchVideo}
-                  userId={this.props.userId}
-                  videoId={this.props.videoId}
-                />
-                <ShareIcon  userId={this.props.userId} videoId={this.props.videoId} />
-                <ReportVideo  userId={this.props.userId} videoId={this.props.videoId} />
-              </View>
+                    <FanVideo
+                      shouldPlay={this.props.shouldPlay}
+                      userId={this.props.userId}
+                      videoId={this.props.videoId}
+                      doRender={this.props.doRender}
+                      isActive={this.props.isActive}
+                      getPixelDropData={this.getPixelDropData}
+                    />
 
-              <VideoAmountStat
-                videoId={this.props.videoId}
-                userId={this.props.userId}
-                onWrapperClick={this.props.onWrapperClick}
-              />
-            </View>
+                    {!!this.props.videoId && !!this.props.userId && (
+                      <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
 
-            <BottomStatus
-              userId={this.props.userId}
-              videoId={this.props.videoId}
-              onWrapperClick={this.props.onWrapperClick}
-              onDescriptionClick={this.onDescriptionClick}
-            />
-          </View>
-        )}
+                        <View style={[inlineStyles.touchablesBtns,  {justifyContent: 'flex-end'}]} pointerEvents={'box-none'} >
+
+
+
+                          <View style={{ minWidth: '20%' }}>
+                            <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
+                            <PepoTxBtn
+                              resyncDataDelegate={this.refetchVideo}
+                              userId={this.props.userId}
+                              entityId={this.props.videoId}
+                              getPixelDropData={this.getPixelDropData}
+                            />
+                            <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
+                            <VideoShareIcon entityId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.props.videoId)} />
+                            <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
+                          </View>
+
+                          <VideoSupporterStat
+                            entityId={this.props.videoId}
+                            userId={this.props.userId}
+                          />
+                        </View>
+                        </View>
+
+                        <VideoBottomStatus
+                          userId={this.props.userId}
+                          entityId={this.props.videoId}
+                          isUserNavigate={this.isUserNavigate}
+                        />
+                      </View>
+                    )}
+                  </View>
+
+            <BottomReplyBar  userId={this.props.userId}  videoId={this.props.videoId}/>
       </View>
     );
   }
 }
+
+UserVideoHistoryRow.defaultProps = {
+  getPixelDropData: function(){
+    console.warn("getPixelDropData props is mandatory for UserVideoHistoryRow component");
+    return {};
+  }
+};
 
 export default withNavigation(UserVideoHistoryRow);

@@ -42,7 +42,7 @@ let refreshTimeOut = 0;
 function loginInFlow(navigation, tab) {
   let currentTabIndex = tab.navigationIndex;
   if (tab.rootStack === 'CaptureVideo') { 
-    utilities.handleVideoUploadModal(previousTabIndex, navigation);
+    utilities.handleVideoUploadModal(previousTabIndex, navigation, {videoType: appConfig.videoTypes.post });
     return;
   }
   if (currentTabIndex == undefined || currentTabIndex == null) return;
@@ -52,8 +52,8 @@ function loginInFlow(navigation, tab) {
   } else if (utilities.getLastChildRoutename(navigation.state) !== tab.childStack) {
     try {
       navigation.dispatch(StackActions.popToTop());
-    } catch {
-      console.log('Catch error');
+    } catch(e) {
+      console.log('Catch error', e);
     }
   } else {
     clearTimeout(refreshTimeOut);
