@@ -160,6 +160,7 @@ class FanVideoDetails extends Component {
 
   handleBackButtonClick = () => {
     FanVideoDetails.saveToRedux(this.props.navigation);
+    return false;
   };
 
   enableStartUploadFlag = () => {

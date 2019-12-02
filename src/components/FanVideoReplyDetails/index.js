@@ -136,6 +136,7 @@ class FanVideoReplyDetails extends Component {
 
   handleBackButtonClick = () => {
       FanVideoReplyDetails.saveToRedux(this.props.navigation);
+      return false;
   };
 
   componentDidMount() {
