@@ -37,14 +37,16 @@ let stylesMap = {
     invertedList: {
       marginRight: 'auto',
       minWidth: '20%',
-      marginBottom: 40
+      marginBottom: 40,
+      position: 'absolute',
+      zIndex:9
     },
     pepoTxCount: {
-        fontSize: 18,
-        color: Colors.white,
-        alignSelf: 'center',
-        marginTop: 3,
-        marginBottom: 5
+      fontSize: 18,
+      color: Colors.white,
+      alignSelf: 'center',
+      marginTop: 3,
+      marginBottom: 5
     },
     txElem: {
         marginBottom: 20
