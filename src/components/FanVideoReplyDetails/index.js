@@ -6,7 +6,8 @@ import {
   View,
   Text,
   Keyboard,
-  ScrollView
+  ScrollView,
+  BackHandler
 } from 'react-native';
 import deepGet from 'lodash/get';
 import CurrentUser from '../../models/CurrentUser';
@@ -129,7 +130,13 @@ class FanVideoReplyDetails extends Component {
 
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
+
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
+
+  handleBackButtonClick = () => {
+      FanVideoReplyDetails.saveToRedux(this.props.navigation);
+  };
 
   componentDidMount() {
     this.props.navigation.setParams({
@@ -152,6 +159,7 @@ class FanVideoReplyDetails extends Component {
     this.keyboardWillHideListener.remove();
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   checkIfReplyChargeable = () => {
