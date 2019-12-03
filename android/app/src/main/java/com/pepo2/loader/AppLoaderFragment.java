@@ -41,7 +41,7 @@ public class AppLoaderFragment extends OstLoaderFragment implements OstWorkflowL
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, com.ost.walletsdk.R.style.FullScreenDialogStyle);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.FullScreenDialogStyle);
     }
 
     @Override
