@@ -19,6 +19,8 @@
 #import "RNFirebaseLinks.h"
 #import <TrustKit/TrustKit.h>
 #import "React/RCTLinkingManager.h"
+#import <OstWalletSdk/OstWalletSdk-Swift.h>
+#import "Pepo2-Swift.h"
 
 static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
 //static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.v2.sandbox";
@@ -28,6 +30,9 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  PepoLoaderManager *loaderManager = [[PepoLoaderManager alloc]init];
+  [OstWalletUI setLoaderManager: loaderManager];
+  
   [FIROptions defaultOptions].deepLinkURLScheme = CUSTOM_URL_SCHEME;
   [FIRApp configure];
   [RNFirebaseNotifications configure];

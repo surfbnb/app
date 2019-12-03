@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "copy-assets": "node -e \"fs.copyFileSync('./src/SdkErrors.json','./android/app/src/main/assets/SdkErrors.json'); fs.copyFileSync('./src/SdkErrors.json','./ios/Loader/SdkErrors.json')\"",
+    "test": "jest",
+    "postinstall": "echo \"Copying assets...\" && npm run copy-assets"
   },
   "dependencies": {
     "@ostdotcom/ost-wallet-sdk-react-native": "2.3.10",
@@ -53,9 +55,9 @@
     "redux": "4.0.1",
     "redux-actions": "2.6.5",
     "redux-logger": "3.0.6",
-    "rn-sliding-up-panel": "2.3.3",
     "socket.io-client": "2.2.0",
-    "react-native-keep-awake": "4.0.0"
+    "react-native-keep-awake": "4.0.0",
+    "rn-sliding-up-panel": "2.3.3"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",
