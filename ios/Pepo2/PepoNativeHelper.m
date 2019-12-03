@@ -7,6 +7,7 @@
 //
 
 #import "PepoNativeHelper.h"
+#import "PepoEventEmitter.h"
 
 @implementation PepoNativeHelper
 
@@ -37,6 +38,13 @@ RCT_EXPORT_METHOD(getGroupAndDecimalSeparators:(RCTResponseSenderBlock)callback
   NSLog(@"decimalSeparator: %@ and groupSeparator: %@", decimalSeparator, finalGroupSeparator);
   
   callback( @[finalGroupSeparator, decimalSeparator] );
+}
+
+RCT_EXPORT_METHOD(subscribeForEvent:(NSString *)workflowId
+                  completion:(RCTResponseSenderBlock)callback) {
+  
+  PepoEventEmitter *instance = [PepoEventEmitter sharedInstance];
+  [instance subscribeCallback:callback forWorkflowId:workflowId];
 }
 
 

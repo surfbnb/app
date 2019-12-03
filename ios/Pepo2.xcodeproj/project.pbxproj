@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00029B4323329B55009E6919 /* TrustKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B76D86A2318FAAC007316D4 /* TrustKit.framework */; };
 		00029B4423329B63009E6919 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
@@ -94,6 +95,13 @@
 		45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2697F42945424A4984DF2EDE /* Lato-LightItalic.ttf */; };
 		4720B1815AA646A98064A0C8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBEB5D26FF5447979A63766E /* EvilIcons.ttf */; };
 		4B983AB722BD153800B9E6D4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		4BAC268D237FEA3C00CE4B34 /* ContentFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC2689237FEA3C00CE4B34 /* ContentFetcher.swift */; };
+		4BAC268E237FEA3C00CE4B34 /* PepoLoaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC268A237FEA3C00CE4B34 /* PepoLoaderViewController.swift */; };
+		4BAC268F237FEA3C00CE4B34 /* OstSdkErrorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC268B237FEA3C00CE4B34 /* OstSdkErrorHelper.swift */; };
+		4BAC2692237FED5D00CE4B34 /* PepoLoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC2691237FED5D00CE4B34 /* PepoLoaderManager.swift */; };
+		4BAC2694237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC2693237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift */; };
+		4BAC27CA2382D6C100CE4B34 /* PepoEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAC27C92382D6C100CE4B34 /* PepoEventEmitter.m */; };
+		4BAC285C23852BC500CE4B34 /* SdkErrors.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BAC285B23852BC500CE4B34 /* SdkErrors.json */; };
 		4BDACD0B23018F0100CF8294 /* libRNTwitterSignIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 776EEED922E1F1F400BE1922 /* libRNTwitterSignIn.a */; };
 		4BDACD6323019EE600CF8294 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005F9BA822E1CA9600A4B00D /* libRCTImageResizer.a */; };
 		4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C73F122E880BD00FE1B04 /* libReactNativePermissions.a */; };
@@ -724,6 +732,15 @@
 		4942AA6D4C5247669FA8FCAF /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		4B46BF1CB84243E2AF31F2B2 /* RNIap.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNIap.xcodeproj; path = "../node_modules/react-native-iap/ios/RNIap.xcodeproj"; sourceTree = "<group>"; };
 		4B76D86A2318FAAC007316D4 /* TrustKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TrustKit.framework; path = Carthage/Build/iOS/TrustKit.framework; sourceTree = "<group>"; };
+		4BAC2688237FEA3B00CE4B34 /* Pepo2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pepo2-Bridging-Header.h"; sourceTree = "<group>"; };
+		4BAC2689237FEA3C00CE4B34 /* ContentFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetcher.swift; sourceTree = "<group>"; };
+		4BAC268A237FEA3C00CE4B34 /* PepoLoaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepoLoaderViewController.swift; sourceTree = "<group>"; };
+		4BAC268B237FEA3C00CE4B34 /* OstSdkErrorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OstSdkErrorHelper.swift; sourceTree = "<group>"; };
+		4BAC2691237FED5D00CE4B34 /* PepoLoaderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepoLoaderManager.swift; sourceTree = "<group>"; };
+		4BAC2693237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIVIew+NSLayoutConstraintHelper.swift"; sourceTree = "<group>"; };
+		4BAC27C82382D6C100CE4B34 /* PepoEventEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PepoEventEmitter.h; sourceTree = "<group>"; };
+		4BAC27C92382D6C100CE4B34 /* PepoEventEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PepoEventEmitter.m; sourceTree = "<group>"; };
+		4BAC285B23852BC500CE4B34 /* SdkErrors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SdkErrors.json; sourceTree = "<group>"; };
 		4BFFD401232D3D930033959D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5E7E0A527AF64DDB95B586B0 /* SMXCrashlytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SMXCrashlytics.xcodeproj; path = "../node_modules/react-native-fabric/ios/SMXCrashlytics.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -1124,6 +1141,7 @@
 		13B07FAE1A68108700A75B9A /* Pepo2 */ = {
 			isa = PBXGroup;
 			children = (
+				4BAC2645237FEA2400CE4B34 /* Loader */,
 				00B7D5572332992B0035BC00 /* ostwalletrnsdk */,
 				00228405232FD8EE00B3F25C /* GoogleService-Info.plist */,
 				00E5D90E232A573A006EA3DE /* Crashlytics.framework */,
@@ -1137,12 +1155,15 @@
 				000C67FC22D764EA0095497C /* TwitterShareExtensionUIResources.bundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				4BAC2688237FEA3B00CE4B34 /* Pepo2-Bridging-Header.h */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				000D4D7A233CD19D003403E6 /* PepoNativeHelper.h */,
 				000D4D7B233CD19D003403E6 /* PepoNativeHelper.m */,
+				4BAC27C82382D6C100CE4B34 /* PepoEventEmitter.h */,
+				4BAC27C92382D6C100CE4B34 /* PepoEventEmitter.m */,
 			);
 			name = Pepo2;
 			sourceTree = "<group>";
@@ -1214,6 +1235,19 @@
 				3C2D0E561192F4D43FFB9D65 /* libPods-Pepo2.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4BAC2645237FEA2400CE4B34 /* Loader */ = {
+			isa = PBXGroup;
+			children = (
+				4BAC285B23852BC500CE4B34 /* SdkErrors.json */,
+				4BAC2693237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift */,
+				4BAC2691237FED5D00CE4B34 /* PepoLoaderManager.swift */,
+				4BAC2689237FEA3C00CE4B34 /* ContentFetcher.swift */,
+				4BAC268B237FEA3C00CE4B34 /* OstSdkErrorHelper.swift */,
+				4BAC268A237FEA3C00CE4B34 /* PepoLoaderViewController.swift */,
+			);
+			path = Loader;
 			sourceTree = "<group>";
 		};
 		52D7BD26853745D797D1079B /* Resources */ = {
@@ -1484,6 +1518,7 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = N83K86W6P4;
+						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -2138,6 +2173,7 @@
 				45C8DB0B6EEA4DE0BD3C07D6 /* Lato-LightItalic.ttf in Resources */,
 				8F9432A3D84C40EB9B2A7B63 /* Lato-Regular.ttf in Resources */,
 				6C300736152B4242B645C0CA /* AntDesign.ttf in Resources */,
+				4BAC285C23852BC500CE4B34 /* SdkErrors.json in Resources */,
 				DA3BF552A5D24AFFBB497D4A /* Entypo.ttf in Resources */,
 				4720B1815AA646A98064A0C8 /* EvilIcons.ttf in Resources */,
 				071D8A4777714474AAD30981 /* Feather.ttf in Resources */,
@@ -2225,17 +2261,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BAC2694237FEFB600CE4B34 /* UIVIew+NSLayoutConstraintHelper.swift in Sources */,
 				00B7D57A2332992B0035BC00 /* OstJsonApiCallbackImpl.m in Sources */,
 				00B7D5842332992B0035BC00 /* OstUICallbackImpl.m in Sources */,
 				00B7D57E2332992B0035BC00 /* OstRNErrorUtils.m in Sources */,
 				00B7D5822332992B0035BC00 /* OstRNSdkUICallbackManager.m in Sources */,
 				00B7D57B2332992B0035BC00 /* OstVerifyDataWrap.m in Sources */,
 				00B7D5802332992B0035BC00 /* OstMessageBus.m in Sources */,
+				4BAC27CA2382D6C100CE4B34 /* PepoEventEmitter.m in Sources */,
 				000D4D7C233CD19D003403E6 /* PepoNativeHelper.m in Sources */,
 				00B7D5832332992B0035BC00 /* OstWalletRnSdkUI.m in Sources */,
 				00B7D57C2332992B0035BC00 /* OstDeviceRegisteredWrap.m in Sources */,
+				4BAC2692237FED5D00CE4B34 /* PepoLoaderManager.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				4BAC268F237FEA3C00CE4B34 /* OstSdkErrorHelper.swift in Sources */,
 				00B7D5852332992B0035BC00 /* OstWorkFlowCallbackImpl.m in Sources */,
+				4BAC268D237FEA3C00CE4B34 /* ContentFetcher.swift in Sources */,
+				4BAC268E237FEA3C00CE4B34 /* PepoLoaderViewController.swift in Sources */,
 				00B7D57D2332992B0035BC00 /* OstPassphrasePrefixAcceptWrap.m in Sources */,
 				00470EE522DC7A8100FC8345 /* RNFFmpegModule.m in Sources */,
 				00B7D5792332992B0035BC00 /* OstPinAcceptWrap.m in Sources */,
@@ -2267,11 +2309,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Pepo2/Pepo2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 23;
 				DEAD_CODE_STRIPPING = NO;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = N83K86W6P4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2322,6 +2366,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.staging;
 				PRODUCT_NAME = Pepo2;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Pepo2-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2331,10 +2378,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Pepo2/Pepo2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 23;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = N83K86W6P4;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2385,6 +2434,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pepo.staging;
 				PRODUCT_NAME = Pepo2;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Pepo2-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
