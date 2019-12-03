@@ -219,7 +219,7 @@ class FullScreenReplyCollection extends PureComponent{
 
     forceSetIndexAndroid(){
         if(Platform.OS != "android") return;
-        if(this.pendantClickIndex != -1 && this.currentIndex != this.pendantClickIndex ){
+        if(this.currentIndex == this.pendantClickIndex){
             this.setState({activeIndex: this.currentIndex},  ()=> {this.pendantClickIndex =  -1});
         }
     }
