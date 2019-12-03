@@ -85,7 +85,7 @@ class FanVideoReplyDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.videoDesc = props.recordedVideo.video_desc || '';
+
     this.videoLink = props.recordedVideo.video_link || '';
     if (! props.recordedVideo.video_type ){
       // It means
@@ -94,6 +94,12 @@ class FanVideoReplyDetails extends Component {
       Store.dispatch(upsertRecordedVideo({ reply_obj: this.replyObject, video_type: videoType }));
     } else {
       this.replyObject = props.recordedVideo.reply_obj;
+    }
+
+    if ('video_desc' in  props.recordedVideo){
+      this.videoDesc = props.recordedVideo.video_desc;
+    } else {
+      this.videoDesc = `@${reduxGetter.getUserName(this.replyObject.replyReceiverUserId)}`;
     }
 
     this.state = {
@@ -141,7 +147,7 @@ class FanVideoReplyDetails extends Component {
 
   componentDidMount() {
     this.props.navigation.setParams({
-      videoDesc: this.props.recordedVideo.video_desc,
+      videoDesc: this.videoDesc,
       videoLink: this.props.recordedVideo.video_link
     });
     this.setState({buttonText: this.setButtonText()});
@@ -364,7 +370,7 @@ class FanVideoReplyDetails extends Component {
               </ImageBackground>
             </TouchableOpacity>
             <VideoDescription 
-              initialValue={this.props.recordedVideo.video_desc} 
+              initialValue={this.videoDesc}
               onChangeDesc={this.onChangeDesc} 
               onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
               onSuggestionsPanelClose={this.onSuggestionsPanelClose}
