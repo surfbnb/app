@@ -27,6 +27,7 @@ import ReduxGetters from '../../services/ReduxGetters';
 import Pricer from "../../services/Pricer";
 import {getVideoReplyObject, replyPreValidationAndMessage} from "../../helpers/cameraHelper";
 import VideoReplyIcon from '../../assets/reply_video_icon.png';
+import VideoReplyCount from '../../components/CommonComponents/VideoReplyCount';
 
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
@@ -62,8 +63,7 @@ class VideoRepliesScreen extends PureComponent {
         showBackdrop : false,
         addRepliesVisible : true,
         videoUploaderVisible: false,
-        currentHeight : this.initialHeight,
-        videoReplyCount : ReduxGetters.getVideoReplyCount(this.videoId)
+        currentHeight : this.initialHeight
       }
     }
 
@@ -148,11 +148,6 @@ class VideoRepliesScreen extends PureComponent {
       return wrapStyles;
     };
 
-    onRefresh = ()=> {
-      this.setState({
-        videoReplyCount : ReduxGetters.getVideoReplyCount(this.videoId)
-      })
-    };
 
     render(){
         return (
@@ -205,9 +200,10 @@ class VideoRepliesScreen extends PureComponent {
                         </TouchableOpacity>
 
                         <View style={inlineStyles.repliesTxt}>
-                          <Text numberOfLines={1} style={inlineStyles.headerText}>
-                            {this.state.videoReplyCount} Repl{this.state.videoReplyCount > 1 ? 'ies' : 'y'}
-                          </Text>
+                          <VideoReplyCount videoId={this.videoId} showReplyText={true} style={inlineStyles.headerText} />
+                          {/*<Text  style={inlineStyles.headerText}>*/}
+                          {/*  {this.state.videoReplyCount} Repl{this.state.videoReplyCount > 1 ? 'ies' : 'y'}*/}
+                          {/*</Text>*/}
                           {/*<Text style={inlineStyles.headerSubText}>Send a reply with{' '}*/}
                           {/*<Image style={{height: 10, width: 10}} source={pepoIcon} />*/}
                           {/*{ Pricer.getToBT(Pricer.getFromDecimal(ReduxGetters.getBtAmountForReply(this.videoId )), 2)}</Text>*/}
@@ -216,7 +212,6 @@ class VideoRepliesScreen extends PureComponent {
                       <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
                                         onData={this.onData}
                                         listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding+bottomReplyViewHeight : listBottomPadding}
-                                        onRefresh={this.onRefresh}
                       />
                     </View>
                   </React.Fragment>

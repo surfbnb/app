@@ -210,7 +210,8 @@ class ReplyCollection extends PureComponent {
             array.splice(index, 1);
             this.setState({list: array});
         }
-    }
+      fetchVideo(this.props.videoId);
+    };
 
     onVideoClick = ( index , item) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
@@ -219,7 +220,7 @@ class ReplyCollection extends PureComponent {
             "currentIndex": index,
             "baseUrl": this.props.fetchUrl
         });
-    }
+    };
 
     renderFooter = () => {
         if (!this.state.loadingNext) return null;
