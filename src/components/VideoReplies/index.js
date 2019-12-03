@@ -5,6 +5,8 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  StatusBar,
+  Platform,
   Animated ,TouchableWithoutFeedback
 } from 'react-native';
 
@@ -28,16 +30,19 @@ import Pricer from "../../services/Pricer";
 import {getVideoReplyObject, replyPreValidationAndMessage} from "../../helpers/cameraHelper";
 import VideoReplyIcon from '../../assets/reply_video_icon.png';
 import VideoReplyCount from '../../components/CommonComponents/VideoReplyCount';
+import NotchHelper from "../../helpers/NotchHelper";
 
+const statusBarHeight = StatusBar.currentHeight;
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
-const bottomReplyViewHeight = isIphoneX() ? 89 : 54;
+// const bottomReplyViewHeight = isIphoneX() ? 88 : Platform.OS === 'ios' ? 54 : NotchHelper.hasNotch() ? 54 - statusBarHeight : statusBarHeight + 6;
+const bottomReplyViewHeight = isIphoneX() ? 88 : Platform.OS === 'ios' ? 54 : NotchHelper.hasNotch() ? 54 - statusBarHeight : 54 - statusBarHeight;
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
 
 const bottomSpace = getBottomSpace([true]);
-
+console.log('statusBarHeight', bottomSpace);
 class VideoRepliesScreen extends PureComponent {
 
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -211,7 +216,8 @@ class VideoRepliesScreen extends PureComponent {
                       </View>
                       <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
                                         onData={this.onData}
-                                        listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding+bottomReplyViewHeight : listBottomPadding}
+                                        listBottomPadding={this.state.currentHeight > this.initialHeight?  topPadding+bottomPadding+bottomReplyViewHeight - (isIphoneX()? 34 : 0): listBottomPadding}
+                                        onRefresh={this.onRefresh}
                       />
                     </View>
                   </React.Fragment>
