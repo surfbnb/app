@@ -45,7 +45,7 @@ class Base extends PureComponent {
                         </View>
                         <View style={[inlineStyles.videoStatsContainer]}>
                             <Image style={{height: 12, width: 12, marginTop: 2}} source={pepoWhiteIcon} />
-                            <Text style={inlineStyles.videoStatsTxt}>{this.props.btAmount || 0}</Text>
+                            {this.props.pepoAmount}
                         </View>
                      </View>        
                 </View>
