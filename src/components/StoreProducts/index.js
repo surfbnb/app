@@ -239,8 +239,8 @@ class StoreProductsScreen extends PureComponent{
                 </View>
                 <ScrollView>
                   {this.products.map(( product) => (
-                    <TouchableWithoutFeedback>
-                      <View key={ product.productId } style={inlineStyles.poductListRow}>
+                    <TouchableWithoutFeedback key={ product.productId }>
+                      <View style={inlineStyles.poductListRow}>
                           <View style={{flexDirection: "row", alignItems: 'center'}}>
                               <Image source={pepoIcon} style={{ width: 19, height: 19 }}/>
                               <Text style={[inlineStyles.topUpName, {marginLeft: 5}]}>{product.title && product.title.replace(/\s\(Pepo.*\)+/ig , "") || product.title }</Text>

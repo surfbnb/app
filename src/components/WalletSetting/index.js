@@ -76,7 +76,7 @@ class WalletSettingList extends PureComponent {
       optionIds.abortRecovery,
       "Cancelling recovery",
       "Waiting for confirmation",
-      "Aborted recovery ");
+      "Aborted recovery");
 
     this._createEventLoaderData(
       optionIds.viewMnemonics,
@@ -223,16 +223,16 @@ class WalletSettingList extends PureComponent {
   };
 
   requestAcknowledged = (ostWorkflowContext , ostContextEntity) => {
-    LoadingModal.show(this._getRequestAcknowledgedText())
+    // LoadingModal.show(this._getRequestAcknowledgedText())
   };
 
   flowComplete = (ostWorkflowContext , ostContextEntity) => {
     this.refreshList(() => {
       if (this.canShowAlert(ostWorkflowContext)) {
         let text = this._getFlowCompleteText();
-        LoadingModal.showSuccessAlert(text);
+        // LoadingModal.showSuccessAlert(text);
       }else {
-        LoadingModal.hide()
+        // LoadingModal.hide()
       }
 
     });
@@ -265,7 +265,7 @@ class WalletSettingList extends PureComponent {
 
   workflowFailed = (ostWorkflowContext , ostError) => {
     let text = this._getFlowFailedText(ostWorkflowContext, ostError);
-    LoadingModal.showFailureAlert(text, null, "Dismiss");
+    // LoadingModal.showFailureAlert(text, null, "Dismiss");
   };
 
   canShowAlert(workflowContext) {

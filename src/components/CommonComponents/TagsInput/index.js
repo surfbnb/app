@@ -32,7 +32,7 @@ class TagsInput extends PureComponent {
     this.reqTimer = setTimeout(() => {
       if (!reqParam) return;
       new PepoApi(DataContract.tags.userTags)
-        .get('q=' + reqParam)
+        .get(  {...{q: reqParam},...(this.props.extraParams || {})} )
         .then((res) => {
           this.openTagsPanel(res);
         })
@@ -40,13 +40,14 @@ class TagsInput extends PureComponent {
     }, 300);
   };
 
+
   fetchMentions = (keyword) => {
     clearTimeout(this.reqTimer);
     const reqParam = keyword.substr(1);
     this.reqTimer = setTimeout(() => {
-      if (!reqParam) return;
+      //if (!reqParam) return;
       new PepoApi(DataContract.mentions.userMentions)
-        .get('q=' + reqParam)
+        .get({...{q: reqParam},...(this.props.extraParams || {})})
         .then((res) => {
           this.openMentionsPanel(res);
         })
@@ -71,6 +72,11 @@ class TagsInput extends PureComponent {
     return str.slice(left, right + pos);
   }
 
+  shouldCallOnEmptyData = (wordAtIndex) => {
+      return this.props.mentionsCallWithEmptyChars && this.props.mentionsCallWithEmptyChars.includes(wordAtIndex);
+  };
+
+
   onChangeText = (val) => {
     const location = this.location - 1,
       currentIndexChar = val.charAt(location),
@@ -78,12 +84,13 @@ class TagsInput extends PureComponent {
       wordAtIndex = this.getWordAtIndex(val, location),
       isHashTag = this.isHashTag(wordAtIndex),
       isMention = this.isMention(wordAtIndex);
-    if (isValidChar && isHashTag || isMention) {
+      let callWithoutData = this.shouldCallOnEmptyData(wordAtIndex);
+    if (isValidChar && isHashTag || isMention || callWithoutData) {
       this.wordIndex = location;
       this.indexWord = wordAtIndex;
       this.startTracking();
-      isHashTag && this.fetchHashTags(wordAtIndex);
-      isMention && this.fetchMentions(wordAtIndex);
+      (isHashTag || callWithoutData) && this.fetchHashTags(wordAtIndex);
+      (isMention || callWithoutData)  && this.fetchMentions(wordAtIndex);
     } else {
       this.closeSuggestionsPanel();
     }
@@ -228,7 +235,7 @@ class TagsInput extends PureComponent {
     this.closeSuggestionsPanel();
     const wordToReplace = this.getWordAtIndex(this.value, this.wordIndex),
       isMention = this.isMention(wordToReplace);
-    if (isMention) {
+    if (isMention || this.shouldCallOnEmptyData(wordToReplace)){
       const startIndex = this.getStartIndex(this.value, this.wordIndex),
         endIndex = this.getEndIndex(this.value, this.wordIndex),
         replaceString = ` @${item.user_name} `,

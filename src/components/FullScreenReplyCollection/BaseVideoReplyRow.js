@@ -23,6 +23,7 @@ import ProfilePicture from "../ProfilePicture";
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import { fetchVideo } from '../../helpers/helpers';
 import ReplyShareIcon from '../CommonComponents/ShareIcon/ReplyShare';
+import Utilities from "../../services/Utilities";
 
 class BaseVideoReplyRow extends PureComponent {
     constructor(props) {
@@ -96,12 +97,13 @@ class BaseVideoReplyRow extends PureComponent {
     _renderInvertedFlatList = () => {
       if( this.state.parentVideoId && this.props.isActive ){
         return (
-          <View style={inlineStyles.invertedList}>
+          <View style={[inlineStyles.invertedList, { top: Utilities.getPendantTop() , height: Utilities.getPendantAvailableHeight()}]}>
               <InvertedReplyList  videoId={this.state.parentVideoId}
                                   doRender={this.props.doRender}
                                   paginationService={this.props.paginationService}
                                   onChildClickDelegate={this.props.onChildClickDelegate}
                                   currentIndex={this.props.currentIndex}
+                                  bottomRounding={50}
                                   isActiveEntity={this.props.isActiveEntity}
                                   fullVideoReplyId={this.props.replyDetailId}
               />
@@ -115,10 +117,10 @@ class BaseVideoReplyRow extends PureComponent {
         const videoId = ReduxGetters.getReplyEntityId(this.props.replyDetailId);
         return (
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
+              {this._renderInvertedFlatList()}
+              <View style={CommonStyle.videoWrapperfullScreen}>
 
-                <View style={CommonStyle.videoWrapperfullScreen}>
-          
-                    <FanVideo
+                <FanVideo
                         shouldPlay={this.props.shouldPlay}
                         userId={this.props.userId}
                         videoId={videoId}
@@ -132,7 +134,7 @@ class BaseVideoReplyRow extends PureComponent {
 
                             <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-                              {this._renderInvertedFlatList()}
+
 
                               <View style={{ minWidth: '20%' , marginLeft: "auto"}} pointerEvents={'box-none'}>
                                 <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}} pointerEvents={'box-none'}>

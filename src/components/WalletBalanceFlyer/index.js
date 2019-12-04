@@ -51,6 +51,7 @@ class WalletBalanceFlyer extends Component {
   }
 
   updatePurchasingLoader = ( status ,  payload ) => {
+    this.state.animatedWidth.setValue(0);
     if( status == this.purchaseLoaderSubscribtion.statusMap.show ){
       this.setState({isPurchasing : true });
     }else if( status == this.purchaseLoaderSubscribtion.statusMap.hide ){

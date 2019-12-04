@@ -1,10 +1,9 @@
 import React , {PureComponent} from "react";
-import {FlatList ,View } from "react-native";
+import {FlatList ,View, Platform } from "react-native";
 import FloatingBackArrow from "../CommonComponents/FlotingBackArrow";
 import deepGet from "lodash/get";
 
 import Pagination from "../../services/Pagination";
-import VideoReplyRow from "./VideoReplyRow";
 import entityHelper from "../../helpers/EntityHelper";
 import DataContract from "../../constants/DataContract";
 import CommonStyle from "../../theme/styles/Common";
@@ -32,6 +31,7 @@ class FullScreenReplyCollection extends PureComponent{
         this.paginationEvent = this.getVideoPagination().event;
         this.currentIndex = this.props.navigation.getParam("currentIndex") || 0;
         this.parentClickHandler = this.props.navigation.getParam("parentClickHandler");
+        this.pendantClickIndex = -1;
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
         this.flatlistRef = null;
@@ -180,9 +180,27 @@ class FullScreenReplyCollection extends PureComponent{
          /> ;
     }
 
+    setPendantIndex = (index) => { 
+        if ( "number" === typeof index ) {
+            this.pendantClickIndex = index;
+        }
+    }
+
+    setCurrentIndex = (index) => {
+        if ( "number" === typeof index ) {
+            this.currentIndex = index;
+        }
+    }
+
+    setActiveIndex( index, callback  ) {
+        this.setCurrentIndex( index ); //sync click index and currentIndex
+        this.setState({ activeIndex:  this.currentIndex }, callback);
+    }
+
     childClickHandler = ( index, item )=> {
-        ReplyHelper.updateEntitySeen( item );
+        this.setPendantIndex(index) ;
         this.scrollToIndex( index );
+        ReplyHelper.updateEntitySeen( item );
     }
 
     scrollToIndex = ( index )=>{
@@ -195,16 +213,15 @@ class FullScreenReplyCollection extends PureComponent{
         let item = deepGet(data, 'viewableItems[0].item');
         item && ReplyHelper.updateEntitySeen( item );
         let currentIndex = deepGet(data, 'viewableItems[0].index');
-        if ( "number" === typeof currentIndex ) {
-            this.currentIndex = currentIndex;
-        }
+        this.setCurrentIndex( currentIndex );
+        //this.forceSetIndexAndroid();
     }
 
-    setActiveIndex( index, callback  ) {
-        if( typeof index === "number"){
-            this.currentIndex =  index;
+    forceSetIndexAndroid(){
+        if(Platform.OS != "android") return;
+        if(this.currentIndex == this.pendantClickIndex){
+            this.setState({activeIndex: this.currentIndex},  ()=> {this.pendantClickIndex =  -1});
         }
-        this.setState({ activeIndex:  this.currentIndex }, callback);
     }
 
     onMomentumScrollEndCallback = () => {

@@ -363,7 +363,7 @@ export default {
 
     // cellHeight - Gives actual height of cell. 
     cellHeight: function() {
-      return this.outerRingDiameter + (2 * this.outerBorderWidth);
+      return this.outerRingDiameter ; // + (2 * this.outerBorderWidth);
     },
 
     separatorHeight: 25,
