@@ -42,7 +42,7 @@ class NavigateTo {
     } else if (goToObject && goToObject.pn === 'v') {
       this.goToVideo(goToObject.v.vid, payload);
     }else if (goToObject && goToObject.pn === 'rd') {
-      this.goToVideoReply(goToObject.v.rdi, payload);
+      this.goToVideoReply(goToObject.v.rdi, goToObject.v.pvi, payload);
     } else if (goToObject && goToObject.pn === 'f') {
       this.__navigate('Home', payload);
     } else if (goToObject && goToObject.pn === 'nc') {
@@ -124,10 +124,11 @@ class NavigateTo {
     }, timeOut)
   };
 
-  goToVideoReply = (rdId, payload) => {
+  goToVideoReply = (rdId, pvId, payload) => {
     let timeOut = 0 ;
     payload = payload || {};
     payload['replyDetailId'] = rdId;
+    payload['parentVideoId'] = pvId;
     if(NavigationService.getActiveTab() != "Notification"){
       timeOut = 100;
       this.__navigate('NotificationScreen', payload);

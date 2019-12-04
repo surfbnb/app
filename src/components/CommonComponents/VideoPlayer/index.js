@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import UserVideoHistoryRow from "../../UserVideoHistory/UserVideoHistoryRow";
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
-import PepoApi from "../../../services/PepoApi";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
 import DeletedVideoInfo from '../DeletedVideoInfo';

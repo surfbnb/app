@@ -1,7 +1,7 @@
-import BaseVideoReplyRow from "./BaseVideoReplyRow";
+import Base from "./Base";
 import { withNavigation } from "react-navigation";
 
-class NoPendantsVideoReplyRow extends BaseVideoReplyRow {
+class NoPendantsVideoReplyRow extends Base {
     constructor(props){
         super(props);
     }
@@ -11,6 +11,6 @@ class NoPendantsVideoReplyRow extends BaseVideoReplyRow {
     }
 }
 
-NoPendantsVideoReplyRow.defaultProps = BaseVideoReplyRow.defaultProps;
+NoPendantsVideoReplyRow.defaultProps = Base.defaultProps;
 
 export default withNavigation( NoPendantsVideoReplyRow );

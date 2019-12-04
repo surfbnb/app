@@ -1,31 +1,31 @@
 import React, { PureComponent } from 'react';
 import { View, TouchableOpacity} from 'react-native';
-import FanVideo from "../VideoWrapper/FanVideo";
-import ReportVideo from "../CommonComponents/ReportVideo";
-import BottomReplyBar from "../CommonComponents/BottomReplyBar";
-import PepoApi from '../../services/PepoApi';
+import FanVideo from "../../VideoWrapper/FanVideo";
+import ReportVideo from "../ReportVideo";
+import BottomReplyBar from "../BottomReplyBar";
+import PepoApi from '../../../services/PepoApi';
 import deepGet from 'lodash/get';
 
-import inlineStyles from './styles';
+import inlineStyles from '../../FullScreenReplyCollection/styles';
 
-import ReplyPepoTxBtn from '../PepoTransactionButton/ReplyPepoTxBtn';
-import VideoReplySupporterStat from '../CommonComponents/VideoSupporterStat/VideoReplySupporterStat';
+import ReplyPepoTxBtn from '../../PepoTransactionButton/ReplyPepoTxBtn';
+import VideoReplySupporterStat from '../VideoSupporterStat/VideoReplySupporterStat';
 
-import ReplyVideoBottomStatus from '../BottomStatus/ReplyVideoBottomStatus';
-import DataContract from '../../constants/DataContract';
-import ReduxGetters from '../../services/ReduxGetters';
-import CommonStyle from "../../theme/styles/Common";
+import ReplyVideoBottomStatus from '../../BottomStatus/ReplyVideoBottomStatus';
+import DataContract from '../../../constants/DataContract';
+import ReduxGetters from '../../../services/ReduxGetters';
+import CommonStyle from "../../../theme/styles/Common";
 import assignIn from 'lodash/assignIn';
-import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
+import InvertedReplyList from "../InvertedReplyThumbnailList";
 
-import AppConfig from "../../constants/AppConfig";
-import ProfilePicture from "../ProfilePicture";
-import multipleClickHandler from '../../services/MultipleClickHandler';
-import { fetchVideo } from '../../helpers/helpers';
-import ReplyShareIcon from '../CommonComponents/ShareIcon/ReplyShare';
-import Utilities from "../../services/Utilities";
+import AppConfig from "../../../constants/AppConfig";
+import ProfilePicture from "../../ProfilePicture";
+import multipleClickHandler from '../../../services/MultipleClickHandler';
+import { fetchVideo } from '../../../helpers/helpers';
+import ReplyShareIcon from '../ShareIcon/ReplyShare';
+import Utilities from "../../../services/Utilities";
 
-class BaseVideoReplyRow extends PureComponent {
+class Base extends PureComponent {
     constructor(props) {
       super(props);
       this.state = {
@@ -181,7 +181,7 @@ class BaseVideoReplyRow extends PureComponent {
     }
 }
 
-BaseVideoReplyRow.defaultProps = {
+Base.defaultProps = {
     getPixelDropData: function(){
       console.warn("getPixelDropData props is mandatory for Video component");
       return {};
@@ -190,4 +190,4 @@ BaseVideoReplyRow.defaultProps = {
     currentIndex: 0
   };
 
-export default BaseVideoReplyRow
+export default Base
