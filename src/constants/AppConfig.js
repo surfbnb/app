@@ -35,6 +35,7 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
 
 export default {
 
+  pepoAnimationDuration : 700,
   logoutTimeOut : 2000,
 
   beKnownErrorCodeMaps : {
