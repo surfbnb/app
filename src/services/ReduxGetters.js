@@ -98,6 +98,11 @@ class ReduxGetters {
     return !!deepGet(state, `user_allowed_action_entities.id_${id}.can_block` , true) ;
   }
 
+  canMuteUser(id, state){
+    state = state || Store.getState();
+    return !!deepGet(state, `user_allowed_action_entities.id_${id}.can_mute` , true ) ;
+  }
+
   getEmail(id, state) {
     state = state || Store.getState();
     return deepGet(state, `user_profile_entities.id_${id}.email.text`);

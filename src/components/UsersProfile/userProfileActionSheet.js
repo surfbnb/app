@@ -8,12 +8,14 @@ import Toast from '../../theme/components/NotificationToast';
 import UserProfileOptions from '../../assets/user_profile_options.png';
 import PepoApi from '../../services/PepoApi';
 import ReduxGetters from '../../services/ReduxGetters';
+import {fetchUser} from "../../helpers/helpers";
 
-const ACTION_SHEET_BUTTONS = ['Report', 'Block' ,'Cancel'];
-const ACTION_SHEET_CANCEL_INDEX = 2;
-const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
-const ACTION_SHEET_REPORT_INDEX = 0;
-const ACTION_SHEET_BLOCK_UNBLOCK_INDEX = 1;
+
+const ACTION_SHEET_CANCEL_INDEX = 3;
+const ACTION_SHEET_DESCTRUCTIVE_INDEX = 2;
+const ACTION_SHEET_REPORT_INDEX = 1;
+const ACTION_SHEET_BLOCK_UNBLOCK_INDEX = 2;
+const MUTE_UNMUTE_INDEX = 0;
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -26,6 +28,7 @@ class UserProfileActionSheet extends PureComponent {
 
     constructor(props) {
         super(props);
+        this.actionSheetButtons = [ this.getMuteUnmuteText() ,'Report', 'Block' ,'Cancel'];
     }
 
     reportUser = () => {
@@ -41,7 +44,83 @@ class UserProfileActionSheet extends PureComponent {
             .catch((err) => {
                 Toast.show({text: `Unable to report user right now.`, icon: 'error' });
             });
+    };
+
+
+
+
+
+    getMuteUnmuteText = () => {
+        let name = ReduxGetters.getName(this.props.userId);
+        if (this.canMute()){
+            return `See less videos from ${name}`;
+        } else if (this.canUnmute()) {
+            return `See more videos from ${name}`;
+        }
+        return '';
+    };
+
+
+    muteUnmuteUser = () => {
+        let apiEndpoint = '';
+        if (this.canMute() ){
+            apiEndpoint = `/users/${this.props.userId}/mute`;
+        } else if (this.canUnmute()){
+            apiEndpoint = `/users/${this.props.userId}/unmute`;
+        } else {
+            return;
+        }
+
+        new PepoApi(apiEndpoint)
+          .post()
+          .then((response) => {
+              if (response && response.success){
+                  Toast.show({text:'Confirmed!', icon: 'success' });
+                  fetchUser(this.props.userId);
+              } else {
+                  Toast.show({text:'failed!', icon: 'error' });
+              }
+          })
+          .catch((err) => {
+              Toast.show({text:'failed!', icon: 'error' });
+              console.log('Action failed!', err);
+          });
+    };
+
+    canMute = () => {
+        return ReduxGetters.canMuteUser(this.props.userId) === true;
     }
+
+    canUnmute = () => {
+        return ReduxGetters.canMuteUser(this.props.userId) === false;
+    }
+
+    showMuteUnmuteAlert = () => {
+
+        let message = '';
+        if (this.canMute()){
+            message =  'By confirming this you will see less videos from ' + ReduxGetters.getName(this.props.userId);
+        } else if (this.canUnmute()){
+            message =  'By confirming this you will see more videos from ' + ReduxGetters.getName(this.props.userId);
+        } else {
+            return;
+        }
+
+        Alert.alert(
+          '',
+          message,
+          [
+              {text: 'Confirm', onPress: () =>  this.muteUnmuteUser() },
+              {
+                  text: 'Cancel',
+                  style: 'cancel'
+              }
+
+          ],
+          {cancelable: true},
+        );
+
+    };
 
     blockUser = () => {
         const oThis = this;
@@ -122,24 +201,27 @@ class UserProfileActionSheet extends PureComponent {
     }
 
     showActionSheet = () => {
-        let actionOptions  = ACTION_SHEET_BUTTONS ,
+        let actionOptions  = this.actionSheetButtons ,
             blockAction = this.showBlockAlert;
         if(!this.props.canBlockUser){
-            actionOptions  = ['Report', 'Unblock' ,'Cancel'] ; //Mutate via code later.
+            actionOptions[ACTION_SHEET_BLOCK_UNBLOCK_INDEX]  = 'Unblock'; //Mutate via code later.
             blockAction =  this.unBlockUser;
         }
+        actionOptions[MUTE_UNMUTE_INDEX] = this.getMuteUnmuteText();
         ActionSheet.show(
             {
                 options: actionOptions,
                 cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
                 destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
-                title: "Select user action"
+               // title: "Select user action"
             },
             (buttonIndex) => {
                 if (buttonIndex == ACTION_SHEET_REPORT_INDEX) {
                    this.showReportAlert();
                 }else if( buttonIndex ==  ACTION_SHEET_BLOCK_UNBLOCK_INDEX ){
                     blockAction();
+                } else if (buttonIndex == MUTE_UNMUTE_INDEX){
+                    this.showMuteUnmuteAlert();
                 }
             }
         );
