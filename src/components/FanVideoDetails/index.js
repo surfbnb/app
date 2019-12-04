@@ -352,6 +352,7 @@ class FanVideoDetails extends Component {
               onChangeDesc={this.onChangeDesc} 
               onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
               onSuggestionsPanelClose={this.onSuggestionsPanelClose}
+              extraParams={{intent:'video'}}
             />
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.descError }</Text>

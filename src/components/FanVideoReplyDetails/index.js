@@ -374,6 +374,8 @@ class FanVideoReplyDetails extends Component {
               onChangeDesc={this.onChangeDesc} 
               onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
               onSuggestionsPanelClose={this.onSuggestionsPanelClose}
+              mentionsCallWithEmptyChars={['@']}
+              extraParams={{intent:'reply', parent_id: this.replyObject.replyReceiverVideoId}}
             />
           </View>
 
