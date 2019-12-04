@@ -214,7 +214,7 @@ class FullScreenReplyCollection extends PureComponent{
         item && ReplyHelper.updateEntitySeen( item );
         let currentIndex = deepGet(data, 'viewableItems[0].index');
         this.setCurrentIndex( currentIndex );
-        this.forceSetIndexAndroid();
+        //this.forceSetIndexAndroid();
     }
 
     forceSetIndexAndroid(){
