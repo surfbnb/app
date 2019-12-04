@@ -1,15 +1,16 @@
 import React, { PureComponent } from 'react';
-import TopStatus from "../../Home/TopStatus";
+import { View, ActivityIndicator} from 'react-native';
+
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
 import DataContract from '../../../constants/DataContract';
 import DeletedVideoInfo from '../DeletedVideoInfo';
-import VideoReplyRow from '../../FullScreenReplyCollection/VideoReplyRow';
-import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
-import CommonStyles from "../../../theme/styles/Common";
-import { SafeAreaView } from "react-navigation";
+import FloatingBackArrow from "../../CommonComponents/FlotingBackArrow";
+import ReplyList from "../../CommonComponents/ReplyList";
+import { fetchVideo } from '../../../helpers/helpers'
+import { FetchServices } from '../../../services/FetchServices';
 
 class VideoReplyPlayer extends PureComponent {
 
@@ -24,12 +25,12 @@ class VideoReplyPlayer extends PureComponent {
         super(props);
         this.replyDetailId =  this.props.navigation.getParam('replyDetailId');
         this.state = {
-          userId :  reduxGetter.getReplyUserId( this.replyDetailId  ) || null,
           isLoading: true,
           isDeleted : false
         };
-        this.fetchReply();
         this.isActiveScreen = true;
+        this.fetchService =  null;
+        this.currentIndex = 0;
     }
 
     componentDidMount(){
@@ -40,6 +41,7 @@ class VideoReplyPlayer extends PureComponent {
       this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
         this.isActiveScreen =  false ;
       });
+      this.setParentVideoId();
     }
 
     componentWillUnmount(){
@@ -48,12 +50,16 @@ class VideoReplyPlayer extends PureComponent {
       this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
-    shouldPlay = () => {
-      return this.isActiveScreen;
-    };
+    setParentVideoId() {
+      this.parentVideoId = this.props.navigation.getParam('parentVideoId') || reduxGetter.getReplyParentVideoId( this.replyDetailId );
+      if(this.parentVideoId) {
+        this.fetchReplies();
+      } else {
+        this.fetchReply();
+      }
+    }
 
     fetchReply = () => {
-      if (this.state.isDeleted) return;
       new PepoApi(DataContract.replies.getSingleVideoReplyApi(this.replyDetailId))
         .get()
         .then((res) => { this.onReplyFetch(res) })
@@ -67,9 +73,42 @@ class VideoReplyPlayer extends PureComponent {
       }
       const replyDetails = deepGet(res , `data.${DataContract.replies.replyDetailsKey}`) ,
             item = replyDetails[this.replyDetailId]
-      if(item){
-        this.setState({ userId : item[DataContract.replies.creatorUserIdKey],  isLoading : false});
+      this.parentVideoId = deepGet(item, DataContract.replies.parentVideoIdKey);
+      this.fetchReplies();
+    };
+
+    fetchReplies() {
+      fetchVideo( this.parentVideoId ); // To save video details in redux if not present, the videoreplyrow fetches video details anyways
+      this.fetchService = new FetchServices(`${DataContract.replies.getReplyListApi( this.parentVideoId )}?${DataContract.replies.replyDetailIdKey}=${this.replyDetailId}`);
+      this.fetchReplyList();
+    }
+
+    fetchReplyList = ( ) => {
+      this.fetchService.fetch()
+      .then(( res )=> {
+        this.onReplyListFetch(res);
+      })
+    }
+
+    onReplyListFetch = ( res ) => {
+      const list = this.fetchService.getAllResults();
+      list.forEach(( item, index )=>{
+        const rId = deepGet(item, `payload.${DataContract.replies.replyDetailIdKey}`);
+        if( rId == this.replyDetailId){
+          this.currentIndex = index;
+        }
+      });
+      if( this.currentIndex < 0 ){
+        if(this.fetchService.hasNextPage){
+          this.fetchReplyList();
+        }
+      }else{
+        this.setState({isLoading: false});
       }
+    } 
+
+    shouldPlay = () => {
+      return this.isActiveScreen;
     };
 
     getPixelDropData = () => {
@@ -83,7 +122,7 @@ class VideoReplyPlayer extends PureComponent {
     parentClickHandler =()=>{
       const parentVideoId =  reduxGetter.getReplyParentVideoId(this.replyDetailId);
       this.props.navigation.push('VideoPlayer', {
-        userId: this.state.userId,
+        userId: reduxGetter.getReplyParentUserId( this.replyDetailId ),
         videoId: parentVideoId
       });
     }
@@ -94,27 +133,21 @@ class VideoReplyPlayer extends PureComponent {
     }
 
     render() {
-        if(this.state.isDeleted){
-         return <DeletedVideoInfo/>
-        }else{
-          return (
-            <SafeAreaView forceInset={{ top: 'never' }}  style={ CommonStyles.fullScreenVideoSafeAreaContainer}>
-              <TopStatus />
-              {!this.state.isLoading && ( <VideoReplyRow shouldPlay={this.shouldPlay}
-                    isActive={true}
-                    doRender={true}
-                    userId={this.state.userId}
-                    parentVideoId={this.state.parentVideoId}
-                    replyDetailId={this.replyDetailId}
-                    getPixelDropData={this.getPixelDropData}
-                    parentClickHandler={this.parentClickHandler}
-                    isActiveEntity={this.isActiveEntity}
-              />)}
-             <FlotingBackArrow />
-            </SafeAreaView>
-          )
-        }
+      if(this.state.isDeleted){
+        return <DeletedVideoInfo/>
+       }else{
+         if(this.state.isLoading){
+           return (<View style={{ width: "100%", flex: 1 , alignItems: "center" ,height:"100%", backgroundColor:"#000"}}>
+                     <FloatingBackArrow/>
+                     <ActivityIndicator style={{paddingTop: 100 }}/>
+                   </View> )
+         }else{
+           return <ReplyList currentIndex={this.currentIndex}
+                             fetchServices={this.fetchService}
+                             parentClickHandler={this.parentClickHandler}/>
+         }
+       }
     }
 }
 
-export default  VideoReplyPlayer ;
+export default VideoReplyPlayer ;
