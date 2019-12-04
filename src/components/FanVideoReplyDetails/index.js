@@ -87,6 +87,7 @@ class FanVideoReplyDetails extends Component {
     super(props);
 
     this.videoLink = props.recordedVideo.video_link || '';
+    this.videoDesc = '';
     if (! props.recordedVideo.video_type ){
       // It means
       this.replyObject = this.props.navigation.getParam('reply_obj');
@@ -98,7 +99,7 @@ class FanVideoReplyDetails extends Component {
 
     if ('video_desc' in  props.recordedVideo){
       this.videoDesc = props.recordedVideo.video_desc;
-    } else {
+    } else if(CurrentUser.getUserId() != this.replyObject.replyReceiverUserId){
       this.videoDesc = `@${reduxGetter.getUserName(this.replyObject.replyReceiverUserId)}`;
     }
 
