@@ -128,11 +128,16 @@ class VideoReplyPlayer extends PureComponent {
       };
     }
 
+    bubbleClickHandler = ()=> {
+      this.props.navigation.goBack(null);
+    }
+
     parentClickHandler =()=>{
       const parentVideoId =  reduxGetter.getReplyParentVideoId(this.replyDetailId);
       this.props.navigation.push('VideoPlayer', {
         userId: reduxGetter.getReplyParentUserId( this.replyDetailId ),
-        videoId: parentVideoId
+        videoId: parentVideoId,
+        bubbleClickHandler: this.bubbleClickHandler
       });
     }
 

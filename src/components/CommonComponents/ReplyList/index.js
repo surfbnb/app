@@ -165,7 +165,6 @@ class ReplyList extends PureComponent{
                                 userId={userId}
                                 replyDetailId={replyDetailId}
                                 paginationService ={this.getVideoPagination()}
-                                onChildClickDelegate={this.childClickHandler}
                                 parentClickHandler={this.parentClickHandler}
                                 currentIndex={this.state.activeIndex}
          /> ;

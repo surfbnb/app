@@ -26,16 +26,11 @@ class FullScreenReplyCollection extends PureComponent{
         return this.props.navigation.getParam("baseUrl");
     }
 
-    getParentClickHandler(){
-        return this.props.navigation.getParam("parentClickHandler");
-    }
-
     render() {
         return (
             <ReplyList currentIndex={this.getCurrentIndex()} 
                   fetchServices={this.getFetchServices()}
                   baseUrl={this.getBaseUrl()}
-                  parentClickHandler={this.getParentClickHandler()}
               />
         );
     }

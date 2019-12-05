@@ -126,7 +126,6 @@ class BubbleList extends PureComponent {
   }
 
   defaultClickHandler= ()=> {
-    const baseUrl = DataContract.replies.getReplyListApi(this.props.videoId);
     this.props.navigation.push('VideoReplyPlayer',{
       parentVideoId: this.props.videoId,
       replyDetailId: this.replyDetailId
