@@ -5,11 +5,9 @@ import Colors from '../../../theme/styles/Colors';
 let stylesMap = {
   
   loadingContainer:{
-     width: "100%", 
      flex: 1 , 
      alignItems: "center", 
      justifyContent:"center",
-     height:"100%", 
      backgroundColor:"#000"
   }
 };
