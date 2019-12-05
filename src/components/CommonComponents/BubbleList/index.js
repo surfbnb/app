@@ -76,21 +76,34 @@ class BubbleList extends PureComponent {
       });
   };
 
+  setReplyToLandOn = (list) => {
+    if(list.length > 0) {
+      let item = list[0];
+      this.replyDetailId = deepGet(item,'payload.reply_detail_id');
+    }
+  };
+
+
 
   onRefresh = (res) => {
     let listToBeShownOnUI = this.fetchServices.getAllResults().slice(0,NO_OF_ITEMS_TO_SHOW);
     this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId);
+    this.setReplyToLandOn(listToBeShownOnUI);
     this.setState({ list : listToBeShownOnUI } );
 
   };
 
   getBubbleListJSX = () => {
     let listToRender = this.state.list;
-    return listToRender.length? listToRender.map((item) => {
+    let listJsx = listToRender.length? listToRender.map((item) => {
       let userId = deepGet(item,'payload.user_id'),
       replyDetailId=deepGet(item,'payload.reply_detail_id');
       return <SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId}  />
     }): <></> ;
+    if (this.replyCount > NO_OF_ITEMS_TO_SHOW ){
+      listJsx.push(<></>)
+    }
+    return listJsx;
   };
 
   moreReplyText = () => {
@@ -110,16 +123,16 @@ class BubbleList extends PureComponent {
 
   defaultClickHandler= ()=> {
     const baseUrl = DataContract.replies.getReplyListApi(this.props.videoId);
-    this.props.navigation.push('FullScreenReplyCollection',{
-      "baseUrl": baseUrl,
-      "fetchServices":this.getFetchService()
-        });
-  }
+    this.props.navigation.push('VideoReplyPlayer',{
+      parentVideoId: this.props.videoId,
+      replyDetailId: this.replyDetailId
+    });
+  };
 
   onIconClick = () => {
     if(!Utilities.checkActiveUser()) return; 
     this.onClickHandler();
-  } 
+  };
 
   render() {
     return <View style={inlineStyles.bubbleContainer}>

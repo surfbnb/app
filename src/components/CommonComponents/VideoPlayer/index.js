@@ -87,7 +87,7 @@ class VideoPlayer extends Component {
               <TopStatus />
               <UserVideoHistoryRow doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
                                  videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}
-                                 bubbleClickHandler={this.bubbleClickHandler}/>
+                                 bubbleClickHandler={this.bubbleClickHandler} />
              <FlotingBackArrow />
             </SafeAreaView>
           )
