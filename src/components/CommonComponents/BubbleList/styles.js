@@ -24,7 +24,7 @@ let stylesMap = {
 
   bubbleContainer: {
     flexDirection:'row',
-    marginLeft: 30,
+    marginLeft: 35,
     alignItems: 'center'
   },
 
@@ -32,6 +32,15 @@ let stylesMap = {
     color: 'white',
     fontSize: 16,
     fontFamily: 'AvenirNext-DemiBold'
+  },
+
+  emptyBubble: {
+    width: 40,
+    height: 40,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: '#fff',
+    backgroundColor: '#ff5566'
   }
 
 };

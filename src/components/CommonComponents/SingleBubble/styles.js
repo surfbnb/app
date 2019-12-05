@@ -4,19 +4,19 @@ import Colors from '../../../theme/styles/Colors';
 let stylesMap = {
 
   bubbleShadow: {
-    shadowColor: Colors.wildWatermelon2,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 5,
-    elevation: 3,
-    borderColor: Colors.wildWatermelon2,
-    borderWidth: .5,
-    borderRadius: 20
+    // shadowColor: Colors.white,
+    // shadowOffset: { width: 0, height: 0 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 5,
+    // elevation: 3,
+    // borderColor: Colors.white,
+    // borderWidth: 2,
+    // borderRadius: 20
   },
 
   bubbleSizeSkipFont: {
-    height: 38,
-    width: 38,
+    height: 40,
+    width: 40,
     borderColor: 'white',
     borderWidth: 1,
     borderRadius: 20
@@ -24,7 +24,7 @@ let stylesMap = {
 
   bubbleContainer: {
     flexDirection:'row',
-    marginLeft: 30,
+    marginLeft: -45,
     alignItems: 'center'
   },
 

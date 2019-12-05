@@ -18,7 +18,7 @@ class SingleBubble extends Component {
   }
 
   render() {
-    return <View style={ [ !this.props.seen ? inlineStyles.bubbleShadow: {}, {marginLeft: -20}]}>
+    return <View style={ [ !this.props.seen ? inlineStyles.bubbleShadow: {}, {marginLeft: -28}]}>
       <ProfilePicture userId={this.props.userId}
                       style={inlineStyles.bubbleSizeSkipFont}
       />

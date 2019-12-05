@@ -82,31 +82,39 @@ class BubbleList extends PureComponent {
     }
   };
 
-  getExtraItemsUI = () => {
-    return <></>;
+  getExtraItemUI = () => {
+    return <View style={ {marginLeft: -34, zIndex: -1} }>
+      <View style={inlineStyles.emptyBubble}></View>
+    </View>;
   };
 
+// <View style={{backgroundColor: '#ff5566', height: 50, width: 50, left: -56, borderRadius: 25, borderWidth: 2, borderColor: '#fff'}}></View>
 
 
   onRefresh = (res) => {
-    let listToBeShownOnUI = this.fetchServices.getAllResults().slice(0,NO_OF_ITEMS_TO_SHOW);
+    let listToBeShownOnUI = this.fetchServices.getAllResults().slice(0,NO_OF_ITEMS_TO_SHOW).reverse();
     this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId);
     this.setReplyToLandOn(listToBeShownOnUI);
     this.setState({ list : listToBeShownOnUI } );
-
   };
 
   getBubbleListJSX = () => {
     let listToRender = this.state.list;
-    let listJsx = listToRender.length? listToRender.map((item) => {
+    let listJsx = [];
+    if (this.replyCount > NO_OF_ITEMS_TO_SHOW ){
+      listJsx.push(this.getExtraItemUI());
+      listJsx.push(this.getExtraItemUI());
+    }
+
+    listToRender.forEach((item) => {
       let userId = deepGet(item,'payload.user_id'),
       replyDetailId=deepGet(item,'payload.reply_detail_id');
-      return <SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId}  />
-    }): <></> ;
-    if (this.replyCount > NO_OF_ITEMS_TO_SHOW ){
-      listJsx.push(this.getExtraItemsUI())
-    }
-    return listJsx;
+      listJsx.push(<SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId}  />)
+    });
+
+
+
+    return listJsx.length ? listJsx : <></>;
   };
 
   moreReplyText = () => {
