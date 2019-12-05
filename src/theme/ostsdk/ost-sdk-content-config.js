@@ -123,7 +123,7 @@ export default {
       "text": "Waiting for confirmation"
     },
     "success":{
-      "text": "Device recovery initiated"
+      "text": "The device recovery has been initiated and will be completed in 12 hours"
     }
   },
 
