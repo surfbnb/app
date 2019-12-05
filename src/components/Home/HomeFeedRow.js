@@ -16,6 +16,7 @@ import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
 import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
+import BubbleList from "../CommonComponents/BubbleList";
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -63,6 +64,10 @@ class HomeFeedRow extends PureComponent {
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
 
           <View style={[inlineStyles.touchablesBtns, {justifyContent: 'flex-end'}]} pointerEvents={'box-none'}>
+
+            <View style={inlineStyles.invertedList}>
+              <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
+            </View>
 
             <View style={{ minWidth: '20%' }}>
               <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>

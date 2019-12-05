@@ -65,6 +65,11 @@ class FullScreeVideoRow extends PureComponent {
                             <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
                                 <View style={[inlineStyles.touchablesBtns, {justifyContent: 'flex-end'}]} pointerEvents={'box-none'}>
 
+                                  <View style={inlineStyles.invertedList}>
+                                    <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
+                                  </View>
+
+
                                   <View style={{ minWidth: '20%' }}>
                                     <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
                                         <PepoTxBtn

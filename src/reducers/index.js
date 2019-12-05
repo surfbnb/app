@@ -55,7 +55,8 @@ export const {
   clearPushNotification,
   upsertInviteCode,
   upsertTwitterEntities,
-  upsertTagVideoEntities
+  upsertTagVideoEntities,
+  upsertUnseenVideoReplies
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -123,7 +124,8 @@ const logoutDefault = {
   notification_unread: {},
   invite_code: null,
   twitter_entities : null,
-  user_allowed_action_entities:{}
+  user_allowed_action_entities:{},
+  unseen_video_replies_entities: {}
 };
 
 export const reducer = handleActions(
@@ -342,6 +344,10 @@ export const reducer = handleActions(
     [upsertTwitterEntities]: (state, action) => ({
       ...state,
       twitter_entities: assignIn({}, state.twitter_entities, action.payload.twitter_entities)
+    }),
+    [upsertUnseenVideoReplies]: (state, action) => ({
+      ...state,
+      unseen_video_replies_entities: assignIn({}, state.unseen_video_replies_entities, action.payload.unseen_video_replies_entities)
     })
   },
   defaultState

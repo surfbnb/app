@@ -40,7 +40,8 @@ const knownEntitiesDispatcherMap = {
   upsert_push_notification: 'upsertPushNotification',
   twitter_users : 'upsertTwitterEntities',
   user_allowed_actions: 'upsertUserAllowedActionEntities',
-  pepocorn_balance: 'updatePepocorn'
+  pepocorn_balance: 'updatePepocorn',
+  unseen_video_replies: 'upsertUnseenVideoReplies'
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.

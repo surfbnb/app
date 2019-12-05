@@ -558,6 +558,11 @@ class ReduxGetters {
     return deepGet(state, `login_popover`);    
   }
 
+  getUnseenVideoReplies(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `unseen_video_replies_entities.id_${id}`, []);
+  }
+
 }
 
 export default new ReduxGetters();
