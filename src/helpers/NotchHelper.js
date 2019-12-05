@@ -128,6 +128,14 @@ let devicesWithNotch =  [
   {
     "brand": "OnePlus",
     "model": "ONEPLUS A6010"
+  },
+  {
+    "brand": "Samsung",
+    "model": "SM-G975F"
+  },
+  {
+    "brand": "Samsung",
+    "model": "SM-G9730"
   }
 ];
 
