@@ -28,7 +28,7 @@ let stylesMap = {
     },
 
     topWrapper :{
-      paddingHorizontal: 20,
+      // paddingHorizontal: 10,
       alignItems: "center"
     },
 
@@ -59,7 +59,7 @@ let stylesMap = {
     heading :{ 
       fontSize: 18,
       fontWeight: "500",
-      paddingBottom: 10,
+      paddingBottom: 5,
       color: Colors.black
     },
 
@@ -67,7 +67,7 @@ let stylesMap = {
       textAlign: "center",
       color: Colors.black,
       paddingBottom: 10,
-      fontSize: 14
+      fontSize: 13
     },
 
     subSection : {
@@ -76,7 +76,7 @@ let stylesMap = {
 
     heading2 : {
       textAlign: "center",
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: "500",
       color: Colors.black,
       marginBottom: 5
@@ -100,7 +100,7 @@ let stylesMap = {
       textAlign: "center",
       alignItems: 'center',
       color: Colors.black,
-      marginTop: 15
+      marginBottom: 15
     },
 
     valueInText : {
@@ -197,7 +197,7 @@ let stylesMap = {
 
     pepoErrorText : { 
       textAlign: 'center', 
-      marginBottom: 10 
+      // marginBottom: 10
     },
 
     balanceTextImageSkipFont : { 
@@ -209,6 +209,16 @@ let stylesMap = {
     successLink :{
       marginTop: 20,
       color: Colors.wildWatermelon2
+    },
+
+    learnMoreAbtUnicorns: {
+      width: '100%',
+      borderWidth: 1,
+      borderRadius: 3,
+      textAlign: 'center',
+      paddingVertical: 10,
+      color: Colors.wildWatermelon2,
+      borderColor: Colors.wildWatermelon
     }
  
 };

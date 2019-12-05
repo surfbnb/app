@@ -586,14 +586,14 @@ class Redemption extends PureComponent{
 
     getRedemptionMarkup = () => {
         return (
-                <View style={inlineStyles.viewWrapper}>
+                <View style={[inlineStyles.viewWrapper, {paddingTop: 10, paddingBottom: 10}]}>
                 <TouchableWithoutFeedback onPress={()=> this.pepocornInput.refs.pepo_corns.blur()}>
                     <View style={inlineStyles.topWrapper}>
                         <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
+                        <Text style={inlineStyles.balanceText}>Your Current balance: <Image style={inlineStyles.balanceTextImageSkipFont} source={pepo_icon}></Image>{' '}{Pricer.getToBT(this.state.balance)}</Text>
                         <Image source={this.getPepoCornsImageSource()} style={inlineStyles.pepcornImageSkipFont}></Image>
                         <Text style={inlineStyles.subText1}>
-                            {this.getPepoCornsName()} are elusive creatures inhabiting Pepo.{" "}
-                            <Text style={{color: Colors.wildWatermelon2}} onPress={MultipleClickHandler(() => InAppBrowser.openBrowser(AppConfig.redemption.learnMoreLink))}>Learn</Text> all about the benefits of owning {this.getPepoCornsName()}.
+                            {this.getPepoCornsName()} are elusive creatures inhabiting Pepo.
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -623,7 +623,7 @@ class Redemption extends PureComponent{
                     <LinearGradient
                         colors={['#ff7499', '#ff7499', '#ff5566']}
                         locations={[0, 0.35, 1]}
-                        style={{ borderRadius: 3, borderWidth: 0, width: '100%' }}
+                        style={{ borderRadius: 3, borderWidth: 0, width: '100%', marginBottom: 15 }}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 0 }}
                         >
@@ -634,7 +634,7 @@ class Redemption extends PureComponent{
                                 onPress={MultipleClickHandler(() => this.onConfirm())}
                         />
                     </LinearGradient>
-                    <Text style={inlineStyles.balanceText}>Your Current balance: <Image style={inlineStyles.balanceTextImageSkipFont} source={pepo_icon}></Image>{' '}{Pricer.getToBT(this.state.balance)}</Text>
+                    <Text style={inlineStyles.learnMoreAbtUnicorns} onPress={MultipleClickHandler(() => InAppBrowser.openBrowser(AppConfig.redemption.learnMoreLink))}>Learn all about {this.getPepoCornsName()}</Text>
                 </View>
             </View>
         </View>
