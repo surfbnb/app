@@ -83,6 +83,10 @@ class BubbleList extends PureComponent {
     }
   };
 
+  getExtraItemsUI = () => {
+    return <></>;
+  };
+
 
 
   onRefresh = (res) => {
@@ -101,7 +105,7 @@ class BubbleList extends PureComponent {
       return <SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId}  />
     }): <></> ;
     if (this.replyCount > NO_OF_ITEMS_TO_SHOW ){
-      listJsx.push(<></>)
+      listJsx.push(this.getExtraItemsUI())
     }
     return listJsx;
   };
