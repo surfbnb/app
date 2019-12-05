@@ -201,7 +201,7 @@ class UserProfileActionSheet extends PureComponent {
     }
 
     showActionSheet = () => {
-        let actionOptions  = this.actionSheetButtons ,
+        let actionOptions  = [...this.actionSheetButtons] ,
             blockAction = this.showBlockAlert;
         if(!this.props.canBlockUser){
             actionOptions[ACTION_SHEET_BLOCK_UNBLOCK_INDEX]  = 'Unblock'; //Mutate via code later.

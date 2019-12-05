@@ -29,8 +29,12 @@ class ReportVideo extends PureComponent {
 
     constructor(props){
       super(props);
-      this.actionSheetButtons = [ this.getMuteUnmuteText(), 'Report', 'Cancel'];
     };
+
+
+    getActionSheetButtons = ()=>{
+      return [ this.getMuteUnmuteText(), 'Report', 'Cancel'];
+    }
 
 
   getMuteUnmuteText = () => {
@@ -145,10 +149,9 @@ class ReportVideo extends PureComponent {
   };
 
     showActionSheet = () => {
-        this.actionSheetButtons[0] = this.getMuteUnmuteText();
         ActionSheet.show(
             {
-                options: this.actionSheetButtons,
+                options: this.getActionSheetButtons(),
                 cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
                 destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
                 // title: 'Report video'
