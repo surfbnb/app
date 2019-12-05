@@ -13,6 +13,7 @@ import TopStatus from "../../Home/TopStatus";
 import InvertedReplyList from "../InvertedReplyThumbnailList";
 import Utilities from "../../../services/Utilities";
 import NoPendantsVideoReplyRow from "../VideoReplyRowComponent/NoPendantsVideoReplyRow";
+import Colors from "../../../theme/styles/Colors";
 
 const maxVideosThreshold = 5;
 
@@ -219,7 +220,7 @@ class ReplyList extends PureComponent{
 
     render() {
         return (
-            <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreen, {position: "relative", backgroundColor: '#111111'}]}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreen, {position: "relative", backgroundColor: Colors.darkShadeOfGray}]}>
                 <TopStatus />
                 
                 <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight(), marginRight: 'auto', minWidth: '20%'}}>

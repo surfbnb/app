@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, ActivityIndicator} from 'react-native';
+import { ActivityIndicator} from 'react-native';
 
 import deepGet from "lodash/get";
 import PepoApi from "../../../services/PepoApi";
@@ -11,6 +11,8 @@ import FloatingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import ReplyList from "../../CommonComponents/ReplyList";
 import { fetchVideo } from '../../../helpers/helpers'
 import { FetchServices } from '../../../services/FetchServices';
+import { SafeAreaView } from 'react-navigation';
+import inlineStyles from './styles';
 
 class VideoReplyPlayer extends PureComponent {
 
@@ -145,10 +147,10 @@ class VideoReplyPlayer extends PureComponent {
         return <DeletedVideoInfo/>
        }else{
          if(this.state.isLoading){
-           return (<View style={{ width: "100%", flex: 1 , alignItems: "center" ,height:"100%", backgroundColor:"#000"}}>
+           return (<SafeAreaView forceInset={{ top: 'never' }} style={inlineStyles.loadingContainer}>
                      <FloatingBackArrow/>
                      <ActivityIndicator style={{paddingTop: 100 }}/>
-                   </View> )
+                   </SafeAreaView> )
          }else{
            return <ReplyList currentIndex={this.currentIndex}
                              fetchServices={this.fetchService}

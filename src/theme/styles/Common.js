@@ -21,7 +21,8 @@ const styles = {
       backgroundColor:  'rgba(0,0,0,0.5)'
     },
     fullScreenVideoSafeAreaContainer: {
-      flex:1,  backgroundColor: Colors.darkShadeOfGray,
+      flex:1,  
+      backgroundColor: Colors.darkShadeOfGray
     },
     fullScreen: {
       width: width,
