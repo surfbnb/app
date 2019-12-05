@@ -35,7 +35,6 @@ class BubbleList extends PureComponent {
     };
     this.fetchServices = new FetchServices(this.getFetchUrl());
     this.getDataWhileLoading();
-    this.onClickHandler = this.props.onClickHandler || this.defaultClickHandler;
   }
 
   componentDidUpdate(prevProps, prevState ) {
@@ -125,10 +124,15 @@ class BubbleList extends PureComponent {
     return this.fetchServices;
   }
 
-  defaultClickHandler= ()=> {
+  parentClickHandler = ()=> {
+    this.props.navigation.goBack(null);
+  }
+
+  onClickHandler= ()=> {
     this.props.navigation.push('VideoReplyPlayer',{
       parentVideoId: this.props.videoId,
-      replyDetailId: this.replyDetailId
+      replyDetailId: this.replyDetailId,
+      parentClickHandler: this.parentClickHandler
     });
   };
 

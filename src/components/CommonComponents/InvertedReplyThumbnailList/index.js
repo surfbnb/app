@@ -46,12 +46,35 @@ class InvertedReplyList extends PureComponent {
   };
 
   setClickHandlers = ()=> {
-    this.onItemClick = this.props.onChildClickDelegate;
+    this.onItemClick = this.props.onChildClickDelegate || this.defaultChildClickHandler;
   };
 
   getPagination = () => {
     return this.paginationService;
   };
+
+  getParentClickHandler =( videoId )=>{
+    return () => {
+      let parentUserId = ReduxGetters.getVideoCreatorUserId(videoId);
+      this.props.navigation.push('VideoPlayer', {
+        userId: parentUserId,
+        videoId: videoId
+      });
+    }
+  }
+
+  defaultChildClickHandler = ( index, item )=> {
+    const videoId = ReduxGetters.getReplyParentVideoId(deepGet(item ,  "payload.reply_detail_id")),
+          baseUrl = DataContract.replies.getReplyListApi(videoId),
+          clonedInstance = this.getPagination().fetchServices.cloneInstance();
+    ReplyHelper.updateEntitySeen( item );
+    this.props.navigation.push('FullScreenReplyCollection',{
+      "fetchServices": clonedInstance,
+      "currentIndex":index,
+      "baseUrl": baseUrl,
+      "parentClickHandler": this.getParentClickHandler( videoId )
+    });
+  };
 
   componentDidMount () {
     this.bindPaginationEvents();

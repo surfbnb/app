@@ -25,6 +25,7 @@ class VideoReplyPlayer extends PureComponent {
     constructor(props){
         super(props);
         this.replyDetailId =  this.props.navigation.getParam('replyDetailId');
+        this.parentClickHandler = this.props.navigation.getParam('parentClickHandler') || this.defaultParentClickHandler;
         this.state = {
           isLoading: true,
           isDeleted : false
@@ -128,16 +129,11 @@ class VideoReplyPlayer extends PureComponent {
       };
     }
 
-    bubbleClickHandler = ()=> {
-      this.props.navigation.goBack(null);
-    }
-
-    parentClickHandler =()=>{
+    defaultParentClickHandler =()=>{
       const parentVideoId =  reduxGetter.getReplyParentVideoId(this.replyDetailId);
       this.props.navigation.push('VideoPlayer', {
         userId: reduxGetter.getReplyParentUserId( this.replyDetailId ),
-        videoId: parentVideoId,
-        bubbleClickHandler: this.bubbleClickHandler
+        videoId: parentVideoId
       });
     }
 
