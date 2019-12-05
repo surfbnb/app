@@ -18,7 +18,7 @@ let stylesMap = {
     height: 40,
     width: 40,
     borderColor: 'white',
-    borderWidth: 1,
+    borderWidth: 1.2,
     borderRadius: 20
   },
 
