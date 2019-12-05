@@ -30,7 +30,7 @@ class VideoReplyPlayer extends PureComponent {
         };
         this.isActiveScreen = true;
         this.fetchService =  null;
-        this.currentIndex = 0;
+        this.currentIndex = -1;
     }
 
     componentDidMount(){
@@ -88,6 +88,11 @@ class VideoReplyPlayer extends PureComponent {
       .then(( res )=> {
         this.onReplyListFetch(res);
       })
+      .catch(( err )=> {
+        if(Utilities.isEntityDeleted(err)){
+          this.setState({isDeleted: true});
+        }
+      })
     }
 
     onReplyListFetch = ( res ) => {
@@ -101,6 +106,9 @@ class VideoReplyPlayer extends PureComponent {
       if( this.currentIndex < 0 ){
         if(this.fetchService.hasNextPage){
           this.fetchReplyList();
+        } else {
+          this.currentIndex = 0;
+          this.setState({isLoading: false});
         }
       }else{
         this.setState({isLoading: false});
