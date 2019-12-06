@@ -17,6 +17,9 @@ import profileLink from '../../../assets/profile_link.png';
 import twitterLink from '../../../assets/twitter_link.png';
 import Utilities from '../../../services/Utilities';
 
+
+const regex = /(^|\s)(#\w+)/g;
+
 const mapStateToProps = (state, ownProps) => {
   return {
     userName: reduxGetter.getUserName(ownProps.userId, state),
@@ -101,7 +104,7 @@ class UserInfo extends React.PureComponent {
   render() {
 
     let processingString = this.props.bio;
-    let hasTagArray = processingString.match(/#\w+/g) || [];
+    let hasTagArray = processingString.match(regex) || [];
 
     return (
       <View style={{ alignItems: 'center', paddingTop: 30}}>
@@ -158,18 +161,21 @@ class UserInfo extends React.PureComponent {
 
             processingString = processingString.slice(tagLocation + hashTag.length);
 
-            if (this.isValidBioTag(this.props.userId, hashTag)) {
-              let tagText = hashTag.replace("#", "");
+            let formattedHashTag = hashTag.replace(regex, "$2");
+
+            if (this.isValidBioTag(this.props.userId, formattedHashTag)) {
+
+              // let tagText = hashTag.replace("#", "");
               return (
-                <Text key={hashTag}>
+                <Text key={formattedHashTag}>
                   {prevText}
                   <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
                         numberOfLines={1}
                         onPress={() => {
-                          this.onTagPressed(hashTag)
+                          this.onTagPressed(formattedHashTag)
                         }}>
-                    <Text style={{fontStyle: 'italic'}}>#</Text>
-                    {tagText}
+                    {/*<Text style={{fontStyle: 'italic'}}>#</Text>*/}
+                    {hashTag}
                   </Text>
                 </Text>
 
