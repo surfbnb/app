@@ -72,7 +72,7 @@ export default class InAppBrowserComponent extends Component {
     try {
       const result = await Share.share(content);
     } catch (error) {
-      alert(error.message);
+      //alert(error.message);
     }
   };
 
