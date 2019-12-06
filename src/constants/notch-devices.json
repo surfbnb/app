@@ -1,0 +1,36 @@
+{
+  "devices": [
+      {
+        "brand": "Apple",
+        "model": "iPhone 11"
+      },
+      {
+        "brand": "Apple",
+        "model": "iPhone 11 Pro"
+      },
+      {
+        "brand": "Apple",
+        "model": "iPhone 11 Pro Max"
+      },
+      {
+        "brand": "Motorola",
+        "model": "Motorola One Vision"
+      },
+      {
+        "brand": "Nokia",
+        "model": "Nokia 6.1 Plus"
+      },
+      {
+        "brand": "xiaomi",
+        "model": "Redmi Note 7 Pro"
+      },
+      {
+        "brand": "HONOR",
+        "model": "COR-AL00"
+      },
+      {
+        "brand": "HONOR",
+        "model": "JSN-L42"
+      }
+  ]
+}
