@@ -81,7 +81,7 @@ class VideoReplyPlayer extends PureComponent {
 
     fetchReplies() {
       fetchVideo( this.parentVideoId ); // To save video details in redux if not present, the videoreplyrow fetches video details anyways
-      this.fetchService = new FetchServices(`${DataContract.replies.getReplyListApi( this.parentVideoId )}?${DataContract.replies.replyDetailIdKey}=${this.replyDetailId}`);
+      this.fetchService = new FetchServices(`${DataContract.replies.getReplyListApi( this.parentVideoId )}?check_reply_detail_id=${this.replyDetailId}`);
       this.fetchReplyList();
     }
 
