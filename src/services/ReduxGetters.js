@@ -558,9 +558,10 @@ class ReduxGetters {
     return deepGet(state, `login_popover`);    
   }
 
-  getUnseenVideoReplies(id, state){
+  getUnseenReplies(id, state){
     state = state || Store.getState();
-    return deepGet(state, `unseen_video_replies_entities.id_${id}`, []);
+    // todo: mayur change 1234 when dummy response is replaced by actual id.
+    return deepGet(state, `unseen_replies_entities.id_${1234}.unseen`, []);
   }
 
 }

@@ -56,7 +56,7 @@ export const {
   upsertInviteCode,
   upsertTwitterEntities,
   upsertTagVideoEntities,
-  upsertUnseenVideoReplies
+  upsertUnseenReplies
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -125,7 +125,7 @@ const logoutDefault = {
   invite_code: null,
   twitter_entities : null,
   user_allowed_action_entities:{},
-  unseen_video_replies_entities: {}
+  unseen_replies_entities: {}
 };
 
 export const reducer = handleActions(
@@ -345,9 +345,9 @@ export const reducer = handleActions(
       ...state,
       twitter_entities: assignIn({}, state.twitter_entities, action.payload.twitter_entities)
     }),
-    [upsertUnseenVideoReplies]: (state, action) => ({
+    [upsertUnseenReplies]: (state, action) => ({
       ...state,
-      unseen_video_replies_entities: assignIn({}, state.unseen_video_replies_entities, action.payload.unseen_video_replies_entities)
+      unseen_replies_entities: assignIn({}, state.unseen_replies_entities, action.payload.unseen_replies_entities)
     })
   },
   defaultState

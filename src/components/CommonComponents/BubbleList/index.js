@@ -7,10 +7,10 @@ import DataContract from '../../../constants/DataContract';
 import deepGet from "lodash/get";
 import reduxGetter from "../../../services/ReduxGetters";
 import multipleClickHandler from '../../../services/MultipleClickHandler';
-import {FetchServices} from "../../../services/FetchServices";
 import SingleBubble from '../SingleBubble';
 import {connect} from "react-redux";
 import Utilities from '../../../services/Utilities';
+import PepoApi from "../../../services/PepoApi";
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -33,8 +33,8 @@ class BubbleList extends PureComponent {
     this.state = {
       list: []
     };
-    this.fetchServices = new FetchServices(this.getFetchUrl());
     this.getDataWhileLoading();
+    this.replyList = [];
   }
 
   componentDidUpdate(prevProps, prevState ) {
@@ -48,7 +48,7 @@ class BubbleList extends PureComponent {
 
 
   getFetchUrl = () => {
-    return `/videos/${this.props.videoId}/replies`;
+    return `/videos/${this.props.videoId}/unseen-replies`;
   };
 
 
@@ -60,25 +60,28 @@ class BubbleList extends PureComponent {
   };
 
   getListData = () => {
+
     if ( this.props.replyCount == 0 ) {
       return;
     }
 
-    this.getFetchService()
-      .refresh()
-      .then((res) => {
-        this.onRefresh(res);
+    return new PepoApi(this.getFetchUrl())
+      .get()
+      .then((apiResponse) => {
+        if (apiResponse.success){
+          this.onRefresh(apiResponse);
+        }
+
       })
-      .catch((error) => {
-        //this.onRefreshError(error);
-        console.log(error);
+      .catch((err) => {
+        console.log('updateActivatingStatus', err);
       });
   };
 
   setReplyToLandOn = (list) => {
     if(list.length > 0) {
       let item = list[0];
-      this.replyDetailId = deepGet(item,'payload.reply_detail_id');
+      this.replyDetailId = deepGet(item,'reply_detail_id');
     }
   };
 
@@ -92,23 +95,24 @@ class BubbleList extends PureComponent {
 
 
   onRefresh = (res) => {
-    let listToBeShownOnUI = this.fetchServices.getAllResults().slice(0,NO_OF_ITEMS_TO_SHOW).reverse();
-    this.replyCount =  reduxGetter.getVideoReplyCount(this.props.videoId);
-    this.setReplyToLandOn(listToBeShownOnUI);
-    this.setState({ list : listToBeShownOnUI } );
+    this.replyList =  reduxGetter.getUnseenReplies(this.props.videoId);
+    let listToShowOnUi =  this.replyList.slice(0,NO_OF_ITEMS_TO_SHOW).reverse();
+    this.setReplyToLandOn(this.replyList);
+    this.setState({ list : listToShowOnUi });
+    console.log(res);
   };
 
   getBubbleListJSX = () => {
     let listToRender = this.state.list;
     let listJsx = [];
-    if (this.replyCount > NO_OF_ITEMS_TO_SHOW ){
+    if (this.replyList.length > NO_OF_ITEMS_TO_SHOW ){
       listJsx.push(this.getExtraItemUI());
       listJsx.push(this.getExtraItemUI());
     }
 
     listToRender.forEach((item) => {
-      let userId = deepGet(item,'payload.user_id'),
-      replyDetailId=deepGet(item,'payload.reply_detail_id');
+      let userId = deepGet(item,'user_id'),
+      replyDetailId=deepGet(item,'reply_detail_id');
       listJsx.push(<SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId}  />)
     });
 
@@ -117,20 +121,16 @@ class BubbleList extends PureComponent {
     return listJsx.length ? listJsx : <></>;
   };
 
-  moreReplyText = () => {
-
-    let list = this.state.list;
-    if (! this.replyCount || ! list.length){
-      return ''
-    }
-    if (this.replyCount > list.length){
-      return ` + ${this.replyCount - list.length} Replies`;
-    }
-  };
-
-  getFetchService = () => {
-    return this.fetchServices;
-  }
+  // moreReplyText = () => {
+  //
+  //   let list = this.state.list;
+  //   if (! this.replyCount || ! list.length){
+  //     return ''
+  //   }
+  //   if (this.replyCount > list.length){
+  //     return ` + ${this.replyCount - list.length} Replies`;
+  //   }
+  // };
 
   parentClickHandler = ()=> {
     this.props.navigation.goBack(null);

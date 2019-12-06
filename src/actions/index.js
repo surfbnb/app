@@ -253,10 +253,10 @@ export const upsertTwitterEntities = (data) => ({
     twitter_entities: data
   }
 });
-export const upsertUnseenVideoReplies = (data) => ({
-  type: types.UPSERT_UNSEEN_VIDEO_REPLIES,
+export const upsertUnseenReplies = (data) => ({
+  type: types.UPSERT_UNSEEN_REPLIES,
   payload: {
-    unseen_video_replies_entities: data
+    unseen_replies_entities: data
   }
 });
 

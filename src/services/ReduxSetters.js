@@ -41,7 +41,7 @@ const knownEntitiesDispatcherMap = {
   twitter_users : 'upsertTwitterEntities',
   user_allowed_actions: 'upsertUserAllowedActionEntities',
   pepocorn_balance: 'updatePepocorn',
-  unseen_video_replies: 'upsertUnseenVideoReplies'
+  unseen_replies: 'upsertUnseenReplies'
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.
