@@ -90,7 +90,8 @@ const CustomTab = (props) => {
   let { navigation, unreadNotification } = props;
   previousTabIndex = navigation.state.index;
   return (
-    <SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
+    <SafeAreaView forceInset={{ top: 'never' }}>
+      <View style={styles.container}>
       <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab1)} style={styles.tapArea}>
         <Image
           style={[styles.tabElementSkipFont]}
@@ -137,6 +138,7 @@ const CustomTab = (props) => {
           source={navigation.state.index === appConfig.tabConfig.tab5.navigationIndex ? profileSelected : profileNs}
         />
       </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };

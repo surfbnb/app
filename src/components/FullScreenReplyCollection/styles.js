@@ -1,32 +1,16 @@
 import { Dimensions, StatusBar, NativeModules } from 'react-native';
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
-import { ifIphoneX, getBottomSpace , getStatusBarHeight} from 'react-native-iphone-x-helper';
+import {ifIphoneX, getBottomSpace, getStatusBarHeight, isIphoneX} from 'react-native-iphone-x-helper';
 
-import  NotchHelper from "../../helpers/NotchHelper";
-import { HEADER_HEIGHT } from '../../theme/constants';
+import {hasNotch} from "../../helpers/NotchHelper";
+import {CUSTOM_TAB_Height, HEADER_HEIGHT} from '../../theme/constants';
 const {width, height} = Dimensions.get('window');
 const statusBarHeight = StatusBar.currentHeight || 20;
 
-
-let RNDeviceInfo = NativeModules.RNDeviceInfo;
-let modalDeviceName = RNDeviceInfo.model === "Redmi Note 7 Pro" && RNDeviceInfo.brand === "xiaomi";
-let btmSpace = modalDeviceName ? 5 : 0;
-
 let stylesMap = {
     fullScreen: {
-        width: width,
-        ...ifIphoneX(
-            {
-                height: height  - HEADER_HEIGHT - getStatusBarHeight(true)
-            },
-            {
-                height:
-                    NotchHelper.hasNotch()
-                        ? height + statusBarHeight - btmSpace - HEADER_HEIGHT
-                        : height - statusBarHeight - HEADER_HEIGHT
-            }
-        )
+        width: width
     },
     touchablesBtns: {
       alignItems: 'flex-end',
@@ -130,5 +114,20 @@ let stylesMap = {
         height: height - 200
     }
 };
+
+Object.defineProperty(stylesMap.fullScreen, "height", {
+  configurable: true,
+  enumerable: true,
+  get: () => {
+    if ( isIphoneX() ) {
+      return height - CUSTOM_TAB_Height - getBottomSpace();
+    }
+
+    if ( hasNotch() ) {
+      return height + statusBarHeight - CUSTOM_TAB_Height;
+    }
+    return height - CUSTOM_TAB_Height;
+  }
+})
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

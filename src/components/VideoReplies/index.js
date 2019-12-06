@@ -30,15 +30,14 @@ import Pricer from "../../services/Pricer";
 import {getVideoReplyObject, replyPreValidationAndMessage} from "../../helpers/cameraHelper";
 import VideoReplyIcon from '../../assets/reply_video_icon.png';
 import VideoReplyCount from '../../components/CommonComponents/VideoReplyCount';
-import NotchHelper from "../../helpers/NotchHelper";
+import {hasNotch} from "../../helpers/NotchHelper";
 
 const statusBarHeight = StatusBar.currentHeight;
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
-// const bottomReplyViewHeight = isIphoneX() ? 88 : Platform.OS === 'ios' ? 54 : NotchHelper.hasNotch() ? 54 - statusBarHeight : statusBarHeight + 6;
-const bottomReplyViewHeight = isIphoneX() ? 88 : Platform.OS === 'ios' ? 54 : NotchHelper.hasNotch() ? 54 - statusBarHeight : 54 - statusBarHeight;
+const bottomReplyViewHeight = isIphoneX() ? 88 : Platform.OS === 'ios' ? 54 : hasNotch() ? 54 - statusBarHeight : 54 - statusBarHeight;
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
 
 const bottomSpace = getBottomSpace([true]);

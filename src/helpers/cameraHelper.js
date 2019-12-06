@@ -53,7 +53,7 @@ const replyPreValidationAndMessage = (videoId , userId) => {
 
   const requiredPepo = ReduxGetters.getBtAmountForReply(videoId);
 
-  if(Pricer.getWeiToNumber(ReduxGetters.getBalance()) < Pricer.getWeiToNumber(requiredPepo)){
+  if( ReduxGetters.isVideoIsChargeable(videoId) && (Pricer.getWeiToNumber(ReduxGetters.getBalance()) < Pricer.getWeiToNumber(requiredPepo))){
     Toast.show({
       text: ostErrors.getUIErrorMessage("video_reply_not_allowed_low_bal"),
       icon: 'error'
