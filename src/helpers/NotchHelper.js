@@ -11,7 +11,7 @@ export const getRemoteNotchData = async () => {
     .then((responseJson) => {
       const devices = responseJson && responseJson.devices;
       if( devices && devices instanceof Array && devices.length > 0 ) {
-        console.log('Remote Notch Data fetched: ', devices);
+        console.log('Remote Notch Data fetched and seeded to local: ', devices);
         return AsyncStorage.setItem(NotchDataKey, JSON.stringify(devices));
       }
     })
