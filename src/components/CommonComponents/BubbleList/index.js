@@ -85,8 +85,8 @@ class BubbleList extends PureComponent {
     }
   };
 
-  getExtraItemUI = () => {
-    return <View style={ {marginLeft: -34, zIndex: -1} }>
+  getExtraItemUI = (key) => {
+    return <View key={key} style={ {marginLeft: -34, zIndex: -1} }>
       <View style={inlineStyles.emptyBubble}></View>
     </View>;
   };
@@ -106,8 +106,8 @@ class BubbleList extends PureComponent {
     let listToRender = this.state.list;
     let listJsx = [];
     if (this.replyList.length > NO_OF_ITEMS_TO_SHOW ){
-      listJsx.push(this.getExtraItemUI());
-      listJsx.push(this.getExtraItemUI());
+      listJsx.push(this.getExtraItemUI(0));
+      listJsx.push(this.getExtraItemUI(1));
     }
 
     listToRender.forEach((item) => {

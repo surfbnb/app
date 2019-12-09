@@ -46,10 +46,10 @@ class BottomStatus extends PureComponent {
     return !!reduxGetter.getTappedIncludesEntity(descriptionId, tappedText);
   }
 
-  getHashTagMarkup( item , formattedItem, prevText ){
+  getHashTagMarkup( item , formattedItem, prevText, index ){
     const tagText = item.replace("#", "");
     return (
-      <Text key={tagText}>
+      <Text key={`${tagText}-${index}`}>
         {prevText}
         <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
               numberOfLines={1}
@@ -63,10 +63,10 @@ class BottomStatus extends PureComponent {
     );
   }
 
-  getMentionMarkup( item , formattedItem, prevText ){
+  getMentionMarkup( item , formattedItem, prevText, index ){
     const mentionText = item.replace("@", "");
     return (
-      <Text key={mentionText}>
+      <Text key={`${mentionText}-${index}`}>
         {prevText}
         <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
               numberOfLines={1}
@@ -103,9 +103,9 @@ class BottomStatus extends PureComponent {
     }
   };
 
-  getTextMarkup( item  , prevText){
+  getTextMarkup( item  , prevText, index){
     return (
-      <Text key={item}>
+      <Text key={`${item}-${index}`}>
         {prevText + item}
       </Text>
     )
@@ -132,17 +132,17 @@ class BottomStatus extends PureComponent {
                 numberOfLines={3}
               >
 
-                {(includesArray.map((item) => {
+                {(includesArray.map((item, index) => {
                   let tagLocation = processingString.search(item);
                   let prevText = processingString.slice(0, tagLocation);
                   processingString = processingString.slice(tagLocation + item.length);
                   let formattedItem = item.replace(regex, "$2$3");
                   if (this.isValidTag(this.props.entityDescriptionId, formattedItem)) {
-                    return this.getHashTagMarkup(item, formattedItem, prevText);
+                    return this.getHashTagMarkup(item, formattedItem, prevText, index);
                   } if( this.isValidMention(this.props.entityDescriptionId ,  formattedItem) ){
-                    return this.getMentionMarkup(item, formattedItem, prevText);
+                    return this.getMentionMarkup(item, formattedItem, prevText, index);
                   }else {
-                    return this.getTextMarkup(item, prevText);
+                    return this.getTextMarkup(item, prevText, index);
                   }
                 }))}
 
