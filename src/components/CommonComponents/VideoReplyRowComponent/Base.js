@@ -104,6 +104,7 @@ class Base extends PureComponent {
                                   onChildClickDelegate={this.props.onChildClickDelegate}
                                   currentIndex={this.props.currentIndex}
                                   bottomRounding={50}
+                                  isActive={this.props.isActive}
                                   isActiveEntity={this.props.isActiveEntity}
                                   fullVideoReplyId={this.props.replyDetailId}
               />
@@ -127,6 +128,7 @@ class Base extends PureComponent {
                         doRender={this.props.doRender}
                         isActive={this.props.isActive}
                         getPixelDropData={this.getPixelDropData}
+                        onPixelFired={this.onPixelFired}
                     />
 
                     {!!videoId && !!this.props.userId && (

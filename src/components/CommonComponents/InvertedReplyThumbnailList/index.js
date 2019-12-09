@@ -6,7 +6,6 @@ import deepGet from "lodash/get";
 import Pagination from "../../../services/Pagination";
 import ReplyThumbnailItem from './ReplyThumbnailItem'
 import {FlatList} from 'react-native-gesture-handler';
-import ReplyHelper from '../../../helpers/ReplyHelper';
 import AppConfig from "../../../constants/AppConfig";
 import DataContract from '../../../constants/DataContract';
 import ReduxGetters from '../../../services/ReduxGetters';
@@ -67,7 +66,6 @@ class InvertedReplyList extends PureComponent {
     const videoId = ReduxGetters.getReplyParentVideoId(deepGet(item ,  "payload.reply_detail_id")),
           baseUrl = DataContract.replies.getReplyListApi(videoId),
           clonedInstance = this.getPagination().fetchServices.cloneInstance();
-    ReplyHelper.updateEntitySeen( item );
     this.props.navigation.push('FullScreenReplyCollection',{
       "fetchServices": clonedInstance,
       "currentIndex":index,
@@ -330,6 +328,7 @@ class InvertedReplyList extends PureComponent {
 InvertedReplyList.defaultProps = {
   paginationService : null,
   doRender: true,
+  isActive: true,
   currentIndex: 0,
   bottomRounding: 10
 };

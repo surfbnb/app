@@ -1,5 +1,6 @@
 import Base from "./Base";
 import { withNavigation } from "react-navigation";
+import ReplyHelper from "../../../helpers/ReplyHelper";
 
 class NoPendantsVideoReplyRow extends Base {
     constructor(props){
@@ -8,6 +9,10 @@ class NoPendantsVideoReplyRow extends Base {
 
     _renderInvertedFlatList =() => {
         return null;
+    }
+
+    onPixelFired = ()=> {
+        ReplyHelper.updateEntitySeen( this.props.replyDetailId );
     }
 }
 

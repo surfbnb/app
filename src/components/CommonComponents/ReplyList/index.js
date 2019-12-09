@@ -8,7 +8,6 @@ import entityHelper from "../../../helpers/EntityHelper";
 import DataContract from "../../../constants/DataContract";
 import CommonStyle from "../../../theme/styles/Common";
 import { SafeAreaView, withNavigation } from "react-navigation";
-import ReplyHelper from "../../../helpers/ReplyHelper";
 import TopStatus from "../../Home/TopStatus";
 import InvertedReplyList from "../InvertedReplyThumbnailList";
 import Utilities from "../../../services/Utilities";
@@ -172,7 +171,6 @@ class ReplyList extends PureComponent{
     }
 
     childClickHandler = ( index, item )=> {
-        ReplyHelper.updateEntitySeen( item );
         this.scrollToIndex( index );
     }
 
@@ -184,7 +182,6 @@ class ReplyList extends PureComponent{
 
     onViewableItemsChanged = (data) => {
         let item = deepGet(data, 'viewableItems[0].item');
-        item && ReplyHelper.updateEntitySeen( item );
         let currentIndex = deepGet(data, 'viewableItems[0].index');
         if ( "number" === typeof currentIndex ) {
             this.currentIndex = currentIndex;

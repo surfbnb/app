@@ -165,6 +165,7 @@ class Base extends PureComponent {
       PixelCall(pixelParams);
       this.sendFeedVideoEvent(VIDEO_PLAY_START_EVENT_NAME);
       this.videoContext.eventFired(CurrentUser.getUserId(), this.props.video_id);
+      this.props.onPixelFired && this.props.onPixelFired();
     }
   }
 
