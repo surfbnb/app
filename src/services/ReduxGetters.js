@@ -560,8 +560,7 @@ class ReduxGetters {
 
   getUnseenReplies(id, state){
     state = state || Store.getState();
-    // todo: mayur change 1234 when dummy response is replaced by actual id.
-    return deepGet(state, `unseen_replies_entities.id_${1234}.unseen`, []);
+    return deepGet(state, `unseen_replies_entities.id_${id}.unseen`, []);
   }
 
 }
