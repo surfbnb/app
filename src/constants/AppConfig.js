@@ -32,7 +32,7 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
 
 const AppConfig = {
 
-  pepoAnimationDuration : 700,
+  pepoAnimationDuration : 500,
   logoutTimeOut : 2000,
 
   beKnownErrorCodeMaps : {
