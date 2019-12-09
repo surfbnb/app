@@ -4,7 +4,7 @@ import Colors from '../../theme/styles/Colors';
 import {ifIphoneX, getBottomSpace, getStatusBarHeight, isIphoneX} from 'react-native-iphone-x-helper';
 
 import {hasNotch} from "../../helpers/NotchHelper";
-import {CUSTOM_TAB_Height, HEADER_HEIGHT} from '../../theme/constants';
+import {CUSTOM_TAB_Height} from '../../theme/constants';
 const {width, height} = Dimensions.get('window');
 const statusBarHeight = StatusBar.currentHeight || 20;
 
@@ -85,24 +85,6 @@ let stylesMap = {
       iconSkipFont: {
         height: 20,
         width: 20
-      },
-      headerStyles: {
-        backgroundColor: Colors.white,
-        borderBottomWidth: 0,
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 1
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-        height: HEADER_HEIGHT
-      },
-      headerText:{
-          fontWeight: '600'
-      },
-      headerSubText:{
-          fontSize: 12
       },
     listContainer: {
         // width: width,
