@@ -1,79 +1,121 @@
-import Store from '../store';
-import * as Actions from '../actions';
+import merge from "lodash/merge";
+import deepGet from "lodash/get";
+import assignIn from "lodash/assignIn";
 
-const knownEntitiesDispatcherMap = {
-  ost_transaction: 'upsertTransactionEntities',
-  gifs: 'upsertGiffyEntities',
-  tags: 'upsertTagEntities',
-  tag_search_results:'upsertTagEntities',
-  user_search_results:'upsertUserEntities',
-  user_profiles: 'upsertUserProfileEntities',
-  user_stats: 'upsertUserStatEntities',
-  links: 'upsertLinkEntities',
-  video_descriptions: 'upsertVideoDescriptionEntities',
-  videos: 'upsertVideoEntities',
-  video_details: 'upsertVideoStatEntities',
-  video_replies: 'upsertVideoReplyEntities',
-  reply_details: 'upsertReplyDetailEntities',
-  current_user_video_relations: 'upsertCurrentUserVideoRelationEntities',
-  current_user_reply_detail_relations: 'upsertCurrentUserReplyDetailRelationEntities',
-  images: 'upsertImageEntities',
-  current_user_video_contributions: 'upsertVideoContributionEntities',
-  current_user_reply_detail_contributions: 'upsertReplyContributionEntities',
-  current_user_user_contributions: 'upsertUserContributionEntities',
-  price_points: 'updatePricePoints',
-  token: 'updateToken',
-  users: 'upsertUserEntities',
-  contribution_to_users: 'upsertUserEntities',
-  contribution_by_users: 'upsertUserEntities',
-  user_contribution_to_stats: 'upsertUserContributionToStats',
-  user_contribution_by_stats: 'upsertUserContributionByStats',
-  contribution_suggestions: 'upsertUserEntities',
-  public_activity: 'upsertActivitiesEntities',
-  user_activity: 'upsertActivitiesEntities',
-  user_videos: 'upsertUserVideoEntities',
-  tag_videos: 'upsertTagVideoEntities',
-  user_notifications: 'upsertUserNotifications',
-  feeds: 'upsertHomeFeedEntities',
+import Store from '../store';
+import {upsertAllWhitelisted} from "../actions";
+
+const backendToAppEntities = {
+  ost_transaction: 'transaction_entities',
+  tags: 'tag_entities',
+  tag_search_results:'tag_entities',
+  user_search_results:'user_entities',
+  user_profile: 'user_profile_entities',
+  user_profiles: 'user_profile_entities',
+  user_stats: 'user_stat_entities',
+  links: 'link_entities',
+  video_descriptions: 'video_description_entities',
+  videos: 'video_entities',
+  video_details: 'video_stat_entities',
+  reply_details: 'reply_detail_entities',
+  current_user_video_relations: 'current_user_video_relation_entities',
+  current_user_reply_detail_relations: 'current_user_reply_detail_relation_entities',
+  images: 'image_entities',
+  current_user_video_contributions: 'video_contribution_entities',
+  current_user_reply_detail_contributions: 'reply_contribution_entities',
+  current_user_user_contributions: 'user_contribution_entities',
+  price_points: {
+    key: 'price_points',
+    parser: parser_price_points
+  },
+  token: 'token',
+  users: 'user_entities',
+  contribution_to_users: 'user_entities',
+  contribution_by_users: 'user_entities',
+  user_contribution_to_stats: {
+    key: 'user_contribution_to_stats',
+    parser: parser_merge
+  },
+  user_contribution_by_stats: {
+    key: 'user_contribution_by_stats',
+    parser: parser_merge
+  },
+  contribution_suggestions: 'user_entities',
+  public_activity: 'activities_entities',
+  user_activity: 'activities_entities',
+  user_videos: 'user_video_entities',
+  tag_videos: 'tag_video_entities',
+  user_notifications: 'user_notifications',
+  feeds: 'home_feed_entities',
   notification_unread: 'notification_unread',
-  feed: 'upsertHomeFeedEntities',
-  upsert_push_notification: 'upsertPushNotification',
-  twitter_users : 'upsertTwitterEntities',
-  user_allowed_actions: 'upsertUserAllowedActionEntities',
-  pepocorn_balance: 'updatePepocorn',
-  unseen_replies: 'upsertUnseenReplies'
+  feed: 'home_feed_entities',
+  upsert_push_notification: 'push_notification',
+  twitter_users : 'twitter_entities',
+  user_allowed_actions: 'user_allowed_action_entities',
+  pepocorn_balance: {
+    key: 'pepocorn',
+    parser: parser_direct_assign
+  },
+  unseen_replies: 'unseen_replies_entities'
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.
-const knownSinglularEntityMap = {
-  "user_profile": "user_profiles"
+const knownSinglularEntities = {
+  user_profile: 'user_profiles'
 };
 
 const dispatchEntities = (data) => {
-  if (!data) return;
-  for (let entity in data) { if (data.hasOwnProperty(entity)) {
+  Store.dispatch(upsertAllWhitelisted(data));
+};
 
-    let reduxAction = knownEntitiesDispatcherMap[entity];
-    let entitiesData = data[entity];
+export const upsertAllWhitelistedAction = (state, action) => {
 
+  // Get backend data
+  let payloadData = deepGet(action, 'payload');
 
-      if ( null == reduxAction ) {
-        // Try know singular entity.
-        let entityCollectionKey = knownSinglularEntityMap[entity];
-        if ( entityCollectionKey ) {
-          // Manipulate the data.
-          entitiesData = [entitiesData];
-          // Manipulate the redux action.
-          reduxAction = knownEntitiesDispatcherMap[entityCollectionKey];
+  // Return cloned state if no data
+  if (!payloadData) return {...state};
+
+  // Clone state for later use
+  let newState = {...state};
+
+  let whitelistedEntities = [];
+
+  // Loop on backend data for whitelisted processing
+  for (let entity in payloadData) {
+
+    if (payloadData.hasOwnProperty(entity)) {
+
+      // App entity to parse or assignIn as-is
+      let appEntity = backendToAppEntities[entity] ,
+          entityData = payloadData[entity];
+
+      // In case of singular entities, convert to array
+      if( knownSinglularEntities[entity] ){
+        entityData = [entityData];
+      }
+
+      // Proceed only if whitelisted
+      if(appEntity) {
+        if(typeof appEntity === 'string'){
+          // Default processing (assignIn)
+          newState[appEntity] = assignIn({}, state[appEntity], getEntities(entityData));
+          whitelistedEntities.push(entity);
+        } else {
+          // Parser based processing
+          if(appEntity.key && typeof appEntity.parser === 'function'){
+            newState[appEntity.key] = appEntity.parser(state[appEntity], getEntities(entityData));
+            whitelistedEntities.push(entity);
+          }
         }
       }
 
-      if ( Actions[reduxAction] ) {
-        Store.dispatch(Actions[reduxAction](getEntities(entitiesData)));
-      }
+    }
+  }
+  if(whitelistedEntities.length > 0) console.log('Upserting following whitelisted entities: ', whitelistedEntities);
+  return newState;
 
-  }}
-};
+}
 
 const getEntities = (entities, key = 'id') => {
   if (entities instanceof Array) {
@@ -99,6 +141,31 @@ const getEntitiesFromObj = (resultObj, key = 'id') => {
     }
   }
   return entities;
+};
+
+const parser_merge = (oldState, newState) => {
+  return merge({}, oldState, newState);
+};
+
+const parser_direct_assign = (oldState, newState) => {
+  return newState;
+};
+
+const parser_price_points = (oldState, newState) => {
+  //Make sure price_points is not null;
+  if (!newState) {
+    return oldState;
+  }
+
+  // Make sure response has keys;
+  if ( !Object.keys(newState).length ) {
+    return oldState;
+  }
+
+  return {
+    ...oldState,
+    ...newState
+  };
 };
 
 export default dispatchEntities;

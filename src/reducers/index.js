@@ -1,7 +1,9 @@
 import { createActions, handleActions } from 'redux-actions';
 import assignIn from 'lodash/assignIn';
 import merge from 'lodash/merge';
+
 import * as types from '../actions/constants';
+import {upsertAllWhitelistedAction} from '../services/ReduxSetters';
 
 export const {
   showModal,
@@ -56,7 +58,8 @@ export const {
   upsertInviteCode,
   upsertTwitterEntities,
   upsertTagVideoEntities,
-  upsertUnseenReplies
+  upsertUnseenReplies,
+  upsertAllWhitelisted
 } = createActions(...Object.keys(types));
 
 const defaultState = {
@@ -348,7 +351,8 @@ export const reducer = handleActions(
     [upsertUnseenReplies]: (state, action) => ({
       ...state,
       unseen_replies_entities: assignIn({}, state.unseen_replies_entities, action.payload.unseen_replies_entities)
-    })
+    }),
+    [upsertAllWhitelisted]: upsertAllWhitelistedAction
   },
   defaultState
 );

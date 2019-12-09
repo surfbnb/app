@@ -259,5 +259,9 @@ export const upsertUnseenReplies = (data) => ({
     unseen_replies_entities: data
   }
 });
+export const upsertAllWhitelisted = (data) => ({
+  type: types.UPSERT_ALL_WHITELISTED,
+  payload: data
+});
 
 

@@ -99,7 +99,6 @@ class BubbleList extends PureComponent {
     let listToShowOnUi =  this.replyList.slice(0,NO_OF_ITEMS_TO_SHOW).reverse();
     this.setReplyToLandOn(this.replyList);
     this.setState({ list : listToShowOnUi });
-    console.log(res);
   };
 
   getBubbleListJSX = () => {
@@ -145,7 +144,7 @@ class BubbleList extends PureComponent {
   };
 
   onIconClick = () => {
-    if(!Utilities.checkActiveUser()) return; 
+    if(!Utilities.checkActiveUser()) return;
     this.onClickHandler();
   };
 

@@ -61,21 +61,6 @@ export default class PepoApi {
     this.parsedParams = AssignIn(this.defaultParams, this.params);
   }
 
-  _getIDList(resultData, key = 'id') {
-    return resultData.map((item) => item[key]);
-  }
-
-  _getIDListFromObj(resultObj) {
-    return Object.keys(resultObj);
-  }
-
-  _getEntityFromObj(resultObj, key = 'id') {
-    const entity = {},
-      id = `${key}_${resultObj.id}`;
-    entity[id] = resultObj;
-    return entity;
-  }
-
   _perform() {
     return new Promise(async (resolve, reject) => {
       try {
