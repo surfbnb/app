@@ -95,7 +95,7 @@ class Base extends PureComponent {
     }
 
     _renderInvertedFlatList = () => {
-      if( this.state.parentVideoId && this.props.isActive ){
+      if( this.state.parentVideoId ){
         return (
           <View style={[inlineStyles.invertedList, { top: Utilities.getPendantTop() , height: Utilities.getPendantAvailableHeight()}]}>
               <InvertedReplyList  videoId={this.state.parentVideoId}

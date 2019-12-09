@@ -296,26 +296,34 @@ class InvertedReplyList extends PureComponent {
     };
   }
 
+  isRender(){
+    return this.props.isActive && this.state.list.length > 0
+  }
+
   render() {
-      console.log("InvertedReplyList :: this.props.listKey", this.props.listKey);
-        return   <FlatList style={{ height: this.getListHeight(), width: '100%' , position: "absolute" , bottom: this.props.bottomRounding}}
-        ref={this.setListRef}
-        ItemSeparatorComponent={this.getItemSeperatorComponent}
-        data={this.state.list}
-        listKey={this.props.listKey}
-        onEndReached={this.getNext}
-        onRefresh={this.refresh}
-        keyExtractor={this._keyExtractor}
-        refreshing={this.state.refreshing}
-        onEndReachedThreshold={4}
-        renderItem={this._renderItem}
-        ListFooterComponent={this.renderFooter}
-        key={this.flatListKey}
-        showsVerticalScrollIndicator={false}
-        initialScrollIndex={this.props.currentIndex}
-        getItemLayout={this.getItemLayout}
-        onScrollToIndexFailed={this.onScrollToIndexFailed}
-        />
+        if(this.isRender()){
+          return   <FlatList style={{ height: this.getListHeight(), width: '100%' , position: "absolute" , bottom: this.props.bottomRounding}}
+          ref={this.setListRef}
+          ItemSeparatorComponent={this.getItemSeperatorComponent}
+          data={this.state.list}
+          listKey={this.props.listKey}
+          onEndReached={this.getNext}
+          onRefresh={this.refresh}
+          keyExtractor={this._keyExtractor}
+          refreshing={this.state.refreshing}
+          onEndReachedThreshold={4}
+          renderItem={this._renderItem}
+          ListFooterComponent={this.renderFooter}
+          key={this.flatListKey}
+          showsVerticalScrollIndicator={false}
+          initialScrollIndex={this.props.currentIndex}
+          getItemLayout={this.getItemLayout}
+          onScrollToIndexFailed={this.onScrollToIndexFailed}
+          />
+        }else{
+          return null;
+        }
+        
   }
 }
 
