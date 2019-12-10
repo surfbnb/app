@@ -34,12 +34,13 @@ class BubbleList extends PureComponent {
       list: []
     };
     this.getDataWhileLoading();
+    this.isInitialDataLoaded = false;
     this.replyList = [];
   }
 
   componentDidUpdate(prevProps, prevState ) {
-    if( this.props.doRender && this.props.doRender !== prevProps.doRender  ){
-      this.getListData();
+    if( this.props.doRender !== prevProps.doRender  ){
+      this.getDataWhileLoading();
     }
     if (this.props.replyCount != prevProps.replyCount){
       this.getListData();
@@ -51,9 +52,9 @@ class BubbleList extends PureComponent {
     return `/videos/${this.props.videoId}/unseen-replies`;
   };
 
-
-
   getDataWhileLoading(){
+    if(this.isInitialDataLoaded) return ;
+    this.isInitialDataLoaded =  true;
     if (this.props.doRender){
       this.getListData();
     }
