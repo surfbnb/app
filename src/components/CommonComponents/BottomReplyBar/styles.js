@@ -14,7 +14,7 @@ let stylesMap = {
           height: CUSTOM_TAB_Height
         }),
       zIndex:9999,
-      backgroundColor:Colors.wildWatermelon2
+      backgroundColor:Colors.darkShadeOfGray
     },
     innerWrapper: {
       width: '100%',

@@ -46,7 +46,8 @@ let stylesMap = {
     paddingTop: 0,
     position: 'relative',
     paddingLeft: 0,
-    height: 100
+    height: 100,
+    textAlignVertical: 'top'
   },
   videoLinkItem: {
     flexDirection: 'row',
