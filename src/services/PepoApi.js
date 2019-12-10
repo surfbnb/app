@@ -7,7 +7,7 @@ import DeviceInfo from 'react-native-device-info';
 import Toast from '../theme/components/NotificationToast';
 import { API_ROOT } from '../constants/index';
 import { ostErrors, UIWhitelistedErrorCode } from './OstErrors';
-import dispatchEntities from '../services/ReduxSetters';
+import {dispatchEntities} from '../services/ReduxSetters';
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {

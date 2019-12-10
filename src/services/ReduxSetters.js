@@ -68,7 +68,7 @@ const dispatchEntities = (data) => {
   Store.dispatch(upsertAllWhitelisted(data));
 };
 
-export const upsertAllWhitelistedAction = (state, action) => {
+const upsertAllWhitelistedAction = (state, action) => {
 
   // Get backend data
   let payloadData = deepGet(action, 'payload');
@@ -117,14 +117,14 @@ export const upsertAllWhitelistedAction = (state, action) => {
 
 }
 
-const getEntities = (entities, key = 'id') => {
+function getEntities(entities, key = 'id') {
   if (entities instanceof Array) {
     return getEntitiesFromArray(entities, key);
   }
   return getEntitiesFromObj(entities, key);
 };
 
-const getEntitiesFromArray = (resultData, key = 'id') => {
+function getEntitiesFromArray (resultData, key = 'id') {
   const entities = {};
   resultData.forEach((item) => {
     entities[`${key}_${item[key]}`] = item;
@@ -132,7 +132,7 @@ const getEntitiesFromArray = (resultData, key = 'id') => {
   return entities;
 };
 
-const getEntitiesFromObj = (resultObj, key = 'id') => {
+function getEntitiesFromObj (resultObj, key = 'id'){
   const entities = {};
   for (let identifier in resultObj) {
     if (resultObj.hasOwnProperty(identifier)) {
@@ -143,15 +143,15 @@ const getEntitiesFromObj = (resultObj, key = 'id') => {
   return entities;
 };
 
-const parser_merge = (oldState, newState) => {
+function parser_merge (oldState, newState)  {
   return merge({}, oldState, newState);
 };
 
-const parser_direct_assign = (oldState, newState) => {
+function parser_direct_assign (oldState, newState) {
   return newState;
 };
 
-const parser_price_points = (oldState, newState) => {
+function parser_price_points (oldState, newState) {
   //Make sure price_points is not null;
   if (!newState) {
     return oldState;
@@ -168,4 +168,4 @@ const parser_price_points = (oldState, newState) => {
   };
 };
 
-export default dispatchEntities;
+export {  dispatchEntities , upsertAllWhitelistedAction };
