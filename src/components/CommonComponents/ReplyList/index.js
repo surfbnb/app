@@ -162,6 +162,7 @@ class ReplyList extends PureComponent{
                                 getPixelDropData={this.getPixelDropData(replyDetailId)}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
+                                index={index}
                                 replyDetailId={replyDetailId}
                                 paginationService ={this.getVideoPagination()}
                                 onChildClickDelegate={this.childClickHandler}

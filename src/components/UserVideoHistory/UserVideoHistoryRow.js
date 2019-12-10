@@ -45,6 +45,7 @@ class UserVideoHistoryRow extends PureComponent {
     const pixelParams = {
       e_entity: 'video',
       video_id: this.props.videoId,
+      position: this.props.index
     };
     return assignIn({}, pixelParams, parentData);
   }
@@ -122,7 +123,8 @@ UserVideoHistoryRow.defaultProps = {
   getPixelDropData: function(){
     console.warn("getPixelDropData props is mandatory for UserVideoHistoryRow component");
     return {};
-  }
+  },
+  index: 0
 };
 
 export default withNavigation(UserVideoHistoryRow);

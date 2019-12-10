@@ -129,6 +129,7 @@ class UserVideoHistoryScreen extends PureComponent{
     _renderItem = ({ item, index }) => {
         const videoId = reduxGetters.getUserVideoId(item) ;
         return  <UserVideoHistoryRow    shouldPlay={this.shouldPlay}
+                                        index={index}
                                         getPixelDropData={this.getPixelDropData}
                                         isActive={index == this.state.activeIndex}
                                         doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}

@@ -302,7 +302,7 @@ class TagsInput extends PureComponent {
           style={[{
             position: 'absolute',
             top: 122,
-            maxHeight: Dimensions.get('window').height - 300,
+            maxHeight: Dimensions.get('window').height - 350,
             backgroundColor: '#fff',
           } , this.props.dropdownStyle ]}>
               {this.isHastagData() ?

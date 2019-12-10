@@ -81,7 +81,7 @@ export default (data) => {
     }
   }
   for(var key in pixelData){
-    if (pixelData.hasOwnProperty(key) && !pixelData[key]) {
+    if (pixelData.hasOwnProperty(key) && pixelData[key] == undefined || pixelData[key] == null ) {
       console.log(`PixelCall validation failed. Invalid value of ${mandatoryKeys[mi]}.`);
       return;
     }

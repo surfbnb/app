@@ -85,7 +85,8 @@ class Base extends PureComponent {
             e_entity: 'reply',
             parent_video_id : this.state.parentVideoId,
             p_name: this.state.parentVideoId,
-            reply_detail_id :this.props.replyDetailId
+            reply_detail_id :this.props.replyDetailId,
+            position: this.props.index
         };
         return assignIn({}, pixelParams, parentData);
     }
@@ -128,7 +129,7 @@ class Base extends PureComponent {
                         doRender={this.props.doRender}
                         isActive={this.props.isActive}
                         getPixelDropData={this.getPixelDropData}
-                        onPixelFired={this.onPixelFired}
+                        onMinimumVideoViewed={this.onMinimumVideoViewed}
                     />
 
                     {!!videoId && !!this.props.userId && (
@@ -189,7 +190,8 @@ Base.defaultProps = {
       return {};
     },
     paginationService : null,
-    currentIndex: 0
+    currentIndex: 0,
+    index:0
   };
 
 export default Base

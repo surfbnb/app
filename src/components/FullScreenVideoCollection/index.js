@@ -188,6 +188,7 @@ class FullScreenVideoCollection extends PureComponent{
                                 getPixelDropData={this.getReplyPixelDrop}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
+                                index={index}
                                 replyDetailId={replyDetailId}
                                 parentClickHandler={()=>{this.parentClickHandler(replyDetailId)}}
                                 isActiveEntity={this.isActiveEntity}
@@ -198,6 +199,7 @@ class FullScreenVideoCollection extends PureComponent{
         let rowKey = this._keyExtractor(item, index);
         return  <FullScreenVideoRow shouldPlay={this.shouldPlay}
                     listKey={`${rowKey}-full-screen-video-row`}
+                    index={index}
                     isActive={index == this.state.activeIndex}
                     getPixelDropData={this.getPixelDropData}
                     doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}

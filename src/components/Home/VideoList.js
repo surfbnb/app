@@ -35,6 +35,7 @@ class VideoList extends PureComponent {
         shouldPlay={this.props.shouldPlay}
         doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
         feedId={item}
+        index={index}
       />
     );
   };

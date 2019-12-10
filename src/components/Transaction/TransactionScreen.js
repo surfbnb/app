@@ -427,15 +427,17 @@ class TransactionScreen extends Component {
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
     pricer.getBalance();
     this.sendTransactionToPlatform(ostWorkflowContext, ostWorkflowEntity);
-    this.dropPixel();
+    this.dropPixel( ostWorkflowEntity );
   }
 
-  dropPixel() {
+  dropPixel( ostWorkflowEntity ) {
     PixelCall({
       e_entity: 'user',
       e_action: 'contribution',
       p_type: 'user_profile',
-      p_name: this.toUser.id,
+      p_name:  this.toUser.id,
+      transaction_uuid : deepGet(ostWorkflowEntity , "entity.id"),
+      receiver_user_id : this.toUser.id,
       amount: this.state.btAmount
     });
   }

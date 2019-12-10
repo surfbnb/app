@@ -42,7 +42,10 @@ class FullScreeVideoRow extends PureComponent {
 
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
-        const pixelParams = { e_entity: 'video' , video_id : this.videoId};
+        const pixelParams = { e_entity: 'video' ,
+                             video_id : this.videoId,
+                             position: this.props.index
+                            };
         return assignIn({}, pixelParams, parentData);
     }
 
@@ -108,7 +111,8 @@ FullScreeVideoRow.defaultProps = {
     getPixelDropData: function(){
       console.warn("getPixelDropData props is mandatory for Video component");
       return {};
-    }
+    },
+    index:0
   };
 
 

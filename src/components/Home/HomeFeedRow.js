@@ -44,6 +44,7 @@ class HomeFeedRow extends PureComponent {
       e_entity: 'video',
       p_type: 'feed',
       video_id: this.videoId,
+      position: this.props.index
     };
     return assignIn({}, pixelParams, parentData);
   }
@@ -98,5 +99,8 @@ class HomeFeedRow extends PureComponent {
   }
 }
 
+HomeFeedRow.defaultProps = {
+  index: 0
+}
 
 export default withNavigation(HomeFeedRow);

@@ -85,7 +85,7 @@ class VideoPlayer extends Component {
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
               <UserVideoHistoryRow doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
-                                 videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}
+                                    videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}
                                  />
              <FlotingBackArrow />
             </SafeAreaView>
