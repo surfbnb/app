@@ -96,7 +96,7 @@ class NotificationItem extends Component {
         onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}
           key={i}
         >
-          <Text style={textStyling}> {unescape(heading.includes[item]['display_text'] || item)}</Text>
+          <Text style={textStyling}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
         </TouchableWithoutFeedback>
       ) : (
         item.split(/(\s+)/).map((element, id) => {
