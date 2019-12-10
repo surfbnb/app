@@ -115,8 +115,8 @@ class NotificationItem extends Component {
     );
   };
 
-  showVideoComponent = () => {
-    let imageUrl = reduxGetter.getVideoImgUrl( this.props.payload.video_id,  null , AppConfig.userVideos.userScreenCoverImageWidth);
+  showVideoComponent = (videoId) => {
+    let imageUrl = reduxGetter.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth);
     return (
       <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
         <Image style={styles.playIconSkipFont} source={playIcon} />
@@ -125,8 +125,8 @@ class NotificationItem extends Component {
   };
 
   notificationInfo = () => {
-    if (this.shouldShowVideo()) {
-      return this.showVideoComponent();
+    if (this.shouldShowVideoPost() || this.shouldShowVideoReply()) {
+      return this.showVideoComponent(this.props.payload.video_id);
     }
   };
 
@@ -205,24 +205,26 @@ class NotificationItem extends Component {
 
     }
   }
+  shouldShowVideoReply = () => {
+    return AppConfig.notificationConstants.showReplyThumbnailForKinds.includes(this.props.kind);
 
-  shouldShowVideo = () => {
-    let videoKinds = [
-      AppConfig.notificationConstants.videoAddKind,
-      AppConfig.notificationConstants.userMention,
-      AppConfig.notificationConstants.replyUserMention,
-      AppConfig.notificationConstants.replySenderWithAmount,
-      AppConfig.notificationConstants.replySenderWithoutAmount,
-      AppConfig.notificationConstants.replyReceiverWithAmount,
-      AppConfig.notificationConstants.replyReceiverWithoutAmount
-    ]
-    return videoKinds.includes(this.props.kind);
-  }
+  };
+
+
+  shouldShowVideoPost = () => {
+    return AppConfig.notificationConstants.showVideoThumbnailForKinds.includes(this.props.kind);
+  };
+
+  shouldShowVideoComponent = () => {
+    return this.shouldShowVideoPost() || this.shouldShowVideoReply();
+
+  };
+
 
   render() {
     let headerWidth = '92%',
     notificationInfoWidth = '0%';
-    if (this.shouldShowVideo()) {
+    if (this.shouldShowVideoComponent()) {
         headerWidth = '72%';
         notificationInfoWidth = '20%';
     }
@@ -235,7 +237,7 @@ class NotificationItem extends Component {
               <View>
                 {this.getActivityIcon()}
               </View>
-              <View style={{ flex: this.shouldShowVideo() ? 6 : 2, flexDirection: 'row'}}>
+              <View style={{ flex: this.shouldShowVideoComponent() ? 6 : 2, flexDirection: 'row'}}>
                 <View style={{ flexDirection: 'column' }}>
                   <View style={styles.descriptionText}>
                     {this.getHeading()}
@@ -248,7 +250,7 @@ class NotificationItem extends Component {
                   {this.showIfFailed()}
                 </View>
               </View>
-              {  this.shouldShowVideo()  ?
+              {  this.shouldShowVideoComponent()  ?
                   <View
                     style={{ flex: 1 }}>{this.notificationInfo()}
                   </View>

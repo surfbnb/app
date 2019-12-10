@@ -17,6 +17,12 @@ const  ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
 const  ACTION_SHEET_REPORT_INDEX = 1;
 const MUTE_UNMUTE_INDEX = 0;
 
+
+const  ACTION_SHEET_LOGGED_OUT_CANCEL_INDEX = 1;
+const  ACTION_SHEET_LOGGED_OUT_DESCTRUCTIVE_INDEX = 0;
+const  ACTION_SHEET_LOGGED_OUT_REPORT_INDEX = 0;
+
+
 const mapStateToProps = (state , ownProps) => {
     return {
         currentUserId: CurrentUser.getUserId()
@@ -35,6 +41,10 @@ class ReportVideo extends PureComponent {
     getActionSheetButtons = ()=>{
       return [ this.getMuteUnmuteText(), 'Report', 'Cancel'];
     }
+
+  getActionSheetLoggedOutButtons = () => {
+    return [ 'Report', 'Cancel'];
+  }
 
 
   getMuteUnmuteText = () => {
@@ -149,22 +159,43 @@ class ReportVideo extends PureComponent {
   };
 
     showActionSheet = () => {
+      if (CurrentUser.getUserId()){
         ActionSheet.show(
-            {
-                options: this.getActionSheetButtons(),
-                cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
-                destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
-                // title: 'Report video'
-            },
-            (buttonIndex) => {
-                if (buttonIndex == ACTION_SHEET_REPORT_INDEX) {
-                    // This will take to VideoRecorder component
-                    this.showAlert();
-                } else if (buttonIndex == MUTE_UNMUTE_INDEX){
-                  this.showMuteUnmuteAlert();
-                }
+          {
+            options: this.getActionSheetButtons(),
+            cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
+            destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
+            title: 'Actions'
+          },
+          (buttonIndex) => {
+            if (buttonIndex == ACTION_SHEET_REPORT_INDEX) {
+              // This will take to VideoRecorder component
+              this.showAlert();
+            } else if (buttonIndex == MUTE_UNMUTE_INDEX){
+              this.showMuteUnmuteAlert();
             }
+          }
         );
+
+      } else {
+        ActionSheet.show(
+          {
+            options: this.getActionSheetLoggedOutButtons(),
+            cancelButtonIndex: ACTION_SHEET_LOGGED_OUT_CANCEL_INDEX,
+            destructiveButtonIndex: ACTION_SHEET_LOGGED_OUT_DESCTRUCTIVE_INDEX,
+            title: 'Actions'
+          },
+          (buttonIndex) => {
+            if (buttonIndex == ACTION_SHEET_LOGGED_OUT_REPORT_INDEX) {
+              // This will take to VideoRecorder component
+              this.showAlert();
+            }
+            }
+            )
+
+      }
+
+
     };
 
     isVisible = () => {
