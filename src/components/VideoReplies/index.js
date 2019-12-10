@@ -204,12 +204,6 @@ class VideoRepliesScreen extends PureComponent {
 
                         <View style={inlineStyles.repliesTxt}>
                           <VideoReplyCount videoId={this.videoId} showReplyText={true} style={inlineStyles.headerText} />
-                          {/*<Text  style={inlineStyles.headerText}>*/}
-                          {/*  {this.state.videoReplyCount} Repl{this.state.videoReplyCount > 1 ? 'ies' : 'y'}*/}
-                          {/*</Text>*/}
-                          {/*<Text style={inlineStyles.headerSubText}>Send a reply with{' '}*/}
-                          {/*<Image style={{height: 10, width: 10}} source={pepoIcon} />*/}
-                          {/*{ Pricer.getToBT(Pricer.getFromDecimal(ReduxGetters.getBtAmountForReply(this.videoId )), 2)}</Text>*/}
                         </View>
                       </View>
                       <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
