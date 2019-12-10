@@ -207,10 +207,10 @@ const BaseErrorMessages = {
   NETWORK_ERROR: "Request could not be executed due to cancellation, a connectivity problem or timeout.",
 
   INVALID_MNEMONICS:
-    "The 12 word passphrase you provided is incorrect. ",
+    "The 12 word passphrase you provided is incorrect.",
 
   INVALID_QR_TRANSACTION_DATA:
-    "The QR code for executing a transaction is not well formed. To know the data definition for QR code based on type of operations please visit https://dev.ost.com/platform ",
+    "The QR code for executing a transaction is not well formed.",
 
   INVALID_USER_PASSPHRASE:
     "The 6 digit PIN you entered is not correct.",
@@ -218,25 +218,25 @@ const BaseErrorMessages = {
   MAX_PASSPHRASE_VERIFICATION_LIMIT_REACHED:
     "The maximum number of 'authenticating with PIN' attempts has been reached. Please try again a bit later.",
 
-  DEVICE_CAN_NOT_BE_AUTHORIZED: "Unable to authorize this device. Please ensure the device is 'Registered' for this user with OST platform. Only a registered device can be authorized.",
+  DEVICE_CAN_NOT_BE_AUTHORIZED: "Unable to authorize this device.",
 
   SESSION_NOT_FOUND:
-    "The device doesn't has any active session. Please authorize a session before doing any transaction. Workflow details provided at https://dev.ost.com/platform/docs/sdk/references ",
+    "The device doesn't has any active session. Please authorize a session before doing any transaction.",
 
-  INVALID_QR_CODE: "Incorrect QR code.",
+  INVALID_QR_CODE: "The QR code for executing a transaction is not well formed.",
 
-  RECOVERY_KEY_GENERATION_FAILED: "Failed to generate Recovery key. Inspect if a correct input values required are being sent and re-submit the request. ",
+  RECOVERY_KEY_GENERATION_FAILED: "Failed to generate Recovery key. Inspect if a correct input values required are being sent and re-submit the request.",
 
   OUT_OF_MEMORY_ERROR: "Device is running low on memory. Reduce the number of App running on your device and re-enter the pin",
 
   WORKFLOW_FAILED:
     "Something went wrong, please try again",
 
-  WORKFLOW_VIEW_DESTROYED: "The application interrupted the workflow. The view got terminated while performing the workflow",
+  WORKFLOW_VIEW_DESTROYED: "The application interrupted the workflow. The view got terminated while performing the workflow.",
 
   // Rare Errors
   DEVICE_UNAUTHORIZED:
-    "Unable to perform the operation as the device not authorized. For details on how to authorize a device please visit https://dev.ost.com/platform/docs/sdk/references ",
+    "Unable to perform the operation as the device not authorized.",
 
   DEVICE_CAN_NOT_BE_REVOKED:
     "Cannot complete the revoke device operation. Only an authorized device can be revoked. Please ensure you are trying to revoke a valid device and re-submit the request.",

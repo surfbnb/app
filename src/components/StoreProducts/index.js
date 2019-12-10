@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
 import {
-    View,
-    Text,
-    TouchableWithoutFeedback,
-    Platform,
-    Animated,
-    Easing,
-    ScrollView,
-    Dimensions,
-    Image
-  } from 'react-native';
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Platform,
+  Animated,
+  Easing,
+  ScrollView,
+  Dimensions,
+  Image, TouchableOpacity
+} from 'react-native';
 
 import TouchableButton from "../../theme/components/TouchableButton";
 import Theme from '../../theme/styles';
@@ -27,6 +27,7 @@ import pepoIcon from '../../assets/self-amount-pepo-icon.png';
 import mailIcon from '../../assets/mail-filled.png';
 import { ostErrors } from '../../services/OstErrors';
 import CommonStyle from '../../theme/styles/Common';
+import modalCross from "../../assets/modal-cross-icon.png";
 
 class StoreProductsScreen extends PureComponent{
 
@@ -37,7 +38,8 @@ class StoreProductsScreen extends PureComponent{
             loadingProducts : true,
             isPurchasing : false,
             rotate: new Animated.Value(0),
-            scale: new Animated.Value(0.1)
+            scale: new Animated.Value(0.1),
+            showCrossIcon : false
         }
 
         this.productIds = [];
@@ -262,6 +264,9 @@ class StoreProductsScreen extends PureComponent{
 
     getMarkUp = () => {
         this.getAnimation().stop() ;
+        this.setState({
+          showCrossIcon : true
+        });
         if(this.isProductFetchError){
             return this.getErrorMarkup();
         } else if(this.maxThresholdReached){
@@ -277,13 +282,27 @@ class StoreProductsScreen extends PureComponent{
         this.props.navigation.goBack();
     }
 
+  getCrossIconMarkup = () =>{
+      return(
+        <TouchableOpacity
+          onPress={() => {
+            this.closeModal();
+          }}
+          style={inlineStyles.crossIconWrapper}
+          disabled={this.state.isPurchasing}
+        >
+          <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
+        </TouchableOpacity>
+      )
+  }
+
     render(){
         return (
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
-                <View style={CommonStyle.modalViewContainer}>
+                <View style={[CommonStyle.modalViewContainer]}>
                   <TouchableWithoutFeedback>
                     <View style={[inlineStyles.container]}>
-                        {/*<View style={inlineStyles.dragger}></View>*/}
+                        {this.state.showCrossIcon && this.getCrossIconMarkup()}
                         {this.state.loadingProducts && this.getLoadingMarkup()}
                         {!this.state.loadingProducts && this.getMarkUp()}
                     </View>

@@ -66,7 +66,7 @@ let stylesMap = {
     subText1 : {
       textAlign: "center",
       color: Colors.black,
-      paddingBottom: 10,
+      paddingBottom: 3,
       fontSize: 13
     },
 
@@ -86,7 +86,7 @@ let stylesMap = {
       backgroundColor: Colors.whisper,
       paddingVertical: 3,
       alignItems: 'center',
-      marginBottom: 5,
+      // marginBottom: 5,
       borderBottomLeftRadius: 3,
       borderBottomRightRadius: 3
     },
@@ -196,7 +196,8 @@ let stylesMap = {
     },
 
     pepoErrorText : { 
-      textAlign: 'center', 
+      textAlign: 'center',
+      color: Colors.wildWatermelon2
       // marginBottom: 10
     },
 

@@ -592,9 +592,8 @@ class Redemption extends PureComponent{
                         <Text style={inlineStyles.heading}>Buy {this.getPepoCornsName()}</Text>
                         <Text style={inlineStyles.balanceText}>Your Current balance: <Image style={inlineStyles.balanceTextImageSkipFont} source={pepo_icon}></Image>{' '}{Pricer.getToBT(this.state.balance)}</Text>
                         <Image source={this.getPepoCornsImageSource()} style={inlineStyles.pepcornImageSkipFont}></Image>
-                        <Text style={inlineStyles.subText1}>
-                            {this.getPepoCornsName()} are elusive creatures inhabiting Pepo.
-                        </Text>
+                        <Text style={inlineStyles.subText1}>You can buy Unicorns with your Pepo Coins.</Text>
+                        <Text style={inlineStyles.subText1}>Use your Unicorns in the Pepo Store.</Text>
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={inlineStyles.subSection}>
