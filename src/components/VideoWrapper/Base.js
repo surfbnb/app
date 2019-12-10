@@ -24,8 +24,6 @@ class Base extends PureComponent {
     };
     this.isUserPaused = false;
     this.pausedOnNavigation = false;
-    this.isPixelCalledOnEnd = false;
-    this.isPixelCalledOnHalf = false;
     this.minTimeConsideredForView = 1;
     this.source = {};
     this.currentPauseStatus = true; //Default value.
@@ -190,7 +188,7 @@ class Base extends PureComponent {
   };
 
   fireEvent(params) {
-    const parentData =  this.props.getPixelDropData() ; 
+    const parentData =  this.props.getPixelDropData() ;
     let pixelParams = {  e_action: 'view' };
     pixelParams = assignIn({}, pixelParams, parentData);
     PixelCall(pixelParams);
@@ -206,7 +204,7 @@ class Base extends PureComponent {
     if(!this.isMinimumVideoViewed(params)) return false;
     const currentTime = params.currentTime,
           totalTime = params.seekableDuration,
-          halfDuration = totalTime && totalTime/2; 
+          halfDuration = totalTime && totalTime/2;
     return halfDuration && halfDuration >= currentTime;
   }
 

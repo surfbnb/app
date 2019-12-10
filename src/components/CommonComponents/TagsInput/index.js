@@ -225,7 +225,7 @@ class TagsInput extends PureComponent {
     if (isHashTag) {
       const startIndex = this.getStartIndex(this.value, this.wordIndex),
         endIndex = this.getEndIndex(this.value, this.wordIndex),
-        replaceString = ` #${item.text} `,
+        replaceString = `#${item.text} `,
         newString = this.replaceBetween(startIndex, endIndex, replaceString);
       this.changeValue(newString);
     }
@@ -238,7 +238,7 @@ class TagsInput extends PureComponent {
     if (isMention || this.shouldCallOnEmptyData(wordToReplace)){
       const startIndex = this.getStartIndex(this.value, this.wordIndex),
         endIndex = this.getEndIndex(this.value, this.wordIndex),
-        replaceString = ` @${item.user_name} `,
+        replaceString = `@${item.user_name} `,
         newString = this.replaceBetween(startIndex, endIndex, replaceString);
       this.changeValue(newString);
     }
@@ -254,12 +254,12 @@ class TagsInput extends PureComponent {
     while (charAtIndex && this.isValidChar(charAtIndex)) {
       --startIndex;
       if (startIndex < 0) {
-        startIndex = 0;
+        // startIndex = 0;
         break;
       }
       charAtIndex = text.charAt(startIndex);
     }
-    return startIndex;
+    return startIndex + 1;
   }
 
   getEndIndex(text, index) {
