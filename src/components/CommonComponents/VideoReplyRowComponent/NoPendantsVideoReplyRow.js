@@ -11,7 +11,7 @@ class NoPendantsVideoReplyRow extends Base {
         return null;
     }
 
-    onPixelFired = ()=> {
+    onMinimumVideoViewed = ()=> {
         ReplyHelper.updateEntitySeen( this.props.replyDetailId );
     }
 }

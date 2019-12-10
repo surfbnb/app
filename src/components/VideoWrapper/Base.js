@@ -153,20 +153,27 @@ class Base extends PureComponent {
   };
 
   onProgress = (params) => {
-    this.fireEvent(params);
+    if(this.isMinimumVideoViewed(params) && this.isCurrentVideoContext()){
+      this.fireEvent(params);
+      this.props.onMinimumVideoViewed && this.props.onMinimumVideoViewed();
+    }
   };
 
   fireEvent(params) {
-    if (this.videoContext.isEventCalledOnView(CurrentUser.getUserId(), this.props.video_id)) return;
-    if (params.currentTime >= this.minTimeConsideredForView) {
-      const parentData =  this.props.getPixelDropData() ; 
-      let pixelParams = {  e_action: 'view' };
-      pixelParams = assignIn({}, pixelParams, parentData);
-      PixelCall(pixelParams);
-      this.sendFeedVideoEvent(VIDEO_PLAY_START_EVENT_NAME);
-      this.videoContext.eventFired(CurrentUser.getUserId(), this.props.video_id);
-      this.props.onPixelFired && this.props.onPixelFired();
-    }
+    const parentData =  this.props.getPixelDropData() ; 
+    let pixelParams = {  e_action: 'view' };
+    pixelParams = assignIn({}, pixelParams, parentData);
+    PixelCall(pixelParams);
+    this.sendFeedVideoEvent(VIDEO_PLAY_START_EVENT_NAME);
+    this.videoContext.eventFired(CurrentUser.getUserId(), this.props.videoId);
+  }
+
+  isCurrentVideoContext = () => {
+    return !this.videoContext.isEventCalledOnView(CurrentUser.getUserId(), this.props.videoId) ;
+  }
+
+  isMinimumVideoViewed =( params) => {
+    return params.currentTime >= this.minTimeConsideredForView;
   }
 
   sendFeedVideoEvent(eventKind) {
@@ -189,7 +196,6 @@ class Base extends PureComponent {
     pixelParams = assignIn({}, pixelParams, parentData);
     PixelCall(pixelParams);
     this.isPixelCalledOnEnd = true;
-
     this.sendFeedVideoEvent(VIDEO_PLAY_END_EVENT_NAME);
   };
 

@@ -128,7 +128,7 @@ class Base extends PureComponent {
                         doRender={this.props.doRender}
                         isActive={this.props.isActive}
                         getPixelDropData={this.getPixelDropData}
-                        onPixelFired={this.onPixelFired}
+                        onMinimumVideoViewed={this.onMinimumVideoViewed}
                     />
 
                     {!!videoId && !!this.props.userId && (
