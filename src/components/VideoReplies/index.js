@@ -41,7 +41,6 @@ const bottomReplyViewHeight = isIphoneX() ? 88 : Platform.OS === 'ios' ? 54 : ha
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
 
 const bottomSpace = getBottomSpace([true]);
-console.log('statusBarHeight', bottomSpace);
 class VideoRepliesScreen extends PureComponent {
 
     static navigationOptions = ({ navigation, navigationOptions }) => {
