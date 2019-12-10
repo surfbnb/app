@@ -199,7 +199,6 @@ class PeopleList extends PureComponent {
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
         <FlatList
           ref={(ref)=>  {this.listRef = ref } }
-          // style={{backgroundColor: 'red'}}
           //ListHeaderComponent={this.listHeaderComponent()}
           data={this.state.list}
           onEndReached={this.getNext}

@@ -30,8 +30,7 @@ let stylesMap = {
         justifyContent: 'center',
         height: 50,
         width: 50,
-        zIndex: 3,
-        backgroundColor: 'red'
+        zIndex: 3
       },
       iconSkipFont: {
         height: 16,
