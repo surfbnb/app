@@ -72,8 +72,11 @@ let stylesMap = {
       },
 
       pepoBtnStyle: {
-        minWidth: 70,
-        paddingVertical: 7
+        minWidth: '20%',
+        maxWidth: 100,
+        width: 100,
+        paddingHorizontal: 0,
+        paddingVertical: 10
       },
 
       dragger: {

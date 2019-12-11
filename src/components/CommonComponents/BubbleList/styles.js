@@ -25,7 +25,8 @@ let stylesMap = {
   bubbleContainer: {
     flexDirection:'row',
     marginLeft: 35,
-    alignItems: 'center'
+    alignItems: 'center',
+    zIndex: 3
   },
 
   repliesTxt: {

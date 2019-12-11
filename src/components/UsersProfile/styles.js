@@ -29,7 +29,7 @@ let stylesMap = {
     marginRight:20
   },
   reportIconWrapper: {
-    height:40,
+    height: 24,
     width: 40,
     alignItems: 'center',
     justifyContent: 'center'

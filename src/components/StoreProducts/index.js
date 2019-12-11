@@ -38,8 +38,7 @@ class StoreProductsScreen extends PureComponent{
             loadingProducts : true,
             isPurchasing : false,
             rotate: new Animated.Value(0),
-            scale: new Animated.Value(0.1),
-            showCrossIcon : false
+            scale: new Animated.Value(0.1)
         }
 
         this.productIds = [];
@@ -264,9 +263,6 @@ class StoreProductsScreen extends PureComponent{
 
     getMarkUp = () => {
         this.getAnimation().stop() ;
-        this.setState({
-          showCrossIcon : true
-        });
         if(this.isProductFetchError){
             return this.getErrorMarkup();
         } else if(this.maxThresholdReached){
@@ -282,27 +278,21 @@ class StoreProductsScreen extends PureComponent{
         this.props.navigation.goBack();
     }
 
-  getCrossIconMarkup = () =>{
-      return(
-        <TouchableOpacity
-          onPress={() => {
-            this.closeModal();
-          }}
-          style={inlineStyles.crossIconWrapper}
-          disabled={this.state.isPurchasing}
-        >
-          <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
-        </TouchableOpacity>
-      )
-  }
-
     render(){
         return (
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
                 <View style={[CommonStyle.modalViewContainer]}>
                   <TouchableWithoutFeedback>
                     <View style={[inlineStyles.container]}>
-                        {this.state.showCrossIcon && this.getCrossIconMarkup()}
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.closeModal();
+                        }}
+                        style={inlineStyles.crossIconWrapper}
+                        disabled={this.state.isPurchasing}
+                      >
+                        <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
+                      </TouchableOpacity>
                         {this.state.loadingProducts && this.getLoadingMarkup()}
                         {!this.state.loadingProducts && this.getMarkUp()}
                     </View>
