@@ -187,6 +187,7 @@ class UserVideoHistoryScreen extends PureComponent{
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
                 <TopStatus />
                 <FlatList
+                    extraData={this.state.activeIndex}
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
                     pagingEnabled={true}

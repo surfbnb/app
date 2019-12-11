@@ -261,6 +261,7 @@ class FullScreenVideoCollection extends PureComponent{
                     listKey={"some-dummy-key-to-be-changed-passed-as-props"}
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
+                    extraData={this.state.activeIndex}
                     pagingEnabled={true}
                     decelerationRate={"normal"}
                     data={this.state.list}

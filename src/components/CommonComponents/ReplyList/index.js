@@ -205,7 +205,11 @@ class ReplyList extends PureComponent{
 
     scrollToIndex = ( index )=>{
         this.setActiveIndex( index, () => {
-            this.flatlistRef && this.flatlistRef.scrollToIndex({animated: false, index: index});
+            if(index==0){
+                this.flatlistRef && this.flatlistRef.scrollToOffset({animated: false, offset: 1});
+            }else{
+                this.flatlistRef && this.flatlistRef.scrollToIndex({animated: false, index: index});
+            }    
         });
     }
     onViewableItemsChanged = (data) => {
@@ -264,6 +268,7 @@ class ReplyList extends PureComponent{
                 </View>    
 
                 <FlatList
+                    extraData={this.state.activeIndex}
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
                     pagingEnabled={true}
