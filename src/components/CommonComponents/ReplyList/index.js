@@ -207,14 +207,14 @@ class ReplyList extends PureComponent{
         const isAnimate =  false;
         this.setActiveIndex( index, () => {
             if(index==0){
-                this.flatlistRef && this.flatlistRef.scrollToOffset({"animated": isAnimate, offset: 1});
+                this.flatlistRef && this.flatlistRef.scrollToOffset({animated: isAnimate, offset: 1});
                 setTimeout(()=> {
                     if(this.getCurrentIndex() == 0){
                         this.flatlistRef && this.flatlistRef.scrollToIndex({animated: false, index: 0, viewPosition: 0, viewOffset : 0});
                     }
                 }, 350)
             }else{
-                this.flatlistRef && this.flatlistRef.scrollToIndex({"animated": isAnimate, index: index});
+                this.flatlistRef && this.flatlistRef.scrollToIndex({animated: isAnimate, index: index});
             }    
         });
     }
