@@ -1,5 +1,5 @@
 import deepGet from 'lodash/get';
-import ReduxGetter from "./ReduxGetters";
+import assignIn from 'lodash/assignIn';
 import Toast from '../theme/components/NotificationToast';
 import { upsertInviteCode } from '../actions';
 import Store from '../store';
@@ -24,6 +24,8 @@ import AppConfig from '../constants/AppConfig';
 import NavigationService from './NavigationService';
 import { navigateTo } from '../helpers/navigateTo';
 import Pricer from './Pricer';
+import DataContract from '../constants/DataContract';
+import PixelCall from './PixelCall';
 
 class TwitterAuthService {
   signUp() {
@@ -62,6 +64,7 @@ class TwitterAuthService {
   }
 
   onSuccess(res) {
+   // this.pixelDrop(res);
     Utilities.removeItem(AppConfig.appInstallInviteCodeASKey);
     Store.dispatch(upsertInviteCode(null));
     Pricer.getBalance();
@@ -69,6 +72,40 @@ class TwitterAuthService {
       return;
     }
     navigateTo.navigationDecision();
+  }
+
+  pixelDrop( res={} ){
+    const data = res.data|| {},
+          meta = data.meta;
+    if(meta && !!meta.is_registration){
+      const resultType = deepGet(res , DataContract.common.resultType ) ,
+            entity = deepGet(res, `data.${resultType}` , {}),
+            utm = data["utm_params"]  ,
+            inviteCode = meta["invite_code"] ,
+            createdAt = entity['uts'],
+            pixelParams = this.getPixeDropParams(createdAt , inviteCode , utm )
+            ;
+      PixelCall( pixelParams );     
+    }
+  }
+
+  getPixeDropParams(createdAt, inviteCode , utm){
+    let params = {
+      e_entity: "user",
+      e_action: "registration",
+      p_type: "signin",
+      p_name: "twitter"
+    }
+    if(createdAt){
+      params["registration_at"] = createdAt;
+    }
+    if(inviteCode){
+      params["invite_code"] = inviteCode;
+    }
+    if(utm){
+      params = assignIn({}, params , utm );
+    }
+    return params ;
   }
 
   logout() {
