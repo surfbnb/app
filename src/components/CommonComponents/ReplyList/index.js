@@ -1,5 +1,5 @@
 import React , {PureComponent} from "react";
-import {FlatList ,View } from "react-native";
+import {FlatList ,View, Platform } from "react-native";
 import FloatingBackArrow from "../FlotingBackArrow";
 import deepGet from "lodash/get";
 
@@ -14,7 +14,8 @@ import Utilities from "../../../services/Utilities";
 import NoPendantsVideoReplyRow from "../VideoReplyRowComponent/NoPendantsVideoReplyRow";
 import Colors from "../../../theme/styles/Colors";
 
-const maxVideosThreshold = 5;
+const maxVideosThreshold = 3;
+const rowHeight = CommonStyle.fullScreen.height;
 
 class ReplyList extends PureComponent{
 
@@ -22,16 +23,23 @@ class ReplyList extends PureComponent{
         super(props);
         this.setVideoPagination();
         this.currentIndex = this.props.currentIndex ;
+        /***
+         * Note initialScrollIndex should be set only once if it changes flatlist will honor the new initialScrollIndex
+         * Which will render extra components and as we keep on changing it will stack instead of clearing
+         **/
+        this.initialScrollIndex = this.currentIndex;
         this.parentClickHandler = this.props.parentClickHandler;
         this.willFocusSubscription =  null ;
         this.flatlistRef = null;
+        this.pendantListRef = null;
         this.state = {
             list : this.getVideoPagination().getResults(),
-            activeIndex: this.currentIndex,
+            activeIndex: this.getCurrentIndex(),
             refreshing : false,
             loadingNext: false
         };
         this.isActiveScreen = true;
+        this.pendantClickIndex = -1;
     }
 
     getBaseUrl(){
@@ -63,7 +71,7 @@ class ReplyList extends PureComponent{
 
         //This is an hack for reset scroll for flatlist. Need to debug a bit more.
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
-            const offset =  this.state.activeIndex > 0 ? CommonStyle.fullScreen.height * this.state.activeIndex :  0 ;
+            const offset =  this.state.activeIndex > 0 ? rowHeight * this.state.activeIndex :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
             this.isActiveScreen = true ;
         });
@@ -170,34 +178,51 @@ class ReplyList extends PureComponent{
                                 currentIndex={this.state.activeIndex}
          /> ;
     }
+    setPendantIndex = (index) => { 
+        if ( "number" === typeof index ) {
+            this.pendantClickIndex = index;
+        }
+    }
+    setCurrentIndex = (index) => {
+        if ( "number" === typeof index ) {
+            this.currentIndex = index;
+        }
+    }
+
+    getCurrentIndex = () => {
+        return this.currentIndex;
+    }
+
+    setActiveIndex( index, callback  ) {
+        this.setCurrentIndex( index ); //sync click index and currentIndex
+        this.setState({ activeIndex:  this.getCurrentIndex()}, callback);
+    }
 
     childClickHandler = ( index, item )=> {
+        this.setPendantIndex(index) ;
         this.scrollToIndex( index );
     }
 
     scrollToIndex = ( index )=>{
         this.setActiveIndex( index, () => {
-            this.flatlistRef.scrollToIndex({index: index});
+            this.flatlistRef && this.flatlistRef.scrollToIndex({animated: false, index: index});
         });
     }
-
     onViewableItemsChanged = (data) => {
         let item = deepGet(data, 'viewableItems[0].item');
         let currentIndex = deepGet(data, 'viewableItems[0].index');
-        if ( "number" === typeof currentIndex ) {
-            this.currentIndex = currentIndex;
-        }
+        this.setCurrentIndex( currentIndex );
+        this.forceSetIndexAndroid();
     }
-
-    setActiveIndex( index, callback  ) {
-        if( typeof index === "number"){
-            this.currentIndex =  index;
+    
+    forceSetIndexAndroid(){
+        if(Platform.OS == "android" && this.getCurrentIndex() == this.pendantClickIndex){
+            this.setState({activeIndex: this.getCurrentIndex()},  ()=> {this.pendantClickIndex =  -1});
         }
-        this.setState({ activeIndex:  this.currentIndex }, callback);
     }
 
     onMomentumScrollEndCallback = () => {
-        this.setActiveIndex();
+        this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) ;
     };
 
     onMomentumScrollBeginCallback = () => {
@@ -209,11 +234,19 @@ class ReplyList extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-        return {length: CommonStyle.fullScreen.height, offset: CommonStyle.fullScreen.height * index, index} ;
+        return {length: rowHeight, offset: rowHeight * index, index} ;
     }
 
     onScrollToTop = () => {
         this.setActiveIndex();
+    }
+
+    setRef = (ref) => {
+        this.flatlistRef =  ref;
+    }
+
+    setPendantListRef = (ref) => {
+        this.pendantListRef = ref;
     }
 
     render() {
@@ -225,7 +258,8 @@ class ReplyList extends PureComponent{
                     <InvertedReplyList  paginationService={this.getVideoPagination()}
                                         onChildClickDelegate={this.childClickHandler}
                                         bottomRounding={50}
-                                        currentIndex={this.state.activeIndex}
+                                        getCurrentIndex={this.getCurrentIndex}
+                                        onRef={this.setPendantListRef}
                                   />
                 </View>    
 
@@ -239,7 +273,7 @@ class ReplyList extends PureComponent{
                     onRefresh={this.refresh}
                     refreshing={this.state.refreshing}
                     keyExtractor={this._keyExtractor}
-                    ref={(ref)=> {this.flatlistRef =  ref }}
+                    ref={this.setRef}
                     onEndReachedThreshold={7}
                     onViewableItemsChanged={this.onViewableItemsChanged}
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
@@ -248,7 +282,7 @@ class ReplyList extends PureComponent{
                     style={[CommonStyle.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
-                    initialScrollIndex={this.state.activeIndex}
+                    initialScrollIndex={this.initialScrollIndex}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />

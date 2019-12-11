@@ -291,6 +291,10 @@ class TopsList extends PureComponent {
 
   }
 
+  onScrollToIndexFailed =( info) => {
+    console.log("======onScrollToIndexFailed=====" , info );
+  }
+
   render(){
     return(
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
@@ -307,6 +311,7 @@ class TopsList extends PureComponent {
           onEndReachedThreshold={9}
           renderSectionHeader={  this.renderSectionHeader}
           stickySectionHeadersEnabled={false}
+          onScrollToIndexFailed={this.onScrollToIndexFailed}
         />
       </SafeAreaView>
     );
