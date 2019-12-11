@@ -115,10 +115,9 @@ class NotificationItem extends Component {
     );
   };
 
-  showVideoComponent = (videoId) => {
-    let imageUrl = reduxGetter.getVideoImgUrl( videoId,  null , AppConfig.userVideos.userScreenCoverImageWidth);
+  showVideoComponent = () => {
     return (
-      <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
+      <ImageBackground style={styles.posterImageSkipFont} source={{ uri: this.getVideoPosterImage() }}>
         <Image style={styles.playIconSkipFont} source={playIcon} />
       </ImageBackground>
     );
@@ -126,7 +125,7 @@ class NotificationItem extends Component {
 
   notificationInfo = () => {
     if (this.shouldShowVideoPost() || this.shouldShowVideoReply()) {
-      return this.showVideoComponent(this.props.payload.video_id);
+      return this.showVideoComponent();
     }
   };
 
@@ -141,7 +140,7 @@ class NotificationItem extends Component {
     if (this.props.payload.thank_you_flag === 0 && this.state.showSayThanks) {
       return (
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.sayThanks())}>
-          <View style={styles.sayThanksButton}>
+          <View style={[styles.sayThanksButton, this.shouldShowVideoComponent() ? { marginTop: -10 } : {}]}>
             <Text style={styles.sayThanksText}>Say Thanks</Text>
           </View>
         </TouchableWithoutFeedback>
@@ -207,7 +206,6 @@ class NotificationItem extends Component {
   }
   shouldShowVideoReply = () => {
     return AppConfig.notificationConstants.showReplyThumbnailForKinds.includes(this.props.kind);
-
   };
 
 
@@ -216,19 +214,14 @@ class NotificationItem extends Component {
   };
 
   shouldShowVideoComponent = () => {
-    return this.shouldShowVideoPost() || this.shouldShowVideoReply();
-
+    return ( this.shouldShowVideoPost() || this.shouldShowVideoReply() ) && !!this.getVideoPosterImage();
   };
 
+  getVideoPosterImage (){
+    return reduxGetter.getVideoImgUrl(this.props.payload.video_id,  null , AppConfig.userVideos.userScreenCoverImageWidth)
+  }
 
-  render() {
-    let headerWidth = '92%',
-    notificationInfoWidth = '0%';
-    if (this.shouldShowVideoComponent()) {
-        headerWidth = '72%';
-        notificationInfoWidth = '20%';
-    }
-    
+  render() {    
     return (
       <View style={{ minHeight: 25 }}>
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handleRowClick())}>
