@@ -30,11 +30,17 @@ class InvertedReplyList extends PureComponent {
     this.state = {
       list: this.getInitialList(),
       refreshing : false,
-      loadingNext: false
+      loadingNext: false,
+      activeIndex : this.props.getCurrentIndex()
     };
-
+     /***
+     * Note initialScrollIndex should be set only once if it changes flatlist will honor the new initialScrollIndex
+     * Which will render extra components and as we keep on changing it will stack instead of clearing
+     **/
+    this.initialScrollIndex = this.props.getCurrentIndex();
     this.listRef = null;
     this.onItemClick = null;
+    this.clickedIndex =  -1;
   }
 
   getInitialList = () => {
@@ -102,8 +108,9 @@ class InvertedReplyList extends PureComponent {
     if( this.props.doRender && this.props.doRender !== prevProps.doRender &&  !this.hasInitialData  ){
       this.initPagination();
     }
-    if(this.props.currentIndex != prevProps.currentIndex){
-      this.listRef && this.listRef.scrollToIndex({index : this.props.currentIndex, viewOffset: 100, viewPosition: 0.5});
+    if( this.state.activeIndex != this.clickedIndex && this.state.activeIndex != prevState.activeIndex ){
+      this.clickedIndex = -1;
+      this.listRef && this.listRef.scrollToIndex({index : this.state.activeIndex, viewOffset: 100, viewPosition: 0.5});
     }
   }
 
@@ -206,11 +213,22 @@ class InvertedReplyList extends PureComponent {
     return `id_${item.id}`;
   };
 
+  onPendantClick =( index , item ) => {
+    this.clickedIndex =  index;
+    this.setState({activeIndex : index } ,  ()=> {  this.onItemClick(index , item); });
+  }
+
+  setActiveIndex = (index) => {
+    if("number" ==  typeof index){
+      this.setState({activeIndex : index});
+    }
+  } 
+
   _renderItem = ({item, index}) => {
     return <View style={{alignSelf:'center'}}>
               <ReplyThumbnailItem
                 payload={item.payload}
-                onClickHandler={()=>{this.onItemClick(index, item)}}
+                onClickHandler={()=>{this.onPendantClick(index, item)}}
                 isActive={this.isActiveEntity( index , item)}
                 cellIndex={index}
                 totalCells={this.state.list.length}
@@ -222,7 +240,7 @@ class InvertedReplyList extends PureComponent {
     if(typeof this.props.isActiveEntity == "function" ){
       return this.props.isActiveEntity(this.props.fullVideoReplyId , item , index) ;
     }
-    return this.props.currentIndex == index;
+    return this.state.activeIndex == index;
   }
 
   setListRef = (ref) => {
@@ -314,7 +332,7 @@ class InvertedReplyList extends PureComponent {
           ListFooterComponent={this.renderFooter}
           key={this.flatListKey}
           showsVerticalScrollIndicator={false}
-          initialScrollIndex={this.props.currentIndex}
+          initialScrollIndex={this.initialScrollIndex}
           getItemLayout={this.getItemLayout}
           onScrollToIndexFailed={this.onScrollToIndexFailed}
           />
@@ -329,7 +347,9 @@ InvertedReplyList.defaultProps = {
   paginationService : null,
   doRender: true,
   isActive: true,
-  currentIndex: 0,
+  getCurrentIndex: ()=>{
+    return 0;
+  },
   bottomRounding: 10
 };
 

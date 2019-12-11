@@ -222,6 +222,10 @@ class VideoCollections extends PureComponent {
       this.listRef = listRef;
     };
 
+    onScrollToIndexFailed =( info) => {
+        console.log("======onScrollToIndexFailed=====" , info );
+    }
+
     render(){
         return (
           <SafeAreaView forceInset={{ top: 'never' }} style={CommonStyle.viewContainer}>
@@ -238,6 +242,7 @@ class VideoCollections extends PureComponent {
                 ListFooterComponent={this.renderFooter}
                 numColumns={this.numColumns}
                 key={this.flatListKey}
+                onScrollToIndexFailed={this.onScrollToIndexFailed}
               />
           </SafeAreaView>
         );

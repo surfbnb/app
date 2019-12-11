@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-navigation";
 import VideoReplyRow from "../CommonComponents/VideoReplyRowComponent/VideoReplyRow";
 
 const maxVideosThreshold = 3;
+const rowHeight = CommonStyle.fullScreen.height;
 
 class FullScreenVideoCollection extends PureComponent{
 
@@ -29,6 +30,11 @@ class FullScreenVideoCollection extends PureComponent{
         this.setVideoPagination();
         this.paginationEvent = this.getVideoPagination().event;
         this.currentIndex = this.props.navigation.getParam("currentIndex");
+         /***
+         * Note initialScrollIndex should be set only once if it changes flatlist will honor the new initialScrollIndex
+         * Which will render extra components and as we keep on changing it will stack instead of clearing
+         **/
+        this.initialScrollIndex = this.currentIndex;
         this.tagId = this.props.navigation.getParam("tagId");
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
@@ -69,7 +75,7 @@ class FullScreenVideoCollection extends PureComponent{
 
         //This is an hack for reset scroll for flatlist. Need to debug a bit more.
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
-            const offset =  this.state.activeIndex > 0 ? CommonStyle.fullScreen.height * this.state.activeIndex :  0 ;
+            const offset =  this.state.activeIndex > 0 ? rowHeight * this.state.activeIndex :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
             this.isActiveScreen = true ;
         });
@@ -231,7 +237,7 @@ class FullScreenVideoCollection extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-        return {length: CommonStyle.fullScreen.height, offset: CommonStyle.fullScreen.height * index, index} ;
+        return {length: rowHeight, offset: rowHeight * index, index} ;
     }
 
     closeVideo = () => {
@@ -271,7 +277,7 @@ class FullScreenVideoCollection extends PureComponent{
                     style={[CommonStyle.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
-                    initialScrollIndex={this.state.activeIndex}
+                    initialScrollIndex={this.initialScrollIndex}
                     nestedScrollEnabled={true}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}

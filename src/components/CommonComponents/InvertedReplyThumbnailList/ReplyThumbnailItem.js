@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
 import {View} from 'react-native';
-import { Platform } from 'react-native';
 
 import ProfilePicture from "../../ProfilePicture";
 import reduxGetters from '../../../services/ReduxGetters';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AppConfig from '../../../constants/AppConfig';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 
@@ -27,10 +26,10 @@ class ReplyThumbnailItem extends Component {
 
   render() {
     return <View style={{position: "relative"}}>
-            <TouchableOpacity onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
+            <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
                   style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive && inlineStyle.active]}>
               <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           </View>
   }
 

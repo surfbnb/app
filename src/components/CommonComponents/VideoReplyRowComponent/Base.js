@@ -103,7 +103,6 @@ class Base extends PureComponent {
                                   doRender={this.props.doRender}
                                   paginationService={this.props.paginationService}
                                   onChildClickDelegate={this.props.onChildClickDelegate}
-                                  currentIndex={this.props.currentIndex}
                                   bottomRounding={50}
                                   isActive={this.props.isActive}
                                   isActiveEntity={this.props.isActiveEntity}
@@ -117,6 +116,7 @@ class Base extends PureComponent {
 
     render() {
         const videoId = ReduxGetters.getReplyEntityId(this.props.replyDetailId);
+        console.log("videoRow========" , videoId);
         return (
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
               {this._renderInvertedFlatList()}
@@ -190,7 +190,6 @@ Base.defaultProps = {
       return {};
     },
     paginationService : null,
-    currentIndex: 0,
     index:0
   };
 

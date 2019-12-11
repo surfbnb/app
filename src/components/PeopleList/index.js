@@ -194,6 +194,10 @@ class PeopleList extends PureComponent {
     )
   };
 
+  onScrollToIndexFailed =( info) => {
+    console.log("======onScrollToIndexFailed=====" , info );
+  }
+
   render(){
     return(
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
@@ -210,6 +214,7 @@ class PeopleList extends PureComponent {
           onScrollBeginDrag={() => Keyboard.dismiss()}
           keyboardShouldPersistTaps={'always'}
           ListFooterComponent={this.renderFooter}
+          onScrollToIndexFailed={this.onScrollToIndexFailed}
           // numColumns={3}
         />
       </SafeAreaView>
