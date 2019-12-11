@@ -128,6 +128,11 @@ class ReduxGetters {
     return unescape(deepGet(state, `video_description_entities.id_${id}.text`));
   }
 
+  getVideoDescriptionObject (id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_description_entities.id_${id}`);
+  }
+
   getVideoDescriptionId(id, state) {
     state = state || Store.getState();
     return deepGet(state, `video_stat_entities.id_${id}.description_id`);

@@ -75,6 +75,7 @@ class PreviewRecordedVideo extends Component {
     this.setState({
       duration: meta.duration
     });
+    Store.dispatch(upsertRecordedVideo({ video_length : meta.duration }));
   };
 
   handleEnd = () => {
