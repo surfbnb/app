@@ -141,7 +141,7 @@ class NotificationItem extends Component {
     if (this.props.payload.thank_you_flag === 0 && this.state.showSayThanks) {
       return (
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.sayThanks())}>
-          <View style={styles.sayThanksButton}>
+          <View style={[styles.sayThanksButton, this.shouldShowVideoComponent() ? { marginTop: -10 } : {}]}>
             <Text style={styles.sayThanksText}>Say Thanks</Text>
           </View>
         </TouchableWithoutFeedback>
