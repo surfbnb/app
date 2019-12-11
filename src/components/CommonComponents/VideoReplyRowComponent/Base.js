@@ -116,7 +116,6 @@ class Base extends PureComponent {
 
     render() {
         const videoId = ReduxGetters.getReplyEntityId(this.props.replyDetailId);
-        console.log("videoRow========" , videoId);
         return (
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
               {this._renderInvertedFlatList()}

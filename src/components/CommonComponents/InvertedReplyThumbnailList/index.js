@@ -168,7 +168,6 @@ class InvertedReplyList extends PureComponent {
   }
 
   beforeRefresh = ( ) => {
-    console.log('beforeRefresh')
     this.props.beforeRefresh && this.props.beforeRefresh();
     let stateObject = {refreshing : true};
     if (this.state.loadingNext) {
