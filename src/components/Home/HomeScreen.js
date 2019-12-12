@@ -43,6 +43,7 @@ class HomeScreen extends Component {
     this.listRef = null;
     this.isActiveScreen = false;
     this.shouldPullToRefesh = false;
+    this.showAutomaticPopup = false;
   }
 
   componentDidMount = () => {
@@ -56,7 +57,6 @@ class HomeScreen extends Component {
         this.refresh(true, 0);
       }
     });
-    this.showLogoutPopup();
     this.showCoachScreen();
     navigateTo.navigationDecision();
     CurrentUser.getEvent().on("onUserLogout" , ()=> {
@@ -83,9 +83,10 @@ class HomeScreen extends Component {
   };
 
   showLogoutPopup = () => {
-    if (this.props.userId ) {
+    if (this.props.userId || this.showAutomaticPopup) {
       return;
     }
+    this.showAutomaticPopup = true;
     this.loginPopupTimeOut = setTimeout(()=>{
       LoginPopoverActions.show();
     }, appConfig.loginPopoverShowTime);
@@ -241,6 +242,7 @@ class HomeScreen extends Component {
           onScrollEnd ={(currentIndex) => {
             this.onScrollMovementEnd(currentIndex);
           }}
+          onRefresh={this.showLogoutPopup}
         />
       </View>
     );
