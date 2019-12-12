@@ -85,6 +85,9 @@ class VideoRepliesScreen extends PureComponent {
 
     componentWillUnmount() {
       this.onAnimatedValueChange= () => {};
+      this.showVideoUploader = () => {};
+      this.hideVideoUploader = () => {};
+      this.onMomentumDragEndCallback = () => {};
       this.animatedValue.removeListener(this.listener);
       videoUploaderComponent.removeListener('show' , this.showVideoUploader , this);
       videoUploaderComponent.removeListener('hide' , this.hideVideoUploader , this);
@@ -151,6 +154,11 @@ class VideoRepliesScreen extends PureComponent {
       return wrapStyles;
     };
 
+    onMomentumDragEndCallback = (value) => {
+      this.setState({
+        currentHeight : value
+      })
+    }
 
     render(){
         return (
@@ -181,12 +189,7 @@ class VideoRepliesScreen extends PureComponent {
               <SlidingUpPanel ref={c => (this._panel = c)}
                   containerStyle={{zIndex: 99}}
                   animatedValue={this.animatedValue}
-                  onMomentumDragEnd={(value) => {
-                    this.setState({
-                      currentHeight : value
-                    })
-
-                  }}
+                  onMomentumDragEnd={this.onMomentumDragEndCallback}
                   ref={c => (this._panel = c)}
                   draggableRange={{
                     top: height - topPadding,

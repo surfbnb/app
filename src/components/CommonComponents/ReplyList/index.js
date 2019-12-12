@@ -242,7 +242,7 @@ class ReplyList extends PureComponent{
     }
     
     forceSetIndex(){
-        this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) 
+        this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) ;
     }
 
     onMomentumScrollEndCallback = () => {
@@ -294,7 +294,7 @@ class ReplyList extends PureComponent{
                 <FlatList
                     extraData={this.state.activeIndex}
                     snapToAlignment={"top"}
-                    viewabilityConfig={{itemVisiblePercentThreshold: 99 , minimumViewTime: 300}}
+                    viewabilityConfig={{itemVisiblePercentThreshold: 99 , minimumViewTime: 10}}
                     pagingEnabled={true}
                     decelerationRate={"normal"}
                     data={this.state.list}
