@@ -38,6 +38,7 @@ const AppConfig = {
 
   pepoAnimationDuration : 500,
   logoutTimeOut : 2000,
+  loginPopoverShowTime: 10000,
 
   beKnownErrorCodeMaps : {
     entityDeleted: "not_found",

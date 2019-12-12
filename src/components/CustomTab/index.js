@@ -17,6 +17,7 @@ import utilities from '../../services/Utilities';
 import NavigationEmitter from '../../helpers/TabNavigationEvent';
 import CurrentUser from '../../models/CurrentUser';
 import { LoginPopoverActions } from '../../components/LoginPopover';
+import {LoggedOutCustomTabClickEvent} from '../../helpers/Emitters';
 import appConfig from '../../constants/AppConfig';
 import reduxGetter from '../../services/ReduxGetters';
 import Colors from '../../theme/styles/Colors';
@@ -82,6 +83,7 @@ function logoutFlow(navigation, tab) {
       NavigationEmitter.emit('onRefresh', { screenName: tab.childStack });
     }, 300);
   } else {
+    LoggedOutCustomTabClickEvent.emit('pressed');
     LoginPopoverActions.show();
   }
 }

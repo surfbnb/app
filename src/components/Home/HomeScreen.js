@@ -17,6 +17,8 @@ import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
 import utilities from "../../services/Utilities";
 import reduxGetter from '../../services/ReduxGetters';
+import {LoginPopoverActions} from "../LoginPopover";
+import {LoggedOutCustomTabClickEvent} from "../../helpers/Emitters";
 
 const mapStateToProps = (state) => {
   return {
@@ -46,11 +48,15 @@ class HomeScreen extends Component {
   componentDidMount = () => {
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
+
+    LoggedOutCustomTabClickEvent.on('pressed', this.loggedOutCustomTabClick );
+
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab1.childStack) {
         this.refresh(true, 0);
       }
     });
+    this.showLogoutPopup();
     this.showCoachScreen();
     navigateTo.navigationDecision();
     CurrentUser.getEvent().on("onUserLogout" , ()=> {
@@ -76,6 +82,21 @@ class HomeScreen extends Component {
     });
   };
 
+  showLogoutPopup = () => {
+    if (this.props.userId ) {
+      return;
+    }
+    this.loginPopupTimeOut = setTimeout(()=>{
+      LoginPopoverActions.show();
+    }, appConfig.loginPopoverShowTime);
+  };
+
+
+  loggedOutCustomTabClick = () => {
+    clearTimeout(this.loginPopupTimeOut);
+  };
+
+
   showCoachScreen = () => {
     if (this.props.userId) {
       utilities.saveItem(`show-coach-screen`, true);
@@ -100,11 +121,13 @@ class HomeScreen extends Component {
   componentWillUnmount = () => {
     videoUploaderComponent.removeListener('show');
     videoUploaderComponent.removeListener('hide');
+    LoggedOutCustomTabClickEvent.removeListener('pressed');
     NavigationEmitter.removeListener('onRefresh');
     CurrentUser.getEvent().removeListener("onBeforeUserLogout");
     CurrentUser.getEvent().removeListener("onUserLogout");
     CurrentUser.getEvent().removeListener("onUserLogoutFailed");
     CurrentUser.getEvent().removeListener("onUserLogoutComplete");
+    clearTimeout(this.loginPopupTimeOut);
     this.willFocusSubscription && this.willFocusSubscription.remove();
     this.willBlurSubscription && this.willBlurSubscription.remove();
   };
