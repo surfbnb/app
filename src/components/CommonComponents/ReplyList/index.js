@@ -16,7 +16,6 @@ import Colors from "../../../theme/styles/Colors";
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;
-const minimumViewTime =  Platform.OS == "ios" ? 300 : 10;
 const numberToRender = 5;
 
 class ReplyList extends PureComponent{
@@ -209,6 +208,23 @@ class ReplyList extends PureComponent{
         this.setState({ activeIndex:  this.getCurrentIndex()}, callback);
     }
 
+    onViewableItemsChanged = (data) => {
+        if(this.pendantClickIndex != -1 ){
+            // If not clicked on pendant (means manual scroll),
+            // Trust the onViewableItemsChanged data index
+            let currentIndex = deepGet(data, 'viewableItems[0].index');
+            this.updateIndex( currentIndex );
+        }else if(this.pendantClickIndex == this.getCurrentIndex()){
+            // if clicked on pendant, 
+            // Sometimes onViewableItemsChanged gives wrong index.
+            // So trust this.pendantClickIndex and reset this.pendantClickIndex
+            // when view scroll to the required index
+            this.pendantClickIndex = -1;
+        } else {
+            // do nothing, as right now there are no more scenarios for scroll
+        }
+    }
+
     childClickHandler = ( index, item )=> {
         console.log("childClickHandler IN OUR CONTROLL====="  ,index);
         this.setPendantIndex(index) ;
@@ -216,33 +232,17 @@ class ReplyList extends PureComponent{
     }
 
     scrollToIndex = ( index )=>{
-        console.log("scrollToIndex IN OUR CONTROLL====="  ,index);
-        const isAnimate =  true;
         this.setActiveIndex( index, () => {
-            console.log("IS this.flatlistRef====" , !!this.flatlistRef , index == this.state.activeIndex);
             if(index==0){
-                this.flatlistRef && this.flatlistRef.scrollToOffset({animated: isAnimate, offset: 1});
-                setTimeout(()=> {
-                    if(this.getCurrentIndex() == 0){
-                        this.flatlistRef && this.flatlistRef.scrollToIndex({animated: false, index: 0, viewPosition: 0, viewOffset : 0});
-                    }
-                }, 350)
+                this.flatlistRef && this.flatlistRef.scrollToOffset({offset: 1});
             }else{
-                this.flatlistRef && this.flatlistRef.scrollToIndex({animated: isAnimate, index: index});
+                this.flatlistRef && this.flatlistRef.scrollToIndex({index: index});
             }    
         });
     }
     
-    onViewableItemsChanged = (data) => {
-        let item = deepGet(data, 'viewableItems[0].item');
-        let currentIndex = deepGet(data, 'viewableItems[0].index');
-        this.setCurrentIndex( currentIndex );
-        console.log("onViewableItemsChanged NOT IN OUR CONTROLL====="  ,currentIndex , item);
-        this.forceSetIndex();
-    }
-    
-    forceSetIndex(){
-        this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) ;
+    updateIndex = ( index ) =>{
+        this.setActiveIndex(index ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(index)} ) ;
     }
 
     onMomentumScrollEndCallback = () => {
@@ -294,7 +294,7 @@ class ReplyList extends PureComponent{
                 <FlatList
                     extraData={this.state.activeIndex}
                     snapToAlignment={"top"}
-                    viewabilityConfig={{itemVisiblePercentThreshold: 99 , minimumViewTime: minimumViewTime}}
+                    viewabilityConfig={{itemVisiblePercentThreshold: 99}}
                     pagingEnabled={true}
                     decelerationRate={"normal"}
                     data={this.state.list}
