@@ -87,7 +87,7 @@ class BubbleList extends PureComponent {
   };
 
   getExtraItemUI = (key) => {
-    return <View key={key} style={ {marginLeft: -34, zIndex: -1} }>
+    return <View key={key} style={ {marginLeft: -36, zIndex: -1} }>
       <View style={inlineStyles.emptyBubble}></View>
     </View>;
   };
