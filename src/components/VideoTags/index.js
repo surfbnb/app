@@ -10,6 +10,7 @@ import deepGet from 'lodash/get';
 import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';
 import BackArrow from '../CommonComponents/BackArrow';
 import DataContract from "../../constants/DataContract";
+import PixelCall from "../../services/PixelCall";
 
 const getPageTitle = (tagId, hashTag) => {
   let pageTitle = "";
@@ -61,6 +62,7 @@ class VideoTags extends PureComponent {
     componentDidMount() {
         this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
             this.getTagData();
+            this.firePixel();
         });
     }
 
@@ -75,7 +77,17 @@ class VideoTags extends PureComponent {
                     this.props.navigation.setParams({ hashTag: hashTag });
                 }
             })
-    }
+    };
+
+    firePixel = () => {
+        let pixelData = {
+            e_entity: "page",
+            e_action: "view",
+            p_type: "tag",
+            p_name: this.getTagId()
+        };
+        PixelCall(pixelData);
+    };
 
     componentWillUnmount() {
         this.didFocus && this.didFocus.remove && this.didFocus.remove();
