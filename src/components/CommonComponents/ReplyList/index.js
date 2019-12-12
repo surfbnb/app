@@ -16,6 +16,8 @@ import Colors from "../../../theme/styles/Colors";
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;
+const minimumViewTime =  Platform.OS == "ios" ? 300 : 10;
+const numberToRender = 5;
 
 class ReplyList extends PureComponent{
 
@@ -157,13 +159,11 @@ class ReplyList extends PureComponent{
         }
     };
 
-    getPixelDropData = ( replyDetailId ) => {
-        return () => {
-            return {
-                e_entity: 'reply',
-                p_type: 'video_reply'
-              };
-        }
+    getPixelDropData = (  ) => {
+        return {
+            e_entity: 'reply',
+            p_type: 'video_reply'
+        };
     }
 
     _renderVideoReplyRow(item, index){
@@ -176,7 +176,7 @@ class ReplyList extends PureComponent{
         return  <NoPendantsVideoReplyRow
                                 shouldPlay={this.shouldPlay}
                                 isActive={isActive}
-                                getPixelDropData={this.getPixelDropData(replyDetailId)}
+                                getPixelDropData={this.getPixelDropData}
                                 doRender={doRender}
                                 userId={userId}
                                 index={index}
@@ -294,7 +294,7 @@ class ReplyList extends PureComponent{
                 <FlatList
                     extraData={this.state.activeIndex}
                     snapToAlignment={"top"}
-                    viewabilityConfig={{itemVisiblePercentThreshold: 99 , minimumViewTime: 10}}
+                    viewabilityConfig={{itemVisiblePercentThreshold: 99 , minimumViewTime: minimumViewTime}}
                     pagingEnabled={true}
                     decelerationRate={"normal"}
                     data={this.state.list}
@@ -304,6 +304,9 @@ class ReplyList extends PureComponent{
                     keyExtractor={this._keyExtractor}
                     ref={this.setRef}
                     onEndReachedThreshold={7}
+                    windowSize={numberToRender}
+                    initialNumToRender={numberToRender}
+                    maxToRenderPerBatch={numberToRender}
                     onViewableItemsChanged={this.onViewableItemsChanged}
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                     onMomentumScrollBegin={this.onMomentumScrollBeginCallback}
