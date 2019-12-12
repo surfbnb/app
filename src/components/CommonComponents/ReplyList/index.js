@@ -71,7 +71,7 @@ class ReplyList extends PureComponent{
 
         //This is an hack for reset scroll for flatlist. Need to debug a bit more.
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
-            const offset =  this.state.activeIndex > 0 ? rowHeight * this.state.activeIndex :  0 ;
+            const offset =  this.getCurrentIndex() > 0 ? rowHeight * this.getCurrentIndex() :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
             this.isActiveScreen = true ;
         });
@@ -145,10 +145,15 @@ class ReplyList extends PureComponent{
     }
 
     _renderItem = ({ item, index }) => {
+        console.log("_renderItem NOT IN OUR CONTROLL====="  ,index);
         if(entityHelper.isVideoReplyEntity( item )){
             if(entityHelper.isReplyVideoTypeEntity(item)){
                 return this._renderVideoReplyRow( item, index );
             }
+        }else{
+            console.log("_renderItem I shouldnt be here====="  ,index , item);
+            return null;
+      
         }
     };
 
@@ -166,25 +171,26 @@ class ReplyList extends PureComponent{
             replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
         return  <NoPendantsVideoReplyRow
                                 shouldPlay={this.shouldPlay}
-                                isActive={index == this.state.activeIndex}
+                                isActive={index == this.getCurrentIndex()}
                                 getPixelDropData={this.getPixelDropData(replyDetailId)}
-                                doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
+                                doRender={Math.abs(index - this.getCurrentIndex()) < maxVideosThreshold}
                                 userId={userId}
                                 index={index}
                                 replyDetailId={replyDetailId}
                                 paginationService ={this.getVideoPagination()}
                                 onChildClickDelegate={this.childClickHandler}
                                 parentClickHandler={this.parentClickHandler}
-                                currentIndex={this.state.activeIndex}
          /> ;
     }
     setPendantIndex = (index) => { 
         if ( "number" === typeof index ) {
+            console.log("setPendantIndex IN OUR CONTROLL====="  ,index);
             this.pendantClickIndex = index;
         }
     }
     setCurrentIndex = (index) => {
         if ( "number" === typeof index ) {
+            console.log("setCurrentIndex IN OUR CONTROLL====="  ,index);
             this.currentIndex = index;
         }
     }
@@ -194,28 +200,32 @@ class ReplyList extends PureComponent{
     }
 
     setActiveIndex( index, callback  ) {
+        console.log("setActiveIndex IN OUR CONTROLL====="  ,index);
         this.setCurrentIndex( index ); //sync click index and currentIndex
         this.setState({ activeIndex:  this.getCurrentIndex()}, callback);
     }
 
     childClickHandler = ( index, item )=> {
+        console.log("childClickHandler IN OUR CONTROLL====="  ,index);
         this.setPendantIndex(index) ;
         this.scrollToIndex( index );
     }
 
     scrollToIndex = ( index )=>{
-        const isAnimate =  false;
+        console.log("scrollToIndex IN OUR CONTROLL====="  ,index);
+        const isAnimate =  true;
         this.setActiveIndex( index, () => {
-            if(index==0){
-                this.flatlistRef && this.flatlistRef.scrollToOffset({animated: isAnimate, offset: 1});
-                setTimeout(()=> {
-                    if(this.getCurrentIndex() == 0){
-                        this.flatlistRef && this.flatlistRef.scrollToIndex({animated: false, index: 0, viewPosition: 0, viewOffset : 0});
-                    }
-                }, 350)
-            }else{
+            console.log("IS this.flatlistRef====" , !!this.flatlistRef , index == this.state.activeIndex);
+            // if(index==0){
+            //     this.flatlistRef && this.flatlistRef.scrollToOffset({animated: isAnimate, offset: 1});
+            //     setTimeout(()=> {
+            //         if(this.getCurrentIndex() == 0){
+            //             this.flatlistRef && this.flatlistRef.scrollToIndex({animated: false, index: 0, viewPosition: 0, viewOffset : 0});
+            //         }
+            //     }, 350)
+            // }else{
                 this.flatlistRef && this.flatlistRef.scrollToIndex({animated: isAnimate, index: index});
-            }    
+            //}    
         });
     }
     
@@ -223,20 +233,24 @@ class ReplyList extends PureComponent{
         let item = deepGet(data, 'viewableItems[0].item');
         let currentIndex = deepGet(data, 'viewableItems[0].index');
         this.setCurrentIndex( currentIndex );
-        this.forceSetIndexAndroid();
+        console.log("onViewableItemsChanged NOT IN OUR CONTROLL====="  ,currentIndex , item);
+        this.forceSetIndex();
     }
     
     forceSetIndexAndroid(){
-        if(Platform.OS == "android" && this.getCurrentIndex() == this.pendantClickIndex){
+        if(this.getCurrentIndex() == this.pendantClickIndex){
             this.setState({activeIndex: this.getCurrentIndex()},  ()=> {this.pendantClickIndex =  -1});
         }
     }
 
     onMomentumScrollEndCallback = () => {
+        //This is required for ScrolltoIndex as its likely that onMomentumScrollEndCallback gets triggered before onViewableItemsChanged.
+        if(this.pendantClickIndex == this.getCurrentIndex()) return;
         this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) ;
     };
 
     onMomentumScrollBeginCallback = () => {
+        console.log("onMomentumScrollBeginCallback====");
         this.isScrolled = true;
     }
 
@@ -261,6 +275,7 @@ class ReplyList extends PureComponent{
     }
 
     render() {
+        console.log("RenderInOurControl====="  , this.state.activeIndex , this.getCurrentIndex());
         return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreen, {position: "relative", backgroundColor: Colors.darkShadeOfGray}]}>
                 <TopStatus />
@@ -277,7 +292,7 @@ class ReplyList extends PureComponent{
                 <FlatList
                     extraData={this.state.activeIndex}
                     snapToAlignment={"top"}
-                    viewabilityConfig={{itemVisiblePercentThreshold: 90}}
+                    viewabilityConfig={{itemVisiblePercentThreshold: 99}}
                     pagingEnabled={true}
                     decelerationRate={"normal"}
                     data={this.state.list}

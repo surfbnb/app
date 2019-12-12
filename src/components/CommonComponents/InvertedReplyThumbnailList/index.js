@@ -108,6 +108,7 @@ class InvertedReplyList extends PureComponent {
     if( this.props.doRender && this.props.doRender !== prevProps.doRender &&  !this.hasInitialData  ){
       this.initPagination();
     }
+    console.log("componentDidUpdate Pendant====" , this.state.activeIndex , this.clickedIndex );
     if( this.state.activeIndex != this.clickedIndex && this.state.activeIndex != prevState.activeIndex ){
       this.clickedIndex = -1;
       this.listRef && this.listRef.scrollToIndex({index : this.state.activeIndex, viewOffset: 100, viewPosition: 0.5});
@@ -213,6 +214,7 @@ class InvertedReplyList extends PureComponent {
   };
 
   onPendantClick =( index , item ) => {
+    console.log("onPendantClick IN OUR CONTROLL=====", index);
     this.clickedIndex =  index;
     this.setState({activeIndex : index } ,  ()=> {  this.onItemClick(index , item); });
   }

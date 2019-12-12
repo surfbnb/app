@@ -116,6 +116,7 @@ class Base extends PureComponent {
 
     render() {
         const videoId = ReduxGetters.getReplyEntityId(this.props.replyDetailId);
+        console.log("render videoComponent in our controll" , this.props);
         return (
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
               {this._renderInvertedFlatList()}
