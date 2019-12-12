@@ -6,7 +6,8 @@ class FullScreenReplyCollection extends PureComponent{
     static navigationOptions = (props) => {
         return {
             headerBackTitle: null,
-            header: null
+            header: null,
+            gesturesEnabled: false
         };
     };
 

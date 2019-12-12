@@ -47,6 +47,9 @@ class BubbleList extends PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    this.onRefresh = () => {};
+  }
 
   getFetchUrl = () => {
     return `/videos/${this.props.videoId}/unseen-replies`;
@@ -72,7 +75,6 @@ class BubbleList extends PureComponent {
         if (apiResponse.success){
           this.onRefresh(apiResponse);
         }
-
       })
       .catch((err) => {
         console.log('updateActivatingStatus', err);
@@ -87,7 +89,7 @@ class BubbleList extends PureComponent {
   };
 
   getExtraItemUI = (key) => {
-    return <View key={key} style={ {marginLeft: -34, zIndex: -1} }>
+    return <View key={key} style={ {marginLeft: -36, zIndex: -1} }>
       <View style={inlineStyles.emptyBubble}></View>
     </View>;
   };

@@ -11,6 +11,9 @@ import Toast from "../../../theme/components/NotificationToast";
 import {ActionSheet} from "native-base";
 import ReduxGetters from "../../../services/ReduxGetters";
 import {fetchUser} from "../../../helpers/helpers";
+//Vitals: To remove start
+import Vitals from 'react-native-vitals';
+//Vitals: To remove end
 
 const  ACTION_SHEET_CANCEL_INDEX = 2;
 const  ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
@@ -59,9 +62,43 @@ class ReportVideo extends PureComponent {
 
   };
 
+  //Vitals: To remove start
+  componentDidMount(){
+    Vitals.addLowMemoryListener(memory => {
+      var {
+        appUsed,
+        systemTotal,
+        systemFree,
+        systemUsed
+      } = memory;
+      Alert.alert("","Low Memory- "+"appUsed: "+appUsed+
+      " systemTotal: "+systemTotal+
+      " systemFree: "+systemFree+
+      " systemUsed: "+systemUsed);
+    })
+  }
+
+  componentWillUnmount(){
+    Vitals.addLowMemoryListener = ()=> {};
+  }
+  //Vitals: To remove end
 
 
     reportVideo = () => {
+    //Vitals: To remove start
+      Vitals.getMemory().then(memory => {
+        var {
+          appUsed,
+          systemTotal,
+          systemFree,
+          systemUsed
+        } = memory;
+        Alert.alert("","Memory used- "+"appUsed: "+appUsed+
+        " systemTotal: "+systemTotal+
+        " systemFree: "+systemFree+
+        " systemUsed: "+systemUsed);
+        })
+        //Vitals: To remove end
         new PepoApi('/report')
             .post({report_entity_kind: this.props.reportKind, report_entity_id: this.props.reportEntityId })
             .then((response) => {
