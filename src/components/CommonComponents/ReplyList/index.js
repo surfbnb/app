@@ -244,9 +244,9 @@ class ReplyList extends PureComponent{
     }
 
     onMomentumScrollEndCallback = () => {
-        //This is required for ScrolltoIndex as its likely that onMomentumScrollEndCallback gets triggered before onViewableItemsChanged.
-        if(this.pendantClickIndex == this.getCurrentIndex()) return;
-        this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) ;
+        // //This is required for ScrolltoIndex as its likely that onMomentumScrollEndCallback gets triggered before onViewableItemsChanged.
+        // if(this.pendantClickIndex == this.getCurrentIndex()) return;
+        // this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) ;
     };
 
     onMomentumScrollBeginCallback = () => {
@@ -292,7 +292,7 @@ class ReplyList extends PureComponent{
                 <FlatList
                     extraData={this.state.activeIndex}
                     snapToAlignment={"top"}
-                    viewabilityConfig={{itemVisiblePercentThreshold: 99}}
+                    viewabilityConfig={{itemVisiblePercentThreshold: 99 , minimumViewTime: 300}}
                     pagingEnabled={true}
                     decelerationRate={"normal"}
                     data={this.state.list}
