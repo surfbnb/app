@@ -44,6 +44,7 @@ class HomeScreen extends Component {
     this.isActiveScreen = false;
     this.shouldPullToRefesh = false;
     this.showAutomaticPopup = false;
+    this.coachShown = false;
   }
 
   componentDidMount = () => {
@@ -82,7 +83,7 @@ class HomeScreen extends Component {
     });
   };
 
-  showLogoutPopup = () => {
+  showLoginAutomatically = () => {
     if (this.props.userId || this.showAutomaticPopup) {
       return;
     }
@@ -90,6 +91,10 @@ class HomeScreen extends Component {
     this.loginPopupTimeOut = setTimeout(()=>{
       LoginPopoverActions.show();
     }, appConfig.loginPopoverShowTime);
+  };
+
+  showLogoutPopup = () => {
+    ! this.coachShown && this.showLoginAutomatically();
   };
 
 
@@ -104,8 +109,9 @@ class HomeScreen extends Component {
     } else {
       utilities.getItem('show-coach-screen').then((data) => {
         if (data !== 'true'){
+          this.coachShown = true;
           utilities.saveItem(`show-coach-screen`, true);
-          this.props.navigation.push('CouchMarks');
+          this.props.navigation.push('CouchMarks' , {handleGotItClick: this.showLoginAutomatically} );
         } else {
           // do nothing
         }
