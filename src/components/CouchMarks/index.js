@@ -16,6 +16,7 @@ export default class CouchMarks extends Component {
 
 
     handleGotItClick = () => {
+        this.props.navigation.getParam("handleGotItClick")();
         this.props.navigation.goBack()
     }
 

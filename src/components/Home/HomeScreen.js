@@ -17,6 +17,8 @@ import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
 import utilities from "../../services/Utilities";
 import reduxGetter from '../../services/ReduxGetters';
+import {LoginPopoverActions} from "../LoginPopover";
+import {LoggedOutCustomTabClickEvent} from "../../helpers/Emitters";
 
 const mapStateToProps = (state) => {
   return {
@@ -41,11 +43,16 @@ class HomeScreen extends Component {
     this.listRef = null;
     this.isActiveScreen = false;
     this.shouldPullToRefesh = false;
+    this.showAutomaticPopup = false;
+    this.coachShown = false;
   }
 
   componentDidMount = () => {
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
+
+    LoggedOutCustomTabClickEvent.on('pressed', this.loggedOutCustomTabClick );
+
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab1.childStack) {
         this.refresh(true, 0);
@@ -76,14 +83,35 @@ class HomeScreen extends Component {
     });
   };
 
+  showLoginAutomatically = () => {
+    if (this.props.userId || this.showAutomaticPopup) {
+      return;
+    }
+    this.showAutomaticPopup = true;
+    this.loginPopupTimeOut = setTimeout(()=>{
+      LoginPopoverActions.show();
+    }, appConfig.loginPopoverShowTime);
+  };
+
+  showLogoutPopup = () => {
+    ! this.coachShown && this.showLoginAutomatically();
+  };
+
+
+  loggedOutCustomTabClick = () => {
+    clearTimeout(this.loginPopupTimeOut);
+  };
+
+
   showCoachScreen = () => {
     if (this.props.userId) {
       utilities.saveItem(`show-coach-screen`, true);
     } else {
       utilities.getItem('show-coach-screen').then((data) => {
         if (data !== 'true'){
+          this.coachShown = true;
           utilities.saveItem(`show-coach-screen`, true);
-          this.props.navigation.push('CouchMarks');
+          this.props.navigation.push('CouchMarks' , {handleGotItClick: this.showLoginAutomatically} );
         } else {
           // do nothing
         }
@@ -100,11 +128,13 @@ class HomeScreen extends Component {
   componentWillUnmount = () => {
     videoUploaderComponent.removeListener('show');
     videoUploaderComponent.removeListener('hide');
+    LoggedOutCustomTabClickEvent.removeListener('pressed');
     NavigationEmitter.removeListener('onRefresh');
     CurrentUser.getEvent().removeListener("onBeforeUserLogout");
     CurrentUser.getEvent().removeListener("onUserLogout");
     CurrentUser.getEvent().removeListener("onUserLogoutFailed");
     CurrentUser.getEvent().removeListener("onUserLogoutComplete");
+    clearTimeout(this.loginPopupTimeOut);
     this.willFocusSubscription && this.willFocusSubscription.remove();
     this.willBlurSubscription && this.willBlurSubscription.remove();
   };
@@ -228,6 +258,7 @@ class HomeScreen extends Component {
           onScrollEnd ={(currentIndex) => {
             this.onScrollMovementEnd(currentIndex);
           }}
+          onRefresh={this.showLogoutPopup}
         />
       </View>
     );

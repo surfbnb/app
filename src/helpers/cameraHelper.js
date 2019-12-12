@@ -48,39 +48,33 @@ const getPixelDataOnFanVideoSuccess = (RecorderObject, videoId ) => {
         if (res && res.success){
           let videoLength = RecorderObject.video_length,
             creatorUserId = ReduxGetters.getVideoCreatorUserId(videoId),
-          isApprovedCreator = ReduxGetters.isCreatorApproved(creatorUserId),
+            isApprovedCreator = ReduxGetters.isCreatorApproved(creatorUserId),
             hasLink = !!ReduxGetters.getVideoLinkId(videoId),
             descId = ReduxGetters.getVideoDescriptionId(videoId),
             descriptionObject = ReduxGetters.getVideoDescriptionObject(descId),
             descIncludes = descriptionObject && descriptionObject.includes,
             tagsObject = getTagsObject(descIncludes);
-          let obj = {
+
+          let pixelData = {
             e_entity: "video",
             e_action: "create",
             p_type: "video_recorder",
-            approved_creator: isApprovedCreator
+            approved_creator: isApprovedCreator,
+            length: videoLength,
+            video_id: videoId
           };
 
-          if(videoLength){
-            obj['length'] = videoLength;
-          }
-
           if(hasLink){
-            obj['has_link'] = hasLink;
-          }
-
-          if (videoId){
-            obj['video_id'] = videoId;
+            pixelData['has_link'] = hasLink;
           }
           if (tagsObject.tagsLength){
-            obj['tag_count'] = tagsObject.tagsLength;
+            pixelData['tag_count'] = tagsObject.tagsLength;
           }
           if (tagsObject.tags){
-            obj['tags'] = tagsObject.tags;
+            pixelData['tags'] = tagsObject.tags;
           }
 
-
-          PixelCall(obj);
+          PixelCall(pixelData);
 
         } else {
           // do nothing
@@ -115,30 +109,28 @@ const getPixelDataOnReplyVideoSuccess = (RecorderObject) => {
             tagsObject = getTagsObject(descIncludes);
 
 
-          let obj = {
+          let pixelData = {
             e_entity: "reply",
             e_action: "create",
             p_type: "video_recorder",
             p_name: parentVideoId,
-            approved_creator: isApprovedCreator
+            approved_creator: isApprovedCreator,
+            length:videoLength,
+
           };
 
-          if( videoLength ) {
-            obj['length'] = videoLength;
-          }
-
           if(hasLink){
-            obj['has_link'] = hasLink;
+            pixelData['has_link'] = hasLink;
           }
 
           if (tagsObject.tagsLength){
-            obj['tag_count'] = tagsObject.tagsLength;
+            pixelData['tag_count'] = tagsObject.tagsLength;
           }
           if (tagsObject.tags){
-            obj['tags'] = tagsObject.tags;
+            pixelData['tags'] = tagsObject.tags;
           }
 
-          PixelCall(obj);
+          PixelCall(pixelData);
 
         } else {
           // do nothing
@@ -177,7 +169,7 @@ const replyPreValidationAndMessage = (videoId , userId) => {
 
   if( ReduxGetters.isVideoIsChargeable(videoId) && (Pricer.getWeiToNumber(ReduxGetters.getBalance()) < Pricer.getWeiToNumber(requiredPepo))){
     Toast.show({
-      text: ostErrors.getUIErrorMessage("video_reply_not_allowed_low_bal"),
+      text: ostErrors.getUIErrorMessage("video_reply_not_allowed_low_bal")(Pricer.getWeiToNumber(requiredPepo)),
       icon: 'error'
     });
     return false ;
