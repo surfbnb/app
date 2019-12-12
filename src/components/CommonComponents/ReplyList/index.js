@@ -237,7 +237,7 @@ class ReplyList extends PureComponent{
         this.forceSetIndex();
     }
     
-    forceSetIndexAndroid(){
+    forceSetIndex(){
         if(this.getCurrentIndex() == this.pendantClickIndex){
             this.setState({activeIndex: this.getCurrentIndex()},  ()=> {this.pendantClickIndex =  -1});
         }
