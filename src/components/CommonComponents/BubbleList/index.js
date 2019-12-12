@@ -47,6 +47,9 @@ class BubbleList extends PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    this.onRefresh = () => {};
+  }
 
   getFetchUrl = () => {
     return `/videos/${this.props.videoId}/unseen-replies`;
@@ -72,7 +75,6 @@ class BubbleList extends PureComponent {
         if (apiResponse.success){
           this.onRefresh(apiResponse);
         }
-
       })
       .catch((err) => {
         console.log('updateActivatingStatus', err);
