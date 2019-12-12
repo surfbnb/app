@@ -242,9 +242,7 @@ class ReplyList extends PureComponent{
     }
     
     forceSetIndex(){
-        if(this.getCurrentIndex() == this.pendantClickIndex){
-            this.setState({activeIndex: this.getCurrentIndex()},  ()=> {this.pendantClickIndex =  -1});
-        }
+        this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) 
     }
 
     onMomentumScrollEndCallback = () => {
