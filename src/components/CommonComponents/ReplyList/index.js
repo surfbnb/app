@@ -168,12 +168,16 @@ class ReplyList extends PureComponent{
 
     _renderVideoReplyRow(item, index){
         let userId = deepGet(item,'payload.user_id'),
-            replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
+            replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`),
+            isActive = index == this.getCurrentIndex()
+            doRender = Math.abs(index - this.getCurrentIndex()) < maxVideosThreshold
+            ;
+         console.log("_renderVideoReplyRow====" , index , isActive , doRender)   ;
         return  <NoPendantsVideoReplyRow
                                 shouldPlay={this.shouldPlay}
-                                isActive={index == this.getCurrentIndex()}
+                                isActive={isActive}
                                 getPixelDropData={this.getPixelDropData(replyDetailId)}
-                                doRender={Math.abs(index - this.getCurrentIndex()) < maxVideosThreshold}
+                                doRender={doRender}
                                 userId={userId}
                                 index={index}
                                 replyDetailId={replyDetailId}
