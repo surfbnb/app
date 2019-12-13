@@ -15,7 +15,6 @@ import VideoReplyRow from "../CommonComponents/VideoReplyRowComponent/VideoReply
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;
-const numberToRender =  5;
 
 class FullScreenVideoCollection extends PureComponent{
 
@@ -272,9 +271,6 @@ class FullScreenVideoCollection extends PureComponent{
                     keyExtractor={this._keyExtractor}
                     ref={(ref)=> {this.flatlistRef =  ref }}
                     onEndReachedThreshold={7}
-                    windowSize={numberToRender}
-                    initialNumToRender={numberToRender}
-                    maxToRenderPerBatch={numberToRender}
                     onViewableItemsChanged={this.onViewableItemsChanged}
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                     onMomentumScrollBegin={this.onMomentumScrollBeginCallback}
