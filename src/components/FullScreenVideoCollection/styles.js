@@ -26,7 +26,7 @@ let stylesMap = {
     invertedList: {
       marginRight: 'auto',
       minWidth: '20%',
-      marginBottom: 40
+      marginBottom: 30
     },
     pepoTxCount: {
         fontSize: 18,
