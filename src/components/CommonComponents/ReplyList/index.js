@@ -209,7 +209,7 @@ class ReplyList extends PureComponent{
     }
 
     onViewableItemsChanged = (data) => {
-        if(this.pendantClickIndex != -1 ){
+        if(this.pendantClickIndex == -1 ){
             // If not clicked on pendant (means manual scroll),
             // Trust the onViewableItemsChanged data index
             let currentIndex = deepGet(data, 'viewableItems[0].index');
@@ -294,7 +294,7 @@ class ReplyList extends PureComponent{
                 <FlatList
                     extraData={this.state.activeIndex}
                     snapToAlignment={"top"}
-                    viewabilityConfig={{itemVisiblePercentThreshold: 99}}
+                    viewabilityConfig={{itemVisiblePercentThreshold: 90}}
                     pagingEnabled={true}
                     decelerationRate={"normal"}
                     data={this.state.list}
