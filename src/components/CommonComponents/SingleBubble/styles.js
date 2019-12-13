@@ -17,7 +17,7 @@ let stylesMap = {
   bubbleSizeSkipFont: {
     height: 40,
     width: 40,
-    borderColor: 'white',
+    borderColor: Colors.white,
     borderWidth: 1,
     borderRadius: 20
   },
@@ -29,7 +29,7 @@ let stylesMap = {
   },
 
   repliesTxt: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 16,
     fontFamily: 'AvenirNext-DemiBold'
   }

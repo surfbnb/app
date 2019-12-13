@@ -21,7 +21,7 @@ let stylesMap = {
     invertedList: {
       marginRight: 'auto',
       minWidth: '20%',
-      marginBottom: 40,
+      marginBottom: 30,
       position: 'absolute',
       zIndex:9
     },

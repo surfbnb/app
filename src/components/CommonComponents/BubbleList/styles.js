@@ -17,7 +17,7 @@ let stylesMap = {
   bubbleSize: {
     height: 38,
     width: 38,
-    borderColor: 'white',
+    borderColor: Colors.white,
     borderWidth: 1,
     borderRadius: 20
   },
@@ -30,7 +30,7 @@ let stylesMap = {
   },
 
   repliesTxt: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 16,
     fontFamily: 'AvenirNext-DemiBold'
   },
@@ -40,8 +40,8 @@ let stylesMap = {
     height: 40,
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: '#fff',
-    backgroundColor: '#ff5566'
+    borderColor: Colors.white,
+    backgroundColor: Colors.wildWatermelon2
   }
 
 };
