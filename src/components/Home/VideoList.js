@@ -7,7 +7,6 @@ import inlineStyles from './styles';
 
 let currentIndex = 0;
 const maxVideosThreshold = 3;
-const numberToRender = 5;
 
 class VideoList extends PureComponent {
   constructor(props) {
@@ -69,9 +68,6 @@ class VideoList extends PureComponent {
           itemVisiblePercentThreshold: 90
         }}
         pagingEnabled={true}
-        windowSize={numberToRender}
-        initialNumToRender={numberToRender}
-        maxToRenderPerBatch={numberToRender}
         decelerationRate={'fast'}
         data={this.props.list}
         onEndReached={this.props.getNext}

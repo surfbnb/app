@@ -16,7 +16,6 @@ import Colors from "../../../theme/styles/Colors";
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;
-const numberToRender = 5;
 
 class ReplyList extends PureComponent{
 
@@ -146,7 +145,6 @@ class ReplyList extends PureComponent{
     }
 
     _renderItem = ({ item, index }) => {
-        console.log("_renderItem NOT IN OUR CONTROLL====="  ,index);
         if(entityHelper.isVideoReplyEntity( item )){
             if(entityHelper.isReplyVideoTypeEntity(item)){
                 return this._renderVideoReplyRow( item, index );
@@ -154,7 +152,6 @@ class ReplyList extends PureComponent{
         }else{
             console.log("_renderItem I shouldnt be here====="  ,index , item);
             return null;
-      
         }
     };
 
@@ -171,7 +168,6 @@ class ReplyList extends PureComponent{
             isActive = index == this.getCurrentIndex()
             doRender = Math.abs(index - this.getCurrentIndex()) < maxVideosThreshold
             ;
-         console.log("_renderVideoReplyRow====" , index , isActive , doRender)   ;
         return  <NoPendantsVideoReplyRow
                                 shouldPlay={this.shouldPlay}
                                 isActive={isActive}
@@ -187,13 +183,11 @@ class ReplyList extends PureComponent{
     }
     setPendantIndex = (index) => { 
         if ( "number" === typeof index ) {
-            console.log("setPendantIndex IN OUR CONTROLL====="  ,index);
             this.pendantClickIndex = index;
         }
     }
     setCurrentIndex = (index) => {
         if ( "number" === typeof index ) {
-            console.log("setCurrentIndex IN OUR CONTROLL====="  ,index);
             this.currentIndex = index;
         }
     }
@@ -203,12 +197,12 @@ class ReplyList extends PureComponent{
     }
 
     setActiveIndex( index, callback  ) {
-        console.log("setActiveIndex IN OUR CONTROLL====="  ,index);
         this.setCurrentIndex( index ); //sync click index and currentIndex
         this.setState({ activeIndex:  this.getCurrentIndex()}, callback);
     }
 
     onViewableItemsChanged = (data) => {
+        console.log("onViewableItemsChanged======" ,  deepGet(data, 'viewableItems[0].index'));
         if(this.pendantClickIndex == -1 ){
             // If not clicked on pendant (means manual scroll),
             // Trust the onViewableItemsChanged data index
@@ -226,7 +220,6 @@ class ReplyList extends PureComponent{
     }
 
     childClickHandler = ( index, item )=> {
-        console.log("childClickHandler IN OUR CONTROLL====="  ,index);
         this.setPendantIndex(index) ;
         this.scrollToIndex( index );
     }
@@ -245,14 +238,9 @@ class ReplyList extends PureComponent{
         this.setActiveIndex(index ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(index)} ) ;
     }
 
-    onMomentumScrollEndCallback = () => {
-        // //This is required for ScrolltoIndex as its likely that onMomentumScrollEndCallback gets triggered before onViewableItemsChanged.
-        // if(this.pendantClickIndex == this.getCurrentIndex()) return;
-        // this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) ;
-    };
+    onMomentumScrollEndCallback = () => {};
 
     onMomentumScrollBeginCallback = () => {
-        console.log("onMomentumScrollBeginCallback====");
         this.isScrolled = true;
     }
 
@@ -277,7 +265,6 @@ class ReplyList extends PureComponent{
     }
 
     render() {
-        console.log("RenderInOurControl====="  , this.state.activeIndex , this.getCurrentIndex());
         return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreen, {position: "relative", backgroundColor: Colors.darkShadeOfGray}]}>
                 <TopStatus />
@@ -304,9 +291,6 @@ class ReplyList extends PureComponent{
                     keyExtractor={this._keyExtractor}
                     ref={this.setRef}
                     onEndReachedThreshold={7}
-                    windowSize={numberToRender}
-                    initialNumToRender={numberToRender}
-                    maxToRenderPerBatch={numberToRender}
                     onViewableItemsChanged={this.onViewableItemsChanged}
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                     onMomentumScrollBegin={this.onMomentumScrollBeginCallback}
