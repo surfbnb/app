@@ -38,6 +38,7 @@
     "react-native-image-resizer": "1.0.1",
     "react-native-image-size": "1.1.2",
     "react-native-iphone-x-helper": "1.2.1",
+    "react-native-keep-awake": "4.0.0",
     "react-native-keyboard-aware-scroll-view": "0.8.0",
     "react-native-linear-gradient": "2.5.4",
     "react-native-material-menu": "1.0.0",
@@ -45,7 +46,8 @@
     "react-native-progress": "3.6.0",
     "react-native-smooth-pincode-input": "1.0.4",
     "react-native-twitter-signin": "git+https://git@github.com/GoldenOwlAsia/react-native-twitter-signin.git#f0ba9152f73778b35735b8dee03da1b6802cad50",
-    "react-native-video": "4.4.4",
+    "react-native-video": "4.4.3",
+    "react-native-vitals": "^2.0.1",
     "react-native-webview": "5.12.1",
     "react-navigation": "4.0.10",
     "react-navigation-stack": "1.9.4",
@@ -55,9 +57,8 @@
     "redux": "4.0.1",
     "redux-actions": "2.6.5",
     "redux-logger": "3.0.6",
-    "socket.io-client": "2.2.0",
-    "react-native-keep-awake": "4.0.0",
-    "rn-sliding-up-panel": "2.3.3"
+    "rn-sliding-up-panel": "2.3.3",
+    "socket.io-client": "2.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.4.5",

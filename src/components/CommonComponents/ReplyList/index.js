@@ -16,6 +16,7 @@ import Colors from "../../../theme/styles/Colors";
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;
+const numberToRender = 5;
 
 class ReplyList extends PureComponent{
 
@@ -71,7 +72,7 @@ class ReplyList extends PureComponent{
 
         //This is an hack for reset scroll for flatlist. Need to debug a bit more.
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
-            const offset =  this.state.activeIndex > 0 ? rowHeight * this.state.activeIndex :  0 ;
+            const offset =  this.getCurrentIndex() > 0 ? rowHeight * this.getCurrentIndex() :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
             this.isActiveScreen = true ;
         });
@@ -145,46 +146,54 @@ class ReplyList extends PureComponent{
     }
 
     _renderItem = ({ item, index }) => {
+        console.log("_renderItem NOT IN OUR CONTROLL====="  ,index);
         if(entityHelper.isVideoReplyEntity( item )){
             if(entityHelper.isReplyVideoTypeEntity(item)){
                 return this._renderVideoReplyRow( item, index );
             }
+        }else{
+            console.log("_renderItem I shouldnt be here====="  ,index , item);
+            return null;
+      
         }
     };
 
-    getPixelDropData = ( replyDetailId ) => {
-        return () => {
-            return {
-                e_entity: 'reply',
-                p_type: 'video_reply'
-              };
-        }
+    getPixelDropData = (  ) => {
+        return {
+            e_entity: 'reply',
+            p_type: 'video_reply'
+        };
     }
 
     _renderVideoReplyRow(item, index){
         let userId = deepGet(item,'payload.user_id'),
-            replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
+            replyDetailId = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`),
+            isActive = index == this.getCurrentIndex()
+            doRender = Math.abs(index - this.getCurrentIndex()) < maxVideosThreshold
+            ;
+         console.log("_renderVideoReplyRow====" , index , isActive , doRender)   ;
         return  <NoPendantsVideoReplyRow
                                 shouldPlay={this.shouldPlay}
-                                isActive={index == this.state.activeIndex}
-                                getPixelDropData={this.getPixelDropData(replyDetailId)}
-                                doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
+                                isActive={isActive}
+                                getPixelDropData={this.getPixelDropData}
+                                doRender={doRender}
                                 userId={userId}
                                 index={index}
                                 replyDetailId={replyDetailId}
                                 paginationService ={this.getVideoPagination()}
                                 onChildClickDelegate={this.childClickHandler}
                                 parentClickHandler={this.parentClickHandler}
-                                currentIndex={this.state.activeIndex}
          /> ;
     }
     setPendantIndex = (index) => { 
         if ( "number" === typeof index ) {
+            console.log("setPendantIndex IN OUR CONTROLL====="  ,index);
             this.pendantClickIndex = index;
         }
     }
     setCurrentIndex = (index) => {
         if ( "number" === typeof index ) {
+            console.log("setCurrentIndex IN OUR CONTROLL====="  ,index);
             this.currentIndex = index;
         }
     }
@@ -194,49 +203,56 @@ class ReplyList extends PureComponent{
     }
 
     setActiveIndex( index, callback  ) {
+        console.log("setActiveIndex IN OUR CONTROLL====="  ,index);
         this.setCurrentIndex( index ); //sync click index and currentIndex
         this.setState({ activeIndex:  this.getCurrentIndex()}, callback);
     }
 
+    onViewableItemsChanged = (data) => {
+        if(this.pendantClickIndex == -1 ){
+            // If not clicked on pendant (means manual scroll),
+            // Trust the onViewableItemsChanged data index
+            let currentIndex = deepGet(data, 'viewableItems[0].index');
+            this.updateIndex( currentIndex );
+        }else if(this.pendantClickIndex == this.getCurrentIndex()){
+            // if clicked on pendant, 
+            // Sometimes onViewableItemsChanged gives wrong index.
+            // So trust this.pendantClickIndex and reset this.pendantClickIndex
+            // when view scroll to the required index
+            this.pendantClickIndex = -1;
+        } else {
+            // do nothing, as right now there are no more scenarios for scroll
+        }
+    }
+
     childClickHandler = ( index, item )=> {
+        console.log("childClickHandler IN OUR CONTROLL====="  ,index);
         this.setPendantIndex(index) ;
         this.scrollToIndex( index );
     }
 
     scrollToIndex = ( index )=>{
-        const isAnimate =  false;
         this.setActiveIndex( index, () => {
             if(index==0){
-                this.flatlistRef && this.flatlistRef.scrollToOffset({animated: isAnimate, offset: 1});
-                setTimeout(()=> {
-                    if(this.getCurrentIndex() == 0){
-                        this.flatlistRef && this.flatlistRef.scrollToIndex({animated: false, index: 0, viewPosition: 0, viewOffset : 0});
-                    }
-                }, 350)
+                this.flatlistRef && this.flatlistRef.scrollToOffset({offset: 1});
             }else{
-                this.flatlistRef && this.flatlistRef.scrollToIndex({animated: isAnimate, index: index});
+                this.flatlistRef && this.flatlistRef.scrollToIndex({index: index});
             }    
         });
     }
     
-    onViewableItemsChanged = (data) => {
-        let item = deepGet(data, 'viewableItems[0].item');
-        let currentIndex = deepGet(data, 'viewableItems[0].index');
-        this.setCurrentIndex( currentIndex );
-        this.forceSetIndexAndroid();
-    }
-    
-    forceSetIndexAndroid(){
-        if(Platform.OS == "android" && this.getCurrentIndex() == this.pendantClickIndex){
-            this.setState({activeIndex: this.getCurrentIndex()},  ()=> {this.pendantClickIndex =  -1});
-        }
+    updateIndex = ( index ) =>{
+        this.setActiveIndex(index ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(index)} ) ;
     }
 
     onMomentumScrollEndCallback = () => {
-        this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) ;
+        // //This is required for ScrolltoIndex as its likely that onMomentumScrollEndCallback gets triggered before onViewableItemsChanged.
+        // if(this.pendantClickIndex == this.getCurrentIndex()) return;
+        // this.setActiveIndex(this.getCurrentIndex() ,() => {this.pendantListRef && this.pendantListRef.setActiveIndex(this.getCurrentIndex())} ) ;
     };
 
     onMomentumScrollBeginCallback = () => {
+        console.log("onMomentumScrollBeginCallback====");
         this.isScrolled = true;
     }
 
@@ -261,6 +277,7 @@ class ReplyList extends PureComponent{
     }
 
     render() {
+        console.log("RenderInOurControl====="  , this.state.activeIndex , this.getCurrentIndex());
         return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreen, {position: "relative", backgroundColor: Colors.darkShadeOfGray}]}>
                 <TopStatus />
@@ -287,6 +304,9 @@ class ReplyList extends PureComponent{
                     keyExtractor={this._keyExtractor}
                     ref={this.setRef}
                     onEndReachedThreshold={7}
+                    windowSize={numberToRender}
+                    initialNumToRender={numberToRender}
+                    maxToRenderPerBatch={numberToRender}
                     onViewableItemsChanged={this.onViewableItemsChanged}
                     onMomentumScrollEnd={this.onMomentumScrollEndCallback}
                     onMomentumScrollBegin={this.onMomentumScrollBeginCallback}

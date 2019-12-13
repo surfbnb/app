@@ -210,6 +210,15 @@ class HomeScreen extends Component {
     Pricer.getBalance();
   };
 
+  onRefresh = (res) => {
+    const flatListHocRef = deepGet(this, 'listRef.flatListHocRef'),
+      flatlistProps = deepGet(this, 'listRef.flatListHocRef.props'),
+      list = flatlistProps && flatlistProps.list;
+    if (list && list.length > 0) {
+      Platform.OS == 'android' && flatListHocRef.forceSetActiveIndex(0);
+    }
+  }
+
   render() {
     return (
       <View style={{ backgroundColor: Colors.black}}>
@@ -244,6 +253,7 @@ class HomeScreen extends Component {
           }}
           fetchUrl={'/feeds'}
           beforeRefresh={this.beforeRefresh}
+          onRefresh={this.onRefresh}
           shouldPlay={this.shouldPlay}
           onScrollEnd ={(currentIndex) => {
             this.onScrollMovementEnd(currentIndex);

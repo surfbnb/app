@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00029B4323329B55009E6919 /* TrustKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B76D86A2318FAAC007316D4 /* TrustKit.framework */; };
 		00029B4423329B63009E6919 /* OstWalletSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FDA022A8226800C2634F /* OstWalletSdk.framework */; };
@@ -120,6 +121,7 @@
 		77C415E222FD8B53008F0F63 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0050FD1522A821D700C2634F /* libRNGestureHandler.a */; };
 		77E9E941235074F10081E690 /* FirebaseDynamicLinks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77E9E8FF235074F10081E690 /* FirebaseDynamicLinks.framework */; };
 		77EDA37C22D763D20095674F /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EDA37B22D763CB0095674F /* libRNCamera.a */; };
+		7BCA8C9B21DE42C2B13F8293 /* libRNVitals.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9AAFB170EEA4B409999811B /* libRNVitals.a */; };
 		7CF11B015E3845FC8E8CBCC4 /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF841003911544D1B506D1B5 /* Lato-Hairline.ttf */; };
 		7E873BEEA71D4772A4CEA8FE /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4942AA6D4C5247669FA8FCAF /* rubicon-icon-font.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -763,6 +765,7 @@
 		9FD60B28CE824C59AE47FEA0 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		A20954163BBA4DA493E99FCE /* Lato-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Light.ttf"; path = "../src/assets/fonts/Lato-Light.ttf"; sourceTree = "<group>"; };
 		A7AD85F48C1E4E04AB39DA01 /* Lato-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Bold.ttf"; path = "../src/assets/fonts/Lato-Bold.ttf"; sourceTree = "<group>"; };
+		A9AAFB170EEA4B409999811B /* libRNVitals.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVitals.a; sourceTree = "<group>"; };
 		AA9BB6AFAB7045B48A74A823 /* RNTwitterSignIn.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNTwitterSignIn.xcodeproj; path = "../node_modules/react-native-twitter-signin/ios/RNTwitterSignIn.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B8081EB3577D4A21B2C29BF9 /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCWebView.xcodeproj; path = "../node_modules/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; };
@@ -783,6 +786,7 @@
 		F1E81A640BFF41ACB5A01A53 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		F3F319F40E4C450690D77546 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		F406518F2D434EC0A78FA040 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		FCDBDCC8BDEF4121B12162B0 /* RNVitals.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVitals.xcodeproj; path = "../node_modules/react-native-vitals/ios/RNVitals.xcodeproj"; sourceTree = "<group>"; };
 		FE776FBD854C4ABF96A4B23E /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -862,6 +866,7 @@
 				00E5D8FE232A556F006EA3DE /* GoogleDataTransportCCTSupport.framework in Frameworks */,
 				85A8F833EBFA49C5B547D4BC /* libRNReactNativeHapticFeedback.a in Frameworks */,
 				6A7DF638AD324771B047E3F5 /* libKCKeepAwake.a in Frameworks */,
+				7BCA8C9B21DE42C2B13F8293 /* libRNVitals.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -911,6 +916,7 @@
 				4BFFD401232D3D930033959D /* GoogleService-Info.plist */,
 				6E2AB22225D74E6496659BC7 /* libRNCWebView.a */,
 				09FE8D15A45B4553AA09050D /* libKCKeepAwake.a */,
+				A9AAFB170EEA4B409999811B /* libRNVitals.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1429,6 +1435,7 @@
 				8C3C31893A924D0BBC0BFA8E /* RNReactNativeHapticFeedback.xcodeproj */,
 				B8081EB3577D4A21B2C29BF9 /* RNCWebView.xcodeproj */,
 				9077E0CF363D4C8A90F6FA78 /* KCKeepAwake.xcodeproj */,
+				FCDBDCC8BDEF4121B12162B0 /* RNVitals.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -2348,12 +2355,14 @@
 					"$(SRCROOT)/Firebase",
 					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-vitals/ios",
 				);
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/Pepo2\"",
 					"\"$(SRCROOT)/Pepo2\"",
 				);
 				MARKETING_VERSION = 1.0.1;
@@ -2416,12 +2425,14 @@
 					"$(SRCROOT)/Firebase",
 					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
+					"$(SRCROOT)/../node_modules/react-native-vitals/ios",
 				);
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/Pepo2\"",
 					"\"$(SRCROOT)/Pepo2\"",
 				);
 				MARKETING_VERSION = 1.0.1;
