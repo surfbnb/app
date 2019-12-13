@@ -47,8 +47,11 @@ class Base extends PureComponent {
         if( !this.isUserVideoContextInSycn( currentUserId , videoId ) ) return false;
         return this.isHalfViewed ;
       },
-      isEventCalledOnFullViewed : function(currentUserId, videoId){
+      isEventCalledOnFullViewed : function(currentUserId, videoId , ignoreLocal=false){
         if( !this.isUserVideoContextInSycn( currentUserId , videoId ) ) return false;
+        if(ignoreLocal){
+          return false;
+        }
         return this.isFullViewed ;
       },
       syncUserVideo( userId, videoId ){
@@ -222,13 +225,15 @@ class Base extends PureComponent {
   }
 
   onEnd = (params) => {
-    if (this.videoContext.isEventCalledOnFullViewed(CurrentUser.getUserId() , this.props.videoId)) return;
+    const shouldFire = this.videoContext.isEventCalledOnFullViewed(CurrentUser.getUserId() , this.props.videoId , true);
+    if ( shouldFire ) return;
+    this.sendFeedVideoEvent(VIDEO_PLAY_END_EVENT_NAME);
+    if( this.videoContext.isFullViewed  ) return;
     const parentData =  this.props.getPixelDropData() ; 
-    let pixelParams = {   e_action: 'full_viewed', };
+    let pixelParams = {   e_action: 'full_viewed' };
     pixelParams = assignIn({}, pixelParams, parentData);
     PixelCall(pixelParams);
     this.videoContext.eventFiredFullView(CurrentUser.getUserId(), this.props.videoId);
-    this.sendFeedVideoEvent(VIDEO_PLAY_END_EVENT_NAME);
   };
 
   onVideoHalfViewed =( ) => {
