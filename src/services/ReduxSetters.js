@@ -103,8 +103,9 @@ const upsertAllWhitelistedAction = (state, action) => {
           whitelistedEntities.push(entity);
         } else {
           // Parser based processing
-          if(appEntity.key && typeof appEntity.parser === 'function'){
-            newState[appEntity.key] = appEntity.parser(state[appEntity], getEntities(entityData));
+          const appEntityKey = appEntity.key
+          if( appEntityKey && typeof appEntity.parser === 'function'){
+            newState[appEntityKey] = appEntity.parser(state[appEntityKey], getEntities(entityData));
             whitelistedEntities.push(entity);
           }
         }
