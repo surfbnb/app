@@ -40,7 +40,6 @@ class InvertedReplyList extends PureComponent {
     this.initialScrollIndex = this.props.getCurrentIndex();
     this.listRef = null;
     this.onItemClick = null;
-    this.clickedIndex =  -1;
   }
 
   getInitialList = () => {
@@ -107,11 +106,6 @@ class InvertedReplyList extends PureComponent {
   componentDidUpdate(prevProps, prevState ) {
     if( this.props.doRender && this.props.doRender !== prevProps.doRender &&  !this.hasInitialData  ){
       this.initPagination();
-    }
-    console.log("componentDidUpdate Pendant====" , this.state.activeIndex , this.clickedIndex );
-    if( this.state.activeIndex != this.clickedIndex && this.state.activeIndex != prevState.activeIndex ){
-      this.clickedIndex = -1;
-      this.listRef && this.listRef.scrollToIndex({index : this.state.activeIndex, viewOffset: 100, viewPosition: 0.5});
     }
   }
 
@@ -181,7 +175,6 @@ class InvertedReplyList extends PureComponent {
     let results = this.getPagination().getResults()  ;
     this.props.onRefresh && this.props.onRefresh( results , res );
     this.setState({ refreshing : false , list : results });
-    // this.setState({ refreshing : false , list : [results[0], results[1]] });
   }
 
   onRefreshError = ( error ) => {
@@ -214,14 +207,14 @@ class InvertedReplyList extends PureComponent {
   };
 
   onPendantClick =( index , item ) => {
-    console.log("onPendantClick IN OUR CONTROLL=====", index);
-    this.clickedIndex =  index;
     this.setState({activeIndex : index } ,  ()=> {  this.onItemClick(index , item); });
   }
 
   setActiveIndex = (index) => {
     if("number" ==  typeof index){
-      this.setState({activeIndex : index});
+      this.setState({activeIndex : index}, ()=>{
+        this.listRef && this.listRef.scrollToIndex({index : this.state.activeIndex, viewOffset: 100, viewPosition: 0.5});
+      });
     }
   } 
 

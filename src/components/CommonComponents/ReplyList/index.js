@@ -202,13 +202,12 @@ class ReplyList extends PureComponent{
     }
 
     onViewableItemsChanged = (data) => {
-        console.log("onViewableItemsChanged======" ,  deepGet(data, 'viewableItems[0].index'));
+        let currentIndex = deepGet(data, 'viewableItems[0].index');
         if(this.pendantClickIndex == -1 ){
             // If not clicked on pendant (means manual scroll),
             // Trust the onViewableItemsChanged data index
-            let currentIndex = deepGet(data, 'viewableItems[0].index');
             this.updateIndex( currentIndex );
-        }else if(this.pendantClickIndex == this.getCurrentIndex()){
+        }else if(this.pendantClickIndex == currentIndex){
             // if clicked on pendant, 
             // Sometimes onViewableItemsChanged gives wrong index.
             // So trust this.pendantClickIndex and reset this.pendantClickIndex
