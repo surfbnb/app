@@ -9,7 +9,7 @@
     "postinstall": "echo \"Copying assets...\" && npm run copy-assets"
   },
   "dependencies": {
-    "@ostdotcom/ost-wallet-sdk-react-native": "2.3.11-alpha.1",
+    "@ostdotcom/ost-wallet-sdk-react-native": "2.3.11",
     "@react-native-community/async-storage": "1.6.1",
     "@react-native-community/cameraroll": "1.1.1",
     "@react-native-community/netinfo": "3.2.1",
