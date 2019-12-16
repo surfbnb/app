@@ -40,7 +40,7 @@ class Base extends PureComponent {
                      <Text style={inlineStyles.videoDescStyle} ellipsizeMode={'tail'} numberOfLines={3}>{this.props.videoDesc}</Text>
                      <View style={{flex:1, flexDirection: "row" , marginTop: 5}}>
                         <View style={{flex: 3, flexDirection: "row"}}>
-                            <ProfilePicture userId={this.props.userId} style={{height: 18, width: 18, borderWidth: 1, borderColor: 'white'}} />
+                            <ProfilePicture userId={this.props.userId} style={{height: 18, width: 18, borderWidth: 1, borderColor: 'white', borderRadius: 9}} />
                             <Text style={inlineStyles.videoUserNameStyle} ellipsizeMode={'tail'} numberOfLines={1}>@{this.props.userName}</Text>
                         </View>
                         <View style={[inlineStyles.videoStatsContainer]}>
