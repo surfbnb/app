@@ -219,7 +219,7 @@ class UserProfileActionSheet extends PureComponent {
                 options: actionOptions,
                 cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
                 destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
-               // title: "Select user action"
+                title: "Select user action"
             },
             (buttonIndex) => {
                 if (buttonIndex == ACTION_SHEET_REPORT_INDEX) {

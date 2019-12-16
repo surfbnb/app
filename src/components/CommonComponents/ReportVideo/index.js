@@ -216,7 +216,7 @@ class ReportVideo extends PureComponent {
             options: this.getActionSheetButtons(),
             cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
             destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
-            title: 'Actions'
+            title: 'Select user action'
           },
           (buttonIndex) => {
             if (buttonIndex == ACTION_SHEET_REPORT_INDEX) {
@@ -238,7 +238,7 @@ class ReportVideo extends PureComponent {
             options: this.getActionSheetLoggedOutButtons(),
             cancelButtonIndex: ACTION_SHEET_LOGGED_OUT_CANCEL_INDEX,
             destructiveButtonIndex: ACTION_SHEET_LOGGED_OUT_DESCTRUCTIVE_INDEX,
-            title: 'Actions'
+            title: 'Select user action'
           },
           (buttonIndex) => {
             if (buttonIndex == ACTION_SHEET_LOGGED_OUT_REPORT_INDEX) {
