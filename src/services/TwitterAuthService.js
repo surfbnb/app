@@ -64,7 +64,7 @@ class TwitterAuthService {
   }
 
   onSuccess(res) {
-   // this.pixelDrop(res);
+    this.pixelDrop(res);
     Utilities.removeItem(AppConfig.appInstallInviteCodeASKey);
     Store.dispatch(upsertInviteCode(null));
     Pricer.getBalance();
@@ -85,7 +85,7 @@ class TwitterAuthService {
             createdAt = entity['uts'],
             pixelParams = this.getPixeDropParams(createdAt , inviteCode , utm )
             ;
-      PixelCall( pixelParams );     
+      PixelCall( pixelParams );
     }
   }
 

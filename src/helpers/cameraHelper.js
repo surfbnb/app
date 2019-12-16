@@ -59,7 +59,7 @@ const getPixelDataOnFanVideoSuccess = (RecorderObject, videoId ) => {
             e_entity: "video",
             e_action: "create",
             p_type: "video_recorder",
-            approved_creator: isApprovedCreator,
+            approved_creator: !!isApprovedCreator,
             length: videoLength,
             video_id: videoId
           };
@@ -114,7 +114,7 @@ const getPixelDataOnReplyVideoSuccess = (RecorderObject) => {
             e_action: "create",
             p_type: "video_recorder",
             p_name: parentVideoId,
-            approved_creator: isApprovedCreator,
+            approved_creator: !!isApprovedCreator,
             length:videoLength,
 
           };
@@ -153,7 +153,7 @@ const replyPreValidationAndMessage = (videoId , userId) => {
     return false;
   }
 
-  const isReplyAllowed = ReduxGetters.isReplyAllowed(videoId) , 
+  const isReplyAllowed = ReduxGetters.isReplyAllowed(videoId) ,
   isVideoUserActivated = Utilities.isUserActivated(ReduxGetters.getUserActivationStatus(userId))
    ;
 

@@ -229,7 +229,7 @@ class Base extends PureComponent {
     const currentTime = params.currentTime,
           totalTime = params.seekableDuration,
           halfDuration = totalTime && totalTime/2;
-    return halfDuration && halfDuration >= currentTime;
+    return halfDuration && currentTime >= halfDuration;
   }
 
   sendFeedVideoEvent(eventKind) {
@@ -248,7 +248,7 @@ class Base extends PureComponent {
   onEnd = (params) => {
     if ( this.videoContext.isEventCalledOnFullViewed(CurrentUser.getUserId() , this.props.videoId ) ) return;
     this.sendFeedVideoEvent(VIDEO_PLAY_END_EVENT_NAME);
-    const parentData =  this.props.getPixelDropData() ; 
+    const parentData =  this.props.getPixelDropData() ;
     let pixelParams = {   e_action: 'full_viewed' };
     pixelParams = assignIn({}, pixelParams, parentData);
     PixelCall(pixelParams);
