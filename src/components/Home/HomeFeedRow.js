@@ -56,6 +56,7 @@ class HomeFeedRow extends PureComponent {
 
         <FanVideo
           shouldPlay={this.props.shouldPlay}
+          dataChangeEvent={this.props.dataChangeEvent}
           userId={this.userId}
           videoId={this.videoId}
           doRender={this.props.doRender}

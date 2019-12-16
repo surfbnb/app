@@ -61,9 +61,9 @@ class ReportVideo extends PureComponent {
 
     let name = ReduxGetters.getName(this.props.userId);
     if (this.canMute()){
-      return `See less videos from ${name}`;
+      return `Mute ${name}`;
     } else if (this.canUnmute()) {
-      return `See more videos from ${name}`;
+      return `Unmute ${name}`;
     }
     return '';
 
@@ -141,11 +141,18 @@ class ReportVideo extends PureComponent {
 
 
   muteUnmuteUser = () => {
-    let apiEndpoint = '';
+    let apiEndpoint = '',
+    successMessage,
+      errorMessage;
     if (this.canMute() ){
       apiEndpoint = `/users/${this.props.userId}/mute`;
+      successMessage = 'User muted successfully!';
+      errorMessage = 'User mute failed!';
     } else if (this.canUnmute()){
       apiEndpoint = `/users/${this.props.userId}/unmute`;
+      successMessage = 'User unmuted successfully!';
+      errorMessage = 'User unmute failed!';
+
     } else {
       return;
     }
@@ -154,15 +161,15 @@ class ReportVideo extends PureComponent {
       .post()
       .then((response) => {
         if (response && response.success){
-          Toast.show({text:'Confirmed!', icon: 'success' });
+          Toast.show({text:successMessage, icon: 'success' });
           fetchUser(this.props.userId);
         } else {
-          Toast.show({text:'failed!', icon: 'error' });
+          Toast.show({text:errorMessage, icon: 'error' });
         }
       })
       .catch((err) => {
-        Toast.show({text:'failed!', icon: 'error' });
-        console.log('Action failed!', err);
+        Toast.show({text:errorMessage, icon: 'error' });
+        console.log('Action failed!', err, errorMessage);
       });
   };
 
@@ -178,9 +185,9 @@ class ReportVideo extends PureComponent {
 
     let message = '';
     if (this.canMute()){
-      message =  'By confirming this you will see less videos from ' + ReduxGetters.getName(this.props.userId);
+      message =  'By confirming this you will mute ' + ReduxGetters.getName(this.props.userId);
     } else if (this.canUnmute()){
-      message =  'By confirming this you will see more videos from ' + ReduxGetters.getName(this.props.userId);
+      message =  'By confirming this you will unmute ' + ReduxGetters.getName(this.props.userId);
     } else {
       return;
     }

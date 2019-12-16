@@ -69,6 +69,11 @@ class Base extends PureComponent {
       eventFiredFullView: function(userId, videoId){
         this.syncUserVideo(userId, videoId);
         this.isFullViewed = true;
+      },
+      resetState : function () {
+        this.isMinimumViewed = false ;
+        this.isHalfViewed =  false;
+        this.isFullViewed = false;
       }
     };
   }
@@ -98,18 +103,12 @@ class Base extends PureComponent {
     };
 
     AppState.addEventListener('change', this._handleAppStateChange);
+    VideoPlayPauseEmitter.on('play', this.onSdkPlay);
+    VideoPlayPauseEmitter.on('pause', this.onSdkPause);
+    if(this.props.dataChangeEvent){
+      this.props.dataChangeEvent.on('refreshDone' , this.onDataRefresh );
+    }
 
-    VideoPlayPauseEmitter.on('play', () => {
-      if (!this.isUserPaused ) {
-        this.playVideo();
-      }
-    });
-
-    VideoPlayPauseEmitter.on('pause', () => {
-      if(this.props.isActive){
-        this.pauseVideo(true);
-      }
-    });
   }
 
   componentWillUnmount() {
@@ -120,7 +119,29 @@ class Base extends PureComponent {
     }
     clearTimeout(this.loadingTimeOut);
     clearTimeout(this.activeStateTimeout);
+    if(this.props.dataChangeEvent) {
+      this.props.dataChangeEvent.removeListener('refreshDone', this.onDataRefresh, this);
+    }
+    VideoPlayPauseEmitter.removeListener('play' , this.onSdkPause ,  this);
+    VideoPlayPauseEmitter.removeListener('play' , this.onSdkPlay ,  this);
+    this.videoContext = null;
   }
+
+  onSdkPause = () => {
+    if(this.props.isActive){
+      this.pauseVideo(true);
+    }
+  };
+
+  onSdkPlay = () => {
+    if (!this.isUserPaused ) {
+      this.playVideo();
+    }
+  };
+
+  onDataRefresh = () => {
+    this.videoContext.resetState();
+  };
 
   shouldPlay(){
    return AppState.currentState == AppConfig.appStateMap.active && this.props.shouldPlay() ;
@@ -225,10 +246,8 @@ class Base extends PureComponent {
   }
 
   onEnd = (params) => {
-    const shouldFire = this.videoContext.isEventCalledOnFullViewed(CurrentUser.getUserId() , this.props.videoId , true);
-    if ( shouldFire ) return;
+    if ( this.videoContext.isEventCalledOnFullViewed(CurrentUser.getUserId() , this.props.videoId ) ) return;
     this.sendFeedVideoEvent(VIDEO_PLAY_END_EVENT_NAME);
-    if( this.videoContext.isFullViewed  ) return;
     const parentData =  this.props.getPixelDropData() ; 
     let pixelParams = {   e_action: 'full_viewed' };
     pixelParams = assignIn({}, pixelParams, parentData);

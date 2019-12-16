@@ -226,7 +226,8 @@ class HomeScreen extends Component {
     if (list && list.length > 0) {
       Platform.OS == 'android' && flatListHocRef.forceSetActiveIndex(0);
     }
-  }
+    flatListHocRef.refreshDone();
+  };
 
   render() {
     return (
