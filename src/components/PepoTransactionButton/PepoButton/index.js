@@ -118,6 +118,7 @@ class PepoButton extends React.Component {
         <TouchableWithoutFeedback
           disabled={this.state.disabled}
           onPressIn={this.keepClapping}
+          delayPressIn={300}
           onPressOut={this.stopClapping}>
           <View style={{marginBottom: 15}}>
             <ClapButton disabled={this.state.disabled}
