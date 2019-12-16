@@ -268,13 +268,6 @@
 			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
 			remoteInfo = "RNDeviceInfo-tvOS";
 		};
-		00B8BCCB23A3961C0076E57D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FCDBDCC8BDEF4121B12162B0 /* RNVitals.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNVitals;
-		};
 		00C302AB1ABCB8CE00DB3ED1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -484,6 +477,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
+		};
+		772B437A23A79D5F0073ED09 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCDBDCC8BDEF4121B12162B0 /* RNVitals.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNVitals;
 		};
 		7734F2CC22DE373E004D7152 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1034,14 +1034,6 @@
 			path = sdkWithUI;
 			sourceTree = "<group>";
 		};
-		00B8BC8423A395B00076E57D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				00B8BCCC23A3961C0076E57D /* libRNVitals.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		00C302A81ABCB8CE00DB3ED1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1310,6 +1302,14 @@
 			children = (
 				5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */,
 				5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		772B433723A79D5F0073ED09 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				772B437B23A79D5F0073ED09 /* libRNVitals.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1699,7 +1699,7 @@
 					ProjectRef = AA9BB6AFAB7045B48A74A823 /* RNTwitterSignIn.xcodeproj */;
 				},
 				{
-					ProductGroup = 00B8BC8423A395B00076E57D /* Products */;
+					ProductGroup = 772B433723A79D5F0073ED09 /* Products */;
 					ProjectRef = FCDBDCC8BDEF4121B12162B0 /* RNVitals.xcodeproj */;
 				},
 				{
@@ -1839,13 +1839,6 @@
 			fileType = archive.ar;
 			path = "libRNDeviceInfo-tvOS.a";
 			remoteRef = 00A1A96022F2DA2F0071923D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		00B8BCCC23A3961C0076E57D /* libRNVitals.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNVitals.a;
-			remoteRef = 00B8BCCB23A3961C0076E57D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */ = {
@@ -2056,6 +2049,13 @@
 			fileType = archive.ar;
 			path = libRCTAnimation.a;
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		772B437B23A79D5F0073ED09 /* libRNVitals.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNVitals.a;
+			remoteRef = 772B437A23A79D5F0073ED09 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		7734F2CD22DE373E004D7152 /* libBVLinearGradient.a */ = {

@@ -3,7 +3,7 @@ import {TouchableOpacity, Image, Alert} from "react-native";
 import { connect } from 'react-redux';
 import inlineStyles from './styles';
 import multipleClickHandler from "../../../services/MultipleClickHandler";
-
+import appVariables from '../../../services/AppVariables';
 import report_icon from '../../../assets/report_video.png';
 import CurrentUser from "../../../models/CurrentUser";
 import PepoApi from "../../../services/PepoApi";
@@ -224,6 +224,8 @@ class ReportVideo extends PureComponent {
         );
 
       } else {
+
+        appVariables.isActionSheetVisible = true;
         ActionSheet.show(
           {
             options: this.getActionSheetLoggedOutButtons(),
@@ -238,6 +240,7 @@ class ReportVideo extends PureComponent {
             }else if (buttonIndex == ACTION_SHEET_LOGGED_OUT_MEMORY_INDEX){// remove memory option
               this.showMemoryStats();
             }
+            appVariables.isActionSheetVisible = false;
             }
             )
 

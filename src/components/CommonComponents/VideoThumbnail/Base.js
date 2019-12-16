@@ -19,7 +19,7 @@ class Base extends PureComponent {
         return <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.props.onVideoClick && this.props.onVideoClick()} )}
     >
         <View>
-            <FastImage style={{
+            <Image style={{
                 width: (Dimensions.get('window').width - 4) / 2,
                 aspectRatio:9/16,
                 margin: 1,

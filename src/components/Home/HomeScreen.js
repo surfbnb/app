@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StatusBar, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
-
+import appVariables from '../../services/AppVariables';
 import TopStatus from './TopStatus';
 import VideoList from './VideoList';
 import Pricer from '../../services/Pricer';
@@ -19,6 +19,7 @@ import utilities from "../../services/Utilities";
 import reduxGetter from '../../services/ReduxGetters';
 import {LoginPopoverActions} from "../LoginPopover";
 import {LoggedOutCustomTabClickEvent} from "../../helpers/Emitters";
+import NavigationService from "../../services/NavigationService";
 
 const mapStateToProps = (state) => {
   return {
@@ -83,13 +84,21 @@ class HomeScreen extends Component {
     });
   };
 
+
+  shouldShowLoginPopover = () => {
+    return ! (  appVariables.isActionSheetVisible ||
+                appVariables.isShareTrayVisible ||
+                ( NavigationService.findCurrentRoute() === 'InAppBrowserComponent')
+             );
+  };
+
   showLoginAutomatically = () => {
     if (this.props.userId || this.showAutomaticPopup) {
       return;
     }
     this.showAutomaticPopup = true;
-    this.loginPopupTimeOut = setTimeout(()=>{
-      LoginPopoverActions.show();
+    this.loginPopupTimeOut = setTimeout(()=> {
+      this.shouldShowLoginPopover() && LoginPopoverActions.show();
     }, appConfig.loginPopoverShowTime);
   };
 
