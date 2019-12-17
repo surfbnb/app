@@ -27,7 +27,8 @@ export default class PepoApi {
         'X-PEPO-DEVICE-OS-VERSION': DeviceInfo.getSystemVersion(),
         'X-PEPO-DEVICE-ID': DeviceInfo.getUniqueID(),
         'X-PEPO-BUILD-NUMBER': DeviceInfo.getBuildNumber(),
-        'X-PEPO-APP-VERSION': DeviceInfo.getVersion()
+        'X-PEPO-APP-VERSION': DeviceInfo.getVersion(),
+        'Accept-Encoding': 'gzip, deflate, br'
       }
     };
     this._cleanUrl();
@@ -88,6 +89,8 @@ export default class PepoApi {
           `Response for ${this.cleanedUrl} resolved in ${t2 - t1} ms, Status: ${responseStatus}, JSON payload:`,
           responseJSON
         );
+
+        console.log(`Response headers for ${this.cleanedUrl}`, response.headers);
 
         dispatchEntities(responseJSON.data);
 
