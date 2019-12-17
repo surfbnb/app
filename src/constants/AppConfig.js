@@ -3,16 +3,13 @@ import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
 import twitterDisconnectIcon from '../assets/drawer-twitter-icon.png';
 import defaultLinkIcon from '../assets/default_link_icon.png';
 import feedLinkIcon from '../assets/Link.png';
-import {getBottomSpace, ifIphoneX} from "react-native-iphone-x-helper";
+import {getBottomSpace, ifIphoneX, isIphoneX} from "react-native-iphone-x-helper";
 import {CUSTOM_TAB_Height} from "../theme/constants";
-import NotchHelper from "../helpers/NotchHelper";
+import {hasNotch} from "../helpers/NotchHelper";
 import {Dimensions, NativeModules, StatusBar} from "react-native";
 
 const statusBarHeight = StatusBar.currentHeight;
 const {height} = Dimensions.get('window');
-let RNDeviceInfo = NativeModules.RNDeviceInfo;
-let modalDeviceName = RNDeviceInfo.model === "Redmi Note 7 Pro" && RNDeviceInfo.brand === "xiaomi";
-let btmSpace = modalDeviceName ? 5 : 0;
 
 const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
   PROFILE_TX_RECEIVE_SUCCESS = 'PROFILE_TX_RECEIVE_SUCCESS',
@@ -31,11 +28,18 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
   VIDEO_TX_SEND_FAILURE = 'VIDEO_TX_SEND_FAILURE',
   TOPUP_DONE = 'TOPUP_DONE',
   AIRDROP_DONE = 'AIRDROP_DONE',
-  RECOVERY_INITIATE='RECOVERY_INITIATE';
+  RECOVERY_INITIATE='RECOVERY_INITIATE',
+  REPLY_TX_SEND_SUCCESS='REPLY_TX_SEND_SUCCESS',
+  REPLY_TX_RECEIVE_SUCCESS = 'REPLY_TX_RECEIVE_SUCCESS',
+  REPLY_TX_SEND_FAILURE = 'REPLY_TX_SEND_FAILURE',
+  REPLY_THREAD_NOTIFICATION = 'REPLY_THREAD_NOTIFICATION'
+  ;
 
-export default {
+const AppConfig = {
 
+  pepoAnimationDuration : 500,
   logoutTimeOut : 2000,
+  loginPopoverShowTime: 10000,
 
   beKnownErrorCodeMaps : {
     entityDeleted: "not_found",
@@ -178,6 +182,29 @@ export default {
     airDropNotification: AIRDROP_DONE,
     topupNotification: TOPUP_DONE,
     recoveryInitiate:RECOVERY_INITIATE,
+    replyTxReceiveSuccess: REPLY_TX_RECEIVE_SUCCESS,
+    replyTxSendSuccess: REPLY_TX_SEND_SUCCESS,
+    replyTxSendFailure: REPLY_TX_SEND_FAILURE,
+    videoTxSendFailure: VIDEO_TX_SEND_FAILURE,
+    replyThreadNotification: REPLY_THREAD_NOTIFICATION,
+    showVideoThumbnailForKinds: [
+      VIDEO_ADD,
+      USER_MENTION,
+      REPLY_USER_MENTION,
+      REPLY_SENDER_WITH_AMOUNT,
+      REPLY_SENDER_WITHOUT_AMOUNT,
+      REPLY_RECEIVER_WITH_AMOUNT,
+      REPLY_RECEIVER_WITHOUT_AMOUNT,
+      VIDEO_TX_RECEIVE_SUCCESS,
+      VIDEO_TX_SEND_SUCCESS,
+      VIDEO_TX_SEND_FAILURE
+    ],
+    showReplyThumbnailForKinds: [
+      REPLY_TX_RECEIVE_SUCCESS,
+      REPLY_TX_SEND_SUCCESS,
+      REPLY_TX_SEND_FAILURE,
+      REPLY_THREAD_NOTIFICATION
+    ],
     showCoinComponentArray: [
       PROFILE_TX_SEND_SUCCESS,
       PROFILE_TX_RECEIVE_SUCCESS,
@@ -188,7 +215,10 @@ export default {
       AIRDROP_DONE,
       TOPUP_DONE,
       REPLY_SENDER_WITH_AMOUNT,
-      REPLY_RECEIVER_WITH_AMOUNT
+      REPLY_RECEIVER_WITH_AMOUNT,
+      REPLY_TX_RECEIVE_SUCCESS,
+      REPLY_TX_SEND_SUCCESS,
+      REPLY_TX_SEND_FAILURE
     ],
     whitelistedNotificationKinds: [
       PROFILE_TX_SEND_SUCCESS,
@@ -199,7 +229,11 @@ export default {
       CONTRIBUTION_THANKS,
       SYSTEM_NOTIFICATION,
       PROFILE_TX_SEND_FAILURE,
-      VIDEO_TX_SEND_FAILURE
+      VIDEO_TX_SEND_FAILURE,
+      REPLY_TX_RECEIVE_SUCCESS,
+      REPLY_TX_SEND_SUCCESS,
+      REPLY_TX_SEND_FAILURE,
+      REPLY_THREAD_NOTIFICATION
     ]
   },
   tabConfig: {
@@ -363,7 +397,7 @@ export default {
 
     // cellHeight - Gives actual height of cell. 
     cellHeight: function() {
-      return this.outerRingDiameter + (2 * this.outerBorderWidth);
+      return this.outerRingDiameter ; // + (2 * this.outerBorderWidth);
     },
 
     separatorHeight: 25,
@@ -377,18 +411,24 @@ export default {
     parentIconHeight: 46,
     parentIconWidth: 46
   },
-  VideoScreenObject : {
-    ...ifIphoneX(
-      {
-        height: height - CUSTOM_TAB_Height - getBottomSpace([true])
-      },
-      {
-        height:
-          NotchHelper.hasNotch()
-            ? height + statusBarHeight - CUSTOM_TAB_Height - btmSpace
-            : height - CUSTOM_TAB_Height
-      }
-    )
-  }
+  VideoScreenObject : {} // Please don't delete this empty object a height property has been setting using the bottom function "Object.defineProperty".
 
 };
+
+
+Object.defineProperty(AppConfig.VideoScreenObject, "height", {
+  configurable: true,
+  enumerable: true,
+  get: () => {
+    if ( isIphoneX() ) {
+      return height - CUSTOM_TAB_Height - getBottomSpace();
+    }
+
+    if ( hasNotch() ) {
+      return height + statusBarHeight - CUSTOM_TAB_Height;
+    }
+    return height - CUSTOM_TAB_Height;
+  }
+});
+
+export default AppConfig;

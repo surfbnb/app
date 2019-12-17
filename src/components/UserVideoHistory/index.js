@@ -13,6 +13,7 @@ import FlotingBackArrow from "../CommonComponents/FlotingBackArrow";
 import { SafeAreaView } from "react-navigation";
 
 const maxVideosThreshold = 3;
+const rowHeight = CommonStyle.fullScreen.height;
 
 class UserVideoHistoryScreen extends PureComponent{
 
@@ -29,6 +30,11 @@ class UserVideoHistoryScreen extends PureComponent{
         this.videoHistoryPagination = new Pagination( this._fetchUrlVideoHistory(), {} , this.props.navigation.getParam("fetchServices"));
         this.paginationEvent = this.videoHistoryPagination.event;
         this.currentIndex = this.props.navigation.getParam("currentIndex");
+        /***
+         * Note initialScrollIndex should be set only once if it changes flatlist will honor the new initialScrollIndex
+         * Which will render extra components and as we keep on changing it will stack instead of clearing
+         **/
+        this.initialScrollIndex =  this.currentIndex;
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
         this.flatlistRef = null;
@@ -56,7 +62,7 @@ class UserVideoHistoryScreen extends PureComponent{
 
         //This is an hack for reset scroll for flatlist. Need to debug a bit more.
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
-            const offset =  this.state.activeIndex > 0 ? CommonStyle.fullScreen.height * this.state.activeIndex :  0 ;
+            const offset =  this.state.activeIndex > 0 ? rowHeight * this.state.activeIndex :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
             this.isActiveScreen = true ;
         });
@@ -129,6 +135,7 @@ class UserVideoHistoryScreen extends PureComponent{
     _renderItem = ({ item, index }) => {
         const videoId = reduxGetters.getUserVideoId(item) ;
         return  <UserVideoHistoryRow    shouldPlay={this.shouldPlay}
+                                        index={index}
                                         getPixelDropData={this.getPixelDropData}
                                         isActive={index == this.state.activeIndex}
                                         doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
@@ -156,7 +163,7 @@ class UserVideoHistoryScreen extends PureComponent{
     }
 
     getItemLayout= (data, index) => {
-       return {length: CommonStyle.fullScreen.height, offset: CommonStyle.fullScreen.height * index, index} ;
+       return {length: rowHeight, offset: rowHeight * index, index} ;
     }
 
     isCurrentUser(){
@@ -176,11 +183,11 @@ class UserVideoHistoryScreen extends PureComponent{
     }
 
     render() {
-
         return(
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
-                {!this.isCurrentUser() &&  <TopStatus />}
+                <TopStatus />
                 <FlatList
+                    extraData={this.state.activeIndex}
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
                     pagingEnabled={true}
@@ -199,7 +206,7 @@ class UserVideoHistoryScreen extends PureComponent{
                     style={[CommonStyle.fullScreen , {backgroundColor: "#000"}]}
                     showsVerticalScrollIndicator={false}
                     onScrollToTop={this.onScrollToTop}
-                    initialScrollIndex={this.state.activeIndex}
+                    initialScrollIndex={this.initialScrollIndex}
                     getItemLayout={this.getItemLayout}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />

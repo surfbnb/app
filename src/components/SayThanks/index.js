@@ -5,7 +5,8 @@ import {
   Keyboard,
   BackHandler,
   ActivityIndicator,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import { getBottomSpace, isIphoneX } from 'react-native-iphone-x-helper';
@@ -20,6 +21,7 @@ import Colors from '../../theme/styles/Colors';
 import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
 import Toast from '../../theme/components/NotificationToast';
 import CommonStyle from '../../theme/styles/Common';
+import LinearGradient from "react-native-linear-gradient";
 
 const bottomSpace = getBottomSpace([true]),
     extraPadding = 10,
@@ -236,20 +238,17 @@ class SayThanks extends Component {
                     placeholderTextColor="#ababab"
                   />
                 </View>
-                <TouchableWithoutFeedback onPress={this.sendMessage}>
-                  <View
-                    style={{
-                      backgroundColor: Colors.primary,
-                      height: 40,
-                      borderRadius: 4,
-                      width: '100%',
-                      justifyContent: 'center',
-                      marginTop: 8
-                    }}
+                <TouchableOpacity onPress={this.sendMessage}>
+                  <LinearGradient
+                    colors={['#ff7499', '#ff5566']}
+                    locations={[0, 1]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={{ borderRadius: 3, height: 50, justifyContent: 'center', marginTop: 5 }}
                   >
-                    <Text style={{ textAlign: 'center', color: Colors.white }}>Send</Text>
-                  </View>
-                </TouchableWithoutFeedback>
+                    <Text style={{ textAlign: 'center', color: Colors.white, fontSize: 18, fontFamily: 'AvenirNext-DemiBold' }}>Send</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
               </View>
               <View style={{ height: 15 }}>
                 {this.state.posting && <ActivityIndicator size="small" color="#168dc1" />}

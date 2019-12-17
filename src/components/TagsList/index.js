@@ -191,6 +191,10 @@ class TagsList extends PureComponent {
         this.listRef = ref;
     }
 
+    onScrollToIndexFailed =( info) => {
+        console.log("======onScrollToIndexFailed=====" , info );
+      }
+
     render(){
         return(
             <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
@@ -206,6 +210,7 @@ class TagsList extends PureComponent {
                     onScrollBeginDrag={() => Keyboard.dismiss()}
                     keyboardShouldPersistTaps={'always'}
                     ListFooterComponent={this.renderFooter}
+                    onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
             </SafeAreaView>
         );

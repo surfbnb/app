@@ -22,7 +22,7 @@ class BrowserMenu extends React.PureComponent {
   };
 
   copyLink = () => {
-    Clipboard.setString(this.props.url);
+    this.props.url && Clipboard.setString(this.props.url);
     this.hideMenu();
   };
 

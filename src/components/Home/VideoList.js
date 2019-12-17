@@ -4,9 +4,12 @@ import deepGet from 'lodash/get';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import HomeFeedRow from './HomeFeedRow';
 import inlineStyles from './styles';
+import EventEmitter from 'eventemitter3';
 
 let currentIndex = 0;
 const maxVideosThreshold = 3;
+
+let dataChangeEvent =  new EventEmitter();
 
 class VideoList extends PureComponent {
   constructor(props) {
@@ -21,6 +24,10 @@ class VideoList extends PureComponent {
     currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
   }
 
+  componentWillUnmount() {
+    dataChangeEvent =  null;
+  }
+
   setActiveIndex() {
     if (this.state.activeIndex == currentIndex) return;
     this.setState({ activeIndex: currentIndex });
@@ -32,12 +39,18 @@ class VideoList extends PureComponent {
     return (
       <HomeFeedRow
         isActive={index == this.state.activeIndex}
+        dataChangeEvent={dataChangeEvent}
         shouldPlay={this.props.shouldPlay}
         doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
         feedId={item}
+        index={index}
       />
     );
   };
+
+  refreshDone = () => {
+    dataChangeEvent.emit("refreshDone");
+  }
 
   onMomentumScrollEndCallback = () => {
     this.setActiveIndex();

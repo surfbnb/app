@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
 import {
-    View,
-    Text,
-    TouchableWithoutFeedback,
-    Platform,
-    Animated,
-    Easing,
-    ScrollView,
-    Dimensions,
-    Image
-  } from 'react-native';
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Platform,
+  Animated,
+  Easing,
+  ScrollView,
+  Dimensions,
+  Image, TouchableOpacity
+} from 'react-native';
 
 import TouchableButton from "../../theme/components/TouchableButton";
 import Theme from '../../theme/styles';
@@ -27,6 +27,7 @@ import pepoIcon from '../../assets/self-amount-pepo-icon.png';
 import mailIcon from '../../assets/mail-filled.png';
 import { ostErrors } from '../../services/OstErrors';
 import CommonStyle from '../../theme/styles/Common';
+import modalCross from "../../assets/modal-cross-icon.png";
 
 class StoreProductsScreen extends PureComponent{
 
@@ -239,8 +240,8 @@ class StoreProductsScreen extends PureComponent{
                 </View>
                 <ScrollView>
                   {this.products.map(( product) => (
-                    <TouchableWithoutFeedback>
-                      <View key={ product.productId } style={inlineStyles.poductListRow}>
+                    <TouchableWithoutFeedback key={ product.productId }>
+                      <View style={inlineStyles.poductListRow}>
                           <View style={{flexDirection: "row", alignItems: 'center'}}>
                               <Image source={pepoIcon} style={{ width: 19, height: 19 }}/>
                               <Text style={[inlineStyles.topUpName, {marginLeft: 5}]}>{product.title && product.title.replace(/\s\(Pepo.*\)+/ig , "") || product.title }</Text>
@@ -280,10 +281,18 @@ class StoreProductsScreen extends PureComponent{
     render(){
         return (
             <TouchableWithoutFeedback onPressOut={this.closeModal}>
-                <View style={CommonStyle.modalViewContainer}>
+                <View style={[CommonStyle.modalViewContainer]}>
                   <TouchableWithoutFeedback>
                     <View style={[inlineStyles.container]}>
-                        {/*<View style={inlineStyles.dragger}></View>*/}
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.closeModal();
+                        }}
+                        style={inlineStyles.crossIconWrapper}
+                        disabled={this.state.isPurchasing}
+                      >
+                        <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
+                      </TouchableOpacity>
                         {this.state.loadingProducts && this.getLoadingMarkup()}
                         {!this.state.loadingProducts && this.getMarkUp()}
                     </View>

@@ -21,7 +21,6 @@ import Store from '../../store';
 import utilities from '../../services/Utilities';
 import Colors from '../../theme/styles/Colors';
 import { ActionSheet } from 'native-base';
-import FastImage from 'react-native-fast-image';
 
 import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 import AllowAccessModal from './AllowAccessModal';
@@ -139,9 +138,9 @@ class ProfileEdit extends React.PureComponent {
   getImageSrc = () => {
     if (this.props.profilePicture) {
       return (
-        <FastImage
+        <Image
           style={[{ backgroundColor: Colors.gainsboro }, inlineStyles.profileEditIconSkipFont]}
-          source={{ uri: this.props.profilePicture, priority: FastImage.priority.high }}
+          source={{ uri: this.props.profilePicture }}
         />
       );
     } else {

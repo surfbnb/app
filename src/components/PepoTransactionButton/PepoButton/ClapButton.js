@@ -5,8 +5,9 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import pepo_tx_img from '../../../assets/pepo_anim_btn.png';
 import pepo_tx_img_disabled from '../../../assets/Pepo-tx-disabled.png';
 import Colors from '../../../theme/styles/Colors';
+import AppConfig from '../../../constants/AppConfig';
 
-const animDuration = 1000;
+const animDuration = AppConfig.pepoAnimationDuration;
 
 const options = {
   enableVibrateFallback: true,

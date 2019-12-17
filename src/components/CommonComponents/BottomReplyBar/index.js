@@ -23,14 +23,12 @@ class BottomReplyBar extends PureComponent {
 
         render(){
             return(
-                <View style={inlineStyles.wrapper}>
-                    <TouchableWithoutFeedback  onPress={multipleClickHandler(() =>this.replyVideo())} >
-                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Image source={cameraIconWhite} style={inlineStyles.replyIconSkipFont}></Image>
-                            <Text style={inlineStyles.text}>Add a reply...</Text>
-                         </View>
-                    </TouchableWithoutFeedback>
-                </View>
+              <TouchableWithoutFeedback  onPress={multipleClickHandler(() =>this.replyVideo())} style={inlineStyles.wrapper}>
+                 <View style={inlineStyles.innerWrapper}>
+                    <Image source={cameraIconWhite} style={inlineStyles.replyIconSkipFont}></Image>
+                    <Text style={inlineStyles.text}>Add a reply...</Text>
+                 </View>
+              </TouchableWithoutFeedback>
             );
 
         }

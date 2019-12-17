@@ -182,8 +182,8 @@ class ReplyCollection extends PureComponent {
         const reply_detail_id = deepGet(item,`payload.${DataContract.replies.replyDetailIdKey}`);
         return (<View style={{position: 'relative'}}>
         {ReduxGetters.getCanDeleteReply( reply_detail_id ) && <LinearGradient
-             colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent']}
-             locations={[0, 0.5, 1]}
+             colors={['rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0)']}
+             locations={[0, 1]}
              start={{ x: 0, y: 0 }}
              end={{ x: 0, y: 1 }}
              style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
@@ -210,7 +210,8 @@ class ReplyCollection extends PureComponent {
             array.splice(index, 1);
             this.setState({list: array});
         }
-    }
+      fetchVideo(this.props.videoId);
+    };
 
     onVideoClick = ( index , item) => {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
@@ -219,7 +220,7 @@ class ReplyCollection extends PureComponent {
             "currentIndex": index,
             "baseUrl": this.props.fetchUrl
         });
-    }
+    };
 
     renderFooter = () => {
         if (!this.state.loadingNext) return null;

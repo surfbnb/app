@@ -3,12 +3,23 @@ import {TouchableOpacity, Image, Alert} from "react-native";
 import { connect } from 'react-redux';
 import inlineStyles from './styles';
 import multipleClickHandler from "../../../services/MultipleClickHandler";
-
+import appVariables from '../../../services/AppVariables';
 import report_icon from '../../../assets/report_video.png';
 import CurrentUser from "../../../models/CurrentUser";
 import PepoApi from "../../../services/PepoApi";
 import Toast from "../../../theme/components/NotificationToast";
 import {ActionSheet} from "native-base";
+import ReduxGetters from "../../../services/ReduxGetters";
+import {fetchUser} from "../../../helpers/helpers";
+const  ACTION_SHEET_CANCEL_INDEX = 2;// revert to index 2
+const  ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
+const  ACTION_SHEET_REPORT_INDEX = 1;
+const MUTE_UNMUTE_INDEX = 0;
+
+
+const  ACTION_SHEET_LOGGED_OUT_CANCEL_INDEX = 1;// revert to index 1
+const  ACTION_SHEET_LOGGED_OUT_DESCTRUCTIVE_INDEX = 0;
+const  ACTION_SHEET_LOGGED_OUT_REPORT_INDEX = 0;
 
 const mapStateToProps = (state , ownProps) => {
     return {
@@ -17,17 +28,34 @@ const mapStateToProps = (state , ownProps) => {
 };
 
 
-const ACTION_SHEET_BUTTONS = ['Report', 'Cancel'];
-const ACTION_SHEET_CANCEL_INDEX = 1;
-const ACTION_SHEET_DESCTRUCTIVE_INDEX = 0;
-const ACTION_SHEET_REPORT_INDEX = 0;
 
 class ReportVideo extends PureComponent {
 
     constructor(props){
-        super(props);
+      super(props);
     };
 
+
+    getActionSheetButtons = ()=>{
+      return [ this.getMuteUnmuteText(), 'Report', 'Cancel'];// remove memory option
+    }
+
+  getActionSheetLoggedOutButtons = () => {
+    return [ 'Report',  'Cancel'];// remove memory option
+  }
+
+
+  getMuteUnmuteText = () => {
+
+    let name = ReduxGetters.getName(this.props.userId);
+    if (this.canMute()){
+      return `Mute ${name}`;
+    } else if (this.canUnmute()) {
+      return `Unmute ${name}`;
+    }
+    return '';
+
+  };
 
 
     reportVideo = () => {
@@ -46,9 +74,9 @@ class ReportVideo extends PureComponent {
                 console.log('Report video failed', err);
 
             });
-    }
+    };
 
-    showAlert(){
+  showAlert () {
         Alert.alert(
             '',
             'Report video for inappropriate content or abuse?',
@@ -62,24 +90,120 @@ class ReportVideo extends PureComponent {
             ],
             {cancelable: true},
         );
+  }
+
+
+  muteUnmuteUser = () => {
+    let apiEndpoint = '',
+    successMessage,
+      errorMessage;
+    if (this.canMute() ){
+      apiEndpoint = `/users/${this.props.userId}/mute`;
+      successMessage = 'User muted successfully!';
+      errorMessage = 'User mute failed!';
+    } else if (this.canUnmute()){
+      apiEndpoint = `/users/${this.props.userId}/unmute`;
+      successMessage = 'User unmuted successfully!';
+      errorMessage = 'User unmute failed!';
+
+    } else {
+      return;
     }
 
-    showActionSheet = () => {
-        ActionSheet.show(
-            {
-                options: ACTION_SHEET_BUTTONS,
-                cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
-                destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
-                title: 'Report video'
-            },
-            (buttonIndex) => {
-                if (buttonIndex == ACTION_SHEET_REPORT_INDEX) {
-                    // This will take to VideoRecorder component
-                    this.showAlert();
-                }
-            }
-        );
+    new PepoApi(apiEndpoint)
+      .post()
+      .then((response) => {
+        if (response && response.success){
+          Toast.show({text:successMessage, icon: 'success' });
+          fetchUser(this.props.userId);
+        } else {
+          Toast.show({text:errorMessage, icon: 'error' });
+        }
+      })
+      .catch((err) => {
+        Toast.show({text:errorMessage, icon: 'error' });
+        console.log('Action failed!', err, errorMessage);
+      });
+  };
+
+  canMute = () => {
+    return ReduxGetters.canMuteUser(this.props.userId) === true;
+  };
+
+  canUnmute = () => {
+    return ReduxGetters.canMuteUser(this.props.userId) === false;
+  };
+
+  showMuteUnmuteAlert = () => {
+
+    let message = '';
+    if (this.canMute()){
+      message =  'By confirming this you will mute ' + ReduxGetters.getName(this.props.userId);
+    } else if (this.canUnmute()){
+      message =  'By confirming this you will unmute ' + ReduxGetters.getName(this.props.userId);
+    } else {
+      return;
     }
+
+
+    Alert.alert(
+      '',
+      message,
+      [
+        {text: 'Confirm', onPress: () =>  this.muteUnmuteUser() },
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        }
+
+      ],
+      {cancelable: true},
+    );
+
+  };
+
+    showActionSheet = () => {
+      if (CurrentUser.getUserId()){
+        ActionSheet.show(
+          {
+            options: this.getActionSheetButtons(),
+            cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
+            destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
+            title: 'Select user action'
+          },
+          (buttonIndex) => {
+            if (buttonIndex == ACTION_SHEET_REPORT_INDEX) {
+              // This will take to VideoRecorder component
+              this.showAlert();
+            } else if (buttonIndex == MUTE_UNMUTE_INDEX){
+              this.showMuteUnmuteAlert();
+            }
+          }
+        );
+
+      } else {
+
+        appVariables.isActionSheetVisible = true;
+        ActionSheet.show(
+          {
+            options: this.getActionSheetLoggedOutButtons(),
+            cancelButtonIndex: ACTION_SHEET_LOGGED_OUT_CANCEL_INDEX,
+            destructiveButtonIndex: ACTION_SHEET_LOGGED_OUT_DESCTRUCTIVE_INDEX,
+            title: 'Select user action'
+          },
+          (buttonIndex) => {
+            if (buttonIndex == ACTION_SHEET_LOGGED_OUT_REPORT_INDEX) {
+              // This will take to VideoRecorder component
+              this.showAlert();
+            }
+            appVariables.isActionSheetVisible = false;
+            }
+            )
+
+      }
+
+
+    };
 
     isVisible = () => {
         return this.props.userId != this.props.currentUserId;

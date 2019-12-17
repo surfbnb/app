@@ -7,7 +7,7 @@ import DeviceInfo from 'react-native-device-info';
 import Toast from '../theme/components/NotificationToast';
 import { API_ROOT } from '../constants/index';
 import { ostErrors, UIWhitelistedErrorCode } from './OstErrors';
-import dispatchEntities from '../services/ReduxSetters';
+import {dispatchEntities} from '../services/ReduxSetters';
 
 let CurrentUser;
 import('../models/CurrentUser').then((imports) => {
@@ -27,7 +27,8 @@ export default class PepoApi {
         'X-PEPO-DEVICE-OS-VERSION': DeviceInfo.getSystemVersion(),
         'X-PEPO-DEVICE-ID': DeviceInfo.getUniqueID(),
         'X-PEPO-BUILD-NUMBER': DeviceInfo.getBuildNumber(),
-        'X-PEPO-APP-VERSION': DeviceInfo.getVersion()
+        'X-PEPO-APP-VERSION': DeviceInfo.getVersion(),
+        'Accept-Encoding': 'gzip, deflate, br'
       }
     };
     this._cleanUrl();
@@ -59,21 +60,6 @@ export default class PepoApi {
 
   _parseParams() {
     this.parsedParams = AssignIn(this.defaultParams, this.params);
-  }
-
-  _getIDList(resultData, key = 'id') {
-    return resultData.map((item) => item[key]);
-  }
-
-  _getIDListFromObj(resultObj) {
-    return Object.keys(resultObj);
-  }
-
-  _getEntityFromObj(resultObj, key = 'id') {
-    const entity = {},
-      id = `${key}_${resultObj.id}`;
-    entity[id] = resultObj;
-    return entity;
   }
 
   _perform() {

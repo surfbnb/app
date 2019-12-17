@@ -194,12 +194,15 @@ class PeopleList extends PureComponent {
     )
   };
 
+  onScrollToIndexFailed =( info) => {
+    console.log("======onScrollToIndexFailed=====" , info );
+  }
+
   render(){
     return(
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
         <FlatList
           ref={(ref)=>  {this.listRef = ref } }
-          // style={{backgroundColor: 'red'}}
           //ListHeaderComponent={this.listHeaderComponent()}
           data={this.state.list}
           onEndReached={this.getNext}
@@ -211,6 +214,7 @@ class PeopleList extends PureComponent {
           onScrollBeginDrag={() => Keyboard.dismiss()}
           keyboardShouldPersistTaps={'always'}
           ListFooterComponent={this.renderFooter}
+          onScrollToIndexFailed={this.onScrollToIndexFailed}
           // numColumns={3}
         />
       </SafeAreaView>

@@ -11,7 +11,7 @@ import ClapButton from "./ClapButton";
 import appConfig from "../../../constants/AppConfig";
 import Pricer from "../../../services/Pricer";
 
-const animDuration = 1000;
+const animDuration = appConfig.pepoAnimationDuration;
 const maxThreshold = appConfig.maxBtAllowedInSingleTransfer;
 
 class PepoButton extends React.Component {
@@ -118,6 +118,7 @@ class PepoButton extends React.Component {
         <TouchableWithoutFeedback
           disabled={this.state.disabled}
           onPressIn={this.keepClapping}
+          delayPressIn={300}
           onPressOut={this.stopClapping}>
           <View style={{marginBottom: 15}}>
             <ClapButton disabled={this.state.disabled}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StatusBar, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
-
+import appVariables from '../../services/AppVariables';
 import TopStatus from './TopStatus';
 import VideoList from './VideoList';
 import Pricer from '../../services/Pricer';
@@ -17,6 +17,9 @@ import { LoadingModal } from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
 import utilities from "../../services/Utilities";
 import reduxGetter from '../../services/ReduxGetters';
+import {LoginPopoverActions} from "../LoginPopover";
+import {LoggedOutCustomTabClickEvent} from "../../helpers/Emitters";
+import NavigationService from "../../services/NavigationService";
 
 const mapStateToProps = (state) => {
   return {
@@ -41,11 +44,16 @@ class HomeScreen extends Component {
     this.listRef = null;
     this.isActiveScreen = false;
     this.shouldPullToRefesh = false;
+    this.showAutomaticPopup = false;
+    this.coachShown = false;
   }
 
   componentDidMount = () => {
     videoUploaderComponent.on('show', this.showVideoUploader);
     videoUploaderComponent.on('hide', this.hideVideoUploader);
+
+    LoggedOutCustomTabClickEvent.on('pressed', this.loggedOutCustomTabClick );
+
     NavigationEmitter.on('onRefresh', (screen) => {
       if (screen.screenName == appConfig.tabConfig.tab1.childStack) {
         this.refresh(true, 0);
@@ -76,14 +84,43 @@ class HomeScreen extends Component {
     });
   };
 
+
+  shouldShowLoginPopover = () => {
+    return ! (  appVariables.isActionSheetVisible ||
+                appVariables.isShareTrayVisible ||
+                ( NavigationService.findCurrentRoute() === 'InAppBrowserComponent')
+             );
+  };
+
+  showLoginAutomatically = () => {
+    if (CurrentUser.isActiveUser() || this.showAutomaticPopup) {
+      return;
+    }
+    this.showAutomaticPopup = true;
+    this.loginPopupTimeOut = setTimeout(()=> {
+      this.shouldShowLoginPopover() && LoginPopoverActions.show();
+    }, appConfig.loginPopoverShowTime);
+  };
+
+  showLogoutPopup = () => {
+    !this.coachShown && this.showLoginAutomatically();
+  };
+
+
+  loggedOutCustomTabClick = () => {
+    clearTimeout(this.loginPopupTimeOut);
+  };
+
+
   showCoachScreen = () => {
     if (this.props.userId) {
       utilities.saveItem(`show-coach-screen`, true);
     } else {
       utilities.getItem('show-coach-screen').then((data) => {
         if (data !== 'true'){
+          this.coachShown = true;
           utilities.saveItem(`show-coach-screen`, true);
-          this.props.navigation.push('CouchMarks');
+          this.props.navigation.push('CouchMarks' , {handleGotItClick: this.showLoginAutomatically} );
         } else {
           // do nothing
         }
@@ -100,11 +137,13 @@ class HomeScreen extends Component {
   componentWillUnmount = () => {
     videoUploaderComponent.removeListener('show');
     videoUploaderComponent.removeListener('hide');
+    LoggedOutCustomTabClickEvent.removeListener('pressed');
     NavigationEmitter.removeListener('onRefresh');
     CurrentUser.getEvent().removeListener("onBeforeUserLogout");
     CurrentUser.getEvent().removeListener("onUserLogout");
     CurrentUser.getEvent().removeListener("onUserLogoutFailed");
     CurrentUser.getEvent().removeListener("onUserLogoutComplete");
+    clearTimeout(this.loginPopupTimeOut);
     this.willFocusSubscription && this.willFocusSubscription.remove();
     this.willBlurSubscription && this.willBlurSubscription.remove();
   };
@@ -180,6 +219,17 @@ class HomeScreen extends Component {
     Pricer.getBalance();
   };
 
+  onRefresh = (res) => {
+    const flatListHocRef = deepGet(this, 'listRef.flatListHocRef'),
+      flatlistProps = deepGet(this, 'listRef.flatListHocRef.props'),
+      list = flatlistProps && flatlistProps.list;
+    if (list && list.length > 0) {
+      Platform.OS == 'android' && flatListHocRef.forceSetActiveIndex(0);
+    }
+    flatListHocRef.refreshDone();
+    this.showLogoutPopup();
+  };
+
   render() {
     return (
       <View style={{ backgroundColor: Colors.black}}>
@@ -214,6 +264,7 @@ class HomeScreen extends Component {
           }}
           fetchUrl={'/feeds'}
           beforeRefresh={this.beforeRefresh}
+          onRefresh={this.onRefresh}
           shouldPlay={this.shouldPlay}
           onScrollEnd ={(currentIndex) => {
             this.onScrollMovementEnd(currentIndex);

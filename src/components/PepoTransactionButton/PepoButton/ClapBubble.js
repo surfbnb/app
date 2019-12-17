@@ -23,10 +23,10 @@ export default class ClapBubble extends React.Component {
 
   componentDidMount() {
     let random = Math.random();
-    let toValue = random*100*(random >= 0.5 ? -1 : 1);
+    let toValue = random*100*(random >= 0.5 ? -0.4 : 0.4);
     Animated.parallel([
       Animated.timing(this.state.yPosition, {
-        toValue: -150,
+        toValue: -90,
         duration: this.props.animDuration,
         easing:Easing.ease,
         useNativeDriver: true

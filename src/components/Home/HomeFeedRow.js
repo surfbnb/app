@@ -16,6 +16,7 @@ import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
 import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
+import BubbleList from "../CommonComponents/BubbleList";
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -43,6 +44,7 @@ class HomeFeedRow extends PureComponent {
       e_entity: 'video',
       p_type: 'feed',
       video_id: this.videoId,
+      position: this.props.index
     };
     return assignIn({}, pixelParams, parentData);
   }
@@ -54,6 +56,7 @@ class HomeFeedRow extends PureComponent {
 
         <FanVideo
           shouldPlay={this.props.shouldPlay}
+          dataChangeEvent={this.props.dataChangeEvent}
           userId={this.userId}
           videoId={this.videoId}
           doRender={this.props.doRender}
@@ -63,6 +66,10 @@ class HomeFeedRow extends PureComponent {
         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
 
           <View style={[inlineStyles.touchablesBtns, {justifyContent: 'flex-end'}]} pointerEvents={'box-none'}>
+
+            <View style={inlineStyles.invertedList}>
+              <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
+            </View>
 
             <View style={{ minWidth: '20%' }}>
               <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
@@ -93,5 +100,8 @@ class HomeFeedRow extends PureComponent {
   }
 }
 
+HomeFeedRow.defaultProps = {
+  index: 0
+}
 
 export default withNavigation(HomeFeedRow);

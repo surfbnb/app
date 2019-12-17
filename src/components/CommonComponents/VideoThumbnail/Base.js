@@ -1,6 +1,5 @@
 import {Dimensions, Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import React, { PureComponent } from 'react';
-import FastImage from 'react-native-fast-image';
 import Colors from "../../../theme/styles/Colors";
 import LinearGradient from "react-native-linear-gradient";
 import pepoWhiteIcon from "../../../assets/pepo-white-icon.png";
@@ -19,15 +18,14 @@ class Base extends PureComponent {
         return <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.props.onVideoClick && this.props.onVideoClick()} )}
     >
         <View>
-            <FastImage style={{
+            <Image style={{
                 width: (Dimensions.get('window').width - 4) / 2,
                 aspectRatio:9/16,
                 margin: 1,
                 backgroundColor: this.props.imageUrl ? Colors.white : Colors.gainsboro
             }}
                        source={{
-                           uri: this.props.imageUrl,
-                           priority: FastImage.priority.high
+                           uri: this.props.imageUrl
                        }}/>
             <LinearGradient
                 colors={['transparent', 'rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.3)']}
@@ -40,12 +38,12 @@ class Base extends PureComponent {
                      <Text style={inlineStyles.videoDescStyle} ellipsizeMode={'tail'} numberOfLines={3}>{this.props.videoDesc}</Text>
                      <View style={{flex:1, flexDirection: "row" , marginTop: 5}}>
                         <View style={{flex: 3, flexDirection: "row"}}>
-                            <ProfilePicture userId={this.props.userId} style={{height: 18, width: 18, borderWidth: 1, borderColor: 'white'}} />
+                            <ProfilePicture userId={this.props.userId} style={{height: 18, width: 18, borderWidth: 1, borderColor: 'white', borderRadius: 9}} />
                             <Text style={inlineStyles.videoUserNameStyle} ellipsizeMode={'tail'} numberOfLines={1}>@{this.props.userName}</Text>
                         </View>
                         <View style={[inlineStyles.videoStatsContainer]}>
                             <Image style={{height: 12, width: 12, marginTop: 2}} source={pepoWhiteIcon} />
-                            <Text style={inlineStyles.videoStatsTxt}>{this.props.btAmount || 0}</Text>
+                            {this.props.pepoAmount}
                         </View>
                      </View>        
                 </View>

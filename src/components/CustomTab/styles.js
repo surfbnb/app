@@ -6,6 +6,8 @@ let stylesMap = {
   container: {
     flex: 0,
     width: '100%',
+    minHeight: CUSTOM_TAB_Height,
+    maxHeight: CUSTOM_TAB_Height,
     height: CUSTOM_TAB_Height,
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -18,7 +20,10 @@ let stylesMap = {
     alignItems: 'center'
   },
   tapArea:{
-    minHeight: 55,
+    // minHeight: CUSTOM_TAB_Height,
+    minHeight: CUSTOM_TAB_Height,
+    maxHeight: CUSTOM_TAB_Height,
+    height: CUSTOM_TAB_Height,
     justifyContent: "center"
   },
   tabElementSkipFont: {

@@ -3,7 +3,7 @@ import { TouchableWithoutFeedback, View } from 'react-native';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import Toast from '../../theme/components/NotificationToast';
 import deepGet from 'lodash/get';
-import assignIn from "lodash/assignIn";
+import assignIn from 'lodash/assignIn';
 
 import CurrentUser from '../../models/CurrentUser';
 import PepoButton from './PepoButton';
@@ -74,12 +74,12 @@ class Base extends PureComponent {
     if ( errorMessage ) {
       if ( ON_USER_CANCLLED_ERROR_MSG === errorMessage) {
         //Cancel the flow.
-        this.syncData(1000);
+        this.syncData(appConfig.pepoAnimationDuration);
         return;
       }
 
       // Else: Show the error message.
-      this.syncData(1000);
+      this.syncData(appConfig.pepoAnimationDuration);
       Toast.show({
         text: errorMessage,
         icon: 'error'
@@ -90,8 +90,7 @@ class Base extends PureComponent {
 
   _deviceUnauthorizedCallback( device ) {
     //Cancel the flow.
-    this.syncData(1000);
-
+    this.syncData(appConfig.pepoAnimationDuration);
     this.props.navigation.push('AuthDeviceDrawer', { device });
   }
 
@@ -113,7 +112,7 @@ class Base extends PureComponent {
 
   onRequestAcknowledge(ostWorkflowContext, ostWorkflowEntity) {
     this.sendTransactionToPlatform(ostWorkflowEntity);
-    this.dropPixel();
+    this.dropPixel(ostWorkflowEntity);
   }
 
   getDropPixel(){
@@ -121,9 +120,18 @@ class Base extends PureComponent {
     return {};
   }
 
-  dropPixel() {
+  dropPixel(ostWorkflowEntity) {
+    const pixelParams = assignIn({}, this.getDefaultDropPixel(ostWorkflowEntity) , this.getDropPixel());
+    PixelCall( pixelParams );
+  }
 
-    PixelCall(this.getDropPixel());
+  getDefaultDropPixel( ostWorkflowEntity ){
+    return {
+      transaction_uuid: deepGet(ostWorkflowEntity, "entity.id"),
+      receiver_user_id : this.toUser.id,
+      e_action: 'contribution',
+      amount: this.btAmount
+    }
   }
 
   onFlowInterrupt(ostWorkflowContext, error) {
@@ -142,7 +150,7 @@ class Base extends PureComponent {
   }
 
   onSdkError(error, ostWorkflowContext) {
-    this.syncData(1000);
+    this.syncData(appConfig.pepoAnimationDuration);
     let errMsg;
     if ( ostWorkflowContext ) {
       errMsg = ostSdkErrors.getErrorMessage(ostWorkflowContext, error);

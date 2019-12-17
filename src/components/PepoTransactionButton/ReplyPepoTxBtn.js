@@ -39,9 +39,7 @@ class ReplyPepoTxBtn extends Base {
         let specificData = this.props.getPixelDropData(),
             defaultData = {
                 e_entity: 'reply',
-                e_action: 'contribution',
-                reply_detail_id: this.props.entityId,
-                amount: this.btAmount
+                reply_detail_id: this.props.entityId
             };
         return assignIn({}, specificData, defaultData);
     }

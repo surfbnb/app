@@ -29,7 +29,8 @@ let stylesMap = {
         alignItems: 'center',
         justifyContent: 'center',
         height: 50,
-        width: 50
+        width: 50,
+        zIndex: 3
       },
       iconSkipFont: {
         height: 16,

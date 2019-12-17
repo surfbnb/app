@@ -66,55 +66,12 @@ export const updateCurrentUser = (current_user) => ({
 
 export const upsertUserEntities = (data) => ({ type: types.UPSERT_USER_ENTITIES, payload: { user_entities: data } });
 
-export const upsertUserContributionToStats = (data) => ({
-  type: types.UPSERT_USER_CONTRIBUTION_TO_STATS,
-  payload: {
-    user_contribution_to_stats: data
-  }
-});
-
-export const upsertUserContributionByStats = (data) => ({
-  type: types.UPSERT_USER_CONTRIBUTION_BY_STATS,
-  payload: {
-    user_contribution_by_stats: data
-  }
-});
-
-export const upsertActivitiesEntities = (data) => ({
-  type: types.UPSERT_ACTIVITIES_ENTITIES,
-  payload: { activities_entities: data }
-});
-
-export const upsertTransactionEntities = (data) => ({
-  type: types.UPSERT_TRANSACTION_ENTITIES,
-  payload: { transaction_entities: data }
-});
-
-export const upsertGiffyEntities = (data) => ({ type: types.UPSERT_GIFFY_ENTITIES, payload: { giffy_entities: data } });
-
-export const upsertTagEntities = (data) => ({ type: types.UPSERT_TAG_ENTITIES, payload: { tag_entities: data } });
-
 export const upsertUserProfileEntities = (data) => ({
   type: types.UPSERT_USER_PROFILE_ENTITIES,
   payload: { user_profile_entities: data }
 });
 
-export const upsertUserAllowedActionEntities = (data) => ({
-  type: types.UPSERT_USER_ALLOWED_ACTION_ENTITIES,
-  payload: { user_allowed_action_entities: data }
-});
-
-export const upsertUserStatEntities = (data) => ({
-  type: types.UPSERT_USER_STAT_ENTITIES,
-  payload: { user_stat_entities: data }
-});
-
 export const upsertLinkEntities = (data) => ({ type: types.UPSERT_LINK_ENTITIES, payload: { link_entities: data } });
-
-export const upsertVideoDescriptionEntities = (data) => ({
-  type: types.UPSERT_VIDEO_DESCRIPTION_ENTITIES,
-  payload: { video_description_entities: data }
-});
 
 export const upsertVideoEntities = (data) => ({ type: types.UPSERT_VIDEO_ENTITIES, payload: { video_entities: data } });
 
@@ -128,55 +85,12 @@ export const upsertReplyDetailEntities = (data) => ({
   payload: { reply_detail_entities: data }
 });
 
-export const upsertCurrentUserVideoRelationEntities = (data) => ({
-  type: types.UPSERT_CURRENT_USER_VIDEO_RELATION_ENTITIES,
-  payload: { current_user_video_relation_entities: data }
-});
-
 export const upsertCurrentUserReplyDetailRelationEntities = (data) => ({
   type: types.UPSERT_CURRENT_USER_REPLY_DETAIL_RELATION_ENTITIES,
   payload: { current_user_reply_detail_relation_entities: data }
 });
 
-export const upsertHomeFeedEntities = (data) => ({
-  type: types.UPSERT_HOME_FEED_ENTITIES,
-  payload: { home_feed_entities: data }
-});
-
-export const upsertUserVideoEntities = (data) => ({
-  type: types.UPSERT_USER_VIDEO_ENTITIES,
-  payload: { user_video_entities: data }
-});
-
-export const upsertTagVideoEntities = (data) => ({
-  type: types.UPSERT_TAG_VIDEO_ENTITIES,
-  payload: { tag_video_entities: data }
-});
-
 export const upsertImageEntities = (data) => ({ type: types.UPSERT_IMAGE_ENTITIES, payload: { image_entities: data } });
-
-export const upsertVideoContributionEntities = (data) => ({
-  type: types.UPSERT_VIDEO_CONTRIBUTION_ENTITIES,
-  payload: { video_contribution_entities: data }
-});
-
-
-export const upsertReplyContributionEntities = (data) => ({
-  type: types.UPSERT_REPLY_CONTRIBUTION_ENTITIES,
-  payload: { reply_contribution_entities: data }
-});
-
-
-export const upsertUserContributionEntities = (data) => ({
-  type: types.UPSERT_USER_CONTRIBUTION_ENTITIES,
-  payload: { user_contribution_entities: data }
-});
-
-export const updatePricePoints = (data) => ({ type: types.UPDATE_PRICE_POINTS, payload: { price_points: data } });
-
-export const updateToken = (data) => ({ type: types.UPDATE_TOKEN, payload: { token: data } });
-
-export const updatePepocorn = (data) => ({ type: types.UPDATE_PEPOCORN, payload: { pepocorn: data } });
 
 export const updateBalance = (balance = '0') => ({
   type: types.UPDATE_BALANCE,
@@ -223,19 +137,9 @@ export const genericEvent = (eventName, payload) => ({
   payload
 });
 
-export const upsertUserNotifications = (data) => ({
-  type: types.UPSERT_USER_NOTIFICATIONS,
-  payload: { user_notifications: data }
-});
-
 export const upsertNotificationUnread = (data) => ({
   type: types.UPSERT_NOTIFICATION_UNREAD,
   payload: { notification_unread: data }
-});
-
-export const upsertPushNotification = (data) => ({
-  type: types.UPSERT_PUSH_NOTIFICATION,
-  payload: { push_notification : data }
 });
 
 export const clearPushNotification = () => ({ type: types.CLEAR_PUSH_NOTIFICATION });
@@ -247,9 +151,16 @@ export const upsertInviteCode = (data) => ({
   }
 });
 
-export const upsertTwitterEntities = (data) => ({
-  type: types.UPSERT_TWITTER_ENTITIES,
+export const upsertUnseenReplies = (data) => ({
+  type: types.UPSERT_UNSEEN_REPLIES,
   payload: {
-    twitter_entities: data
+    unseen_replies_entities: data
   }
 });
+
+export const upsertAllWhitelisted = (data) => ({
+  type: types.UPSERT_ALL_WHITELISTED,
+  payload: data
+});
+
+

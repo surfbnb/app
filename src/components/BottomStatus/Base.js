@@ -10,6 +10,8 @@ import InAppBrowser from '../../services/InAppBrowser';
 import Utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
 
+const regex = /(^|\s)(#|@)(\w+)/g;
+
 class BottomStatus extends PureComponent {
   constructor(props) {
     super(props);
@@ -44,35 +46,35 @@ class BottomStatus extends PureComponent {
     return !!reduxGetter.getTappedIncludesEntity(descriptionId, tappedText);
   }
 
-  getHashTagMarkup( item , prevText ){
+  getHashTagMarkup( item , formattedItem, prevText, index ){
     const tagText = item.replace("#", "");
     return (
-      <Text key={tagText}>
+      <Text key={`${tagText}-${index}`}>
         {prevText}
         <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
               numberOfLines={1}
               onPress={() => {
-                this.onIncludesPressed(item)
+                this.onIncludesPressed(formattedItem)
               }}>
-          <Text style={{fontStyle: 'italic'}}>#</Text>
-          {tagText}
+          {/*<Text style={{fontStyle: 'italic'}}>#</Text>*/}
+          {item}
         </Text>
       </Text>
     );
   }
 
-  getMentionMarkup( item , prevText ){
+  getMentionMarkup( item , formattedItem, prevText, index ){
     const mentionText = item.replace("@", "");
     return (
-      <Text key={mentionText}>
+      <Text key={`${mentionText}-${index}`}>
         {prevText}
         <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
               numberOfLines={1}
               onPress={() => {
-                this.onIncludesPressed(item)
+                this.onIncludesPressed(formattedItem)
               }}>
-          <Text style={{fontStyle: 'italic'}}>@</Text>
-          {mentionText}
+          {/*<Text style={{fontStyle: 'italic'}}>@</Text>*/}
+          {item}
         </Text>
       </Text>
     );
@@ -101,9 +103,9 @@ class BottomStatus extends PureComponent {
     }
   };
 
-  getTextMarkup( item  , prevText){
+  getTextMarkup( item  , prevText, index){
     return (
-      <Text key={item}>
+      <Text key={`${item}-${index}`}>
         {prevText + item}
       </Text>
     )
@@ -112,8 +114,7 @@ class BottomStatus extends PureComponent {
   render() {
 
     let processingString = this.props.description;
-    let includesArray = processingString.match(/(#|@)\w+/g) || [];
-
+    let includesArray = processingString.match(regex) || [];
     return (
       <View style={inlineStyles.bottomBg}>
 
@@ -131,16 +132,17 @@ class BottomStatus extends PureComponent {
                 numberOfLines={3}
               >
 
-                {(includesArray.map((item) => {
+                {(includesArray.map((item, index) => {
                   let tagLocation = processingString.search(item);
                   let prevText = processingString.slice(0, tagLocation);
                   processingString = processingString.slice(tagLocation + item.length);
-                  if (this.isValidTag(this.props.entityDescriptionId, item)) {
-                    return this.getHashTagMarkup(item, prevText);
-                  } if( this.isValidMention(this.props.entityDescriptionId ,  item) ){
-                    return this.getMentionMarkup(item, prevText);
+                  let formattedItem = item.replace(regex, "$2$3");
+                  if (this.isValidTag(this.props.entityDescriptionId, formattedItem)) {
+                    return this.getHashTagMarkup(item, formattedItem, prevText, index);
+                  } if( this.isValidMention(this.props.entityDescriptionId ,  formattedItem) ){
+                    return this.getMentionMarkup(item, formattedItem, prevText, index);
                   }else {
-                    return this.getTextMarkup(item, prevText);
+                    return this.getTextMarkup(item, prevText, index);
                   }
                 }))}
 

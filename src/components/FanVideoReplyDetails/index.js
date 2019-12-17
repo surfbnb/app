@@ -6,7 +6,8 @@ import {
   View,
   Text,
   Keyboard,
-  ScrollView
+  ScrollView,
+  BackHandler
 } from 'react-native';
 import deepGet from 'lodash/get';
 import CurrentUser from '../../models/CurrentUser';
@@ -84,8 +85,9 @@ class FanVideoReplyDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.videoDesc = props.recordedVideo.video_desc || '';
+
     this.videoLink = props.recordedVideo.video_link || '';
+    this.videoDesc = '';
     if (! props.recordedVideo.video_type ){
       // It means
       this.replyObject = this.props.navigation.getParam('reply_obj');
@@ -93,6 +95,12 @@ class FanVideoReplyDetails extends Component {
       Store.dispatch(upsertRecordedVideo({ reply_obj: this.replyObject, video_type: videoType }));
     } else {
       this.replyObject = props.recordedVideo.reply_obj;
+    }
+
+    if ('video_desc' in  props.recordedVideo){
+      this.videoDesc = props.recordedVideo.video_desc;
+    } else if(CurrentUser.getUserId() != this.replyObject.replyReceiverUserId){
+      this.videoDesc = `@${reduxGetter.getUserName(this.replyObject.replyReceiverUserId)}`;
     }
 
     this.state = {
@@ -129,11 +137,18 @@ class FanVideoReplyDetails extends Component {
 
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
+
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
+
+  handleBackButtonClick = () => {
+      FanVideoReplyDetails.saveToRedux(this.props.navigation);
+      return false;
+  };
 
   componentDidMount() {
     this.props.navigation.setParams({
-      videoDesc: this.props.recordedVideo.video_desc,
+      videoDesc: this.videoDesc,
       videoLink: this.props.recordedVideo.video_link
     });
     this.setState({buttonText: this.setButtonText()});
@@ -152,6 +167,7 @@ class FanVideoReplyDetails extends Component {
     this.keyboardWillHideListener.remove();
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   checkIfReplyChargeable = () => {
@@ -355,10 +371,12 @@ class FanVideoReplyDetails extends Component {
               </ImageBackground>
             </TouchableOpacity>
             <VideoDescription 
-              initialValue={this.props.recordedVideo.video_desc} 
+              initialValue={this.videoDesc}
               onChangeDesc={this.onChangeDesc} 
               onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
               onSuggestionsPanelClose={this.onSuggestionsPanelClose}
+              mentionsCallWithEmptyChars={['@']}
+              extraParams={{intent:'reply', parent_id: this.replyObject.replyReceiverVideoId}}
             />
           </View>
 

@@ -72,8 +72,11 @@ let stylesMap = {
       },
 
       pepoBtnStyle: {
-        minWidth: 70,
-        paddingVertical: 7
+        minWidth: '20%',
+        maxWidth: 100,
+        width: 100,
+        paddingHorizontal: 0,
+        paddingVertical: 10
       },
 
       dragger: {
@@ -83,6 +86,22 @@ let stylesMap = {
         width: 75,
         alignSelf: 'center',
         marginVertical: 10
+      },
+
+      crossIconWrapper: {
+        position: 'absolute',
+        top: 18,
+        left: 10,
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 100
+      },
+
+      crossIconSkipFont: {
+        width: 13,
+        height: 12.6
       }
 
 

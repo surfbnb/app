@@ -40,9 +40,7 @@ class PepoTxBtn extends Base {
     let specificData = this.props.getPixelDropData(),
         defaultData = {
           e_entity: 'video',
-          e_action: 'contribution',
-          video_id: this.props.entityId,
-          amount: this.btAmount
+          video_id: this.props.entityId
         };
     return assignIn({}, specificData, defaultData);
   }

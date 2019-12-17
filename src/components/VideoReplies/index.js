@@ -5,6 +5,8 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  StatusBar,
+  Platform,
   Animated ,TouchableWithoutFeedback
 } from 'react-native';
 
@@ -27,16 +29,18 @@ import ReduxGetters from '../../services/ReduxGetters';
 import Pricer from "../../services/Pricer";
 import {getVideoReplyObject, replyPreValidationAndMessage} from "../../helpers/cameraHelper";
 import VideoReplyIcon from '../../assets/reply_video_icon.png';
+import VideoReplyCount from '../../components/CommonComponents/VideoReplyCount';
+import {hasNotch} from "../../helpers/NotchHelper";
 
+const statusBarHeight = StatusBar.currentHeight;
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);
 const bottomPadding = getInset('bottom', landScape);
-const bottomReplyViewHeight = isIphoneX() ? 89 : 54;
+const bottomReplyViewHeight = isIphoneX() ? 88 : Platform.OS === 'ios' ? 54 : hasNotch() ? 54 - statusBarHeight : 54 - statusBarHeight;
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
 
 const bottomSpace = getBottomSpace([true]);
-
 class VideoRepliesScreen extends PureComponent {
 
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -62,8 +66,7 @@ class VideoRepliesScreen extends PureComponent {
         showBackdrop : false,
         addRepliesVisible : true,
         videoUploaderVisible: false,
-        currentHeight : this.initialHeight,
-        videoReplyCount : ReduxGetters.getVideoReplyCount(this.videoId)
+        currentHeight : this.initialHeight
       }
     }
 
@@ -82,6 +85,9 @@ class VideoRepliesScreen extends PureComponent {
 
     componentWillUnmount() {
       this.onAnimatedValueChange= () => {};
+      this.showVideoUploader = () => {};
+      this.hideVideoUploader = () => {};
+      this.onMomentumDragEndCallback = () => {};
       this.animatedValue.removeListener(this.listener);
       videoUploaderComponent.removeListener('show' , this.showVideoUploader , this);
       videoUploaderComponent.removeListener('hide' , this.hideVideoUploader , this);
@@ -148,11 +154,11 @@ class VideoRepliesScreen extends PureComponent {
       return wrapStyles;
     };
 
-    onRefresh = ()=> {
+    onMomentumDragEndCallback = (value) => {
       this.setState({
-        videoReplyCount : ReduxGetters.getVideoReplyCount(this.videoId)
+        currentHeight : value
       })
-    };
+    }
 
     render(){
         return (
@@ -183,12 +189,7 @@ class VideoRepliesScreen extends PureComponent {
               <SlidingUpPanel ref={c => (this._panel = c)}
                   containerStyle={{zIndex: 99}}
                   animatedValue={this.animatedValue}
-                  onMomentumDragEnd={(value) => {
-                    this.setState({
-                      currentHeight : value
-                    })
-
-                  }}
+                  onMomentumDragEnd={this.onMomentumDragEndCallback}
                   ref={c => (this._panel = c)}
                   draggableRange={{
                     top: height - topPadding,
@@ -205,17 +206,12 @@ class VideoRepliesScreen extends PureComponent {
                         </TouchableOpacity>
 
                         <View style={inlineStyles.repliesTxt}>
-                          <Text numberOfLines={1} style={inlineStyles.headerText}>
-                            {this.state.videoReplyCount} Repl{this.state.videoReplyCount > 1 ? 'ies' : 'y'}
-                          </Text>
-                          {/*<Text style={inlineStyles.headerSubText}>Send a reply with{' '}*/}
-                          {/*<Image style={{height: 10, width: 10}} source={pepoIcon} />*/}
-                          {/*{ Pricer.getToBT(Pricer.getFromDecimal(ReduxGetters.getBtAmountForReply(this.videoId )), 2)}</Text>*/}
+                          <VideoReplyCount videoId={this.videoId} showReplyText={true} style={inlineStyles.headerText} />
                         </View>
                       </View>
                       <ReplyCollection  userId={this.userId}  videoId={this.videoId} fetchUrl={this.fetchUrl}
                                         onData={this.onData}
-                                        listBottomPadding={this.state.currentHeight > this.initialHeight? topPadding+bottomPadding+bottomReplyViewHeight : listBottomPadding}
+                                        listBottomPadding={this.state.currentHeight > this.initialHeight?  topPadding+bottomPadding+bottomReplyViewHeight - (isIphoneX()? 34 : 0): listBottomPadding}
                                         onRefresh={this.onRefresh}
                       />
                     </View>

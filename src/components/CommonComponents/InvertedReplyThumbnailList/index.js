@@ -6,7 +6,6 @@ import deepGet from "lodash/get";
 import Pagination from "../../../services/Pagination";
 import ReplyThumbnailItem from './ReplyThumbnailItem'
 import {FlatList} from 'react-native-gesture-handler';
-import ReplyHelper from '../../../helpers/ReplyHelper';
 import AppConfig from "../../../constants/AppConfig";
 import DataContract from '../../../constants/DataContract';
 import ReduxGetters from '../../../services/ReduxGetters';
@@ -31,9 +30,14 @@ class InvertedReplyList extends PureComponent {
     this.state = {
       list: this.getInitialList(),
       refreshing : false,
-      loadingNext: false
+      loadingNext: false,
+      activeIndex : this.props.getCurrentIndex()
     };
-
+     /***
+     * Note initialScrollIndex should be set only once if it changes flatlist will honor the new initialScrollIndex
+     * Which will render extra components and as we keep on changing it will stack instead of clearing
+     **/
+    this.initialScrollIndex = this.props.getCurrentIndex();
     this.listRef = null;
     this.onItemClick = null;
   }
@@ -53,22 +57,12 @@ class InvertedReplyList extends PureComponent {
     return this.paginationService;
   };
 
-  componentDidMount () {
-    this.bindPaginationEvents();
-    this.setClickHandlers();
-  }
-
-  bubbleClickHandler = ()=> {
-    this.props.navigation.goBack(null);
-  }
-
   getParentClickHandler =( videoId )=>{
     return () => {
       let parentUserId = ReduxGetters.getVideoCreatorUserId(videoId);
       this.props.navigation.push('VideoPlayer', {
         userId: parentUserId,
-        videoId: videoId,
-        bubbleClickHandler: this.bubbleClickHandler
+        videoId: videoId
       });
     }
   }
@@ -77,7 +71,6 @@ class InvertedReplyList extends PureComponent {
     const videoId = ReduxGetters.getReplyParentVideoId(deepGet(item ,  "payload.reply_detail_id")),
           baseUrl = DataContract.replies.getReplyListApi(videoId),
           clonedInstance = this.getPagination().fetchServices.cloneInstance();
-    ReplyHelper.updateEntitySeen( item );
     this.props.navigation.push('FullScreenReplyCollection',{
       "fetchServices": clonedInstance,
       "currentIndex":index,
@@ -85,6 +78,11 @@ class InvertedReplyList extends PureComponent {
       "parentClickHandler": this.getParentClickHandler( videoId )
     });
   };
+
+  componentDidMount () {
+    this.bindPaginationEvents();
+    this.setClickHandlers();
+  }
 
   setPagination() {
     let fetchUrl = this.getFetchUrl();
@@ -108,9 +106,6 @@ class InvertedReplyList extends PureComponent {
   componentDidUpdate(prevProps, prevState ) {
     if( this.props.doRender && this.props.doRender !== prevProps.doRender &&  !this.hasInitialData  ){
       this.initPagination();
-    }
-    if(this.props.currentIndex != prevProps.currentIndex){
-      this.listRef && this.listRef.scrollToIndex({index : this.props.currentIndex, viewOffset: 100, viewPosition: 0.5});
     }
   }
 
@@ -168,7 +163,6 @@ class InvertedReplyList extends PureComponent {
   }
 
   beforeRefresh = ( ) => {
-    console.log('beforeRefresh')
     this.props.beforeRefresh && this.props.beforeRefresh();
     let stateObject = {refreshing : true};
     if (this.state.loadingNext) {
@@ -181,7 +175,6 @@ class InvertedReplyList extends PureComponent {
     let results = this.getPagination().getResults()  ;
     this.props.onRefresh && this.props.onRefresh( results , res );
     this.setState({ refreshing : false , list : results });
-    // this.setState({ refreshing : false , list : [results[0], results[1]] });
   }
 
   onRefreshError = ( error ) => {
@@ -213,11 +206,23 @@ class InvertedReplyList extends PureComponent {
     return `id_${item.id}`;
   };
 
+  onPendantClick =( index , item ) => {
+    this.setState({activeIndex : index } ,  ()=> {  this.onItemClick(index , item); });
+  }
+
+  setActiveIndex = (index) => {
+    if("number" ==  typeof index){
+      this.setState({activeIndex : index}, ()=>{
+        this.listRef && this.listRef.scrollToIndex({index : this.state.activeIndex, viewOffset: 100, viewPosition: 0.5});
+      });
+    }
+  } 
+
   _renderItem = ({item, index}) => {
     return <View style={{alignSelf:'center'}}>
               <ReplyThumbnailItem
                 payload={item.payload}
-                onClickHandler={()=>{this.onItemClick(index, item)}}
+                onClickHandler={()=>{this.onPendantClick(index, item)}}
                 isActive={this.isActiveEntity( index , item)}
                 cellIndex={index}
                 totalCells={this.state.list.length}
@@ -229,7 +234,7 @@ class InvertedReplyList extends PureComponent {
     if(typeof this.props.isActiveEntity == "function" ){
       return this.props.isActiveEntity(this.props.fullVideoReplyId , item , index) ;
     }
-    return this.props.currentIndex == index;
+    return this.state.activeIndex == index;
   }
 
   setListRef = (ref) => {
@@ -301,33 +306,44 @@ class InvertedReplyList extends PureComponent {
     };
   }
 
+  isRender(){
+    return this.props.isActive && this.state.list.length > 0
+  }
+
   render() {
-      console.log("InvertedReplyList :: this.props.listKey", this.props.listKey);
-        return   <FlatList style={{ height: this.getListHeight(), width: '100%' , position: "absolute" , bottom: this.props.bottomRounding}}
-        ref={this.setListRef}
-        ItemSeparatorComponent={this.getItemSeperatorComponent}
-        data={this.state.list}
-        listKey={this.props.listKey}
-        onEndReached={this.getNext}
-        onRefresh={this.refresh}
-        keyExtractor={this._keyExtractor}
-        refreshing={this.state.refreshing}
-        onEndReachedThreshold={4}
-        renderItem={this._renderItem}
-        ListFooterComponent={this.renderFooter}
-        key={this.flatListKey}
-        showsVerticalScrollIndicator={false}
-        initialScrollIndex={this.props.currentIndex}
-        getItemLayout={this.getItemLayout}
-        onScrollToIndexFailed={this.onScrollToIndexFailed}
-        />
+        if(this.isRender()){
+          return   <FlatList style={{ height: this.getListHeight(), width: '100%' , position: "absolute" , bottom: this.props.bottomRounding}}
+          ref={this.setListRef}
+          ItemSeparatorComponent={this.getItemSeperatorComponent}
+          data={this.state.list}
+          listKey={this.props.listKey}
+          onEndReached={this.getNext}
+          onRefresh={this.refresh}
+          keyExtractor={this._keyExtractor}
+          refreshing={this.state.refreshing}
+          onEndReachedThreshold={4}
+          renderItem={this._renderItem}
+          ListFooterComponent={this.renderFooter}
+          key={this.flatListKey}
+          showsVerticalScrollIndicator={false}
+          initialScrollIndex={this.initialScrollIndex}
+          getItemLayout={this.getItemLayout}
+          onScrollToIndexFailed={this.onScrollToIndexFailed}
+          />
+        }else{
+          return null;
+        }
+        
   }
 }
 
 InvertedReplyList.defaultProps = {
   paginationService : null,
   doRender: true,
-  currentIndex: 0,
+  isActive: true,
+  getCurrentIndex: ()=>{
+    return 0;
+  },
   bottomRounding: 10
 };
 

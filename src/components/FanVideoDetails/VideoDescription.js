@@ -32,10 +32,13 @@ class VideoDescription extends PureComponent {
           maxLength={110}
           autoFocus={false}
           mentions={["#" ,  "@"]}
+          mentionsCallWithEmptyChars={this.props.mentionsCallWithEmptyChars}
+          extraParams={this.props.extraParams}
         />
       </View>
     );
   }
 }
+
 
 export default VideoDescription;

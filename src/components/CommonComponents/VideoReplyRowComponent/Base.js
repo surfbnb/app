@@ -1,35 +1,36 @@
 import React, { PureComponent } from 'react';
 import { View, TouchableOpacity} from 'react-native';
-import FanVideo from "../VideoWrapper/FanVideo";
-import ReportVideo from "../CommonComponents/ReportVideo";
-import BottomReplyBar from "../CommonComponents/BottomReplyBar";
-import PepoApi from '../../services/PepoApi';
+import FanVideo from "../../VideoWrapper/FanVideo";
+import ReportVideo from "../ReportVideo";
+import BottomReplyBar from "../BottomReplyBar";
+import PepoApi from '../../../services/PepoApi';
 import deepGet from 'lodash/get';
 
-import inlineStyles from './styles';
+import inlineStyles from '../../FullScreenReplyCollection/styles';
 
-import ReplyPepoTxBtn from '../PepoTransactionButton/ReplyPepoTxBtn';
-import VideoReplySupporterStat from '../CommonComponents/VideoSupporterStat/VideoReplySupporterStat';
+import ReplyPepoTxBtn from '../../PepoTransactionButton/ReplyPepoTxBtn';
+import VideoReplySupporterStat from '../VideoSupporterStat/VideoReplySupporterStat';
 
-import ReplyVideoBottomStatus from '../BottomStatus/ReplyVideoBottomStatus';
-import DataContract from '../../constants/DataContract';
-import ReduxGetters from '../../services/ReduxGetters';
-import CommonStyle from "../../theme/styles/Common";
+import ReplyVideoBottomStatus from '../../BottomStatus/ReplyVideoBottomStatus';
+import DataContract from '../../../constants/DataContract';
+import ReduxGetters from '../../../services/ReduxGetters';
+import CommonStyle from "../../../theme/styles/Common";
 import assignIn from 'lodash/assignIn';
-import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
+import InvertedReplyList from "../InvertedReplyThumbnailList";
 
-import AppConfig from "../../constants/AppConfig";
-import ProfilePicture from "../ProfilePicture";
-import multipleClickHandler from '../../services/MultipleClickHandler';
-import { fetchVideo } from '../../helpers/helpers';
-import ReplyShareIcon from '../CommonComponents/ShareIcon/ReplyShare';
+import AppConfig from "../../../constants/AppConfig";
+import ProfilePicture from "../../ProfilePicture";
+import multipleClickHandler from '../../../services/MultipleClickHandler';
+import { fetchVideo } from '../../../helpers/helpers';
+import ReplyShareIcon from '../ShareIcon/ReplyShare';
+import Utilities from "../../../services/Utilities";
 
-class BaseVideoReplyRow extends PureComponent {
+class Base extends PureComponent {
     constructor(props) {
       super(props);
       this.state = {
         parentVideoId : ReduxGetters.getReplyParentVideoId( props.replyDetailId ),
-        parentUserId  : ReduxGetters.getReplyParentUserId( props.replyDetailId ) 
+        parentUserId  : ReduxGetters.getReplyParentUserId( props.replyDetailId )
       }
       this.onParentClickDelegate = this.props.parentClickHandler || this.defaultParentClickHandler;
     }
@@ -38,7 +39,7 @@ class BaseVideoReplyRow extends PureComponent {
      if(this.props.doRender && this.state.parentVideoId && !this.state.parentUserId ){
        this.fetchParentVideo = fetchVideo(this.state.parentVideoId, this.onParentVideoFetch , null , this.onParentVideoFetchComplete);
      }
-   } 
+   }
 
    componentDidUpdate(prevProps){
     if(!this.fetchParentVideo && this.props.doRender && this.props.doRender !== prevProps.doRender  && !this.state.parentUserId ){
@@ -56,7 +57,7 @@ class BaseVideoReplyRow extends PureComponent {
       this.onParentClickDelegate();
      }
    }
-   
+
    onParentVideoFetchComplete() {
      this.fetchParentVideo =  null;
    }
@@ -84,7 +85,8 @@ class BaseVideoReplyRow extends PureComponent {
             e_entity: 'reply',
             parent_video_id : this.state.parentVideoId,
             p_name: this.state.parentVideoId,
-            reply_detail_id :this.props.replyDetailId
+            reply_detail_id :this.props.replyDetailId,
+            position: this.props.index
         };
         return assignIn({}, pixelParams, parentData);
     }
@@ -94,14 +96,15 @@ class BaseVideoReplyRow extends PureComponent {
     }
 
     _renderInvertedFlatList = () => {
-      if( this.state.parentVideoId && this.props.isActive ){
+      if( this.state.parentVideoId ){
         return (
-          <View style={inlineStyles.invertedList}>
+          <View style={[inlineStyles.invertedList, { top: Utilities.getPendantTop() , height: Utilities.getPendantAvailableHeight()}]}>
               <InvertedReplyList  videoId={this.state.parentVideoId}
                                   doRender={this.props.doRender}
                                   paginationService={this.props.paginationService}
                                   onChildClickDelegate={this.props.onChildClickDelegate}
-                                  currentIndex={this.props.currentIndex}
+                                  bottomRounding={50}
+                                  isActive={this.props.isActive}
                                   isActiveEntity={this.props.isActiveEntity}
                                   fullVideoReplyId={this.props.replyDetailId}
               />
@@ -115,16 +118,17 @@ class BaseVideoReplyRow extends PureComponent {
         const videoId = ReduxGetters.getReplyEntityId(this.props.replyDetailId);
         return (
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
+              {this._renderInvertedFlatList()}
+              <View style={CommonStyle.videoWrapperfullScreen}>
 
-                <View style={CommonStyle.videoWrapperfullScreen}>
-          
-                    <FanVideo
+                <FanVideo
                         shouldPlay={this.props.shouldPlay}
                         userId={this.props.userId}
                         videoId={videoId}
                         doRender={this.props.doRender}
                         isActive={this.props.isActive}
                         getPixelDropData={this.getPixelDropData}
+                        onMinimumVideoViewed={this.onMinimumVideoViewed}
                     />
 
                     {!!videoId && !!this.props.userId && (
@@ -132,7 +136,7 @@ class BaseVideoReplyRow extends PureComponent {
 
                             <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-                              {this._renderInvertedFlatList()}
+
 
                               <View style={{ minWidth: '20%' , marginLeft: "auto"}} pointerEvents={'box-none'}>
                                 <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}} pointerEvents={'box-none'}>
@@ -168,7 +172,7 @@ class BaseVideoReplyRow extends PureComponent {
                                 entityId={this.props.replyDetailId}
                             />
                         </View>
-                        
+
                     )}
 
                 </View>
@@ -179,13 +183,13 @@ class BaseVideoReplyRow extends PureComponent {
     }
 }
 
-BaseVideoReplyRow.defaultProps = {
+Base.defaultProps = {
     getPixelDropData: function(){
       console.warn("getPixelDropData props is mandatory for Video component");
       return {};
     },
     paginationService : null,
-    currentIndex: 0
+    index:0
   };
 
-export default BaseVideoReplyRow
+export default Base

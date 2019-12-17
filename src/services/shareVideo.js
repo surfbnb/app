@@ -1,5 +1,6 @@
 import PepoApi from './PepoApi';
 import { Share } from 'react-native';
+import appVariables from '../services/AppVariables';
 
 class ShareVideo {
   constructor(url , entityId) {
@@ -25,8 +26,10 @@ class ShareVideo {
   }
 
   shareTray(res) {
+    appVariables.isShareTrayVisible = true;
     try {
       Share.share(this.getShareObject(res)).then((result) => {
+        appVariables.isShareTrayVisible = false;
         if (result.action === Share.sharedAction) {
           if (result.activityType) {
             console.log('shareTray:result.activityType', result.activityType);

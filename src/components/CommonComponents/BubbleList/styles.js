@@ -17,21 +17,30 @@ let stylesMap = {
   bubbleSize: {
     height: 38,
     width: 38,
-    borderColor: 'white',
+    borderColor: Colors.white,
     borderWidth: 1,
     borderRadius: 20
   },
 
   bubbleContainer: {
     flexDirection:'row',
-    marginLeft: 30,
-    alignItems: 'center'
+    marginLeft: 12
   },
 
   repliesTxt: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 16,
     fontFamily: 'AvenirNext-DemiBold'
+  },
+
+  emptyBubble: {
+    width: 40,
+    height: 40,
+    opacity: 0.7,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: Colors.white,
+    backgroundColor: Colors.wildWatermelon2
   }
 
 };

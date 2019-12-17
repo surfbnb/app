@@ -73,6 +73,9 @@ export default {
     videos: {
         getDeleteVideoApi : (id) => {
             return `/videos/${id}/delete`;
+        }, 
+        getVideoDetailsApi : (id) => {
+            return `/videos/${id}`;
         },
         videoKind: {
             reply : "VIDEO_REPLY",

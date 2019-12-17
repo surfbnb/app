@@ -98,6 +98,11 @@ class ReduxGetters {
     return !!deepGet(state, `user_allowed_action_entities.id_${id}.can_block` , true) ;
   }
 
+  canMuteUser(id, state){
+    state = state || Store.getState();
+    return !!deepGet(state, `user_allowed_action_entities.id_${id}.can_mute` , true ) ;
+  }
+
   getEmail(id, state) {
     state = state || Store.getState();
     return deepGet(state, `user_profile_entities.id_${id}.email.text`);
@@ -121,6 +126,11 @@ class ReduxGetters {
   getVideoDescription(id, state) {
     state = state || Store.getState();
     return unescape(deepGet(state, `video_description_entities.id_${id}.text`));
+  }
+
+  getVideoDescriptionObject (id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `video_description_entities.id_${id}`);
   }
 
   getVideoDescriptionId(id, state) {
@@ -551,6 +561,11 @@ class ReduxGetters {
   getLoginPopOverProps(state) {
     state = state || Store.getState();
     return deepGet(state, `login_popover`);    
+  }
+
+  getUnseenReplies(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `unseen_replies_entities.id_${id}.unseen`, []);
   }
 
 }

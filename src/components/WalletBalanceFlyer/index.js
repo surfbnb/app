@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, Animated, Easing } from 'react-native';
+import { View, Image, Text, Animated, Easing, Alert } from 'react-native';
 import ProgressCircle from 'react-native-progress/CircleSnail';
 
 import styles from './styles';
@@ -32,9 +32,10 @@ class WalletBalanceFlyer extends Component {
     this.state = {
       animatedWidth: new Animated.Value(0),
       extensionVisible: false,
-      isPurchasing : false
+      isPurchasing : false,
     };
   }
+
 
   componentDidMount() {
     WalletBalanceFlyerEventEmitter.on('onHideBalanceFlyer', this.handleToggle.bind(this));
@@ -51,6 +52,7 @@ class WalletBalanceFlyer extends Component {
   }
 
   updatePurchasingLoader = ( status ,  payload ) => {
+    this.state.animatedWidth.setValue(0);
     if( status == this.purchaseLoaderSubscribtion.statusMap.show ){
       this.setState({isPurchasing : true });
     }else if( status == this.purchaseLoaderSubscribtion.statusMap.hide ){
@@ -122,7 +124,7 @@ class WalletBalanceFlyer extends Component {
     });
     if(this.props.balance == null) return null;
     return (
-      <View style={[styles.topBg]}>
+      <View style={[styles.topBg, {backgroundColor: Colors.white }]}>
         {this.isRenderFlyer() && (
           <Animated.View
             style={{

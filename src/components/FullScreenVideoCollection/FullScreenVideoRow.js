@@ -42,7 +42,10 @@ class FullScreeVideoRow extends PureComponent {
 
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
-        const pixelParams = { e_entity: 'video' , video_id : this.videoId};
+        const pixelParams = { e_entity: 'video' ,
+                             video_id : this.videoId,
+                             position: this.props.index
+                            };
         return assignIn({}, pixelParams, parentData);
     }
 
@@ -64,6 +67,11 @@ class FullScreeVideoRow extends PureComponent {
                         {!!this.videoId && !!this.userId && (
                             <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
                                 <View style={[inlineStyles.touchablesBtns, {justifyContent: 'flex-end'}]} pointerEvents={'box-none'}>
+
+                                  <View style={inlineStyles.invertedList}>
+                                    <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
+                                  </View>
+
 
                                   <View style={{ minWidth: '20%' }}>
                                     <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
@@ -93,7 +101,7 @@ class FullScreeVideoRow extends PureComponent {
                             </View>
                         )}
                     </View>
-                <BottomReplyBar   userId={this.userId}  videoId={this.videoId}/>
+                <BottomReplyBar userId={this.userId}  videoId={this.videoId}/>
             </View>
         );
     }
@@ -103,7 +111,8 @@ FullScreeVideoRow.defaultProps = {
     getPixelDropData: function(){
       console.warn("getPixelDropData props is mandatory for Video component");
       return {};
-    }
+    },
+    index:0
   };
 
 

@@ -28,6 +28,8 @@ import {TransactionExecutor} from './TransactionExecutor';
 import { ostSdkErrors } from '../services/OstSdkErrors';
 import AppConfig from '../constants/AppConfig';
 import { fetchVideo } from '../helpers/helpers';
+import {getPixelDataOnFanVideoSuccess, getPixelDataOnReplyVideoSuccess} from "../helpers/cameraHelper";
+
 const recordedVideoStates = [
   'raw_video',
   'compressed_video',
@@ -189,10 +191,12 @@ class CameraWorker extends PureComponent {
 
   videoUploadedSuccessCallback = ( ostWorkflowContext, ostWorkflowEntity ) => {
     console.log('CameraWorker.videoUploadedSuccessCallback');
+    let recordedVideo = {...this.props.recorded_video};
+    getPixelDataOnReplyVideoSuccess(recordedVideo);
     Toast.show({
       text: 'Your video uploaded successfully.',
       icon: 'success',
-      imageUri: this.props.recorded_video.cover_image
+      imageUri: recordedVideo.cover_image
     });
     this.executeTx = false;
     Store.dispatch(
@@ -202,6 +206,9 @@ class CameraWorker extends PureComponent {
       })
     );
     this.fetchParentVideo();
+
+
+
   };
 
   fetchParentVideo = () => {
@@ -715,12 +722,17 @@ class CameraWorker extends PureComponent {
         .post(payload)
         .then((responseData) => {
           if (responseData.success && responseData.data) {
+            console.log('cameraworker---------------',responseData.data );
             console.log('Video uploaded Successfully');
             Toast.show({
               text: 'Your video uploaded successfully.',
               icon: 'success',
               imageUri: this.props.recorded_video.cover_image
             });
+            let recordedVideo = {...this.props.recorded_video};
+            let resultType = deepGet(responseData, DataContract.common.resultType),
+              video = deepGet(responseData, `data.${resultType}[0]` );
+            getPixelDataOnFanVideoSuccess(recordedVideo, video.payload.video_id);
             Store.dispatch(
               upsertRecordedVideo({
                 do_discard: true,

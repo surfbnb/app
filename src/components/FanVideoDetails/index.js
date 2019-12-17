@@ -6,7 +6,8 @@ import {
   View,
   Text,
   Keyboard,
-  ScrollView
+  ScrollView,
+  BackHandler
 } from 'react-native';
 import deepGet from 'lodash/get';
 import utilities from '../../services/Utilities';
@@ -136,6 +137,7 @@ class FanVideoDetails extends Component {
 
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   componentDidMount() {
@@ -153,7 +155,13 @@ class FanVideoDetails extends Component {
     this.keyboardWillHideListener.remove();
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
+
+  handleBackButtonClick = () => {
+    FanVideoDetails.saveToRedux(this.props.navigation);
+    return false;
+  };
 
   enableStartUploadFlag = () => {
 
@@ -344,6 +352,7 @@ class FanVideoDetails extends Component {
               onChangeDesc={this.onChangeDesc} 
               onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
               onSuggestionsPanelClose={this.onSuggestionsPanelClose}
+              extraParams={{intent:'video'}}
             />
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.descError }</Text>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import UserVideoHistoryRow from "../../UserVideoHistory/UserVideoHistoryRow";
 import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
-import PepoApi from "../../../services/PepoApi";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
 import DeletedVideoInfo from '../DeletedVideoInfo';
@@ -24,7 +23,6 @@ class VideoPlayer extends Component {
     constructor(props){
         super(props);
         this.videoId =  this.props.navigation.getParam('videoId');
-        this.bubbleClickHandler =  this.props.navigation.getParam('bubbleClickHandler');
         this.state = {
           userId : reduxGetter.getVideoCreatorUserId(this.videoId) || null,
           isDeleted : false
@@ -87,8 +85,8 @@ class VideoPlayer extends Component {
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyles.fullScreenVideoSafeAreaContainer}>
               <TopStatus />
               <UserVideoHistoryRow doRender={true} isActive={ true }  shouldPlay={this.shouldPlay}
-                                 videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}
-                                 bubbleClickHandler={this.bubbleClickHandler}/>
+                                    videoId={this.videoId} userId={this.state.userId} getPixelDropData={this.getPixelDropData}
+                                 />
              <FlotingBackArrow />
             </SafeAreaView>
           )

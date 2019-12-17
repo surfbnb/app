@@ -96,7 +96,7 @@ class NotificationItem extends Component {
         onPress={multipleClickHandler(() =>  this.includesTextNavigate(heading.includes[item]))}
           key={i}
         >
-          <Text style={textStyling}> {unescape(heading.includes[item]['display_text'] || item)}</Text>
+          <Text style={textStyling}>{unescape(heading.includes[item]['display_text'] || item)}</Text>
         </TouchableWithoutFeedback>
       ) : (
         item.split(/(\s+)/).map((element, id) => {
@@ -116,16 +116,15 @@ class NotificationItem extends Component {
   };
 
   showVideoComponent = () => {
-    let imageUrl = reduxGetter.getVideoImgUrl( this.props.payload.video_id,  null , AppConfig.userVideos.userScreenCoverImageWidth);
     return (
-      <ImageBackground style={styles.posterImageSkipFont} source={{ uri: imageUrl }}>
+      <ImageBackground style={styles.posterImageSkipFont} source={{ uri: this.getVideoPosterImage() }}>
         <Image style={styles.playIconSkipFont} source={playIcon} />
       </ImageBackground>
     );
   };
 
   notificationInfo = () => {
-    if (this.shouldShowVideo()) {
+    if (this.shouldShowVideoPost() || this.shouldShowVideoReply()) {
       return this.showVideoComponent();
     }
   };
@@ -141,7 +140,7 @@ class NotificationItem extends Component {
     if (this.props.payload.thank_you_flag === 0 && this.state.showSayThanks) {
       return (
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.sayThanks())}>
-          <View style={styles.sayThanksButton}>
+          <View style={[styles.sayThanksButton, this.shouldShowVideoComponent() ? { marginTop: -10 } : {}]}>
             <Text style={styles.sayThanksText}>Say Thanks</Text>
           </View>
         </TouchableWithoutFeedback>
@@ -205,28 +204,24 @@ class NotificationItem extends Component {
 
     }
   }
+  shouldShowVideoReply = () => {
+    return AppConfig.notificationConstants.showReplyThumbnailForKinds.includes(this.props.kind);
+  };
 
-  shouldShowVideo = () => {
-    let videoKinds = [
-      AppConfig.notificationConstants.videoAddKind,
-      AppConfig.notificationConstants.userMention,
-      AppConfig.notificationConstants.replyUserMention,
-      AppConfig.notificationConstants.replySenderWithAmount,
-      AppConfig.notificationConstants.replySenderWithoutAmount,
-      AppConfig.notificationConstants.replyReceiverWithAmount,
-      AppConfig.notificationConstants.replyReceiverWithoutAmount
-    ]
-    return videoKinds.includes(this.props.kind);
+
+  shouldShowVideoPost = () => {
+    return AppConfig.notificationConstants.showVideoThumbnailForKinds.includes(this.props.kind);
+  };
+
+  shouldShowVideoComponent = () => {
+    return ( this.shouldShowVideoPost() || this.shouldShowVideoReply() ) && !!this.getVideoPosterImage();
+  };
+
+  getVideoPosterImage (){
+    return reduxGetter.getVideoImgUrl(this.props.payload.video_id,  null , AppConfig.userVideos.userScreenCoverImageWidth)
   }
 
-  render() {
-    let headerWidth = '92%',
-    notificationInfoWidth = '0%';
-    if (this.shouldShowVideo()) {
-        headerWidth = '72%';
-        notificationInfoWidth = '20%';
-    }
-    
+  render() {    
     return (
       <View style={{ minHeight: 25 }}>
         <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handleRowClick())}>
@@ -235,7 +230,7 @@ class NotificationItem extends Component {
               <View>
                 {this.getActivityIcon()}
               </View>
-              <View style={{ flex: this.shouldShowVideo() ? 6 : 2, flexDirection: 'row'}}>
+              <View style={{ flex: this.shouldShowVideoComponent() ? 6 : 2, flexDirection: 'row'}}>
                 <View style={{ flexDirection: 'column' }}>
                   <View style={styles.descriptionText}>
                     {this.getHeading()}
@@ -248,7 +243,7 @@ class NotificationItem extends Component {
                   {this.showIfFailed()}
                 </View>
               </View>
-              {  this.shouldShowVideo()  ?
+              {  this.shouldShowVideoComponent()  ?
                   <View
                     style={{ flex: 1 }}>{this.notificationInfo()}
                   </View>
