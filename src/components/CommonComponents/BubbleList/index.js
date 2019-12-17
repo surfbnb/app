@@ -112,10 +112,11 @@ class BubbleList extends PureComponent {
       // listJsx.push(this.getExtraItemUI(1));
     }
 
-    listToRender.forEach((item) => {
+    listToRender.forEach((item, index) => {
       let userId = deepGet(item,'user_id'),
-      replyDetailId=deepGet(item,'reply_detail_id');
-      listJsx.push(<SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId}  />)
+      replyDetailId=deepGet(item,'reply_detail_id'),
+      marginStyle = index === listToRender.length - 1 ? {}:{ marginLeft: -28 };
+      listJsx.push(<SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId} marginStyle={marginStyle}  />)
     });
 
 
