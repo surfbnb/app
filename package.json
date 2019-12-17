@@ -46,7 +46,6 @@
     "react-native-smooth-pincode-input": "1.0.4",
     "react-native-twitter-signin": "git+https://git@github.com/GoldenOwlAsia/react-native-twitter-signin.git#f0ba9152f73778b35735b8dee03da1b6802cad50",
     "react-native-video": "4.4.3",
-    "react-native-vitals": "^2.0.1",
     "react-native-webview": "5.12.1",
     "react-navigation": "4.0.10",
     "react-navigation-stack": "1.9.4",

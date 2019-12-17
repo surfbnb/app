@@ -3,6 +3,6 @@ let VideoPlayPauseEmitter = new EventEmitter();
 let DrawerEmitter = new EventEmitter();
 let VideoReplyEmitter = new EventEmitter();
 let LoggedOutCustomTabClickEvent = new EventEmitter();
-let LowMemoryEmitter = new EventEmitter();
 
-export { VideoPlayPauseEmitter, DrawerEmitter, VideoReplyEmitter, LoggedOutCustomTabClickEvent, LowMemoryEmitter };
+
+export { VideoPlayPauseEmitter, DrawerEmitter, VideoReplyEmitter, LoggedOutCustomTabClickEvent };

@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.arthenica.reactnative.RNFFmpegPackage;
 import com.facebook.react.ReactApplication;
-import com.robinpowered.react.vitals.RNVitalsPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.ost.walletsdk.ui.OstWalletUI;
 import com.pepo2.loader.LoaderManager;
@@ -59,7 +58,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new PepoNativePackage(),
             new MainReactPackage(),
-            new RNVitalsPackage(),
             new KCKeepAwakePackage(),
             new RNCWebViewPackage(),
             new RNIapPackage(),

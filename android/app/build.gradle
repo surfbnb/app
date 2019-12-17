@@ -168,7 +168,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-vitals')
     implementation project(':react-native-keep-awake')
     implementation project(':react-native-webview')
     implementation project(':react-native-firebase')

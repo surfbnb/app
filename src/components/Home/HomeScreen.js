@@ -93,7 +93,7 @@ class HomeScreen extends Component {
   };
 
   showLoginAutomatically = () => {
-    if (this.props.userId || this.showAutomaticPopup) {
+    if (CurrentUser.isActiveUser() || this.showAutomaticPopup) {
       return;
     }
     this.showAutomaticPopup = true;
@@ -103,7 +103,7 @@ class HomeScreen extends Component {
   };
 
   showLogoutPopup = () => {
-    ! this.coachShown && this.showLoginAutomatically();
+    !this.coachShown && this.showLoginAutomatically();
   };
 
 
@@ -227,6 +227,7 @@ class HomeScreen extends Component {
       Platform.OS == 'android' && flatListHocRef.forceSetActiveIndex(0);
     }
     flatListHocRef.refreshDone();
+    this.showLogoutPopup();
   };
 
   render() {
@@ -268,7 +269,6 @@ class HomeScreen extends Component {
           onScrollEnd ={(currentIndex) => {
             this.onScrollMovementEnd(currentIndex);
           }}
-          onRefresh={this.showLogoutPopup}
         />
       </View>
     );

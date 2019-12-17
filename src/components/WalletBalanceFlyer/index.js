@@ -16,7 +16,6 @@ import { withNavigation } from 'react-navigation';
 import PollCurrentUserPendingPayments from "../../helpers/PollCurrentUserPendingPayments";
 import Colors from '../../theme/styles/Colors';
 import AppConfig from "../../constants/AppConfig";
-import { LowMemoryEmitter } from '../../helpers/Emitters';
 
 export const WalletBalanceFlyerEventEmitter = new EventEmitter();
 
@@ -34,35 +33,15 @@ class WalletBalanceFlyer extends Component {
       animatedWidth: new Animated.Value(0),
       extensionVisible: false,
       isPurchasing : false,
-      //Vitals: To remove start  
-      memoryLow: false
-      //Vitals: To remove end  
     };
   }
 
-  //Vitals: To remove start  
-  randomHex = () => {
-    let letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-  //Vitals: To remove end  
 
   componentDidMount() {
     WalletBalanceFlyerEventEmitter.on('onHideBalanceFlyer', this.handleToggle.bind(this));
     this.purchaseLoaderSubscribtion = new PurchaseLoader( this.updatePurchasingLoader );
     this.purchaseLoaderSubscribtion.subscribeToEvents();
     this.setState({isPurchasing: PollCurrentUserPendingPayments.getPollingStatus()});
-    //Vitals: To remove start  
-    LowMemoryEmitter.on('memoryLow', ()=>{
-      this.setState({
-        memoryLow: true
-      })
-    })
-    //Vitals: To remove end  
   }
 
   componentWillUnmount() {
@@ -145,7 +124,7 @@ class WalletBalanceFlyer extends Component {
     });
     if(this.props.balance == null) return null;
     return (
-      <View style={[styles.topBg, {backgroundColor: this.state.memoryLow ? this.randomHex() : Colors.white }]}>
+      <View style={[styles.topBg, {backgroundColor: Colors.white }]}>
         {this.isRenderFlyer() && (
           <Animated.View
             style={{
