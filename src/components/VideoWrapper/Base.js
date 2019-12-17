@@ -122,8 +122,8 @@ class Base extends PureComponent {
     if(this.props.dataChangeEvent) {
       this.props.dataChangeEvent.removeListener('refreshDone', this.onDataRefresh, this);
     }
-    VideoPlayPauseEmitter.removeListener('play' , this.onSdkPause ,  this);
     VideoPlayPauseEmitter.removeListener('play' , this.onSdkPlay ,  this);
+    VideoPlayPauseEmitter.removeListener('pause' , this.onSdkPause ,  this);
     this.videoContext = null;
   }
 

@@ -30,7 +30,7 @@ class Base extends PureComponent {
       super(props);
       this.state = {
         parentVideoId : ReduxGetters.getReplyParentVideoId( props.replyDetailId ),
-        parentUserId  : ReduxGetters.getReplyParentUserId( props.replyDetailId ) 
+        parentUserId  : ReduxGetters.getReplyParentUserId( props.replyDetailId )
       }
       this.onParentClickDelegate = this.props.parentClickHandler || this.defaultParentClickHandler;
     }
@@ -39,7 +39,7 @@ class Base extends PureComponent {
      if(this.props.doRender && this.state.parentVideoId && !this.state.parentUserId ){
        this.fetchParentVideo = fetchVideo(this.state.parentVideoId, this.onParentVideoFetch , null , this.onParentVideoFetchComplete);
      }
-   } 
+   }
 
    componentDidUpdate(prevProps){
     if(!this.fetchParentVideo && this.props.doRender && this.props.doRender !== prevProps.doRender  && !this.state.parentUserId ){
@@ -57,7 +57,7 @@ class Base extends PureComponent {
       this.onParentClickDelegate();
      }
    }
-   
+
    onParentVideoFetchComplete() {
      this.fetchParentVideo =  null;
    }
@@ -116,7 +116,6 @@ class Base extends PureComponent {
 
     render() {
         const videoId = ReduxGetters.getReplyEntityId(this.props.replyDetailId);
-        console.log("render videoComponent in our controll" , this.props);
         return (
             <View style={[CommonStyle.fullScreen, {position: 'relative'}]}>
               {this._renderInvertedFlatList()}
@@ -173,7 +172,7 @@ class Base extends PureComponent {
                                 entityId={this.props.replyDetailId}
                             />
                         </View>
-                        
+
                     )}
 
                 </View>
