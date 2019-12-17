@@ -1,6 +1,5 @@
 import {Dimensions, Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import React, { PureComponent } from 'react';
-import FastImage from 'react-native-fast-image';
 import Colors from "../../../theme/styles/Colors";
 import LinearGradient from "react-native-linear-gradient";
 import pepoWhiteIcon from "../../../assets/pepo-white-icon.png";
@@ -26,8 +25,7 @@ class Base extends PureComponent {
                 backgroundColor: this.props.imageUrl ? Colors.white : Colors.gainsboro
             }}
                        source={{
-                           uri: this.props.imageUrl,
-                           priority: FastImage.priority.high
+                           uri: this.props.imageUrl
                        }}/>
             <LinearGradient
                 colors={['transparent', 'rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.3)']}

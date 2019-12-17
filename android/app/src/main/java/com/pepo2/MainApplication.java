@@ -30,7 +30,6 @@ import com.goldenowl.twittersignin.TwitterSigninPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import org.reactnative.camera.RNCameraPackage;
-import com.dylanvann.fastimage.FastImageViewPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.ostwalletrnsdk.OstWalletRnSdkPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -80,7 +79,6 @@ public class MainApplication extends Application implements ReactApplication {
             new ImageResizerPackage(),
             new LinearGradientPackage(),
             new RNCameraPackage(),
-            new FastImageViewPackage(),
             new NetInfoPackage(),
             new OstWalletRnSdkPackage(),
             new RNFSPackage(),

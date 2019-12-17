@@ -9,7 +9,6 @@ import {
   Image
 } from "react-native";
 import {SafeAreaView, withNavigation} from "react-navigation";
-import FastImage from 'react-native-fast-image';
 
 import reduxGetters from "../../../services/ReduxGetters";
 import AppConfig from "../../../constants/AppConfig";

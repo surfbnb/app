@@ -106,7 +106,6 @@
 		4BDACD6323019EE600CF8294 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005F9BA822E1CA9600A4B00D /* libRCTImageResizer.a */; };
 		4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 003C73F122E880BD00FE1B04 /* libReactNativePermissions.a */; };
 		4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7734F2CD22DE373E004D7152 /* libBVLinearGradient.a */; };
-		4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EDA33222D74FBC0095674F /* libFastImage.a */; };
 		4BFFD402232D3D930033959D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BFFD401232D3D930033959D /* GoogleService-Info.plist */; };
 		5EB5C540ECA14657BF83FD2E /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F11DD15287DC4605913C28BE /* Roboto_medium.ttf */; };
 		65CD6A21EC164A9A8F14A9A3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DAB07333EF0A462BB5571B78 /* Zocial.ttf */; };
@@ -569,13 +568,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNReactNativeHapticFeedback;
 		};
-		77EDA33122D74FBC0095674F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE776FBD854C4ABF96A4B23E /* FastImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A287971D1DE0C0A60081BDFA;
-			remoteInfo = FastImage;
-		};
 		77EDA37A22D763CB0095674F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 77EDA37622D763CB0095674F /* RNCamera.xcodeproj */;
@@ -794,7 +786,6 @@
 		F3F319F40E4C450690D77546 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		F406518F2D434EC0A78FA040 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		FCDBDCC8BDEF4121B12162B0 /* RNVitals.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVitals.xcodeproj; path = "../node_modules/react-native-vitals/ios/RNVitals.xcodeproj"; sourceTree = "<group>"; };
-		FE776FBD854C4ABF96A4B23E /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -805,7 +796,6 @@
 				004112FC233D182B0076FEDD /* libRNCWebView.a in Frameworks */,
 				0054911F233D143600692D50 /* libRNIap.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				4BDACD662301A2E600CF8294 /* libFastImage.a in Frameworks */,
 				4BDACD652301A11E00CF8294 /* libBVLinearGradient.a in Frameworks */,
 				4BDACD6423019EF500CF8294 /* libReactNativePermissions.a in Frameworks */,
 				4BDACD6323019EE600CF8294 /* libRCTImageResizer.a in Frameworks */,
@@ -1390,14 +1380,6 @@
 			path = DynamicLinks;
 			sourceTree = "<group>";
 		};
-		77EDA32E22D74FBC0095674F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				77EDA33222D74FBC0095674F /* libFastImage.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		77EDA37722D763CB0095674F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1437,7 +1419,6 @@
 				CC06FFEC4C2F4EE2B75BF27B /* RNGestureHandler.xcodeproj */,
 				E2CAE8BE9DAE49359E5A9FCA /* RNCAsyncStorage.xcodeproj */,
 				8079D913B25E4ECBB620047A /* RNCNetInfo.xcodeproj */,
-				FE776FBD854C4ABF96A4B23E /* FastImage.xcodeproj */,
 				D9F6E1E6A2F74CDCB21180CD /* BVLinearGradient.xcodeproj */,
 				845CDE8555BB44DF9C86B077 /* RCTImageResizer.xcodeproj */,
 				AA9BB6AFAB7045B48A74A823 /* RNTwitterSignIn.xcodeproj */,
@@ -1581,10 +1562,6 @@
 				{
 					ProductGroup = 7734F2C822DE373E004D7152 /* Products */;
 					ProjectRef = D9F6E1E6A2F74CDCB21180CD /* BVLinearGradient.xcodeproj */;
-				},
-				{
-					ProductGroup = 77EDA32E22D74FBC0095674F /* Products */;
-					ProjectRef = FE776FBD854C4ABF96A4B23E /* FastImage.xcodeproj */;
 				},
 				{
 					ProductGroup = 77535F5E237854F5007923B8 /* Products */;
@@ -2140,13 +2117,6 @@
 			fileType = archive.ar;
 			path = libRNReactNativeHapticFeedback.a;
 			remoteRef = 77A278A923225CD6008C55AA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		77EDA33222D74FBC0095674F /* libFastImage.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libFastImage.a;
-			remoteRef = 77EDA33122D74FBC0095674F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		77EDA37B22D763CB0095674F /* libRNCamera.a */ = {
