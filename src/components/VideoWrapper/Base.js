@@ -148,7 +148,7 @@ class Base extends PureComponent {
   }
 
   isPaused() {
-    return !this.props.isActive || this.state.paused || this.props.loginPopover || !this.shouldPlay();
+    return this.state.buffer || !this.props.isActive || this.state.paused || this.props.loginPopover || !this.shouldPlay();
   }
 
   playVideo() {
