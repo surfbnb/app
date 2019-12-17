@@ -115,8 +115,9 @@ class BubbleList extends PureComponent {
     listToRender.forEach((item, index) => {
       let userId = deepGet(item,'user_id'),
       replyDetailId=deepGet(item,'reply_detail_id'),
-      marginStyle = index === listToRender.length - 1 ? {}:{ marginLeft: -28 };
-      listJsx.push(<SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId} marginStyle={marginStyle}  />)
+      marginStyle = index === listToRender.length - 1 ? {}:{ marginLeft: -28 },
+      opacityStyle = index === listToRender.length - 1 ? {}:{ opacity: 0.9 };
+      listJsx.push(<SingleBubble key={`${userId}-${replyDetailId}`} userId={userId} replyDetailId={replyDetailId} marginStyle={marginStyle} opacityStyle={opacityStyle} />)
     });
 
 

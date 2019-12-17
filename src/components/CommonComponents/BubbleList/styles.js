@@ -36,6 +36,7 @@ let stylesMap = {
   emptyBubble: {
     width: 40,
     height: 40,
+    opacity: 0.6,
     borderWidth: 1,
     borderRadius: 20,
     borderColor: Colors.white,
