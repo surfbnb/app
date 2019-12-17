@@ -90,8 +90,6 @@ export default class PepoApi {
           responseJSON
         );
 
-        console.log(`Response headers for ${this.cleanedUrl}`, response.headers);
-
         dispatchEntities(responseJSON.data);
 
         switch (responseStatus) {
