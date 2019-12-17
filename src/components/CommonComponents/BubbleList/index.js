@@ -155,7 +155,7 @@ class BubbleList extends PureComponent {
   render() {
     return <View style={inlineStyles.bubbleContainer}>
         <TouchableOpacity onPress={multipleClickHandler(() => {this.onIconClick()})}
-             style={{flexDirection: 'row-reverse', marginRight: 5, zIndex: 3}}>{this.getBubbleListJSX()}
+             style={{flexDirection: 'row-reverse', zIndex: 3}}>{this.getBubbleListJSX()}
         </TouchableOpacity>
         {/*<Text style={inlineStyles.repliesTxt}>{this.moreReplyText()}</Text>*/}
       </View>
