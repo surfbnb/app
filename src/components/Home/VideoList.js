@@ -24,10 +24,6 @@ class VideoList extends PureComponent {
     currentIndex = deepGet(data, 'viewableItems[0].index') || 0;
   }
 
-  componentWillUnmount() {
-    dataChangeEvent =  null;
-  }
-
   setActiveIndex() {
     if (this.state.activeIndex == currentIndex) return;
     this.setState({ activeIndex: currentIndex });
