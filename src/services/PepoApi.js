@@ -27,8 +27,7 @@ export default class PepoApi {
         'X-PEPO-DEVICE-OS-VERSION': DeviceInfo.getSystemVersion(),
         'X-PEPO-DEVICE-ID': DeviceInfo.getUniqueID(),
         'X-PEPO-BUILD-NUMBER': DeviceInfo.getBuildNumber(),
-        'X-PEPO-APP-VERSION': DeviceInfo.getVersion(),
-        'Accept-Encoding': 'gzip, deflate, br'
+        'X-PEPO-APP-VERSION': DeviceInfo.getVersion()
       }
     };
     this._cleanUrl();

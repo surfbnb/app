@@ -276,6 +276,8 @@ class Base extends PureComponent {
         <View>
           {this.props.doRender && this.props.videoUrl && (
             <Video
+              poster={this.props.videoImgUrl}
+              posterResizeMode={this.props.posterResizeMode || 'cover'}
               style={[inlineStyles.fullHeightWidthSkipFont, this.props.style]}
               paused={this.getIsVideoPausedStatus()}
               resizeMode={this.props.resizeMode || 'cover'}
