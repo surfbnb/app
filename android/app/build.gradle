@@ -123,12 +123,28 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.pepo.staging"
+        applicationId "com.pepo.v2.production"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 24
         versionName "1.0.1"
         missingDimensionStrategy 'react-native-camera', 'general'
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        production {
+            applicationId "com.pepo.v2.production"
+            dimension "version"
+        }
+        staging {
+            applicationId "com.pepo.staging"
+            dimension "version"
+        }
+        sandbox {
+            applicationId "com.pepo.v2.sandbox"
+            dimension "version"
+        }
     }
     splits {
         abi {
