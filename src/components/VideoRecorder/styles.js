@@ -111,6 +111,19 @@ let stylesMap = {
   bottomWrapper: {
     flexDirection: 'row'
     // width: Dimensions.get('window').width
+  },
+
+  triangleRight: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderBottomWidth: 22,
+    borderTopWidth: 22,
+    borderLeftWidth: 16,
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent',
+    borderLeftColor: Colors.wildWatermelon2
   }
 };
 

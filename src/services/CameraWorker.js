@@ -31,9 +31,10 @@ import { fetchVideo } from '../helpers/helpers';
 import {getPixelDataOnFanVideoSuccess, getPixelDataOnReplyVideoSuccess} from "../helpers/cameraHelper";
 
 const recordedVideoStates = [
-  'raw_video',
+  'raw_video_list',
   'compressed_video',
   's3_video',
+  'video_length',
   'cover_image',
   's3_cover_image',
   'video_desc',
@@ -58,6 +59,7 @@ class CameraWorker extends PureComponent {
   constructor() {
     super();
     this.syncedFromAsyncToRedux = false;
+    this.videoMergeJobId = null;
   }
 
   syncAsyncToRedux() {
@@ -460,7 +462,11 @@ class CameraWorker extends PureComponent {
     this.VideoUploadStatusToNotProcessing();
     FfmpegProcesser.cancel();
     // remove files from cache,
-    await this.removeFile(this.props.recorded_video.raw_video);
+    this.videoMergeJobId = null;
+    let recordedVideoList = this.props.recorded_video.raw_video_list;
+    for (let video of recordedVideoList){
+      await this.removeFile(video);
+    }
     await this.removeFile(this.props.recorded_video.compressed_video);
     await this.removeFile(this.props.recorded_video.cover_image);
     // Cleaning up Async
@@ -485,7 +491,8 @@ class CameraWorker extends PureComponent {
   async createThumbnail() {
     return new Promise((resolve, reject) => {
       if (
-        this.props.recorded_video.raw_video &&
+        this.props.recorded_video.raw_video_list &&
+        this.props.recorded_video.raw_video_list.length > 0 &&
         !this.props.recorded_video.cover_capture_processing &&
         !this.props.recorded_video.cover_image
       ) {
@@ -494,7 +501,7 @@ class CameraWorker extends PureComponent {
             cover_capture_processing: true
           })
         );
-        FfmpegProcesser.init(this.props.recorded_video.raw_video);
+        FfmpegProcesser.init(this.props.recorded_video.raw_video_list);
         FfmpegProcesser.getVideoThumbnail()
           .then((coverImage) => {
             Store.dispatch(
@@ -523,7 +530,8 @@ class CameraWorker extends PureComponent {
   async compressVideo() {
     return new Promise((resolve, reject) => {
       if (
-        this.props.recorded_video.raw_video &&
+        this.props.recorded_video.raw_video_list &&
+        this.props.recorded_video.raw_video_list.length > 0 &&
         !this.props.recorded_video.compression_processing &&
         this.props.recorded_video.cover_image &&
         !this.props.recorded_video.compressed_video
@@ -535,7 +543,7 @@ class CameraWorker extends PureComponent {
         );
         console.log('compressVideo:::VideoUploadStatusToProcessing');
         this.VideoUploadStatusToProcessing();
-        FfmpegProcesser.init(this.props.recorded_video.raw_video);
+        FfmpegProcesser.init(this.props.recorded_video.raw_video_list);
 
         FfmpegProcesser.compress()
           .then((compressedVideo) => {
@@ -549,12 +557,14 @@ class CameraWorker extends PureComponent {
             resolve();
           })
           .catch((err) => {
-            resolve();
+
             Store.dispatch(
               upsertRecordedVideo({
+                compressed_video: INVALID,
                 compression_processing: false
               })
             );
+            resolve();
             console.log('compressVideo: catch', err);
           });
       } else {
@@ -563,27 +573,103 @@ class CameraWorker extends PureComponent {
     });
   }
 
-  updateProfileViewVideo(coverImage, video) {
-    let imageObject = createObjectForRedux.createImageObject({
-      url: coverImage,
-      height: appConfig.cameraConstants.VIDEO_HEIGHT,
-      width: appConfig.cameraConstants.VIDEO_WIDTH,
-      size: '10000'
+  stitchingSuccessedVideoUpload = () => {
+    return this.uploadToS3([this.props.recorded_video.compressed_video], 'video')
+      .then((s3Video) => {
+        console.log('uploadVideo success :: s3Video', s3Video);
+        Store.dispatch(
+          upsertRecordedVideo({
+            s3_video: s3Video[0],
+            video_s3_upload_processing: false
+          })
+        );
+      })
+      .catch((err) => {
+        console.log('uploadVideo error :: s3Video', err);
+        Store.dispatch(
+          upsertRecordedVideo({
+            video_s3_upload_processing: false
+          })
+        );
+      });
+
+  };
+
+  pollingFailed = () => {
+    clearInterval(this.pollingForStitchingCompletion);
+    this.VideoUploadStatusToNotProcessing();
+    Toast.show({
+      text: 'Video upload failed',
+      icon: 'error'
     });
+  };
 
-    let videoObject = createObjectForRedux.createVideoObject(
-      {
-        url: video,
-        height: appConfig.cameraConstants.VIDEO_HEIGHT,
-        width: appConfig.cameraConstants.VIDEO_WIDTH,
-        size: '10000'
-      },
-      imageObject.key
-    );
+  pollForCompleteStitching = () => {
+    if (this.currentPollingCount >= 15 ) {
+      this.pollingFailed();
+    }
+    this.currentPollingCount += 1;
 
-    Store.dispatch(upsertImageEntities(imageObject.value));
-    Store.dispatch(upsertVideoEntities(videoObject.value));
-  }
+    return new PepoApi(`/merge-jobs/${this.videoMergeJobId}`)
+      .get()
+      .then((responseData) => {
+        if (responseData.success && responseData.data) {
+          let resultType = deepGet(responseData, DataContract.common.resultType),
+            videoMergeJobDetails = deepGet(responseData, `data.${resultType}`);
+          if(videoMergeJobDetails.status === 'DONE'){
+            Store.dispatch(
+              upsertRecordedVideo({
+                s3_video: videoMergeJobDetails.merged_url,
+                video_s3_upload_processing: false
+              })
+            );
+            clearInterval(this.pollingForStitchingCompletion);
+          } else if (videoMergeJobDetails.status === 'FAILED') {
+            this.pollingFailed();
+          }
+        } else {
+          this.pollingFailed();
+
+        }
+      }).catch(()=>{
+        this.pollingFailed();
+      })
+  };
+
+  stitchingFailedVideoUpload = () => {
+    return this.uploadToS3(this.props.recorded_video.raw_video_list, 'video')
+      .then((s3VideoList) => {
+        let resolution = `${appConfig.cameraConstants.VIDEO_WIDTH}*${appConfig.cameraConstants.VIDEO_HEIGHT}`,
+        list = s3VideoList.map((s3Video)=>{
+          return {video_url:s3Video, resolution}
+        });
+        let payload = { video_urls : JSON.stringify(list)};
+        return new PepoApi(`/videos/merge-jobs`)
+          .post(payload)
+          .then((responseData) => {
+            if (responseData.success && responseData.data) {
+
+              let resultType = deepGet(responseData, DataContract.common.resultType),
+                videoMergeJob = deepGet(responseData, `data.${resultType}`);
+                this.videoMergeJobId = videoMergeJob.id;
+                this.currentPollingCount = 0;
+                this.pollingForStitchingCompletion = setInterval(this.pollForCompleteStitching, 10000);
+            } else {
+              this.VideoUploadStatusToNotProcessing();
+            }
+          })
+      })
+      .catch((err) => {
+        console.log('uploadVideo error :: s3Video', err);
+        Store.dispatch(
+          upsertRecordedVideo({
+            video_s3_upload_processing: false
+          })
+        );
+      });
+  };
+
+
 
   async uploadVideo() {
     if (this.checkIfDiscardedAndClean()){
@@ -602,26 +688,16 @@ class CameraWorker extends PureComponent {
           video_s3_upload_processing: true
         })
       );
-      console.log('uploadVideo:::VideoUploadStatusToProcessing');
       this.VideoUploadStatusToProcessing();
-      return this.uploadToS3(this.props.recorded_video.compressed_video, 'video')
-        .then((s3Video) => {
-          console.log('uploadVideo success :: s3Video', s3Video);
-          Store.dispatch(
-            upsertRecordedVideo({
-              s3_video: s3Video,
-              video_s3_upload_processing: false
-            })
-          );
-        })
-        .catch((err) => {
-          console.log('uploadVideo error :: s3Video', err);
-          Store.dispatch(
-            upsertRecordedVideo({
-              video_s3_upload_processing: false
-            })
-          );
-        });
+      console.log('uploadVideo:::VideoUploadStatusToProcessing');
+
+      if (this.props.recorded_video.compressed_video === INVALID){
+        return this.stitchingFailedVideoUpload();
+      } else {
+        return this.stitchingSuccessedVideoUpload();
+      }
+
+
     }
   }
 
@@ -644,12 +720,12 @@ class CameraWorker extends PureComponent {
         })
       );
 
-     return this.uploadToS3(this.props.recorded_video.cover_image, 'image')
+     return this.uploadToS3([this.props.recorded_video.cover_image], 'image')
         .then((s3CoverImage) => {
           console.log('uploadCoverImage success :: s3CoverImage', s3CoverImage);
           Store.dispatch(
             upsertRecordedVideo({
-              s3_cover_image: s3CoverImage,
+              s3_cover_image: s3CoverImage[0],
               cover_s3_upload_processing: false
             })
           );

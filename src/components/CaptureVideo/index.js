@@ -26,7 +26,8 @@ class CaptureVideo extends Component {
       actionSheetOnRecordVideo: true,
       modalVisible: true,
       acceptedCameraTnC: null,
-      showLightBoxOnReply: isChargeble
+      showLightBoxOnReply: isChargeble,
+      totalVideoLength: 0
     };
     this.replyReceiverUserId = null;
     this.replyReceiverVideoId = null;
@@ -87,7 +88,8 @@ class CaptureVideo extends Component {
     this.videoType = recordedVideoObj.video_type || AppConfig.videoTypes.post ;
     this.setState ({
       recordingScreen: false,
-      videoUri: recordedVideoObj.raw_video
+      videoUrlsList: recordedVideoObj.raw_video_list,
+      totalVideoLength: recordedVideoObj.video_length
     });
   };
 
@@ -153,10 +155,11 @@ class CaptureVideo extends Component {
     }
   };
 
-  goToPreviewScreen = (videoUri) => {
+  goToPreviewScreen = (videoUrlsList, totalVideoLength) => {
     this.setState({
       recordingScreen: false,
-      videoUri
+      videoUrlsList,
+      totalVideoLength
     });
   };
 
@@ -194,7 +197,8 @@ class CaptureVideo extends Component {
             this.goToDetailsScreen();
           }}
           saveVideoPrimaryInfo={this.saveVideoPrimaryInfo}
-          cachedvideoUrl={this.state.videoUri}
+          videoUrlsList={this.state.videoUrlsList}
+          totalVideoLength={this.state.totalVideoLength}
           navigation={this.props.navigation}
         />
       );

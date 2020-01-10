@@ -33,6 +33,7 @@ const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_FACTOR = 0.01;
+let intervalID = null;
 
 class VideoRecorder extends Component {
   constructor(props) {
@@ -46,7 +47,9 @@ class VideoRecorder extends Component {
       cameraFrontMode: true,
       isLocalVideoPresent: false
     };
+    this.videoUrlsList = [];
     this.camera = null;
+    this.videoLength = 0;
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
   }
 
@@ -63,7 +66,6 @@ class VideoRecorder extends Component {
       this.setState({showLightBoxOnReply: nextProps.showLightBoxOnReply })
     }
   }
-
 
 
   isStaleReduxObjectPresent(){
@@ -157,12 +159,19 @@ class VideoRecorder extends Component {
 
 
   ifLocalVideoPresent = async  () => {
-    let recordedVideo = this.recordedVideoObj.raw_video;
-    let isFileExists = false;
-    if (recordedVideo) {
-      isFileExists = await RNFS.exists(recordedVideo);
+    let recordedVideoList = this.recordedVideoObj.raw_video_list || [];
+    console.log(recordedVideoList, '=====recordedVideoList=====');
+    if (recordedVideoList.length === 0){
+      return false;
     }
-    return isFileExists;
+
+    for (let video of recordedVideoList){
+      let isFileExists = await RNFS.exists(video);
+      if (!isFileExists){
+        return false;
+      }
+    }
+    return true;
   };
 
   getPepoAmount = () => {
@@ -336,18 +345,61 @@ class VideoRecorder extends Component {
           <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
             <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
           </TouchableOpacity>
-          <View style={styles.bottomWrapper}>
-            {!this.state.isRecording && <View style={{flex: 1}}/>}
-            {this.getActionButton()}
+          <View style={[styles.bottomWrapper]}>
             {this.flipButton()}
+            {this.getActionButton()}
+            {this.previewButton()}
+            {/*{!this.state.isRecording && <View style={{flex: 1}}/> }*/}
+
+
+
           </View>
         </React.Fragment>
       );
     }
   };
 
+  previewPressHandler = () => {
+    if (this.discardVideo) return;
+    // This will take from VideoRecorder to PreviewRecordedVideo component
+    this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+
+  };
+
+
+  previewButton = () => {
+    return <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={{ flexDirection: 'row' }}>
+      <LinearGradient
+        colors={['#ff7499', '#ff5566']}
+        locations={[0, 1]}
+        style={{
+          borderRadius: 0,
+          borderTopLeftRadius: 3,
+          borderBottomLeftRadius: 3,
+          paddingLeft: 15,
+          paddingRight: 10
+        }}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+      >
+        <TouchableOpacity
+          onPress={multipleClickHandler(() => {
+            this.previewPressHandler()
+          })}
+          style={{ height: 40, width:60, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Text style={{ color: '#fff', fontSize: 14 }}>PREVIEW</Text>
+        </TouchableOpacity>
+      </LinearGradient>
+      <View style={styles.triangleRight}></View>
+    </View>
+    </View>
+  };
+
   stopRecording = () => {
     // naviagate from here to other page
+    this.intervalManager(false);  // for clearInterval
     this.camera && this.camera.stopRecording();
   };
 
@@ -362,12 +414,13 @@ class VideoRecorder extends Component {
     }
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={{color: 'white', marginTop: 5, letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Tap to record</Text>
           <TouchableOpacity onPress={onPressCallback}>
             <Image style={styles.captureButtonSkipFont} source={source} />
           </TouchableOpacity>
           { !this.state.isRecording ?
-            ( <Text style={{color: 'white', marginTop: 5, letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Tap to record</Text> )
-            : ( <Text/> )
+            ( <Text style={{color: 'white', marginTop: 5, letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Normal</Text> )
+            : ( <Text style={{marginTop:5 }}/> )
           }
         </View>
     );
@@ -376,23 +429,38 @@ class VideoRecorder extends Component {
   flipButton() {
     if (!this.state.isRecording) {
       return (
-        <View style={{flex: 1, alignItems: 'flex-end', justifyContent: 'flex-start'}}>
-          <TouchableOpacity onPress={this.flipCamera} style={{marginRight: 30, marginTop: 15}}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <TouchableOpacity onPress={this.flipCamera} >
             <Image style={styles.flipIconSkipFont} source={flipIcon} />
           </TouchableOpacity>
         </View>
       );
+    } else {
+      return (<View style={{flex:1}}/>)
     }
   }
 
-  initProgressBar() {
-    this.progressInterval = setInterval(() => {
+  progressBarStateUpdate = () => {
+      let progress =  this.state.progress + PROGRESS_FACTOR ;
+      this.videoLength = progress * 100 * 300;
       if (this.state.progress < 1) {
-        this.setState({ progress: this.state.progress + PROGRESS_FACTOR });
+        this.setState({ progress });
       } else {
         this.stopRecording();
       }
-    }, 300);
+  }
+
+
+
+  initProgressBar() {
+      this.intervalManager(true , this.progressBarStateUpdate, 300);
+  }
+
+  intervalManager(flag, animate, time) {
+    if(flag)
+      intervalID =  setInterval(animate, time);
+    else
+      clearInterval(intervalID);
   }
 
   recordVideoAsync = async () => {
@@ -407,9 +475,11 @@ class VideoRecorder extends Component {
     };
     this.initProgressBar();
     const data = await this.camera.recordAsync(options);
+    this.setState({ isRecording: false });
     if (this.discardVideo) return;
+    this.videoUrlsList.push(data.uri);
     // This will take from VideoRecorder to PreviewRecordedVideo component
-    this.props.goToPreviewScreen(data.uri);
+    // this.props.goToPreviewScreen(data.uri);
   };
 
   recordVideoStateChage() {
@@ -418,7 +488,6 @@ class VideoRecorder extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.progressInterval);
     this.recordVideoStateChage = () => {};
     AppState.removeEventListener('change', this._handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress', this._handleBackPress);
