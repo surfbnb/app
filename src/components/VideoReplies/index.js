@@ -32,7 +32,7 @@ import VideoReplyIcon from '../../assets/reply_video_icon.png';
 import VideoReplyCount from '../../components/CommonComponents/VideoReplyCount';
 import {hasNotch} from "../../helpers/NotchHelper";
 
-const statusBarHeight = StatusBar.currentHeight;
+const statusBarHeight = StatusBar.currentHeight || 0;
 const { width, height } = Dimensions.get('window');
 const landScape = width > height;
 const topPadding = getInset('top', landScape);

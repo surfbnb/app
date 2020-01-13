@@ -124,6 +124,9 @@ class Base extends PureComponent {
     }
     VideoPlayPauseEmitter.removeListener('play' , this.onSdkPlay ,  this);
     VideoPlayPauseEmitter.removeListener('pause' , this.onSdkPause ,  this);
+    this.pauseVideo = () => {};
+    this.playVideo = () => {};
+    this.onLoad = () => {};
   }
 
   onSdkPause = () => {

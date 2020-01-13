@@ -32,6 +32,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import pendingConfirmEmail from '../../assets/verify_email_error.png';
 import confirmedEmail from '../../assets/verify_email_success.png';
 import {fetchUser} from "../../helpers/helpers";
+import AppConfig from '../../constants/AppConfig';
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
@@ -328,9 +329,9 @@ class ProfileEdit extends React.PureComponent {
 
   openCamera = async () => {
     CameraPermissionsApi.requestPermission('camera').then((result) => {
-      if (result == 'authorized') {
+      if (result == AppConfig.permisssionStatusMap.granted) {
         this.props.navigation.push('CaptureImageScreen');
-      } else if ((Platform.OS == 'ios' && result == 'denied') || result == 'restricted') {
+      } else if ( result == AppConfig.permisssionStatusMap.denied || result == AppConfig.permisssionStatusMap.blocked) {
         this.setState({
           showCameraAccessModal: true
         });
@@ -340,9 +341,9 @@ class ProfileEdit extends React.PureComponent {
 
   openGallery = async () => {
     CameraPermissionsApi.requestPermission('photo').then((result) => {
-      if (result == 'authorized') {
+      if (result == AppConfig.permisssionStatusMap.granted) {
         this.props.navigation.push('ImageGalleryScreen');
-      } else if ((Platform.OS == 'ios' && result == 'denied') || result == 'restricted') {
+      } else if (result == AppConfig.permisssionStatusMap.denied || result == AppConfig.permisssionStatusMap.blocked) {
         this.setState({
           showGalleryAccessModal: true
         });

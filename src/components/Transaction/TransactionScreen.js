@@ -81,6 +81,7 @@ class TransactionScreen extends Component {
     //Imp : Make sure if transaction is mappning againts Profile dont send video Id
     this.videoId = this.props.navigation.getParam('videoId');
     this.requestAcknowledgeDelegate = this.props.navigation.getParam('requestAcknowledgeDelegate');
+    this.defaultVals();
   }
 
   componentDidMount() {
@@ -97,6 +98,13 @@ class TransactionScreen extends Component {
       this.groupSeparator = ',';
       this.decimalSeparator = '.';
     })
+
+    this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
+    this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
+
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   _keyboardShown(e) {
@@ -288,16 +296,6 @@ class TransactionScreen extends Component {
   defaultVals() {
     this.meta = null;
     this.workflow = null;
-  }
-
-  componentWillMount() {
-    this.defaultVals();
-    this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
-    this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
-
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   componentWillUnmount() {

@@ -1,16 +1,16 @@
 import React, {PureComponent} from 'react';
-import {Alert, FlatList, Linking, Platform, Text, TouchableWithoutFeedback, View} from 'react-native';
+import { FlatList, Linking, Platform, Text, TouchableWithoutFeedback, View} from 'react-native';
 import inlineStyle from './styles'
 import {optionIds, walletSettingController} from './WalletSettingController';
 import {LoadingModal} from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
 import BackArrow from '../CommonComponents/BackArrow';
-import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
 import {ostSdkErrors} from "../../services/OstSdkErrors";
 import CurrentUser from "../../models/CurrentUser";
 import CameraPermissionsApi from "../../services/CameraPermissionsApi";
 import DeviceInfo from 'react-native-device-info';
 import AndroidOpenSettings from 'react-native-android-open-settings';
+import AppConfig from '../../constants/AppConfig';
 
 class WalletSettingList extends PureComponent {
   static navigationOptions = (options) => {
@@ -173,7 +173,7 @@ class WalletSettingList extends PureComponent {
       return;
     } else if (item.id === optionIds.authorizeWithQR) {
       let cameraResult = await CameraPermissionsApi.requestPermission('camera');
-      if ((cameraResult == 'denied' || cameraResult == 'restricted')) {
+      if ((cameraResult == AppConfig.permisssionStatusMap.denied || cameraResult == AppConfig.permisssionStatusMap.blocked)) {
         LoadingModal.showFailureAlert("Allow access to your camera to scan QR", '', 'Enable Camera Access', (isBtnTapped) => {
           if (isBtnTapped) {
             this.enableAccess();
@@ -241,7 +241,7 @@ class WalletSettingList extends PureComponent {
   onUnauthorized = (ostWorkflowContext , ostError) => {
     LoadingModal.showFailureAlert("Device is not authorized. Please authorize device again.", null, "Logout", () => {
       CurrentUser.logout({
-        device_id: DeviceInfo.getUniqueID()
+        device_id: DeviceInfo.getUniqueId()
       });
     })
   };

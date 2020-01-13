@@ -129,7 +129,7 @@ class CustomDrawerContent extends Component {
   CurrentUserLogout = () => {
     DrawerEmitter.emit('closeDrawer');
     let params = {
-      device_id: DeviceInfo.getUniqueID()
+      device_id: DeviceInfo.getUniqueId()
     };
     this.setState(
       {

@@ -35,7 +35,8 @@ class PepoButton extends React.Component {
     }).start()
   }
 
-  componentWillReceiveProps( nextProps ){
+  //@TODO Ashutosh/Akshay need to change this code
+  UNSAFE_componentWillReceiveProps( nextProps ){
     let newState;
     if( nextProps.count != this.state.count ){
       newState = newState || {};

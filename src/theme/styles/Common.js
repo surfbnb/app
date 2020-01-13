@@ -5,7 +5,7 @@ import DefaultStyleGenerator from './DefaultStyleGenerator';
 import Colors from './Colors';
 import { CUSTOM_TAB_Height } from '../../theme/constants';
 
-const statusBarHeight = StatusBar.currentHeight;
+const statusBarHeight = StatusBar.currentHeight || 0;
 const {width, height} = Dimensions.get('window');
 
 const fullScreenHeight = () => {

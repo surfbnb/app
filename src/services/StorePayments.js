@@ -33,9 +33,9 @@ class StorePayments {
     //@Note : Success and error will be subscribtion based
     requestPurchase( skuId ){
         try {
-            RNIap.clearTransactionIOS();
+            //RNIap.clearTransactionIOS(); This method has been deprecated
             RNIap.initConnection().then((res)=> {
-                RNIap.requestPurchase(skuId)
+                RNIap.requestPurchase(skuId , false)
                 .catch((err)=> {});
             }).catch((error)=> {
                 this.onInitRequestPurchaseError(error); 
@@ -283,7 +283,7 @@ class NativeStoreAcknowledge{
     }
 
     iOsConsumtion( purchase ){
-        RNIap.consumePurchaseAndroid(purchase.transactionId).then((res)=> {
+        RNIap.finishTransactionIOS(purchase.transactionId).then((res)=> {
             this.nativeStoreSyncSuccess();
         }).catch((error)=> {
            console.log("==nativeStoreSync== error" , error); 

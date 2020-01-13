@@ -3,15 +3,16 @@ package com.pepo2.loader;
 import android.animation.Animator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.animation.DynamicAnimation;
-import android.support.animation.SpringAnimation;
-import android.support.animation.SpringForce;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.pepo2.R;
+
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
 
 /**
  * simple custom view of a beating heart which is achieved by a scaling animation

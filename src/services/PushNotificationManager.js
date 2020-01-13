@@ -10,6 +10,7 @@ import reduxGetter from '../services/ReduxGetters';
 import NavigationEmitter from '../helpers/TabNavigationEvent';
 import AndroidOpenSettings from "react-native-android-open-settings";
 import utilities from '../services/Utilities';
+import Utilities from '../services/Utilities';
 
 let refreshTimeOut = null;
 // Not to be used for now
@@ -68,8 +69,8 @@ async function  sendToken(token, userId) {
   }
 
   let payload = {
-    device_id: DeviceInfo.getUniqueID(),
-    user_timezone: DeviceInfo.getTimezone(),
+    device_id: DeviceInfo.getUniqueId(),
+    user_timezone: Utilities.getUTCTimeZone(),
     device_kind: Platform.OS,
     device_token: token
   };

@@ -14,6 +14,8 @@ import('../models/CurrentUser').then((imports) => {
   CurrentUser = imports.default;
 });
 
+let userAgent = null;
+
 export default class PepoApi {
   constructor(url, params = {}) {
     this.url = url;
@@ -22,10 +24,10 @@ export default class PepoApi {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': DeviceInfo.getUserAgent(),
+        'User-Agent': userAgent,
         'X-PEPO-DEVICE-OS': Platform.OS,
         'X-PEPO-DEVICE-OS-VERSION': DeviceInfo.getSystemVersion(),
-        'X-PEPO-DEVICE-ID': DeviceInfo.getUniqueID(),
+        'X-PEPO-DEVICE-ID': DeviceInfo.getUniqueId(),
         'X-PEPO-BUILD-NUMBER': DeviceInfo.getBuildNumber(),
         'X-PEPO-APP-VERSION': DeviceInfo.getVersion()
       }
@@ -61,6 +63,17 @@ export default class PepoApi {
     this.parsedParams = AssignIn(this.defaultParams, this.params);
   }
 
+  _getParsedParams = async () => {
+    if(!this.parsedParams.headers['User-Agent']) {
+      //@Ashutosh @Akshay gives error WKWebView is invalidated. debug. Check file PixelCall as well.
+      try{
+        userAgent = await DeviceInfo.getUserAgent();
+        this.parsedParams.headers['User-Agent'] = userAgent;
+      }catch( e ) {};
+    } 
+    return this.parsedParams;
+  }
+
   _perform() {
     return new Promise(async (resolve, reject) => {
       try {
@@ -76,10 +89,12 @@ export default class PepoApi {
           throw UIWhitelistedErrorCode['no_internet'];
         }
 
-        let t1 = Date.now();
-        console.log(`Requesting ${this.cleanedUrl} with options:`, this.parsedParams);
+        const parsedParams = await this._getParsedParams(); 
 
-        let response = await fetch(this.cleanedUrl, this.parsedParams),
+        let t1 = Date.now();
+        console.log(`Requesting ${this.cleanedUrl} with options:`, parsedParams);
+
+        let response = await fetch(this.cleanedUrl, parsedParams),
           responseStatus = parseInt(response.status),
           responseJSON = await response.json();
 
@@ -101,7 +116,7 @@ export default class PepoApi {
           case 409:
             break;
           case 401:
-            await CurrentUser.logout({device_id: DeviceInfo.getUniqueID()});
+            await CurrentUser.logout({device_id: DeviceInfo.getUniqueId()});
             break;
           default:
             Toast.show({

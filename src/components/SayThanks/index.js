@@ -50,9 +50,6 @@ class SayThanks extends Component {
   componentDidMount(){
     //Dont delete this code. This is a hack for android keyboard initial jump.
     setTimeout(() => this.setState({ thanksMessage: thanksMsg, focus: true}), 0);
-  }
-
-  componentWillMount() {
     this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
     this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));

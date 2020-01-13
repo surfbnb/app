@@ -37,13 +37,14 @@ export const getLocalNotchData = async () => {
 };
 
 
-const hasNotchRemote = () => {
+const hasNotchRemote = async () => {
   if(devicesWithNotch.length > 0){
+    const deviceName = await  DeviceInfo.getDeviceName() ;
     return (
       devicesWithNotch.findIndex(
         item =>
           item.brand.toLowerCase() === DeviceInfo.getBrand().toLowerCase() &&
-          (item.model.toLowerCase() === DeviceInfo.getDeviceName().toLowerCase() || item.model.toLowerCase() === DeviceInfo.getModel().toLowerCase())
+          (item.model.toLowerCase() === deviceName.toLowerCase() || item.model.toLowerCase() === DeviceInfo.getModel().toLowerCase())
       ) !== -1
     );
   }

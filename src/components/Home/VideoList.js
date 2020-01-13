@@ -77,22 +77,22 @@ class VideoList extends PureComponent {
         }}
         pagingEnabled={true}
         decelerationRate={'fast'}
-        data={this.props.list}
+         data={this.props.list}
         onEndReached={this.props.getNext}
         onRefresh={this.props.refresh}
-        keyExtractor={this._keyExtractor}
-        refreshing={this.props.refreshing}
-        initialNumToRender={maxVideosThreshold}
-        onEndReachedThreshold={3}
-        style={inlineStyles.fullScreen}
-        onViewableItemsChanged={this.onViewableItemsChanged}
-        onMomentumScrollEnd={this.onMomentumScrollEndCallback}
-        onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
-        renderItem={this._renderItem}
-        showsVerticalScrollIndicator={false}
-        onScrollToTop={this.onScrollToTop}
-        onScrollToIndexFailed={this.onScrollToIndexFailed}
-        ref={(ref) => (this.flatlistRef = ref)}
+         keyExtractor={this._keyExtractor}
+         refreshing={this.props.refreshing}
+         initialNumToRender={maxVideosThreshold}
+         onEndReachedThreshold={3}
+         style={inlineStyles.fullScreen}
+         onViewableItemsChanged={this.onViewableItemsChanged}
+         onMomentumScrollEnd={this.onMomentumScrollEndCallback}
+         onMomentumScrollBegin={this.props.onMomentumScrollBeginCallback}
+         renderItem={this._renderItem}
+         showsVerticalScrollIndicator={false}
+         onScrollToTop={this.onScrollToTop}
+         onScrollToIndexFailed={this.onScrollToIndexFailed}
+         ref={(ref) => (this.flatlistRef = ref)}
 
       />
     );

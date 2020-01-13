@@ -3,9 +3,6 @@ package com.pepo2.loader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +19,10 @@ import com.ost.walletsdk.workflows.errors.OstError;
 import com.pepo2.R;
 
 import org.json.JSONObject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 
 public class AppLoaderFragment extends OstLoaderFragment implements OstWorkflowLoader {

@@ -1,7 +1,5 @@
 package com.pepo2.bridge;
 
-import android.support.annotation.NonNull;
-
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -11,6 +9,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 
 import javax.annotation.Nonnull;
+
+import androidx.annotation.NonNull;
 
 public class PepoNativeHelper extends ReactContextBaseJavaModule {
     private static final String TAG = "Ost-PepoNativeHelper";

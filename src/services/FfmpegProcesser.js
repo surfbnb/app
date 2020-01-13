@@ -1,4 +1,4 @@
-import { RNFFmpeg } from '../libs/react-native-ffmpeg';
+import { RNFFmpeg } from 'react-native-ffmpeg';
 import AppConfig from '../constants/AppConfig';
 
 class FfmpegProcesser {

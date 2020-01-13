@@ -54,16 +54,15 @@ class VideoRecorder extends Component {
     nextAppState === 'background' && this.cancleVideoHandling();
   };
 
-  componentWillReceiveProps( nextProps ){
-    if( nextProps.acceptedCameraTnC != this.state.acceptedCameraTnC ){
-     this.setState({acceptedCameraTnC: nextProps.acceptedCameraTnC })
+  componentDidUpdate(prevProps, prevState){
+    //@Mayur change this code. Catch the ref and update the state directly
+    if( prevProps.acceptedCameraTnC != this.props.acceptedCameraTnC ){
+     this.setState({acceptedCameraTnC: this.props.acceptedCameraTnC })
     }
-
-    if ( nextProps.showLightBoxOnReply != this.state.showLightBoxOnReply ) {
-      this.setState({showLightBoxOnReply: nextProps.showLightBoxOnReply })
-    }
+    if ( prevProps.showLightBoxOnReply != this.props.showLightBoxOnReply ) {
+      this.setState({showLightBoxOnReply: this.props.showLightBoxOnReply })
+    } 
   }
-
 
 
   isStaleReduxObjectPresent(){

@@ -2,10 +2,10 @@ import {Platform, Dimensions} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import qs from 'qs';
 import assignIn from 'lodash/assignIn';
-import momentTimezone from 'moment-timezone';
 
 import { TRACKER_ENDPOINT } from '../constants/index';
 import CurrentUser from "../models/CurrentUser";
+import Utilities from './Utilities';
 
 const keyAliasMap = {
   t_version: 'v',
@@ -34,21 +34,34 @@ const keyAliasMap = {
 
 const staticData = {
   t_version: 2,
-  t_gid: DeviceInfo.getUniqueID(),
+  t_gid: DeviceInfo.getUniqueId(),
   u_service_id: 1,
   u_session_id: 'placeholder_u_session_id',
-  u_timezone: momentTimezone.tz(DeviceInfo.getTimezone()).utcOffset(),
-  device_id: DeviceInfo.getUniqueID(),
+  u_timezone:  Utilities.getUTCTimeZone(), 
+  device_id: DeviceInfo.getUniqueId(),
   device_model: DeviceInfo.getModel(),
   device_platform: DeviceInfo.getSystemVersion(),
   device_os: Platform.OS,
-  device_language: DeviceInfo.getDeviceLocale(),
+  device_language: Utilities.getLanguageCode(),
   device_width: Dimensions.get('window').width,
   device_height: Dimensions.get('window').height,
   device_type: 'mobile_app',
-  user_agent: DeviceInfo.getUserAgent(),
+  user_agent: userAgent,
   mobile_app_version: DeviceInfo.getVersion()
 };
+
+
+let userAgent = null;
+async function getStaticData(){ 
+  if( !staticData['user_agent']) {
+    try{
+       //@Ashutosh @Akshay gives error WKWebView is invalidated. debug 
+      userAgent = await DeviceInfo.getUserAgent();
+      staticData['user_agent'] = userAgent ;
+    }catch (e){};
+  }
+  return staticData ;
+}
 
 const mandatoryKeys = ['e_entity', 'e_action', 'p_type'];
 
@@ -63,11 +76,11 @@ const makeCompactData = params => {
   return compactData;
 };
 
-export default (data) => {
+export default async (data) => {
 
   // Extend outer data with staticData
+  const staticData = await getStaticData();
   let pixelData = assignIn({}, staticData, data);
-
   // Add user context (if any) else bail out
   let currentUserId = CurrentUser.getUserId();
   if(!currentUserId) return;

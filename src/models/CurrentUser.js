@@ -11,8 +11,7 @@ import EventEmitter from "eventemitter3";
 import {navigateTo} from "../helpers/navigateTo";
 import AppConfig from '../constants/AppConfig';
 
-// Used require to support all platforms
-const RCTNetworking = require('RCTNetworking');
+const RCTNetworking = require('react-native/Libraries/Network/RCTNetworking'); 
 
 let utilities = null;
 import('../services/Utilities').then((pack) => {
@@ -189,7 +188,7 @@ class CurrentUser {
       });
   }
 
-  onLogout( params ){
+  async onLogout( params ){ 
     return RCTNetworking.clearCookies(async () => {
        this.getEvent().emit("onUserLogout");
        navigateTo.resetAllNavigationStack();
