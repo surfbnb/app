@@ -17,6 +17,7 @@ class FfmpegProcesser {
       let compressStartedAt = Date.now();
       console.log('compress: compression started at:', compressStartedAt);
       let executeResponse = await RNFFmpeg.execute(executeString);
+      return reject('Forcefully cancelled');
       if (executeResponse.rc === 0) {
         // rc = 0, means successful compression
         let compressFinishedAt = Date.now();
@@ -46,7 +47,6 @@ class FfmpegProcesser {
     }
     command += `-filter_complex ${complexFilter}concat=n=${this.inputFiles.length}:v=1:a=1[v][a] -map [v] -map [a] -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -crf ${AppConfig.compressionConstants.CRF} -preset ${AppConfig.compressionConstants.PRESET} -pix_fmt ${AppConfig.compressionConstants.PIX_FMT} -vcodec h264 ${this.outputPath}`;
     return command;
-
   }
 
   cancel() {

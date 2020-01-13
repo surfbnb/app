@@ -355,13 +355,19 @@ class CameraWorker extends PureComponent {
       !this.postToPepoApi
     ) {
       this.postToPepoApi = true;
-      let videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);
-      let videoSize = videoInfo.size;
-      let imageInfo, imageSize;
+
+      let imageInfo, imageSize, videoInfo, videoSize;
       if(this.props.recorded_video.cover_image !== INVALID){
         imageInfo = await RNFS.stat(this.props.recorded_video.cover_image);
         imageSize = imageInfo.size;
       }
+
+      if (this.props.recorded_video.compressed_video !== INVALID ){
+        videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);
+        videoSize = videoInfo.size;
+
+      }
+
       console.log('CameraWorker.postReplyVideoToPepoApi');
       Store.dispatch(
         upsertRecordedVideo({
@@ -377,18 +383,24 @@ class CameraWorker extends PureComponent {
         video_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         image_width: appConfig.cameraConstants.VIDEO_WIDTH,
         image_height: appConfig.cameraConstants.VIDEO_HEIGHT,
-        video_size: videoSize,
         parent_kind: 'video',
         parent_id: parentVideoId
       };
 
       let payload = payloadWithoutImage;
 
-      if(this.props.recorded_video.cover_image !== INVALID){
+      if (this.props.recorded_video.cover_image !== INVALID) {
         payload = {
           ...payload,
           poster_image_url: this.props.recorded_video.s3_cover_image,
           image_size: imageSize
+        };
+      }
+
+      if (this.props.recorded_video.compressed_video !== INVALID ){
+        payload = {
+          ...payload,
+          video_size: videoSize
         };
       }
 
@@ -397,7 +409,7 @@ class CameraWorker extends PureComponent {
         payload['reply_detail_id'] = replyDetailId;
       }
 
-      new PepoApi(`/replies`)
+      new PepoApi(DataContract.videos.replyVideoUploadApi)
         .post(payload)
         .then((responseData) => {
           Store.dispatch(
@@ -544,7 +556,6 @@ class CameraWorker extends PureComponent {
         console.log('compressVideo:::VideoUploadStatusToProcessing');
         this.VideoUploadStatusToProcessing();
         FfmpegProcesser.init(this.props.recorded_video.raw_video_list);
-
         FfmpegProcesser.compress()
           .then((compressedVideo) => {
             console.log('compressVideo: then', compressedVideo);
@@ -557,7 +568,7 @@ class CameraWorker extends PureComponent {
             resolve();
           })
           .catch((err) => {
-
+            console.log('Ffmpeg failed #invalidCompressedVideo');
             Store.dispatch(
               upsertRecordedVideo({
                 compressed_video: INVALID,
@@ -579,7 +590,7 @@ class CameraWorker extends PureComponent {
         console.log('uploadVideo success :: s3Video', s3Video);
         Store.dispatch(
           upsertRecordedVideo({
-            s3_video: s3Video[0],
+            s3_video: s3Video.length && s3Video[0],
             video_s3_upload_processing: false
           })
         );
@@ -610,13 +621,14 @@ class CameraWorker extends PureComponent {
     }
     this.currentPollingCount += 1;
 
-    return new PepoApi(`/merge-jobs/${this.videoMergeJobId}`)
+    return new PepoApi( DataContract.videos.videoMergePollApi(this.videoMergeJobId))
       .get()
       .then((responseData) => {
         if (responseData.success && responseData.data) {
           let resultType = deepGet(responseData, DataContract.common.resultType),
             videoMergeJobDetails = deepGet(responseData, `data.${resultType}`);
-          if(videoMergeJobDetails.status === 'DONE'){
+          if(videoMergeJobDetails.status === AppConfig.stitchingStatus.done){
+            console.log(videoMergeJobDetails.merged_url, 'videoMergeJobDetails.merged_url');
             Store.dispatch(
               upsertRecordedVideo({
                 s3_video: videoMergeJobDetails.merged_url,
@@ -624,31 +636,31 @@ class CameraWorker extends PureComponent {
               })
             );
             clearInterval(this.pollingForStitchingCompletion);
-          } else if (videoMergeJobDetails.status === 'FAILED') {
+          } else if ( videoMergeJobDetails.status ===  AppConfig.stitchingStatus.failed ) {
             this.pollingFailed();
           }
         } else {
           this.pollingFailed();
-
         }
-      }).catch(()=>{
+      }).catch(() => {
         this.pollingFailed();
       })
   };
 
   stitchingFailedVideoUpload = () => {
+    console.log(this.props.recorded_video.raw_video_list, 'this.props.recorded_video.raw_video_list');
     return this.uploadToS3(this.props.recorded_video.raw_video_list, 'video')
       .then((s3VideoList) => {
+        console.log(s3VideoList, 's3VideoList');
         let resolution = `${appConfig.cameraConstants.VIDEO_WIDTH}*${appConfig.cameraConstants.VIDEO_HEIGHT}`,
         list = s3VideoList.map((s3Video)=>{
           return {video_url:s3Video, resolution}
         });
         let payload = { video_urls : JSON.stringify(list)};
-        return new PepoApi(`/videos/merge-jobs`)
+        return new PepoApi(DataContract.videos.videoMergeApi)
           .post(payload)
           .then((responseData) => {
             if (responseData.success && responseData.data) {
-
               let resultType = deepGet(responseData, DataContract.common.resultType),
                 videoMergeJob = deepGet(responseData, `data.${resultType}`);
                 this.videoMergeJobId = videoMergeJob.id;
@@ -661,11 +673,7 @@ class CameraWorker extends PureComponent {
       })
       .catch((err) => {
         console.log('uploadVideo error :: s3Video', err);
-        Store.dispatch(
-          upsertRecordedVideo({
-            video_s3_upload_processing: false
-          })
-        );
+        this.VideoUploadStatusToNotProcessing();
       });
   };
 
@@ -689,8 +697,6 @@ class CameraWorker extends PureComponent {
         })
       );
       this.VideoUploadStatusToProcessing();
-      console.log('uploadVideo:::VideoUploadStatusToProcessing');
-
       if (this.props.recorded_video.compressed_video === INVALID){
         return this.stitchingFailedVideoUpload();
       } else {
@@ -758,9 +764,14 @@ class CameraWorker extends PureComponent {
       !this.postToPepoApi
     ) {
       this.postToPepoApi = true;
-      let videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);
-      let videoSize = videoInfo.size;
-      let imageInfo, imageSize;
+
+      let imageInfo, imageSize, videoInfo, videoSize ;
+
+      if (this.props.recorded_video.compressed_video !== INVALID) {
+        videoInfo = await RNFS.stat(this.props.recorded_video.compressed_video);
+        videoSize = videoInfo.size;
+      }
+
       if(this.props.recorded_video.cover_image !== INVALID){
         imageInfo = await RNFS.stat(this.props.recorded_video.cover_image);
         imageSize = imageInfo.size;
@@ -780,7 +791,6 @@ class CameraWorker extends PureComponent {
         video_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         image_width: appConfig.cameraConstants.VIDEO_WIDTH,
         image_height: appConfig.cameraConstants.VIDEO_HEIGHT,
-        video_size: videoSize,
         per_reply_amount_in_wei: this.props.recorded_video.reply_amount
       };
 
@@ -794,11 +804,18 @@ class CameraWorker extends PureComponent {
         };
       }
 
-      return new PepoApi(`/users/${this.props.currentUserId}/fan-video`)
+      if (this.props.recorded_video.compressed_video !== INVALID ){
+        payload = {
+          ...payload,
+          video_size: videoSize
+        };
+
+      }
+
+      return new PepoApi(DataContract.videos.fanVideoUploadApi(this.props.currentUserId))
         .post(payload)
         .then((responseData) => {
           if (responseData.success && responseData.data) {
-            console.log('cameraworker---------------',responseData.data );
             console.log('Video uploaded Successfully');
             Toast.show({
               text: 'Your video uploaded successfully.',
@@ -807,8 +824,8 @@ class CameraWorker extends PureComponent {
             });
             let recordedVideo = {...this.props.recorded_video};
             let resultType = deepGet(responseData, DataContract.common.resultType),
-              video = deepGet(responseData, `data.${resultType}[0]` );
-            getPixelDataOnFanVideoSuccess(recordedVideo, video.payload.video_id);
+              videoId = deepGet(responseData, `data.${resultType}[0].payload.video_id` );
+            getPixelDataOnFanVideoSuccess(recordedVideo, videoId);
             Store.dispatch(
               upsertRecordedVideo({
                 do_discard: true,

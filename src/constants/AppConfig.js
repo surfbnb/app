@@ -411,7 +411,13 @@ const AppConfig = {
     parentIconHeight: 46,
     parentIconWidth: 46
   },
-  VideoScreenObject : {} // Please don't delete this empty object a height property has been setting using the bottom function "Object.defineProperty".
+  VideoScreenObject : {}, // Please don't delete this empty object a height property has been setting using the bottom function "Object.defineProperty".
+  stitchingStatus: {
+    done: 'DONE',
+    failed: 'FAILED',
+    not_started:'NOT_STARTED',
+    in_progress:'IN_PROGRESS'
+  }
 
 };
 

@@ -1,23 +1,22 @@
 import PepoApi from './PepoApi';
 import Constants from '../../src/constants/AppConfig';
-import Store from '../store';
+import deepGet from "lodash/get";
 
 export default class UploadToS3 {
   constructor(fileURIs, fileType) {
     this.fileType = fileType;
     this.mappedFileType = Constants['fileUploadTypes'][fileType];
     this.files = this.getFileObject(fileURIs);
-    console.log(this.files, 'this.filesthis.filesthis.filesthis.files');
   }
 
   getFileObject(fileURIs) {
     let fileObjectArray = [];
-    for (let fileURI of fileURIs){
-      let fileExt = this.getFileExtension(fileURI);
+    for (let index in fileURIs){
+      let fileExt = this.getFileExtension(fileURIs[index]);
       fileObjectArray.push({
-        uri: fileURI,
+        uri: fileURIs[index],
         type: `${this.fileType}/${fileExt}`,
-        name: `${this.fileType}_${Date.now()}.${fileExt}`
+        name: `${this.fileType}_${Date.now()}_${index}.${fileExt}`
       })
     }
 
@@ -32,18 +31,16 @@ export default class UploadToS3 {
   perform() {
     return new Promise(async (resolve, reject) => {
       this.getSignedUrl().then (async (signedUrlResp)=>{
-      let uploadResp, listOfS3Urls;
+      let uploadResp,
+        listOfS3Urls = [];
       if (signedUrlResp.success) {
         try {
-          let resultType = signedUrlResp.data['result_type'];
-          let fileNames =  signedUrlResp.data[resultType][this.mappedFileType];
+          let resultType = deepGet(signedUrlResp,'data.result_type');
+          let fileNames =  deepGet(signedUrlResp,`data.${resultType}.${this.mappedFileType}`);
 
-
-          for (let fileName of fileNames){
-
-            uploadResp = await this.upload(fileName);
-
-            if (uploadResp.resp.status == 204) {
+          for (let key in fileNames){
+            uploadResp = await this.upload(fileNames[key], key);
+            if (uploadResp.resp.status === 204 && uploadResp.uploadParams.s3_url) {
               listOfS3Urls.push(uploadResp.uploadParams.s3_url);
             } else {
               return reject();
@@ -78,32 +75,27 @@ export default class UploadToS3 {
     });
   }
 
-  async upload(fileName) {
+  async upload(uploadParams, fileName) {
     let resp;
-    let uploadParams = this.getUploadParams(fileName);
+    // let uploadParams = fileName;
     let postFields = uploadParams.post_fields;
 
-    postFields.push({ key: 'file', value: fileName });
+    let file = this.files.filter((item)=> { console.log(item.name, 'item.name'); console.log(fileName, 'fileName');return item.name === fileName});
+    postFields.push({ key: 'file', value: file.length && file[0]  });
 
-    let options = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      method: 'POST',
-      body: this.getFormData(uploadParams.post_fields)
-    };
-    try {
+    try{
+      let options = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        method: 'POST',
+        body: this.getFormData(uploadParams.post_fields)
+      };
       resp = await fetch(uploadParams.post_url, options);
-    } catch (e) {
-      console.log(e);
-      throw(1);
+    } catch(e){
+      console.log('eeeeee--------', e);
     }
     return {resp, uploadParams};
-  }
-
-  getUploadParams(fileName) {
-    let resultType = res.data['result_type'];
-    return res.data[resultType][this.mappedFileType][fileName];
   }
 
   getFormData(paramsList) {
