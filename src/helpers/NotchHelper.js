@@ -53,4 +53,5 @@ const hasNotchRemote =  () => {
   return false;
 };
 
-export const hasNotch = () => DeviceInfo.hasNotch() || hasNotchRemote();
+//TODO version update read from Cache
+export const hasNotch = () =>  { return DeviceInfo.hasNotch() || hasNotchRemote() } ;

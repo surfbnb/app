@@ -3,7 +3,7 @@ import DeviceInfo from 'react-native-device-info';
 class DeviceInfoCache {
 
     constructor(){
-        this.deviceName = null;
+        this.deviceName = "";
         this.userAgent = null;
     }
 
