@@ -3,6 +3,7 @@ import qs from 'qs';
 import NetInfo from '@react-native-community/netinfo';
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import DeviceInfoCache from "../helpers/DeviceInfoCache";
 
 import Toast from '../theme/components/NotificationToast';
 import { API_ROOT } from '../constants/index';
@@ -14,8 +15,6 @@ import('../models/CurrentUser').then((imports) => {
   CurrentUser = imports.default;
 });
 
-let userAgent = null;
-
 export default class PepoApi {
   constructor(url, params = {}) {
     this.url = url;
@@ -24,7 +23,7 @@ export default class PepoApi {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': userAgent,
+        'User-Agent': DeviceInfoCache.getUserAgent(),
         'X-PEPO-DEVICE-OS': Platform.OS,
         'X-PEPO-DEVICE-OS-VERSION': DeviceInfo.getSystemVersion(),
         'X-PEPO-DEVICE-ID': DeviceInfo.getUniqueId(),
@@ -63,17 +62,6 @@ export default class PepoApi {
     this.parsedParams = AssignIn(this.defaultParams, this.params);
   }
 
-  _getParsedParams = async () => {
-    if(!this.parsedParams.headers['User-Agent']) {
-      //@Ashutosh @Akshay gives error WKWebView is invalidated. debug. Check file PixelCall as well.
-      try{
-        userAgent = await DeviceInfo.getUserAgent();
-        this.parsedParams.headers['User-Agent'] = userAgent;
-      }catch( e ) {};
-    } 
-    return this.parsedParams;
-  }
-
   _perform() {
     return new Promise(async (resolve, reject) => {
       try {
@@ -89,12 +77,10 @@ export default class PepoApi {
           throw UIWhitelistedErrorCode['no_internet'];
         }
 
-        const parsedParams = await this._getParsedParams(); 
-
         let t1 = Date.now();
-        console.log(`Requesting ${this.cleanedUrl} with options:`, parsedParams);
+        console.log(`Requesting ${this.cleanedUrl} with options:`, this.parsedParams);
 
-        let response = await fetch(this.cleanedUrl, parsedParams),
+        let response = await fetch(this.cleanedUrl, this.parsedParams),
           responseStatus = parseInt(response.status),
           responseJSON = await response.json();
 

@@ -1,4 +1,5 @@
 import DeviceInfo from 'react-native-device-info';
+import DeviceInfoCache from "../helpers/DeviceInfoCache";
 import AsyncStorage from '@react-native-community/async-storage';
 import { devices } from '../constants/notch-devices';
 
@@ -37,9 +38,10 @@ export const getLocalNotchData = async () => {
 };
 
 
-const hasNotchRemote = async () => {
+const hasNotchRemote =  () => {
   if(devicesWithNotch.length > 0){
-    const deviceName = await  DeviceInfo.getDeviceName() ;
+    const deviceName = DeviceInfoCache.getDeviceName() ;
+    console.log("deviceName====" , deviceName );
     return (
       devicesWithNotch.findIndex(
         item =>
