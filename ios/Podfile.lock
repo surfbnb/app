@@ -331,10 +331,6 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.5)
   - ReactNativeART (1.1.2):
     - React
-  - ReactNativeFabric (0.5.2):
-    - Crashlytics
-    - Fabric
-    - React
   - RNCAsyncStorage (1.7.1):
     - React
   - RNDeviceInfo (5.4.0):
@@ -415,7 +411,6 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
-  - ReactNativeFabric (from `../node_modules/react-native-fabric`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
@@ -526,8 +521,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeART:
     :path: "../node_modules/@react-native-community/art"
-  ReactNativeFabric:
-    :path: "../node_modules/react-native-fabric"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNDeviceInfo:
@@ -606,7 +599,6 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeART: c496c53089b3149663215d74d6f1adb3a62e07eb
-  ReactNativeFabric: d05320ff347d5c72567c115b97edeead111ac4d2
   RNCAsyncStorage: 8539fc80a0075fcc9c8e2dff84cd22dc5bf1dacf
   RNDeviceInfo: d0fff8432ccdf276cb342a52e665ea6dd311472e
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
