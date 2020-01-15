@@ -41,7 +41,6 @@ export const getLocalNotchData = async () => {
 const hasNotchRemote =  () => {
   if(devicesWithNotch.length > 0){
     const deviceName = DeviceInfoCache.getDeviceName() ;
-    console.log("deviceName====" , deviceName );
     return (
       devicesWithNotch.findIndex(
         item =>

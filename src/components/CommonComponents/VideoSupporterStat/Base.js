@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 
 import pricer from '../../../services/Pricer';
 import inlineStyles from '../../Home/styles';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import Utilities from "../../../services/Utilities";
 import CurrentUser from '../../../models/CurrentUser';

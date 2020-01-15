@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text , TouchableWithoutFeedback} from 'react-native';
 
 import inlineStyles from './styles';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import reduxGetter from '../../services/ReduxGetters';
 
 import multipleClickHandler from '../../services/MultipleClickHandler';

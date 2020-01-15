@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View , Text , Image } from 'react-native';
+import { View , Text , Image , TouchableWithoutFeedback} from 'react-native';
 import { withNavigation } from 'react-navigation';
 import inlineStyles from './styles';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import cameraIconWhite from '../../../assets/reply-video-white.png';
 
 import {navigateToCamera, replyPreValidationAndMessage} from "../../../helpers/cameraHelper";
