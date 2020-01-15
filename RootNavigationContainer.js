@@ -60,6 +60,7 @@ import FullScreenVideoCollection from './src/components/FullScreenVideoCollectio
 import VideoReplies from './src/components/VideoReplies';
 import FullScreenReplyCollection from './src/components/FullScreenReplyCollection';
 import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
+import TwitterWebLogin from './src/components/TwitterWebLogin';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -384,6 +385,7 @@ const RootNavigationContainer = () => (
     <PaymentWorker />
     <PushNotificationManager />
     <UniversalLinksManager />
+    <TwitterWebLogin/>
   </Root>
 );
 

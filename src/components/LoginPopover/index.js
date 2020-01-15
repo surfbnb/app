@@ -16,6 +16,7 @@ import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
+import { TwitterWebLoginActions } from '../TwitterWebLogin';
 
 let TwitterAuthService;
 import('../../services/TwitterAuthService').then((imports) => {
@@ -55,7 +56,8 @@ class loginPopover extends React.Component {
 
   onSignUp = () => {
     this.setState({ disableLoginBtn: true });
-    TwitterAuthService.signUp();
+    //TwitterAuthService.signUp();
+    TwitterWebLoginActions.signIn();
   };
 
   //Use this function if needed to handle hardware back handling for android.
