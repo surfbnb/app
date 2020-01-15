@@ -1,6 +1,5 @@
 import React  from 'react';
-import {Text, View } from 'react-native';
-import {TouchableWithoutFeedback} from "react-native";
+import {Text, View , TouchableWithoutFeedback} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 
