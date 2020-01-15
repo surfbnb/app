@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, BackHandler, Platform, Alert, Keyboard } from 'react-native';
+import { View, Text, Image, TouchableOpacity, BackHandler, TouchableWithoutFeedback, Alert, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
@@ -60,7 +59,7 @@ class ProfileEdit extends React.PureComponent {
     return {
       headerBackTitle: null,
       headerLeft: (
-        <TouchableWithoutFeedback
+        <TouchableOpacity
           onPress={() => {
             const onCancel = navigation.getParam('onCancel');
             if (onCancel) {
@@ -71,7 +70,7 @@ class ProfileEdit extends React.PureComponent {
           }}
         >
           <BackArrow forcePaddingLeft={true} />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       ),
       headerStyle: {
         backgroundColor: Colors.white,

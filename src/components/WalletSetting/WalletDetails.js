@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Alert, FlatList, Linking, Platform, Text, TouchableWithoutFeedback, View, Image, Clipboard} from 'react-native';
+import {FlatList, Text, TouchableWithoutFeedback, View, Image, Clipboard} from 'react-native';
 import inlineStyle from './walletDetailsStyles';
 import {LoadingModal} from '../../theme/components/LoadingModalCover';
 import Colors from "../../theme/styles/Colors";
@@ -8,7 +8,7 @@ import BackArrow from '../CommonComponents/BackArrow';
 import iconCopy from '../../assets/icon-copy.png';
 import viewIcon from '../../assets/open-view.png';
 
-import { OstWalletSdk, OstWalletSdkUI, OstJsonApi} from '@ostdotcom/ost-wallet-sdk-react-native';
+import { OstWalletSdk, OstJsonApi} from '@ostdotcom/ost-wallet-sdk-react-native';
 import OstWalletSdkHelper from "../../helpers/OstWalletSdkHelper";
 import {ostSdkErrors} from "../../services/OstSdkErrors";
 import CurrentUser from "../../models/CurrentUser";
