@@ -13,6 +13,7 @@ import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.links.RNFirebaseLinksPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
+import com.pepo2.bridge.PepoNativePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          packages.add(new PepoNativePackage());
           packages.add(new RNFirebaseAnalyticsPackage());
           packages.add(new RNFirebaseMessagingPackage());
           packages.add(new RNFirebaseLinksPackage());
