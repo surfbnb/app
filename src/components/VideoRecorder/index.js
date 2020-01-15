@@ -6,7 +6,8 @@ import {
   Text,
   TouchableWithoutFeedback,
   BackHandler,
-  AppState, FlatList
+  AppState, FlatList, Dimensions,
+  ScrollView, Animated
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
@@ -35,6 +36,10 @@ const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_FACTOR = 0.01;
 let intervalID = null;
 
+const ELEMENT_WIDTH = 80;
+const MARGIN_LEFT_NORMAL =  (Dimensions.get('screen').width / 2 ) - (ELEMENT_WIDTH /2);
+const MARGIN_LEFT_HANDS_FREE =  (Dimensions.get('screen').width / 2 ) - (ELEMENT_WIDTH /2) - ELEMENT_WIDTH;
+
 class VideoRecorder extends Component {
   constructor(props) {
     super(props);
@@ -45,8 +50,10 @@ class VideoRecorder extends Component {
       acceptedCameraTnC: this.props.acceptedCameraTnC,
       showLightBoxOnReply: this.props.showLightBoxOnReply,
       cameraFrontMode: true,
-      isLocalVideoPresent: false
+      isLocalVideoPresent: false,
+      marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL)
     };
+    this.currentMode = 'NORMAL';
     this.videoUrlsList = [];
     this.separationBars = [];
     this.camera = null;
@@ -359,27 +366,33 @@ class VideoRecorder extends Component {
             <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
           </TouchableOpacity>
           <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
-          <View >
+          <View>
             <View style={[styles.bottomWrapper ]}>
               {this.flipButton()}
               {this.getActionButton()}
               {this.previewButton()}
             </View>
+            {this.renderModeRow()}
 
-            <FlatList
-              // ref={(list) => (this.userFlatList = list)}
-              style={{ width: '100%' }}
-              contentContainerStyle={{ flexDirection: 'row', width: '100%', alignSelf: 'stretch'}}
-              horizontal={true}
-              pagingEnabled={true}
-              data={[0, 1]}
-              // viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
-              // onViewableItemsChanged={this.toggleScreen}
-              // keyExtractor={this._keyExtractor}
-              renderItem={this.renderItem}
-              // onScroll={this.flScrolled}
-              // onScrollToIndexFailed={this.onScrollToIndexFailed}
-            />
+            {/*<FlatList*/}
+            {/*  ref={(list) => (this.flatList = list)}*/}
+            {/*  style={{ width: '50%' }}*/}
+            {/*  contentContainerStyle={{ flexDirection: 'row', width: '50%', alignSelf: 'stretch', backgroundColor:'yellow'}}*/}
+            {/*  horizontal={true}*/}
+            {/*  getItemLayout={(data, index) => (*/}
+            {/*    {length: 100, offset: 100 * index, index}*/}
+            {/*  )}*/}
+            {/*  pagingEnabled={true}*/}
+            {/*  data={[0, 1, 2]}*/}
+            {/*  onViewableItemsChanged={this.onViewableItemsChanged}*/}
+            {/*  onScrollToIndexFailed={()=>{}}*/}
+            {/*  // viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}*/}
+            {/*  // onViewableItemsChanged={this.toggleScreen}*/}
+            {/*  // keyExtractor={this._keyExtractor}*/}
+            {/*  renderItem={this.renderItem}*/}
+            {/*  // onScroll={this.flScrolled}*/}
+            {/*  // onScrollToIndexFailed={this.onScrollToIndexFailed}*/}
+            {/*/>*/}
           </View>
           </View>
         </React.Fragment>
@@ -387,12 +400,92 @@ class VideoRecorder extends Component {
     }
   };
 
-  renderItem = (ele) => {
-    console.log(ele, 'item---------');
-    return <View style={{height: 15,backgroundColor:'red'}}>
-      <Text >{ele.item}</Text>
-    </View>
+  renderModeRow = () => {
+    let elements =  ['Normal','Hands free'].map((item, index)=> {
+      return <TouchableWithoutFeedback onPress={()=>{
+        if (index === 0){
+          this.currentMode = 'NORMAL';
+
+          Animated.timing(this.state.marginLeft, {
+            toValue: MARGIN_LEFT_NORMAL,
+            // easing: Easing.back(),
+            duration: 200,
+            // useNativeDriver: true
+          }).start();
+
+          // this.setState({marginLeft: MARGIN_LEFT_NORMAL});
+        } else if(index === 1){
+          this.currentMode = 'HANDS_FREE';
+          Animated.timing(this.state.marginLeft, {
+            toValue: MARGIN_LEFT_HANDS_FREE,
+            // easing: Easing.back(),
+            duration: 200,
+            // useNativeDriver: true
+          }).start();
+
+          // this.setState({marginLeft: MARGIN_LEFT_HANDS_FREE});
+        }
+      }}
+      >
+      <View style={{marginHorizontal: 2, height: 30, width: ELEMENT_WIDTH, alignItems: 'center', justifyContent:'center'}}>
+        <Text style={{color: '#fff', fontWeight:'600' }}>{item}</Text>
+      </View>
+      </TouchableWithoutFeedback>
+    });
+    return <Animated.View onScroll={this.onScroll}  onMomentumScrollBegin={this.onMomentumScrollBegin}  onScrollBeginDrag={this.onScrollBeginDrag} horizontal={true} style={{marginLeft: this.state.marginLeft, flexDirection: 'row'}}>{elements}</Animated.View>
   };
+
+  onViewableItemsChanged = () => {
+    console.log('onViewableItemsChanged', this.flatList);
+    // this.flatList && this.flatList.scrollToIndex({index:1});
+  }
+
+  onScroll = (event) => {
+
+    let currentOffset = event.nativeEvent.contentOffset.x;
+    let direction = currentOffset > this.offset ? 'right' : 'left';
+    this.offset = currentOffset;
+    console.log(direction, 'direction------');
+
+
+
+  }
+  onMomentumScrollBegin = (eve) => {
+    console.log('onMomentumScrollBegin', eve, eve.nativeEvent.contentOffset.x);
+  }
+
+  onScrollBeginDrag = (event) => {
+    console.log(event, 'event-----------', event.nativeEvent.contentOffset.x);
+    let currentOffset = event.nativeEvent.contentOffset.x;
+    var direction = currentOffset > this.offset ? 'down' : 'up';
+    this.offset = currentOffset;
+    console.log(direction, 'direction-----------');
+    if (this.currentMode === 'NORMAL' ) {
+      this.currentMode = 'HANDS_FREE';
+      this.setState({marginLeft: MARGIN_LEFT_HANDS_FREE});
+    } else if (this.currentMode === 'HANDS_FREE') {
+      this.currentMode = 'NORMAL';
+      this.setState({marginLeft: MARGIN_LEFT_NORMAL});
+    }
+
+
+
+
+
+  };
+  //
+  // renderItem = (ele) => {
+  //   console.log(ele, 'item---------');
+  //   return <TouchableWithoutFeedback onPress={()=>{console.log(ele);console.log('heuuuuuuuuu');
+  //   // this.flatList.scrollToOffset({offset:1});
+  //   this.flatList.scrollToItem({item: ele.item, viewPosition: 0.5})
+  //     this.flatList.scrollToIndex({index: ele.index, viewPosition: 0.5})
+  //   }}>
+  //   <View style={{height: 15,backgroundColor:'red', width:100, alignItems: 'center', alignSelf:'center'}}>
+  //     <Text >{ele.item}</Text>
+  //   </View>
+  //   </TouchableWithoutFeedback>
+  // };
 
   previewPressHandler = () => {
     if (this.discardVideo) return;
@@ -460,14 +553,19 @@ class VideoRecorder extends Component {
     }
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{color: 'white', marginTop: 5, letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Tap to record</Text>
+          <View style={{backgroundColor: '#eee', marginBottom: 10, position: 'relative', paddingVertical: 4, paddingHorizontal: 6, alignItems: 'center', justifyContent:'center', borderRadius: 4 }}>
+          <Text style={{ letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>
+            Tap to record
+          </Text>
+            <View style={{height:12,width:12, top: '100%', marginTop: 2, backgroundColor: '#eee', alignSelf:'center', position: 'absolute', transform: [{ rotate: '45deg'}] }}></View>
+          </View>
           <TouchableOpacity onPress={onPressCallback}>
             <Image style={styles.captureButtonSkipFont} source={source} />
           </TouchableOpacity>
-          { !this.state.isRecording ?
-            ( <Text style={{color: 'white', marginTop: 5, letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Normal</Text> )
-            : ( <Text style={{marginTop:5 }}/> )
-          }
+          {/*{ !this.state.isRecording ?*/}
+          {/*  ( <Text style={{color: 'white', marginTop: 5, letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Normal</Text> )*/}
+          {/*  : ( <Text style={{marginTop:5 }}/> )*/}
+          {/*}*/}
         </View>
     );
   }
