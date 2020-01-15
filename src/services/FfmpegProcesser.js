@@ -13,17 +13,15 @@ class FfmpegProcesser {
       RNFFmpeg.cancel();
       this.getOutputPath();
 
-      let executeString = this.getCompressCommand();  //   `-i ${this.inputFileUri} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -crf ${AppConfig.compressionConstants.CRF} -preset ${AppConfig.compressionConstants.PRESET} -pix_fmt ${AppConfig.compressionConstants.PIX_FMT} -vcodec h264 ${this.outputPath}`;
+      let executeString = this.getCompressCommand();
       let compressStartedAt = Date.now();
       console.log('compress: compression started at:', compressStartedAt);
       let executeResponse = await RNFFmpeg.execute(executeString);
-      return reject('Forcefully cancelled');
       if (executeResponse.rc === 0) {
         // rc = 0, means successful compression
         let compressFinishedAt = Date.now();
         console.log ('compress: compression finished successfully at:', compressFinishedAt);
         console.log ('compress: Time for compression (In ms)', compressFinishedAt - compressStartedAt);
-
         resolve(this.outputPath);
       } else if (executeResponse.rc == 255) {
         // Forcefully cancelled
@@ -55,20 +53,19 @@ class FfmpegProcesser {
 
   getVideoThumbnail() {
     return new Promise(async (resolve, reject) => {
-      this.getCoverOutputPath();
       if (this.inputFiles.length < 1){
         return reject();
       }
+      this.getCoverOutputPath();
       let executeString = `-i ${this.inputFiles[0]} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -vframes 1 -q:v 10 ${this.coverFileOutputPath}`;
       console.log(executeString);
       RNFFmpeg.cancel();
       let executeResponse = await RNFFmpeg.execute(executeString);
       if (executeResponse.rc === 0) {
-        console.log('getVideoThumbnail: Thumbnail created ', this.outputImageFile);
         // rc = 0, means successful compression
         return resolve(this.coverFileOutputPath);
       } else {
-        console.log('getVideoThumbnail: Thumbnail failed ', this.outputImageFile);
+        console.log('================== thumbnail create failed ==================');
         // compression is failed
         return reject();
       }

@@ -38,11 +38,8 @@ let stylesMap = {
   progressBar: {
     borderRadius: 3.5,
     borderColor: Colors.white,
-    borderWidth: 0.5,
-    height: 7,
-    width: '90%',
-    marginLeft: 10,
-    marginRight: 10
+    borderWidth: 1,
+    height: 7
   },
   cancelButton: {
     position: 'absolute',

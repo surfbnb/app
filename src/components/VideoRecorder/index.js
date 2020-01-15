@@ -6,7 +6,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   BackHandler,
-  AppState
+  AppState, FlatList
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
@@ -48,6 +48,7 @@ class VideoRecorder extends Component {
       isLocalVideoPresent: false
     };
     this.videoUrlsList = [];
+    this.separationBars = [];
     this.camera = null;
     this.videoLength = 0;
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
@@ -330,10 +331,18 @@ class VideoRecorder extends Component {
 
   };
 
+  plotSeparationBars = () => {
+    let plotBars = this.separationBars.map((ele)=> ele);
+    return plotBars;
+  };
+
+
   showCameraActions = () => {
     if (this.shouldShowActionButtons()) {
+      console.log(this.separationBars, 'this.separationBarsthis.separationBars');
       return (
         <React.Fragment>
+          <View style={{position: 'relative', height: 7, width: '90%' }}>
           <ProgressBar
             width={null}
             color="#EF5566"
@@ -341,22 +350,48 @@ class VideoRecorder extends Component {
             indeterminate={false}
             style={styles.progressBar}
           />
+            <React.Fragment>
+              {this.plotSeparationBars()}
+            </React.Fragment>
+          </View>
 
           <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
             <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
           </TouchableOpacity>
-          <View style={[styles.bottomWrapper]}>
-            {this.flipButton()}
-            {this.getActionButton()}
-            {this.previewButton()}
-            {/*{!this.state.isRecording && <View style={{flex: 1}}/> }*/}
+          <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
+          <View >
+            <View style={[styles.bottomWrapper ]}>
+              {this.flipButton()}
+              {this.getActionButton()}
+              {this.previewButton()}
+            </View>
 
-
-
+            <FlatList
+              // ref={(list) => (this.userFlatList = list)}
+              style={{ width: '100%' }}
+              contentContainerStyle={{ flexDirection: 'row', width: '100%', alignSelf: 'stretch'}}
+              horizontal={true}
+              pagingEnabled={true}
+              data={[0, 1]}
+              // viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
+              // onViewableItemsChanged={this.toggleScreen}
+              // keyExtractor={this._keyExtractor}
+              renderItem={this.renderItem}
+              // onScroll={this.flScrolled}
+              // onScrollToIndexFailed={this.onScrollToIndexFailed}
+            />
+          </View>
           </View>
         </React.Fragment>
       );
     }
+  };
+
+  renderItem = (ele) => {
+    console.log(ele, 'item---------');
+    return <View style={{height: 15,backgroundColor:'red'}}>
+      <Text >{ele.item}</Text>
+    </View>
   };
 
   previewPressHandler = () => {
@@ -368,6 +403,7 @@ class VideoRecorder extends Component {
 
 
   previewButton = () => {
+    if (this.state.isRecording || this.videoUrlsList.length === 0) { return <View style={{flex:1}}/> }
     return <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
     <View style={{ flexDirection: 'row' }}>
       <LinearGradient
@@ -387,9 +423,9 @@ class VideoRecorder extends Component {
           onPress={multipleClickHandler(() => {
             this.previewPressHandler()
           })}
-          style={{ height: 40, width:60, alignItems: 'center', justifyContent: 'center' }}
+            style={{ height: 40, width:60, alignItems: 'center', justifyContent: 'center' }}
         >
-          <Text style={{ color: '#fff', fontSize: 14 }}>PREVIEW</Text>
+          <Text style={{ color: '#fff', fontSize: 12 }}>PREVIEW</Text>
         </TouchableOpacity>
       </LinearGradient>
       <View style={styles.triangleRight}></View>
@@ -398,9 +434,19 @@ class VideoRecorder extends Component {
   };
 
   stopRecording = () => {
-    // naviagate from here to other page
+    this.appendNewBar();
     this.intervalManager(false);  // for clearInterval
     this.camera && this.camera.stopRecording();
+  };
+
+  appendNewBar = () => {
+    let progress = Math.floor(this.state.progress * 100);
+    if(progress === 100){
+      return
+    }
+    this.separationBars.push((
+      <View key={progress} style={{backgroundColor: '#fff', width: 2.5, height: 7, position: 'absolute', left: `${progress}%`}}>
+      </View>));
   };
 
   getActionButton() {

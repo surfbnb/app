@@ -61,10 +61,6 @@ export default class UploadToS3 {
     return new Promise((resolve, reject)=>{
 
       let fileNamesArray = this.files.map((fileObj)=>{ return fileObj.name });
-      console.log(fileNamesArray, 'fileNamesArrayfileNamesArray');
-
-
-
       new PepoApi('/upload-params').get({
         [this.mappedFileType]: fileNamesArray
       }).then((res)=>{
@@ -80,8 +76,8 @@ export default class UploadToS3 {
     // let uploadParams = fileName;
     let postFields = uploadParams.post_fields;
 
-    let file = this.files.filter((item)=> { console.log(item.name, 'item.name'); console.log(fileName, 'fileName');return item.name === fileName});
-    postFields.push({ key: 'file', value: file.length && file[0]  });
+    let file = this.files.filter((item) => { return item.name === fileName });
+    postFields.push({ key: 'file', value: file.length && file[0] });
 
     try{
       let options = {
@@ -93,7 +89,7 @@ export default class UploadToS3 {
       };
       resp = await fetch(uploadParams.post_url, options);
     } catch(e){
-      console.log('eeeeee--------', e);
+      console.log('Error', e);
     }
     return {resp, uploadParams};
   }
