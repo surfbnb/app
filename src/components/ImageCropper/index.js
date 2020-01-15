@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Image, ImageEditor, Dimensions, View } from 'react-native';
+import { Image, Dimensions, View } from 'react-native';
+import ImageEditor from "@react-native-community/image-editor"; 
 import ImageZoom from 'react-native-image-pan-zoom';
 import ImageSize from 'react-native-image-size';
 
@@ -116,7 +117,7 @@ class ImageCropper extends Component {
       resizeMode: 'stretch'
     };
 
-    return new Promise((resolve, reject) => ImageEditor.cropImage(imageUri, cropData, resolve, reject));
+    return ImageEditor.cropImage(imageUri, cropData);
   };
 
   static computeXOffSet(factoredCropperRadius, displayImgWidth, actualImageWidth, zoomerX) {

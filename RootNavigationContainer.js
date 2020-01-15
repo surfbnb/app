@@ -72,6 +72,8 @@ const customTabHiddenRoutes = [
   'VideoReplies',
   'FullScreenReplyCollection',
   'FullScreenVideoCollection',
+  'CaptureImageScreen',
+  'ImageGalleryScreen',
   'UserVideoHistory',
   'VideoPlayer',
   'VideoReplyPlayer'

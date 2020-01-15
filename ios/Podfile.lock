@@ -278,6 +278,9 @@ PODS:
   - react-native-ffmpeg/min-gpl-lts (0.4.0):
     - mobile-ffmpeg-min-gpl (= 4.2.2.LTS)
     - React
+  - react-native-image-editor (2.2.0):
+    - React
+    - React-RCTImage
   - react-native-image-resizer (1.1.0):
     - React
   - react-native-keep-awake (4.0.0):
@@ -393,6 +396,7 @@ DEPENDENCIES:
   - react-native-camera (from `../node_modules/react-native-camera`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-ffmpeg/min-gpl-lts (from `../node_modules/react-native-ffmpeg/ios/react-native-ffmpeg.podspec`)
+  - "react-native-image-editor (from `../node_modules/@react-native-community/image-editor`)"
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-keep-awake (from `../node_modules/react-native-keep-awake`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -424,7 +428,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/cocoapods/specs.git:
     - boost-for-react-native
     - Crashlytics
     - Fabric
@@ -487,6 +491,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-ffmpeg:
     :podspec: "../node_modules/react-native-ffmpeg/ios/react-native-ffmpeg.podspec"
+  react-native-image-editor:
+    :path: "../node_modules/@react-native-community/image-editor"
   react-native-image-resizer:
     :path: "../node_modules/react-native-image-resizer"
   react-native-keep-awake:
@@ -582,6 +588,7 @@ SPEC CHECKSUMS:
   react-native-camera: 6eaa78f9afda93fab531ba92f597c0b137244777
   react-native-cameraroll: ad20f5a93c25cb83a76455df57a2c62fbb63aaed
   react-native-ffmpeg: 35e303059e3c958cb74e271a45f9391d044f915a
+  react-native-image-editor: e52b0c069384c71963c6b5e8a1a4d7f5d7189ac9
   react-native-image-resizer: 9dfb844937574db849fd18a56d8e6c607b0a31d8
   react-native-keep-awake: eba3137546b10003361b37c761f6c429b59814ae
   react-native-netinfo: 332d617e448eddc12697c7818185861e6114aebf
@@ -613,6 +620,6 @@ SPEC CHECKSUMS:
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 3d6ffa0da632cedcd3d25b21e9fed6b1d9a66535
+PODFILE CHECKSUM: d1a757a3c53d7b67c308b69e65b0adbf62f5310c
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.5
