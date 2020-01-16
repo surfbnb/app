@@ -18,6 +18,7 @@ import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
 import TwitterWebLoginActions from '../TwitterWebLogin';
 import GmailOAuth from '../../services/ExternalLogin/GmailOAuth';
+import GitHubOAuth from '../../services/ExternalLogin/GitHubOAuth';
 
 let TwitterAuthService;
 import('../../services/TwitterAuthService').then((imports) => {
@@ -53,25 +54,21 @@ class loginPopover extends React.Component {
       },
       apple: {
         header: 'Continue with Apple',
-        pressHandler: this.twitterPressHandler,
+        pressHandler: this.applePressHandler,
         icon: twitterBird
       },
       gmail:{
         header: 'Continue with Gmail',
-        pressHandler: this.twitterPressHandler,
+        pressHandler: this.gmailPressHandler,
         icon: twitterBird
       },
       github: {
         header: 'Continue with Github',
-        pressHandler: this.twitterPressHandler,
+        pressHandler: this.githubPressHandler,
         icon: twitterBird
       },
     };
   };
-
-  twitterPressHandler = () => {
-    console.log('twitterPressHandler', this);
-  }
 
   componentWillUnmount() {
     this.state.disableLoginBtn = false;
@@ -85,18 +82,33 @@ class loginPopover extends React.Component {
     }
   }
 
-  onTwitterSignUp = () => {
+  gmailPressHandler = async() => {
+    let response = await GmailOAuth.signIn();
+    if(response && response.success){
+      console.log("logged in with gmail", response);
+    } else {
+
+    }
+  }
+
+  githubPressHandler = async() => {
+    let response = await GitHubOAuth.signIn();
+    if(response && response.success){
+      console.log("logged in with github", response);
+    } else {
+
+    }
+  }
+
+  twitterPressHandler = () => {
     this.setState({ disableLoginBtn: true });
     //TwitterAuthService.signUp();
     LoginPopoverActions.hide();
     TwitterWebLoginActions.signIn();
-  };
+  }
 
-  onGmailSignUp = () => {
-    let response = GmailOAuth.signIn();
-    if(response && response.success){
-      console.log("logged in with gmail", response);
-    }
+  applePressHandler = () => {
+
   }
 
   //Use this function if needed to handle hardware back handling for android.

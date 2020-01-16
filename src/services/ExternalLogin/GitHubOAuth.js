@@ -1,30 +1,23 @@
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 
 const config = {
-  issuer: 'https://accounts.google.com',
-  clientId: '244190786286-nf5vscpeh5bclog3f89klr8s4v5afgtl.apps.googleusercontent.com',
-  redirectUrl: 'com.googleusercontent.apps.244190786286-nf5vscpeh5bclog3f89klr8s4v5afgtl:/oauth2redirect/google',
-  scopes: ['openid', 'profile']
-};
+  clientId: '58a09b55ccbcd1f6909f',
+  clientSecret: '96bae48081191810aa8850456f9d279c672e0b42',
+  redirectUrl: 'PepoStaging-08012020://oauth', //note: path is required
+  serviceConfiguration: {
+    authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+    tokenEndpoint: `https://github.com/login/oauth/access_token`,
+    revocationEndpoint: `https://github.com/settings/connections/applications/58a09b55ccbcd1f6909f`
+  },
+  customHeaders :{
+    token : {
+      token_type: 'bearer'
+    }
+  },
+  scopes: ['read:user', 'user:email']
+}
 
-// const config = {
-//   clientId: '58a09b55ccbcd1f6909f',
-//   clientSecret: '96bae48081191810aa8850456f9d279c672e0b42',
-//   redirectUrl: 'PepoStaging-08012020://oauth', //note: path is required
-//   serviceConfiguration: {
-//     authorizationEndpoint: 'https://github.com/login/oauth/authorize',
-//     tokenEndpoint: `https://github.com/login/oauth/access_token`,
-//     revocationEndpoint: `https://github.com/settings/connections/applications/58a09b55ccbcd1f6909f`
-//   },
-//   customHeaders :{
-//     token : {
-//       token_type: 'bearer'
-//     }
-//   },
-//   scopes: ['read:user', 'user:email']
-// }
-
-class GmailOAuth {
+class GitHubOAuth {
 
     constructor(){
         this.authState = {
@@ -89,4 +82,4 @@ class GmailOAuth {
     };
 }
 
-export default new GmailOAuth();
+export default new GitHubOAuth();
