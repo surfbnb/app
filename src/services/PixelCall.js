@@ -1,5 +1,6 @@
 import {Platform, Dimensions} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import DeviceInfoCache from "../helpers/DeviceInfoCache";
 import qs from 'qs';
 import assignIn from 'lodash/assignIn';
 
@@ -42,25 +43,18 @@ const staticData = {
   device_model: DeviceInfo.getModel(),
   device_platform: DeviceInfo.getSystemVersion(),
   device_os: Platform.OS,
-  device_language: Utilities.getLanguageCode(),
+  device_language: Utilities.getLanguageTag(),
   device_width: Dimensions.get('window').width,
   device_height: Dimensions.get('window').height,
   device_type: 'mobile_app',
-  user_agent: userAgent,
+  user_agent: DeviceInfoCache.getUserAgent(),
   mobile_app_version: DeviceInfo.getVersion()
 };
 
-
-let userAgent = null;
-async function getStaticData(){ 
+function setUserAgent(){ 
   if( !staticData['user_agent']) {
-    try{
-       //@Ashutosh @Akshay gives error WKWebView is invalidated. debug 
-      userAgent = await DeviceInfo.getUserAgent();
-      staticData['user_agent'] = userAgent ;
-    }catch (e){};
+    staticData['user_agent'] =  DeviceInfoCache.getUserAgent();
   }
-  return staticData ;
 }
 
 const mandatoryKeys = ['e_entity', 'e_action', 'p_type'];
@@ -76,10 +70,10 @@ const makeCompactData = params => {
   return compactData;
 };
 
-export default async (data) => {
+export default (data) => {
 
   // Extend outer data with staticData
-  const staticData = await getStaticData();
+  setUserAgent(staticData);
   let pixelData = assignIn({}, staticData, data);
   // Add user context (if any) else bail out
   let currentUserId = CurrentUser.getUserId();
