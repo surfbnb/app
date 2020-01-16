@@ -53,8 +53,8 @@ class loginPopover extends React.Component {
         header: 'Continue with Twitter',
         pressHandler: this.twitterPressHandler,
         icon: cwTwitter,
-        width: 24.6,
-        height: 20
+        width: 21.14,
+        height: 17.14
       },
       apple: {
         header: 'Continue with Apple',
@@ -67,15 +67,15 @@ class loginPopover extends React.Component {
         header: 'Continue with Gmail',
         pressHandler: this.twitterPressHandler,
         icon: cwGmail,
-        width: 28,
-        height: 28
+        width: 21,
+        height: 21
       },
       github: {
         header: 'Continue with Github',
         pressHandler: this.twitterPressHandler,
         icon: cwGithub,
-        width: 25.3,
-        height: 24.6
+        width: 19,
+        height: 18.5
       },
     };
   };
