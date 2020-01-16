@@ -435,44 +435,40 @@ class VideoRecorder extends Component {
     return <Animated.View onScroll={this.onScroll}  onMomentumScrollBegin={this.onMomentumScrollBegin}  onScrollBeginDrag={this.onScrollBeginDrag} horizontal={true} style={{marginLeft: this.state.marginLeft, flexDirection: 'row'}}>{elements}</Animated.View>
   };
 
-  onViewableItemsChanged = () => {
-    console.log('onViewableItemsChanged', this.flatList);
-    // this.flatList && this.flatList.scrollToIndex({index:1});
-  }
+  // onViewableItemsChanged = () => {
+  //   console.log('onViewableItemsChanged', this.flatList);
+  //   // this.flatList && this.flatList.scrollToIndex({index:1});
+  // }
 
-  onScroll = (event) => {
+  // onScroll = (event) => {
+  //
+  //   let currentOffset = event.nativeEvent.contentOffset.x;
+  //   let direction = currentOffset > this.offset ? 'right' : 'left';
+  //   this.offset = currentOffset;
+  //   console.log(direction, 'direction------');
+  //
+  //
+  //
+  // }
+  // onMomentumScrollBegin = (eve) => {
+  //   console.log('onMomentumScrollBegin', eve, eve.nativeEvent.contentOffset.x);
+  // }
 
-    let currentOffset = event.nativeEvent.contentOffset.x;
-    let direction = currentOffset > this.offset ? 'right' : 'left';
-    this.offset = currentOffset;
-    console.log(direction, 'direction------');
+  // onScrollBeginDrag = (event) => {
+  //   console.log(event, 'event-----------', event.nativeEvent.contentOffset.x);
+  //   let currentOffset = event.nativeEvent.contentOffset.x;
+  //   var direction = currentOffset > this.offset ? 'down' : 'up';
+  //   this.offset = currentOffset;
+  //   console.log(direction, 'direction-----------');
+  //   if (this.currentMode === 'NORMAL' ) {
+  //     this.currentMode = 'HANDS_FREE';
+  //     this.setState({marginLeft: MARGIN_LEFT_HANDS_FREE});
+  //   } else if (this.currentMode === 'HANDS_FREE') {
+  //     this.currentMode = 'NORMAL';
+  //     this.setState({marginLeft: MARGIN_LEFT_NORMAL});
+  //   }
+  //};
 
-
-
-  }
-  onMomentumScrollBegin = (eve) => {
-    console.log('onMomentumScrollBegin', eve, eve.nativeEvent.contentOffset.x);
-  }
-
-  onScrollBeginDrag = (event) => {
-    console.log(event, 'event-----------', event.nativeEvent.contentOffset.x);
-    let currentOffset = event.nativeEvent.contentOffset.x;
-    var direction = currentOffset > this.offset ? 'down' : 'up';
-    this.offset = currentOffset;
-    console.log(direction, 'direction-----------');
-    if (this.currentMode === 'NORMAL' ) {
-      this.currentMode = 'HANDS_FREE';
-      this.setState({marginLeft: MARGIN_LEFT_HANDS_FREE});
-    } else if (this.currentMode === 'HANDS_FREE') {
-      this.currentMode = 'NORMAL';
-      this.setState({marginLeft: MARGIN_LEFT_NORMAL});
-    }
-
-
-
-
-
-  };
   //
   // renderItem = (ele) => {
   //   console.log(ele, 'item---------');
@@ -542,6 +538,18 @@ class VideoRecorder extends Component {
       </View>));
   };
 
+  showTooltip = () => {
+    if (this.state.isRecording){
+      return <></>;
+    }
+    return <View style={{backgroundColor: '#eee', marginBottom: 10, position: 'relative', paddingVertical: 4, paddingHorizontal: 6, alignItems: 'center', justifyContent:'center', borderRadius: 4 }}>
+      <Text style={{ letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>
+        {this.currentMode === 'NORMAL'? "Hold to record": "Tap to record" }
+      </Text>
+      <View style={{height:12,width:12, top: '100%', marginTop: 2, backgroundColor: '#eee', alignSelf:'center', position: 'absolute', transform: [{ rotate: '45deg'}] }}></View>
+    </View>;
+  };
+
   getActionButton() {
     let onPressCallback, source;
     if (this.state.isRecording) {
@@ -553,12 +561,7 @@ class VideoRecorder extends Component {
     }
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <View style={{backgroundColor: '#eee', marginBottom: 10, position: 'relative', paddingVertical: 4, paddingHorizontal: 6, alignItems: 'center', justifyContent:'center', borderRadius: 4 }}>
-          <Text style={{ letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>
-            Tap to record
-          </Text>
-            <View style={{height:12,width:12, top: '100%', marginTop: 2, backgroundColor: '#eee', alignSelf:'center', position: 'absolute', transform: [{ rotate: '45deg'}] }}></View>
-          </View>
+          {this.showTooltip()}
           <TouchableOpacity onPress={onPressCallback}>
             <Image style={styles.captureButtonSkipFont} source={source} />
           </TouchableOpacity>
