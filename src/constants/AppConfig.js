@@ -420,6 +420,12 @@ const AppConfig = {
     denied: RESULTS.DENIED,
     blocked: RESULTS.BLOCKED,
     granted: RESULTS.GRANTED
+  },
+  stitchingStatus: {
+    done: 'DONE',
+    failed: 'FAILED',
+    not_started:'NOT_STARTED',
+    in_progress:'IN_PROGRESS'
   }
 
 };

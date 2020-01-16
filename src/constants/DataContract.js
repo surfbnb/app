@@ -77,6 +77,14 @@ export default {
         getVideoDetailsApi : (id) => {
             return `/videos/${id}`;
         },
+        fanVideoUploadApi: (userId) => {
+            return `/users/${userId}/fan-video`
+        },
+        replyVideoUploadApi: `/replies`,
+        videoMergeApi: `/videos/merge-jobs`,
+        videoMergePollApi : (id)=> {
+            return `/videos/merge-jobs/${id}`
+        },
         videoKind: {
             reply : "VIDEO_REPLY",
             video:"FAN_UPDATE"

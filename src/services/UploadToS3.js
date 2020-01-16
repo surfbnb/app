@@ -1,22 +1,26 @@
 import PepoApi from './PepoApi';
 import Constants from '../../src/constants/AppConfig';
-import Store from '../store';
+import deepGet from "lodash/get";
 
 export default class UploadToS3 {
-  constructor(fileURI, fileType) {
+  constructor(fileURIs, fileType) {
     this.fileType = fileType;
     this.mappedFileType = Constants['fileUploadTypes'][fileType];
-    this.file = this.getFileObject(fileURI);
+    this.files = this.getFileObject(fileURIs);
   }
 
-  getFileObject(fileURI) {
-    let fileExt = this.getFileExtension(fileURI);
+  getFileObject(fileURIs) {
+    let fileObjectArray = [];
+    for (let index in fileURIs){
+      let fileExt = this.getFileExtension(fileURIs[index]);
+      fileObjectArray.push({
+        uri: fileURIs[index],
+        type: `${this.fileType}/${fileExt}`,
+        name: `${this.fileType}_${Date.now()}_${index}.${fileExt}`
+      })
+    }
 
-    return {
-      uri: fileURI,
-      type: `${this.fileType}/${fileExt}`,
-      name: `${this.fileType}_${Date.now()}.${fileExt}`
-    };
+    return fileObjectArray;
   }
 
   getFileExtension(file) {
@@ -26,18 +30,26 @@ export default class UploadToS3 {
 
   perform() {
     return new Promise(async (resolve, reject) => {
-      this.getSignedUrl().then (async (signedUrl)=>{
-      let uploadResp;
-      if (signedUrl.success) {
-        try{
-          uploadResp = await this.upload(signedUrl);
+      this.getSignedUrl().then (async (signedUrlResp)=>{
+      let uploadResp,
+        listOfS3Urls = [];
+      if (signedUrlResp.success) {
+        try {
+          let resultType = deepGet(signedUrlResp,'data.result_type');
+          let fileNames =  deepGet(signedUrlResp,`data.${resultType}.${this.mappedFileType}`);
+
+          for (let key in fileNames){
+            uploadResp = await this.upload(fileNames[key], key);
+            if (uploadResp.resp.status === 204 && uploadResp.uploadParams.s3_url) {
+              listOfS3Urls.push(uploadResp.uploadParams.s3_url);
+            } else {
+              return reject();
+            }
+          }
+          return resolve(listOfS3Urls);
         } catch(e){
           return reject();
-        }        
-        if (uploadResp.status == 204) {          
-          return resolve(this.uploadParams.s3_url);
         }
-        return reject();
       }
       }).catch(()=> {
         return reject();
@@ -47,8 +59,10 @@ export default class UploadToS3 {
 
   async getSignedUrl() {
     return new Promise((resolve, reject)=>{
+
+      let fileNamesArray = this.files.map((fileObj)=>{ return fileObj.name });
       new PepoApi('/upload-params').get({
-        [this.mappedFileType]: [this.file && this.file.name]
+        [this.mappedFileType]: fileNamesArray
       }).then((res)=>{
         return resolve(res);
       }).catch(()=>{
@@ -57,31 +71,27 @@ export default class UploadToS3 {
     });
   }
 
-  async upload(res) {
-      let resp;
-    (this.uploadParams = this.getUploadParams(res)), (postFields = this.uploadParams.post_fields);
+  async upload(uploadParams, fileName) {
+    let resp;
+    // let uploadParams = fileName;
+    let postFields = uploadParams.post_fields;
 
-    postFields.push({ key: 'file', value: this.file });
+    let file = this.files.filter((item) => { return item.name === fileName });
+    postFields.push({ key: 'file', value: file.length && file[0] });
 
-    let options = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      method: 'POST',
-      body: this.getFormData(this.uploadParams.post_fields)
-    };
-    try {
-      resp = await fetch(this.uploadParams.post_url, options);
-    } catch (e) {
-      console.log(e);
-      throw(1);
+    try{
+      let options = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        method: 'POST',
+        body: this.getFormData(uploadParams.post_fields)
+      };
+      resp = await fetch(uploadParams.post_url, options);
+    } catch(e){
+      console.log('Error', e);
     }
-    return resp;
-  }
-
-  getUploadParams(res) {
-    let resultType = res.data['result_type'];
-    return res.data[resultType][this.mappedFileType][this.file.name];
+    return {resp, uploadParams};
   }
 
   getFormData(paramsList) {

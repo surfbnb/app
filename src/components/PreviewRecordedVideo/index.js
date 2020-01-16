@@ -21,10 +21,14 @@ class PreviewRecordedVideo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      progress: 0
+      progress: 0,
+      indexOfVideo: 0
     };
+    this.completedVideosDuration = 0;
+    this.currentVideoDuration = 0;
     this.pauseVideo = false;
-    this.cachedVideoUri = this.props.cachedvideoUrl;
+    this.videoUrlsList = this.props.videoUrlsList;
+    this.totalVideoLength = this.props.totalVideoLength;
     this.cancleVideoHandling = this.cancleVideoHandling.bind(this);
   }
 
@@ -33,7 +37,7 @@ class PreviewRecordedVideo extends Component {
 
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    Store.dispatch(upsertRecordedVideo({ raw_video: this.cachedVideoUri }));
+    Store.dispatch(upsertRecordedVideo({ raw_video_list: this.videoUrlsList, video_length: this.totalVideoLength }));
     this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
       if (this.pauseVideo) {
         this.pauseVideo = false;
@@ -66,22 +70,24 @@ class PreviewRecordedVideo extends Component {
   };
 
   handleProgress = (progress) => {
+    let totalProgress = this.completedVideosDuration + progress.currentTime;
     this.setState({
-      progress: progress.currentTime / this.state.duration
+      progress: totalProgress / (this.totalVideoLength/1000)
     });
   };
 
   handleLoad = (meta) => {
-    this.setState({
-      duration: meta.duration
-    });
-    Store.dispatch(upsertRecordedVideo({ video_length : meta.duration }));
+    this.currentVideoDuration = meta.duration;
   };
 
   handleEnd = () => {
-    this.setState({
-      progress: 1
-    });
+    this.completedVideosDuration += this.currentVideoDuration;
+    if (this.videoUrlsList.length - 1 === this.state.indexOfVideo ){
+      this.setState({progress: 1});
+    } else {
+      this.setState({indexOfVideo: this.state.indexOfVideo + 1});
+    }
+
   };
 
   cancleVideoHandling() {
@@ -119,7 +125,7 @@ class PreviewRecordedVideo extends Component {
     return (
       <View style={styles.container}>
         <Video
-          source={{ uri: this.cachedVideoUri }}
+          source={{ uri: this.videoUrlsList[this.state.indexOfVideo] }}
           style={{
             flex:1
           }}
@@ -191,8 +197,10 @@ class PreviewRecordedVideo extends Component {
   }
 
   replay() {
-    this.setState({ progress: 0 });
-    this._video && this._video.seek(0);
+    this.completedVideosDuration = 0;
+    this.currentVideoDuration = 0;
+    this.setState({ progress: 0, indexOfVideo:0 });
+    //this._video && this._video.seek(0);
   }
 }
 
