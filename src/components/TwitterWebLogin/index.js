@@ -1,12 +1,12 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, Modal} from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import DeviceInfo from 'react-native-device-info';
 import {TwitterAuthEmitter} from '../../helpers/Emitters';
 import TwitterOAuth from '../../services/ExternalLogin/TwitterOAuth';
 
-class TwitterWebLogin extends React.Component{
+export default class TwitterWebLogin extends React.Component{
 
     constructor(props){
         super(props);
