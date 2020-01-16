@@ -37,7 +37,7 @@ const staticData = {
   t_gid: DeviceInfo.getUniqueId(),
   u_service_id: 1,
   u_session_id: 'placeholder_u_session_id',
-  u_timezone:  Utilities.getUTCTimeZone(), 
+  u_timezone:  Utilities.getNumbericUTCTimeZone(), 
   device_id: DeviceInfo.getUniqueId(),
   device_model: DeviceInfo.getModel(),
   device_platform: DeviceInfo.getSystemVersion(),

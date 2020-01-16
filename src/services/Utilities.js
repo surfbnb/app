@@ -241,7 +241,11 @@ export default {
   },
 
   getUTCTimeZone(){
-    return momentTimezone.tz(RNLocalize.getTimeZone()).utcOffset();
+    return RNLocalize.getTimeZone();
+  },
+  
+  getNumbericUTCTimeZone(){
+    return momentTimezone.tz(this.getUTCTimeZone()).utcOffset();
   }
 
 };
