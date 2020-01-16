@@ -30,13 +30,9 @@ const mapStateToProps = ({ login_popover }) => {
   }
 };
 
-const btnPreText = {
-  twitter: 'Continue with Twitter',
-  apple: 'Continue with Apple',
-  gmail: 'Continue with Gmail',
-  github: 'Continue with Github'
-};
+
 const btnPostText = 'Connecting...';
+const sequenceOfLoginServices = ['twitter','apple', 'gmail', 'github' ];
 
 class loginPopover extends React.Component {
   constructor(props) {
@@ -44,11 +40,42 @@ class loginPopover extends React.Component {
     this.state = {
       disableLoginBtn: false
     };
+    this.setLoginServicesConfig();
   }
+
+  setLoginServicesConfig = () => {
+    this.loginServicesConfig = {
+      twitter: {
+        header: 'Continue with Twitter',
+        pressHandler: this.twitterPressHandler,
+        icon: twitterBird
+      },
+      apple: {
+        header: 'Continue with apple',
+        pressHandler: this.twitterPressHandler,
+        icon: twitterBird
+      },
+      gmail:{
+        header: 'Continue with gmail',
+        pressHandler: this.twitterPressHandler,
+        icon: twitterBird
+      },
+      github: {
+        header: 'Continue with github',
+        pressHandler: this.twitterPressHandler,
+        icon: twitterBird
+      },
+    };
+  };
+
+  twitterPressHandler = () => {
+    console.log('twitterPressHandler', this);
+  }
+
+
 
   componentWillUnmount() {
     this.state.disableLoginBtn = false;
-    
   }
 
   componentDidUpdate(prevProps) {
@@ -80,6 +107,26 @@ class loginPopover extends React.Component {
     } 
     return btnPreText.twitter;
   }
+
+  getLoginButtons = () => {
+    let buttonsJSX = sequenceOfLoginServices.map((item)=>{
+      let currentServiceConfig = this.loginServicesConfig[item];
+      return <TouchableButton
+        key={item}
+        TouchableStyles={[
+          inlineStyles.loginBtnStyles,
+          this.state.disableLoginBtn ? Theme.Button.disabled : null
+        ]}
+        TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
+        text={currentServiceConfig.header}
+        onPress={currentServiceConfig.pressHandler}
+        source={currentServiceConfig.icon}
+        imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
+        disabled={this.state.disableLoginBtn}
+      />
+    });
+    return buttonsJSX;
+  };
 
   render() {
     return (
@@ -117,54 +164,7 @@ class loginPopover extends React.Component {
                     <Text style={[inlineStyles.desc, {marginBottom: 6, fontSize: 14}]}>
                       Please create an account to continue.
                     </Text>
-                    <TouchableButton
-                      TouchableStyles={[
-                        inlineStyles.loginBtnStyles,
-                        this.state.disableLoginBtn ? Theme.Button.disabled : null
-                      ]}
-                      TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
-                      text={btnPreText.twitter}
-                      onPress={this.onSignUp}
-                      source={twitterBird}
-                      imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
-                      disabled={this.state.disableLoginBtn}
-                    />
-                    <TouchableButton
-                      TouchableStyles={[
-                        inlineStyles.loginBtnStyles,
-                        this.state.disableLoginBtn ? Theme.Button.disabled : null
-                      ]}
-                      TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
-                      text={btnPreText.apple}
-                      //onPress={this.onSignUp}
-                      source={twitterBird}
-                      imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
-                      disabled={this.state.disableLoginBtn}
-                    />
-                    <TouchableButton
-                      TouchableStyles={[
-                        inlineStyles.loginBtnStyles,
-                        this.state.disableLoginBtn ? Theme.Button.disabled : null
-                      ]}
-                      TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
-                      text={btnPreText.gmail}
-                      //onPress={this.onSignUp}
-                      source={twitterBird}
-                      imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
-                      disabled={this.state.disableLoginBtn}
-                    />
-                    <TouchableButton
-                      TouchableStyles={[
-                        inlineStyles.loginBtnStyles,
-                        this.state.disableLoginBtn ? Theme.Button.disabled : null
-                      ]}
-                      TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
-                      text={btnPreText.github}
-                      //onPress={this.onSignUp}
-                      source={twitterBird}
-                      imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
-                      disabled={this.state.disableLoginBtn}
-                    />
+                    {this.getLoginButtons()}
                     <View style={inlineStyles.tocPp}>
                       <Text style={{textAlign: 'center'}}>
                         <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
