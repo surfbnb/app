@@ -9,7 +9,10 @@ import Theme from '../../theme/styles';
 import Store from '../../store';
 import { showLoginPopover, hideLoginPopover, showConnectingLoginPopover } from '../../actions';
 import loggedOutLogo from '../../assets/logged-out-logo.png';
-import twitterBird from '../../assets/twitter-bird.png';
+import cwTwitter from '../../assets/connect-with-twitter.png';
+import cwApple from '../../assets/connect-with-apple.png';
+import cwGmail from '../../assets/connect-with-gmail.png';
+import cwGithub from '../../assets/connect-with-github.png';
 import modalCross from '../../assets/modal-cross-icon.png';
 import ReduxGetter from "../../services/ReduxGetters";
 import multipleClickHandler from '../../services/MultipleClickHandler';
@@ -49,22 +52,30 @@ class loginPopover extends React.Component {
       twitter: {
         header: 'Continue with Twitter',
         pressHandler: this.twitterPressHandler,
-        icon: twitterBird
+        icon: cwTwitter,
+        width: 24.6,
+        height: 20
       },
       apple: {
         header: 'Continue with Apple',
         pressHandler: this.twitterPressHandler,
-        icon: twitterBird
+        icon: cwApple,
+        width: 17.3,
+        height: 20
       },
       gmail:{
         header: 'Continue with Gmail',
         pressHandler: this.twitterPressHandler,
-        icon: twitterBird
+        icon: cwGmail,
+        width: 28,
+        height: 28
       },
       github: {
         header: 'Continue with Github',
         pressHandler: this.twitterPressHandler,
-        icon: twitterBird
+        icon: cwGithub,
+        width: 25.3,
+        height: 24.6
       },
     };
   };
@@ -127,7 +138,7 @@ class loginPopover extends React.Component {
         text={currentServiceConfig.header}
         onPress={currentServiceConfig.pressHandler}
         source={currentServiceConfig.icon}
-        imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
+        imgDimension={{ width: currentServiceConfig.width, height: currentServiceConfig.height, marginRight: 8 }}
         disabled={this.state.disableLoginBtn}
       />
     });
