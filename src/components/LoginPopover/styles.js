@@ -17,14 +17,6 @@ let stylesMap = {
     width: '100%',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    // ...ifIphoneX(
-    //   {
-    //     bottom: getBottomSpace([true])
-    //   },
-    //   {
-    //     bottom: 0
-    //   }
-    // )
     bottom: 0
   },
   crossBtnPos: {
@@ -36,10 +28,23 @@ let stylesMap = {
     alignItems: 'center',
     justifyContent: 'center'
   },
+  loginBtnStyles:{
+    marginTop: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    padding: 8,
+    borderColor: 'rgba(42, 41, 59, 0.3)'
+  },
+  loginBtnTextStyles:{
+    fontSize: 16,
+    color: '#2a293b',
+    fontFamily: 'AvenirNext-Regular'
+  },
   desc: {
     color: Colors.dark,
     fontSize: 16,
-    // lineHeight: 26,
     textAlign: 'center',
     width: '95%'
   },

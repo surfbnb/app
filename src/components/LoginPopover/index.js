@@ -110,42 +110,18 @@ class loginPopover extends React.Component {
                       <Image source={modalCross} style={{ width: 19.5, height: 19 }} />
                     </TouchableOpacity>
                     <Image source={loggedOutLogo} style={{ width: 261, height: 70, marginBottom: 20 }} />
-                    <Text
-                      style={[
-                        inlineStyles.desc,
-                        {
-                          fontWeight: '500'
-                        }
-                      ]}
-                    >
+                    <Text style={[inlineStyles.desc, {fontWeight: '500'}]}>
                       Pepo is a place to discover & support creators.
                     </Text>
-                    <Text
-                      style={[
-                        inlineStyles.desc,
-                        {
-                          marginBottom: 6,
-                          fontSize: 14
-                        }
-                      ]}
-                    >
+                    <Text style={[inlineStyles.desc, {marginBottom: 6, fontSize: 14}]}>
                       Please create an account to continue.
                     </Text>
                     <TouchableButton
                       TouchableStyles={[
-                        {
-                          marginTop: 12,
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '80%',
-                          // marginBottom: 10,
-                          padding: 8,
-                          borderColor: 'rgba(42, 41, 59, 0.3)'
-                        },
+                        inlineStyles.loginBtnStyles,
                         this.state.disableLoginBtn ? Theme.Button.disabled : null
                       ]}
-                      TextStyles={[Theme.Button.btnPinkText, { fontSize: 16, color: '#2a293b', fontFamily: 'AvenirNext-Regular' }]}
+                      TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
                       text={btnPreText.twitter}
                       onPress={this.onSignUp}
                       source={twitterBird}
@@ -154,19 +130,10 @@ class loginPopover extends React.Component {
                     />
                     <TouchableButton
                       TouchableStyles={[
-                        {
-                          marginTop: 12,
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '80%',
-                          // marginBottom: 10,
-                          padding: 8,
-                          borderColor: 'rgba(42, 41, 59, 0.3)'
-                        },
+                        inlineStyles.loginBtnStyles,
                         this.state.disableLoginBtn ? Theme.Button.disabled : null
                       ]}
-                      TextStyles={[Theme.Button.btnPinkText, { fontSize: 16, color: '#2a293b', fontFamily: 'AvenirNext-Regular' }]}
+                      TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
                       text={btnPreText.apple}
                       //onPress={this.onSignUp}
                       source={twitterBird}
@@ -175,19 +142,10 @@ class loginPopover extends React.Component {
                     />
                     <TouchableButton
                       TouchableStyles={[
-                        {
-                          marginTop: 12,
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '80%',
-                          // marginBottom: 10,
-                          padding: 8,
-                          borderColor: 'rgba(42, 41, 59, 0.3)'
-                        },
+                        inlineStyles.loginBtnStyles,
                         this.state.disableLoginBtn ? Theme.Button.disabled : null
                       ]}
-                      TextStyles={[Theme.Button.btnPinkText, { fontSize: 16, color: '#2a293b', fontFamily: 'AvenirNext-Regular' }]}
+                      TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
                       text={btnPreText.gmail}
                       //onPress={this.onSignUp}
                       source={twitterBird}
@@ -196,19 +154,10 @@ class loginPopover extends React.Component {
                     />
                     <TouchableButton
                       TouchableStyles={[
-                        {
-                          marginTop: 12,
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '80%',
-                          // marginBottom: 10,
-                          padding: 8,
-                          borderColor: 'rgba(42, 41, 59, 0.3)'
-                        },
+                        inlineStyles.loginBtnStyles,
                         this.state.disableLoginBtn ? Theme.Button.disabled : null
                       ]}
-                      TextStyles={[Theme.Button.btnPinkText, { fontSize: 16, color: '#2a293b', fontFamily: 'AvenirNext-Regular' }]}
+                      TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
                       text={btnPreText.github}
                       //onPress={this.onSignUp}
                       source={twitterBird}
