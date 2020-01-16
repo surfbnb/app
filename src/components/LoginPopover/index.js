@@ -30,7 +30,12 @@ const mapStateToProps = ({ login_popover }) => {
   }
 };
 
-const btnPreText = 'Connect with Twitter';
+const btnPreText = {
+  twitter: 'Continue with Twitter',
+  apple: 'Continue with Apple',
+  gmail: 'Continue with Gmail',
+  github: 'Continue with Github'
+};
 const btnPostText = 'Connecting...';
 
 class loginPopover extends React.Component {
@@ -72,7 +77,7 @@ class loginPopover extends React.Component {
     if ( this.props.isTwitterConnecting || this.state.disableLoginBtn) {
       return btnPostText;
     } 
-    return btnPreText;
+    return btnPreText.twitter;
   }
 
   render() {
@@ -113,36 +118,99 @@ class loginPopover extends React.Component {
                         }
                       ]}
                     >
-                      Meet the people shaping the
+                      Pepo is a place to discover & support creators.
                     </Text>
                     <Text
                       style={[
                         inlineStyles.desc,
                         {
-                          fontWeight: '500',
-                          marginBottom: 15
+                          marginBottom: 6,
+                          fontSize: 14
                         }
                       ]}
                     >
-                       crypto movement.
+                      Please create an account to continue.
                     </Text>
                     <TouchableButton
                       TouchableStyles={[
-                        Theme.Button.btnSoftBlue,
                         {
-                          marginTop: 15,
+                          marginTop: 12,
                           flexDirection: 'row',
-                          height: 55,
                           alignItems: 'center',
                           justifyContent: 'center',
-                          width: '85%',
-                          marginBottom: 10
+                          width: '80%',
+                          // marginBottom: 10,
+                          padding: 8,
+                          borderColor: 'rgba(42, 41, 59, 0.3)'
                         },
                         this.state.disableLoginBtn ? Theme.Button.disabled : null
                       ]}
-                      TextStyles={[Theme.Button.btnPinkText, { fontSize: 18 }]}
-                      text={this.getConnectBtnText()}
+                      TextStyles={[Theme.Button.btnPinkText, { fontSize: 16, color: '#2a293b', fontFamily: 'AvenirNext-Regular' }]}
+                      text={btnPreText.twitter}
                       onPress={this.onSignUp}
+                      source={twitterBird}
+                      imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
+                      disabled={this.state.disableLoginBtn}
+                    />
+                    <TouchableButton
+                      TouchableStyles={[
+                        {
+                          marginTop: 12,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '80%',
+                          // marginBottom: 10,
+                          padding: 8,
+                          borderColor: 'rgba(42, 41, 59, 0.3)'
+                        },
+                        this.state.disableLoginBtn ? Theme.Button.disabled : null
+                      ]}
+                      TextStyles={[Theme.Button.btnPinkText, { fontSize: 16, color: '#2a293b', fontFamily: 'AvenirNext-Regular' }]}
+                      text={btnPreText.apple}
+                      //onPress={this.onSignUp}
+                      source={twitterBird}
+                      imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
+                      disabled={this.state.disableLoginBtn}
+                    />
+                    <TouchableButton
+                      TouchableStyles={[
+                        {
+                          marginTop: 12,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '80%',
+                          // marginBottom: 10,
+                          padding: 8,
+                          borderColor: 'rgba(42, 41, 59, 0.3)'
+                        },
+                        this.state.disableLoginBtn ? Theme.Button.disabled : null
+                      ]}
+                      TextStyles={[Theme.Button.btnPinkText, { fontSize: 16, color: '#2a293b', fontFamily: 'AvenirNext-Regular' }]}
+                      text={btnPreText.gmail}
+                      //onPress={this.onSignUp}
+                      source={twitterBird}
+                      imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
+                      disabled={this.state.disableLoginBtn}
+                    />
+                    <TouchableButton
+                      TouchableStyles={[
+                        {
+                          marginTop: 12,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '80%',
+                          // marginBottom: 10,
+                          padding: 8,
+                          borderColor: 'rgba(42, 41, 59, 0.3)'
+                        },
+                        this.state.disableLoginBtn ? Theme.Button.disabled : null
+                      ]}
+                      TextStyles={[Theme.Button.btnPinkText, { fontSize: 16, color: '#2a293b', fontFamily: 'AvenirNext-Regular' }]}
+                      text={btnPreText.github}
+                      //onPress={this.onSignUp}
                       source={twitterBird}
                       imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
                       disabled={this.state.disableLoginBtn}
