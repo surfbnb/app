@@ -9,8 +9,8 @@ const TWITTER_OAUTH_URL='https://api.twitter.com/oauth/authorize?oauth_token=';
 class TwitterOAuth {
 
   constructor(){
-    this.requestToken = null;
-    this.requestTokenSecret = null;
+    this.requestToken = '';
+    this.requestTokenSecret = '';
   }
 
   getRequestToken = async () => {
@@ -82,7 +82,6 @@ fireRequest = async (twitterRequestParams) => {
 
   handleRequestTokenSuccess = async( params )=> {
     let accessToken = await this.getAccessToken(params);
-    
     console.log("acce3sstoken", accessToken);
   }
 

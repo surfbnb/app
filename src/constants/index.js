@@ -19,6 +19,7 @@ const BundleConstants = {
     TOKEN_ID: '1185',
     TWITTER_CONSUMER_KEY: 'NEo4gEXzdQZaoTsqzpZvepfKb',
     TWITTER_CONSUMER_SECRET: 'iM5UMt4px8rwoqEoRV9gJGrJGtEoMUxOYkaWXSges7t4bk564t',
+    TWITTER_AUTH_CALLBACK_ROUTE: 'twitterkit-NEo4gEXzdQZaoTsqzpZvepfKb://',
     VIEW_END_POINT: 'https://ost:Ax23!sdQ*kN-201~96@view.stagingost.com/testnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitStaging.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitStaging.toString( 10 ),
@@ -34,6 +35,7 @@ const BundleConstants = {
     TOKEN_ID: '1506',
     TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
     TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0',
+    TWITTER_AUTH_CALLBACK_ROUTE: 'twitterkit-qqc45NF23dhKRuNbfsdnHGEkI://',
     VIEW_END_POINT: 'https://view.ost.com/testnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitSandbox.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitSandbox.toString( 10 ),
@@ -49,6 +51,7 @@ const BundleConstants = {
     TOKEN_ID: '1506',
     TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
     TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0',
+    TWITTER_AUTH_CALLBACK_ROUTE: 'twitterkit-qqc45NF23dhKRuNbfsdnHGEkI://',
     VIEW_END_POINT: 'https://view.ost.com/testnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitSandbox.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitSandbox.toString( 10 ),
@@ -64,6 +67,7 @@ const BundleConstants = {
     TOKEN_ID: '1009',
     TWITTER_CONSUMER_KEY: '53Q0hHEe4Hhartej9lFVWZX4C',
     TWITTER_CONSUMER_SECRET: 'L3jOhUfHr8drwrx8qT7GnvObFtPxTxZkFQbdCWGKawzo7l9avV',
+    TWITTER_AUTH_CALLBACK_ROUTE: 'twitterkit-53Q0hHEe4Hhartej9lFVWZX4C://',
     VIEW_END_POINT: 'https://view.ost.com/mainnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitProduction.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitProduction.toString( 10 ),
@@ -87,6 +91,7 @@ export const DEFAULT_SPENDING_LIMIT = BundleConstants[DeviceInfo.getBundleId()].
 export const MAX_SPENDING_LIMIT = BundleConstants[DeviceInfo.getBundleId()].MAX_SPENDING_LIMIT || '1000000000000000000000';
 export const TWITTER_CONSUMER_KEY = BundleConstants[DeviceInfo.getBundleId()].TWITTER_CONSUMER_KEY;
 export const TWITTER_CONSUMER_SECRET = BundleConstants[DeviceInfo.getBundleId()].TWITTER_CONSUMER_SECRET;
+export const TWITTER_AUTH_CALLBACK_ROUTE = BundleConstants[DeviceInfo.getBundleId()].TWITTER_AUTH_CALLBACK_ROUTE;
 
 export const VIEW_END_POINT = BundleConstants[DeviceInfo.getBundleId()].VIEW_END_POINT;
 
