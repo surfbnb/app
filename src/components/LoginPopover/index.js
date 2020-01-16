@@ -17,6 +17,7 @@ import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
 import TwitterWebLoginActions from '../TwitterWebLogin';
+import GmailOAuth from '../../services/ExternalLogin/GmailOAuth';
 
 let TwitterAuthService;
 import('../../services/TwitterAuthService').then((imports) => {
@@ -59,12 +60,19 @@ class loginPopover extends React.Component {
     }
   }
 
-  onSignUp = () => {
+  onTwitterSignUp = () => {
     this.setState({ disableLoginBtn: true });
     //TwitterAuthService.signUp();
     LoginPopoverActions.hide();
     TwitterWebLoginActions.signIn();
   };
+
+  onGmailSignUp = () => {
+    let response = GmailOAuth.signIn();
+    if(response && response.success){
+      console.log("logged in with gmail", response);
+    }
+  }
 
   //Use this function if needed to handle hardware back handling for android.
   closeModal = () => {
@@ -124,7 +132,7 @@ class loginPopover extends React.Component {
                       ]}
                       TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
                       text={btnPreText.twitter}
-                      onPress={this.onSignUp}
+                      onPress={this.onTwitterSignUp}
                       source={twitterBird}
                       imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
                       disabled={this.state.disableLoginBtn}
@@ -136,7 +144,7 @@ class loginPopover extends React.Component {
                       ]}
                       TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
                       text={btnPreText.apple}
-                      //onPress={this.onSignUp}
+                      onPress={this.onAppleSignUp}
                       source={twitterBird}
                       imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
                       disabled={this.state.disableLoginBtn}
@@ -148,7 +156,7 @@ class loginPopover extends React.Component {
                       ]}
                       TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
                       text={btnPreText.gmail}
-                      //onPress={this.onSignUp}
+                      onPress={this.onGmailSignUp}
                       source={twitterBird}
                       imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
                       disabled={this.state.disableLoginBtn}
@@ -160,7 +168,7 @@ class loginPopover extends React.Component {
                       ]}
                       TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
                       text={btnPreText.github}
-                      //onPress={this.onSignUp}
+                      onPress={this.onGithubSignUp}
                       source={twitterBird}
                       imgDimension={{ width: 28, height: 22.5, marginRight: 8 }}
                       disabled={this.state.disableLoginBtn}

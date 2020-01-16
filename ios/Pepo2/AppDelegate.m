@@ -27,7 +27,7 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
 //static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.v2.production";
 
 @implementation AppDelegate
-
+ 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   PepoLoaderManager *loaderManager = [[PepoLoaderManager alloc]init];
@@ -121,6 +121,7 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
   if (handled) {
     return handled;
   }
+  return [self.authorizationFlowManagerDelegate resumeExternalUserAgentFlowWithURL:url];
   
   return YES;
 }
