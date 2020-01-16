@@ -51,17 +51,17 @@ class loginPopover extends React.Component {
         icon: twitterBird
       },
       apple: {
-        header: 'Continue with apple',
+        header: 'Continue with Apple',
         pressHandler: this.twitterPressHandler,
         icon: twitterBird
       },
       gmail:{
-        header: 'Continue with gmail',
+        header: 'Continue with Gmail',
         pressHandler: this.twitterPressHandler,
         icon: twitterBird
       },
       github: {
-        header: 'Continue with github',
+        header: 'Continue with Github',
         pressHandler: this.twitterPressHandler,
         icon: twitterBird
       },
