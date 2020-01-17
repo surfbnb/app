@@ -221,14 +221,14 @@ class VideoRepliesScreen extends PureComponent {
               </SlidingUpPanel>
               {this.state.addRepliesVisible && (
                  <TouchableWithoutFeedback onPress={this.openCamera}>
-                 <View style={inlineStyles.addReplyView}>
-                   <View style={inlineStyles.addReplyInnerView}>
-                     <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimensionSkipFont}></Image>
-                     <Text style={inlineStyles.addReplyText}>
-                       Add a reply...
-                     </Text>
-                   </View>
-                 </View>
+                  <View style={inlineStyles.addReplyView}>
+                    <View style={inlineStyles.addReplyInnerView}>
+                      <Image source={VideoReplyIcon} style={inlineStyles.addReplyImageDimensionSkipFont}></Image>
+                      <Text style={inlineStyles.addReplyText}>
+                        Add a reply...
+                      </Text>
+                    </View>
+                  </View>
                </TouchableWithoutFeedback>
               )}
           </React.Fragment>

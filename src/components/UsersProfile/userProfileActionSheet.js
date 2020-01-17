@@ -235,10 +235,10 @@ class UserProfileActionSheet extends PureComponent {
 
     render() {
         return (<TouchableWithoutFeedback onPress={this.showActionSheet}>
-         <View style={inlineStyles.reportIconWrapper}>
-        <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}   ></Image>
-         </View>
-        </TouchableWithoutFeedback>);
+                    <View style={inlineStyles.reportIconWrapper}>
+                        <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}   ></Image>
+                    </View>
+                </TouchableWithoutFeedback>);
     }
 
 }
