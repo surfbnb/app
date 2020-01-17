@@ -8,42 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:256507122234:android:d4566b0100ddc8f4cd1b03",
-        "android_client_info": {
-          "package_name": "com.pepo.sandbox"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "256507122234-rk49a3omrfb19uf1kasl07bqb07rmurj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDUyP_CXBt8LmPx__xwnuFCrtaKLVx4b-E"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "256507122234-rk49a3omrfb19uf1kasl07bqb07rmurj.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "256507122234-0n15ivihpium2jjit8ribqiqmalt9boc.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.pepo.staging"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:256507122234:android:aa2a5f6075c0813ecd1b03",
         "android_client_info": {
           "package_name": "com.pepo.staging"
@@ -68,10 +32,82 @@
               "client_type": 3
             },
             {
-              "client_id": "256507122234-0n15ivihpium2jjit8ribqiqmalt9boc.apps.googleusercontent.com",
+              "client_id": "256507122234-s37m9acvguf78fcmpe1lt26hl9565smd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.pepo.staging"
+                "bundle_id": "com.pepo.v2.sandbox"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256507122234:android:7db5469976098dd1cd1b03",
+        "android_client_info": {
+          "package_name": "com.pepo.v2.sandbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256507122234-rk49a3omrfb19uf1kasl07bqb07rmurj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUyP_CXBt8LmPx__xwnuFCrtaKLVx4b-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256507122234-rk49a3omrfb19uf1kasl07bqb07rmurj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256507122234-s37m9acvguf78fcmpe1lt26hl9565smd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pepo.v2.sandbox"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256507122234:android:c4170b751bb4a1b4cd1b03",
+        "android_client_info": {
+          "package_name": "com.pepo.v2.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256507122234-rk49a3omrfb19uf1kasl07bqb07rmurj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUyP_CXBt8LmPx__xwnuFCrtaKLVx4b-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256507122234-rk49a3omrfb19uf1kasl07bqb07rmurj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256507122234-s37m9acvguf78fcmpe1lt26hl9565smd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pepo.v2.sandbox"
               }
             }
           ]

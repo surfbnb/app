@@ -133,15 +133,31 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.pepo.staging"
+        applicationId "com.pepo.v2.production"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 28
-        versionName "1.1.0"
+        versionName "1.0.2"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
             appAuthRedirectScheme: 'com.pepo.staging'
         ]
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        production {
+            applicationId "com.pepo.v2.production"
+            dimension "version"
+        }
+        staging {
+            applicationId "com.pepo.staging"
+            dimension "version"
+        }
+        sandbox {
+            applicationId "com.pepo.v2.sandbox"
+            dimension "version"
+        }
     }
     splits {
         abi {
@@ -152,6 +168,14 @@ android {
         }
     }
     signingConfigs {
+        release {
+            if (System.getenv("KEYSTORE_FILE")) {
+                storeFile file(System.getenv("KEYSTORE_FILE"))
+                storePassword System.getenv("STORE_PASS")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASS")
+            }
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -169,6 +193,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release

@@ -4,6 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.ost.walletsdk.ui.OstWalletUI;
+import com.pepo2.loader.LoaderManager;
+import com.pepo2.loader.OstSdkErrors;
+import com.reactnativecommunity.imageeditor.ImageEditorPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
@@ -54,6 +58,8 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
+    OstWalletUI.setLoaderManager(LoaderManager.getInstance());
+    OstSdkErrors.init(this.getApplicationContext());
   }
 
   /**
