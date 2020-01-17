@@ -129,6 +129,7 @@
 		7712016D2314034B11AD0A2D /* Pods-Pepo2-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pepo2-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Pepo2-tvOSTests/Pods-Pepo2-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		7F908193B78C4C80B83009D7 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		8B67A2689E7F467D9415208D /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		90C66A1D23D20C3100342134 /* Pepo2Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Pepo2Release.entitlements; path = Pepo2/Pepo2Release.entitlements; sourceTree = "<group>"; };
 		90FEF095B3AEA45A6F311662 /* libPods-Pepo2Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pepo2Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93DFA3EEED0A4387B6401F14 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		9B790C4B6AA24DA88B3F3797 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
@@ -276,6 +277,7 @@
 		13B07FAE1A68108700A75B9A /* Pepo2 */ = {
 			isa = PBXGroup;
 			children = (
+				90C66A1D23D20C3100342134 /* Pepo2Release.entitlements */,
 				00119DFB23D07F18007C9980 /* ostwalletrnsdk */,
 				00F8954023C5EE5200CB41A8 /* Loader */,
 				00F8954823C5EE5200CB41A8 /* Pepo2-Bridging-Header.h */,
@@ -681,7 +683,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Pepo2/Pepo2.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Pepo2/Pepo2Release.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = N83K86W6P4;
 				FRAMEWORK_SEARCH_PATHS = (
