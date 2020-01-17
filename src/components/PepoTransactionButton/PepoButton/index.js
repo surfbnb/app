@@ -10,9 +10,10 @@ import inlineStyles from '../styles';
 import ClapButton from "./ClapButton";
 import appConfig from "../../../constants/AppConfig";
 import Pricer from "../../../services/Pricer";
+import { DEFAULT_SPENDING_LIMIT } from '../../../constants';
 
 const animDuration = appConfig.pepoAnimationDuration;
-const maxThreshold = appConfig.maxBtAllowedInSingleTransfer;
+const maxThreshold = Number(Pricer.getFromDecimal( DEFAULT_SPENDING_LIMIT ));
 
 class PepoButton extends React.Component {
   constructor(props) {

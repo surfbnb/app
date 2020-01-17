@@ -1,11 +1,10 @@
 import BigNumber from 'bignumber.js';
 import {OstWalletSdk, OstWalletSdkUI} from '@ostdotcom/ost-wallet-sdk-react-native';
 import {
-  IS_PRODUCTION, DEFAULT_SESSION_KEY_EXPIRY_TIME, DEFAULT_SPENDING_LIMIT, MAX_SPENDING_LIMIT,
+  DEFAULT_SESSION_KEY_EXPIRY_TIME, DEFAULT_SPENDING_LIMIT, MAX_SPENDING_LIMIT,
   HIGH_SPEND_SESSION_KEY_EXPIRY_TIME, MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME
 } from '../constants';
 import CurrentUser from "../models/CurrentUser";
-import {LoadingModal} from '../theme/components/LoadingModalCover';
 import {ostSdkErrors, WORKFLOW_CANCELLED_MSG} from '../services/OstSdkErrors';
 import {ostErrors} from "../services/OstErrors";
 import {VideoPlayPauseEmitter} from './Emitters'
