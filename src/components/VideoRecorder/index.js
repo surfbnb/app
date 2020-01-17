@@ -12,6 +12,7 @@ import {
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
+import deleteCameraSegment  from '../../assets/delete_camera_segment.png';
 import flipIcon from '../../assets/flip_camera.png';
 import ProgressBar from 'react-native-progress/Bar';
 import styles from './styles';
@@ -37,8 +38,8 @@ const PROGRESS_FACTOR = 0.01;
 let intervalID = null;
 
 const ELEMENT_WIDTH = 80;
-const MARGIN_LEFT_NORMAL =  (Dimensions.get('screen').width / 2 ) - (ELEMENT_WIDTH /2);
-const MARGIN_LEFT_HANDS_FREE =  (Dimensions.get('screen').width / 2 ) - (ELEMENT_WIDTH /2) - ELEMENT_WIDTH;
+const MARGIN_LEFT_NORMAL =  (Dimensions.get('screen').width / 2 ) - ((ELEMENT_WIDTH + 4 )  /2);
+const MARGIN_LEFT_HANDS_FREE =  (Dimensions.get('screen').width / 2 ) - ((ELEMENT_WIDTH + 4) /2) - (ELEMENT_WIDTH + 4);
 
 class VideoRecorder extends Component {
   constructor(props) {
@@ -51,9 +52,10 @@ class VideoRecorder extends Component {
       showLightBoxOnReply: this.props.showLightBoxOnReply,
       cameraFrontMode: true,
       isLocalVideoPresent: false,
-      marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL)
+      marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL),
+      currentMode: 'NORMAL'
     };
-    this.currentMode = 'NORMAL';
+    // this.currentMode = 'NORMAL';
     this.videoUrlsList = [];
     this.separationBars = [];
     this.camera = null;
@@ -168,6 +170,7 @@ class VideoRecorder extends Component {
 
   ifLocalVideoPresent = async  () => {
     let recordedVideoList = this.recordedVideoObj.raw_video_list || [];
+    recordedVideoList = recordedVideoList.map((ele)=>ele.uri);
     console.log(recordedVideoList, '=====recordedVideoList=====');
     if (recordedVideoList.length === 0){
       return false;
@@ -240,8 +243,7 @@ class VideoRecorder extends Component {
       }
       // if (no video reply present) { return Coach }
     } else {
-      if (this.state.acceptedCameraTnC !== 'true'){
-        console.log('=========----============-----------');
+      if (this.state.acceptedCameraTnC !== 'true') {
 
         return <View style={styles.backgroundStyle}>
           <View style={{ padding: 26 }}>
@@ -295,7 +297,7 @@ class VideoRecorder extends Component {
           ref={(ref) => {
             this.camera = ref;
           }}
-          style={styles.previewSkipFont}
+          style={styles.cameraView}
           type={this.state.cameraFrontMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back}
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
@@ -346,7 +348,6 @@ class VideoRecorder extends Component {
 
   showCameraActions = () => {
     if (this.shouldShowActionButtons()) {
-      console.log(this.separationBars, 'this.separationBarsthis.separationBars');
       return (
         <React.Fragment>
           <View style={{position: 'relative', height: 7, width: '90%' }}>
@@ -367,32 +368,13 @@ class VideoRecorder extends Component {
           </TouchableOpacity>
           <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
           <View>
-            <View style={[styles.bottomWrapper ]}>
+            {this.showTooltip()}
+            <View style={styles.bottomWrapper }>
               {this.flipButton()}
               {this.getActionButton()}
               {this.previewButton()}
             </View>
             {this.renderModeRow()}
-
-            {/*<FlatList*/}
-            {/*  ref={(list) => (this.flatList = list)}*/}
-            {/*  style={{ width: '50%' }}*/}
-            {/*  contentContainerStyle={{ flexDirection: 'row', width: '50%', alignSelf: 'stretch', backgroundColor:'yellow'}}*/}
-            {/*  horizontal={true}*/}
-            {/*  getItemLayout={(data, index) => (*/}
-            {/*    {length: 100, offset: 100 * index, index}*/}
-            {/*  )}*/}
-            {/*  pagingEnabled={true}*/}
-            {/*  data={[0, 1, 2]}*/}
-            {/*  onViewableItemsChanged={this.onViewableItemsChanged}*/}
-            {/*  onScrollToIndexFailed={()=>{}}*/}
-            {/*  // viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}*/}
-            {/*  // onViewableItemsChanged={this.toggleScreen}*/}
-            {/*  // keyExtractor={this._keyExtractor}*/}
-            {/*  renderItem={this.renderItem}*/}
-            {/*  // onScroll={this.flScrolled}*/}
-            {/*  // onScrollToIndexFailed={this.onScrollToIndexFailed}*/}
-            {/*/>*/}
           </View>
           </View>
         </React.Fragment>
@@ -401,87 +383,31 @@ class VideoRecorder extends Component {
   };
 
   renderModeRow = () => {
-    let elements =  ['Normal','Hands free'].map((item, index)=> {
-      return <TouchableWithoutFeedback onPress={()=>{
-        if (index === 0){
-          this.currentMode = 'NORMAL';
-
+    let elements =  ['Normal','Hands Free'].map((item, index)=> {
+      return <TouchableWithoutFeedback key={index} onPress={()=>{
+        if (index === 0) {
+          this.setState({currentMode: 'NORMAL'});
           Animated.timing(this.state.marginLeft, {
             toValue: MARGIN_LEFT_NORMAL,
-            // easing: Easing.back(),
-            duration: 200,
-            // useNativeDriver: true
+            duration: 200
           }).start();
-
-          // this.setState({marginLeft: MARGIN_LEFT_NORMAL});
-        } else if(index === 1){
-          this.currentMode = 'HANDS_FREE';
+        } else if(index === 1) {
+          this.setState({currentMode: 'HANDS_FREE'});
           Animated.timing(this.state.marginLeft, {
             toValue: MARGIN_LEFT_HANDS_FREE,
             // easing: Easing.back(),
-            duration: 200,
-            // useNativeDriver: true
+            duration: 200
           }).start();
-
-          // this.setState({marginLeft: MARGIN_LEFT_HANDS_FREE});
         }
       }}
       >
       <View style={{marginHorizontal: 2, height: 30, width: ELEMENT_WIDTH, alignItems: 'center', justifyContent:'center'}}>
-        <Text style={{color: '#fff', fontWeight:'600' }}>{item}</Text>
+        <Text style={[{color: '#fff', fontWeight:'600' }, this.state.isRecording ? {opacity:0}:{}]}>{item}</Text>
       </View>
       </TouchableWithoutFeedback>
     });
     return <Animated.View onScroll={this.onScroll}  onMomentumScrollBegin={this.onMomentumScrollBegin}  onScrollBeginDrag={this.onScrollBeginDrag} horizontal={true} style={{marginLeft: this.state.marginLeft, flexDirection: 'row'}}>{elements}</Animated.View>
   };
-
-  // onViewableItemsChanged = () => {
-  //   console.log('onViewableItemsChanged', this.flatList);
-  //   // this.flatList && this.flatList.scrollToIndex({index:1});
-  // }
-
-  // onScroll = (event) => {
-  //
-  //   let currentOffset = event.nativeEvent.contentOffset.x;
-  //   let direction = currentOffset > this.offset ? 'right' : 'left';
-  //   this.offset = currentOffset;
-  //   console.log(direction, 'direction------');
-  //
-  //
-  //
-  // }
-  // onMomentumScrollBegin = (eve) => {
-  //   console.log('onMomentumScrollBegin', eve, eve.nativeEvent.contentOffset.x);
-  // }
-
-  // onScrollBeginDrag = (event) => {
-  //   console.log(event, 'event-----------', event.nativeEvent.contentOffset.x);
-  //   let currentOffset = event.nativeEvent.contentOffset.x;
-  //   var direction = currentOffset > this.offset ? 'down' : 'up';
-  //   this.offset = currentOffset;
-  //   console.log(direction, 'direction-----------');
-  //   if (this.currentMode === 'NORMAL' ) {
-  //     this.currentMode = 'HANDS_FREE';
-  //     this.setState({marginLeft: MARGIN_LEFT_HANDS_FREE});
-  //   } else if (this.currentMode === 'HANDS_FREE') {
-  //     this.currentMode = 'NORMAL';
-  //     this.setState({marginLeft: MARGIN_LEFT_NORMAL});
-  //   }
-  //};
-
-  //
-  // renderItem = (ele) => {
-  //   console.log(ele, 'item---------');
-  //   return <TouchableWithoutFeedback onPress={()=>{console.log(ele);console.log('heuuuuuuuuu');
-  //   // this.flatList.scrollToOffset({offset:1});
-  //   this.flatList.scrollToItem({item: ele.item, viewPosition: 0.5})
-  //     this.flatList.scrollToIndex({index: ele.index, viewPosition: 0.5})
-  //   }}>
-  //   <View style={{height: 15,backgroundColor:'red', width:100, alignItems: 'center', alignSelf:'center'}}>
-  //     <Text >{ele.item}</Text>
-  //   </View>
-  //   </TouchableWithoutFeedback>
-  // };
 
   previewPressHandler = () => {
     if (this.discardVideo) return;
@@ -490,20 +416,32 @@ class VideoRecorder extends Component {
 
   };
 
+  onBackPress = () => {
+    let lastElementIndex = this.videoUrlsList.length - 2;
+    let lastSegment = this.videoUrlsList[lastElementIndex] || {};
+    this.videoUrlsList.pop();
+    this.separationBars.pop();
+    this.setState({progress: lastSegment.progress || 0 });
+  };
+
 
   previewButton = () => {
-    if (this.state.isRecording || this.videoUrlsList.length === 0) { return <View style={{flex:1}}/> }
+    if (this.state.isRecording || this.videoUrlsList.length === 0) {
+      return <View style={{flex:1}}/>
+    }
     return <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
-    <View style={{ flexDirection: 'row' }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+      <TouchableOpacity onPress={this.onBackPress}>
+      <Image style={styles.backIcon} source={deleteCameraSegment}/>
+      </TouchableOpacity>
       <LinearGradient
         colors={['#ff7499', '#ff5566']}
         locations={[0, 1]}
         style={{
-          borderRadius: 0,
-          borderTopLeftRadius: 3,
-          borderBottomLeftRadius: 3,
-          paddingLeft: 15,
-          paddingRight: 10
+          borderRadius: 3,
+          paddingLeft: 10,
+          paddingRight: 10,
+          marginLeft:8
         }}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
@@ -512,18 +450,17 @@ class VideoRecorder extends Component {
           onPress={multipleClickHandler(() => {
             this.previewPressHandler()
           })}
-            style={{ height: 40, width:60, alignItems: 'center', justifyContent: 'center' }}
+            style={{ height: 40,  alignItems: 'center', justifyContent: 'center' }}
         >
           <Text style={{ color: '#fff', fontSize: 12 }}>PREVIEW</Text>
         </TouchableOpacity>
       </LinearGradient>
-      <View style={styles.triangleRight}></View>
+      {/*<View style={styles.triangleRight}></View>*/}
     </View>
     </View>
   };
 
   stopRecording = () => {
-    this.appendNewBar();
     this.intervalManager(false);  // for clearInterval
     this.camera && this.camera.stopRecording();
   };
@@ -542,35 +479,37 @@ class VideoRecorder extends Component {
     if (this.state.isRecording){
       return <></>;
     }
-    return <View style={{backgroundColor: '#eee', marginBottom: 10, position: 'relative', paddingVertical: 4, paddingHorizontal: 6, alignItems: 'center', justifyContent:'center', borderRadius: 4 }}>
-      <Text style={{ letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>
-        {this.currentMode === 'NORMAL'? "Hold to record": "Tap to record" }
+    return <View style={styles.tooltipWrapper}>
+      <Text style={styles.tooltipStyle}>
+        {this.state.currentMode === 'NORMAL' ? "Hold to record": "Tap to record" }
       </Text>
-      <View style={{height:12,width:12, top: '100%', marginTop: 2, backgroundColor: '#eee', alignSelf:'center', position: 'absolute', transform: [{ rotate: '45deg'}] }}></View>
+      <View style={styles.tooltipLowerTriangle } />
     </View>;
   };
 
   getActionButton() {
     let onPressCallback, source;
-    if (this.state.isRecording) {
-      onPressCallback = this.stopRecording;
-      source = stopIcon;
-    } else {
-      onPressCallback = this.recordVideoAsync;
-      source = captureIcon;
+    if (this.state.currentMode === 'NORMAL') {
+      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <TouchableOpacity onPressIn={this.recordVideoAsync} onPressOut={this.stopRecording}>
+          <Image style={styles.captureButtonSkipFont} source={captureIcon}/>
+        </TouchableOpacity>
+      </View>
+    } else if (this.state.currentMode === 'HANDS_FREE') {
+      if (this.state.isRecording) {
+        onPressCallback = this.stopRecording;
+        source = stopIcon;
+      } else {
+        onPressCallback = this.recordVideoAsync;
+        source = captureIcon;
+      }
+
+      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <TouchableOpacity onPress={onPressCallback}>
+          <Image style={styles.captureButtonSkipFont} source={source}/>
+        </TouchableOpacity>
+      </View>
     }
-    return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          {this.showTooltip()}
-          <TouchableOpacity onPress={onPressCallback}>
-            <Image style={styles.captureButtonSkipFont} source={source} />
-          </TouchableOpacity>
-          {/*{ !this.state.isRecording ?*/}
-          {/*  ( <Text style={{color: 'white', marginTop: 5, letterSpacing: 1, fontFamily:'AvenirNext-DemiBold', shadowColor:'rgba(0, 0, 0, 0.5)', shadowOffset: { width: 1, height: 2 }, shadowRadius: 2 }}>Normal</Text> )*/}
-          {/*  : ( <Text style={{marginTop:5 }}/> )*/}
-          {/*}*/}
-        </View>
-    );
   }
 
   flipButton() {
@@ -583,7 +522,7 @@ class VideoRecorder extends Component {
         </View>
       );
     } else {
-      return (<View style={{flex:1}}/>)
+      return ( <View style={{flex:1}} /> )
     }
   }
 
@@ -594,6 +533,7 @@ class VideoRecorder extends Component {
         this.setState({ progress });
       } else {
         this.stopRecording();
+        this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
       }
   }
 
@@ -622,9 +562,18 @@ class VideoRecorder extends Component {
     };
     this.initProgressBar();
     const data = await this.camera.recordAsync(options);
+    let videoLength =this.state.progress * 100 * 300;
+    console.log(videoLength, 'videoLength');
+    if (videoLength <= 1000 ) {
+      this.setState({ progress : 0 });
+    } else {
+      this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
+      this.appendNewBar();
+    }
+
     this.setState({ isRecording: false });
-    if (this.discardVideo) return;
-    this.videoUrlsList.push(data.uri);
+    // if (this.discardVideo) return;
+
     // This will take from VideoRecorder to PreviewRecordedVideo component
     // this.props.goToPreviewScreen(data.uri);
   };

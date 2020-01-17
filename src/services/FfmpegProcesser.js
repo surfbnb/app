@@ -6,6 +6,7 @@ class FfmpegProcesser {
 
   init(inputFiles) {
     this.inputFiles = inputFiles;
+    console.log(this.inputFiles, 'this.inputFiles');
   }
 
   compress() {

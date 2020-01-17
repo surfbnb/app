@@ -109,7 +109,6 @@ class CaptureVideo extends Component {
       } else if (this.isVideoTypePost()) {
         return { video_type: AppConfig.videoTypes.post };
       }
-
   };
 
 
@@ -156,6 +155,7 @@ class CaptureVideo extends Component {
   };
 
   goToPreviewScreen = (videoUrlsList, totalVideoLength) => {
+    // let videoList = videoUrlsList.map((ele=>(ele.uri)));
     this.setState({
       recordingScreen: false,
       videoUrlsList,

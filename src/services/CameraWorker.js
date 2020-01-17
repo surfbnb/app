@@ -476,7 +476,8 @@ class CameraWorker extends PureComponent {
     // remove files from cache,
     this.videoMergeJobId = null;
     let recordedVideoList = this.props.recorded_video.raw_video_list;
-    for (let video of recordedVideoList){
+    let filesList = recordedVideoList.map((ele)=> ele.uri);
+    for (let video of filesList){
       await this.removeFile(video);
     }
     await this.removeFile(this.props.recorded_video.compressed_video);
@@ -513,7 +514,8 @@ class CameraWorker extends PureComponent {
             cover_capture_processing: true
           })
         );
-        FfmpegProcesser.init(this.props.recorded_video.raw_video_list);
+        let videoList = this.props.recorded_video.raw_video_list.map((ele=>(ele.uri)));
+        FfmpegProcesser.init(videoList);
         FfmpegProcesser.getVideoThumbnail()
           .then((coverImage) => {
             Store.dispatch(
@@ -555,7 +557,8 @@ class CameraWorker extends PureComponent {
         );
         console.log('compressVideo:::VideoUploadStatusToProcessing');
         this.VideoUploadStatusToProcessing();
-        FfmpegProcesser.init(this.props.recorded_video.raw_video_list);
+        let videoList = this.props.recorded_video.raw_video_list.map(ele=>ele.uri);
+        FfmpegProcesser.init(videoList);
         FfmpegProcesser.compress()
           .then((compressedVideo) => {
             console.log('compressVideo: then', compressedVideo);
@@ -649,7 +652,8 @@ class CameraWorker extends PureComponent {
 
   stitchingFailedVideoUpload = () => {
     console.log(this.props.recorded_video.raw_video_list, 'this.props.recorded_video.raw_video_list');
-    return this.uploadToS3(this.props.recorded_video.raw_video_list, 'video')
+    let videoList = this.props.recorded_video.raw_video_list.map(ele=>ele.uri);
+    return this.uploadToS3(videoList, 'video')
       .then((s3VideoList) => {
         console.log(s3VideoList, 's3VideoList');
         let resolution = `${appConfig.cameraConstants.VIDEO_WIDTH}*${appConfig.cameraConstants.VIDEO_HEIGHT}`,

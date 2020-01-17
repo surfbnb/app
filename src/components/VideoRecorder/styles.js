@@ -8,11 +8,12 @@ let stylesMap = {
     flexDirection: 'column',
     backgroundColor: Colors.black
   },
-  previewSkipFont: {
+  cameraView: {
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 35
+    paddingTop: 35,
+    paddingBottom:15
   },
   capture: {
     flex: 0,
@@ -121,7 +122,47 @@ let stylesMap = {
     borderBottomColor: 'transparent',
     borderTopColor: 'transparent',
     borderLeftColor: Colors.wildWatermelon2
+  },
+
+  tooltipStyle: {
+    letterSpacing: 1,
+    fontFamily:'AvenirNext-DemiBold',
+    shadowColor:'rgba(0, 0, 0, 0.5)',
+    shadowOffset: { width: 1, height: 2 },
+    shadowRadius: 2
+  },
+
+  tooltipWrapper: {
+    backgroundColor: '#eee',
+    marginBottom: 10,
+    position: 'relative',
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    alignItems: 'center',
+    justifyContent:'center',
+    borderRadius: 4,
+    // maxWidth: 150,
+    minWidth: 120,
+    alignSelf: 'center'
+  },
+  tooltipLowerTriangle : {
+    height:12,
+    width:12,
+    top: '100%',
+    marginTop: 2,
+    backgroundColor: '#eee',
+    alignSelf:'center',
+    position: 'absolute',
+    transform: [{ rotate: '45deg'}]
+  },
+  backIcon: {
+    height: 18,
+    width: 28
   }
+
+
+
+
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
