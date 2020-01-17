@@ -62,6 +62,7 @@ import FullScreenReplyCollection from './src/components/FullScreenReplyCollectio
 import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
 import { TwitterWebLogin } from './src/components/TwitterWebLogin';
 import { GitHubWebLogin } from './src/components/GitHubWebLogin';
+import { AppleLogin } from './src/components/AppleLogin';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -388,6 +389,7 @@ const RootNavigationContainer = () => (
     <UniversalLinksManager />
     <TwitterWebLogin/>
     <GitHubWebLogin/>
+    <AppleLogin/>
   </Root>
 );
 

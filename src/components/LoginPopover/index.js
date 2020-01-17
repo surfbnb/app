@@ -22,7 +22,8 @@ import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
 import TwitterWebLoginActions from '../TwitterWebLogin';
 import GmailOAuth from '../../services/ExternalLogin/GmailOAuth';
-import GitHubWebLogin from '../GitHubWebLogin';
+import GitHubWebLoginActions from '../GitHubWebLogin';
+import AppleLoginActions  from '../AppleLogin';
 
 let TwitterAuthService;
 import('../../services/TwitterAuthService').then((imports) => {
@@ -107,7 +108,7 @@ class loginPopover extends React.Component {
 
   githubPressHandler = async() => {
     LoginPopoverActions.hide();
-    let response = await GitHubWebLogin.signIn();
+    let response = await GitHubWebLoginActions.signIn();
     if(response && response.success){
       console.log("logged in with github", response);
     } else {
@@ -123,7 +124,7 @@ class loginPopover extends React.Component {
   }
 
   applePressHandler = () => {
-
+    AppleLoginActions.signIn();
   }
 
   //Use this function if needed to handle hardware back handling for android.
