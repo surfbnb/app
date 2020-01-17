@@ -6,6 +6,12 @@ import Oauth1Helper from '../../helpers/Oauth1';
 const TwitterBase = 'https://api.twitter.com/oauth';
 const TWITTER_OAUTH_URL='https://api.twitter.com/oauth/authorize?oauth_token=';
 
+let TwitterAuthService;
+import('../../services/TwitterAuthService').then((imports) => {
+  TwitterAuthService = imports.default;
+});
+
+
 class TwitterOAuth {
 
   constructor(){
@@ -81,8 +87,8 @@ fireRequest = async (twitterRequestParams) => {
   }
 
   handleRequestTokenSuccess = async( params )=> {
-    let accessToken = await this.getAccessToken(params);
-    console.log("acce3sstoken", accessToken);
+    let accessParams = await this.getAccessToken(params);
+    TwitterAuthService.signUp(accessParams);
   }
 
    getAccessToken = async(params)=> {
