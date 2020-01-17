@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {View, Modal, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Platform} from 'react-native';
 import firebase from 'react-native-firebase';
+import DeviceInfo from 'react-native-device-info';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import inlineStyles from './styles';
@@ -38,6 +39,8 @@ const mapStateToProps = ({ login_popover }) => {
 
 const btnPostText = 'Connecting...';
 const sequenceOfLoginServices = ['twitter','apple', 'gmail', 'github' ];
+const versionIOS = DeviceInfo.getSystemVersion();
+const finalVersionIOS = versionIOS <= 13;
 
 class loginPopover extends React.Component {
   constructor(props) {
@@ -139,7 +142,7 @@ class loginPopover extends React.Component {
 
   getLoginButtons = () => {
     let buttonsJSX = sequenceOfLoginServices.map((item)=>{
-      if(item === 'apple' && Platform.OS === "android") return;
+      if((item === 'apple' && Platform.OS === "android") || (item === 'apple' && finalVersionIOS)) return;
       let currentServiceConfig = this.loginServicesConfig[item];
       return <TouchableButton
         key={item}
