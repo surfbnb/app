@@ -28,6 +28,14 @@ function getActiveTab(){
   return route && route["routeName"];
 }
 
+function goBack(isNull){
+  if(isNull){
+    _navigator._navigation.goBack(null);
+  }else{
+    _navigator._navigation.goBack();
+  }
+}
+
 const findCurrentRoute = (navState) => {
   if ( !navState ) {
     navState = getTopLevelNavigator().state.nav;
@@ -77,5 +85,6 @@ export default {
   findCurrentRoute,
   getActiveTab,
   getStackNumber,
-  reset
+  reset,
+  goBack
 };
