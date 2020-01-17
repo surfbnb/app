@@ -290,10 +290,10 @@ PODS:
   - react-native-twitter-signin (1.1.0):
     - React
     - TwitterKit (~> 3.3)
-  - react-native-video (5.0.2):
+  - react-native-video (4.4.3):
     - React
-    - react-native-video/Video (= 5.0.2)
-  - react-native-video/Video (5.0.2):
+    - react-native-video/Video (= 4.4.3)
+  - react-native-video/Video (4.4.3):
     - React
   - react-native-webview (8.0.1):
     - React
@@ -593,7 +593,7 @@ SPEC CHECKSUMS:
   react-native-keep-awake: eba3137546b10003361b37c761f6c429b59814ae
   react-native-netinfo: 332d617e448eddc12697c7818185861e6114aebf
   react-native-twitter-signin: d85aa337ac3f564eea008053b6eb30e56ea09f40
-  react-native-video: 961749da457e73bf0b5565edfbaffc25abfb8974
+  react-native-video: bd7ca482cd4f3dac31c9bc93a6fe8573db433319
   react-native-webview: b1ea98894c474b27c4080779939959e1f3653147
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
