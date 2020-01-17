@@ -21,7 +21,7 @@ import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
 import TwitterWebLoginActions from '../TwitterWebLogin';
 import GmailOAuth from '../../services/ExternalLogin/GmailOAuth';
-import GitHubOAuth from '../../services/ExternalLogin/GitHubOAuth';
+import GitHubWebLogin from '../GitHubWebLogin';
 
 let TwitterAuthService;
 import('../../services/TwitterAuthService').then((imports) => {
@@ -103,7 +103,8 @@ class loginPopover extends React.Component {
   }
 
   githubPressHandler = async() => {
-    let response = await GitHubOAuth.signIn();
+    LoginPopoverActions.hide();
+    let response = await GitHubWebLogin.signIn();
     if(response && response.success){
       console.log("logged in with github", response);
     } else {
