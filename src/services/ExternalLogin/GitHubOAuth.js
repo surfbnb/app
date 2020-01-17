@@ -3,6 +3,12 @@ import qs from 'qs';
 import PepoApi from '../../services/PepoApi';
 import { GITHUB_AUTH_CALLBACK_ROUTE } from '../../constants';
 
+let GithubAuthService;
+import('../../services/GithubAuthService').then((imports) => {
+  GithubAuthService = imports.default;
+});
+
+
 const GithubBase = 'https://github.com/login/oauth';
 const GITHUB_OAUTH_URL = '/authorize';
 const GITHUB_ACCESS_TOKEN_URL = '/access_token';
@@ -48,7 +54,8 @@ class GitHubOAuth {
         });
         let formData =  await response.formData();
         let tokenData = this.formDataToJSON( formData );
-        console.log(tokenData);
+        GithubAuthService.signUp(tokenData);
+        // console.log(tokenData);
     }
 
     getWebviewUrl = ()=> {

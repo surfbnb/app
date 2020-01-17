@@ -19,7 +19,7 @@ import('./Utilities').then((imports) => {
   Utilities = imports.default;
 });
 
-import TwitterOAuth from './ExternalLogin/TwitterOAuth';
+import GitHubOAuth from './ExternalLogin/GitHubOAuth';
 import AppConfig from '../constants/AppConfig';
 import NavigationService from './NavigationService';
 import { navigateTo } from '../helpers/navigateTo';
@@ -27,47 +27,40 @@ import Pricer from './Pricer';
 import DataContract from '../constants/DataContract';
 import PixelCall from './PixelCall';
 
-class TwitterAuthService {
+class GithubAuthService {
   async signUp(paramsFromService) {
-        LoginPopoverActions.showConnecting();
-        let params = this.getParams(paramsFromService);
+    LoginPopoverActions.showConnecting();
+    let params = this.getParams(paramsFromService);
 
-        if (params) {
-          let inviteCode = await Utilities.getItem(AppConfig.appInstallInviteCodeASKey);
-          if (inviteCode) {
-            params['invite_code'] = inviteCode;
+    if (params) {
+      let inviteCode = await Utilities.getItem(AppConfig.appInstallInviteCodeASKey);
+      if (inviteCode) {
+        params['invite_code'] = inviteCode;
+      }
+      this.githubConnect(params)
+        .then((res) => {
+          if (res && res.success) {
+            this.onSuccess(res);
+          } else {
+            this.onServerError(res);
           }
-          CurrentUser.twitterConnect(params)
-            .then((res) => {
-              if (res && res.success) {
-                this.onSuccess(res);
-              } else {
-                this.onServerError(res);
-              }
-            })
-            .catch((err) => {
-              this.onServerError(err);
-            })
-            .finally(() => {
-              LoginPopoverActions.hide();
-            });
-        } else {
+        })
+        .catch((err) => {
+          this.onServerError(err);
+        })
+        .finally(() => {
           LoginPopoverActions.hide();
-        }
-      // })
-      // .catch((error) => {
-      //   LoginPopoverActions.hide();
-      //   this.onServerError(error);
-      // });
+        });
+    } else {
+      LoginPopoverActions.hide();
+    }
   }
 
 
   getParams (params){
+    console.log(params, 'paramsFromServiceparamsFromService');
     return {
-      token: params.oauth_token,
-      secret: params.oauth_token_secret,
-      twitter_id: params.user_id,
-      handle: params.screen_name
+      access_token: params.access_token
     }
   }
 
@@ -84,15 +77,15 @@ class TwitterAuthService {
 
   pixelDrop( res={} ){
     const data = res.data|| {},
-          meta = data.meta;
+      meta = data.meta;
     if(meta && !!meta.is_registration){
       const resultType = deepGet(res , DataContract.common.resultType ) ,
-            entity = deepGet(res, `data.${resultType}` , {}),
-            utm = data["utm_params"]  ,
-            inviteCode = meta["invite_code"] ,
-            createdAt = entity['uts'],
-            pixelParams = this.getPixeDropParams(createdAt , inviteCode , utm )
-            ;
+        entity = deepGet(res, `data.${resultType}` , {}),
+        utm = data["utm_params"]  ,
+        inviteCode = meta["invite_code"] ,
+        createdAt = entity['uts'],
+        pixelParams = this.getPixeDropParams(createdAt , inviteCode , utm )
+      ;
       PixelCall( pixelParams );
     }
   }
@@ -102,7 +95,7 @@ class TwitterAuthService {
       e_entity: "user",
       e_action: "registration",
       p_type: "signin",
-      p_name: "twitter"
+      p_name: "github"
     }
     if(createdAt){
       params["registration_at"] = createdAt;
@@ -117,7 +110,7 @@ class TwitterAuthService {
   }
 
   logout() {
-    TwitterOAuth.signOut();
+    GitHubOAuth.signOut();
   }
 
   onServerError(error) {
@@ -125,7 +118,7 @@ class TwitterAuthService {
       return;
     }
     Toast.show({
-      text: 'Unable to login with Twitter',
+      text: 'Unable to login with Github',
       icon: 'error'
     });
   }
@@ -144,6 +137,10 @@ class TwitterAuthService {
     return false;
   }
 
+  githubConnect(params) {
+    return CurrentUser._signin('/auth/github-login', params);
+  }
+
   isInviteCodeError(errorObj) {
     for (i in errorObj) {
       if (errorObj[i].parameter === 'invite_code') {
@@ -154,4 +151,4 @@ class TwitterAuthService {
   }
 }
 
-export default new TwitterAuthService();
+export default new GithubAuthService();
