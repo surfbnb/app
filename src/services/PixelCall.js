@@ -100,7 +100,7 @@ export default (data) => {
   // Fire the fetch call
   fetch(`${TRACKER_ENDPOINT}?${qs.stringify(compactData)}`, {
     headers: {
-      'User-Agent': DeviceInfo.getUserAgent()
+      'User-Agent': DeviceInfoCache.getUserAgent()
     }
   }).then((response) => console.log(`PixelCall to URL: ${TRACKER_ENDPOINT} completed with data: `, compactData))
     .catch((error) => console.log(`PixelCall fetch error: `, error));
