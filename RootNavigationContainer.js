@@ -182,6 +182,7 @@ const HomeStack = createStackNavigator(
     InviteCodeScreen: InviteCodeScreen,
     AuthDeviceDrawer: AuthDeviceDrawer,
     AddEmailScreen: AddEmailScreen,
+    LoginPopover: LoginPopover,
     CouchMarks: CouchMarks
   },
   {
@@ -380,7 +381,6 @@ const RootNavigationContainer = () => (
     <CameraWorker />
     <PictureWorker />
     <LoadingModalCover />
-    <LoginPopover />
     <AllowAccessModalScreen />
     <NotificationToastComponent />
     <SocketManager />

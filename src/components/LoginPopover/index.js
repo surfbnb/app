@@ -24,6 +24,7 @@ import TwitterWebLoginActions from '../TwitterWebLogin';
 import GmailOAuth from '../../services/ExternalLogin/GmailOAuth';
 import GitHubWebLoginActions from '../GitHubWebLogin';
 import AppleLoginActions  from '../AppleLogin';
+import NavigationService from '../../services/NavigationService';
 
 let TwitterAuthService;
 import('../../services/TwitterAuthService').then((imports) => {
@@ -119,7 +120,6 @@ class loginPopover extends React.Component {
   twitterPressHandler = () => {
     this.setState({ disableLoginBtn: true });
     //TwitterAuthService.signUp();
-    LoginPopoverActions.hide();
     TwitterWebLoginActions.signIn();
   }
 
@@ -130,7 +130,7 @@ class loginPopover extends React.Component {
   //Use this function if needed to handle hardware back handling for android.
   closeModal = () => {
     if (!this.props.isTwitterConnecting) {
-      Store.dispatch(hideLoginPopover());
+      NavigationService.goBack();
     }
     return true;
   };
@@ -163,68 +163,77 @@ class loginPopover extends React.Component {
     return buttonsJSX;
   };
 
+  isLastLoginUser(){
+    return true;
+  }
+
+  isError() {
+    return false;
+  }
+
+  getLastLoginUserName(){
+
+  }
+
+  getLastLoginProfilePic(){
+
+  }
+
+  onMoreOptionClick = () => {
+
+  }
+  
+
   render() {
     return (
-      <React.Fragment>
-        {this.props.show && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={this.props.show}
-            coverScreen={false}
-            hasBackdrop={true}
-          >
-            <TouchableWithoutFeedback onPressIn={this.closeModal}>
-              <View style={inlineStyles.parent}>
-                <TouchableWithoutFeedback>
-                  <View style={inlineStyles.container}>
-                    <TouchableOpacity
-                      onPress={this.closeModal}
-                      style={{
-                        position: 'absolute',
-                        top: 15,
-                        right: 15,
-                        width: 38,
-                        height: 38,
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      <Image source={modalCross} style={{ width: 19.5, height: 19 }} />
-                    </TouchableOpacity>
-                    <Image source={loggedOutLogo} style={{ width: 261, height: 70, marginBottom: 20 }} />
-                    <Text style={[inlineStyles.desc, {fontWeight: '500'}]}>
-                      Pepo is a place to discover & support creators.
-                    </Text>
-                    <Text style={[inlineStyles.desc, {marginBottom: 6, fontSize: 14}]}>
-                      Please create an account to continue.
-                    </Text>
-                    {this.getLoginButtons()}
-                    <View style={inlineStyles.tocPp}>
-                      <Text style={{textAlign: 'center'}}>
-                        <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
-                        <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-                          this.closeModal();
-                          InAppBrowser.openBrowser(
-                            `${WEB_ROOT}/terms`
-                          );
-                        })}>Terms of use </Text>
-                        <Text style={inlineStyles.termsTextBlack}>and </Text>
-                        <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-                          this.closeModal();
-                          InAppBrowser.openBrowser(
-                              `${WEB_ROOT}/privacy`
-                          );
-                        })}>Privacy Policy</Text>
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPressIn={this.closeModal}>
+        <View style={inlineStyles.parent}>
+          <TouchableWithoutFeedback>
+            <View style={inlineStyles.container}>
+              <TouchableOpacity
+                onPress={this.closeModal}
+                style={{
+                  position: 'absolute',
+                  top: 15,
+                  right: 15,
+                  width: 38,
+                  height: 38,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Image source={modalCross} style={{ width: 19.5, height: 19 }} />
+              </TouchableOpacity>
+              <Image source={loggedOutLogo} style={{ width: 261, height: 70, marginBottom: 20 }} />
+              <Text style={[inlineStyles.desc, {fontWeight: '500'}]}>
+                Pepo is a place to discover & support creators.
+              </Text>
+              <Text style={[inlineStyles.desc, {marginBottom: 6, fontSize: 14}]}>
+                Please create an account to continue.
+              </Text>
+              {this.getLoginButtons()}
+              <View style={inlineStyles.tocPp}>
+                <Text style={{textAlign: 'center'}}>
+                  <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
+                  <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
+                    this.closeModal();
+                    InAppBrowser.openBrowser(
+                      `${WEB_ROOT}/terms`
+                    );
+                  })}>Terms of use </Text>
+                  <Text style={inlineStyles.termsTextBlack}>and </Text>
+                  <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
+                    this.closeModal();
+                    InAppBrowser.openBrowser(
+                        `${WEB_ROOT}/privacy`
+                    );
+                  })}>Privacy Policy</Text>
+                </Text>
               </View>
-            </TouchableWithoutFeedback>
-          </Modal>
-        )}
-      </React.Fragment>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -236,7 +245,7 @@ export const LoginPopoverActions = {
     firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);    
   },
   show: () => {
-    Store.dispatch(showLoginPopover());
+    NavigationService.navigate("LoginPopover");
     LoginPopoverActions._track();
   },
   showConnecting: () => {
@@ -248,6 +257,6 @@ export const LoginPopoverActions = {
     Store.dispatch(showConnectingLoginPopover());
   },
   hide: () => {
-    Store.dispatch(hideLoginPopover());
+    NavigationService.goBack();
   }
 };
