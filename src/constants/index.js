@@ -20,6 +20,7 @@ const BundleConstants = {
     TWITTER_CONSUMER_KEY: 'NEo4gEXzdQZaoTsqzpZvepfKb',
     TWITTER_CONSUMER_SECRET: 'iM5UMt4px8rwoqEoRV9gJGrJGtEoMUxOYkaWXSges7t4bk564t',
     TWITTER_AUTH_CALLBACK_ROUTE: 'https://stagingpepo.com/webview/twitter/oauth',
+    GITHUB_AUTH_CALLBACK_ROUTE: 'https://stagingpepo.com/webview/github/oauth',
     VIEW_END_POINT: 'https://ost:Ax23!sdQ*kN-201~96@view.stagingost.com/testnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitStaging.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitStaging.toString( 10 ),
@@ -92,6 +93,7 @@ export const MAX_SPENDING_LIMIT = BundleConstants[DeviceInfo.getBundleId()].MAX_
 export const TWITTER_CONSUMER_KEY = BundleConstants[DeviceInfo.getBundleId()].TWITTER_CONSUMER_KEY;
 export const TWITTER_CONSUMER_SECRET = BundleConstants[DeviceInfo.getBundleId()].TWITTER_CONSUMER_SECRET;
 export const TWITTER_AUTH_CALLBACK_ROUTE = BundleConstants[DeviceInfo.getBundleId()].TWITTER_AUTH_CALLBACK_ROUTE;
+export const GITHUB_AUTH_CALLBACK_ROUTE = BundleConstants[DeviceInfo.getBundleId()].GITHUB_AUTH_CALLBACK_ROUTE;
 
 export const VIEW_END_POINT = BundleConstants[DeviceInfo.getBundleId()].VIEW_END_POINT;
 

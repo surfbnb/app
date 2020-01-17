@@ -2,8 +2,8 @@ import { authorize, refresh, revoke } from 'react-native-app-auth';
 
 const config = {
   issuer: 'https://accounts.google.com',
-  clientId: '801672201569-e1j1g2gji2p022oagnpjheld89thchn8.apps.googleusercontent.com',
-  redirectUrl: 'com.googleusercontent.apps.801672201569-e1j1g2gji2p022oagnpjheld89thchn8:/oauth2redirect/google',
+  clientId: '82182934708-621bbpcpag2gc653kd8f2lu0m23k250p.apps.googleusercontent.com',
+  redirectUrl: 'com.googleusercontent.apps.82182934708-621bbpcpag2gc653kd8f2lu0m23k250p:/oauth2redirect/google',
   scopes: ['openid', 'profile']
 };
 

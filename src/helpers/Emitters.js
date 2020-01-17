@@ -4,6 +4,7 @@ let DrawerEmitter = new EventEmitter();
 let VideoReplyEmitter = new EventEmitter();
 let LoggedOutCustomTabClickEvent = new EventEmitter();
 let TwitterAuthEmitter = new EventEmitter();
+let GithubAuthEmitter = new EventEmitter();
 
 
-export { VideoPlayPauseEmitter, DrawerEmitter, VideoReplyEmitter, LoggedOutCustomTabClickEvent, TwitterAuthEmitter };
+export { VideoPlayPauseEmitter, DrawerEmitter, VideoReplyEmitter, LoggedOutCustomTabClickEvent, TwitterAuthEmitter, GithubAuthEmitter };

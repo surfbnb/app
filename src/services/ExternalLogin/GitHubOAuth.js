@@ -1,41 +1,66 @@
-import { authorize, refresh, revoke } from 'react-native-app-auth';
-import PepoApi from '../PepoApi';
+import qs from 'qs';
 
-const config = {
+import PepoApi from '../../services/PepoApi';
+import { GITHUB_AUTH_CALLBACK_ROUTE } from '../../constants';
+
+const GithubBase = 'https://github.com/login/oauth';
+const GITHUB_OAUTH_URL = '/authorize';
+const GITHUB_ACCESS_TOKEN_URL = '/access_token';
+
+const GitHubConfig = {
   clientId: '58a09b55ccbcd1f6909f',
   clientSecret: '96bae48081191810aa8850456f9d279c672e0b42',
-  redirectUrl: 'PepoStaging-08012020://oauth', //note: path is required
-  serviceConfiguration: {
-    authorizationEndpoint: 'https://github.com/login/oauth/authorize',
-    tokenEndpoint: `https://github.com/login/oauth/access_token`,
-    revocationEndpoint: `https://github.com/settings/connections/applications/58a09b55ccbcd1f6909f`
-  },
-  customHeaders :{
-    token : {
-      token_type: 'bearer'
-    }
-  },
-  scopes: ['read:user', 'user:email']
+  redirectUrl: GITHUB_AUTH_CALLBACK_ROUTE, 
+  scopes: 'read:user user:email'
 }
 
 class GitHubOAuth {
-
-    constructor(){
-        
-    }
 
     signIn = async() => {
        this.authorize();
     }
 
-    authorize = ()=> {
-        new PepoApi('https://github.com/login/oauth/authorize')
-        .then(()=> {
+    formDataToJSON = (formData)=> {
+      var object = {};
+      for (let p in formData){
+          formData[p].forEach((item)=> {
+              object[item[0]] = item[1]
+          });
+      }
+      return object;
+  }
 
-        })
-        .catch((error)=>{
-            console.log("github error", error);
-        })
+    handleRedirectSuccess = async( requestParams ) => {
+      let params = {
+        client_id : GitHubConfig.clientId,
+        client_secret : GitHubConfig.clientSecret,
+        redirect_uri : GitHubConfig.redirectUrl,
+        code : requestParams.code
+      },
+      accesstokenUrl = `${GithubBase}${GITHUB_ACCESS_TOKEN_URL}`;
+     
+        const response = await fetch(accesstokenUrl, {
+          method: 'POST', 
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(params)
+        });
+        let formData =  await response.formData();
+        let tokenData = this.formDataToJSON( formData );
+        console.log(tokenData);
+    }
+
+    getWebviewUrl = ()=> {
+      let params = {
+        client_id : GitHubConfig.clientId,
+        redirect_uri : GitHubConfig.redirectUrl,
+        scope : GitHubConfig.scopes,
+        response_type : 'code'
+      };
+      let queryParams = qs.stringify(params);
+      let githubRedirectURL = `${GithubBase}${GITHUB_OAUTH_URL}?${queryParams}`;
+      return githubRedirectURL;
     }
 
    
