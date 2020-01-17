@@ -2,9 +2,9 @@ import DeviceInfo from 'react-native-device-info';
 import BigNumber from 'bignumber.js';
 
 const B18 = new BigNumber('10').exponentiatedBy('18');
-const DefaultSpendingLimitProduction = new BigNumber('50').multipliedBy(B18);
-const DefaultSpendingLimitStaging = new BigNumber('50').multipliedBy(B18);
-const DefaultSpendingLimitSandbox = new BigNumber('50').multipliedBy(B18);
+const DefaultSpendingLimitProduction = new BigNumber('100').multipliedBy(B18);
+const DefaultSpendingLimitStaging = new BigNumber('100').multipliedBy(B18);
+const DefaultSpendingLimitSandbox = new BigNumber('100').multipliedBy(B18);
 
 const MaxSpendingLimitProduction = new BigNumber('1000').multipliedBy(B18);
 const MaxSpendingLimitSandbox = new BigNumber('1000').multipliedBy(B18);

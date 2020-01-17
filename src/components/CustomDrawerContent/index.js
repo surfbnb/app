@@ -20,7 +20,6 @@ import storePink from '../../assets/StorePink.png';
 import Toast from '../../theme/components/NotificationToast';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper';
-import {ostErrors} from "../../services/OstErrors";
 import InAppBrowser from '../../services/InAppBrowser';
 import {DrawerEmitter} from '../../helpers/Emitters';
 import {WEB_ROOT, VIEW_END_POINT, TOKEN_ID} from "../../constants";
@@ -97,12 +96,7 @@ class CustomDrawerContent extends Component {
   };
 
   twitterDisconnect = () => {
-    this.setState(
-      {
-        disableButtons: true
-      },
-      () => {
-        new PepoApi('/auth/twitter-disconnect')
+    new PepoApi('/auth/twitter-disconnect')
           .post()
           .then(async (res) => {
             if (res && res.success) {
@@ -112,7 +106,6 @@ class CustomDrawerContent extends Component {
                 text: 'Twitter Disconnect failed',
                 icon: 'error'
               });
-              this.setState({ disableButtons: false });
             }
           })
           .catch((error) => {
@@ -120,10 +113,7 @@ class CustomDrawerContent extends Component {
               text: 'Twitter Disconnect failed',
               icon: 'error'
             });
-            this.setState({ disableButtons: false });
-          });
-      }
-    );
+      });
   };
 
   CurrentUserLogout = () => {
@@ -131,19 +121,7 @@ class CustomDrawerContent extends Component {
     let params = {
       device_id: DeviceInfo.getUniqueId()
     };
-    this.setState(
-      {
-        disableButtons: true
-      },
-      async () => {
-        await CurrentUser.logout(params);
-        setTimeout(() => {
-          this.setState({
-            disableButtons: false
-          });
-        }, 300);
-      }
-    );
+    CurrentUser.logout(params);
   };
 
   initWallet = () => {

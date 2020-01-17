@@ -233,15 +233,19 @@ export default {
     }
   },
 
-  getLanguageCode() {
+  getLanguageTag() {
     const locales = RNLocalize.getLocales() || [] ,
     local = locales[0] || {}
     ;
-    return local["languageCode"];
+    return local["languageTag"];
   },
 
   getUTCTimeZone(){
-    return momentTimezone.tz(RNLocalize.getTimeZone()).utcOffset();
+    return RNLocalize.getTimeZone();
+  },
+  
+  getNumbericUTCTimeZone(){
+    return momentTimezone.tz(this.getUTCTimeZone()).utcOffset();
   }
 
 };

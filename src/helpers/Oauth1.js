@@ -5,7 +5,7 @@
  */
 
 const uuidV4 = require('uuid/v4');
-import './shim.js'
+const Buffer = require('buffer/').Buffer;
 import Crypto from './crypto';
 
 const BYTE_MAP = {
