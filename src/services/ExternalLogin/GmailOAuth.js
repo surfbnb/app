@@ -2,19 +2,19 @@ import { authorize, refresh, revoke } from 'react-native-app-auth';
 
 const config = {
   issuer: 'https://accounts.google.com',
-  clientId: '244190786286-nf5vscpeh5bclog3f89klr8s4v5afgtl.apps.googleusercontent.com',
-  redirectUrl: 'com.googleusercontent.apps.244190786286-nf5vscpeh5bclog3f89klr8s4v5afgtl:/oauth2redirect/google',
+  clientId: '801672201569-e1j1g2gji2p022oagnpjheld89thchn8.apps.googleusercontent.com',
+  redirectUrl: 'com.googleusercontent.apps.801672201569-e1j1g2gji2p022oagnpjheld89thchn8:/oauth2redirect/google',
   scopes: ['openid', 'profile']
 };
 
 // const config = {
-//   clientId: '58a09b55ccbcd1f6909f',
-//   clientSecret: '96bae48081191810aa8850456f9d279c672e0b42',
-//   redirectUrl: 'PepoStaging-08012020://oauth', //note: path is required
+//   clientId: '10ca594072962f391504',
+//   clientSecret: 'c4566b51d00527d3f2db54634fdce8e9d00e8a2c',
+//   redirectUrl: 'https://stagingpepo.com/app/github/oauth', //note: path is required
 //   serviceConfiguration: {
 //     authorizationEndpoint: 'https://github.com/login/oauth/authorize',
 //     tokenEndpoint: `https://github.com/login/oauth/access_token`,
-//     revocationEndpoint: `https://github.com/settings/connections/applications/58a09b55ccbcd1f6909f`
+//     revocationEndpoint: `https://github.com/settings/connections/applications/10ca594072962f391504`
 //   },
 //   customHeaders :{
 //     token : {

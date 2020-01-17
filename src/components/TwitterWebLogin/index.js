@@ -1,12 +1,13 @@
 import React from 'react';
-import {Modal, Text, TouchableHighlight, View, Alert} from 'react-native';
+import { Modal } from 'react-native';
 import { WebView } from 'react-native-webview';
+import qs from 'qs';
 
 import DeviceInfo from 'react-native-device-info';
 import {TwitterAuthEmitter} from '../../helpers/Emitters';
 import TwitterOAuth from '../../services/ExternalLogin/TwitterOAuth';
-import inlineStyles from './styles';
 import { SafeAreaView } from 'react-navigation';
+import { TWITTER_AUTH_CALLBACK_ROUTE } from '../../constants';
 
 export class TwitterWebLogin extends React.Component{
 
@@ -49,6 +50,16 @@ export class TwitterWebLogin extends React.Component{
         this.showWebview( url );
     }
 
+    handleNavigationStateChange = ( navState ) => {
+        let url = navState.url;
+        if( url.includes(TWITTER_AUTH_CALLBACK_ROUTE)){
+            let params = url.split('?');
+            let paramsObj = qs.parse(params[1]);
+            this.hideWebview();
+            TwitterOAuth.handleRequestTokenSuccess(paramsObj);
+        }
+    }
+
     getModalView = ()=> {
         return  (
             <WebView
@@ -62,6 +73,9 @@ export class TwitterWebLogin extends React.Component{
                 }
                 }}
                 style={{ flex: 1 }}
+                onNavigationStateChange = {(navState)=>{
+                    this.handleNavigationStateChange( navState );
+                }}
             />
         )
     }
@@ -73,7 +87,7 @@ export class TwitterWebLogin extends React.Component{
               transparent={false}
               visible={this.state.show}
               onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
+                this.hideWebview();
               }}>
               <SafeAreaView style={{flex: 1, marginTop: 40}} >
                 {this.getModalView()}

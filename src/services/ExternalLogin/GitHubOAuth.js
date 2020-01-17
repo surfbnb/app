@@ -1,4 +1,5 @@
 import { authorize, refresh, revoke } from 'react-native-app-auth';
+import PepoApi from '../PepoApi';
 
 const config = {
   clientId: '58a09b55ccbcd1f6909f',
@@ -20,66 +21,24 @@ const config = {
 class GitHubOAuth {
 
     constructor(){
-        this.authState = {
-            refreshToken : null,
-            accessToken : null,
-            accessTokenExpirationDate : null,
-            scopes : null
-        }
+        
     }
 
     signIn = async() => {
-       let response = await this.initiateSignUp();
-       response.success = true;
-       return response;
+       this.authorize();
     }
 
-    initiateSignUp = async () => {
-        let authState = await this.authorize();
-        return authState;
+    authorize = ()=> {
+        new PepoApi('https://github.com/login/oauth/authorize')
+        .then(()=> {
+
+        })
+        .catch((error)=>{
+            console.log("github error", error);
+        })
     }
 
-    authorize = async () => {
-        try {
-        const authState = await authorize(config);
-        this.authState = {
-            refreshToken : authState.refreshToken,
-            accessToken : authState.accessToken,
-            accessTokenExpirationDate : authState.accessTokenExpirationDate,
-            scopes : authState.scopes
-            }
-        return this.authState;
-        } catch (error) {
-            Promise.reject(`Failed to log in ${error.message}`);
-        }
-    };
-
-    refresh = async () => {
-        try {
-        const authState = await refresh(config, {
-            refreshToken: this.authState.refreshToken
-        });
-        this.authState = {
-            refreshToken : authState.refreshToken,
-            accessToken : authState.accessToken,
-            accessTokenExpirationDate : authState.accessTokenExpirationDate,
-            scopes : authState.scopes
-            }
-        } catch (error) {
-            Promise.reject(`Failed to refresh token ${error.message}`);
-        }
-    };
-
-    revoke = async () => {
-        try {
-        await revoke(config, {
-            tokenToRevoke: this.authState.accessToken,
-            sendClientId: true
-        });
-        } catch (error) {
-            Promise.reject(`Failed to revoke token ${error.message}`);
-        }
-    };
+   
 }
 
 export default new GitHubOAuth();
