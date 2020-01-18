@@ -420,6 +420,13 @@ const AppConfig = {
     denied: RESULTS.DENIED,
     blocked: RESULTS.BLOCKED,
     granted: RESULTS.GRANTED
+  },
+
+  authServiceTypes : {
+    google: "google",
+    apple: "apple",
+    github: "github",
+    twitter: "twitter"
   }
 
 };

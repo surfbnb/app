@@ -3,7 +3,7 @@ import qs from 'qs';
 import { GITHUB_AUTH_CALLBACK_ROUTE } from '../../constants';
 
 let GithubAuthService;
-import('../../services/GithubAuthService').then((imports) => {
+import('../../services/AuthServices/GithubAuthService').then((imports) => {
   GithubAuthService = imports.default;
 });
 

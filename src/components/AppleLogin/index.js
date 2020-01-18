@@ -7,6 +7,7 @@ import appleAuth, {
   AppleAuthRequestOperation,
 } from '@invertase/react-native-apple-authentication';
 import {AppleAuthEmitter} from '../../helpers/Emitters';
+import AppleAuthService from "../../services/AuthServices/AppleAuthService";
 
 
 export class AppleLogin extends React.Component {
@@ -56,6 +57,7 @@ export class AppleLogin extends React.Component {
             AppleAuthRequestScope.FULL_NAME,
             ],
         });
+        AppleAuthService.signUp()
 
         console.log('appleAuthRequestResponse', appleAuthRequestResponse);
 

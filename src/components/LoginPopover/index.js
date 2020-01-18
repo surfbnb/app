@@ -28,11 +28,6 @@ import NavigationService from '../../services/NavigationService';
 import LinearGradient from "react-native-linear-gradient";
 import ProfilePicture from "../ProfilePicture";
 
-let TwitterAuthService;
-import('../../services/TwitterAuthService').then((imports) => {
-  TwitterAuthService = imports.default;
-});
-
 const mapStateToProps = ({ login_popover }) => {
   return {
     show: login_popover.show,
@@ -111,7 +106,6 @@ class loginPopover extends React.Component {
 
   twitterPressHandler = () => {
     this.setState({ disableLoginBtn: true });
-    //TwitterAuthService.signUp();
     TwitterWebLoginActions.signIn();
   }
 
