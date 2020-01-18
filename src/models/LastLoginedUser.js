@@ -2,13 +2,9 @@ import merge from "lodash/merge";
 import deepGet from "lodash/get";
 import Utilities from '../services/Utilities';
 import ReduxGetters from '../services/ReduxGetters';
+import AppConfig from "../constants/AppConfig";
 
-const ServiceTypes = {
-    google: "google", 
-    apple: "apple",
-    github: "github",
-    twitter: "twitter"
-}
+const ServiceTypes =AppConfig.authServiceTypes;
 
 class LastLoginedUser {
 
