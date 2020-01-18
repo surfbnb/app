@@ -1,6 +1,4 @@
-
-import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_AUTH_CALLBACK_ROUTE } from '../../constants';
-
+import RemoteConfig from '../../services/RemoteConfig';
 import Oauth1Helper from '../../helpers/Oauth1';
 
 const TwitterBase = 'https://api.twitter.com/oauth';
@@ -24,10 +22,10 @@ class TwitterOAuth {
     let twitterRequestParams = {
         requestType: 'POST',
         completeUrl: url,
-        authorizationHeader: { oauth_callback: TWITTER_AUTH_CALLBACK_ROUTE },
+        authorizationHeader: { oauth_callback: RemoteConfig.getValue('TWITTER_AUTH_CALLBACK_ROUTE') },
         oAuthCredentials: {
-            oAuthConsumerKey: TWITTER_CONSUMER_KEY,
-            oAuthConsumerSecret: TWITTER_CONSUMER_SECRET
+            oAuthConsumerKey: RemoteConfig.getValue('TWITTER_CONSUMER_KEY'),
+            oAuthConsumerSecret: RemoteConfig.getValue('TWITTER_CONSUMER_SECRET')
           }
       };
 
@@ -55,7 +53,7 @@ fireRequest = async (twitterRequestParams) => {
         oAuthCredentials: twitterRequestParams.oAuthCredentials,
         requestParams: requestParams
     };
-      
+
     let authorizationHeader = await new Oauth1Helper(twitterAuthorizationHeader).perform();
 
     // if (authorizationHeader.isFailure()) {
@@ -113,7 +111,7 @@ fireRequest = async (twitterRequestParams) => {
     let response = await this.fireRequest(twitterRequestParams);
 
     return this.formDataToJSON(response);
-  } 
+  }
 }
 
 export default new TwitterOAuth();
