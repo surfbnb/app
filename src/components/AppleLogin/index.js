@@ -32,7 +32,7 @@ export class AppleLogin extends React.Component {
     /**
      * cleans up event listener
      */
-    this.authCredentialListener();
+    this.authCredentialListener = null;
   }
 
    logout = async() =>  {
