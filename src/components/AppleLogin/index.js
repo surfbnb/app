@@ -13,10 +13,6 @@ export class AppleLogin extends React.Component {
   constructor() {
     super();
     this.authCredentialListener = null;
-    this.user = null;
-    this.state = {
-      credentialStateForUser: -1,
-    }
   }
 
   componentDidMount() {
@@ -24,9 +20,11 @@ export class AppleLogin extends React.Component {
      * subscribe to credential updates.This returns a function which can be used to remove the event listener
      * when the component unmounts.
      */
-    this.authCredentialListener = appleAuth.onCredentialRevoked(async () => {
-      this.logout();
-    });
+    if(appleAuth.isSupported) {
+      this.authCredentialListener = appleAuth.onCredentialRevoked(async () => {
+        this.logout();
+      });
+    }
     AppleAuthEmitter.on('appleSignIn', ()=> this.signIn());
   }
 
@@ -46,6 +44,7 @@ export class AppleLogin extends React.Component {
     }
   
     signIn = async () => {
+      if(appleAuth.isSupported) {
         console.warn('Beginning Apple Authentication');
 
         // start a login request
@@ -67,6 +66,7 @@ export class AppleLogin extends React.Component {
             console.log(error);
         }
         }
+      }    
     };
 
   render() {
