@@ -7,11 +7,11 @@ import('../services/AuthServices/TwitterAuthService').then((imports) => {
   TwitterAuthService = imports.default;
 });
 import('../services/AuthServices/AppleAuthService').then((imports) => {
-  GithubAuthService = imports.default;
+  AppleAuthService = imports.default;
 });
 
 import('../services/AuthServices/GoogleAuthService').then((imports) => {
-  GithubAuthService = imports.default;
+  GoogleAuthService = imports.default;
 });
 
 import AppConfig from '../constants/AppConfig';

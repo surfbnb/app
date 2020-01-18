@@ -16,7 +16,9 @@ class GoogleAuthService extends Base {
 
   getParamsForServer (params){
     return {
-      access_token: params.access_token
+      access_token: params.accessToken,
+      refresh_token: params.refreshToken,
+      expires_in: params.accessTokenExpirationDate
     }
   }
 

@@ -2,6 +2,11 @@ import { Platform, Alert} from 'react-native';
 
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 
+let GoogleAuthService;
+import('../../services/AuthServices/GoogleAuthService').then((imports) => {
+    GoogleAuthService = imports.default;
+});
+
 const GoogleAndroidConfig = {
     issuer: 'https://accounts.google.com',
     clientId: '82182934708-rgk37rbb4jojhb27cjbood88d014n8f8.apps.googleusercontent.com',
@@ -45,6 +50,8 @@ class GoogleOAuth {
 
     signIn = async() => {
        let response = await this.initiateSignUp();
+       console.log('Hey signing in');
+       GoogleAuthService.signUp(response);
        console.log(response);
     }
 
