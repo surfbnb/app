@@ -17,6 +17,7 @@ import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.links.RNFirebaseLinksPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
+import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage;
 import com.pepo2.bridge.PepoNativePackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -39,6 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new RNFirebaseMessagingPackage());
           packages.add(new RNFirebaseLinksPackage());
           packages.add(new RNFirebaseNotificationsPackage());
+          packages.add(new RNFirebaseRemoteConfigPackage());
           return packages;
         }
 
