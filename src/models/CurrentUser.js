@@ -10,6 +10,7 @@ import OstWorkflowDelegate from '../helpers/OstWorkflowDelegate';
 import EventEmitter from "eventemitter3";
 import {navigateTo} from "../helpers/navigateTo";
 import AppConfig from '../constants/AppConfig';
+import LastLoginedUser from "./LastLoginedUser";
 
 const RCTNetworking = require('react-native/Libraries/Network/RCTNetworking'); 
 
@@ -177,6 +178,7 @@ class CurrentUser {
     await new PepoApi('/auth/logout')
       .post(params)
       .then((res) => {
+        LastLoginedUser.updateASUserOnLogout(this.getUserId());
         this.onLogout( res , params );
       })
       .catch((error) => {
@@ -215,6 +217,7 @@ class CurrentUser {
       return this._saveCurrentUser(apiResponse, null, true)
         .catch()
         .then(() => {
+          LastLoginedUser.updateASUserOnLogin(apiResponse);
           return apiResponse;
         });
     });
