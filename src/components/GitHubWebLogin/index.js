@@ -24,7 +24,7 @@ export class GitHubWebLogin extends React.Component{
     }
 
     componentWillUnmount(){
-        GithubAuthEmitter.removeListener('showTwitterWebview');
+        GithubAuthEmitter.removeListener('showGithubWebview');
     }
 
     showWebview = ( url )=> {

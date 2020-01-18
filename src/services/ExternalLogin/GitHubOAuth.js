@@ -1,6 +1,5 @@
 import qs from 'qs';
 
-import PepoApi from '../../services/PepoApi';
 import { GITHUB_AUTH_CALLBACK_ROUTE } from '../../constants';
 
 let GithubAuthService;
@@ -21,10 +20,6 @@ const GitHubConfig = {
 }
 
 class GitHubOAuth {
-
-    signIn = async() => {
-       this.authorize();
-    }
 
     formDataToJSON = (formData)=> {
       var object = {};
