@@ -1,7 +1,19 @@
-import GithubAuthService from '../services/AuthServices/GithubAuthService';
-import TwitterAuthService from '../services/AuthServices/TwitterAuthService';
-import AppleAuthService from '../services/AuthServices/AppleAuthService';
-import GoogleAuthService from '../services/AuthServices/GoogleAuthService'
+let GithubAuthService,TwitterAuthService, AppleAuthService,GoogleAuthService;
+import('../services/AuthServices/GithubAuthService').then((imports) => {
+  GithubAuthService = imports.default;
+});
+
+import('../services/AuthServices/TwitterAuthService').then((imports) => {
+  TwitterAuthService = imports.default;
+});
+import('../services/AuthServices/AppleAuthService').then((imports) => {
+  GithubAuthService = imports.default;
+});
+
+import('../services/AuthServices/GoogleAuthService').then((imports) => {
+  GithubAuthService = imports.default;
+});
+
 import AppConfig from '../constants/AppConfig';
 
 const authService = function(authServiceString){
