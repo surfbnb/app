@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import appleAuth, {
   AppleAuthError,
@@ -14,23 +15,23 @@ import('../../services/AuthServices/AppleAuthService').then((imports) => {
 });
 
 
-
 export class AppleLogin extends React.Component {
   constructor() {
     super();
-    this.authCredentialListener = null;
+    // this.authCredentialListener = null;
   }
 
   componentDidMount() {
+    //DO NOT UNCOMMENT because need to check why onCredentialRevoked() opens auth dialog again
     /**
      * subscribe to credential updates.This returns a function which can be used to remove the event listener
      * when the component unmounts.
      */
-    if(appleAuth.isSupported) {
-      this.authCredentialListener = appleAuth.onCredentialRevoked(async () => {
-        this.logout();
-      });
-    }
+    // if(appleAuth.isSupported) { 
+    //   this.authCredentialListener = appleAuth.onCredentialRevoked(async () => {
+    //     this.logout();
+    //   });
+    // }
     AppleAuthEmitter.on('appleSignIn', ()=> this.signIn());
   }
 
@@ -38,16 +39,17 @@ export class AppleLogin extends React.Component {
     /**
      * cleans up event listener
      */
-    this.authCredentialListener = null;
+    // this.authCredentialListener = null;
+    AppleAuthEmitter.removeListener('appleSignIn');
   }
 
-   logout = async() =>  {
-        // performs logout request
-        const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: AppleAuthRequestOperation.LOGOUT,
-        });
-        console.log("User logged out", appleAuthRequestResponse);
-    }
+  //  logout = async() =>  {
+  //       // performs logout request
+  //       const appleAuthRequestResponse = await appleAuth.performRequest({
+  //       requestedOperation: AppleAuthRequestOperation.LOGOUT,
+  //       });
+  //       console.log("User logged out", appleAuthRequestResponse);
+  //   }
   
     signIn = async () => {
       if(appleAuth.isSupported) {
@@ -55,16 +57,14 @@ export class AppleLogin extends React.Component {
 
         // start a login request
         try {
-        const appleAuthRequestResponse = await appleAuth.performRequest({
+        const response = await appleAuth.performRequest({
             requestedOperation: AppleAuthRequestOperation.LOGIN,
             requestedScopes: [
             AppleAuthRequestScope.EMAIL,
             AppleAuthRequestScope.FULL_NAME,
             ],
         });
-        AppleAuthService.signUp()
-
-        console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+        AppleAuthService.signUp( response );
 
         } catch (error) {
         if (error.code === AppleAuthError.CANCELED) {
@@ -75,6 +75,17 @@ export class AppleLogin extends React.Component {
         }
       }    
     };
+
+    getUserDataFromAsync = ( response ) => {
+      return AsyncStorage.getItem(`appleUser${response.user}`);
+    }
+
+    //Save response to async as apple return email and other details only on first login
+    saveResponseToAsync = ( response )=> {
+      if(!this.getUserDataFromAsync( response )){
+        AsyncStorage.setItem(`appleUser${response.user}`, JSON.stringify(response));
+      }
+    }
 
   render() {
       return (

@@ -8,16 +8,22 @@ class AppleAuthService extends Base {
     super(params);
   }
 
-
   connectToServer(params) {
     return CurrentUser._signin('/auth/apple-login', params);
   }
 
-
   getParamsForServer (params){
     console.log(params, 'Apple Params');
     return {
-      access_token: params.access_token
+      authorization_code : params.authorizationCode,
+      authorized_scopes : params.authorizedScopes,
+      email : params.email,
+      full_name : params.fullName,
+      nonce: params.nonce,
+      identity_token : params.identityToken,
+      real_user_status : params.realUserStatus,
+      state: params.state,
+      user: params.user
     }
   }
 
@@ -41,7 +47,7 @@ class AppleAuthService extends Base {
   }
 
   logout() {
-    // TwitterOAuth.signOut();
+    
   }
 }
 
