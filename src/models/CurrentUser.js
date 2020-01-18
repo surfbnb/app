@@ -39,6 +39,7 @@ class CurrentUser {
   initialize() {
     //Provide user js obj in  a promise.
     this.userId = null;
+    LastLoginedUser.initialize();
     return this.currentUserIdFromAS().then((asUserId) => {
       if (!asUserId) {
         Promise.resolve(null);

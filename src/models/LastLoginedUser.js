@@ -1,8 +1,12 @@
 import merge from "lodash/merge";
 import deepGet from "lodash/get";
-import Utilities from '../services/Utilities';
 import ReduxGetters from '../services/ReduxGetters';
 import AppConfig from "../constants/AppConfig";
+
+let Utilities;
+import('../services/Utilities').then((imports) => {
+  Utilities = imports.default;
+});
 
 const ServiceTypes =AppConfig.authServiceTypes;
 
@@ -10,7 +14,6 @@ class LastLoginedUser {
 
     constructor(){
         this.lastLoginUser = {};
-        this.initialize();
     }
 
     /**
@@ -56,16 +59,28 @@ class LastLoginedUser {
         const resultType = deepGet(apiResponse, 'data.result_type');
         const data = deepGet(apiResponse, 'data', {});
         const user = deepGet(apiResponse, `data.${resultType}`, {}); 
-        const userDetails = deepGet( data , `users.${user['user_id']}`  );
+        const userDetails = deepGet( data , `users.${user['user_id']}`);
+        if(!userDetails) return;
         const service = deepGet(data,  "meta.service_type");
+        const profileImageId = userDetails["profile_image_id"] ;
+        const image = this._getProfileImage(profileImageId, data);
 
         const userObj = this._getUserObj( userDetails );
         if(userObj && service){
             userObj['service'] = service;
         }
 
+        if(userObj && image){
+          userObj['profileImage'] = image;
+        }
+
         return userObj;
     }
+
+      _getProfileImage(id , data){
+        return deepGet(data, `images.${id}.resolutions.${AppConfig.profileImageConstants.imageWidth}.url`) ||
+          deepGet(data, `images.${id}.resolutions.original.url`)
+      }
 
     updateASUserOnLogout(currentId){
         const user = this.getUserDataFromRedux( currentId );
@@ -74,10 +89,11 @@ class LastLoginedUser {
 
     getUserDataFromRedux(userId){
         const userDetails = ReduxGetters.getUser(userId);
+        if(!userDetails) return;
         const profileImage = ReduxGetters.getProfileImage(ReduxGetters.getProfileImageId(userId));
         const userObj = this._getUserObj(userDetails);
         if(userObj && profileImage ){
-            userObj[profileImage] = profileImage;
+            userObj['profileImage'] = profileImage;
         }
         return userObj;
     }
@@ -109,10 +125,6 @@ class LastLoginedUser {
 
     _getASKey() {
         return "lastLoginUser";
-    }
-
-    getServices() {
-        return ServiceTypes ;
     }
 
     getLastLoginServiceType() {

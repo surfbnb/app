@@ -26,7 +26,8 @@ import GitHubWebLoginActions from '../GitHubWebLogin';
 import AppleLoginActions  from '../AppleLogin';
 import NavigationService from '../../services/NavigationService';
 import LinearGradient from "react-native-linear-gradient";
-import ProfilePicture from "../ProfilePicture";
+import LastLoginedUser from "../../models/LastLoginedUser";
+import profilePicture from "../../assets/default_user_icon.png";
 
 const mapStateToProps = ({ login_popover }) => {
   return {
@@ -35,9 +36,9 @@ const mapStateToProps = ({ login_popover }) => {
   }
 };
 
-
+const serviceTypes = AppConfig.authServiceTypes;
 const btnPostText = 'Connecting...';
-const sequenceOfLoginServices = ['twitter','apple', 'gmail', 'github' ];
+const sequenceOfLoginServices = [serviceTypes.twitter,serviceTypes.apple, serviceTypes.google, serviceTypes.github ];
 const versionIOS = DeviceInfo.getSystemVersion();
 const finalVersionIOS = versionIOS <= 13;
 
@@ -46,35 +47,36 @@ class loginPopover extends React.Component {
     super(props);
     this.state = {
       disableLoginBtn: false,
-      continueAs: 'Continue as'
+      continueAs: 'Continue as',
+      showAllOptions : !this.isLastLoginUser()
     };
     this.setLoginServicesConfig();
   }
 
   setLoginServicesConfig = () => {
     this.loginServicesConfig = {
-      twitter: {
+      [serviceTypes.twitter]: {
         header: 'Continue with Twitter',
         pressHandler: this.twitterPressHandler,
         icon: cwTwitter,
         width: 21.14,
         height: 17.14
       },
-      apple: {
+      [serviceTypes.apple]: {
         header: 'Continue with Apple',
         pressHandler: this.applePressHandler,
         icon: cwApple,
         width: 17.3,
         height: 20
       },
-      gmail:{
+      [serviceTypes.google]:{
         header: 'Continue with Gmail',
         pressHandler: this.gmailPressHandler,
         icon: cwGmail,
         width: 21,
         height: 21
       },
-      github: {
+      [serviceTypes.github]: {
         header: 'Continue with Github',
         pressHandler: this.githubPressHandler,
         icon: cwGithub,
@@ -150,11 +152,7 @@ class loginPopover extends React.Component {
   };
 
   isLastLoginUser(){
-    return false;
-  }
-
-  isError() {
-    return false;
+    return LastLoginedUser.getLastLoginServiceType() && LastLoginedUser.getUserName();
   }
 
   termsOfService(){
@@ -187,28 +185,35 @@ class loginPopover extends React.Component {
     </TouchableOpacity>
   }
 
-  getLastLoginUserName(){
-
-  }
-
-  getLastLoginProfilePic(){
-
-  }
-
   onMoreOptionClick = () => {
-
+    this.setState({showAllOptions : true});
   }
-  
+
+  getProfileImageMarkup(){
+    const profilePic = LastLoginedUser.getProfileImage();
+    let src;
+    if ( profilePic) {
+      src = { uri: profilePic };
+    } else {
+      src = profilePicture;
+    }
+    return <Image style={{height: 80, width: 80, borderRadius: 40}} source={src} />
+  }
+
+  signInViaLastLoginService = () => {
+    const serviceConfig = this.loginServicesConfig[LastLoginedUser.getLastLoginServiceType()];
+    serviceConfig.pressHandler.apply(this);
+  }
 
   render() {
     return (
       <TouchableWithoutFeedback onPressIn={this.closeModal}>
         <View style={inlineStyles.parent}>
           <TouchableWithoutFeedback>
-            {this.isLastLoginUser() ? (
+            {!this.state.showAllOptions ? (
               <View style={[inlineStyles.container, inlineStyles.welcomeBack]}>
                 {this.closeAction()}
-                <ProfilePicture style={{height: 80, width: 80, borderRadius: 40}}/>
+                {this.getProfileImageMarkup()}
                 <Text style={[inlineStyles.desc, { marginTop: 10, fontSize: 16, letterSpacing: 0.5, fontFamily: 'AvenirNext-DemiBold'}]}>
                   Welcome back
                 </Text>
@@ -222,11 +227,12 @@ class loginPopover extends React.Component {
                   <TouchableOpacity
                     style={[Theme.Button.btn, { borderWidth: 0 }]}
                     disabled={this.state.isSubmitting}
+                    onPress={this.signInViaLastLoginService}
                   >
-                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]}>{this.state.continueAs}</Text>
+                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]}>{this.state.continueAs} {LastLoginedUser.getUserName()} </Text>
                   </TouchableOpacity>
                 </LinearGradient>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.onMoreOptionClick}>
                   <Text style={[{ textAlign: 'center', fontSize: 16, letterSpacing: 0.5, marginBottom: 10 }]}>More Options</Text>
                 </TouchableOpacity>
                 {this.termsOfService()}
