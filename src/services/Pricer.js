@@ -42,7 +42,7 @@ class Pricer {
 
   getDecimal(){
     const token = ReduxGetter.getToken() || {};
-    return token.decimal;
+    return token.decimal || 18;
   }
 
   getBalance( successCallback ,  errorCallback ) {
