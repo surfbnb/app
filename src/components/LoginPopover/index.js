@@ -21,15 +21,12 @@ import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
 import TwitterWebLoginActions from '../TwitterWebLogin';
-import GmailOAuth from '../../services/ExternalLogin/GmailOAuth';
+import GoogleOAuth from '../../services/ExternalLogin/GoogleOAuth';
 import GitHubWebLoginActions from '../GitHubWebLogin';
 import AppleLoginActions  from '../AppleLogin';
 import NavigationService from '../../services/NavigationService';
-
-let TwitterAuthService;
-import('../../services/TwitterAuthService').then((imports) => {
-  TwitterAuthService = imports.default;
-});
+import LinearGradient from "react-native-linear-gradient";
+import ProfilePicture from "../ProfilePicture";
 
 const mapStateToProps = ({ login_popover }) => {
   return {
@@ -48,7 +45,8 @@ class loginPopover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      disableLoginBtn: false
+      disableLoginBtn: false,
+      continueAs: 'Continue as'
     };
     this.setLoginServicesConfig();
   }
@@ -98,28 +96,16 @@ class loginPopover extends React.Component {
     }
   }
 
-  gmailPressHandler = async() => {
-    let response = await GmailOAuth.signIn();
-    if(response && response.success){
-      console.log("logged in with gmail", response);
-    } else {
-
-    }
+  gmailPressHandler = () => {
+    GoogleOAuth.signIn();
   }
 
-  githubPressHandler = async() => {
-    LoginPopoverActions.hide();
-    let response = await GitHubWebLoginActions.signIn();
-    if(response && response.success){
-      console.log("logged in with github", response);
-    } else {
-
-    }
+  githubPressHandler = () => {
+    GitHubWebLoginActions.signIn();
   }
 
   twitterPressHandler = () => {
     this.setState({ disableLoginBtn: true });
-    //TwitterAuthService.signUp();
     TwitterWebLoginActions.signIn();
   }
 
@@ -164,11 +150,41 @@ class loginPopover extends React.Component {
   };
 
   isLastLoginUser(){
-    return true;
+    return false;
   }
 
   isError() {
     return false;
+  }
+
+  termsOfService(){
+    return <View style={inlineStyles.tocPp}>
+      <Text style={{textAlign: 'center'}}>
+        <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
+        <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
+          this.closeModal();
+          InAppBrowser.openBrowser(
+            `${WEB_ROOT}/terms`
+          );
+        })}>Terms of use </Text>
+        <Text style={inlineStyles.termsTextBlack}>and </Text>
+        <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
+          this.closeModal();
+          InAppBrowser.openBrowser(
+            `${WEB_ROOT}/privacy`
+          );
+        })}>Privacy Policy</Text>
+      </Text>
+    </View>
+  }
+
+  closeAction(){
+    return <TouchableOpacity
+      onPress={this.closeModal}
+      style={inlineStyles.crossTouchable}
+    >
+      <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
+    </TouchableOpacity>
   }
 
   getLastLoginUserName(){
@@ -189,48 +205,46 @@ class loginPopover extends React.Component {
       <TouchableWithoutFeedback onPressIn={this.closeModal}>
         <View style={inlineStyles.parent}>
           <TouchableWithoutFeedback>
-            <View style={inlineStyles.container}>
-              <TouchableOpacity
-                onPress={this.closeModal}
-                style={{
-                  position: 'absolute',
-                  top: 15,
-                  right: 15,
-                  width: 38,
-                  height: 38,
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <Image source={modalCross} style={{ width: 19.5, height: 19 }} />
-              </TouchableOpacity>
-              <Image source={loggedOutLogo} style={{ width: 261, height: 70, marginBottom: 20 }} />
-              <Text style={[inlineStyles.desc, {fontWeight: '500'}]}>
-                Pepo is a place to discover & support creators.
-              </Text>
-              <Text style={[inlineStyles.desc, {marginBottom: 6, fontSize: 14}]}>
-                Please create an account to continue.
-              </Text>
-              {this.getLoginButtons()}
-              <View style={inlineStyles.tocPp}>
-                <Text style={{textAlign: 'center'}}>
-                  <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
-                  <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-                    this.closeModal();
-                    InAppBrowser.openBrowser(
-                      `${WEB_ROOT}/terms`
-                    );
-                  })}>Terms of use </Text>
-                  <Text style={inlineStyles.termsTextBlack}>and </Text>
-                  <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-                    this.closeModal();
-                    InAppBrowser.openBrowser(
-                        `${WEB_ROOT}/privacy`
-                    );
-                  })}>Privacy Policy</Text>
+            {this.isLastLoginUser() ? (
+              <View style={[inlineStyles.container, inlineStyles.welcomeBack]}>
+                {this.closeAction()}
+                <ProfilePicture style={{height: 80, width: 80, borderRadius: 40}}/>
+                <Text style={[inlineStyles.desc, { marginTop: 10, fontSize: 16, letterSpacing: 0.5, fontFamily: 'AvenirNext-DemiBold'}]}>
+                  Welcome back
                 </Text>
+                <LinearGradient
+                  colors={['#ff7499', '#ff5566']}
+                  locations={[0, 1]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={{ borderRadius: 3, borderTopRadius: 0, width: '80%', marginTop: 15, marginBottom: 20 }}
+                >
+                  <TouchableOpacity
+                    style={[Theme.Button.btn, { borderWidth: 0 }]}
+                    disabled={this.state.isSubmitting}
+                  >
+                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]}>{this.state.continueAs}</Text>
+                  </TouchableOpacity>
+                </LinearGradient>
+                <TouchableOpacity>
+                  <Text style={[{ textAlign: 'center', fontSize: 16, letterSpacing: 0.5, marginBottom: 10 }]}>More Options</Text>
+                </TouchableOpacity>
+                {this.termsOfService()}
               </View>
-            </View>
+            ) : (
+              <View style={inlineStyles.container}>
+                {this.closeAction()}
+                <Image source={loggedOutLogo} style={{ width: 261, height: 70, marginBottom: 20 }} />
+                <Text style={[inlineStyles.desc, {fontWeight: '500'}]}>
+                  Pepo is a place to discover & support creators.
+                </Text>
+                <Text style={[inlineStyles.desc, {marginBottom: 6, fontSize: 14}]}>
+                  Please create an account to continue.
+                </Text>
+                {this.getLoginButtons()}
+                {this.termsOfService()}
+              </View>
+              )}
           </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>

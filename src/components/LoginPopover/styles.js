@@ -1,6 +1,7 @@
-import { Dimensions } from 'react-native';
+import {Dimensions, Text} from 'react-native';
 import Colors from '../../theme/styles/Colors';
 import DefaultStyleGenerator from "../../theme/styles/DefaultStyleGenerator";
+import React from "react";
 
 let stylesMap = {
   parent: {
@@ -17,7 +18,24 @@ let stylesMap = {
     width: '100%',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    bottom: 0
+    bottom: 0,
+    zIndex: 9
+  },
+  welcomeBack:{
+    minHeight: Dimensions.get('window').height / 3,
+  },
+  crossTouchable:{
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    width: 38,
+    height: 38,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  crossIconSkipFont:{
+    height: 19,
+    width: 19.5
   },
   crossBtnPos: {
     position: 'absolute',

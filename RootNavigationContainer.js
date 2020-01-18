@@ -3,9 +3,10 @@ import { View, Platform } from 'react-native';
 import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import NavigationAnimation from "./src/helpers/NavigationAnimation";
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
+import RemoteConfig from './src/services/RemoteConfig';
+import NavigationAnimation from "./src/helpers/NavigationAnimation";
 import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
 import SetPin from './src/components/SetPin';
@@ -64,6 +65,8 @@ import { TwitterWebLogin } from './src/components/TwitterWebLogin';
 import { GitHubWebLogin } from './src/components/GitHubWebLogin';
 import { AppleLogin } from './src/components/AppleLogin';
 
+setTimeout(() => console.log('RemoteConfig', RemoteConfig()), 300);
+
 const customTabHiddenRoutes = [
   'CaptureVideo',
   'FanVideoDetails',
@@ -79,7 +82,8 @@ const customTabHiddenRoutes = [
   'ImageGalleryScreen',
   'UserVideoHistory',
   'VideoPlayer',
-  'VideoReplyPlayer'
+  'VideoReplyPlayer',
+  'LoginPopover'
 ];
 
 const modalStackConfig = {
@@ -122,7 +126,7 @@ const cardStackConfig = {
         return  NavigationAnimation.fromBottom();
       }
     }
-    
+
   }
 }
 

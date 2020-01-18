@@ -7,7 +7,7 @@ const TwitterBase = 'https://api.twitter.com/oauth';
 const TWITTER_OAUTH_URL='https://api.twitter.com/oauth/authorize?oauth_token=';
 
 let TwitterAuthService;
-import('../../services/TwitterAuthService').then((imports) => {
+import('../../services/AuthServices/TwitterAuthService').then((imports) => {
   TwitterAuthService = imports.default;
 });
 
