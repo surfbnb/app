@@ -21,7 +21,7 @@ import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
 import TwitterWebLoginActions from '../TwitterWebLogin';
-import GmailOAuth from '../../services/ExternalLogin/GmailOAuth';
+import GoogleOAuth from '../../services/ExternalLogin/GoogleOAuth';
 import GitHubWebLoginActions from '../GitHubWebLogin';
 import AppleLoginActions  from '../AppleLogin';
 import NavigationService from '../../services/NavigationService';
@@ -101,23 +101,12 @@ class loginPopover extends React.Component {
     }
   }
 
-  gmailPressHandler = async() => {
-    let response = await GmailOAuth.signIn();
-    if(response && response.success){
-      console.log("logged in with gmail", response);
-    } else {
-
-    }
+  gmailPressHandler = () => {
+    GoogleOAuth.signIn();
   }
 
-  githubPressHandler = async() => {
-    LoginPopoverActions.hide();
-    let response = await GitHubWebLoginActions.signIn();
-    if(response && response.success){
-      console.log("logged in with github", response);
-    } else {
-
-    }
+  githubPressHandler = () => {
+    GitHubWebLoginActions.signIn();
   }
 
   twitterPressHandler = () => {
@@ -167,7 +156,7 @@ class loginPopover extends React.Component {
   };
 
   isLastLoginUser(){
-    return true;
+    return false;
   }
 
   isError() {
