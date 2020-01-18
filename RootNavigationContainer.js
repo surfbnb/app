@@ -79,7 +79,8 @@ const customTabHiddenRoutes = [
   'ImageGalleryScreen',
   'UserVideoHistory',
   'VideoPlayer',
-  'VideoReplyPlayer'
+  'VideoReplyPlayer',
+  'LoginPopover'
 ];
 
 const modalStackConfig = {
