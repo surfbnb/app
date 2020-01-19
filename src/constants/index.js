@@ -17,10 +17,6 @@ const BundleConstants = {
     PLATFORM_API_ENDPOINT: 'https://api.stagingost.com/testnet/v2',
     TRACKER_ENDPOINT: 'https://px.pepo.com/devp101_pixel.png',
     TOKEN_ID: '1185',
-    TWITTER_CONSUMER_KEY: 'NEo4gEXzdQZaoTsqzpZvepfKb',
-    TWITTER_CONSUMER_SECRET: 'iM5UMt4px8rwoqEoRV9gJGrJGtEoMUxOYkaWXSges7t4bk564t',
-    TWITTER_AUTH_CALLBACK_ROUTE: 'https://stagingpepo.com/webview/twitter/oauth',
-    GITHUB_AUTH_CALLBACK_ROUTE: 'https://stagingpepo.com/webview/github/oauth',
     VIEW_END_POINT: 'https://ost:Ax23!sdQ*kN-201~96@view.stagingost.com/testnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitStaging.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitStaging.toString( 10 ),
@@ -34,9 +30,6 @@ const BundleConstants = {
     PLATFORM_API_ENDPOINT: 'https://api.ost.com/testnet/v2',
     TRACKER_ENDPOINT: 'https://px.pepo.com/ps501_pixel.png',
     TOKEN_ID: '1506',
-    TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
-    TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0',
-    TWITTER_AUTH_CALLBACK_ROUTE: 'https://sandboxpepo.com/webview/twitter/oauth',
     VIEW_END_POINT: 'https://view.ost.com/testnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitSandbox.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitSandbox.toString( 10 ),
@@ -50,9 +43,6 @@ const BundleConstants = {
     PLATFORM_API_ENDPOINT: 'https://api.ost.com/testnet/v2',
     TRACKER_ENDPOINT: 'https://px.pepo.com/ps501_pixel.png',
     TOKEN_ID: '1506',
-    TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
-    TWITTER_CONSUMER_SECRET: 'vgDWrMorXdvDOaMSkniRvjQqij4GUwIadWSg9kQnfEmjTDIPs0',
-    TWITTER_AUTH_CALLBACK_ROUTE: 'https://sandboxpepo.com/webview/twitter/oauth',
     VIEW_END_POINT: 'https://view.ost.com/testnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitSandbox.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitSandbox.toString( 10 ),
@@ -66,9 +56,6 @@ const BundleConstants = {
     PLATFORM_API_ENDPOINT: 'https://api.ost.com/mainnet/v2',
     TRACKER_ENDPOINT: 'https://px.pepo.com/pp1001_pixel.png',
     TOKEN_ID: '1009',
-    TWITTER_CONSUMER_KEY: '53Q0hHEe4Hhartej9lFVWZX4C',
-    TWITTER_CONSUMER_SECRET: 'L3jOhUfHr8drwrx8qT7GnvObFtPxTxZkFQbdCWGKawzo7l9avV',
-    TWITTER_AUTH_CALLBACK_ROUTE: 'https://pepo.com/webview/twitter/oauth',
     VIEW_END_POINT: 'https://view.ost.com/mainnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitProduction.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitProduction.toString( 10 ),
@@ -90,10 +77,6 @@ export const HIGH_SPEND_SESSION_KEY_EXPIRY_TIME = BundleConstants[DeviceInfo.get
 export const MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME = BundleConstants[DeviceInfo.getBundleId()].MEDIUM_SPEND_SESSION_KEY_EXPIRY_TIME || 0;
 export const DEFAULT_SPENDING_LIMIT = BundleConstants[DeviceInfo.getBundleId()].DEFAULT_SPENDING_LIMIT || '1000000000000000000000';
 export const MAX_SPENDING_LIMIT = BundleConstants[DeviceInfo.getBundleId()].MAX_SPENDING_LIMIT || '1000000000000000000000';
-export const TWITTER_CONSUMER_KEY = BundleConstants[DeviceInfo.getBundleId()].TWITTER_CONSUMER_KEY;
-export const TWITTER_CONSUMER_SECRET = BundleConstants[DeviceInfo.getBundleId()].TWITTER_CONSUMER_SECRET;
-export const TWITTER_AUTH_CALLBACK_ROUTE = BundleConstants[DeviceInfo.getBundleId()].TWITTER_AUTH_CALLBACK_ROUTE;
-export const GITHUB_AUTH_CALLBACK_ROUTE = BundleConstants[DeviceInfo.getBundleId()].GITHUB_AUTH_CALLBACK_ROUTE;
 
 export const VIEW_END_POINT = BundleConstants[DeviceInfo.getBundleId()].VIEW_END_POINT;
 

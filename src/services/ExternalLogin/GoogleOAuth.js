@@ -1,32 +1,29 @@
 import { Platform, Alert} from 'react-native';
 
 import { authorize, refresh, revoke } from 'react-native-app-auth';
+import RemoteConfig from '../../services/RemoteConfig';
 
 let GoogleAuthService;
 import('../../services/AuthServices/GoogleAuthService').then((imports) => {
     GoogleAuthService = imports.default;
 });
 
-const GoogleAndroidConfig = {
+const BaseConfig = {
     issuer: 'https://accounts.google.com',
-    clientId: '82182934708-rgk37rbb4jojhb27cjbood88d014n8f8.apps.googleusercontent.com',
-    redirectUrl: 'com.pepo.staging:/oauth2callback',
-    scopes: ['https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/userinfo.profile',
-             'https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/contacts.readonly'],
+    scopes: RemoteConfig.getValue('GOOGLE_SCOPES'),
     additionalParameters : {
         prompt : 'select_account'
     }
+}
+
+const GoogleAndroidConfig = {
+    clientId: RemoteConfig.getValue('GOOGLE_ANDROID_CLIEND_ID'),
+    redirectUrl: RemoteConfig.getValue('GOOGLE_ANDROID_REDIRECT_URI'),
 };
 
 const GoogleIOSConfig = {
-    issuer: 'https://accounts.google.com',
-    clientId: '82182934708-nkbb3ta4piprjh9bpu8937b16aq3mik4.apps.googleusercontent.com',
-    redirectUrl: 'com.googleusercontent.apps.82182934708-nkbb3ta4piprjh9bpu8937b16aq3mik4:/oauth2redirect/google',
-    scopes: ['https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/userinfo.profile',
-             'https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/contacts.readonly'],
-    additionalParameters : {
-        prompt : 'select_account'
-    }
+    clientId: RemoteConfig.getValue('GOOGLE_IOS_CLIEND_ID'),
+    redirectUrl: RemoteConfig.getValue('GOOGLE_IOS_REDIRECT_URI'),
   };
 
 class GoogleOAuth {
@@ -41,16 +38,21 @@ class GoogleOAuth {
     }
 
     getConfig = () => {
+        let androidConfig = {
+            ...BaseConfig, ...GoogleAndroidConfig
+        },
+        iosConfig = {
+            ...BaseConfig, ...GoogleIOSConfig
+        }
         if( Platform.OS == 'android') {
-            return GoogleAndroidConfig;
+            return androidConfig;
         } else {
-            return GoogleIOSConfig;
+            return iosConfig;
         }
     }
 
     signIn = async() => {
        let response = await this.initiateSignUp();
-       console.log('Hey signing in');
        GoogleAuthService.signUp(response);
        console.log(response);
     }

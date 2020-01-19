@@ -7,7 +7,7 @@ import DeviceInfo from 'react-native-device-info';
 import {GithubAuthEmitter} from '../../helpers/Emitters';
 import GitHubOAuth from '../../services/ExternalLogin/GitHubOAuth';
 import { SafeAreaView } from 'react-navigation';
-import { GITHUB_AUTH_CALLBACK_ROUTE } from '../../constants';
+import RemoteConfig from '../../services/RemoteConfig';
 
 export class GitHubWebLogin extends React.Component{
 
@@ -49,7 +49,7 @@ export class GitHubWebLogin extends React.Component{
 
     handleNavigationStateChange = ( navState ) => {
         let url = navState.url;
-        if( url.includes(`${GITHUB_AUTH_CALLBACK_ROUTE}?`) ){
+        if( url.includes(`${RemoteConfig.getValue('GITHUB_AUTH_CALLBACK_ROUTE')}?`) ){
             let urlParts = url.split('?');
             let params = qs.parse(urlParts[1]);
             this.hideWebview();

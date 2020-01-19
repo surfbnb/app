@@ -7,7 +7,7 @@ import DeviceInfo from 'react-native-device-info';
 import {TwitterAuthEmitter} from '../../helpers/Emitters';
 import TwitterOAuth from '../../services/ExternalLogin/TwitterOAuth';
 import { SafeAreaView } from 'react-navigation';
-import { TWITTER_AUTH_CALLBACK_ROUTE } from '../../constants';
+import RemoteConfig from '../../services/RemoteConfig';
 
 export class TwitterWebLogin extends React.Component{
 
@@ -52,7 +52,7 @@ export class TwitterWebLogin extends React.Component{
 
     handleNavigationStateChange = ( navState ) => {
         let url = navState.url;
-        if( url.includes(TWITTER_AUTH_CALLBACK_ROUTE)){
+        if( url.includes(RemoteConfig.getValue('TWITTER_AUTH_CALLBACK_ROUTE'))){
             let params = url.split('?');
             let paramsObj = qs.parse(params[1]);
             this.hideWebview();

@@ -22,7 +22,7 @@ export class AppleLogin extends React.Component {
   }
 
   componentDidMount() {
-    //DO NOT UNCOMMENT because need to check why onCredentialRevoked() opens auth dialog again
+    //DO NOT UNCOMMENT because need to check why onCredentialRevoked() opens auth dialog again after login
     /**
      * subscribe to credential updates.This returns a function which can be used to remove the event listener
      * when the component unmounts.

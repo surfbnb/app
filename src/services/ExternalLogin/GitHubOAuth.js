@@ -1,22 +1,21 @@
 import qs from 'qs';
 
-import { GITHUB_AUTH_CALLBACK_ROUTE } from '../../constants';
-
 let GithubAuthService;
 import('../../services/AuthServices/GithubAuthService').then((imports) => {
   GithubAuthService = imports.default;
 });
+import RemoteConfig from '../../services/RemoteConfig';
 
 
-const GithubBase = 'https://github.com/login/oauth';
+const GITHUB_BASE_URL = 'https://github.com/login/oauth';
 const GITHUB_OAUTH_URL = '/authorize';
 const GITHUB_ACCESS_TOKEN_URL = '/access_token';
 
 const GitHubConfig = {
-  clientId: '58a09b55ccbcd1f6909f',
-  clientSecret: '96bae48081191810aa8850456f9d279c672e0b42',
-  redirectUrl: GITHUB_AUTH_CALLBACK_ROUTE, 
-  scopes: 'read:user user:email'
+  clientId: RemoteConfig.getValue('GITHUB_CLIENT_ID'),
+  clientSecret: RemoteConfig.getValue('GITHUB_CLIENT_SECRET'),
+  redirectUrl: RemoteConfig.getValue('GITHUB_AUTH_CALLBACK_ROUTE'), 
+  scopes: RemoteConfig.getValue('GITHUB_SCOPES')
 }
 
 class GitHubOAuth {
@@ -38,7 +37,7 @@ class GitHubOAuth {
         redirect_uri : GitHubConfig.redirectUrl,
         code : requestParams.code
       },
-      accesstokenUrl = `${GithubBase}${GITHUB_ACCESS_TOKEN_URL}`;
+      accesstokenUrl = `${GITHUB_BASE_URL}${GITHUB_ACCESS_TOKEN_URL}`;
      
         const response = await fetch(accesstokenUrl, {
           method: 'POST', 
@@ -50,7 +49,6 @@ class GitHubOAuth {
         let formData =  await response.formData();
         let tokenData = this.formDataToJSON( formData );
         GithubAuthService.signUp(tokenData);
-        // console.log(tokenData);
     }
 
     getWebviewUrl = ()=> {
@@ -61,7 +59,7 @@ class GitHubOAuth {
         response_type : 'code'
       };
       let queryParams = qs.stringify(params);
-      let githubRedirectURL = `${GithubBase}${GITHUB_OAUTH_URL}?${queryParams}`;
+      let githubRedirectURL = `${GITHUB_BASE_URL}${GITHUB_OAUTH_URL}?${queryParams}`;
       return githubRedirectURL;
     }
 
