@@ -1,12 +1,13 @@
 import { NativeModules } from 'react-native';
-import { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET } from '../../constants';
+
+import RemoteConfig from '../../services/RemoteConfig';
 const { RNTwitterSignIn } = NativeModules;
 
 let twitterLoginParams = null;
 
 class TwitterAuth {
   constructor(){
-    RNTwitterSignIn.init(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
+    RNTwitterSignIn.init(RemoteConfig.getValue('TWITTER_CONSUMER_KEY'), RemoteConfig.getValue('TWITTER_CONSUMER_SECRET'));
   }
   
   signIn() {

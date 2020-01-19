@@ -143,7 +143,7 @@ class SayThanks extends Component {
             this.tweeterHandle = twitterInfo &&  twitterInfo.handle != 'null' && twitterInfo.handle;
             if (response.data.logged_in_user.twitter_auth_expired === 1) {
               console.log('tweeter auth expired');
-              TwitterAuth.signIn().then((res) => {
+              TwitterAuth.signIn().then((res) => { //TODO: Check how to handle
                 if (res) {
                   return new PepoApi(`/twitter/refresh-token`)
                     .post(res)
