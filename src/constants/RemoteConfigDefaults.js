@@ -11,8 +11,8 @@ const DefaultConstants = {
         GOOGLE_IOS_CLIEND_ID: '82182934708-nkbb3ta4piprjh9bpu8937b16aq3mik4.apps.googleusercontent.com',
         GOOGLE_IOS_REDIRECT_URI: 'com.googleusercontent.apps.82182934708-nkbb3ta4piprjh9bpu8937b16aq3mik4:/oauth2redirect/google',
         GITHUB_AUTH_CALLBACK_ROUTE: 'https://stagingpepo.com/webview/github/oauth',
-        GITHUB_CLIENT_ID: '58a09b55ccbcd1f6909f',
-        GITHUB_CLIENT_SECRET: '96bae48081191810aa8850456f9d279c672e0b42',
+        GITHUB_CLIENT_ID: '10ca594072962f391504',
+        GITHUB_CLIENT_SECRET: 'c4566b51d00527d3f2db54634fdce8e9d00e8a2c',
         GITHUB_SCOPES: 'read:user user:email'// Need to be space separated
     },
     'com.pepo.sandbox': {
