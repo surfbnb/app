@@ -27,6 +27,9 @@ import Pricer from '../../services/Pricer';
 import Utilities from '../../services/Utilities';
 import ReduxGetters from '../../services/ReduxGetters';
 import DataContract from '../../constants/DataContract';
+import LastLoginedUser from "../../models/LastLoginedUser";
+import authService from "../../services/AuthServicesFactory";
+import AuthBaseService from "../../services/AuthServices/Base"
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -95,33 +98,26 @@ class CustomDrawerContent extends Component {
     }
   };
 
-  twitterDisconnect = () => {
-    new PepoApi('/auth/twitter-disconnect')
-          .post()
-          .then(async (res) => {
-            if (res && res.success) {
-              this.CurrentUserLogout();
-            } else {
-              Toast.show({
-                text: 'Twitter Disconnect failed',
-                icon: 'error'
-              });
-            }
-          })
-          .catch((error) => {
-            Toast.show({
-              text: 'Twitter Disconnect failed',
-              icon: 'error'
-            });
-      });
+  disconnect = () => {
+    const serviceType = LastLoginedUser.getLastLoginServiceType() ,
+      oAuthService = authService(serviceType) ;
+    if(oAuthService instanceof  AuthBaseService ){
+      oAuthService.logout();
+    }else {
+      //Current user logout incase if we dont get an service. Should'nt be here
+      console.warn("Logout oAuth service was not found");
+      CurrentUser.logout();
+    }
   };
 
-  CurrentUserLogout = () => {
-    DrawerEmitter.emit('closeDrawer');
-    let params = {
-      device_id: DeviceInfo.getUniqueId()
-    };
-    CurrentUser.logout(params);
+  getDisconnectBtnText = () => {
+    const serviceType = LastLoginedUser.getLastLoginServiceType();
+    if(serviceType){
+      return `Disconnect ${Utilities.capitalizeFirstLetter(serviceType)}`;
+    }else {
+      console.warn("Logout oAuth service was not found");
+      return "Logout"
+    }
   };
 
   initWallet = () => {
@@ -276,11 +272,11 @@ class CustomDrawerContent extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={multipleClickHandler(() => {
-            this.twitterDisconnect();
+            this.disconnect();
           })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
               <Image style={{ height: 23.6, width: 29, resizeMode: 'contain' }} source={twitterDisconnectIcon} />
-              <Text style={styles.item}>Disconnect Twitter</Text>
+              <Text style={styles.item}>{this.getDisconnectBtnText()}</Text>
             </View>
           </TouchableOpacity>
 

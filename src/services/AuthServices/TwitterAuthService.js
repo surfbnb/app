@@ -1,7 +1,7 @@
 import Base from './Base';
 import CurrentUser from '../../models/CurrentUser';
 import Toast from "../../theme/components/NotificationToast";
-
+import PepoApi from "../PepoApi";
 
 class TwitterAuthService extends Base {
   constructor(params){
@@ -43,9 +43,26 @@ class TwitterAuthService extends Base {
   }
 
   logout() {
-    // TwitterOAuth.signOut();
+    this.beforLogout();
+    new PepoApi('/auth/twitter-disconnect')
+      .post()
+      .then(async (res) => {
+        if (res && res.success) {
+          this.onLogout();
+        } else {
+          Toast.show({
+            text: 'Twitter Disconnect failed',
+            icon: 'error'
+          });
+        }
+      })
+      .catch((error) => {
+        Toast.show({
+          text: 'Twitter Disconnect failed',
+          icon: 'error'
+        });
+      });
   }
-
 
 }
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {View, Modal, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Platform} from 'react-native';
 import firebase from 'react-native-firebase';
 import DeviceInfo from 'react-native-device-info';
+import deepGet from 'lodash/get';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import inlineStyles from './styles';
@@ -56,14 +57,14 @@ class loginPopover extends React.Component {
   setLoginServicesConfig = () => {
     this.loginServicesConfig = {
       [serviceTypes.twitter]: {
-        header: 'Continue with Twitter',
+        header: 'continue with Twitter',
         pressHandler: this.twitterPressHandler,
         icon: cwTwitter,
         width: 21.14,
         height: 17.14
       },
       [serviceTypes.apple]: {
-        header: 'Continue with Apple',
+        header: 'continue with Apple',
         pressHandler: this.applePressHandler,
         icon: cwApple,
         width: 17.3,

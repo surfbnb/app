@@ -1,6 +1,7 @@
 import Base from './Base';
 import CurrentUser from '../../models/CurrentUser';
 import Toast from "../../theme/components/NotificationToast";
+import PepoApi from "../PepoApi";
 
 
 class GoogleAuthService extends Base {
@@ -42,7 +43,25 @@ class GoogleAuthService extends Base {
   }
 
   logout() {
-    //
+    this.beforLogout();
+    new PepoApi('/auth/google-disconnect')
+      .post()
+      .then(async (res) => {
+        if (res && res.success) {
+          this.onLogout();
+        } else {
+          Toast.show({
+            text: 'Google Disconnect failed',
+            icon: 'error'
+          });
+        }
+      })
+      .catch((error) => {
+        Toast.show({
+          text: 'Google Disconnect failed',
+          icon: 'error'
+        });
+      });
   }
 
 

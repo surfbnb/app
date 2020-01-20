@@ -49,10 +49,10 @@ class LastLoginedUser {
         return this.lastLoginUser ;
     }
 
-    updateASUserOnLogin( res ){
+    updateASUserOnSync( res ){
         if(!res) return;
         const user = this.getUserFromRes(res);
-        this._saveCurrentUser(user);
+        this._saveCurrentUser(user , this.lastLoginUser.userId);
     }
 
     getUserFromRes(apiResponse) {
@@ -77,10 +77,10 @@ class LastLoginedUser {
         return userObj;
     }
 
-      _getProfileImage(id , data){
+    _getProfileImage(id , data){
         return deepGet(data, `images.${id}.resolutions.${AppConfig.profileImageConstants.imageWidth}.url`) ||
           deepGet(data, `images.${id}.resolutions.original.url`)
-      }
+    }
 
     updateASUserOnLogout(currentId){
         const user = this.getUserDataFromRedux( currentId );

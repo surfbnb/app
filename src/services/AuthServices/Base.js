@@ -25,6 +25,8 @@ import Pricer from '../Pricer';
 import DataContract from '../../constants/DataContract';
 import PixelCall from '../PixelCall';
 import TwitterOAuth from "../ExternalLogin/TwitterOAuth";
+import {DrawerEmitter} from "../../helpers/Emitters";
+import DeviceInfo from "react-native-device-info";
 
 class Base {
 
@@ -126,9 +128,18 @@ class Base {
     return false;
   }
 
-  logout() {
-    // Implement logout here.
+  beforLogout(){
+    CurrentUser.getEvent().emit("onBeforeUserLogout");
   }
+
+  logout() {
+    throw 'Need to implement in child';
+  }
+
+  onLogout = () => {
+    DrawerEmitter.emit('closeDrawer');
+    CurrentUser.logout();
+  };
 
   getParamsForServer(params){
     throw 'Need to implement in child';
@@ -143,6 +154,10 @@ class Base {
     throw 'Need to implement in child';
   }
 
+
+  onServerError(){
+    throw 'Need to implement in child';
+  }
 
 
 }
