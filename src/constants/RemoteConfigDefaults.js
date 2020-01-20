@@ -5,7 +5,7 @@ const DefaultConstants = {
         TWITTER_CONSUMER_KEY: 'NEo4gEXzdQZaoTsqzpZvepfKb',
         TWITTER_CONSUMER_SECRET: 'iM5UMt4px8rwoqEoRV9gJGrJGtEoMUxOYkaWXSges7t4bk564t',
         TWITTER_AUTH_CALLBACK_ROUTE: 'https://stagingpepo.com/webview/twitter/oauth',
-        GOOGLE_ANDROID_CLIEND_ID: '82182934708-rgk37rbb4jojhb27cjbood88d014n8f8.apps.googleusercontent.com',
+        GOOGLE_ANDROID_CLIENT_ID: '82182934708-rgk37rbb4jojhb27cjbood88d014n8f8.apps.googleusercontent.com',
         GOOGLE_ANDROID_REDIRECT_URI: 'com.pepo.staging:/oauth2callback',
         GOOGLE_SCOPES: ['https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/userinfo.profile'],
         GOOGLE_IOS_CLIEND_ID: '82182934708-nkbb3ta4piprjh9bpu8937b16aq3mik4.apps.googleusercontent.com',

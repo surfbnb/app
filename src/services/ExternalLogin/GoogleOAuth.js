@@ -18,7 +18,7 @@ const BaseConfig = {
 }
 
 const GoogleAndroidConfig = {
-    clientId: RemoteConfig.getValue('GOOGLE_ANDROID_CLIEND_ID'),
+    clientId: RemoteConfig.getValue('GOOGLE_ANDROID_CLIENT_ID'),
     redirectUrl: RemoteConfig.getValue('GOOGLE_ANDROID_REDIRECT_URI'),
 };
 
