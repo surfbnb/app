@@ -18,7 +18,7 @@ import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
 import Theme from '../../theme/styles';
 import Colors from '../../theme/styles/Colors';
-import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
+// import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
 import Toast from '../../theme/components/NotificationToast';
 import CommonStyle from '../../theme/styles/Common';
 import LinearGradient from "react-native-linear-gradient";
@@ -143,7 +143,7 @@ class SayThanks extends Component {
             this.tweeterHandle = twitterInfo &&  twitterInfo.handle != 'null' && twitterInfo.handle;
             if (response.data.logged_in_user.twitter_auth_expired === 1) {
               console.log('tweeter auth expired');
-              TwitterAuth.signIn().then((res) => { //TODO: Check how to handle
+              TwitterAuth.signIn().then((res) => {
                 if (res) {
                   return new PepoApi(`/twitter/refresh-token`)
                     .post(res)

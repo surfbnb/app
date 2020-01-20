@@ -60,8 +60,8 @@ import FullScreenVideoCollection from './src/components/FullScreenVideoCollectio
 import VideoReplies from './src/components/VideoReplies';
 import FullScreenReplyCollection from './src/components/FullScreenReplyCollection';
 import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
-import { TwitterWebLogin } from './src/components/TwitterWebLogin';
-import { GitHubWebLogin } from './src/components/GitHubWebLogin';
+import { TwitterWebLogin } from './src/components/WebLogins/TwitterWebLogin';
+import { GitHubWebLogin } from './src/components/WebLogins/GitHubWebLogin';
 import { AppleLogin } from './src/components/AppleLogin';
 
 const customTabHiddenRoutes = [

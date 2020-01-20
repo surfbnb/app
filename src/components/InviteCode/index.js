@@ -9,7 +9,7 @@ import inlineStyles from './styles';
 import Theme from '../../theme/styles';
 import FormInput from '../../theme/components/FormInput';
 import LinearGradient from 'react-native-linear-gradient';
-import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
+// import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
 import CurrentUser from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
 import Colors from '../../theme/styles/Colors';

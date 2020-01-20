@@ -105,11 +105,15 @@ class Base {
       return true;
     }
     let errorData = deepGet(res, 'err.error_data');
-    if (res && this.isInviteCodeError(errorData)) {
-      //Goto invite screen
-      NavigationService.navigate('InviteCodeScreen');
-      return true;
-    }
+    /*
+    * We dont have to ask for invite code now
+    * 
+    */
+    // if (res && this.isInviteCodeError(errorData)) {
+    //   //Goto invite screen
+    //   NavigationService.navigate('InviteCodeScreen');
+    //   return true;
+    // }
     return false;
   }
 
