@@ -16,9 +16,7 @@ class GithubAuthService extends Base {
 
 
   getParamsForServer (params){
-    return {
-      access_token: params.access_token
-    }
+    return  params &&  Object.keys(params).length > 0 ?  {access_token: params.access_token} : {};
   }
 
   getPixelMandatoryParams(){

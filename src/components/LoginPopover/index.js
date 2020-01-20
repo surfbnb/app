@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import {View, Modal, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Platform} from 'react-native';
+import {View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Platform} from 'react-native';
 import firebase from 'react-native-firebase';
 import DeviceInfo from 'react-native-device-info';
 import deepGet from 'lodash/get';
@@ -8,11 +7,8 @@ import deepGet from 'lodash/get';
 import TouchableButton from '../../theme/components/TouchableButton';
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
-import Store from '../../store';
-import { showLoginPopover, hideLoginPopover, showConnectingLoginPopover } from '../../actions';
 import loggedOutLogo from '../../assets/logged-out-logo.png';
 import modalCross from '../../assets/modal-cross-icon.png';
-import ReduxGetter from "../../services/ReduxGetters";
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
@@ -26,13 +22,6 @@ import LinearGradient from "react-native-linear-gradient";
 import LastLoginedUser from "../../models/LastLoginedUser";
 import profilePicture from "../../assets/default_user_icon.png";
 
-const mapStateToProps = ({ login_popover }) => {
-  return {
-    show: login_popover.show,
-    isTwitterConnecting: login_popover.isTwitterConnecting
-  }
-};
-
 const serviceTypes = AppConfig.authServiceTypes;
 const btnPostText = 'Connecting...';
 const sequenceOfLoginServices = [serviceTypes.twitter,serviceTypes.apple, serviceTypes.google, serviceTypes.github ];
@@ -45,7 +34,8 @@ class loginPopover extends React.Component {
     this.state = {
       disableLoginBtn: false,
       continueAs: 'Continue as',
-      showAllOptions : !this.isLastLoginUser()
+      showAllOptions : !this.isLastLoginUser(),
+      currentConnecting: ''
     };
     this.setLoginServicesConfig();
   }
@@ -57,28 +47,32 @@ class loginPopover extends React.Component {
         pressHandler: this.twitterPressHandler,
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.twitter),
         width: 21.14,
-        height: 17.14
+        height: 17.14,
+        connectingHeader: 'Twitter connecting'
       },
       [serviceTypes.apple]: {
         header: 'continue with Apple',
         pressHandler: this.applePressHandler,
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.apple),
         width: 17.3,
-        height: 20
+        height: 20,
+        connectingHeader: 'Apple connecting'
       },
       [serviceTypes.google]:{
         header: 'Continue with Gmail',
         pressHandler: this.gmailPressHandler,
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.google),
         width: 21,
-        height: 21
+        height: 21,
+        connectingHeader: 'Google connecting'
       },
       [serviceTypes.github]: {
         header: 'Continue with Github',
         pressHandler: this.githubPressHandler,
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.github),
         width: 19,
-        height: 18.5
+        height: 18.5,
+        connectingHeader: 'Github connecting'
       },
     };
   };
@@ -88,27 +82,40 @@ class loginPopover extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log(this.props.isTwitterConnecting, 'this.props.isTwitterConnecting');
     if ( this.props.isTwitterConnecting && this.props.isTwitterConnecting !== prevProps.isTwitterConnecting ) {
+      console.log(this.props.isTwitterConnecting, 'this.props.isTwitterConnecting');
       this.setState({ disableLoginBtn: true });
     } else if (this.props.show && this.props.show !== prevProps.show) {
+        console.log(this.props.show, 'this.props.show');
       this.setState({ disableLoginBtn: false });
     }
   }
 
+  beforeOAuthInvoke = (service ) => {
+    this.setState({disableLoginBtn : true , currentConnecting:  AppConfig.authServiceTypes[service] })
+  }
+
   gmailPressHandler = () => {
-    GoogleOAuth.signIn();
+    this.beforeOAuthInvoke(AppConfig.authServiceTypes.google);
+    let resp = GoogleOAuth.signIn();
+    console.log(resp, 'Google resp ====-=-=-=-==-=-=-=-=-=-=-=');
   }
 
   githubPressHandler = () => {
-    GitHubWebLoginActions.signIn();
+    this.beforeOAuthInvoke(AppConfig.authServiceTypes.github);
+    let resp = GitHubWebLoginActions.signIn();
+    console.log(resp, 'github resp ====-=-=-=-==-=-=-=-=-=-=-=');
   }
 
   twitterPressHandler = () => {
-    this.setState({ disableLoginBtn: true });
-    TwitterWebLoginActions.signIn();
+    this.beforeOAuthInvoke(AppConfig.authServiceTypes.twitter);
+    let resp = TwitterWebLoginActions.signIn();
+    console.log(resp, 'twitter resp ====-=-=-=-==-=-=-=-=-=-=-=');
   }
 
   applePressHandler = () => {
+    this.beforeOAuthInvoke(AppConfig.authServiceTypes.apple);
     AppleLoginActions.signIn();
   }
 
@@ -120,16 +127,11 @@ class loginPopover extends React.Component {
     return true;
   };
 
-  getConnectBtnText = () => {
-    if ( this.props.isTwitterConnecting || this.state.disableLoginBtn) {
-      return btnPostText;
-    } 
-    return btnPreText.twitter;
-  }
-
   getLoginButtons = () => {
     let buttonsJSX = sequenceOfLoginServices.map((item)=>{
       if((item === 'apple' && Platform.OS === "android") || (item === 'apple' && finalVersionIOS)) return;
+      console.log(this.state.currentConnecting, 'this.state.currentConnecting');
+      console.log(item, '----------------item----------------');
       let currentServiceConfig = this.loginServicesConfig[item];
       return <TouchableButton
         key={item}
@@ -138,7 +140,7 @@ class loginPopover extends React.Component {
           this.state.disableLoginBtn ? Theme.Button.disabled : null
         ]}
         TextStyles={[Theme.Button.btnPinkText, inlineStyles.loginBtnTextStyles ]}
-        text={currentServiceConfig.header}
+        text={this.state.currentConnecting === item ? currentServiceConfig.connectingHeader :  currentServiceConfig.header}
         onPress={currentServiceConfig.pressHandler}
         source={currentServiceConfig.icon}
         imgDimension={{ width: currentServiceConfig.width, height: currentServiceConfig.height, marginRight: 8 }}
@@ -255,25 +257,18 @@ class loginPopover extends React.Component {
   }
 }
 
-export const LoginPopover = connect(mapStateToProps)(loginPopover);
+export const LoginPopover = loginPopover;
 export const LoginPopoverActions = {
-  _track: () => {
-    let analyticsAction = AppConfig.routesAnalyticsMap.TwitterLogin;
+  _track: ( service ) => {
+    if(!service) return;
+    let analyticsAction = AppConfig.routesAnalyticsMap[service];
     firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);    
   },
   show: () => {
     NavigationService.navigate("LoginPopover");
-    LoginPopoverActions._track();
-  },
-  showConnecting: () => {
-    let loginPopoverProps = ReduxGetter.getLoginPopOverProps();
-    if ( !loginPopoverProps || !loginPopoverProps.show ) {
-      //Track.
-      LoginPopoverActions._track();
-    }
-    Store.dispatch(showConnectingLoginPopover());
   },
   hide: () => {
+    console.log("Hideeeeeeeeeeee");
     NavigationService.goBack();
   }
 };

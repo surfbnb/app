@@ -5,6 +5,7 @@ import { WebView } from 'react-native-webview';
 import DeviceInfo from 'react-native-device-info';
 import CommonStyle from '../../theme/styles/Common';
 import inlineStyles from './styles';
+import {LoginPopoverActions} from "../LoginPopover";
 
 export default class Base extends React.Component{
 
@@ -24,6 +25,8 @@ export default class Base extends React.Component{
     }
 
     hideWebview = ()=> {
+      console.log('hideWebview');
+      LoginPopoverActions.hide();
         this.setState({
             show: false,
             url: 'url'

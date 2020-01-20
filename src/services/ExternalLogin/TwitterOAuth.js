@@ -1,6 +1,7 @@
 import RemoteConfig from '../../services/RemoteConfig';
 import Oauth1Helper from '../../helpers/Oauth1';
 import Utilities from '../Utilities';
+import Toast from "../../theme/components/NotificationToast";
 
 const TWITTER_BASE_URL = 'https://api.twitter.com/oauth';
 const TWITTER_OAUTH_URL='https://api.twitter.com/oauth/authorize?oauth_token=';
@@ -76,7 +77,14 @@ fireRequest = async (twitterRequestParams) => {
   }
 
   handleRequestTokenSuccess = async( params )=> {
-    let accessParams = await this.getAccessToken(params);
+    let accessParams ;
+    try{
+      accessParams = await this.getAccessToken(params);
+    } catch (e) {
+      Toast.show({text: `Failed to login via Twitter`, icon: 'error' });
+      TwitterAuthService.signUp({});
+      return;
+    }
     TwitterAuthService.signUp(accessParams);
   }
 

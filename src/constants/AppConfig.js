@@ -359,10 +359,16 @@ const AppConfig = {
     RedemptionSuccess: 'Redemption/Success',
     CouchMarks: 'CouchMarks',
     AuthDeviceDrawer: 'DeviceUnauthorized',
-    TwitterLogin: 'TwitterLogin',
     FullScreenReplyCollection: 'FullScreenReplyCollection',
     VideoReplyPlayer: 'VideoReplyPlayer',
-    VideoReplies: 'VideoReplies'
+    VideoReplies: 'VideoReplies',
+    LoginPopover:'LoginPopover',
+    //Dont change the key name,  values as u wish start
+    twitter: 'TwitterLogin',
+    google: 'GoogleLogin',
+    apple :'AppleLogin',
+    github: 'GithubLogin'
+    //Dont change the key name,  values as u wish end
   },
   default_bt_amt : 10,
 

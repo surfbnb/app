@@ -15,7 +15,7 @@ class AppleAuthService extends Base {
 
   getParamsForServer (params){
     console.log(params, 'Apple Params');
-    return {
+    return  params &&  Object.keys(params).length > 0 ?  {
       authorization_code : params.authorizationCode,
       authorized_scopes : params.authorizedScopes,
       email : params.email,
@@ -25,7 +25,7 @@ class AppleAuthService extends Base {
       real_user_status : params.realUserStatus,
       state: params.state,
       user: params.user
-    }
+    } : {};
   }
 
   getPixelMandatoryParams(){

@@ -4,10 +4,8 @@ import Toast from '../../theme/components/NotificationToast';
 import { upsertInviteCode } from '../../actions';
 import Store from '../../store';
 
-let LoginPopoverActions = null;
-import('../../components/LoginPopover').then((pack) => {
-  LoginPopoverActions = pack.LoginPopoverActions;
-});
+
+import {LoginPopoverActions} from '../../components/LoginPopover';
 
 let CurrentUser;
 import('../../models/CurrentUser').then((imports) => {
@@ -33,10 +31,9 @@ class Base {
   constructor(){}
 
   async signUp(paramsFromService) {
-    LoginPopoverActions.showConnecting();
+    console.log('paramsFromServiceparamsFromServiceparamsFromService');
     let params = this.getParamsForServer(paramsFromService);
-
-    if (params) {
+    if (params && Object.keys(params).length > 0) {
       let inviteCode = await Utilities.getItem(AppConfig.appInstallInviteCodeASKey);
       if (inviteCode) {
         params['invite_code'] = inviteCode;
@@ -56,6 +53,7 @@ class Base {
           LoginPopoverActions.hide();
         });
     } else {
+      console.log('Here=++++====++++===');
       LoginPopoverActions.hide();
     }
   }

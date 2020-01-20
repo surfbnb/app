@@ -2,6 +2,7 @@ import { Platform, Alert} from 'react-native';
 
 import { authorize, refresh, revoke } from 'react-native-app-auth';
 import RemoteConfig from '../../services/RemoteConfig';
+import Toast from "../../theme/components/NotificationToast";
 
 let GoogleAuthService;
 import('../../services/AuthServices/GoogleAuthService').then((imports) => {
@@ -75,7 +76,7 @@ class GoogleOAuth {
             }
         return this.authState;
         } catch (error) {
-            Alert.alert(`Failed to log in`, error.message);
+            Toast.show({text: `Failed to login via Google`, icon: 'error' });
         }
     };
 

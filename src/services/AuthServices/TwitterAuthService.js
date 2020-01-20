@@ -15,12 +15,13 @@ class TwitterAuthService extends Base {
 
 
   getParamsForServer (params){
-    return {
+    console.log('getParamsForServer', params);
+    return  params &&  Object.keys(params).length > 0 ?  {
       token: params.oauth_token,
       secret: params.oauth_token_secret,
       twitter_id: params.user_id,
       handle: params.screen_name
-    }
+    } : {};
   }
 
   getPixelMandatoryParams(){
