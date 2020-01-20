@@ -2,6 +2,10 @@ import merge from "lodash/merge";
 import deepGet from "lodash/get";
 import ReduxGetters from '../services/ReduxGetters';
 import AppConfig from "../constants/AppConfig";
+import twitterDisconnectIcon from '../assets/settings-twitter-disconnect.png';
+import appleDisconnectIcon from '../assets/connect-with-apple.png';
+import gmailDisconnectIcon from '../assets/connect-with-gmail.png';
+import githubDisconnectIcon from '../assets/connect-with-github.png';
 
 let Utilities;
 import('../services/Utilities').then((imports) => {
@@ -161,6 +165,24 @@ class LastLoginedUser {
 
     isGitHubLoggedIn(){
         return ServiceTypes["github"] == this.getLastLoginServiceType();
+    }
+
+    getOAuthIcon(service){
+      if( ServiceTypes["twitter"] == service ){
+        return twitterDisconnectIcon;
+      }
+
+      if(ServiceTypes["apple"] == service){
+        return appleDisconnectIcon;
+      }
+
+      if(ServiceTypes["google"] == service){
+        return gmailDisconnectIcon;
+      }
+
+      if(ServiceTypes["github"] == service){
+        return githubDisconnectIcon;
+      }
     }
 }
 

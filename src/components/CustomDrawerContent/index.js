@@ -29,7 +29,29 @@ import ReduxGetters from '../../services/ReduxGetters';
 import DataContract from '../../constants/DataContract';
 import LastLoginedUser from "../../models/LastLoginedUser";
 import authService from "../../services/AuthServicesFactory";
-import AuthBaseService from "../../services/AuthServices/Base"
+import AuthBaseService from "../../services/AuthServices/Base";
+import AppConfig from "../../constants/AppConfig";
+
+const serviceTypes = AppConfig.authServiceTypes;
+const disconnetImageIconStyle = {
+  [serviceTypes.twitter] : {
+    width: 21.14,
+    height: 17.14
+  },
+  [serviceTypes.google] : {
+    width: 21,
+    height: 21
+  },
+  [serviceTypes.apple] : {
+    width: 17.3,
+    height: 20
+  },
+  [serviceTypes.github] : {
+    width: 19,
+    height: 18.5
+  }
+}
+
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -109,6 +131,16 @@ class CustomDrawerContent extends Component {
       CurrentUser.logout();
     }
   };
+
+  getDisconnectBtnImage = () => {
+    const serviceType = LastLoginedUser.getLastLoginServiceType();
+    const styleConfig =  disconnetImageIconStyle[serviceType];
+    if( serviceType ){
+      return <Image style={[ styleConfig , {resizeMode: 'contain' }]} source={LastLoginedUser.getOAuthIcon(serviceType)} />;
+    }else {
+      return null;
+    }
+  }
 
   getDisconnectBtnText = () => {
     const serviceType = LastLoginedUser.getLastLoginServiceType();
@@ -275,7 +307,7 @@ class CustomDrawerContent extends Component {
             this.disconnect();
           })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
-              <Image style={{ height: 23.6, width: 29, resizeMode: 'contain' }} source={twitterDisconnectIcon} />
+              {this.getDisconnectBtnImage()}
               <Text style={styles.item}>{this.getDisconnectBtnText()}</Text>
             </View>
           </TouchableOpacity>

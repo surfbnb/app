@@ -11,10 +11,6 @@ import Theme from '../../theme/styles';
 import Store from '../../store';
 import { showLoginPopover, hideLoginPopover, showConnectingLoginPopover } from '../../actions';
 import loggedOutLogo from '../../assets/logged-out-logo.png';
-import cwTwitter from '../../assets/connect-with-twitter.png';
-import cwApple from '../../assets/connect-with-apple.png';
-import cwGmail from '../../assets/connect-with-gmail.png';
-import cwGithub from '../../assets/connect-with-github.png';
 import modalCross from '../../assets/modal-cross-icon.png';
 import ReduxGetter from "../../services/ReduxGetters";
 import multipleClickHandler from '../../services/MultipleClickHandler';
@@ -57,30 +53,30 @@ class loginPopover extends React.Component {
   setLoginServicesConfig = () => {
     this.loginServicesConfig = {
       [serviceTypes.twitter]: {
-        header: 'continue with Twitter',
+        header: 'Continue with Twitter',
         pressHandler: this.twitterPressHandler,
-        icon: cwTwitter,
+        icon: LastLoginedUser.getOAuthIcon(serviceTypes.twitter),
         width: 21.14,
         height: 17.14
       },
       [serviceTypes.apple]: {
         header: 'continue with Apple',
         pressHandler: this.applePressHandler,
-        icon: cwApple,
+        icon: LastLoginedUser.getOAuthIcon(serviceTypes.apple),
         width: 17.3,
         height: 20
       },
       [serviceTypes.google]:{
         header: 'Continue with Gmail',
         pressHandler: this.gmailPressHandler,
-        icon: cwGmail,
+        icon: LastLoginedUser.getOAuthIcon(serviceTypes.google),
         width: 21,
         height: 21
       },
       [serviceTypes.github]: {
         header: 'Continue with Github',
         pressHandler: this.githubPressHandler,
-        icon: cwGithub,
+        icon: LastLoginedUser.getOAuthIcon(serviceTypes.github),
         width: 19,
         height: 18.5
       },
