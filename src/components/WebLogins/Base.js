@@ -1,11 +1,10 @@
 import React from 'react';
-import { Modal, SafeAreaView, Image, TouchableOpacity } from 'react-native';
+import { Modal, SafeAreaView, Text, View, TouchableOpacity } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import DeviceInfo from 'react-native-device-info';
 import CommonStyle from '../../theme/styles/Common';
 import inlineStyles from './styles';
-import crossIcon from '../../assets/cross_icon.png';
 
 export default class Base extends React.Component{
 
@@ -68,17 +67,17 @@ export default class Base extends React.Component{
                 onRequestClose={() => {
                     this.hideWebview();
                 }}>
-                        <TouchableOpacity
-                        onPress={() => {
-                            this.hideWebview();
-                        }}
-                        style={inlineStyles.iconWrapper}
-                        >
-                            <Image style={inlineStyles.crossIconSkipFont} source={crossIcon}></Image>
-                        </TouchableOpacity>
-                         <SafeAreaView style={[CommonStyle.viewContainer]}>
-                            {this.getModalView()}
-                        </SafeAreaView>
+                    <TouchableOpacity
+                    onPress={() => {
+                        this.hideWebview();
+                    }}
+                    style={inlineStyles.closeWrapper}
+                    >
+                        <Text style={inlineStyles.cancel}>Cancel</Text>
+                    </TouchableOpacity>
+                        <SafeAreaView style={[CommonStyle.viewContainer]}>
+                        {this.getModalView()}
+                    </SafeAreaView>
                 </Modal>
         )
     }

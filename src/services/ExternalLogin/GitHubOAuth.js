@@ -5,6 +5,7 @@ import('../../services/AuthServices/GithubAuthService').then((imports) => {
   GithubAuthService = imports.default;
 });
 import RemoteConfig from '../../services/RemoteConfig';
+import Utilities from '../Utilities';
 
 
 const GITHUB_BASE_URL = 'https://github.com/login/oauth';
@@ -19,16 +20,6 @@ const GitHubConfig = {
 }
 
 class GitHubOAuth {
-
-    formDataToJSON = (formData)=> {
-      var object = {};
-      for (let p in formData){
-          formData[p].forEach((item)=> {
-              object[item[0]] = item[1]
-          });
-      }
-      return object;
-  }
 
     handleRedirectSuccess = async( requestParams ) => {
       let params = {
@@ -47,7 +38,7 @@ class GitHubOAuth {
           body: JSON.stringify(params)
         });
         let formData =  await response.formData();
-        let tokenData = this.formDataToJSON( formData );
+        let tokenData = Utilities.formDataToJSON( formData );
         GithubAuthService.signUp(tokenData);
     }
 

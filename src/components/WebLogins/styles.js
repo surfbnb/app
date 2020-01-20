@@ -1,7 +1,8 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
+import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
-    iconWrapper: {
+    closeWrapper: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
@@ -9,11 +10,13 @@ let stylesMap = {
         width: 60,
         position: 'absolute',
         top: 20,
+        left: 20,
         zIndex: 999
       },
-      crossIconSkipFont: {
-        height: 20,
-        width: 20
+      cancel: {
+        color: Colors.softBlue,
+        fontWeight: '300',
+        fontSize: 16
       }
   }
 

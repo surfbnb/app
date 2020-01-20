@@ -246,6 +246,16 @@ export default {
   
   getNumbericUTCTimeZone(){
     return momentTimezone.tz(this.getUTCTimeZone()).utcOffset();
+  },
+
+  formDataToJSON(formData) {
+    var object = {};
+    for (let p in formData){
+        formData[p].forEach((item)=> {
+            object[item[0]] = item[1]
+        });
+    }
+    return object;
   }
 
 };

@@ -1,7 +1,8 @@
 import RemoteConfig from '../../services/RemoteConfig';
 import Oauth1Helper from '../../helpers/Oauth1';
+import Utilities from '../Utilities';
 
-const TwitterBase = 'https://api.twitter.com/oauth';
+const TWITTER_BASE_URL = 'https://api.twitter.com/oauth';
 const TWITTER_OAUTH_URL='https://api.twitter.com/oauth/authorize?oauth_token=';
 
 let TwitterAuthService;
@@ -18,7 +19,7 @@ class TwitterOAuth {
   }
 
   getRequestToken = async () => {
-    let url = `${TwitterBase}/request_token`;
+    let url = `${TWITTER_BASE_URL}/request_token`;
     let twitterRequestParams = {
         requestType: 'POST',
         completeUrl: url,
@@ -30,17 +31,7 @@ class TwitterOAuth {
       };
 
       let response = await this.fireRequest(twitterRequestParams);
-      return this.formDataToJSON(response);
-}
-
-formDataToJSON = (formData)=> {
-    var object = {};
-    for (let p in formData){
-        formData[p].forEach((item)=> {
-            object[item[0]] = item[1]
-        });
-    }
-    return object;
+      return Utilities.formDataToJSON(response);
 }
 
 fireRequest = async (twitterRequestParams) => {
@@ -90,12 +81,12 @@ fireRequest = async (twitterRequestParams) => {
   }
 
    getAccessToken = async(params)=> {
-    let accessTokenURL = `${TwitterBase}/access_token`;
+    let accessTokenURL = `${TWITTER_BASE_URL}/access_token`;
     let {oauth_token, oauth_verifier} = params;
 
     let oAuthCredentials = {
-        oAuthConsumerKey: TWITTER_CONSUMER_KEY,
-        oAuthConsumerSecret: TWITTER_CONSUMER_SECRET,
+        oAuthConsumerKey: RemoteConfig.getValue('TWITTER_CONSUMER_KEY'),
+        oAuthConsumerSecret: RemoteConfig.getValue('TWITTER_CONSUMER_SECRET'),
         oAuthToken: this.requestToken,
         oAuthTokenSecret: this.requestTokenSecret
       },
@@ -110,7 +101,7 @@ fireRequest = async (twitterRequestParams) => {
 
     let response = await this.fireRequest(twitterRequestParams);
 
-    return this.formDataToJSON(response);
+    return Utilities.formDataToJSON(response);
   }
 }
 
