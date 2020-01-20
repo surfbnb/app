@@ -55,7 +55,6 @@ class GoogleOAuth {
     signIn = async() => {
        let response = await this.initiateSignUp();
        GoogleAuthService.signUp(response);
-       console.log(response);
     }
 
     initiateSignUp = async () => {

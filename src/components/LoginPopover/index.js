@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Platform} from 'react-native';
 import firebase from 'react-native-firebase';
 import DeviceInfo from 'react-native-device-info';
-import deepGet from 'lodash/get';
 
 import TouchableButton from '../../theme/components/TouchableButton';
 import inlineStyles from './styles';
@@ -48,7 +47,7 @@ class loginPopover extends React.Component {
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.twitter),
         width: 21.14,
         height: 17.14,
-        connectingHeader: 'Twitter connecting'
+        connectingHeader:btnPostText
       },
       [serviceTypes.apple]: {
         header: 'continue with Apple',
@@ -56,7 +55,7 @@ class loginPopover extends React.Component {
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.apple),
         width: 17.3,
         height: 20,
-        connectingHeader: 'Apple connecting'
+        connectingHeader: btnPostText
       },
       [serviceTypes.google]:{
         header: 'Continue with Gmail',
@@ -64,7 +63,7 @@ class loginPopover extends React.Component {
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.google),
         width: 21,
         height: 21,
-        connectingHeader: 'Google connecting'
+        connectingHeader: btnPostText
       },
       [serviceTypes.github]: {
         header: 'Continue with Github',
@@ -72,7 +71,7 @@ class loginPopover extends React.Component {
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.github),
         width: 19,
         height: 18.5,
-        connectingHeader: 'Github connecting'
+        connectingHeader: btnPostText
       },
     };
   };
@@ -98,20 +97,17 @@ class loginPopover extends React.Component {
 
   gmailPressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.google);
-    let resp = GoogleOAuth.signIn();
-    console.log(resp, 'Google resp ====-=-=-=-==-=-=-=-=-=-=-=');
+    GoogleOAuth.signIn();
   }
 
   githubPressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.github);
-    let resp = GitHubWebLoginActions.signIn();
-    console.log(resp, 'github resp ====-=-=-=-==-=-=-=-=-=-=-=');
+    GitHubWebLoginActions.signIn();
   }
 
   twitterPressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.twitter);
-    let resp = TwitterWebLoginActions.signIn();
-    console.log(resp, 'twitter resp ====-=-=-=-==-=-=-=-=-=-=-=');
+    TwitterWebLoginActions.signIn();
   }
 
   applePressHandler = () => {
