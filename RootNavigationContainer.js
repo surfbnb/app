@@ -60,8 +60,8 @@ import FullScreenVideoCollection from './src/components/FullScreenVideoCollectio
 import VideoReplies from './src/components/VideoReplies';
 import FullScreenReplyCollection from './src/components/FullScreenReplyCollection';
 import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
-import { TwitterWebLogin } from './src/components/WebLogins/TwitterWebLogin';
-import { GitHubWebLogin } from './src/components/WebLogins/GitHubWebLogin';
+import TwitterWebLogin from './src/components/WebLogins/TwitterWebLogin';
+import GitHubWebLogin from './src/components/WebLogins/GitHubWebLogin';
 import { AppleLogin } from './src/components/AppleLogin';
 
 const customTabHiddenRoutes = [
@@ -80,7 +80,9 @@ const customTabHiddenRoutes = [
   'UserVideoHistory',
   'VideoPlayer',
   'VideoReplyPlayer',
-  'LoginPopover'
+  'LoginPopover',
+  'TwitterWebLogin',
+  'GitHubWebLogin'
 ];
 
 const modalStackConfig = {
@@ -173,6 +175,24 @@ const HomePushStack = createStackNavigator(
   }
 );
 
+const TwitterWebLoginStack = createStackNavigator(
+  {
+    TwitterWebLogin: TwitterWebLogin
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
+const GitHubWebLoginStack = createStackNavigator(
+  {
+    GitHubWebLogin: GitHubWebLogin
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
 const HomeStack = createStackNavigator(
   {
     HomePushStack: HomePushStack,
@@ -184,6 +204,8 @@ const HomeStack = createStackNavigator(
     AuthDeviceDrawer: AuthDeviceDrawer,
     AddEmailScreen: AddEmailScreen,
     LoginPopover: LoginPopover,
+    TwitterWebLogin: TwitterWebLoginStack,
+    GitHubWebLogin: GitHubWebLoginStack,
     CouchMarks: CouchMarks
   },
   {
@@ -388,8 +410,6 @@ const RootNavigationContainer = () => (
     <PaymentWorker />
     <PushNotificationManager />
     <UniversalLinksManager />
-    <TwitterWebLogin/>
-    <GitHubWebLogin/>
     <AppleLogin/>
   </Root>
 );

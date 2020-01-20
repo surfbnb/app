@@ -1,51 +1,76 @@
+import React from 'react';
+import { View, Text, TouchableOpacity} from 'react-native';
 import qs from 'qs';
 
-import {GithubAuthEmitter} from '../../helpers/Emitters';
 import GitHubOAuth from '../../services/ExternalLogin/GitHubOAuth';
 import RemoteConfig from '../../services/RemoteConfig';
 import Base from './Base';
+import { LoginPopoverActions } from '../LoginPopover';
+import inlineStyles from './styles';
 
-export class GitHubWebLogin extends Base{
+export default class GitHubWebLogin extends React.PureComponent{
+
+    static navigationOptions = (props) => {
+        return {
+          headerStyle: inlineStyles.headerStyles,
+          headerLeft: <HeaderLeft {...props} />,
+          headerTitle: <HeaderTitle {...props} />
+        };
+      };
 
     constructor(props){
-        super(props);
+        super(props);   
         this.state = {
-            show: false,
-            url: ''
+            url : null
         }
     }
 
     componentDidMount(){
-        GithubAuthEmitter.on('showGithubWebview', ()=> this.signIn())
+        this.signIn();
     }
 
-    componentWillUnmount(){
-        GithubAuthEmitter.removeListener('showGithubWebview');
-    }
-    
     signIn = async ()=> {
         let url = await GitHubOAuth.getWebviewUrl();
-        console.log(url);
-        this.showWebview( url );
+        this.setState({
+            url
+        })
     }
 
-    handleNavigationStateChange = ( navState ) => {
+    handleOnLoadEnd = ( navState ) => {
         let url = navState.url;
         if( url.includes(`${RemoteConfig.getValue('GITHUB_AUTH_CALLBACK_ROUTE')}?`) ){
             let urlParts = url.split('?');
             let params = qs.parse(urlParts[1]);
-            this.hideWebview();
             GitHubOAuth.handleRedirectSuccess(params);
+            this.props.navigation.goBack(null);
         }
     }
 
-    getHeader = () => {
-       return "GitHub";
+    render() {
+        return (this.state.url ? <Base url={this.state.url} handleOnLoadEnd={this.handleOnLoadEnd}/> : null);
     }
 }
 
-export default {
-    signIn : () => {
-        GithubAuthEmitter.emit('showGithubWebview');
-    }
+const HeaderLeft = (props) => {
+    return (
+       <TouchableOpacity
+        onPress={() => {
+            props.navigation.goBack(null);
+            LoginPopoverActions.hide();
+        }}
+        style={{paddingLeft: 20}}
+        >
+            <Text style={inlineStyles.cancel}>Cancel</Text>
+        </TouchableOpacity>
+    );
+  };
+
+  const HeaderTitle = (props) => {
+    return (
+      <View>
+        <Text numberOfLines={1} style={inlineStyles.headerText}>
+          {props.navigation.getParam('title')}
+        </Text>
+      </View>
+    );
   };

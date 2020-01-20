@@ -50,6 +50,7 @@ class Base {
           this.onServerError(err);
         })
         .finally(() => {
+          console.log("success finally")
           LoginPopoverActions.hide();
         });
     } else {

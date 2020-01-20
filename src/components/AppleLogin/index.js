@@ -8,6 +8,8 @@ import appleAuth, {
   AppleAuthRequestOperation,
 } from '@invertase/react-native-apple-authentication';
 import {AppleAuthEmitter} from '../../helpers/Emitters';
+import Toast from '../../theme/components/NotificationToast';
+import { LoginPopoverActions } from '../LoginPopover';
 
 let AppleAuthService;
 import('../../services/AuthServices/AppleAuthService').then((imports) => {
@@ -53,7 +55,6 @@ export class AppleLogin extends React.Component {
   
     signIn = async () => {
       if(appleAuth.isSupported) {
-        console.warn('Beginning Apple Authentication');
 
         // start a login request
         try {
@@ -68,9 +69,11 @@ export class AppleLogin extends React.Component {
 
         } catch (error) {
         if (error.code === AppleAuthError.CANCELED) {
-            Alert.alert('User canceled Apple Sign in.');
+          Toast.show({text: `Failed to login via Apple`, icon: 'error' });
+          LoginPopoverActions.hide();
         } else {
-            console.log(error);
+          Toast.show({text: `Failed to login via Apple`, icon: 'error' });
+          LoginPopoverActions.hide();
         }
         }
       }    

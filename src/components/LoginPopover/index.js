@@ -20,6 +20,7 @@ import NavigationService from '../../services/NavigationService';
 import LinearGradient from "react-native-linear-gradient";
 import LastLoginedUser from "../../models/LastLoginedUser";
 import profilePicture from "../../assets/default_user_icon.png";
+import WebLogins from '../../services/WebLogins';
 
 const serviceTypes = AppConfig.authServiceTypes;
 const btnPostText = 'Connecting...';
@@ -50,7 +51,7 @@ class loginPopover extends React.Component {
         connectingHeader:btnPostText
       },
       [serviceTypes.apple]: {
-        header: 'continue with Apple',
+        header: 'Continue with Apple',
         pressHandler: this.applePressHandler,
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.apple),
         width: 17.3,
@@ -102,12 +103,12 @@ class loginPopover extends React.Component {
 
   githubPressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.github);
-    GitHubWebLoginActions.signIn();
+    WebLogins.openGitHubWebLogin();
   }
 
   twitterPressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.twitter);
-    TwitterWebLoginActions.signIn();
+    WebLogins.openTwitterWebLogin();
   }
 
   applePressHandler = () => {
@@ -265,6 +266,6 @@ export const LoginPopoverActions = {
   },
   hide: () => {
     console.log("Hideeeeeeeeeeee");
-    NavigationService.goBack();
+    NavigationService.goBack(null);
   }
 };
