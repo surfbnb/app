@@ -42,6 +42,10 @@ export class TwitterWebLogin extends Base{
         }
     }
 
+    getHeader = () => {
+       return "Twitter";
+    }
+
 }
 
 export default {

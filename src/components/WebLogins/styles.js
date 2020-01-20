@@ -15,8 +15,18 @@ let stylesMap = {
       },
       cancel: {
         color: Colors.softBlue,
-        fontWeight: '300',
+        fontWeight: '500',
         fontSize: 16
+      },
+      header: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 60,
+        position: 'absolute',
+        top: 20,
+        left: '45%',
+        zIndex: 999
       }
   }
 

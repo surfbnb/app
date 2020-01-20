@@ -58,6 +58,11 @@ export default class Base extends React.Component{
         )
     }
 
+    getHeader = () => {
+        //implement in child
+       return "";
+    }
+
     render(){
         return (
                 <Modal
@@ -75,6 +80,9 @@ export default class Base extends React.Component{
                     >
                         <Text style={inlineStyles.cancel}>Cancel</Text>
                     </TouchableOpacity>
+                    <View style={inlineStyles.header}>
+                        <Text>{this.getHeader()}</Text>
+                    </View>
                         <SafeAreaView style={[CommonStyle.viewContainer]}>
                         {this.getModalView()}
                     </SafeAreaView>

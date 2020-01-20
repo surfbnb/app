@@ -38,6 +38,10 @@ export class GitHubWebLogin extends Base{
             GitHubOAuth.handleRedirectSuccess(params);
         }
     }
+
+    getHeader = () => {
+       return "GitHub";
+    }
 }
 
 export default {
