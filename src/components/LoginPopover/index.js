@@ -26,7 +26,7 @@ const serviceTypes = AppConfig.authServiceTypes;
 const btnPostText = 'Connecting...';
 const sequenceOfLoginServices = [serviceTypes.twitter,serviceTypes.apple, serviceTypes.google, serviceTypes.github ];
 const versionIOS = DeviceInfo.getSystemVersion();
-const finalVersionIOS = versionIOS <= 13;
+const finalVersionIOS = parseInt( versionIOS ) <= 13;
 
 class loginPopover extends React.Component {
   constructor(props) {
@@ -265,7 +265,6 @@ export const LoginPopoverActions = {
     NavigationService.navigate("LoginPopover");
   },
   hide: () => {
-    console.log("Hideeeeeeeeeeee");
     NavigationService.goBack(null);
   }
 };
