@@ -26,7 +26,7 @@ const versionIOS = DeviceInfo.getSystemVersion();
 const finalVersionIOS = parseFloat( versionIOS ) <= 13;
 
 let sequenceOfLoginServices = [serviceTypes.twitter, serviceTypes.google, serviceTypes.github ] ;
-if( Platform.OS == 'ios' && finalVersionIOS ){
+if( Platform.OS == 'ios' && !finalVersionIOS ){
   sequenceOfLoginServices.splice(1, 0, serviceTypes.apple);
 }
 
