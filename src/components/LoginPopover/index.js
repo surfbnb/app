@@ -215,11 +215,11 @@ class loginPopover extends React.Component {
                   style={{ borderRadius: 3, borderTopRadius: 0, width: '80%', marginTop: 15, marginBottom: 20 }}
                 >
                   <TouchableOpacity
-                    style={[Theme.Button.btn, { borderWidth: 0 }]}
-                    disabled={this.state.isSubmitting}
+                    style={[Theme.Button.btn, { borderWidth: 0 }, this.state.disableLoginBtn ? Theme.Button.disabled : null]}
+                    disabled={this.state.disableLoginBtn}
                     onPress={this.signInViaLastLoginService}
                   >
-                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]} numberOfLines={1} ellipsizeMode={'tail'}>{this.state.continueAs} {LastLoginedUser.getUserName()} </Text>
+                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]} numberOfLines={1} ellipsizeMode={'tail'}>Continue as {LastLoginedUser.getUserName()} </Text>
                   </TouchableOpacity>
                 </LinearGradient>
                 <TouchableOpacity onPress={this.onMoreOptionClick}>

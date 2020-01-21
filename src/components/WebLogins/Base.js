@@ -4,7 +4,6 @@ import { WebView } from 'react-native-webview';
 
 import DeviceInfo from 'react-native-device-info';
 import CommonStyle from '../../theme/styles/Common';
-import {LoginPopoverActions} from "../LoginPopover";
 import NavigationService from "../../services/NavigationService";
 
 export default class Base extends React.PureComponent{
