@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Platform} from 'react-native';
-import firebase from 'react-native-firebase';
 import DeviceInfo from 'react-native-device-info';
 
 import TouchableButton from '../../theme/components/TouchableButton';
@@ -19,19 +18,24 @@ import LinearGradient from "react-native-linear-gradient";
 import LastLoginedUser from "../../models/LastLoginedUser";
 import profilePicture from "../../assets/default_user_icon.png";
 import WebLogins from '../../services/WebLogins';
+import { analyticsSetCurrentScreen } from '../../helpers/helpers';
 
 const serviceTypes = AppConfig.authServiceTypes;
 const btnPostText = 'Connecting...';
-const sequenceOfLoginServices = [serviceTypes.twitter,serviceTypes.apple, serviceTypes.google, serviceTypes.github ];
 const versionIOS = DeviceInfo.getSystemVersion();
 const finalVersionIOS = parseFloat( versionIOS ) <= 13;
+
+let sequenceOfLoginServices = [serviceTypes.twitter, serviceTypes.google, serviceTypes.github ] ;
+if( Platform.OS == 'ios' && finalVersionIOS ){
+  sequenceOfLoginServices.splice(1, 0, serviceTypes.apple);
+}
+
 
 class loginPopover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       disableLoginBtn: false,
-      continueAs: 'Continue as',
       showAllOptions : !this.isLastLoginUser(),
       currentConnecting: ''
     };
@@ -75,22 +79,9 @@ class loginPopover extends React.Component {
     };
   };
 
-  componentWillUnmount() {
-    this.state.disableLoginBtn = false;
-  }
-
-  componentDidUpdate(prevProps) {
-    console.log(this.props.isTwitterConnecting, 'this.props.isTwitterConnecting');
-    if ( this.props.isTwitterConnecting && this.props.isTwitterConnecting !== prevProps.isTwitterConnecting ) {
-      console.log(this.props.isTwitterConnecting, 'this.props.isTwitterConnecting');
-      this.setState({ disableLoginBtn: true });
-    } else if (this.props.show && this.props.show !== prevProps.show) {
-        console.log(this.props.show, 'this.props.show');
-      this.setState({ disableLoginBtn: false });
-    }
-  }
 
   beforeOAuthInvoke = (service ) => {
+    analyticsSetCurrentScreen( service );
     this.setState({disableLoginBtn : true , currentConnecting:  AppConfig.authServiceTypes[service] })
   }
 
@@ -116,15 +107,12 @@ class loginPopover extends React.Component {
 
   //Use this function if needed to handle hardware back handling for android.
   closeModal = () => {
-    if (!this.props.isTwitterConnecting) {
-      NavigationService.goBack();
-    }
+    NavigationService.goBack();
     return true;
   };
 
   getLoginButtons = () => {
     let buttonsJSX = sequenceOfLoginServices.map((item)=>{
-      if((item === 'apple' && Platform.OS === "android") || (item === 'apple' && finalVersionIOS)) return;
       let currentServiceConfig = this.loginServicesConfig[item];
       return <TouchableButton
         key={item}
@@ -194,7 +182,17 @@ class loginPopover extends React.Component {
 
   signInViaLastLoginService = () => {
     const serviceConfig = this.loginServicesConfig[LastLoginedUser.getLastLoginServiceType()];
-    serviceConfig.pressHandler.apply(this);
+    if(serviceConfig.pressHandler){
+      serviceConfig.pressHandler.apply(this);
+      return;
+    }
+    
+    /**
+     * This should never happen. But just incase if it dose user can still login.
+     * The app wont be blocking for it.
+     */
+    console.warn("AS services was found but pressHandler was unavaialable in serviceConfig LoginPopover.");
+    this.setState({showAllOptions: true});
   }
 
   render() {
@@ -221,7 +219,7 @@ class loginPopover extends React.Component {
                     disabled={this.state.isSubmitting}
                     onPress={this.signInViaLastLoginService}
                   >
-                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]}>{this.state.continueAs} {LastLoginedUser.getUserName()} </Text>
+                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]}>Continue as {LastLoginedUser.getUserName()} </Text>
                   </TouchableOpacity>
                 </LinearGradient>
                 <TouchableOpacity onPress={this.onMoreOptionClick}>
@@ -252,11 +250,6 @@ class loginPopover extends React.Component {
 
 export const LoginPopover = loginPopover;
 export const LoginPopoverActions = {
-  _track: ( service ) => {
-    if(!service) return;
-    let analyticsAction = AppConfig.routesAnalyticsMap[service];
-    firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);    
-  },
   show: () => {
     NavigationService.navigate("LoginPopover");
   },

@@ -2,6 +2,9 @@ import PepoApi from '../services/PepoApi';
 import Toast from '../theme/components/NotificationToast';
 import AppConfig from '../constants/AppConfig';
 import { ostErrors } from '../services/OstErrors';
+import firebase from 'react-native-firebase';
+
+const routesAnalyticsMap = AppConfig.routesAnalyticsMap;
 
 function fetchUser(userId, onResponse, errorCallback, finallyCallback) {
   new PepoApi(`/users/${userId}/profile`)
@@ -67,4 +70,19 @@ function getHostName( url ){
   return url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)/im)[1];
 }
 
-export { fetchUser, getHostName , fetchVideo};
+function analyticsSetCurrentScreen( routeName ){
+  if(!routeName) return;
+
+  let analyticsAction = routesAnalyticsMap[routeName] && routesAnalyticsMap[routeName].trim();
+
+  if(!analyticsAction){
+    // Unhandled action
+    console.log("Unhandled routeName in analyticsSetCurrentScreen: " , routeName);
+    return;
+  }
+
+  console.log('firebase.analytics().setCurrentScreen() ::', analyticsAction);
+  firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);
+}
+
+export { fetchUser, getHostName , fetchVideo , analyticsSetCurrentScreen};

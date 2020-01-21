@@ -25,12 +25,9 @@ class GoogleAuthService extends Base {
   }
 
   getPixelMandatoryParams(){
-    return {
-      e_entity: "user",
-      e_action: "registration",
-      p_type: "signin",
-      p_name: "google"
-    };
+    const params = super.getPixelMandatoryParams();
+    params["p_name"] = "google";
+    return params;
   }
 
   onServerError(error) {

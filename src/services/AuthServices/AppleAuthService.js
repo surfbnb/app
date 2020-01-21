@@ -14,7 +14,6 @@ class AppleAuthService extends Base {
   }
 
   getParamsForServer (params){
-    console.log(params, 'Apple Params');
     return  params &&  Object.keys(params).length > 0 ?  {
       authorization_code : params.authorizationCode,
       authorized_scopes : params.authorizedScopes,
@@ -29,12 +28,9 @@ class AppleAuthService extends Base {
   }
 
   getPixelMandatoryParams(){
-    return {
-      e_entity: "user",
-      e_action: "registration",
-      p_type: "signin",
-      p_name: "apple"
-    };
+    const params = super.getPixelMandatoryParams();
+    params["p_name"] = "apple";
+    return params;
   }
 
   onServerError(error) {

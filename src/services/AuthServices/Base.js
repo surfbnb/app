@@ -1,11 +1,14 @@
 import deepGet from 'lodash/get';
 import assignIn from 'lodash/assignIn';
-import Toast from '../../theme/components/NotificationToast';
 import { upsertInviteCode } from '../../actions';
 import Store from '../../store';
-
-
 import {LoginPopoverActions} from '../../components/LoginPopover';
+import AppConfig from '../../constants/AppConfig';
+import { navigateTo } from '../../helpers/navigateTo';
+import Pricer from '../Pricer';
+import DataContract from '../../constants/DataContract';
+import PixelCall from '../PixelCall';
+import {DrawerEmitter} from "../../helpers/Emitters";
 
 let CurrentUser;
 import('../../models/CurrentUser').then((imports) => {
@@ -16,22 +19,12 @@ let Utilities;
 import('../Utilities').then((imports) => {
   Utilities = imports.default;
 });
-import AppConfig from '../../constants/AppConfig';
-import NavigationService from '../NavigationService';
-import { navigateTo } from '../../helpers/navigateTo';
-import Pricer from '../Pricer';
-import DataContract from '../../constants/DataContract';
-import PixelCall from '../PixelCall';
-import TwitterOAuth from "../ExternalLogin/TwitterOAuth";
-import {DrawerEmitter} from "../../helpers/Emitters";
-import DeviceInfo from "react-native-device-info";
 
 class Base {
 
   constructor(){}
 
   async signUp(paramsFromService) {
-    console.log('paramsFromServiceparamsFromServiceparamsFromService');
     let params = this.getParamsForServer(paramsFromService);
     if (params && Object.keys(params).length > 0) {
       let inviteCode = await Utilities.getItem(AppConfig.appInstallInviteCodeASKey);
@@ -54,7 +47,6 @@ class Base {
           LoginPopoverActions.hide();
         });
     } else {
-      console.log('Here=++++====++++===');
       LoginPopoverActions.hide();
     }
   }
@@ -105,25 +97,6 @@ class Base {
     if (navigateTo.handleGoTo(res)) {
       return true;
     }
-    let errorData = deepGet(res, 'err.error_data');
-    /*
-    * We dont have to ask for invite code now
-    * 
-    */
-    // if (res && this.isInviteCodeError(errorData)) {
-    //   //Goto invite screen
-    //   NavigationService.navigate('InviteCodeScreen');
-    //   return true;
-    // }
-    return false;
-  }
-
-  isInviteCodeError(errorObj) {
-    for (i in errorObj) {
-      if (errorObj[i].parameter === 'invite_code') {
-        return true;
-      }
-    }
     return false;
   }
 
@@ -144,15 +117,17 @@ class Base {
     throw 'Need to implement in child';
   }
 
-
   connectToServer(){
     throw 'Need to implement in child';
   }
 
   getPixelMandatoryParams(){
-    throw 'Need to implement in child';
+    return {
+      e_entity: "user",
+      e_action: "registration",
+      p_type: "signin"
+    };
   }
-
 
   onServerError(){
     throw 'Need to implement in child';

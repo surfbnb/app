@@ -25,12 +25,9 @@ class TwitterAuthService extends Base {
   }
 
   getPixelMandatoryParams(){
-    return {
-      e_entity: "user",
-      e_action: "registration",
-      p_type: "signin",
-      p_name: "twitter"
-    };
+    const params = super.getPixelMandatoryParams();
+    params["p_name"] = "twitter";
+    return params;
   }
 
   onServerError(error) {
