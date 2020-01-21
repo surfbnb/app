@@ -52,7 +52,7 @@ let stylesMap = {
     alignItems: 'center',
     justifyContent: 'center',
     width: '80%',
-    padding: 8,
+    padding: 10,
     borderColor: 'rgba(42, 41, 59, 0.3)'
   },
   loginBtnTextStyles:{

@@ -26,7 +26,7 @@ const serviceTypes = AppConfig.authServiceTypes;
 const btnPostText = 'Connecting...';
 const sequenceOfLoginServices = [serviceTypes.twitter,serviceTypes.apple, serviceTypes.google, serviceTypes.github ];
 const versionIOS = DeviceInfo.getSystemVersion();
-const finalVersionIOS = parseInt( versionIOS ) <= 13;
+const finalVersionIOS = parseFloat( versionIOS ) <= 13;
 
 class loginPopover extends React.Component {
   constructor(props) {
@@ -127,8 +127,6 @@ class loginPopover extends React.Component {
   getLoginButtons = () => {
     let buttonsJSX = sequenceOfLoginServices.map((item)=>{
       if((item === 'apple' && Platform.OS === "android") || (item === 'apple' && finalVersionIOS)) return;
-      console.log(this.state.currentConnecting, 'this.state.currentConnecting');
-      console.log(item, '----------------item----------------');
       let currentServiceConfig = this.loginServicesConfig[item];
       return <TouchableButton
         key={item}
