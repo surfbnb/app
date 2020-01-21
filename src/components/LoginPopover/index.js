@@ -69,7 +69,7 @@ class loginPopover extends React.Component {
         connectingHeader: btnPostText
       },
       [serviceTypes.github]: {
-        header: 'Continue with Github',
+        header: 'Continue with GitHub',
         pressHandler: this.githubPressHandler,
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.github),
         width: 19,
@@ -140,14 +140,14 @@ class loginPopover extends React.Component {
       <Text style={{textAlign: 'center'}}>
         <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-          this.closeModal();
+          // this.closeModal();
           InAppBrowser.openBrowser(
             `${WEB_ROOT}/terms`
           );
         })}>Terms of use </Text>
         <Text style={inlineStyles.termsTextBlack}>and </Text>
         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-          this.closeModal();
+          // this.closeModal();
           InAppBrowser.openBrowser(
             `${WEB_ROOT}/privacy`
           );

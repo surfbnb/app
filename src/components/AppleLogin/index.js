@@ -69,7 +69,7 @@ export class AppleLogin extends React.Component {
 
         } catch (error) {
         if (error.code === AppleAuthError.CANCELED) {
-          Toast.show({text: `Failed to login via Apple`, icon: 'error' });
+           Toast.show({text: `Unable to login via Apple`, icon: 'error' });
           LoginPopoverActions.hide();
         } else {
           Toast.show({text: `Failed to login via Apple`, icon: 'error' });
