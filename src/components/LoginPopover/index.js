@@ -219,7 +219,7 @@ class loginPopover extends React.Component {
                     disabled={this.state.isSubmitting}
                     onPress={this.signInViaLastLoginService}
                   >
-                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]}>Continue as {LastLoginedUser.getUserName()} </Text>
+                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]} numberOfLines={1} ellipsizeMode={'tail'}>{this.state.continueAs} {LastLoginedUser.getUserName()} </Text>
                   </TouchableOpacity>
                 </LinearGradient>
                 <TouchableOpacity onPress={this.onMoreOptionClick}>
