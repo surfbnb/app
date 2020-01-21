@@ -5,7 +5,7 @@ let stylesMap = {
       cancel: {
         color: Colors.softBlue,
         fontWeight: '500',
-        fontSize: 16
+        fontSize: 18
       },
       headerStyles: {
         backgroundColor: Colors.white,
@@ -19,7 +19,9 @@ let stylesMap = {
         shadowRadius: 3
       },
       headerText:{
-          fontWeight: '600'
+        fontWeight: '600',
+        fontSize: 20,
+        letterSpacing: 0.3
       }
   }
 

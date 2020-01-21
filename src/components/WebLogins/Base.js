@@ -1,18 +1,31 @@
 import React from 'react';
-import { SafeAreaView, Platform, KeyboardAvoidingView } from 'react-native';
+import {SafeAreaView, Platform, KeyboardAvoidingView, BackHandler} from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import DeviceInfo from 'react-native-device-info';
 import CommonStyle from '../../theme/styles/Common';
+import {LoginPopoverActions} from "../LoginPopover";
+import NavigationService from "../../services/NavigationService";
 
 export default class Base extends React.PureComponent{
 
     constructor(props){
         super(props);
         this.url = props.url;
+
     }
 
-    getModalView = ()=> {
+
+    componentDidMount(){
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+  handleBackButtonClick = () => {
+    clearTimeout(this.goBack);
+    this.goBack = setTimeout(()=>{NavigationService.goBack()}, 300);
+  };
+
+  getModalView = ()=> {
         return  (
             <WebView
                 source={{

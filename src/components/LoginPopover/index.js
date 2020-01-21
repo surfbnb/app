@@ -26,7 +26,7 @@ const versionIOS = DeviceInfo.getSystemVersion();
 const finalVersionIOS = parseFloat( versionIOS ) <= 13;
 
 let sequenceOfLoginServices = [serviceTypes.twitter, serviceTypes.google, serviceTypes.github ] ;
-if( Platform.OS == 'ios' && finalVersionIOS ){
+if( Platform.OS == 'ios' && !finalVersionIOS ){
   sequenceOfLoginServices.splice(1, 0, serviceTypes.apple);
 }
 
@@ -69,7 +69,7 @@ class loginPopover extends React.Component {
         connectingHeader: btnPostText
       },
       [serviceTypes.github]: {
-        header: 'Continue with Github',
+        header: 'Continue with GitHub',
         pressHandler: this.githubPressHandler,
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.github),
         width: 19,
@@ -140,14 +140,14 @@ class loginPopover extends React.Component {
       <Text style={{textAlign: 'center'}}>
         <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-          this.closeModal();
+          // this.closeModal();
           InAppBrowser.openBrowser(
             `${WEB_ROOT}/terms`
           );
         })}>Terms of use </Text>
         <Text style={inlineStyles.termsTextBlack}>and </Text>
         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-          this.closeModal();
+          // this.closeModal();
           InAppBrowser.openBrowser(
             `${WEB_ROOT}/privacy`
           );
@@ -219,7 +219,7 @@ class loginPopover extends React.Component {
                     disabled={this.state.isSubmitting}
                     onPress={this.signInViaLastLoginService}
                   >
-                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]}>Continue as {LastLoginedUser.getUserName()} </Text>
+                    <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]} numberOfLines={1} ellipsizeMode={'tail'}>{this.state.continueAs} {LastLoginedUser.getUserName()} </Text>
                   </TouchableOpacity>
                 </LinearGradient>
                 <TouchableOpacity onPress={this.onMoreOptionClick}>

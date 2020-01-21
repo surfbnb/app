@@ -11,7 +11,7 @@ import('../../services/AuthServices/GoogleAuthService').then((imports) => {
 
 const BaseConfig = {
     issuer: 'https://accounts.google.com',
-    scopes: RemoteConfig.getValue('GOOGLE_SCOPES'),
+    scopes: RemoteConfig.getValue('GOOGLE_SCOPES').split(" "),
     additionalParameters : {
         prompt : 'select_account'
     }
@@ -75,7 +75,7 @@ class GoogleOAuth {
             }
         return this.authState;
         } catch (error) {
-            Toast.show({text: `Failed to login via Google`, icon: 'error' });
+             Toast.show({text: `Unable to login via Google`, icon: 'error' });
         }
     };
 
