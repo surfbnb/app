@@ -12,9 +12,7 @@ import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
-import TwitterWebLoginActions from '../WebLogins/TwitterWebLogin';
 import GoogleOAuth from '../../services/ExternalLogin/GoogleOAuth';
-import GitHubWebLoginActions from '../WebLogins/GitHubWebLogin';
 import AppleLoginActions  from '../AppleLogin';
 import NavigationService from '../../services/NavigationService';
 import LinearGradient from "react-native-linear-gradient";
@@ -26,7 +24,7 @@ const serviceTypes = AppConfig.authServiceTypes;
 const btnPostText = 'Connecting...';
 const sequenceOfLoginServices = [serviceTypes.twitter,serviceTypes.apple, serviceTypes.google, serviceTypes.github ];
 const versionIOS = DeviceInfo.getSystemVersion();
-const finalVersionIOS = parseInt( versionIOS ) <= 13;
+const finalVersionIOS = parseFloat( versionIOS ) <= 13;
 
 class loginPopover extends React.Component {
   constructor(props) {
