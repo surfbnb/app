@@ -281,6 +281,7 @@ class VideoRecorder extends Component {
           type={this.state.cameraFrontMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back}
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
+          pictureSize={AppConfig.cameraConstants.PICTURE_SIZE}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
           notAuthorizedView={
             <View>

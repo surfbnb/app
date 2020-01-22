@@ -136,7 +136,8 @@ const AppConfig = {
     RATIO: '16:9',
     VIDEO_QUALITY: '720p',
     VIDEO_WIDTH: 720,
-    VIDEO_HEIGHT: 1280
+    VIDEO_HEIGHT: 1280,
+    PICTURE_SIZE: '1280x720'
   },
 
   compressionConstants: {
