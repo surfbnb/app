@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback, View, Image, BackHandler, AppState, Text } from 'react-native';
+import { TouchableOpacity, View, Image, BackHandler, AppState, Text } from 'react-native';
 import Video from 'react-native-video';
 import ProgressBar from 'react-native-progress/Bar';
 import playIcon from '../../assets/preview_play_icon.png';
@@ -115,6 +115,19 @@ class PreviewRecordedVideo extends Component {
     );
   }
 
+  onPlaybackRateChange = (args) => {
+    const playRate = args && args.playbackRate;
+    /*
+    * PlayRate is zero that means its video start or paused in between.
+    * this.state.progress > 0  that means video hard started playing
+    * !this.pauseVideo that means video is expedted to play
+    * The below condition says that video was accidentally paused as playRate = 0 , but pauseVideo is false and video had progress. 
+    * */
+    if (playRate == 0 && this.state.progress > 0 && !this.pauseVideo ){
+      this.forceUpdate();
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -123,6 +136,7 @@ class PreviewRecordedVideo extends Component {
           style={{
             flex:1
           }}
+          onPlaybackRateChange={this.onPlaybackRateChange}
           posterResizeMode={'cover'}
           resizeMode={'cover'}
           onLoad={this.handleLoad}

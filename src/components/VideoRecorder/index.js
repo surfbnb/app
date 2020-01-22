@@ -295,7 +295,6 @@ class VideoRecorder extends Component {
           }
           defaultVideoQuality={RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY]}
           defaultMuted={false}
-          keepAudioSession={true}
         >
           {this.showCoachForPosting()}
           {this.showCameraActions()}
