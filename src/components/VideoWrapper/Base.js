@@ -131,7 +131,7 @@ class Base extends PureComponent {
 
   onSdkPause = () => {
     if(this.props.isActive){
-      this.pauseVideo(true);
+      this.pauseVideo();
     }
   };
 
