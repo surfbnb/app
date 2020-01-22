@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, TouchableWithoutFeedback, FlatList, Dimensions } from 'react-native';
+import { View, Image, TouchableOpacity, TouchableWithoutFeedback, FlatList, Dimensions, SafeAreaView } from 'react-native';
 
 import inlineStyles from './styles';
 import ImageBrowser from '../../services/ImageBrowser';
-import { SafeAreaView } from 'react-navigation';
 import assignIn from 'lodash/assignIn';
 import store from '../../store';
 import CropperUI from '../ImageCropper/CropperUI';

@@ -10,9 +10,8 @@ import {
   Animated ,TouchableWithoutFeedback
 } from 'react-native';
 
-import {getBottomSpace, ifIphoneX, isIphoneX} from 'react-native-iphone-x-helper';
+import {getBottomSpace, getStatusBarHeight, ifIphoneX, isIphoneX} from 'react-native-iphone-x-helper';
 
-import pepoIcon from "../../assets/pepo-tx-icon.png";
 import inlineStyles from './styles';
 import crossIcon from '../../assets/cross_icon.png';
 import ReplyCollection from '../ReplyCollection';
@@ -23,10 +22,8 @@ import SlidingUpPanel from "../CommonComponents/SlidingUpPanel";
 import VideoLoadingFlyer from '../CommonComponents/VideoLoadingFlyer';
 import videoUploaderComponent from '../../services/CameraWorkerEventEmitter';
 
-import { getInset } from 'react-native-safe-area-view';
 import DataContract from '../../constants/DataContract';
 import ReduxGetters from '../../services/ReduxGetters';
-import Pricer from "../../services/Pricer";
 import {getVideoReplyObject, replyPreValidationAndMessage} from "../../helpers/cameraHelper";
 import VideoReplyIcon from '../../assets/reply_video_icon.png';
 import VideoReplyCount from '../../components/CommonComponents/VideoReplyCount';
@@ -34,13 +31,12 @@ import {hasNotch} from "../../helpers/NotchHelper";
 
 const statusBarHeight = StatusBar.currentHeight || 0;
 const { width, height } = Dimensions.get('window');
-const landScape = width > height;
-const topPadding = getInset('top', landScape);
-const bottomPadding = getInset('bottom', landScape);
+
+const topPadding = getStatusBarHeight(true);
+const bottomPadding = getBottomSpace();
 const bottomReplyViewHeight = isIphoneX() ? 88 : Platform.OS === 'ios' ? 54 : hasNotch() ? 54 - statusBarHeight : 54 - statusBarHeight;
 const listBottomPadding = height - (height/1.5)+bottomReplyViewHeight ;
 
-const bottomSpace = getBottomSpace([true]);
 class VideoRepliesScreen extends PureComponent {
 
     static navigationOptions = ({ navigation, navigationOptions }) => {

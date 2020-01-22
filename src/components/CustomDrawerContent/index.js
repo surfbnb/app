@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, Image, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { StyleSheet, TouchableOpacity, Text, View, Image, ScrollView, SafeAreaView } from 'react-native';
 import { OstWalletSdk} from '@ostdotcom/ost-wallet-sdk-react-native';
 import DeviceInfo from 'react-native-device-info';
 import { connect } from 'react-redux';

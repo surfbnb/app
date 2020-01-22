@@ -10,7 +10,7 @@ import TopStatus from "../Home/TopStatus";
 import CommonStyle from "../../theme/styles/Common";
 import entityHelper from '../../helpers/EntityHelper';
 import DataContract from "../../constants/DataContract";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from 'react-native-safe-area-view';
 import VideoReplyRow from "../CommonComponents/VideoReplyRowComponent/VideoReplyRow";
 
 const maxVideosThreshold = 3;

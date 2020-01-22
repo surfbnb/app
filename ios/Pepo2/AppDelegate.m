@@ -10,7 +10,6 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <TwitterKit/TWTRKit.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import <Firebase.h>
@@ -104,13 +103,6 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
   BOOL handled;
-  
-  if ([[url absoluteString] hasPrefix:@"twitterkit-"]) {
-    handled = [[Twitter sharedInstance] application:app openURL:url options:options];
-     if (handled) {
-       return handled;
-     }
-  }
  
   handled = [[RNFirebaseLinks instance] application:app openURL:url options:options];
   if (handled) {
