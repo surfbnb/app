@@ -260,4 +260,4 @@ class ReplyCollection extends PureComponent {
 
 }
 
-export default  withNavigation( ReplyCollection );
+export default withNavigation( ReplyCollection );

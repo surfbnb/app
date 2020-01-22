@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { WebView } from 'react-native-webview';
-import { SafeAreaView } from 'react-navigation';
-import {Image, TouchableOpacity, Text, View, Share, Platform, KeyboardAvoidingView} from 'react-native';
+import {Image, TouchableOpacity, Text, View, Share, Platform, KeyboardAvoidingView, SafeAreaView} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import ProgressBar from 'react-native-progress/Bar';
 

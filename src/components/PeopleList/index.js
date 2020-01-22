@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import {
-  View,
   FlatList,
-  ActivityIndicator, Keyboard,
-
+  ActivityIndicator,
+  Keyboard
 } from "react-native";
-import {SafeAreaView, withNavigation} from "react-navigation";
+import SafeAreaView from 'react-native-safe-area-view';
 
 import PeopleCell from './PeopleCell';
 

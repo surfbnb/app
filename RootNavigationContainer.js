@@ -4,6 +4,7 @@ import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import NavigationAnimation from "./src/helpers/NavigationAnimation";
 import NavigationService from './src/services/NavigationService';
@@ -395,22 +396,24 @@ const AppContainer = createAppContainer(
 
 const RootNavigationContainer = () => (
   <Root>
-    <AppContainer
-      onNavigationStateChange={(prevState, currentState, action) => NavigationStateHandler(prevState, currentState, action)}
-      ref={(navigatorRef) => {
-        NavigationService.setTopLevelNavigator(navigatorRef);
-      }}
-    />
-    <CameraWorker />
-    <PictureWorker />
-    <LoadingModalCover />
-    <AllowAccessModalScreen />
-    <NotificationToastComponent />
-    <SocketManager />
-    <PaymentWorker />
-    <PushNotificationManager />
-    <UniversalLinksManager />
-    <AppleLogin/>
+    <SafeAreaProvider>
+      <AppContainer
+        onNavigationStateChange={(prevState, currentState, action) => NavigationStateHandler(prevState, currentState, action)}
+        ref={(navigatorRef) => {
+          NavigationService.setTopLevelNavigator(navigatorRef);
+        }}
+      />
+      <CameraWorker />
+      <PictureWorker />
+      <LoadingModalCover />
+      <AllowAccessModalScreen />
+      <NotificationToastComponent />
+      <SocketManager />
+      <PaymentWorker />
+      <PushNotificationManager />
+      <UniversalLinksManager />
+      <AppleLogin/>
+    </SafeAreaProvider>
   </Root>
 );
 

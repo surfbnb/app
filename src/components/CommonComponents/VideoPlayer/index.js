@@ -7,7 +7,7 @@ import reduxGetter from '../../../services/ReduxGetters';
 import DeletedVideoInfo from '../DeletedVideoInfo';
 import CommonStyles from "../../../theme/styles/Common";
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from 'react-native-safe-area-view';
 import { fetchVideo } from '../../../helpers/helpers';
 import DataContract from '../../../constants/DataContract';
 
