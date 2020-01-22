@@ -266,7 +266,7 @@ class ReplyList extends PureComponent{
 
     render() {
         return (
-            <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreen, {position: "relative", backgroundColor: Colors.darkShadeOfGray}]}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={[{position: "relative", flex: 1, backgroundColor: Colors.darkShadeOfGray}]}>
                 <TopStatus />
                 
                 <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight(), marginRight: 'auto', minWidth: '20%'}}>
