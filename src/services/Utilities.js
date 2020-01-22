@@ -260,6 +260,14 @@ export default {
         });
     }
     return object;
+  },
+
+  isIos(){
+    return Platform.OS === "ios" ;
+  },
+
+  isAndroid(){
+    return Platform.OS === "android";
   }
 
 };

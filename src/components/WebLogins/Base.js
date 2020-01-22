@@ -1,22 +1,36 @@
 import React from 'react';
-import {SafeAreaView, Platform, KeyboardAvoidingView, BackHandler} from 'react-native';
+import {SafeAreaView, Platform, KeyboardAvoidingView, BackHandler, Keyboard, StatusBar } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import DeviceInfo from 'react-native-device-info';
 import CommonStyle from '../../theme/styles/Common';
 import NavigationService from "../../services/NavigationService";
+import Utilities from "../../services/Utilities";
 
 export default class Base extends React.PureComponent{
 
     constructor(props){
         super(props);
         this.url = props.url;
-
+        this.backHandler = null;
+        this.keyboardWillShowListener = null;
     }
 
 
     componentDidMount(){
-      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+      if(Utilities.isAndroid()){
+        this.backHandler  = BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+      }
+      if(Utilities.isIos()){
+        this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', ()=> {
+          StatusBar.setBarStyle("dark-content");
+        });
+      }
+    }
+
+    componentWillUnmount(){
+      this.backHandler && this.backHandler.remove();
+      this.keyboardWillShowListener && this.keyboardWillShowListener.remove();
     }
 
   handleBackButtonClick = () => {

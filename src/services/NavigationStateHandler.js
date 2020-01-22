@@ -1,29 +1,29 @@
-import {StatusBar , Platform} from "react-native";
+import {StatusBar} from "react-native";
 import Colors from "../theme/styles/Colors";
 import NavigationService from './NavigationService';
 import { analyticsSetCurrentScreen } from "../helpers/helpers";
+import Utilities from "./Utilities";
 
 const routesWithoutStatusBar = ['Home', 'HomeScreen', 'VideoPlayer', 'CaptureVideo', 'CaptureImageScreen', 'ImageGalleryScreen', 'UserVideoHistory', 'VideoReplies', 'FullScreenVideoCollection', 'FullScreenReplyCollection', 'VideoReplyPlayer'];
 const typesToIgnore = ['Navigation/COMPLETE_TRANSITION', 'Navigation/MARK_DRAWER_SETTLING', 'Navigation/MARK_DRAWER_IDLE', 'Navigation/DRAWER_CLOSED'];
 
 const StatusBarShow = () => {
-  if( Platform.OS === "android"){
+  if( Utilities.isAndroid()){
     StatusBar.setBackgroundColor(Colors.grey);
     StatusBar.setTranslucent(false);
   }
 
-  if(Platform.OS === "ios"){
+  if(Utilities.isIos()){
     StatusBar.setBarStyle("dark-content")
   }
 
 };
 
 const StatusBarHide = () => {
-  if( Platform.OS === "android"){
+  if(Utilities.isAndroid()){
     StatusBar.setBackgroundColor('transparent');
     StatusBar.setTranslucent(true);
   }
-
 };
 
 export const NavigationStateHandler = (prevState, currentState, action) => {
