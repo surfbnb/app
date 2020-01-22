@@ -112,7 +112,7 @@ class Base {
 
   onLogout = () => {
     DrawerEmitter.emit('closeDrawer');
-    CurrentUser.logout();
+    CurrentUser.logout(false);
   };
 
   getParamsForServer(params){

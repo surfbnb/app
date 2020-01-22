@@ -1,6 +1,5 @@
 import PepoApi from '../services/PepoApi';
 import deepGet from 'lodash/get';
-import  merge from "lodash/merge";
 import Store from '../store';
 import { updateCurrentUser, logoutUser } from '../actions';
 import NavigationService from '../services/NavigationService';
@@ -12,7 +11,6 @@ import EventEmitter from "eventemitter3";
 import {navigateTo} from "../helpers/navigateTo";
 import AppConfig from '../constants/AppConfig';
 import LastLoginedUser from "./LastLoginedUser";
-import DeviceInfo from "react-native-device-info";
 
 const RCTNetworking = require('react-native/Libraries/Network/RCTNetworking'); 
 
@@ -176,7 +174,8 @@ class CurrentUser {
     return this._signin('/auth/twitter-login', params);
   }
 
-  logout(params={}) {
+  logout(emitEventBeforeLogout=true) {
+      emitEventBeforeLogout && this.getEvent().emit("onBeforeUserLogout");
       LastLoginedUser.updateASUserOnLogout(this.getUserId());
       RCTNetworking.clearCookies(() => {
         this.onLogout();
