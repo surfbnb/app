@@ -9,6 +9,7 @@ import Pricer from '../Pricer';
 import DataContract from '../../constants/DataContract';
 import PixelCall from '../PixelCall';
 import {DrawerEmitter} from "../../helpers/Emitters";
+import {globalEvents,  globalEventsMap} from "../../helpers/GlobalEvents";
 
 let CurrentUser;
 import('../../models/CurrentUser').then((imports) => {
@@ -34,23 +35,24 @@ class Base {
       this.connectToServer(params)
         .then((res) => {
           if (res && res.success) {
+            LoginPopoverActions.hide();
             this.onSuccess(res);
           } else {
-            this.onServerError(res);
+            this._onError(res);
           }
         })
         .catch((err) => {
-          this.onServerError(err);
+          this._onError(err);
         })
-        .finally(() => {
-          console.log("success finally");
-          LoginPopoverActions.hide();
-        });
     } else {
-      LoginPopoverActions.hide();
+      this._onError();
     }
   }
 
+  _onError(err){
+    globalEvents.emit(globalEventsMap.oAuthError ,  err);
+    this.onServerError(err);
+  }
 
   onSuccess(res) {
     this.pixelDrop(res);

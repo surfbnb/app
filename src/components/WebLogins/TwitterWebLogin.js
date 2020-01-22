@@ -5,8 +5,8 @@ import qs from 'qs';
 import TwitterOAuth from '../../services/ExternalLogin/TwitterOAuth';
 import RemoteConfig from '../../services/RemoteConfig';
 import Base from './Base';
-import { LoginPopoverActions } from '../LoginPopover';
 import inlineStyles from './styles';
+import {globalEvents,  globalEventsMap} from "../../helpers/GlobalEvents";
 
 export default class TwitterWebLogin extends React.PureComponent{
 
@@ -57,7 +57,7 @@ const HeaderLeft = (props) => {
        <TouchableOpacity
         onPress={() => {
             props.navigation.goBack(null);
-            LoginPopoverActions.hide();
+            globalEvents.emit(globalEventsMap.oAuthCancel);
         }}
         style={{paddingLeft: 20}}
         >

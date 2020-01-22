@@ -19,6 +19,8 @@ import LastLoginedUser from "../../models/LastLoginedUser";
 import profilePicture from "../../assets/default_user_icon.png";
 import WebLogins from '../../services/WebLogins';
 import { analyticsSetCurrentScreen } from '../../helpers/helpers';
+import {globalEvents,  globalEventsMap} from "../../helpers/GlobalEvents";
+import debounce from "lodash/debounce";
 
 const serviceTypes = AppConfig.authServiceTypes;
 const btnPostText = 'Connecting...';
@@ -39,7 +41,25 @@ class loginPopover extends React.Component {
       showAllOptions : !this.isLastLoginUser(),
       currentConnecting: ''
     };
+    this.resetBtnTimeOut = 0
     this.setLoginServicesConfig();
+  }
+
+  componentDidMount(){
+    globalEvents.on(globalEventsMap.oAuthCancel, this.onCancleAndError );
+    globalEvents.on(globalEventsMap.oAuthError, this.onCancleAndError );
+  }
+
+  componentWillUnmount(){
+    globalEvents.removeListener(globalEventsMap.oAuthCancel, this.onCancleAndError , this);
+    globalEvents.removeListener(globalEventsMap.oAuthError, this.onCancleAndError , this );
+  }
+
+  onCancleAndError = () => {
+    clearTimeout( this.resetBtnTimeOut );
+    this.resetBtnTimeOut  = setTimeout(()=> {
+      this.setState({disableLoginBtn : false, currentConnecting: ""});
+    } , 100)
   }
 
   setLoginServicesConfig = () => {

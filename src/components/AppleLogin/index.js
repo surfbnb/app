@@ -1,5 +1,4 @@
 import React from 'react';
-import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import appleAuth, {
@@ -9,7 +8,7 @@ import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
 import {AppleAuthEmitter} from '../../helpers/Emitters';
 import Toast from '../../theme/components/NotificationToast';
-import { LoginPopoverActions } from '../LoginPopover';
+import {globalEvents,  globalEventsMap} from "../../helpers/GlobalEvents";
 
 let AppleAuthService;
 import('../../services/AuthServices/AppleAuthService').then((imports) => {
@@ -20,43 +19,18 @@ import('../../services/AuthServices/AppleAuthService').then((imports) => {
 export class AppleLogin extends React.Component {
   constructor() {
     super();
-    // this.authCredentialListener = null;
   }
 
   componentDidMount() {
-    //DO NOT UNCOMMENT because need to check why onCredentialRevoked() opens auth dialog again after login
-    /**
-     * subscribe to credential updates.This returns a function which can be used to remove the event listener
-     * when the component unmounts.
-     */
-    // if(appleAuth.isSupported) { 
-    //   this.authCredentialListener = appleAuth.onCredentialRevoked(async () => {
-    //     this.logout();
-    //   });
-    // }
     AppleAuthEmitter.on('appleSignIn', ()=> this.signIn());
   }
 
   componentWillUnmount() {
-    /**
-     * cleans up event listener
-     */
-    // this.authCredentialListener = null;
     AppleAuthEmitter.removeListener('appleSignIn');
   }
-
-  //  logout = async() =>  {
-  //       // performs logout request
-  //       const appleAuthRequestResponse = await appleAuth.performRequest({
-  //       requestedOperation: AppleAuthRequestOperation.LOGOUT,
-  //       });
-  //       console.log("User logged out", appleAuthRequestResponse);
-  //   }
   
     signIn = async () => {
       if(appleAuth.isSupported) {
-
-        // start a login request
         try {
         const response = await appleAuth.performRequest({
             requestedOperation: AppleAuthRequestOperation.LOGIN,
@@ -69,11 +43,10 @@ export class AppleLogin extends React.Component {
 
         } catch (error) {
         if (error.code === AppleAuthError.CANCELED) {
-           Toast.show({text: `Unable to login via Apple`, icon: 'error' });
-          LoginPopoverActions.hide();
+          globalEvents.emit(globalEventsMap.oAuthCancel , error);
         } else {
           Toast.show({text: `Failed to login via Apple`, icon: 'error' });
-          LoginPopoverActions.hide();
+          globalEvents.emit(globalEventsMap.oAuthError , error);
         }
         }
       }    
