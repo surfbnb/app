@@ -23,7 +23,8 @@ class AppleAuthService extends Base {
       identity_token : params.identityToken,
       real_user_status : params.realUserStatus,
       state: params.state,
-      user: params.user
+      apple_user_id: params.user,
+      raw_connect_params: params
     } : {};
   }
 

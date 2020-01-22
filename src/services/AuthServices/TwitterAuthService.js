@@ -20,7 +20,8 @@ class TwitterAuthService extends Base {
       token: params.oauth_token,
       secret: params.oauth_token_secret,
       twitter_id: params.user_id,
-      handle: params.screen_name
+      handle: params.screen_name,
+      raw_connect_params: params
     } : {};
   }
 

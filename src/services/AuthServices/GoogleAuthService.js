@@ -20,7 +20,8 @@ class GoogleAuthService extends Base {
     return  params &&  Object.keys(params).length > 0 ?  {
       access_token: params.accessToken,
       refresh_token: params.refreshToken,
-      expires_in: params.accessTokenExpirationDate
+      expires_in: params.accessTokenExpirationDate,
+      raw_connect_params: params
     } : {};
   }
 
