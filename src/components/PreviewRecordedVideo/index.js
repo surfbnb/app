@@ -23,6 +23,7 @@ class PreviewRecordedVideo extends Component {
     this.state = {
       progress: 0
     };
+    this.currentTime = 0;
     this.pauseVideo = false;
     this.cachedVideoUri = this.props.cachedvideoUrl;
     this.cancleVideoHandling = this.cancleVideoHandling.bind(this);
@@ -66,6 +67,7 @@ class PreviewRecordedVideo extends Component {
   };
 
   handleProgress = (progress) => {
+    this.currentTime = progress.currentTime;
     this.setState({
       progress: progress.currentTime / this.state.duration
     });
@@ -117,6 +119,7 @@ class PreviewRecordedVideo extends Component {
 
   onPlaybackRateChange = (args) => {
     const playRate = args && args.playbackRate;
+
     /*
     * PlayRate is zero that means its video start or paused in between.
     * this.state.progress > 0  that means video hard started playing
@@ -124,7 +127,8 @@ class PreviewRecordedVideo extends Component {
     * The below condition says that video was accidentally paused as playRate = 0 , but pauseVideo is false and video had progress. 
     * */
     if (playRate == 0 && this.state.progress > 0 && !this.pauseVideo ){
-      this.forceUpdate();
+      this._video && this._video.seek(this.currentTime);
+
     }
   };
 
@@ -144,7 +148,7 @@ class PreviewRecordedVideo extends Component {
           onEnd={this.handleEnd}
           ref={(component) => (this._video = component)}
           paused={this.pauseVideo}
-        ></Video>
+        />
         <ProgressBar
           width={null}
           color="#EF5566"

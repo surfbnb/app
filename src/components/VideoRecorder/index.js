@@ -410,6 +410,7 @@ class VideoRecorder extends Component {
     if (this.discardVideo) return;
     // This will take from VideoRecorder to PreviewRecordedVideo component
     this.props.goToPreviewScreen(data.uri);
+
   };
 
   recordVideoStateChage() {
