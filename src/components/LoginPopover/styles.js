@@ -68,7 +68,7 @@ let stylesMap = {
   },
   tocPp: {
     width: '85%',
-    marginTop: 10
+    marginTop: 24
   },
   termsTextBlack: {
     lineHeight: 24,
