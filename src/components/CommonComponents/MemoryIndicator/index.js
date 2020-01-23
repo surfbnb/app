@@ -15,17 +15,19 @@ export default class MemoryIndicator extends React.Component {
     }
 
   componentDidMount(){
-    if(!IS_STAGING) return null;
-    this.vitalsListener = Vitals.addLowMemoryListener(memory => {
+    if(IS_STAGING) {
+      this.vitalsListener = Vitals.addLowMemoryListener(memory => {
         this.setState({
             memoryLow: true
         })
      })
+    };
   }
 
   componentWillUnmount(){
-    if(!IS_STAGING) return null;
-    this.vitalsListener && this.vitalsListener.remove();
+    if(IS_STAGING) {
+      this.vitalsListener && this.vitalsListener.remove();
+    }
   }
 
    showMemoryStats = () => {
@@ -53,8 +55,7 @@ export default class MemoryIndicator extends React.Component {
   }
 
     render() {
-        if(!IS_STAGING) return null;
-        return this.state.memoryLow && (<TouchableOpacity pointerEvents={'auto'} 
+        return IS_STAGING && this.state.memoryLow && (<TouchableOpacity pointerEvents={'auto'} 
                                   style={[inlineStyles.wrapper,{ backgroundColor: this.randomHex()}]}
                                   onPress={multipleClickHandler(() => this.showMemoryStats())} >
         </TouchableOpacity>)
