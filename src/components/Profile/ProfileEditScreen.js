@@ -47,7 +47,7 @@ const mapStateToProps = (state, ownProps) => {
     bio: reduxGetter.getBio(CurrentUser.getUserId(), state) || '',
     email: reduxGetter.getBio(CurrentUser.getUserId(), state) || '',
     link: reduxGetter.getLink(reduxGetter.getUserLinkId(CurrentUser.getUserId(), state), state) || '',
-    profilePicture: reduxGetter.getImage(reduxGetter.getProfileImageId(CurrentUser.getUserId(), state), state, AppConfig.profileImageConstants.imageWidth)
+    profilePicture: reduxGetter.getProfileImage(reduxGetter.getProfileImageId(CurrentUser.getUserId(), state), state)
   };
 };
 
