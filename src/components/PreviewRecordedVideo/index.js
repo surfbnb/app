@@ -21,10 +21,12 @@ class PreviewRecordedVideo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      progress: 0
+      progress: 0,
+      paused: false
     };
     this.currentTime = 0;
-    this.pauseVideo = false;
+    this.duration = 0;
+    this.appStateTimeOut = 0;
     this.cachedVideoUri = this.props.cachedvideoUrl;
     this.cancleVideoHandling = this.cancleVideoHandling.bind(this);
   }
@@ -36,14 +38,19 @@ class PreviewRecordedVideo extends Component {
 
     Store.dispatch(upsertRecordedVideo({ raw_video: this.cachedVideoUri }));
     this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
-      if (this.pauseVideo) {
-        this.pauseVideo = false;
-        this.replay();
-      }
+      this.playVideo();
     });
     this.willBlur = this.props.navigation.addListener('willBlur', (payload) => {
-      this.pauseVideo = true;
+      this.pauseVideo();
     });
+  }
+
+  playVideo(){
+    this.setState({paused : false});
+  }
+
+  pauseVideo(){
+    this.setState({paused : true});
   }
 
   componentWillUnmount() {
@@ -54,9 +61,15 @@ class PreviewRecordedVideo extends Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
-    if (nextAppState == 'active' && this.state.progress == 1) {
-      this.replay();
-    }
+    console.log("nextAppState====" , nextAppState);
+    clearTimeout(this.appStateTimeOut);
+    this.appStateTimeOut = setTimeout(()=> {
+      if (nextAppState == 'active' ) {
+        this.playVideo();
+      }else {
+        this.pauseVideo();
+      }
+    } , 100)
   };
 
   handleBackButtonClick = () => {
@@ -69,18 +82,17 @@ class PreviewRecordedVideo extends Component {
   handleProgress = (progress) => {
     this.currentTime = progress.currentTime;
     this.setState({
-      progress: progress.currentTime / this.state.duration
+      progress: progress.currentTime / this.duration
     });
   };
 
   handleLoad = (meta) => {
-    this.setState({
-      duration: meta.duration
-    });
+    this.duration = meta.duration;
     Store.dispatch(upsertRecordedVideo({ video_length : meta.duration }));
   };
 
   handleEnd = () => {
+    this.currentTime = this.duration;
     this.setState({
       progress: 1
     });
@@ -118,17 +130,17 @@ class PreviewRecordedVideo extends Component {
   }
 
   onPlaybackRateChange = (args) => {
+    if(AppState.currentState != "active") return;
     const playRate = args && args.playbackRate;
-
     /*
     * PlayRate is zero that means its video start or paused in between.
     * this.state.progress > 0  that means video hard started playing
     * !this.pauseVideo that means video is expedted to play
     * The below condition says that video was accidentally paused as playRate = 0 , but pauseVideo is false and video had progress. 
     * */
-    if (playRate == 0 && this.state.progress > 0 && !this.pauseVideo ){
+    if (playRate == 0 && this.state.progress > 0 && !this.state.pauseVideo ){
+      console.log('onPlaybackRateChange====' , playRate );
       this._video && this._video.seek(this.currentTime);
-
     }
   };
 
@@ -147,7 +159,7 @@ class PreviewRecordedVideo extends Component {
           onProgress={this.handleProgress}
           onEnd={this.handleEnd}
           ref={(component) => (this._video = component)}
-          paused={this.pauseVideo}
+          paused={this.state.paused}
         />
         <ProgressBar
           width={null}
@@ -209,8 +221,8 @@ class PreviewRecordedVideo extends Component {
   }
 
   replay() {
-    this.setState({ progress: 0 });
     this._video && this._video.seek(0);
+    this.setState({ progress: 0 , paused: false});
   }
 }
 
