@@ -17,16 +17,6 @@ const BaseConfig = {
     }
 }
 
-const GoogleAndroidConfig = {
-    clientId: RemoteConfig.getValue('GOOGLE_ANDROID_CLIENT_ID'),
-    redirectUrl: RemoteConfig.getValue('GOOGLE_ANDROID_REDIRECT_URI'),
-};
-
-const GoogleIOSConfig = {
-    clientId: RemoteConfig.getValue('GOOGLE_IOS_CLIEND_ID'),
-    redirectUrl: RemoteConfig.getValue('GOOGLE_IOS_REDIRECT_URI'),
-  };
-
 class GoogleOAuth {
 
     constructor(){
@@ -38,63 +28,74 @@ class GoogleOAuth {
         }
     }
 
+    /*
+    * Get the platform specific config
+    */
     getConfig = () => {
-        let androidConfig = {
-            ...BaseConfig, ...GoogleAndroidConfig
-        },
-        iosConfig = {
-            ...BaseConfig, ...GoogleIOSConfig
-        }
-        if( Platform.OS == 'android') {
-            return androidConfig;
-        } else {
-            return iosConfig;
+        return {
+            ...BaseConfig,
+            ...Platform.select({
+                ios: {
+                    clientId: RemoteConfig.getValue('GOOGLE_IOS_CLIENT_ID'),
+                    redirectUrl: RemoteConfig.getValue('GOOGLE_IOS_REDIRECT_URI'),
+                },
+                android: {
+                    clientId: RemoteConfig.getValue('GOOGLE_ANDROID_CLIENT_ID'),
+                    redirectUrl: RemoteConfig.getValue('GOOGLE_ANDROID_REDIRECT_URI'),
+                },
+              })
         }
     }
 
+    /*
+    * Call the Google sdk method to open it's webview with the auth url
+    */
     signIn = async() => {
-       let response = await this.initiateSignUp();
+       let response = await this.authorize();
        GoogleAuthService.signUp(response);
     }
 
-    initiateSignUp = async () => {
-        let authState = await this.authorize();
-        return authState;
-    }
-
+    /*
+    * Opens a webview with gmail page asking for credentials
+    */
     authorize = async () => {
         let config = this.getConfig();
-
         try {
-        const authState = await authorize(config);
-        this.authState = {
-            refreshToken : authState.refreshToken,
-            accessToken : authState.accessToken,
-            accessTokenExpirationDate : authState.accessTokenExpirationDate,
-            scopes : authState.scopes
-            }
-        return this.authState;
+            const authState = await authorize(config);
+            this.authState = {
+                refreshToken : authState.refreshToken,
+                accessToken : authState.accessToken,
+                accessTokenExpirationDate : authState.accessTokenExpirationDate,
+                scopes : authState.scopes
+                }
+            return this.authState;
         } catch (error) {
              Toast.show({text: `Unable to login via Google`, icon: 'error' });
         }
     };
 
+    /*
+    * Refresh the access token ( Not Used )
+    */
     refresh = async () => {
         try {
-        const authState = await refresh(config, {
-            refreshToken: this.authState.refreshToken
-        });
-        this.authState = {
-            refreshToken : authState.refreshToken,
-            accessToken : authState.accessToken,
-            accessTokenExpirationDate : authState.accessTokenExpirationDate,
-            scopes : authState.scopes
-            }
+            const authState = await refresh(config, {
+                refreshToken: this.authState.refreshToken
+            });
+            this.authState = {
+                refreshToken : authState.refreshToken,
+                accessToken : authState.accessToken,
+                accessTokenExpirationDate : authState.accessTokenExpirationDate,
+                scopes : authState.scopes
+                }
         } catch (error) {
-            Alert.alert(`Failed to refresh token`, error.message);
+            Toast.show({text: `Failed to refresh token`, icon: 'error' });
         }
     };
 
+    /*
+    * Revoke the access token ( Not Used )
+    */
     revoke = async () => {
         try {
         await revoke(config, {
@@ -102,7 +103,7 @@ class GoogleOAuth {
             sendClientId: true
         });
         } catch (error) {
-            Alert.alert(`Failed to revoke token`, error.message);
+            Toast.show({text: `Failed to revoke token`, icon: 'error' });
         }
     };
 }

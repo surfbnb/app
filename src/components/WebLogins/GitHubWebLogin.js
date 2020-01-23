@@ -29,13 +29,17 @@ export default class GitHubWebLogin extends React.PureComponent{
         this.signIn();
     }
 
-    signIn = async ()=> {
-        let url = await GitHubOAuth.getWebviewUrl();
+    signIn = ()=> {
+        let url = GitHubOAuth.getWebviewUrl();
         this.setState({
             url
         })
     }
 
+    /*
+    * Called when Github redirects to our redirect uri (GITHUB_AUTH_CALLBACK_ROUTE) 
+    * with the code needed to fetch the access token.
+    */
     handleOnLoadEnd = ( navState ) => {
         let url = navState.url;
         if( url.includes(`${RemoteConfig.getValue('GITHUB_AUTH_CALLBACK_ROUTE')}?`) ){

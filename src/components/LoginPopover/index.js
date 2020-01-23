@@ -12,7 +12,7 @@ import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
 import GoogleOAuth from '../../services/ExternalLogin/GoogleOAuth';
-import AppleLoginActions  from '../AppleLogin';
+import AppleOAuth  from '../../services/ExternalLogin/AppleOAuth';
 import NavigationService from '../../services/NavigationService';
 import LinearGradient from "react-native-linear-gradient";
 import LastLoginedUser from "../../models/LastLoginedUser";
@@ -122,7 +122,7 @@ class loginPopover extends React.Component {
 
   applePressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.apple);
-    AppleLoginActions.signIn();
+    AppleOAuth.signIn();
   }
 
   //Use this function if needed to handle hardware back handling for android.
@@ -224,7 +224,7 @@ class loginPopover extends React.Component {
               <View style={[inlineStyles.container, inlineStyles.welcomeBack]}>
                 {this.closeAction()}
                 {this.getProfileImageMarkup()}
-                <Text style={[inlineStyles.desc, { marginTop: 10, fontSize: 16, letterSpacing: 0.5, fontFamily: 'AvenirNext-DemiBold'}]}>
+                <Text style={[inlineStyles.desc, { marginTop: 10, fontSize: 16, fontFamily: 'AvenirNext-Medium'}]}>
                   Welcome back
                 </Text>
                 <LinearGradient
@@ -232,7 +232,7 @@ class loginPopover extends React.Component {
                   locations={[0, 1]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
-                  style={{ borderRadius: 3, borderTopRadius: 0, width: '80%', marginTop: 15, marginBottom: 20 }}
+                  style={{ borderRadius: 3, borderTopRadius: 0, width: '80%', marginTop: 20, marginBottom: 15 }}
                 >
                   <TouchableOpacity
                     style={[Theme.Button.btn, { borderWidth: 0 }, this.state.disableLoginBtn ? Theme.Button.disabled : null]}
@@ -243,19 +243,16 @@ class loginPopover extends React.Component {
                   </TouchableOpacity>
                 </LinearGradient>
                 <TouchableOpacity onPress={this.onMoreOptionClick}>
-                  <Text style={[{ textAlign: 'center', fontSize: 16, letterSpacing: 0.5, marginBottom: 10 }]}>More Options</Text>
+                  <Text style={[{ textAlign: 'center', color: '#ff5566', fontFamily: 'AvenirNext-Medium'}]}>More Options</Text>
                 </TouchableOpacity>
                 {this.termsOfService()}
               </View>
             ) : (
               <View style={inlineStyles.container}>
                 {this.closeAction()}
-                <Image source={loggedOutLogo} style={{ width: 261, height: 70, marginBottom: 20 }} />
-                <Text style={[inlineStyles.desc, {fontWeight: '500'}]}>
-                  Pepo is a place to discover & support creators.
-                </Text>
-                <Text style={[inlineStyles.desc, {marginBottom: 6, fontSize: 14}]}>
-                  Please create an account to continue.
+                <Image source={loggedOutLogo} style={{ width: 261, height: 70, marginBottom: 14 }} />
+                <Text style={[inlineStyles.desc, {fontWeight: '500', marginBottom: 2}]}>
+                  Meet the people shaping the crypto community movement
                 </Text>
                 {this.getLoginButtons()}
                 {this.termsOfService()}
