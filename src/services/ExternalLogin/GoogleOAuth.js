@@ -36,7 +36,7 @@ class GoogleOAuth {
             ...BaseConfig,
             ...Platform.select({
                 ios: {
-                    clientId: RemoteConfig.getValue('GOOGLE_IOS_CLIEND_ID'),
+                    clientId: RemoteConfig.getValue('GOOGLE_IOS_CLIENT_ID'),
                     redirectUrl: RemoteConfig.getValue('GOOGLE_IOS_REDIRECT_URI'),
                 },
                 android: {
