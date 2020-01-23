@@ -1,24 +1,14 @@
 import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
 
 let stylesMap = {
-
-    txElem: {
-        marginBottom: 20
-    },
-
     wrapper : {
         marginBottom: 20, 
-        height: 24, 
-        width: 50, 
+        height: 40, 
+        width: 40, 
         alignItems: 'center', 
-        justifyContent: 'center'
-    },
-
-    iconSkipFont : {
-         height: 12, 
-         width: 30
+        justifyContent: 'center',
+        borderRadius: 20
     }
-
 }
 
 ;

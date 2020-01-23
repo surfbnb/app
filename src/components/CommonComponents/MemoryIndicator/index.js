@@ -1,9 +1,8 @@
 import React from 'react';
-import { Image, TouchableOpacity, Alert } from 'react-native';
+import { TouchableOpacity, Alert } from 'react-native';
 
 import Vitals from 'react-native-vitals';
 import inlineStyles from './styles';
-import report_icon from '../../../assets/report_video.png';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import { IS_STAGING } from '../../../constants';
 
@@ -55,10 +54,9 @@ export default class MemoryIndicator extends React.Component {
 
     render() {
         if(!IS_STAGING) return null;
-        return (<TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem}
-                                  style={[inlineStyles.wrapper,{ backgroundColor:  this.state.memoryLow ? this.randomHex() : 'white'}]}
+        return this.state.memoryLow && (<TouchableOpacity pointerEvents={'auto'} 
+                                  style={[inlineStyles.wrapper,{ backgroundColor: this.randomHex()}]}
                                   onPress={multipleClickHandler(() => this.showMemoryStats())} >
-            <Image style={inlineStyles.iconSkipFont} source={report_icon} />
         </TouchableOpacity>)
     }
 }
