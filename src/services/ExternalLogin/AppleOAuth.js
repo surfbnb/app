@@ -1,12 +1,8 @@
-import React from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
-
 import appleAuth, {
   AppleAuthError,
   AppleAuthRequestScope,
   AppleAuthRequestOperation,
 } from '@invertase/react-native-apple-authentication';
-import {AppleAuthEmitter} from '../../helpers/Emitters';
 import Toast from '../../theme/components/NotificationToast';
 import {globalEvents,  globalEventsMap} from "../../helpers/GlobalEvents";
 
@@ -16,19 +12,11 @@ import('../../services/AuthServices/AppleAuthService').then((imports) => {
 });
 
 
-export class AppleLogin extends React.Component {
-  constructor() {
-    super();
-  }
+class AppleOAuth {
 
-  componentDidMount() {
-    AppleAuthEmitter.on('appleSignIn', ()=> this.signIn());
-  }
-
-  componentWillUnmount() {
-    AppleAuthEmitter.removeListener('appleSignIn');
-  }
-  
+    /*
+    * The AppleAuth package method used to sign in
+    */
     signIn = async () => {
       if(appleAuth.isSupported) {
         try {
@@ -52,26 +40,21 @@ export class AppleLogin extends React.Component {
       }    
     };
 
-    getUserDataFromAsync = ( response ) => {
-      return AsyncStorage.getItem(`appleUser${response.user}`);
-    }
 
-    //Save response to async as apple return email and other details only on first login
-    saveResponseToAsync = ( response )=> {
-      if(!this.getUserDataFromAsync( response )){
-        AsyncStorage.setItem(`appleUser${response.user}`, JSON.stringify(response));
-      }
-    }
+    /*
+    *Save response to async as apple return email and other details only on first login if needed( Not used for now)
+    */
 
-  render() {
-      return (
-          <React.Fragment/>
-      )
-  }
+    // getUserDataFromAsync = ( response ) => {
+    //   return AsyncStorage.getItem(`appleUser${response.user}`);
+    // }
+
+    
+    // saveResponseToAsync = ( response )=> {
+    //   if(!this.getUserDataFromAsync( response )){
+    //     AsyncStorage.setItem(`appleUser${response.user}`, JSON.stringify(response));
+    //   }
+    // }
 }
 
-export default {
-    signIn : () => {
-        AppleAuthEmitter.emit('appleSignIn');
-    }
-  };
+export default new AppleOAuth();

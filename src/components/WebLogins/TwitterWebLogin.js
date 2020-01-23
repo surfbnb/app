@@ -36,6 +36,10 @@ export default class TwitterWebLogin extends React.PureComponent{
         })
     }
 
+    /*
+    * Called when twitter redirects to our redirect uri(TWITTER_AUTH_CALLBACK_ROUTE)
+    * after user enters credentials with the oauth_verifier needed to fetch the access token.
+    */
     handleOnLoadEnd = ( navState ) => {
         let url = navState.url;
         if( url.includes(`${RemoteConfig.getValue('TWITTER_AUTH_CALLBACK_ROUTE')}?`)){

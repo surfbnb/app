@@ -63,7 +63,6 @@ import FullScreenReplyCollection from './src/components/FullScreenReplyCollectio
 import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
 import TwitterWebLogin from './src/components/WebLogins/TwitterWebLogin';
 import GitHubWebLogin from './src/components/WebLogins/GitHubWebLogin';
-import { AppleLogin } from './src/components/AppleLogin';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -412,7 +411,6 @@ const RootNavigationContainer = () => (
       <PaymentWorker />
       <PushNotificationManager />
       <UniversalLinksManager />
-      <AppleLogin/>
     </SafeAreaProvider>
   </Root>
 );

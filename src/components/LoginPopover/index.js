@@ -12,7 +12,7 @@ import InAppBrowser from '../../services/InAppBrowser';
 import { WEB_ROOT } from '../../constants/index';
 import AppConfig from '../../constants/AppConfig';
 import GoogleOAuth from '../../services/ExternalLogin/GoogleOAuth';
-import AppleLoginActions  from '../AppleLogin';
+import AppleOAuth  from '../../services/ExternalLogin/AppleOAuth';
 import NavigationService from '../../services/NavigationService';
 import LinearGradient from "react-native-linear-gradient";
 import LastLoginedUser from "../../models/LastLoginedUser";
@@ -122,7 +122,7 @@ class loginPopover extends React.Component {
 
   applePressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.apple);
-    AppleLoginActions.signIn();
+    AppleOAuth.signIn();
   }
 
   //Use this function if needed to handle hardware back handling for android.

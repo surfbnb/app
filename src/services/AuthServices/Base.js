@@ -25,7 +25,7 @@ class Base {
 
   constructor(){}
 
-  async signUp(paramsFromService) {
+  async signUp(paramsFromService = {}) {
     let params = this.getParamsForServer(paramsFromService);
     if (params && Object.keys(params).length > 0) {
       let inviteCode = await Utilities.getItem(AppConfig.appInstallInviteCodeASKey);

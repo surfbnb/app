@@ -9,8 +9,6 @@ import Utilities from '../Utilities';
 
 
 const GITHUB_BASE_URL = 'https://github.com/login/oauth';
-const GITHUB_OAUTH_URL = '/authorize';
-const GITHUB_ACCESS_TOKEN_URL = '/access_token';
 
 const GitHubConfig = {
   clientId: RemoteConfig.getValue('GITHUB_CLIENT_ID'),
@@ -21,6 +19,10 @@ const GitHubConfig = {
 
 class GitHubOAuth {
 
+
+  /*
+  * Called after github returns a code after authorization using which we fetch the access token.
+  */
     handleRedirectSuccess = async( requestParams ) => {
       let params = {
         client_id : GitHubConfig.clientId,
@@ -28,8 +30,10 @@ class GitHubOAuth {
         redirect_uri : GitHubConfig.redirectUrl,
         code : requestParams.code
       },
-      accesstokenUrl = `${GITHUB_BASE_URL}${GITHUB_ACCESS_TOKEN_URL}`;
+      accesstokenUrl = `${GITHUB_BASE_URL}/access_token`;
      
+      let formData;
+      try {
         const response = await fetch(accesstokenUrl, {
           method: 'POST', 
           headers: {
@@ -37,11 +41,19 @@ class GitHubOAuth {
           },
           body: JSON.stringify(params)
         });
-        let formData =  await response.formData();
-        let tokenData = Utilities.formDataToJSON( formData );
-        GithubAuthService.signUp(tokenData);
+        formData =  await response.formData();
+      } catch (error) {
+        Toast.show({text: `Failed to login via GitHub`, icon: 'error' });
+        console.warn(error);
+      }
+
+      let tokenData = Utilities.formDataToJSON( formData );
+      GithubAuthService.signUp(tokenData);
     }
 
+    /*
+    * Used to construct and return the auth url of github. Called from GithubWebLogin to load in webview.
+    */
     getWebviewUrl = ()=> {
       let params = {
         client_id : GitHubConfig.clientId,
@@ -50,7 +62,7 @@ class GitHubOAuth {
         response_type : 'code'
       };
       let queryParams = qs.stringify(params);
-      let githubRedirectURL = `${GITHUB_BASE_URL}${GITHUB_OAUTH_URL}?${queryParams}`;
+      let githubRedirectURL = `${GITHUB_BASE_URL}/authorize?${queryParams}`;
       return githubRedirectURL;
     }
 
