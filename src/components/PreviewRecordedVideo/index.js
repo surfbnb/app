@@ -88,7 +88,6 @@ class PreviewRecordedVideo extends PureComponent {
   handleProgress = (progress) => {
     if(this.isPaused()) return;
     this.currentTime = progress.currentTime;
-    this.seekCount = 0;
     this.updateProgress(progress.currentTime / this.duration);
   };
 
@@ -99,6 +98,7 @@ class PreviewRecordedVideo extends PureComponent {
 
   handleEnd = () => {
     this.currentTime = this.duration;
+    this.seekCount = 0;
     this.pauseVideo();
     this.updateProgress(1);
   };
