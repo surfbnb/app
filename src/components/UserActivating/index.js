@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, SafeAreaView} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 import LinearGradient from 'react-native-linear-gradient';
 
 import TouchableButton from '../../theme/components/TouchableButton';

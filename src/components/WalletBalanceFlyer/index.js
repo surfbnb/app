@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { View, Image, Text, Animated, Easing, Alert } from 'react-native';
+import { View, Image, Text, Animated, Easing, TouchableWithoutFeedback } from 'react-native';
 import ProgressCircle from 'react-native-progress/CircleSnail';
 
 import styles from './styles';
 import selfAmountWallet from '../../assets/pepo-amount-wallet.png';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import modalCross from '../../assets/modal-cross-icon.png';
 import CurrentUser from '../../models/CurrentUser';
 import Pricer from '../../services/Pricer';

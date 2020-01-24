@@ -13,6 +13,8 @@ import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScree
 import AppConfig from '../constants/AppConfig';;
 import DataContract from '../constants/DataContract';
 import { isIphoneX } from 'react-native-iphone-x-helper';
+import * as RNLocalize from "react-native-localize";
+import momentTimezone from 'moment-timezone';
 
 let CurrentUser, PepoApi;
 import('../models/CurrentUser').then((imports) => {
@@ -30,19 +32,17 @@ let recursiveMaxCount = 0;
 let checkVideoPermission = function(navigation, params ) {
   CameraPermissionsApi.requestPermission('camera').then((cameraResult) => {
     CameraPermissionsApi.requestPermission('microphone').then((microphoneResult) => {
-      if (cameraResult == 'authorized' && microphoneResult == 'authorized') {
+      if (cameraResult == AppConfig.permisssionStatusMap.granted && microphoneResult == AppConfig.permisssionStatusMap.granted) {
         console.log('checkVideoPermission:cameraResult', cameraResult);
         console.log('checkVideoPermission:microphoneResult', microphoneResult);
         navigation.navigate('CaptureVideo', params);
-      } else if (
-        (Platform.OS == 'ios' && (cameraResult == 'denied' || microphoneResult == 'denied')) ||
-        cameraResult == 'restricted' ||
-        microphoneResult == 'restricted'
+      } else if ( cameraResult == AppConfig.permisssionStatusMap.denied || microphoneResult == AppConfig.permisssionStatusMap.denied
+         || cameraResult == AppConfig.permisssionStatusMap.blocked  || microphoneResult ==  AppConfig.permisssionStatusMap.blocked
       ) {
         let accessText = '';
-        if ((cameraResult == 'denied' || cameraResult == 'restricted') && microphoneResult == 'authorized') {
+        if ((cameraResult == AppConfig.permisssionStatusMap.denied || cameraResult ==  AppConfig.permisssionStatusMap.blocked ) && microphoneResult == AppConfig.permisssionStatusMap.granted) {
           accessText = 'Enable Camera Access';
-        } else if ((microphoneResult == 'denied' || microphoneResult == 'restricted') && cameraResult == 'authorized') {
+        } else if ((microphoneResult ==  AppConfig.permisssionStatusMap.denied || microphoneResult == AppConfig.permisssionStatusMap.blocked) && cameraResult == AppConfig.permisssionStatusMap.granted) {
           accessText = 'Enable Microphone Access';
         } else {
           accessText = 'Enable Camera and Microphone Access';
@@ -231,6 +231,43 @@ export default {
     }else{
       return 30+45;
     }
+  },
+
+  getLanguageTag() {
+    const locales = RNLocalize.getLocales() || [] ,
+    local = locales[0] || {}
+    ;
+    return local["languageTag"];
+  },
+
+  getUTCTimeZone(){
+    return RNLocalize.getTimeZone();
+  },
+  
+  getNumbericUTCTimeZone(){
+    return momentTimezone.tz(this.getUTCTimeZone()).utcOffset();
+  },
+
+  capitalizeFirstLetter(str) {
+    return str[0].toUpperCase() + str.slice(1);
+  },
+
+  formDataToJSON(formData) {
+    var object = {};
+    for (let p in formData){
+        formData[p].forEach((item)=> {
+            object[item[0]] = item[1]
+        });
+    }
+    return object;
+  },
+
+  isIos(){
+    return Platform.OS === "ios" ;
+  },
+
+  isAndroid(){
+    return Platform.OS === "android";
   }
 
 };

@@ -6,7 +6,7 @@ import {
   View,
   Keyboard
 } from "react-native";
-import {SafeAreaView, withNavigation} from "react-navigation";
+import SafeAreaView from 'react-native-safe-area-view';
 
 import TagsCell from '../TagsList/TagsCell';
 

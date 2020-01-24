@@ -20,6 +20,7 @@ public class MainActivity extends ReactActivity {
         return "Pepo2";
     }
 
+    /**THIS is explict addition for RNGestureHandlerEnabledRootView done manually. Should be done and kept**/
     @Override
     protected ReactActivityDelegate createReactActivityDelegate() {
      return new ReactActivityDelegate(this, getMainComponentName()) {

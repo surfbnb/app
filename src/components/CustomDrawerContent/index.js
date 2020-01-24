@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, Image, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { StyleSheet, TouchableOpacity, Text, View, Image, ScrollView, SafeAreaView } from 'react-native';
 import { OstWalletSdk} from '@ostdotcom/ost-wallet-sdk-react-native';
 import DeviceInfo from 'react-native-device-info';
 import { connect } from 'react-redux';
@@ -20,7 +19,6 @@ import storePink from '../../assets/StorePink.png';
 import Toast from '../../theme/components/NotificationToast';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper';
-import {ostErrors} from "../../services/OstErrors";
 import InAppBrowser from '../../services/InAppBrowser';
 import {DrawerEmitter} from '../../helpers/Emitters';
 import {WEB_ROOT, VIEW_END_POINT, TOKEN_ID} from "../../constants";
@@ -28,6 +26,31 @@ import Pricer from '../../services/Pricer';
 import Utilities from '../../services/Utilities';
 import ReduxGetters from '../../services/ReduxGetters';
 import DataContract from '../../constants/DataContract';
+import LastLoginedUser from "../../models/LastLoginedUser";
+import authService from "../../services/AuthServicesFactory";
+import AuthBaseService from "../../services/AuthServices/Base";
+import AppConfig from "../../constants/AppConfig";
+
+const serviceTypes = AppConfig.authServiceTypes;
+const disconnetImageIconStyle = {
+  [serviceTypes.twitter] : {
+    width: 21.14,
+    height: 17.14
+  },
+  [serviceTypes.google] : {
+    width: 21,
+    height: 21
+  },
+  [serviceTypes.apple] : {
+    width: 17.3,
+    height: 20
+  },
+  [serviceTypes.github] : {
+    width: 19,
+    height: 18.5
+  }
+}
+
 
 class CustomDrawerContent extends Component {
   constructor(props) {
@@ -96,54 +119,36 @@ class CustomDrawerContent extends Component {
     }
   };
 
-  twitterDisconnect = () => {
-    this.setState(
-      {
-        disableButtons: true
-      },
-      () => {
-        new PepoApi('/auth/twitter-disconnect')
-          .post()
-          .then(async (res) => {
-            if (res && res.success) {
-              this.CurrentUserLogout();
-            } else {
-              Toast.show({
-                text: 'Twitter Disconnect failed',
-                icon: 'error'
-              });
-              this.setState({ disableButtons: false });
-            }
-          })
-          .catch((error) => {
-            Toast.show({
-              text: 'Twitter Disconnect failed',
-              icon: 'error'
-            });
-            this.setState({ disableButtons: false });
-          });
-      }
-    );
+  disconnect = () => {
+    const serviceType = LastLoginedUser.getLastLoginServiceType() ,
+      oAuthService = authService(serviceType) ;
+    if(oAuthService instanceof  AuthBaseService ){
+      oAuthService.logout();
+    }else {
+      //Current user logout incase if we dont get an service. Should'nt be here
+      console.warn("Logout oAuth service was not found");
+      CurrentUser.logout();
+    }
   };
 
-  CurrentUserLogout = () => {
-    DrawerEmitter.emit('closeDrawer');
-    let params = {
-      device_id: DeviceInfo.getUniqueID()
-    };
-    this.setState(
-      {
-        disableButtons: true
-      },
-      async () => {
-        await CurrentUser.logout(params);
-        setTimeout(() => {
-          this.setState({
-            disableButtons: false
-          });
-        }, 300);
-      }
-    );
+  getDisconnectBtnImage = () => {
+    const serviceType = LastLoginedUser.getLastLoginServiceType();
+    const styleConfig =  disconnetImageIconStyle[serviceType];
+    if( serviceType ){
+      return <Image style={[ styleConfig , {resizeMode: 'contain' }]} source={LastLoginedUser.getOAuthIcon(serviceType)} />;
+    }else {
+      return null;
+    }
+  }
+
+  getDisconnectBtnText = () => {
+    const serviceType = LastLoginedUser.getLastLoginServiceType();
+    if(serviceType){
+      return `Disconnect ${Utilities.capitalizeFirstLetter(serviceType)}`;
+    }else {
+      console.warn("Logout oAuth service was not found");
+      return "Logout"
+    }
   };
 
   initWallet = () => {
@@ -298,11 +303,11 @@ class CustomDrawerContent extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={multipleClickHandler(() => {
-            this.twitterDisconnect();
+            this.disconnect();
           })} disabled={this.state.disableButtons}>
             <View style={styles.itemParent}>
-              <Image style={{ height: 23.6, width: 29, resizeMode: 'contain' }} source={twitterDisconnectIcon} />
-              <Text style={styles.item}>Disconnect Twitter</Text>
+              {this.getDisconnectBtnImage()}
+              <Text style={styles.item}>{this.getDisconnectBtnText()}</Text>
             </View>
           </TouchableOpacity>
 

@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import CameraRoll from '@react-native-community/cameraroll';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
+import AppConfig from '../constants/AppConfig';
 
 class ImageBrowser {
   constructor() {
@@ -47,7 +48,7 @@ class ImageBrowser {
 
   async _getPhotosAsync() {
     const permission = await CameraPermissionsApi.checkPermission('photo');
-    if (permission == 'authorized') {
+    if (permission == AppConfig.permisssionStatusMap.granted) {
       return await this._fetchPhotos();
     }
   }

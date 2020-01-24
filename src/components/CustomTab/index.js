@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Image, Text, View } from 'react-native';
-import { StackActions, SafeAreaView } from 'react-navigation';
+import { StackActions } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import { connect } from 'react-redux';
 
 import styles from './styles';

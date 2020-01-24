@@ -14,6 +14,7 @@ class UniversalLinksManager extends PureComponent {
         super(props);
         this._processURL = this._processURL.bind(this);
         this._handleOpenURL = this._handleOpenURL.bind(this);
+        this.processURLTimeOut = 0;
     }
 
     componentDidMount() {
@@ -55,7 +56,9 @@ class UniversalLinksManager extends PureComponent {
     }
 
     _processURL(url) {
-        new PepoApi(`/fetch-goto`)
+        clearTimeout(this.processURLTimeOut);
+        this.processURLTimeOut = setTimeout(()=>{
+            new PepoApi(`/fetch-goto`)
             .get({url})
             .then((res) => {
                 const resultType = deepGet(res, "data.result_type"),
@@ -67,6 +70,7 @@ class UniversalLinksManager extends PureComponent {
                 }     
             })
             .catch((error) => {});
+        }, 100)
     }
 
     render() {

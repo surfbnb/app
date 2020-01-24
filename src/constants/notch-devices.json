@@ -31,6 +31,10 @@
       {
         "brand": "HONOR",
         "model": "JSN-L42"
+      },
+      {
+        "brand": "samsung",
+        "model": "SM-M307F"
       }
   ]
 }

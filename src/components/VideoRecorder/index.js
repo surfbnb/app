@@ -47,23 +47,33 @@ class VideoRecorder extends Component {
       isLocalVideoPresent: false
     };
     this.camera = null;
+    this.appStateTimeout = 0;
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
   }
 
   _handleAppStateChange = (nextAppState) => {
-    nextAppState === 'background' && this.cancleVideoHandling();
+    clearTimeout(this.appStateTimeout);
+    setTimeout(()=> {
+      if(nextAppState === 'inactive'){
+        this.stopRecording();
+        return;
+      }
+
+      if( nextAppState === 'background'){
+        this.cancleVideoHandling();
+      }
+    } , 100 )
   };
 
-  componentWillReceiveProps( nextProps ){
-    if( nextProps.acceptedCameraTnC != this.state.acceptedCameraTnC ){
-     this.setState({acceptedCameraTnC: nextProps.acceptedCameraTnC })
+  componentDidUpdate(prevProps, prevState){
+    //@Mayur change this code. Catch the ref and update the state directly
+    if( prevProps.acceptedCameraTnC != this.props.acceptedCameraTnC ){
+     this.setState({acceptedCameraTnC: this.props.acceptedCameraTnC })
     }
-
-    if ( nextProps.showLightBoxOnReply != this.state.showLightBoxOnReply ) {
-      this.setState({showLightBoxOnReply: nextProps.showLightBoxOnReply })
-    }
+    if ( prevProps.showLightBoxOnReply != this.props.showLightBoxOnReply ) {
+      this.setState({showLightBoxOnReply: this.props.showLightBoxOnReply })
+    } 
   }
-
 
 
   isStaleReduxObjectPresent(){
@@ -282,6 +292,7 @@ class VideoRecorder extends Component {
           type={this.state.cameraFrontMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back}
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
+          pictureSize={AppConfig.cameraConstants.PICTURE_SIZE}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
           notAuthorizedView={
             <View>
@@ -410,6 +421,7 @@ class VideoRecorder extends Component {
     if (this.discardVideo) return;
     // This will take from VideoRecorder to PreviewRecordedVideo component
     this.props.goToPreviewScreen(data.uri);
+
   };
 
   recordVideoStateChage() {

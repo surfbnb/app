@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import deepGet from 'lodash/get';
-import {View} from 'react-native';
+import {View, TouchableWithoutFeedback} from 'react-native';
 
 import ProfilePicture from "../../ProfilePicture";
 import reduxGetters from '../../../services/ReduxGetters';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AppConfig from '../../../constants/AppConfig';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 
@@ -26,9 +25,10 @@ class ReplyThumbnailItem extends Component {
 
   render() {
     return <View style={{position: "relative"}}>
-            <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.props.onClickHandler();})}
-                  style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive && inlineStyle.active]}>
-              <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
+            <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.props.onClickHandler();})}>
+              <View {...this.props}  style={[inlineStyle.wrapperStyle, !this.props.seen && inlineStyle.unseen, this.props.isActive && inlineStyle.active]}>
+                <ProfilePicture userId={this.userId} style={[inlineStyle.borderStyle, inlineStyle.iconStyle]}/>
+              </View>
             </TouchableWithoutFeedback>
           </View>
   }

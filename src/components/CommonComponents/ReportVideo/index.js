@@ -11,6 +11,7 @@ import Toast from "../../../theme/components/NotificationToast";
 import {ActionSheet} from "native-base";
 import ReduxGetters from "../../../services/ReduxGetters";
 import {fetchUser} from "../../../helpers/helpers";
+import MemoryIndicator from "../../CommonComponents/MemoryIndicator";
 const  ACTION_SHEET_CANCEL_INDEX = 2;// revert to index 2
 const  ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
 const  ACTION_SHEET_REPORT_INDEX = 1;
@@ -210,11 +211,18 @@ class ReportVideo extends PureComponent {
     };
 
     render(){
-        return  this.isVisible() && (<TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem}
-                                  style={{marginBottom: 20, height: 24, width: 50, alignItems: 'center', justifyContent: 'center'}}
-                                  onPress={multipleClickHandler(() => this.showActionSheet())} >
-            <Image style={{ height: 12, width: 30 }} source={report_icon} />
-        </TouchableOpacity>)
+        return  this.isVisible() && (
+          <React.Fragment>
+            <TouchableOpacity pointerEvents={'auto'} style={inlineStyles.txElem}
+                              style={{marginBottom: 20, height: 24, width: 50, alignItems: 'center', justifyContent: 'center'}}
+                              onPress={multipleClickHandler(() => this.showActionSheet())} >
+              <Image style={{ height: 12, width: 30 }} source={report_icon} />
+            </TouchableOpacity>
+            {/* Only for staging start */}
+            <MemoryIndicator/> 
+            {/* Only for staging end */}
+          </React.Fragment>
+        )
     }
 
 };

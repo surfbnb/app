@@ -1,28 +1,22 @@
 import React, { PureComponent } from 'react';
 import {
   View,
-  TouchableWithoutFeedback,
   FlatList,
   ActivityIndicator,
-  Text,
+  SafeAreaView,
   Dimensions,
-  Image
 } from "react-native";
-import {SafeAreaView, withNavigation} from "react-navigation";
+import {withNavigation} from "react-navigation";
 
 import reduxGetters from "../../../services/ReduxGetters";
-import AppConfig from "../../../constants/AppConfig";
 import Pricer from '../../../services/Pricer';
 import Pagination from "../../../services/Pagination";
 import {fetchUser} from "../../../helpers/helpers";
-import multipleClickHandler from '../../../services/MultipleClickHandler';
 
 import inlineStyles from './style';
-import pepoWhiteIcon from '../../../assets/pepo-white-icon.png'
 import LinearGradient from "react-native-linear-gradient";
 import CurrentUser from "../../../models/CurrentUser";
 import DeleteVideo from "../DeleteVideo";
-import Colors from '../../../theme/styles/Colors';
 import CommonStyle from "../../../theme/styles/Common"
 import VideoThumbnail from '../../CommonComponents/VideoThumbnail/VideoThumbnail';
 import DataContract from '../../../constants/DataContract';
@@ -182,7 +176,7 @@ class UserProfileFlatList extends PureComponent {
 
     render(){
         return(
-            <SafeAreaView forceInset={{ bottom: 'never' }} style={CommonStyle.viewContainer}>
+            <SafeAreaView style={CommonStyle.viewContainer}>
                 <FlatList
                     ref={(ref)=>  {this.listRef = ref } }
                     ListHeaderComponent={this.listHeaderComponent()}

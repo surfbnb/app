@@ -9,7 +9,7 @@ import inlineStyles from './styles';
 import Theme from '../../theme/styles';
 import FormInput from '../../theme/components/FormInput';
 import LinearGradient from 'react-native-linear-gradient';
-import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
+// import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
 import CurrentUser from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
 import Colors from '../../theme/styles/Colors';
@@ -111,7 +111,7 @@ class InviteCodeScreen extends React.Component {
 
     this.setState({ isSubmitting: true, submitText: 'Processing...', invite_code_error: null, general_error: null });
 
-    let twitterAccessToken = TwitterAuth.getCachedTwitterResponse();
+    let twitterAccessToken = TwitterAuth.getCachedTwitterResponse();// TODO: check how to handle
     twitterAccessToken['invite_code'] = this.state.inviteCode;
 
     CurrentUser.twitterConnect(twitterAccessToken)

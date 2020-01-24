@@ -54,8 +54,9 @@ export default class PinInput extends Component {
           }}
           textStyleFocused={{}}
           value={this.state.pin}
-          password
+          password={true}
           mask="●"
+          maskDelay={0}
           onFulfill={(pin) => {
             this.props.onPinChange(pin, this.resetPin);
           }}

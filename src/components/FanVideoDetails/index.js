@@ -131,15 +131,6 @@ class FanVideoDetails extends Component {
     });
   };
 
-  componentWillMount() {
-    this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
-    this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
-
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
-  }
-
   componentDidMount() {
     this.props.navigation.setParams({
       videoDesc: this.props.recordedVideo.video_desc,
@@ -147,6 +138,12 @@ class FanVideoDetails extends Component {
       replyAmount:  this.props.recordedVideo.reply_amount
     });
 
+    this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
+    this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
+
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardShown.bind(this));
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardHidden.bind(this));
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
 

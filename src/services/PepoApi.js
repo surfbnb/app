@@ -3,6 +3,7 @@ import qs from 'qs';
 import NetInfo from '@react-native-community/netinfo';
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import DeviceInfoCache from "../helpers/DeviceInfoCache";
 
 import Toast from '../theme/components/NotificationToast';
 import { API_ROOT } from '../constants/index';
@@ -22,10 +23,10 @@ export default class PepoApi {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': DeviceInfo.getUserAgent(),
+        'User-Agent': DeviceInfoCache.getUserAgent(),
         'X-PEPO-DEVICE-OS': Platform.OS,
         'X-PEPO-DEVICE-OS-VERSION': DeviceInfo.getSystemVersion(),
-        'X-PEPO-DEVICE-ID': DeviceInfo.getUniqueID(),
+        'X-PEPO-DEVICE-ID': DeviceInfo.getUniqueId(),
         'X-PEPO-BUILD-NUMBER': DeviceInfo.getBuildNumber(),
         'X-PEPO-APP-VERSION': DeviceInfo.getVersion()
       }
@@ -101,7 +102,7 @@ export default class PepoApi {
           case 409:
             break;
           case 401:
-            await CurrentUser.logout({device_id: DeviceInfo.getUniqueID()});
+            await CurrentUser.logout({device_id: DeviceInfo.getUniqueId()});
             break;
           default:
             Toast.show({

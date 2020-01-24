@@ -6,7 +6,7 @@ import {ifIphoneX, getBottomSpace, getStatusBarHeight, isIphoneX} from 'react-na
 import {hasNotch} from "../../helpers/NotchHelper";
 import {CUSTOM_TAB_Height} from '../../theme/constants';
 const {width, height} = Dimensions.get('window');
-const statusBarHeight = StatusBar.currentHeight || 20;
+const statusBarHeight = StatusBar.currentHeight || 0;
 
 let stylesMap = {
     fullScreen: {

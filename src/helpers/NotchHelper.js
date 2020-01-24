@@ -1,4 +1,5 @@
 import DeviceInfo from 'react-native-device-info';
+import DeviceInfoCache from "../helpers/DeviceInfoCache";
 import AsyncStorage from '@react-native-community/async-storage';
 import { devices } from '../constants/notch-devices';
 
@@ -37,17 +38,23 @@ export const getLocalNotchData = async () => {
 };
 
 
-const hasNotchRemote = () => {
+let isHasNotchRemote ; //Dont initalize this variable with any value. Used for cache
+const hasNotchRemote =  () => {
+  if( isHasNotchRemote !== undefined ){
+    return isHasNotchRemote ;
+  }
+  isHasNotchRemote = false;
   if(devicesWithNotch.length > 0){
-    return (
+    const deviceName = DeviceInfoCache.getDeviceName() ;
+    isHasNotchRemote = (
       devicesWithNotch.findIndex(
         item =>
           item.brand.toLowerCase() === DeviceInfo.getBrand().toLowerCase() &&
-          (item.model.toLowerCase() === DeviceInfo.getDeviceName().toLowerCase() || item.model.toLowerCase() === DeviceInfo.getModel().toLowerCase())
+          (item.model.toLowerCase() === deviceName.toLowerCase() || item.model.toLowerCase() === DeviceInfo.getModel().toLowerCase())
       ) !== -1
     );
   }
-  return false;
+  return isHasNotchRemote;
 };
 
-export const hasNotch = () => DeviceInfo.hasNotch() || hasNotchRemote();
+export const hasNotch = () =>  { return DeviceInfo.hasNotch() || hasNotchRemote() } ;

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { View, Dimensions, Text, Animated} from 'react-native';
-import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { View, Dimensions, Text} from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 
 import PepoApi from '../../../services/PepoApi';
 import CustomTextInput from './CustomTextInput';

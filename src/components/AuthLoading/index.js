@@ -13,6 +13,9 @@ import ost_sdk_content_config from '../../theme/ostsdk/ost-sdk-content-config';
 import ost_wallet_sdk_config from '../../theme/ostsdk/ost-wallet-sdk-config';
 import { getRemoteNotchData, getLocalNotchData } from "../../helpers/NotchHelper";
 
+import DeviceInfoCache from "../../helpers/DeviceInfoCache";
+import LastLoginedUser from "../../models/LastLoginedUser";
+
 let t1, t2;
 
 export default class AuthLoading extends Component {
@@ -24,8 +27,12 @@ export default class AuthLoading extends Component {
   // Fetch the token from storage then navigate to our appropriate place
   init = async () => {
     LoadingModal.show('Syncing...');
-    getRemoteNotchData(); // To seed local with remote data
-    await getLocalNotchData(); // To wait for data from local storage
+    // Specifically for await calls
+    try {
+      getRemoteNotchData(); // To seed local with remote data
+      await getLocalNotchData(); // To wait for data from local storage      
+      await DeviceInfoCache.perform();
+    } catch (error) {}
     t1 = Date.now();
     OstWalletSdkUI.setThemeConfig(ost_sdk_theme_config);
     OstWalletSdkUI.setContentConfig(ost_sdk_content_config);
@@ -42,7 +49,7 @@ export default class AuthLoading extends Component {
 
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
-
+    LastLoginedUser.initialize();
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();

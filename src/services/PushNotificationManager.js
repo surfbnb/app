@@ -1,15 +1,13 @@
 import React, { PureComponent } from 'react';
-import {Platform, AppState, Alert, Linking} from 'react-native';
+import {Platform, AppState} from 'react-native';
 import firebase from 'react-native-firebase';
 import DeviceInfo from 'react-native-device-info';
 import { connect } from 'react-redux';
 import PepoApi from './PepoApi';
 import { navigateTo } from '../helpers/navigateTo';
 import CurrentUser from '../models/CurrentUser';
-import reduxGetter from '../services/ReduxGetters';
 import NavigationEmitter from '../helpers/TabNavigationEvent';
-import AndroidOpenSettings from "react-native-android-open-settings";
-import utilities from '../services/Utilities';
+import Utilities from '../services/Utilities';
 
 let refreshTimeOut = null;
 // Not to be used for now
@@ -68,8 +66,8 @@ async function  sendToken(token, userId) {
   }
 
   let payload = {
-    device_id: DeviceInfo.getUniqueID(),
-    user_timezone: DeviceInfo.getTimezone(),
+    device_id: DeviceInfo.getUniqueId(),
+    user_timezone: Utilities.getUTCTimeZone(),
     device_kind: Platform.OS,
     device_token: token
   };
@@ -173,7 +171,7 @@ class PushNotificationManager extends PureComponent {
   }
 
   getUserToken(){
-    utilities.getItem(`notification-permission-${this.props.currentUserId}`).then((value)=> {
+    Utilities.getItem(`notification-permission-${this.props.currentUserId}`).then((value)=> {
       value === 'true' && getToken(this.props.currentUserId);
     });
   }

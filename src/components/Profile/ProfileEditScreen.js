@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, BackHandler, Platform, Alert, Keyboard } from 'react-native';
+import { View, Text, Image, TouchableOpacity, BackHandler, TouchableWithoutFeedback, Alert, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import inlineStyles from './styles';
 import Theme from '../../theme/styles';
@@ -32,6 +31,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import pendingConfirmEmail from '../../assets/verify_email_error.png';
 import confirmedEmail from '../../assets/verify_email_success.png';
 import {fetchUser} from "../../helpers/helpers";
+import AppConfig from '../../constants/AppConfig';
 
 const BUTTONS = ['Take Photo', 'Choose from Library', 'Cancel'];
 const OPEN_CAMERA = 0;
@@ -47,7 +47,7 @@ const mapStateToProps = (state, ownProps) => {
     bio: reduxGetter.getBio(CurrentUser.getUserId(), state) || '',
     email: reduxGetter.getBio(CurrentUser.getUserId(), state) || '',
     link: reduxGetter.getLink(reduxGetter.getUserLinkId(CurrentUser.getUserId(), state), state) || '',
-    profilePicture: reduxGetter.getImage(reduxGetter.getProfileImageId(CurrentUser.getUserId(), state), state)
+    profilePicture: reduxGetter.getProfileImage(reduxGetter.getProfileImageId(CurrentUser.getUserId(), state), state)
   };
 };
 
@@ -59,7 +59,7 @@ class ProfileEdit extends React.PureComponent {
     return {
       headerBackTitle: null,
       headerLeft: (
-        <TouchableWithoutFeedback
+        <TouchableOpacity
           onPress={() => {
             const onCancel = navigation.getParam('onCancel');
             if (onCancel) {
@@ -70,7 +70,7 @@ class ProfileEdit extends React.PureComponent {
           }}
         >
           <BackArrow forcePaddingLeft={true} />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       ),
       headerStyle: {
         backgroundColor: Colors.white,
@@ -328,9 +328,9 @@ class ProfileEdit extends React.PureComponent {
 
   openCamera = async () => {
     CameraPermissionsApi.requestPermission('camera').then((result) => {
-      if (result == 'authorized') {
+      if (result == AppConfig.permisssionStatusMap.granted) {
         this.props.navigation.push('CaptureImageScreen');
-      } else if ((Platform.OS == 'ios' && result == 'denied') || result == 'restricted') {
+      } else if ( result == AppConfig.permisssionStatusMap.denied || result == AppConfig.permisssionStatusMap.blocked) {
         this.setState({
           showCameraAccessModal: true
         });
@@ -340,9 +340,9 @@ class ProfileEdit extends React.PureComponent {
 
   openGallery = async () => {
     CameraPermissionsApi.requestPermission('photo').then((result) => {
-      if (result == 'authorized') {
+      if (result == AppConfig.permisssionStatusMap.granted) {
         this.props.navigation.push('ImageGalleryScreen');
-      } else if ((Platform.OS == 'ios' && result == 'denied') || result == 'restricted') {
+      } else if (result == AppConfig.permisssionStatusMap.denied || result == AppConfig.permisssionStatusMap.blocked) {
         this.setState({
           showGalleryAccessModal: true
         });

@@ -1,4 +1,4 @@
-import { Dimensions, StatusBar, NativeModules } from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper';
 
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
@@ -7,7 +7,7 @@ import { CUSTOM_TAB_Height } from '../../theme/constants';
 import {hasNotch} from "../../helpers/NotchHelper";
 
 const {width, height} = Dimensions.get('window');
-const statusBarHeight = StatusBar.currentHeight;
+const statusBarHeight = StatusBar.currentHeight || 0;
 
 let stylesMap = {
   fullScreen: {

@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text , TouchableWithoutFeedback} from 'react-native';
 
 import inlineStyles from './styles';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import reduxGetter from '../../services/ReduxGetters';
 
 import multipleClickHandler from '../../services/MultipleClickHandler';
@@ -112,19 +111,19 @@ class BottomStatus extends PureComponent {
   }
 
   render() {
-
     let processingString = this.props.description;
     let includesArray = processingString.match(regex) || [];
     return (
       <View style={inlineStyles.bottomBg}>
 
           <View style={{ paddingTop: 8, paddingBottom: 5 }}>
-            <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())} pointerEvents={'auto'}>
-              {!!this.props.userName &&
-              <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
-                {`@${this.props.userName}`}
-              </Text>}
-            </TouchableWithoutFeedback>
+          {!!this.props.userName &&(
+              <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())}
+              pointerEvents={'auto'}>
+                <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
+                  {`@${this.props.userName}`}
+                </Text>
+            </TouchableWithoutFeedback>)}
             {this.props.description ? (
               <Text
                 style={[{ fontSize: 14, flexWrap: 'wrap', fontFamily: 'AvenirNext-Regular', textAlign: 'left' }, inlineStyles.bottomBgTxt]}

@@ -95,9 +95,8 @@ class NotificationScreen extends Component {
       this.setState({permissionModalVisible: !permissionButtonClicked })
     });
   }
-
-  componentWillUpdate(nextProps) {
-    if (this.props.userId !== nextProps.userId || this.props.navigation.state.refresh) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.userId != prevProps.userId|| this.props.navigation.state.refresh) {
       this.refresh(true, 300);
     }
   }

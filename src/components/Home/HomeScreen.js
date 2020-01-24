@@ -128,8 +128,8 @@ class HomeScreen extends Component {
     }
   }
 
-  componentWillUpdate(nextProps) {
-    if ( (nextProps.userId && this.props.userId !== nextProps.userId) || this.props.navigation.state.refresh) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.userId != prevProps.userId || this.props.navigation.state.refresh) {
       this.refresh(true, 300);
     }
   }

@@ -3,12 +3,13 @@ import balance_header_pepo_icon from '../assets/balance_header_pepo_icon.png';
 import twitterDisconnectIcon from '../assets/drawer-twitter-icon.png';
 import defaultLinkIcon from '../assets/default_link_icon.png';
 import feedLinkIcon from '../assets/Link.png';
-import {getBottomSpace, ifIphoneX, isIphoneX} from "react-native-iphone-x-helper";
+import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
 import {CUSTOM_TAB_Height} from "../theme/constants";
 import {hasNotch} from "../helpers/NotchHelper";
-import {Dimensions, NativeModules, StatusBar} from "react-native";
+import {Dimensions, StatusBar} from "react-native";
+import {RESULTS} from 'react-native-permissions';
 
-const statusBarHeight = StatusBar.currentHeight;
+const statusBarHeight = StatusBar.currentHeight || 0 ;
 const {height} = Dimensions.get('window');
 
 const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
@@ -135,7 +136,8 @@ const AppConfig = {
     RATIO: '16:9',
     VIDEO_QUALITY: '720p',
     VIDEO_WIDTH: 720,
-    VIDEO_HEIGHT: 1280
+    VIDEO_HEIGHT: 1280,
+    PICTURE_SIZE: '1280x720'
   },
 
   compressionConstants: {
@@ -358,10 +360,16 @@ const AppConfig = {
     RedemptionSuccess: 'Redemption/Success',
     CouchMarks: 'CouchMarks',
     AuthDeviceDrawer: 'DeviceUnauthorized',
-    TwitterLogin: 'TwitterLogin',
     FullScreenReplyCollection: 'FullScreenReplyCollection',
     VideoReplyPlayer: 'VideoReplyPlayer',
-    VideoReplies: 'VideoReplies'
+    VideoReplies: 'VideoReplies',
+    LoginPopover:'LoginPopover',
+    //Dont change the key name,  values as u wish start
+    twitter: 'TwitterLogin',
+    google: 'GoogleLogin',
+    apple :'AppleLogin',
+    github: 'GithubLogin'
+    //Dont change the key name,  values as u wish end
   },
   default_bt_amt : 10,
 
@@ -411,7 +419,22 @@ const AppConfig = {
     parentIconHeight: 46,
     parentIconWidth: 46
   },
-  VideoScreenObject : {} // Please don't delete this empty object a height property has been setting using the bottom function "Object.defineProperty".
+  VideoScreenObject : {}, // Please don't delete this empty object a height property has been setting using the bottom function "Object.defineProperty".
+
+
+  permisssionStatusMap : {
+    unavailable: RESULTS.UNAVAILABLE,
+    denied: RESULTS.DENIED,
+    blocked: RESULTS.BLOCKED,
+    granted: RESULTS.GRANTED
+  },
+
+  authServiceTypes : {
+    google: "google",
+    apple: "apple",
+    github: "github",
+    twitter: "twitter"
+  }
 
 };
 

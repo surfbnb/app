@@ -10,9 +10,10 @@ import inlineStyles from '../styles';
 import ClapButton from "./ClapButton";
 import appConfig from "../../../constants/AppConfig";
 import Pricer from "../../../services/Pricer";
+import { DEFAULT_SPENDING_LIMIT } from '../../../constants';
 
 const animDuration = appConfig.pepoAnimationDuration;
-const maxThreshold = appConfig.maxBtAllowedInSingleTransfer;
+const maxThreshold = Number(Pricer.getFromDecimal( DEFAULT_SPENDING_LIMIT ));
 
 class PepoButton extends React.Component {
   constructor(props) {
@@ -35,7 +36,8 @@ class PepoButton extends React.Component {
     }).start()
   }
 
-  componentWillReceiveProps( nextProps ){
+  //@TODO Ashutosh/Akshay need to change this code
+  UNSAFE_componentWillReceiveProps( nextProps ){
     let newState;
     if( nextProps.count != this.state.count ){
       newState = newState || {};
