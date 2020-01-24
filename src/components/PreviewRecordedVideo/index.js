@@ -68,14 +68,11 @@ class PreviewRecordedVideo extends PureComponent {
   }
 
   _handleAppStateChange = (nextAppState) => {
-    console.log("nextAppState====" , nextAppState);
     clearTimeout(this.appStateTimeOut);
     this.appStateTimeOut = setTimeout(()=> {
       if (nextAppState == 'active' ) {
-        console.log("playVideo====" , nextAppState);
         this.playVideo();
       }else {
-        console.log("pauseVideo====" , nextAppState)
         this.pauseVideo();
       }
     } , 100)
@@ -151,7 +148,7 @@ class PreviewRecordedVideo extends PureComponent {
       if (this.seekCount <= 3 ) {
         this._video && this._video.seek(this.currentTime);
       } else {
-        this.pauseVideo();
+        // this.pauseVideo();
       }
     }}
 
