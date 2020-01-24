@@ -140,7 +140,7 @@ android {
         versionName "1.0.2"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
-            appAuthRedirectScheme: 'com.pepo.staging'
+            appAuthRedirectScheme: 'com.pepo.v2.production'
         ]
     }
 
@@ -149,14 +149,23 @@ android {
         production {
             applicationId "com.pepo.v2.production"
             dimension "version"
+            manifestPlaceholders = [
+                appAuthRedirectScheme: 'com.pepo.v2.production'
+            ]
         }
         staging {
             applicationId "com.pepo.staging"
             dimension "version"
+            manifestPlaceholders = [
+                appAuthRedirectScheme: 'com.pepo.staging'
+            ]
         }
         sandbox {
             applicationId "com.pepo.v2.sandbox"
             dimension "version"
+            manifestPlaceholders = [
+                appAuthRedirectScheme: 'com.pepo.v2.sandbox'
+            ]
         }
     }
     splits {
