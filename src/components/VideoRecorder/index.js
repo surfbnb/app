@@ -401,6 +401,7 @@ class VideoRecorder extends Component {
       if (this.state.progress < 1) {
         this.setState({ progress: this.state.progress + PROGRESS_FACTOR });
       } else {
+        clearInterval(this.progressInterval);
         this.stopRecording();
       }
     }, 300);
