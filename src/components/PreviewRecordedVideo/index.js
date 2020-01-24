@@ -25,12 +25,12 @@ class PreviewRecordedVideo extends PureComponent {
       paused: false
     };
     this._progressRef = null;
+    this._video = null;
     this.currentTime = 0;
     this.duration = 0;
     this.seekCount = 0;
     this.appStateTimeOut = 0;
     this.cachedVideoUri = this.props.cachedvideoUrl;
-    this.reSeekTimeout = 0;
     this.cancleVideoHandling = this.cancleVideoHandling.bind(this);
   }
 
