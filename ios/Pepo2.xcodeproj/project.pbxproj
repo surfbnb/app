@@ -466,7 +466,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Fabric/run",
+				"\"${PODS_ROOT}/Fabric/run\" e500ef3e75c9fb12689f830748bd17e7bfae62a5 f51f922e21caf07d64ae713d3d1aa129a273b1fc28701e78ec67df4b316e21a6",
 			);
 			outputFileListPaths = (
 			);
