@@ -17,6 +17,7 @@ export default class MemoryIndicator extends React.Component {
   componentDidMount(){
     if(IS_STAGING) {
       this.vitalsListener = Vitals.addLowMemoryListener(memory => {
+        console.log("low memory")
         this.setState({
             memoryLow: true
         })
@@ -55,8 +56,8 @@ export default class MemoryIndicator extends React.Component {
   }
 
     render() {
-        return IS_STAGING && this.state.memoryLow && (<TouchableOpacity pointerEvents={'auto'} 
-                                  style={[inlineStyles.wrapper,{ backgroundColor: this.randomHex()}]}
+        return IS_STAGING && (<TouchableOpacity pointerEvents={'auto'} 
+                                  style={[inlineStyles.wrapper,{ backgroundColor: this.state.memoryLow ? this.randomHex(): "transparent"}]}
                                   onPress={multipleClickHandler(() => this.showMemoryStats())} >
         </TouchableOpacity>)
     }
