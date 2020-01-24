@@ -11,7 +11,6 @@ import Toast from "../../../theme/components/NotificationToast";
 import {ActionSheet} from "native-base";
 import ReduxGetters from "../../../services/ReduxGetters";
 import {fetchUser} from "../../../helpers/helpers";
-import MemoryIndicator from "../../CommonComponents/MemoryIndicator";
 const  ACTION_SHEET_CANCEL_INDEX = 2;// revert to index 2
 const  ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
 const  ACTION_SHEET_REPORT_INDEX = 1;
@@ -218,9 +217,6 @@ class ReportVideo extends PureComponent {
                               onPress={multipleClickHandler(() => this.showActionSheet())} >
               <Image style={{ height: 12, width: 30 }} source={report_icon} />
             </TouchableOpacity>
-            {/* Only for staging start */}
-            <MemoryIndicator/> 
-            {/* Only for staging end */}
           </React.Fragment>
         )
     }
