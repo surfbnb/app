@@ -28,6 +28,7 @@ class PreviewRecordedVideo extends Component {
     this.duration = 0;
     this.appStateTimeOut = 0;
     this.cachedVideoUri = this.props.cachedvideoUrl;
+    this.reSeekTimeout = 0;
     this.cancleVideoHandling = this.cancleVideoHandling.bind(this);
   }
 
@@ -45,12 +46,15 @@ class PreviewRecordedVideo extends Component {
     });
   }
 
-  playVideo(){
-    this.setState({paused : false});
+  playVideo(forcePlay=false , state={}){
+    if(!forcePlay && this.state.progress == 1) return;
+    state["paused"] = false;
+    this.setState(state);
   }
 
-  pauseVideo(){
-    this.setState({paused : true});
+  pauseVideo(state={}){
+    state["paused"] = true;
+    this.setState(state);
   }
 
   componentWillUnmount() {
@@ -80,6 +84,7 @@ class PreviewRecordedVideo extends Component {
   };
 
   handleProgress = (progress) => {
+    if(this.state.paused) return;
     this.currentTime = progress.currentTime;
     this.setState({
       progress: progress.currentTime / this.duration
@@ -93,9 +98,7 @@ class PreviewRecordedVideo extends Component {
 
   handleEnd = () => {
     this.currentTime = this.duration;
-    this.setState({
-      progress: 1
-    });
+    this.pauseVideo({progress: 1});
   };
 
   cancleVideoHandling() {
@@ -138,28 +141,31 @@ class PreviewRecordedVideo extends Component {
     * !this.pauseVideo that means video is expedted to play
     * The below condition says that video was accidentally paused as playRate = 0 , but pauseVideo is false and video had progress. 
     * */
-    if (playRate == 0 && this.state.progress > 0 && !this.state.pauseVideo ){
-      console.log('onPlaybackRateChange====' , playRate );
+    if (playRate == 0 && this.state.progress > 0 && !this.state.paused ){
       this._video && this._video.seek(this.currentTime);
     }
   };
+
+  setRef = (ref) => {
+    this._video = ref;
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <Video
+          ref={this.setRef}
           source={{ uri: this.cachedVideoUri }}
-          style={{
-            flex:1
-          }}
+          style={{flex:1}}
           onPlaybackRateChange={this.onPlaybackRateChange}
           posterResizeMode={'cover'}
           resizeMode={'cover'}
           onLoad={this.handleLoad}
           onProgress={this.handleProgress}
           onEnd={this.handleEnd}
-          ref={(component) => (this._video = component)}
+          ignoreSilentSwitch={'ignore'}
           paused={this.state.paused}
+          repeat={true}
         />
         <ProgressBar
           width={null}
@@ -175,7 +181,7 @@ class PreviewRecordedVideo extends Component {
         <View style={styles.bottomControls}>
           <View style={{flex :1}}></View>
           <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
-            {this.state.progress == 1 ? (
+            {this.state.paused ? (
               <TouchableOpacity
                 onPress={() => {
                   this.replay();
@@ -221,8 +227,7 @@ class PreviewRecordedVideo extends Component {
   }
 
   replay() {
-    this._video && this._video.seek(0);
-    this.setState({ progress: 0 , paused: false});
+    this.playVideo(true, {progress: 0});
   }
 }
 

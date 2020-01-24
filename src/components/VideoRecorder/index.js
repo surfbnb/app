@@ -47,11 +47,22 @@ class VideoRecorder extends Component {
       isLocalVideoPresent: false
     };
     this.camera = null;
+    this.appStateTimeout = 0;
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
   }
 
   _handleAppStateChange = (nextAppState) => {
-    nextAppState === 'background' && this.cancleVideoHandling();
+    clearTimeout(this.appStateTimeout);
+    setTimeout(()=> {
+      if(nextAppState === 'inactive'){
+        this.stopRecording();
+        return;
+      }
+
+      if( nextAppState === 'background'){
+        this.cancleVideoHandling();
+      }
+    } , 100 )
   };
 
   componentDidUpdate(prevProps, prevState){
