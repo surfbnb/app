@@ -22,7 +22,7 @@ class PreviewRecordedVideo extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {  
-      paused: false
+      paused: true
     };
     this._progressRef = null;
     this._video = null;
@@ -44,6 +44,9 @@ class PreviewRecordedVideo extends PureComponent {
     this.willBlur = this.props.navigation.addListener('willBlur', (payload) => {
       this.pauseVideo();
     });
+    setTimeout(()=> {
+      this.playVideo();
+    }, 100)
   }
 
   playVideo(state={}){
@@ -166,6 +169,7 @@ class PreviewRecordedVideo extends PureComponent {
   }
 
   render() {
+    console.log("PreviewRecordedVideo" , this.state);
     return (
       <View style={styles.container}>
         <Video
