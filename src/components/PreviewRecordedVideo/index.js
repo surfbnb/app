@@ -45,6 +45,7 @@ class PreviewRecordedVideo extends PureComponent {
       this.pauseVideo();
     });
     setTimeout(()=> {
+     if(!this.shouldPlay()) return;
       this.playVideo();
     }, 100)
   }
@@ -71,8 +72,10 @@ class PreviewRecordedVideo extends PureComponent {
     clearTimeout(this.appStateTimeOut);
     this.appStateTimeOut = setTimeout(()=> {
       if (nextAppState == 'active' ) {
+        console.log("playVideo====" , nextAppState);
         this.playVideo();
       }else {
+        console.log("pauseVideo====" , nextAppState)
         this.pauseVideo();
       }
     } , 100)
@@ -86,7 +89,7 @@ class PreviewRecordedVideo extends PureComponent {
   };
 
   handleProgress = (progress) => {
-    if(this.state.paused) return;
+    if(this.isPaused()) return;
     this.currentTime = progress.currentTime;
     this.seekCount = 0;
     this.updateProgress(progress.currentTime / this.duration);
@@ -165,11 +168,15 @@ class PreviewRecordedVideo extends PureComponent {
   }
 
   isPaused(){
-    return this.state.paused || AppState.currentState != AppConfig.appStateMap.active ;
+    return this.state.paused || !this.shouldPlay();
+  }
+
+  shouldPlay(){
+    return AppState.currentState == AppConfig.appStateMap.active;
   }
 
   render() {
-    console.log("PreviewRecordedVideo" , this.state);
+    console.log("render====" , this.state);
     return (
       <View style={styles.container}>
         <Video
@@ -194,7 +201,7 @@ class PreviewRecordedVideo extends PureComponent {
         <View style={styles.bottomControls}>
           <View style={{flex :1}}></View>
           <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
-            {this.state.paused ? (
+            {this.isPaused() ? (
               <TouchableOpacity
                 onPress={() => {
                   this.replay();
