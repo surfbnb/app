@@ -162,7 +162,7 @@ class PreviewRecordedVideo extends PureComponent {
   }
 
   isPaused(){
-    return this.state.isPaused || AppState.currentState != AppConfig.appStateMap.active ;
+    return this.state.paused || AppState.currentState != AppConfig.appStateMap.active ;
   }
 
   render() {
@@ -179,7 +179,7 @@ class PreviewRecordedVideo extends PureComponent {
           onProgress={this.handleProgress}
           onEnd={this.handleEnd}
           ignoreSilentSwitch={'ignore'}
-          paused={this.state.paused}
+          paused={this.isPaused()}
           repeat={true}
         />
         <ProgressBar ref={this.setProgressBarRef}/>
