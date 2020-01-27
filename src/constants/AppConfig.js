@@ -158,7 +158,7 @@ const AppConfig = {
   },
 
   profileImageConstants: {
-    imageWidth: '144w'
+    imageWidth: 'original'
   },
 
   userVideos: {

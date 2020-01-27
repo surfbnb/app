@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { TouchableOpacity, View, Image, BackHandler, AppState, Text } from 'react-native';
 import Video from 'react-native-video';
+import NavigationService from '../../services/NavigationService';
 import ProgressBar from './ProgressBarWrapper';
 import playIcon from '../../assets/preview_play_icon.png';
 import Store from '../../store';
@@ -70,7 +71,9 @@ class PreviewRecordedVideo extends PureComponent {
   _handleAppStateChange = (nextAppState) => {
     clearTimeout(this.appStateTimeOut);
     this.appStateTimeOut = setTimeout(()=> {
-      if (nextAppState == 'active' ) {
+      let currentRoute = NavigationService.findCurrentRoute();
+      if(currentRoute !== 'CaptureVideo') return;
+      if (nextAppState === 'active' ) {
         this.playVideo();
       }else {
         this.pauseVideo();
