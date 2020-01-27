@@ -22,6 +22,7 @@ function flatlistHOC(ListComponent, options) {
       super(props);
       this.state = {
         list: this.props.list || [],
+        payloadList : this.props.payloadList || [],
         refreshing: false,
         loadingNext: false
       };
@@ -83,6 +84,7 @@ function flatlistHOC(ListComponent, options) {
       this.props.onRefresh && this.props.onRefresh(res);
       this.setState({
         refreshing: false,
+        payloadList: this.fetchServices.getAllResults(),
         list:
           options && options.keyPath ? this.fetchServices.getIDList(options.keyPath) : this.fetchServices.getIDList()
       });
@@ -131,6 +133,7 @@ function flatlistHOC(ListComponent, options) {
       this.props.onNext && this.props.onNext(res);
       this.setState({
         loadingNext: false,
+        payloadList: this.fetchServices.getAllResults(),
         list:
           options && options.keyPath ? this.fetchServices.getIDList(options.keyPath) : this.fetchServices.getIDList()
       });
@@ -161,6 +164,7 @@ function flatlistHOC(ListComponent, options) {
         <ListComponent
           ref={(ref) => (this.flatListHocRef = ref)}
           list={this.state.list}
+          payloadList={this.state.payloadList}
           getNext={this.getNext}
           refresh={this.refresh}
           refreshing={this.state.refreshing}
