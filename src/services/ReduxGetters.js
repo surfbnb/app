@@ -273,11 +273,12 @@ class ReduxGetters {
     return deepGet(state, `tag_video_entities.id_${id}.payload`)
   }
 
-  getProfileImage(id, state) {
+  getProfileImage(id, state, size) {
     state = state || Store.getState();
+    size = size || appConfig.profileImageConstants.imageWidth;
     return (
-      deepGet(state, `image_entities.id_${id}.resolutions.${appConfig.profileImageConstants.imageWidth}.url`) ||
-      deepGet(state, `image_entities.id_${id}.resolutions.original.url`)
+      deepGet(state, `image_entities.id_${id}.resolutions.${size}.url`) ||
+      deepGet(state, `image_entities.id_${id}.resolutions.${appConfig.profileImageConstants.originalImageWidth}.url`)
     );
   }
 
