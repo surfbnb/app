@@ -63,6 +63,7 @@ import FullScreenReplyCollection from './src/components/FullScreenReplyCollectio
 import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
 import TwitterWebLogin from './src/components/WebLogins/TwitterWebLogin';
 import GitHubWebLogin from './src/components/WebLogins/GitHubWebLogin';
+import ChannelsScreen from "./src/components/ChannelsScreen";
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -166,7 +167,8 @@ const HomePushStack = createStackNavigator(
     WalletDetails: WalletDetails,
     FullScreenVideoCollection: FullScreenVideoCollection,
     VideoReplies:VideoReplies ,
-    FullScreenReplyCollection: FullScreenReplyCollection
+    FullScreenReplyCollection: FullScreenReplyCollection,
+    ChannelsScreen: ChannelsScreen
   },
   {
     initialRouteName: 'HomeScreen',
@@ -228,7 +230,8 @@ const NotificationPushStack = createStackNavigator(
     WalletDetails: WalletDetails,
     FullScreenVideoCollection: FullScreenVideoCollection,
     VideoReplies:VideoReplies ,
-    FullScreenReplyCollection: FullScreenReplyCollection
+    FullScreenReplyCollection: FullScreenReplyCollection,
+    ChannelsScreen: ChannelsScreen
   },
   {
     headerLayoutPreset: 'center',
@@ -267,7 +270,8 @@ const ProfilePushStack = createStackNavigator(
     VideoTags: VideoTags,
     FullScreenVideoCollection: FullScreenVideoCollection,
     VideoReplies:VideoReplies ,
-    FullScreenReplyCollection: FullScreenReplyCollection
+    FullScreenReplyCollection: FullScreenReplyCollection,
+    ChannelsScreen: ChannelsScreen
   },
   {
     headerLayoutPreset: 'center',
@@ -305,6 +309,7 @@ const SearchPushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection,
     VideoReplies:VideoReplies ,
     FullScreenReplyCollection: FullScreenReplyCollection,
+    ChannelsScreen: ChannelsScreen
   },
   {
     headerLayoutPreset: 'center',
