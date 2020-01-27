@@ -14,6 +14,7 @@ import Pagination from "../../services/MultiSection/MultiSectionPagination";
 import PeopleCell from "../PeopleList/PeopleCell";
 import VideoThumbnail from "../CommonComponents/VideoThumbnail/VideoThumbnail";
 import {FetchServices} from "../../services/FetchServices";
+import ChannelCell from "../ChannelCell";
 
 const titleKeyName = 'title',
   dataKeyName = 'data',
@@ -213,6 +214,10 @@ class TopsList extends PureComponent {
 
   };
 
+  _renderChannelsItem = (item) => {
+    return <ChannelCell text={item.text} channelId={item.id} />;
+  };
+
   listHeaderComponent = () => {
     return (
       <React.Fragment>
@@ -229,6 +234,8 @@ class TopsList extends PureComponent {
       return this.__renderUserItem;
     } else if (kind === 'videos'){
       return this._renderVideoItem;
+    } else if (kind === 'channels'){
+      return this._renderChannelsItem;
     }
   };
 

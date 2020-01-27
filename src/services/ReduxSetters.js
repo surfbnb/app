@@ -25,6 +25,7 @@ const backendToAppEntities = {
   current_user_video_relations: 'current_user_video_relation_entities',
   current_user_reply_detail_relations: 'current_user_reply_detail_relation_entities',
   images: 'image_entities',
+  texts: 'text_entities',
   current_user_video_contributions: 'video_contribution_entities',
   current_user_reply_detail_contributions: 'reply_contribution_entities',
   current_user_user_contributions: 'user_contribution_entities',
@@ -60,7 +61,14 @@ const backendToAppEntities = {
     key: 'pepocorn',
     parser: parser_direct_assign
   },
-  unseen_replies: 'unseen_replies_entities'
+  unseen_replies: 'unseen_replies_entities',
+  channels: 'channels',
+  channel_details: 'channel_details',
+  channel_stats: 'channel_stats',
+  channel_taglines: 'channel_taglines',
+  current_user_channel_relations: 'current_user_channel_relations',
+
+
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.

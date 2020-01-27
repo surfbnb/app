@@ -569,6 +569,34 @@ class ReduxGetters {
     return deepGet(state, `unseen_replies_entities.id_${id}.unseen`, []);
   }
 
+  getChannelName(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `channels.id_${id}.name`);
+  }
+
+  getChannelTagLine(id, state){
+    state = state || Store.getState();
+    let tagId = deepGet(state, `channel_details.id_${id}.tagline_id`);
+    return deepGet(state, `text_entities.id_${tagId}.text`);
+  }
+
+  getChannelUserCount(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `channel_stats.id_${id}.total_users`);
+  }
+
+  getChannelVideoCount(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `channel_stats.id_${id}.total_videos`);
+  }
+  getChannelBackgroundImage(id, state){
+    state = state || Store.getState();
+    let coverImageId = deepGet(state, `channel_details.id_${id}.cover_image_id`)
+      return deepGet(state, `image_entities.id_${coverImageId}.resolutions.original.url`);
+  }
+
+
+
 }
 
 export default new ReduxGetters();
