@@ -40,7 +40,7 @@ class ChannelTagsList extends PureComponent {
         this.setState({
             selectedTags
         })
-        this.props.onTagClicked && this.props.onTagClicked(tagId);
+        this.props.onTagClicked && this.props.onTagClicked(selectedTags);
     }
 
     _renderItem = ( {item, index} ) => {
