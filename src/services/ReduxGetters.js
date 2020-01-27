@@ -589,13 +589,17 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `channel_stats.id_${id}.total_videos`);
   }
+  
   getChannelBackgroundImage(id, state){
     state = state || Store.getState();
     let coverImageId = deepGet(state, `channel_details.id_${id}.cover_image_id`)
       return deepGet(state, `image_entities.id_${coverImageId}.resolutions.original.url`);
   }
 
-
+  getChannelTagIds(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `channel_detail_entities.id_${id}.tag_ids`);
+  }
 
 }
 
