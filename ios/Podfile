@@ -33,15 +33,16 @@ target 'Pepo2' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-  
+
   # Custom additions
   pod 'Firebase/Core', '~> 6.3.0'
   pod 'GoogleIDFASupport', '~> 3.14.0'
   pod 'Firebase/Messaging', '~> 6.3.0'
   pod 'Firebase/DynamicLinks', '~> 6.3.0'
+  pod 'Firebase/RemoteConfig', '~> 6.3.0'
   pod 'Fabric', '~> 1.10.2'
   pod 'Crashlytics', '~> 3.14.0'
-  
+
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
@@ -52,6 +53,5 @@ target 'Pepo2' do
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
   use_native_modules!
-  pod 'react-native-image-editor', :path => '../node_modules/@react-native-community/image-editor'
 
 end

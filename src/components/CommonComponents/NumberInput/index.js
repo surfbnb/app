@@ -1,6 +1,5 @@
 import React,{PureComponent} from 'react';
 import {View,Text,TextInput} from 'react-native';
-
 import NumberFormatter from '../../../helpers/NumberFormatter';
 import { ostErrors } from '../../../services/OstErrors';
 import Theme from '../../../theme/styles';
@@ -53,7 +52,7 @@ export default class NumberInput extends PureComponent{
                   onChangeText={(value) => {this.onChangeText(value)}}
                   value = {String(this.props.value)}
                   keyboardType = 'decimal-pad'
-                  style={{paddingVertical: 0}}
+                  style={{paddingVertical: 0, color: Theme.Colors.dark}}
                 />
                 <Text style={[Theme.Errors.errorText ,  this.props.errorStyle]}>
                   { this.props.errorMsg || this.state.valueError }

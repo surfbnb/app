@@ -233,15 +233,41 @@ export default {
     }
   },
 
-  getLanguageCode() {
+  getLanguageTag() {
     const locales = RNLocalize.getLocales() || [] ,
     local = locales[0] || {}
     ;
-    return local["languageCode"];
+    return local["languageTag"];
   },
 
   getUTCTimeZone(){
-    return momentTimezone.tz(RNLocalize.getTimeZone()).utcOffset();
+    return RNLocalize.getTimeZone();
+  },
+  
+  getNumbericUTCTimeZone(){
+    return momentTimezone.tz(this.getUTCTimeZone()).utcOffset();
+  },
+
+  capitalizeFirstLetter(str) {
+    return str[0].toUpperCase() + str.slice(1);
+  },
+
+  formDataToJSON(formData) {
+    var object = {};
+    for (let p in formData){
+        formData[p].forEach((item)=> {
+            object[item[0]] = item[1]
+        });
+    }
+    return object;
+  },
+
+  isIos(){
+    return Platform.OS === "ios" ;
+  },
+
+  isAndroid(){
+    return Platform.OS === "android";
   }
 
 };

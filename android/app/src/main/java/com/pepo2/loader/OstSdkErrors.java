@@ -20,7 +20,7 @@ import java.util.Map;
 public class OstSdkErrors {
 
     private final static String DEFAULT_CONTEXT = "__DEFAULT_CONTEXT";
-    private static final boolean DEVELOPER_MODE = true;
+    private static final boolean DEVELOPER_MODE = false;
     private static JSONObject ALL_ERRORS = new JSONObject();
     private final String DEVICE_OUT_OF_SYNC = "DEVICE_OUT_OF_SYNC";
     private final String DEFAULT_ERROR_MSG = "Something went wrong";

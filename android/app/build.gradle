@@ -133,12 +133,40 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.pepo.staging"
+        applicationId "com.pepo.v2.production"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 28
-        versionName "1.1.0"
+        versionCode 29
+        versionName "1.0.2"
         missingDimensionStrategy 'react-native-camera', 'general'
+        manifestPlaceholders = [
+            appAuthRedirectScheme: 'com.pepo.v2.production'
+        ]
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        production {
+            applicationId "com.pepo.v2.production"
+            dimension "version"
+            manifestPlaceholders = [
+                appAuthRedirectScheme: 'com.pepo.v2.production'
+            ]
+        }
+        staging {
+            applicationId "com.pepo.staging"
+            dimension "version"
+            manifestPlaceholders = [
+                appAuthRedirectScheme: 'com.pepo.staging'
+            ]
+        }
+        sandbox {
+            applicationId "com.pepo.v2.sandbox"
+            dimension "version"
+            manifestPlaceholders = [
+                appAuthRedirectScheme: 'com.pepo.v2.sandbox'
+            ]
+        }
     }
     splits {
         abi {
@@ -149,6 +177,14 @@ android {
         }
     }
     signingConfigs {
+        release {
+            if (System.getenv("KEYSTORE_FILE")) {
+                storeFile file(System.getenv("KEYSTORE_FILE"))
+                storePassword System.getenv("STORE_PASS")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASS")
+            }
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -166,6 +202,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -193,7 +230,6 @@ android {
 }
 
 dependencies {
-    implementation project(':@react-native-community_image-editor')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "com.google.android.gms:play-services-base:16.1.0"
@@ -201,6 +237,7 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "com.google.firebase:firebase-dynamic-links:17.0.0"
     implementation "com.google.firebase:firebase-invites:17.0.0"
+    implementation "com.google.firebase:firebase-config:17.0.0"
     implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
     implementation 'com.datatheorem.android.trustkit:trustkit:1.0.3'
     implementation 'com.android.support:support-v4:28.0.0'

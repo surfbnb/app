@@ -3,9 +3,10 @@ import { View, Platform } from 'react-native';
 import { Root } from 'native-base';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import NavigationAnimation from "./src/helpers/NavigationAnimation";
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import NavigationAnimation from "./src/helpers/NavigationAnimation";
 import NavigationService from './src/services/NavigationService';
 import AuthLoading from './src/components/AuthLoading';
 import SetPin from './src/components/SetPin';
@@ -60,6 +61,8 @@ import FullScreenVideoCollection from './src/components/FullScreenVideoCollectio
 import VideoReplies from './src/components/VideoReplies';
 import FullScreenReplyCollection from './src/components/FullScreenReplyCollection';
 import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer';
+import TwitterWebLogin from './src/components/WebLogins/TwitterWebLogin';
+import GitHubWebLogin from './src/components/WebLogins/GitHubWebLogin';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -76,7 +79,10 @@ const customTabHiddenRoutes = [
   'ImageGalleryScreen',
   'UserVideoHistory',
   'VideoPlayer',
-  'VideoReplyPlayer'
+  'VideoReplyPlayer',
+  'LoginPopover',
+  'TwitterWebLogin',
+  'GitHubWebLogin'
 ];
 
 const modalStackConfig = {
@@ -119,7 +125,7 @@ const cardStackConfig = {
         return  NavigationAnimation.fromBottom();
       }
     }
-    
+
   }
 }
 
@@ -169,6 +175,24 @@ const HomePushStack = createStackNavigator(
   }
 );
 
+const TwitterWebLoginStack = createStackNavigator(
+  {
+    TwitterWebLogin: TwitterWebLogin
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
+const GitHubWebLoginStack = createStackNavigator(
+  {
+    GitHubWebLogin: GitHubWebLogin
+  },
+  {
+    headerLayoutPreset: 'center'
+  }
+);
+
 const HomeStack = createStackNavigator(
   {
     HomePushStack: HomePushStack,
@@ -179,6 +203,9 @@ const HomeStack = createStackNavigator(
     InviteCodeScreen: InviteCodeScreen,
     AuthDeviceDrawer: AuthDeviceDrawer,
     AddEmailScreen: AddEmailScreen,
+    LoginPopover: LoginPopover,
+    TwitterWebLogin: TwitterWebLoginStack,
+    GitHubWebLogin: GitHubWebLoginStack,
     CouchMarks: CouchMarks
   },
   {
@@ -368,22 +395,23 @@ const AppContainer = createAppContainer(
 
 const RootNavigationContainer = () => (
   <Root>
-    <AppContainer
-      onNavigationStateChange={(prevState, currentState, action) => NavigationStateHandler(prevState, currentState, action)}
-      ref={(navigatorRef) => {
-        NavigationService.setTopLevelNavigator(navigatorRef);
-      }}
-    />
-    <CameraWorker />
-    <PictureWorker />
-    <LoadingModalCover />
-    <LoginPopover />
-    <AllowAccessModalScreen />
-    <NotificationToastComponent />
-    <SocketManager />
-    <PaymentWorker />
-    <PushNotificationManager />
-    <UniversalLinksManager />
+    <SafeAreaProvider>
+      <AppContainer
+        onNavigationStateChange={(prevState, currentState, action) => NavigationStateHandler(prevState, currentState, action)}
+        ref={(navigatorRef) => {
+          NavigationService.setTopLevelNavigator(navigatorRef);
+        }}
+      />
+      <CameraWorker />
+      <PictureWorker />
+      <LoadingModalCover />
+      <AllowAccessModalScreen />
+      <NotificationToastComponent />
+      <SocketManager />
+      <PaymentWorker />
+      <PushNotificationManager />
+      <UniversalLinksManager />
+    </SafeAreaProvider>
   </Root>
 );
 

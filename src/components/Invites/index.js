@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, SafeAreaView } from 'react-native';
-
+import SafeAreaView from 'react-native-safe-area-view';
 import Colors from '../../theme/styles/Colors';
 import BackArrow from '../CommonComponents/BackArrow';
 import InvitesList from './InvitesList';

@@ -14,6 +14,7 @@ import ost_wallet_sdk_config from '../../theme/ostsdk/ost-wallet-sdk-config';
 import { getRemoteNotchData, getLocalNotchData } from "../../helpers/NotchHelper";
 
 import DeviceInfoCache from "../../helpers/DeviceInfoCache";
+import LastLoginedUser from "../../models/LastLoginedUser";
 
 let t1, t2;
 
@@ -48,7 +49,7 @@ export default class AuthLoading extends Component {
 
     t2 = Date.now();
     console.log(`OstWalletSdk.initialize took: ${t2 - t1} ms`);
-
+    LastLoginedUser.initialize();
     CurrentUser.initialize()
       .then((user) => {
         LoadingModal.hide();

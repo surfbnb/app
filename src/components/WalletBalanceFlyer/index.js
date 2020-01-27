@@ -15,6 +15,7 @@ import { withNavigation } from 'react-navigation';
 import PollCurrentUserPendingPayments from "../../helpers/PollCurrentUserPendingPayments";
 import Colors from '../../theme/styles/Colors';
 import AppConfig from "../../constants/AppConfig";
+import MemoryIndicator from '../CommonComponents/MemoryIndicator';
 
 export const WalletBalanceFlyerEventEmitter = new EventEmitter();
 
@@ -123,31 +124,36 @@ class WalletBalanceFlyer extends Component {
     });
     if(this.props.balance == null) return null;
     return (
-      <View style={[styles.topBg, {backgroundColor: Colors.white }]}>
-        {this.isRenderFlyer() && (
-          <Animated.View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: this.state.animatedWidth,
-              opacity: contentOpacity
-            }}
-          >
-            <TouchableWithoutFeedback onPress={this.hideFlyer} style={styles.crossIconClickSpace}>
-              <Image style={[styles.crossIconSkipFont]} source={modalCross} />
-            </TouchableWithoutFeedback>
-            <Text style={[styles.topUp , {color: this.state.isPurchasing ? Colors.black : Colors.wildWatermelon2 } ]}>
-               {this.state.isPurchasing ? sendingPepoText : topupText}
-            </Text>
-          </Animated.View>
-        )}
-        <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handlePress())}>
-          <View style={[styles.innerTopBg, { minWidth: getBalance(this.props.balance) <= 0 ? 50 : 'auto' }]}>
-            {this.getWalletIcon()}
-            <Text style={styles.topBgTxt}>{Pricer.displayAmountWithKFomatter(getBalance(this.props.balance))}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
+      <React.Fragment>
+        <View style={[styles.topBg, {backgroundColor: Colors.white }]}>
+          {this.isRenderFlyer() && (
+            <Animated.View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: this.state.animatedWidth,
+                opacity: contentOpacity
+              }}
+            >
+              <TouchableWithoutFeedback onPress={this.hideFlyer} style={styles.crossIconClickSpace}>
+                <Image style={[styles.crossIconSkipFont]} source={modalCross} />
+              </TouchableWithoutFeedback>
+              <Text style={[styles.topUp , {color: this.state.isPurchasing ? Colors.black : Colors.wildWatermelon2 } ]}>
+                {this.state.isPurchasing ? sendingPepoText : topupText}
+              </Text>
+            </Animated.View>
+          )}
+          <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handlePress())}>
+            <View style={[styles.innerTopBg, { minWidth: getBalance(this.props.balance) <= 0 ? 50 : 'auto' }]}>
+              {this.getWalletIcon()}
+              <Text style={styles.topBgTxt}>{Pricer.displayAmountWithKFomatter(getBalance(this.props.balance))}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        {/* Only for staging start */}
+        <MemoryIndicator/> 
+        {/* Only for staging end */}
+      </React.Fragment>  
     );
   }
 }

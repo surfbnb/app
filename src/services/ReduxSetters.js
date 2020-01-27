@@ -1,9 +1,13 @@
 import merge from "lodash/merge";
 import deepGet from "lodash/get";
 import assignIn from "lodash/assignIn";
-
-import Store from '../store';
 import {upsertAllWhitelisted} from "../actions";
+
+let Store;
+import('../store').then((imports) => {
+  Store = imports.default;
+});
+
 
 const backendToAppEntities = {
   ost_transaction: 'transaction_entities',

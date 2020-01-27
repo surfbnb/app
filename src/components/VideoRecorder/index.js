@@ -60,11 +60,22 @@ class VideoRecorder extends Component {
     this.separationBars = [];
     this.camera = null;
     this.videoLength = 0;
+    this.appStateTimeout = 0;
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
   }
 
   _handleAppStateChange = (nextAppState) => {
-    nextAppState === 'background' && this.cancleVideoHandling();
+    clearTimeout(this.appStateTimeout);
+    setTimeout(()=> {
+      if(nextAppState === 'inactive'){
+        this.stopRecording();
+        return;
+      }
+
+      if( nextAppState === 'background'){
+        this.cancleVideoHandling();
+      }
+    } , 100 )
   };
 
   componentDidUpdate(prevProps, prevState){
@@ -76,7 +87,6 @@ class VideoRecorder extends Component {
       this.setState({showLightBoxOnReply: this.props.showLightBoxOnReply })
     } 
   }
-
 
   isStaleReduxObjectPresent(){
      let acceptableKeys = ['reply_obj', 'video_type'];
@@ -301,6 +311,7 @@ class VideoRecorder extends Component {
           type={this.state.cameraFrontMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back}
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
+          pictureSize={AppConfig.cameraConstants.PICTURE_SIZE}
           autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
           notAuthorizedView={
             <View>
@@ -432,7 +443,7 @@ class VideoRecorder extends Component {
     return <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
       <TouchableOpacity onPress={this.onBackPress}>
-      <Image style={styles.backIcon} source={deleteCameraSegment}/>
+      {/*<Image style={styles.backIcon} source={deleteCameraSegment}/>*/}
       </TouchableOpacity>
       <LinearGradient
         colors={['#ff7499', '#ff5566']}
@@ -532,6 +543,7 @@ class VideoRecorder extends Component {
       if (this.state.progress < 1) {
         this.setState({ progress });
       } else {
+        clearInterval(this.progressInterval);
         this.stopRecording();
         this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
       }
@@ -576,6 +588,7 @@ class VideoRecorder extends Component {
 
     // This will take from VideoRecorder to PreviewRecordedVideo component
     // this.props.goToPreviewScreen(data.uri);
+    this.props.goToPreviewScreen(data.uri);
   };
 
   recordVideoStateChage() {

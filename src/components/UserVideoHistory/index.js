@@ -10,7 +10,7 @@ import CurrentUser from "../../models/CurrentUser";
 import CommonStyle from "../../theme/styles/Common";
 
 import FlotingBackArrow from "../CommonComponents/FlotingBackArrow";
-import { SafeAreaView } from "react-navigation";
+import SafeAreaView from 'react-native-safe-area-view';
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;

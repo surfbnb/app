@@ -5,4 +5,5 @@ let VideoReplyEmitter = new EventEmitter();
 let LoggedOutCustomTabClickEvent = new EventEmitter();
 
 
-export { VideoPlayPauseEmitter, DrawerEmitter, VideoReplyEmitter, LoggedOutCustomTabClickEvent };
+export { VideoPlayPauseEmitter, DrawerEmitter, VideoReplyEmitter,
+     LoggedOutCustomTabClickEvent};

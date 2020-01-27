@@ -7,7 +7,8 @@ import Pagination from "../../../services/Pagination";
 import entityHelper from "../../../helpers/EntityHelper";
 import DataContract from "../../../constants/DataContract";
 import CommonStyle from "../../../theme/styles/Common";
-import { SafeAreaView, withNavigation } from "react-navigation";
+import SafeAreaView from 'react-native-safe-area-view';
+import { withNavigation } from "react-navigation";
 import TopStatus from "../../Home/TopStatus";
 import InvertedReplyList from "../InvertedReplyThumbnailList";
 import Utilities from "../../../services/Utilities";
@@ -265,7 +266,7 @@ class ReplyList extends PureComponent{
 
     render() {
         return (
-            <SafeAreaView forceInset={{ top: 'never' }}  style={[CommonStyle.fullScreen, {position: "relative", backgroundColor: Colors.darkShadeOfGray}]}>
+            <SafeAreaView forceInset={{ top: 'never' }}  style={[{position: "relative", flex: 1, backgroundColor: Colors.darkShadeOfGray}]}>
                 <TopStatus />
                 
                 <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight(), marginRight: 'auto', minWidth: '20%'}}>

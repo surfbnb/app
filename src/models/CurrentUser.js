@@ -10,6 +10,7 @@ import OstWorkflowDelegate from '../helpers/OstWorkflowDelegate';
 import EventEmitter from "eventemitter3";
 import {navigateTo} from "../helpers/navigateTo";
 import AppConfig from '../constants/AppConfig';
+import LastLoginedUser from "./LastLoginedUser";
 
 const RCTNetworking = require('react-native/Libraries/Network/RCTNetworking'); 
 
@@ -120,6 +121,7 @@ class CurrentUser {
         return Promise.resolve();
       }
     }
+    LastLoginedUser.updateASUserOnSync(apiResponse);
     return utilities
       .saveItem(this._getASKey(userId), user)
       .then(() => {
@@ -172,41 +174,30 @@ class CurrentUser {
     return this._signin('/auth/twitter-login', params);
   }
 
-  async logout(params) {
-    this.getEvent().emit("onBeforeUserLogout");
-    await new PepoApi('/auth/logout')
-      .post(params)
-      .then((res) => {
-        this.onLogout( res , params );
-      })
-      .catch((error) => {
+  logout(emitEventBeforeLogout=true) {
+      emitEventBeforeLogout && this.getEvent().emit("onBeforeUserLogout");
+      LastLoginedUser.updateASUserOnLogout(this.getUserId());
+      RCTNetworking.clearCookies(() => {
+        this.onLogout();
+      });
+  }
+
+  onLogout( ){
+      this.getEvent().emit("onUserLogout");
+      navigateTo.resetAllNavigationStack();
+      this.clearCurrentUser().then(()=> {
+        PushNotificationMethods.deleteToken();
+        setTimeout(()=> {
+          NavigationService.navigate('HomeScreen');
+          this.getEvent().emit("onUserLogoutComplete");
+        } , AppConfig.logoutTimeOut );
+      }).catch((error)=> {
         Toast.show({
           text: 'Logout failed please try again.',
           icon: 'error'
         });
         this.getEvent().emit("onUserLogoutFailed");
-      });
-  }
-
-  async onLogout( params ){ 
-    return RCTNetworking.clearCookies(async () => {
-       this.getEvent().emit("onUserLogout");
-       navigateTo.resetAllNavigationStack();
-       await this.clearCurrentUser();
-       PushNotificationMethods.deleteToken();
-       //Remove this timeout once redux logout is promise based.
-       setTimeout(()=> {
-         NavigationService.navigate('HomeScreen' , params);
-         this.getEvent().emit("onUserLogoutComplete");
-       } , AppConfig.logoutTimeOut );
-    });
-  }
-
-  async logoutLocal(params) {
-    await RCTNetworking.clearCookies(async () => {
-      await this.clearCurrentUser();
-      NavigationService.navigate('HomeScreen', params);
-    });
+      })
   }
 
   _signin(apiUrl, params) {

@@ -18,7 +18,7 @@ import FormInput from '../../theme/components/FormInput';
 import PepoApi from '../../services/PepoApi';
 import Theme from '../../theme/styles';
 import Colors from '../../theme/styles/Colors';
-import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
+// import TwitterAuth from '../../services/ExternalLogin/TwitterAuth';
 import Toast from '../../theme/components/NotificationToast';
 import CommonStyle from '../../theme/styles/Common';
 import LinearGradient from "react-native-linear-gradient";

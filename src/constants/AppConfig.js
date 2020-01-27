@@ -136,7 +136,8 @@ const AppConfig = {
     RATIO: '16:9',
     VIDEO_QUALITY: '720p',
     VIDEO_WIDTH: 720,
-    VIDEO_HEIGHT: 1280
+    VIDEO_HEIGHT: 1280,
+    PICTURE_SIZE: '1280x720'
   },
 
   compressionConstants: {
@@ -157,7 +158,8 @@ const AppConfig = {
   },
 
   profileImageConstants: {
-    imageWidth: '144w'
+    imageWidth: '144w',
+    originalImageWidth: 'original'
   },
 
   userVideos: {
@@ -359,10 +361,16 @@ const AppConfig = {
     RedemptionSuccess: 'Redemption/Success',
     CouchMarks: 'CouchMarks',
     AuthDeviceDrawer: 'DeviceUnauthorized',
-    TwitterLogin: 'TwitterLogin',
     FullScreenReplyCollection: 'FullScreenReplyCollection',
     VideoReplyPlayer: 'VideoReplyPlayer',
-    VideoReplies: 'VideoReplies'
+    VideoReplies: 'VideoReplies',
+    LoginPopover:'LoginPopover',
+    //Dont change the key name,  values as u wish start
+    twitter: 'TwitterLogin',
+    google: 'GoogleLogin',
+    apple :'AppleLogin',
+    github: 'GithubLogin'
+    //Dont change the key name,  values as u wish end
   },
   default_bt_amt : 10,
 
@@ -421,11 +429,20 @@ const AppConfig = {
     blocked: RESULTS.BLOCKED,
     granted: RESULTS.GRANTED
   },
+
   stitchingStatus: {
     done: 'DONE',
     failed: 'FAILED',
-    not_started:'NOT_STARTED',
-    in_progress:'IN_PROGRESS'
+    not_started: 'NOT_STARTED',
+    in_progress: 'IN_PROGRESS'
+  },
+
+  authServiceTypes : {
+    google: "google",
+    apple: "apple",
+    github: "github",
+    twitter: "twitter"
+
   }
 
 };

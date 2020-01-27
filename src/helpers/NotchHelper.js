@@ -38,10 +38,15 @@ export const getLocalNotchData = async () => {
 };
 
 
+let isHasNotchRemote ; //Dont initalize this variable with any value. Used for cache
 const hasNotchRemote =  () => {
+  if( isHasNotchRemote !== undefined ){
+    return isHasNotchRemote ;
+  }
+  isHasNotchRemote = false;
   if(devicesWithNotch.length > 0){
     const deviceName = DeviceInfoCache.getDeviceName() ;
-    return (
+    isHasNotchRemote = (
       devicesWithNotch.findIndex(
         item =>
           item.brand.toLowerCase() === DeviceInfo.getBrand().toLowerCase() &&
@@ -49,8 +54,7 @@ const hasNotchRemote =  () => {
       ) !== -1
     );
   }
-  return false;
+  return isHasNotchRemote;
 };
 
-//TODO version update read from Cache
 export const hasNotch = () =>  { return DeviceInfo.hasNotch() || hasNotchRemote() } ;
