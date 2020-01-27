@@ -17,7 +17,7 @@ import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupp
 import DataContract from '../../constants/DataContract';
 import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
 import BubbleList from "../CommonComponents/BubbleList";
-import HFlatlist from '../CommonComponents/HFlatlist';
+import HFlatlist from '../CommonComponents/ChannelNamesFlatlist';
 import LinearGradient from "react-native-linear-gradient";
 
 class HomeFeedRow extends PureComponent {
@@ -117,10 +117,10 @@ const ItemComponent = (props)=> {
   return (
     <LinearGradient
       // useAngle={true}
-      // angle={ 90 }
+      angle={ -240 }
       // angleCenter= { {x: 0.5, y: 0.5} }
-      colors={['#ff5566', '#cb5697', '#ff7499']}
-      locations={[0, 0.5, 1]}
+      colors={['rgba(255, 85, 102, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(255, 116, 153, 0.85)']}
+      locations={[0, 0.5, 0.55, 1]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={{ marginLeft: 10, borderTopLeftRadius: 25, borderBottomRightRadius: 25, paddingLeft: 15, paddingRight: 15, paddingVertical: 6, justifyContent: 'center' }}

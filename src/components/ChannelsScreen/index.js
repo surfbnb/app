@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import { View, Text} from 'react-native';
 import Common from '../../theme/styles/Common';
-import HFlatlist from '../CommonComponents/HFlatlist';
+import HFlatlist from '../CommonComponents/ChannelNamesFlatlist';
 
 class ChannelsScreen extends PureComponent {
 

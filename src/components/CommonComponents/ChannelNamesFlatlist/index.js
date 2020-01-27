@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
 import { FlatList } from 'react-native';
 
-import flatlistHOC from "../flatlistHOC";
 import inlineStyles from './styles';
 
-class HFlatlist extends PureComponent {
+class ChannelNamesFlatlist extends PureComponent {
 
     constructor( props ){
         super( props );
@@ -25,13 +24,9 @@ class HFlatlist extends PureComponent {
             <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                pagingEnabled={true}
                 decelerationRate={'fast'}
                 data={this.props.payloadList}
-                onRefresh={this.props.refresh}
                 keyExtractor={this._keyExtractor}
-                refreshing={this.props.refreshing}
-                onEndReachedThreshold={10}
                 contentContainerStyle={[inlineStyles.container, this.props.customStyles]}
                 renderItem={this._renderItem}
                 ref={(ref) => (this.flatlistRef = ref)}
@@ -40,4 +35,4 @@ class HFlatlist extends PureComponent {
     }
 }
 
-export default flatlistHOC( HFlatlist );
+export default ChannelNamesFlatlist;
