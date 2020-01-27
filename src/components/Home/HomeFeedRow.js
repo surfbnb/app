@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {View, Dimensions} from 'react-native';
+import {View, Text} from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import FanVideo from '../VideoWrapper/FanVideo';
@@ -17,6 +17,8 @@ import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupp
 import DataContract from '../../constants/DataContract';
 import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
 import BubbleList from "../CommonComponents/BubbleList";
+import HFlatlist from '../CommonComponents/HFlatlist';
+import LinearGradient from "react-native-linear-gradient";
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -69,9 +71,16 @@ class HomeFeedRow extends PureComponent {
 
             <View style={inlineStyles.invertedList}>
               <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
+              <View style={{marginRight: '20%', marginTop: 20}}>
+                <HFlatlist
+                  customStyles={{justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}}
+                  itemComponent = {ItemComponent}
+                  payloadList = {["ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020", 'Epicenter']}
+                />
+              </View>
             </View>
 
-            <View style={{ minWidth: '20%' }}>
+            <View style={{ minWidth: '20%'}}>
               <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}}>
                 <PepoTxBtn
                   resyncDataDelegate={this.refetchFeed}
@@ -102,6 +111,23 @@ class HomeFeedRow extends PureComponent {
 
 HomeFeedRow.defaultProps = {
   index: 0
+}
+
+const ItemComponent = (props)=> {
+  return (
+    <LinearGradient
+      // useAngle={true}
+      // angle={ 90 }
+      // angleCenter= { {x: 0.5, y: 0.5} }
+      colors={['#ff5566', '#cb5697', '#ff7499']}
+      locations={[0, 0.5, 1]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      style={{ marginLeft: 10, borderTopLeftRadius: 25, borderBottomRightRadius: 25, paddingLeft: 15, paddingRight: 15, paddingVertical: 6, justifyContent: 'center' }}
+    >
+      <Text style={{fontSize: 17, color: '#fff', fontFamily: 'AvenirNext-Medium'}}>{props.item}</Text>
+    </LinearGradient>
+  )
 }
 
 export default withNavigation(HomeFeedRow);

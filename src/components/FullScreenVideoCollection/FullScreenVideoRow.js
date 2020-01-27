@@ -86,18 +86,18 @@ class FullScreeVideoRow extends PureComponent {
                                         <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
                                     </View>
 
-                                    <VideoSupporterStat
-                                        entityId={this.videoId}
-                                        userId={this.userId}
-                                    />
+                                    {/*<VideoSupporterStat*/}
+                                        {/*entityId={this.videoId}*/}
+                                        {/*userId={this.userId}*/}
+                                    {/*/>*/}
                                   </View>
                                 </View>
 
-                                {/*<VideoBottomStatus*/}
-                                    {/*userId={this.userId}*/}
-                                    {/*entityId={this.videoId}*/}
-                                    {/*getPixelDropData={() => {p_type: 'feed'}}*/}
-                                {/*/>*/}
+                                <VideoBottomStatus
+                                    userId={this.userId}
+                                    entityId={this.videoId}
+                                    getPixelDropData={() => {p_type: 'feed'}}
+                                />
                             </View>
                         )}
                     </View>

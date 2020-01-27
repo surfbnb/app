@@ -97,18 +97,18 @@ class UserVideoHistoryRow extends PureComponent {
                             <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
                           </View>
 
-                          <VideoSupporterStat
-                            entityId={this.props.videoId}
-                            userId={this.props.userId}
-                          />
+                          {/*<VideoSupporterStat*/}
+                            {/*entityId={this.props.videoId}*/}
+                            {/*userId={this.props.userId}*/}
+                          {/*/>*/}
                         </View>
                         </View>
 
-                        {/*<VideoBottomStatus*/}
-                          {/*userId={this.props.userId}*/}
-                          {/*entityId={this.props.videoId}*/}
-                          {/*isUserNavigate={this.isUserNavigate}*/}
-                        {/*/>*/}
+                        <VideoBottomStatus
+                          userId={this.props.userId}
+                          entityId={this.props.videoId}
+                          isUserNavigate={this.isUserNavigate}
+                        />
                       </View>
                     )}
                   </View>
