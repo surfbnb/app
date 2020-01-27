@@ -151,7 +151,7 @@ class PreviewRecordedVideo extends PureComponent {
       if (this.seekCount <= 3 ) {
         this._video && this._video.seek(this.currentTime);
       } else {
-        // this.pauseVideo();
+        this.pauseVideo();
       }
     }}
 
