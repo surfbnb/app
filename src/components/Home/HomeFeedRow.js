@@ -13,12 +13,10 @@ import inlineStyles from './styles';
 import ReportVideo from "../CommonComponents/ReportVideo";
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
-import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
 import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
 import BubbleList from "../CommonComponents/BubbleList";
-import HFlatlist from '../CommonComponents/ChannelNamesFlatlist';
-import LinearGradient from "react-native-linear-gradient";
+import ChannelNamesFlatlist from '../CommonComponents/ChannelNamesFlatlist';
 
 class HomeFeedRow extends PureComponent {
   constructor(props) {
@@ -52,6 +50,8 @@ class HomeFeedRow extends PureComponent {
   }
 
 
+
+
   render() {
     return (
       <View style={[inlineStyles.fullScreen,  {position: "relative"} ]}>
@@ -72,11 +72,7 @@ class HomeFeedRow extends PureComponent {
             <View style={inlineStyles.invertedList}>
               <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
               <View style={{marginRight: '20%', marginTop: 20}}>
-                <HFlatlist
-                  customStyles={{justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}}
-                  itemComponent = {ItemComponent}
-                  payloadList = {["ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020", 'Epicenter']}
-                />
+                <ChannelNamesFlatlist />
               </View>
             </View>
 
@@ -111,23 +107,6 @@ class HomeFeedRow extends PureComponent {
 
 HomeFeedRow.defaultProps = {
   index: 0
-}
-
-const ItemComponent = (props)=> {
-  return (
-    <LinearGradient
-      // useAngle={true}
-      angle={ -240 }
-      // angleCenter= { {x: 0.5, y: 0.5} }
-      colors={['rgba(255, 85, 102, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(255, 116, 153, 0.85)']}
-      locations={[0, 0.5, 0.55, 1]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 0 }}
-      style={{ marginLeft: 10, borderTopLeftRadius: 25, borderBottomRightRadius: 25, paddingLeft: 15, paddingRight: 15, paddingVertical: 6, justifyContent: 'center' }}
-    >
-      <Text style={{fontSize: 17, color: '#fff', fontFamily: 'AvenirNext-Medium'}}>{props.item}</Text>
-    </LinearGradient>
-  )
-}
+};
 
 export default withNavigation(HomeFeedRow);
