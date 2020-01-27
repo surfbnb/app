@@ -11,7 +11,7 @@ import inlineStyles from './styles';
 import Utilities from '../../services/Utilities';
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
-import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
+// import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
 import BottomReplyBar from '../CommonComponents/BottomReplyBar';
 import CommonStyle from "../../theme/styles/Common";
@@ -104,11 +104,11 @@ class UserVideoHistoryRow extends PureComponent {
                         </View>
                         </View>
 
-                        <VideoBottomStatus
-                          userId={this.props.userId}
-                          entityId={this.props.videoId}
-                          isUserNavigate={this.isUserNavigate}
-                        />
+                        {/*<VideoBottomStatus*/}
+                          {/*userId={this.props.userId}*/}
+                          {/*entityId={this.props.videoId}*/}
+                          {/*isUserNavigate={this.isUserNavigate}*/}
+                        {/*/>*/}
                       </View>
                     )}
                   </View>

@@ -11,7 +11,7 @@ import inlineStyles from './styles';
 
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
-import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
+//import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
 import BottomReplyBar from '../CommonComponents/BottomReplyBar';
 import assignIn from 'lodash/assignIn';
@@ -93,11 +93,11 @@ class FullScreeVideoRow extends PureComponent {
                                   </View>
                                 </View>
 
-                                <VideoBottomStatus
-                                    userId={this.userId}
-                                    entityId={this.videoId}
-                                    getPixelDropData={() => {p_type: 'feed'}}
-                                />
+                                {/*<VideoBottomStatus*/}
+                                    {/*userId={this.userId}*/}
+                                    {/*entityId={this.videoId}*/}
+                                    {/*getPixelDropData={() => {p_type: 'feed'}}*/}
+                                {/*/>*/}
                             </View>
                         )}
                     </View>
