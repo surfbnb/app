@@ -81,14 +81,14 @@ class HomeFeedRow extends PureComponent {
                 />
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                 <VideoShareIcon  entityId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
-                <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
+                <ReportVideo userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
               </View>
 
-              <VideoSupporterStat
-                entityId={this.videoId}
-                userId={this.userId}
-                pageName="feed"
-              />
+              {/*<VideoSupporterStat*/}
+                {/*entityId={this.videoId}*/}
+                {/*userId={this.userId}*/}
+                {/*pageName="feed"*/}
+              {/*/>*/}
             </View>
 
           </View>
