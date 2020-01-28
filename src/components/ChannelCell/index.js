@@ -1,20 +1,30 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Image, TouchableOpacity, View, Text, SafeAreaView, ImageBackground, Dimensions } from 'react-native';
 import styles from './styles';
 import reduxGetters from "../../services/ReduxGetters";
+import {connect} from "react-redux";
 
-const {height} = Dimensions.get('window');
+const mapStateToProps = ( state, ownProps ) => {
+   return {
+    backgroundImgUrl :  reduxGetters.getChannelBackgroundImage(ownProps.channelId, state),
+     channelName : reduxGetters.getChannelName(ownProps.channelId),
+     channelTagLine: reduxGetters.getChannelTagLine(ownProps.channelId),
+     channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId),
+     channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId),
+     isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId)
 
-class ChannelCell extends Component {
+  };
+}
+
+class ChannelCell extends PureComponent {
   constructor(props) {
     super(props);
   }
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
   joined(){
-    if(reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId)){
+    if(this.props.isChannelMember){
       return <View style={styles.joinView}><Text style={styles.joinText}>Joined</Text></View>
     } else {
       return <React.Fragment/>
@@ -24,13 +34,13 @@ class ChannelCell extends Component {
 
   render() {
     return <View style={styles.channelCellWrapper}>
-      <ImageBackground source={ {uri: reduxGetters.getChannelBackgroundImage(this.props.channelId)} } style={{width: '100%', aspectRatio: 21/9}}  resizeMode={'cover'}>
+      <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={{width: '100%', aspectRatio: 21/9}}  resizeMode={'cover'}>
         <View style={{padding: 12}}>
-      <Text style={styles.header}>{reduxGetters.getChannelName(this.props.channelId)} </Text>
-      <Text style={styles.channelDesc}>{reduxGetters.getChannelTagLine(this.props.channelId)}</Text>
+      <Text style={styles.header}>{this.props.channelName} </Text>
+      <Text style={styles.channelDesc}>{this.props.channelTagLine}</Text>
       <View style={styles.bottomView}>
-        <Text style={styles.memberText}>{reduxGetters.getChannelUserCount(this.props.channelId)} Members</Text>
-        <Text style={styles.videoText}>{reduxGetters.getChannelVideoCount(this.props.channelId)} Videos</Text>
+        <Text style={styles.memberText}>{this.props.channelUserCount} Members</Text>
+        <Text style={styles.videoText}>{this.props.channelVideoCount} Videos</Text>
         <View style={styles.joinViewWrapper}>
           {this.joined()}
         </View>
@@ -41,5 +51,4 @@ class ChannelCell extends Component {
   }
 }
 
-export default ChannelCell;
-
+export default connect(mapStateToProps)(ChannelCell);
