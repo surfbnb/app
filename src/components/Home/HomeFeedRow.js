@@ -20,40 +20,32 @@ import BubbleList from "../CommonComponents/BubbleList";
 import ChannelNamesFlatlist from '../CommonComponents/ChannelNamesFlatlist';
 import LinearGradient from "react-native-linear-gradient";
 
-class MaskedChannelNamesFlatlist extends React.Component {
-  render() {
-    return (
-      <MaskedView
-        style={{ flex: 1, flexDirection: 'row', height: '100%' }}
-        maskElement={
-          <View
-            style={{
-              // Transparent background because mask is based off alpha channel.
-              backgroundColor: 'transparent',
-              flex: 1
-            }}
-          >
-            <LinearGradient
-              //colors={['rgba(76, 102, 159, 1)', 'rgba(76, 102, 159, 1)', 'rgba(76, 102, 159, 0)']}
-              colors={['rgb(255, 85, 102)', 'rgb(203, 86, 151)', 'rgba(252, 115, 153, 0.05)', 'rgba(255, 116, 153, 0)']}
-              locations={[0, 0.81, 0.91, 1]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-              style={{
-                flex: 1,
-                // paddingLeft: 15,
-                // paddingRight: 15,
-                // width: '100%'
-              }}></LinearGradient>
-          </View>
-        }
+const MaskedChannelNamesFlatlist = () => (
+  <MaskedView
+    style={{ flex: 1, flexDirection: 'row', height: '100%' }}
+    maskElement={
+      <View
+        style={{
+          // Transparent background because mask is based off alpha channel.
+          backgroundColor: 'transparent',
+          flex: 1
+        }}
       >
-        {/* Shows behind the mask, you can put anything here, such as an image */}
+        <LinearGradient
+          //colors={['rgb(255, 85, 102)', 'rgb(203, 86, 151)', 'rgba(252, 115, 153, 0.05)', 'rgba(255, 116, 153, 0)']}
+          //locations={[0, 0.81, 0.91, 1]}
+          colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0)']} // Color does not matter for masking - only alpha matters
+          locations={[0.71, 0.91, 1]}
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+          style={{flex: 1}}/>
+      </View>
+    }
+  >
+    {/* Shows behind the mask, you can put anything here, such as an image */}
 
-        <ChannelNamesFlatlist />
-      </MaskedView>
-    );
-  }
-}
+    <ChannelNamesFlatlist />
+  </MaskedView>
+);
 
 
 class HomeFeedRow extends PureComponent {
