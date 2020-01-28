@@ -15,7 +15,7 @@ class ChannelCell extends Component {
 
   joined(){
     if(reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId)){
-      return <View style={styles.joinView}><Text>Joined</Text></View>
+      return <View style={styles.joinView}><Text style={styles.joinText}>Joined</Text></View>
     } else {
       return <React.Fragment/>
     }
