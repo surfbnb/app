@@ -270,7 +270,6 @@ class SearchScreen extends PureComponent {
 
   getUrlForTab = (tabData) => {
     let baseUrl = tabData.baseUrl;
-    console.log(baseUrl, 'tabDatatabDatatabData');
 
     let params = tabData.params || {};
     // Copy it.
