@@ -177,11 +177,15 @@ class ProfileScreen extends PureComponent {
       this.setState({hasVideos: false});
     }
   }
+  showQrCodeScreen = () => {
+    this.props.navigation.navigate('QrCode')
+  }
 
   render() {
     if(this.props.userId){
       return  <CustomDrawer openDrawer={this.state.openDrawer} navigation={this.props.navigation} onClose={this.onClose}>
-                <UserProfileFlatList
+        <Text onPress={this.showQrCodeScreen} >Click here</Text>
+        <UserProfileFlatList
                       onRef={(elem) => this.listRef = elem}
                       listHeaderComponent={this._headerComponent()}
                       beforeRefresh={this.beforeRefresh}

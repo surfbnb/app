@@ -65,6 +65,7 @@ import TwitterWebLogin from './src/components/WebLogins/TwitterWebLogin';
 import GitHubWebLogin from './src/components/WebLogins/GitHubWebLogin';
 import ChannelsScreen from "./src/components/ChannelsScreen";
 import MembersScreen from "./src/components/MembersScreen";
+import QrCode from './src/components/CommonComponents/QrCode'
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -84,7 +85,8 @@ const customTabHiddenRoutes = [
   'VideoReplyPlayer',
   'LoginPopover',
   'TwitterWebLogin',
-  'GitHubWebLogin'
+  'GitHubWebLogin',
+  'QrCode'
 ];
 
 const modalStackConfig = {
@@ -293,7 +295,8 @@ const ProfileStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen,
-    RedemptiomScreen: RedemptiomScreen
+    RedemptiomScreen: RedemptiomScreen,
+    QrCode : QrCode
   },
   { ...modalStackConfig, ...txModalConfig }
 );
