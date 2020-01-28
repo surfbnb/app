@@ -1,6 +1,6 @@
 
 import React, { PureComponent } from 'react';
-import { View, FlatList, Text} from 'react-native';
+import { View, Text} from 'react-native';
 import Common from '../../theme/styles/Common';
 import ChannelTagsList from '../ChannelTagsList';
 import VideoCollections from '../VideoCollections';
