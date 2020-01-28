@@ -4,10 +4,7 @@ import {
   TouchableOpacity,
   View,
   Text,
-  SafeAreaView,
-  ImageBackground,
-  Dimensions,
-  TouchableWithoutFeedback
+  ImageBackground
 } from 'react-native';
 import styles from './styles';
 import reduxGetters from "../../services/ReduxGetters";
@@ -36,7 +33,7 @@ class ChannelCell extends PureComponent {
   joined(){
     if(this.props.isChannelMember){
       return <View style={styles.joinView}>
-        <Image style={{height: 16, width:15}} source={Checkmarks}/>
+        <Image style={{height: 10.66, width: 10}} source={Checkmarks}/>
         <Text style={styles.joinText}>Joined</Text>
       </View>
     } else {
@@ -56,29 +53,29 @@ class ChannelCell extends PureComponent {
 
 
   render() {
-    return <TouchableWithoutFeedback onPress={this.onChannelPress}>
+    return <TouchableOpacity onPress={this.onChannelPress}>
     <View style={styles.channelCellWrapper}>
-          <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={{width: '100%', aspectRatio: 21/9}}  resizeMode={'cover'}>
-            <View style={{flex: 1, padding: 12, justifyContent: 'space-between', backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+          <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={styles.imageBg} resizeMode={'cover'}>
+            <View style={styles.imageBgOpacity}>
               <View>
-                <Text style={styles.header}>{this.props.channelName} </Text>
+                <Text style={styles.header}>{this.props.channelName}</Text>
                 <Text style={styles.channelDesc}>{this.props.channelTagLine}</Text>
               </View>
               <View style={styles.bottomView}>
-                <View style={{flexDirection: 'row', flex: 3}}>
-                  <TouchableWithoutFeedback onPress={this.onMemberPress}>
-                  <Text style={styles.memberText}>{this.props.channelUserCount} Members</Text>
-                  </TouchableWithoutFeedback>
+                <View style={styles.bottomViewLeft}>
+                  <TouchableOpacity onPress={this.onMemberPress}>
+                    <Text style={styles.memberText}>{this.props.channelUserCount} Members</Text>
+                  </TouchableOpacity>
                   <Text style={styles.videoText}>{this.props.channelVideoCount} Videos</Text>
                 </View>
-                <View style={styles.joinViewWrapper}>
+                <View style={styles.bottomViewRight}>
                   {this.joined()}
                 </View>
               </View>
             </View>
           </ImageBackground>
         </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   }
 }
 
