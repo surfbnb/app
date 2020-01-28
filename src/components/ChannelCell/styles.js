@@ -1,4 +1,5 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
+import Colors from '../../theme/styles/Colors';
 
 let stylesMap = {
   header: {
@@ -23,8 +24,11 @@ let stylesMap = {
     borderRadius: 4,
   },
   bottomView: {
-    marginTop: 20,
-    flexDirection: 'row'
+    // marginTop: 20,
+    // flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 
   memberText: {
@@ -47,9 +51,13 @@ let stylesMap = {
     opacity:0.8,
     borderRadius: 20,
     paddingVertical: 6,
+    maxWidth: 80,
+    alignItems: 'center',
     paddingHorizontal: 12
   },
   joinText: {
+    color: Colors.dark,
+    fontSize: 16,
     fontWeight: '500'
   }
 };
