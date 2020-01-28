@@ -12,10 +12,18 @@ class ChannelTagsList extends PureComponent {
     constructor( props ){
         super( props );
         this.flatlistRef = null;
-        this.state ={
-            data: reduxGetter.getChannelTagIds(props.channelId)
-                     || ['120', '122','10549', '10259', '10350', '10348', '10349', '10480', '10621', '10324', '10426' ],
-            selectedTags: [] //@Preshita Dont use array here
+        this.allTag = {
+            id: 0,
+            status: null,
+            text: "All",
+            uts: null,
+            video_weight: null,
+            weight: null
+        }
+        this.state = {
+            data: (reduxGetter.getChannelTagIds(props.channelId) && reduxGetter.getChannelTagIds(props.channelId).unshift(0))
+                     || ['0','120', '122','10549', '10259', '10350', '10348', '10349', '10480', '10621', '10324', '10426' ],
+            selectedTag: this.allTag
         }
     }
 
@@ -24,34 +32,24 @@ class ChannelTagsList extends PureComponent {
     };
 
     isSelected = (tagId) => {
-        if(this.state.selectedTags.indexOf(tagId) != -1){
-            return true;
-        } else {
-            return false;
-        }
+       return this.state.selectedTag.id == tagId;
     }
 
-    onItemClicked = (tagId) => {
-        let selectedTags = this.state.selectedTags.splice(0),
-            clickedItemIndex = this.state.selectedTags.indexOf(tagId);
-        if(clickedItemIndex == -1){
-            selectedTags.push(tagId);
-        } else {
-            selectedTags.splice(clickedItemIndex, 1);
-        }
+    onItemClicked = (tag) => {
         this.setState({
-            selectedTags
+            selectedTag : tag
         })
-        this.props.onTagClicked && this.props.onTagClicked(selectedTags);
+        //this.props.onTagClicked && this.props.onTagClicked(tag);
     }
 
     _renderItem = ( {item, index} ) => {
         let tagId = item;
-        return reduxGetter.getHashTag(tagId) && (
-            <TouchableOpacity onPress={()=> this.onItemClicked(tagId)}>
-                 <View style={{height: 30, padding: 5, fontSize: 12}}>
-                    <Text style={{color: this.isSelected(tagId) ? Colors.wildWatermelon2 : Colors.valhalla, }}>
-                        #{reduxGetter.getHashTag(tagId).text}
+        let tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId);
+        return tag && (
+            <TouchableOpacity onPress={()=> this.onItemClicked(tag)}>
+                <View style={inlineStyles.tagWrapper}>
+                    <Text style={{color: this.isSelected(tagId) ? Colors.wildWatermelon2 : Colors.valhalla }}>
+                        {tagId == 0 ? tag.text : `#${tag.text}`}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -60,16 +58,18 @@ class ChannelTagsList extends PureComponent {
 
     render() {
         return this.state.data && (
-            <FlatList
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                decelerationRate={'fast'}
-                data={this.state.data}
-                keyExtractor={this._keyExtractor}
-                contentContainerStyle={[inlineStyles.container, this.props.customStyles]}
-                renderItem={this._renderItem}
-                ref={(ref) => (this.flatlistRef = ref)}
-            />
+            <View style={inlineStyles.tagListWrapper}>
+                <FlatList
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    decelerationRate={'fast'}
+                    data={this.state.data}
+                    keyExtractor={this._keyExtractor}
+                    renderItem={this._renderItem}
+                    ref={(ref) => (this.flatlistRef = ref)}
+                    extraData={this.state.selectedTag}
+                />
+            </View>
         )
     }
 }
