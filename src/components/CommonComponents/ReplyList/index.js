@@ -270,6 +270,7 @@ class ReplyList extends PureComponent{
                 <TopStatus />
                 
                 <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight(), marginRight: 'auto', minWidth: '20%'}}>
+                    {/* Ashutosh TODO get video id and integate maskedChannelList */}
                     <InvertedReplyList  paginationService={this.getVideoPagination()}
                                         onChildClickDelegate={this.childClickHandler}
                                         bottomRounding={50}

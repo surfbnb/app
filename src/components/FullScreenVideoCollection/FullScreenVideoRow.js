@@ -21,6 +21,7 @@ import AppConfig from "../../constants/AppConfig";
 import CommonStyle from "../../theme/styles/Common";
 import BubbleList from "../CommonComponents/BubbleList";
 import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
+import MaskedChannelHList from "../CommonComponents/MaskedChannelHList";
 
 
 const AREA = AppConfig.MaxDescriptionArea;
@@ -70,6 +71,7 @@ class FullScreeVideoRow extends PureComponent {
 
                                   <View style={inlineStyles.invertedList}>
                                     <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
+                                    <MaskedChannelHList videoId={this.videoId} />
                                   </View>
 
 
@@ -85,11 +87,6 @@ class FullScreeVideoRow extends PureComponent {
                                         <VideoShareIcon  entityId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
                                         <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
                                     </View>
-
-                                    {/*<VideoSupporterStat*/}
-                                        {/*entityId={this.videoId}*/}
-                                        {/*userId={this.userId}*/}
-                                    {/*/>*/}
                                   </View>
                                 </View>
 

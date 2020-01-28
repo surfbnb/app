@@ -24,6 +24,7 @@ import multipleClickHandler from '../../../services/MultipleClickHandler';
 import { fetchVideo } from '../../../helpers/helpers';
 import ReplyShareIcon from '../ShareIcon/ReplyShare';
 import Utilities from "../../../services/Utilities";
+import MaskedChannelHList from "../../CommonComponents/MaskedChannelHList";
 
 class Base extends PureComponent {
     constructor(props) {
@@ -108,6 +109,7 @@ class Base extends PureComponent {
                                   isActiveEntity={this.props.isActiveEntity}
                                   fullVideoReplyId={this.props.replyDetailId}
               />
+              <MaskedChannelHList videoId={this.state.parentVideoId} />
           </View>
         )
       }
@@ -135,8 +137,6 @@ class Base extends PureComponent {
                         <View style={inlineStyles.bottomContainer} pointerEvents={'box-none'}>
 
                             <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
-
-
 
                               <View style={{ minWidth: '20%' , marginLeft: "auto"}} pointerEvents={'box-none'}>
                                 <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}} pointerEvents={'box-none'}>

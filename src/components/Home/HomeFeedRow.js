@@ -73,9 +73,7 @@ class HomeFeedRow extends PureComponent {
 
             <View style={inlineStyles.invertedList}>
               <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
-              <View style={{marginRight: '20%', marginTop: 20, justifyContent: 'center'}}>
-                <MaskedChannelHList />
-              </View>
+              <MaskedChannelHList videoId={this.videoId} />
             </View>
 
             <View style={{ minWidth: '20%'}}>
