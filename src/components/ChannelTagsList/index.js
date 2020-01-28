@@ -12,7 +12,7 @@ class ChannelTagsList extends PureComponent {
         this.flatlistRef = null;
         this.state ={
             data: reduxGetter.getChannelTagIds(props.channelId)
-                     || ['10151', '10259', '10350', '10348', '10349', '10480', '10621', '10324', '10426' ],
+                     || ['120', '122','10549', '10259', '10350', '10348', '10349', '10480', '10621', '10324', '10426' ],
             selectedTags: []
         }
     }
