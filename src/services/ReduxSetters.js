@@ -56,7 +56,8 @@ const backendToAppEntities = {
     key: 'pepocorn',
     parser: parser_direct_assign
   },
-  unseen_replies: 'unseen_replies_entities'
+  unseen_replies: 'unseen_replies_entities',
+  user_replies : 'user_replies_entities'
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.
