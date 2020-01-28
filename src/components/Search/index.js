@@ -27,7 +27,7 @@ const NO_OF_CHARS_TO_RESTRICT_SEARCH = 1;
 const TabMap = {
   "top": {
     id: 'top',
-    baseUrl: '/search/top',
+    baseUrl: '/dummy/search/top',
     title: 'Top',
     "params": {
       "supported_entities": [USER_KIND, TAG_KIND, VIDEO_KIND]
@@ -55,7 +55,7 @@ const TabMap = {
     },
     "channels": {
     id: TAG_KIND,
-    baseUrl : '/search/channels',
+    baseUrl : '/dummy/search/channels',
     title: 'Channels',
     "queryParam": "q",
     "noResultsData": {
@@ -270,6 +270,7 @@ class SearchScreen extends PureComponent {
 
   getUrlForTab = (tabData) => {
     let baseUrl = tabData.baseUrl;
+    console.log(baseUrl, 'tabDatatabDatatabData');
 
     let params = tabData.params || {};
     // Copy it.

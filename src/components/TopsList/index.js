@@ -236,7 +236,13 @@ class TopsList extends PureComponent {
       return this._renderVideoItem;
     } else if (kind === 'channel'){
       return this._renderChannelsItem;
+    } else {
+      return this.renderEmpty;
     }
+  };
+
+  renderEmpty = () => {
+    return <React.Fragment></React.Fragment>;
   };
 
   getVideoSectionsData = () => {
