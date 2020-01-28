@@ -4,14 +4,23 @@ import deepGet from "lodash/get";
 
 class Pagination {
    
-    constructor(fetchUrl,  callbacks ,  fetchServices ) {
+    /**
+     * 
+     * @param {*} fetchUrl 
+     * @param {*} callbacks 
+     * @param {*} fetchServices 
+     * @param {*} params 
+     * NOTE params were added later m ideally it should be second parameter to the constructor
+     *  but can risk it now to change the signature everywhere
+     */
+    constructor(fetchUrl,  callbacks ,  fetchServices , params) {
       this.fetchUrl = fetchUrl ; 
       this.callbacks =  callbacks || {};
       this.refreshing =  false ; 
       this.loadingNext =  false ; 
 
       this.event = new EventEmitter();
-      this.fetchServices = fetchServices || new FetchServices(this.fetchUrl); 
+      this.fetchServices = fetchServices || new FetchServices(this.fetchUrl , params); 
     }
 
     initPagination() {

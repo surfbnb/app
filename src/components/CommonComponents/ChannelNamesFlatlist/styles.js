@@ -3,8 +3,7 @@ import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
   hList: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    // paddingLeft: 15,
     backgroundColor: 'transparent'
   }
 };

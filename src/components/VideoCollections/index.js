@@ -51,7 +51,8 @@ class VideoCollections extends PureComponent {
 
         // Now, create a new one.
         let fetchUrl = this.props.getFetchUrl();
-        this.videoPagination = new Pagination(fetchUrl);
+        let params = this.props.getFetchParams();
+        this.videoPagination = new Pagination(fetchUrl , null , null ,params);
         this.bindPaginationEvents();
     }
 
@@ -170,8 +171,7 @@ class VideoCollections extends PureComponent {
             payload={item.payload}
             index={index}
             onVideoClick={() => {this.onVideoClick(item.payload, index)}}
-            isEmpty={item.isEmpty}
-            emptyRenderFunction={this.props.getNoResultsCell}/>);
+            isEmpty={item.isEmpty}/>);
     }
 
 
@@ -246,6 +246,15 @@ class VideoCollections extends PureComponent {
               />
           </SafeAreaView>
         );
+    }
+}
+
+VideoCollections.defaultProps ={
+    getFetchParams : () => {
+        return null;
+    },
+    getNoResultsCell: () => {
+        return null;
     }
 }
 

@@ -4,7 +4,7 @@ import Colors from '../../../theme/styles/Colors';
 let stylesMap = {
 
     wrapper : {
-        poistion: "absolute",
+        position: "absolute",
         top: 10,
         right: 10,
         backgroundColor : Colors.black

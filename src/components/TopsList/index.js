@@ -7,7 +7,7 @@ import {
   Keyboard
 } from "react-native";
 import SafeAreaView from 'react-native-safe-area-view';
-
+import deepGet from "lodash/get";
 import TagsCell from '../TagsList/TagsCell';
 
 import Pagination from "../../services/MultiSection/MultiSectionPagination";
@@ -215,7 +215,8 @@ class TopsList extends PureComponent {
   };
 
   _renderChannelsItem = (item) => {
-    return <ChannelCell text={item.text} channelId={item.id} />;
+    let channelId = deepGet(item, 'item.payload.channel_id' );
+    return <ChannelCell  channelId={channelId} />;
   };
 
   listHeaderComponent = () => {

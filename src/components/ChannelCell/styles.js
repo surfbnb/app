@@ -48,6 +48,9 @@ let stylesMap = {
     borderRadius: 20,
     paddingVertical: 6,
     paddingHorizontal: 12
+  },
+  joinText: {
+    fontWeight: '500'
   }
 };
 
