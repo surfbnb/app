@@ -13,10 +13,15 @@ class Description extends React.PureComponent{
     constructor( props ) {
         super( props );
         this.description = reduxGetter.getChannelDescription(props.channelId) 
-        || "Join the leading minds in the Web3 space for a weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free f"
+        || "Join the leading minds in the Web3 space for a weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free Join the leading minds in the Web3 space for a weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free"
         this.state = {
-            expanded  : false
+          expanded  : false
         }
+
+      this.seeStatus = {
+        more  : '…See More',
+        less  : '…See Less'
+      }
     }
 
     showMore = () => {
@@ -32,13 +37,19 @@ class Description extends React.PureComponent{
     }
 
     render(){
+      let moreOrLess = this.seeStatus.more;
+
+      if(this.state.expanded){
+        moreOrLess = this.seeStatus.less;
+      }
+
         return (
             <View style={inlineStyles.mainWrapper}>
                 <Text style={inlineStyles.title}>About</Text>
-                    <Text style={inlineStyles.desc}>
-                        {this.getText()} 
-                        {!this.state.expanded ? <Text onPress={this.showMore} style={inlineStyles.more}> …See More</Text> : <React.Fragment/>}
-                    </Text>
+                <Text style={[inlineStyles.desc]}>
+                  {this.getText()}
+                  <Text onPress={this.showMore} style={inlineStyles.more}> {moreOrLess}</Text>
+                </Text>
             </View>
         )
     }
