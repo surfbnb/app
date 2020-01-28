@@ -73,17 +73,11 @@ class ChannelsScreen extends PureComponent {
         this.setVideoListRef && this.setVideoListRef.forcedRefresh();
     }
 
-    getAboutSection = () => {
-        return (
-            <Description/>
-        )
-    }
-
     listHeaderComponent = () => {
         return (
             <View style={{flex: 1}}>
                 <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}}/>
-                {this.getAboutSection()}
+                <Description/>
                 <View style={{padding: 10}}>
                     <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )}/>
                 </View>
@@ -113,9 +107,9 @@ class ChannelsScreen extends PureComponent {
     };
 
     render(){
-        // if(this.state.isDeleted){
-        //     return <DeletedChannelInfo/>
-        // }
+        if(this.state.isDeleted){
+            return <DeletedChannelInfo/>
+        }
         return (
             <View style={[Common.viewContainer]}>
                 <VideoCollections getFetchUrl={this.getFetchUrl}
