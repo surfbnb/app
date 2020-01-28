@@ -8,6 +8,7 @@ import DataContract from '../../constants/DataContract';
 import deepGet from "lodash/get";
 import ChannelCell from '../ChannelCell';
 import Colors from "../../theme/styles/Colors"
+import Description from '../CommonComponents/Description';
 
 class ChannelsScreen extends PureComponent {
 
@@ -81,12 +82,7 @@ class ChannelsScreen extends PureComponent {
 
     getAboutSection = () => {
         return (
-            <View style={{padding: 10}}>
-                <Text>About</Text>
-                <Text>
-                Join the leading minds in the Web3 space for a weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free f…See More
-                </Text>
-            </View>
+            <Description/>
         )
     }
 
