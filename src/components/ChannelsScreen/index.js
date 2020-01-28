@@ -12,6 +12,8 @@ import { fetchChannel } from '../../helpers/helpers';
 import Utilities from "../../services/Utilities";
 import DeletedChannelInfo from "../CommonComponents/DeletedEntity/DeletedChannelInfo";
 import Description from '../CommonComponents/Description';
+import EmptySearchResult from '../CommonComponents/EmptySearchResult';
+import ReduxGetters from '../../services/ReduxGetters';
 
 class ChannelsScreen extends PureComponent {
 
@@ -89,6 +91,17 @@ class ChannelsScreen extends PureComponent {
         )
     }
 
+    getNoResultsCell = () => {
+        const noResultsData = {
+            "noResultsMsg": 'No videos tagged. Please try again later.',
+            "isEmpty": true
+        };
+        if(!!this.selectedTagId){
+            noResultsData = `No videos tagged ${ReduxGetters.getChannelName(this.selectedTagId)}, Please try again later.`
+        }
+        return <EmptySearchResult   noResultsData={noResultsData} />
+    }
+
     fetchChannel = () => {
         fetchChannel(this.channelId, this.onChannelFetch);
     }
@@ -111,6 +124,7 @@ class ChannelsScreen extends PureComponent {
                     listHeaderComponent={this.listHeaderComponent()}
                     ref={this.setVideoListRef}
                     beforeRefresh={this.fetchChannel}
+                    getNoResultsCell={this.getNoResultsCell}
                 />
             </View>
         )
