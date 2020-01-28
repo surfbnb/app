@@ -1,28 +1,25 @@
 import React, { PureComponent } from 'react';
 import {View} from 'react-native';
 
+import styles from './styles';
 import MaskedView from '@react-native-community/masked-view';
 import ChannelNamesFlatlist from '../ChannelNamesFlatlist';
 import LinearGradient from "react-native-linear-gradient";
 
 export default () => (
-    //@Thahir move inline style to Style sheet 
-    <View style={{marginRight: '20%', marginTop: 20, justifyContent: 'center'}}>
+    //@Thahir move inline style to Style sheet
+    <View style={styles.listPosition}>
       <MaskedView
-        style={{ flex: 1, flexDirection: 'row', height: '100%' }}
+        style={styles.maskedView}
         maskElement={
           <View
-            style={{
-              // Transparent background because mask is based off alpha channel.
-              backgroundColor: 'transparent',
-              flex: 1
-            }}
+            style={styles.maskedInnerView}
           >
             <LinearGradient
               colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0)']} // Color does not matter for masking - only alpha matters
               locations={[0.71, 0.91, 1]}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-              style={{flex: 1}}/>
+              style={styles.maskedInnerLinearGradient}/>
           </View>
         }
       >

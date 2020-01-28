@@ -12,6 +12,7 @@ let stylesMap = {
   channelDesc: {
     color: Colors.white,
     letterSpacing: 0.2,
+    fontFamily: 'AvenirNext-Medium',
     fontWeight: '500',
     minHeight: 40,
     marginTop: 2

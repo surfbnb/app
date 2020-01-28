@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {FlatList, Text , TouchableWithoutFeedback} from 'react-native';
+import {FlatList, Text, TouchableOpacity} from 'react-native';
 
 import inlineStyles from './styles';
 import LinearGradient from "react-native-linear-gradient";
@@ -28,17 +28,17 @@ class ChannelNamesFlatlist extends PureComponent {
     }
 
     _renderItem = ( {item} ) => {
-        return (<TouchableWithoutFeedback onPress={multipleClickHandler(() => this._navigateToChannel( item ))}>
+        return (<TouchableOpacity onPress={multipleClickHandler(() => this._navigateToChannel( item ))}>
                     <LinearGradient
                     colors={['rgba(255, 85, 102, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(255, 116, 153, 0.85)']}
                     locations={[0, 0.5, 0.55, 1]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
-                    style={{ marginLeft: 12, borderTopLeftRadius: 25, borderBottomRightRadius: 25, paddingLeft: 15, paddingRight: 15, paddingVertical: 6}}
+                    style={{ marginRight: 8, borderTopLeftRadius: 25, borderBottomRightRadius: 25, paddingLeft: 15, paddingRight: 15, paddingVertical: 6}}
                     >
                         <Text style={{fontSize: 12, color: '#fff', fontFamily: 'AvenirNext-DemiBold'}}>{item}</Text>
                     </LinearGradient>
-               </TouchableWithoutFeedback>
+               </TouchableOpacity>
         );
     }
 
