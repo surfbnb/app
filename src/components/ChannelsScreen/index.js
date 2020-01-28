@@ -92,14 +92,12 @@ class ChannelsScreen extends PureComponent {
     }
 
     getNoResultsCell = () => {
+        const tagName = deepGet( ReduxGetters.getHashTag(this.selectedTagId) , "text");
         const noResultsData = {
-            "noResultsMsg": 'No videos tagged. Please try again later.',
+            "noResultsMsg": `No videos tagged ${tagName}, Please try again later.`,
             "isEmpty": true
         };
-        if(!!this.selectedTagId){
-            noResultsData = `No videos tagged ${ReduxGetters.getChannelName(this.selectedTagId)}, Please try again later.`
-        }
-        return <EmptySearchResult   noResultsData={noResultsData} />
+        return <EmptySearchResult noResultsData={noResultsData} />
     }
 
     fetchChannel = () => {
@@ -111,6 +109,7 @@ class ChannelsScreen extends PureComponent {
           this.setState({isDeleted: true});
           return;
         }
+        this.props.navigation.setParams({ headerTitle: ReduxGetters.getChannelName(this.channelId) });
     };
 
     render(){
