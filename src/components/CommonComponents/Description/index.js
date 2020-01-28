@@ -19,8 +19,8 @@ class Description extends React.PureComponent{
         }
 
       this.seeStatus = {
-        more  : '…See More',
-        less  : '…See Less'
+        more  : ' …See More',
+        less  : ' …See Less'
       }
     }
 
@@ -48,7 +48,7 @@ class Description extends React.PureComponent{
                 <Text style={inlineStyles.title}>About</Text>
                 <Text style={[inlineStyles.desc]}>
                   {this.getText()}
-                  <Text onPress={this.showMore} style={inlineStyles.more}> {moreOrLess}</Text>
+                  <Text onPress={this.showMore} style={inlineStyles.more}>{moreOrLess}</Text>
                 </Text>
             </View>
         )
