@@ -5,6 +5,8 @@ import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import reduxGetter from '../../services/ReduxGetters';
 
+//TODO @Preshita redux connect 
+
 class ChannelTagsList extends PureComponent {
 
     constructor( props ){
@@ -13,7 +15,7 @@ class ChannelTagsList extends PureComponent {
         this.state ={
             data: reduxGetter.getChannelTagIds(props.channelId)
                      || ['120', '122','10549', '10259', '10350', '10348', '10349', '10480', '10621', '10324', '10426' ],
-            selectedTags: []
+            selectedTags: [] //@Preshita Dont use array here
         }
     }
 

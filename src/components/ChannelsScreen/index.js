@@ -12,7 +12,9 @@ import Colors from "../../theme/styles/Colors"
 class ChannelsScreen extends PureComponent {
 
     static navigationOptions = (options) => {
-        const name = options.navigation.getParam('headerTitle');
+        const name = options.navigation.getParam('headerTitle') ,
+        channelId =  options.navigation.getParam('channelId')
+        ;
         return {
           headerBackTitle: null,
           title: name || 'Channel',
@@ -33,7 +35,6 @@ class ChannelsScreen extends PureComponent {
           headerRight: <View><Text>options</Text></View>
         };
       };
-    
 
     constructor(props){
         super(props);
@@ -41,9 +42,7 @@ class ChannelsScreen extends PureComponent {
         this.channelId =  this.props.navigation.getParam('channelId') || 5678;
         this.videoListRef = null;
         this.selectedTagId = 0;
-        this.state = {
-            list: null
-        }
+        this.fetchChannel();
     }
 
     componentDidMount(){
@@ -52,6 +51,10 @@ class ChannelsScreen extends PureComponent {
 
     componentWillUnMount(){
         
+    }
+
+    fetchChannel(){
+        //@Ashutosh TODO 
     }
 
     onTagClicked = (item) => {
@@ -66,13 +69,6 @@ class ChannelsScreen extends PureComponent {
 
     getFetchParams = () => {
         return  DataContract.channels.getVideoListParams()
-    }
-
-    listHeaderComponent = () => {
-        //@Preshita add Cover and description scection here
-        return <View style={{marginTop: 40}}>
-                    <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )} channelId = {this.channelId}/>
-                </View>
     }
 
     setVideoListRef = (ref) => {
@@ -106,13 +102,19 @@ class ChannelsScreen extends PureComponent {
         )
     }
 
+    beforeRefresh = () => {
+        this.fetchChannel();
+    }
+
     render(){
+        //@Ashutosh TODO check deleted Channel
         return (
             <View style={[Common.viewContainer]}>
                 <VideoCollections getFetchUrl={this.getFetchUrl}
                     getFetchParams={this.getFetchParams}
                     listHeaderComponent={this.listHeaderComponent()}
                     ref={this.setVideoListRef}
+                    beforeRefresh={this.beforeRefresh}
                 />
             </View>
         )
