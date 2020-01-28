@@ -598,13 +598,18 @@ class ReduxGetters {
 
   getChannelTagIds(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `channel_detail_entities.id_${id}.tag_ids`);
+    return deepGet(state, `channel_details.id_${id}.tag_ids`);
   }
 
   isCurrentUserMemberOfChannel(id, state){
     state = state || Store.getState();
     return deepGet(state, `current_user_channel_relations.id_${id}.is_member`);
+  }
 
+  getChannelDescription(id, state){
+    state = state || Store.getState();
+    let descId = deepGet(state, `channel_details.id_${id}.description_id`);
+    return deepGet(state, `text_entities.id_${descId}.text`);
   }
 
 }
