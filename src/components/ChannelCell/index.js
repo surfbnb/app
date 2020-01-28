@@ -53,28 +53,26 @@ class ChannelCell extends PureComponent {
 
 
   render() {
-    return <TouchableOpacity onPress={this.onChannelPress}>
-    <View style={styles.channelCellWrapper}>
-          <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={styles.imageBg} resizeMode={'cover'}>
-            <View style={styles.imageBgOpacity}>
-              <View>
-                <Text style={styles.header}>{this.props.channelName}</Text>
-                <Text style={styles.channelDesc}>{this.props.channelTagLine}</Text>
-              </View>
-              <View style={styles.bottomView}>
-                <View style={styles.bottomViewLeft}>
-                  <TouchableOpacity onPress={this.onMemberPress}>
-                    <Text style={styles.memberText}>{this.props.channelUserCount} Members</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.videoText}>{this.props.channelVideoCount} Videos</Text>
+    return <TouchableOpacity onPress={this.onChannelPress} style={styles.channelCellWrapper}>
+            <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={styles.imageBg} resizeMode={'cover'}>
+              <View style={styles.imageBgOpacity}>
+                <View>
+                  <Text style={styles.header}>{this.props.channelName}</Text>
+                  <Text style={styles.channelDesc}>{this.props.channelTagLine}</Text>
                 </View>
-                <View style={styles.bottomViewRight}>
-                  {this.joined()}
+                <View style={styles.bottomView}>
+                  <View style={styles.bottomViewLeft}>
+                    <TouchableOpacity onPress={this.onMemberPress} style={styles.memberText}>
+                      <Text style={styles.memberText}>{this.props.channelUserCount} <Text style={{fontFamily: 'AvenirNext-Regular'}}>Members</Text></Text>
+                    </TouchableOpacity>
+                    <Text style={styles.memberText}>{this.props.channelVideoCount} <Text style={{fontFamily: 'AvenirNext-Regular'}}>Videos</Text></Text>
+                  </View>
+                  <View style={styles.bottomViewRight}>
+                    {this.joined()}
+                  </View>
                 </View>
               </View>
-            </View>
-          </ImageBackground>
-        </View>
+            </ImageBackground>
     </TouchableOpacity>
   }
 }

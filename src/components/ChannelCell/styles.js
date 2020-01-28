@@ -22,7 +22,8 @@ let stylesMap = {
     minHeight: 130,
     backgroundColor: '#a77c7d',
     margin:10,
-    borderRadius: 4,
+    overflow: 'hidden',
+    borderRadius: 4
   },
 
   imageBg:{
@@ -50,12 +51,9 @@ let stylesMap = {
 
   memberText: {
     flex: 1,
-    color: Colors.white
-  },
-
-  videoText: {
-    flex: 1,
-    color: Colors.white
+    fontSize: 15,
+    color: Colors.white,
+    fontFamily: 'AvenirNext-DemiBold'
   },
 
   bottomViewRight: {

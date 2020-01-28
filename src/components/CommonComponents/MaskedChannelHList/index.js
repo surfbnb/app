@@ -7,7 +7,6 @@ import ChannelNamesFlatlist from '../ChannelNamesFlatlist';
 import LinearGradient from "react-native-linear-gradient";
 
 export default () => (
-    //@Thahir move inline style to Style sheet
     <View style={styles.listPosition}>
       <MaskedView
         style={styles.maskedView}
