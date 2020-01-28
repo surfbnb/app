@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import { withNavigation } from 'react-navigation';
-import MaskedView from '@react-native-community/masked-view';
+
 
 import FanVideo from '../VideoWrapper/FanVideo';
 import PepoApi from '../../services/PepoApi';
@@ -17,35 +17,7 @@ import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
 import DataContract from '../../constants/DataContract';
 import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
 import BubbleList from "../CommonComponents/BubbleList";
-import ChannelNamesFlatlist from '../CommonComponents/ChannelNamesFlatlist';
-import LinearGradient from "react-native-linear-gradient";
-
-const MaskedChannelNamesFlatlist = () => (
-  <MaskedView
-    style={{ flex: 1, flexDirection: 'row', height: '100%' }}
-    maskElement={
-      <View
-        style={{
-          // Transparent background because mask is based off alpha channel.
-          backgroundColor: 'transparent',
-          flex: 1
-        }}
-      >
-        <LinearGradient
-          //colors={['rgb(255, 85, 102)', 'rgb(203, 86, 151)', 'rgba(252, 115, 153, 0.05)', 'rgba(255, 116, 153, 0)']}
-          //locations={[0, 0.81, 0.91, 1]}
-          colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0)']} // Color does not matter for masking - only alpha matters
-          locations={[0.71, 0.91, 1]}
-          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-          style={{flex: 1}}/>
-      </View>
-    }
-  >
-    {/* Shows behind the mask, you can put anything here, such as an image */}
-
-    <ChannelNamesFlatlist />
-  </MaskedView>
-);
+import MaskedChannelHList from '../CommonComponents/MaskedChannelHList';
 
 
 class HomeFeedRow extends PureComponent {
@@ -102,7 +74,7 @@ class HomeFeedRow extends PureComponent {
             <View style={inlineStyles.invertedList}>
               <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
               <View style={{marginRight: '20%', marginTop: 20, justifyContent: 'center'}}>
-                <MaskedChannelNamesFlatlist />
+                <MaskedChannelHList />
               </View>
             </View>
 
@@ -118,12 +90,6 @@ class HomeFeedRow extends PureComponent {
                 <VideoShareIcon  entityId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
                 <ReportVideo userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
               </View>
-
-              {/*<VideoSupporterStat*/}
-                {/*entityId={this.videoId}*/}
-                {/*userId={this.userId}*/}
-                {/*pageName="feed"*/}
-              {/*/>*/}
             </View>
 
           </View>

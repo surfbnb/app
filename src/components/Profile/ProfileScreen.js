@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Image, TouchableOpacity , View , Text } from 'react-native';
-import EventEmitter from 'eventemitter3';
+import { Image, TouchableOpacity , View  } from 'react-native';
 import deepGet from 'lodash/get';
 
 import BalanceHeader from '../Profile/BalanceHeader';

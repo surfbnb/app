@@ -39,11 +39,6 @@ const PeopleCell = (props) => {
           </Text>
           <Text style={styles.username}>{`@${username}`}</Text>
         </View>
-
-        {/* <View style={[styles.numericInnerWrapper]}>*/}
-        {/*  <Image source={PepoIcon} style={styles.imageIconSkipFont} />*/}
-        {/*  <Text style={styles.numericInfoText}>{Pricer.toDisplayAmount(props.amount)}</Text>*/}
-        {/*</View>*/}
       </View>
     </TouchableOpacity>
 

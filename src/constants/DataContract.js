@@ -93,6 +93,16 @@ export default {
         getVideoReplyShareApi: ( id ) => {
             return `/replies/${id}/share`;
         }
+    },
+
+    channels: {
+        getVideoListApi : (id) => {
+            return `/channels/${id}/videos`;
+        },
+        getVideoListParams : (id=0)=> {
+            return {filter_by_tag_id: id}
+        }
     }
+
 }
 

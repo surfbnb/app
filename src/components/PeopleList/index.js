@@ -174,7 +174,6 @@ class PeopleList extends PureComponent {
     return <PeopleCell
             userId={item.payload.user_id}
             isEmpty={item.isEmpty}
-            emptyRenderFunction={this.props.getNoResultsCell}
             />;
   };
 
