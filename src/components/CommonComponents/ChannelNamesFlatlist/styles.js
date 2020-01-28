@@ -3,7 +3,7 @@ import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
   hList: {
-    // paddingLeft: 15,
+    paddingRight: 50,
     backgroundColor: 'transparent'
   }
 };

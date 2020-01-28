@@ -1,14 +1,19 @@
 import React, { PureComponent } from 'react';
-import {FlatList, Text} from 'react-native';
+import {FlatList, Text , TouchableWithoutFeedback} from 'react-native';
 
 import inlineStyles from './styles';
 import LinearGradient from "react-native-linear-gradient";
+import { withNavigation } from 'react-navigation';
+import Utilities from '../../../services/Utilities';
+import multipleClickHandler from '../../../services/MultipleClickHandler';
+
 
 class ChannelNamesFlatlist extends PureComponent {
 
     constructor( props ){
         super( props );
         this.flatlistRef = null;
+        //@Ashutosh integrate with
         this.data = ["ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020", "ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020"]
     }
 
@@ -16,16 +21,25 @@ class ChannelNamesFlatlist extends PureComponent {
         return `id_${item.id}_${index}`;
     };
 
+    _navigateToChannel =(item={}) => {
+        if(!Utilities.checkActiveUser()) return;
+        //@Ashutosh integrate with
+        this.props.navigation.push("ChannelsScreen" , {} );
+    }
+
     _renderItem = ( {item} ) => {
-        return <LinearGradient
-          colors={['rgba(255, 85, 102, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(255, 116, 153, 0.85)']}
-          locations={[0, 0.5, 0.55, 1]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={{ marginLeft: 12, borderTopLeftRadius: 25, borderBottomRightRadius: 25, paddingLeft: 15, paddingRight: 15, paddingVertical: 6}}
-        >
-          <Text style={{fontSize: 12, color: '#fff', fontFamily: 'AvenirNext-DemiBold'}}>{item}</Text>
-        </LinearGradient>;
+        return (<TouchableWithoutFeedback onPress={multipleClickHandler(() => this._navigateToChannel( item ))}>
+                    <LinearGradient
+                    colors={['rgba(255, 85, 102, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(255, 116, 153, 0.85)']}
+                    locations={[0, 0.5, 0.55, 1]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={{ marginLeft: 12, borderTopLeftRadius: 25, borderBottomRightRadius: 25, paddingLeft: 15, paddingRight: 15, paddingVertical: 6}}
+                    >
+                        <Text style={{fontSize: 12, color: '#fff', fontFamily: 'AvenirNext-DemiBold'}}>{item}</Text>
+                    </LinearGradient>
+               </TouchableWithoutFeedback>
+        );
     }
 
     render() {
@@ -44,4 +58,4 @@ class ChannelNamesFlatlist extends PureComponent {
     }
 }
 
-export default ChannelNamesFlatlist;
+export default withNavigation( ChannelNamesFlatlist );
