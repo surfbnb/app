@@ -51,14 +51,16 @@ let stylesMap = {
     opacity:0.8,
     borderRadius: 20,
     paddingVertical: 6,
-    maxWidth: 80,
+    maxWidth: 90,
     alignItems: 'center',
-    paddingHorizontal: 12
+    paddingHorizontal: 10,
+    flexDirection: 'row'
   },
   joinText: {
     color: Colors.dark,
     fontSize: 16,
-    fontWeight: '500'
+    fontWeight: '500',
+    marginLeft:4
   }
 };
 
