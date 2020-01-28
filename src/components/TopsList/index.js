@@ -234,7 +234,7 @@ class TopsList extends PureComponent {
       return this.__renderUserItem;
     } else if (kind === 'videos'){
       return this._renderVideoItem;
-    } else if (kind === 'channels'){
+    } else if (kind === 'channel'){
       return this._renderChannelsItem;
     }
   };
