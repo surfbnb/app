@@ -64,6 +64,7 @@ import VideoReplyPlayer from './src/components/CommonComponents/VideoReplyPlayer
 import TwitterWebLogin from './src/components/WebLogins/TwitterWebLogin';
 import GitHubWebLogin from './src/components/WebLogins/GitHubWebLogin';
 import ChannelsScreen from "./src/components/ChannelsScreen";
+import MembersScreen from "./src/components/MembersScreen";
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -168,7 +169,8 @@ const HomePushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection,
     VideoReplies:VideoReplies ,
     FullScreenReplyCollection: FullScreenReplyCollection,
-    ChannelsScreen: ChannelsScreen
+    ChannelsScreen: ChannelsScreen,
+    MembersScreen: MembersScreen
   },
   {
     initialRouteName: 'HomeScreen',
@@ -231,7 +233,8 @@ const NotificationPushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection,
     VideoReplies:VideoReplies ,
     FullScreenReplyCollection: FullScreenReplyCollection,
-    ChannelsScreen: ChannelsScreen
+    ChannelsScreen: ChannelsScreen,
+    MembersScreen: MembersScreen
   },
   {
     headerLayoutPreset: 'center',
@@ -271,7 +274,8 @@ const ProfilePushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection,
     VideoReplies:VideoReplies ,
     FullScreenReplyCollection: FullScreenReplyCollection,
-    ChannelsScreen: ChannelsScreen
+    ChannelsScreen: ChannelsScreen,
+    MembersScreen: MembersScreen
   },
   {
     headerLayoutPreset: 'center',
@@ -309,7 +313,8 @@ const SearchPushStack = createStackNavigator(
     FullScreenVideoCollection: FullScreenVideoCollection,
     VideoReplies:VideoReplies ,
     FullScreenReplyCollection: FullScreenReplyCollection,
-    ChannelsScreen: ChannelsScreen
+    ChannelsScreen: ChannelsScreen,
+    MembersScreen: MembersScreen
   },
   {
     headerLayoutPreset: 'center',

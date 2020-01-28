@@ -96,7 +96,7 @@ class ChannelsScreen extends PureComponent {
                 <ChannelCell/>
                 {this.getAboutSection()}
                 <View style={{padding: 10}}>
-                    <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )} channelId = {'120', '122'}/>
+                    <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )} channelId = '120'/>
                 </View>
             </View>
         )
