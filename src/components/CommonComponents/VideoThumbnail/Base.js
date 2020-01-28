@@ -6,6 +6,7 @@ import pepoWhiteIcon from "../../../assets/pepo-white-icon.png";
 import inlineStyles from "./style";
 import multipleClickHandler from '../../../services/MultipleClickHandler'
 import ProfilePicture from "../../ProfilePicture";
+import PinnedLabel from "../PinnedLabel";
 
 
 class Base extends PureComponent {
@@ -17,7 +18,8 @@ class Base extends PureComponent {
     render(){
         return <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.props.onVideoClick && this.props.onVideoClick()} )}
     >
-        <View>
+        <View style={{position:"relative"}}>
+            <PinnedLabel isPinned={this.props.isPinned} />
             <Image style={{
                 width: (Dimensions.get('window').width - 4) / 2,
                 aspectRatio:9/16,

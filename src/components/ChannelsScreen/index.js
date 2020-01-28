@@ -20,8 +20,7 @@ class ChannelsScreen extends PureComponent {
     }
 
     onTagClicked = () => {
-        this.setState({
-            
+        this.setState({         
         })
     }
 
