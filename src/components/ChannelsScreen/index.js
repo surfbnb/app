@@ -7,6 +7,7 @@ import VideoCollections from '../VideoCollections';
 import DataContract from '../../constants/DataContract';
 import deepGet from "lodash/get";
 import ChannelCell from '../ChannelCell';
+import Colors from "../../theme/styles/Colors"
 
 class ChannelsScreen extends PureComponent {
 
@@ -102,16 +103,6 @@ class ChannelsScreen extends PureComponent {
                     <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )} channelId = {'120', '122'}/>
                 </View>
             </View>
-        )
-    }
-
-    _keyExtractor = () => {
-
-    }
-
-    _renderItem = () => {
-        return (
-            <View style={{flex: 1}}></View>
         )
     }
 
