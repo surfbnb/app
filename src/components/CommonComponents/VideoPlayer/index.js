@@ -4,7 +4,7 @@ import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
-import DeletedVideoInfo from '../DeletedVideoInfo';
+import DeletedVideoInfo from '../DeletedEntity/DeletedVideoInfo';
 import CommonStyles from "../../../theme/styles/Common";
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import SafeAreaView from 'react-native-safe-area-view';

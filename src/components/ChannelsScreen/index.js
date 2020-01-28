@@ -1,6 +1,6 @@
 
 import React, { PureComponent } from 'react';
-import { View, FlatList, Text} from 'react-native';
+import { View, Text} from 'react-native';
 import Common from '../../theme/styles/Common';
 import ChannelTagsList from '../ChannelTagsList';
 import VideoCollections from '../VideoCollections';
@@ -8,6 +8,9 @@ import DataContract from '../../constants/DataContract';
 import deepGet from "lodash/get";
 import ChannelCell from '../ChannelCell';
 import Colors from "../../theme/styles/Colors"
+import { fetchChannel } from '../../helpers/helpers';
+import Utilities from "../../services/Utilities";
+import DeletedChannelInfo from "../CommonComponents/DeletedEntity/DeletedChannelInfo";
 
 class ChannelsScreen extends PureComponent {
 
@@ -38,33 +41,21 @@ class ChannelsScreen extends PureComponent {
 
     constructor(props){
         super(props);
-        //TODO Ashutosh remove this fallback
-        this.channelId =  this.props.navigation.getParam('channelId') || 5678;
+        this.channelId = this.props.navigation.getParam('channelId');
         this.videoListRef = null;
         this.selectedTagId = 0;
-        this.fetchChannel();
-    }
-
-    componentDidMount(){
-
-    }
-
-    componentWillUnMount(){
-        
-    }
-
-    fetchChannel(){
-        //@Ashutosh TODO 
+        this.state = {
+            isDeleted: false
+        }
     }
 
     onTagClicked = (item) => {
-        //TODO Ashutosh check this
-      this.selectedTagId = deepGet(item ,  "payload.id" , 0);
+      this.selectedTagId = deepGet(item ,  "id" , 0);
       this.applyVideoListTagFilter();
     }
 
     getFetchUrl = () => {
-        return DataContract.channels.getVideoListApi(this.selectedTagId);
+        return DataContract.channels.getVideoListApi(this.channelId);
     }
 
     getFetchParams = () => {
@@ -102,19 +93,28 @@ class ChannelsScreen extends PureComponent {
         )
     }
 
-    beforeRefresh = () => {
-        this.fetchChannel();
+    fetchChannel = () => {
+        fetchChannel(this.channelId, this.onChannelFetch);
     }
 
+    onChannelFetch = ( res ) => {
+        if(Utilities.isEntityDeleted(res)){
+          this.setState({isDeleted: true});
+          return;
+        }
+    };
+
     render(){
-        //@Ashutosh TODO check deleted Channel
+        if(this.state.isDeleted){
+            return <DeletedChannelInfo/>
+        }
         return (
             <View style={[Common.viewContainer]}>
                 <VideoCollections getFetchUrl={this.getFetchUrl}
                     getFetchParams={this.getFetchParams}
                     listHeaderComponent={this.listHeaderComponent()}
                     ref={this.setVideoListRef}
-                    beforeRefresh={this.beforeRefresh}
+                    beforeRefresh={this.fetchChannel}
                 />
             </View>
         )

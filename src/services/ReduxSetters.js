@@ -66,9 +66,7 @@ const backendToAppEntities = {
   channel_details: 'channel_details',
   channel_stats: 'channel_stats',
   channel_taglines: 'channel_taglines',
-  current_user_channel_relations: 'current_user_channel_relations',
-
-
+  current_user_channel_relations: 'current_user_channel_relations'
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.
