@@ -106,7 +106,6 @@ class TextFormatter extends PureComponent{
     };
 
     getTextMarkup( item  , prevText, index){
-        console.log(prevText , item)
         return (
           <Text key={`${item}-${index}`}>
             {prevText + item}
