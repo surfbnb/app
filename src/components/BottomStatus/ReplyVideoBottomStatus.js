@@ -12,7 +12,8 @@ const mapStateToProps = (state, ownProps) => {
       link: reduxGetter.getVideoLink(reduxGetter.getReplyLinkId(ownProps.entityId, state), state),
       supporters: reduxGetter.getReplySupporters(ownProps.entityId),
       totalBt: reduxGetter.getReplyBt(ownProps.entityId, state),
-      cts : reduxGetter.getReplyCTS(ownProps.entityId, state)
+      cts : reduxGetter.getReplyCTS(ownProps.entityId, state),
+      entityKind : "reply"
     };
   };
 

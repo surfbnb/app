@@ -212,7 +212,7 @@ class ReportVideo extends PureComponent {
         return  this.isVisible() && (
           <React.Fragment>
             <TouchableOpacity pointerEvents={'auto'}
-                              style={{marginBottom: -21, height: 24, width: 50, alignItems: 'center', justifyContent: 'center'}}
+                              style={{height: 24, width: '20%', alignItems: 'center', justifyContent: 'center', marginRight: -12}}
                               onPress={multipleClickHandler(() => this.showActionSheet())} >
               <Image style={{ height: 12, width: 30 }} source={report_icon} />
             </TouchableOpacity>

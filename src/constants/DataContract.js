@@ -1,5 +1,12 @@
 export default {
 
+    feed: {
+        homeApi: "/feeds",
+        getSingleFeedApi : (id) => {
+            return `/feeds/${id}`
+        }
+    },
+
     payments: {
         postPaymentAcknowledgeApi : "/top-up/",
         getAllProductsApi : '/top-up/products' ,

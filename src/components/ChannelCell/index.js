@@ -11,6 +11,7 @@ import reduxGetters from "../../services/ReduxGetters";
 import {connect} from "react-redux";
 import { withNavigation } from 'react-navigation';
 import Checkmarks from '../../assets/Checkmarks.png';
+import ChannelJoin from '../../assets/channel-join-icon.png';
 const mapStateToProps = ( state, ownProps ) => {
    return {
     backgroundImgUrl :  reduxGetters.getChannelBackgroundImage(ownProps.channelId, state),
@@ -19,7 +20,6 @@ const mapStateToProps = ( state, ownProps ) => {
      channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId),
      channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId),
      isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId)
-
   };
 }
 
@@ -33,11 +33,14 @@ class ChannelCell extends PureComponent {
   joined(){
     if(this.props.isChannelMember){
       return <View style={styles.joinView}>
-        <Image style={{height: 10.66, width: 10}} source={Checkmarks}/>
+        <Image style={styles.joinedIconSkipFont} source={Checkmarks}/>
         <Text style={styles.joinText}>Joined</Text>
       </View>
     } else {
-      return <React.Fragment/>
+      return <View style={styles.joinView}>
+        <Image style={styles.joinIconSkipFont} source={ChannelJoin}/>
+        <Text style={styles.joinText}>Join</Text>
+      </View>
     }
   }
 
