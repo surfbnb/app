@@ -21,7 +21,7 @@ class Description extends React.PureComponent{
 
       this.seeStatus = {
         more  : ' …See More',
-        less  : ' …See Less'
+        less  : ' See Less'
       }
     }
 
@@ -32,7 +32,7 @@ class Description extends React.PureComponent{
     }
 
     getText(){
-      return this.isTextOverflow() ?
+      return this.isTextOverflow() && !this.state.expanded ?
                      this.description.substring(0, totalAllowedChars) :
                      this.description;
     }
@@ -59,8 +59,8 @@ class Description extends React.PureComponent{
                 <Text style={[inlineStyles.desc]}>
                 <TextFormatter text={this.getText()} getTappedIncludesEntity={this.getTappedIncludesEntity}
                         navigation={this.props.navigation}/>
-                  {this.isTextOverflow() && !this.state.expanded ? <Text onPress={this.showMore} style={inlineStyles.more}>{moreOrLess}</Text> :
-                         <React.Fragment/>}
+                  {this.isTextOverflow() || this.state.expanded ? <Text onPress={this.showMore} style={inlineStyles.more}>{moreOrLess}</Text> : 
+                    <React.Fragment/> }
                 </Text>
             </View>
         )
