@@ -14,8 +14,7 @@ class Description extends React.PureComponent{
 
     constructor( props ) {
         super( props );
-        this.description = reduxGetter.getChannelDescription(props.channelId) 
-        || "Join the leading minds in ost.com the Web3 space www.google.com for a #abc weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free Join the leading minds in the Web3 space for a weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free"
+        this.description = reduxGetter.getChannelDescription(props.channelId) || '';
         this.state = {
           expanded  : false
         }
@@ -33,13 +32,17 @@ class Description extends React.PureComponent{
     }
 
     getText(){
-        return this.description.length > totalAllowedChars && !this.state.expanded ?
+      return this.isTextOverflow() ?
                      this.description.substring(0, totalAllowedChars) :
                      this.description;
     }
 
-    getTappedIncludesEntity = ( tag )=> {
-      let tappedIncludesEntity = reduxGetter.getChannelIncludesEntity(this.props.channelId, tag);
+    isTextOverflow = () => {
+      return this.description && this.description.length > totalAllowedChars;
+    }
+
+    getTappedIncludesEntity = (text) => {
+      let tappedIncludesEntity = reduxGetter.getChannelIncludesEntity(this.props.channelId, text);
       return tappedIncludesEntity;
     }
 
@@ -54,9 +57,10 @@ class Description extends React.PureComponent{
             <View style={inlineStyles.mainWrapper}>
                 <Text style={inlineStyles.title}>About</Text>
                 <Text style={[inlineStyles.desc]}>
-                <TextFormatter text={this.getText()} getTappedIncludesEntity={this.getTappedIncludesEntity} 
+                <TextFormatter text={this.getText()} getTappedIncludesEntity={this.getTappedIncludesEntity}
                         navigation={this.props.navigation}/>
-                  <Text onPress={this.showMore} style={inlineStyles.more}>{moreOrLess}</Text>
+                  {this.isTextOverflow() && !this.state.expanded ? <Text onPress={this.showMore} style={inlineStyles.more}>{moreOrLess}</Text> :
+                         <React.Fragment/>}
                 </Text>
             </View>
         )

@@ -621,10 +621,12 @@ class ReduxGetters {
     return deepGet(state, `text_entities.id_${descId}.text`);
   }
 
-  getChannelIncludesEntity(id, state){
-    state = state || Store.getState();
+  getChannelIncludesEntity(id, tappedText){
+    let lowercasedText = tappedText.toLowerCase();
+    let state = Store.getState();
     let descId = deepGet(state, `channel_detail_entities.id_${id}.description_id`);
-    return deepGet(state, `text_entities.id_${descId}.includes`);
+    return deepGet(state, `text_entities.id_${descId}.includes`)[lowercasedText] ||
+            deepGet(state, `text_entities.id_${descId}.includes`)[tappedText];
   }
 
   getReplyCTS(id, state){

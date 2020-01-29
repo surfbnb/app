@@ -19,8 +19,8 @@ import BackArrow from '../CommonComponents/BackArrow';
 class ChannelsScreen extends PureComponent {
 
     static navigationOptions = (options) => {
-        const name = options.navigation.getParam('headerTitle') ,
-        channelId =  options.navigation.getParam('channelId')
+        const channelId =  options.navigation.getParam('channelId'),
+            name = ReduxGetters.getChannelName(channelId);
         ;
         return {
           headerBackTitle: null,

@@ -97,15 +97,18 @@ export default {
 
     channels: {
         getVideoListApi : (id) => {
+            return `/dummy/channels/1/videos`;
             return `/channels/${id}/videos`;
         },
         getVideoListParams : (id=0)=> {
             return {filter_by_tag_id: id}
         },
         getChannelDetails : (id)=> {
+            return `/dummy/channels/1`;
             return `/channels/${id}`;
         },
         getChannelsMemberApi: (id) => {
+            return `/dummy/channels/1/users`;
             return `/channels/${id}/users`;
         }
     }
