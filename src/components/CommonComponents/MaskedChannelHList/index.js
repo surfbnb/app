@@ -6,7 +6,7 @@ import MaskedView from '@react-native-community/masked-view';
 import ChannelNamesFlatlist from '../ChannelNamesFlatlist';
 import LinearGradient from "react-native-linear-gradient";
 
-export default () => (
+export default (props) => (
     <View style={styles.listPosition}>
       <MaskedView
         style={styles.maskedView}
@@ -23,7 +23,7 @@ export default () => (
         }
       >
         {/* Shows behind the mask, you can put anything here, such as an image */}
-        <ChannelNamesFlatlist />
+        <ChannelNamesFlatlist videoId={props.videoId} />
       </MaskedView>
    </View> 
 )

@@ -14,6 +14,7 @@ import InvertedReplyList from "../InvertedReplyThumbnailList";
 import Utilities from "../../../services/Utilities";
 import NoPendantsVideoReplyRow from "../VideoReplyRowComponent/NoPendantsVideoReplyRow";
 import Colors from "../../../theme/styles/Colors";
+import MaskedChannelHList from "../MaskedChannelHList";
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;
@@ -270,13 +271,13 @@ class ReplyList extends PureComponent{
                 <TopStatus />
                 
                 <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight(), marginRight: 'auto', minWidth: '20%'}}>
-                    {/* Ashutosh TODO get video id and integate maskedChannelList */}
                     <InvertedReplyList  paginationService={this.getVideoPagination()}
                                         onChildClickDelegate={this.childClickHandler}
                                         bottomRounding={50}
                                         getCurrentIndex={this.getCurrentIndex}
                                         onRef={this.setPendantListRef}
                                   />
+                    <MaskedChannelHList videoId={this.props.parentVideoId} />             
                 </View>    
 
                 <FlatList

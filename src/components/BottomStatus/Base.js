@@ -11,6 +11,7 @@ import TextFormatter from '../CommonComponents/TextFormatter';
 import ReduxGetters from '../../services/ReduxGetters';
 import TimerIcon from '../../assets/created-timer-icon.png';
 import Checkmarks from "../../assets/Checkmarks.png";
+import { shortenedFromNow } from '../../helpers/timestampHandling';
 
 class BottomStatus extends PureComponent {
   constructor(props) {
@@ -51,7 +52,7 @@ class BottomStatus extends PureComponent {
                       {`@${this.props.userName}`}
                   </Text>
                   <Image style={{height: 12, width: 12, marginLeft: 5, marginRight: 3}} source={TimerIcon}/>
-                  <Text style={inlineStyles.timerTxt}>24h</Text>
+          <Text style={inlineStyles.timerTxt}>{shortenedFromNow(this.props.cts)}</Text>
                 </View>
             </TouchableWithoutFeedback>)}
             {this.props.description ? (

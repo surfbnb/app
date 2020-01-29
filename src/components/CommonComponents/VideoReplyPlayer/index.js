@@ -154,6 +154,7 @@ class VideoReplyPlayer extends PureComponent {
          }else{
            return <ReplyList currentIndex={this.currentIndex}
                              fetchServices={this.fetchService}
+                             parentVideoId={this.parentVideoId}
                              parentClickHandler={this.parentClickHandler}/>
          }
        }

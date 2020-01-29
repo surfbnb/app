@@ -5,6 +5,7 @@ import EmptySearchResult from '../CommonComponents/EmptySearchResult';
 import CommonStyle from "../../theme/styles/Common";
 import UserRow from '../CommonComponents/UserRow';
 import ReduxGetters from '../../services/ReduxGetters';
+import inlineStyles from "./styles";
 
 class SupportersList extends PureComponent {
   constructor(props) {
@@ -19,7 +20,7 @@ class SupportersList extends PureComponent {
 
   getLeftLabel = (item) =>{
     if(ReduxGetters.isChannelUserAdmin(this.props.channelId , item )){
-        return <Text>Admin</Text>
+        return <View style={inlineStyles.leafInnerWrapper}><Text style={inlineStyles.leafInnerText}>Admin</Text></View>
     }else{
         return null;
     }

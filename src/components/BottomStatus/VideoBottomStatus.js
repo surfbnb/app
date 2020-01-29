@@ -11,7 +11,8 @@ const mapStateToProps = (state, ownProps) => {
       description: reduxGetter.getVideoDescription(reduxGetter.getVideoDescriptionId(ownProps.entityId, state), state),
       link: reduxGetter.getVideoLink(reduxGetter.getVideoLinkId(ownProps.entityId, state), state),
       supporters: reduxGetter.getVideoSupporters(ownProps.entityId),
-      totalBt: reduxGetter.getVideoBt(ownProps.entityId, state)
+      totalBt: reduxGetter.getVideoBt(ownProps.entityId, state),
+      cts: reduxGetter.getVideoCTS(ownProps.entityId,  state)
     };
   };
 

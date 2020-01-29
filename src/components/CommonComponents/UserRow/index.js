@@ -19,8 +19,8 @@ const userClick = function(userId, navigation) {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    name: reduxGetter.getName(ownProps.userId, state),
-    userName: reduxGetter.getUserName(ownProps.userId, state)  
+    name: reduxGetter.getName(ownProps.userId, state) || "",
+    userName: reduxGetter.getUserName(ownProps.userId, state)  ||"" 
   };
 }
 
@@ -36,10 +36,10 @@ const UserRow = (props) => {
       <ProfilePicture userId={props.userId} />
       <View style={{ flexDirection: 'column', flex: 1, paddingLeft: 15 }}>
           <Text style={styles.titleName} numberOfLines={1} ellipsizeMode={'tail'}>
-            {props.name}
+            {props.name.length > 40 ? `${props.name.substring(0, 40)}...` : props.name}
           </Text>
           <Text style={styles.titleHandle} numberOfLines={1} ellipsizeMode={'tail'}>
-            {props.userName}
+            {props.userName.length > 40 ? `${props.userName.substring(0, 40)}...` : props.userName}
           </Text>
           {this.props.leftLabel}
         </View>

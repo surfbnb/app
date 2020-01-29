@@ -6,6 +6,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { withNavigation } from 'react-navigation';
 import Utilities from '../../../services/Utilities';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
+import ReduxGetters from '../../../services/ReduxGetters';
 
 
 class ChannelNamesFlatlist extends PureComponent {
@@ -13,20 +14,29 @@ class ChannelNamesFlatlist extends PureComponent {
     constructor( props ){
         super( props );
         this.flatlistRef = null;
-        //@Ashutosh integrate with
-        this.data = ["ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020", "ETHDENVER 2020", 'Epicenter', "ETHDENVER 2020"]
+        this.data = ReduxGetters.getVideoChannelList(this.props.videoId);
     }
 
+    /**
+     * item : id itself
+     */
     _keyExtractor = (item, index) => {
-        return `id_${item.id}_${index}`;
+        return `id_${item}_${index}`;
     };
 
-    _navigateToChannel =(item={}) => {
+
+    /**
+     * item : id itself
+     */
+    _navigateToChannel =(item) => {
         if(!Utilities.checkActiveUser()) return;
-        //@Ashutosh integrate with
-        this.props.navigation.push("ChannelsScreen" , {} );
+        this.props.navigation.push("ChannelsScreen" , {channelId :item } );
     }
 
+
+    /**
+     * item : id itself
+     */
     _renderItem = ( {item} ) => {
         return (<TouchableOpacity onPress={multipleClickHandler(() => this._navigateToChannel( item ))}>
                     <LinearGradient
@@ -36,7 +46,7 @@ class ChannelNamesFlatlist extends PureComponent {
                     end={{ x: 1, y: 0 }}
                     style={{ marginRight: 8, borderTopLeftRadius: 25, borderBottomRightRadius: 25, paddingLeft: 15, paddingRight: 15, paddingVertical: 6}}
                     >
-                        <Text style={{fontSize: 12, color: '#fff', fontFamily: 'AvenirNext-DemiBold'}}>{item}</Text>
+                        <Text style={{fontSize: 12, color: '#fff', fontFamily: 'AvenirNext-DemiBold'}}>{ReduxGetters.getChannelName(item)}</Text>
                     </LinearGradient>
                </TouchableOpacity>
         );

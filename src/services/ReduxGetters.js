@@ -627,6 +627,21 @@ class ReduxGetters {
     return deepGet(state, `text_entities.id_${descId}.includes`);
   }
 
+  getReplyCTS(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.cts`,  0);
+  } 
+
+  getVideoCTS(id ,state ){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.cts` , 0 );
+  }
+
+  getVideoChannelList(id , state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.channel_ids` , [] );
+  }
+
 
 }
 
