@@ -54,7 +54,6 @@ const backendToAppEntities = {
   feeds: 'home_feed_entities',
   notification_unread: 'notification_unread',
   feed: 'home_feed_entities',
-  upsert_push_notification: 'push_notification',
   twitter_users : 'twitter_entities',
   user_allowed_actions: 'user_allowed_action_entities',
   pepocorn_balance: {
@@ -62,11 +61,11 @@ const backendToAppEntities = {
     parser: parser_direct_assign
   },
   unseen_replies: 'unseen_replies_entities',
-  channels: 'channels',
-  channel_details: 'channel_details',
-  channel_stats: 'channel_stats',
-  channel_taglines: 'channel_taglines',
-  current_user_channel_relations: 'current_user_channel_relations'
+  channels: 'channel_entities',  //@TODO mayur follow standards 
+  channel_details: 'channel_detail_entities',  //@TODO mayur follow standards 
+  channel_stats: 'channel_stat_entities',  //@TODO mayur follow standards 
+  channel_taglines: 'channel_tagline_entities',  //@TODO mayur follow standards 
+  current_user_channel_relations: 'current_user_channel_relation_entities',  //@TODO mayur follow standards 
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.

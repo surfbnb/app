@@ -20,6 +20,11 @@ class ReduxGetters {
     return deepGet(state, `home_feed_entities.id_${id}.payload.video_id`);
   }
 
+  getVideoIdFromVideoDetails(id ,state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.video_id`);
+  }
+
   getVideoUrl(id, state) {
     state = state || Store.getState();
     return (
@@ -27,7 +32,7 @@ class ReduxGetters {
       deepGet(state, `video_entities.id_${id}.resolutions.original.url`)
     );
   }
-
+  
   getUser(id, state) {
     state = state || Store.getState();
     return deepGet(state, `user_entities.id_${id}`);
@@ -503,7 +508,6 @@ class ReduxGetters {
   isVideoIsChargeable(id, state){
     state = state || Store.getState();
     return  !!Number( deepGet(state, `current_user_video_relation_entities.id_${id}.is_reply_chargeable` , 0) );
-
   }
 
   isReplyShareable(id ,  state){
@@ -571,28 +575,28 @@ class ReduxGetters {
 
   getChannelName(id, state){
     state = state || Store.getState();
-    return deepGet(state, `channels.id_${id}.name`);
+    return deepGet(state, `channel_entities.id_${id}.name`);
   }
 
   getChannelTagLine(id, state){
     state = state || Store.getState();
-    let tagId = deepGet(state, `channel_details.id_${id}.tagline_id`);
+    let tagId = deepGet(state, `channel_detail_entities.id_${id}.tagline_id`);
     return deepGet(state, `text_entities.id_${tagId}.text`);
   }
 
   getChannelUserCount(id, state){
     state = state || Store.getState();
-    return deepGet(state, `channel_stats.id_${id}.total_users`);
+    return deepGet(state, `channel_stat_entities.id_${id}.total_users`);
   }
 
   getChannelVideoCount(id, state){
     state = state || Store.getState();
-    return deepGet(state, `channel_stats.id_${id}.total_videos`);
+    return deepGet(state, `channel_stat_entities.id_${id}.total_videos`);
   }
   
   getChannelBackgroundImage(id, state){
     state = state || Store.getState();
-    let coverImageId = deepGet(state, `channel_details.id_${id}.cover_image_id`)
+    let coverImageId = deepGet(state, `channel_detail_entities.id_${id}.cover_image_id`)
       return deepGet(state, `image_entities.id_${coverImageId}.resolutions.original.url`);
   }
 
@@ -603,9 +607,15 @@ class ReduxGetters {
 
   isCurrentUserMemberOfChannel(id, state){
     state = state || Store.getState();
-    return deepGet(state, `current_user_channel_relations.id_${id}.is_member`);
+    return deepGet(state, `current_user_channel_relation_entities.id_${id}.is_member`);
 
   }
+
+  isChannelUserAdmin(id,  state){
+    state = state || Store.getState();
+    return deepGet(state, `channel_user_relation_entities.id_${id}.is_admin`);
+  }
+
 
 }
 
