@@ -16,12 +16,26 @@ let stylesMap = {
       bottomBgTxt: {
         color: Colors.white
       },
+
+      timerTxt: {
+        fontSize: 12,
+        color: Colors.white,
+        fontFamily: 'AvenirNext-Medium'
+      },
+
       handle: {
         fontSize: 15,
-        paddingBottom: 3,
         color: Colors.white,
         fontFamily: 'AvenirNext-DemiBold',
-        fontWeight: '700'
+        fontWeight: '700',
+        maxWidth: '85%'
+      },
+
+      handleWithTimer: {
+        paddingBottom: 3,
+        marginRight: '15%',
+        alignItems: 'center',
+        flexDirection: 'row'
       }
 }
 

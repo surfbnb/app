@@ -61,6 +61,10 @@ let stylesMap = {
     alignItems: 'flex-end'
   },
 
+  fontRegular: {
+    fontFamily: 'AvenirNext-Regular'
+  },
+
   joinView: {
     backgroundColor: Colors.white,
     opacity: 0.8,

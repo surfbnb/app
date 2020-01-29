@@ -63,9 +63,9 @@ class ChannelCell extends PureComponent {
                 <View style={styles.bottomView}>
                   <View style={styles.bottomViewLeft}>
                     <TouchableOpacity onPress={this.onMemberPress} style={styles.memberText}>
-                      <Text style={styles.memberText}>{this.props.channelUserCount} <Text style={{fontFamily: 'AvenirNext-Regular'}}>Members</Text></Text>
+                      <Text style={styles.memberText}>{this.props.channelUserCount} <Text style={styles.fontRegular}>Members</Text></Text>
                     </TouchableOpacity>
-                    <Text style={styles.memberText}>{this.props.channelVideoCount} <Text style={{fontFamily: 'AvenirNext-Regular'}}>Videos</Text></Text>
+                    <Text style={styles.memberText}>{this.props.channelVideoCount} <Text style={styles.fontRegular}>Videos</Text></Text>
                   </View>
                   <View style={styles.bottomViewRight}>
                     {this.joined()}
