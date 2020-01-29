@@ -64,7 +64,7 @@ class ChannelsScreen extends PureComponent {
     }
 
     getFetchParams = () => {
-        return  DataContract.channels.getVideoListParams()
+        return  DataContract.channels.getVideoListParams(this.selectedTagId)
     }
 
     setVideoListRef = (ref) => {
