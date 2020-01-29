@@ -8,16 +8,24 @@ let stylesMap = {
         top: 10,
         left: 10,
         zIndex: 9,
-        flexDirection: "row"
+        flexDirection: "row",
+        borderRadius: 50,
+        paddingVertical: 3,
+        paddingHorizontal: 7,
+        alignItems: 'center',
+        backgroundColor: 'rgba(42, 41, 59, 0.25)'
     },
 
     imageSkipFont: {
-        width: 20,
-        height: 20
+        width: 10.4,
+        height: 14.4
     },
 
     text : {
-        fontSize: 14
+        fontSize: 13,
+        marginLeft: 5,
+        fontFamily: 'AvenirNext-Medium',
+        color: Colors.white
     }
     
 };
