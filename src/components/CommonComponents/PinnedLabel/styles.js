@@ -6,11 +6,12 @@ let stylesMap = {
     wrapper : {
         position: "absolute",
         top: 10,
-        right: 10,
-        backgroundColor : Colors.black
+        left: 10,
+        zIndex: 9,
+        flexDirection: "row"
     },
 
-    image: {
+    imageSkipFont: {
         width: 20,
         height: 20
     },
