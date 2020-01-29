@@ -5,13 +5,27 @@ let stylesMap = {
   tagListWrapper: {
     flexDirection: 'row', 
     alignItems: 'center', 
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    shadowColor: "#000",
+    shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    paddingLeft: 5
   },
 
   tagWrapper : {
-    height: 30, 
-    paddingHorizontal: 5, 
-    fontSize: 12
+    paddingHorizontal: 5,
+    paddingVertical: 5
+  },
+
+  text : {
+    fontSize: 12,
+    textTransform: 'capitalize'
   }
 
 };

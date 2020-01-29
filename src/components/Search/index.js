@@ -52,8 +52,8 @@ const TabMap = {
       showBalanceFlyer: true
     },
     supported: true
-    },
-    "channels": {
+  },
+  "channels": {
     id: TAG_KIND,
     baseUrl : '/dummy/search/channels',
     title: 'Channels',

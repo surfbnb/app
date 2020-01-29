@@ -49,7 +49,7 @@ class ChannelTagsList extends PureComponent {
         return tag && (
             <TouchableOpacity onPress={()=> this.onItemClicked(tag)}>
                 <View style={inlineStyles.tagWrapper}>
-                    <Text style={{color: this.isSelected(tagId) ? Colors.wildWatermelon2 : Colors.valhalla }}>
+                    <Text style={[inlineStyles.text, {color: this.isSelected(tagId) ? Colors.wildWatermelon2 : Colors.valhalla }]}>
                         {tagId == 0 ? tag.text : `#${tag.text}`}
                     </Text>
                 </View>
