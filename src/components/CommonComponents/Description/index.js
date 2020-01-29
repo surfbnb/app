@@ -15,7 +15,7 @@ class Description extends React.PureComponent{
     constructor( props ) {
         super( props );
         this.description = reduxGetter.getChannelDescription(props.channelId) 
-        || "Join the leading minds in the Web3 space for a weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free Join the leading minds in the Web3 space for a weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free"
+        || "Join the leading minds in ost.com the Web3 space www.google.com for a #abc weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free Join the leading minds in the Web3 space for a weekend-long community gathering dedicated to playing with blockchains and #BUIDLing with PegaBufficorns! Event is free"
         this.state = {
           expanded  : false
         }
