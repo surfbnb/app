@@ -20,9 +20,10 @@ class ChannelTagsList extends PureComponent {
             video_weight: null,
             weight: null
         }
+        this.tagIds = reduxGetter.getChannelTagIds(props.channelId);
+        this.tagIds && this.tagIds.unshift('0');
         this.state = {
-            data: (reduxGetter.getChannelTagIds(props.channelId) && reduxGetter.getChannelTagIds(props.channelId).unshift(0))
-                     || ['0','120', '122','10549', '10259', '10350', '10348', '10349', '10480', '10621', '10324', '10426' ],
+            data: this.tagIds || ['0'],
             selectedTag: this.allTag
         }
     }
@@ -39,7 +40,7 @@ class ChannelTagsList extends PureComponent {
         this.setState({
             selectedTag : tag
         })
-        //this.props.onTagClicked && this.props.onTagClicked(tag);
+        this.props.onTagClicked && this.props.onTagClicked(tag);
     }
 
     _renderItem = ( {item, index} ) => {

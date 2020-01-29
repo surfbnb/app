@@ -71,8 +71,8 @@ class ChannelsScreen extends PureComponent {
         this.videoListRef = ref;
     }
 
-    applyVideoListTagFilter(){
-        this.setVideoListRef && this.setVideoListRef.forcedRefresh();
+    applyVideoListTagFilter = () => {
+        this.videoListRef && this.videoListRef.forcedRefresh();
     }
 
     listHeaderComponent = () => {
@@ -81,7 +81,7 @@ class ChannelsScreen extends PureComponent {
                 <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}} channelId={this.channelId}/>
                 <Description channelId={this.channelId}/>
                 <View style={{padding: 10}}>
-                    <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )} channelId={this.channelId}/>
+                    <ChannelTagsList onTagClicked = {this.onTagClicked} channelId={this.channelId}/>
                 </View>
             </View>
         )
