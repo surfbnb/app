@@ -65,7 +65,7 @@ let stylesMap = {
     fontFamily: 'AvenirNext-Regular'
   },
 
-  joinView: {
+  joinedView: {
     backgroundColor: Colors.white,
     opacity: 0.8,
     borderRadius: 20,
@@ -75,6 +75,18 @@ let stylesMap = {
     paddingHorizontal: 10,
     flexDirection: 'row'
   },
+
+  joinView: {
+    backgroundColor: Colors.white,
+    // opacity: 0.8,
+    borderRadius: 5,
+    paddingVertical: 5,
+    // maxWidth: 90,
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    flexDirection: 'row'
+  },
+
   joinText: {
     color: Colors.valhalla,
     fontFamily: 'AvenirNext-Medium',

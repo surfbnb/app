@@ -32,14 +32,14 @@ class ChannelCell extends PureComponent {
 
   joined(){
     if(this.props.isChannelMember){
-      return <View style={styles.joinView}>
+      return <View style={styles.joinedView}>
         <Image style={styles.joinedIconSkipFont} source={Checkmarks}/>
         <Text style={styles.joinText}>Joined</Text>
       </View>
     } else {
       return <View style={styles.joinView}>
         <Image style={styles.joinIconSkipFont} source={ChannelJoin}/>
-        <Text style={styles.joinText}>Join</Text>
+        <Text style={[styles.joinText, {fontFamily: 'AvenirNext-DemiBold', fontSize: 18}]}>Join</Text>
       </View>
     }
   }
