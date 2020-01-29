@@ -20,6 +20,7 @@ import reduxGetter from '../../services/ReduxGetters';
 import {LoginPopoverActions} from "../LoginPopover";
 import {LoggedOutCustomTabClickEvent} from "../../helpers/Emitters";
 import NavigationService from "../../services/NavigationService";
+import DataContract from "../../constants/DataContract";
 
 const mapStateToProps = (state) => {
   return {
@@ -262,7 +263,7 @@ class HomeScreen extends Component {
           ref={(ref) => {
             this.listRef = ref;
           }}
-          fetchUrl={'/feeds'}
+          fetchUrl={DataContract.feed.homeApi}
           beforeRefresh={this.beforeRefresh}
           onRefresh={this.onRefresh}
           shouldPlay={this.shouldPlay}

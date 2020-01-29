@@ -156,15 +156,13 @@ class Base extends PureComponent {
                                       />
                                     </TouchableOpacity>
                                     <ReplyShareIcon  entityId={this.props.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)}/>
-                                    <ReportVideo  userId={this.props.userId} reportEntityId={this.props.replyDetailId} reportKind={'reply'} />
                                  </View>
                               </View>
                             </View>
 
                             <ReplyVideoBottomStatus
                                 userId={this.props.userId}
-                                entityId={this.props.replyDetailId}
-                            />
+                                entityId={this.props.replyDetailId} />
                         </View>
 
                     )}

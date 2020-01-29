@@ -80,6 +80,16 @@ let stylesMap = {
     fontFamily: 'AvenirNext-Medium',
     fontWeight: '500',
     marginLeft:4
+  },
+
+  joinedIconSkipFont: {
+    width: 10,
+    height: 10.66
+  },
+
+  joinIconSkipFont:{
+    width: 12.5,
+    height: 12.5
   }
 };
 

@@ -12,6 +12,7 @@ import ReduxGetters from '../../services/ReduxGetters';
 import TimerIcon from '../../assets/created-timer-icon.png';
 import Checkmarks from "../../assets/Checkmarks.png";
 import { shortenedFromNow } from '../../helpers/timestampHandling';
+import ReportVideo from "../CommonComponents/ReportVideo";
 
 class BottomStatus extends PureComponent {
   constructor(props) {
@@ -42,19 +43,23 @@ class BottomStatus extends PureComponent {
     return (
       <View style={inlineStyles.bottomBg}>
 
-          <View style={{ paddingTop: 8, paddingBottom: 5 }}>
+          <View style={inlineStyles.bottomBgInner}>
           {!!this.props.userName &&(
-            <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())}
-              pointerEvents={'auto'}
-            >
-                <View style={inlineStyles.handleWithTimer}>
+            <View style={inlineStyles.handleWithTimerAndReportIcon}>
+              <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())}
+                                        pointerEvents={'auto'}
+              >
+                <View style={inlineStyles.handleTruncate}>
                   <Text ellipsizeMode={'tail'} numberOfLines={1} style={[inlineStyles.handle]}>
-                      {`@${this.props.userName}`}
+                    {/*ellipsizeMode ellipsizeMode ellipsizeMode ellipsizeMode*/}
+                    {`@${this.props.userName}`}
                   </Text>
-                  <Image style={{height: 12, width: 12, marginLeft: 5, marginRight: 3}} source={TimerIcon}/>
-          <Text style={inlineStyles.timerTxt}>{shortenedFromNow(this.props.cts)}</Text>
+                  <Image style={inlineStyles.ctaIconSkipFont} source={TimerIcon}/>
+                  <Text style={inlineStyles.timerTxt}>{shortenedFromNow(this.props.cts)}</Text>
                 </View>
-            </TouchableWithoutFeedback>)}
+              </TouchableWithoutFeedback>
+              <ReportVideo userId={this.props.userId} reportEntityId={this.props.entityId} reportKind={this.props.entityKind} />
+            </View>)}
             {this.props.description ? (
               <Text
                 style={[{ fontSize: 14, flexWrap: 'wrap', fontFamily: 'AvenirNext-Regular', textAlign: 'left' }, inlineStyles.bottomBgTxt]}

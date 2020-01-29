@@ -34,7 +34,7 @@ class HomeFeedRow extends PureComponent {
   }
 
   refetchFeed = () => {
-    new PepoApi(`/feeds/${this.props.feedId}`)
+    new PepoApi(DataContract.feed.getSingleFeedApi(this.props.feedId))
       .get()
       .then((res) => {})
       .catch((error) => {});
@@ -86,7 +86,6 @@ class HomeFeedRow extends PureComponent {
                 />
                 <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                 <VideoShareIcon  entityId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
-                <ReportVideo userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
               </View>
             </View>
 
