@@ -8,6 +8,7 @@ import InAppBrowser from '../../services/InAppBrowser';
 import Utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
 import TextFormatter from '../CommonComponents/TextFormatter';
+import ReduxGetters from '../../services/ReduxGetters';
 
 class BottomStatus extends PureComponent {
   constructor(props) {
@@ -29,6 +30,11 @@ class BottomStatus extends PureComponent {
     }
   };
 
+  getTappedIncludesEntity = ( tag ) => {
+    let tappedIncludesEntity = ReduxGetters.getTappedIncludesEntity(this.props.entityDescriptionId, tag);
+    return tappedIncludesEntity;
+  }
+
   render() {
     return (
       <View style={inlineStyles.bottomBg}>
@@ -47,7 +53,7 @@ class BottomStatus extends PureComponent {
                 ellipsizeMode={'tail'}
                 numberOfLines={3}
               >
-                <TextFormatter text={this.props.description} entityDescriptionId={this.props.entityDescriptionId} 
+                <TextFormatter text={this.props.description} getTappedIncludesEntity={this.getTappedIncludesEntity} 
                         navigation={this.props.navigation}/>
               </Text>
             ) : (

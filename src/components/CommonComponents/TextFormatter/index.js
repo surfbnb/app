@@ -8,18 +8,18 @@ import CurrentUser from '../../../models/CurrentUser';
 const regex = /(^|\s)(#|@)(\w+)/g;
 
 class TextFormatter extends PureComponent{
-    isValidTag(descriptionId, tappedText) {
+    isValidTag(tappedText) {
         if(tappedText.indexOf('#') != 0 ) return false;
-        return this.isValidIncludes( descriptionId, tappedText );
+        return this.isValidIncludes( tappedText );
     }
 
-    isValidMention(descriptionId, tappedText) {
+    isValidMention(tappedText) {
         if(tappedText.indexOf('@') != 0 ) return false;
-        return this.isValidIncludes( descriptionId, tappedText );
+        return this.isValidIncludes( tappedText );
     }
 
-    isValidIncludes(descriptionId, tappedText){
-        return !!reduxGetter.getTappedIncludesEntity(descriptionId, tappedText);
+    isValidIncludes(tappedText){
+        return !!this.props.getTappedIncludesEntity(tappedText);
     }
 
     getHashTagMarkup( item , formattedItem, prevText, index ){
@@ -59,7 +59,7 @@ class TextFormatter extends PureComponent{
     onIncludesPressed = (tag) => {
         if(!Utilities.checkActiveUser()) return;
 
-        let tapEntity = reduxGetter.getTappedIncludesEntity(this.props.entityDescriptionId, tag);
+        let tapEntity = this.props.getTappedIncludesEntity(tag);
         if (!tapEntity) {
             return;
         }
@@ -98,9 +98,9 @@ class TextFormatter extends PureComponent{
                   let prevText = processingString.slice(0, tagLocation);
                   processingString = processingString.slice(tagLocation + item.length);
                   let formattedItem = item.replace(regex, "$2$3");
-                  if (this.isValidTag(this.props.entityDescriptionId, formattedItem)) {
+                  if (this.isValidTag( formattedItem)) {
                     return this.getHashTagMarkup(item, formattedItem, prevText, index);
-                  } if( this.isValidMention(this.props.entityDescriptionId ,  formattedItem) ){
+                  } if( this.isValidMention( formattedItem) ){
                     return this.getMentionMarkup(item, formattedItem, prevText, index);
                   }else {
                     return this.getTextMarkup(item, prevText, index);

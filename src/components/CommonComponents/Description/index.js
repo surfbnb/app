@@ -3,6 +3,8 @@ import { View, Text, Dimensions} from 'react-native';
 
 import inlineStyles from './styles';
 import reduxGetter from '../../../services/ReduxGetters';
+import TextFormatter from '../TextFormatter';
+import { withNavigation } from 'react-navigation';
 
 const windowWidth = Dimensions.get("window").width;
 const charPerLine = windowWidth / 8;
@@ -36,6 +38,11 @@ class Description extends React.PureComponent{
                      this.description;
     }
 
+    getTappedIncludesEntity = ( tag )=> {
+      let tappedIncludesEntity = reduxGetter.getChannelIncludesEntity(this.props.channelId, tag);
+      return tappedIncludesEntity;
+    }
+
     render(){
       let moreOrLess = this.seeStatus.more;
 
@@ -47,7 +54,8 @@ class Description extends React.PureComponent{
             <View style={inlineStyles.mainWrapper}>
                 <Text style={inlineStyles.title}>About</Text>
                 <Text style={[inlineStyles.desc]}>
-                  {this.getText()}
+                <TextFormatter text={this.getText()} getTappedIncludesEntity={this.getTappedIncludesEntity} 
+                        navigation={this.props.navigation}/>
                   <Text onPress={this.showMore} style={inlineStyles.more}>{moreOrLess}</Text>
                 </Text>
             </View>
@@ -56,4 +64,4 @@ class Description extends React.PureComponent{
     
 }
 
-export default Description;
+export default withNavigation(Description);

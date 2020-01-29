@@ -612,6 +612,12 @@ class ReduxGetters {
     return deepGet(state, `text_entities.id_${descId}.text`);
   }
 
+  getChannelIncludesEntity(id, state){
+    state = state || Store.getState();
+    let descId = deepGet(state, `channel_details.id_${id}.description_id`);
+    return deepGet(state, `text_entities.id_${descId}.includes`);
+  }
+
 }
 
 export default new ReduxGetters();
