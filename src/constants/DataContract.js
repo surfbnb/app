@@ -104,6 +104,9 @@ export default {
         },
         getChannelDetails : (id)=> {
             return `/channels/${id}`;
+        },
+        getChannelsMemberApi: (id) => {
+            return `/channels/${id}/users`;
         }
     }
 

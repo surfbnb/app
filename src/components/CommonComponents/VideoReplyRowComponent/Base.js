@@ -9,7 +9,6 @@ import deepGet from 'lodash/get';
 import inlineStyles from '../../FullScreenReplyCollection/styles';
 
 import ReplyPepoTxBtn from '../../PepoTransactionButton/ReplyPepoTxBtn';
-import VideoReplySupporterStat from '../VideoSupporterStat/VideoReplySupporterStat';
 
 import ReplyVideoBottomStatus from '../../BottomStatus/ReplyVideoBottomStatus';
 import DataContract from '../../../constants/DataContract';
@@ -159,11 +158,6 @@ class Base extends PureComponent {
                                     <ReplyShareIcon  entityId={this.props.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)}/>
                                     <ReportVideo  userId={this.props.userId} reportEntityId={this.props.replyDetailId} reportKind={'reply'} />
                                  </View>
-
-                                <VideoReplySupporterStat
-                                    entityId={this.props.replyDetailId}
-                                    userId={this.props.userId}
-                                />
                               </View>
                             </View>
 

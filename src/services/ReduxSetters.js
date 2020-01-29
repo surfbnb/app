@@ -37,6 +37,7 @@ const backendToAppEntities = {
   users: 'user_entities',
   contribution_to_users: 'user_entities',
   contribution_by_users: 'user_entities',
+  channel_users: 'user_entities',
   user_contribution_to_stats: {
     key: 'user_contribution_to_stats',
     parser: parser_merge
@@ -61,11 +62,15 @@ const backendToAppEntities = {
     parser: parser_direct_assign
   },
   unseen_replies: 'unseen_replies_entities',
-  channels: 'channel_entities',  //@TODO mayur follow standards 
-  channel_details: 'channel_detail_entities',  //@TODO mayur follow standards 
-  channel_stats: 'channel_stat_entities',  //@TODO mayur follow standards 
-  channel_taglines: 'channel_tagline_entities',  //@TODO mayur follow standards 
-  current_user_channel_relations: 'current_user_channel_relation_entities',  //@TODO mayur follow standards 
+  channels: 'channel_entities',  
+  channel_details: 'channel_detail_entities',  
+  channel_stats: 'channel_stat_entities',  
+  channel_taglines: 'channel_tagline_entities',  
+  current_user_channel_relations: 'current_user_channel_relation_entities',  
+  channel_user_relations: {
+    key :  'channel_user_relation_entities', 
+    parser: parser_merge
+  }
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.
