@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
 import { Text} from 'react-native';
 
-import reduxGetter from '../../../services/ReduxGetters';
 import Utilities from '../../../services/Utilities';
 import CurrentUser from '../../../models/CurrentUser';
+import InAppBrowser from '../../../services/InAppBrowser';
 
-const regex = /(^|\s)(#|@)(\w+)/g;
+const regex = /(^|\s)(#|@)(\w+)|(^|\s)(http:\/\/|https:\/\/|www.)([^\s]+)/gi;
+const linkRegex = /(^|\s)(http:\/\/|https:\/\/|www.)([^\s]+)/gi;
 
 class TextFormatter extends PureComponent{
     isValidTag(tappedText) {
@@ -15,6 +16,10 @@ class TextFormatter extends PureComponent{
 
     isValidMention(tappedText) {
         if(tappedText.indexOf('@') != 0 ) return false;
+        return this.isValidIncludes( tappedText );
+    }
+
+    isValidLink(tappedText) {
         return this.isValidIncludes( tappedText );
     }
 
@@ -56,16 +61,37 @@ class TextFormatter extends PureComponent{
         );
     }
 
-    onIncludesPressed = (tag) => {
+    getLinkMarkup( item , formattedItem, prevText, index ){
+        return (
+            <Text key={`${item}-${index}`}>
+            {prevText}
+            <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
+                    numberOfLines={1}
+                    onPress={() => {
+                    this.onIncludesPressed(formattedItem)
+                    }}>
+                {/*<Text style={{fontStyle: 'italic'}}>@</Text>*/}
+                {item}
+            </Text>
+            </Text>
+        );
+    }
+
+    onIncludesPressed = (item) => {
         if(!Utilities.checkActiveUser()) return;
 
-        let tapEntity = this.props.getTappedIncludesEntity(tag);
+        let tapEntity = this.props.getTappedIncludesEntity(item);
         if (!tapEntity) {
             return;
         }
 
         if( tapEntity.kind === 'tags'){
             this.props.navigation.push('VideoTags', { "tagId": tapEntity.id });
+            return;
+        }
+
+        if( tapEntity.kind === 'links'){
+            InAppBrowser.openBrowser(item);
             return;
         }
 
@@ -80,7 +106,6 @@ class TextFormatter extends PureComponent{
     };
 
     getTextMarkup( item  , prevText, index){
-        console.log(prevText , item)
         return (
           <Text key={`${item}-${index}`}>
             {prevText + item}
@@ -90,18 +115,25 @@ class TextFormatter extends PureComponent{
       
     render(){
         let processingString = this.props.text;
-        let includesArray = processingString.match(regex) || [];
+        let includesAndLinksArray = processingString.match(regex) || [];
         return  (
             <React.Fragment>
-                 {(includesArray.map((item, index) => {
-                  let tagLocation = processingString.search(item);
-                  let prevText = processingString.slice(0, tagLocation);
-                  processingString = processingString.slice(tagLocation + item.length);
-                  let formattedItem = item.replace(regex, "$2$3");
+                 {(includesAndLinksArray.map((item, index) => {
+                  let itemLocation = processingString.search(item);
+                  let prevText = processingString.slice(0, itemLocation);
+                  processingString = processingString.slice(itemLocation + item.length);
+                  let formattedItem = item;
+                  if(item.match(linkRegex) && item.match(linkRegex).length > 0){
+                    formattedItem = item.replace(regex, "$5$6");
+                  } else{
+                    formattedItem = item.replace(regex, "$2$3");
+                  }
                   if (this.isValidTag( formattedItem)) {
                     return this.getHashTagMarkup(item, formattedItem, prevText, index);
                   } if( this.isValidMention( formattedItem) ){
                     return this.getMentionMarkup(item, formattedItem, prevText, index);
+                  }else if(this.isValidLink( formattedItem )){
+                    return this.getLinkMarkup( item, formattedItem, prevText, index );
                   }else {
                     return this.getTextMarkup(item, prevText, index);
                   }

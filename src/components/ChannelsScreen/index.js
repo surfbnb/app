@@ -78,10 +78,10 @@ class ChannelsScreen extends PureComponent {
     listHeaderComponent = () => {
         return (
             <View style={{flex: 1}}>
-                <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}}/>
-                <Description/>
+                <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}} channelId={this.channelId}/>
+                <Description channelId={this.channelId}/>
                 <View style={{padding: 10}}>
-                    <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )}/>
+                    <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )} channelId={this.channelId}/>
                 </View>
             </View>
         )
