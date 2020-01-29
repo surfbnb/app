@@ -6,8 +6,8 @@ import inlineStyle from "./styles";
 export default (props) => {
     if( props.isPinned ){
       return   <View style={inlineStyle.wrapper}>
-        <Image source={reply_video} style={inlineStyles.image} />
-        <Text style={inlineStyles.text}>Pinned Video</Text>
+        <Image source={reply_video} style={inlineStyle.image} />
+        <Text style={inlineStyle.text}>Pinned Video</Text>
       </View>
     }
     return  null;

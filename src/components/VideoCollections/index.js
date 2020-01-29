@@ -7,6 +7,7 @@ import CommonStyle from "../../theme/styles/Common";
 import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
 import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
 import entityHelper from '../../helpers/EntityHelper';
+import { withNavigation } from 'react-navigation';
 
 class VideoCollections extends PureComponent {
     constructor(props){
@@ -258,4 +259,4 @@ VideoCollections.defaultProps ={
     }
 }
 
-export default VideoCollections  ;
+export default withNavigation( VideoCollections ) ;

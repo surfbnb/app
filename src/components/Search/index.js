@@ -457,9 +457,8 @@ class SearchScreen extends PureComponent {
            style={tabStyle.style}>
 
         <VideoCollections
-          ref={this.setVideoFlatListRef}
+          onRef={this.setVideoFlatListRef}
           getFetchUrl={this.getVideoTabUrl}
-          navigation={this.props.navigation}
           noResultsData={TabMap.videos.noResultsData}
           getNoResultsCell={TabMap.videos.renderNoResults}
           extraParams={TabMap.videos.extraParams}
