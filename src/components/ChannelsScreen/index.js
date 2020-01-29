@@ -14,6 +14,7 @@ import DeletedChannelInfo from "../CommonComponents/DeletedEntity/DeletedChannel
 import Description from '../CommonComponents/Description';
 import EmptySearchResult from '../CommonComponents/EmptySearchResult';
 import ReduxGetters from '../../services/ReduxGetters';
+import BackArrow from '../CommonComponents/BackArrow';
 
 class ChannelsScreen extends PureComponent {
 
@@ -38,7 +39,8 @@ class ChannelsScreen extends PureComponent {
             shadowOpacity: 0.1,
             shadowRadius: 3
           },
-          headerRight: <View><Text>options</Text></View>
+          headerRight: <View><Text>options</Text></View>,
+          headerBackImage: <BackArrow />
         };
       };
 
@@ -73,19 +75,13 @@ class ChannelsScreen extends PureComponent {
         this.setVideoListRef && this.setVideoListRef.forcedRefresh();
     }
 
-    getAboutSection = () => {
-        return (
-            <Description/>
-        )
-    }
-
     listHeaderComponent = () => {
         return (
-            <View style={{flex: 1, height: 500}}>
-                <ChannelCell/>
-                {this.getAboutSection()}
+            <View style={{flex: 1}}>
+                <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}}/>
+                <Description/>
                 <View style={{padding: 10}}>
-                    <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )} channelId = '120'/>
+                    <ChannelTagsList onTagClicked = {( item )=> this.onTagClicked( item )}/>
                 </View>
             </View>
         )

@@ -602,7 +602,7 @@ class ReduxGetters {
 
   getChannelTagIds(id, state) {
     state = state || Store.getState();
-    return deepGet(state, `channel_detail_entities.id_${id}.tag_ids`);
+    return deepGet(state, `channel_details.id_${id}.tag_ids`);
   }
 
   isCurrentUserMemberOfChannel(id, state){
@@ -611,9 +611,16 @@ class ReduxGetters {
 
   }
 
-  isChannelUserAdmin(id,  state){
+  getChannelDescription(id, state){
     state = state || Store.getState();
-    return deepGet(state, `channel_user_relation_entities.id_${id}.is_admin`);
+    let descId = deepGet(state, `channel_detail_entities.id_${id}.description_id`);
+    return deepGet(state, `text_entities.id_${descId}.text`);
+  }
+
+  getChannelIncludesEntity(id, state){
+    state = state || Store.getState();
+    let descId = deepGet(state, `channel_detail_entities.id_${id}.description_id`);
+    return deepGet(state, `text_entities.id_${descId}.includes`);
   }
 
 
