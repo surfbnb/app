@@ -38,6 +38,11 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
 
 const AppConfig = {
 
+  videoType : {
+    fanVideo: "video",
+    reply: "reply"
+  },
+
   pepoAnimationDuration : 500,
   logoutTimeOut : 2000,
   loginPopoverShowTime: 10000,
