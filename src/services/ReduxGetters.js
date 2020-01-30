@@ -599,7 +599,7 @@ class ReduxGetters {
   getChannelBackgroundImage(id, state){
     state = state || Store.getState();
     let coverImageId = deepGet(state, `channel_detail_entities.id_${id}.cover_image_id`)
-      return deepGet(state, `image_entities.id_${coverImageId}.resolutions.original.url`);
+      return deepGet(state, `image_entities.id_${coverImageId}.resolutions.576w.url`) || deepGet(state, `image_entities.id_${coverImageId}.resolutions.original.url`) ;
   }
 
   getChannelTagIds(id, state) {
