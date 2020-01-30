@@ -1,11 +1,19 @@
 import React, { PureComponent } from 'react';
 import { FlatList, TouchableOpacity, View, Text } from 'react-native';
+import {connect} from "react-redux";
 
 import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import reduxGetter from '../../services/ReduxGetters';
 
 //TODO @Preshita redux connect 
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+      tagIds: reduxGetter.getChannelTagIds(ownProps.channelId) || []
+    };
+  };
+
 
 class ChannelTagsList extends PureComponent {
 
@@ -20,12 +28,19 @@ class ChannelTagsList extends PureComponent {
             video_weight: null,
             weight: null
         }
-        this.tagIds = reduxGetter.getChannelTagIds(props.channelId);
-        this.tagIds && this.tagIds.unshift('0');
         this.state = {
-            data: this.tagIds || ['0'],
             selectedTag: this.allTag
         }
+        this.setAllOption();
+    }
+
+    setAllOption = () => {
+        this.tagIds = this.props.tagIds.slice(0);
+        this.tagIds.unshift('0');
+    }
+
+    componentDidUpdate(){
+        this.setAllOption();
     }
 
     _keyExtractor = (item, index) => {
@@ -58,13 +73,13 @@ class ChannelTagsList extends PureComponent {
     }
 
     render() {
-        return this.state.data && (
+        return this.tagIds && (
             <View style={inlineStyles.tagListWrapper}>
                 <FlatList
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     decelerationRate={'fast'}
-                    data={this.state.data}
+                    data={this.tagIds}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
                     ref={(ref) => (this.flatlistRef = ref)}
@@ -75,4 +90,4 @@ class ChannelTagsList extends PureComponent {
     }
 }
 
-export default ChannelTagsList;
+export default connect(mapStateToProps)(ChannelTagsList);

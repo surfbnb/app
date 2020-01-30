@@ -36,11 +36,6 @@ class ChannelCell extends PureComponent {
 
   componentWillUnmount() {}
 
-  isChannelPage = () => {
-    let state = this.props.navigation.state;
-    return Utilities.getLastChildRoutename(state) == AppConfig.channelConstants.SCREEN_NAME;
-  }
-
   joined(){
     if(this.props.isChannelMember){
       return <View style={styles.joinedView}>
@@ -48,7 +43,7 @@ class ChannelCell extends PureComponent {
         <Text style={styles.joinText}>Joined</Text>
       </View>
     } else {
-      return this.isChannelPage() ?
+      return Utilities.isChannelPage(this.props.navigation.state) ?
             <TouchableOpacity onPress={this.onJoinChannel}>
               <View style={styles.joinView}>
                 <Image style={styles.joinIconSkipFont} source={ChannelJoin}/>
@@ -76,6 +71,7 @@ class ChannelCell extends PureComponent {
 
   onChannelPress= () =>  {
     console.log('onChannelPress');
+    if(Utilities.isChannelPage(this.props.navigation.state)) return;
     this.props.navigation.push("ChannelsScreen", {channelId:this.props.channelId} )
   }
 
