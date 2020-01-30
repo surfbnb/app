@@ -99,6 +99,9 @@ export default {
         },
         getVideoReplyShareApi: ( id ) => {
             return `/replies/${id}/share`;
+        },
+        getChannelShareApi: ( id ) => {
+            return `/dummy/channels/${id}/share`
         }
     },
 
@@ -117,6 +120,21 @@ export default {
         getChannelsMemberApi: (id) => {
             return `/dummy/channels/1/users`;
             return `/channels/${id}/users`;
+        },
+        getMuteApi : (id) => {
+          return `/channels/${id}/turn-off-notifications`;
+        },
+        getUnmuteApi : (id) => {
+            return `/channels/${id}/turn-on-notifications`;
+        },
+        getLeaveChannelApi : (id) => {
+          return `/channels/${id}/leave`
+        },
+        getJoinChannelApi : (id) => {
+          return `/channels/${id}/join`
+        },
+        getReportChannelApi : () => {
+            return `/report`
         }
     }
 

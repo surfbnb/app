@@ -15,6 +15,7 @@ import Description from '../CommonComponents/Description';
 import EmptySearchResult from '../CommonComponents/EmptySearchResult';
 import ReduxGetters from '../../services/ReduxGetters';
 import BackArrow from '../CommonComponents/BackArrow';
+import ChannelsHeaderRight from '../ChannelsHeaderRight';
 
 class ChannelsScreen extends PureComponent {
 
@@ -39,7 +40,7 @@ class ChannelsScreen extends PureComponent {
             shadowOpacity: 0.1,
             shadowRadius: 3
           },
-          headerRight: <View><Text>options</Text></View>,
+          headerRight: <ChannelsHeaderRight channelId = {1}/>,
           headerBackImage: <BackArrow />
         };
       };
@@ -115,7 +116,7 @@ class ChannelsScreen extends PureComponent {
                 <VideoCollections getFetchUrl={this.getFetchUrl}
                     getFetchParams={this.getFetchParams}
                     listHeaderComponent={this.listHeaderComponent()}
-                    ref={this.setVideoListRef}
+                    onRef={this.setVideoListRef}
                     beforeRefresh={this.fetchChannel}
                     getNoResultsCell={this.getNoResultsCell}
                 />

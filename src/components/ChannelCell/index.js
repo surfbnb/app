@@ -12,14 +12,20 @@ import {connect} from "react-redux";
 import { withNavigation } from 'react-navigation';
 import Checkmarks from '../../assets/Checkmarks.png';
 import ChannelJoin from '../../assets/channel-join-icon.png';
+import PepoApi from '../../services/PepoApi';
+import DataContract from '../../constants/DataContract';
+import Toast from "../../theme/components/NotificationToast";
+import Utilities from '../../services/Utilities';
+import AppConfig from '../../constants/AppConfig';
+
 const mapStateToProps = ( state, ownProps ) => {
    return {
     backgroundImgUrl :  reduxGetters.getChannelBackgroundImage(ownProps.channelId, state),
-     channelName : reduxGetters.getChannelName(ownProps.channelId),
-     channelTagLine: reduxGetters.getChannelTagLine(ownProps.channelId),
-     channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId),
-     channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId),
-     isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId)
+    channelName : reduxGetters.getChannelName(ownProps.channelId),
+    channelTagLine: reduxGetters.getChannelTagLine(ownProps.channelId),
+    channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId),
+    channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId),
+    isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId)
   };
 }
 
@@ -37,15 +43,35 @@ class ChannelCell extends PureComponent {
         <Text style={styles.joinText}>Joined</Text>
       </View>
     } else {
-      return <View style={styles.joinView}>
-        <Image style={styles.joinIconSkipFont} source={ChannelJoin}/>
-        <Text style={[styles.joinText, {fontFamily: 'AvenirNext-DemiBold', fontSize: 18}]}>Join</Text>
-      </View>
+      return Utilities.isChannelPage(this.props.navigation.state) ?
+            <TouchableOpacity onPress={this.onJoinChannel}>
+              <View style={styles.joinView}>
+                <Image style={styles.joinIconSkipFont} source={ChannelJoin}/>
+                <Text style={[styles.joinText, {fontFamily: 'AvenirNext-DemiBold', fontSize: 18}]}>Join</Text>
+              </View>
+            </TouchableOpacity> : <React.Fragment/>
     }
+  }
+
+  onJoinChannel = () => {
+    new PepoApi(DataContract.channels.getJoinChannelApi(this.props.channelId))
+      .post()
+      .then((response) => {
+        if (response && response.success){
+            Toast.show({text:'You have joined channel successfully!', icon: 'success' });
+        } else {
+            Toast.show({text:'Could not join channel!', icon: 'error' });
+        }
+      })
+      .catch((err) => {
+        Toast.show({text:'Could not join channel!', icon: 'error' });
+        console.log('Join channel failed', err);
+      })
   }
 
   onChannelPress= () =>  {
     console.log('onChannelPress');
+    if(Utilities.isChannelPage(this.props.navigation.state)) return;
     this.props.navigation.push("ChannelsScreen", {channelId:this.props.channelId} )
   }
 

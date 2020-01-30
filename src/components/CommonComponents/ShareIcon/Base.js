@@ -21,7 +21,7 @@ class Base extends PureComponent {
   render(){
     return (<TouchableOpacity pointerEvents={'auto'}
                               disabled={!this.props.canReply}
-                              style={{marginBottom: 15, height: 50, width: 50, alignItems: 'center', justifyContent: 'center'}}
+                              style={{marginBottom: 0, height: 50, width: 50, alignItems: 'center', justifyContent: 'center'}}
                               onPress={multipleClickHandler(() => this.shareVideo())} >
               <Image style={{ height: 35, width: 36.5 }} source={!this.props.canReply ? share_icon_disabled : share_icon} />
           </TouchableOpacity>);

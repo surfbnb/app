@@ -65,6 +65,7 @@ import TwitterWebLogin from './src/components/WebLogins/TwitterWebLogin';
 import GitHubWebLogin from './src/components/WebLogins/GitHubWebLogin';
 import ChannelsScreen from "./src/components/ChannelsScreen";
 import MembersScreen from "./src/components/MembersScreen";
+import QrCode from './src/components/CommonComponents/QrCode'
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -84,7 +85,8 @@ const customTabHiddenRoutes = [
   'VideoReplyPlayer',
   'LoginPopover',
   'TwitterWebLogin',
-  'GitHubWebLogin'
+  'GitHubWebLogin',
+  'QrCode'
 ];
 
 const modalStackConfig = {
@@ -210,7 +212,8 @@ const HomeStack = createStackNavigator(
     LoginPopover: LoginPopover,
     TwitterWebLogin: TwitterWebLoginStack,
     GitHubWebLogin: GitHubWebLoginStack,
-    CouchMarks: CouchMarks
+    CouchMarks: CouchMarks,
+    QrCode : QrCode
   },
   {
     ...modalStackConfig,
@@ -249,7 +252,8 @@ const NotificationStack = createStackNavigator(
     AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
     CaptureVideo: CaptureVideoStack,
-    InAppBrowserStack: InAppBrowserStack
+    InAppBrowserStack: InAppBrowserStack,
+    QrCode : QrCode
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -293,7 +297,8 @@ const ProfileStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     StoreProductsScreen: StoreProductsScreen,
-    RedemptiomScreen: RedemptiomScreen
+    RedemptiomScreen: RedemptiomScreen,
+    QrCode : QrCode
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -328,7 +333,8 @@ const SearchStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     TransactionScreen: TransactionScreen,
-    AuthDeviceDrawer: AuthDeviceDrawer
+    AuthDeviceDrawer: AuthDeviceDrawer,
+    QrCode : QrCode
   },
   {
     ...modalStackConfig,

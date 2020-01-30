@@ -268,6 +268,10 @@ export default {
 
   isAndroid(){
     return Platform.OS === "android";
+  },
+
+  isChannelPage(state) {
+    return this.getLastChildRoutename(state) == AppConfig.channelConstants.SCREEN_NAME;
   }
 
 };

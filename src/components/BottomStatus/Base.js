@@ -55,7 +55,7 @@ class BottomStatus extends PureComponent {
                     {`@${this.props.userName}`}
                   </Text>
                   <Image style={inlineStyles.ctaIconSkipFont} source={TimerIcon}/>
-                  <Text style={inlineStyles.timerTxt}>{shortenedFromNow(this.props.cts)}</Text>
+                  <Text style={inlineStyles.timerTxt}>{shortenedFromNow(this.props.cts*1000)}</Text>
                 </View>
               </TouchableWithoutFeedback>
               <ReportVideo userId={this.props.userId} reportEntityId={this.props.entityId} reportKind={this.props.entityKind} />

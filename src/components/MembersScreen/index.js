@@ -5,6 +5,7 @@ import Common from '../../theme/styles/Common';
 import DataContract from '../../constants/DataContract';
 import Colors from "../../theme/styles/Colors";
 import MembersList from "./list";
+import BackArrow from '../CommonComponents/BackArrow';
 
 class MembersScreen extends PureComponent {
 
@@ -25,7 +26,8 @@ class MembersScreen extends PureComponent {
         },
         shadowOpacity: 0.1,
         shadowRadius: 3
-      }
+      },
+      headerBackImage: <BackArrow/>
     };
   };
 

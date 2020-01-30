@@ -83,7 +83,7 @@ let stylesMap = {
     paddingVertical: 5,
     // maxWidth: 90,
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
     flexDirection: 'row'
   },
 
