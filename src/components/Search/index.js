@@ -27,7 +27,7 @@ const NO_OF_CHARS_TO_RESTRICT_SEARCH = 1;
 const TabMap = {
   "top": {
     id: 'top',
-    baseUrl: '/dummy/search/top',
+    baseUrl: '/search/top',
     title: 'Top',
     "params": {
       "supported_entities": [USER_KIND, TAG_KIND, VIDEO_KIND]
@@ -55,7 +55,7 @@ const TabMap = {
   },
   "channels": {
     id: TAG_KIND,
-    baseUrl : '/dummy/search/channels',
+    baseUrl : '/search/channels',
     title: 'Channels',
     "queryParam": "q",
     "noResultsData": {

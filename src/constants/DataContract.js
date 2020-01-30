@@ -90,7 +90,11 @@ export default {
         },
         kindKey: "kind",
         creatorUserIdKey: 'creator_user_id',
-        videoDetailsKey: 'video_details'
+        videoDetailsKey: 'video_details',
+        reportEntityKind : {
+            reply:"reply",
+            video:"video"
+        }
     },
 
     share: {
@@ -101,24 +105,21 @@ export default {
             return `/replies/${id}/share`;
         },
         getChannelShareApi: ( id ) => {
-            return `/dummy/channels/${id}/share`
+            return `/channels/${id}/share`
         }
     },
 
     channels: {
         getVideoListApi : (id) => {
-            return `/dummy/channels/1/videos`;
             return `/channels/${id}/videos`;
         },
         getVideoListParams : (id=0)=> {
             return {filter_by_tag_id: id}
         },
         getChannelDetails : (id)=> {
-            return `/dummy/channels/1`;
             return `/channels/${id}`;
         },
         getChannelsMemberApi: (id) => {
-            return `/dummy/channels/1/users`;
             return `/channels/${id}/users`;
         },
         getMuteApi : (id) => {
@@ -135,6 +136,19 @@ export default {
         },
         getReportChannelApi : () => {
             return `/report`
+        }
+    },
+    
+    actionSheet: {
+        video : {
+            reportApi: '/report',
+            getMuteUnMuteApi : (id, canMute) => {
+                if(canMute){
+                    return  `/users/${id}/mute` ;
+                }else{
+                    return  `/users/${id}/unmute`;
+                }
+            }
         }
     }
 

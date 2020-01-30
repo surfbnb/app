@@ -282,7 +282,6 @@ class ReduxGetters {
   getProfileImage(id, state, size) {
     state = state || Store.getState();
     size = size || appConfig.profileImageConstants.imageWidth;
-    console.log("Image ====" ,  deepGet(state, `image_entities.id_${id}.resolutions.${size}.url`));
     return (
       deepGet(state, `image_entities.id_${id}.resolutions.${size}.url`) ||
       deepGet(state, `image_entities.id_${id}.resolutions.${appConfig.profileImageConstants.originalImageWidth}.url`)

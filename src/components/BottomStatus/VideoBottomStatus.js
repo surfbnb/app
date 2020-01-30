@@ -2,7 +2,7 @@ import reduxGetter from "../../services/ReduxGetters";
 import { connect } from 'react-redux';
 import Base from "./Base"
 import { withNavigation } from "react-navigation";
-import AppConfig from "../../constants/AppConfig";
+import DataContract from "../../constants/DataContract";
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -14,7 +14,7 @@ const mapStateToProps = (state, ownProps) => {
       supporters: reduxGetter.getVideoSupporters(ownProps.entityId),
       totalBt: reduxGetter.getVideoBt(ownProps.entityId, state),
       cts: reduxGetter.getVideoCTS(ownProps.entityId,  state),
-      entityKind : AppConfig.videoType.fanVideo
+      reportEntityKind : DataContract.videos.reportEntityKind.video
     };
   };
 

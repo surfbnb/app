@@ -1,8 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import {TouchableOpacity, Image, Alert} from "react-native";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import multipleClickHandler from "../../../services/MultipleClickHandler";
-import appVariables from '../../../services/AppVariables';
 import report_icon from '../../../assets/report_video.png';
 import CurrentUser from "../../../models/CurrentUser";
 import PepoApi from "../../../services/PepoApi";
@@ -10,216 +9,206 @@ import Toast from "../../../theme/components/NotificationToast";
 import {ActionSheet} from "native-base";
 import ReduxGetters from "../../../services/ReduxGetters";
 import {fetchUser} from "../../../helpers/helpers";
-const ACTION_SHEET_CANCEL_INDEX = 2;// revert to index 2
-const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
-const ACTION_SHEET_REPORT_INDEX = 1;
-const MUTE_UNMUTE_INDEX = 0;
+import DataContract from '../../../constants/DataContract';
+import Utilities from '../../../services/Utilities';
+import deepGet from "lodash/get"
 
-
-const  ACTION_SHEET_LOGGED_OUT_CANCEL_INDEX = 1;// revert to index 1
-const  ACTION_SHEET_LOGGED_OUT_DESCTRUCTIVE_INDEX = 0;
-const  ACTION_SHEET_LOGGED_OUT_REPORT_INDEX = 0;
-
-const mapStateToProps = (state , ownProps) => {
-    return {
-        currentUserId: CurrentUser.getUserId()
-    }
+const mapStateToProps = (state, ownProps) => {
+  return {
+    currentUserId: CurrentUser.getUserId()
+  }
 };
 
-
-
 class ReportVideo extends PureComponent {
-
-    constructor(props){
-      super(props);
-    };
-
-
-    getActionSheetButtons = ()=>{
-      return [ this.getMuteUnmuteText(), 'Report', 'Cancel'];// remove memory option
-    }
-
-  getActionSheetLoggedOutButtons = () => {
-    return [ 'Report',  'Cancel'];// remove memory option
-  }
-
-
-  getMuteUnmuteText = () => {
-
-    let name = ReduxGetters.getName(this.props.userId);
-    if (this.canMute()){
-      return `Mute ${name}`;
-    } else if (this.canUnmute()) {
-      return `Unmute ${name}`;
-    }
-    return '';
-
+  
+  constructor(props) {
+    super(props);
   };
 
-
-    reportVideo = () => {
-        new PepoApi('/report')
-            .post({report_entity_kind: this.props.reportKind, report_entity_id: this.props.reportEntityId })
-            .then((response) => {
-                if (response && response.success){
-                    Toast.show({text:'Video reported successfully!', icon: 'success' });
-                } else {
-                    Toast.show({text:'Video reported failed!', icon: 'error' });
-
-                }
-            })
-            .catch((err) => {
-                Toast.show({text:'Video reported failed!', icon: 'error' });
-                console.log('Report video failed', err);
-
-            });
-    };
-
-  showAlert () {
-        Alert.alert(
-            '',
-            'Report video for inappropriate content or abuse?',
-            [
-                {text: 'Report', onPress: () =>  this.reportVideo() },
-                {
-                    text: 'Cancel',
-                    style: 'cancel'
-                }
-
-            ],
-            {cancelable: true},
-        );
-  }
-
-
-  muteUnmuteUser = () => {
-    let apiEndpoint = '',
-    successMessage,
-      errorMessage;
-    if (this.canMute() ){
-      apiEndpoint = `/users/${this.props.userId}/mute`;
-      successMessage = 'User muted successfully!';
-      errorMessage = 'User mute failed!';
-    } else if (this.canUnmute()){
-      apiEndpoint = `/users/${this.props.userId}/unmute`;
-      successMessage = 'User unmuted successfully!';
-      errorMessage = 'User unmute failed!';
-
-    } else {
-      return;
-    }
-
-    new PepoApi(apiEndpoint)
-      .post()
-      .then((response) => {
-        if (response && response.success){
-          Toast.show({text:successMessage, icon: 'success' });
-          fetchUser(this.props.userId);
-        } else {
-          Toast.show({text:errorMessage, icon: 'error' });
+  getDefaultConfig() { 
+    return {
+      loginVideoConfig: {
+        actionConfig: {
+          0: "showMuteUnmuteAlert",   //function name in component mapped to index in actionSheetConfig options array
+          1: "showReportVideoAlert"   //function name in component mapped to index in actionSheetConfig options array
+        },
+        actionSheetConfig: {
+          options: [this.getActionSheetMuteUnmuteText(), 'Report', `Video Id: ${this.props.entityId}`, 'Cancel'],
+          cancelButtonIndex: 3,  //Cancel button index in options array
+          destructiveButtonIndex: 1, //Red button index in options array
+          title: 'Select user action'
         }
+      },
+      logoutVideoConfig: {
+        actionConfig: {
+          0: "showReportVideoAlert"  //function name in component mapped to index in actionSheetConfig options array
+        },
+        actionSheetConfig: {
+          options: ['Report', `Video Id: ${this.props.entityId}` , 'Cancel'],
+          cancelButtonIndex: 2, //Cancel button index in options array
+          destructiveButtonIndex: 0,  //Red button index in options array
+          title: 'Select user action'
+        }
+      },
+      loginReplyConfig: {
+        actionConfig: {
+          0: "showMuteUnmuteAlert",   //function name in component mapped to index in actionSheetConfig options array
+          1: "showReportVideoAlert"  //function name in component mapped to index in actionSheetConfig options array
+        },
+        actionSheetConfig: {
+          options: [this.getActionSheetMuteUnmuteText(), 'Report', 'Cancel'],
+          cancelButtonIndex: 2,  //Cancel button index in options array
+          destructiveButtonIndex: 1, //Red button index in options array
+          title: 'Select user action'
+        }
+      },
+      logoutReplyConfig: {
+        actionConfig: {
+          0: "showReportVideoAlert"  //function name in component mapped to index in actionSheetConfig options array
+        },
+        actionSheetConfig: {
+          options: ['Report', 'Cancel'],
+          cancelButtonIndex: 1, //Cancel button index in options array
+          destructiveButtonIndex: 0, //Red button index in options array
+          title: 'Select user action'
+        }
+      }
+    }
+  }
+  
+  getActionSheetConfig() {
+    if (CurrentUser.getUserId()) {
+      //Login sheet config
+      if (DataContract.videos.reportEntityKind.video == this.props.reportKind) {
+        //Fan video sheetconfig
+        return this.getDefaultConfig().loginVideoConfig;
+      } else {
+        //Reply video sheetconfig
+        return this.getDefaultConfig().loginReplyConfig;
+      }
+    } else {
+      //Logout sheet config
+      if (DataContract.videos.reportEntityKind.video = this.props.reportKind) {
+        //Fan video sheetconfig
+        return this.getDefaultConfig().logoutVideoConfig;
+      } else {
+        //Reply video sheetconfig
+        return this.getDefaultConfig().logoutReplyConfig;
+      }
+    }
+  }
+  
+  canMute = () => {
+    return !!ReduxGetters.canMuteUser(this.props.userId);
+  };
+  
+  getActionSheetMuteUnmuteText = () => {
+    return `${Utilities.capitalizeFirstLetter(this.getMuteUnMuteText())} ${this.getUserName()}`;
+  };
+  
+  getUserName = () => {
+    return ReduxGetters.getName(this.props.userId);
+  }
+  
+  getMuteUnMuteText = () => {
+    if (this.canMute()) {
+      return "mute";
+    } else {
+      return `unmute`;
+    }
+  }
+  
+  showReportVideoAlert() {
+    Alert.alert('', 'Report video for inappropriate content or abuse?',
+      [{text: 'Report', onPress: () => this.reportVideo()},
+        {text: 'Cancel', style: 'cancel'}],
+      {cancelable: true});
+  }
+  
+  reportVideo = () => {
+    new PepoApi(DataContract.actionSheet.video.reportApi)
+      .post({report_entity_kind: this.props.reportKind, report_entity_id: this.props.entityId})
+      .then((response) => {
+        this.onReportVideo(response);
       })
       .catch((err) => {
-        Toast.show({text:errorMessage, icon: 'error' });
-        console.log('Action failed!', err, errorMessage);
+        this.onReportVideo(err);
       });
   };
-
-  canMute = () => {
-    return ReduxGetters.canMuteUser(this.props.userId) === true;
-  };
-
-  canUnmute = () => {
-    return ReduxGetters.canMuteUser(this.props.userId) === false;
-  };
-
-  showMuteUnmuteAlert = () => {
-
-    let message = '';
-    if (this.canMute()){
-      message =  'By confirming this you will mute ' + ReduxGetters.getName(this.props.userId);
-    } else if (this.canUnmute()){
-      message =  'By confirming this you will unmute ' + ReduxGetters.getName(this.props.userId);
+  
+  onReportVideo = (response) => {
+    if (response && response.success) {
+      Toast.show({text: 'Video reported successfully!', icon: 'success'});
     } else {
-      return;
+      Toast.show({text: 'Video reported failed!', icon: 'error'});
     }
-
-
-    Alert.alert(
-      '',
-      message,
-      [
-        {text: 'Confirm', onPress: () =>  this.muteUnmuteUser() },
-        {
-          text: 'Cancel',
-          style: 'cancel'
-        }
-
+  }
+  
+  showMuteUnmuteAlert = () => {
+    let message = `By confirming this you will ${this.getMuteUnMuteText()} ` + ReduxGetters.getName(this.props.userId);
+    Alert.alert('', message,
+      [{text: 'Confirm', onPress: () => this.muteUnmuteUser()},
+        {text: 'Cancel', style: 'cancel'}
       ],
       {cancelable: true},
     );
-
   };
-
-    showActionSheet = () => {
-      if (CurrentUser.getUserId()){
-        ActionSheet.show(
-          {
-            options: this.getActionSheetButtons(),
-            cancelButtonIndex: ACTION_SHEET_CANCEL_INDEX,
-            destructiveButtonIndex: ACTION_SHEET_DESCTRUCTIVE_INDEX,
-            title: 'Select user action'
-          },
-          (buttonIndex) => {
-            if (buttonIndex == ACTION_SHEET_REPORT_INDEX) {
-              // This will take to VideoRecorder component
-              this.showAlert();
-            } else if (buttonIndex == MUTE_UNMUTE_INDEX){
-              this.showMuteUnmuteAlert();
-            }
-          }
-        );
-
-      } else {
-
-        appVariables.isActionSheetVisible = true;
-        ActionSheet.show(
-          {
-            options: this.getActionSheetLoggedOutButtons(),
-            cancelButtonIndex: ACTION_SHEET_LOGGED_OUT_CANCEL_INDEX,
-            destructiveButtonIndex: ACTION_SHEET_LOGGED_OUT_DESCTRUCTIVE_INDEX,
-            title: 'Select user action'
-          },
-          (buttonIndex) => {
-            if (buttonIndex == ACTION_SHEET_LOGGED_OUT_REPORT_INDEX) {
-              // This will take to VideoRecorder component
-              this.showAlert();
-            }
-            appVariables.isActionSheetVisible = false;
-            }
-            )
-
-      }
-
-
-    };
-
-    isVisible = () => {
-        return this.props.userId != this.props.currentUserId;
-    };
-
-    render(){
-        return  this.isVisible() && (
-          <React.Fragment>
-            <TouchableOpacity pointerEvents={'auto'}
-                              style={{height: 24, width: '20%', alignItems: 'center', justifyContent: 'center', marginRight: -14}}
-                              onPress={multipleClickHandler(() => this.showActionSheet())} >
-              <Image style={{ height: 12, width: 30 }} source={report_icon} />
-            </TouchableOpacity>
-          </React.Fragment>
-        )
+  
+  muteUnmuteUser = () => {
+    new PepoApi(DataContract.actionSheet.video.getMuteUnMuteApi(this.props.userId, this.canMute()))
+      .post()
+      .then((response) => {
+        this.onMuteUnMute(response);
+      })
+      .catch((err) => {
+        this.onMuteUnMute(err);
+      });
+  };
+  
+  onMuteUnMute = (response) => {
+    if (response && response.success) {
+      Toast.show({text: `User ${this.getMuteUnMuteText().toLowerCase()}d successfully!`, icon: 'success'});
+      fetchUser(this.props.userId);
+    } else {
+      Toast.show({text: `User ${this.getMuteUnMuteText().toLowerCase()}d failed!`, icon: 'error'});
     }
-
+  }
+  
+  showActionSheet = () => {
+    const config = this.getActionSheetConfig();
+    ActionSheet.show(
+      config.actionSheetConfig,
+      (buttonIndex) => {
+        const fnName = deepGet(config, `actionConfig[${buttonIndex}]`)
+        if (fnName && this[fnName]) {
+          this[fnName]();
+        }
+      }
+    );
+  };
+  
+  isVisible = () => {
+    return this.props.userId != this.props.currentUserId;
+  };
+  
+  render() {
+    return this.isVisible() && (
+      <React.Fragment>
+        <TouchableOpacity pointerEvents={'auto'}
+                          style={{
+                            height: 24,
+                            width: '20%',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: -14
+                          }}
+                          onPress={multipleClickHandler(() => this.showActionSheet())}>
+          <Image style={{height: 12, width: 30}} source={report_icon}/>
+        </TouchableOpacity>
+      </React.Fragment>
+    )
+  }
+  
 };
 
 export default connect(mapStateToProps)(ReportVideo);

@@ -10,7 +10,6 @@ import CurrentUser from '../../models/CurrentUser';
 import TextFormatter from '../CommonComponents/TextFormatter';
 import ReduxGetters from '../../services/ReduxGetters';
 import TimerIcon from '../../assets/created-timer-icon.png';
-import Checkmarks from "../../assets/Checkmarks.png";
 import { shortenedFromNow } from '../../helpers/timestampHandling';
 import ReportVideo from "../CommonComponents/ReportVideo";
 
@@ -58,7 +57,7 @@ class BottomStatus extends PureComponent {
                   <Text style={inlineStyles.timerTxt}>{shortenedFromNow(this.props.cts*1000)}</Text>
                 </View>
               </TouchableWithoutFeedback>
-              <ReportVideo userId={this.props.userId} reportEntityId={this.props.entityId} reportKind={this.props.entityKind} />
+              <ReportVideo userId={this.props.userId} entityId={this.props.entityId} reportKind={this.props.reportEntityKind} />
             </View>)}
             {this.props.description ? (
               <Text
