@@ -1,12 +1,8 @@
 
 import React, { PureComponent } from 'react';
-import { View, Text} from 'react-native';
+import { View } from 'react-native';
 import Common from '../../theme/styles/Common';
-import ChannelTagsList from '../ChannelTagsList';
-import VideoCollections from '../VideoCollections';
 import DataContract from '../../constants/DataContract';
-import deepGet from "lodash/get";
-import ChannelCell from '../ChannelCell';
 import Colors from "../../theme/styles/Colors";
 import MembersList from "./list";
 
@@ -32,7 +28,6 @@ class MembersScreen extends PureComponent {
       }
     };
   };
-
 
   constructor(props){
     super(props);

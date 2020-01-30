@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import reduxGetter from '../../../services/ReduxGetters';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
@@ -28,29 +28,16 @@ const UserRow = (props) => {
   {
     return (
       <TouchableOpacity
-      onPress={multipleClickHandler(() => {
-        userClick(props.userId, props.navigation);
-      })}
-    >
-      <View style={styles.txtWrapper}>
-      <ProfilePicture userId={props.userId} />
-      <View style={{ flexDirection: 'column', flex: 1, paddingLeft: 15 }}>
-          <Text style={styles.titleName} numberOfLines={1} ellipsizeMode={'tail'}>
-            {props.name.length > 40 ? `${props.name.substring(0, 40)}...` : props.name}
-          </Text>
-          <Text style={styles.titleHandle} numberOfLines={1} ellipsizeMode={'tail'}>
-            {props.userName.length > 40 ? `${props.userName.substring(0, 40)}...` : props.userName}
-          </Text>
-          {this.props.leftLabel}
+        onPress={multipleClickHandler(() => {
+          userClick(props.userId, props.navigation);
+        })}>
+        <View style={styles.txtWrapper}>
+          <ProfilePicture userId={props.userId} />
+          {props.children}
         </View>
-      </View>
       </TouchableOpacity>
     );
   }
 };
-
-UserRow.defaultProps = {
-  leftLabel : null 
-}
 
 export default connect(mapStateToProps)(withNavigation(UserRow));

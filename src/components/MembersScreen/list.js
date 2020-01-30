@@ -4,27 +4,20 @@ import flatlistHOC from '../CommonComponents/flatlistHOC';
 import EmptySearchResult from '../CommonComponents/EmptySearchResult';
 import CommonStyle from "../../theme/styles/Common";
 import UserRow from '../CommonComponents/UserRow';
-import ReduxGetters from '../../services/ReduxGetters';
-import inlineStyles from "./styles";
+import AmdinUser from "../CommonComponents/UserRow/Admin";
 
 class SupportersList extends PureComponent {
   constructor(props) {
     super(props);
   }
-  
+
   _keyExtractor = (item, index) => `id_${item}_${index}`;
 
   _renderItem = ({ item, index }) => {
-    return <UserRow userId={item} leftLabel={this.getLeftLabel(item)} />;
+    return <UserRow userId={item} >
+              <AmdinUser  userId={item} channelId={this.props.channelId} />
+          </UserRow>
   };
-
-  getLeftLabel = (item) =>{
-    if(ReduxGetters.isChannelUserAdmin(this.props.channelId , item )){
-        return <View style={inlineStyles.leafInnerWrapper}><Text style={inlineStyles.leafInnerText}>Admin</Text></View>
-    }else{
-        return null;
-    }
-  }
 
   getEmptyComponent = () => {
         const noResultsData = {

@@ -16,6 +16,7 @@ import InAppBrowser from '../../../services/InAppBrowser';
 import profileLink from '../../../assets/profile_link.png';
 import twitterLink from '../../../assets/twitter_link.png';
 import Utilities from '../../../services/Utilities';
+import AppConfig from '../../../constants/AppConfig';
 
 
 const regex = /(^|\s)(#\w+)/g;
@@ -110,7 +111,7 @@ class UserInfo extends React.PureComponent {
       <View style={{ alignItems: 'center', paddingTop: 30}}>
         <NavigationEvents onDidFocus={this.onDidFocus} />
         {this.props.header}
-        <ProfilePicture
+        <ProfilePicture size={AppConfig.profileImageConstants.originalImageWidth}
           userId={this.props.userId}
           style={[inlineStyle.profileImageSkipFont, { width: 80, height: 80, borderRadius: 40 }]}
         />

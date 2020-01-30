@@ -5,12 +5,10 @@ import {
   Keyboard
 } from "react-native";
 import SafeAreaView from 'react-native-safe-area-view';
-
-import PeopleCell from './PeopleCell';
+import UserRow from "../CommonComponents/UserRow";
+import SearchUser from "../CommonComponents/UserRow/Search";
 
 import Pagination from "../../services/Pagination";
-import Colors from "../../theme/styles/Colors";
-import User from "../Users/User";
 
 class PeopleList extends PureComponent {
   constructor(props){
@@ -171,10 +169,7 @@ class PeopleList extends PureComponent {
   };
 
   _renderPeopleCell = ({ item, index }) => {
-    return <PeopleCell
-            userId={item.payload.user_id}
-            isEmpty={item.isEmpty}
-            />;
+    return <UserRow  userId={item.payload.user_id} ><SearchUser userId={item.payload.user_id} /></UserRow>
   };
 
   renderFooter = () => {

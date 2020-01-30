@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {View, SafeAreaView} from "react-native";
+import {SafeAreaView} from "react-native";
 import { connect } from 'react-redux';
 import CurrentUser from '../../models/CurrentUser';
 import { Tab, Tabs, ScrollableTab } from 'native-base';

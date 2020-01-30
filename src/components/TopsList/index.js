@@ -11,7 +11,8 @@ import deepGet from "lodash/get";
 import TagsCell from '../TagsList/TagsCell';
 
 import Pagination from "../../services/MultiSection/MultiSectionPagination";
-import PeopleCell from "../PeopleList/PeopleCell";
+import UserRow from "../CommonComponents/UserRow";
+import SearchUser from "../CommonComponents/UserRow/Search";
 import VideoThumbnail from "../CommonComponents/VideoThumbnail/VideoThumbnail";
 import {FetchServices} from "../../services/FetchServices";
 import ChannelCell from "../ChannelCell";
@@ -158,7 +159,7 @@ class TopsList extends PureComponent {
   };
 
   __renderUserItem = ({ item, index }) => {
-    return <PeopleCell userId={item.payload.user_id} />;
+    return <UserRow userId={item.payload.user_id}><SearchUser userId={item.payload.user_id} /></UserRow>;
   };
 
 
