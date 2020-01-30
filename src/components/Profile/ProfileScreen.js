@@ -20,6 +20,7 @@ import PepoApi from '../../services/PepoApi';
 import ReviewStatusBanner from './ReviewStatusBanner';
 import CustomDrawer from '../CustomDrawer';
 import {DrawerEmitter} from '../../helpers/Emitters';
+import {testProps} from "../../constants/AppiumAutomation";
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -147,6 +148,7 @@ class ProfileScreen extends PureComponent {
           <TouchableOpacity
             onPress={multipleClickHandler(() => this.onEdit())}
             style={[inlineStyles.editProfileIconPos]}
+            {...testProps('profile-edit-icon')}
           >
             <Image style={{ width: 13, height: 13 }} source={profileEditIcon}></Image>
           </TouchableOpacity>
