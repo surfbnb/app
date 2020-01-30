@@ -114,7 +114,7 @@ export default {
             return `/channels/${id}/videos`;
         },
         getVideoListParams : (id=0)=> {
-            return {filter_by_tag_id: id}
+            return id ? {filter_by_tag_id: id} : {};
         },
         getChannelDetails : (id)=> {
             return `/channels/${id}`;
@@ -123,16 +123,16 @@ export default {
             return `/channels/${id}/users`;
         },
         getMuteApi : (id) => {
-          return `/channels/${id}/turn-off-notifications`;
+            return `/channels/${id}/turn-off-notifications`;
         },
         getUnmuteApi : (id) => {
             return `/channels/${id}/turn-on-notifications`;
         },
         getLeaveChannelApi : (id) => {
-          return `/channels/${id}/leave`
+            return `/channels/${id}/leave`
         },
         getJoinChannelApi : (id) => {
-          return `/channels/${id}/join`
+            return `/channels/${id}/join`
         },
         getReportChannelApi : () => {
             return `/report`

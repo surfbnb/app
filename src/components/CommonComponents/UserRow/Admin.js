@@ -12,15 +12,17 @@ const mapStateToProps = (state, ownProps) => {
     };
   }
 
-const adminUser = (props) => (<View style={styles.innerViewWrapper}>
-                                <Text style={styles.titleName} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {props.name.length > 40 ? `${props.name.substring(0, 40)}...` : props.name}
-                                </Text>
-                                <Text style={styles.titleHandle} numberOfLines={1} ellipsizeMode={'tail'}>
-                                {props.userName.length > 40 ? `${props.userName.substring(0, 40)}...` : props.userName}
-                                </Text>
-                                {this.props.isChannelAdmin && (<View style={inlineStyles.adminLeafInnerWrapper}>
-                                  <Text style={inlineStyles.adminLeafInnerText}>Admin</Text>
+const adminUser = (props) => (<View style={styles.outerWrapper}>
+                                <View style={styles.innerViewWrapper}>
+                                  <Text style={styles.titleName} numberOfLines={1} ellipsizeMode={'tail'}>
+                                  {props.name.length > 40 ? `${props.name.substring(0, 40)}...` : props.name}
+                                  </Text>
+                                  <Text style={styles.titleHandle} numberOfLines={1} ellipsizeMode={'tail'}>
+                                  {props.userName.length > 40 ? `${props.userName.substring(0, 40)}...` : props.userName}
+                                  </Text>
+                                </View>
+                                {props.isChannelAdmin && (<View style={styles.adminLeafInnerWrapper}>
+                                  <Text style={styles.adminLeafInnerText}>Admin</Text>
                                 </View>)}
                               </View>)
 

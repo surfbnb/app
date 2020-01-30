@@ -8,8 +8,14 @@ let stylesMap = {
     flexDirection: 'row',
     alignItems: 'center' 
   },
+  outerWrapper:{
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   innerViewWrapper : {
-    flexDirection: 'column', flex: 1, paddingLeft: 15
+    flexDirection: 'column', 
+    paddingLeft: 15,
   },
   titleName: {
     color: Colors.valhalla,

@@ -19,7 +19,8 @@ import ChannelsList from "../ChannelsList";
 const tabStyle = NativeBaseTabTheme.tab,
   USER_KIND = 'user',
   TAG_KIND = 'tag',
-  VIDEO_KIND = 'video';
+  VIDEO_KIND = 'video',
+  CHANNEL_KIND = 'channel';
 
 const NO_OF_CHARS_TO_RESTRICT_SEARCH = 1;
 
@@ -30,7 +31,7 @@ const TabMap = {
     baseUrl: '/search/top',
     title: 'Top',
     "params": {
-      "supported_entities": [USER_KIND, TAG_KIND, VIDEO_KIND]
+      "supported_entities": [USER_KIND, TAG_KIND, VIDEO_KIND, CHANNEL_KIND]
     },
     "queryParam": "q",
     "noResultsData": {

@@ -598,7 +598,7 @@ class ReduxGetters {
   getChannelBackgroundImage(id, state){
     state = state || Store.getState();
     let coverImageId = deepGet(state, `channel_detail_entities.id_${id}.cover_image_id`)
-      return deepGet(state, `image_entities.id_${coverImageId}.resolutions.original.url`);
+      return deepGet(state, `image_entities.id_${coverImageId}.resolutions.576w.url`) || deepGet(state, `image_entities.id_${coverImageId}.resolutions.original.url`) ;
   }
 
   getChannelTagIds(id, state) {
@@ -626,8 +626,8 @@ class ReduxGetters {
     let lowercasedText = tappedText.toLowerCase();
     let state = Store.getState();
     let descId = deepGet(state, `channel_detail_entities.id_${id}.description_id`);
-    return deepGet(state, `text_entities.id_${descId}.includes`)[lowercasedText] ||
-            deepGet(state, `text_entities.id_${descId}.includes`)[tappedText];
+    return deepGet(state, `text_entities.id_${descId}.includes`) && (deepGet(state, `text_entities.id_${descId}.includes`)[lowercasedText] ||
+            deepGet(state, `text_entities.id_${descId}.includes`)[tappedText]);
   }
 
   getReplyCTS(id, state){

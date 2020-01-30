@@ -6,7 +6,7 @@ import CommonStyle from "../../theme/styles/Common";
 import UserRow from '../CommonComponents/UserRow';
 import AmdinUser from "../CommonComponents/UserRow/Admin";
 
-class SupportersList extends PureComponent {
+class MembersList extends PureComponent {
   constructor(props) {
     super(props);
   }
@@ -24,7 +24,7 @@ class SupportersList extends PureComponent {
             "noResultsMsg":`No members found, Please try again later.`,
             "isEmpty": true
         };
-        return !!this.props.refreshing && <EmptySearchResult noResultsData={noResultsData}/>
+        return !this.props.refreshing && <EmptySearchResult noResultsData={noResultsData}/>
   };
 
   render() {
@@ -46,4 +46,4 @@ class SupportersList extends PureComponent {
   }
 }
 
-export default flatlistHOC(SupportersList);
+export default flatlistHOC(MembersList);

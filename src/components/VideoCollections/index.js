@@ -138,11 +138,11 @@ class VideoCollections extends PureComponent {
         this.videoPagination.refresh();
     };
 
-    _keyExtractor = (item, index) => {
-        return `id_${item.id}`;
+    _keyExtractor = (item={}, index) => {
+        return `id_${item.id}_${index}`;
     }
 
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item={}, index }) => {
       // Check if this is an empty cell.
       if ( item.isEmpty) {
         // Render no results cell here.
@@ -160,7 +160,9 @@ class VideoCollections extends PureComponent {
             }
         } else if( entityHelper.isVideoEntity( item )) {
            return this._renderVideoThumbnail( item, index);
-        } 
+        } else{
+            return null;
+        }
     };
 
     _renderVideoReplyThumbnail( item, index ) {

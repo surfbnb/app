@@ -13,6 +13,8 @@ import DataContract from '../../../constants/DataContract';
 import Utilities from '../../../services/Utilities';
 import deepGet from "lodash/get"
 
+import {testProps} from "../../../constants/AppiumAutomation";
+
 const mapStateToProps = (state, ownProps) => {
   return {
     currentUserId: CurrentUser.getUserId()
@@ -25,7 +27,7 @@ class ReportVideo extends PureComponent {
     super(props);
   };
 
-  getDefaultConfig() { 
+  getDefaultConfig() {
     return {
       loginVideoConfig: {
         actionConfig: {
@@ -202,6 +204,7 @@ class ReportVideo extends PureComponent {
                             justifyContent: 'center',
                             marginRight: -14
                           }}
+                          {...testProps('pepo-report-button')}
                           onPress={multipleClickHandler(() => this.showActionSheet())}>
           <Image style={{height: 12, width: 30}} source={report_icon}/>
         </TouchableOpacity>

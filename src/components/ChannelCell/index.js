@@ -16,7 +16,6 @@ import PepoApi from '../../services/PepoApi';
 import DataContract from '../../constants/DataContract';
 import Toast from "../../theme/components/NotificationToast";
 import Utilities from '../../services/Utilities';
-import AppConfig from '../../constants/AppConfig';
 
 const mapStateToProps = ( state, ownProps ) => {
    return {
@@ -92,9 +91,17 @@ class ChannelCell extends PureComponent {
                 <View style={styles.bottomView}>
                   <View style={styles.bottomViewLeft}>
                     <TouchableOpacity onPress={this.onMemberPress} style={styles.memberText}>
-                      <Text style={styles.memberText}>{this.props.channelUserCount} <Text style={styles.fontRegular}>Members</Text></Text>
+                      <Text style={styles.memberText}>{`${this.props.channelUserCount} `}
+                        <Text style={styles.fontRegular}>
+                          Member{this.props.channelUserCount > 1 ? 's': null}
+                        </Text>
+                      </Text>
                     </TouchableOpacity>
-                    <Text style={styles.memberText}>{this.props.channelVideoCount} <Text style={styles.fontRegular}>Videos</Text></Text>
+                    <Text style={styles.memberText}>{`${this.props.channelVideoCount} `}
+                      <Text style={styles.fontRegular}>
+                        Video{this.props.channelVideoCount > 1 ? 's': null}
+                      </Text>
+                    </Text>
                   </View>
                   <View style={styles.bottomViewRight}>
                     {this.joined()}
