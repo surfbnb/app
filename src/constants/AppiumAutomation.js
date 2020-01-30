@@ -1,4 +1,8 @@
 import React from 'react';
+const testObj={};
 export function testProps(id){
-  return {testID: id, accessibilityLabel: id}
+  if(!id) return null;
+  testObj['testID'] = id ;
+  testObj['accessibilityLabel'] = id ;
+  return testObj;
 }
