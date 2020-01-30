@@ -86,13 +86,16 @@ class ChannelsScreen extends PureComponent {
         )
     }
 
-    getNoResultsCell = () => {
-        const tagName = deepGet( ReduxGetters.getHashTag(this.selectedTagId) , "text");
-        const noResultsData = {
+    getNoResultData = () => {
+        const tagName = deepGet( ReduxGetters.getHashTag(this.selectedTagId) , "text" , "");
+        return {
             "noResultsMsg": `No videos tagged ${tagName}, Please try again later.`,
             "isEmpty": true
         };
-        return <EmptySearchResult noResultsData={noResultsData} />
+    }
+
+    getNoResultsCell = () => {
+        return <EmptySearchResult noResultsData={this.getNoResultData()} />
     }
 
     fetchChannel = () => {
@@ -119,6 +122,7 @@ class ChannelsScreen extends PureComponent {
                     onRef={this.setVideoListRef}
                     beforeRefresh={this.fetchChannel}
                     getNoResultsCell={this.getNoResultsCell}
+                    noResultsData={this.getNoResultData()}
                 />
             </View>
         )

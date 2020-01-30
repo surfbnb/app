@@ -110,7 +110,7 @@ export default {
             return `/channels/${id}/videos`;
         },
         getVideoListParams : (id=0)=> {
-            return {filter_by_tag_id: id}
+            return id ? {filter_by_tag_id: id} : {};
         },
         getChannelDetails : (id)=> {
             return `/channels/${id}`;
