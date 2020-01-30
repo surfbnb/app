@@ -12,6 +12,8 @@ import {connect} from "react-redux";
 import Utilities from '../../../services/Utilities';
 import PepoApi from "../../../services/PepoApi";
 
+import {testProps} from "../../../constants/AppiumAutomation";
+
 const mapStateToProps = (state, ownProps) => {
   return {
     replyCount : reduxGetter.getVideoReplyCount(ownProps.videoId)
@@ -156,7 +158,10 @@ class BubbleList extends PureComponent {
   render() {
     return <View style={inlineStyles.bubbleContainer}>
         <TouchableOpacity onPress={multipleClickHandler(() => {this.onIconClick()})}
-             style={{flexDirection: 'row-reverse', zIndex: 3}}>{this.getBubbleListJSX()}
+                          style={{flexDirection: 'row-reverse', zIndex: 3}}
+                          {...testProps('horizontal-bubble-list')}
+        >
+          {this.getBubbleListJSX()}
         </TouchableOpacity>
         {/*<Text style={inlineStyles.repliesTxt}>{this.moreReplyText()}</Text>*/}
       </View>

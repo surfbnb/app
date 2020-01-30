@@ -10,6 +10,7 @@ import Toast from "../../../theme/components/NotificationToast";
 import {ActionSheet} from "native-base";
 import ReduxGetters from "../../../services/ReduxGetters";
 import {fetchUser} from "../../../helpers/helpers";
+import {testProps} from "../../../constants/AppiumAutomation";
 const ACTION_SHEET_CANCEL_INDEX = 2;// revert to index 2
 const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
 const ACTION_SHEET_REPORT_INDEX = 1;
@@ -213,7 +214,9 @@ class ReportVideo extends PureComponent {
           <React.Fragment>
             <TouchableOpacity pointerEvents={'auto'}
                               style={{height: 24, width: '20%', alignItems: 'center', justifyContent: 'center', marginRight: -14}}
-                              onPress={multipleClickHandler(() => this.showActionSheet())} >
+                              onPress={multipleClickHandler(() => this.showActionSheet())}
+                              {...testProps('pepo-report-button')}
+            >
               <Image style={{ height: 12, width: 30 }} source={report_icon} />
             </TouchableOpacity>
           </React.Fragment>

@@ -11,6 +11,7 @@ import ClapButton from "./ClapButton";
 import appConfig from "../../../constants/AppConfig";
 import Pricer from "../../../services/Pricer";
 import { DEFAULT_SPENDING_LIMIT } from '../../../constants';
+import {testProps} from '../../../constants/AppiumAutomation';
 
 const animDuration = appConfig.pepoAnimationDuration;
 const maxThreshold = Number(Pricer.getFromDecimal( DEFAULT_SPENDING_LIMIT ));
@@ -116,12 +117,15 @@ class PepoButton extends React.Component {
     return (
       <React.Fragment>
         {this.renderClaps()}
-        <Text style={inlineStyles.pepoTxCount}>{ Pricer.displayAmountWithKFomatter(this.state.count || 0 )}</Text>
+        <Text style={inlineStyles.pepoTxCount} {...testProps('pepo-clap-button-count')}>{ Pricer.displayAmountWithKFomatter(this.state.count || 0 )}</Text>
         <TouchableWithoutFeedback
           disabled={this.state.disabled}
           onPressIn={this.keepClapping}
           delayPressIn={300}
-          onPressOut={this.stopClapping}>
+          onPressOut={this.stopClapping}
+          {...testProps('pepo-clap-button')}
+        >
+
           <View style={{marginBottom: 15}}>
             <ClapButton disabled={this.state.disabled}
                         isSupported={this.props.isSupported}
