@@ -34,7 +34,13 @@ class ChannelsHeaderRight extends PureComponent{
   }
 
   showQrCodeScreen = () => {
-    this.props.navigation.navigate('QrCode',{url:this.qrCodeGeneratorUrl});
+    this.props.navigation.navigate(
+      'QrCode',
+      {
+        url:this.qrCodeGeneratorUrl,
+        descText:`Scan the QR code to join\n Ethdenver 2020`
+      }
+        );
   }
 
   shareViaQrCode = () =>{

@@ -15,6 +15,7 @@ export default class QrCode extends PureComponent{
   constructor(props){
     super(props);
     this.url = this.props.navigation.getParam('url') ;
+    this.descText = this.props.navigation.getParam('descText');
   }
   closeModal=()=>{
     this.props.navigation.goBack();
@@ -41,7 +42,7 @@ export default class QrCode extends PureComponent{
             />
           </View>
 
-          <Text style={inlineStyles.modalTextStyle}>{`Scan the QR code to join\n Ethdenver 2020`}</Text>
+          <Text style={inlineStyles.modalTextStyle}>{this.descText}</Text>
         </View>
       </View>
       )
