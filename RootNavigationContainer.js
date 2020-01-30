@@ -212,7 +212,8 @@ const HomeStack = createStackNavigator(
     LoginPopover: LoginPopover,
     TwitterWebLogin: TwitterWebLoginStack,
     GitHubWebLogin: GitHubWebLoginStack,
-    CouchMarks: CouchMarks
+    CouchMarks: CouchMarks,
+    QrCode : QrCode
   },
   {
     ...modalStackConfig,
@@ -251,7 +252,8 @@ const NotificationStack = createStackNavigator(
     AuthDeviceDrawer: AuthDeviceDrawer,
     SayThanksScreen: SayThanksScreen,
     CaptureVideo: CaptureVideoStack,
-    InAppBrowserStack: InAppBrowserStack
+    InAppBrowserStack: InAppBrowserStack,
+    QrCode : QrCode
   },
   { ...modalStackConfig, ...txModalConfig }
 );
@@ -331,7 +333,8 @@ const SearchStack = createStackNavigator(
     CaptureVideo: CaptureVideoStack,
     InAppBrowserStack: InAppBrowserStack,
     TransactionScreen: TransactionScreen,
-    AuthDeviceDrawer: AuthDeviceDrawer
+    AuthDeviceDrawer: AuthDeviceDrawer,
+    QrCode : QrCode
   },
   {
     ...modalStackConfig,

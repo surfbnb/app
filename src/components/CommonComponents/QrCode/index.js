@@ -6,8 +6,15 @@ import inlineStyles from "./style";
 import CrossIcon from "../../../assets/cross_icon.png"
 
 export default class QrCode extends PureComponent{
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    return {
+      headerBackTitle: null,
+      header: null
+    };
+  };
   constructor(props){
-    super(props)
+    super(props);
+    this.url = this.props.navigation.getParam('url') ;
   }
   closeModal=()=>{
     this.props.navigation.goBack();
@@ -27,8 +34,9 @@ export default class QrCode extends PureComponent{
           <View
             style={inlineStyles.qrCode}>
             <QRCode
-              value="http://awesome.link.qr"//{this.props.url}
-              color="#ff5566"
+              value={this.url}
+              backgroundColor="#ff5566"
+              color="#ffffff"
               size={130}
             />
           </View>

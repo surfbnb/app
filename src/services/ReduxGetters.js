@@ -643,6 +643,11 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `video_stat_entities.id_${id}.channel_ids` , [] );
   }
+  currentUserNotificationStatus(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `current_user_channel_relation_entities.id_${id}.notification_status`);
+
+  }
 
 
 }

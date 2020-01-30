@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Image, TouchableOpacity , View  } from 'react-native';
+import { Image, TouchableOpacity , View ,Text } from 'react-native';
 import deepGet from 'lodash/get';
 
 import BalanceHeader from '../Profile/BalanceHeader';
@@ -177,14 +177,10 @@ class ProfileScreen extends PureComponent {
       this.setState({hasVideos: false});
     }
   }
-  showQrCodeScreen = () => {
-    this.props.navigation.navigate('QrCode')
-  }
 
   render() {
     if(this.props.userId){
       return  <CustomDrawer openDrawer={this.state.openDrawer} navigation={this.props.navigation} onClose={this.onClose}>
-        <Text onPress={this.showQrCodeScreen} >Click here</Text>
         <UserProfileFlatList
                       onRef={(elem) => this.listRef = elem}
                       listHeaderComponent={this._headerComponent()}
