@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Dimensions} from 'react-native';
+import {connect} from 'react-redux';
 
 import inlineStyles from './styles';
 import reduxGetter from '../../../services/ReduxGetters';
@@ -10,11 +11,16 @@ const windowWidth = Dimensions.get("window").width;
 const charPerLine = windowWidth / 8;
 const totalAllowedChars = charPerLine * 3 - 11;
 
+const mapStateToProps = (state, ownProps) => {
+  return {
+    description: reduxGetter.getChannelDescription(ownProps.channelId) || ''
+  };
+};
+
 class Description extends React.PureComponent{
 
     constructor( props ) {
         super( props );
-        this.description = reduxGetter.getChannelDescription(props.channelId) || '';
         this.state = {
           expanded  : false
         }
@@ -33,12 +39,12 @@ class Description extends React.PureComponent{
 
     getText(){
       return this.isTextOverflow() && !this.state.expanded ?
-                     this.description.substring(0, totalAllowedChars) :
-                     this.description;
+                     this.props.description.substring(0, totalAllowedChars) :
+                     this.props.description;
     }
 
     isTextOverflow = () => {
-      return this.description && this.description.length > totalAllowedChars;
+      return this.props.description && this.props.description.length > totalAllowedChars;
     }
 
     getTappedIncludesEntity = (text) => {
@@ -68,4 +74,4 @@ class Description extends React.PureComponent{
     
 }
 
-export default withNavigation(Description);
+export default connect(mapStateToProps)(withNavigation(Description));
