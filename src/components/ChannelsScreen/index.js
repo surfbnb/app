@@ -21,11 +21,11 @@ class ChannelsScreen extends PureComponent {
 
     static navigationOptions = (options) => {
         const channelId =  options.navigation.getParam('channelId'),
-            name = ReduxGetters.getChannelName(channelId);
+            name = options.navigation.getParam('headerTitle') || ReduxGetters.getChannelName(channelId);
         ;
         return {
           headerBackTitle: null,
-          title: name || 'Channel',
+          title: name,
           headerTitleStyle: {
             fontFamily: 'AvenirNext-Medium'
           },
