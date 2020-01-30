@@ -216,7 +216,7 @@ class TopsList extends PureComponent {
   };
 
   _renderChannelsItem = (item) => {
-    let channelId = deepGet(item, 'item.payload.channel_id' );
+    let channelId = deepGet(item, 'item.id' );
     return <ChannelCell  channelId={channelId} />;
   };
 
