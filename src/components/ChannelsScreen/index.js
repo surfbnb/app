@@ -116,7 +116,7 @@ class ChannelsScreen extends PureComponent {
                 <VideoCollections getFetchUrl={this.getFetchUrl}
                     getFetchParams={this.getFetchParams}
                     listHeaderComponent={this.listHeaderComponent()}
-                    ref={this.setVideoListRef}
+                    onRef={this.setVideoListRef}
                     beforeRefresh={this.fetchChannel}
                     getNoResultsCell={this.getNoResultsCell}
                 />
