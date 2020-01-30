@@ -435,6 +435,10 @@ const AppConfig = {
     apple: "apple",
     github: "github",
     twitter: "twitter"
+  },
+
+  channelConstants : {
+    SCREEN_NAME : "ChannelsScreen"
   }
 
 };
