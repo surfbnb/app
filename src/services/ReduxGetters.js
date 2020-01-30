@@ -95,7 +95,8 @@ class ReduxGetters {
   getBioIncudes(userId, tappedText) {
     let lowercasedTappedText = tappedText.toLowerCase();
     let state =  Store.getState();
-    return deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${lowercasedTappedText}`);
+    return deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${lowercasedTappedText}`) ||
+            deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${tappedText}`);
   }
 
   canBlockUser(id ,state){
