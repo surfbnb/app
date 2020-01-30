@@ -627,8 +627,8 @@ class ReduxGetters {
     let lowercasedText = tappedText.toLowerCase();
     let state = Store.getState();
     let descId = deepGet(state, `channel_detail_entities.id_${id}.description_id`);
-    return deepGet(state, `text_entities.id_${descId}.includes`)[lowercasedText] ||
-            deepGet(state, `text_entities.id_${descId}.includes`)[tappedText];
+    return deepGet(state, `text_entities.id_${descId}.includes.${lowercasedText}`) ||
+            deepGet(state, `text_entities.id_${descId}.includes.${tappedText}`);
   }
 
   getReplyCTS(id, state){
