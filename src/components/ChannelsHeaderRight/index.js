@@ -1,27 +1,21 @@
 import React, {PureComponent} from "react";
-import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
-import deepGet from 'lodash/get';
+import { Image, TouchableOpacity, Alert } from 'react-native';
 import { withNavigation } from "react-navigation";
 import Toast from '../../theme/components/NotificationToast';
 
-import GreyShareIcon from '../../assets/grey_share_icon.png';
 import MoreOptionsIcon from '../../assets/user_profile_options.png';
 import inlineStyles from './style';
-import ShareVideo from '../../services/shareVideo';
 import DataContract from '../../constants/DataContract';
 import { ActionSheet } from 'native-base';
 import PepoApi from '../../services/PepoApi';
 import reduxGetters from '../../services/ReduxGetters';
-
-const INVITE_VIA_LINK_INDEX     = 0;
-const INVITE_VIA_QRCODE_INDEX   = 1;
-const SHARE_CANCEL_INDEX        = 2;
+import ShareOptions from "../CommonComponents/ShareOptions";
+import CurrentUser from "../../models/CurrentUser";
 
 
 class ChannelsHeaderRight extends PureComponent{
   constructor(props){
     super(props);
-    this.sharingActionSheetButtons  = ['Invite via Link', 'Invite via QR Code' ,'Cancel'];
     if(this.checkIfMember()){
       this.mute_notifications_index = 0
       this.leave_channel_index = 1
@@ -34,58 +28,6 @@ class ChannelsHeaderRight extends PureComponent{
       this.more_cancel_index = 2
       this.moreActionSheetButtons     = [this.getMuteText() , 'Report Channel', 'Cancel'];
     }
-  }
-  shareViaLink = () =>{
-    let shareChannel = new ShareVideo(DataContract.share.getChannelShareApi(this.props.channelId));
-    shareChannel.perform();
-  }
-
-  showQrCodeScreen = (options) => {
-    this.props.navigation.navigate(
-      'QrCode',
-      {
-        url:options.url,
-        descText:options.text,
-        backgroundColor : options.backgroundColor,
-        color : options.color,
-        size : options.size
-      }
-        );
-  }
-
-  shareViaQrCode = () =>{
-    new PepoApi(DataContract.share.getChannelShareApi(this.props.channelId))
-      .get()
-      .then((response)=>{
-        if(response && response.success){
-          this.qrCodeGeneratorUrl = deepGet(response,"data.share.url");
-          ActionSheet.hide();
-          let options = {
-            url : this.qrCodeGeneratorUrl,
-            text : `Scan the QR code to join\n Ethdenver 2020`,
-            backgroundColor:"#ff5566",
-            color:"#ffffff",
-            size:130
-          }
-          this.showQrCodeScreen(options);
-        }
-      });
-  }
-  showSharingOptions = () => {
-    let sharingActionOptions = [...this.sharingActionSheetButtons];
-    ActionSheet.show({
-        options : sharingActionOptions,
-        cancelButtonIndex :SHARE_CANCEL_INDEX,
-    },
-      (buttonIndex)=>{
-        if (buttonIndex == INVITE_VIA_LINK_INDEX) {
-          this.shareViaLink();
-        }else if( buttonIndex ==  INVITE_VIA_QRCODE_INDEX ){
-          this.shareViaQrCode();
-        }
-      }
-
-    )
   }
 
   checkMuteStatus = () => {
@@ -265,14 +207,7 @@ class ChannelsHeaderRight extends PureComponent{
   render(){
     return(
       <React.Fragment>
-        <TouchableOpacity
-          style={inlineStyles.wrapperShare}
-          onPress={() => {
-            this.showSharingOptions();
-          }}>
-          <Image style={inlineStyles.shareIconSkipFont} source={GreyShareIcon}/>
-        </TouchableOpacity>
-
+        <ShareOptions entityId= {this.props.channelId} entityKind={'channel'}/>
         <TouchableOpacity
           style={inlineStyles.wrapperMore}
           onPress={() => {

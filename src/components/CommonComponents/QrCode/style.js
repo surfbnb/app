@@ -2,6 +2,12 @@ import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
+  crossIconWrapper: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   modalContainer:{
     flex:1,
     padding : 10,
