@@ -6,9 +6,10 @@ import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import reduxGetter from '../../services/ReduxGetters';
 
+const defaultArray  = [];
 const mapStateToProps = (state, ownProps) => {
     return {
-      tagIds: reduxGetter.getChannelTagIds(ownProps.channelId, state) || []
+      tagIds: reduxGetter.getChannelTagIds(ownProps.channelId, state) || defaultArray
     };
   };
 
@@ -19,21 +20,28 @@ class ChannelTagsList extends PureComponent {
         this.flatlistRef = null;
         this.allTag = {
             id: 0,
-            status: null,
-            text: "All",
-            uts: null,
-            video_weight: null,
-            weight: null
-        }
+            text: "All"
+        }  
         this.state = {
             selectedTag: this.allTag
         }
         this.setAllOption();
+        this.setInitialSelectedTag();
     }
 
     setAllOption = () => {
-        this.tagIds = this.props.tagIds.slice(0);
-        this.tagIds.unshift('0');
+        if(this.props.tagIds.length <= 1){
+            this.tagIds = this.props.tagIds
+        }else{
+            this.tagIds = this.props.tagIds.slice(0);
+            this.tagIds.unshift('0');
+        }      
+    }
+
+    setInitialSelectedTag(){
+        if(this.props.tagIds.length == 1){
+            this.state.selectedTag = reduxGetter.getHashTag(this.props.tagIds[0]);
+        }
     }
 
     componentDidUpdate(){
