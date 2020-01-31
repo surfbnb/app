@@ -361,7 +361,7 @@ class VideoRecorder extends Component {
     if (this.shouldShowActionButtons()) {
       return (
         <React.Fragment>
-          <View style={{position: 'relative', height: 7, width: '90%' }}>
+          <View style={{position: 'relative', height: 7, width: '90%'}}>
           <ProgressBar
             width={null}
             color="#EF5566"
@@ -443,7 +443,7 @@ class VideoRecorder extends Component {
     return <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
       <TouchableOpacity onPress={this.onBackPress}>
-      {/*<Image style={styles.backIcon} source={deleteCameraSegment}/>*/}
+      <Image style={styles.backIcon} source={deleteCameraSegment}/>
       </TouchableOpacity>
       <LinearGradient
         colors={['#ff7499', '#ff5566']}
@@ -545,6 +545,7 @@ class VideoRecorder extends Component {
       } else {
         clearInterval(this.progressInterval);
         this.stopRecording();
+        console.log('progressBarStateUpdate', this.videoLength);
         this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
       }
   }
@@ -573,8 +574,14 @@ class VideoRecorder extends Component {
       orientation: 'portrait'
     };
     this.initProgressBar();
-    const data = await this.camera.recordAsync(options);
-    let videoLength =this.state.progress * 100 * 300;
+    let data;
+    try{
+       data = await this.camera.recordAsync(options);
+    } catch {
+      this.setState({ isRecording: false });
+    }
+
+    let videoLength = this.state.progress * 100 * 300;
     console.log(videoLength, 'videoLength');
     if (videoLength <= 1000 ) {
       this.setState({ progress : 0 });
@@ -588,7 +595,7 @@ class VideoRecorder extends Component {
 
     // This will take from VideoRecorder to PreviewRecordedVideo component
     // this.props.goToPreviewScreen(data.uri);
-    this.props.goToPreviewScreen(data.uri);
+    // this.props.goToPreviewScreen(data.uri);
   };
 
   recordVideoStateChage() {
