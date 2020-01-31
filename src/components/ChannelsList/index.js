@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import {
   FlatList,
   ActivityIndicator,
-  Keyboard
+  Keyboard, View
 } from "react-native";
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -169,7 +169,7 @@ class ChannelsList extends PureComponent {
   _renderChannelCell = ({ item, index }) => {
     // isEmpty came from configuration in Search/index.js
     console.log(item, 'itemitemitem');
-    return <ChannelCell channelId={item.id} />;
+    return <View style={{marginHorizontal: 10, marginTop: 10, marginBottom: 0}}><ChannelCell channelId={item.id} /></View>;
   };
 
   renderFooter = () => {
@@ -198,6 +198,7 @@ class ChannelsList extends PureComponent {
     return(
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
         <FlatList
+          style={{marginTop: 10}}
           ref={this.setFlatListRef}
           data={this.state.list}
           onEndReached={this.getNext}

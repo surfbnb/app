@@ -218,7 +218,7 @@ class TopsList extends PureComponent {
 
   _renderChannelsItem = (item) => {
     let channelId = deepGet(item, 'item.id' );
-    return <ChannelCell  channelId={channelId} />;
+    return <View style={{marginHorizontal: 10, marginBottom: 10}}><ChannelCell  channelId={channelId} /></View>;
   };
 
   listHeaderComponent = () => {

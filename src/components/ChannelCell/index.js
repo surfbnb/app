@@ -39,14 +39,14 @@ class ChannelCell extends PureComponent {
     if(this.props.isChannelMember){
       return <View style={styles.joinedView}>
         <Image style={styles.joinedIconSkipFont} source={Checkmarks}/>
-        <Text style={styles.joinText}>Joined</Text>
+        <Text style={styles.joinedText}>Joined</Text>
       </View>
     } else {
       return Utilities.isChannelPage(this.props.navigation.state) ?
             <TouchableOpacity onPress={this.onJoinChannel}>
               <View style={styles.joinView}>
                 <Image style={styles.joinIconSkipFont} source={ChannelJoin}/>
-                <Text style={[styles.joinText, {fontFamily: 'AvenirNext-DemiBold', fontSize: 18}]}>Join</Text>
+                <Text style={[styles.joinText]}>Join</Text>
               </View>
             </TouchableOpacity> : <React.Fragment/>
     }
