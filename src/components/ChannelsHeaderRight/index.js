@@ -120,7 +120,7 @@ class ChannelsHeaderRight extends PureComponent{
 
   reportChannel = () => {
     let params = {
-      report_entity_kind: "channel",
+      report_entity_kind: DataContract.knownEntityTypes.channel,
       report_entity_id  : this.props.channelId
     }
     new PepoApi(DataContract.channels.getReportChannelApi())

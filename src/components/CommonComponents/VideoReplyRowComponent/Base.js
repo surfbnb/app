@@ -82,7 +82,7 @@ class Base extends PureComponent {
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
         const pixelParams = {
-            e_entity: 'reply',
+            e_entity: DataContract.knownEntityTypes.reply,
             parent_video_id : this.state.parentVideoId,
             p_name: this.state.parentVideoId,
             reply_detail_id :this.props.replyDetailId,

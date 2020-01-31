@@ -43,7 +43,7 @@ class HomeFeedRow extends PureComponent {
   getPixelDropData = () => {
     const parentData =  this.props.getPixelDropData && this.props.getPixelDropData() || {};
     const pixelParams = {
-      e_entity: 'video',
+      e_entity: DataContract.knownEntityTypes.video,
       p_type: 'feed',
       video_id: this.videoId,
       position: this.props.index

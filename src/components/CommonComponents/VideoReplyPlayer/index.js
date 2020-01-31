@@ -123,7 +123,7 @@ class VideoReplyPlayer extends PureComponent {
 
     getPixelDropData = () => {
       return pixelParams = {
-        e_entity: 'reply',
+        e_entity: DataContract.knownEntityTypes.reply,
         p_type: 'video_reply',
         p_name: this.parentVideoId,
       };

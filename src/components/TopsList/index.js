@@ -16,6 +16,7 @@ import SearchUser from "../CommonComponents/UserRow/Search";
 import VideoThumbnail from "../CommonComponents/VideoThumbnail/VideoThumbnail";
 import {FetchServices} from "../../services/FetchServices";
 import ChannelCell from "../ChannelCell";
+import DataContract from '../../constants/DataContract';
 
 const titleKeyName = 'title',
   dataKeyName = 'data',
@@ -230,13 +231,13 @@ class TopsList extends PureComponent {
   };
 
   getRenderCell = (kind) => {
-    if (kind === 'tag'){
+    if (kind === DataContract.knownEntityTypes.tag){
       return this._renderTagItem;
-    } else if (kind === 'user'){
+    } else if (kind === DataContract.knownEntityTypes.user){
       return this.__renderUserItem;
-    } else if (kind === 'videos'){
+    } else if (kind === DataContract.knownEntityTypes.video){
       return this._renderVideoItem;
-    } else if (kind === 'channel'){
+    } else if (kind === DataContract.knownEntityTypes.channel){
       return this._renderChannelsItem;
     } else {
       return this.renderEmpty;

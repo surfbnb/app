@@ -11,6 +11,7 @@ import { withNavigation } from 'react-navigation';
 
 import Base from "./Base";
 import assignIn from "lodash/assignIn";
+import DataContract from '../../constants/DataContract';
 
 const mapStateToProps = (state, ownProps) => ({
     balance: state.balance,
@@ -38,7 +39,7 @@ class ReplyPepoTxBtn extends Base {
     getDropPixel(){
         let specificData = this.props.getPixelDropData(),
             defaultData = {
-                e_entity: 'reply',
+                e_entity: DataContract.knownEntityTypes.reply,
                 reply_detail_id: this.props.entityId
             };
         return assignIn({}, specificData, defaultData);

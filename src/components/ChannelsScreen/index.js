@@ -123,6 +123,8 @@ class ChannelsScreen extends PureComponent {
                     beforeRefresh={this.fetchChannel}
                     getNoResultsCell={this.getNoResultsCell}
                     noResultsData={this.getNoResultData()}
+                    entityId={this.channelId}
+                    entityType={DataContract.knownEntityTypes.channel}
                 />
             </View>
         )

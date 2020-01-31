@@ -81,7 +81,7 @@ class ReportVideo extends PureComponent {
   getActionSheetConfig() {
     if (CurrentUser.getUserId()) {
       //Login sheet config
-      if (DataContract.videos.reportEntityKind.video == this.props.reportKind) {
+      if (DataContract.knownEntityTypes.video == this.props.entityKind) {
         //Fan video sheetconfig
         return this.getDefaultConfig().loginVideoConfig;
       } else {
@@ -90,7 +90,7 @@ class ReportVideo extends PureComponent {
       }
     } else {
       //Logout sheet config
-      if (DataContract.videos.reportEntityKind.video = this.props.reportKind) {
+      if (DataContract.knownEntityTypes.video = this.props.entityKind) {
         //Fan video sheetconfig
         return this.getDefaultConfig().logoutVideoConfig;
       } else {

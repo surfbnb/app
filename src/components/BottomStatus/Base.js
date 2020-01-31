@@ -57,7 +57,7 @@ class BottomStatus extends PureComponent {
                   <Text style={inlineStyles.timerTxt}>{shortenedFromNow(this.props.cts*1000)}</Text>
                 </View>
               </TouchableWithoutFeedback>
-              <ReportVideo userId={this.props.userId} entityId={this.props.entityId} reportKind={this.props.reportEntityKind} />
+              <ReportVideo userId={this.props.userId} entityId={this.props.entityId} entityKind={this.props.entityKind} />
             </View>)}
             {this.props.description ? (
               <Text

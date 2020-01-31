@@ -159,7 +159,7 @@ class ReplyList extends PureComponent{
 
     getPixelDropData = (  ) => {
         return {
-            e_entity: 'reply',
+            e_entity: DataContract.knownEntityTypes.reply,
             p_type: 'video_reply'
         };
     }

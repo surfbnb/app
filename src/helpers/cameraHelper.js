@@ -10,6 +10,7 @@ import {fetchVideo} from "./helpers";
 import PepoApi from "../services/PepoApi";
 import deepGet from "lodash/get";
 import PixelCall from "../services/PixelCall";
+import DataContract from '../constants/DataContract';
 
 const getTagsObject = (object = {}) =>  {
   let tagArray = [];
@@ -56,7 +57,7 @@ const getPixelDataOnFanVideoSuccess = (RecorderObject, videoId ) => {
             tagsObject = getTagsObject(descIncludes);
 
           let pixelData = {
-            e_entity: "video",
+            e_entity: DataContract.knownEntityTypes.video,
             e_action: "create",
             p_type: "video_recorder",
             approved_creator: !!isApprovedCreator,
@@ -110,7 +111,7 @@ const getPixelDataOnReplyVideoSuccess = (RecorderObject) => {
 
 
           let pixelData = {
-            e_entity: "reply",
+            e_entity: DataContract.knownEntityTypes.reply,
             e_action: "create",
             p_type: "video_recorder",
             p_name: parentVideoId,

@@ -9,6 +9,7 @@ import UserProfileOptions from '../../assets/user_profile_options.png';
 import PepoApi from '../../services/PepoApi';
 import ReduxGetters from '../../services/ReduxGetters';
 import {fetchUser} from "../../helpers/helpers";
+import DataContract from '../../constants/DataContract';
 
 
 const ACTION_SHEET_CANCEL_INDEX = 3;
@@ -33,7 +34,7 @@ class UserProfileActionSheet extends PureComponent {
 
     reportUser = () => {
         new PepoApi('/report')
-            .post({report_entity_kind: 'user', report_entity_id: this.props.userId })
+            .post({report_entity_kind: DataContract.knownEntityTypes.user, report_entity_id: this.props.userId })
             .then((response) => {
                 if (response && response.success){
                     Toast.show({text:'User reported successfully!', icon: 'success' });
@@ -45,10 +46,6 @@ class UserProfileActionSheet extends PureComponent {
                 Toast.show({text: `Unable to report user right now.`, icon: 'error' });
             });
     };
-
-
-
-
 
     getMuteUnmuteText = () => {
         let name = ReduxGetters.getName(this.props.userId);
