@@ -32,12 +32,12 @@ class ReportVideo extends PureComponent {
       loginVideoConfig: {
         actionConfig: {
           0: "showMuteUnmuteAlert",   //function name in component mapped to index in actionSheetConfig options array
-          1: "showReportVideoAlert"   //function name in component mapped to index in actionSheetConfig options array
+          2: "showReportVideoAlert"   //function name in component mapped to index in actionSheetConfig options array
         },
         actionSheetConfig: {
-          options: [this.getActionSheetMuteUnmuteText(), 'Report', `Video Id: ${this.props.entityId}`, 'Cancel'],
+          options: [this.getActionSheetMuteUnmuteText(), `Video Id: ${this.props.entityId}`, 'Report', 'Cancel'],
           cancelButtonIndex: 3,  //Cancel button index in options array
-          destructiveButtonIndex: 1, //Red button index in options array
+          destructiveButtonIndex: 2, //Red button index in options array
           title: 'Select user action'
         }
       },
@@ -46,8 +46,8 @@ class ReportVideo extends PureComponent {
           0: "showReportVideoAlert"  //function name in component mapped to index in actionSheetConfig options array
         },
         actionSheetConfig: {
-          options: ['Report', `Video Id: ${this.props.entityId}` , 'Cancel'],
-          cancelButtonIndex: 2, //Cancel button index in options array
+          options: ['Report', 'Cancel'],
+          cancelButtonIndex: 1, //Cancel button index in options array
           destructiveButtonIndex: 0,  //Red button index in options array
           title: 'Select user action'
         }
