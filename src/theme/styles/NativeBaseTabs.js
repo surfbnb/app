@@ -21,9 +21,17 @@ const tabStyle = {
         fontSize: 25,
        // fontWeight : 'bold'
     },
-    activeTabStyle : {backgroundColor: Colors.white},
+    activeTabStyle : {
+        backgroundColor: Colors.white,
+        paddingLeft: 10,
+        paddingRight: 10,
+        flex: 1
+    },
     tabStyleSkipFont : {
-        backgroundColor: Colors.white
+        backgroundColor: Colors.white,
+        paddingLeft: 10,
+        paddingRight: 10,
+        flex: 1
     },
     style : {backgroundColor:  Colors.white}
 }

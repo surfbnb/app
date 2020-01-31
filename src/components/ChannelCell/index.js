@@ -81,7 +81,7 @@ class ChannelCell extends PureComponent {
 
 
   render() {
-    return <TouchableOpacity onPress={this.onChannelPress} style={[styles.channelCellWrapper, this.props.wrapperStyles]}>
+    return <TouchableOpacity onPress={this.onChannelPress} style={[styles.channelCellWrapper, this.props.wrapperStyles]} activeOpacity={0.9}>
             <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={styles.imageBg} resizeMode={'cover'}>
               <View style={styles.imageBgOpacity}>
                 <View>
