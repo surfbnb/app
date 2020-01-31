@@ -155,7 +155,7 @@ class ChannelsHeaderRight extends PureComponent{
 
   leaveChannel = () => {
     new PepoApi(DataContract.channels.getLeaveChannelApi(this.props.channelId))
-      .get()
+      .post()
       .then((response)=>{
         if(response && response.success){
           ActionSheet.hide();
