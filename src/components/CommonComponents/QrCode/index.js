@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {TouchableOpacity , Image, View, Text} from "react-native";
+import {TouchableOpacity , Image, View, Text, SafeAreaView} from "react-native";
 import QRCode from 'react-native-qrcode-svg';
 
 import inlineStyles from "./style";
@@ -25,7 +25,7 @@ export default class QrCode extends PureComponent{
   }
   render(){
     return(
-      <View style={inlineStyles.modalContainer}>
+      <SafeAreaView style={inlineStyles.modalContainer}>
         <TouchableOpacity
           onPress={() => {
             this.closeModal();
@@ -47,7 +47,7 @@ export default class QrCode extends PureComponent{
 
           <Text style={inlineStyles.modalTextStyle}>{this.descText}</Text>
         </View>
-      </View>
+      </SafeAreaView>
       )
 
 
