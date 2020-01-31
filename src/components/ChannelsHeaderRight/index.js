@@ -1,8 +1,9 @@
 import React, {PureComponent} from "react";
 import { Image, TouchableOpacity, Alert } from 'react-native';
 import { withNavigation } from "react-navigation";
-import Toast from '../../theme/components/NotificationToast';
+import deepGet from 'lodash/get';
 
+import Toast from '../../theme/components/NotificationToast';
 import MoreOptionsIcon from '../../assets/user_profile_options.png';
 import inlineStyles from './style';
 import DataContract from '../../constants/DataContract';
@@ -10,23 +11,48 @@ import { ActionSheet } from 'native-base';
 import PepoApi from '../../services/PepoApi';
 import reduxGetters from '../../services/ReduxGetters';
 import ShareOptions from "../CommonComponents/ShareOptions";
-import CurrentUser from "../../models/CurrentUser";
 
 
 class ChannelsHeaderRight extends PureComponent{
   constructor(props){
     super(props);
-    if(this.checkIfMember()){
-      this.mute_notifications_index = 0
-      this.leave_channel_index = 1
-      this.report_channel_index =2
-      this.more_cancel_index = 3
-      this.moreActionSheetButtons     = [this.getMuteText() ,'Leave Channel', 'Report Channel', 'Cancel'];
-      }else{
-      this.mute_notifications_index = 0
-      this.report_channel_index =1
-      this.more_cancel_index = 2
-      this.moreActionSheetButtons     = [this.getMuteText() , 'Report Channel', 'Cancel'];
+  }
+
+  getDefaultConfig = () => {
+    return {
+      memberConfig:{
+        actionConfig:{
+          0 : this.checkMuteStatus() ? "showUnMuteChannelAlert" : "showMuteChannelAlert",
+          1 : "showLeaveChannelAlert",
+          2 : "showReportAlert",
+          3 : "cancel"
+        },
+        actionSheetConfig : {
+          options : [this.getMuteOptionText(), "Leave Channel", "Report Channel", "Cancel"],
+          cancelButtonIndex : 3,
+          destructiveButtonIndex : 2
+        }
+      },
+      nonMemberConfig :{
+        actionConfig:{
+          0 : "showReportAlert",
+          1 : "cancel"
+        },
+        actionSheetConfig : {
+          options : ["Report Channel","Cancel"],
+          cancelButtonIndex : 1,
+          destructiveButtonIndex : 0
+        }
+      }
+    }
+  }
+
+  getConfig = () => {
+    let isMember = reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId);
+    if(isMember){
+      return this.getDefaultConfig().memberConfig;
+    } else {
+      return this.getDefaultConfig().nonMemberConfig;
     }
   }
 
@@ -41,7 +67,7 @@ class ChannelsHeaderRight extends PureComponent{
     }
   }
 
-  getMuteText = () =>{
+  getMuteOptionText = () =>{
     if(this.checkMuteStatus()){
       return `Unmute Notifications`;
     }else{
@@ -81,8 +107,6 @@ class ChannelsHeaderRight extends PureComponent{
       })
   }
 
-
-
   reportChannel = () => {
     let params = {
       report_entity_kind: DataContract.knownEntityTypes.channel,
@@ -101,12 +125,6 @@ class ChannelsHeaderRight extends PureComponent{
       .catch((error)=>{
         Toast.show({text: `Unable to report channel right now.`, icon: 'error' });
       });
-  }
-
-
-  checkIfMember = () =>{
-    let isMember = reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId);
-    return isMember;
   }
 
   leaveChannel = () => {
@@ -180,27 +198,11 @@ class ChannelsHeaderRight extends PureComponent{
   }
 
   showMoreOptions = () =>{
-    let moreActionSheetOptions = [...this.moreActionSheetButtons];
-    ActionSheet.show({
-      options :moreActionSheetOptions,
-      cancelButtonIndex : this.more_cancel_index,
-      destructiveButtonIndex : this.report_channel_index
-    },(buttonIndex)=>{
-      if(buttonIndex == this.mute_notifications_index){
-        if(this.checkMuteStatus()){
-          this.showUnMuteChannelAlert();
-        }else{
-
-          this.showMuteChannelAlert();
-        }
-      }
-      else if(buttonIndex == this.leave_channel_index){
-        if(this.checkIfMember()) {
-          this.showLeaveChannelAlert();
-        }
-      }
-      else if(buttonIndex == this.report_channel_index){
-        this.showReportAlert();
+    let config = this.getConfig();
+    ActionSheet.show( config.actionSheetConfig, (buttonIndex)=>{
+      const fnName = deepGet(config, `actionConfig[${buttonIndex}]`)
+      if (fnName && this[fnName]) {
+        this[fnName]();
       }
     })
   }
