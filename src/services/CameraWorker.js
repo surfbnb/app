@@ -722,25 +722,26 @@ class CameraWorker extends PureComponent {
         .post(payload)
         .then((responseData) => {
           if (responseData.success && responseData.data) {
-            console.log('cameraworker---------------',responseData.data );
-            console.log('Video uploaded Successfully');
-            Toast.show({
-              text: 'Your video uploaded successfully.',
-              icon: 'success',
-              imageUri: this.props.recorded_video.cover_image
-            });
-            let recordedVideo = {...this.props.recorded_video};
-            let resultType = deepGet(responseData, DataContract.common.resultType),
-              video = deepGet(responseData, `data.${resultType}[0]` );
-            getPixelDataOnFanVideoSuccess(recordedVideo, video.payload.video_id);
+            //Update in redux video uploaded 
             Store.dispatch(
               upsertRecordedVideo({
                 do_discard: true,
                 pepo_api_posting: false
               })
             );
+
+            Toast.show({
+              text: 'Your video uploaded successfully.',
+              icon: 'success',
+              imageUri: this.props.recorded_video.cover_image
+            });
+
+            let recordedVideo = {...this.props.recorded_video};
+            let resultType = deepGet(responseData, DataContract.common.resultType),
+                videoId = deepGet(responseData, `data.${resultType}[0].payload.video_id` );
+                getPixelDataOnFanVideoSuccess(recordedVideo, videoId);
+           
           } else {
-            console.log('/fanvideo:::VideoUploadStatusToNotProcessing');
             this.VideoUploadStatusToNotProcessing();
           }
           this.postToPepoApi = false;

@@ -6,14 +6,11 @@ import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import reduxGetter from '../../services/ReduxGetters';
 
-//TODO @Preshita redux connect 
-
 const mapStateToProps = (state, ownProps) => {
     return {
-      tagIds: reduxGetter.getChannelTagIds(ownProps.channelId) || []
+      tagIds: reduxGetter.getChannelTagIds(ownProps.channelId, state) || []
     };
   };
-
 
 class ChannelTagsList extends PureComponent {
 
