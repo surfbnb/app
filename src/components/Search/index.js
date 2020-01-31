@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {View, SafeAreaView} from "react-native";
+import {SafeAreaView} from "react-native";
 import { connect } from 'react-redux';
 import CurrentUser from '../../models/CurrentUser';
 import { Tab, Tabs, ScrollableTab } from 'native-base';
@@ -14,11 +14,13 @@ import TopsList from "../TopsList";
 import EmptySearchResult from '../../components/CommonComponents/EmptySearchResult';
 import NavigationEmitter from "../../helpers/TabNavigationEvent";
 import appConfig from "../../constants/AppConfig";
+import ChannelsList from "../ChannelsList";
 
 const tabStyle = NativeBaseTabTheme.tab,
   USER_KIND = 'user',
   TAG_KIND = 'tag',
-  VIDEO_KIND = 'video';
+  VIDEO_KIND = 'video',
+  CHANNEL_KIND = 'channel';
 
 const NO_OF_CHARS_TO_RESTRICT_SEARCH = 1;
 
@@ -29,7 +31,7 @@ const TabMap = {
     baseUrl: '/search/top',
     title: 'Top',
     "params": {
-      "supported_entities": [USER_KIND, TAG_KIND, VIDEO_KIND]
+      "supported_entities": [USER_KIND, TAG_KIND, VIDEO_KIND, CHANNEL_KIND]
     },
     "queryParam": "q",
     "noResultsData": {
@@ -51,7 +53,24 @@ const TabMap = {
       showBalanceFlyer: true
     },
     supported: true
+  },
+  "channels": {
+    id: TAG_KIND,
+    baseUrl : '/search/channels',
+    title: 'Channels',
+    "queryParam": "q",
+    "noResultsData": {
+      "noResultsMsg": 'No results found. Please try again.',
+      "isEmpty": true
     },
+    renderNoResults:  (noResultsData) => {
+      const oThis = TabMap.channels;
+      console.log('this.emptyData',oThis.noResultsData);
+      noResultsData = noResultsData || oThis.noResultsData;
+      return <EmptySearchResult  noResultsData={noResultsData}/>
+    },
+    supported: true
+  },
   "people": {
     id: USER_KIND,
     baseUrl : '/search/users',
@@ -107,7 +126,7 @@ const TabMap = {
   }
 };
 
-const TabsArray = [TabMap.top, TabMap.people, TabMap.tag, TabMap.videos];
+const TabsArray = [TabMap.top, TabMap.channels, TabMap.people, TabMap.tag, TabMap.videos];
 
 const mapStateToProps = (state) => {
   return {
@@ -234,6 +253,10 @@ class SearchScreen extends PureComponent {
     return this.getUrlForTab(TabMap.top);
   };
 
+  getChannelsTabUrl = () => {
+    return this.getUrlForTab(TabMap.channels);
+  };
+
   getTagsTabUrl = () => {
     return this.getUrlForTab(TabMap.tag);
   };
@@ -270,6 +293,15 @@ class SearchScreen extends PureComponent {
     let tabId = tabData.id;
     this.flatLists[ tabId ] = elemRef;
   };
+  setChannelFlatListRef = (elemRef) => {
+    this.flatLists = this.flatLists || {};
+
+    let tabData = TabMap.channels;
+    let tabId = tabData.id;
+    this.flatLists[ tabId ] = elemRef;
+
+  }
+
   setPeopleFlatListRef = (elemRef) => {
     this.flatLists = this.flatLists || {};
 
@@ -360,6 +392,26 @@ class SearchScreen extends PureComponent {
     return null;
   };
 
+  showChannelsTab = () => {
+
+    if (TabMap.channels.supported) {
+      return <Tab heading={TabMap.channels.title} textStyle={tabStyle.textStyle}
+                  activeTextStyle={tabStyle.activeTextStyle}
+                  activeTabStyle={tabStyle.activeTabStyle}
+                  tabStyle={tabStyle.tabStyleSkipFont}
+                  style={tabStyle.style}>
+        <ChannelsList
+          getFetchUrl={this.getChannelsTabUrl}
+          ref={this.setChannelFlatListRef}
+          noResultsData={TabMap.channels.noResultsData}
+          getNoResultsCell={TabMap.channels.renderNoResults}
+        />
+      </Tab>
+    }
+    return null;
+
+  };
+
 
   showPeopleTab = () => {
     if (TabMap.people.supported) {
@@ -406,9 +458,8 @@ class SearchScreen extends PureComponent {
            style={tabStyle.style}>
 
         <VideoCollections
-          ref={this.setVideoFlatListRef}
+          onRef={this.setVideoFlatListRef}
           getFetchUrl={this.getVideoTabUrl}
-          navigation={this.props.navigation}
           noResultsData={TabMap.videos.noResultsData}
           getNoResultsCell={TabMap.videos.renderNoResults}
           extraParams={TabMap.videos.extraParams}
@@ -424,6 +475,7 @@ class SearchScreen extends PureComponent {
       <SearchListHeader setSearchParams={this.setSearchParams} ref={this.setSearchListHeaderRef} />
       <Tabs renderTabBar={this.renderTabBar}  onChangeTab={this.onChangeTab}>
         {this.showTopTab()}
+        {this.showChannelsTab()}
         {this.showPeopleTab()}
         {this.showTagsTab()}
         {this.showVideoSection()}

@@ -23,6 +23,7 @@ import AppConfig from '../../constants/AppConfig';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import pepoCornsImg from '../../assets/UnicornSmall.png';
+import {testProps} from "../../constants/AppiumAutomation";
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -152,9 +153,9 @@ class BalanceHeader extends PureComponent {
         <View style={{alignItems: 'flex-end'}}>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             {this.getWalletIcon()}
-            <Text style={inlineStyles.pepoBalance}>{' '}{this.toBt(this.props.balance) || 0.00}</Text>
+            <Text style={inlineStyles.pepoBalance} {...testProps('balance-header-pepo-amount')}>{' '}{this.toBt(this.props.balance) || 0.00}</Text>
           </View>
-          <Text style={inlineStyles.usdBalance}>${' '}{this.toFiat( this.props.balance ) || 0.00} </Text>
+          <Text style={inlineStyles.usdBalance} {...testProps('balance-header-usd-amount')}>${' '}{this.toFiat( this.props.balance ) || 0.00} </Text>
         </View>
       </View>
     );

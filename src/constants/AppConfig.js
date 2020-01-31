@@ -38,6 +38,11 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
 
 const AppConfig = {
 
+  videoType : {
+    fanVideo: "video",
+    reply: "reply"
+  },
+
   pepoAnimationDuration : 500,
   logoutTimeOut : 2000,
   loginPopoverShowTime: 10000,
@@ -430,19 +435,21 @@ const AppConfig = {
     granted: RESULTS.GRANTED
   },
 
-  stitchingStatus: {
-    done: 'DONE',
-    failed: 'FAILED',
-    not_started: 'NOT_STARTED',
-    in_progress: 'IN_PROGRESS'
-  },
-
   authServiceTypes : {
     google: "google",
     apple: "apple",
     github: "github",
     twitter: "twitter"
+  },
 
+  channelConstants : {
+    SCREEN_NAME : "ChannelsScreen"
+  },
+  stitchingStatus: {
+    done: 'DONE',
+    failed: 'FAILED',
+    not_started: 'NOT_STARTED',
+    in_progress: 'IN_PROGRESS'
   }
 
 };

@@ -14,6 +14,7 @@ import InvertedReplyList from "../InvertedReplyThumbnailList";
 import Utilities from "../../../services/Utilities";
 import NoPendantsVideoReplyRow from "../VideoReplyRowComponent/NoPendantsVideoReplyRow";
 import Colors from "../../../theme/styles/Colors";
+import MaskedChannelHList from "../MaskedChannelHList";
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;
@@ -276,6 +277,7 @@ class ReplyList extends PureComponent{
                                         getCurrentIndex={this.getCurrentIndex}
                                         onRef={this.setPendantListRef}
                                   />
+                    <MaskedChannelHList videoId={this.props.parentVideoId} />             
                 </View>    
 
                 <FlatList

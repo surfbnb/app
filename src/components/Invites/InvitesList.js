@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, Keyboard, FlatList, Text } from 'react-native';
 
-import User from './User';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import styles from './styles';
 import Colors from '../../theme/styles/Colors';
+import UserRow from '../CommonComponents/UserRow';
+import InviteUser from '../CommonComponents/UserRow/Invite';
 
 class InvitesList extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class InvitesList extends Component {
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
-    return <User userId={item} />;
+    return  <UserRow userId={item} ><InviteUser  userId={item} /></UserRow>;
   };
 
   getEmptyComponent = () => {

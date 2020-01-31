@@ -7,13 +7,15 @@ import {
   Keyboard
 } from "react-native";
 import SafeAreaView from 'react-native-safe-area-view';
-
+import deepGet from "lodash/get";
 import TagsCell from '../TagsList/TagsCell';
 
 import Pagination from "../../services/MultiSection/MultiSectionPagination";
-import PeopleCell from "../PeopleList/PeopleCell";
+import UserRow from "../CommonComponents/UserRow";
+import SearchUser from "../CommonComponents/UserRow/Search";
 import VideoThumbnail from "../CommonComponents/VideoThumbnail/VideoThumbnail";
 import {FetchServices} from "../../services/FetchServices";
+import ChannelCell from "../ChannelCell";
 
 const titleKeyName = 'title',
   dataKeyName = 'data',
@@ -157,7 +159,7 @@ class TopsList extends PureComponent {
   };
 
   __renderUserItem = ({ item, index }) => {
-    return <PeopleCell userId={item.payload.user_id} />;
+    return <UserRow userId={item.payload.user_id}><SearchUser userId={item.payload.user_id} /></UserRow>;
   };
 
 
@@ -213,6 +215,11 @@ class TopsList extends PureComponent {
 
   };
 
+  _renderChannelsItem = (item) => {
+    let channelId = deepGet(item, 'item.id' );
+    return <ChannelCell  channelId={channelId} />;
+  };
+
   listHeaderComponent = () => {
     return (
       <React.Fragment>
@@ -229,7 +236,15 @@ class TopsList extends PureComponent {
       return this.__renderUserItem;
     } else if (kind === 'videos'){
       return this._renderVideoItem;
+    } else if (kind === 'channel'){
+      return this._renderChannelsItem;
+    } else {
+      return this.renderEmpty;
     }
+  };
+
+  renderEmpty = () => {
+    return <React.Fragment></React.Fragment>;
   };
 
   getVideoSectionsData = () => {

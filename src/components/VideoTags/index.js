@@ -127,7 +127,6 @@ class VideoTags extends PureComponent {
                     listHeaderComponent={this._headerComponent()}
                     beforeRefresh={this.beforeRefresh}
                     getFetchUrl={this.getFetchUrl}
-                    navigation={this.props.navigation}
                     noResultsData={this.noResultsData}
                     getNoResultsCell={this.renderNoResults}
                     tagId={this.getTagId()}

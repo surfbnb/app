@@ -6,7 +6,7 @@ import PepoApi from "../../../services/PepoApi";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
 import DataContract from '../../../constants/DataContract';
-import DeletedVideoInfo from '../DeletedVideoInfo';
+import DeletedVideoInfo from '../DeletedEntity/DeletedVideoInfo';
 import FloatingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import ReplyList from "../../CommonComponents/ReplyList";
 import { fetchVideo } from '../../../helpers/helpers'
@@ -154,6 +154,7 @@ class VideoReplyPlayer extends PureComponent {
          }else{
            return <ReplyList currentIndex={this.currentIndex}
                              fetchServices={this.fetchService}
+                             parentVideoId={this.parentVideoId}
                              parentClickHandler={this.parentClickHandler}/>
          }
        }

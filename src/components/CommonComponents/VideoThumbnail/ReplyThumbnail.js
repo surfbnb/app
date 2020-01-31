@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import reduxGetters from '../../../services/ReduxGetters';
 import AppConfig from '../../../constants/AppConfig';
 import deepGet from "lodash/get";
-import Pricer from "../../../services/Pricer";
 import {ReplyPepoAmount} from '../../CommonComponents/PepoAmount'
 
 class ReplyThumbnail extends PureComponent {
@@ -19,8 +18,10 @@ class ReplyThumbnail extends PureComponent {
      userName = reduxGetters.getUserName(userId),
      imageUrl = reduxGetters.getVideoImgUrl(videoId, null,  AppConfig.userVideos.userScreenCoverImageWidth) ,
      videoDesc = reduxGetters.getVideoDescription(reduxGetters.getReplyDescriptionId(replyId));
+     isPinned = deepGet(this.props , "payload.is_pinned")
     return <Base userId={userId} userName={userName}
                  imageUrl={imageUrl} videoDesc={videoDesc}
+                 isPinned={isPinned}
                  pepoAmount={<ReplyPepoAmount entityId={replyId} />}
                   {...this.props}
 

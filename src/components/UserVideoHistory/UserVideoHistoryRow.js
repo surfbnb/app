@@ -11,15 +11,14 @@ import inlineStyles from './styles';
 import Utilities from '../../services/Utilities';
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
-import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
 import BottomReplyBar from '../CommonComponents/BottomReplyBar';
 import CommonStyle from "../../theme/styles/Common";
 import assignIn from 'lodash/assignIn';
-import InvertedReplyList from "../CommonComponents/InvertedReplyThumbnailList";
 import AppConfig from "../../constants/AppConfig";
 import BubbleList from '../CommonComponents/BubbleList';
 import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
+import MaskedChannelHList from "../CommonComponents/MaskedChannelHList"
 
 
 const AREA = AppConfig.MaxDescriptionArea;
@@ -80,6 +79,7 @@ class UserVideoHistoryRow extends PureComponent {
 
                           <View style={inlineStyles.invertedList}>
                             <BubbleList videoId={this.props.videoId} doRender={this.props.doRender} />
+                            <MaskedChannelHList videoId={this.props.videoId} />
                           </View>
 
 
@@ -94,13 +94,8 @@ class UserVideoHistoryRow extends PureComponent {
                             />
                             <ReplyIcon videoId={this.props.videoId} userId={this.props.userId}/>
                             <VideoShareIcon entityId={this.props.videoId} url={DataContract.share.getVideoShareApi(this.props.videoId)} />
-                            <ReportVideo  userId={this.props.userId} reportEntityId={this.props.videoId} reportKind={'video'} />
                           </View>
 
-                          <VideoSupporterStat
-                            entityId={this.props.videoId}
-                            userId={this.props.userId}
-                          />
                         </View>
                         </View>
 

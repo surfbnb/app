@@ -1,5 +1,12 @@
 export default {
 
+    feed: {
+        homeApi: "/feeds",
+        getSingleFeedApi : (id) => {
+            return `/feeds/${id}`
+        }
+    },
+
     payments: {
         postPaymentAcknowledgeApi : "/top-up/",
         getAllProductsApi : '/top-up/products' ,
@@ -91,7 +98,11 @@ export default {
         },
         kindKey: "kind",
         creatorUserIdKey: 'creator_user_id',
-        videoDetailsKey: 'video_details'
+        videoDetailsKey: 'video_details',
+        reportEntityKind : {
+            reply:"reply",
+            video:"video"
+        }
     },
 
     share: {
@@ -100,7 +111,54 @@ export default {
         },
         getVideoReplyShareApi: ( id ) => {
             return `/replies/${id}/share`;
+        },
+        getChannelShareApi: ( id ) => {
+            return `/channels/${id}/share`
+        }
+    },
+
+    channels: {
+        getVideoListApi : (id) => {
+            return `/channels/${id}/videos`;
+        },
+        getVideoListParams : (id=0)=> {
+            return id ? {filter_by_tag_id: id} : {};
+        },
+        getChannelDetails : (id)=> {
+            return `/channels/${id}`;
+        },
+        getChannelsMemberApi: (id) => {
+            return `/channels/${id}/users`;
+        },
+        getMuteApi : (id) => {
+            return `/channels/${id}/turn-off-notifications`;
+        },
+        getUnmuteApi : (id) => {
+            return `/channels/${id}/turn-on-notifications`;
+        },
+        getLeaveChannelApi : (id) => {
+            return `/channels/${id}/leave`
+        },
+        getJoinChannelApi : (id) => {
+            return `/channels/${id}/join`
+        },
+        getReportChannelApi : () => {
+            return `/report`
+        }
+    },
+    
+    actionSheet: {
+        video : {
+            reportApi: '/report',
+            getMuteUnMuteApi : (id, canMute) => {
+                if(canMute){
+                    return  `/users/${id}/mute` ;
+                }else{
+                    return  `/users/${id}/unmute`;
+                }
+            }
         }
     }
+
 }
 

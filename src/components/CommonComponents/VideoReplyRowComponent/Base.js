@@ -9,7 +9,6 @@ import deepGet from 'lodash/get';
 import inlineStyles from '../../FullScreenReplyCollection/styles';
 
 import ReplyPepoTxBtn from '../../PepoTransactionButton/ReplyPepoTxBtn';
-import VideoReplySupporterStat from '../VideoSupporterStat/VideoReplySupporterStat';
 
 import ReplyVideoBottomStatus from '../../BottomStatus/ReplyVideoBottomStatus';
 import DataContract from '../../../constants/DataContract';
@@ -24,6 +23,7 @@ import multipleClickHandler from '../../../services/MultipleClickHandler';
 import { fetchVideo } from '../../../helpers/helpers';
 import ReplyShareIcon from '../ShareIcon/ReplyShare';
 import Utilities from "../../../services/Utilities";
+import MaskedChannelHList from "../../CommonComponents/MaskedChannelHList";
 
 class Base extends PureComponent {
     constructor(props) {
@@ -108,6 +108,7 @@ class Base extends PureComponent {
                                   isActiveEntity={this.props.isActiveEntity}
                                   fullVideoReplyId={this.props.replyDetailId}
               />
+              <MaskedChannelHList videoId={this.state.parentVideoId} />
           </View>
         )
       }
@@ -136,8 +137,6 @@ class Base extends PureComponent {
 
                             <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-
-
                               <View style={{ minWidth: '20%' , marginLeft: "auto"}} pointerEvents={'box-none'}>
                                 <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}} pointerEvents={'box-none'}>
                                     <ReplyPepoTxBtn
@@ -157,20 +156,13 @@ class Base extends PureComponent {
                                       />
                                     </TouchableOpacity>
                                     <ReplyShareIcon  entityId={this.props.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)}/>
-                                    <ReportVideo  userId={this.props.userId} reportEntityId={this.props.replyDetailId} reportKind={'reply'} />
                                  </View>
-
-                                <VideoReplySupporterStat
-                                    entityId={this.props.replyDetailId}
-                                    userId={this.props.userId}
-                                />
                               </View>
                             </View>
 
                             <ReplyVideoBottomStatus
                                 userId={this.props.userId}
-                                entityId={this.props.replyDetailId}
-                            />
+                                entityId={this.props.replyDetailId} />
                         </View>
 
                     )}

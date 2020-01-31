@@ -22,6 +22,8 @@ import { analyticsSetCurrentScreen } from '../../helpers/helpers';
 import {globalEvents,  globalEventsMap} from "../../helpers/GlobalEvents";
 import debounce from "lodash/debounce";
 
+import {testProps} from "../../constants/AppiumAutomation";
+
 const serviceTypes = AppConfig.authServiceTypes;
 const btnPostText = 'Connecting...';
 const versionIOS = DeviceInfo.getSystemVersion();
@@ -70,7 +72,8 @@ class loginPopover extends React.Component {
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.twitter),
         width: 21.14,
         height: 17.14,
-        connectingHeader:btnPostText
+        connectingHeader:btnPostText,
+        testIdName: 'continue-with-twitter'
       },
       [serviceTypes.apple]: {
         header: 'Continue with Apple',
@@ -78,7 +81,8 @@ class loginPopover extends React.Component {
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.apple),
         width: 17.3,
         height: 20,
-        connectingHeader: btnPostText
+        connectingHeader: btnPostText,
+        testIdName: 'continue-with-apple'
       },
       [serviceTypes.google]:{
         header: 'Continue with Gmail',
@@ -86,7 +90,8 @@ class loginPopover extends React.Component {
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.google),
         width: 21,
         height: 21,
-        connectingHeader: btnPostText
+        connectingHeader: btnPostText,
+        testIdName: 'continue-with-google'
       },
       [serviceTypes.github]: {
         header: 'Continue with GitHub',
@@ -94,7 +99,8 @@ class loginPopover extends React.Component {
         icon: LastLoginedUser.getOAuthIcon(serviceTypes.github),
         width: 19,
         height: 18.5,
-        connectingHeader: btnPostText
+        connectingHeader: btnPostText,
+        testIdName: 'continue-with-github'
       },
     };
   };
@@ -146,6 +152,7 @@ class loginPopover extends React.Component {
         source={currentServiceConfig.icon}
         imgDimension={{ width: currentServiceConfig.width, height: currentServiceConfig.height, marginRight: 8 }}
         disabled={this.state.disableLoginBtn}
+        {...testProps(currentServiceConfig.testIdName)}
       />
     });
     return buttonsJSX;
@@ -180,6 +187,7 @@ class loginPopover extends React.Component {
     return <TouchableOpacity
       onPress={this.closeModal}
       style={inlineStyles.crossTouchable}
+      {...testProps('login-popover-cross-icon')}
     >
       <Image source={modalCross} style={inlineStyles.crossIconSkipFont} />
     </TouchableOpacity>
@@ -238,11 +246,12 @@ class loginPopover extends React.Component {
                     style={[Theme.Button.btn, { borderWidth: 0 }, this.state.disableLoginBtn ? Theme.Button.disabled : null]}
                     disabled={this.state.disableLoginBtn}
                     onPress={this.signInViaLastLoginService}
+                    {...testProps('continue-as')}
                   >
                     <Text style={[Theme.Button.btnPinkText, { textAlign: 'center', fontSize: 16 }]} numberOfLines={1} ellipsizeMode={'tail'}>Continue as {LastLoginedUser.getUserName()} </Text>
                   </TouchableOpacity>
                 </LinearGradient>
-                <TouchableOpacity onPress={this.onMoreOptionClick}>
+                <TouchableOpacity onPress={this.onMoreOptionClick} {...testProps('more-options')}>
                   <Text style={[{ textAlign: 'center', color: '#ff5566', fontFamily: 'AvenirNext-Medium'}]}>More Options</Text>
                 </TouchableOpacity>
                 {this.termsOfService()}

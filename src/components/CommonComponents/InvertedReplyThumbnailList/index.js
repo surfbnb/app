@@ -75,6 +75,7 @@ class InvertedReplyList extends PureComponent {
       "fetchServices": clonedInstance,
       "currentIndex":index,
       "baseUrl": baseUrl,
+      "parentVideoId": videoId,
       "parentClickHandler": this.getParentClickHandler( videoId )
     });
   };

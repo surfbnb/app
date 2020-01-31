@@ -30,6 +30,7 @@ import LastLoginedUser from "../../models/LastLoginedUser";
 import authService from "../../services/AuthServicesFactory";
 import AuthBaseService from "../../services/AuthServices/Base";
 import AppConfig from "../../constants/AppConfig";
+import {testProps} from "../../constants/AppiumAutomation";
 
 const serviceTypes = AppConfig.authServiceTypes;
 const disconnetImageIconStyle = {
@@ -243,7 +244,9 @@ class CustomDrawerContent extends Component {
                 onPress={multipleClickHandler(() => {
                   this.onPepocornsClick();
                 })}
-                disabled={this.state.disableButtons}>
+                disabled={this.state.disableButtons}
+                {...testProps('side-toggle-drawer-pepo-store')}
+            >
                 <View style={styles.itemParent}>
                   <Image style={{ height: 27, width: 27, resizeMode: 'contain' }} source={storePink} />
                   <Text style={styles.item}>Pepo.com Store</Text>
@@ -255,6 +258,7 @@ class CustomDrawerContent extends Component {
               this.referAndEarn();
             })}
             disabled={this.state.disableButtons}
+            {...testProps('side-toggle-drawer-invite')}
           >
             <View style={styles.itemParent}>
               <Image style={{ height: 29, width: 26.6, resizeMode: 'contain' }} source={referAndEarn} />
@@ -265,7 +269,9 @@ class CustomDrawerContent extends Component {
 
           <TouchableOpacity onPress={multipleClickHandler(() => {
             this.onGetSupport();
-          })} disabled={this.state.disableButtons}>
+          })} disabled={this.state.disableButtons}
+          {...testProps('side-toggle-drawer-support')}
+          >
             <View style={styles.itemParent}>
               <Image style={{ height: 29, width: 29, resizeMode: 'contain' }} source={helpIcon} />
               <Text style={styles.item}>Support & Feedback</Text>
@@ -274,7 +280,9 @@ class CustomDrawerContent extends Component {
 
           <TouchableOpacity onPress={multipleClickHandler(() => {
             this.privacypolicy();
-          })} disabled={this.state.disableButtons}>
+          })} disabled={this.state.disableButtons}
+            {...testProps('side-toggle-drawer-privacy')}
+          >
             <View style={styles.itemParent}>
               <Image style={{ height: 27.75, width: 25.5, resizeMode: 'contain' }} source={privacy} />
               <Text style={styles.item}>Privacy Policy</Text>
@@ -283,7 +291,9 @@ class CustomDrawerContent extends Component {
 
           <TouchableOpacity onPress={multipleClickHandler(() => {
             this.termsAndConditions();
-          })} disabled={this.state.disableButtons}>
+          })} disabled={this.state.disableButtons}
+            {...testProps('side-toggle-drawer-terms-and-conditions')}
+          >
             <View style={styles.itemParent}>
               <Image style={{ height: 24, width: 25.5, resizeMode: 'contain' }} source={tac} />
               <Text style={styles.item}>Terms and Conditions</Text>
@@ -295,6 +305,7 @@ class CustomDrawerContent extends Component {
               this.aboutLink();
             })}
             disabled={this.state.disableButtons}
+            {...testProps('side-toggle-drawer-about')}
           >
             <View style={styles.itemParent}>
               <Image style={{ height: 27, width: 27, resizeMode: 'contain' }} source={about} />
@@ -304,7 +315,9 @@ class CustomDrawerContent extends Component {
 
           <TouchableOpacity onPress={multipleClickHandler(() => {
             this.disconnect();
-          })} disabled={this.state.disableButtons}>
+          })} disabled={this.state.disableButtons}
+            {...testProps('side-toggle-drawer-disconnect')}
+          >
             <View style={styles.itemParent}>
               {this.getDisconnectBtnImage()}
               <Text style={styles.item}>{this.getDisconnectBtnText()}</Text>
@@ -314,7 +327,7 @@ class CustomDrawerContent extends Component {
         </View>
 
         <View style={{ alignItems: 'center', paddingVertical: 12 }}>
-          <Text style={{ fontSize: 12 }}>
+          <Text style={{ fontSize: 12 }} {...testProps('side-toggle-drawer-pepo-version')}>
             Pepo v{DeviceInfo.getVersion()} ({DeviceInfo.getBuildNumber()})
           </Text>
         </View>
@@ -329,7 +342,7 @@ class CustomDrawerContent extends Component {
       return null;
     }
     return (
-      <TouchableOpacity onPress={this.initWallet}>
+      <TouchableOpacity onPress={this.initWallet} {...testProps('side-toggle-drawer-wallet-settings')}>
         <View style={[styles.itemParent]}>
           <Image style={{ height: 26.6, width: 29, resizeMode: 'contain'  }} source={pepoAmountWallet} />
           <Text style={styles.item}>Wallet Settings</Text>

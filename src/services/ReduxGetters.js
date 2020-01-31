@@ -20,6 +20,11 @@ class ReduxGetters {
     return deepGet(state, `home_feed_entities.id_${id}.payload.video_id`);
   }
 
+  getVideoIdFromVideoDetails(id ,state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.video_id`);
+  }
+
   getVideoUrl(id, state) {
     state = state || Store.getState();
     return (
@@ -27,7 +32,7 @@ class ReduxGetters {
       deepGet(state, `video_entities.id_${id}.resolutions.original.url`)
     );
   }
-
+  
   getUser(id, state) {
     state = state || Store.getState();
     return deepGet(state, `user_entities.id_${id}`);
@@ -90,7 +95,8 @@ class ReduxGetters {
   getBioIncudes(userId, tappedText) {
     let lowercasedTappedText = tappedText.toLowerCase();
     let state =  Store.getState();
-    return deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${lowercasedTappedText}`);
+    return deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${lowercasedTappedText}`) ||
+            deepGet(state, `user_profile_entities.id_${userId}.bio.includes.${tappedText}`);
   }
 
   canBlockUser(id ,state){
@@ -503,7 +509,6 @@ class ReduxGetters {
   isVideoIsChargeable(id, state){
     state = state || Store.getState();
     return  !!Number( deepGet(state, `current_user_video_relation_entities.id_${id}.is_reply_chargeable` , 0) );
-
   }
 
   isReplyShareable(id ,  state){
@@ -568,6 +573,83 @@ class ReduxGetters {
     state = state || Store.getState();
     return deepGet(state, `unseen_replies_entities.id_${id}.unseen`, []);
   }
+
+  getChannelName(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `channel_entities.id_${id}.name`);
+  }
+
+  getChannelTagLine(id, state){
+    state = state || Store.getState();
+    let tagId = deepGet(state, `channel_detail_entities.id_${id}.tagline_id`);
+    return deepGet(state, `text_entities.id_${tagId}.text`);
+  }
+
+  getChannelUserCount(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `channel_stat_entities.id_${id}.total_users`);
+  }
+
+  getChannelVideoCount(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `channel_stat_entities.id_${id}.total_videos`);
+  }
+  
+  getChannelBackgroundImage(id, state){
+    state = state || Store.getState();
+    let coverImageId = deepGet(state, `channel_detail_entities.id_${id}.cover_image_id`)
+      return deepGet(state, `image_entities.id_${coverImageId}.resolutions.576w.url`) || deepGet(state, `image_entities.id_${coverImageId}.resolutions.original.url`) ;
+  }
+
+  getChannelTagIds(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `channel_detail_entities.id_${id}.tag_ids`);
+  }
+
+  isCurrentUserMemberOfChannel(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `current_user_channel_relation_entities.id_${id}.is_member`);
+  }
+
+  isChannelUserAdmin(channelId ,  userId , state){
+    state = state || Store.getState();
+    return !!deepGet(state, `current_user_channel_relation_entities.id_${channelId}.${userId}.is_admin` ,  false);
+  }
+
+  getChannelDescription(id, state){
+    state = state || Store.getState();
+    let descId = deepGet(state, `channel_detail_entities.id_${id}.description_id`);
+    return deepGet(state, `text_entities.id_${descId}.text`);
+  }
+
+  getChannelIncludesEntity(id, tappedText){
+    let lowercasedText = tappedText.toLowerCase();
+    let state = Store.getState();
+    let descId = deepGet(state, `channel_detail_entities.id_${id}.description_id`);
+    return deepGet(state, `text_entities.id_${descId}.includes`) && (deepGet(state, `text_entities.id_${descId}.includes`)[lowercasedText] ||
+            deepGet(state, `text_entities.id_${descId}.includes`)[tappedText]);
+  }
+
+  getReplyCTS(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `reply_detail_entities.id_${id}.cts`,  0);
+  } 
+
+  getVideoCTS(id ,state ){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.cts` , 0 );
+  }
+
+  getVideoChannelList(id , state){
+    state = state || Store.getState();
+    return deepGet(state, `video_stat_entities.id_${id}.channel_ids` , [] );
+  }
+  currentUserNotificationStatus(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `current_user_channel_relation_entities.id_${id}.notification_status`);
+
+  }
+
 
 }
 

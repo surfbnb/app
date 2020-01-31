@@ -1,15 +1,17 @@
 import React, { PureComponent } from 'react';
-import { View, Text , TouchableWithoutFeedback} from 'react-native';
+import {View, Text, TouchableWithoutFeedback, Image} from 'react-native';
 
 import inlineStyles from './styles';
-import reduxGetter from '../../services/ReduxGetters';
 
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import InAppBrowser from '../../services/InAppBrowser';
 import Utilities from '../../services/Utilities';
 import CurrentUser from '../../models/CurrentUser';
-
-const regex = /(^|\s)(#|@)(\w+)/g;
+import TextFormatter from '../CommonComponents/TextFormatter';
+import ReduxGetters from '../../services/ReduxGetters';
+import TimerIcon from '../../assets/created-timer-icon.png';
+import { shortenedFromNow } from '../../helpers/timestampHandling';
+import ReportVideo from "../CommonComponents/ReportVideo";
 
 class BottomStatus extends PureComponent {
   constructor(props) {
@@ -31,122 +33,40 @@ class BottomStatus extends PureComponent {
     }
   };
 
-  isValidTag(descriptionId, tappedText) {
-    if(tappedText.indexOf('#') != 0 ) return false;
-    return this.isValidIncludes( descriptionId, tappedText );
-  }
-
-  isValidMention(descriptionId, tappedText) {
-    if(tappedText.indexOf('@') != 0 ) return false;
-    return this.isValidIncludes( descriptionId, tappedText );
-  }
-
-  isValidIncludes(descriptionId, tappedText){
-    return !!reduxGetter.getTappedIncludesEntity(descriptionId, tappedText);
-  }
-
-  getHashTagMarkup( item , formattedItem, prevText, index ){
-    const tagText = item.replace("#", "");
-    return (
-      <Text key={`${tagText}-${index}`}>
-        {prevText}
-        <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
-              numberOfLines={1}
-              onPress={() => {
-                this.onIncludesPressed(formattedItem)
-              }}>
-          {/*<Text style={{fontStyle: 'italic'}}>#</Text>*/}
-          {item}
-        </Text>
-      </Text>
-    );
-  }
-
-  getMentionMarkup( item , formattedItem, prevText, index ){
-    const mentionText = item.replace("@", "");
-    return (
-      <Text key={`${mentionText}-${index}`}>
-        {prevText}
-        <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
-              numberOfLines={1}
-              onPress={() => {
-                this.onIncludesPressed(formattedItem)
-              }}>
-          {/*<Text style={{fontStyle: 'italic'}}>@</Text>*/}
-          {item}
-        </Text>
-      </Text>
-    );
-  }
-
-  onIncludesPressed = (tag) => {
-    if(!Utilities.checkActiveUser()) return;
-
-    let tapEntity = reduxGetter.getTappedIncludesEntity(this.props.entityDescriptionId, tag);
-    if (!tapEntity) {
-      return;
-    }
-
-    if( tapEntity.kind === 'tags'){
-      this.props.navigation.push('VideoTags', { "tagId": tapEntity.id });
-      return;
-    }
-
-    if( tapEntity.kind === 'users'){
-      if (tapEntity.id == CurrentUser.getUserId()) {
-        this.props.navigation.navigate('ProfileScreen');
-      }else{
-        this.props.navigation.push('UsersProfileScreen', { userId: tapEntity.id });
-      }
-      return;
-    }
-  };
-
-  getTextMarkup( item  , prevText, index){
-    return (
-      <Text key={`${item}-${index}`}>
-        {prevText + item}
-      </Text>
-    )
+  getTappedIncludesEntity = ( tag ) => {
+    let tappedIncludesEntity = ReduxGetters.getTappedIncludesEntity(this.props.entityDescriptionId, tag);
+    return tappedIncludesEntity;
   }
 
   render() {
-    let processingString = this.props.description;
-    let includesArray = processingString.match(regex) || [];
     return (
       <View style={inlineStyles.bottomBg}>
 
-          <View style={{ paddingTop: 8, paddingBottom: 5 }}>
+          <View style={inlineStyles.bottomBgInner}>
           {!!this.props.userName &&(
+            <View style={inlineStyles.handleWithTimerAndReportIcon}>
               <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())}
-              pointerEvents={'auto'}>
-                <Text style={[inlineStyles.handle]} ellipsizeMode={'tail'} numberOfLines={1}>
-                  {`@${this.props.userName}`}
-                </Text>
-            </TouchableWithoutFeedback>)}
+                                        pointerEvents={'auto'}
+              >
+                <View style={inlineStyles.handleTruncate}>
+                  <Text ellipsizeMode={'tail'} numberOfLines={1} style={[inlineStyles.handle]}>
+                    {/*ellipsizeMode ellipsizeMode ellipsizeMode ellipsizeMode*/}
+                    {`@${this.props.userName}`}
+                  </Text>
+                  <Image style={inlineStyles.ctaIconSkipFont} source={TimerIcon}/>
+                  <Text style={inlineStyles.timerTxt}>{shortenedFromNow(this.props.cts*1000)}</Text>
+                </View>
+              </TouchableWithoutFeedback>
+              <ReportVideo userId={this.props.userId} entityId={this.props.entityId} reportKind={this.props.reportEntityKind} />
+            </View>)}
             {this.props.description ? (
               <Text
                 style={[{ fontSize: 14, flexWrap: 'wrap', fontFamily: 'AvenirNext-Regular', textAlign: 'left' }, inlineStyles.bottomBgTxt]}
                 ellipsizeMode={'tail'}
                 numberOfLines={3}
               >
-
-                {(includesArray.map((item, index) => {
-                  let tagLocation = processingString.search(item);
-                  let prevText = processingString.slice(0, tagLocation);
-                  processingString = processingString.slice(tagLocation + item.length);
-                  let formattedItem = item.replace(regex, "$2$3");
-                  if (this.isValidTag(this.props.entityDescriptionId, formattedItem)) {
-                    return this.getHashTagMarkup(item, formattedItem, prevText, index);
-                  } if( this.isValidMention(this.props.entityDescriptionId ,  formattedItem) ){
-                    return this.getMentionMarkup(item, formattedItem, prevText, index);
-                  }else {
-                    return this.getTextMarkup(item, prevText, index);
-                  }
-                }))}
-
-                <Text>{processingString}</Text>
-
+                <TextFormatter text={this.props.description} getTappedIncludesEntity={this.getTappedIncludesEntity} 
+                        navigation={this.props.navigation}/>
               </Text>
             ) : (
                 <React.Fragment />

@@ -11,6 +11,7 @@ import NavigationService from "../../../services/NavigationService";
 import utilities from "../../../services/Utilities";
 import {getVideoReplyObject, replyPreValidationAndMessage} from "../../../helpers/cameraHelper";
 import Pricer from "../../../services/Pricer";
+import {testProps} from '../../../constants/AppiumAutomation';
 
 const mapStateToProps = (state , ownProps) => {
   return {
@@ -44,10 +45,12 @@ class ReplyIcon extends PureComponent {
     render(){
         return (
         <React.Fragment>
-            <Text style={inlineStyles.videoReplyCount}>{Pricer.toDisplayAmount(this.props.videoReplyCount)}</Text>
+            <Text style={inlineStyles.videoReplyCount} {...testProps('pepo-reply-btn-count')}>{Pricer.toDisplayAmount(this.props.videoReplyCount)}</Text>
             <TouchableOpacity pointerEvents={'auto'}
                             style={inlineStyles.replyIconWrapper}
-                            onPress={multipleClickHandler(() => this.replyVideo())} >
+                            onPress={multipleClickHandler(() => this.replyVideo())}
+                            {...testProps('pepo-reply-btn')}
+            >
                 <Image style={{ width: 47.33, height: 40.66 }} source={reply_video} />
             </TouchableOpacity>
         </React.Fragment>);

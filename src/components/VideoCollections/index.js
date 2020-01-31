@@ -7,6 +7,7 @@ import CommonStyle from "../../theme/styles/Common";
 import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
 import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
 import entityHelper from '../../helpers/EntityHelper';
+import { withNavigation } from 'react-navigation';
 
 class VideoCollections extends PureComponent {
     constructor(props){
@@ -51,7 +52,8 @@ class VideoCollections extends PureComponent {
 
         // Now, create a new one.
         let fetchUrl = this.props.getFetchUrl();
-        this.videoPagination = new Pagination(fetchUrl);
+        let params = this.props.getFetchParams();
+        this.videoPagination = new Pagination(fetchUrl , null , null ,params);
         this.bindPaginationEvents();
     }
 
@@ -136,11 +138,11 @@ class VideoCollections extends PureComponent {
         this.videoPagination.refresh();
     };
 
-    _keyExtractor = (item, index) => {
-        return `id_${item.id}`;
+    _keyExtractor = (item={}, index) => {
+        return `id_${item.id}_${index}`;
     }
 
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item={}, index }) => {
       // Check if this is an empty cell.
       if ( item.isEmpty) {
         // Render no results cell here.
@@ -158,7 +160,9 @@ class VideoCollections extends PureComponent {
             }
         } else if( entityHelper.isVideoEntity( item )) {
            return this._renderVideoThumbnail( item, index);
-        } 
+        } else{
+            return null;
+        }
     };
 
     _renderVideoReplyThumbnail( item, index ) {
@@ -170,8 +174,7 @@ class VideoCollections extends PureComponent {
             payload={item.payload}
             index={index}
             onVideoClick={() => {this.onVideoClick(item.payload, index)}}
-            isEmpty={item.isEmpty}
-            emptyRenderFunction={this.props.getNoResultsCell}/>);
+            isEmpty={item.isEmpty}/>);
     }
 
 
@@ -249,4 +252,13 @@ class VideoCollections extends PureComponent {
     }
 }
 
-export default VideoCollections  ;
+VideoCollections.defaultProps ={
+    getFetchParams : () => {
+        return null;
+    },
+    getNoResultsCell: () => {
+        return null;
+    }
+}
+
+export default withNavigation( VideoCollections ) ;

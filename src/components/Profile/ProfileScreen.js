@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Image, TouchableOpacity , View , Text } from 'react-native';
-import EventEmitter from 'eventemitter3';
+import { Image, TouchableOpacity , View ,Text } from 'react-native';
 import deepGet from 'lodash/get';
 
 import BalanceHeader from '../Profile/BalanceHeader';
@@ -21,6 +20,7 @@ import PepoApi from '../../services/PepoApi';
 import ReviewStatusBanner from './ReviewStatusBanner';
 import CustomDrawer from '../CustomDrawer';
 import {DrawerEmitter} from '../../helpers/Emitters';
+import {testProps} from "../../constants/AppiumAutomation";
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -148,6 +148,7 @@ class ProfileScreen extends PureComponent {
           <TouchableOpacity
             onPress={multipleClickHandler(() => this.onEdit())}
             style={[inlineStyles.editProfileIconPos]}
+            {...testProps('profile-edit-icon')}
           >
             <Image style={{ width: 13, height: 13 }} source={profileEditIcon}></Image>
           </TouchableOpacity>
@@ -182,7 +183,7 @@ class ProfileScreen extends PureComponent {
   render() {
     if(this.props.userId){
       return  <CustomDrawer openDrawer={this.state.openDrawer} navigation={this.props.navigation} onClose={this.onClose}>
-                <UserProfileFlatList
+        <UserProfileFlatList
                       onRef={(elem) => this.listRef = elem}
                       listHeaderComponent={this._headerComponent()}
                       beforeRefresh={this.beforeRefresh}

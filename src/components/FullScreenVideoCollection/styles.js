@@ -19,7 +19,7 @@ let stylesMap = {
     },
     touchablesBtns: {
       alignItems: 'flex-end',
-      marginBottom: -10,
+      // marginBottom: -10,
       zIndex: 1,
       flexDirection: 'row'
     },

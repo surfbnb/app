@@ -3,9 +3,11 @@ import { FlatList, View } from 'react-native';
 import flatlistHOC from '../CommonComponents/flatlistHOC';
 import Pricer from "../../services/Pricer";
 import reduxGetters from "../../services/ReduxGetters";
-import User from '../Users/User';
 import EmptyList from '../EmptyFriendsList/EmptyList';
 import CommonStyle from "../../theme/styles/Common";
+
+import UserRow from '../CommonComponents/UserRow';
+import SupportersSupportingUser from '../CommonComponents/UserRow/SupportersSupporting';
 
 class SupportingList extends PureComponent {
 
@@ -20,7 +22,9 @@ class SupportingList extends PureComponent {
   _keyExtractor = (item, index) => `id_${item}`;
 
   _renderItem = ({ item, index }) => {
-    return <User  userId={item}  amount={this.getBtAmount(this.props.userId , item)}/>;
+    return  <UserRow  userId={item} >
+              <SupportersSupportingUser  userId={item}  amount={this.getBtAmount(this.props.userId , item)}/>
+            </UserRow>
   };
 
   getEmptyComponent = () => {

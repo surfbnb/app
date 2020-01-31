@@ -25,6 +25,7 @@ const backendToAppEntities = {
   current_user_video_relations: 'current_user_video_relation_entities',
   current_user_reply_detail_relations: 'current_user_reply_detail_relation_entities',
   images: 'image_entities',
+  texts: 'text_entities',
   current_user_video_contributions: 'video_contribution_entities',
   current_user_reply_detail_contributions: 'reply_contribution_entities',
   current_user_user_contributions: 'user_contribution_entities',
@@ -36,6 +37,7 @@ const backendToAppEntities = {
   users: 'user_entities',
   contribution_to_users: 'user_entities',
   contribution_by_users: 'user_entities',
+  channel_users: 'user_entities',
   user_contribution_to_stats: {
     key: 'user_contribution_to_stats',
     parser: parser_merge
@@ -53,14 +55,25 @@ const backendToAppEntities = {
   feeds: 'home_feed_entities',
   notification_unread: 'notification_unread',
   feed: 'home_feed_entities',
-  upsert_push_notification: 'push_notification',
   twitter_users : 'twitter_entities',
   user_allowed_actions: 'user_allowed_action_entities',
   pepocorn_balance: {
     key: 'pepocorn',
     parser: parser_direct_assign
   },
-  unseen_replies: 'unseen_replies_entities'
+  unseen_replies: 'unseen_replies_entities',
+  channels: 'channel_entities',  
+  channel: 'channel_entities',
+  channel_details: 'channel_detail_entities',  
+  channel_detail: 'channel_detail_entities',
+  channel_stats: 'channel_stat_entities',  
+  channel_stat: 'channel_stat_entities',  
+  channel_taglines: 'channel_tagline_entities',  
+  current_user_channel_relations: 'current_user_channel_relation_entities',  
+  channel_user_relations: {
+    key :  'channel_user_relation_entities', 
+    parser: parser_merge
+  }
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.
