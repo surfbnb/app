@@ -16,25 +16,41 @@ import reduxGetters from '../../services/ReduxGetters';
 const INVITE_VIA_LINK_INDEX     = 0;
 const INVITE_VIA_QRCODE_INDEX   = 1;
 const SHARE_CANCEL_INDEX        = 2;
-const MUTE_NOTIFICATIONS_INDEX  = 0;
-const LEAVE_CHANNEL_INDEX       = 1;
-const REPORT_CHANNEL_INDEX      = 2;
-const MORE_CANCEL_INDEX         = 3;
+
 
 class ChannelsHeaderRight extends PureComponent{
   constructor(props){
     super(props);
     this.sharingActionSheetButtons  = ['Invite via Link', 'Invite via QR Code' ,'Cancel'];
-    this.moreActionSheetButtons     = [this.getMuteText(), this.memberShipText() , 'Report Channel', 'Cancel'];
-
+    if(this.checkIfMember()){
+      this.mute_notifications_index = 0
+      this.leave_channel_index = 1
+      this.report_channel_index =2
+      this.more_cancel_index = 3
+      this.moreActionSheetButtons     = [this.getMuteText() ,'Leave Channel', 'Report Channel', 'Cancel'];
+      }else{
+      this.mute_notifications_index = 0
+      this.report_channel_index =1
+      this.more_cancel_index = 2
+      this.moreActionSheetButtons     = [this.getMuteText() , 'Report Channel', 'Cancel'];
+    }
   }
   shareViaLink = () =>{
-    let shareVideo = new ShareVideo(DataContract.share.getChannelShareApi(this.props.channelId));
-    shareVideo.perform();
+    let shareChannel = new ShareVideo(DataContract.share.getChannelShareApi(this.props.channelId));
+    shareChannel.perform();
   }
 
-  showQrCodeScreen = () => {
-    this.props.navigation.navigate('QrCode',{url:this.qrCodeGeneratorUrl});
+  showQrCodeScreen = (options) => {
+    this.props.navigation.navigate(
+      'QrCode',
+      {
+        url:options.url,
+        descText:options.text,
+        backgroundColor : options.backgroundColor,
+        color : options.color,
+        size : options.size
+      }
+        );
   }
 
   shareViaQrCode = () =>{
@@ -44,7 +60,14 @@ class ChannelsHeaderRight extends PureComponent{
         if(response && response.success){
           this.qrCodeGeneratorUrl = deepGet(response,"data.share.url");
           ActionSheet.hide();
-          this.showQrCodeScreen();
+          let options = {
+            url : this.qrCodeGeneratorUrl,
+            text : `Scan the QR code to join\n Ethdenver 2020`,
+            backgroundColor:"#ff5566",
+            color:"#ffffff",
+            size:130
+          }
+          this.showQrCodeScreen(options);
         }
       });
   }
@@ -67,9 +90,9 @@ class ChannelsHeaderRight extends PureComponent{
 
   checkMuteStatus = () => {
     let status = reduxGetters.currentUserNotificationStatus(this.props.channelId);
-    // status = 0 unmuted
-    // status = 1 muted
-    if(status == 0){
+    // status = 0 muted
+    // status = 1 unmuted
+    if(status == 1){
       return false;
     }else{
       return true;
@@ -86,7 +109,7 @@ class ChannelsHeaderRight extends PureComponent{
 
   muteNotifications = () =>{
     new PepoApi(DataContract.channels.getMuteApi(this.props.channelId))
-      .get()
+      .post()
       .then((response)=>{
         if(response && response.success){
           ActionSheet.hide();
@@ -102,7 +125,7 @@ class ChannelsHeaderRight extends PureComponent{
 
   unMuteNotifications = () =>{
     new PepoApi(DataContract.channels.getUnmuteApi(this.props.channelId))
-      .get()
+      .post()
       .then((response)=>{
         if(response && response.success){
           ActionSheet.hide();
@@ -138,24 +161,15 @@ class ChannelsHeaderRight extends PureComponent{
       });
   }
 
-  memberShipText = () =>{
-    if(this.checkIfMember()){
-      return `Leave Channel`;
-    }
-    else{
-      return `Join Channel`;
-    }
-  }
 
   checkIfMember = () =>{
     let isMember = reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId);
-    console.log("reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId)",reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId));
     return isMember;
   }
 
   leaveChannel = () => {
     new PepoApi(DataContract.channels.getLeaveChannelApi(this.props.channelId))
-      .get()
+      .post()
       .then((response)=>{
         if(response && response.success){
           ActionSheet.hide();
@@ -168,22 +182,6 @@ class ChannelsHeaderRight extends PureComponent{
       .catch((error)=>{
         Toast.show({text: `Unable to leave channel right now.`, icon: 'error' });
       })
-  }
-
-  joinChannel = () =>{
-    new PepoApi(DataContract.channels.getJoinChannelApi(this.props.channelId))
-      .post()
-      .then((response)=>{
-        if(response && response.success){
-          ActionSheet.hide();
-          Toast.show({text:'Channel joined successfully!', icon: 'success' });
-        }else{
-          Toast.show({text: `Unable to join channel right now.`, icon: 'error' });
-        }
-      })
-      .catch((error)=>{
-        Toast.show({text: `Unable to leave channel right now.`, icon: 'error' });
-      });
   }
 
   showReportAlert = () =>{
@@ -205,19 +203,6 @@ class ChannelsHeaderRight extends PureComponent{
       'Leave channel for inappropriate content or abuse?',
       [
         {text: 'Leave', onPress: () =>  this.leaveChannel() },
-        {
-          text: 'Cancel'
-        }
-      ],
-      {cancelable: true},
-    );
-  }
-  showJoinChannelAlert = () =>{
-    Alert.alert(
-      '',
-      'Join channel ?',
-      [
-        {text: 'Join', onPress: () =>  this.joinChannel() },
         {
           text: 'Cancel'
         }
@@ -256,10 +241,10 @@ class ChannelsHeaderRight extends PureComponent{
     let moreActionSheetOptions = [...this.moreActionSheetButtons];
     ActionSheet.show({
       options :moreActionSheetOptions,
-      cancelButtonIndex : MORE_CANCEL_INDEX,
-      destructiveButtonIndex : REPORT_CHANNEL_INDEX
+      cancelButtonIndex : this.more_cancel_index,
+      destructiveButtonIndex : this.report_channel_index
     },(buttonIndex)=>{
-      if(buttonIndex == MUTE_NOTIFICATIONS_INDEX){
+      if(buttonIndex == this.mute_notifications_index){
         if(this.checkMuteStatus()){
           this.showUnMuteChannelAlert();
         }else{
@@ -267,14 +252,12 @@ class ChannelsHeaderRight extends PureComponent{
           this.showMuteChannelAlert();
         }
       }
-      else if(buttonIndex == LEAVE_CHANNEL_INDEX){
-        if(this.checkIfMember()){
+      else if(buttonIndex == this.leave_channel_index){
+        if(this.checkIfMember()) {
           this.showLeaveChannelAlert();
-        }else{
-          this.showJoinChannelAlert();
         }
       }
-      else if(buttonIndex == REPORT_CHANNEL_INDEX){
+      else if(buttonIndex == this.report_channel_index){
         this.showReportAlert();
       }
     })

@@ -14,7 +14,7 @@ import InvertedReplyList from "../InvertedReplyThumbnailList";
 import Utilities from "../../../services/Utilities";
 import NoPendantsVideoReplyRow from "../VideoReplyRowComponent/NoPendantsVideoReplyRow";
 import Colors from "../../../theme/styles/Colors";
-import MaskedChannelHList from "../MaskedChannelHList";
+import inlineStyles from "../../FullScreenReplyCollection/styles";
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;
@@ -270,14 +270,13 @@ class ReplyList extends PureComponent{
             <SafeAreaView forceInset={{ top: 'never' }}  style={[{position: "relative", flex: 1, backgroundColor: Colors.darkShadeOfGray}]}>
                 <TopStatus />
                 
-                <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight(), marginRight: 'auto', minWidth: '20%'}}>
+                <View style={[inlineStyles.invertedList , {top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight()}]}>
                     <InvertedReplyList  paginationService={this.getVideoPagination()}
                                         onChildClickDelegate={this.childClickHandler}
                                         bottomRounding={50}
                                         getCurrentIndex={this.getCurrentIndex}
                                         onRef={this.setPendantListRef}
                                   />
-                    <MaskedChannelHList videoId={this.props.parentVideoId} />             
                 </View>    
 
                 <FlatList

@@ -16,6 +16,8 @@ import EmptySearchResult from '../CommonComponents/EmptySearchResult';
 import ReduxGetters from '../../services/ReduxGetters';
 import BackArrow from '../CommonComponents/BackArrow';
 import ChannelsHeaderRight from '../ChannelsHeaderRight';
+import PixelCall from "../../services/PixelCall";
+import {NavigationEvents} from "react-navigation";
 
 class ChannelsScreen extends PureComponent {
 
@@ -40,7 +42,7 @@ class ChannelsScreen extends PureComponent {
             shadowOpacity: 0.1,
             shadowRadius: 3
           },
-          headerRight: <ChannelsHeaderRight channelId = {1}/>,
+          headerRight: <ChannelsHeaderRight channelId = {channelId}/>,
           headerBackImage: <BackArrow />
         };
       };
@@ -75,6 +77,15 @@ class ChannelsScreen extends PureComponent {
     applyVideoListTagFilter = () => {
         this.videoListRef && this.videoListRef.forcedRefresh();
     }
+
+    onDidFocus = (payload) => {
+        PixelCall({
+            e_entity: 'page',
+            e_action: 'view',
+            p_type: 'channel',
+            p_name: this.channelId
+        });
+    };
 
     listHeaderComponent = () => {
         return (
@@ -116,6 +127,7 @@ class ChannelsScreen extends PureComponent {
         }
         return (
             <View style={[Common.viewContainer]}>
+                <NavigationEvents onDidFocus={this.onDidFocus} />
                 <VideoCollections getFetchUrl={this.getFetchUrl}
                     getFetchParams={this.getFetchParams}
                     listHeaderComponent={this.listHeaderComponent()}
