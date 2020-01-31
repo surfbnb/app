@@ -106,7 +106,10 @@ export default {
         },
         getChannelShareApi: ( id ) => {
             return `/channels/${id}/share`
-        }
+        },
+      getProfileShareApi: ( id ) => {
+            return `/dummy/users/${id}/share`
+          }
     },
 
     channels: {

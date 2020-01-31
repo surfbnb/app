@@ -33,6 +33,11 @@ let stylesMap = {
     width: 40,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  shareIconSkipFont:{
+    height : 16,
+    width : 20,
+    marginRight:8
   }
 
 };

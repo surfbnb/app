@@ -16,6 +16,9 @@ export default class QrCode extends PureComponent{
     super(props);
     this.url = this.props.navigation.getParam('url') ;
     this.descText = this.props.navigation.getParam('descText');
+    this.backgroundColor = this.props.navigation.getParam('backgroundColor');
+    this.color = this.props.navigation.getParam('color');
+    this.size = this.props.navigation.getParam('size');
   }
   closeModal=()=>{
     this.props.navigation.goBack();
@@ -33,12 +36,12 @@ export default class QrCode extends PureComponent{
         </TouchableOpacity>
         <View style={inlineStyles.modalContentWrapper}>
           <View
-            style={inlineStyles.qrCode}>
+            style={[inlineStyles.qrCode,{backgroundColor:this.backgroundColor}]}>
             <QRCode
               value={this.url}
-              backgroundColor="#ff5566"
-              color="#ffffff"
-              size={130}
+              backgroundColor={this.backgroundColor}
+              color={this.color}
+              size={this.size}
             />
           </View>
 

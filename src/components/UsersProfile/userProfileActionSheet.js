@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Image, Alert, TouchableWithoutFeedback, View } from 'react-native';
 import { connect } from 'react-redux';
+import deepGet from 'lodash/get';
 
+import GreyShareIcon from '../../assets/grey_share_icon.png';
 import { ActionSheet } from 'native-base';
 import inlineStyles from './styles';
 import Toast from '../../theme/components/NotificationToast';
@@ -9,6 +11,9 @@ import UserProfileOptions from '../../assets/user_profile_options.png';
 import PepoApi from '../../services/PepoApi';
 import ReduxGetters from '../../services/ReduxGetters';
 import {fetchUser} from "../../helpers/helpers";
+import ShareVideo from '../../services/shareVideo';
+import DataContract from '../../constants/DataContract';
+import { withNavigation } from "react-navigation";
 
 
 const ACTION_SHEET_CANCEL_INDEX = 3;
@@ -16,6 +21,12 @@ const ACTION_SHEET_DESCTRUCTIVE_INDEX = 2;
 const ACTION_SHEET_REPORT_INDEX = 1;
 const ACTION_SHEET_BLOCK_UNBLOCK_INDEX = 2;
 const MUTE_UNMUTE_INDEX = 0;
+
+const SHARE_VIA_LINK_INDEX     = 0;
+const SHARE_VIA_QRCODE_INDEX   = 1;
+const PAY_VIA_QRCODE_INDEX     = 2;
+const SHARE_CANCEL_INDEX       = 3;
+const QRCODE_SIZE  = 130
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -29,6 +40,7 @@ class UserProfileActionSheet extends PureComponent {
     constructor(props) {
         super(props);
         this.actionSheetButtons = [ this.getMuteUnmuteText() ,'Report', 'Block' ,'Cancel'];
+        this.sharingActionSheetButtons = ['Share via Link', 'Share via QR Code' ,'Pay via Qrcode', 'Cancel'];
     }
 
     reportUser = () => {
@@ -233,15 +245,100 @@ class UserProfileActionSheet extends PureComponent {
         );
     }
 
+  showSharingOptions = () =>{
+    let sharingActionOptions = [...this.sharingActionSheetButtons];
+    ActionSheet.show({
+        options : sharingActionOptions,
+        cancelButtonIndex :SHARE_CANCEL_INDEX,
+      },
+      (buttonIndex)=>{
+        if (buttonIndex == SHARE_VIA_LINK_INDEX) {
+          this.shareViaLink();
+        }else if( buttonIndex ==  SHARE_VIA_QRCODE_INDEX ){
+          this.shareViaQrCode();
+        }else if( buttonIndex == PAY_VIA_QRCODE_INDEX){
+          this.payViaQrCode();
+        }
+      }
+
+    )
+  }
+
+  shareViaLink = () =>{
+    let shareProfile = new ShareVideo(DataContract.share.getProfileShareApi(this.props.userId));
+    shareProfile.perform();
+  }
+
+  shareViaQrCode = () =>{
+    new PepoApi(DataContract.share.getProfileShareApi(this.props.userId))
+      .get()
+      .then((response)=>{
+        if(response && response.success){
+          this.qrCodeGeneratorUrl = deepGet(response,"data.share.url");
+          ActionSheet.hide();
+          let options = {
+            url : this.qrCodeGeneratorUrl,
+            text : 'Scan the QR code to Share',
+            backgroundColor:"#2a293b",
+            color:"#ff5566",
+            size:QRCODE_SIZE
+          }
+          this.showQrCodeScreen(options);
+        }
+      });
+  }
+
+  payViaQrCode = () => {
+    new PepoApi(DataContract.share.getProfileShareApi(this.props.userId))
+      .get()
+      .then((response)=>{
+        if(response && response.success){
+          this.qrCodeGeneratorUrl = deepGet(response,"data.share.url");
+          ActionSheet.hide();
+          let options = {
+            url : this.qrCodeGeneratorUrl+'&at=pay',
+            text : 'Scan the QR code to Pay',
+            backgroundColor:"#ff5566",
+            color:"#2a293b",
+            size:QRCODE_SIZE
+          }
+          this.showQrCodeScreen(options);
+        }
+      });
+  }
+
+
+  showQrCodeScreen = ( options ) =>{
+    this.props.navigation.navigate(
+      'QrCode',
+      {
+        url:options.url,
+        descText:options.text,
+        backgroundColor:options.backgroundColor,
+        color:options.color,
+        size:options.size
+      }
+    );
+  }
+
     render() {
-        return (<TouchableWithoutFeedback onPress={this.showActionSheet}>
+        return (
+          <React.Fragment>
+          <TouchableWithoutFeedback onPress={this.showSharingOptions}>
+            <Image style={inlineStyles.shareIconSkipFont} source={GreyShareIcon}/>
+          </TouchableWithoutFeedback>
+
+          <TouchableWithoutFeedback onPress={this.showActionSheet}>
                     <View style={inlineStyles.reportIconWrapper}>
                         <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}   ></Image>
                     </View>
-                </TouchableWithoutFeedback>);
+                </TouchableWithoutFeedback>
+
+          </React.Fragment>
+        );
     }
 
 }
 
 
-export default connect(mapStateToProps)(UserProfileActionSheet);
+export default connect(mapStateToProps)(withNavigation(UserProfileActionSheet));

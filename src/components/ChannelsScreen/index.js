@@ -42,7 +42,7 @@ class ChannelsScreen extends PureComponent {
             shadowOpacity: 0.1,
             shadowRadius: 3
           },
-          headerRight: <ChannelsHeaderRight channelId = {1}/>,
+          headerRight: <ChannelsHeaderRight channelId = {channelId}/>,
           headerBackImage: <BackArrow />
         };
       };

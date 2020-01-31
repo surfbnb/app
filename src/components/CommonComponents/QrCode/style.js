@@ -25,7 +25,6 @@ let stylesMap = {
   qrCode:{
     borderRadius : 20,
     padding:20,
-    backgroundColor:Colors.wildWatermelon2,
     overflow:"hidden",
     marginBottom : 10
   }
