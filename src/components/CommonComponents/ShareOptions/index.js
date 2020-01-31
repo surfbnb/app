@@ -10,19 +10,14 @@ import DataContract from '../../../constants/DataContract';
 import PepoApi from '../../../services/PepoApi';
 import inlineStyles from './styles';
 import ReduxGetters from '../../../services/ReduxGetters';
+import Colors from '../../../theme/styles/Colors';
 
-const ENTITY_KINDS = {
-    CHANNEL : 'channel',
-    USER : 'user'
-}
-
-const QRCODE_SIZE  = 130
+const QRCODE_SIZE  = 130;
 
 class ShareOptions extends React.PureComponent {
 
     constructor( props) {
         super( props );
-        this.sharingActionSheetButtons  = [];
     }
 
     getDefaultConfig = () => {
@@ -41,9 +36,9 @@ class ShareOptions extends React.PureComponent {
                 },
                 displayConfig : {
                     text : `Scan the QR code to join\n ${ReduxGetters.getChannelName(this.props.entityId)}`,
-                    backgroundColor:"#ff5566",
-                    color:"#ffffff",
-                    size:130
+                    backgroundColor: Colors.wildWatermelon2,
+                    color:Colors.white,
+                    size:QRCODE_SIZE
                 }
             },
             userConfig : {
@@ -61,48 +56,41 @@ class ShareOptions extends React.PureComponent {
                 },
                 displayConfig : {
                     text : 'Scan the QR code to Share',
-                    backgroundColor:"#2a293b",
-                    color:"#ff5566",
-                    size:130
+                    backgroundColor:Colors.valhalla,
+                    color:Colors.wildWatermelon2,
+                    size:QRCODE_SIZE
                   }
-            },
-            defaultConfig : {
-                actionConfig : {},
-                actionSheetConfig: {},
-                apiConfig: {},
-                displayConfig: {}
             }
         }
     }
 
     getConfig = () => {
         let defaultConfig = this.getDefaultConfig();
-        if(this.props.entityKind == ENTITY_KINDS.CHANNEL){
+        if(this.props.entityKind == DataContract.knownEntityTypes.channel){
             return defaultConfig.channelConfig;
-        } else if( this.props.entityKind == ENTITY_KINDS.USER){
+        } else if( this.props.entityKind == DataContract.knownEntityTypes.user){
             return defaultConfig.userConfig;
-        } else {
-            return defaultConfig.defaultConfig;
         }
     }
 
     showSharingOptions = () =>{
         let config = this.getConfig();
+        if(!config) return;
         ActionSheet.show(config.actionSheetConfig,
           (buttonIndex)=>{
-            const fnName = deepGet(config, `actionConfig[${buttonIndex}]`)
+            const fnName = deepGet(config, `actionConfig[${buttonIndex}]`);
             if (fnName && this[fnName]) {
               this[fnName]();
             }
           }
         )
-      }
+      };
 
       shareViaLink = () =>{
         let apiConfig = this.getConfig().apiConfig;
         let shareProfile = new ShareVideo(apiConfig.shareApi(this.props.entityId));
         shareProfile.perform();
-      }
+      };
     
       shareViaQrCode = () =>{
         let apiConfig = this.getConfig().apiConfig;
@@ -112,14 +100,16 @@ class ShareOptions extends React.PureComponent {
           .then((response)=>{
             if(response && response.success){
               this.qrCodeGeneratorUrl = deepGet(response,"data.share.url");
-              ActionSheet.hide();
               let options = {
                 url : this.qrCodeGeneratorUrl,
                 ...displayConfig
               }
               this.showQrCodeScreen(options);
             }
-          });
+          })
+          .catch((error) =>{
+            cosole.log("**** error in share via qrcode ****" );
+        });
       }
     
       payViaQrCode = () => {
@@ -129,17 +119,19 @@ class ShareOptions extends React.PureComponent {
           .then((response)=>{
             if(response && response.success){
               this.qrCodeGeneratorUrl = deepGet(response,"data.share.url");
-              ActionSheet.hide();
               let options = {
                 url : this.qrCodeGeneratorUrl+'&at=pay',
                 text : 'Scan the QR code to Pay',
-                backgroundColor:"#ff5566",
-                color:"#2a293b",
+                backgroundColor:Colors.wildWatermelon2,
+                color:Colors.valhalla,
                 size: QRCODE_SIZE
               }
               this.showQrCodeScreen(options);
             }
-          });
+          })
+          .catch((error) =>{
+          cosole.log("**** error in pay via qrcode ****" );
+        });
       }
     
     

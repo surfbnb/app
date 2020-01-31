@@ -142,7 +142,7 @@ class ReportVideo extends PureComponent {
     if (response && response.success) {
       Toast.show({text: 'Video reported successfully!', icon: 'success'});
     } else {
-      Toast.show({text: 'Video reported failed!', icon: 'error'});
+      Toast.show({text: 'Video report failed!', icon: 'error'});
     }
   }
   
@@ -172,7 +172,7 @@ class ReportVideo extends PureComponent {
       Toast.show({text: `User ${this.getMuteUnMuteText().toLowerCase()}d successfully!`, icon: 'success'});
       fetchUser(this.props.userId);
     } else {
-      Toast.show({text: `User ${this.getMuteUnMuteText().toLowerCase()}d failed!`, icon: 'error'});
+      Toast.show({text: `User ${this.getMuteUnMuteText().toLowerCase()} failed!`, icon: 'error'});
     }
   }
   
