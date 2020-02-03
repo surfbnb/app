@@ -18,6 +18,7 @@ import BackArrow from '../CommonComponents/BackArrow';
 import ChannelsHeaderRight from '../ChannelsHeaderRight';
 import PixelCall from "../../services/PixelCall";
 import {NavigationEvents} from "react-navigation";
+import erroMsgStyle from "../CommonComponents/EmptySearchResult/style";
 
 class ChannelsScreen extends PureComponent {
 
@@ -100,13 +101,15 @@ class ChannelsScreen extends PureComponent {
     getNoResultData = () => {
         const tagName = deepGet( ReduxGetters.getHashTag(this.selectedTagId) , "text" , "");
         return {
-            "noResultsMsg": `No videos tagged ${tagName}, Please try again later.`,
+            "noResultsMsg": `No videos tagged ${tagName}.`,
             "isEmpty": true
         };
     }
 
-    getNoResultsCell = () => {
-        return <EmptySearchResult noResultsData={this.getNoResultData()} />
+    getNoResultsCell = (item) => {
+        return <EmptySearchResult noResultsData={item}>
+                    <View><Text style={erroMsgStyle.msgStyle}>Please try again later.</Text></View>
+               </EmptySearchResult>
     }
 
     fetchChannel = () => {
