@@ -143,7 +143,7 @@ class Base extends PureComponent {
                                         entityId={this.props.replyDetailId}
                                         getPixelDropData={this.getPixelDropData}
                                     />
-                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentProfileIconClick()})}>
+                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentProfileIconClick()})} activeOpacity={0.75}>
                                       <ProfilePicture userId={this.state.parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
                                         width: AppConfig.thumbnailListConstants.parentIconWidth,
                                         borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,

@@ -4,8 +4,9 @@ import { Dimensions, StatusBar } from 'react-native';
 
 let stylesMap = {
   container: {
+    flex: 1,
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height    
+    height: Dimensions.get('window').height
   },
   previewVideoSkipFont: {
     overflow: 'hidden',

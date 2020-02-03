@@ -34,6 +34,7 @@ class TextFormatter extends PureComponent{
             {prevText}
             <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
                     numberOfLines={1}
+                    suppressHighlighting={true}
                     onPress={() => {
                     this.onIncludesPressed(formattedItem)
                     }}>
@@ -51,6 +52,7 @@ class TextFormatter extends PureComponent{
             {prevText}
             <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
                     numberOfLines={1}
+                    suppressHighlighting={true}
                     onPress={() => {
                     this.onIncludesPressed(formattedItem)
                     }}>
@@ -67,6 +69,7 @@ class TextFormatter extends PureComponent{
             {prevText}
             <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
                     numberOfLines={1}
+                    suppressHighlighting={true}
                     onPress={() => {
                     this.onIncludesPressed(formattedItem)
                     }}>

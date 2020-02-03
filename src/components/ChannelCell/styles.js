@@ -38,6 +38,8 @@ let stylesMap = {
   },
 
   bottomView: {
+    height: 35,
+    maxHeight: 35,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between'

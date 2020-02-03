@@ -38,7 +38,7 @@ class ChannelNamesFlatlist extends PureComponent {
      * item : id itself
      */
     _renderItem = ( {item} ) => {
-        return (<TouchableOpacity onPress={multipleClickHandler(() => this._navigateToChannel( item ))}>
+        return (<TouchableOpacity onPress={multipleClickHandler(() => this._navigateToChannel( item ))} activeOpacity={0.75}>
                     <LinearGradient
                     colors={['rgba(255, 85, 102, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(203, 86, 151, 0.85)', 'rgba(255, 116, 153, 0.85)']}
                     locations={[0, 0.5, 0.55, 1]}
