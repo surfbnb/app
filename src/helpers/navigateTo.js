@@ -31,6 +31,10 @@ class NavigateTo {
     this.navigation = navigation;
   }
 
+  getTopLevelNavigation(){
+    return this.navigation;
+  }
+
   //navigation is a mandatory param
   navigate(goToObject, navigation, payload) {
     goToObject = goToObject || {};

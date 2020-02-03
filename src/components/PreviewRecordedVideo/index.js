@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { TouchableOpacity, View, Image, BackHandler, AppState, Text } from 'react-native';
+import {TouchableOpacity, View, Image, BackHandler, AppState, Text, Platform} from 'react-native';
 import Video from 'react-native-video';
 import NavigationService from '../../services/NavigationService';
 import ProgressBar from './ProgressBarWrapper';
@@ -18,6 +18,8 @@ const ACTION_SHEET_BUTTONS = ['Reshoot', 'Discard', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
 const ACTION_SHEET_DESCTRUCTIVE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
+const VIDEO_COMPONENT_ZERO = 'video-component-0';
+const VIDEO_COMPONENT_ONE =  'video-component-1';
 
 class PreviewRecordedVideo extends PureComponent {
   constructor(props) {
@@ -25,7 +27,7 @@ class PreviewRecordedVideo extends PureComponent {
 
     this.videoUrlsList = this.props.videoUrlsList;
     this.state = {
-      currentActiveComponent: 'video-component-0',
+      currentActiveComponent: VIDEO_COMPONENT_ZERO,
       paused: false
     };
     this._progressRef = null;
@@ -66,7 +68,7 @@ class PreviewRecordedVideo extends PureComponent {
     }, 100)
   }
 
-  playVideo(state={}){
+  playVideo = (state={}) => {
     state["paused"] = false;
     this.setState(state);
   }
@@ -111,42 +113,6 @@ class PreviewRecordedVideo extends PureComponent {
     this.updateProgress(totalProgress / (this.totalVideoLength / 1000));
   };
 
-
-  handleEnd = () => {
-    if (this.videoUrlsList.length - 1 === this.indexOfVideo) {
-      this.pauseVideo();
-      this.updateProgress(1);
-      return;
-    }
-
-    this.setState(
-      {
-          currentActiveComponent: this.state.currentActiveComponent === 'video-component-1'
-            ? 'video-component-0' :
-            'video-component-1'
-        });
-
-    this.indexOfVideo += 1;
-  };
-
-    // handleProgress = ()=>{
-    // if(this.isPaused()) return;
-    // this.currentTime = progress.currentTime;
-    // this.updateProgress(progress.currentTime / this.duration);
-    // };
-
-  // handleLoad = (meta) => {
-  //   this.duration = meta.duration;
-  //   Store.dispatch(upsertRecordedVideo({ video_length : meta.duration }));
-  // };
-
-  // handleEnd = () => {
-  //   this.currentTime = this.duration;
-  //   this.seekCount = 0;
-  //   this.pauseVideo();
-  //   this.updateProgress(1);
-  //
-  // };
 
   cancleVideoHandling() {
     ActionSheet.show(
@@ -198,9 +164,21 @@ class PreviewRecordedVideo extends PureComponent {
     return AppState.currentState === AppConfig.appStateMap.active;
   }
 
+  isCurrentActiveComponentZero = () => {
+    return this.state.currentActiveComponent === VIDEO_COMPONENT_ZERO;
+  };
+
+  isCurrentActiveComponentOne = () => {
+    return this.state.currentActiveComponent === VIDEO_COMPONENT_ONE;
+  }
+
+
   showVideoComp = () => {
-    const isShowingComponent0 = this.state.currentActiveComponent === 'video-component-0';
+
+    const isShowingComponent0 = this.isCurrentActiveComponentZero();
     const isShowingComponent1 = !isShowingComponent0;
+    console.log('this.nextUrlComponentZero.uri, this.nextUrlComponentOne.uri, isShowingComponent0, isShowingComponent1');
+    console.log(this.nextUrlComponentZero.uri, this.nextUrlComponentOne.uri, isShowingComponent0, isShowingComponent1);
     return <View style={{flex: 1}}>
       <Video
         source={{uri: this.nextUrlComponentZero.uri}}
@@ -217,26 +195,31 @@ class PreviewRecordedVideo extends PureComponent {
         resizeMode={'cover'}
         onProgress={this.handleProgress}
         onEnd={this.handleEndZero}
-        repeat={false}
+        repeat={this.isRepeatModeOn()}
         ref={(component) => {
           this.videoZero = component;
         }}
         paused={isShowingComponent0 ? this.state.paused : true}
       />
       <Video
-        source={{uri: this.nextUrlComponentOne.uri}}
+        source={{uri: this.nextUrlComponentOne.uri }}
         style={{
           flex: isShowingComponent1 ? 1 : 0
         }}
+        onPlaybackRateChange={this.onPlaybackRateChange}
         posterResizeMode={'cover'}
         resizeMode={'cover'}
         onProgress={this.handleProgress}
         onEnd={this.handleEndOne}
-        repeat={false}
+        repeat={this.isRepeatModeOn()}
         ref={(component) =>   {this.videoOne = component; }}
         paused={isShowingComponent1 ? this.state.paused : true }
       />
     </View>
+  };
+
+  isRepeatModeOn = () => {
+    return  Platform.OS === "android" ;
   }
 
   onPlaybackRateChange = (args) => {
@@ -248,72 +231,61 @@ class PreviewRecordedVideo extends PureComponent {
     * !this.pauseVideo that means video is expedted to play
     * The below condition says that video was accidentally paused as playRate = 0 , but pauseVideo is false and video had progress.
     * */
-    if (playRate == 0 && this.currentTime > 0 && !this.isPaused() ){
+    if (playRate === 0 && this.currentTime > 0 && !this.isPaused() ){
       this.seekCount++;
-      if (this.seekCount <= 3 ) {
-        let video = this.state.currentActiveComponent === 'video-component-0' ?  this.videoZero : this.videoOne ;
+      if (this.seekCount <= 8 ) {
+        let video = this.isCurrentActiveComponentZero() ?  this.videoZero : this.videoOne ;
         video && video.seek(this.currentTime);
       } else {
-        // this.pauseVideo();
+        this.pauseVideo();
       }
-    }}
+    }
+  };
 
-
-
-  // render() {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Video
-  //         ref={this.setRef}
-  //         source={{ uri: this.cachedVideoUri }}
-  //         style={{flex:1}}
-  //         onPlaybackRateChange={this.onPlaybackRateChange}
-  //
-  //         posterResizeMode={'cover'}
-  //         resizeMode={'cover'}
-  //         onProgress={this.handleProgress}
-  //
-  //         onEnd={this.handleEndZero}
-  //         ref={(component) => {
-  //           // if (this.state.indexOfVideo == 0) {
-  //           //   this._video = component
-  //           // }
-  //         }}
-  //         paused={isShowingComponent1 ? this.pauseVideo : true}
-  //       />
-  //       <Video
-  //         source={{ uri: this.nextUrlComponentOne.uri || 'INVALID' }}
-  //         style={{
-  //           flex: isShowingComponent2 ? 1 : 0
-  //         }}
-  //         posterResizeMode={'cover'}
-  //         resizeMode={'cover'}
-  //         onProgress={this.handleProgress}
-  //         onEnd={this.handleEndOne}
-  //         // ref={(component) =>   { if(this.indexOfVideo == 0){ this._video = component } }}
-  //         paused={isShowingComponent2 ? this.pauseVideo : true}
-  //       />
-  //     </View>
-  // };
+  switchVideo = () => {
+    if (Platform.OS === 'android'){
+      //In case of Android, we explicitly need to do this, to play next video
+      this.pauseVideo();
+      setTimeout(()=> {  this.playVideo(); },0);
+    }
+  };
 
 
   handleEndOne = () => {
-    console.log('handleEndOne', this.indexOfVideo );
     this.nextUrlComponentZero =  this.getNextVideoUri();
-    console.log(this.nextUrlComponentZero, 'this.nextUrlComponentZerothis.nextUrlComponentZero');
+    // this.nextUrlComponentOne =  {};
     this.handleEnd();
-
-
   };
 
   handleEndZero = () => {
-    console.log('handleEndZero', this.indexOfVideo );
     this.nextUrlComponentOne = this.getNextVideoUri();
-    console.log(this.nextUrlComponentOne, 'this.nextUrlComponentOne.nextUrlComponentOne..nextUrlComponentOne');
+    // this.nextUrlComponentZero =  {};
     this.handleEnd();
   };
 
+
+  handleEnd = () => {
+    this.seekCount = 0;
+    if (this.videoUrlsList.length - 1 === this.indexOfVideo ) {
+      this.pauseVideo();
+      this.updateProgress(1);
+      return;
+    }
+    this.setState(
+      {
+        currentActiveComponent: this.isCurrentActiveComponentOne()
+          ? VIDEO_COMPONENT_ZERO :
+          VIDEO_COMPONENT_ONE
+      }, ()=>{
+        this.switchVideo();
+      });
+    this.indexOfVideo += 1;
+  };
+
   getNextVideoUri = () => {
+    if (this.videoUrlsList.length === 1){
+      return this.videoUrlsList[0] || {} ;
+    }
     return this.videoUrlsList[this.indexOfVideo + 1] || {} ;
   };
 
@@ -322,7 +294,30 @@ class PreviewRecordedVideo extends PureComponent {
       return 0;
     }
     return this.videoUrlsList[this.indexOfVideo - 1].progress * 100 * 300;
-  }
+  };
+
+  replay = () => {
+    this.indexOfVideo  = 0;
+    this.currentTime = 0;
+    if (this.isCurrentActiveComponentZero()) {
+      this.nextUrlComponentOne = this.videoUrlsList[this.indexOfVideo] || {};
+      this.nextUrlComponentZero = {};
+      this.setState( {
+        currentActiveComponent: VIDEO_COMPONENT_ONE
+      });
+    } else if (this.isCurrentActiveComponentOne()) {
+      this.nextUrlComponentOne = {};
+      this.nextUrlComponentZero = this.videoUrlsList[this.indexOfVideo] || {};
+      this.setState( {
+        currentActiveComponent: VIDEO_COMPONENT_ZERO
+      });
+    }
+    let video = this.isCurrentActiveComponentZero() ? this.videoZero : this.videoOne;
+    video && video.seek(this.currentTime);
+    this.playVideo();
+    this.updateProgress(0);
+
+  };
 
 
 
@@ -330,7 +325,6 @@ class PreviewRecordedVideo extends PureComponent {
     return (
       <View style={styles.container}>
         {this.showVideoComp()}
-
         <ProgressBar ref={this.setProgressBarRef}/>
         <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
           <Image style={styles.closeIconSkipFont} source={closeIcon} />
@@ -341,9 +335,7 @@ class PreviewRecordedVideo extends PureComponent {
           <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
             {this.isPaused() ? (
               <TouchableOpacity
-                onPress={() => {
-                  this.replay();
-                }}
+                onPress={this.replay}
               >
                 <Image style={styles.playIconSkipFont} source={playIcon} />
               </TouchableOpacity>
@@ -384,25 +376,6 @@ class PreviewRecordedVideo extends PureComponent {
     );
   }
 
-  replay() {
-    this.indexOfVideo  = 0;
-    if (this.state.currentActiveComponent === 'video-component-0') {
-      this.nextUrlComponentOne = this.videoUrlsList[this.indexOfVideo] || {};
-      this.nextUrlComponentZero = {};
-      this.setState( {
-        currentActiveComponent:'video-component-1'
-      });
-    } else if (this.state.currentActiveComponent === 'video-component-1') {
-      this.nextUrlComponentOne = {};
-      this.nextUrlComponentZero = this.videoUrlsList[this.indexOfVideo] || {};
-      this.setState( {
-        currentActiveComponent:'video-component-0'
-      });
-    }
-    this.playVideo();
-    this.updateProgress(0);
-
-  }
 }
 
 //make this component available to the app

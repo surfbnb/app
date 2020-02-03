@@ -16,6 +16,7 @@ import EmptySearchResult from '../CommonComponents/EmptySearchResult';
 import ReduxGetters from '../../services/ReduxGetters';
 import BackArrow from '../CommonComponents/BackArrow';
 import ChannelsHeaderRight from '../ChannelsHeaderRight';
+import {navigateTo} from "../../helpers/navigateTo";
 
 class ChannelsScreen extends PureComponent {
 
@@ -47,6 +48,7 @@ class ChannelsScreen extends PureComponent {
 
     constructor(props){
         super(props);
+        navigateTo.setTopLevelNavigation(props.navigation);
         this.channelId = this.props.navigation.getParam('channelId');
         this.videoListRef = null;
         this.selectedTagId = 0;

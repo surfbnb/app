@@ -31,6 +31,7 @@ import Theme from "../../theme/styles";
 import multipleClickHandler from "../../services/MultipleClickHandler";
 import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 import Pricer from "../../services/Pricer";
+import Toast from "../../theme/components/NotificationToast";
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -307,7 +308,7 @@ class VideoRecorder extends Component {
           ref={(ref) => {
             this.camera = ref;
           }}
-          style={styles.cameraView}
+          style={styles.cameraViewSkipFont}
           type={this.state.cameraFrontMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back}
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
@@ -375,7 +376,7 @@ class VideoRecorder extends Component {
           </View>
 
           <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
-            <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
+            <Image style={styles.closeIconSkipFont} source={closeIcon} />
           </TouchableOpacity>
           <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
           <View>
@@ -423,6 +424,12 @@ class VideoRecorder extends Component {
   previewPressHandler = () => {
     if (this.discardVideo) return;
     // This will take from VideoRecorder to PreviewRecordedVideo component
+    let videoLength = this.state.progress * 100 * 300;
+    if(videoLength <= 1000) {
+      Toast.show({text:'Please create longer video', icon: 'error' });
+      return;
+    }
+
     this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
 
   };
@@ -443,7 +450,7 @@ class VideoRecorder extends Component {
     return <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
       <TouchableOpacity onPress={this.onBackPress}>
-      <Image style={styles.backIcon} source={deleteCameraSegment}/>
+      <Image style={styles.backIconSkipFont} source={deleteCameraSegment}/>
       </TouchableOpacity>
       <LinearGradient
         colors={['#ff7499', '#ff5566']}
@@ -482,7 +489,7 @@ class VideoRecorder extends Component {
       return
     }
     this.separationBars.push((
-      <View key={progress} style={{backgroundColor: '#fff', width: 2.5, height: 7, position: 'absolute', left: `${progress}%`}}>
+      <View key={progress} style={[styles.separationBarsStyle, {left: `${progress}%`}]}>
       </View>));
   };
 
@@ -545,8 +552,6 @@ class VideoRecorder extends Component {
       } else {
         clearInterval(this.progressInterval);
         this.stopRecording();
-        console.log('progressBarStateUpdate', this.videoLength);
-        this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
       }
   }
 
@@ -579,23 +584,19 @@ class VideoRecorder extends Component {
        data = await this.camera.recordAsync(options);
     } catch {
       this.setState({ isRecording: false });
+      return;
     }
 
     let videoLength = this.state.progress * 100 * 300;
     console.log(videoLength, 'videoLength');
-    if (videoLength <= 1000 ) {
-      this.setState({ progress : 0 });
+     if (videoLength >= 30000) {
+      this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
+      this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
     } else {
       this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
       this.appendNewBar();
     }
-
     this.setState({ isRecording: false });
-    // if (this.discardVideo) return;
-
-    // This will take from VideoRecorder to PreviewRecordedVideo component
-    // this.props.goToPreviewScreen(data.uri);
-    // this.props.goToPreviewScreen(data.uri);
   };
 
   recordVideoStateChage() {

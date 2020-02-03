@@ -11,7 +11,7 @@ import deepGet from 'lodash/get';
 import FanVideoDetails from '../FanVideoDetails';
 import KeepAwake from 'react-native-keep-awake';
 import reduxGetters from "../../services/ReduxGetters";
-
+import NavigationService from '../../services/NavigationService';
 
 class CaptureVideo extends Component {
   static navigationOptions = {
@@ -62,6 +62,7 @@ class CaptureVideo extends Component {
 
     } else {
       // Do nothing.
+      this.channelId = this.props.navigation.getParam("channelId");
     }
   }
 
@@ -96,7 +97,7 @@ class CaptureVideo extends Component {
 
   saveVideoPrimaryInfo = () => {
    this.proceedWithExisting = false;
-
+   console.log('saveVideoPrimaryInfo',this.getPrimaryVideoInfo() );
    Store.dispatch(upsertRecordedVideo(this.getPrimaryVideoInfo()));
   };
 
@@ -107,8 +108,23 @@ class CaptureVideo extends Component {
       if (this.isVideoTypeReply()){
         return { video_type: AppConfig.videoTypes.reply , reply_obj: this.getReplyOptions()};
       } else if (this.isVideoTypePost()) {
-        return { video_type: AppConfig.videoTypes.post };
+
+        return { video_type: AppConfig.videoTypes.post, video_desc: this.getVideoDesc() };
       }
+  };
+
+  getVideoDesc = () => {
+      let desc = '';
+      if (this.channelId){
+      let tagIds = reduxGetters.getChannelTagIds(this.channelId);
+
+      for (let tagId of tagIds){
+        let tagInfo = reduxGetters.getHashTag(tagId);
+        console.log(tagId, tagInfo, 'tagIdtagIdtagIdtagIdtagIdtagIdtagId');
+        desc += `#${tagInfo.text} `
+      }
+    }
+    return desc;
   };
 
 

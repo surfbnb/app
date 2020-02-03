@@ -23,6 +23,8 @@ import appConfig from '../../constants/AppConfig';
 import {testProps} from '../../constants/AppiumAutomation';
 import reduxGetter from '../../services/ReduxGetters';
 import Colors from '../../theme/styles/Colors';
+import {navigateTo} from "../../helpers/navigateTo";
+import NavigationService from '../../services/NavigationService';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -44,8 +46,15 @@ let refreshTimeOut = 0;
 
 function loginInFlow(navigation, tab) {
   let currentTabIndex = tab.navigationIndex;
-  if (tab.rootStack === 'CaptureVideo') { 
-    utilities.handleVideoUploadModal(previousTabIndex, navigation, {videoType: appConfig.videoTypes.post });
+  if (tab.rootStack === 'CaptureVideo') {
+    let params = {videoType: appConfig.videoTypes.post };
+    console.log('--------------::::: --------------::::: :::: --------------:::::', NavigationService.findCurrentRoute());
+    if (NavigationService.findCurrentRoute() === 'ChannelsScreen'){
+      console.log('--------------::::: --------------::::: :::: --------------:::::');
+      params['channelId'] = navigateTo.getTopLevelNavigation().getParam('channelId');
+    }
+    console.log(params);
+    utilities.handleVideoUploadModal(previousTabIndex, navigation, params );
     return;
   }
   if (currentTabIndex == undefined || currentTabIndex == null) return;

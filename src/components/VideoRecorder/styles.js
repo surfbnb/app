@@ -8,7 +8,7 @@ let stylesMap = {
     flexDirection: 'column',
     backgroundColor: Colors.black
   },
-  cameraView: {
+  cameraViewSkipFont: {
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -55,6 +55,7 @@ let stylesMap = {
   },
   closeBtWrapper: {
     position: 'absolute',
+    zIndex: 2,
     top: 45,
     left: 10,
     height: 45,
@@ -155,9 +156,16 @@ let stylesMap = {
     position: 'absolute',
     transform: [{ rotate: '45deg'}]
   },
-  backIcon: {
+  backIconSkipFont: {
     height: 18,
     width: 28
+  },
+
+  separationBarsStyle: {
+    backgroundColor: '#fff',
+    width: 4,
+    height: 7,
+    position: 'absolute'
   }
 
 

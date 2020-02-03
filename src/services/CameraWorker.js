@@ -476,7 +476,7 @@ class CameraWorker extends PureComponent {
     // remove files from cache,
     this.videoMergeJobId = null;
     let recordedVideoList = this.props.recorded_video.raw_video_list;
-    let filesList = recordedVideoList.map((ele)=> ele.uri);
+    let filesList = recordedVideoList && recordedVideoList.map((ele)=> ele.uri);
     for (let video of filesList){
       await this.removeFile(video);
     }
