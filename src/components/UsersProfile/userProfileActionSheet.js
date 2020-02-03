@@ -30,7 +30,7 @@ class UserProfileActionSheet extends PureComponent {
     constructor(props) {
         super(props);
         this.actionSheetButtons = [ this.getMuteUnmuteText() ,'Report', 'Block' ,'Cancel'];
-        this.sharingActionSheetButtons = ['Share via Link', 'Share via QR Code' ,'Pay via Qrcode', 'Cancel'];
+        this.sharingActionSheetButtons = ['Share via Link', 'Share via QR Code' ,'Pay via QR code', 'Cancel'];
     }
 
     reportUser = () => {

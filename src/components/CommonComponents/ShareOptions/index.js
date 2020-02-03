@@ -48,7 +48,7 @@ class ShareOptions extends React.PureComponent {
                     2: 'payViaQrCode'
                 },
                 actionSheetConfig: {
-                    options: ['Share via Link', 'Share via QR Code','Pay via Qrcode', 'Cancel'],
+                    options: ['Share via Link', 'Share via QR Code','Pay via QR code', 'Cancel'],
                     cancelButtonIndex: 3,  //Cancel button index in options array
                 },
                 apiConfig : {
