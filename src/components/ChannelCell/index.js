@@ -19,12 +19,12 @@ import Utilities from '../../services/Utilities';
 
 const mapStateToProps = ( state, ownProps ) => {
    return {
-    backgroundImgUrl :  reduxGetters.getChannelBackgroundImage(ownProps.channelId, state),
-    channelName : reduxGetters.getChannelName(ownProps.channelId),
-    channelTagLine: reduxGetters.getChannelTagLine(ownProps.channelId),
-    channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId),
-    channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId),
-    isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId)
+    backgroundImgUrl :  reduxGetters.getChannelBackgroundImage(ownProps.channelId, state) || '',
+    channelName : reduxGetters.getChannelName(ownProps.channelId) || '',
+    channelTagLine: reduxGetters.getChannelTagLine(ownProps.channelId) || '',
+    channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId) || 0,
+    channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId) || 0,
+    isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId) || false
   };
 }
 
