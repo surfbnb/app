@@ -14,7 +14,7 @@ const mapStateToProps = (state, ownProps) => {
       supporters: reduxGetter.getReplySupporters(ownProps.entityId),
       totalBt: reduxGetter.getReplyBt(ownProps.entityId, state),
       cts : reduxGetter.getReplyCTS(ownProps.entityId, state),
-      reportEntityKind : DataContract.videos.reportEntityKind.reply
+      entityKind : DataContract.knownEntityTypes.reply
     };
   };
 

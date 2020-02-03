@@ -22,6 +22,7 @@ class Base extends PureComponent {
   render(){
     return (<TouchableOpacity pointerEvents={'auto'}
                               disabled={!this.props.canReply}
+                              activeOpacity={0.75}
                               style={{marginBottom: 0, height: 50, width: 50, alignItems: 'center', justifyContent: 'center'}}
                               onPress={multipleClickHandler(() => this.shareVideo())}
                               {...testProps('pepo-share-button')}

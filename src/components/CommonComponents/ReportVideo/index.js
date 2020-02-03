@@ -29,15 +29,22 @@ class ReportVideo extends PureComponent {
 
   getDefaultConfig() {
     return {
+      currentUserVideoConfig: {
+        actionSheetConfig: {
+          options: [`Video Id: ${this.props.entityId}`, 'Cancel'],
+          cancelButtonIndex: 1,  //Cancel button index in options array
+          destructiveButtonIndex: 1//Red button index in options array
+        }
+      },
       loginVideoConfig: {
         actionConfig: {
           0: "showMuteUnmuteAlert",   //function name in component mapped to index in actionSheetConfig options array
-          1: "showReportVideoAlert"   //function name in component mapped to index in actionSheetConfig options array
+          2: "showReportVideoAlert"   //function name in component mapped to index in actionSheetConfig options array
         },
         actionSheetConfig: {
-          options: [this.getActionSheetMuteUnmuteText(), 'Report', `Video Id: ${this.props.entityId}`, 'Cancel'],
+          options: [this.getActionSheetMuteUnmuteText(), `Video Id: ${this.props.entityId}`, 'Report', 'Cancel'],
           cancelButtonIndex: 3,  //Cancel button index in options array
-          destructiveButtonIndex: 1, //Red button index in options array
+          destructiveButtonIndex: 2, //Red button index in options array
           title: 'Select user action'
         }
       },
@@ -46,8 +53,8 @@ class ReportVideo extends PureComponent {
           0: "showReportVideoAlert"  //function name in component mapped to index in actionSheetConfig options array
         },
         actionSheetConfig: {
-          options: ['Report', `Video Id: ${this.props.entityId}` , 'Cancel'],
-          cancelButtonIndex: 2, //Cancel button index in options array
+          options: ['Report', 'Cancel'],
+          cancelButtonIndex: 1, //Cancel button index in options array
           destructiveButtonIndex: 0,  //Red button index in options array
           title: 'Select user action'
         }
@@ -79,9 +86,12 @@ class ReportVideo extends PureComponent {
   }
   
   getActionSheetConfig() {
-    if (CurrentUser.getUserId()) {
+    if(this.isCurrentUser()){
+      return this.getDefaultConfig().currentUserVideoConfig;
+    }
+    else if (CurrentUser.getUserId()) {
       //Login sheet config
-      if (DataContract.videos.reportEntityKind.video == this.props.reportKind) {
+      if (DataContract.knownEntityTypes.video == this.props.entityKind) {
         //Fan video sheetconfig
         return this.getDefaultConfig().loginVideoConfig;
       } else {
@@ -90,7 +100,7 @@ class ReportVideo extends PureComponent {
       }
     } else {
       //Logout sheet config
-      if (DataContract.videos.reportEntityKind.video = this.props.reportKind) {
+      if (DataContract.knownEntityTypes.video = this.props.entityKind) {
         //Fan video sheetconfig
         return this.getDefaultConfig().logoutVideoConfig;
       } else {
@@ -100,6 +110,11 @@ class ReportVideo extends PureComponent {
     }
   }
   
+  isCurrentUser = () => {
+    return this.props.userId === this.props.currentUserId;
+  };
+  
+
   canMute = () => {
     return !!ReduxGetters.canMuteUser(this.props.userId);
   };
@@ -142,7 +157,7 @@ class ReportVideo extends PureComponent {
     if (response && response.success) {
       Toast.show({text: 'Video reported successfully!', icon: 'success'});
     } else {
-      Toast.show({text: 'Video reported failed!', icon: 'error'});
+      Toast.show({text: 'Video report failed!', icon: 'error'});
     }
   }
   
@@ -172,7 +187,7 @@ class ReportVideo extends PureComponent {
       Toast.show({text: `User ${this.getMuteUnMuteText().toLowerCase()}d successfully!`, icon: 'success'});
       fetchUser(this.props.userId);
     } else {
-      Toast.show({text: `User ${this.getMuteUnMuteText().toLowerCase()}d failed!`, icon: 'error'});
+      Toast.show({text: `User ${this.getMuteUnMuteText().toLowerCase()} failed!`, icon: 'error'});
     }
   }
   
@@ -189,12 +204,8 @@ class ReportVideo extends PureComponent {
     );
   };
   
-  isVisible = () => {
-    return this.props.userId != this.props.currentUserId;
-  };
-  
   render() {
-    return this.isVisible() && (
+    return (
       <React.Fragment>
         <TouchableOpacity pointerEvents={'auto'}
                           style={{
@@ -205,7 +216,9 @@ class ReportVideo extends PureComponent {
                             marginRight: -14
                           }}
                           {...testProps('pepo-report-button')}
-                          onPress={multipleClickHandler(() => this.showActionSheet())}>
+                          onPress={multipleClickHandler(() => this.showActionSheet())}
+                          activeOpacity={0.75}
+        >
           <Image style={{height: 12, width: 30}} source={report_icon}/>
         </TouchableOpacity>
       </React.Fragment>

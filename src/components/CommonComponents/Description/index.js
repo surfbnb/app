@@ -60,15 +60,15 @@ class Description extends React.PureComponent{
       }
 
         return (
-            <View style={inlineStyles.mainWrapper}>
-                <Text style={inlineStyles.title}>About</Text>
-                <Text style={[inlineStyles.desc]}>
-                <TextFormatter text={this.getText()} getTappedIncludesEntity={this.getTappedIncludesEntity}
-                        navigation={this.props.navigation}/>
-                  {this.isTextOverflow() || this.state.expanded ? <Text onPress={this.showMore} style={inlineStyles.more}>{moreOrLess}</Text> : 
-                    <React.Fragment/> }
-                </Text>
-            </View>
+          (this.props.description ? <View style={inlineStyles.mainWrapper}>
+            <Text style={inlineStyles.title}>About</Text>
+            <Text style={[inlineStyles.desc]}>
+              <TextFormatter text={this.getText()} getTappedIncludesEntity={this.getTappedIncludesEntity}
+                             navigation={this.props.navigation}/>
+              {this.isTextOverflow() || this.state.expanded ? <Text onPress={this.showMore} style={inlineStyles.more}>{moreOrLess}</Text> :
+                <React.Fragment/> }
+            </Text>
+          </View> : <React.Fragment/>)
         )
     }
     

@@ -162,7 +162,7 @@ class CameraWorker extends PureComponent {
     }
     if (videoType === 'post'){
         await this.processPostVideo();
-    } else if (videoType === 'reply'){
+    } else if (videoType === DataContract.knownEntityTypes.reply){
        await this.processReplyVideo();
     }
   };
@@ -383,7 +383,8 @@ class CameraWorker extends PureComponent {
         video_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         image_width: appConfig.cameraConstants.VIDEO_WIDTH,
         image_height: appConfig.cameraConstants.VIDEO_HEIGHT,
-        parent_kind: 'video',
+        video_size: videoSize,
+        parent_kind: DataContract.knownEntityTypes.video,
         parent_id: parentVideoId
       };
 
@@ -827,15 +828,15 @@ class CameraWorker extends PureComponent {
               imageUri: this.props.recorded_video.cover_image
             });
             let recordedVideo = {...this.props.recorded_video};
-            let resultType = deepGet(responseData, DataContract.common.resultType),
-              videoId = deepGet(responseData, `data.${resultType}[0].payload.video_id` );
-            getPixelDataOnFanVideoSuccess(recordedVideo, videoId);
+            let resultType = deepGet(responseData, DataContract.common.resultType);
             Store.dispatch(
               upsertRecordedVideo({
                 do_discard: true,
                 pepo_api_posting: false
               })
             );
+            let videoId = deepGet(responseData, `data.${resultType}[0].payload.video_id` );
+            getPixelDataOnFanVideoSuccess(recordedVideo, videoId);
           } else {
             console.log('/fanvideo:::VideoUploadStatusToNotProcessing');
             this.VideoUploadStatusToNotProcessing();

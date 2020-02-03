@@ -9,6 +9,8 @@ import UserProfileOptions from '../../assets/user_profile_options.png';
 import PepoApi from '../../services/PepoApi';
 import ReduxGetters from '../../services/ReduxGetters';
 import {fetchUser} from "../../helpers/helpers";
+import { withNavigation } from "react-navigation";
+import ShareOptions from '../CommonComponents/ShareOptions';
 
 
 const ACTION_SHEET_CANCEL_INDEX = 3;
@@ -16,7 +18,6 @@ const ACTION_SHEET_DESCTRUCTIVE_INDEX = 2;
 const ACTION_SHEET_REPORT_INDEX = 1;
 const ACTION_SHEET_BLOCK_UNBLOCK_INDEX = 2;
 const MUTE_UNMUTE_INDEX = 0;
-
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -29,6 +30,7 @@ class UserProfileActionSheet extends PureComponent {
     constructor(props) {
         super(props);
         this.actionSheetButtons = [ this.getMuteUnmuteText() ,'Report', 'Block' ,'Cancel'];
+        this.sharingActionSheetButtons = ['Share via Link', 'Share via QR Code' ,'Pay via QR code', 'Cancel'];
     }
 
     reportUser = () => {
@@ -45,10 +47,6 @@ class UserProfileActionSheet extends PureComponent {
                 Toast.show({text: `Unable to report user right now.`, icon: 'error' });
             });
     };
-
-
-
-
 
     getMuteUnmuteText = () => {
         let name = ReduxGetters.getName(this.props.userId);
@@ -234,14 +232,19 @@ class UserProfileActionSheet extends PureComponent {
     }
 
     render() {
-        return (<TouchableWithoutFeedback onPress={this.showActionSheet}>
-                    <View style={inlineStyles.reportIconWrapper}>
-                        <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}   ></Image>
-                    </View>
-                </TouchableWithoutFeedback>);
+        return (
+          <React.Fragment>
+            <ShareOptions entityId={this.props.userId} entityKind={'user'}/>
+            <TouchableWithoutFeedback onPress={this.showActionSheet}>
+                <View style={inlineStyles.reportIconWrapper}>
+                    <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}   ></Image>
+                </View>
+            </TouchableWithoutFeedback>
+          </React.Fragment>
+        );
     }
 
 }
 
 
-export default connect(mapStateToProps)(UserProfileActionSheet);
+export default connect(mapStateToProps)(withNavigation(UserProfileActionSheet));

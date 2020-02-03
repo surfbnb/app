@@ -19,12 +19,12 @@ import Utilities from '../../services/Utilities';
 
 const mapStateToProps = ( state, ownProps ) => {
    return {
-    backgroundImgUrl :  reduxGetters.getChannelBackgroundImage(ownProps.channelId, state),
-    channelName : reduxGetters.getChannelName(ownProps.channelId),
-    channelTagLine: reduxGetters.getChannelTagLine(ownProps.channelId),
-    channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId),
-    channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId),
-    isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId)
+    backgroundImgUrl :  reduxGetters.getChannelBackgroundImage(ownProps.channelId, state) || '',
+    channelName : reduxGetters.getChannelName(ownProps.channelId) || '',
+    channelTagLine: reduxGetters.getChannelTagLine(ownProps.channelId) || '',
+    channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId) || 0,
+    channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId) || 0,
+    isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId) || false
   };
 }
 
@@ -39,14 +39,14 @@ class ChannelCell extends PureComponent {
     if(this.props.isChannelMember){
       return <View style={styles.joinedView}>
         <Image style={styles.joinedIconSkipFont} source={Checkmarks}/>
-        <Text style={styles.joinText}>Joined</Text>
+        <Text style={styles.joinedText}>Joined</Text>
       </View>
     } else {
       return Utilities.isChannelPage(this.props.navigation.state) ?
             <TouchableOpacity onPress={this.onJoinChannel}>
               <View style={styles.joinView}>
                 <Image style={styles.joinIconSkipFont} source={ChannelJoin}/>
-                <Text style={[styles.joinText, {fontFamily: 'AvenirNext-DemiBold', fontSize: 18}]}>Join</Text>
+                <Text style={[styles.joinText]}>Join</Text>
               </View>
             </TouchableOpacity> : <React.Fragment/>
     }
@@ -68,12 +68,6 @@ class ChannelCell extends PureComponent {
       })
   }
 
-  onChannelPress= () =>  {
-    console.log('onChannelPress');
-    if(Utilities.isChannelPage(this.props.navigation.state)) return;
-    this.props.navigation.push("ChannelsScreen", {channelId:this.props.channelId} )
-  }
-
   onMemberPress = () => {
     console.log('onMemberPress');
     this.props.navigation.push("MembersScreen", {channelId:this.props.channelId} )
@@ -81,7 +75,7 @@ class ChannelCell extends PureComponent {
 
 
   render() {
-    return <TouchableOpacity onPress={this.onChannelPress} style={[styles.channelCellWrapper, this.props.wrapperStyles]}>
+    return <View style={[styles.channelCellWrapper, this.props.wrapperStyles]}>
             <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={styles.imageBg} resizeMode={'cover'}>
               <View style={styles.imageBgOpacity}>
                 <View>
@@ -109,7 +103,7 @@ class ChannelCell extends PureComponent {
                 </View>
               </View>
             </ImageBackground>
-    </TouchableOpacity>
+          </View>
   }
 }
 

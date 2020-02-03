@@ -38,11 +38,6 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
 
 const AppConfig = {
 
-  videoType : {
-    fanVideo: "video",
-    reply: "reply"
-  },
-
   pepoAnimationDuration : 500,
   logoutTimeOut : 2000,
   loginPopoverShowTime: 10000,
@@ -374,7 +369,8 @@ const AppConfig = {
     twitter: 'TwitterLogin',
     google: 'GoogleLogin',
     apple :'AppleLogin',
-    github: 'GithubLogin'
+    github: 'GithubLogin',
+    ChannelsScreen: 'Channel'
     //Dont change the key name,  values as u wish end
   },
   default_bt_amt : 10,
@@ -387,19 +383,19 @@ const AppConfig = {
   MaxDescriptionArea: 35250,
   thumbnailListConstants: {
 
-    
+
     // NOTE: Outer Circle Configs.
     // -----------------------------------------------------------------------
     // 1. outerRingDiameter - Replaces old iconHeight/iconWidth.
-    // 
-    // 2. borderWidth       - The border width is applied outside the 
+    //
+    // 2. borderWidth       - The border width is applied outside the
     //                        this iconHeight (Diameter).
-    // 
-    // 3. transparentGap    - Gap between the inner edge of Outer-Circle 
+    //
+    // 3. transparentGap    - Gap between the inner edge of Outer-Circle
     //                        and icon itself.
-    //                        
-    // 4. iconImageDiameter - Diameter of icon Image is computed 
-    //                        using outerRingDiameter, outerBorderWidth 
+    //
+    // 4. iconImageDiameter - Diameter of icon Image is computed
+    //                        using outerRingDiameter, outerBorderWidth
     //                        and transparentGap.
     // -----------------------------------------------------------------------
     outerRingDiameter: 48,
@@ -409,7 +405,7 @@ const AppConfig = {
       return this.outerRingDiameter - (2 * (this.outerBorderWidth + this.transparentGap ));
     },
 
-    // cellHeight - Gives actual height of cell. 
+    // cellHeight - Gives actual height of cell.
     cellHeight: function() {
       return this.outerRingDiameter ; // + (2 * this.outerBorderWidth);
     },

@@ -22,6 +22,7 @@ let stylesMap = {
       marginRight: 'auto',
       minWidth: '20%',
       marginBottom: 30,
+      position: "absolute",
       zIndex:9
     },
     pepoTxCount: {

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import {
   SectionList,
-  ActivityIndicator,
+  TouchableOpacity,
   Text,
   View,
   Keyboard
@@ -16,6 +16,7 @@ import SearchUser from "../CommonComponents/UserRow/Search";
 import VideoThumbnail from "../CommonComponents/VideoThumbnail/VideoThumbnail";
 import {FetchServices} from "../../services/FetchServices";
 import ChannelCell from "../ChannelCell";
+import DataContract from '../../constants/DataContract';
 
 const titleKeyName = 'title',
   dataKeyName = 'data',
@@ -215,9 +216,17 @@ class TopsList extends PureComponent {
 
   };
 
+  onChannelPress= (id) =>  {
+    this.props.navigation.push("ChannelsScreen", {channelId:id} )
+  }
+
   _renderChannelsItem = (item) => {
     let channelId = deepGet(item, 'item.id' );
-    return <ChannelCell  channelId={channelId} />;
+    return  <View style={{marginHorizontal: 10, marginBottom: 10}}>
+              <TouchableOpacity onPress={() => this.onChannelPress(channelId)} activeOpacity={0.9}>
+                <ChannelCell channelId={channelId} />
+              </TouchableOpacity>
+            </View>;
   };
 
   listHeaderComponent = () => {
@@ -230,13 +239,13 @@ class TopsList extends PureComponent {
   };
 
   getRenderCell = (kind) => {
-    if (kind === 'tag'){
+    if (kind === DataContract.knownEntityTypes.tag){
       return this._renderTagItem;
-    } else if (kind === 'user'){
+    } else if (kind === DataContract.knownEntityTypes.user){
       return this.__renderUserItem;
-    } else if (kind === 'videos'){
+    } else if (kind === DataContract.knownEntityTypes.video){
       return this._renderVideoItem;
-    } else if (kind === 'channel'){
+    } else if (kind === DataContract.knownEntityTypes.channel){
       return this._renderChannelsItem;
     } else {
       return this.renderEmpty;
@@ -298,7 +307,7 @@ class TopsList extends PureComponent {
       return null;
     } else {
       return <View style={{padding: 12}}>
-        <Text style={{color:'rgb(42, 41, 59)', fontFamily:'AvenirNext-DemiBold', fontSize:14 }}>{section.title}</Text>
+        <Text style={{color:'#34445b', fontFamily:'AvenirNext-DemiBold', fontSize: 18 }}>{section.title}</Text>
       </View>;
 
     }

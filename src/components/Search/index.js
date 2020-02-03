@@ -15,12 +15,13 @@ import EmptySearchResult from '../../components/CommonComponents/EmptySearchResu
 import NavigationEmitter from "../../helpers/TabNavigationEvent";
 import appConfig from "../../constants/AppConfig";
 import ChannelsList from "../ChannelsList";
+import DataContract from '../../constants/DataContract';
 
 const tabStyle = NativeBaseTabTheme.tab,
-  USER_KIND = 'user',
-  TAG_KIND = 'tag',
-  VIDEO_KIND = 'video',
-  CHANNEL_KIND = 'channel';
+  USER_KIND = DataContract.knownEntityTypes.user,
+  TAG_KIND = DataContract.knownEntityTypes.tag,
+  VIDEO_KIND = DataContract.knownEntityTypes.video,
+  CHANNEL_KIND = DataContract.knownEntityTypes.channel;
 
 const NO_OF_CHARS_TO_RESTRICT_SEARCH = 1;
 
@@ -55,7 +56,7 @@ const TabMap = {
     supported: true
   },
   "channels": {
-    id: TAG_KIND,
+    id: CHANNEL_KIND,
     baseUrl : '/search/channels',
     title: 'Channels',
     "queryParam": "q",
@@ -402,7 +403,7 @@ class SearchScreen extends PureComponent {
                   style={tabStyle.style}>
         <ChannelsList
           getFetchUrl={this.getChannelsTabUrl}
-          ref={this.setChannelFlatListRef}
+          onRef={this.setChannelFlatListRef}
           noResultsData={TabMap.channels.noResultsData}
           getNoResultsCell={TabMap.channels.renderNoResults}
         />

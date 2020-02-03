@@ -43,7 +43,7 @@ class FullScreeVideoRow extends PureComponent {
 
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
-        const pixelParams = { e_entity: 'video' ,
+        const pixelParams = { e_entity: DataContract.knownEntityTypes.video ,
                              video_id : this.videoId,
                              position: this.props.index
                             };

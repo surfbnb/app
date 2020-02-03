@@ -2,6 +2,12 @@ import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
+  crossIconWrapper: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   modalContainer:{
     flex:1,
     padding : 10,
@@ -25,7 +31,6 @@ let stylesMap = {
   qrCode:{
     borderRadius : 20,
     padding:20,
-    backgroundColor:Colors.wildWatermelon2,
     overflow:"hidden",
     marginBottom : 10
   }

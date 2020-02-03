@@ -15,7 +15,8 @@ let stylesMap = {
     color: Colors.valhalla
   },
   more: {
-    fontWeight: '500'
+    fontFamily: 'AvenirNext-DemiBold',
+    color: Colors.valhalla
   }
 };
 

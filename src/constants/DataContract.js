@@ -1,5 +1,17 @@
 export default {
 
+    actionTypes: {
+        pay: "pay"
+    },
+
+    knownEntityTypes : {
+        reply:"reply",
+        video:"video",
+        tag: "tag",
+        channel: "channel",
+        user: "user"
+    },
+
     feed: {
         homeApi: "/feeds",
         getSingleFeedApi : (id) => {
@@ -98,11 +110,7 @@ export default {
         },
         kindKey: "kind",
         creatorUserIdKey: 'creator_user_id',
-        videoDetailsKey: 'video_details',
-        reportEntityKind : {
-            reply:"reply",
-            video:"video"
-        }
+        videoDetailsKey: 'video_details'
     },
 
     share: {
@@ -114,7 +122,10 @@ export default {
         },
         getChannelShareApi: ( id ) => {
             return `/channels/${id}/share`
-        }
+        },
+        getProfileShareApi: ( id ) => {
+            return `/users/${id}/share`
+          }
     },
 
     channels: {

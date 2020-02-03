@@ -13,6 +13,7 @@ export default class EmptySearchResult extends Component{
     return(
       <View style={inlineStyles.emptyWrapper}>
         <Text style={inlineStyles.msgStyle}>{noResultData.noResultsMsg}</Text>
+        {this.props.children}
       </View>
     )
   }

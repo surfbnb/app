@@ -23,7 +23,6 @@ import multipleClickHandler from '../../../services/MultipleClickHandler';
 import { fetchVideo } from '../../../helpers/helpers';
 import ReplyShareIcon from '../ShareIcon/ReplyShare';
 import Utilities from "../../../services/Utilities";
-import MaskedChannelHList from "../../CommonComponents/MaskedChannelHList";
 
 class Base extends PureComponent {
     constructor(props) {
@@ -82,7 +81,7 @@ class Base extends PureComponent {
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
         const pixelParams = {
-            e_entity: 'reply',
+            e_entity: DataContract.knownEntityTypes.reply,
             parent_video_id : this.state.parentVideoId,
             p_name: this.state.parentVideoId,
             reply_detail_id :this.props.replyDetailId,
@@ -108,7 +107,6 @@ class Base extends PureComponent {
                                   isActiveEntity={this.props.isActiveEntity}
                                   fullVideoReplyId={this.props.replyDetailId}
               />
-              <MaskedChannelHList videoId={this.state.parentVideoId} />
           </View>
         )
       }
@@ -145,7 +143,7 @@ class Base extends PureComponent {
                                         entityId={this.props.replyDetailId}
                                         getPixelDropData={this.getPixelDropData}
                                     />
-                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentProfileIconClick()})}>
+                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentProfileIconClick()})} activeOpacity={0.75}>
                                       <ProfilePicture userId={this.state.parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
                                         width: AppConfig.thumbnailListConstants.parentIconWidth,
                                         borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,

@@ -16,6 +16,9 @@ import EmptySearchResult from '../CommonComponents/EmptySearchResult';
 import ReduxGetters from '../../services/ReduxGetters';
 import BackArrow from '../CommonComponents/BackArrow';
 import ChannelsHeaderRight from '../ChannelsHeaderRight';
+import PixelCall from "../../services/PixelCall";
+import {NavigationEvents} from "react-navigation";
+import erroMsgStyle from "../CommonComponents/EmptySearchResult/style";
 import {navigateTo} from "../../helpers/navigateTo";
 
 class ChannelsScreen extends PureComponent {
@@ -41,7 +44,7 @@ class ChannelsScreen extends PureComponent {
             shadowOpacity: 0.1,
             shadowRadius: 3
           },
-          headerRight: <ChannelsHeaderRight channelId = {1}/>,
+          headerRight: <ChannelsHeaderRight channelId = {channelId}/>,
           headerBackImage: <BackArrow />
         };
       };
@@ -78,6 +81,15 @@ class ChannelsScreen extends PureComponent {
         this.videoListRef && this.videoListRef.forcedRefresh();
     }
 
+    onDidFocus = (payload) => {
+        PixelCall({
+            e_entity: 'page',
+            e_action: 'view',
+            p_type: 'channel',
+            p_name: this.channelId
+        });
+    };
+
     listHeaderComponent = () => {
         return (
             <View style={{flex: 1}}>
@@ -90,14 +102,22 @@ class ChannelsScreen extends PureComponent {
 
     getNoResultData = () => {
         const tagName = deepGet( ReduxGetters.getHashTag(this.selectedTagId) , "text" , "");
+        if(tagName){
+            return {
+                "noResultsMsg": `No videos tagged #${tagName}.`,
+                "isEmpty": true
+            };
+        }
         return {
-            "noResultsMsg": `No videos tagged ${tagName}, Please try again later.`,
+            "noResultsMsg": `No videos tagged.`,
             "isEmpty": true
         };
     }
 
-    getNoResultsCell = () => {
-        return <EmptySearchResult noResultsData={this.getNoResultData()} />
+    getNoResultsCell = (item) => {
+        return <EmptySearchResult noResultsData={item}>
+                    <View><Text style={erroMsgStyle.msgStyle}>Please try again later.</Text></View>
+               </EmptySearchResult>
     }
 
     fetchChannel = () => {
@@ -118,6 +138,7 @@ class ChannelsScreen extends PureComponent {
         }
         return (
             <View style={[Common.viewContainer]}>
+                <NavigationEvents onDidFocus={this.onDidFocus} />
                 <VideoCollections getFetchUrl={this.getFetchUrl}
                     getFetchParams={this.getFetchParams}
                     listHeaderComponent={this.listHeaderComponent()}
@@ -125,6 +146,8 @@ class ChannelsScreen extends PureComponent {
                     beforeRefresh={this.fetchChannel}
                     getNoResultsCell={this.getNoResultsCell}
                     noResultsData={this.getNoResultData()}
+                    entityId={this.channelId}
+                    entityType={DataContract.knownEntityTypes.channel}
                 />
             </View>
         )

@@ -30,7 +30,9 @@ const UserRow = (props) => {
       <TouchableOpacity
         onPress={multipleClickHandler(() => {
           userClick(props.userId, props.navigation);
-        })}>
+        })}
+        activeOpacity={0.8}
+      >
         <View style={styles.txtWrapper}>
           <ProfilePicture userId={props.userId} />
           {props.children}

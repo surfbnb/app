@@ -11,17 +11,19 @@ let stylesMap = {
     width : 20,
   },
   moreOptionsSkipFont : {
-    height:4,
-    width:20,
+    height: 4.5,
+    width: 21
   },
   wrapperShare : {
     paddingVertical:10,
     paddingHorizontal:5
   },
   wrapperMore : {
-    paddingHorizontal:5,
-    paddingVertical:10,
-    marginRight:13,
+    height: 20,
+    width: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight:13
   }
 };
 

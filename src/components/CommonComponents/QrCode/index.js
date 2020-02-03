@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {TouchableOpacity , Image, View, Text} from "react-native";
+import {TouchableOpacity , Image, View, Text, SafeAreaView} from "react-native";
 import QRCode from 'react-native-qrcode-svg';
 
 import inlineStyles from "./style";
@@ -15,13 +15,17 @@ export default class QrCode extends PureComponent{
   constructor(props){
     super(props);
     this.url = this.props.navigation.getParam('url') ;
+    this.descText = this.props.navigation.getParam('descText');
+    this.backgroundColor = this.props.navigation.getParam('backgroundColor');
+    this.color = this.props.navigation.getParam('color');
+    this.size = this.props.navigation.getParam('size');
   }
   closeModal=()=>{
     this.props.navigation.goBack();
   }
   render(){
     return(
-      <View style={inlineStyles.modalContainer}>
+      <SafeAreaView style={inlineStyles.modalContainer}>
         <TouchableOpacity
           onPress={() => {
             this.closeModal();
@@ -32,18 +36,18 @@ export default class QrCode extends PureComponent{
         </TouchableOpacity>
         <View style={inlineStyles.modalContentWrapper}>
           <View
-            style={inlineStyles.qrCode}>
+            style={[inlineStyles.qrCode,{backgroundColor:this.backgroundColor}]}>
             <QRCode
               value={this.url}
-              backgroundColor="#ff5566"
-              color="#ffffff"
-              size={130}
+              backgroundColor={this.backgroundColor}
+              color={this.color}
+              size={this.size}
             />
           </View>
 
-          <Text style={inlineStyles.modalTextStyle}>{`Scan the QR code to join\n Ethdenver 2020`}</Text>
+          <Text style={inlineStyles.modalTextStyle}>{this.descText}</Text>
         </View>
-      </View>
+      </SafeAreaView>
       )
 
 

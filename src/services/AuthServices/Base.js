@@ -125,7 +125,7 @@ class Base {
 
   getPixelMandatoryParams(){
     return {
-      e_entity: "user",
+      e_entity: DataContract.knownEntityTypes.user,
       e_action: "registration",
       p_type: "signin"
     };

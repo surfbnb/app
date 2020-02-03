@@ -42,7 +42,7 @@ class UserVideoHistoryRow extends PureComponent {
   getPixelDropData = () => {
     const parentData =  this.props.getPixelDropData() ;
     const pixelParams = {
-      e_entity: 'video',
+      e_entity: DataContract.knownEntityTypes.video,
       video_id: this.props.videoId,
       position: this.props.index
     };

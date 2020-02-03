@@ -124,7 +124,7 @@ class VideoRepliesScreen extends PureComponent {
     let videoType = ReduxGetters.getRecordedVideoType();
     if (videoType === 'post'){
       return "Uploading Video";
-    } else if (videoType === 'reply'){
+    } else if (videoType === DataContract.knownEntityTypes.reply){
       return "Posting reply";
     }
   }

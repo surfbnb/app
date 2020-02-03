@@ -21,7 +21,6 @@ let stylesMap = {
   channelCellWrapper: {
     minHeight: 130,
     backgroundColor: '#a77c7d',
-    margin:10,
     overflow: 'hidden',
     borderRadius: 4
   },
@@ -35,10 +34,12 @@ let stylesMap = {
     flex: 1,
     padding: 12,
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    backgroundColor: 'rgba(0, 0, 0, 0.3)'
   },
 
   bottomView: {
+    height: 35,
+    maxHeight: 35,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between'
@@ -87,10 +88,17 @@ let stylesMap = {
     flexDirection: 'row'
   },
 
-  joinText: {
+  joinedText: {
     color: Colors.valhalla,
     fontFamily: 'AvenirNext-Medium',
     fontWeight: '500',
+    marginLeft:4
+  },
+
+  joinText: {
+    color: Colors.valhalla,
+    fontSize: 18,
+    fontFamily: 'AvenirNext-DemiBold',
     marginLeft:4
   },
 
