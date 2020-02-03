@@ -116,7 +116,7 @@ export default {
             return `/channels/${id}/share`
         },
       getProfileShareApi: ( id ) => {
-            return `/dummy/users/${id}/share`
+            return `/users/${id}/share`
           }
     },
 
