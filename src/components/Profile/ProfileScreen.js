@@ -21,6 +21,7 @@ import ReviewStatusBanner from './ReviewStatusBanner';
 import CustomDrawer from '../CustomDrawer';
 import {DrawerEmitter} from '../../helpers/Emitters';
 import {testProps} from "../../constants/AppiumAutomation";
+import { fetchUser } from '../../helpers/helpers';
 
 const mapStateToProps = (state, ownProps) => {
   return { userId: CurrentUser.getUserId() };
@@ -135,6 +136,7 @@ class ProfileScreen extends PureComponent {
   }
 
   beforeRefresh = () => {
+    fetchUser(CurrentUser.getUserId())
     this.getEmail();
     Pricer.getBalance();
   };

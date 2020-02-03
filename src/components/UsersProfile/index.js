@@ -56,15 +56,13 @@ export default class UsersProfile extends Component {
       isDeleted : reduxGetter.isUserInactive(this.userId)
     }
     this.listRef = null;
+    this.isActionHonored =  false;
   }
 
   componentDidMount(){
     userActionEvents.on("onBlockUnblockAction" ,  ( params ) => {
       this.listRef && this.listRef.refresh();
     });
-    if(this.props.navigation.getParam('at') == DataContract.actionTypes.pay){
-      this.navigateToTransactionScreen();
-    }
   }
 
   componentWillUnmount(){
@@ -92,6 +90,17 @@ export default class UsersProfile extends Component {
     }
     let userName =  deepGet(res,  `data.users.${this.userId}.name` , "");
     this.props.navigation.setParams({ headerTitle:  unescape(userName)});
+    this.honorAction()
+  }
+
+  honorAction(){
+    if(this.isActionHonored) return;
+    this.isActionHonored =  true;  
+    let goTo = this.props.navigation.getParam('goTo'),
+        actionType = deepGet( goTo, 'v.at');
+    if( actionType == DataContract.actionTypes.pay){
+      this.navigateToTransactionScreen();
+   }
   }
 
   _headerComponent() {
@@ -111,7 +120,7 @@ export default class UsersProfile extends Component {
         <View style={CommonStyle.viewContainer}>
           <UserProfileFlatList
             listHeaderComponent={this._headerComponent()}
-            onUserFetch={this.onUserResponse}
+            beforeRefresh={this.fetchUser}
             userId={this.userId}
             onRef={(elem) => this.listRef = elem}
           />
