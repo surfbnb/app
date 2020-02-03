@@ -108,7 +108,7 @@ class ShareOptions extends React.PureComponent {
             }
           })
           .catch((error) =>{
-            cosole.log("**** error in share via qrcode ****" );
+            console.log("**** error in share via qrcode ****" );
         });
       }
     
@@ -130,7 +130,7 @@ class ShareOptions extends React.PureComponent {
             }
           })
           .catch((error) =>{
-          cosole.log("**** error in pay via qrcode ****" );
+          console.log("**** error in pay via qrcode ****" );
         });
       }
     

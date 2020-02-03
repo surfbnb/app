@@ -152,7 +152,7 @@ class ChannelsHeaderRight extends PureComponent {
   showReportAlert = () => {
     Alert.alert('', 'Report channel for inappropriate content or abuse?',
       [{ text: 'Report', onPress: () => this.reportChannel() },
-        { text: 'Cancel' }],
+        { text: 'Cancel', style : 'cancel' }],
       { cancelable: true }
     );
   };
@@ -160,7 +160,7 @@ class ChannelsHeaderRight extends PureComponent {
   showLeaveChannelAlert = () => {
     Alert.alert('', 'Leave channel for inappropriate content or abuse?',
       [{ text: 'Leave', onPress: () => this.leaveChannel() },
-        { text: 'Cancel' }],
+        { text: 'Cancel', style : 'cancel' }],
       { cancelable: true }
     );
   };
@@ -168,7 +168,7 @@ class ChannelsHeaderRight extends PureComponent {
   showMuteChannelAlert = () => {
     Alert.alert('', 'Mute channel ?',
       [{ text: 'Mute', onPress: () => this.muteNotifications() },
-        { text: 'Cancel' }],
+        { text: 'Cancel', style : 'cancel' }],
       { cancelable: true }
     );
   };
@@ -176,7 +176,7 @@ class ChannelsHeaderRight extends PureComponent {
   showUnMuteChannelAlert = () => {
     Alert.alert('', 'UnMute channel ?',
       [{ text: 'UnMute', onPress: () => this.unMuteNotifications() },
-        { text: 'Cancel' }],
+        { text: 'Cancel', style : 'cancel' }],
       { cancelable: true }
     );
   };
