@@ -40,7 +40,7 @@ class NavigateTo {
 
     switch (pn) {
       case 'p':
-        this.goToProfilePage(deepGet(goToObject, 'v.puid'), payload);
+        this.goToProfilePage(deepGet(goToObject, 'v.puid'), payload, goToObject);
         break;
       case 'v':
         this.goToVideo(deepGet(goToObject, 'v.vid'), payload);
@@ -162,12 +162,13 @@ class NavigateTo {
     }, timeOut)
   };
 
-  goToProfilePage = (id, payload={}) => {
+  goToProfilePage = (id, payload={}, goToObj) => {
     if (id === CurrentUser.getUserId()) {
       this.__navigate('ProfileScreen', payload);
     } else {
       payload = payload ;
       payload['userId'] = id;
+      payload['goTo'] = goToObj;
       this.__push('UsersProfileScreen', payload);
     }
   };
