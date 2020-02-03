@@ -56,7 +56,7 @@ const TabMap = {
     supported: true
   },
   "channels": {
-    id: TAG_KIND,
+    id: CHANNEL_KIND,
     baseUrl : '/search/channels',
     title: 'Channels',
     "queryParam": "q",
