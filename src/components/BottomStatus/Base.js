@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {View, Text, TouchableWithoutFeedback, Image} from 'react-native';
+import {View, Text, TouchableWithoutFeedback, Image, TouchableOpacity} from 'react-native';
 
 import inlineStyles from './styles';
 
@@ -45,18 +45,19 @@ class BottomStatus extends PureComponent {
           <View style={inlineStyles.bottomBgInner}>
           {!!this.props.userName &&(
             <View style={inlineStyles.handleWithTimerAndReportIcon}>
-              <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.navigateToUserProfile())}
-                                        pointerEvents={'auto'}
+              <TouchableOpacity onPress={multipleClickHandler(() => this.navigateToUserProfile())}
+                                pointerEvents={'auto'}
+                                activeOpacity={0.9}
               >
                 <View style={inlineStyles.handleTruncate}>
-                  <Text ellipsizeMode={'tail'} numberOfLines={1} style={[inlineStyles.handle]}>
+                  <Text ellipsizeMode={'tail'} numberOfLines={1} style={[inlineStyles.handle]} selectable={true} selectionColor={'#ff5566'}>
                     {/*ellipsizeMode ellipsizeMode ellipsizeMode ellipsizeMode*/}
                     {`@${this.props.userName}`}
                   </Text>
                   <Image style={inlineStyles.ctaIconSkipFont} source={TimerIcon}/>
                   <Text style={inlineStyles.timerTxt}>{shortenedFromNow(this.props.cts*1000)}</Text>
                 </View>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
               <ReportVideo userId={this.props.userId} entityId={this.props.entityId} entityKind={this.props.entityKind} />
             </View>)}
             {this.props.description ? (
@@ -75,11 +76,12 @@ class BottomStatus extends PureComponent {
           </View>
 
         {this.props.link ? (
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             onPress={multipleClickHandler(() => {
              this.onLinkClick();
             })}
             pointerEvents={'auto'}
+            activeOpacity={0.9}
           >
             <Text
               style={[{ fontSize: 13, paddingBottom: 10, fontFamily: 'AvenirNext-DemiBold', fontWeight: '700'}, inlineStyles.bottomBgTxt]}
@@ -88,7 +90,7 @@ class BottomStatus extends PureComponent {
             >
               {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
             </Text>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         ) : (
           <React.Fragment />
         )}
