@@ -7,14 +7,17 @@ import { withNavigation } from 'react-navigation';
 import Utilities from '../../../services/Utilities';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import ReduxGetters from '../../../services/ReduxGetters';
+import { connect } from 'react-redux';
 
+const mapStateToProps = (state, ownProps) => ({
+    list : ReduxGetters.getVideoChannelList(ownProps.videoId, state)
+});
 
 class ChannelNamesFlatlist extends PureComponent {
 
     constructor( props ){
         super( props );
         this.flatlistRef = null;
-        this.data = ReduxGetters.getVideoChannelList(this.props.videoId);
     }
 
     /**
@@ -58,7 +61,7 @@ class ChannelNamesFlatlist extends PureComponent {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 decelerationRate={'fast'}
-                data={this.data}
+                data={this.props.list}
                 keyExtractor={this._keyExtractor}
                 contentContainerStyle={[inlineStyles.hList]}
                 renderItem={this._renderItem}
@@ -68,4 +71,4 @@ class ChannelNamesFlatlist extends PureComponent {
     }
 }
 
-export default withNavigation( ChannelNamesFlatlist );
+export default connect(mapStateToProps)(withNavigation( ChannelNamesFlatlist ));
