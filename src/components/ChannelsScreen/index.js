@@ -100,8 +100,14 @@ class ChannelsScreen extends PureComponent {
 
     getNoResultData = () => {
         const tagName = deepGet( ReduxGetters.getHashTag(this.selectedTagId) , "text" , "");
+        if(tagName){
+            return {
+                "noResultsMsg": `No videos tagged #${tagName}.`,
+                "isEmpty": true
+            };  
+        }
         return {
-            "noResultsMsg": `No videos tagged ${tagName}.`,
+            "noResultsMsg": `No videos tagged.`,
             "isEmpty": true
         };
     }
