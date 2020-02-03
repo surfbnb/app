@@ -1,5 +1,9 @@
 export default {
 
+    actionTypes: {
+        pay: "pay"
+    },
+
     knownEntityTypes : {
         reply:"reply",
         video:"video",

@@ -21,6 +21,7 @@ import deepGet from "lodash/get";
 import unescape from'lodash/unescape';
 
 import EventEmitter from "eventemitter3";
+import DataContract from '../../constants/DataContract';
 const userActionEvents = new EventEmitter();
 
 export default class UsersProfile extends Component {
@@ -61,6 +62,9 @@ export default class UsersProfile extends Component {
     userActionEvents.on("onBlockUnblockAction" ,  ( params ) => {
       this.listRef && this.listRef.refresh();
     });
+    if(this.props.navigation.getParam('at') == DataContract.actionTypes.pay){
+      this.navigateToTransactionScreen();
+    }
   }
 
   componentWillUnmount(){

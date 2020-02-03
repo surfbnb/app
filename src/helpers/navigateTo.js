@@ -162,11 +162,11 @@ class NavigateTo {
     }, timeOut)
   };
 
-  goToProfilePage = (id, payload) => {
+  goToProfilePage = (id, payload={}) => {
     if (id === CurrentUser.getUserId()) {
       this.__navigate('ProfileScreen', payload);
     } else {
-      payload = payload || {};
+      payload = payload ;
       payload['userId'] = id;
       this.__push('UsersProfileScreen', payload);
     }
