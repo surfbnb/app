@@ -48,6 +48,7 @@ class ReplyIcon extends PureComponent {
             <Text style={inlineStyles.videoReplyCount} {...testProps('pepo-reply-btn-count')}>{Pricer.toDisplayAmount(this.props.videoReplyCount)}</Text>
             <TouchableOpacity pointerEvents={'auto'}
                             style={inlineStyles.replyIconWrapper}
+                            activeOpacity={0.75}
                             onPress={multipleClickHandler(() => this.replyVideo())}
                             {...testProps('pepo-reply-btn')}
             >

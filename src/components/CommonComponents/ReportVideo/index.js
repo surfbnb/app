@@ -216,7 +216,9 @@ class ReportVideo extends PureComponent {
                             marginRight: -14
                           }}
                           {...testProps('pepo-report-button')}
-                          onPress={multipleClickHandler(() => this.showActionSheet())}>
+                          onPress={multipleClickHandler(() => this.showActionSheet())}
+                          activeOpacity={0.75}
+        >
           <Image style={{height: 12, width: 30}} source={report_icon}/>
         </TouchableOpacity>
       </React.Fragment>
