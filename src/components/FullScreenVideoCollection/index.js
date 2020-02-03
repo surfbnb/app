@@ -249,7 +249,7 @@ class FullScreenVideoCollection extends PureComponent{
 
         return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
-                {this.props.navigation.getParam("showBalanceFlyer")  && <TopStatus />}
+                {!this.props.navigation.getParam("hideBalanceFlyer")  && <TopStatus />}
                 <FlatList
                     listKey={"some-key-to-be-changed-passed-as-props"}
                     snapToAlignment={"top"}
