@@ -68,12 +68,6 @@ class ChannelCell extends PureComponent {
       })
   }
 
-  onChannelPress= () =>  {
-    console.log('onChannelPress');
-    if(Utilities.isChannelPage(this.props.navigation.state)) return;
-    this.props.navigation.push("ChannelsScreen", {channelId:this.props.channelId} )
-  }
-
   onMemberPress = () => {
     console.log('onMemberPress');
     this.props.navigation.push("MembersScreen", {channelId:this.props.channelId} )
@@ -81,7 +75,7 @@ class ChannelCell extends PureComponent {
 
 
   render() {
-    return <TouchableOpacity onPress={this.onChannelPress} style={[styles.channelCellWrapper, this.props.wrapperStyles]} activeOpacity={0.9}>
+    return <View style={[styles.channelCellWrapper, this.props.wrapperStyles]}>
             <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={styles.imageBg} resizeMode={'cover'}>
               <View style={styles.imageBgOpacity}>
                 <View>
@@ -109,7 +103,7 @@ class ChannelCell extends PureComponent {
                 </View>
               </View>
             </ImageBackground>
-    </TouchableOpacity>
+          </View>
   }
 }
 

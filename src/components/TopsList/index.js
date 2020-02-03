@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import {
   SectionList,
-  ActivityIndicator,
+  TouchableOpacity,
   Text,
   View,
   Keyboard
@@ -216,9 +216,17 @@ class TopsList extends PureComponent {
 
   };
 
+  onChannelPress= (id) =>  {
+    this.props.navigation.push("ChannelsScreen", {channelId:id} )
+  }
+
   _renderChannelsItem = (item) => {
     let channelId = deepGet(item, 'item.id' );
-    return <View style={{marginHorizontal: 10, marginBottom: 10}}><ChannelCell  channelId={channelId} /></View>;
+    return  <View style={{marginHorizontal: 10, marginBottom: 10}}>
+              <TouchableOpacity onPress={() => this.onChannelPress(channelId)} activeOpacity={0.9}>
+                <ChannelCell channelId={channelId} />
+              </TouchableOpacity>
+            </View>;
   };
 
   listHeaderComponent = () => {

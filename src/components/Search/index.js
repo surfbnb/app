@@ -403,7 +403,7 @@ class SearchScreen extends PureComponent {
                   style={tabStyle.style}>
         <ChannelsList
           getFetchUrl={this.getChannelsTabUrl}
-          ref={this.setChannelFlatListRef}
+          onRef={this.setChannelFlatListRef}
           noResultsData={TabMap.channels.noResultsData}
           getNoResultsCell={TabMap.channels.renderNoResults}
         />

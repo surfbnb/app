@@ -2,12 +2,14 @@ import React, { PureComponent } from 'react';
 import {
   FlatList,
   ActivityIndicator,
-  Keyboard, View
+  Keyboard, 
+  View,
+  TouchableOpacity
 } from "react-native";
+import { withNavigation } from 'react-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import ChannelCell from '../ChannelCell';
-
 import Pagination from "../../services/Pagination";
 
 class ChannelsList extends PureComponent {
@@ -166,10 +168,17 @@ class ChannelsList extends PureComponent {
     }
   };
 
+  onChannelPress= (id) =>  {
+    this.props.navigation.push("ChannelsScreen", {channelId:id} )
+  }
+
   _renderChannelCell = ({ item, index }) => {
     // isEmpty came from configuration in Search/index.js
-    console.log(item, 'itemitemitem');
-    return <View style={{marginHorizontal: 10, marginTop: 10, marginBottom: 0}}><ChannelCell channelId={item.id} /></View>;
+    return  <View style={{marginHorizontal: 10, marginTop: 10, marginBottom: 0}}>
+              <TouchableOpacity onPress={() => this.onChannelPress(item.id)} activeOpacity={0.9}>
+                <ChannelCell channelId={item.id} />
+              </TouchableOpacity>
+            </View>;
   };
 
   renderFooter = () => {
@@ -218,4 +227,4 @@ class ChannelsList extends PureComponent {
 
 }
 
-export default  ChannelsList;
+export default withNavigation(ChannelsList);
