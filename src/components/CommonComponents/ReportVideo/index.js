@@ -29,6 +29,13 @@ class ReportVideo extends PureComponent {
 
   getDefaultConfig() {
     return {
+      currentUserVideoConfig: {
+        actionSheetConfig: {
+          options: [`Video Id: ${this.props.entityId}`, 'Cancel'],
+          cancelButtonIndex: 1,  //Cancel button index in options array
+          destructiveButtonIndex: 1//Red button index in options array
+        }
+      },
       loginVideoConfig: {
         actionConfig: {
           0: "showMuteUnmuteAlert",   //function name in component mapped to index in actionSheetConfig options array
@@ -79,7 +86,10 @@ class ReportVideo extends PureComponent {
   }
   
   getActionSheetConfig() {
-    if (CurrentUser.getUserId()) {
+    if(this.isCurrentUser()){
+      return this.getDefaultConfig().currentUserVideoConfig;
+    }
+    else if (CurrentUser.getUserId()) {
       //Login sheet config
       if (DataContract.knownEntityTypes.video == this.props.entityKind) {
         //Fan video sheetconfig
@@ -100,6 +110,11 @@ class ReportVideo extends PureComponent {
     }
   }
   
+  isCurrentUser = () => {
+    return this.props.userId === this.props.currentUserId;
+  };
+  
+
   canMute = () => {
     return !!ReduxGetters.canMuteUser(this.props.userId);
   };
@@ -189,12 +204,8 @@ class ReportVideo extends PureComponent {
     );
   };
   
-  isVisible = () => {
-    return this.props.userId != this.props.currentUserId;
-  };
-  
   render() {
-    return this.isVisible() && (
+    return (
       <React.Fragment>
         <TouchableOpacity pointerEvents={'auto'}
                           style={{
