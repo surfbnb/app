@@ -110,7 +110,7 @@ class ReportVideo extends PureComponent {
   }
   
   isCurrentUser = () => {
-    return this.props.userId === this.props.currentUserId;
+    return this.props.userId == this.props.currentUserId;
   };
   
 
