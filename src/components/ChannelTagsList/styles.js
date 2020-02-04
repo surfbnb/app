@@ -24,8 +24,7 @@ let stylesMap = {
   },
 
   text : {
-    fontSize: 12,
-    textTransform: 'capitalize'
+    fontSize: 12
   }
 
 };

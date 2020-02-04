@@ -111,10 +111,10 @@ const TabMap = {
     baseUrl : '/tags/52/videos',
     title: 'Video',
     "queryParam": "q",
-    "noResultsData": {
+    "getNoResultData": () =>({
       "noResultsMsg": 'No results found. Please try again.',
       "isEmpty": true
-    },
+    }),
     extraParams: {
       showBalanceFlyer: true
     },
@@ -461,7 +461,7 @@ class SearchScreen extends PureComponent {
         <VideoCollections
           onRef={this.setVideoFlatListRef}
           getFetchUrl={this.getVideoTabUrl}
-          noResultsData={TabMap.videos.noResultsData}
+          getNoResultData={TabMap.videos.getNoResultData}
           getNoResultsCell={TabMap.videos.renderNoResults}
           extraParams={TabMap.videos.extraParams}
         />

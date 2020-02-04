@@ -144,7 +144,7 @@ class VideoCollections extends PureComponent {
 
     _renderItem = ({ item={}, index }) => {
       // Check if this is an empty cell.
-      if ( item.isEmpty) {
+      if ( item.isEmpty && !this.state.refreshing ) {
         // Render no results cell here.
         return this.props.getNoResultsCell(item);
       } else {
@@ -201,8 +201,8 @@ class VideoCollections extends PureComponent {
     listHeaderComponent = () => {
         return (
           <React.Fragment>
-              {this.props.listHeaderComponent}
-              {this.state.list.length > 0 && this.props.listHeaderSubComponent }
+              {this.props.listHeaderComponent()}
+              {this.state.list.length > 0 && this.props.listHeaderSubComponent() }
           </React.Fragment>
         )
     };
@@ -216,7 +216,7 @@ class VideoCollections extends PureComponent {
       } else {
         this.numColumns = 1;
         this.flatListKey = this.noResultsKeyProp;
-        return [this.props.noResultsData];
+        return [this.props.getNoResultData()];
       }
     }
 
@@ -256,12 +256,14 @@ class VideoCollections extends PureComponent {
 }
 
 VideoCollections.defaultProps ={
-    getFetchParams : () => {
-        return null;
-    },
-    getNoResultsCell: () => {
-        return null;
-    }
+    getFetchParams : () => null,
+    getNoResultsCell: () => null,
+    listHeaderComponent: () => null,
+    listHeaderSubComponent: () => null,
+    getNoResultData: () =>({
+            "noResultsMsg": 'No results found.',
+            "isEmpty": true
+        })
 }
 
 export default withNavigation( VideoCollections ) ;

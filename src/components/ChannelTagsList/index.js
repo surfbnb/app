@@ -23,7 +23,7 @@ class ChannelTagsList extends PureComponent {
             text: "All"
         }  
         this.state = {
-            selectedTag: this.allTag
+            selectedTag: props.selectedTag || this.allTag
         }
         this.setAllOption();
         this.setInitialSelectedTag();
