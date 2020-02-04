@@ -118,10 +118,11 @@ class CaptureVideo extends Component {
       if (this.channelId){
       let tagIds = reduxGetters.getChannelTagIds(this.channelId);
 
-      for (let tagId of tagIds){
+      if (tagIds && tagIds instanceof Array && tagIds.length > 0 ) {
+        let tagId = tagIds[0];
         let tagInfo = reduxGetters.getHashTag(tagId);
-        console.log(tagId, tagInfo, 'tagIdtagIdtagIdtagIdtagIdtagIdtagId');
-        desc += `#${tagInfo.text} `
+        desc = `#${tagInfo.text}`
+
       }
     }
     return desc;

@@ -57,7 +57,7 @@ class PreviewRecordedVideo extends PureComponent {
 
 
     this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
-      this.replay();
+      this.replayPreview();
     });
     this.willBlur = this.props.navigation.addListener('willBlur', (payload) => {
       this.pauseVideo();
@@ -319,6 +319,19 @@ class PreviewRecordedVideo extends PureComponent {
 
   };
 
+  replayPreview = () => {
+    this.replay();
+    setTimeout(this.replayOnAndroid, 100);
+  };
+
+
+  replayOnAndroid = () => {
+    if(Platform.OS === 'android' && this.videoUrlsList.length === 1){
+      // This is hack for android to preview video on clicking play icon.
+      this.replay();
+    }
+  };
+
 
 
   render() {
@@ -335,7 +348,7 @@ class PreviewRecordedVideo extends PureComponent {
           <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
             {this.isPaused() ? (
               <TouchableOpacity
-                onPress={this.replay}
+                onPress={this.replayPreview}
               >
                 <Image style={styles.playIconSkipFont} source={playIcon} />
               </TouchableOpacity>
