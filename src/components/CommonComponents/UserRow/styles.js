@@ -38,17 +38,14 @@ let stylesMap = {
     borderWidth: 1,
     alignItems: 'center',
     marginLeft: 'auto',
-    paddingHorizontal: 12,
-    height: 32,
+    height: 35,
+    minWidth: 80,
     justifyContent: 'center',
-    color: Colors.white,
-    borderColor: Colors.wildWatermelon2,
-    flexDirection: 'row'
+    borderColor: Colors.wildWatermelon2
   },
   adminLeafInnerText: {
     color: Colors.wildWatermelon2,
-    fontFamily: 'AvenirNext-DemiBold',
-    marginLeft: 8
+    fontFamily: 'AvenirNext-DemiBold'
   },
   supportersSupportingWrapper: {
     fontSize: 15,
