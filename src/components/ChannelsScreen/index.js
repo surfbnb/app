@@ -115,7 +115,7 @@ class ChannelsScreen extends PureComponent {
 
     getNoResultsCell = (item) => {
         return <EmptySearchResult noResultsData={item}>
-                    <View><Text style={erroMsgStyle.msgStyle}>Please try again later.</Text></View>
+                    <Text style={erroMsgStyle.msgStyle}>Please try again later.</Text>
                </EmptySearchResult>
     }
 
