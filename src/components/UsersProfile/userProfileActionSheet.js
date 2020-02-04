@@ -237,7 +237,7 @@ class UserProfileActionSheet extends PureComponent {
             <ShareOptions entityId={this.props.userId} entityKind={'user'}/>
             <TouchableWithoutFeedback onPress={this.showActionSheet}>
                 <View style={inlineStyles.reportIconWrapper}>
-                    <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}   ></Image>
+                    <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}></Image>
                 </View>
             </TouchableWithoutFeedback>
           </React.Fragment>
