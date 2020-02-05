@@ -17,7 +17,7 @@ class Menu extends PureComponent{
       <ShareOptions entityId= {CurrentUser.getUserId()} entityKind={'user'}/>
         {this.props.navigation && this.props.navigation.state.routeName === 'ProfileScreen' && (
       <TouchableOpacity
-        style={{ height: 32, width: 35, alignItems: 'center', justifyContent: 'center', marginRight: 20 }}
+        style={{ height: 32, width: 35, alignItems: 'center', justifyContent: 'center', marginRight: 15 }}
         onPress={()=>{DrawerEmitter.emit('toggleDrawer')}}
         activeOpacity={0.2}
       {...testProps('profile-right-side-toggle-drawer')}>

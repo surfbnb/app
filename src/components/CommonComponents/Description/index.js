@@ -26,8 +26,8 @@ class Description extends React.PureComponent{
         }
 
       this.seeStatus = {
-        more  : ' …See More',
-        less  : ' See Less'
+        more  : '…  See More',
+        less  : '   See Less'
       }
     }
 

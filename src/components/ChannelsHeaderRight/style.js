@@ -20,10 +20,10 @@ let stylesMap = {
   },
   wrapperMore : {
     height: 20,
-    width: 30,
+    width: 35,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 13
+    marginRight: 15
   }
 };
 

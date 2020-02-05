@@ -47,7 +47,8 @@ let stylesMap = {
 
   bottomViewLeft: {
     flex: 2,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignSelf: 'flex-end'
   },
 
   textContainer: {

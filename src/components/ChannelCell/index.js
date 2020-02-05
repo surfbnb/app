@@ -57,7 +57,10 @@ class ChannelCell extends PureComponent {
       .post()
       .then((response) => {
         if (response && response.success){
-            Toast.show({text:'You have joined channel successfully!', icon: 'success' });
+          // ****************************************************************************************************** //
+             // Commenting out the below toast line as the requirement by UX is not to show the toast success message!
+          // ****************************************************************************************************** //
+          // Toast.show({text:'You have joined channel successfully!', icon: 'success' });
         } else {
             Toast.show({text:'Could not join channel!', icon: 'error' });
         }

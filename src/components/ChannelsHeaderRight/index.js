@@ -144,7 +144,10 @@ class ChannelsHeaderRight extends PureComponent {
 
   onLeaveChannel(response) {
     if (response && response.success) {
-      Toast.show({ text: 'Channel left successfully!', icon: 'success' });
+      // ******************************************************************************************************* //
+         // Commenting out the below toast line as the requirement by UX is not to show the toast success message! //
+      // ******************************************************************************************************* //
+      // Toast.show({ text: 'Channel left successfully!', icon: 'success' }); //
     } else {
       Toast.show({ text:ostErrors.getUIErrorMessage("leave_channel_failure") , icon: 'error' });
     }
