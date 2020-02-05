@@ -123,12 +123,15 @@ class ChannelsScreen extends PureComponent {
         fetchChannel(this.channelId, this.onChannelFetch);
     }
 
-    onChannelFetch = ( res ) => {
+    onChannelFetch = ( res={} ) => {
         if(Utilities.isEntityDeleted(res)){
           this.setState({isDeleted: true});
           return;
         }
-        this.props.navigation.setParams({ headerTitle: ReduxGetters.getChannelName(this.channelId) });
+        const resultType = deepGet(res,  DataContract.common.resultType),
+              videoName = deepGet(res , `data.${resultType}.name` )
+              ;   
+        this.props.navigation.setParams({ headerTitle:videoName });
     };
 
     render(){
