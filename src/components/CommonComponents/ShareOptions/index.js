@@ -11,7 +11,8 @@ import PepoApi from '../../../services/PepoApi';
 import inlineStyles from './styles';
 import ReduxGetters from '../../../services/ReduxGetters';
 import Colors from '../../../theme/styles/Colors';
-
+import Toast from '../../../theme/components/NotificationToast';
+import { ostErrors } from '../../../services/OstErrors';
 const QRCODE_SIZE  = 130;
 
 class ShareOptions extends React.PureComponent {
@@ -56,8 +57,8 @@ class ShareOptions extends React.PureComponent {
                 },
                 displayConfig : {
                     text : 'Scan the QR code to Share',
-                    backgroundColor:Colors.valhalla,
-                    color:Colors.wildWatermelon2,
+                    backgroundColor:Colors.wildWatermelon2,
+                    color:Colors.white,
                     size:QRCODE_SIZE
                   }
             }
@@ -108,7 +109,7 @@ class ShareOptions extends React.PureComponent {
             }
           })
           .catch((error) =>{
-            console.log("**** error in share via qrcode ****" );
+            Toast.show({ text: ostErrors.getUIErrorMessage("share_via_qrcode_failure"), icon: 'error' });
         });
       }
     
@@ -122,16 +123,16 @@ class ShareOptions extends React.PureComponent {
               let options = {
                 url : this.qrCodeGeneratorUrl+'&at=pay',
                 text : 'Scan the QR code to Pay',
-                backgroundColor:Colors.wildWatermelon2,
-                color:Colors.valhalla,
+                backgroundColor:Colors.valhalla,
+                color:Colors.white,
                 size: QRCODE_SIZE
               }
               this.showQrCodeScreen(options);
             }
           })
           .catch((error) =>{
-          console.log("**** error in pay via qrcode ****" );
-        });
+            Toast.show({ text: ostErrors.getUIErrorMessage("pay_user_via_qrcode_failure"), icon: 'error' });
+          });
       }
     
     

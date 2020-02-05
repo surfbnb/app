@@ -12,6 +12,7 @@ import PepoApi from '../../services/PepoApi';
 import reduxGetters from '../../services/ReduxGetters';
 import ShareOptions from '../CommonComponents/ShareOptions';
 import { fetchChannel } from '../../helpers/helpers';
+import {ostErrors} from '../../services/OstErrors';
 
 
 class ChannelsHeaderRight extends PureComponent {
@@ -84,7 +85,7 @@ class ChannelsHeaderRight extends PureComponent {
     if (response && response.success) {
       Toast.show({ text: 'Channel muted successfully!', icon: 'success' });
     } else {
-      Toast.show({ text: `Channel mute failed.`, icon: 'error' });
+      Toast.show({ text: ostErrors.getUIErrorMessage("channel_mute_failure"), icon: 'error' });
     }
   }
 
@@ -103,7 +104,7 @@ class ChannelsHeaderRight extends PureComponent {
     if (response && response.success) {
       Toast.show({ text: 'Channel unmuted successfully!', icon: 'success' });
     } else {
-      Toast.show({ text: `Channel unmute failed.`, icon: 'error' });
+      Toast.show({ text: ostErrors.getUIErrorMessage("channel_unmute_failure"), icon: 'error' });
     }
   }
 
@@ -126,7 +127,7 @@ class ChannelsHeaderRight extends PureComponent {
     if (response && response.success) {
       Toast.show({ text: 'Channel reported successfully!', icon: 'success' });
     } else {
-      Toast.show({ text: `Channel report failed.`, icon: 'error' });
+      Toast.show({ text: ostErrors.getUIErrorMessage("report_channel_failure"), icon: 'error' });
     }
   }
 
@@ -145,7 +146,7 @@ class ChannelsHeaderRight extends PureComponent {
     if (response && response.success) {
       Toast.show({ text: 'Channel left successfully!', icon: 'success' });
     } else {
-      Toast.show({ text: `Channel leave failed`, icon: 'error' });
+      Toast.show({ text:ostErrors.getUIErrorMessage("leave_channel_failure") , icon: 'error' });
     }
   }
 
