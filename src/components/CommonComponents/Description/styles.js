@@ -1,5 +1,6 @@
 import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
 import Colors from "../../../theme/styles/Colors";
+import {fontFamWeight} from "../../../theme/constants";
 
 let stylesMap = {
   mainWrapper : {
@@ -15,8 +16,8 @@ let stylesMap = {
     color: Colors.valhalla
   },
   more: {
-    fontFamily: 'AvenirNext-DemiBold',
-    color: Colors.valhalla
+    color: Colors.valhalla,
+    ...fontFamWeight
   }
 };
 

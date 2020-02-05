@@ -170,12 +170,11 @@ class UserInfo extends React.PureComponent {
               return (
                 <Text key={formattedHashTag}>
                   {prevText}
-                  <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
+                  <Text style={inlineStyle.hashTagTxt}
                         numberOfLines={1}
                         onPress={() => {
                           this.onTagPressed(formattedHashTag)
                         }}>
-                    {/*<Text style={{fontStyle: 'italic'}}>#</Text>*/}
                     {hashTag}
                   </Text>
                 </Text>
@@ -220,7 +219,6 @@ class UserInfo extends React.PureComponent {
           </View>
         )}
 
-        {/*</View>*/}
         {this.props.videoInReviewHeader || <View style={{height:15}} />}
       </View>
     );

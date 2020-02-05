@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Text} from 'react-native';
+import styles from './styles';
 
 import Utilities from '../../../services/Utilities';
 import CurrentUser from '../../../models/CurrentUser';
@@ -31,16 +32,15 @@ class TextFormatter extends PureComponent{
         const tagText = item.replace("#", "");
         return (
             <Text key={`${tagText}-${index}`}>
-            {prevText}
-            <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
+              {prevText}
+              <Text style={styles.iosDroidFamWeight}
                     numberOfLines={1}
                     suppressHighlighting={true}
                     onPress={() => {
-                    this.onIncludesPressed(formattedItem)
+                      this.onIncludesPressed(formattedItem)
                     }}>
-                {/*<Text style={{fontStyle: 'italic'}}>#</Text>*/}
                 {item}
-            </Text>
+              </Text>
             </Text>
         );
     }
@@ -49,16 +49,15 @@ class TextFormatter extends PureComponent{
         const mentionText = item.replace("@", "");
         return (
             <Text key={`${mentionText}-${index}`}>
-            {prevText}
-            <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
+              {prevText}
+              <Text style={styles.iosDroidFamWeight}
                     numberOfLines={1}
                     suppressHighlighting={true}
                     onPress={() => {
-                    this.onIncludesPressed(formattedItem)
+                      this.onIncludesPressed(formattedItem)
                     }}>
-                {/*<Text style={{fontStyle: 'italic'}}>@</Text>*/}
                 {item}
-            </Text>
+              </Text>
             </Text>
         );
     }
@@ -66,16 +65,15 @@ class TextFormatter extends PureComponent{
     getLinkMarkup( item , formattedItem, prevText, index ){
         return (
             <Text key={`${item}-${index}`}>
-            {prevText}
-            <Text style={[{fontFamily: 'AvenirNext-DemiBold'}]}
+              {prevText}
+              <Text style={styles.iosDroidFamWeight}
                     numberOfLines={1}
                     suppressHighlighting={true}
                     onPress={() => {
-                    this.onIncludesPressed(formattedItem)
+                      this.onIncludesPressed(formattedItem)
                     }}>
-                {/*<Text style={{fontStyle: 'italic'}}>@</Text>*/}
                 {item}
-            </Text>
+              </Text>
             </Text>
         );
     }

@@ -1,6 +1,7 @@
 import DefaultStyleGenerator from '../../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../../theme/styles/Colors';
 import { Dimensions } from 'react-native';
+import {fontFamWeight} from "../../../theme/constants";
 
 let stylesMap = {
   infoHeaderWrapper: {
@@ -46,11 +47,8 @@ let stylesMap = {
     width: Dimensions.get('window').width - 30
   },
   numericInnerWrapper:{
-    // borderLeftWidth: 1,
-    // borderColor: '#ff5566',
     alignItems: 'center',
     justifyContent: 'center',
-    // paddingHorizontal: 15,
     color: Colors.valhalla,
     flex: 1
   },
@@ -61,6 +59,10 @@ let stylesMap = {
     fontSize: 14,
     color: Colors.valhalla,
     fontFamily: 'AvenirNext-Regular'
+  },
+  hashTagTxt: {
+    color: Colors.valhalla,
+    ...fontFamWeight
   }
 };
 
