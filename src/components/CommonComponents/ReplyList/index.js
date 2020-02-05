@@ -75,6 +75,9 @@ class ReplyList extends PureComponent{
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
             const offset =  this.getCurrentIndex() > 0 ? rowHeight * this.getCurrentIndex() :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
+        });
+
+        this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
             this.isActiveScreen = true ;
         });
 
@@ -97,6 +100,7 @@ class ReplyList extends PureComponent{
         this.paginationEvent.removeListener('onNext');
         this.paginationEvent.removeListener('onNextError');
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didFocusSubscription &&  this.didFocusSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 

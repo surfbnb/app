@@ -60,8 +60,6 @@ class HomeScreen extends Component {
         this.refresh(true, 0);
       }
     });
-    this.showCoachScreen();
-    navigateTo.navigationDecision();
     CurrentUser.getEvent().on("onUserLogout" , ()=> {
       this.onLogout();
     });
@@ -76,13 +74,16 @@ class HomeScreen extends Component {
       LoadingModal.hide();
     });
 
-    this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
+    this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
         this.isActiveScreen = true ;
     });
 
     this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
       this.isActiveScreen =  false ;
     });
+
+    this.showCoachScreen();
+    navigateTo.navigationDecision();
   };
 
 
@@ -145,7 +146,7 @@ class HomeScreen extends Component {
     CurrentUser.getEvent().removeListener("onUserLogoutFailed");
     CurrentUser.getEvent().removeListener("onUserLogoutComplete");
     clearTimeout(this.loginPopupTimeOut);
-    this.willFocusSubscription && this.willFocusSubscription.remove();
+    this.didFocusSubscription && this.didFocusSubscription.remove();
     this.willBlurSubscription && this.willBlurSubscription.remove();
   };
 
