@@ -46,7 +46,7 @@ let stylesMap = {
   },
 
   bottomViewLeft: {
-    flex: 3,
+    flex: 2,
     flexDirection: 'row'
   },
 
@@ -78,11 +78,9 @@ let stylesMap = {
   },
 
   joinView: {
-    backgroundColor: Colors.white,
-    // opacity: 0.8,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 5,
-    paddingVertical: 5,
-    // maxWidth: 90,
+    paddingVertical: 4,
     alignItems: 'center',
     paddingHorizontal: 8,
     flexDirection: 'row'
@@ -97,7 +95,7 @@ let stylesMap = {
 
   joinText: {
     color: Colors.valhalla,
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'AvenirNext-DemiBold',
     marginLeft:4
   },

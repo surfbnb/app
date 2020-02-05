@@ -144,12 +144,14 @@ class TagsInput extends PureComponent {
         return;
       }
       let results = res.data[resultTypeTags];
-      this.setState({ mentionsData:[], hashTagsData: results});
-      if ( results && results.length ) {
-        this.triggerOnSuggestionsPanelOpen();  
-      } else {
-        this.triggerOnSuggestionsPanelClose();
-      }
+      this.setState({ mentionsData:[], hashTagsData: results}, ()=> {
+        if ( results && results.length ) {
+          this.triggerOnSuggestionsPanelOpen();
+          this.hashTagListRef.scrollToOffset({offset: 0});
+        } else {
+          this.triggerOnSuggestionsPanelClose();
+        }
+      }); 
     }
   }
 
@@ -161,13 +163,14 @@ class TagsInput extends PureComponent {
         return;
       }
       let results = res.data[resultTypeMentions];
-      this.setState({hashTagsData:[], mentionsData: results});
-      this.triggerOnSuggestionsPanelOpen();
-      if ( results && results.length ) {
-        this.triggerOnSuggestionsPanelOpen();  
-      } else {
-        this.triggerOnSuggestionsPanelClose();
-      }
+      this.setState({hashTagsData:[], mentionsData: results}, ()=> {
+        if ( results && results.length ) {
+          this.triggerOnSuggestionsPanelOpen(); 
+          this.mentionListRef.scrollToOffset({offset: 0}); 
+        } else {
+          this.triggerOnSuggestionsPanelClose();
+        }
+      });  
     }
   }
 
@@ -307,6 +310,7 @@ class TagsInput extends PureComponent {
           } , this.props.dropdownStyle ]}>
               {this.isHastagData() ?
               <FlatList
+                ref={(ref) => this.hashTagListRef = ref}
                 keyboardDismissMode={"on-drag"}
                 keyboardShouldPersistTaps={'always'}
                 bounces={false}
@@ -317,14 +321,15 @@ class TagsInput extends PureComponent {
                 renderItem={this._renderHashTagItem}
               /> : this.isMentionsData() && (
                   <FlatList
-                keyboardDismissMode={"on-drag"}
-                keyboardShouldPersistTaps={'always'}
-                bounces={false}
-                horizontal={this.props.horizontal}
-                enableEmptySections={true}
-                data={this.state.mentionsData}
-                keyExtractor={this._keyExtractor}
-                renderItem={this._renderMentionsItem}
+                  ref={(ref) => this.mentionListRef = ref}
+                  keyboardDismissMode={"on-drag"}
+                  keyboardShouldPersistTaps={'always'}
+                  bounces={false}
+                  horizontal={this.props.horizontal}
+                  enableEmptySections={true}
+                  data={this.state.mentionsData}
+                  keyExtractor={this._keyExtractor}
+                  renderItem={this._renderMentionsItem}
               />
               )
             }

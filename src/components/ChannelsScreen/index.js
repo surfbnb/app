@@ -61,6 +61,7 @@ class ChannelsScreen extends PureComponent {
     }
 
     onTagClicked = (item) => {
+      this.selectedTag = item;
       this.selectedTagId = deepGet(item ,  "id" , 0);
       this.applyVideoListTagFilter();
     }
@@ -95,7 +96,7 @@ class ChannelsScreen extends PureComponent {
             <View style={{flex: 1}}>
                 <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}} channelId={this.channelId}/>
                 <Description channelId={this.channelId}/>
-                <ChannelTagsList onTagClicked = {this.onTagClicked} channelId={this.channelId}/>
+                <ChannelTagsList onTagClicked = {this.onTagClicked} channelId={this.channelId} selectedTag={this.selectedTag}/>
             </View>
         )
     }
@@ -116,7 +117,7 @@ class ChannelsScreen extends PureComponent {
 
     getNoResultsCell = (item) => {
         return <EmptySearchResult noResultsData={item}>
-                    <View><Text style={erroMsgStyle.msgStyle}>Please try again later.</Text></View>
+                    <Text style={erroMsgStyle.msgStyle}>Please try again later.</Text>
                </EmptySearchResult>
     }
 
@@ -141,11 +142,11 @@ class ChannelsScreen extends PureComponent {
                 <NavigationEvents onDidFocus={this.onDidFocus} />
                 <VideoCollections getFetchUrl={this.getFetchUrl}
                     getFetchParams={this.getFetchParams}
-                    listHeaderComponent={this.listHeaderComponent()}
+                    listHeaderComponent={this.listHeaderComponent}
                     onRef={this.setVideoListRef}
                     beforeRefresh={this.fetchChannel}
                     getNoResultsCell={this.getNoResultsCell}
-                    noResultsData={this.getNoResultData()}
+                    getNoResultData={this.getNoResultData}
                     entityId={this.channelId}
                     entityType={DataContract.knownEntityTypes.channel}
                 />

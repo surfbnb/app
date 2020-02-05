@@ -200,7 +200,7 @@ class ChannelsHeaderRight extends PureComponent {
           onPress={() => {
             this.showMoreOptions();
           }}>
-          <Image style={inlineStyles.moreOptionsSkipFont} source={MoreOptionsIcon}/>
+          <Image style={inlineStyles.moreOptionsSkipFont} source={MoreOptionsIcon} resizeMode={'contain'}/>
         </TouchableOpacity>
       </React.Fragment>
     );

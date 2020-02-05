@@ -12,7 +12,6 @@ import appConfig from '../../constants/AppConfig';
 import reduxGetter from '../../services/ReduxGetters';
 import styles from './styles';
 import {Text, View, Modal, Platform, Linking, TouchableOpacity} from 'react-native';
-import { Button } from 'native-base';
 import utilities from '../../services/Utilities';
 import {PushNotificationMethods} from '../../services/PushNotificationManager'
 import AndroidOpenSettings from "react-native-android-open-settings";

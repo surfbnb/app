@@ -120,14 +120,16 @@ class VideoTags extends PureComponent {
         };
     };
 
+    getNoResultData = () => this.noResultsData;
+
     render() {
         if(this.getTagId()){
             return <VideoCollections
                     onRef={(elem) => this.videoCollections = elem}
-                    listHeaderComponent={this._headerComponent()}
+                    listHeaderComponent={this._headerComponent}
                     beforeRefresh={this.beforeRefresh}
                     getFetchUrl={this.getFetchUrl}
-                    noResultsData={this.noResultsData}
+                    getNoResultData={this.getNoResultData}
                     getNoResultsCell={this.renderNoResults}
                     entityId={this.getTagId()}
                     entityType={DataContract.knownEntityTypes.tag}

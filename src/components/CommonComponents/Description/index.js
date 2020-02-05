@@ -68,7 +68,7 @@ class Description extends React.PureComponent{
               {this.isTextOverflow() || this.state.expanded ? <Text onPress={this.showMore} style={inlineStyles.more}>{moreOrLess}</Text> :
                 <React.Fragment/> }
             </Text>
-          </View> : <React.Fragment/>)
+          </View> : null )
         )
     }
     

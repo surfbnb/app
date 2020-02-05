@@ -59,8 +59,13 @@ class NotificationItem extends Component {
   }
 
   includesTextNavigate = (includesObject) => {
-    if (includesObject.kind === 'users') {
-      navigateTo.goToProfilePage(includesObject.id, this.props.navigation);
+    let kind = includesObject.kind;
+    switch(kind) {
+      case 'users': navigateTo.goToProfilePage(includesObject.id, this.props.navigation);
+                    break;
+      case 'channels': this.props.navigation.push('ChannelsScreen', {channelId: this.props.payload.channel_id} );
+                       break;
+      default: break;
     }
   };
 

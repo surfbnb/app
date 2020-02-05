@@ -23,7 +23,7 @@ let stylesMap = {
     width: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight:13
+    marginRight: 13
   }
 };
 

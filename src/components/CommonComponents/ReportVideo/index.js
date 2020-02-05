@@ -32,8 +32,7 @@ class ReportVideo extends PureComponent {
       currentUserVideoConfig: {
         actionSheetConfig: {
           options: [`Video Id: ${this.props.entityId}`, 'Cancel'],
-          cancelButtonIndex: 1,  //Cancel button index in options array
-          destructiveButtonIndex: 1//Red button index in options array
+          cancelButtonIndex: 1  //Cancel button index in options array
         }
       },
       loginVideoConfig: {
@@ -111,7 +110,7 @@ class ReportVideo extends PureComponent {
   }
   
   isCurrentUser = () => {
-    return this.props.userId === this.props.currentUserId;
+    return this.props.userId == this.props.currentUserId;
   };
   
 

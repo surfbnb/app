@@ -205,9 +205,11 @@ class ChannelsList extends PureComponent {
 
   render(){
     return(
-      <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1 }}>
+      <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1}}>
         <FlatList
-          style={{marginTop: 10}}
+          // style={{marginTop: 10}}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: 20, paddingTop: 10}}
           ref={this.setFlatListRef}
           data={this.state.list}
           onEndReached={this.getNext}
