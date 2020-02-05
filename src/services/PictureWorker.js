@@ -156,13 +156,14 @@ class PictureWorker extends PureComponent {
       })
     );
 
-    let uploadToS3 = new UploadToS3(this.props.profile_picture.cleaned_cropped_image, 'image');
+    let uploadToS3 = new UploadToS3([this.props.profile_picture.cleaned_cropped_image], 'image');
     uploadToS3
       .perform()
       .then((s3ProfileImage) => {
+        s3ProfileImage.length === 1 &&
         Store.dispatch(
           upsertProfilePicture({
-            s3_cropped_image: s3ProfileImage
+            s3_cropped_image: s3ProfileImage[0]
           })
         );
       })
