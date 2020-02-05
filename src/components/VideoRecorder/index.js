@@ -9,6 +9,7 @@ import {
   AppState, FlatList, Dimensions,
   ScrollView, Animated
 } from 'react-native';
+import {PanGestureHandler} from 'react-native-gesture-handler';
 import { RNCamera } from 'react-native-camera';
 import captureIcon from '../../assets/capture_icon.png';
 import stopIcon from '../../assets/stop_icon.png';
@@ -576,7 +577,7 @@ class VideoRecorder extends Component {
       base64: true,
       maxDuration: 30,
       muted: false,
-      orientation: 'portrait'
+      orientation: this.state.cameraFrontMode ?  'portrait' : 'portraitUpsideDown' ,
     };
     this.initProgressBar();
     let data;

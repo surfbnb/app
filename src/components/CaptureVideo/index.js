@@ -12,6 +12,7 @@ import FanVideoDetails from '../FanVideoDetails';
 import KeepAwake from 'react-native-keep-awake';
 import reduxGetters from "../../services/ReduxGetters";
 import NavigationService from '../../services/NavigationService';
+import FfmpegProcesser from "../../services/FfmpegProcesser";
 
 class CaptureVideo extends Component {
   static navigationOptions = {
@@ -90,7 +91,8 @@ class CaptureVideo extends Component {
     this.setState ({
       recordingScreen: false,
       videoUrlsList: recordedVideoObj.raw_video_list,
-      totalVideoLength: recordedVideoObj.video_length
+      totalVideoLength: recordedVideoObj.video_length,
+      previewURL: recordedVideoObj.previewURL
     });
   };
 
@@ -172,12 +174,21 @@ class CaptureVideo extends Component {
   };
 
   goToPreviewScreen = (videoUrlsList, totalVideoLength) => {
-    // let videoList = videoUrlsList.map((ele=>(ele.uri)));
-    this.setState({
-      recordingScreen: false,
-      videoUrlsList,
-      totalVideoLength
-    });
+
+    FfmpegProcesser.init(videoUrlsList.map((obj) =>obj.uri));
+    FfmpegProcesser.localConcat()
+      .then((previewURL) => {
+        console.log('localConcat: then', previewURL);
+        this.setState({
+          recordingScreen: false,
+          videoUrlsList,
+          totalVideoLength,
+          previewURL
+        });
+      }).catch(()=>{
+      this.goToDetailsScreen();
+
+    }) ;
   };
 
 
@@ -216,6 +227,7 @@ class CaptureVideo extends Component {
           saveVideoPrimaryInfo={this.saveVideoPrimaryInfo}
           videoUrlsList={this.state.videoUrlsList}
           totalVideoLength={this.state.totalVideoLength}
+          previewURL={this.state.previewURL}
           navigation={this.props.navigation}
         />
       );

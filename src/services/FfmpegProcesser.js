@@ -1,5 +1,6 @@
 import { RNFFmpeg } from 'react-native-ffmpeg';
 import AppConfig from '../constants/AppConfig';
+import RNFS from 'react-native-fs';
 
 class FfmpegProcesser {
   constructor() {}
@@ -36,6 +37,114 @@ class FfmpegProcesser {
       }
     });
   }
+
+  getTextPath = () => {
+    let inputUriArr = this.inputFiles[0].split('/');
+    let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
+
+    outputPath.push(`test.txt`);
+    this.testPath = outputPath.join('/');
+    return this.testPath;
+  };
+
+
+
+  localConcat = () => {
+    return new Promise(async (resolve, reject) => {
+      RNFFmpeg.cancel();
+      var path = this.getTextPath();
+      let fileText = '';
+      console.log('localConcat::::', path);
+      for (let index in this.inputFiles){
+        fileText += `file '${this.inputFiles[index]}'\n`
+      }
+      console.log('fileTextfileText::::', fileText);
+      RNFS.writeFile(path, fileText, 'utf8')
+        .then(async (success) => {
+          console.log('FILE WRITTEN!');
+          let executeString = this.getLocalConcatCommand(path);
+          let compressStartedAt = Date.now();
+          console.log('localConcat: started at:', compressStartedAt);
+          let executeResponse = await RNFFmpeg.execute(executeString);
+          if (executeResponse.rc === 0) {
+            // rc = 0, means successful compression
+            let compressFinishedAt = Date.now();
+            console.log ('localConcat: localConcat finished successfully at:', compressFinishedAt);
+            console.log ('localConcat: Time for localConcat (In ms)', compressFinishedAt - compressStartedAt);
+            return resolve(this.localFilePath);
+          } else if (executeResponse.rc == 255) {
+            // Forcefully cancelled
+            reject('Forcefully cancelled');
+          } else {
+            // compression is failed
+            console.log('localConcat is failed', executeResponse.rc);
+            // return resolve(this.inputFiles[0]);
+            return reject('localConcat has failed');
+            // return resolve(this.inputFileUri);
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    });
+  };
+
+  getLocalConcatCommand = (path) => {
+    return `-f concat -safe 0 -i ${path} -codec copy ${this.getLocalFilePath()}`;
+
+    let command = '';
+    let complexFilter = '';
+    for (let index in this.inputFiles){
+      command +=  `-i ${this.inputFiles[index]} `;
+      complexFilter += `[${index}:v][${index}:a]`
+    }
+    command += `-filter_complex ${complexFilter}concat=n=${this.inputFiles.length}:v=1:a=1[v][a] -map [v] -map [a] ${this.getLocalFilePath()}`;
+    return command;
+  };
+
+
+  // getLocalConcatCommand = () => {
+  //   let command = '';
+  //   let intermediateFiles = [];
+  //   for (let index in this.inputFiles){
+  //     command +=  ` -i ${this.inputFiles[index]} -c copy -bsf:v h264_mp4toannexb -f mpegts ${this.getIntermediateFile(index)};`;
+  //     intermediateFiles.push(this.getIntermediateFile(index));
+  //   }
+  //   command += ` -i concat:${intermediateFiles.join('|')} -c copy -bsf:a aac_adtstoasc ${this.getLocalFilePath()}`;
+  //   console.log(command, 'commandcommandcommandcommandcommands');
+  //   return command.trim();
+  // };
+
+  getIntermediateFile = (index) => {
+    let inputUriArr = this.inputFiles[0].split('/');
+    let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
+
+    outputPath.push(`intermediate${index}.ts`);
+    return outputPath.join('/');
+  };
+
+
+  // getLocalConcatCommand = () => {
+  //   let command = '-f concat -safe 0';
+  //   let intermediateFiles = [];
+  //   for (let index in this.inputFiles){
+  //     // command +=  ` -i ${this.inputFiles[index]} -c copy -bsf:v h264_mp4toannexb -f mpegts intermediate${index}.ts;`;
+  //     intermediateFiles.push(this.inputFiles[index]);
+  //     command += ` -i ${this.inputFiles[index]}`
+  //   }
+  //   command += ` -codec copy ${this.getLocalFilePath()}`;
+  //   console.log(command, 'commandcommandcommandcommandcommandhhh');
+  //   return command.trim();
+  // }
+
+  getLocalFilePath = () => {
+    let inputUriArr = this.inputFiles[0].split('/');
+    let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
+
+    outputPath.push(`output_local_${Date.now()}.mp4`);
+    this.localFilePath = outputPath.join('/');
+    return this.localFilePath;
+  };
 
   getCompressCommand(){
     let command = '';
