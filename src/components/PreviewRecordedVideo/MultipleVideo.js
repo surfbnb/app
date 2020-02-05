@@ -1,11 +1,13 @@
 import { withNavigation } from 'react-navigation';
 import Base from "./Base";
+import Utilities from '../../services/Utilities';
 
 class MultipleVideo extends Base {
 
     constructor(props){
         super(props);
         this.totalVideos = this.props.videoUrlsList.length || 0;
+        this.updateProgressIgnoreOnce = false;
     }
 
     handleProgress = (progress) => {
@@ -13,8 +15,10 @@ class MultipleVideo extends Base {
         this.currentVideoTime = progress.currentTime;
         let totalProgress = ( this.getPrevVideoDuration() / 1000) + this.currentVideoTime ,
             val  = totalProgress / ( this.props.totalDuration / 1000);
-        console.log('************',progress);
-        if(isNaN(val)) return;
+        if(isNaN(val) || this.updateProgressIgnoreOnce ) {
+            this.updateProgressIgnoreOnce = false;
+            return ;
+        };
         this.updateProgress(val);
     };
 
@@ -31,6 +35,9 @@ class MultipleVideo extends Base {
         }
         this.seekCount = 0;
         this.currentVideoTime = 0;
+        if(Utilities.isIos()){
+            this.updateProgressIgnoreOnce = true;
+        } 
         this.setState({activeIndex: nextVideoIndex});
     };
 
