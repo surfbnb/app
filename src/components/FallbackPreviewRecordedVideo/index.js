@@ -13,7 +13,6 @@ import { withNavigation } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import AppConfig from '../../constants/AppConfig';
-import FfmpegProcesser from "../../services/FfmpegProcesser";
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Discard', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
@@ -119,7 +118,6 @@ class PreviewRecordedVideo extends PureComponent {
     this.updateProgress(totalProgress / (this.totalVideoLength / 1000));
   };
 
-
   cancleVideoHandling() {
     ActionSheet.show(
       {
@@ -150,9 +148,6 @@ class PreviewRecordedVideo extends PureComponent {
       }
     );
   }
-
-
-
 
   setProgressBarRef = (ref) => {
     this._progressRef = ref;
