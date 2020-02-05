@@ -108,7 +108,8 @@ let stylesMap = {
   },
 
   bottomWrapper: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 20
     // width: Dimensions.get('window').width
   },
 

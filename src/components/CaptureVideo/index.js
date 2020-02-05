@@ -11,7 +11,6 @@ import deepGet from 'lodash/get';
 import FanVideoDetails from '../FanVideoDetails';
 import KeepAwake from 'react-native-keep-awake';
 import reduxGetters from "../../services/ReduxGetters";
-import NavigationService from '../../services/NavigationService';
 import FfmpegProcesser from "../../services/FfmpegProcesser";
 
 class CaptureVideo extends Component {
@@ -169,11 +168,19 @@ class CaptureVideo extends Component {
 
   goToPreviewScreen = (videoUrlsList, totalDuration) => {
     console.log(totalDuration, 'totalDurationtotalDuration');
-    if(utilities.isAndroid() || videoUrlsList.length === 1){
+    if( videoUrlsList.length === 1){
       this.setState({
         recordingScreen: false,
         videoUrlsList,
-        totalDuration
+        totalDuration,
+        previewURL: videoUrlsList[0]
+      });
+      return;
+    } else if(utilities.isAndroid()) {
+      this.setState({
+        recordingScreen: false,
+        videoUrlsList,
+        totalDuration,
       });
       return;
     }

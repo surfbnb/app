@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   BackHandler,
   AppState, FlatList, Dimensions,
-  ScrollView, Animated
+  ScrollView, Animated, Alert
 } from 'react-native';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import { RNCamera } from 'react-native-camera';
@@ -381,13 +381,13 @@ class VideoRecorder extends Component {
           </TouchableOpacity>
           <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
           <View>
-            {this.showTooltip()}
+            {/*{this.showTooltip()}*/}
             <View style={styles.bottomWrapper }>
               {this.flipButton()}
               {this.getActionButton()}
               {this.previewButton()}
             </View>
-            {this.renderModeRow()}
+            {/*{this.renderModeRow()}*/}
           </View>
           </View>
         </React.Fragment>
@@ -436,23 +436,32 @@ class VideoRecorder extends Component {
   };
 
   onBackPress = () => {
-    this.goToLastProgress();
+    Alert.alert(
+      '',
+      'You really want to delete last video segment?',
+      [
+        {text: 'Confirm', onPress:  this.deleteLastSegment },
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        }
+
+      ],
+      {cancelable: true},
+    );
+  };
+
+  deleteLastSegment = () => {
     this.videoUrlsList.pop();
     this.separationBars.pop();
+    this.goToLastProgress();
   };
 
   goToLastProgress = () => {
-    let lastElementIndex = this.videoUrlsList.length - 2;
-    let lastSegment = this.videoUrlsList[lastElementIndex] || {};
-    this.setState({progress: lastSegment.progress || 0 });
-  };
-
-  goToBackProgress = () => {
     let lastElementIndex = this.videoUrlsList.length - 1;
     let lastSegment = this.videoUrlsList[lastElementIndex] || {};
     this.setState({progress: lastSegment.progress || 0 });
-  }
-
+  };
 
   previewButton = () => {
     if (this.state.isRecording || this.videoUrlsList.length === 0) {
@@ -491,6 +500,7 @@ class VideoRecorder extends Component {
 
   stopRecording = () => {
     this.intervalManager(false);  // for clearInterval
+    this.setState({isRecording:false});
     this.camera && this.camera.stopRecording();
   };
 
@@ -517,48 +527,53 @@ class VideoRecorder extends Component {
   };
 
   handlePressIn = () => {
+    console.log("************handlePressIn");
+    return;
     this.pressInTime = Date.now();
     this.timeout = setTimeout(this.recordVideoAsync, 300);
   };
 
   handlePressOut = () => {
-    let currentTime = Date.now();
-    if ((currentTime - this.pressInTime) < 300){
-      clearTimeout(this.timeout);
-      console.log(currentTime - this.pressInTime, 'currentTime - this.pressInTime) ::::::');
-      this.pressInTime = 0;
-      return;
+    if (this.state.currentMode == 'NORMAL'){
+      this.state.isRecording && this.stopRecording();
+      this.setState({currentMode: ''});
     }
-    this.pressInTime = 0;
-    if(this.state.isRecording){
-      this.stopRecording()
+  };
+
+  onLongPress = () => {
+    this.setState({currentMode: 'NORMAL'});
+    this.recordVideoAsync();
+    console.log("************handleLongPress");
+  }
+
+  handleOnPress = () => {
+    if (this.state.isRecording){
+      this.setState({currentMode: ''});
+      this.stopRecording();
+    } else {
+      this.setState({currentMode: 'HANDS_FREE'});
+      this.recordVideoAsync();
     }
 
-  }
+   console.log("************handleOnPress");
+  };
+
+  getSource = () => {
+    if (this.state.isRecording){
+      return this.state.currentMode === 'HANDS_FREE' ? stopIcon : captureIcon;
+    } else {
+      return captureIcon;
+    }
+  };
 
   getActionButton() {
     let onPressCallback, source;
-    if (this.state.currentMode === 'NORMAL') {
-      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity onPressIn={this.handlePressIn} onPressOut={this.handlePressOut}>
-          <Image style={styles.captureButtonSkipFont} source={captureIcon}/>
-        </TouchableOpacity>
-      </View>
-    } else if (this.state.currentMode === 'HANDS_FREE') {
-      if (this.state.isRecording) {
-        onPressCallback = this.stopRecording;
-        source = stopIcon;
-      } else {
-        onPressCallback = this.recordVideoAsync;
-        source = captureIcon;
-      }
 
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity onPress={onPressCallback}>
-          <Image style={styles.captureButtonSkipFont} source={source}/>
+        <TouchableOpacity onPressIn={this.handlePressIn} onPressOut={this.handlePressOut} onPress={this.handleOnPress} onLongPress={this.onLongPress}>
+          <Image style={styles.captureButtonSkipFont} source={this.getSource()}/>
         </TouchableOpacity>
       </View>
-    }
   }
 
   flipButton() {
@@ -622,7 +637,7 @@ class VideoRecorder extends Component {
       }
     } catch {
       console.log('recordVideoAsync:::::catch');
-      this.goToBackProgress();
+      this.goToLastProgress();
       this.setState({ isRecording: false });
       return;
     }
