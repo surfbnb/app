@@ -1,5 +1,6 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
 import Colors from '../../theme/styles/Colors';
+import {fontFamWeight} from "../../theme/constants";
 
 let stylesMap = {
       cancel: {
@@ -19,8 +20,9 @@ let stylesMap = {
         shadowRadius: 3
       },
       headerText:{
-        fontWeight: '600',
+        color: Colors.valhalla,
         fontSize: 20,
+        ...fontFamWeight,
         letterSpacing: 0.3
       }
   }

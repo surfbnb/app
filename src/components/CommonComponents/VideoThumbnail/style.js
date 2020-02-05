@@ -5,7 +5,8 @@ let stylesMap = {
     videoStatsContainer: {
         flexDirection: 'row',
         textAlign: 'right',
-        flex: 1, 
+        flex: 1,
+        alignItems: 'center',
         justifyContent: 'flex-end'
     },
     videoStatsTxt: {
