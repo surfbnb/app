@@ -64,12 +64,15 @@ class UserVideoHistoryScreen extends PureComponent{
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
             const offset =  this.state.activeIndex > 0 ? rowHeight * this.state.activeIndex :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
+        });
+
+        this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
             this.isActiveScreen = true ;
         });
 
-      this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
-        this.isActiveScreen =  false ;
-      });
+        this.willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) => {
+            this.isActiveScreen =  false ;
+        });
     }
 
     componentWillUnmount(){
@@ -80,6 +83,7 @@ class UserVideoHistoryScreen extends PureComponent{
         this.paginationEvent.removeListener('onNext');
         this.paginationEvent.removeListener('onNextError');
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 

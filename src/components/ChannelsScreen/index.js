@@ -91,10 +91,14 @@ class ChannelsScreen extends PureComponent {
         });
     };
 
+    onVideoClick = () => {
+        this.videoListRef &&  this.videoListRef.scrollToIndex(0);
+    }
+
     listHeaderComponent = () => {
         return (
             <View style={{flex: 1}}>
-                <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}} channelId={this.channelId}/>
+                <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}} channelId={this.channelId} onVideoClick={this.onVideoClick}/>
                 <Description channelId={this.channelId}/>
                 <ChannelTagsList onTagClicked = {this.onTagClicked} channelId={this.channelId} selectedTag={this.selectedTag}/>
             </View>
@@ -125,12 +129,15 @@ class ChannelsScreen extends PureComponent {
         fetchChannel(this.channelId, this.onChannelFetch);
     }
 
-    onChannelFetch = ( res ) => {
+    onChannelFetch = ( res={} ) => {
         if(Utilities.isEntityDeleted(res)){
           this.setState({isDeleted: true});
           return;
         }
-        this.props.navigation.setParams({ headerTitle: ReduxGetters.getChannelName(this.channelId) });
+        const resultType = deepGet(res,  DataContract.common.resultType),
+              videoName = deepGet(res , `data.${resultType}.name` )
+              ;   
+        this.props.navigation.setParams({ headerTitle:videoName });
     };
 
     render(){

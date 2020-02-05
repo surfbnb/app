@@ -232,6 +232,12 @@ class VideoCollections extends PureComponent {
         console.log("======onScrollToIndexFailed=====" , info );
     }
 
+    scrollToIndex(index=0){
+        if(this.state.list && this.state.list.length > 0 ){
+            this.listRef.scrollToIndex({ index: 0 });
+        }
+    }
+
     render(){
         return (
           <SafeAreaView forceInset={{ top: 'never' }} style={CommonStyle.viewContainer}>

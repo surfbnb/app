@@ -47,11 +47,15 @@ let stylesMap = {
 
   bottomViewLeft: {
     flex: 2,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignSelf: 'flex-end'
   },
 
-  memberText: {
-    flex: 1,
+  textContainer: {
+    flex: 1
+  },
+
+  memberText: {    
     fontSize: 15,
     color: Colors.white,
     fontFamily: 'AvenirNext-DemiBold'

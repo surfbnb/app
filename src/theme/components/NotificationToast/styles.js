@@ -5,10 +5,10 @@ let stylesMap = {
   animatedToastView: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 30,
+    marginHorizontal: 20,
     marginVertical: 30,
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingVertical: 3,
     zIndex: 9999,
     position: 'absolute',
     top: 0,

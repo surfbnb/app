@@ -167,7 +167,7 @@ class NavigateTo {
   };
 
   goToProfilePage = (id, payload={}, goToObj) => {
-    if (id === CurrentUser.getUserId()) {
+    if (id == CurrentUser.getUserId()) {
       this.__navigate('ProfileScreen', payload);
     } else {
       payload = payload ;

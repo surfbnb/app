@@ -32,7 +32,7 @@ class VideoPlayer extends Component {
     }
 
     componentDidMount(){
-      this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
+      this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
         this.isActiveScreen = true ;
       });
 
@@ -43,7 +43,7 @@ class VideoPlayer extends Component {
 
     componentWillUnmount(){
       this.onRefetchVideo = () => {};
-      this.willFocusSubscription && this.willFocusSubscription.remove();
+      this.didFocusSubscription && this.didFocusSubscription.remove();
       this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 

@@ -36,7 +36,7 @@ class VideoReplyPlayer extends PureComponent {
     }
 
     componentDidMount(){
-      this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
+      this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
         this.isActiveScreen = true ;
       });
 
@@ -48,7 +48,7 @@ class VideoReplyPlayer extends PureComponent {
 
     componentWillUnmount(){
       this.onReplyFetch = () => {};
-      this.willFocusSubscription && this.willFocusSubscription.remove();
+      this.didFocusSubscription && this.didFocusSubscription.remove();
       this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 

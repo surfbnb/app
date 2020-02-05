@@ -139,7 +139,7 @@ export class NotificationToastComponent extends Component {
               {
                 color: Colors.black,
                 paddingLeft: this.state.config.imageUri || this.state.config.icon ? 45 : 0,
-                paddingRight: 15
+                paddingRight: 20
               }
             ]}
           >
