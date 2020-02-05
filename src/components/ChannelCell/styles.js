@@ -50,8 +50,11 @@ let stylesMap = {
     flexDirection: 'row'
   },
 
-  memberText: {
-    flex: 1,
+  textContainer: {
+    flex: 1
+  },
+
+  memberText: {    
     fontSize: 15,
     color: Colors.white,
     fontFamily: 'AvenirNext-DemiBold'

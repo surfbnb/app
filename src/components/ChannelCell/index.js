@@ -73,6 +73,13 @@ class ChannelCell extends PureComponent {
     this.props.navigation.push("MembersScreen", {channelId:this.props.channelId} )
   }
 
+  onVideoClick =() => {
+    if(this.props.onVideoClick){
+     this.props.onVideoClick();
+     return false;
+    }
+    this.props.navigation.push("ChannelsScreen", {channelId:this.props.channelId} );
+  }
 
   render() {
     return <View style={[styles.channelCellWrapper, this.props.wrapperStyles]}>
@@ -84,18 +91,20 @@ class ChannelCell extends PureComponent {
                 </View>
                 <View style={styles.bottomView}>
                   <View style={styles.bottomViewLeft}>
-                    <TouchableOpacity onPress={this.onMemberPress} style={styles.memberText}>
+                    <TouchableOpacity onPress={this.onMemberPress} style={styles.textContainer}>
                       <Text style={styles.memberText}>{`${this.props.channelUserCount} `}
                         <Text style={styles.fontRegular}>
                           Member{this.props.channelUserCount > 1 ? 's': null}
                         </Text>
                       </Text>
                     </TouchableOpacity>
-                    <Text style={styles.memberText}>{`${this.props.channelVideoCount} `}
-                      <Text style={styles.fontRegular}>
-                        Video{this.props.channelVideoCount > 1 ? 's': null}
+                    <TouchableOpacity onPress={this.onVideoClick} style={styles.textContainer}>
+                      <Text style={styles.memberText}>{`${this.props.channelVideoCount} `}
+                        <Text style={styles.fontRegular}>
+                          Video{this.props.channelVideoCount > 1 ? 's': null}
+                        </Text>
                       </Text>
-                    </Text>
+                    </TouchableOpacity>  
                   </View>
                   <View style={styles.bottomViewRight}>
                     {this.joined()}

@@ -89,10 +89,14 @@ class ChannelsScreen extends PureComponent {
         });
     };
 
+    onVideoClick = () => {
+        this.videoListRef &&  this.videoListRef.scrollToIndex(0);
+    }
+
     listHeaderComponent = () => {
         return (
             <View style={{flex: 1}}>
-                <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}} channelId={this.channelId}/>
+                <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}} channelId={this.channelId} onVideoClick={this.onVideoClick}/>
                 <Description channelId={this.channelId}/>
                 <ChannelTagsList onTagClicked = {this.onTagClicked} channelId={this.channelId} selectedTag={this.selectedTag}/>
             </View>
