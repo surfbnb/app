@@ -12,6 +12,7 @@ class ProgressBarWrapper extends PureComponent {
     }
 
     updateProgress(val){
+        console.log("*********",val)
         this.setState({progress: val});
     }
 

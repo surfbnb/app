@@ -12,6 +12,7 @@ import closeIcon from '../../assets/camera-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import AppConfig from '../../constants/AppConfig';
+import Utilities from "../../services/Utilities";
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Discard', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
@@ -28,7 +29,6 @@ class Base extends PureComponent {
     this._progressRef = null;
     this._video = null;
     this.currentVideoTime = 0;
-    this.totalDuration = this.props.totalVideoLength;
     this.seekCount = 0;
     this.appStateTimeOut = 0;
     this.cachedVideoUri = this.props.cachedvideoUrl;
@@ -46,7 +46,7 @@ class Base extends PureComponent {
     });
     Store.dispatch(upsertRecordedVideo({
         raw_video_list: this.props.videoUrlsList,
-        video_length: this.totalVideoLength,
+        video_length: this.props.totalDuration,
         previewURL:  this.props.previewURL
     }));
     setTimeout(()=> {
@@ -95,11 +95,11 @@ class Base extends PureComponent {
   handleProgress = (progress) => {
     if(this.isPaused()) return;
     this.currentVideoTime = progress.currentTime;
-    this.updateProgress( this.currentVideoTime / ( this.totalDuration / 1000) );
+    this.updateProgress( this.currentVideoTime / ( this.props.totalDuration / 1000) );
   };
 
   handleEnd = () => {
-    this.currentVideoTime = this.totalDuration;
+    this.currentVideoTime = 0;
     this.seekCount = 0;
     this.pauseVideo();
     this.updateProgress(1);
@@ -234,6 +234,7 @@ class Base extends PureComponent {
               >
                 <TouchableOpacity
                   onPress={multipleClickHandler(() => {
+                    console.log('Hey here!!!!!!!');
                     this.props.goToDetailsScreen();
                   })}
                   style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}
@@ -250,14 +251,11 @@ class Base extends PureComponent {
   }
 
   replay() {
-    this.resetAllDefaults();  
     this.playVideo();
+    this._video && this._video.seek(this.currentVideoTime);
     this.updateProgress(0);
   }
 
-  resetAllDefaults(){
-    this.currentVideoTime = 0;
-  }
 }
 
 

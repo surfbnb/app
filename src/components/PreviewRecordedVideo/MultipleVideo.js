@@ -6,18 +6,20 @@ class MultipleVideo extends Base {
     constructor(props){
         super(props);
         this.totalVideos = this.props.videoUrlsList.length || 0;
-        this.totalCurrentDuration = 0;
     }
 
     handleProgress = (progress) => {
         if(this.isPaused()) return;
         this.currentVideoTime = progress.currentTime;
-        this.totalCurrentDuration = this.totalCurrentDuration + this.currentVideoTime;
-        this.updateProgress(this.totalCurrentDuration /( this.totalDuration / 1000) );
+        let totalProgress = ( this.getPrevVideoDuration() / 1000) + this.currentVideoTime ,
+            val  = totalProgress / ( this.props.totalDuration / 1000);
+        console.log('************',progress);
+        if(isNaN(val)) return;
+        this.updateProgress(val);
     };
 
     handleEnd = () => {
-        const nextVideoIndex  = this.state.activeIndex + 1; 
+        let nextVideoIndex  = this.state.activeIndex + 1;
         //Check if all video are played 
         if( nextVideoIndex >= this.totalVideos ){
           //Pause all videos  
@@ -28,18 +30,21 @@ class MultipleVideo extends Base {
           nextVideoIndex = 0;
         }
         this.seekCount = 0;
-        this.currentVideoTime = this.currentDuration;
+        this.currentVideoTime = 0;
         this.setState({activeIndex: nextVideoIndex});
+    };
+
+    getPrevVideoDuration = () => {
+        if (this.state.activeIndex  < 1){
+            return 0;
+        }
+        return this.props.videoUrlsList[this.state.activeIndex - 1].progress * 100 * 300;
     };
 
     getVideoUri = () => {
         return {uri : this.props.videoUrlsList[this.state.activeIndex].uri};
     }
 
-    resetAllDefaults(){
-        super.resetAllDefaults();
-        this.totalCurrentDuration = 0;
-    }
 
 }
 

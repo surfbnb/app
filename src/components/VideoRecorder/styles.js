@@ -163,7 +163,7 @@ let stylesMap = {
 
   separationBarsStyle: {
     backgroundColor: '#fff',
-    width: 4,
+    width: 2,
     height: 7,
     position: 'absolute'
   }

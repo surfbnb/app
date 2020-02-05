@@ -144,7 +144,9 @@ const AppConfig = {
   compressionConstants: {
     COMPRESSION_SIZE: '720X1280',
     CRF: '28',
+    PREVIEW_CRF: '28',
     PRESET: 'superfast',
+    PREVIEW_PRESET: 'ultrafast',
     PIX_FMT: 'yuv420p'
   },
 

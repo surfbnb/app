@@ -436,12 +436,22 @@ class VideoRecorder extends Component {
   };
 
   onBackPress = () => {
-    let lastElementIndex = this.videoUrlsList.length - 2;
-    let lastSegment = this.videoUrlsList[lastElementIndex] || {};
+    this.goToLastProgress();
     this.videoUrlsList.pop();
     this.separationBars.pop();
+  };
+
+  goToLastProgress = () => {
+    let lastElementIndex = this.videoUrlsList.length - 2;
+    let lastSegment = this.videoUrlsList[lastElementIndex] || {};
     this.setState({progress: lastSegment.progress || 0 });
   };
+
+  goToBackProgress = () => {
+    let lastElementIndex = this.videoUrlsList.length - 1;
+    let lastSegment = this.videoUrlsList[lastElementIndex] || {};
+    this.setState({progress: lastSegment.progress || 0 });
+  }
 
 
   previewButton = () => {
@@ -506,11 +516,31 @@ class VideoRecorder extends Component {
     </View>;
   };
 
+  handlePressIn = () => {
+    this.pressInTime = Date.now();
+    this.timeout = setTimeout(this.recordVideoAsync, 300);
+  };
+
+  handlePressOut = () => {
+    let currentTime = Date.now();
+    if ((currentTime - this.pressInTime) < 300){
+      clearTimeout(this.timeout);
+      console.log(currentTime - this.pressInTime, 'currentTime - this.pressInTime) ::::::');
+      this.pressInTime = 0;
+      return;
+    }
+    this.pressInTime = 0;
+    if(this.state.isRecording){
+      this.stopRecording()
+    }
+
+  }
+
   getActionButton() {
     let onPressCallback, source;
     if (this.state.currentMode === 'NORMAL') {
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity onPressIn={this.recordVideoAsync} onPressOut={this.stopRecording}>
+        <TouchableOpacity onPressIn={this.handlePressIn} onPressOut={this.handlePressOut}>
           <Image style={styles.captureButtonSkipFont} source={captureIcon}/>
         </TouchableOpacity>
       </View>
@@ -546,6 +576,7 @@ class VideoRecorder extends Component {
   }
 
   progressBarStateUpdate = () => {
+    if(! this.state.isRecording) return;
       let progress =  this.state.progress + PROGRESS_FACTOR ;
       this.videoLength = progress * 100 * 300;
       if (this.state.progress < 1) {
@@ -571,22 +602,31 @@ class VideoRecorder extends Component {
 
   recordVideoAsync = async () => {
     if (!this.camera) return;
+    let currentTime = Date.now();
+    console.log('recordVideoAsync:::::start');
     this.recordVideoStateChage();
     const options = {
       quality: RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY],
       base64: true,
       maxDuration: 30,
       muted: false,
-      orientation: this.state.cameraFrontMode ?  'portrait' : 'portraitUpsideDown' ,
+      orientation:  'portrait'
     };
     this.initProgressBar();
     let data;
     try{
        data = await this.camera.recordAsync(options);
+      let nowTime = Date.now();
+      if((nowTime - currentTime) < 1000){
+        console.log('Heyyyyyyyyy');
+      }
     } catch {
+      console.log('recordVideoAsync:::::catch');
+      this.goToBackProgress();
       this.setState({ isRecording: false });
       return;
     }
+    console.log('recordVideoAsync:::::done');
 
     let videoLength = this.state.progress * 100 * 300;
     console.log(videoLength, 'videoLength');

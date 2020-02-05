@@ -41,7 +41,8 @@ const recordedVideoStates = [
   'video_link',
   'reply_amount',
   'video_type',
-  'reply_obj'
+  'reply_obj',
+  'previewURL'
 ];
 
 const processingStatuses = [
