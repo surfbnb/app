@@ -13,7 +13,7 @@ let stylesMap = {
         paddingVertical: 3,
         paddingHorizontal: 7,
         alignItems: 'center',
-        backgroundColor: 'rgba(42, 41, 59, 0.25)'
+        backgroundColor: 'rgba(42, 41, 59, 0.4)'
     },
 
     imageSkipFont: {
