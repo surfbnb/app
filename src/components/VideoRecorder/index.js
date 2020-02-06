@@ -462,7 +462,7 @@ class VideoRecorder extends Component {
   goToLastProgress = () => {
     let lastElementIndex = this.videoUrlsList.length - 1;
     let lastSegment = this.videoUrlsList[lastElementIndex] || {};
-    this.setState({progress: lastSegment.progress || 0 });
+    this.setState({progress: lastSegment.progress || 0 }, ()=>{ this.videoLength = this.state.progress * 100 *300 });
   };
 
   previewButton = () => {
