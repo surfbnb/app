@@ -53,8 +53,7 @@ class VideoRecorder extends Component {
       isLocalVideoPresent: false,
       marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL),
       currentMode: '',
-      scale: new Animated.Value(1),
-      borderWidth: new Animated.Value(1)
+      scale: new Animated.Value(1)
     };
     this.stoppedUnexpectedly = false;
     this.intervalID = null;
@@ -599,7 +598,7 @@ class VideoRecorder extends Component {
     if (!this.state.isRecording) {
       return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <TouchableOpacity onPress={this.flipCamera} >
+          <TouchableOpacity onPress={this.flipCamera} activeOpacity={0.75}>
             <Image style={styles.flipIconSkipFont} source={flipIcon} />
           </TouchableOpacity>
         </View>
