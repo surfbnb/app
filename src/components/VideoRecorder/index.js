@@ -515,13 +515,13 @@ class VideoRecorder extends Component {
           toValue: 1.8,
           duration: 500,
           easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true
+          // useNativeDriver: true
         }),
         Animated.timing(this.state.scale, {
           toValue: 1,
           duration: 500,
           easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true
+          // useNativeDriver: true
         })
       ])
     );
@@ -533,7 +533,7 @@ class VideoRecorder extends Component {
       toValue: 1,
       duration: 500,
       easing: Easing.inOut(Easing.ease),
-      useNativeDriver: true
+      // useNativeDriver: true
     }).start();
   };
 
@@ -571,10 +571,15 @@ class VideoRecorder extends Component {
 
   getActionButton() {
 
+    let modColor = this.state.scale.interpolate({
+      inputRange: [1, 1.000001, 1.8],
+      outputRange: ['rgba(255, 85, 102, 0.75)', 'rgba(255, 85, 102, 0.9)', 'rgba(255, 85, 102, 1)'],
+      extrapolate: 'clamp',
+    });
+
     let animationStyle = {
-      transform: [
-        {scale: this.state.scale}
-      ]
+      borderColor: modColor,
+      transform: [{scale: this.state.scale}]
     };
 
     let onPressCallback, source;
@@ -584,7 +589,7 @@ class VideoRecorder extends Component {
           onPressOut={this.handlePressOut}
           onPress={this.handleOnPress}
           onLongPress={this.onLongPress}
-          activeOpacity={0.75}
+          activeOpacity={0.9}
         >
           <View style={{position: 'relative'}}>
             <Animated.View style={[styles.outerCircle, animationStyle]}></Animated.View>
