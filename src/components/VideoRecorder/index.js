@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   BackHandler,
   AppState, FlatList, Dimensions,
-  ScrollView, Animated, Alert
+  ScrollView, Animated, Alert, Easing
 } from 'react-native';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import { RNCamera } from 'react-native-camera';
@@ -54,7 +54,8 @@ class VideoRecorder extends Component {
       cameraFrontMode: true,
       isLocalVideoPresent: false,
       marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL),
-      currentMode: ''
+      currentMode: '',
+      scale: new Animated.Value(1)
     };
     this.stoppedUnexpectedly = false;
     this.intervalID = null;
@@ -502,6 +503,7 @@ class VideoRecorder extends Component {
 
   stopRecording = () => {
     this.setState({isRecording:false});
+    this._stopRecordingAnimation();
     this.camera && this.camera.stopRecording();
   };
 
@@ -534,6 +536,35 @@ class VideoRecorder extends Component {
     }
   };
 
+  _recordingAnimation = () => {
+    return Animated.loop(
+      Animated.sequence([
+        Animated.timing(this.state.scale, {
+          toValue: 1.5,
+          duration: 600,
+          easing:Easing.elastic(1.5),
+          useNativeDriver: true
+        }),
+        Animated.timing(this.state.scale, {
+          toValue: 1,
+          duration: 600,
+          easing:Easing.elastic(1.5),
+          useNativeDriver: true
+        })
+      ])
+    );
+
+  };
+
+  _stopRecordingAnimation = () => {
+    Animated.timing(this.state.scale, {
+      toValue: 1,
+      duration: 300,
+      easing:Easing.elastic(1.5),
+      useNativeDriver: true
+    }).start();
+  };
+
   onLongPress = () => {
     this.setState({currentMode: 'NORMAL'});
     this.recordVideoAsync();
@@ -552,20 +583,40 @@ class VideoRecorder extends Component {
    console.log("************handleOnPress");
   };
 
+  stopIcon = () => <View style={styles.squareIcon}></View>
+
+  captureIcon = () => <View style={[styles.innerCircle]}></View>
+
   getSource = () => {
     if (this.state.isRecording){
-      return this.state.currentMode === 'HANDS_FREE' ? stopIcon : captureIcon;
+      return this.state.currentMode === 'HANDS_FREE' ? this.stopIcon() : this.captureIcon();
     } else {
-      return captureIcon;
+      return this.captureIcon();
     }
   };
 
   getActionButton() {
+
+    let animationStyle = {
+      transform: [
+        {scale: this.state.scale}
+      ]
+    };
+
     let onPressCallback, source;
 
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity onPressOut={this.handlePressOut} onPress={this.handleOnPress} onLongPress={this.onLongPress}>
-          <Image style={styles.captureButtonSkipFont} source={this.getSource()}/>
+        <TouchableOpacity
+          onPressIn={this.handlePressIn}
+          onPressOut={this.handlePressOut}
+          onPress={this.handleOnPress}
+          onLongPress={this.onLongPress}
+          activeOpacity={0.75}
+        >
+          <View style={{position: 'relative'}}>
+            <Animated.View style={[styles.outerCircle, animationStyle]}></Animated.View>
+            {this.getSource()}
+          </View>
         </TouchableOpacity>
       </View>
   }
@@ -628,26 +679,27 @@ class VideoRecorder extends Component {
       async ()=>{
         this.progressBarStateUpdate();
         this.initProgressBar();
-    try{
-       data = await this.camera.recordAsync(options);
-    } catch {
-      console.log('recordVideoAsync:::::catch');
-      this.goToLastProgress();
-      this.setState({ isRecording: false });
-      return;
-    } finally {
-      // for clearInterval
-      this.intervalManager(false);
-    }
-    let videoLength = this.state.progress * 100 * 300;
-    console.log(videoLength, 'videoLength');
-    this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
-    this.appendNewBar();
-    this.setState({ isRecording: false });
-    if(this.stoppedUnexpectedly){
-      this.previewPressHandler();
-      this.stoppedUnexpectedly = false;
-    }
+        this._recordingAnimation().start();
+        try{
+           data = await this.camera.recordAsync(options);
+        } catch {
+          console.log('recordVideoAsync:::::catch');
+          this.goToLastProgress();
+          this.setState({ isRecording: false });
+          return;
+        } finally {
+          // for clearInterval
+          this.intervalManager(false);
+        }
+        let videoLength = this.state.progress * 100 * 300;
+        console.log(videoLength, 'videoLength');
+        this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
+        this.appendNewBar();
+        this.setState({ isRecording: false });
+        if(this.stoppedUnexpectedly){
+          this.previewPressHandler();
+          this.stoppedUnexpectedly = false;
+        }
 
       });
   };

@@ -32,6 +32,38 @@ let stylesMap = {
     width: 65,
     height: 65
   },
+  outerCircle: {
+    width: 65,
+    height: 65,
+    borderWidth: 4,
+    borderRadius: 65/2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderColor: 'rgba(255, 85, 102, 0.5)'
+  },
+  innerCircle: {
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -25,
+    marginLeft: -25,
+    borderRadius: 50/2,
+    backgroundColor: Colors.wildWatermelon,
+  },
+  squareIcon: {
+    width: 28,
+    height: 28,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -14,
+    marginLeft: -14,
+    borderRadius: 5,
+    backgroundColor: Colors.wildWatermelon,
+  },
   flipIconSkipFont: {
     width: 39.5,
     height: 36.5
