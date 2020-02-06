@@ -101,7 +101,7 @@ class Base extends PureComponent {
     this.currentVideoTime = progress.currentTime;
     const val =  this.currentVideoTime / ( this.props.totalDuration / 1000) ;
     if(isNaN(val)) return;
-    this.updateProgress();
+    this.updateProgress(val);
   };
 
   handleEnd = () => {
