@@ -652,7 +652,7 @@ class VideoRecorder extends Component {
       async ()=>{
         this.progressBarStateUpdate();
         this.initProgressBar();
-        // this._recordingAnimation().start();
+        this._recordingAnimation().start();
         try{
            data = await this.camera.recordAsync(options);
         } catch {
