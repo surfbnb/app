@@ -25,7 +25,8 @@ class ChannelsScreen extends PureComponent {
 
     static navigationOptions = (options) => {
         const channelId =  options.navigation.getParam('channelId'),
-            name = options.navigation.getParam('headerTitle') || ReduxGetters.getChannelName(channelId);
+              name = options.navigation.getParam('headerTitle') || ReduxGetters.getChannelName(channelId)
+              isDeleted = options.navigation.getParam('isDeleted') || false
         ;
         return {
           headerBackTitle: null,
@@ -44,7 +45,7 @@ class ChannelsScreen extends PureComponent {
             shadowOpacity: 0.1,
             shadowRadius: 3
           },
-          headerRight: <ChannelsHeaderRight channelId = {channelId}/>,
+          headerRight: <ChannelsHeaderRight channelId = {channelId} isDeleted={isDeleted}/>,
           headerBackImage: <BackArrow />
         };
       };
@@ -132,6 +133,7 @@ class ChannelsScreen extends PureComponent {
     onChannelFetch = ( res={} ) => {
         if(Utilities.isEntityDeleted(res)){
           this.setState({isDeleted: true});
+          this.props.navigation.setParams({ isDeleted:true });
           return;
         }
         const resultType = deepGet(res,  DataContract.common.resultType),
