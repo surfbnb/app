@@ -196,7 +196,7 @@ class ChannelsHeaderRight extends PureComponent {
   };
 
   render() {
-    return (
+    return !this.props.isDeleted && (
       <React.Fragment>
         <ShareOptions entityId={this.props.channelId} entityKind={'channel'}/>
         <TouchableOpacity
@@ -209,6 +209,10 @@ class ChannelsHeaderRight extends PureComponent {
       </React.Fragment>
     );
   }
+}
+
+ChannelsHeaderRight.defaultProps ={
+  isDeleted : false
 }
 
 export default withNavigation(ChannelsHeaderRight);
