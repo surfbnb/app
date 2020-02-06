@@ -31,6 +31,7 @@ import multipleClickHandler from "../../services/MultipleClickHandler";
 import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 import Pricer from "../../services/Pricer";
 import Toast from "../../theme/components/NotificationToast";
+import utilities from '../../services/Utilities';
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -56,29 +57,27 @@ class VideoRecorder extends Component {
       scale: new Animated.Value(1)
     };
     this.stoppedUnexpectedly = false;
+    this.actionButtonDisabled = false;
     this.intervalID = null;
     // this.currentMode = 'NORMAL';
     this.videoUrlsList = [];
     this.separationBars = [];
     this.camera = null;
     this.videoLength = 0;
-    this.appStateTimeout = 0;
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
   }
 
   _handleAppStateChange = (nextAppState) => {
-    clearTimeout(this.appStateTimeout);
-    setTimeout(()=> {
-      if(nextAppState === 'inactive'){
-        this.stoppedUnexpectedly = true;
-        this.stopRecording();
-        return;
-      }
 
-      if( nextAppState === 'background'){
-        this.cancleVideoHandling();
+      if(nextAppState === 'inactive' || nextAppState === 'background'){
+        if (this.state.isRecording){
+          this.stoppedUnexpectedly = true;
+          this.stopRecording();
+        } else {
+          this.stoppedUnexpectedly = false;
+          this.previewPressHandler();
+        }
       }
-    } , 100 )
   };
 
   componentDidUpdate(prevProps, prevState){
@@ -315,7 +314,7 @@ class VideoRecorder extends Component {
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
           pictureSize={AppConfig.cameraConstants.PICTURE_SIZE}
-          autoFocusPointOfInterest={{ x: 0.5, y: 0.5 }}
+          autoFocusPointOfInterest={utilities.isAndroid() ? { x: 0.5, y: 0.5 } : {}}
           notAuthorizedView={
             <View>
               <Text>The camera is not authorized!</Text>
@@ -359,6 +358,26 @@ class VideoRecorder extends Component {
     return plotBars;
   };
 
+  askCancelConfirmation = () => {
+    if (this.videoLength > 0){
+      Alert.alert(
+        '',
+        'Video segments will be discarded. Do you want to continue?',
+        [
+          {text: 'Confirm', onPress:  this.cancleVideoHandling},
+          {
+            text: 'Cancel',
+            style: 'cancel'
+          }
+
+        ],
+        {cancelable: true},
+      );
+    } else {
+      this.cancleVideoHandling();
+    }
+  };
+
 
   showCameraActions = () => {
     if (this.shouldShowActionButtons()) {
@@ -377,7 +396,7 @@ class VideoRecorder extends Component {
             </React.Fragment>
           </View>
 
-          <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
+          <TouchableOpacity onPressIn={this.askCancelConfirmation } style={styles.closeBtWrapper}>
             <Image style={styles.closeIconSkipFont} source={closeIcon} />
           </TouchableOpacity>
           <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
@@ -434,7 +453,8 @@ class VideoRecorder extends Component {
   goToLastProgress = () => {
     let lastElementIndex = this.videoUrlsList.length - 1;
     let lastSegment = this.videoUrlsList[lastElementIndex] || {};
-    this.setState({progress: lastSegment.progress || 0 }, ()=>{ this.videoLength = this.state.progress * 100 *300 });
+    this.videoLength = (lastSegment.progress || 0) * 100 *300;
+    this.setState({progress: lastSegment.progress || 0 }, ()=>{  });
   };
 
   previewButton = () => {
@@ -480,11 +500,11 @@ class VideoRecorder extends Component {
 
   appendNewBar = () => {
     let progress = Math.floor(this.state.progress * 100);
-    if(progress === 100){
-      return
-    }
+    // for last segment we need a invisible view else there will be a problem when segment is deleted.
+    // That is why height :0 , width : 0 is given
+    // Problem: On every delete segment, we delete one red segment line and one white separator.
     this.separationBars.push((
-      <View key={progress} style={[styles.separationBarsStyle, {left: `${progress}%`}]}>
+      <View key={`progress-${Date.now()}`} style={[styles.separationBarsStyle, {left: `${progress}%`}, progress === 100 ? {height:0, width:0} : {}]}>
       </View>));
   };
 
@@ -571,6 +591,12 @@ class VideoRecorder extends Component {
 
   getActionButton() {
 
+    if(this.videoLength >= 30000){
+      this.actionButtonDisabled = true;
+    } else {
+      this.actionButtonDisabled = false;
+    }
+
     let modColor = this.state.scale.interpolate({
       inputRange: [1, 1.000001, 1.8],
       outputRange: ['rgba(255, 85, 102, 0.75)', 'rgba(255, 85, 102, 0.9)', 'rgba(255, 85, 102, 1)'],
@@ -586,17 +612,26 @@ class VideoRecorder extends Component {
 
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableOpacity
+          disabled={this.actionButtonDisabled}
           onPressOut={this.handlePressOut}
           onPress={this.handleOnPress}
           onLongPress={this.onLongPress}
           activeOpacity={0.9}
         >
-          <View style={{position: 'relative'}}>
+          <View style={[ {position: 'relative'},  this.getDisabledButtonStyle() ]}>
             <Animated.View style={[styles.outerCircle, animationStyle]}></Animated.View>
             {this.getSource()}
           </View>
         </TouchableOpacity>
       </View>
+  }
+
+  getDisabledButtonStyle = () => {
+    if(this.videoLength >= 30000){
+      return {opacity: 0.5}
+    } else {
+      return {opacity: 1}
+    }
   }
 
   flipButton() {
@@ -614,7 +649,6 @@ class VideoRecorder extends Component {
   }
 
   progressBarStateUpdate = () => {
-    console.log('progressBarStateUpdate--');
     if(! this.state.isRecording) return;
       let currentProgress =  this.state.progress ;
       let progress = currentProgress + PROGRESS_FACTOR ;
@@ -660,8 +694,8 @@ class VideoRecorder extends Component {
         this._recordingAnimation().start();
         try{
            data = await this.camera.recordAsync(options);
-        } catch {
-          console.log('recordVideoAsync:::::catch');
+        } catch(exception) {
+          console.log('recordVideoAsync:::::catch', exception);
           this.goToLastProgress();
           this.setState({ isRecording: false });
           return;
