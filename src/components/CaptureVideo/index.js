@@ -166,42 +166,30 @@ class CaptureVideo extends Component {
     }
   };
 
+  goToPreviewStateUpdate( videoUrlsList, totalDuration , previewURL ="" , recordingScreen = false  ){
+    this.setState({
+      recordingScreen,
+      videoUrlsList,
+      totalDuration,
+      previewURL
+    });
+  }
+
   goToPreviewScreen = (videoUrlsList, totalDuration) => {
-    console.log(totalDuration, 'totalDurationtotalDuration');
-    if( videoUrlsList.length === 1){
-      this.setState({
-        recordingScreen: false,
-        videoUrlsList,
-        totalDuration,
-        previewURL: videoUrlsList[0]
-      });
+    if( videoUrlsList.length == 1){
+      this.goToPreviewStateUpdate(videoUrlsList , totalDuration , videoUrlsList[0].uri );
       return;
     } else if(utilities.isAndroid()) {
-      this.setState({
-        recordingScreen: false,
-        videoUrlsList,
-        totalDuration,
-      });
+      this.goToPreviewStateUpdate(videoUrlsList , totalDuration  );
       return;
     }
 
     FfmpegProcesser.init(videoUrlsList.map((obj) =>obj.uri));
     FfmpegProcesser.localConcat()
       .then((previewURL) => {
-        console.log('localConcat: then', previewURL);
-        this.setState({
-          recordingScreen: false,
-          videoUrlsList,
-          totalDuration,
-          previewURL
-        });
+        this.goToPreviewStateUpdate(videoUrlsList , totalDuration ,previewURL  );
       }).catch(()=>{
-      this.setState({
-        recordingScreen: false,
-        videoUrlsList,
-        totalDuration
-      });
-
+      this.goToPreviewStateUpdate(videoUrlsList , totalDuration );
     }) ;
   };
 
