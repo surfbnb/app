@@ -440,7 +440,7 @@ class VideoRecorder extends Component {
   onBackPress = () => {
     Alert.alert(
       '',
-      'You really want to delete last video segment?',
+      'Are you sure you want to delete last segment?',
       [
         {text: 'Confirm', onPress:  this.deleteLastSegment },
         {
