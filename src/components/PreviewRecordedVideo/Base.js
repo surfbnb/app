@@ -12,7 +12,6 @@ import closeIcon from '../../assets/camera-cross-icon.png';
 import LinearGradient from 'react-native-linear-gradient';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import AppConfig from '../../constants/AppConfig';
-import Utilities from "../../services/Utilities";
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Discard', 'Cancel'];
 const ACTION_SHEET_CANCEL_INDEX = 2;
@@ -56,6 +55,7 @@ class Base extends PureComponent {
   }
 
   playVideo(state={}){
+    this._video.seek(this.currentVideoTime);
     state["paused"] = false;
     this.setState(state);
   }
@@ -63,6 +63,11 @@ class Base extends PureComponent {
   pauseVideo(state={}){
     state["paused"] = true;
     this.setState(state);
+  }
+
+  replay() {
+    this.playVideo();
+    this.updateProgress(0);
   }
 
   componentWillUnmount() {
@@ -93,9 +98,10 @@ class Base extends PureComponent {
   };
 
   handleProgress = (progress) => {
-    if(this.isPaused()) return;
     this.currentVideoTime = progress.currentTime;
-    this.updateProgress( this.currentVideoTime / ( this.props.totalDuration / 1000) );
+    const val =  this.currentVideoTime / ( this.props.totalDuration / 1000) ;
+    if(isNaN(val)) return;
+    this.updateProgress();
   };
 
   handleEnd = () => {
@@ -179,7 +185,6 @@ class Base extends PureComponent {
   }
 
   render() {
-    console.log("render====" , this.state);
     return (
       <View style={styles.container}>
         <Video
@@ -194,7 +199,7 @@ class Base extends PureComponent {
           onEnd={this.handleEnd}
           ignoreSilentSwitch={'ignore'}
           paused={this.isPaused()}
-          repeat={true}
+          repeat={false}
         />
         <ProgressBar ref={this.setProgressBarRef}/>
         <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
@@ -250,10 +255,6 @@ class Base extends PureComponent {
     );
   }
 
-  replay() {
-    this.playVideo();
-    this.updateProgress(0);
-  }
 
 }
 
