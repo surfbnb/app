@@ -397,33 +397,6 @@ class VideoRecorder extends Component {
     }
   };
 
-  renderModeRow = () => {
-    let elements =  ['Normal','Hands Free'].map((item, index)=> {
-      return <TouchableWithoutFeedback key={index} onPress={()=>{
-        if (index === 0) {
-          this.setState({currentMode: 'NORMAL'});
-          Animated.timing(this.state.marginLeft, {
-            toValue: MARGIN_LEFT_NORMAL,
-            duration: 200
-          }).start();
-        } else if(index === 1) {
-          this.setState({currentMode: 'HANDS_FREE'});
-          Animated.timing(this.state.marginLeft, {
-            toValue: MARGIN_LEFT_HANDS_FREE,
-            // easing: Easing.back(),
-            duration: 200
-          }).start();
-        }
-      }}
-      >
-      <View style={{marginHorizontal: 2, height: 30, width: ELEMENT_WIDTH, alignItems: 'center', justifyContent:'center'}}>
-        <Text style={[{color: '#fff', fontWeight:'600' }, this.state.isRecording ? {opacity:0}:{}]}>{item}</Text>
-      </View>
-      </TouchableWithoutFeedback>
-    });
-    return <Animated.View onScroll={this.onScroll}  onMomentumScrollBegin={this.onMomentumScrollBegin}  onScrollBeginDrag={this.onScrollBeginDrag} horizontal={true} style={{marginLeft: this.state.marginLeft, flexDirection: 'row'}}>{elements}</Animated.View>
-  };
-
   previewPressHandler = () => {
     if (this.discardVideo) return;
     // This will take from VideoRecorder to PreviewRecordedVideo component
@@ -529,6 +502,7 @@ class VideoRecorder extends Component {
   };
 
   handlePressOut = () => {
+    console.log('handlePressOut');
     if (this.state.currentMode == 'NORMAL'){
       this.state.isRecording && this.stopRecording();
       this.setState({currentMode: ''});
@@ -565,12 +539,14 @@ class VideoRecorder extends Component {
   };
 
   onLongPress = () => {
+    console.log('onLongPress');
     this.setState({currentMode: 'NORMAL'});
     this.recordVideoAsync();
     console.log("************handleLongPress");
   }
 
   handleOnPress = () => {
+    console.log('handleOnPress');
     if (this.state.isRecording){
       this.setState({currentMode: ''});
       this.stopRecording();
@@ -606,7 +582,6 @@ class VideoRecorder extends Component {
 
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableOpacity
-          onPressIn={this.handlePressIn}
           onPressOut={this.handlePressOut}
           onPress={this.handleOnPress}
           onLongPress={this.onLongPress}
@@ -673,12 +648,12 @@ class VideoRecorder extends Component {
       orientation:  'portrait'
     };
     let data;
-    // this.recordVideoStateChage();
+    this.recordVideoStateChage();
     this.setState({isRecording:true},
       async ()=>{
         this.progressBarStateUpdate();
         this.initProgressBar();
-        this._recordingAnimation().start();
+        // this._recordingAnimation().start();
         try{
            data = await this.camera.recordAsync(options);
         } catch {
@@ -710,6 +685,14 @@ class VideoRecorder extends Component {
 
   componentWillUnmount() {
     this.recordVideoStateChage = () => {};
+    this.recordVideoAsync = () => {};
+    this.progressBarStateUpdate = () => {};
+    this.stopRecording = () => {};
+    this.goToLastProgress = () => {};
+    this.acceptCameraTerms = () => {};
+    this.replyToVideo = () => {};
+    this.flipCamera = () => {};
+    this.handlePressOut = () => {};
     AppState.removeEventListener('change', this._handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress', this._handleBackPress);
   }
