@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import reduxGetter from '../../services/ReduxGetters';
+import findIndex from "lodash/findIndex";
 
 const defaultArray  = [];
 const mapStateToProps = (state, ownProps) => {
@@ -22,9 +23,11 @@ class ChannelTagsList extends PureComponent {
             id: 0,
             text: "All"
         }  
+        const selectedTag = props.selectedTag || this.allTag;
         this.state = {
-            selectedTag: props.selectedTag || this.allTag
+            selectedTag
         }
+        this.initialScrollIndex = findIndex(this.props.tagIds , (id)=> (id == selectedTag.id)) || 0;
         this.setAllOption();
         this.setInitialSelectedTag();
     }
@@ -83,12 +86,12 @@ class ChannelTagsList extends PureComponent {
                 <FlatList
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    decelerationRate={'fast'}
                     data={this.tagIds}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
                     ref={(ref) => (this.flatlistRef = ref)}
                     extraData={this.state.selectedTag}
+                    initialScrollIndex={this.initialScrollIndex}
                 />
             </View>
         )
