@@ -54,15 +54,15 @@ class Base extends PureComponent {
     }, 100)
   }
 
-  playVideo(state={}){
+  playVideo(state={} , callback ){
     this._video && this._video.seek(this.currentVideoTime);
     state["paused"] = false;
     this.setState(state);
   }
 
-  pauseVideo(state={}){
+  pauseVideo(state={} , callback){
     state["paused"] = true;
-    this.setState(state);
+    this.setState(state,callback);
   }
 
   replay() {
@@ -194,7 +194,7 @@ class Base extends PureComponent {
         <Video
           ref={this.setRef}
           source={this.getVideoUri()}
-          style={{flex:1}}
+          style={{flex:1, width: "100%", height: "100%"}}
           onPlaybackRateChange={this.onPlaybackRateChange}
           posterResizeMode={'cover'}
           resizeMode={'cover'}
@@ -244,7 +244,7 @@ class Base extends PureComponent {
               >
                 <TouchableOpacity
                   onPress={multipleClickHandler(() => {
-                    this.props.goToDetailsScreen();
+                    this.pauseVideo({} , this.props.goToDetailsScreen);
                   })}
                   style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}
                 >

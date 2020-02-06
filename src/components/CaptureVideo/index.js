@@ -12,6 +12,7 @@ import FanVideoDetails from '../FanVideoDetails';
 import KeepAwake from 'react-native-keep-awake';
 import reduxGetters from "../../services/ReduxGetters";
 import FfmpegProcesser from "../../services/FfmpegProcesser";
+import Colors from '../../theme/styles/Colors';
 
 class CaptureVideo extends Component {
   static navigationOptions = {
@@ -228,7 +229,7 @@ class CaptureVideo extends Component {
   }
 
   render() {
-    return <View style={{flex:1 }}>
+    return <View style={{flex:1 , backgroundColor: Colors.black}}>
       <KeepAwake />
       {this.getCurrentView()}
     </View>
