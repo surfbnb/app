@@ -252,7 +252,6 @@ class Base extends PureComponent {
 
   replay() {
     this.playVideo();
-    this._video && this._video.seek(this.currentVideoTime);
     this.updateProgress(0);
   }
 
