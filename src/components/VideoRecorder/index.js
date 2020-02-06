@@ -4,15 +4,13 @@ import {
   View,
   Image,
   Text,
+  Easing,
   TouchableWithoutFeedback,
   BackHandler,
-  AppState, FlatList, Dimensions,
-  ScrollView, Animated, Alert, Easing
+  AppState, Dimensions, Animated, Alert
 } from 'react-native';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import { RNCamera } from 'react-native-camera';
-import captureIcon from '../../assets/capture_icon.png';
-import stopIcon from '../../assets/stop_icon.png';
 import deleteCameraSegment  from '../../assets/delete_camera_segment.png';
 import flipIcon from '../../assets/flip_camera.png';
 import ProgressBar from 'react-native-progress/Bar';
@@ -55,7 +53,8 @@ class VideoRecorder extends Component {
       isLocalVideoPresent: false,
       marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL),
       currentMode: '',
-      scale: new Animated.Value(1)
+      scale: new Animated.Value(1),
+      borderWidth: new Animated.Value(1)
     };
     this.stoppedUnexpectedly = false;
     this.intervalID = null;
@@ -540,15 +539,15 @@ class VideoRecorder extends Component {
     return Animated.loop(
       Animated.sequence([
         Animated.timing(this.state.scale, {
-          toValue: 1.5,
-          duration: 600,
-          easing:Easing.elastic(1.5),
+          toValue: 1.8,
+          duration: 500,
+          easing: Easing.inOut(Easing.ease),
           useNativeDriver: true
         }),
         Animated.timing(this.state.scale, {
           toValue: 1,
-          duration: 600,
-          easing:Easing.elastic(1.5),
+          duration: 500,
+          easing: Easing.inOut(Easing.ease),
           useNativeDriver: true
         })
       ])
@@ -557,10 +556,10 @@ class VideoRecorder extends Component {
   };
 
   _stopRecordingAnimation = () => {
-    Animated.timing(this.state.scale, {
+    Animated.spring(this.state.scale, {
       toValue: 1,
-      duration: 300,
-      easing:Easing.elastic(1.5),
+      duration: 500,
+      easing: Easing.inOut(Easing.ease),
       useNativeDriver: true
     }).start();
   };

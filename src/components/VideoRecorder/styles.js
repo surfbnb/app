@@ -35,12 +35,12 @@ let stylesMap = {
   outerCircle: {
     width: 65,
     height: 65,
-    borderWidth: 4,
+    borderWidth: 5,
     borderRadius: 65/2,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    borderColor: 'rgba(255, 85, 102, 0.5)'
+    borderColor: 'rgba(255, 85, 102, 0.9)'
   },
   innerCircle: {
     width: 50,
@@ -141,7 +141,7 @@ let stylesMap = {
 
   bottomWrapper: {
     flexDirection: 'row',
-    marginBottom: 20
+    marginBottom: 30
     // width: Dimensions.get('window').width
   },
 
