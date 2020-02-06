@@ -147,7 +147,7 @@ class Base extends PureComponent {
     * */
     if (playRate == 0 && this.currentVideoTime > 0 && !this.isPaused() ){
       this.seekCount++;
-      if (this.seekCount <= 3 ) {
+      if (this.seekCount <= 5 ) {
         this._video && this._video.seek(this.currentVideoTime);
       } else {
         this.pauseVideo();
