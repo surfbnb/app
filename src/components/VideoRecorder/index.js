@@ -40,6 +40,8 @@ const PROGRESS_FACTOR = 0.01;
 const ELEMENT_WIDTH = 80;
 const MARGIN_LEFT_NORMAL =  (Dimensions.get('screen').width / 2 ) - ((ELEMENT_WIDTH + 4 )  /2);
 const MARGIN_LEFT_HANDS_FREE =  (Dimensions.get('screen').width / 2 ) - ((ELEMENT_WIDTH + 4) /2) - (ELEMENT_WIDTH + 4);
+const TAP_TO_RECORD = 'TAP_TO_RECORD';
+const LONG_PRESS_TO_RECORD = 'LONG_PRESS_TO_RECORD';
 
 class VideoRecorder extends Component {
   constructor(props) {
@@ -53,13 +55,17 @@ class VideoRecorder extends Component {
       cameraFrontMode: true,
       isLocalVideoPresent: false,
       marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL),
-      currentMode: '',
+      currentMode: null,
       scale: new Animated.Value(1)
     };
+    /*
+     these variables are used because setting state variables is async task
+   */
+    this.shallowCurrentMode = null;
+    this.shallowIsRecording = false;
     this.stoppedUnexpectedly = false;
     this.actionButtonDisabled = false;
     this.intervalID = null;
-    // this.currentMode = 'NORMAL';
     this.videoUrlsList = [];
     this.separationBars = [];
     this.camera = null;
@@ -423,7 +429,6 @@ class VideoRecorder extends Component {
       Toast.show({text:'Please create longer video', icon: 'error' });
       return;
     }
-
     this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
 
   };
@@ -493,7 +498,9 @@ class VideoRecorder extends Component {
   };
 
   stopRecording = () => {
-    this.setState({isRecording:false});
+    this.changeIsRecording(false);
+    this.changeCurrentMode(null);
+    // this.setState({isRecording:false});
     this._stopRecordingAnimation();
     this.camera && this.camera.stopRecording();
   };
@@ -508,25 +515,17 @@ class VideoRecorder extends Component {
       </View>));
   };
 
-  showTooltip = () => {
-    if (this.state.isRecording){
-      return <></>;
-    }
-    return <View style={styles.tooltipWrapper}>
-      <Text style={styles.tooltipStyle}>
-        {this.state.currentMode === 'NORMAL' ? "Hold to record": "Tap to record" }
-      </Text>
-      <View style={styles.tooltipLowerTriangle } />
-    </View>;
-  };
-
-  handlePressOut = () => {
-    console.log('handlePressOut');
-    if (this.state.currentMode == 'NORMAL'){
-      this.state.isRecording && this.stopRecording();
-      this.setState({currentMode: ''});
-    }
-  };
+  // showTooltip = () => {
+  //   if (this.state.isRecording){
+  //     return <></>;
+  //   }
+  //   return <View style={styles.tooltipWrapper}>
+  //     <Text style={styles.tooltipStyle}>
+  //       {this.state.currentMode === LONG_PRESS_TO_RECORD ? "Hold to record": "Tap to record" }
+  //     </Text>
+  //     <View style={styles.tooltipLowerTriangle } />
+  //   </View>;
+  // };
 
   _recordingAnimation = () => {
     return Animated.loop(
@@ -557,24 +556,64 @@ class VideoRecorder extends Component {
     }).start();
   };
 
-  onLongPress = () => {
-    console.log('onLongPress');
-    this.setState({currentMode: 'NORMAL'});
-    this.recordVideoAsync();
-    console.log("************handleLongPress");
-  }
+  handleOnPressIn = () => {
+    console.log('************handleOnPressIn isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
 
-  handleOnPress = () => {
-    console.log('handleOnPress');
-    if (this.state.isRecording){
-      this.setState({currentMode: ''});
+    if(this.state.isRecording || this.shallowIsRecording){
       this.stopRecording();
+      // this.changeCurrentMode(null);
+      // this.setState({currentMode : null});
     } else {
-      this.setState({currentMode: 'HANDS_FREE'});
       this.recordVideoAsync();
     }
+    console.log('************After:handleOnPressIn isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
 
-   console.log("************handleOnPress");
+
+  }
+
+  handleOnPressOut = () => {
+    console.log('************handleOnPressOut isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
+
+    if ((this.state.currentMode === LONG_PRESS_TO_RECORD || this.shallowCurrentMode === LONG_PRESS_TO_RECORD ) && (this.state.isRecording || this.shallowIsRecording)){
+      this.stopRecording();
+      // this.changeCurrentMode(null);
+      // this.setState({currentMode: null});
+    }
+
+    console.log('************After:handleOnPressOut isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
+
+
+  };
+
+  handleOnPress = () => {
+    console.log('************handleOnPress isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
+
+    if (this.state.isRecording || this.shallowIsRecording) {
+      this.changeCurrentMode(TAP_TO_RECORD);
+      // this.setState({currentMode: TAP_TO_RECORD});
+    } else {
+      // Just for safety.
+      this.changeCurrentMode(null);
+      // this.setState({currentMode: null});
+    }
+
+    console.log('************After:handleOnPress isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
+
+  };
+
+  handleOnLongPress = () => {
+    console.log('************handleOnLongPress isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
+
+    if (this.state.isRecording || this.shallowIsRecording) {
+      this.changeCurrentMode(LONG_PRESS_TO_RECORD);
+      // this.setState({currentMode: LONG_PRESS_TO_RECORD});
+    } else {
+      // Just for safety.
+      this.changeCurrentMode(null);
+      // this.setState({currentMode: null});
+    }
+
+    console.log('************After:handleOnLongPress isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
   };
 
   stopIcon = () => <View style={styles.squareIcon}></View>
@@ -583,7 +622,7 @@ class VideoRecorder extends Component {
 
   getSource = () => {
     if (this.state.isRecording){
-      return this.state.currentMode === 'HANDS_FREE' ? this.stopIcon() : this.captureIcon();
+      return this.state.currentMode === TAP_TO_RECORD ? this.stopIcon() : this.captureIcon();
     } else {
       return this.captureIcon();
     }
@@ -613,9 +652,11 @@ class VideoRecorder extends Component {
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableOpacity
           disabled={this.actionButtonDisabled}
-          onPressOut={this.handlePressOut}
+          onPressIn={this.handleOnPressIn}
+          onPressOut={this.handleOnPressOut}
           onPress={this.handleOnPress}
-          onLongPress={this.onLongPress}
+          onLongPress={this.handleOnLongPress}
+          delayLongPress={2000}
           activeOpacity={0.9}
         >
           <View style={[ {position: 'relative'},  this.getDisabledButtonStyle() ]}>
@@ -687,8 +728,9 @@ class VideoRecorder extends Component {
     };
     let data;
     this.recordVideoStateChage();
+    this.changeIsRecording(true);
     this.setState({isRecording:true},
-      async ()=>{
+      async ()=> {
         this.progressBarStateUpdate();
         this.initProgressBar();
         this._recordingAnimation().start();
@@ -697,7 +739,8 @@ class VideoRecorder extends Component {
         } catch(exception) {
           console.log('recordVideoAsync:::::catch', exception);
           this.goToLastProgress();
-          this.setState({ isRecording: false });
+          this.changeIsRecording(false);
+          // this.setState({ isRecording: false });
           return;
         } finally {
           // for clearInterval
@@ -707,7 +750,8 @@ class VideoRecorder extends Component {
         console.log(videoLength, 'videoLength');
         this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
         this.appendNewBar();
-        this.setState({ isRecording: false });
+        this.changeIsRecording(false);
+        // this.setState({ isRecording: false });
         if(this.stoppedUnexpectedly){
           this.previewPressHandler();
           this.stoppedUnexpectedly = false;
@@ -717,9 +761,20 @@ class VideoRecorder extends Component {
   };
 
   recordVideoStateChage() {
-    this.setState({ isRecording: true });
+    // this.setState({ isRecording: true });
     this.discardVideo = false;
   }
+
+  changeIsRecording = (isRecording) => {
+    this.setState({ isRecording });
+    this.shallowIsRecording = isRecording;
+  }
+
+  changeCurrentMode = (currentMode) => {
+    this.setState({ currentMode });
+    this.shallowCurrentMode = currentMode;
+  }
+
 
   componentWillUnmount() {
     this.recordVideoStateChage = () => {};
@@ -730,9 +785,14 @@ class VideoRecorder extends Component {
     this.acceptCameraTerms = () => {};
     this.replyToVideo = () => {};
     this.flipCamera = () => {};
-    this.handlePressOut = () => {};
+    this.handleOnPressIn = () => {};
+    this.handleOnPressOut = () => {};
+    this.handleOnPress = () => {};
+    this.handleOnLongPress = () => {};
     AppState.removeEventListener('change', this._handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress', this._handleBackPress);
+    this.shallowCurrentMode = null;
+    this.shallowIsRecording = false;
   }
 
   render() {
