@@ -7,9 +7,11 @@ class MultipleVideo extends Base {
         super(props);
         this.totalVideos = this.props.videoUrlsList.length || 0;
         this.updateProgressIgnoreOnce = false;
+        this.repeat = false;
     }
 
     handleProgress = (progress) => {
+        if(this.isPaused()) return;
         this.currentVideoTime = progress.currentTime;
         let totalProgress = ( this.getPrevVideoDuration() / 1000) + this.currentVideoTime ,
             val  = totalProgress / ( this.props.totalDuration / 1000);

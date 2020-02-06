@@ -25,6 +25,7 @@ class Base extends PureComponent {
       paused: true, 
       activeIndex: 0
     };
+    this.repeat = true;
     this._progressRef = null;
     this._video = null;
     this.currentVideoTime = 0;
@@ -55,7 +56,6 @@ class Base extends PureComponent {
   }
 
   playVideo(state={} , callback ){
-    this._video && this._video.seek(this.currentVideoTime);
     state["paused"] = false;
     this.setState(state);
   }
@@ -98,6 +98,7 @@ class Base extends PureComponent {
   };
 
   handleProgress = (progress) => {
+    if(this.isPaused()) return;
     this.currentVideoTime = progress.currentTime;
     const val =  this.currentVideoTime / ( this.props.totalDuration / 1000) ;
     if(isNaN(val)) return;
@@ -204,7 +205,7 @@ class Base extends PureComponent {
           ignoreSilentSwitch={'ignore'}
           onError={this.onVideoLoadError}
           paused={this.isPaused()}
-          repeat={false}
+          repeat={this.repeat}
         />
         <ProgressBar ref={this.setProgressBarRef}/>
         <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
