@@ -337,6 +337,10 @@ class FanVideoDetails extends Component {
     });
   }
 
+  getInitialVideoDesc = () => {
+    return this.videoDesc || this.props.recordedVideo.video_desc || this.props.navigation.getParam('video_desc');
+  };
+
   render() {
     let imageUrl = this.props.recordedVideo.cover_image,
     value = pricer.getFromDecimal(this.replyAmount, 2) ;
@@ -362,7 +366,7 @@ class FanVideoDetails extends Component {
               </ImageBackground>
             </TouchableOpacity>
             <VideoDescription 
-              initialValue={this.videoDesc}
+              initialValue={this.getInitialVideoDesc()}
               onChangeDesc={this.onChangeDesc} 
               onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
               onSuggestionsPanelClose={this.onSuggestionsPanelClose}
