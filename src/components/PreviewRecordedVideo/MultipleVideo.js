@@ -18,6 +18,14 @@ class MultipleVideo extends Base {
     };
 
     handleEnd = () => {
+       this.changeVideo();
+    };
+
+    onVideoLoadError = () => {
+        this.changeVideo();
+    }
+
+    changeVideo(){
         let nextVideoIndex  = this.state.activeIndex + 1;
         //Check if all video are played 
         if( nextVideoIndex >= this.totalVideos ){
@@ -31,7 +39,7 @@ class MultipleVideo extends Base {
         this.seekCount = 0;
         this.currentVideoTime = 0;
         this.setState({activeIndex: nextVideoIndex});
-    };
+    }
 
     getPrevVideoDuration = () => {
         if (this.state.activeIndex  < 1){

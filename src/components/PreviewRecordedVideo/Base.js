@@ -55,7 +55,7 @@ class Base extends PureComponent {
   }
 
   playVideo(state={}){
-    this._video.seek(this.currentVideoTime);
+    this._video && this._video.seek(this.currentVideoTime);
     state["paused"] = false;
     this.setState(state);
   }
@@ -184,6 +184,10 @@ class Base extends PureComponent {
       return { uri:this.props.previewURL };
   }
 
+  handleLoad= () => {};
+
+  onVideoLoadError = () => {};
+
   render() {
     return (
       <View style={styles.container}>
@@ -198,6 +202,7 @@ class Base extends PureComponent {
           onProgress={this.handleProgress}
           onEnd={this.handleEnd}
           ignoreSilentSwitch={'ignore'}
+          onError={this.onVideoLoadError}
           paused={this.isPaused()}
           repeat={false}
         />
@@ -239,7 +244,6 @@ class Base extends PureComponent {
               >
                 <TouchableOpacity
                   onPress={multipleClickHandler(() => {
-                    console.log('Hey here!!!!!!!');
                     this.props.goToDetailsScreen();
                   })}
                   style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}
