@@ -37,7 +37,6 @@ const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_FACTOR = 0.01;
-let intervalID = null;
 
 const ELEMENT_WIDTH = 80;
 const MARGIN_LEFT_NORMAL =  (Dimensions.get('screen').width / 2 ) - ((ELEMENT_WIDTH + 4 )  /2);
@@ -57,6 +56,8 @@ class VideoRecorder extends Component {
       marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL),
       currentMode: ''
     };
+    this.stoppedUnexpectedly = false;
+    this.intervalID = null;
     // this.currentMode = 'NORMAL';
     this.videoUrlsList = [];
     this.separationBars = [];
@@ -70,6 +71,7 @@ class VideoRecorder extends Component {
     clearTimeout(this.appStateTimeout);
     setTimeout(()=> {
       if(nextAppState === 'inactive'){
+        this.stoppedUnexpectedly = true;
         this.stopRecording();
         return;
       }
@@ -499,7 +501,6 @@ class VideoRecorder extends Component {
   };
 
   stopRecording = () => {
-    this.intervalManager(false);  // for clearInterval
     this.setState({isRecording:false});
     this.camera && this.camera.stopRecording();
   };
@@ -524,13 +525,6 @@ class VideoRecorder extends Component {
       </Text>
       <View style={styles.tooltipLowerTriangle } />
     </View>;
-  };
-
-  handlePressIn = () => {
-    console.log("************handlePressIn");
-    return;
-    this.pressInTime = Date.now();
-    this.timeout = setTimeout(this.recordVideoAsync, 300);
   };
 
   handlePressOut = () => {
@@ -570,7 +564,7 @@ class VideoRecorder extends Component {
     let onPressCallback, source;
 
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity onPressIn={this.handlePressIn} onPressOut={this.handlePressOut} onPress={this.handleOnPress} onLongPress={this.onLongPress}>
+        <TouchableOpacity onPressOut={this.handlePressOut} onPress={this.handleOnPress} onLongPress={this.onLongPress}>
           <Image style={styles.captureButtonSkipFont} source={this.getSource()}/>
         </TouchableOpacity>
       </View>
@@ -612,52 +606,50 @@ class VideoRecorder extends Component {
 
   intervalManager(flag, animate, time) {
     if(flag){
-      intervalID =  setInterval(animate, time);
+      this.intervalID =  setInterval(animate, time);
     } else {
-      console.log('clearInterval::clearInterval');
-      clearInterval(intervalID);
+      clearInterval(this.intervalID);
     }
 
   }
 
-  recordVideoAsync = async () => {
+  recordVideoAsync =  () => {
     if (!this.camera) return;
     let currentTime = Date.now();
-    console.log('recordVideoAsync:::::start');
-    this.recordVideoStateChage();
     const options = {
       quality: RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY],
       base64: true,
-      maxDuration: 30,
       muted: false,
       orientation:  'portrait'
     };
-    this.initProgressBar();
     let data;
+    // this.recordVideoStateChage();
+    this.setState({isRecording:true},
+      async ()=>{
+        this.progressBarStateUpdate();
+        this.initProgressBar();
     try{
        data = await this.camera.recordAsync(options);
-      let nowTime = Date.now();
-      if((nowTime - currentTime) < 1000){
-        console.log('Heyyyyyyyyy');
-      }
     } catch {
       console.log('recordVideoAsync:::::catch');
       this.goToLastProgress();
       this.setState({ isRecording: false });
       return;
+    } finally {
+      // for clearInterval
+      this.intervalManager(false);
     }
-    console.log('recordVideoAsync:::::done');
-
     let videoLength = this.state.progress * 100 * 300;
     console.log(videoLength, 'videoLength');
-     if (videoLength >= 30000) {
-      this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
-      this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
-    } else {
-      this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
-      this.appendNewBar();
-    }
+    this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
+    this.appendNewBar();
     this.setState({ isRecording: false });
+    if(this.stoppedUnexpectedly){
+      this.previewPressHandler();
+      this.stoppedUnexpectedly = false;
+    }
+
+      });
   };
 
   recordVideoStateChage() {
