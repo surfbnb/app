@@ -55,7 +55,7 @@ class VideoRecorder extends Component {
       cameraFrontMode: true,
       isLocalVideoPresent: false,
       marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL),
-      currentMode: 'NORMAL'
+      currentMode: ''
     };
     // this.currentMode = 'NORMAL';
     this.videoUrlsList = [];
@@ -591,13 +591,15 @@ class VideoRecorder extends Component {
   }
 
   progressBarStateUpdate = () => {
+    console.log('progressBarStateUpdate--');
     if(! this.state.isRecording) return;
-      let progress =  this.state.progress + PROGRESS_FACTOR ;
+      let currentProgress =  this.state.progress ;
+      let progress = currentProgress + PROGRESS_FACTOR ;
       this.videoLength = progress * 100 * 300;
-      if (this.state.progress < 1) {
+      console.log('this.state.progress');
+      if (currentProgress <= 1) {
         this.setState({ progress });
       } else {
-        clearInterval(this.progressInterval);
         this.stopRecording();
       }
   }
@@ -609,10 +611,13 @@ class VideoRecorder extends Component {
   }
 
   intervalManager(flag, animate, time) {
-    if(flag)
+    if(flag){
       intervalID =  setInterval(animate, time);
-    else
+    } else {
+      console.log('clearInterval::clearInterval');
       clearInterval(intervalID);
+    }
+
   }
 
   recordVideoAsync = async () => {
