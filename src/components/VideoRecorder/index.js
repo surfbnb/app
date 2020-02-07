@@ -88,7 +88,7 @@ class VideoRecorder extends Component {
     }
     if ( prevProps.showLightBoxOnReply != this.props.showLightBoxOnReply ) {
       this.setState({showLightBoxOnReply: this.props.showLightBoxOnReply })
-    } 
+    }
   }
 
   isStaleReduxObjectPresent(){
@@ -589,7 +589,6 @@ class VideoRecorder extends Component {
       let currentProgress =  this.state.progress ;
       let progress = currentProgress + PROGRESS_FACTOR ;
       this.videoLength = progress * 100 * 300;
-      console.log('this.state.progress');
       if (currentProgress <= 1) {
         this.setState({ progress });
       } else {
@@ -613,11 +612,13 @@ class VideoRecorder extends Component {
   preRecording = () => {
     //Start after some delya as actual recording starts after some delay.
     this.changeIsRecording(true);
+    this.recordActionButton.styleAsDisabled(true);
     clearTimeout(this.preRecordingTimeOut);
     console.log("AppConfig.videoRecorderConstants.recordingDelay" , AppConfig.videoRecorderConstants.recordingDelay);
     this.preRecordingTimeOut = setTimeout(() => {
       this.progressBarStateUpdate();
       this.initProgressBar();
+      this.recordActionButton.styleAsDisabled(false);
       this.recordActionButton.loopedAnimation().start();
     }, AppConfig.videoRecorderConstants.recordingDelay);
   }
@@ -650,13 +651,13 @@ class VideoRecorder extends Component {
       this.intervalManager(false);
     }
 
-    //TODO start if this video length is less than 0 return 
+    //TODO start if this video length is less than 0 return
     let videoLength = this.state.progress * 100 * 300;
     console.log("recordVideoAsync - videoLength - ", videoLength , data) ;
     this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
     this.appendNewBar();
-    //TODO end if this video length is less than 0 return 
-    
+    //TODO end if this video length is less than 0 return
+
     //Stop recording
     this.stopRecording(stopNativeRecording);
 
