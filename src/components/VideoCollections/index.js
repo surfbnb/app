@@ -54,6 +54,7 @@ class VideoCollections extends PureComponent {
         let fetchUrl = this.props.getFetchUrl();
         let params = this.props.getFetchParams();
         this.videoPagination = new Pagination(fetchUrl , null , null ,params);
+        this.state.loadingNext = false;
         this.bindPaginationEvents();
     }
 
