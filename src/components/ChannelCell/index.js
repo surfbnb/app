@@ -62,12 +62,12 @@ class ChannelCell extends PureComponent {
           // ****************************************************************************************************** //
           // Toast.show({text:'You have joined channel successfully!', icon: 'success' });
         } else {
-            Toast.show({text:'Could not join channel!', icon: 'error' });
+            Toast.show({text:'Could not join community!', icon: 'error' });
         }
       })
       .catch((err) => {
-        Toast.show({text:'Could not join channel!', icon: 'error' });
-        console.log('Join channel failed', err);
+        Toast.show({text:'Could not join community!', icon: 'error' });
+        console.log('Join community failed', err);
       })
   }
 
