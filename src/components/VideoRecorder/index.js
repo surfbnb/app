@@ -491,8 +491,8 @@ class VideoRecorder extends Component {
     </View>
   };
 
-  stopRecording = () => {
-    this.camera && this.camera.stopRecording();
+  stopRecording = (stopNativeRecording=true) => {
+    stopNativeRecording && this.camera && this.camera.stopRecording();
     this.changeIsRecording(false);
     this.changeCurrentMode(null);
     this.recordActionButton.stopAnimation();
@@ -635,11 +635,13 @@ class VideoRecorder extends Component {
     if (!this.camera) return;
     this.preRecording();
     let data;
+    let stopNativeRecording = false;
     try{
         data = await this.camera.recordAsync(this.getRecordingOptions());
     } catch(exception) {
       console.log('recordVideoAsync:::::catch', exception);
       this.goToLastProgress();
+      stopNativeRecording = true;
       return;
     } finally {
       //Just incase of video recording ends before the time starts.
@@ -656,7 +658,7 @@ class VideoRecorder extends Component {
     //TODO end if this video length is less than 0 return 
     
     //Stop recording
-    this.stopRecording();
+    this.stopRecording(stopNativeRecording);
 
     //If application goes Inactive while recording go to preview screen
     if(this.stoppedUnexpectedly){
