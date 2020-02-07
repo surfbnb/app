@@ -654,6 +654,8 @@ class VideoRecorder extends Component {
       clearTimeout(this.preRecordingTimeOut);
        // for clearInterval
       this.intervalManager(false);
+      // Release button disabled status as soon as video recording completed or failed.
+      this.recordActionButton.styleAsDisabled(false);
     }
 
     this.sanitizeSegments(data);
