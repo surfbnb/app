@@ -108,19 +108,19 @@ class ChannelsScreen extends PureComponent {
         const tagName = deepGet( ReduxGetters.getHashTag(this.selectedTagId) , "text" , "");
         if(tagName){
             return {
-                "noResultsMsg": `No videos tagged #${tagName}.`,
+                "noResultsMsg": `No videos for this tag.`,
                 "isEmpty": true
             };  
         }
         return {
-            "noResultsMsg": `No videos tagged.`,
+            "noResultsMsg": `No videos in this community.`,
             "isEmpty": true
         };
     }
 
     getNoResultsCell = (item) => {
         return <EmptySearchResult noResultsData={item}>
-                    <Text style={erroMsgStyle.msgStyle}>Please try again later.</Text>
+                    <Text style={erroMsgStyle.msgStyle}>Create the first video!</Text>
                </EmptySearchResult>
     }
 
