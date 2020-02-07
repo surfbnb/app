@@ -27,7 +27,6 @@ import multipleClickHandler from "../../services/MultipleClickHandler";
 import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 import Pricer from "../../services/Pricer";
 import Toast from "../../theme/components/NotificationToast";
-import utilities from '../../services/Utilities';
 import RecordActionButton from './RecordActionButton';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
@@ -499,7 +498,7 @@ class VideoRecorder extends Component {
     stopNativeRecording && this.camera && this.camera.stopRecording();
     this.changeIsRecording(false);
     this.changeCurrentMode(null);
-    this.recordActionButton.stopAnimation();
+    this.recordActionButton && this.recordActionButton.stopAnimation();
   };
 
   appendNewBar = () => {
@@ -616,14 +615,14 @@ class VideoRecorder extends Component {
   preRecording = () => {
     //Start after some delya as actual recording starts after some delay.
     this.changeIsRecording(true);
-    this.recordActionButton.styleAsDisabled(true);
+    this.recordActionButton && this.recordActionButton.styleAsDisabled(true);
     clearTimeout(this.preRecordingTimeOut);
     console.log("AppConfig.videoRecorderConstants.recordingDelay" , AppConfig.videoRecorderConstants.recordingDelay);
     this.preRecordingTimeOut = setTimeout(() => {
       this.progressBarStateUpdate();
       this.initProgressBar();
-      this.recordActionButton.styleAsDisabled(false);
-      this.recordActionButton.loopedAnimation().start();
+      this.recordActionButton && this.recordActionButton.styleAsDisabled(false);
+      this.recordActionButton && this.recordActionButton.loopedAnimation().start();
     }, AppConfig.videoRecorderConstants.recordingDelay);
   }
 
@@ -654,7 +653,7 @@ class VideoRecorder extends Component {
        // for clearInterval
       this.intervalManager(false);
       // Release button disabled status as soon as video recording completed or failed.
-      this.recordActionButton.styleAsDisabled(false);
+      this.recordActionButton && this.recordActionButton.styleAsDisabled(false);
     }
 
     this.sanitizeSegments(data);
