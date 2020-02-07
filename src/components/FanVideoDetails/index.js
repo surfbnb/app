@@ -153,7 +153,7 @@ class FanVideoDetails extends Component {
       params['replyAmount'] = this.props.recordedVideo.reply_amount;
     }
 
-    this.props.navigation.setParams();
+    this.props.navigation.setParams(params);
 
     this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
     this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));

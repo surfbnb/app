@@ -106,7 +106,7 @@ class VideoRecorder extends Component {
   }
 
   isStaleReduxObjectPresent(){
-     let acceptableKeys = ['reply_obj', 'video_type'];
+     let acceptableKeys = ['reply_obj', 'video_type', 'video_desc'];
      for (let key in this.recordedVideoObj) {
       if (! acceptableKeys.includes(key)){
         return true;
