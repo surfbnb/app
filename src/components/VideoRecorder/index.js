@@ -323,6 +323,7 @@ class VideoRecorder extends Component {
           ref={(ref) => {
             this.camera = ref;
           }}
+          keepAudioSession={true}
           style={styles.cameraViewSkipFont}
           type={this.state.cameraFrontMode ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back}
           ratio={AppConfig.cameraConstants.RATIO}
