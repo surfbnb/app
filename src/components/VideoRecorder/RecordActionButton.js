@@ -18,9 +18,16 @@ class RecordActionButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scale: new Animated.Value(ANIM_FROM_VAL)
+      scale: new Animated.Value(ANIM_FROM_VAL),
+      styleAsDisabled: false
     };
   }
+
+  styleAsDisabled = (action = true) => {
+    this.setState({
+      styleAsDisabled: action
+    });
+  };
 
   loopedAnimation = () => {
     return Animated.loop(
@@ -74,8 +81,8 @@ class RecordActionButton extends Component {
         delayLongPress={AppConfig.videoRecorderConstants.longPressDelay}
         activeOpacity={0.9}
       >
-        <View style={[ {position: 'relative'},  {opacity: this.props.disabled ? 0.5 : 1} ]}>
-          <Animated.View style={[styles.outerCircle, animationStyle]}></Animated.View>
+        <View style={[ {position: 'relative'},  {opacity: (this.props.disabled || this.state.styleAsDisabled) ? 0.5 : 1} ]}>
+          <Animated.View style={[styles.outerCircle, animationStyle]} />
           {this.props.children}
         </View>
       </TouchableOpacity>
