@@ -7,7 +7,7 @@ import inlineStyles from './styles';
 
 const deletedChannelInfo = () => (<View style={inlineStyles.container}>
                     <Image style={inlineStyles.imgSizeSkipFont} source={channelNotAvailable} />
-                    <Text style={inlineStyles.desc}>The channel you were looking for does not exist!</Text>
+                    <Text style={inlineStyles.desc}>The community you were looking for does not exist!</Text>
                 </View>);
 
 export default withNavigation(deletedChannelInfo);
