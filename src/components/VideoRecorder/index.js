@@ -454,6 +454,7 @@ class VideoRecorder extends Component {
   };
 
   previewButton = () => {
+    console.log("previewButton", this.isRecording() , this.videoUrlsList.length );
     if (this.isRecording() || this.videoUrlsList.length === 0) {
       return <View style={{flex:1}}/>
     }
@@ -547,7 +548,6 @@ class VideoRecorder extends Component {
   };
 
   handleOnPressIn = () => {
-    console.log("handleOnPressIn**********");
     if(this.isRecording()){
       this.stopRecording();
     } else {
@@ -556,14 +556,12 @@ class VideoRecorder extends Component {
   }
 
   handleOnPressOut = () => {
-    console.log("handleOnPressOut**********");
      if (this.isLongPressRecordingMode() && this.isRecording()){
       this.stopRecording();
     }
   };
 
   handleOnPress = () => {
-    console.log("handleOnPress**********");
     if (this.isRecording()) {
       this.changeCurrentMode(TAP_TO_RECORD);
     } else {
@@ -714,8 +712,6 @@ class VideoRecorder extends Component {
       clearTimeout(this.preRecordingTimeOut);
        // for clearInterval
       this.intervalManager(false);
-      //Stop recording 
-      this.stopRecording();
     }
 
     //TODO start if this video length is less than 0 return 
@@ -725,6 +721,9 @@ class VideoRecorder extends Component {
     this.appendNewBar();
     //TODO end if this video length is less than 0 return 
     
+    //Stop recording 
+    this.stopRecording();
+
     //If application goes Inactive while recording go to preview screen
     if(this.stoppedUnexpectedly){
       this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
