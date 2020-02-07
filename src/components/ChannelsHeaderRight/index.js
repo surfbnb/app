@@ -30,7 +30,7 @@ class ChannelsHeaderRight extends PureComponent {
           3: 'cancel'
         },
         actionSheetConfig: {
-          options: [this.getMuteOptionText(), 'Leave Channel', 'Report Channel', 'Cancel'],
+          options: [this.getMuteOptionText(), 'Leave Community', 'Report Community', 'Cancel'],
           cancelButtonIndex: 3,
           destructiveButtonIndex: 2
         }
@@ -41,7 +41,7 @@ class ChannelsHeaderRight extends PureComponent {
           1: 'cancel'
         },
         actionSheetConfig: {
-          options: ['Report Channel', 'Cancel'],
+          options: ['Report Community', 'Cancel'],
           cancelButtonIndex: 1,
           destructiveButtonIndex: 0
         }
