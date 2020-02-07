@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {TouchableOpacity, Image, Alert} from "react-native";
+import {TouchableOpacity, Image, Alert, Clipboard} from "react-native";
 import {connect} from 'react-redux';
 import multipleClickHandler from "../../../services/MultipleClickHandler";
 import report_icon from '../../../assets/report_video.png';
@@ -30,20 +30,23 @@ class ReportVideo extends PureComponent {
   getDefaultConfig() {
     return {
       currentUserVideoConfig: {
+        actionConfig: {
+          0: "copyVideoId" //function name in component mapped to index in actionSheetConfig options array
+        },
         actionSheetConfig: {
-          options: [`Video Id: ${this.props.entityId}`, 'Cancel'],
+          options: [`Copy Video Id: ${this.props.entityId}`, 'Cancel'],
           cancelButtonIndex: 1  //Cancel button index in options array
         }
       },
       loginVideoConfig: {
         actionConfig: {
           0: "showMuteUnmuteAlert",   //function name in component mapped to index in actionSheetConfig options array
-          2: "showReportVideoAlert"   //function name in component mapped to index in actionSheetConfig options array
+          1: "showReportVideoAlert"   //function name in component mapped to index in actionSheetConfig options array
         },
         actionSheetConfig: {
-          options: [this.getActionSheetMuteUnmuteText(), `Video Id: ${this.props.entityId}`, 'Report', 'Cancel'],
-          cancelButtonIndex: 3,  //Cancel button index in options array
-          destructiveButtonIndex: 2, //Red button index in options array
+          options: [this.getActionSheetMuteUnmuteText(), 'Report', 'Cancel'],
+          cancelButtonIndex: 2,  //Cancel button index in options array
+          destructiveButtonIndex: 1, //Red button index in options array
           title: 'Select user action'
         }
       },
@@ -139,6 +142,15 @@ class ReportVideo extends PureComponent {
       [{text: 'Report', onPress: () => this.reportVideo()},
         {text: 'Cancel', style: 'cancel'}],
       {cancelable: true});
+  }
+
+  copyVideoId = async() => {
+    try{
+      await Clipboard.setString(this.props.entityId);
+      Toast.show({text: "Copied to Clipboard", icon:'success'});
+    } catch {
+      console.log("Copy failed!!");
+    }
   }
   
   reportVideo = () => {
