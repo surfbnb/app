@@ -31,6 +31,7 @@ class Base extends PureComponent {
     this.currentVideoTime = 0;
     this.seekCount = 0;
     this.appStateTimeOut = 0;
+    this.isVideoPlayedOnLoad = false;
     this.cachedVideoUri = this.props.cachedvideoUrl;
     this.cancleVideoHandling = this.cancleVideoHandling.bind(this);
   }
@@ -49,10 +50,6 @@ class Base extends PureComponent {
         video_length: this.props.totalDuration,
         previewURL:  this.props.previewURL
     }));
-    setTimeout(()=> {
-      if(!this.shouldPlay()) return;
-      this.playVideo();
-    }, 100)
   }
 
   playVideo(state={} , callback ){
@@ -185,7 +182,11 @@ class Base extends PureComponent {
       return { uri:this.props.previewURL };
   }
 
-  handleLoad= () => {};
+  handleLoad= () => {
+    if(!this.shouldPlay() || this.isVideoPlayedOnLoad) return;
+    this.isVideoPlayedOnLoad =  true;
+    this.playVideo();
+  };
 
   onVideoLoadError = () => {};
 
