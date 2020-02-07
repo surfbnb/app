@@ -34,7 +34,7 @@ class ChannelsScreen extends PureComponent {
 
     static navigationOptions = (options) => {
         const channelId =  options.navigation.getParam('channelId'),
-              name = options.navigation.getParam('headerTitle') || ReduxGetters.getChannelName(channelId)
+              name = options.navigation.getParam('headerTitle') || ReduxGetters.getChannelName(channelId),
               isDeleted = options.navigation.getParam('isDeleted') || false
         ;
         return {
