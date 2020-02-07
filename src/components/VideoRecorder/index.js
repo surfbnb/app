@@ -320,7 +320,6 @@ class VideoRecorder extends Component {
           zoom={0}
           pictureSize={AppConfig.cameraConstants.PICTURE_SIZE}
           captureMode='video'
-          autoFocusPointOfInterest={utilities.isAndroid() ? { x: 0.5, y: 0.5 } : {}}
           notAuthorizedView={
             <View>
               <Text>The camera is not authorized!</Text>
