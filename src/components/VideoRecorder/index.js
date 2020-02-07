@@ -488,10 +488,10 @@ class VideoRecorder extends Component {
   };
 
   stopRecording = () => {
+    this.camera && this.camera.stopRecording();
     this.changeIsRecording(false);
     this.changeCurrentMode(null);
     this._stopRecordingAnimation();
-    this.camera && this.camera.stopRecording();
   };
 
   appendNewBar = () => {
@@ -546,6 +546,7 @@ class VideoRecorder extends Component {
   };
 
   handleOnPressIn = () => {
+    console.log("handleOnPressIn**********");
     if(this.isRecording()){
       this.stopRecording();
     } else {
@@ -554,12 +555,14 @@ class VideoRecorder extends Component {
   }
 
   handleOnPressOut = () => {
+    console.log("handleOnPressOut**********");
      if (this.isLongPressRecordingMode() && this.isRecording()){
       this.stopRecording();
     }
   };
 
   handleOnPress = () => {
+    console.log("handleOnPress**********");
     if (this.isRecording()) {
       this.changeCurrentMode(TAP_TO_RECORD);
     } else {
@@ -611,7 +614,7 @@ class VideoRecorder extends Component {
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableOpacity
           disabled={this.actionButtonDisabled}
-          onPressIn={this.handleOnPressIn}
+          onPressIn={multipleClickHandler(this.handleOnPressIn) }
           onPressOut={this.handleOnPressOut}
           onPress={this.handleOnPress}
           onLongPress={this.handleOnLongPress}
@@ -661,8 +664,6 @@ class VideoRecorder extends Component {
       }
   }
 
-
-
   initProgressBar() {
       this.intervalManager(true , this.progressBarStateUpdate, 300);
   }
@@ -706,20 +707,22 @@ class VideoRecorder extends Component {
     } catch(exception) {
       console.log('recordVideoAsync:::::catch', exception);
       this.goToLastProgress();
-      this.changeIsRecording(false);
       return;
     } finally {
       //Just incase of video recording ends before the time starts.
       clearTimeout(this.preRecordingTimeOut);
        // for clearInterval
       this.intervalManager(false);
+      //Stop recording 
+      this.stopRecording();
     }
 
+    //TODO start if this video length is less than 0 return 
     let videoLength = this.state.progress * 100 * 300;
-    console.log("recordVideoAsync - videoLength - ", videoLength);
+    console.log("recordVideoAsync - videoLength - ", videoLength , data) ;
     this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
     this.appendNewBar();
-    this.changeIsRecording(false);
+    //TODO end if this video length is less than 0 return 
     
     //If application goes Inactive while recording go to preview screen
     if(this.stoppedUnexpectedly){
