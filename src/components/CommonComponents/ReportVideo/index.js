@@ -143,7 +143,7 @@ class ReportVideo extends PureComponent {
   
   reportVideo = () => {
     new PepoApi(DataContract.actionSheet.video.reportApi)
-      .post({report_entity_kind: this.props.reportKind, report_entity_id: this.props.entityId})
+      .post({report_entity_kind: this.props.entityKind, report_entity_id: this.props.entityId})
       .then((response) => {
         this.onReportVideo(response);
       })
