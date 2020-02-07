@@ -523,13 +523,13 @@ class VideoRecorder extends Component {
           toValue: 1.8,
           duration: 500,
           easing: Easing.inOut(Easing.ease),
-          // useNativeDriver: true
+          useNativeDriver: true
         }),
         Animated.timing(this.state.scale, {
           toValue: 1,
           duration: 500,
           easing: Easing.inOut(Easing.ease),
-          // useNativeDriver: true
+          useNativeDriver: true
         })
       ])
     );
@@ -541,7 +541,7 @@ class VideoRecorder extends Component {
       toValue: 1,
       duration: 500,
       easing: Easing.inOut(Easing.ease),
-      // useNativeDriver: true
+      useNativeDriver: true
     }).start();
   };
 
@@ -599,12 +599,12 @@ class VideoRecorder extends Component {
 
     let modColor = this.state.scale.interpolate({
       inputRange: [1, 1.000001, 1.8],
-      outputRange: ['rgba(255, 85, 102, 0.75)', 'rgba(255, 85, 102, 0.9)', 'rgba(255, 85, 102, 1)'],
+      outputRange: [0.5, 0.9, 1],
       extrapolate: 'clamp',
     });
 
     let animationStyle = {
-      borderColor: modColor,
+      opacity: modColor,
       transform: [{scale: this.state.scale}]
     };
 

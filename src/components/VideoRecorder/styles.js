@@ -40,7 +40,7 @@ let stylesMap = {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    borderColor: 'rgba(255, 85, 102, 0.9)'
+    borderColor: 'rgb(255, 85, 102)'
   },
   innerCircle: {
     width: 50,
