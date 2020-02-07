@@ -27,6 +27,7 @@ const userActionEvents = new EventEmitter();
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
     const name = navigation.getParam('headerTitle') || reduxGetter.getName(navigation.getParam('userId'));
+    const isDeleted = navigation.getParam('isDeleted') || false;
     return {
       title: name,
       headerBackTitle: null,
@@ -45,7 +46,7 @@ export default class UsersProfile extends Component {
         fontFamily: 'AvenirNext-Medium'
       },
       headerBackImage: <BackArrow />,
-      headerRight: <UserProfileActionSheet userId={navigation.getParam('userId')} userActionEvents={userActionEvents}  />
+      headerRight: <UserProfileActionSheet userId={navigation.getParam('userId')} userActionEvents={userActionEvents} isDeleted = {isDeleted} />
     };
   };
 
@@ -86,6 +87,7 @@ export default class UsersProfile extends Component {
   onUserResponse = ( res ) => {
     if(utilities.isEntityDeleted(res)){
       this.setState({isDeleted: true});
+      this.props.navigation.setParams({ isDeleted: true});
       return
     }
     let userName =  deepGet(res,  `data.users.${this.userId}.name` , "");

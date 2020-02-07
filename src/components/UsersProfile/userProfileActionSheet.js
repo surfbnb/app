@@ -234,7 +234,9 @@ class UserProfileActionSheet extends PureComponent {
     render() {
         return (
           <React.Fragment>
+            {!this.props.isDeleted && (
             <ShareOptions entityId={this.props.userId} entityKind={'user'}/>
+            )}
             <TouchableWithoutFeedback onPress={this.showActionSheet}>
                 <View style={inlineStyles.reportIconWrapper}>
                     <Image source={UserProfileOptions} style={inlineStyles.userProfileOptionSkipFont}></Image>
@@ -244,6 +246,9 @@ class UserProfileActionSheet extends PureComponent {
         );
     }
 
+}
+UserProfileActionSheet.defaultProps ={
+  isDeleted : false
 }
 
 
