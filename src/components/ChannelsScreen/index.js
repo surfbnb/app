@@ -1,6 +1,8 @@
 
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { View, Text} from 'react-native';
+
 import Common from '../../theme/styles/Common';
 import ChannelTagsList from '../ChannelTagsList';
 import VideoCollections from '../VideoCollections';
@@ -19,6 +21,14 @@ import ChannelsHeaderRight from '../ChannelsHeaderRight';
 import PixelCall from "../../services/PixelCall";
 import {NavigationEvents} from "react-navigation";
 import erroMsgStyle from "../CommonComponents/EmptySearchResult/style";
+import NotificationPermissionModal from '../NotificationPermissionModal';
+import CurrentUser from '../../models/CurrentUser';
+
+const mapStateToProps = (state) => {
+    return {
+      userId: CurrentUser.getUserId()
+    };
+  };
 
 class ChannelsScreen extends PureComponent {
 
@@ -55,9 +65,27 @@ class ChannelsScreen extends PureComponent {
         this.videoListRef = null;
         this.selectedTagId = 0;
         this.state = {
-            isDeleted: false
+            isDeleted: false,
+            permissionModalVisible:null
         }
     }
+
+    componentDidMount(){
+        this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
+            this.getPermissions();
+        });
+    }
+
+    componentWillUnmount() {
+        this.didFocus && this.didFocus.remove && this.didFocus.remove();
+    }
+
+    getPermissions (){
+        Utilities.getItem(`notification-permission-show-${this.props.userId}`).then((value)=> {
+          let permissionButtonClicked = value === 'true';
+          this.setState({permissionModalVisible: !permissionButtonClicked })
+        });
+      }
 
     onTagClicked = (item) => {
       this.selectedTag = item;
@@ -140,6 +168,10 @@ class ChannelsScreen extends PureComponent {
         this.props.navigation.setParams({ headerTitle:videoName });
     };
 
+    onPermissionModalDismiss = () => {
+        this.setState({permissionModalVisible: false});
+    }
+
     render(){
         if(this.state.isDeleted){
             return <DeletedChannelInfo/>
@@ -157,10 +189,13 @@ class ChannelsScreen extends PureComponent {
                     entityId={this.channelId}
                     entityType={DataContract.knownEntityTypes.channel}
                 />
+                {this.state.permissionModalVisible && 
+                <NotificationPermissionModal userId={this.props.userId}
+                                             onPermissionModalDismiss={this.onPermissionModalDismiss}/>}
             </View>
         )
     }
 
 }
 
-export default ChannelsScreen;
+export default connect(mapStateToProps)(ChannelsScreen);
