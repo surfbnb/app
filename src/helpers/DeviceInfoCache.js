@@ -16,7 +16,7 @@ class DeviceInfoCache {
             this.deviceName = await DeviceInfo.getDeviceName();
             return this.deviceName;
         }catch(error){
-            console.warn("Falied to get deviceName",  error);
+            console.warn("Failed to get deviceName",  error);
         }
     }
 
@@ -25,7 +25,7 @@ class DeviceInfoCache {
             this.userAgent = await DeviceInfo.getUserAgent();
             return this.userAgent;
         }catch(error){
-            console.warn("Falied to get userAgent",  error);
+            console.warn("Failed to get userAgent",  error);
         }
     }
 

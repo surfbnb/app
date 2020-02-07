@@ -29,6 +29,9 @@ import Theme from "../../theme/styles";
 import multipleClickHandler from "../../services/MultipleClickHandler";
 import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 import Pricer from "../../services/Pricer";
+import Toast from "../../theme/components/NotificationToast";
+import RecordActionButton from './RecordActionButton';
+
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -72,7 +75,7 @@ class VideoRecorder extends Component {
     }
     if ( prevProps.showLightBoxOnReply != this.props.showLightBoxOnReply ) {
       this.setState({showLightBoxOnReply: this.props.showLightBoxOnReply })
-    } 
+    }
   }
 
 
