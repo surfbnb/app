@@ -4,9 +4,8 @@ import {
   View,
   Image,
   Text,
-  Easing,
   BackHandler,
-  AppState, Animated, Alert
+  AppState, Alert
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import deleteCameraSegment  from '../../assets/delete_camera_segment.png';
@@ -29,6 +28,8 @@ import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 import Pricer from "../../services/Pricer";
 import Toast from "../../theme/components/NotificationToast";
 import utilities from '../../services/Utilities';
+import RecordActionButton from './RecordActionButton';
+
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
@@ -47,8 +48,7 @@ class VideoRecorder extends Component {
       showLightBoxOnReply: this.props.showLightBoxOnReply,
       cameraFrontMode: true,
       isLocalVideoPresent: false,
-      currentMode: null,
-      scale: new Animated.Value(1)
+      currentMode: null
     };
     /*
      these variables are used because setting state variables is async task
@@ -492,7 +492,7 @@ class VideoRecorder extends Component {
     this.camera && this.camera.stopRecording();
     this.changeIsRecording(false);
     this.changeCurrentMode(null);
-    this._stopRecordingAnimation();
+    this.recordActionButton.stopAnimation();
   };
 
   appendNewBar = () => {
@@ -503,47 +503,6 @@ class VideoRecorder extends Component {
     this.separationBars.push((
       <View key={`progress-${Date.now()}`} style={[styles.separationBarsStyle, {left: `${progress}%`}, progress === 100 ? {height:0, width:0} : {}]}>
       </View>));
-  };
-
-  // showTooltip = () => {
-  //   if (this.isRecording()){
-  //     return <></>;
-  //   }
-  //   return <View style={styles.tooltipWrapper}>
-  //     <Text style={styles.tooltipStyle}>
-  //       {this.state.currentMode === LONG_PRESS_TO_RECORD ? "Hold to record": "Tap to record" }
-  //     </Text>
-  //     <View style={styles.tooltipLowerTriangle } />
-  //   </View>;
-  // };
-
-  _recordingAnimation = () => {
-    return Animated.loop(
-      Animated.sequence([
-        Animated.timing(this.state.scale, {
-          toValue: 1.8,
-          duration: 500,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true
-        }),
-        Animated.timing(this.state.scale, {
-          toValue: 1,
-          duration: 500,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true
-        })
-      ])
-    );
-
-  };
-
-  _stopRecordingAnimation = () => {
-    Animated.spring(this.state.scale, {
-      toValue: 1,
-      duration: 500,
-      easing: Easing.inOut(Easing.ease),
-      useNativeDriver: true
-    }).start();
   };
 
   handleOnPressIn = () => {
@@ -578,11 +537,11 @@ class VideoRecorder extends Component {
     }
   };
 
-  stopIcon = () => <View style={styles.squareIcon}></View>
+  stopIcon = () => <View style={styles.squareIcon} />
 
-  captureIcon = () => <View style={[styles.innerCircle]}></View>
+  captureIcon = () => <View style={[styles.innerCircle]} />
 
-  getSource = () => {
+  getIcon = () => {
     if (this.isRecording()){
       return this.state.currentMode === TAP_TO_RECORD ? this.stopIcon() : this.captureIcon();
     } else {
@@ -598,41 +557,14 @@ class VideoRecorder extends Component {
       this.actionButtonDisabled = false;
     }
 
-    let modColor = this.state.scale.interpolate({
-      inputRange: [1, 1.000001, 1.8],
-      outputRange: [0.5, 0.9, 1],
-      extrapolate: 'clamp',
-    });
-
-    let animationStyle = {
-      opacity: modColor,
-      transform: [{scale: this.state.scale}]
-    };
-
-      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity
-          disabled={this.actionButtonDisabled}
-          onPressIn={multipleClickHandler(this.handleOnPressIn) }
-          onPressOut={this.handleOnPressOut}
-          onPress={this.handleOnPress}
-          onLongPress={this.handleOnLongPress}
-          delayLongPress={AppConfig.videoRecorderConstants.longPressDelay}
-          activeOpacity={0.9}
-        >
-          <View style={[ {position: 'relative'},  this.getDisabledButtonStyle() ]}>
-            <Animated.View style={[styles.outerCircle, animationStyle]}></Animated.View>
-            {this.getSource()}
-          </View>
-        </TouchableOpacity>
-      </View>
-  }
-
-  getDisabledButtonStyle = () => {
-    if(this.videoLength >= 30000){
-      return {opacity: 0.5}
-    } else {
-      return {opacity: 1}
-    }
+    return <RecordActionButton
+      disabled={this.actionButtonDisabled}
+      onPressIn={this.handleOnPressIn}
+      onPressOut={this.handleOnPressOut}
+      onPress={this.handleOnPress}
+      onLongPress={this.handleOnLongPress}
+      ref={(ref) => (this.recordActionButton = ref)}
+    >{this.getIcon()}</RecordActionButton>
   }
 
   flipButton() {
@@ -683,7 +615,7 @@ class VideoRecorder extends Component {
     this.preRecordingTimeOut = setTimeout(() => {
       this.progressBarStateUpdate();
       this.initProgressBar();
-      this._recordingAnimation().start();
+      this.recordActionButton.loopedAnimation().start();
     }, AppConfig.videoRecorderConstants.recordingDelay);
   }
 
