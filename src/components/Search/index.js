@@ -58,7 +58,7 @@ const TabMap = {
   "channels": {
     id: CHANNEL_KIND,
     baseUrl : '/search/channels',
-    title: 'Channels',
+    title: 'Communities',
     "queryParam": "q",
     "noResultsData": {
       "noResultsMsg": 'No results found. Please try again.',

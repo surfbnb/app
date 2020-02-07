@@ -83,7 +83,7 @@ class ChannelsHeaderRight extends PureComponent {
 
   onMuteNotification(response) {
     if (response && response.success) {
-      Toast.show({ text: 'Channel muted successfully!', icon: 'success' });
+      Toast.show({ text: 'Community notifications off!', icon: 'success' });
     } else {
       Toast.show({ text: ostErrors.getUIErrorMessage("channel_mute_failure"), icon: 'error' });
     }
@@ -102,7 +102,7 @@ class ChannelsHeaderRight extends PureComponent {
 
   onUnMuteNotification(response) {
     if (response && response.success) {
-      Toast.show({ text: 'Channel unmuted successfully!', icon: 'success' });
+      Toast.show({ text: 'Community notifications on!', icon: 'success' });
     } else {
       Toast.show({ text: ostErrors.getUIErrorMessage("channel_unmute_failure"), icon: 'error' });
     }
@@ -125,7 +125,7 @@ class ChannelsHeaderRight extends PureComponent {
 
   onReportChannel(response) {
     if (response && response.success) {
-      Toast.show({ text: 'Channel reported successfully!', icon: 'success' });
+      Toast.show({ text: 'Community reported successfully!', icon: 'success' });
     } else {
       Toast.show({ text: ostErrors.getUIErrorMessage("report_channel_failure"), icon: 'error' });
     }
@@ -147,14 +147,14 @@ class ChannelsHeaderRight extends PureComponent {
       // ******************************************************************************************************* //
          // Commenting out the below toast line as the requirement by UX is not to show the toast success message! //
       // ******************************************************************************************************* //
-      // Toast.show({ text: 'Channel left successfully!', icon: 'success' }); //
+      // Toast.show({ text: 'Community left successfully!', icon: 'success' }); //
     } else {
       Toast.show({ text:ostErrors.getUIErrorMessage("leave_channel_failure") , icon: 'error' });
     }
   }
 
   showReportAlert = () => {
-    Alert.alert('', 'Report channel for inappropriate content or abuse?',
+    Alert.alert('', 'Report community for inappropriate content or abuse?',
       [{ text: 'Report', onPress: () => this.reportChannel() },
         { text: 'Cancel', style : 'cancel' }],
       { cancelable: true }
@@ -162,7 +162,7 @@ class ChannelsHeaderRight extends PureComponent {
   };
 
   showLeaveChannelAlert = () => {
-    Alert.alert('', 'Leave channel for inappropriate content or abuse?',
+    Alert.alert('', 'Leave community?',
       [{ text: 'Leave', onPress: () => this.leaveChannel() },
         { text: 'Cancel', style : 'cancel' }],
       { cancelable: true }
@@ -170,7 +170,7 @@ class ChannelsHeaderRight extends PureComponent {
   };
 
   showMuteChannelAlert = () => {
-    Alert.alert('', 'Mute channel ?',
+    Alert.alert('', 'Turn Community Notification Off',
       [{ text: 'Mute', onPress: () => this.muteNotifications() },
         { text: 'Cancel', style : 'cancel' }],
       { cancelable: true }
@@ -178,7 +178,7 @@ class ChannelsHeaderRight extends PureComponent {
   };
 
   showUnMuteChannelAlert = () => {
-    Alert.alert('', 'UnMute channel ?',
+    Alert.alert('', 'Turn Community Notification On',
       [{ text: 'UnMute', onPress: () => this.unMuteNotifications() },
         { text: 'Cancel', style : 'cancel' }],
       { cancelable: true }
