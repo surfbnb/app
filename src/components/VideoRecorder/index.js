@@ -311,6 +311,7 @@ class VideoRecorder extends Component {
           ratio={AppConfig.cameraConstants.RATIO}
           zoom={0}
           pictureSize={AppConfig.cameraConstants.PICTURE_SIZE}
+          captureMode='video'
           autoFocusPointOfInterest={utilities.isAndroid() ? { x: 0.5, y: 0.5 } : {}}
           notAuthorizedView={
             <View>
