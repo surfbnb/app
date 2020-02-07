@@ -57,6 +57,7 @@ class VideoRecorder extends Component {
     this.shallowIsRecording = false;
     this.stoppedUnexpectedly = false;
     this.actionButtonDisabled = false;
+    this.isInActiveTimeOut = 0;
     this.intervalID = null;
     this.videoUrlsList = [];
     this.separationBars = [];
@@ -66,16 +67,18 @@ class VideoRecorder extends Component {
   }
 
   _handleAppStateChange = (nextAppState) => {
-
-      if(nextAppState === 'inactive' || nextAppState === 'background'){
-        if (this.isRecording()){
-          this.stoppedUnexpectedly = true;
-          this.stopRecording();
-        } else {
-          this.stoppedUnexpectedly = false;
-          this.videoUrlsList.length && this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+      clearTimeout(this.isInActiveTimeOut);
+      this.isInActiveTimeOut = setTimeout(()=> {
+        if(nextAppState === 'inactive' || nextAppState === 'background'){
+          if (this.isRecording()){
+            this.stoppedUnexpectedly = true;
+            this.stopRecording();
+          } else {
+            this.stoppedUnexpectedly = false;
+            this.videoUrlsList.length && this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+          }
         }
-      }
+      } , 300)
   };
 
   componentDidUpdate(prevProps, prevState){

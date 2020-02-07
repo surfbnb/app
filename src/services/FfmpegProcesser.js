@@ -153,7 +153,7 @@ class FfmpegProcesser {
       command +=  `-i ${this.inputFiles[index]} `;
       complexFilter += `[${index}:v][${index}:a]`
     }
-    command += `-filter_complex ${complexFilter}concat=n=${this.inputFiles.length}:v=1:a=1[v][a] -map [v] -map [a] -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -crf ${AppConfig.compressionConstants.CRF} -preset ${AppConfig.compressionConstants.PRESET} -pix_fmt ${AppConfig.compressionConstants.PIX_FMT} -vcodec h264 ${this.outputPath}`;
+    command += `-filter_complex ${complexFilter}concat=n=${this.inputFiles.length}:v=1:a=1[v][a] -map [v] -map [a] -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -crf ${AppConfig.compressionConstants.CRF} -preset ${AppConfig.compressionConstants.PRESET} -pix_fmt ${AppConfig.compressionConstants.PIX_FMT} -vcodec h264 -ss 00:00:00.0 -t 00:00:30.0 ${this.outputPath}`;
     return command;
   }
 
