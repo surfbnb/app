@@ -6,7 +6,7 @@ import feedLinkIcon from '../assets/Link.png';
 import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
 import {CUSTOM_TAB_Height} from "../theme/constants";
 import {hasNotch} from "../helpers/NotchHelper";
-import {Dimensions, StatusBar} from "react-native";
+import {Dimensions, StatusBar, Platform} from "react-native";
 import {RESULTS} from 'react-native-permissions';
 
 const statusBarHeight = StatusBar.currentHeight || 0 ;
@@ -44,6 +44,13 @@ const AppConfig = {
   pepoAnimationDuration : 500,
   logoutTimeOut : 2000,
   loginPopoverShowTime: 10000,
+
+  videoRecorderConstants : {
+    longPressDelay : __DEV__ ? 2000 : 500,
+    recordingDelay : Platform.OS == "android" ? 1200 : 600,
+    tabToRecord : "TAP_TO_RECORD",
+    longPressToRecord : "LONG_PRESS_TO_RECORD"
+  },
 
   beKnownErrorCodeMaps : {
     entityDeleted: "not_found",

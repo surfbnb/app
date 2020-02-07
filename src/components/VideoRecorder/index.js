@@ -5,11 +5,9 @@ import {
   Image,
   Text,
   Easing,
-  TouchableWithoutFeedback,
   BackHandler,
-  AppState, Dimensions, Animated, Alert
+  AppState, Animated, Alert
 } from 'react-native';
-import {PanGestureHandler} from 'react-native-gesture-handler';
 import { RNCamera } from 'react-native-camera';
 import deleteCameraSegment  from '../../assets/delete_camera_segment.png';
 import flipIcon from '../../assets/flip_camera.png';
@@ -17,14 +15,13 @@ import ProgressBar from 'react-native-progress/Bar';
 import styles from './styles';
 import reduxGetters from '../../services/ReduxGetters';
 import RNFS from 'react-native-fs';
-import { ActionSheet, Button } from 'native-base';
+import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/camera-cross-icon.png';
 import closeIconWhite from '../../assets/cross-icon-white.png';
 import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
-import deepGet from 'lodash/get';
 import LinearGradient from "react-native-linear-gradient";
 import Theme from "../../theme/styles";
 import multipleClickHandler from "../../services/MultipleClickHandler";
@@ -37,11 +34,8 @@ const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_FACTOR = 0.01;
 
-const ELEMENT_WIDTH = 80;
-const MARGIN_LEFT_NORMAL =  (Dimensions.get('screen').width / 2 ) - ((ELEMENT_WIDTH + 4 )  /2);
-const MARGIN_LEFT_HANDS_FREE =  (Dimensions.get('screen').width / 2 ) - ((ELEMENT_WIDTH + 4) /2) - (ELEMENT_WIDTH + 4);
-const TAP_TO_RECORD = 'TAP_TO_RECORD';
-const LONG_PRESS_TO_RECORD = 'LONG_PRESS_TO_RECORD';
+const TAP_TO_RECORD = AppConfig.videoRecorderConstants.tabToRecord;
+const LONG_PRESS_TO_RECORD = AppConfig.videoRecorderConstants.longPressToRecord;
 
 class VideoRecorder extends Component {
   constructor(props) {
@@ -49,12 +43,10 @@ class VideoRecorder extends Component {
     this.state = {
       isRecording: false,
       progress: 0,
-      recordingInProgress: false,
       acceptedCameraTnC: this.props.acceptedCameraTnC,
       showLightBoxOnReply: this.props.showLightBoxOnReply,
       cameraFrontMode: true,
       isLocalVideoPresent: false,
-      marginLeft: new Animated.Value(MARGIN_LEFT_NORMAL),
       currentMode: null,
       scale: new Animated.Value(1)
     };
@@ -76,7 +68,7 @@ class VideoRecorder extends Component {
   _handleAppStateChange = (nextAppState) => {
 
       if(nextAppState === 'inactive' || nextAppState === 'background'){
-        if (this.state.isRecording){
+        if (this.isRecording()){
           this.stoppedUnexpectedly = true;
           this.stopRecording();
         } else {
@@ -155,7 +147,6 @@ class VideoRecorder extends Component {
   }
 
   cancelVideo = () => {
-    this.discardVideo = true;
     this.stopRecording();
   };
 
@@ -422,7 +413,7 @@ class VideoRecorder extends Component {
   };
 
   previewPressHandler = () => {
-    if (this.discardVideo) return;
+    if (this.isRecording()) return;
     // This will take from VideoRecorder to PreviewRecordedVideo component
     let videoLength = this.state.progress * 100 * 300;
     if(videoLength <= 1000) {
@@ -430,7 +421,6 @@ class VideoRecorder extends Component {
       return;
     }
     this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
-
   };
 
   onBackPress = () => {
@@ -463,7 +453,7 @@ class VideoRecorder extends Component {
   };
 
   previewButton = () => {
-    if (this.state.isRecording || this.videoUrlsList.length === 0) {
+    if (this.isRecording() || this.videoUrlsList.length === 0) {
       return <View style={{flex:1}}/>
     }
     return <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
@@ -500,7 +490,6 @@ class VideoRecorder extends Component {
   stopRecording = () => {
     this.changeIsRecording(false);
     this.changeCurrentMode(null);
-    // this.setState({isRecording:false});
     this._stopRecordingAnimation();
     this.camera && this.camera.stopRecording();
   };
@@ -516,7 +505,7 @@ class VideoRecorder extends Component {
   };
 
   // showTooltip = () => {
-  //   if (this.state.isRecording){
+  //   if (this.isRecording()){
   //     return <></>;
   //   }
   //   return <View style={styles.tooltipWrapper}>
@@ -557,63 +546,35 @@ class VideoRecorder extends Component {
   };
 
   handleOnPressIn = () => {
-    console.log('************handleOnPressIn isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
-
-    if(this.state.isRecording || this.shallowIsRecording){
+    if(this.isRecording()){
       this.stopRecording();
-      // this.changeCurrentMode(null);
-      // this.setState({currentMode : null});
     } else {
       this.recordVideoAsync();
     }
-    console.log('************After:handleOnPressIn isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
-
-
   }
 
   handleOnPressOut = () => {
-    console.log('************handleOnPressOut isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
-
-    if ((this.state.currentMode === LONG_PRESS_TO_RECORD || this.shallowCurrentMode === LONG_PRESS_TO_RECORD ) && (this.state.isRecording || this.shallowIsRecording)){
+     if (this.isLongPressRecordingMode() && this.isRecording()){
       this.stopRecording();
-      // this.changeCurrentMode(null);
-      // this.setState({currentMode: null});
     }
-
-    console.log('************After:handleOnPressOut isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
-
-
   };
 
   handleOnPress = () => {
-    console.log('************handleOnPress isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
-
-    if (this.state.isRecording || this.shallowIsRecording) {
+    if (this.isRecording()) {
       this.changeCurrentMode(TAP_TO_RECORD);
-      // this.setState({currentMode: TAP_TO_RECORD});
     } else {
       // Just for safety.
       this.changeCurrentMode(null);
-      // this.setState({currentMode: null});
     }
-
-    console.log('************After:handleOnPress isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
-
   };
 
   handleOnLongPress = () => {
-    console.log('************handleOnLongPress isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
-
-    if (this.state.isRecording || this.shallowIsRecording) {
+    if (this.isRecording()) {
       this.changeCurrentMode(LONG_PRESS_TO_RECORD);
-      // this.setState({currentMode: LONG_PRESS_TO_RECORD});
     } else {
       // Just for safety.
       this.changeCurrentMode(null);
-      // this.setState({currentMode: null});
     }
-
-    console.log('************After:handleOnLongPress isRecording: '+ this.state.isRecording +' shallowIsRecording: '+ this.shallowIsRecording + ' Mode: ' + this.state.currentMode + ' ShallowMode:'+ this.shallowCurrentMode);
   };
 
   stopIcon = () => <View style={styles.squareIcon}></View>
@@ -621,7 +582,7 @@ class VideoRecorder extends Component {
   captureIcon = () => <View style={[styles.innerCircle]}></View>
 
   getSource = () => {
-    if (this.state.isRecording){
+    if (this.isRecording()){
       return this.state.currentMode === TAP_TO_RECORD ? this.stopIcon() : this.captureIcon();
     } else {
       return this.captureIcon();
@@ -647,8 +608,6 @@ class VideoRecorder extends Component {
       transform: [{scale: this.state.scale}]
     };
 
-    let onPressCallback, source;
-
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableOpacity
           disabled={this.actionButtonDisabled}
@@ -656,7 +615,7 @@ class VideoRecorder extends Component {
           onPressOut={this.handleOnPressOut}
           onPress={this.handleOnPress}
           onLongPress={this.handleOnLongPress}
-          delayLongPress={2000}
+          delayLongPress={AppConfig.videoRecorderConstants.longPressDelay}
           activeOpacity={0.9}
         >
           <View style={[ {position: 'relative'},  this.getDisabledButtonStyle() ]}>
@@ -676,7 +635,7 @@ class VideoRecorder extends Component {
   }
 
   flipButton() {
-    if (!this.state.isRecording) {
+    if (!this.isRecording()) {
       return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <TouchableOpacity onPress={this.flipCamera} activeOpacity={0.75}>
@@ -690,7 +649,7 @@ class VideoRecorder extends Component {
   }
 
   progressBarStateUpdate = () => {
-    if(! this.state.isRecording) return;
+    if(!this.isRecording()) return;
       let currentProgress =  this.state.progress ;
       let progress = currentProgress + PROGRESS_FACTOR ;
       this.videoLength = progress * 100 * 300;
@@ -717,53 +676,59 @@ class VideoRecorder extends Component {
 
   }
 
-  recordVideoAsync =  () => {
-    if (!this.camera) return;
-    let currentTime = Date.now();
-    const options = {
+  preRecording = () => {
+    //Start after some delya as actual recording starts after some delay.
+    this.changeIsRecording(true);
+    clearTimeout(this.preRecordingTimeOut);
+    console.log("AppConfig.videoRecorderConstants.recordingDelay" , AppConfig.videoRecorderConstants.recordingDelay);
+    this.preRecordingTimeOut = setTimeout(() => {
+      this.progressBarStateUpdate();
+      this.initProgressBar();
+      this._recordingAnimation().start();
+    }, AppConfig.videoRecorderConstants.recordingDelay);
+  }
+
+  getRecordingOptions = () => {
+    return {
       quality: RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY],
       base64: true,
       muted: false,
       orientation:  'portrait'
     };
-    let data;
-    this.recordVideoStateChage();
-    this.changeIsRecording(true);
-    this.setState({isRecording:true},
-      async ()=> {
-        this.progressBarStateUpdate();
-        this.initProgressBar();
-        this._recordingAnimation().start();
-        try{
-           data = await this.camera.recordAsync(options);
-        } catch(exception) {
-          console.log('recordVideoAsync:::::catch', exception);
-          this.goToLastProgress();
-          this.changeIsRecording(false);
-          // this.setState({ isRecording: false });
-          return;
-        } finally {
-          // for clearInterval
-          this.intervalManager(false);
-        }
-        let videoLength = this.state.progress * 100 * 300;
-        console.log(videoLength, 'videoLength');
-        this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
-        this.appendNewBar();
-        this.changeIsRecording(false);
-        // this.setState({ isRecording: false });
-        if(this.stoppedUnexpectedly){
-          this.previewPressHandler();
-          this.stoppedUnexpectedly = false;
-        }
+  }
 
-      });
+  recordVideoAsync = async () => {
+    if (!this.camera) return;
+    this.preRecording();
+    let data;
+    try{
+        data = await this.camera.recordAsync(this.getRecordingOptions());
+    } catch(exception) {
+      console.log('recordVideoAsync:::::catch', exception);
+      this.goToLastProgress();
+      this.changeIsRecording(false);
+      return;
+    } finally {
+      //Just incase of video recording ends before the time starts.
+      clearTimeout(this.preRecordingTimeOut);
+       // for clearInterval
+      this.intervalManager(false);
+    }
+
+    let videoLength = this.state.progress * 100 * 300;
+    console.log("recordVideoAsync - videoLength - ", videoLength);
+    this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
+    this.appendNewBar();
+    this.changeIsRecording(false);
+    
+    //If application goes Inactive while recording go to preview screen
+    if(this.stoppedUnexpectedly){
+      this.previewPressHandler();
+      this.stoppedUnexpectedly = false;
+    }
+
   };
 
-  recordVideoStateChage() {
-    // this.setState({ isRecording: true });
-    this.discardVideo = false;
-  }
 
   changeIsRecording = (isRecording) => {
     this.setState({ isRecording });
@@ -775,9 +740,17 @@ class VideoRecorder extends Component {
     this.shallowCurrentMode = currentMode;
   }
 
+  isRecording = () => {
+    return this.state.isRecording || this.shallowIsRecording ;
+  }
+
+  isLongPressRecordingMode =( ) => {
+    return this.state.currentMode === LONG_PRESS_TO_RECORD || this.shallowCurrentMode === LONG_PRESS_TO_RECORD ;
+  }
 
   componentWillUnmount() {
-    this.recordVideoStateChage = () => {};
+    AppState.removeEventListener('change', this._handleAppStateChange);
+    BackHandler.removeEventListener('hardwareBackPress', this._handleBackPress);
     this.recordVideoAsync = () => {};
     this.progressBarStateUpdate = () => {};
     this.stopRecording = () => {};
@@ -789,8 +762,6 @@ class VideoRecorder extends Component {
     this.handleOnPressOut = () => {};
     this.handleOnPress = () => {};
     this.handleOnLongPress = () => {};
-    AppState.removeEventListener('change', this._handleAppStateChange);
-    BackHandler.removeEventListener('hardwareBackPress', this._handleBackPress);
     this.shallowCurrentMode = null;
     this.shallowIsRecording = false;
   }
