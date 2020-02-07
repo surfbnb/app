@@ -185,7 +185,9 @@ class Base extends PureComponent {
   handleLoad= () => {
     if(!this.shouldPlay() || this.isVideoPlayedOnLoad) return;
     this.isVideoPlayedOnLoad =  true;
-    this.playVideo();
+    setTimeout(()=> {
+      this.playVideo();
+    } , 100);
   };
 
   onVideoLoadError = () => {};
