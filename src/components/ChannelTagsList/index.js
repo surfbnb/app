@@ -80,6 +80,10 @@ class ChannelTagsList extends PureComponent {
         );
     }
 
+    onScrollToIndexFailed =( info) => {
+        console.log("======onScrollToIndexFailed=====" , info );
+    }
+
     render() {
         return this.tagIds && (
             <View style={inlineStyles.tagListWrapper}>
@@ -92,6 +96,7 @@ class ChannelTagsList extends PureComponent {
                     ref={(ref) => (this.flatlistRef = ref)}
                     extraData={this.state.selectedTag}
                     initialScrollIndex={this.initialScrollIndex}
+                    onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
             </View>
         )
