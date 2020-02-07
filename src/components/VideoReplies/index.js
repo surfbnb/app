@@ -68,18 +68,20 @@ class VideoRepliesScreen extends PureComponent {
 
     componentDidMount(){
       this.listener = this.animatedValue.addListener(this.onAnimatedValueChange);
-      setTimeout(()=> {
-        this.setState({
-          showBackdrop: true,
-          videoUploaderVisible: ReduxGetters.getVideoProcessingStatus()
-        });
-
-      }, 300)
+      setTimeout(this.initState, 300);
       videoUploaderComponent.on('show', this.showVideoUploader);
       videoUploaderComponent.on('hide', this.hideVideoUploader);
     }
 
+    initState = () => {
+      this.setState({
+        showBackdrop: true,
+        videoUploaderVisible: ReduxGetters.getVideoProcessingStatus()
+      });
+    }
+
     componentWillUnmount() {
+      this.initState = () => {};
       this.onAnimatedValueChange= () => {};
       this.showVideoUploader = () => {};
       this.hideVideoUploader = () => {};

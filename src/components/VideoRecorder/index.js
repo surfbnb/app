@@ -73,7 +73,7 @@ class VideoRecorder extends Component {
           this.stopRecording();
         } else {
           this.stoppedUnexpectedly = false;
-          this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+          this.videoUrlsList.length && this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
         }
       }
   };
@@ -454,7 +454,6 @@ class VideoRecorder extends Component {
   };
 
   previewButton = () => {
-    console.log("previewButton", this.isRecording() , this.videoUrlsList.length );
     if (this.isRecording() || this.videoUrlsList.length === 0) {
       return <View style={{flex:1}}/>
     }
@@ -721,7 +720,7 @@ class VideoRecorder extends Component {
     this.appendNewBar();
     //TODO end if this video length is less than 0 return 
     
-    //Stop recording 
+    //Stop recording
     this.stopRecording();
 
     //If application goes Inactive while recording go to preview screen
@@ -765,8 +764,6 @@ class VideoRecorder extends Component {
     this.handleOnPressOut = () => {};
     this.handleOnPress = () => {};
     this.handleOnLongPress = () => {};
-    this.shallowCurrentMode = null;
-    this.shallowIsRecording = false;
   }
 
   render() {
