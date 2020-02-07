@@ -44,12 +44,12 @@ const UIErros = {
   bt_exceeds_bal_amount_error : `Sorry, you don't have enough Pepo Coins for this transactions.`,
   video_reply_not_allowed: 'Reply is not allowed for this video.',
   video_reply_not_allowed_low_bal: (requiredPepo) => `Reply for ${requiredPepo} Pepo Coins.`,
-  channel_unmute_failure : `Channel unmute failed.`,
-  channel_mute_failure : `Channel mute failed.`,
-  report_channel_failure : `Channel report failed.`,
-  leave_channel_failure :`Channel leave failed`,
-  share_via_qrcode_failure : `error in share via qrcode`,
-  pay_user_via_qrcode_failure : `error in pay via qrcode `
+  channel_unmute_failure : "Community unmute failed.",
+  channel_mute_failure : "Community mute failed.",
+  report_channel_failure : "Community report failed.",
+  leave_channel_failure : "Community leave failed",
+  share_via_qrcode_failure : "Error in share via QR Code",
+  pay_user_via_qrcode_failure : "Error in pay via QR Code "
 
 };
 

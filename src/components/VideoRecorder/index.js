@@ -34,6 +34,7 @@ const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_FACTOR = 0.01;
+const MIN_VIDEO_LENGTH_IN_SEC = 1;
 
 const TAP_TO_RECORD = AppConfig.videoRecorderConstants.tabToRecord;
 const LONG_PRESS_TO_RECORD = AppConfig.videoRecorderConstants.longPressToRecord;
@@ -66,6 +67,11 @@ class VideoRecorder extends Component {
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
   }
 
+  accidentalGoToPreviewScreen = () => {
+    this.stoppedUnexpectedly = false;
+    this.videoUrlsList.length && this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+  };
+
   _handleAppStateChange = (nextAppState) => {
       clearTimeout(this.isInActiveTimeOut);
       this.isInActiveTimeOut = setTimeout(()=> {
@@ -74,8 +80,7 @@ class VideoRecorder extends Component {
             this.stoppedUnexpectedly = true;
             this.stopRecording();
           } else {
-            this.stoppedUnexpectedly = false;
-            this.videoUrlsList.length && this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+            this.accidentalGoToPreviewScreen();
           }
         }
       } , 300)
@@ -315,7 +320,6 @@ class VideoRecorder extends Component {
           zoom={0}
           pictureSize={AppConfig.cameraConstants.PICTURE_SIZE}
           captureMode='video'
-          autoFocusPointOfInterest={utilities.isAndroid() ? { x: 0.5, y: 0.5 } : {}}
           notAuthorizedView={
             <View>
               <Text>The camera is not authorized!</Text>
@@ -649,25 +653,40 @@ class VideoRecorder extends Component {
       clearTimeout(this.preRecordingTimeOut);
        // for clearInterval
       this.intervalManager(false);
+      // Release button disabled status as soon as video recording completed or failed.
+      this.recordActionButton.styleAsDisabled(false);
     }
 
-    //TODO start if this video length is less than 0 return
-    let videoLength = this.state.progress * 100 * 300;
-    console.log("recordVideoAsync - videoLength - ", videoLength , data) ;
-    this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
-    this.appendNewBar();
-    //TODO end if this video length is less than 0 return
+    this.sanitizeSegments(data);
 
     //Stop recording
     this.stopRecording(stopNativeRecording);
 
     //If application goes Inactive while recording go to preview screen
-    if(this.stoppedUnexpectedly){
-      this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
-      this.stoppedUnexpectedly = false;
+    if(this.stoppedUnexpectedly) {
+      this.accidentalGoToPreviewScreen();
     }
 
   };
+
+  sanitizeSegments = (data) => {
+    let videoLength = this.state.progress * 100 * 300;
+    let lastSegmentProgress = this.getLastSegmentDuration(this.state.progress);
+    if( lastSegmentProgress >= MIN_VIDEO_LENGTH_IN_SEC / 30 ){
+      this.videoUrlsList.push({uri: data.uri, progress: this.state.progress});
+      this.appendNewBar();
+    } else {
+      this.goToLastProgress();
+    }
+  };
+
+  getLastSegmentDuration(progress){
+    if (this.videoUrlsList.length >= 1){
+      return progress - this.videoUrlsList[this.videoUrlsList.length - 1].progress;
+    } else {
+      return progress;
+    }
+  }
 
 
   changeIsRecording = (isRecording) => {
