@@ -28,6 +28,7 @@ import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 import Pricer from "../../services/Pricer";
 import Toast from "../../theme/components/NotificationToast";
 import RecordActionButton from './RecordActionButton';
+import Utilities from '../../services/Utilities';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
@@ -72,18 +73,27 @@ class VideoRecorder extends Component {
   };
 
   _handleAppStateChange = (nextAppState) => {
-      clearTimeout(this.isInActiveTimeOut);
-      this.isInActiveTimeOut = setTimeout(()=> {
-        if(nextAppState === 'inactive' || nextAppState === 'background'){
-          if (this.isRecording()){
-            this.stoppedUnexpectedly = true;
-            this.stopRecording();
-          } else {
-            this.accidentalGoToPreviewScreen();
-          }
-        }
-      } , 300)
+      //On Android video recording is stopped by the module itself so no throttel.
+      if(Utilities.isAndroid()){
+        this._onAppStateChange(nextAppState);
+      }else{
+        clearTimeout(this.isInActiveTimeOut);
+        this.isInActiveTimeOut = setTimeout(()=> {
+          this._onAppStateChange(nextAppState);
+        } , 300);
+      }
   };
+
+  _onAppStateChange = ( nextAppState ) => {
+    if(nextAppState === 'inactive' || nextAppState === 'background'){
+      if (this.isRecording()){
+        this.stoppedUnexpectedly = true;
+        this.stopRecording();
+      } else {
+        this.accidentalGoToPreviewScreen();
+      }
+    }
+  }
 
   componentDidUpdate(prevProps, prevState){
     //@Mayur change this code. Catch the ref and update the state directly
