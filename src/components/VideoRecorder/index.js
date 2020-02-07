@@ -73,7 +73,7 @@ class VideoRecorder extends Component {
           this.stopRecording();
         } else {
           this.stoppedUnexpectedly = false;
-          this.previewPressHandler();
+          this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
         }
       }
   };
@@ -723,7 +723,7 @@ class VideoRecorder extends Component {
     
     //If application goes Inactive while recording go to preview screen
     if(this.stoppedUnexpectedly){
-      this.previewPressHandler();
+      this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
       this.stoppedUnexpectedly = false;
     }
 
