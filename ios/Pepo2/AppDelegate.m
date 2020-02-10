@@ -26,6 +26,16 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
 //static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.v2.production";
 
 @implementation AppDelegate
+
++ (NSArray *)getPepoDomains
+{
+    static NSArray *_domains;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _domains = @[@"https://stagingpepo.com/", @"https://pepo.com/", @"https://sandboxpepo.com/"];
+    });
+    return _domains;
+}
  
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -104,11 +114,22 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
   BOOL handled;
  
+  // Firebase consume valid links and throw errors, hence first handle the whitelisted domains
+  // And then let Firebase do it job.
+  if ([self isWhiteListedUrl:url]) {
+    handled = [RCTLinkingManager application:app openURL:url options:options];
+    if (handled) {
+      return handled;
+    }
+  }
+  
+  // If we are not able to handle whitelisted domains, let firebase handle it here
   handled = [[RNFirebaseLinks instance] application:app openURL:url options:options];
   if (handled) {
     return handled;
   }
   
+  // If links are neither whitelsted nor handled by Firebase, fallback
   handled = [RCTLinkingManager application:app openURL:url options:options];
   if (handled) {
     return handled;
@@ -117,7 +138,6 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
   
   return YES;
 }
-
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
@@ -128,21 +148,53 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
 #endif
 }
 
+-(BOOL) isWhiteListedUrl:(NSURL *) url {
+  // Get whitelisted Pepo Domains
+  NSArray<NSString *> *domains = [[self class] getPepoDomains];
+  
+  // Check if domain is whitelisted or not
+  BOOL isWhiteListedDomain = false;
+  for (NSString *domain in domains) {
+    if ([[url absoluteString] hasPrefix:domain]) {
+      isWhiteListedDomain = true;
+      continue;
+    }
+  }
+  
+  return isWhiteListedDomain;
+}
+
 - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
  restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
 {
-  BOOL handled = [[RNFirebaseLinks instance] application:application
+  
+  // Get the URL from userActivity
+  NSURL *url = userActivity.webpageURL;
+    
+  // Firebase consume valid links and throw errors, hence first handle the whitelisted domains
+  // And then let Firebase do it job.
+  BOOL handled = NO;
+  if ([self isWhiteListedUrl:url]) {
+    handled = [RCTLinkingManager application:application
+                              continueUserActivity:userActivity
+                                restorationHandler:restorationHandler];
+    if ( handled ) {
+       return handled;
+    }
+  }
+  
+  // If we are not able to handle whitelisted domains, let firebase handle it here
+  handled = [[RNFirebaseLinks instance] application:application
                                     continueUserActivity:userActivity
                                       restorationHandler:restorationHandler];
-  
   if ( handled ) {
     return handled;
   }
 
+  // If links are neither whitelsted nor handled by Firebase, fallback
   handled = [RCTLinkingManager application:application
                            continueUserActivity:userActivity
                              restorationHandler:restorationHandler];
-
   return handled;
   
 }
