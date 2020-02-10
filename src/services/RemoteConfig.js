@@ -1,6 +1,7 @@
 import firebase from 'react-native-firebase';
 import assignIn from "lodash/assignIn";
 import DefaultConstants from '../constants/RemoteConfigDefaults';
+import appConfig from '../constants/AppConfig';
 
 class RemoteConfig {
 
@@ -32,7 +33,7 @@ class RemoteConfig {
     }
 
     firebaseConfigFetch(){
-        firebase.config().fetch()
+        firebase.config().fetch(appConfig.remoteConfigCacheTimeout)
             .then(() => {
                 console.log('Activating remote fetched data...');
                 return firebase.config().activateFetched();
