@@ -58,6 +58,7 @@ class VideoRecorder extends Component {
     this.shallowIsRecording = false;
     this.stoppedUnexpectedly = false;
     this.actionButtonDisabled = false;
+    this.isBackgroundHonoured = false;
     this.isInActiveTimeOut = 0;
     this.intervalID = null;
     this.videoUrlsList = [];
@@ -75,17 +76,18 @@ class VideoRecorder extends Component {
   _handleAppStateChange = (nextAppState) => {
       //On Android video recording is stopped by the module itself so no throttel.
       if(Utilities.isAndroid()){
-        this._onAppStateChange(nextAppState);
-      }else{
-        clearTimeout(this.isInActiveTimeOut);
-        this.isInActiveTimeOut = setTimeout(()=> {
-          this._onAppStateChange(nextAppState);
-        } , 300);
+        if(nextAppState === 'inactive' || nextAppState === 'background') {
+          this._onAppStateChangeToBackground();
+        }
+      }else {
+        if( ! this.isBackgroundHonoured &&  (nextAppState === 'inactive' || nextAppState === 'background' )) {
+          this.isBackgroundHonoured = true;
+          this._onAppStateChangeToBackground();
+        }
       }
   };
 
-  _onAppStateChange = ( nextAppState ) => {
-    if(nextAppState === 'inactive' || nextAppState === 'background'){
+  _onAppStateChangeToBackground = ( ) => {
       if (this.isRecording()){
         this.stoppedUnexpectedly = true;
         this.stopRecording();
@@ -93,7 +95,7 @@ class VideoRecorder extends Component {
         this.accidentalGoToPreviewScreen();
       }
     }
-  }
+
 
   componentDidUpdate(prevProps, prevState){
     //@Mayur change this code. Catch the ref and update the state directly
