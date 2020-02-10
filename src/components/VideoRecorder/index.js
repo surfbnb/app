@@ -480,7 +480,7 @@ class VideoRecorder extends Component {
     return <View style={{flex :1, alignItems: 'center', justifyContent: 'center'}}>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
       <TouchableOpacity onPress={this.onBackPress}>
-      <Image style={styles.backIconSkipFont} source={deleteCameraSegment}/>
+        <Image style={styles.backIconSkipFont} source={deleteCameraSegment}/>
       </TouchableOpacity>
       <LinearGradient
         colors={['#ff7499', '#ff5566']}
@@ -489,7 +489,7 @@ class VideoRecorder extends Component {
           borderRadius: 3,
           paddingLeft: 10,
           paddingRight: 10,
-          marginLeft:8
+          marginLeft: 12
         }}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}

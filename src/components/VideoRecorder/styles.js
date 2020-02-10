@@ -190,8 +190,8 @@ let stylesMap = {
     transform: [{ rotate: '45deg'}]
   },
   backIconSkipFont: {
-    height: 18,
-    width: 28
+    height: 19.55,
+    width: 28.8
   },
 
   separationBarsStyle: {
