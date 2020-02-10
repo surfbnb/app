@@ -222,6 +222,7 @@ class NavigateTo {
 
   __navigate(screenName, payload) {
     if (!screenName) return;
+    if (Utilities.isCameraScreen()) return;
     if (this.navigation) {
       this.navigation.navigate(screenName, payload);
     } else {
@@ -231,6 +232,7 @@ class NavigateTo {
 
   __push(screenName, payload, idKey, idValue) {
     if (!screenName || !this.navigation) return;
+    if (Utilities.isCameraScreen()) return;
     payload = payload || {};
     if(idKey && idValue) payload[idKey] = idValue;
     this.navigation.push(screenName, payload);

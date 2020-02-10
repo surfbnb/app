@@ -15,7 +15,7 @@ import DataContract from '../constants/DataContract';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import * as RNLocalize from "react-native-localize";
 import momentTimezone from 'moment-timezone';
-import {navigateTo} from "../helpers/navigateTo";
+import NavigationService from './NavigationService';
 
 let CurrentUser, PepoApi;
 import('../models/CurrentUser').then((imports) => {
@@ -35,7 +35,7 @@ let checkVideoPermission = function(navigation, params ) {
     CameraPermissionsApi.requestPermission('microphone').then((microphoneResult) => {
       if (cameraResult == AppConfig.permisssionStatusMap.granted && microphoneResult == AppConfig.permisssionStatusMap.granted) {
         console.log('checkVideoPermission:cameraResult', cameraResult);
-        console.log('checkVideoPermission:microphoneResult', navigateTo ,  navigateTo.navigation.getParam("channelId"));
+        console.log('checkVideoPermission:microphoneResult', microphoneResult);
         navigation.navigate('CaptureVideo', params);
       } else if ( cameraResult == AppConfig.permisssionStatusMap.denied || microphoneResult == AppConfig.permisssionStatusMap.denied
          || cameraResult == AppConfig.permisssionStatusMap.blocked  || microphoneResult ==  AppConfig.permisssionStatusMap.blocked
@@ -273,6 +273,10 @@ export default {
 
   isChannelPage(state) {
     return this.getLastChildRoutename(state) == AppConfig.channelConstants.SCREEN_NAME;
+  },
+
+  isCameraScreen() {
+    return AppConfig.cameraScreens.includes(NavigationService.findCurrentRoute());
   }
 
 };

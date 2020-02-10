@@ -456,6 +456,8 @@ const AppConfig = {
   channelConstants : {
     SCREEN_NAME : "ChannelsScreen"
   },
+
+  cameraScreens : [ 'CaptureVideo', 'FanVideoDetails', 'FanVideoReplyDetails' ],
   stitchingStatus: {
     done: 'DONE',
     failed: 'FAILED',
