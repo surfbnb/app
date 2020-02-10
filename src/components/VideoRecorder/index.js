@@ -515,12 +515,12 @@ class VideoRecorder extends Component {
   };
 
   appendNewBar = () => {
-    let progress = Math.floor(this.state.progress * 100);
+    let progress = this.state.progress * 100;
     // for last segment we need a invisible view else there will be a problem when segment is deleted.
     // That is why height :0 , width : 0 is given
     // Problem: On every delete segment, we delete one red segment line and one white separator.
     this.separationBars.push((
-      <View key={`progress-${Date.now()}`} style={[styles.separationBarsStyle, {left: `${progress}%`}, progress === 100 ? {height:0, width:0} : {}]}>
+      <View key={`progress-${Date.now()}`} style={[styles.separationBarsStyle, {left: `${progress}%`}, progress >= 100 ? {height:0, width:0} : {}]}>
       </View>));
   };
 
