@@ -167,15 +167,13 @@ class loginPopover extends React.Component {
       <Text style={{textAlign: 'center'}}>
         <Text style={inlineStyles.termsTextBlack}>By signing up you confirm that you agree to our </Text>
         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-          // this.closeModal();
-          InAppBrowser.openBrowser(
+          !this.state.disableLoginBtn && InAppBrowser.openBrowser(
             `${WEB_ROOT}/terms`
           );
         })}>Terms of use </Text>
         <Text style={inlineStyles.termsTextBlack}>and </Text>
         <Text style={inlineStyles.termsTextBlue} onPress={multipleClickHandler(() => {
-          // this.closeModal();
-          InAppBrowser.openBrowser(
+          !this.state.disableLoginBtn && InAppBrowser.openBrowser(
             `${WEB_ROOT}/privacy`
           );
         })}>Privacy Policy</Text>
@@ -214,7 +212,7 @@ class loginPopover extends React.Component {
       serviceConfig.pressHandler.apply(this);
       return;
     }
-    
+
     /**
      * This should never happen. But just incase if it dose user can still login.
      * The app wont be blocking for it.
