@@ -458,6 +458,7 @@ const AppConfig = {
   },
 
   cameraScreens : [ 'CaptureVideo', 'FanVideoDetails', 'FanVideoReplyDetails' ],
+
   stitchingStatus: {
     done: 'DONE',
     failed: 'FAILED',

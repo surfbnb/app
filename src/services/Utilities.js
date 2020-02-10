@@ -276,6 +276,7 @@ export default {
   },
 
   isCameraScreen() {
+    console.log('isCameraScreen**********', NavigationService.findCurrentRoute());
     return AppConfig.cameraScreens.includes(NavigationService.findCurrentRoute());
   }
 
