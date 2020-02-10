@@ -413,10 +413,7 @@ class VideoRecorder extends Component {
               {this.plotSeparationBars()}
             </React.Fragment>
           </View>
-
-          <TouchableOpacity onPressIn={this.askCancelConfirmation } style={styles.closeBtWrapper}>
-            <Image style={styles.closeIconSkipFont} source={closeIcon} />
-          </TouchableOpacity>
+          {this.showCancelVideoCTA()}
           <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
           <View>
             {/*{this.showTooltip()}*/}
@@ -432,6 +429,16 @@ class VideoRecorder extends Component {
       );
     }
   };
+
+  showCancelVideoCTA = () => {
+    if (this.isRecording()){
+      return null;
+    }
+    return <TouchableOpacity onPressIn={this.askCancelConfirmation } style={styles.closeBtWrapper}>
+      <Image style={styles.closeIconSkipFont} source={closeIcon} />
+    </TouchableOpacity>
+
+  }
 
   previewPressHandler = () => {
     if (this.isRecording()) return;
