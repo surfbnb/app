@@ -464,7 +464,9 @@ const AppConfig = {
     failed: 'FAILED',
     not_started: 'NOT_STARTED',
     in_progress: 'IN_PROGRESS'
-  }
+  },
+
+  remoteConfigCacheTimeout: 3600
 
 };
 
