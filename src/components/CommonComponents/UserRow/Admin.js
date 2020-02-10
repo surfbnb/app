@@ -13,15 +13,15 @@ const mapStateToProps = (state, ownProps) => {
   }
 
 const adminUser = (props) => (<View style={styles.outerWrapper}>
-                                <View style={styles.innerViewWrapper}>
+                                <View style={[styles.innerViewWrapper, {flex: 1, marginRight: props.isChannelAdmin ? 5 : 0}]}>
                                   <Text style={styles.titleName} numberOfLines={1} ellipsizeMode={'tail'}>
-                                  {props.name.length > 40 ? `${props.name.substring(0, 40)}...` : props.name}
+                                    {props.name}
                                   </Text>
                                   <Text style={styles.titleHandle} numberOfLines={1} ellipsizeMode={'tail'}>
-                                  {props.userName.length > 40 ? `${props.userName.substring(0, 40)}...` : props.userName}
+                                    {props.userName}
                                   </Text>
                                 </View>
-                                {props.isChannelAdmin && (<View style={styles.adminLeafInnerWrapper}>
+                                {props.isChannelAdmin && (<View style={[styles.adminLeafInnerWrapper]}>
                                   <Text style={styles.adminLeafInnerText}>Admin</Text>
                                 </View>)}
                               </View>)
