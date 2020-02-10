@@ -61,10 +61,10 @@ export default class NotificationPermissionModal extends React.PureComponent{
         return (
             <Modal style={styles.backgroundStyle} transparent={true}>
               <View style={styles.wrappedView}>
-                <Text style={styles.headerText}>This is your Pepo inbox - we'll keep you updated.</Text>
+                <Text style={styles.headerText}>Don't miss out!</Text>
       
                 <Text style={styles.smallText}>
-                  Make sure to turn "on" notifications so you don't miss important events, like when you receive Pepo Coins or when someone thanks you. We promise to keep it light.
+                Get updates about important activity, videos, people, and communities you follow.
                 </Text>
       
                 <LinearGradient

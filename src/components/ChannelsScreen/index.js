@@ -70,16 +70,6 @@ class ChannelsScreen extends PureComponent {
         }
     }
 
-    componentDidMount(){
-        this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
-            this.getPermissions();
-        });
-    }
-
-    componentWillUnmount() {
-        this.didFocus && this.didFocus.remove && this.didFocus.remove();
-    }
-
     getPermissions (){
         Utilities.getItem(`notification-permission-show-${this.props.userId}`).then((value)=> {
           let permissionButtonClicked = value === 'true';
@@ -122,10 +112,15 @@ class ChannelsScreen extends PureComponent {
         this.videoListRef &&  this.videoListRef.scrollToIndex(0);
     }
 
+    onJoinSuccess = () => {
+        this.getPermissions();
+    }
+
     listHeaderComponent = () => {
         return (
             <View style={{flex: 1}}>
-                <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}} channelId={this.channelId} onVideoClick={this.onVideoClick}/>
+                <ChannelCell wrapperStyles={{margin: 0, borderRadius: 0}} channelId={this.channelId} 
+                                onVideoClick={this.onVideoClick} onJoinSuccess={this.onJoinSuccess}/>
                 <Description channelId={this.channelId}/>
                 <ChannelTagsList onTagClicked = {this.onTagClicked} channelId={this.channelId} selectedTag={this.selectedTag}/>
             </View>

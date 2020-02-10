@@ -4,7 +4,6 @@ import {
   View,
   Image,
   Text,
-  TouchableWithoutFeedback,
   BackHandler,
   AppState
 } from 'react-native';
@@ -16,21 +15,18 @@ import ProgressBar from 'react-native-progress/Bar';
 import styles from './styles';
 import reduxGetters from '../../services/ReduxGetters';
 import RNFS from 'react-native-fs';
-import { ActionSheet, Button } from 'native-base';
+import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/camera-cross-icon.png';
 import closeIconWhite from '../../assets/cross-icon-white.png';
 import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
-import deepGet from 'lodash/get';
 import LinearGradient from "react-native-linear-gradient";
 import Theme from "../../theme/styles";
 import multipleClickHandler from "../../services/MultipleClickHandler";
 import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 import Pricer from "../../services/Pricer";
-import Toast from "../../theme/components/NotificationToast";
-import RecordActionButton from './RecordActionButton';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;

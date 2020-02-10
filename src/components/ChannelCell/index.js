@@ -61,6 +61,7 @@ class ChannelCell extends PureComponent {
              // Commenting out the below toast line as the requirement by UX is not to show the toast success message!
           // ****************************************************************************************************** //
           // Toast.show({text:'You have joined channel successfully!', icon: 'success' });
+          this.props.onJoinSuccess && this.props.onJoinSuccess();
         } else {
             Toast.show({text:'Could not join community!', icon: 'error' });
         }
