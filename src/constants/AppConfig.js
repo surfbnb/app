@@ -446,7 +446,9 @@ const AppConfig = {
 
   channelConstants : {
     SCREEN_NAME : "ChannelsScreen"
-  }
+  },
+
+  cameraScreens : [ 'CaptureVideo', 'FanVideoDetails', 'FanVideoReplyDetails' ]
 
 };
 
