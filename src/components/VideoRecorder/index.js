@@ -5,7 +5,8 @@ import {
   Image,
   Text,
   BackHandler,
-  AppState, Alert
+  AppState,
+  Alert
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import deleteCameraSegment  from '../../assets/delete_camera_segment.png';
