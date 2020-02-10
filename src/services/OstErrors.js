@@ -43,7 +43,14 @@ const UIErros = {
   min_pepocorns: `Minimum amount allowed is 1 ${Utilities.getPepoCornsName()}.`,
   bt_exceeds_bal_amount_error : `Sorry, you don't have enough Pepo Coins for this transactions.`,
   video_reply_not_allowed: 'Reply is not allowed for this video.',
-  video_reply_not_allowed_low_bal: (requiredPepo) => `Reply for ${requiredPepo} Pepo Coins.`
+  video_reply_not_allowed_low_bal: (requiredPepo) => `Reply for ${requiredPepo} Pepo Coins.`,
+  channel_unmute_failure : "Community unmute failed.",
+  channel_mute_failure : "Community mute failed.",
+  report_channel_failure : "Community report failed.",
+  leave_channel_failure : "Community leave failed",
+  share_via_qrcode_failure : "Error in share via QR Code",
+  pay_user_via_qrcode_failure : "Error in pay via QR Code "
+
 };
 
 const UIWhitelistedErrorCode = {

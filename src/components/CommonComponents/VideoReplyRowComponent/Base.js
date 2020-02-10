@@ -9,7 +9,6 @@ import deepGet from 'lodash/get';
 import inlineStyles from '../../FullScreenReplyCollection/styles';
 
 import ReplyPepoTxBtn from '../../PepoTransactionButton/ReplyPepoTxBtn';
-import VideoReplySupporterStat from '../VideoSupporterStat/VideoReplySupporterStat';
 
 import ReplyVideoBottomStatus from '../../BottomStatus/ReplyVideoBottomStatus';
 import DataContract from '../../../constants/DataContract';
@@ -82,7 +81,7 @@ class Base extends PureComponent {
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
         const pixelParams = {
-            e_entity: 'reply',
+            e_entity: DataContract.knownEntityTypes.reply,
             parent_video_id : this.state.parentVideoId,
             p_name: this.state.parentVideoId,
             reply_detail_id :this.props.replyDetailId,
@@ -136,8 +135,6 @@ class Base extends PureComponent {
 
                             <View style={inlineStyles.touchablesBtns} pointerEvents={'box-none'}>
 
-
-
                               <View style={{ minWidth: '20%' , marginLeft: "auto"}} pointerEvents={'box-none'}>
                                 <View style={{alignItems: 'center', alignSelf: 'flex-end', marginRight: 10}} pointerEvents={'box-none'}>
                                     <ReplyPepoTxBtn
@@ -146,7 +143,7 @@ class Base extends PureComponent {
                                         entityId={this.props.replyDetailId}
                                         getPixelDropData={this.getPixelDropData}
                                     />
-                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentProfileIconClick()})}>
+                                    <TouchableOpacity onPress={multipleClickHandler(()=>{this.onParentProfileIconClick()})} activeOpacity={0.75}>
                                       <ProfilePicture userId={this.state.parentUserId} style={{height: AppConfig.thumbnailListConstants.parentIconHeight,
                                         width: AppConfig.thumbnailListConstants.parentIconWidth,
                                         borderRadius: AppConfig.thumbnailListConstants.parentIconWidth /2,
@@ -157,20 +154,13 @@ class Base extends PureComponent {
                                       />
                                     </TouchableOpacity>
                                     <ReplyShareIcon  entityId={this.props.replyDetailId} url={DataContract.share.getVideoReplyShareApi(this.props.replyDetailId)}/>
-                                    <ReportVideo  userId={this.props.userId} reportEntityId={this.props.replyDetailId} reportKind={'reply'} />
                                  </View>
-
-                                <VideoReplySupporterStat
-                                    entityId={this.props.replyDetailId}
-                                    userId={this.props.userId}
-                                />
                               </View>
                             </View>
 
                             <ReplyVideoBottomStatus
                                 userId={this.props.userId}
-                                entityId={this.props.replyDetailId}
-                            />
+                                entityId={this.props.replyDetailId} />
                         </View>
 
                     )}

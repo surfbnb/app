@@ -13,7 +13,9 @@ const DefaultConstants = {
         GITHUB_AUTH_CALLBACK_ROUTE: 'https://stagingpepo.com/webview/github/oauth',
         GITHUB_CLIENT_ID: '10ca594072962f391504',
         GITHUB_CLIENT_SECRET: 'c4566b51d00527d3f2db54634fdce8e9d00e8a2c',
-        GITHUB_SCOPES: 'read:user user:email'// Need to be space separated
+        GITHUB_SCOPES: 'read:user user:email', // Need to be space separated
+        IOS_AUTH_USERAGENT: '',
+        ANDROID_AUTH_USERAGENT: ''
     },
     'com.pepo.sandbox': {
         TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
@@ -27,7 +29,9 @@ const DefaultConstants = {
         GITHUB_AUTH_CALLBACK_ROUTE: 'https://sandboxpepo.com/webview/github/oauth',
         GITHUB_CLIENT_ID: '8f136ce2ced93725d620',
         GITHUB_CLIENT_SECRET: 'ddf398e94411cd9fb0cc7e30e586f1e4d8199381',
-        GITHUB_SCOPES: 'read:user user:email'// Need to be space separated
+        GITHUB_SCOPES: 'read:user user:email', // Need to be space separated
+        IOS_AUTH_USERAGENT: '',
+        ANDROID_AUTH_USERAGENT: ''
     },
     'com.pepo.v2.sandbox': {
         TWITTER_CONSUMER_KEY: 'qqc45NF23dhKRuNbfsdnHGEkI',
@@ -41,7 +45,9 @@ const DefaultConstants = {
         GITHUB_AUTH_CALLBACK_ROUTE: 'https://sandboxpepo.com/webview/github/oauth',
         GITHUB_CLIENT_ID: '8f136ce2ced93725d620',
         GITHUB_CLIENT_SECRET: 'ddf398e94411cd9fb0cc7e30e586f1e4d8199381',
-        GITHUB_SCOPES: 'read:user user:email'// Need to be space separated
+        GITHUB_SCOPES: 'read:user user:email',// Need to be space separated
+        IOS_AUTH_USERAGENT: '',
+        ANDROID_AUTH_USERAGENT: ''
     },
     'com.pepo.v2.production': {
         TWITTER_CONSUMER_KEY: '53Q0hHEe4Hhartej9lFVWZX4C',
@@ -55,7 +61,9 @@ const DefaultConstants = {
         GITHUB_AUTH_CALLBACK_ROUTE: 'https://pepo.com/webview/github/oauth',
         GITHUB_CLIENT_ID: '268fd72a5df6f45c51f5',
         GITHUB_CLIENT_SECRET: '0a51c76c60fa457ec252a611a1772c48e4744695',
-        GITHUB_SCOPES: 'read:user user:email'// Need to be space separated
+        GITHUB_SCOPES: 'read:user user:email',// Need to be space separated
+        IOS_AUTH_USERAGENT: '',
+        ANDROID_AUTH_USERAGENT: ''
     }
 };
 

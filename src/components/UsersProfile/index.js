@@ -21,11 +21,13 @@ import deepGet from "lodash/get";
 import unescape from'lodash/unescape';
 
 import EventEmitter from "eventemitter3";
+import DataContract from '../../constants/DataContract';
 const userActionEvents = new EventEmitter();
 
 export default class UsersProfile extends Component {
   static navigationOptions = ({ navigation }) => {
     const name = navigation.getParam('headerTitle') || reduxGetter.getName(navigation.getParam('userId'));
+    const isDeleted = navigation.getParam('isDeleted') || false;
     return {
       title: name,
       headerBackTitle: null,
@@ -44,7 +46,7 @@ export default class UsersProfile extends Component {
         fontFamily: 'AvenirNext-Medium'
       },
       headerBackImage: <BackArrow />,
-      headerRight: <UserProfileActionSheet userId={navigation.getParam('userId')} userActionEvents={userActionEvents}  />
+      headerRight: <UserProfileActionSheet userId={navigation.getParam('userId')} userActionEvents={userActionEvents} isDeleted = {isDeleted} />
     };
   };
 
@@ -55,6 +57,7 @@ export default class UsersProfile extends Component {
       isDeleted : reduxGetter.isUserInactive(this.userId)
     }
     this.listRef = null;
+    this.isActionHonored =  false;
   }
 
   componentDidMount(){
@@ -84,10 +87,22 @@ export default class UsersProfile extends Component {
   onUserResponse = ( res ) => {
     if(utilities.isEntityDeleted(res)){
       this.setState({isDeleted: true});
+      this.props.navigation.setParams({ isDeleted: true});
       return
     }
     let userName =  deepGet(res,  `data.users.${this.userId}.name` , "");
     this.props.navigation.setParams({ headerTitle:  unescape(userName)});
+    this.honorAction()
+  }
+
+  honorAction(){
+    if(this.isActionHonored) return;
+    this.isActionHonored =  true;  
+    let goTo = this.props.navigation.getParam('goTo'),
+        actionType = deepGet( goTo, 'v.at');
+    if( actionType == DataContract.actionTypes.pay){
+      this.navigateToTransactionScreen();
+   }
   }
 
   _headerComponent() {
@@ -107,7 +122,7 @@ export default class UsersProfile extends Component {
         <View style={CommonStyle.viewContainer}>
           <UserProfileFlatList
             listHeaderComponent={this._headerComponent()}
-            onUserFetch={this.onUserResponse}
+            beforeRefresh={this.fetchUser}
             userId={this.userId}
             onRef={(elem) => this.listRef = elem}
           />

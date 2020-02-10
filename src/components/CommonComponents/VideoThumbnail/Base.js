@@ -6,6 +6,7 @@ import pepoWhiteIcon from "../../../assets/pepo-white-icon.png";
 import inlineStyles from "./style";
 import multipleClickHandler from '../../../services/MultipleClickHandler'
 import ProfilePicture from "../../ProfilePicture";
+import PinnedLabel from "../PinnedLabel";
 
 
 class Base extends PureComponent {
@@ -17,7 +18,8 @@ class Base extends PureComponent {
     render(){
         return <TouchableWithoutFeedback onPress={multipleClickHandler(() => { this.props.onVideoClick && this.props.onVideoClick()} )}
     >
-        <View>
+        <View style={{position:"relative"}}>
+            <PinnedLabel isPinned={this.props.isPinned} />
             <Image style={{
                 width: (Dimensions.get('window').width - 4) / 2,
                 aspectRatio:9/16,
@@ -37,7 +39,7 @@ class Base extends PureComponent {
                 <View style={inlineStyles.videoInfoContainer}> 
                      <Text style={inlineStyles.videoDescStyle} ellipsizeMode={'tail'} numberOfLines={3}>{this.props.videoDesc}</Text>
                      <View style={{flex:1, flexDirection: "row" , marginTop: 5}}>
-                        <View style={{flex: 3, flexDirection: "row"}}>
+                        <View style={{flex: 3, flexDirection: "row", alignItems: 'center'}}>
                             <ProfilePicture userId={this.props.userId} style={{height: 18, width: 18, borderWidth: 1, borderColor: 'white', borderRadius: 9}} />
                             <Text style={inlineStyles.videoUserNameStyle} ellipsizeMode={'tail'} numberOfLines={1}>@{this.props.userName}</Text>
                         </View>

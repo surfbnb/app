@@ -38,6 +38,7 @@ import { ON_USER_CANCLLED_ERROR_MSG, ensureDeivceAndSession } from '../../helper
 import ReduxGetters from '../../services/ReduxGetters';
 import PepoNativeHelper from '../../helpers/PepoNativeHelper';
 import CommonStyle from '../../theme/styles/Common';
+import DataContract from '../../constants/DataContract';
 
 const bottomSpace = getBottomSpace([true]),
   extraPadding = 10,
@@ -414,7 +415,7 @@ class TransactionScreen extends Component {
     let details = '';
     const metaProperties = clone(AppConfig.metaProperties);
     if (this.videoId) {
-      metaProperties['name'] = 'video';
+      metaProperties['name'] = DataContract.knownEntityTypes.video;
       details = `vi_${this.videoId} `;
     }
     details += `ipp_${1}`;
@@ -430,7 +431,7 @@ class TransactionScreen extends Component {
 
   dropPixel( ostWorkflowEntity ) {
     PixelCall({
-      e_entity: 'user',
+      e_entity: DataContract.knownEntityTypes.user,
       e_action: 'contribution',
       p_type: 'user_profile',
       p_name:  this.toUser.id,

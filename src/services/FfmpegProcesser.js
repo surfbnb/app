@@ -1,36 +1,160 @@
 import { RNFFmpeg } from 'react-native-ffmpeg';
 import AppConfig from '../constants/AppConfig';
+import RNFS from 'react-native-fs';
 
 class FfmpegProcesser {
   constructor() {}
 
-  init(inputFileUri) {
-    this.inputFileUri = inputFileUri;
+  init(inputFiles) {
+    this.inputFiles = inputFiles;
+    console.log(this.inputFiles, 'this.inputFiles');
   }
 
   compress() {
     return new Promise(async (resolve, reject) => {
       RNFFmpeg.cancel();
       this.getOutputPath();
-      let executeString = `-i ${this.inputFileUri} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -crf ${AppConfig.compressionConstants.CRF} -preset ${AppConfig.compressionConstants.PRESET} -pix_fmt ${AppConfig.compressionConstants.PIX_FMT} -vcodec h264 ${this.outputPath}`;
+
+      let executeString = this.getCompressCommand();
       let compressStartedAt = Date.now();
       console.log('compress: compression started at:', compressStartedAt);
       let executeResponse = await RNFFmpeg.execute(executeString);
       if (executeResponse.rc === 0) {
         // rc = 0, means successful compression
         let compressFinishedAt = Date.now();
-        console.log('compress: compression finished successfully at:', compressFinishedAt);
-        console.log('compress: Time for compression (In ms)', compressFinishedAt - compressStartedAt);
-
+        console.log ('compress: compression finished successfully at:', compressFinishedAt);
+        console.log ('compress: Time for compression (In ms)', compressFinishedAt - compressStartedAt);
         resolve(this.outputPath);
       } else if (executeResponse.rc == 255) {
+        // Forcefully cancelled
         reject('Forcefully cancelled');
       } else {
         // compression is failed
         console.log('Compression is failed', executeResponse.rc);
-        return resolve(this.inputFileUri);        
+       // return resolve(this.inputFiles[0]);
+        return reject('Compression has failed');
+        // return resolve(this.inputFileUri);
       }
     });
+  }
+
+  getTextPath = () => {
+    let inputUriArr = this.inputFiles[0].split('/');
+    let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
+
+    outputPath.push(`test.txt`);
+    this.testPath = outputPath.join('/');
+    return this.testPath;
+  };
+
+
+
+  localConcat = () => {
+    return new Promise(async (resolve, reject) => {
+      RNFFmpeg.cancel();
+      var path = this.getTextPath();
+      let fileText = '';
+      console.log('localConcat::::', path);
+      for (let index in this.inputFiles){
+        fileText += `file '${this.inputFiles[index]}'\n`
+      }
+      console.log('fileTextfileText::::', fileText);
+      RNFS.writeFile(path, fileText, 'utf8')
+        .then(async (success) => {
+          console.log('FILE WRITTEN!');
+          let executeString = this.getLocalConcatCommand(path);
+          let compressStartedAt = Date.now();
+          console.log('localConcat: started at:', compressStartedAt);
+          let executeResponse = await RNFFmpeg.execute(executeString);
+          if (executeResponse.rc === 0) {
+            // rc = 0, means successful compression
+            let compressFinishedAt = Date.now();
+            console.log ('localConcat: localConcat finished successfully at:', compressFinishedAt);
+            console.log ('localConcat: Time for localConcat (In ms)', compressFinishedAt - compressStartedAt);
+            return resolve(this.localFilePath);
+          } else if (executeResponse.rc == 255) {
+            // Forcefully cancelled
+            reject('Forcefully cancelled');
+          } else {
+            // compression is failed
+            console.log('localConcat is failed', executeResponse.rc);
+            // return resolve(this.inputFiles[0]);
+            return reject('localConcat has failed');
+            // return resolve(this.inputFileUri);
+          }
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    });
+  };
+
+  getLocalConcatCommand = (path) => {
+    return `-f concat -safe 0 -i ${path} -codec copy ${this.getLocalFilePath()}`;
+
+    let command = '';
+    let complexFilter = '';
+    for (let index in this.inputFiles){
+      command +=  `-i ${this.inputFiles[index]} `;
+      complexFilter += `[${index}:v][${index}:a]`
+    }
+    command += `-filter_complex ${complexFilter}concat=n=${this.inputFiles.length}:v=1:a=1[v][a] -map [v] -map [a] ${this.getLocalFilePath()}`;
+    return command;
+  };
+
+
+  // getLocalConcatCommand = () => {
+  //   let command = '';
+  //   let intermediateFiles = [];
+  //   for (let index in this.inputFiles){
+  //     command +=  ` -i ${this.inputFiles[index]} -c copy -bsf:v h264_mp4toannexb -f mpegts ${this.getIntermediateFile(index)};`;
+  //     intermediateFiles.push(this.getIntermediateFile(index));
+  //   }
+  //   command += ` -i concat:${intermediateFiles.join('|')} -c copy -bsf:a aac_adtstoasc ${this.getLocalFilePath()}`;
+  //   console.log(command, 'commandcommandcommandcommandcommands');
+  //   return command.trim();
+  // };
+
+  getIntermediateFile = (index) => {
+    let inputUriArr = this.inputFiles[0].split('/');
+    let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
+
+    outputPath.push(`intermediate${index}.ts`);
+    return outputPath.join('/');
+  };
+
+
+  // getLocalConcatCommand = () => {
+  //   let command = '-f concat -safe 0';
+  //   let intermediateFiles = [];
+  //   for (let index in this.inputFiles){
+  //     // command +=  ` -i ${this.inputFiles[index]} -c copy -bsf:v h264_mp4toannexb -f mpegts intermediate${index}.ts;`;
+  //     intermediateFiles.push(this.inputFiles[index]);
+  //     command += ` -i ${this.inputFiles[index]}`
+  //   }
+  //   command += ` -codec copy ${this.getLocalFilePath()}`;
+  //   console.log(command, 'commandcommandcommandcommandcommandhhh');
+  //   return command.trim();
+  // }
+
+  getLocalFilePath = () => {
+    let inputUriArr = this.inputFiles[0].split('/');
+    let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
+
+    outputPath.push(`output_local_${Date.now()}.mp4`);
+    this.localFilePath = outputPath.join('/');
+    return this.localFilePath;
+  };
+
+  getCompressCommand(){
+    let command = '';
+    let complexFilter = '';
+    for (let index in this.inputFiles){
+      command +=  `-i ${this.inputFiles[index]} `;
+      complexFilter += `[${index}:v][${index}:a]`
+    }
+    command += `-filter_complex ${complexFilter}concat=n=${this.inputFiles.length}:v=1:a=1[v][a] -map [v] -map [a] -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -crf ${AppConfig.compressionConstants.CRF} -preset ${AppConfig.compressionConstants.PRESET} -pix_fmt ${AppConfig.compressionConstants.PIX_FMT} -vcodec h264 -ss 00:00:00.0 -t 00:00:30.0 ${this.outputPath}`;
+    return command;
   }
 
   cancel() {
@@ -39,17 +163,19 @@ class FfmpegProcesser {
 
   getVideoThumbnail() {
     return new Promise(async (resolve, reject) => {
+      if (this.inputFiles.length < 1){
+        return reject();
+      }
       this.getCoverOutputPath();
-      let executeString = `-i ${this.inputFileUri} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -vframes 1 -q:v 10 ${this.coverFileOutputPath}`;
+      let executeString = `-i ${this.inputFiles[0]} -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -vframes 1 -q:v 10 ${this.coverFileOutputPath}`;
       console.log(executeString);
       RNFFmpeg.cancel();
       let executeResponse = await RNFFmpeg.execute(executeString);
       if (executeResponse.rc === 0) {
-        console.log('getVideoThumbnail: Thumbnail created ', this.outputImageFile);
         // rc = 0, means successful compression
         return resolve(this.coverFileOutputPath);
       } else {
-        console.log('getVideoThumbnail: Thumbnail failed ', this.outputImageFile);
+        console.log('================== thumbnail create failed ==================');
         // compression is failed
         return reject();
       }
@@ -61,7 +187,7 @@ class FfmpegProcesser {
   }
 
   getCoverOutputPath() {
-    let inputUriArr = this.inputFileUri.split('/');
+    let inputUriArr = this.inputFiles[0].split('/');
     let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
     this.outputFileName = `output_${Date.now()}.jpg`;
     outputPath.push(this.outputFileName);
@@ -69,7 +195,7 @@ class FfmpegProcesser {
   }
 
   getOutputPath() {
-    let inputUriArr = this.inputFileUri.split('/');
+    let inputUriArr = this.inputFiles[0].split('/');
     let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
     this.outputFileName = `output_${Date.now()}.mp4`;
     outputPath.push(this.outputFileName);

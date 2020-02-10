@@ -3,6 +3,7 @@ import Toast from '../theme/components/NotificationToast';
 import AppConfig from '../constants/AppConfig';
 import { ostErrors } from '../services/OstErrors';
 import firebase from 'react-native-firebase';
+import DataContract from '../constants/DataContract';
 
 const routesAnalyticsMap = AppConfig.routesAnalyticsMap;
 
@@ -50,6 +51,20 @@ function fetchVideo( videoId , onResponse, onError, onComplete ){
     });
 }
 
+function fetchChannel( id , onResponse, onError, onComplete ){
+  return new PepoApi(DataContract.channels.getChannelDetails(id))
+    .get()
+    .then((res) => {
+      onResponse && onResponse(res);
+    })
+    .catch((error) => {
+      onError && onError(error);
+    })
+    .finally(() => {
+      onComplete && onComplete();
+    });
+}
+
 function getSocialIcon(url, screen) {
   let hostName = url && url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?([^:\/?\n]+)/im);
   if ( !hostName || hostName.length < 2) {
@@ -85,4 +100,4 @@ function analyticsSetCurrentScreen( routeName ){
   firebase.analytics().setCurrentScreen(analyticsAction, analyticsAction);
 }
 
-export { fetchUser, getHostName , fetchVideo , analyticsSetCurrentScreen};
+export { fetchUser, getHostName , fetchVideo , analyticsSetCurrentScreen , fetchChannel};

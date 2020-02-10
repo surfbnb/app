@@ -12,6 +12,7 @@ import utilities from '../../services/Utilities';
 import { withNavigation } from 'react-navigation';
 
 import Base from "./Base";
+import DataContract from '../../constants/DataContract';
 
 const mapStateToProps = (state, ownProps) => ({
     balance: state.balance,
@@ -31,7 +32,7 @@ class PepoTxBtn extends Base {
 
   getSdkMetaProperties() {
     const metaProperties = clone(appConfig.metaProperties);
-    metaProperties['name'] = 'video';
+    metaProperties['name'] = DataContract.knownEntityTypes.video;
     metaProperties['details'] = `vi_${this.props.entityId}`;
     return metaProperties;
   }
@@ -39,7 +40,7 @@ class PepoTxBtn extends Base {
   getDropPixel(){
     let specificData = this.props.getPixelDropData(),
         defaultData = {
-          e_entity: 'video',
+          e_entity: DataContract.knownEntityTypes.video,
           video_id: this.props.entityId
         };
     return assignIn({}, specificData, defaultData);

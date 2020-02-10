@@ -1,5 +1,24 @@
 export default {
 
+    actionTypes: {
+        pay: "pay"
+    },
+
+    knownEntityTypes : {
+        reply:"reply",
+        video:"video",
+        tag: "tag",
+        channel: "channel",
+        user: "user"
+    },
+
+    feed: {
+        homeApi: "/feeds",
+        getSingleFeedApi : (id) => {
+            return `/feeds/${id}`
+        }
+    },
+
     payments: {
         postPaymentAcknowledgeApi : "/top-up/",
         getAllProductsApi : '/top-up/products' ,
@@ -77,6 +96,14 @@ export default {
         getVideoDetailsApi : (id) => {
             return `/videos/${id}`;
         },
+        fanVideoUploadApi: (userId) => {
+            return `/users/${userId}/fan-video`
+        },
+        replyVideoUploadApi: `/replies`,
+        videoMergeApi: `/videos/merge-jobs`,
+        videoMergePollApi : (id)=> {
+            return `/videos/merge-jobs/${id}`
+        },
         videoKind: {
             reply : "VIDEO_REPLY",
             video:"FAN_UPDATE"
@@ -92,7 +119,57 @@ export default {
         },
         getVideoReplyShareApi: ( id ) => {
             return `/replies/${id}/share`;
+        },
+        getChannelShareApi: ( id ) => {
+            return `/channels/${id}/share`
+        },
+        getProfileShareApi: ( id ) => {
+            return `/users/${id}/share`
+          }
+    },
+
+    channels: {
+        getVideoListApi : (id) => {
+            return `/channels/${id}/videos`;
+        },
+        getVideoListParams : (id=0)=> {
+            return id ? {filter_by_tag_id: id} : {};
+        },
+        getChannelDetails : (id)=> {
+            return `/channels/${id}`;
+        },
+        getChannelsMemberApi: (id) => {
+            return `/channels/${id}/users`;
+        },
+        getMuteApi : (id) => {
+            return `/channels/${id}/turn-off-notifications`;
+        },
+        getUnmuteApi : (id) => {
+            return `/channels/${id}/turn-on-notifications`;
+        },
+        getLeaveChannelApi : (id) => {
+            return `/channels/${id}/leave`
+        },
+        getJoinChannelApi : (id) => {
+            return `/channels/${id}/join`
+        },
+        getReportChannelApi : () => {
+            return `/report`
+        }
+    },
+    
+    actionSheet: {
+        video : {
+            reportApi: '/report',
+            getMuteUnMuteApi : (id, canMute) => {
+                if(canMute){
+                    return  `/users/${id}/mute` ;
+                }else{
+                    return  `/users/${id}/unmute`;
+                }
+            }
         }
     }
+
 }
 

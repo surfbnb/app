@@ -11,7 +11,7 @@ import inlineStyles from './styles';
 
 import ReplyIcon from '../CommonComponents/ReplyIcon';
 import PepoTxBtn from '../PepoTransactionButton/PepoTxBtn';
-import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
+//import VideoSupporterStat from '../CommonComponents/VideoSupporterStat/VideoSupporterStat';
 import DataContract from '../../constants/DataContract';
 import BottomReplyBar from '../CommonComponents/BottomReplyBar';
 import assignIn from 'lodash/assignIn';
@@ -21,6 +21,7 @@ import AppConfig from "../../constants/AppConfig";
 import CommonStyle from "../../theme/styles/Common";
 import BubbleList from "../CommonComponents/BubbleList";
 import VideoShareIcon from '../CommonComponents/ShareIcon/VideoShare';
+import MaskedChannelHList from "../CommonComponents/MaskedChannelHList";
 
 
 const AREA = AppConfig.MaxDescriptionArea;
@@ -42,7 +43,7 @@ class FullScreeVideoRow extends PureComponent {
 
     getPixelDropData = () => {
         const parentData =  this.props.getPixelDropData();
-        const pixelParams = { e_entity: 'video' ,
+        const pixelParams = { e_entity: DataContract.knownEntityTypes.video ,
                              video_id : this.videoId,
                              position: this.props.index
                             };
@@ -70,6 +71,7 @@ class FullScreeVideoRow extends PureComponent {
 
                                   <View style={inlineStyles.invertedList}>
                                     <BubbleList videoId={this.videoId} doRender={this.props.doRender} />
+                                    <MaskedChannelHList videoId={this.videoId} />
                                   </View>
 
 
@@ -83,13 +85,7 @@ class FullScreeVideoRow extends PureComponent {
                                         />
                                         <ReplyIcon videoId={this.videoId} userId={this.userId}/>
                                         <VideoShareIcon  entityId={this.videoId} url={DataContract.share.getVideoShareApi(this.videoId)}/>
-                                        <ReportVideo  userId={this.userId} reportEntityId={this.videoId} reportKind={'video'} />
                                     </View>
-
-                                    <VideoSupporterStat
-                                        entityId={this.videoId}
-                                        userId={this.userId}
-                                    />
                                   </View>
                                 </View>
 

@@ -4,7 +4,7 @@ import TopStatus from "../../Home/TopStatus";
 import deepGet from "lodash/get";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
-import DeletedVideoInfo from '../DeletedVideoInfo';
+import DeletedVideoInfo from '../DeletedEntity/DeletedVideoInfo';
 import CommonStyles from "../../../theme/styles/Common";
 import FlotingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import SafeAreaView from 'react-native-safe-area-view';
@@ -32,7 +32,7 @@ class VideoPlayer extends Component {
     }
 
     componentDidMount(){
-      this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
+      this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
         this.isActiveScreen = true ;
       });
 
@@ -43,7 +43,7 @@ class VideoPlayer extends Component {
 
     componentWillUnmount(){
       this.onRefetchVideo = () => {};
-      this.willFocusSubscription && this.willFocusSubscription.remove();
+      this.didFocusSubscription && this.didFocusSubscription.remove();
       this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 

@@ -6,6 +6,7 @@ import DeviceInfo from 'react-native-device-info';
 import CommonStyle from '../../theme/styles/Common';
 import NavigationService from "../../services/NavigationService";
 import Utilities from "../../services/Utilities";
+import RemoteConfig from '../../services/RemoteConfig';
 
 export default class Base extends React.PureComponent{
 
@@ -38,16 +39,30 @@ export default class Base extends React.PureComponent{
     this.goBack = setTimeout(()=>{NavigationService.goBack()}, 300);
   };
 
+  getUserAgent = () => {
+      if(Utilities.isIos() && RemoteConfig.getValue('IOS_AUTH_USERAGENT') !== ''){
+          return {
+              userAgent: RemoteConfig.getValue('IOS_AUTH_USERAGENT')
+          };
+      } else if (Utilities.isAndroid() && RemoteConfig.getValue('ANDROID_AUTH_USERAGENT') !== ''){
+          return {
+              userAgent: RemoteConfig.getValue('ANDROID_AUTH_USERAGENT')
+          };
+      }
+      return {};
+  };
+
   getModalView = ()=> {
         return  (
             <WebView
+                {...this.getUserAgent()}
                 source={{
                 uri: this.url,
                 headers: {
-                'X-PEPO-DEVICE-OS': Platform.OS,
-                'X-PEPO-DEVICE-OS-VERSION': String(DeviceInfo.getSystemVersion()),
-                'X-PEPO-BUILD-NUMBER': String(DeviceInfo.getBuildNumber()),
-                'X-PEPO-APP-VERSION': String(DeviceInfo.getVersion())
+                    'X-PEPO-DEVICE-OS': Platform.OS,
+                    'X-PEPO-DEVICE-OS-VERSION': String(DeviceInfo.getSystemVersion()),
+                    'X-PEPO-BUILD-NUMBER': String(DeviceInfo.getBuildNumber()),
+                    'X-PEPO-APP-VERSION': String(DeviceInfo.getVersion())
                 }
                 }}
                 style={{ flex: 1 }}
@@ -66,7 +81,7 @@ export default class Base extends React.PureComponent{
                     {this.getModalView()}
                 </KeyboardAvoidingView>
             </SafeAreaView>
-              
+
         )
     }
 }

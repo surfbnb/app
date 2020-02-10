@@ -38,7 +38,7 @@ const staticData = {
   t_gid: DeviceInfo.getUniqueId(),
   u_service_id: 1,
   u_session_id: 'placeholder_u_session_id',
-  u_timezone:  Utilities.getNumbericUTCTimeZone(), 
+  u_timezone:  Utilities.getNumbericUTCTimeZone(),
   device_id: DeviceInfo.getUniqueId(),
   device_model: DeviceInfo.getModel(),
   device_platform: DeviceInfo.getSystemVersion(),
@@ -51,7 +51,7 @@ const staticData = {
   mobile_app_version: DeviceInfo.getVersion()
 };
 
-function setUserAgent(){ 
+function setUserAgent(){
   if( !staticData['user_agent']) {
     staticData['user_agent'] =  DeviceInfoCache.getUserAgent();
   }
@@ -89,7 +89,7 @@ export default (data) => {
   }
   for(var key in pixelData){
     if (pixelData.hasOwnProperty(key) && pixelData[key] == undefined || pixelData[key] == null ) {
-      console.log(`PixelCall validation failed. Invalid value of ${mandatoryKeys[mi]}.`);
+      console.log(`PixelCall validation failed. Invalid value of ${key}.`);
       return;
     }
   }

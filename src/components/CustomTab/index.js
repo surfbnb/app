@@ -20,8 +20,11 @@ import CurrentUser from '../../models/CurrentUser';
 import { LoginPopoverActions } from '../../components/LoginPopover';
 import {LoggedOutCustomTabClickEvent} from '../../helpers/Emitters';
 import appConfig from '../../constants/AppConfig';
+import {testProps} from '../../constants/AppiumAutomation';
 import reduxGetter from '../../services/ReduxGetters';
 import Colors from '../../theme/styles/Colors';
+import {navigateTo} from "../../helpers/navigateTo";
+import NavigationService from '../../services/NavigationService';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -43,8 +46,15 @@ let refreshTimeOut = 0;
 
 function loginInFlow(navigation, tab) {
   let currentTabIndex = tab.navigationIndex;
-  if (tab.rootStack === 'CaptureVideo') { 
-    utilities.handleVideoUploadModal(previousTabIndex, navigation, {videoType: appConfig.videoTypes.post });
+  if (tab.rootStack === 'CaptureVideo') {
+    let params = {videoType: appConfig.videoTypes.post };
+    console.log('--------------::::: --------------::::: :::: --------------:::::', NavigationService.findCurrentRoute());
+    if (NavigationService.findCurrentRoute() === 'ChannelsScreen'){
+      console.log('--------------::::: --------------::::: :::: --------------:::::');
+      params['channelId'] = navigateTo.getTopLevelNavigation().getParam('channelId');
+    }
+    console.log(params);
+    utilities.handleVideoUploadModal(previousTabIndex, navigation, params );
     return;
   }
   if (currentTabIndex == undefined || currentTabIndex == null) return;
@@ -95,24 +105,25 @@ const CustomTab = (props) => {
   return (
     <SafeAreaView forceInset={{ top: 'never' }}>
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab1)} style={styles.tapArea}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab1)} style={styles.tapArea} {...testProps('custom-navigation-tab-home')}>
         <Image
           style={[styles.tabElementSkipFont]}
           source={navigation.state.index === appConfig.tabConfig.tab1.navigationIndex ? homeSelected : homeNs}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab2)} style={styles.tapArea}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab2)} style={styles.tapArea} {...testProps('custom-navigation-tab-search')}>
         <Image
           style={[styles.tabElementSkipFont]}
           source={navigation.state.index === appConfig.tabConfig.tab2.navigationIndex ? searchSelected : searchNs}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab3)} style={styles.tapArea}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab3)} style={styles.tapArea} {...testProps('custom-navigation-tab-camera')}>
         <Image style={[styles.tabElementSkipFont]} source={videoNs} />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab4)}
         style={{ position: 'relative' }}
+        {...testProps('custom-navigation-tab-notifications')}
       >
         <React.Fragment>
           {unreadNotification ? (
@@ -135,7 +146,7 @@ const CustomTab = (props) => {
           />
         </React.Fragment>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab5)} style={styles.tapArea}>
+      <TouchableOpacity onPress={() => onTabPressed(navigation, appConfig.tabConfig.tab5)} style={styles.tapArea} {...testProps('custom-navigation-tab-profile')}>
         <Image
           style={[styles.tabElementSkipFont]}
           source={navigation.state.index === appConfig.tabConfig.tab5.navigationIndex ? profileSelected : profileNs}

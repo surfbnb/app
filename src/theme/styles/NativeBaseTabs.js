@@ -14,16 +14,28 @@ const scrollableTabStyles = {
 const tabStyle = {
     textStyle : { 
         color: Colors.black,
-        fontSize: 25
+        fontSize: 25,
+        marginLeft: 0,
+        marginRight: 0
     },
     activeTextStyle :{
         color: Colors.primary,
         fontSize: 25,
+        marginLeft: 0,
+        marginRight: 0
        // fontWeight : 'bold'
     },
-    activeTabStyle : {backgroundColor: Colors.white},
+    activeTabStyle : {
+        backgroundColor: Colors.white,
+        paddingLeft: 10,
+        paddingRight: 10,
+        flexGrow: 1
+    },
     tabStyleSkipFont : {
-        backgroundColor: Colors.white
+        backgroundColor: Colors.white,
+        paddingLeft: 10,
+        paddingRight: 10,
+        flexGrow: 1
     },
     style : {backgroundColor:  Colors.white}
 }

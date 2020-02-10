@@ -12,8 +12,8 @@ let stylesMap = {
   textInputUi: {
     marginTop: 0,
     borderWidth: 0,
-    paddingLeft: 45,
-    paddingRight: 35,
+    paddingLeft: 43,
+    paddingRight: 33,
     backgroundColor: '#F5F6F5'
   },
   searchIconSkipFont: {

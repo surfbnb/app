@@ -83,7 +83,7 @@ class VideoTags extends PureComponent {
         let pixelData = {
             e_entity: "page",
             e_action: "view",
-            p_type: "tag",
+            p_type: DataContract.knownEntityTypes.tag,
             p_name: this.getTagId()
         };
         PixelCall(pixelData);
@@ -120,17 +120,19 @@ class VideoTags extends PureComponent {
         };
     };
 
+    getNoResultData = () => this.noResultsData;
+
     render() {
         if(this.getTagId()){
             return <VideoCollections
                     onRef={(elem) => this.videoCollections = elem}
-                    listHeaderComponent={this._headerComponent()}
+                    listHeaderComponent={this._headerComponent}
                     beforeRefresh={this.beforeRefresh}
                     getFetchUrl={this.getFetchUrl}
-                    navigation={this.props.navigation}
-                    noResultsData={this.noResultsData}
+                    getNoResultData={this.getNoResultData}
                     getNoResultsCell={this.renderNoResults}
-                    tagId={this.getTagId()}
+                    entityId={this.getTagId()}
+                    entityType={DataContract.knownEntityTypes.tag}
                     extraParams={this.getExtraParams()}
                    />
         } else {

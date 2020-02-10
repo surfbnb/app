@@ -16,6 +16,7 @@ import PollCurrentUserPendingPayments from "../../helpers/PollCurrentUserPending
 import Colors from '../../theme/styles/Colors';
 import AppConfig from "../../constants/AppConfig";
 import MemoryIndicator from '../CommonComponents/MemoryIndicator';
+import {testProps} from "../../constants/AppiumAutomation";
 
 export const WalletBalanceFlyerEventEmitter = new EventEmitter();
 
@@ -143,10 +144,10 @@ class WalletBalanceFlyer extends Component {
               </Text>
             </Animated.View>
           )}
-          <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handlePress())}>
+          <TouchableWithoutFeedback onPress={multipleClickHandler(() => this.handlePress())} {...testProps('top-status-wallet')}>
             <View style={[styles.innerTopBg, { minWidth: getBalance(this.props.balance) <= 0 ? 50 : 'auto' }]}>
               {this.getWalletIcon()}
-              <Text style={styles.topBgTxt}>{Pricer.displayAmountWithKFomatter(getBalance(this.props.balance))}</Text>
+              <Text style={styles.topBgTxt} {...testProps('top-status-wallet-balance')}>{Pricer.displayAmountWithKFomatter(getBalance(this.props.balance))}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>

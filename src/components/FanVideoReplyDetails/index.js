@@ -277,7 +277,7 @@ class FanVideoReplyDetails extends Component {
     params['video_description'] = this.videoDesc;
     params['link'] = this.videoLink;
 
-    params['parent_kind'] = 'video';
+    params['parent_kind'] = DataContract.knownEntityTypes.video;
     params['parent_id'] = this.replyObject.replyReceiverVideoId;
 
     return new Promise((resolve, reject) => {
@@ -373,7 +373,7 @@ class FanVideoReplyDetails extends Component {
               onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
               onSuggestionsPanelClose={this.onSuggestionsPanelClose}
               mentionsCallWithEmptyChars={['@']}
-              extraParams={{intent:'reply', parent_id: this.replyObject.replyReceiverVideoId}}
+              extraParams={{intent: DataContract.knownEntityTypes.reply, parent_id: this.replyObject.replyReceiverVideoId}}
             />
           </View>
 

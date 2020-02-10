@@ -110,8 +110,18 @@ class FanVideoDetails extends Component {
     };
 
     if (! props.recordedVideo.video_type ) {
-      let videoType = this.props.navigation.getParam('video_type');
-      Store.dispatch(upsertRecordedVideo({ video_type: videoType }));
+      let videoType = this.props.navigation.getParam('video_type'),
+      videoDesc = this.props.navigation.getParam('video_desc'),
+        obj = { video_type: videoType };
+      if(videoDesc){
+        obj['video_desc'] = videoDesc;
+        this.videoDesc = videoDesc;
+        this.props.navigation.setParams({
+          videoDesc: videoDesc
+        });
+      }
+
+      Store.dispatch(upsertRecordedVideo(obj));
     }
   }
   _keyboardShown = (e) => {
@@ -132,11 +142,18 @@ class FanVideoDetails extends Component {
   };
 
   componentDidMount() {
-    this.props.navigation.setParams({
-      videoDesc: this.props.recordedVideo.video_desc,
-      videoLink: this.props.recordedVideo.video_link,
-      replyAmount:  this.props.recordedVideo.reply_amount
-    });
+    let params = {};
+    if(this.props.recordedVideo.video_desc ){
+      params['videoDesc'] = this.props.recordedVideo.video_desc;
+    }
+    if(this.props.recordedVideo.video_link){
+      params['videoLink'] = this.props.recordedVideo.video_link;
+    }
+    if(this.props.recordedVideo.reply_amount){
+      params['replyAmount'] = this.props.recordedVideo.reply_amount;
+    }
+
+    this.props.navigation.setParams(params);
 
     this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this._keyboardShown.bind(this));
     this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this._keyboardHidden.bind(this));
@@ -320,6 +337,10 @@ class FanVideoDetails extends Component {
     });
   }
 
+  getInitialVideoDesc = () => {
+    return this.videoDesc || this.props.recordedVideo.video_desc || this.props.navigation.getParam('video_desc');
+  };
+
   render() {
     let imageUrl = this.props.recordedVideo.cover_image,
     value = pricer.getFromDecimal(this.replyAmount, 2) ;
@@ -345,11 +366,11 @@ class FanVideoDetails extends Component {
               </ImageBackground>
             </TouchableOpacity>
             <VideoDescription 
-              initialValue={this.props.recordedVideo.video_desc} 
+              initialValue={this.getInitialVideoDesc()}
               onChangeDesc={this.onChangeDesc} 
               onSuggestionsPanelOpen={this.onSuggestionsPanelOpen}
               onSuggestionsPanelClose={this.onSuggestionsPanelClose}
-              extraParams={{intent:'video'}}
+              extraParams={{intent:DataContract.knownEntityTypes.video}}
             />
           </View>
           <Text style={[Theme.Errors.errorText, { alignSelf: 'center' }]}>{this.state.descError }</Text>

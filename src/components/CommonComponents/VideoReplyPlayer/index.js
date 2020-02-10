@@ -6,7 +6,7 @@ import PepoApi from "../../../services/PepoApi";
 import Utilities from '../../../services/Utilities';
 import reduxGetter from '../../../services/ReduxGetters';
 import DataContract from '../../../constants/DataContract';
-import DeletedVideoInfo from '../DeletedVideoInfo';
+import DeletedVideoInfo from '../DeletedEntity/DeletedVideoInfo';
 import FloatingBackArrow from "../../CommonComponents/FlotingBackArrow";
 import ReplyList from "../../CommonComponents/ReplyList";
 import { fetchVideo } from '../../../helpers/helpers'
@@ -36,7 +36,7 @@ class VideoReplyPlayer extends PureComponent {
     }
 
     componentDidMount(){
-      this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
+      this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
         this.isActiveScreen = true ;
       });
 
@@ -48,7 +48,7 @@ class VideoReplyPlayer extends PureComponent {
 
     componentWillUnmount(){
       this.onReplyFetch = () => {};
-      this.willFocusSubscription && this.willFocusSubscription.remove();
+      this.didFocusSubscription && this.didFocusSubscription.remove();
       this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
@@ -123,7 +123,7 @@ class VideoReplyPlayer extends PureComponent {
 
     getPixelDropData = () => {
       return pixelParams = {
-        e_entity: 'reply',
+        e_entity: DataContract.knownEntityTypes.reply,
         p_type: 'video_reply',
         p_name: this.parentVideoId,
       };
@@ -154,6 +154,7 @@ class VideoReplyPlayer extends PureComponent {
          }else{
            return <ReplyList currentIndex={this.currentIndex}
                              fetchServices={this.fetchService}
+                             parentVideoId={this.parentVideoId}
                              parentClickHandler={this.parentClickHandler}/>
          }
        }

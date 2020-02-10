@@ -15,6 +15,7 @@ import DataContract from '../constants/DataContract';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import * as RNLocalize from "react-native-localize";
 import momentTimezone from 'moment-timezone';
+import NavigationService from './NavigationService';
 
 let CurrentUser, PepoApi;
 import('../models/CurrentUser').then((imports) => {
@@ -268,6 +269,15 @@ export default {
 
   isAndroid(){
     return Platform.OS === "android";
+  },
+
+  isChannelPage(state) {
+    return this.getLastChildRoutename(state) == AppConfig.channelConstants.SCREEN_NAME;
+  },
+
+  isCameraScreen() {
+    console.log('isCameraScreen**********', NavigationService.findCurrentRoute());
+    return AppConfig.cameraScreens.includes(NavigationService.findCurrentRoute());
   }
 
 };

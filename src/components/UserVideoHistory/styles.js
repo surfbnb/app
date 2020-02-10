@@ -19,14 +19,14 @@ let stylesMap = {
   },
   touchablesBtns: {
     alignItems: 'flex-end',
-    marginBottom: -10,
+    // marginBottom: -10,
     zIndex: 1,
     flexDirection: 'row'
   },
   invertedList: {
     marginRight: 'auto',
     minWidth: '20%',
-    marginBottom: 30
+    marginBottom: 10
   },
   pepoTxCount: {
     fontSize: 18,

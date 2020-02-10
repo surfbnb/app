@@ -71,17 +71,8 @@ class UserProfileFlatList extends PureComponent {
       return Pricer.displayAmountWithKFomatter( Pricer.getFromDecimal( reduxGetters.getVideoBt(videoId) ) ) ;
     }
 
-    onPullToRefresh = () => {
-      fetchUser(this.props.userId , this.onUserFetch );
-    }
-
-    onUserFetch =(res) => {
-      this.props.onUserFetch && this.props.onUserFetch(res);
-    }
-
     beforeRefresh = ( ) => {
         this.props.beforeRefresh && this.props.beforeRefresh();
-        this.onPullToRefresh();
         this.setState({ refreshing : true });
     }
 

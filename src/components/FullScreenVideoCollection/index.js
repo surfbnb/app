@@ -1,6 +1,7 @@
 import React , {PureComponent} from "react";
 import {FlatList} from "react-native";
 import deepGet from "lodash/get";
+import assignIn from 'lodash/assignIn';
 
 import reduxGetters from "../../services/ReduxGetters";
 import Pagination from "../../services/Pagination";
@@ -35,7 +36,7 @@ class FullScreenVideoCollection extends PureComponent{
          * Which will render extra components and as we keep on changing it will stack instead of clearing
          **/
         this.initialScrollIndex = this.currentIndex;
-        this.tagId = this.props.navigation.getParam("tagId");
+        this.getPixelDropData = this.props.navigation.getParam("getPixelDropData");
         this.isScrolled = false ;
         this.willFocusSubscription =  null ;
         this.flatlistRef = null;
@@ -77,6 +78,9 @@ class FullScreenVideoCollection extends PureComponent{
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
             const offset =  this.state.activeIndex > 0 ? rowHeight * this.state.activeIndex :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
+        });
+
+        this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
             this.isActiveScreen = true ;
         });
 
@@ -93,6 +97,7 @@ class FullScreenVideoCollection extends PureComponent{
         this.paginationEvent.removeListener('onNext');
         this.paginationEvent.removeListener('onNextError');
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didFocusSubscription &&  this.didFocusSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
@@ -154,19 +159,11 @@ class FullScreenVideoCollection extends PureComponent{
     };
 
     getPixelDropData = () => {
-        return {
-          e_entity: 'video',
-          p_type: 'tag',
-          p_name: this.tagId,
-        };
-    }
-
-    getReplyPixelDrop = () => {
-        return {
-          e_entity: 'reply',
-          p_type: 'tag',
-          p_name: this.tagId,
-        };
+        const parentData = {} ;
+        if(typeof this.props.getPixelDropData == "function"){
+          parentData =  this.props.getPixelDropData()
+        } 
+        return parentData;
     }
 
     parentClickHandler =(replyDetailId)=>{
@@ -191,7 +188,7 @@ class FullScreenVideoCollection extends PureComponent{
         return  <VideoReplyRow  shouldPlay={this.shouldPlay}
                                 listKey={`${rowKey}-video-row`}
                                 isActive={index == this.state.activeIndex}
-                                getPixelDropData={this.getReplyPixelDrop}
+                                getPixelDropData={this.getPixelDropData}
                                 doRender={Math.abs(index - this.state.activeIndex) < maxVideosThreshold}
                                 userId={userId}
                                 index={index}
@@ -256,9 +253,9 @@ class FullScreenVideoCollection extends PureComponent{
 
         return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={CommonStyle.fullScreenVideoSafeAreaContainer}>
-                {this.props.navigation.getParam("showBalanceFlyer")  && <TopStatus />}
+                {!this.props.navigation.getParam("hideBalanceFlyer")  && <TopStatus />}
                 <FlatList
-                    listKey={"some-dummy-key-to-be-changed-passed-as-props"}
+                    listKey={"some-key-to-be-changed-passed-as-props"}
                     snapToAlignment={"top"}
                     viewabilityConfig={{itemVisiblePercentThreshold: 90}}
                     extraData={this.state.activeIndex}

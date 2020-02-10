@@ -8,11 +8,12 @@ let stylesMap = {
     flexDirection: 'column',
     backgroundColor: Colors.black
   },
-  previewSkipFont: {
+  cameraViewSkipFont: {
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 35
+    paddingTop: 35,
+    paddingBottom:15
   },
   capture: {
     flex: 0,
@@ -31,6 +32,38 @@ let stylesMap = {
     width: 65,
     height: 65
   },
+  outerCircle: {
+    width: 65,
+    height: 65,
+    borderWidth: 5,
+    borderRadius: 65/2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderColor: 'rgb(255, 85, 102)'
+  },
+  innerCircle: {
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -25,
+    marginLeft: -25,
+    borderRadius: 50/2,
+    backgroundColor: Colors.wildWatermelon,
+  },
+  squareIcon: {
+    width: 28,
+    height: 28,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -14,
+    marginLeft: -14,
+    borderRadius: 5,
+    backgroundColor: Colors.wildWatermelon,
+  },
   flipIconSkipFont: {
     width: 39.5,
     height: 36.5
@@ -38,11 +71,8 @@ let stylesMap = {
   progressBar: {
     borderRadius: 3.5,
     borderColor: Colors.white,
-    borderWidth: 0.5,
-    height: 7,
-    width: '90%',
-    marginLeft: 10,
-    marginRight: 10
+    borderWidth: 1,
+    height: 7
   },
   cancelButton: {
     position: 'absolute',
@@ -57,6 +87,7 @@ let stylesMap = {
   },
   closeBtWrapper: {
     position: 'absolute',
+    zIndex: 2,
     top: 45,
     left: 10,
     height: 45,
@@ -109,9 +140,70 @@ let stylesMap = {
   },
 
   bottomWrapper: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 30
     // width: Dimensions.get('window').width
+  },
+
+  triangleRight: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderBottomWidth: 22,
+    borderTopWidth: 22,
+    borderLeftWidth: 16,
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent',
+    borderLeftColor: Colors.wildWatermelon2
+  },
+
+  tooltipStyle: {
+    letterSpacing: 1,
+    fontFamily:'AvenirNext-DemiBold',
+    shadowColor:'rgba(0, 0, 0, 0.5)',
+    shadowOffset: { width: 1, height: 2 },
+    shadowRadius: 2
+  },
+
+  tooltipWrapper: {
+    backgroundColor: '#eee',
+    marginBottom: 10,
+    position: 'relative',
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    alignItems: 'center',
+    justifyContent:'center',
+    borderRadius: 4,
+    // maxWidth: 150,
+    minWidth: 120,
+    alignSelf: 'center'
+  },
+  tooltipLowerTriangle : {
+    height:12,
+    width:12,
+    top: '100%',
+    marginTop: 2,
+    backgroundColor: '#eee',
+    alignSelf:'center',
+    position: 'absolute',
+    transform: [{ rotate: '45deg'}]
+  },
+  backIconSkipFont: {
+    height: 19.55,
+    width: 28.8
+  },
+
+  separationBarsStyle: {
+    backgroundColor: '#fff',
+    width: 2,
+    height: 7,
+    position: 'absolute'
   }
+
+
+
+
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

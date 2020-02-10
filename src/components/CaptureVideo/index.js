@@ -11,7 +11,8 @@ import deepGet from 'lodash/get';
 import FanVideoDetails from '../FanVideoDetails';
 import KeepAwake from 'react-native-keep-awake';
 import reduxGetters from "../../services/ReduxGetters";
-
+import FfmpegProcesser from "../../services/FfmpegProcesser";
+import Colors from '../../theme/styles/Colors';
 
 class CaptureVideo extends Component {
   static navigationOptions = {
@@ -26,7 +27,8 @@ class CaptureVideo extends Component {
       actionSheetOnRecordVideo: true,
       modalVisible: true,
       acceptedCameraTnC: null,
-      showLightBoxOnReply: isChargeble
+      showLightBoxOnReply: isChargeble,
+      totalDuration: 0
     };
     this.replyReceiverUserId = null;
     this.replyReceiverVideoId = null;
@@ -35,7 +37,7 @@ class CaptureVideo extends Component {
     this.proceedWithExisting = null;
     this.setReplyVideoParams();
     this.showCoachForVideoRecord();
-
+    this.previewVideo = React.createRef();
   }
 
   componentDidMount () {}
@@ -61,6 +63,7 @@ class CaptureVideo extends Component {
 
     } else {
       // Do nothing.
+      this.channelId = this.props.navigation.getParam("channelId");
     }
   }
 
@@ -72,7 +75,7 @@ class CaptureVideo extends Component {
     return this.videoType === AppConfig.videoTypes.reply;
   };
 
-  goToRecordScreen() {
+  goToRecordScreen = () => {
     this.setState({
       recordingScreen: true,
       actionSheetOnRecordVideo: false,
@@ -85,16 +88,20 @@ class CaptureVideo extends Component {
   proceedWithExistingVideo = (recordedVideoObj) => {
     this.proceedWithExisting = true;
     this.videoType = recordedVideoObj.video_type || AppConfig.videoTypes.post ;
+    console.log(recordedVideoObj.video_length, 'totalDurationtotalDurationtotalDuration');
     this.setState ({
       recordingScreen: false,
-      videoUri: recordedVideoObj.raw_video
+      videoUrlsList: recordedVideoObj.raw_video_list,
+      totalDuration: recordedVideoObj.video_length,
+      previewURL: recordedVideoObj.previewURL,
+
     });
   };
 
 
   saveVideoPrimaryInfo = () => {
    this.proceedWithExisting = false;
-
+   console.log('saveVideoPrimaryInfo',this.getPrimaryVideoInfo() );
    Store.dispatch(upsertRecordedVideo(this.getPrimaryVideoInfo()));
   };
 
@@ -105,14 +112,29 @@ class CaptureVideo extends Component {
       if (this.isVideoTypeReply()){
         return { video_type: AppConfig.videoTypes.reply , reply_obj: this.getReplyOptions()};
       } else if (this.isVideoTypePost()) {
-        return { video_type: AppConfig.videoTypes.post };
-      }
 
+        return { video_type: AppConfig.videoTypes.post, video_desc: this.getVideoDesc() };
+      }
+  };
+
+  getVideoDesc = () => {
+      let desc = '';
+      if (this.channelId){
+      let tagIds = reduxGetters.getChannelTagIds(this.channelId);
+
+      if (tagIds && tagIds instanceof Array && tagIds.length > 0 ) {
+        let tagId = tagIds[0];
+        let tagInfo = reduxGetters.getHashTag(tagId);
+        desc = `#${tagInfo.text} `
+      }
+    }
+    return desc;
   };
 
 
-  goToDetailsScreen () {
+  goToDetailsScreen = () => {
     if (this.videoType ===  AppConfig.videoTypes.post ){
+      console.log('----goToDetailsScreen----');
       this.props.navigation.push('FanVideoDetails', this.getPrimaryVideoInfo());
     } else if (this.videoType ===  AppConfig.videoTypes.reply ){
       this.props.navigation.push('FanVideoReplyDetails', this.getPrimaryVideoInfo());
@@ -136,15 +158,6 @@ class CaptureVideo extends Component {
     return reduxGetters.getUserName(deepGet (reduxGetters.getRecordedVideo(),'reply_obj.replyReceiverUserId'));
   }
 
-
-  modalRequestClose = () => {
-    if (this.state.recordingScreen) {
-      this.props.navigation.goBack();
-    } else {
-      this.previewVideo.cancleVideoHandling();
-    }
-  };
-
   getActionSheetText = (videoObject) => {
     if (videoObject.video_type ===AppConfig.videoTypes.reply ){
       return 'You have a pre-recorded reply';
@@ -153,11 +166,31 @@ class CaptureVideo extends Component {
     }
   };
 
-  goToPreviewScreen = (videoUri) => {
+  goToPreviewStateUpdate( videoUrlsList, totalDuration , previewURL ="" , recordingScreen = false  ){
     this.setState({
-      recordingScreen: false,
-      videoUri
+      recordingScreen,
+      videoUrlsList,
+      totalDuration,
+      previewURL
     });
+  }
+
+  goToPreviewScreen = (videoUrlsList, totalDuration) => {
+    if( videoUrlsList.length == 1){
+      this.goToPreviewStateUpdate(videoUrlsList , totalDuration , videoUrlsList[0].uri );
+      return;
+    } else if(utilities.isAndroid()) {
+      this.goToPreviewStateUpdate(videoUrlsList , totalDuration  );
+      return;
+    }
+
+    FfmpegProcesser.init(videoUrlsList.map((obj) =>obj.uri));
+    FfmpegProcesser.localConcat()
+      .then((previewURL) => {
+        this.goToPreviewStateUpdate(videoUrlsList , totalDuration ,previewURL  );
+      }).catch(()=>{
+      this.goToPreviewStateUpdate(videoUrlsList , totalDuration );
+    }) ;
   };
 
 
@@ -165,9 +198,6 @@ class CaptureVideo extends Component {
     if (this.state.recordingScreen) {
       return (
         <VideoRecorder
-          ref={(recorder) => {
-            this.videoRecorder = recorder;
-          }}
           acceptedCameraTnC={this.state.acceptedCameraTnC}
           proceedWithExistingVideo={this.proceedWithExistingVideo}
           saveVideoPrimaryInfo={this.saveVideoPrimaryInfo}
@@ -184,17 +214,13 @@ class CaptureVideo extends Component {
     } else {
       return (
         <PreviewRecordedVideo
-          ref={(previewVideo) => {
-            this.previewVideo = previewVideo;
-          }}
-          goToRecordScreen={() => {
-            this.goToRecordScreen();
-          }}
-          goToDetailsScreen={() => {
-            this.goToDetailsScreen();
-          }}
+          ref={this.previewVideo}
+          goToRecordScreen={this.goToRecordScreen}
+          goToDetailsScreen={this.goToDetailsScreen}
           saveVideoPrimaryInfo={this.saveVideoPrimaryInfo}
-          cachedvideoUrl={this.state.videoUri}
+          videoUrlsList={this.state.videoUrlsList}
+          totalDuration={this.state.totalDuration}
+          previewURL={this.state.previewURL}
           navigation={this.props.navigation}
         />
       );
@@ -202,7 +228,7 @@ class CaptureVideo extends Component {
   }
 
   render() {
-    return <View style={{flex:1 }}>
+    return <View style={{flex:1 , backgroundColor: Colors.black}}>
       <KeepAwake />
       {this.getCurrentView()}
     </View>

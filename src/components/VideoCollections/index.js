@@ -7,6 +7,7 @@ import CommonStyle from "../../theme/styles/Common";
 import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
 import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
 import entityHelper from '../../helpers/EntityHelper';
+import { withNavigation } from 'react-navigation';
 
 class VideoCollections extends PureComponent {
     constructor(props){
@@ -51,9 +52,17 @@ class VideoCollections extends PureComponent {
 
         // Now, create a new one.
         let fetchUrl = this.props.getFetchUrl();
-        this.videoPagination = new Pagination(fetchUrl);
+        let params = this.props.getFetchParams();
+        this.videoPagination = new Pagination(fetchUrl , null , null ,params);
+        this.silenUpdateState();
+
         this.bindPaginationEvents();
     }
+
+  silenUpdateState(){
+    this.state.loadingNext = false;
+    this.state.refreshing = false;
+  }
 
     bindPaginationEvents(){
         let pagination = this.videoPagination;
@@ -136,13 +145,13 @@ class VideoCollections extends PureComponent {
         this.videoPagination.refresh();
     };
 
-    _keyExtractor = (item, index) => {
-        return `id_${item.id}`;
+    _keyExtractor = (item={}, index) => {
+        return `id_${item.id}_${index}`;
     }
 
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item={}, index }) => {
       // Check if this is an empty cell.
-      if ( item.isEmpty) {
+      if ( item.isEmpty && !this.state.refreshing ) {
         // Render no results cell here.
         return this.props.getNoResultsCell(item);
       } else {
@@ -158,7 +167,9 @@ class VideoCollections extends PureComponent {
             }
         } else if( entityHelper.isVideoEntity( item )) {
            return this._renderVideoThumbnail( item, index);
-        } 
+        } else{
+            return null;
+        }
     };
 
     _renderVideoReplyThumbnail( item, index ) {
@@ -170,8 +181,7 @@ class VideoCollections extends PureComponent {
             payload={item.payload}
             index={index}
             onVideoClick={() => {this.onVideoClick(item.payload, index)}}
-            isEmpty={item.isEmpty}
-            emptyRenderFunction={this.props.getNoResultsCell}/>);
+            isEmpty={item.isEmpty}/>);
     }
 
 
@@ -179,11 +189,14 @@ class VideoCollections extends PureComponent {
         const clonedInstance = this.videoPagination.fetchServices.cloneInstance();
         this.props.navigation.push("FullScreenVideoCollection", {
             fetchServices : clonedInstance,
-            tagId: this.props.tagId,
             currentIndex: index,
             payload,
             baseUrl: this.props.getFetchUrl(),
-            showBalanceFlyer: this.props.extraParams && this.props.extraParams.showBalanceFlyer
+            showBalanceFlyer: this.props.extraParams && this.props.extraParams.showBalanceFlyer,
+            getPixelDropData: () => ({
+                p_type: this.props.entityType,
+                p_name:  this.props.entityId
+            }) 
         });
     }
     
@@ -195,8 +208,8 @@ class VideoCollections extends PureComponent {
     listHeaderComponent = () => {
         return (
           <React.Fragment>
-              {this.props.listHeaderComponent}
-              {this.state.list.length > 0 && this.props.listHeaderSubComponent }
+              {this.props.listHeaderComponent()}
+              {this.state.list.length > 0 && this.props.listHeaderSubComponent() }
           </React.Fragment>
         )
     };
@@ -210,7 +223,7 @@ class VideoCollections extends PureComponent {
       } else {
         this.numColumns = 1;
         this.flatListKey = this.noResultsKeyProp;
-        return [this.props.noResultsData];
+        return [this.props.getNoResultData()];
       }
     }
 
@@ -224,6 +237,12 @@ class VideoCollections extends PureComponent {
 
     onScrollToIndexFailed =( info) => {
         console.log("======onScrollToIndexFailed=====" , info );
+    }
+
+    scrollToIndex(index=0){
+        if(this.state.list && this.state.list.length > 0 ){
+            this.listRef.scrollToIndex({ index: 0 });
+        }
     }
 
     render(){
@@ -249,4 +268,15 @@ class VideoCollections extends PureComponent {
     }
 }
 
-export default VideoCollections  ;
+VideoCollections.defaultProps ={
+    getFetchParams : () => null,
+    getNoResultsCell: () => null,
+    listHeaderComponent: () => null,
+    listHeaderSubComponent: () => null,
+    getNoResultData: () =>({
+            "noResultsMsg": 'No results found.',
+            "isEmpty": true
+        })
+}
+
+export default withNavigation( VideoCollections ) ;

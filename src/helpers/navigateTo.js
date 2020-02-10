@@ -31,36 +31,62 @@ class NavigateTo {
     this.navigation = navigation;
   }
 
+  getTopLevelNavigation(){
+    return this.navigation;
+  }
+
   //navigation is a mandatory param
   navigate(goToObject, navigation, payload) {
     goToObject = goToObject || {};
     this.setTopLevelNavigation(navigation);
-    if (goToObject && goToObject.pn === 'p') {
-      this.goToProfilePage(goToObject.v.puid, payload);
-    } else if (goToObject && goToObject.pn === 'cb') {
-      this.goToSupporters(goToObject.v.puid, payload);
-    } else if (goToObject && goToObject.pn === 'v') {
-      this.goToVideo(goToObject.v.vid, payload);
-    }else if (goToObject && goToObject.pn === 'rd') {
-      this.goToVideoReply(goToObject.v.rdi, goToObject.v.pvi, payload);
-    } else if (goToObject && goToObject.pn === 'f') {
-      this.__navigate('Home', payload);
-    } else if (goToObject && goToObject.pn === 'nc') {
-      this.__navigate('Notification', payload);
-    } else if (goToObject.pn === 'e') {
-      this.__push('AddEmailScreen', payload);
-    } else if (goToObject && goToObject.pn === 'ct') {
-      this.goToSupportings(goToObject.v.puid, payload);
-    } else if (goToObject && goToObject.pn === 'iu'){
-      this.goToInvitedUsers(payload);
-    } else if (goToObject && goToObject.pn === 'wv'){
-      InAppBrowser.openBrowser(goToObject.v.wu)
-    } else if (goToObject && goToObject.pn === 'su'){
-      this.goToSupport();
-    } else if (goToObject && goToObject.pn === 'sp'){
-      this.goToStore();
-    } else if (goToObject && goToObject.pn == 't'){
-      this.goToTagVideoPage(goToObject.v.tid, payload);
+
+    let pn = deepGet(goToObject, 'pn');
+
+    switch (pn) {
+      case 'p':
+        this.goToProfilePage(deepGet(goToObject, 'v.puid'), payload, goToObject);
+        break;
+      case 'v':
+        this.goToVideo(deepGet(goToObject, 'v.vid'), payload);
+        break;
+      case 'rd':
+        this.goToVideoReply(deepGet(goToObject, 'v.rdi'), deepGet(goToObject, 'v.pvi'), payload);
+        break;
+      case 'f':
+        this.__navigate('Home', payload);
+        break;
+      case 'nc':
+        this.__navigate('Notification', payload);
+        break;
+      case 'e':
+        this.__push('AddEmailScreen', payload);
+        break;
+      case 'cb':
+        this.__push('SupportersListScreen', payload, 'userId', deepGet(goToObject, 'v.puid'));
+        break;
+      case 'ct':
+        this.__push('SupportingListScreen', payload, 'userId', deepGet(goToObject, 'v.puid'));
+        break;
+      case 'iu':
+        this.goToInvitedUsers(payload);
+        break;
+      case 'wv':
+        InAppBrowser.openBrowser(deepGet(goToObject, 'v.wu'))
+        break;
+      case 'su':
+        this.goToSupport();
+        break;
+      case 'sp':
+        this.goToStore();
+        break;
+      case 't':
+        this.__push('VideoTags', payload, 'tagId', deepGet(goToObject, 'v.tid'));
+        break;
+      case 'ch':
+        this.__push('ChannelsScreen', payload, 'channelId', deepGet(goToObject, 'v.cid'));
+        break;
+      default:
+        console.log('Unhandled navigateTo: ', goToObject, payload);
     }
   }
 
@@ -140,30 +166,13 @@ class NavigateTo {
     }, timeOut)
   };
 
-  goToSupportings = (profileId, payload) => {
-    payload = payload || {};
-    payload['userId'] = profileId;
-    this.__push('SupportingListScreen', payload);
-  };
-
-  goToTagVideoPage = (tagId, payload) => {
-    payload = payload || {};
-    payload['tagId'] = tagId;
-    this.__push('VideoTags', payload);
-  };
-
-  goToSupporters = (profileId, payload) => {
-    payload = payload || {};
-    payload['userId'] = profileId;
-    this.__push('SupportersListScreen', payload);
-  };
-
-  goToProfilePage = (id, payload) => {
+  goToProfilePage = (id, payload={}, goToObj) => {
     if (id == CurrentUser.getUserId()) {
       this.__navigate('ProfileScreen', payload);
     } else {
-      payload = payload || {};
+      payload = payload ;
       payload['userId'] = id;
+      payload['goTo'] = goToObj;
       this.__push('UsersProfileScreen', payload);
     }
   };
@@ -213,6 +222,7 @@ class NavigateTo {
 
   __navigate(screenName, payload) {
     if (!screenName) return;
+    if (Utilities.isCameraScreen()) return;
     if (this.navigation) {
       this.navigation.navigate(screenName, payload);
     } else {
@@ -220,13 +230,16 @@ class NavigateTo {
     }
   }
 
-  __push(screenName, payload) {
+  __push(screenName, payload, idKey, idValue) {
     if (!screenName || !this.navigation) return;
+    if (Utilities.isCameraScreen()) return;
+    payload = payload || {};
+    if(idKey && idValue) payload[idKey] = idValue;
     this.navigation.push(screenName, payload);
   }
 
   setGoTo(goTo) {
-    if (goTo && goTo.pn == 's') {
+    if (goTo && goTo.pn === 's') {
       this._setInviteCode(goTo.v.ic);
       return;
     }

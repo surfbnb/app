@@ -14,6 +14,7 @@ import InvertedReplyList from "../InvertedReplyThumbnailList";
 import Utilities from "../../../services/Utilities";
 import NoPendantsVideoReplyRow from "../VideoReplyRowComponent/NoPendantsVideoReplyRow";
 import Colors from "../../../theme/styles/Colors";
+import inlineStyles from "../../FullScreenReplyCollection/styles";
 
 const maxVideosThreshold = 3;
 const rowHeight = CommonStyle.fullScreen.height;
@@ -74,6 +75,9 @@ class ReplyList extends PureComponent{
         this.willFocusSubscription = this.props.navigation.addListener('willFocus', (payload) => {
             const offset =  this.getCurrentIndex() > 0 ? rowHeight * this.getCurrentIndex() :  0 ;
             this.flatlistRef && this.flatlistRef.scrollToOffset({offset: offset , animated: false});
+        });
+
+        this.didFocusSubscription = this.props.navigation.addListener('didFocus', (payload) => {
             this.isActiveScreen = true ;
         });
 
@@ -96,6 +100,7 @@ class ReplyList extends PureComponent{
         this.paginationEvent.removeListener('onNext');
         this.paginationEvent.removeListener('onNextError');
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didFocusSubscription &&  this.didFocusSubscription.remove();
         this.willBlurSubscription && this.willBlurSubscription.remove();
     }
 
@@ -158,7 +163,7 @@ class ReplyList extends PureComponent{
 
     getPixelDropData = (  ) => {
         return {
-            e_entity: 'reply',
+            e_entity: DataContract.knownEntityTypes.reply,
             p_type: 'video_reply'
         };
     }
@@ -269,7 +274,7 @@ class ReplyList extends PureComponent{
             <SafeAreaView forceInset={{ top: 'never' }}  style={[{position: "relative", flex: 1, backgroundColor: Colors.darkShadeOfGray}]}>
                 <TopStatus />
                 
-                <View style={{position: "absolute" , top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight(), marginRight: 'auto', minWidth: '20%'}}>
+                <View style={[inlineStyles.invertedList , {top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight()}]}>
                     <InvertedReplyList  paginationService={this.getVideoPagination()}
                                         onChildClickDelegate={this.childClickHandler}
                                         bottomRounding={50}

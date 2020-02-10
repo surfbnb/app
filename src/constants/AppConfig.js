@@ -6,7 +6,7 @@ import feedLinkIcon from '../assets/Link.png';
 import {getBottomSpace, isIphoneX} from "react-native-iphone-x-helper";
 import {CUSTOM_TAB_Height} from "../theme/constants";
 import {hasNotch} from "../helpers/NotchHelper";
-import {Dimensions, StatusBar} from "react-native";
+import {Dimensions, StatusBar, Platform} from "react-native";
 import {RESULTS} from 'react-native-permissions';
 
 const statusBarHeight = StatusBar.currentHeight || 0 ;
@@ -33,7 +33,10 @@ const PROFILE_TX_SEND_SUCCESS = 'PROFILE_TX_SEND_SUCCESS',
   REPLY_TX_SEND_SUCCESS='REPLY_TX_SEND_SUCCESS',
   REPLY_TX_RECEIVE_SUCCESS = 'REPLY_TX_RECEIVE_SUCCESS',
   REPLY_TX_SEND_FAILURE = 'REPLY_TX_SEND_FAILURE',
-  REPLY_THREAD_NOTIFICATION = 'REPLY_THREAD_NOTIFICATION'
+  REPLY_THREAD_NOTIFICATION = 'REPLY_THREAD_NOTIFICATION',
+  VIDEO_ADD_CHANNEL = 'VIDEO_ADD_CHANNEL',
+  USER_MENTION_CHANNEL = 'USER_MENTION_CHANNEL',
+  VIDEO_ADD_SUPPORTERS_CHANNEL_MEMBERS = 'VIDEO_ADD_SUPPORTERS_CHANNEL_MEMBERS'
   ;
 
 const AppConfig = {
@@ -41,6 +44,13 @@ const AppConfig = {
   pepoAnimationDuration : 500,
   logoutTimeOut : 2000,
   loginPopoverShowTime: 10000,
+
+  videoRecorderConstants : {
+    longPressDelay : __DEV__ ? 2000 : 500,
+    recordingDelay : Platform.OS == "android" ? 1200 : 600,
+    tabToRecord : "TAP_TO_RECORD",
+    longPressToRecord : "LONG_PRESS_TO_RECORD"
+  },
 
   beKnownErrorCodeMaps : {
     entityDeleted: "not_found",
@@ -143,7 +153,9 @@ const AppConfig = {
   compressionConstants: {
     COMPRESSION_SIZE: '720X1280',
     CRF: '28',
+    PREVIEW_CRF: '28',
     PRESET: 'superfast',
+    PREVIEW_PRESET: 'ultrafast',
     PIX_FMT: 'yuv420p'
   },
 
@@ -200,7 +212,10 @@ const AppConfig = {
       REPLY_RECEIVER_WITHOUT_AMOUNT,
       VIDEO_TX_RECEIVE_SUCCESS,
       VIDEO_TX_SEND_SUCCESS,
-      VIDEO_TX_SEND_FAILURE
+      VIDEO_TX_SEND_FAILURE,
+      VIDEO_ADD_CHANNEL,
+      USER_MENTION_CHANNEL,
+      VIDEO_ADD_SUPPORTERS_CHANNEL_MEMBERS
     ],
     showReplyThumbnailForKinds: [
       REPLY_TX_RECEIVE_SUCCESS,
@@ -369,7 +384,8 @@ const AppConfig = {
     twitter: 'TwitterLogin',
     google: 'GoogleLogin',
     apple :'AppleLogin',
-    github: 'GithubLogin'
+    github: 'GithubLogin',
+    ChannelsScreen: 'Channel'
     //Dont change the key name,  values as u wish end
   },
   default_bt_amt : 10,
@@ -382,19 +398,19 @@ const AppConfig = {
   MaxDescriptionArea: 35250,
   thumbnailListConstants: {
 
-    
+
     // NOTE: Outer Circle Configs.
     // -----------------------------------------------------------------------
     // 1. outerRingDiameter - Replaces old iconHeight/iconWidth.
-    // 
-    // 2. borderWidth       - The border width is applied outside the 
+    //
+    // 2. borderWidth       - The border width is applied outside the
     //                        this iconHeight (Diameter).
-    // 
-    // 3. transparentGap    - Gap between the inner edge of Outer-Circle 
+    //
+    // 3. transparentGap    - Gap between the inner edge of Outer-Circle
     //                        and icon itself.
-    //                        
-    // 4. iconImageDiameter - Diameter of icon Image is computed 
-    //                        using outerRingDiameter, outerBorderWidth 
+    //
+    // 4. iconImageDiameter - Diameter of icon Image is computed
+    //                        using outerRingDiameter, outerBorderWidth
     //                        and transparentGap.
     // -----------------------------------------------------------------------
     outerRingDiameter: 48,
@@ -404,7 +420,7 @@ const AppConfig = {
       return this.outerRingDiameter - (2 * (this.outerBorderWidth + this.transparentGap ));
     },
 
-    // cellHeight - Gives actual height of cell. 
+    // cellHeight - Gives actual height of cell.
     cellHeight: function() {
       return this.outerRingDiameter ; // + (2 * this.outerBorderWidth);
     },
@@ -435,6 +451,19 @@ const AppConfig = {
     apple: "apple",
     github: "github",
     twitter: "twitter"
+  },
+
+  channelConstants : {
+    SCREEN_NAME : "ChannelsScreen"
+  },
+
+  cameraScreens : [ 'CaptureVideo', 'FanVideoDetails', 'FanVideoReplyDetails' ],
+
+  stitchingStatus: {
+    done: 'DONE',
+    failed: 'FAILED',
+    not_started: 'NOT_STARTED',
+    in_progress: 'IN_PROGRESS'
   }
 
 };
