@@ -168,6 +168,12 @@ class ProfileEdit extends React.PureComponent {
       });
       isValid = false;
     }
+    if (this.state.name.length > 30 || this.state.name.length < 2) {
+      this.setState({
+        name_error: ostErrors.getUIErrorMessage('name_min_max')
+      });
+      isValid = false;
+    }
     if (this.state.user_name.length > 15 || this.state.user_name.length < 1) {
       this.setState({
         user_name_error: ostErrors.getUIErrorMessage('user_name_min_max')
