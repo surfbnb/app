@@ -408,6 +408,7 @@ class VideoRecorder extends Component {
             progress={this.state.progress}
             indeterminate={false}
             style={styles.progressBar}
+            useNativeDriver={true}
           />
             <React.Fragment>
               {this.plotSeparationBars()}
