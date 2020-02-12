@@ -25,6 +25,11 @@ class EntityHelper {
         return type == DataContract.videos.videoKind.reply;
     }
 
+    isUserVideoReplyEntity( entity ){
+        const type = this.getEntityType(entity);
+        return type == DataContract.videos.videoKind.user_reply;
+    }
+
     isReplyVideoTypeEntity( entity ){
         const replyKind = this.getReplyKind( entity );
         return replyKind == DataContract.replies.videoReplyKind.video;

@@ -34,6 +34,9 @@ class FullScreenReplyCollection extends PureComponent{
     getParentVideoId(){
         return this.props.navigation.getParam("parentVideoId");
     }
+  getReplyType(){
+    return this.props.navigation.getParam("isUserReplyVideo");
+  }
 
     render() {
         return (
@@ -42,6 +45,7 @@ class FullScreenReplyCollection extends PureComponent{
                   baseUrl={this.getBaseUrl()}
                   parentVideoId={this.getParentVideoId()}
                   parentClickHandler={this.getParentClickHandler()}
+                  isUserReplyVideo ={this.getReplyType()}
               />
         );
     }

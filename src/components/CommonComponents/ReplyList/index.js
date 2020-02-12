@@ -151,7 +151,7 @@ class ReplyList extends PureComponent{
     }
 
     _renderItem = ({ item, index }) => {
-        if(entityHelper.isVideoReplyEntity( item )){
+        if(entityHelper.isVideoReplyEntity( item ) || entityHelper.isUserVideoReplyEntity( item )){
             if(entityHelper.isReplyVideoTypeEntity(item)){
                 return this._renderVideoReplyRow( item, index );
             }
@@ -273,16 +273,18 @@ class ReplyList extends PureComponent{
         return (
             <SafeAreaView forceInset={{ top: 'never' }}  style={[{position: "relative", flex: 1, backgroundColor: Colors.darkShadeOfGray}]}>
                 <TopStatus />
-                
+              {!this.props.isUserReplyVideo?
                 <View style={[inlineStyles.invertedList , {top: Utilities.getPendantTop() , zIndex:9 , height: Utilities.getPendantAvailableHeight()}]}>
-                    <InvertedReplyList  paginationService={this.getVideoPagination()}
-                                        onChildClickDelegate={this.childClickHandler}
-                                        bottomRounding={50}
-                                        getCurrentIndex={this.getCurrentIndex}
-                                        onRef={this.setPendantListRef}
-                                  />
-                </View>    
+                  <InvertedReplyList  paginationService={this.getVideoPagination()}
+                                      onChildClickDelegate={this.childClickHandler}
+                                      bottomRounding={50}
+                                      getCurrentIndex={this.getCurrentIndex}
+                                      onRef={this.setPendantListRef}
+                  />
+                </View>:
+                <React.Fragment></React.Fragment>
 
+              }
                 <FlatList
                     extraData={this.state.activeIndex}
                     snapToAlignment={"top"}

@@ -269,6 +269,11 @@ class ReduxGetters {
     return deepGet(state, `user_video_entities.id_${id}.payload.video_id`);
   }
 
+  getUserReplyId(id, state) {
+    state = state || Store.getState();
+    return deepGet(state, `user_replies_entities.id_${id}.payload.reply_detail_id`);
+  }
+
   getUserVideoUserId(id, state) {
     state = state || Store.getState();
     return deepGet(state, `user_video_entities.id_${id}.payload.user_id`);

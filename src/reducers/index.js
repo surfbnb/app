@@ -76,7 +76,8 @@ const defaultState = {
   notification_unread: {},
   invite_code: null,
   twitter_entities : {},
-  user_allowed_action_entities: {}
+  user_allowed_action_entities: {},
+  user_replies_entities:{}
 };
 
 const logoutDefault = {
@@ -110,7 +111,8 @@ const logoutDefault = {
   invite_code: null,
   twitter_entities : null,
   user_allowed_action_entities:{},
-  unseen_replies_entities: {}
+  unseen_replies_entities: {},
+  user_replies_entities:{}
 };
 
 export const reducer = handleActions(

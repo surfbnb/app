@@ -61,6 +61,9 @@ export default {
         getReplyListApi : (id) => {
             return `/videos/${id}/replies`
         },
+        getUserReplyListApi : (id) => {
+            return `/users/${id}/replies`
+        },
         getDeleteVideoReplyApi : (id) => {
             return `/replies/${id}/delete`;
         },
@@ -106,7 +109,8 @@ export default {
         },
         videoKind: {
             reply : "VIDEO_REPLY",
-            video:"FAN_UPDATE"
+            video:"FAN_UPDATE",
+            user_reply:"USER_REPLY"
         },
         kindKey: "kind",
         creatorUserIdKey: 'creator_user_id',
