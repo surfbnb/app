@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Dimensions, FlatList, ActivityIndicator } from 'react-native';
-import NativeBaseTabTheme from '../../theme/styles/NativeBaseTabs';
 import LinearGradient from "react-native-linear-gradient";
 import {withNavigation} from "react-navigation";
 
@@ -10,7 +9,6 @@ import DataContract from '../../constants/DataContract';
 import reduxGetters from '../../services/ReduxGetters';
 import CurrentUser from '../../models/CurrentUser';
 import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
-import { fetchUser } from '../../helpers/helpers';
 import DeleteVideo from "../CommonComponents/DeleteVideo";
 
 class PostsTabBar extends PureComponent{
@@ -57,11 +55,7 @@ class PostsTabBar extends PureComponent{
   }
 
   onPullToRefresh = () => {
-    fetchUser(this.props.userId , this.onUserFetch );
-  }
-
-  onUserFetch =(res) => {
-    this.props.onUserFetch && this.props.onUserFetch(res);
+    this.videoHistoryPagination.refresh();
   }
 
   onRefresh = ( res ) => {

@@ -9,19 +9,14 @@ import {
 } from 'react-native';
 import LinearGradient from "react-native-linear-gradient";
 import {withNavigation} from "react-navigation";
-import deepGet from "lodash/get";
 
-
-import NativeBaseTabTheme from '../../theme/styles/NativeBaseTabs';
 import Pagination from '../../services/Pagination';
-import { fetchUser } from '../../helpers/helpers';
 import CurrentUser from '../../models/CurrentUser';
 import inlineStyles from '../PostTabBar/style';
 import DataContract from '../../constants/DataContract';
 import reduxGetters from '../../services/ReduxGetters';
 import DeleteVideo from "../CommonComponents/DeleteVideo";
-import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail'
-import VideoThumbnail from '../CommonComponents/VideoThumbnail/VideoThumbnail';
+import ReplyThumbnail from '../CommonComponents/VideoThumbnail/ReplyThumbnail';
 
 
 class RepliesTabBar extends PureComponent {
@@ -57,7 +52,6 @@ class RepliesTabBar extends PureComponent {
     this.paginationEvent.removeListener('onBeforeNext');
     this.paginationEvent.removeListener('onNext');
     this.paginationEvent.removeListener('onNextError');
-    // ++ check this
     if( this.props.refreshEvent) {
       this.props.refreshEvent.removeListener("refresh");
     }
@@ -70,11 +64,7 @@ class RepliesTabBar extends PureComponent {
   }
 
   onPullToRefresh = () => {
-    fetchUser(this.props.userId , this.onUserFetch );
-  }
-
-  onUserFetch =(res) => {
-    this.props.onUserFetch && this.props.onUserFetch(res);
+    this.videoRepliesPagination.refresh();
   }
 
   onRefresh = ( res ) => {
@@ -109,10 +99,6 @@ class RepliesTabBar extends PureComponent {
 
   _keyExtractor = (item, index) => `id_${item}`;
 
-  isCurrentUser = () => {
-    return this.props.userId === CurrentUser.getUserId();
-  }
-
   removeVideo = (videoId, index) => {
     if (index > -1) {
       this.videoRepliesPagination.deleteItem(videoId , "payload.video_id");
@@ -123,29 +109,8 @@ class RepliesTabBar extends PureComponent {
     }
   }
 
-  _renderItemPosts = ({ item, index }) => {
-    const videoId = reduxGetters.getUserReplyId(item);
-    return (<View style={{position: 'relative'}}>
-      {this.isCurrentUser() && <LinearGradient
-        colors={['rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0)']}
-        locations={[0, 1]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={{width: (Dimensions.get('window').width - 6) / 2, margin: 1, position: 'absolute', top: 0, left: 0, zIndex: 1, alignItems: 'flex-end'}}
-      >
-        <View style={inlineStyles.deleteButton}>
-          <DeleteVideo  fetchUrl={DataContract.videos.getDeleteVideoApi(videoId)}
-                        removeVideo={() => {this.removeVideo(videoId , index )}} />
-        </View>
-      </LinearGradient>}
-      <VideoThumbnail payload={{video_id:videoId, user_id: this.props.userId }}
-                      index={index}  onVideoClick={() => {this.onVideoClick(item, index)}}/>
-    </View>);
-  };
-
   _renderVideoReplyThumbnail= ( {item, index} )=> {
     const reply_detail_id = reduxGetters.getUserReplyId(item);
-    // const videoId = reduxGetters.getReplyEntityId( reply_detail_id );
     this.fetchUrl = DataContract.replies.getUserReplyListApi(this.props.userId);
     return (<View style={{position: 'relative'}}>
       {reduxGetters.getCanDeleteReply( reply_detail_id ) && <LinearGradient
