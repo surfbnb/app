@@ -14,6 +14,10 @@ class ProgressBarWrapper extends PureComponent {
     this.setState({progress: val});
   }
 
+  getProgress(){
+    return this.state.progress;
+  }
+
   render(){
     return  <ProgressBar
       width={null}

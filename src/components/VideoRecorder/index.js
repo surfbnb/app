@@ -743,9 +743,8 @@ class VideoRecorder extends Component {
   };
 
   sanitizeSegments = async (data) => {
-    let lastSegmentProgress = this.getLastSegmentDuration(this.progress);
-    console.log(lastSegmentProgress, 'lastSegmentProgress', this.progress, 'this.progress')
-    if ( lastSegmentProgress >= (MIN_VIDEO_LENGTH_IN_SEC * 1000)) {
+    let lastSegmentProgress = this.getCurrentSegmentProgress();
+    if ( lastSegmentProgress >= (MIN_VIDEO_LENGTH_IN_SEC / AppConfig.videoRecorderConstants.videoMaxLength)) {
       FfmpegProcesser.init([data.uri]);
       let videoInfo = await FfmpegProcesser.getVideoInfo();
       this.videoLength += videoInfo.duration;
@@ -772,11 +771,12 @@ class VideoRecorder extends Component {
     this.videoUrlsList[lastIndex] = {...this.videoUrlsList[lastIndex], ...{progress:correctedProgress}}
   };
 
-  getLastSegmentDuration(progress){
+  getCurrentSegmentProgress() {
+    let progress = this._progressRef.getProgress();
     if (this.videoUrlsList.length >= 1){
-      return this.videoUrlsList[this.videoUrlsList.length - 1].durationInMS;
+      return progress - this.videoUrlsList[this.videoUrlsList.length - 1].progress ;
     } else {
-      return progress * AppConfig.videoRecorderConstants.videoMaxLength * 1000;
+      return progress;
     }
   }
 
