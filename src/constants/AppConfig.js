@@ -49,7 +49,9 @@ const AppConfig = {
     longPressDelay : __DEV__ ? 2000 : 500,
     recordingDelay : Platform.OS == "android" ? 1200 : 600,
     tabToRecord : "TAP_TO_RECORD",
-    longPressToRecord : "LONG_PRESS_TO_RECORD"
+    longPressToRecord : "LONG_PRESS_TO_RECORD",
+    recordingDelayKey: 'recording-delay',
+    videoMaxLength : 30
   },
 
   beKnownErrorCodeMaps : {
