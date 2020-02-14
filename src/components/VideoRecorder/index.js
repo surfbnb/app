@@ -497,7 +497,7 @@ class VideoRecorder extends Component {
     let lastElementIndex = this.videoUrlsList.length - 1;
     let lastSegment = this.videoUrlsList[lastElementIndex] || {};
     let lastSegmentProgress =   lastSegment.progress || 0;
-    console.log('goToLastProgress:lastSegmentProgress', lastSegmentProgress)
+    console.log('goToLastProgress:lastSegmentProgress', lastSegmentProgress);
     this.updateProgress(lastSegmentProgress);
   };
 
