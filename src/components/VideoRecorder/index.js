@@ -731,7 +731,9 @@ class VideoRecorder extends Component {
       this.correctedRecordingDelay = 0;
       return;
     }
+    if (val < (2 * AppConfig.videoRecorderConstants.recordingDelay)){
     this.correctedRecordingDelay =  val;
+    }
   }
 
   getLastSegmentProgress = () => {
