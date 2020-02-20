@@ -35,10 +35,10 @@ target 'Pepo2' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   # Custom additions
-  pod 'Firebase/Core', '~> 6.8.1'
-  pod 'Firebase/Messaging', '~> 6.8.1'
-  pod 'Firebase/DynamicLinks', '~> 6.8.1'
-  pod 'Firebase/RemoteConfig', '~> 6.8.1'
+  pod 'Firebase/Core', '~> 6.3.0'
+  pod 'Firebase/Messaging', '~> 6.3.0'
+  pod 'Firebase/DynamicLinks', '~> 6.3.0'
+  pod 'Firebase/RemoteConfig', '~> 6.3.0'
   pod 'GoogleIDFASupport', '~> 3.14.0'
   pod 'Fabric', '~> 1.10.2'
   pod 'Crashlytics', '~> 3.14.0'

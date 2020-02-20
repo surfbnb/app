@@ -9,19 +9,6 @@ import CurrentUser from '../models/CurrentUser';
 import NavigationEmitter from '../helpers/TabNavigationEvent';
 import Utilities from '../services/Utilities';
 
-//TODO: Remove start
-function debugHelper( params ){
-  fetch('https://engen02ibrql9.x.pipedream.net/', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
-}
-//TODO: Remove end
-``
 // Not to be used for now
 function deleteToken() {
   firebase
@@ -62,23 +49,15 @@ function askForPNPermission() {
 
 }
 
-function getToken(userId) {
+function getToken(userId, cb) {
   firebase
       .messaging()
       .getToken()
-      .then((fcmToken) => {
-        //TODO: Remove start
-        debugHelper({ fcmToken: fcmToken });
-        //TODO: Remove end
-        fcmToken && sendToken(fcmToken, userId)
-      })
+      .then((fcmToken) => fcmToken && sendToken(fcmToken, userId, cb))
       .catch((error) => console.log('Error occured while getting device token ', error));
 }
 
-async function  sendToken(token, userId) {
-  //TODO: Remove start
-  debugHelper({message: `sendToken called: token-${token} userId-${userId}`});
-  //TODO: Remove end
+async function  sendToken(token, userId, cb) {
   if (!userId) {
     console.log('sendToken :: currentUserId is not yet available');
     return;
@@ -96,17 +75,10 @@ async function  sendToken(token, userId) {
   new PepoApi(`/notifications/device-token`)
       .post(payload)
       .then((responseData) => {
-        //TODO: Remove start
-        debugHelper({message: `device-token success`});
-        //TODO: Remove end
-        console.log('sendToken :: Payload sent successfully', responseData)
+        console.log('sendToken :: Payload sent successfully', responseData);
+        cb && cb();
       })
-      .catch((error) => {
-        //TODO: Remove start
-        debugHelper({message: `device-token error ${error}`});
-        //TODO: Remove end
-        console.log('Error occured in device-token endpoint ', error)}
-        );
+      .catch((error) => console.log('Error occured in device-token endpoint ', error));
 }
 
 function resetUserBadge(userId){
@@ -122,12 +94,7 @@ class PushNotificationManager extends PureComponent {
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    this.onTokenRefreshListener = firebase.messaging().onTokenRefresh((fcmToken) => {
-      //TODO: Remove start
-      debugHelper({ fcmToken: fcmToken });
-      //TODO: Remove end
-      sendToken(fcmToken) 
-    });
+    this.onTokenRefreshListener = firebase.messaging().onTokenRefresh((fcmToken) => sendToken(fcmToken));
 
     // getInitialNotification when app is closed and is being launched by clicking on push notification
     firebase
@@ -206,9 +173,6 @@ class PushNotificationManager extends PureComponent {
   }
 
   getUserToken(){
-    //TODO: Remove start
-    debugHelper({message: `getUserToken called`});
-    //TODO: Remove end
     Utilities.getItem(`notification-permission-${this.props.currentUserId}`).then((value)=> {
       value === 'true' && getToken(this.props.currentUserId);
     });
