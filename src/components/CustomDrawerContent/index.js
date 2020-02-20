@@ -50,7 +50,7 @@ const disconnetImageIconStyle = {
     width: 19,
     height: 18.5
   }
-}
+};
 
 
 class CustomDrawerContent extends Component {
@@ -140,7 +140,7 @@ class CustomDrawerContent extends Component {
     }else {
       return null;
     }
-  }
+  };
 
   getDisconnectBtnText = () => {
     const serviceType = LastLoginedUser.getLastLoginServiceType();
@@ -188,7 +188,7 @@ class CustomDrawerContent extends Component {
           this.setState({ disableButtons: false })
         });
       });
-  }
+  };
   _getUtilityBandedToken() {
     return (this.token.auxiliary_chains[0]).utility_branded_token || '0x'
   }
@@ -205,28 +205,28 @@ class CustomDrawerContent extends Component {
 
   aboutLink = () =>{
     InAppBrowser.openBrowser( `${WEB_ROOT}/about` );
-  }
+  };
 
   blockExplorer = () =>{
-    let link = `${VIEW_END_POINT}token/ec-${this._getAuxChainId()}-${this._getUtilityBandedToken()}`
+    let link = `${VIEW_END_POINT}token/ec-${this._getAuxChainId()}-${this._getUtilityBandedToken()}`;
     InAppBrowser.openBrowser( link );
-  }
+  };
 
   termsAndConditions = () =>{
     InAppBrowser.openBrowser(
       `${WEB_ROOT}/terms`
     );
-  }
+  };
 
   privacypolicy = ()=>{
     InAppBrowser.openBrowser(
       `${WEB_ROOT}/privacy`
     );
-  }
+  };
 
   onPepocornsClick = () => {
     Utilities.openRedemptionWebView();
-  }
+  };
 
   render() {
     return (
@@ -321,6 +321,15 @@ class CustomDrawerContent extends Component {
             <View style={styles.itemParent}>
               {this.getDisconnectBtnImage()}
               <Text style={styles.item}>{this.getDisconnectBtnText()}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={multipleClickHandler(() => {
+            throw('Crash!');
+          })} disabled={this.state.disableButtons}
+          >
+            <View style={styles.itemParent}>
+              <Text style={styles.item}>Crash my app!</Text>
             </View>
           </TouchableOpacity>
 
