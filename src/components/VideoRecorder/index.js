@@ -754,9 +754,17 @@ class VideoRecorder extends Component {
 
   sanitizeSegments = async (data, durationByCode ) => {
     let lastSegmentProgress = this.getCurrentSegmentProgress();
-    if ( lastSegmentProgress >= (MIN_VIDEO_LENGTH_IN_SEC / AppConfig.videoRecorderConstants.videoMaxLength)) {
-      FfmpegProcesser.init([data.uri]);
-      let videoInfo = await FfmpegProcesser.getVideoInfo();
+    let videoInfo;
+    FfmpegProcesser.init([data.uri]);
+    try{
+      videoInfo = await FfmpegProcesser.getVideoInfo();
+    } catch (e){
+      logger(e);
+      this.goToLastProgress();
+      return ;
+    }
+
+    if ( videoInfo.duration >= (MIN_VIDEO_LENGTH_IN_SEC * 1000)) {
       this.videoLength += videoInfo.duration;
       this.videoUrlsList.push({uri: data.uri, progress: this.progress, durationInMS: videoInfo.duration });
       logger('FfmpegProcesser duration', videoInfo.duration);
