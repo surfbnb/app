@@ -797,13 +797,16 @@ class VideoRecorder extends Component {
     state["isRecording"] = isRecording;
     this.setState(state);
     this.shallowIsRecording = isRecording;
-  }
+    if(state.hasOwnProperty("currentMode")){
+      this.shallowCurrentMode = state["currentMode"];
+    }
+  };
 
   changeCurrentMode = (currentMode, state={}) => {
     state["currentMode"] = currentMode ;
     this.setState(state);
     this.shallowCurrentMode = currentMode;
-  }
+  };
 
   isRecording = () => {
     return this.state.isRecording || this.shallowIsRecording ;
