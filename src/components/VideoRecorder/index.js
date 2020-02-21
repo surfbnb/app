@@ -36,7 +36,8 @@ import ProgressBar from '../CommonComponents/ProgressBarWrapper';
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
-const PROGRESS_FACTOR = 0.01;
+const PROGRESS_REFRESH_INTERVAL = 300;
+const PROGRESS_FACTOR = (1/(AppConfig.videoRecorderConstants.videoMaxLength*1000))*PROGRESS_REFRESH_INTERVAL;
 const MIN_VIDEO_LENGTH_IN_SEC = 1;
 
 const TAP_TO_RECORD = AppConfig.videoRecorderConstants.tabToRecord;
@@ -408,12 +409,12 @@ class VideoRecorder extends Component {
 
   setProgressBarRef = (ref) => {
     this._progressRef = ref;
-  }
+  };
 
   updateProgress = (val) => {
     this.progress = val;
     this._progressRef && this._progressRef.updateProgress(val);
-  }
+  };
 
 
   showCameraActions = () => {
@@ -451,7 +452,7 @@ class VideoRecorder extends Component {
       <Image style={styles.closeIconSkipFont} source={closeIcon} />
     </TouchableOpacity>
 
-  }
+  };
 
   previewPressHandler = () => {
     if (this.isRecording()) return;
@@ -571,7 +572,7 @@ class VideoRecorder extends Component {
     } else {
       this.recordVideoAsync();
     }
-  }
+  };
 
   handleOnPressOut = () => {
      if (this.isLongPressRecordingMode() && this.isRecording()){
@@ -597,9 +598,9 @@ class VideoRecorder extends Component {
     }
   };
 
-  stopIcon = () => <View style={styles.squareIcon} />
+  stopIcon = () => <View style={styles.squareIcon} />;
 
-  captureIcon = () => <View style={[styles.innerCircle]} />
+  captureIcon = () => <View style={[styles.innerCircle]} />;
 
   getIcon = () => {
     if (this.isRecording()){
@@ -653,7 +654,7 @@ class VideoRecorder extends Component {
   };
 
   initProgressBar() {
-      this.intervalManager(true , this.progressBarStateUpdate, 300);
+    this.intervalManager(true , this.progressBarStateUpdate, PROGRESS_REFRESH_INTERVAL);
   }
 
   intervalManager(flag, animate, time) {
@@ -819,11 +820,11 @@ class VideoRecorder extends Component {
 
   isRecording = () => {
     return this.state.isRecording || this.shallowIsRecording ;
-  }
+  };
 
   isLongPressRecordingMode =( ) => {
     return this.state.currentMode === LONG_PRESS_TO_RECORD || this.shallowCurrentMode === LONG_PRESS_TO_RECORD ;
-  }
+  };
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);

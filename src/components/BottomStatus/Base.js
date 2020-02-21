@@ -36,7 +36,7 @@ class BottomStatus extends PureComponent {
   getTappedIncludesEntity = ( tag ) => {
     let tappedIncludesEntity = ReduxGetters.getTappedIncludesEntity(this.props.entityDescriptionId, tag);
     return tappedIncludesEntity;
-  }
+  };
 
   render() {
     return (
@@ -66,7 +66,7 @@ class BottomStatus extends PureComponent {
                 ellipsizeMode={'tail'}
                 numberOfLines={3}
               >
-                <TextFormatter text={this.props.description} getTappedIncludesEntity={this.getTappedIncludesEntity} 
+                <TextFormatter text={this.props.description} getTappedIncludesEntity={this.getTappedIncludesEntity}
                         navigation={this.props.navigation}/>
               </Text>
             ) : (
@@ -88,7 +88,7 @@ class BottomStatus extends PureComponent {
               numberOfLines={1}
               ellipsizeMode={'tail'}
             >
-              {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '')}
+              {this.props.link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '').replace(/\/$/, '')}
             </Text>
           </TouchableOpacity>
         ) : (
@@ -101,6 +101,6 @@ class BottomStatus extends PureComponent {
 
 BottomStatus.defaultProps = {
   isUserNavigate : true
-}
+};
 
 export default BottomStatus;
