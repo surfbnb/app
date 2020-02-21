@@ -32,6 +32,8 @@ import AuthBaseService from "../../services/AuthServices/Base";
 import AppConfig from "../../constants/AppConfig";
 import {testProps} from "../../constants/AppiumAutomation";
 
+import firebase from 'react-native-firebase';
+
 const serviceTypes = AppConfig.authServiceTypes;
 const disconnetImageIconStyle = {
   [serviceTypes.twitter] : {
@@ -325,7 +327,8 @@ class CustomDrawerContent extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={multipleClickHandler(() => {
-            throw('Crash!');
+            firebase.crashlytics().log('Test Crash coming up...');
+            firebase.crashlytics().crash();
           })} disabled={this.state.disableButtons}
           >
             <View style={styles.itemParent}>
