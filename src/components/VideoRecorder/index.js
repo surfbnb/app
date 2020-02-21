@@ -684,7 +684,8 @@ class VideoRecorder extends Component {
       quality: RNCamera.Constants.VideoQuality[AppConfig.cameraConstants.VIDEO_QUALITY],
       base64: true,
       muted: false,
-      orientation:  'portrait'
+      orientation:  'portrait',
+      maxDuration: AppConfig.videoRecorderConstants.videoMaxLength
     };
   };
 
