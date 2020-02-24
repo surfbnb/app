@@ -39,6 +39,7 @@ class MultipleVideo extends Base {
           this.updateProgress(1);
           //Reset next video Index 
           nextVideoIndex = 0;
+          this.prevVideosLength = 0;
         }
         this.seekCount = 0;
         this.currentVideoTime = 0;
