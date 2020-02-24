@@ -25,7 +25,7 @@ class ProgressBarWrapper extends PureComponent {
       progress={this.state.progress}
       indeterminate={false}
       style={this.props.style}
-      useNativeDriver={true}
+      // useNativeDriver={true}
     />
   }
 

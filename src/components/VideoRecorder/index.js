@@ -103,7 +103,7 @@ class VideoRecorder extends Component {
   _onAppStateChangeToBackground = ( ) => {
       if (this.isRecording()){
         this.stoppedUnexpectedly = true;
-        this.stopRecording();
+        this.cameraStopRecording();
       } else {
         this.accidentalGoToPreviewScreen();
       }
@@ -178,7 +178,7 @@ class VideoRecorder extends Component {
   }
 
   cancelVideo = () => {
-    this.stopRecording();
+    this.cameraStopRecording();
   };
 
   _handleBackPress = () => {
@@ -537,10 +537,14 @@ class VideoRecorder extends Component {
     </View>
   };
 
-  stopRecording = (stopNativeRecording=true, stateUpdate=true) => {
-    //Stop camera recording
-    stopNativeRecording && this.camera && this.camera.stopRecording();
-    //Stop button animation
+  cameraStopRecording = () => {
+    this.camera && this.camera.stopRecording();
+  };
+
+  stopRecording = () => {
+    // Stop camera recording
+    // this.stoppedByAction = true;
+    // Stop button animation
     this.recordActionButton && this.recordActionButton.stopAnimation();
     // Release button disabled status as soon as video recording completed or failed.
     this.recordActionButton && this.recordActionButton.styleAsDisabled(false);
@@ -549,7 +553,7 @@ class VideoRecorder extends Component {
     // for clearInterval
     this.intervalManager(false);
     //Change recording flag to false and current mode to null
-    stateUpdate && this.stopRecordingStateUpdate();
+    this.stopRecordingStateUpdate();
   };
 
   stopRecordingStateUpdate(){
@@ -568,7 +572,7 @@ class VideoRecorder extends Component {
 
   handleOnPressIn = () => {
     if(this.isRecording()){
-      this.stopRecording();
+      this.cameraStopRecording();
     } else {
       this.recordVideoAsync();
     }
@@ -576,7 +580,7 @@ class VideoRecorder extends Component {
 
   handleOnPressOut = () => {
      if (this.isLongPressRecordingMode() && this.isRecording()){
-      this.stopRecording();
+      this.cameraStopRecording();
     }
   };
 
@@ -649,7 +653,7 @@ class VideoRecorder extends Component {
     if (currentProgress <= 1) {
       this.updateProgress(progress);
     } else {
-      this.stopRecording();
+      this.cameraStopRecording();
     }
   };
 
@@ -695,7 +699,11 @@ class VideoRecorder extends Component {
     this.preRecording();
     let data, assumedStartTime, endTime;
     let stopNativeRecording = false;
-    try{
+
+    // Reset stoppedByAction here.
+    // this.stoppedByAction = false;
+
+    try {
         assumedStartTime = Date.now() + this.correctedRecordingDelay;
         logger('this.correctedRecordingDelay', this.correctedRecordingDelay);
         logger('assumedStartTime', assumedStartTime);
@@ -703,17 +711,18 @@ class VideoRecorder extends Component {
     } catch(exception) {
       console.log('recordVideoAsync:::::catch', exception);
       this.goToLastProgress();
-      stopNativeRecording = true;
+      this.stopRecording();
       return;
     }
+    this.stopRecording();
     endTime = Date.now();
 
     //Stop recording
-    this.stopRecording(stopNativeRecording, false);
+
     //Sanitize Segments
     logger('durationByCode', (endTime - assumedStartTime));
     await this.sanitizeSegments(data, (endTime - assumedStartTime));
-    //Stop recording state update
+    // Stop recording state update
     this.stopRecordingStateUpdate();
 
     //If application goes Inactive while recording go to preview screen
@@ -734,6 +743,7 @@ class VideoRecorder extends Component {
 
   setCorrectionValue(val){
     if(!val) return;
+    //TODO: Remove commented code
     // if(val <= 0){
     //   this.correctedRecordingDelay = 0;
     //   return;
