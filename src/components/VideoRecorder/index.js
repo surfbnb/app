@@ -62,6 +62,7 @@ class VideoRecorder extends Component {
     this.stoppedUnexpectedly = false;
     this.actionButtonDisabled = false;
     this.isBackgroundHonoured = false;
+    this.lastUpdateProgressTimeStamp = 0;
     this._progressRef = null;
     this.progress = 0;
     this.intervalID = null;
@@ -80,6 +81,8 @@ class VideoRecorder extends Component {
     });
 
   }
+
+  progressFactor = () => (1/(AppConfig.videoRecorderConstants.videoMaxLength*1000))*(this.actualProgressRefreshInterval || PROGRESS_REFRESH_INTERVAL);
 
   accidentalGoToPreviewScreen = () => {
     this.stoppedUnexpectedly = false;
@@ -648,8 +651,13 @@ class VideoRecorder extends Component {
 
   progressBarStateUpdate = () => {
     if(!this.isRecording()) return;
-    let currentProgress =  this.progress ;
-    let progress = currentProgress + PROGRESS_FACTOR ;
+    let currentProgress =  this.progress;
+    this.actualProgressRefreshInterval = this.lastUpdateProgressTimeStamp ?
+      (Date.now() - this.lastUpdateProgressTimeStamp) : PROGRESS_REFRESH_INTERVAL;
+    this.lastUpdateProgressTimeStamp = Date.now();
+    let factor = this.progressFactor();
+    logger('factor time: ',factor * 30000);
+    let progress = currentProgress + factor;
     if (currentProgress <= 1) {
       this.updateProgress(progress);
     } else {
@@ -696,6 +704,7 @@ class VideoRecorder extends Component {
 
   recordVideoAsync = async () => {
     if (!this.camera) return;
+    this.lastUpdateProgressTimeStamp = 0;
     this.preRecording();
     let data, assumedStartTime, endTime;
     let stopNativeRecording = false;
