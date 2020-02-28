@@ -39,6 +39,7 @@ const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_REFRESH_INTERVAL = 300;
 const PROGRESS_FACTOR = (1/(AppConfig.videoRecorderConstants.videoMaxLength*1000))*PROGRESS_REFRESH_INTERVAL;
 const MIN_VIDEO_LENGTH_IN_SEC = 1;
+const BUFFERED_MAX_DURATION_MS  = ( AppConfig.videoRecorderConstants.videoMaxLength -  MIN_VIDEO_LENGTH_IN_SEC  ) * 1000;
 
 const TAP_TO_RECORD = AppConfig.videoRecorderConstants.tabToRecord;
 const LONG_PRESS_TO_RECORD = AppConfig.videoRecorderConstants.longPressToRecord;
@@ -473,15 +474,19 @@ class VideoRecorder extends Component {
   };
 
   deleteLastSegment = () => {
-    if(this.videoUrlsList.length > 0 && this.separationBars.length > 0){
+    if(this.videoUrlsList.length > 0 ){
       let lastElementIndex = this.videoUrlsList.length - 1;
       let lastSegment = this.videoUrlsList[lastElementIndex] || {};
       this.videoLength = this.videoLength -  lastSegment.durationInMS;
       this.videoUrlsList.pop();
-      this.separationBars.pop();
       let lastSegmentProgress = (this.videoUrlsList[lastElementIndex - 1] || {}).progress || 0;
       this.updateProgress(lastSegmentProgress);
-      this.forceUpdate();
+      
+      if(this.separationBars.length > 0){
+        this.separationBars.pop();
+      }
+  
+      this.forceUpdate(); 
     }
   };
 
@@ -604,10 +609,13 @@ class VideoRecorder extends Component {
       return this.captureIcon();
     }
   };
+  
+  isVideoDurationBufferReached(length){
+    return length >= BUFFERED_MAX_DURATION_MS ;
+  }
 
   getActionButton() {
-
-    if(this.videoLength >= AppConfig.videoRecorderConstants.videoMaxLength * 1000){
+    if(this.isVideoDurationBufferReached(this.videoLength) ){
       this.actionButtonDisabled = true;
     } else {
       this.actionButtonDisabled = false;
@@ -749,7 +757,6 @@ class VideoRecorder extends Component {
   };
 
   sanitizeSegments = async (data, durationByCode ) => {
-    let lastSegmentProgress = this.getCurrentSegmentProgress();
     let videoInfo;
     FfmpegProcesser.init([data.uri]);
     try{
@@ -772,8 +779,11 @@ class VideoRecorder extends Component {
 
   correctProgress = () => {
     let correctedProgress = (this.videoLength / 1000) / AppConfig.videoRecorderConstants.videoMaxLength;
-    this.updateProgress(correctedProgress);
     this.updateVideoUrlsListProgress(correctedProgress);
+    if(this.isVideoDurationBufferReached(this.videoLength)){
+      correctedProgress =  1;
+    }
+    this.updateProgress(correctedProgress);
   };
 
   updateVideoUrlsListProgress = (correctedProgress) => {
