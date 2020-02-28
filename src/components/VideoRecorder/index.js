@@ -214,7 +214,6 @@ class VideoRecorder extends Component {
   ifLocalVideoPresent = async  () => {
     let recordedVideoList = this.recordedVideoObj.raw_video_list || [];
     recordedVideoList = recordedVideoList.map((ele)=>ele.uri);
-    console.log(recordedVideoList, '=====recordedVideoList=====');
     if (recordedVideoList.length === 0){
       return false;
     }
@@ -491,7 +490,6 @@ class VideoRecorder extends Component {
       this.videoUrlsList.pop();
       this.separationBars.pop();
       let lastSegmentProgress = (this.videoUrlsList[lastElementIndex - 1] || {}).progress || 0;
-      console.log(lastSegmentProgress, 'deleteLastSegment');
       this.updateProgress(lastSegmentProgress);
       this.forceUpdate();
     }
@@ -501,7 +499,6 @@ class VideoRecorder extends Component {
     let lastElementIndex = this.videoUrlsList.length - 1;
     let lastSegment = this.videoUrlsList[lastElementIndex] || {};
     let lastSegmentProgress =   lastSegment.progress || 0;
-    console.log('goToLastProgress:lastSegmentProgress', lastSegmentProgress);
     this.updateProgress(lastSegmentProgress);
   };
 
@@ -681,7 +678,6 @@ class VideoRecorder extends Component {
   preRecording = () => {
     //Start after some delya as actual recording starts after some delay.
     clearTimeout(this.preRecordingTimeOut);
-    console.log("AppConfig.videoRecorderConstants.recordingDelay" , AppConfig.videoRecorderConstants.recordingDelay);
     this.preRecordingTimeOut = setTimeout(() => {
       this.progressBarStateUpdate();
       this.initProgressBar();
@@ -716,7 +712,6 @@ class VideoRecorder extends Component {
         assumedStartTime = Date.now() + this.correctedRecordingDelay;
         data = await this.camera.recordAsync(this.getRecordingOptions());
     } catch(exception) {
-      console.log('recordVideoAsync:::::catch', exception);
       this.goToLastProgress();
       this.stopRecording();
       return;
