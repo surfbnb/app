@@ -757,6 +757,7 @@ class VideoRecorder extends Component {
   };
 
   sanitizeSegments = async (data, durationByCode ) => {
+    let lastSegmentProgress = this.getCurrentSegmentProgress();
     let videoInfo;
     FfmpegProcesser.init([data.uri]);
     try{
