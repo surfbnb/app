@@ -3,10 +3,11 @@ import {connect} from 'react-redux';
 import { View, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { Text, Image } from 'react-native';
 import pricer from '../../services/Pricer';
-import inlineStyles from './styles';
+import inlineProfileStyles from './styles';
 import selfAmountWallet from '../../assets/pepo-amount-wallet.png';
-import topUpIcon from '../../assets/top-up-icon.png'
-import inlineStyle from "../CommonComponents/UserInfo/styles";
+import topUpIcon from '../../assets/top-up-icon.png';
+import storeIcon from '../../assets/balanace-header-store.png'
+import inlineUserStyles from "../CommonComponents/UserInfo/styles";
 import LinearGradient from "react-native-linear-gradient";
 import { withNavigation } from 'react-navigation';
 import CurrentUser from '../../models/CurrentUser';
@@ -24,6 +25,9 @@ import MultipleClickHandler from '../../services/MultipleClickHandler';
 import { OstWalletSdk } from '@ostdotcom/ost-wallet-sdk-react-native';
 import pepoCornsImg from '../../assets/UnicornSmall.png';
 import {testProps} from "../../constants/AppiumAutomation";
+import Utilities from "../../services/Utilities";
+
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 const mapStateToProps = (state) => ({ balance: state.balance });
 
@@ -126,14 +130,18 @@ class BalanceHeader extends PureComponent {
     }
   }
 
+  onStoreClick = () => {
+    Utilities.openRedemptionWebView();
+  }
+
   render() {
     return (
-      <View style={inlineStyle.infoHeaderWrapper}>
+      <View style={inlineUserStyles.infoHeaderWrapper}>
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity onPress={this.onTopUp}>
             <View style={{alignItems: 'center'}}>
-              <Image style={{ width: 50, height: 50 }} source={topUpIcon}></Image>
-              <Text style={inlineStyles.redeemBalance}>Top Up</Text>
+              <Image style={inlineUserStyles.balanceHeaderIcons} source={topUpIcon}></Image>
+              <Text style={inlineProfileStyles.redeemBalance}>Top Up</Text>
             </View>
           </TouchableOpacity>
           <LinearGradient
@@ -141,21 +149,36 @@ class BalanceHeader extends PureComponent {
             locations={[0, 1]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            style={{height: 20, width: 1, marginHorizontal: 8, marginTop: 16.5}}
+            style={inlineUserStyles.dividerLine}
           ></LinearGradient>
           <TouchableOpacity onPress={MultipleClickHandler(() => this.onRedemptionClick())} >
             <View style={{alignItems: 'center'}}>
-              <Image style={{ width: 50, height: 50 }} source={pepoCornsImg}></Image>
-              <Text style={inlineStyles.redeemBalance}>{AppConfig.redemption.pepoCornsName}</Text>
+              <Image style={inlineUserStyles.balanceHeaderIcons} source={pepoCornsImg}></Image>
+              <Text style={inlineProfileStyles.redeemBalance}>{AppConfig.redemption.pepoCornsName}</Text>
+            </View>
+          </TouchableOpacity>
+          <LinearGradient
+            colors={['#dadfdc', '#dadfdc']}
+            locations={[0, 1]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={inlineUserStyles.dividerLine}
+          ></LinearGradient>
+          <TouchableOpacity onPress={multipleClickHandler(() => {
+            this.onStoreClick();
+          })} >
+            <View style={{alignItems: 'center'}}>
+              <Image style={inlineUserStyles.balanceHeaderIcons} source={storeIcon}></Image>
+              <Text style={inlineProfileStyles.redeemBalance}>Store</Text>
             </View>
           </TouchableOpacity>
         </View>
         <View style={{alignItems: 'flex-end'}}>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             {this.getWalletIcon()}
-            <Text style={inlineStyles.pepoBalance} {...testProps('balance-header-pepo-amount')}>{' '}{this.toBt(this.props.balance) || 0.00}</Text>
+            <Text style={inlineProfileStyles.pepoBalance} {...testProps('balance-header-pepo-amount')}>{' '}{this.toBt(this.props.balance) || 0.00}</Text>
           </View>
-          <Text style={inlineStyles.usdBalance} {...testProps('balance-header-usd-amount')}>${' '}{this.toFiat( this.props.balance ) || 0.00} </Text>
+          <Text style={inlineProfileStyles.usdBalance} {...testProps('balance-header-usd-amount')}>${' '}{this.toFiat( this.props.balance ) || 0.00} </Text>
         </View>
       </View>
     );
