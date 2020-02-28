@@ -106,7 +106,7 @@ class VideoRecorder extends Component {
   _onAppStateChangeToBackground = ( ) => {
       if (this.isRecording()){
         this.stoppedUnexpectedly = true;
-        this.cameraStopRecording();
+        this.stopRecording();
       } else {
         this.accidentalGoToPreviewScreen();
       }
@@ -181,7 +181,7 @@ class VideoRecorder extends Component {
   }
 
   cancelVideo = () => {
-    this.cameraStopRecording();
+    this.stopRecording();
   };
 
   _handleBackPress = () => {
@@ -544,10 +544,11 @@ class VideoRecorder extends Component {
     this.camera && this.camera.stopRecording();
   };
 
-  stopRecording = () => {
+  stopRecording = (stopNativeRecording = true) => {
     // Stop camera recording
     // this.stoppedByAction = true;
     // Stop button animation
+    stopNativeRecording && this.cameraStopRecording();
     this.recordActionButton && this.recordActionButton.stopAnimation();
     // Release button disabled status as soon as video recording completed or failed.
     this.recordActionButton && this.recordActionButton.styleAsDisabled(false);
@@ -575,7 +576,7 @@ class VideoRecorder extends Component {
 
   handleOnPressIn = () => {
     if(this.isRecording()){
-      this.cameraStopRecording();
+      this.stopRecording();
     } else {
       this.recordVideoAsync();
     }
@@ -583,7 +584,7 @@ class VideoRecorder extends Component {
 
   handleOnPressOut = () => {
      if (this.isLongPressRecordingMode() && this.isRecording()){
-      this.cameraStopRecording();
+      this.stopRecording();
     }
   };
 
@@ -656,12 +657,11 @@ class VideoRecorder extends Component {
       (Date.now() - this.lastUpdateProgressTimeStamp) : PROGRESS_REFRESH_INTERVAL;
     this.lastUpdateProgressTimeStamp = Date.now();
     let factor = this.progressFactor();
-    logger('factor time: ',factor * 30000);
     let progress = currentProgress + factor;
     if (currentProgress <= 1) {
       this.updateProgress(progress);
     } else {
-      this.cameraStopRecording();
+      this.stopRecording();
     }
   };
 
@@ -714,8 +714,6 @@ class VideoRecorder extends Component {
 
     try {
         assumedStartTime = Date.now() + this.correctedRecordingDelay;
-        logger('this.correctedRecordingDelay', this.correctedRecordingDelay);
-        logger('assumedStartTime', assumedStartTime);
         data = await this.camera.recordAsync(this.getRecordingOptions());
     } catch(exception) {
       console.log('recordVideoAsync:::::catch', exception);
@@ -723,16 +721,17 @@ class VideoRecorder extends Component {
       this.stopRecording();
       return;
     }
-    this.stopRecording();
+
+    this.stopRecording(false);
     endTime = Date.now();
 
     //Stop recording
 
     //Sanitize Segments
-    logger('durationByCode', (endTime - assumedStartTime));
     await this.sanitizeSegments(data, (endTime - assumedStartTime));
-    // Stop recording state update
-    this.stopRecordingStateUpdate();
+
+    // Just to re-render
+    this.forceUpdate();
 
     //If application goes Inactive while recording go to preview screen
     if(this.stoppedUnexpectedly) {
@@ -744,24 +743,15 @@ class VideoRecorder extends Component {
       let durationByProgress = this.getLastSegmentProgress() * AppConfig.videoRecorderConstants.videoMaxLength * 1000;
       const correctionVal =  this.correctedRecordingDelay - (duration - durationByCode);
       this.setCorrectionValue( correctionVal );
-      let logMsg = `DF ${duration.toFixed(2)} DC ${durationByCode.toFixed(2)} CD ${this.correctedRecordingDelay.toFixed(2)}`;
-      console.log(`**||** ${logMsg}`);
-      Toast.show({text:logMsg, icon: 'success'});
+      // let logMsg = `DF ${duration.toFixed(2)} DC ${durationByCode.toFixed(2)} CD ${this.correctedRecordingDelay.toFixed(2)}`;
+      // Toast.show({text:logMsg, icon: 'success'});
       Utilities.saveItem(AppConfig.videoRecorderConstants.recordingDelayKey, this.correctedRecordingDelay);
   };
 
   setCorrectionValue(val){
     if(!val) return;
-    //TODO: Remove commented code
-    // if(val <= 0){
-    //   this.correctedRecordingDelay = 0;
-    //   return;
-    // }
     if (val < (5 * AppConfig.videoRecorderConstants.recordingDelay)){
-      logger('setCorrectionValue set', val);
       this.correctedRecordingDelay =  val;
-    } else {
-      logger('setCorrectionValue NOT set!', val);
     }
   }
 
@@ -780,7 +770,6 @@ class VideoRecorder extends Component {
     try{
       videoInfo = await FfmpegProcesser.getVideoInfo();
     } catch (e){
-      logger(e);
       this.goToLastProgress();
       return ;
     }
@@ -788,12 +777,10 @@ class VideoRecorder extends Component {
     if ( videoInfo.duration >= (MIN_VIDEO_LENGTH_IN_SEC * 1000)) {
       this.videoLength += videoInfo.duration;
       this.videoUrlsList.push({uri: data.uri, progress: this.progress, durationInMS: videoInfo.duration });
-      logger('FfmpegProcesser duration', videoInfo.duration);
       this.recordingDelayCorrection(videoInfo.duration, durationByCode);
       this.correctProgress();
       this.appendNewBar();
     } else {
-      logger("sanitizeSegments:goToLastProgress");
       this.goToLastProgress();
     }
   };
@@ -865,11 +852,6 @@ class VideoRecorder extends Component {
     return this.cameraView();
   }
 }
-
-
-const logger = (key, data) => {
-  console.log(`-----=====${key}=====-----`, data);
-};
 
 //make this component available to the app
 export default withNavigation(VideoRecorder);
