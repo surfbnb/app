@@ -289,20 +289,10 @@ class VideoRecorder extends Component {
 
         return <View style={styles.backgroundStyle}>
           <View style={{ padding: 26 }}>
-            <Text style={styles.headerText}>Submit your first video</Text>
+            <Text style={styles.headerText}>Create your first 30 second video</Text>
 
             <Text style={styles.smallText}>
-              Create a 30 second video update. Share what you're working on, what excites you, or anything on your
-              mind.
-            </Text>
-
-            <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
-
-            <Text style={styles.headerText}>Approval process</Text>
-
-            <Text style={styles.smallText}>
-              The Pepo team will review your first video before it is shared publicly. We'll get in touch with you
-              ASAP!
+              Introduce yourself. Share your passions, projects, and your unique personality!
             </Text>
 
             <LinearGradient
@@ -320,7 +310,7 @@ class VideoRecorder extends Component {
                   Theme.Button.btnPinkText,
                   { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
                 ]}>
-                  Get Started
+                  Start Creating
                 </Text>
               </TouchableOpacity>
             </LinearGradient>
