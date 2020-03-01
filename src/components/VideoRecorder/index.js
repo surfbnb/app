@@ -37,7 +37,6 @@ const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_REFRESH_INTERVAL = 300;
-const PROGRESS_FACTOR = (1/(AppConfig.videoRecorderConstants.videoMaxLength*1000))*PROGRESS_REFRESH_INTERVAL;
 const MIN_VIDEO_LENGTH_IN_SEC = 1;
 const BUFFERED_MAX_DURATION_MS  = ( AppConfig.videoRecorderConstants.videoMaxLength -  MIN_VIDEO_LENGTH_IN_SEC  ) * 1000;
 
@@ -481,12 +480,12 @@ class VideoRecorder extends Component {
       this.videoUrlsList.pop();
       let lastSegmentProgress = (this.videoUrlsList[lastElementIndex - 1] || {}).progress || 0;
       this.updateProgress(lastSegmentProgress);
-      
+
       if(this.separationBars.length > 0){
         this.separationBars.pop();
       }
-  
-      this.forceUpdate(); 
+
+      this.forceUpdate();
     }
   };
 
@@ -609,7 +608,7 @@ class VideoRecorder extends Component {
       return this.captureIcon();
     }
   };
-  
+
   isVideoDurationBufferReached(length){
     return length >= BUFFERED_MAX_DURATION_MS ;
   }
@@ -744,7 +743,8 @@ class VideoRecorder extends Component {
   setCorrectionValue(val){
     if(!val) return;
     if (val < (5 * AppConfig.videoRecorderConstants.recordingDelay)){
-      this.correctedRecordingDelay =  val;
+      let valToSet = Utilities.isAndroid() ? Math.min(val, AppConfig.videoRecorderConstants.recordingDelay) : val;
+      this.correctedRecordingDelay =  valToSet;
     }
   }
 
