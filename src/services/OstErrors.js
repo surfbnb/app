@@ -25,6 +25,7 @@ const UIErros = {
   no_internet: 'No Internet, please try again later.',
   maxAllowedBt: `Visit user's profile to send more Pepo Coins.`,
   name: 'Name is required',
+  name_min_max : 'Name can contain min 2 characters and max 30 characters',
   payment_failed_error : `Transaction failed. Please check your ${Utilities.getNativeStoreName()} account.`,
   init_iap_payment: "Failed to initalize in app payments, please try again later.",
   payment_acknowledge_to_be: "We are not able to connect to our servers right now. We will try again and  update your transaction status soon. Please do not uninstall the app until then.",

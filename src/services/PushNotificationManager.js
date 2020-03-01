@@ -9,7 +9,6 @@ import CurrentUser from '../models/CurrentUser';
 import NavigationEmitter from '../helpers/TabNavigationEvent';
 import Utilities from '../services/Utilities';
 
-let refreshTimeOut = null;
 // Not to be used for now
 function deleteToken() {
   firebase
@@ -18,8 +17,6 @@ function deleteToken() {
     .then((res) => console.log('Successfully deleted device token with response ',res))
     .catch((error) => console.log('Error occured while deleting device token ', error));
 }
-
-
 
 function askForPNPermission() {
   return new Promise((resolve, reject)=> {
@@ -34,7 +31,7 @@ function askForPNPermission() {
                 .then(() => {
                   console.log('requestPermission: then');
                   //firebase.messaging().registerForNotifications();
-                  if(Platform.OS == 'ios'){
+                  if(Utilities.isIos()){
                       return resolve();
                   } else {
                     return reject();
@@ -52,14 +49,15 @@ function askForPNPermission() {
 
 }
 
-function getToken(userId) {
+function getToken(userId, cb) {
   firebase
       .messaging()
       .getToken()
-      .then((fcmToken) => fcmToken && sendToken(fcmToken, userId));
+      .then((fcmToken) => fcmToken && sendToken(fcmToken, userId, cb))
+      .catch((error) => console.log('Error occured while getting device token ', error));
 }
 
-async function  sendToken(token, userId) {
+async function  sendToken(token, userId, cb) {
   if (!userId) {
     console.log('sendToken :: currentUserId is not yet available');
     return;
@@ -76,10 +74,20 @@ async function  sendToken(token, userId) {
   userId &&
   new PepoApi(`/notifications/device-token`)
       .post(payload)
-      .then((responseData) => console.log('sendToken :: Payload sent successfully', responseData));
+      .then((responseData) => {
+        console.log('sendToken :: Payload sent successfully', responseData);
+        cb && cb();
+      })
+      .catch((error) => console.log('Error occured in device-token endpoint ', error));
 }
 
-
+function resetUserBadge(userId){
+  userId &&
+  new PepoApi(`/users/${userId}/reset-badge`)
+      .post()
+      .then((responseData) => console.log('reset-badge :: responseData', responseData))
+      .catch((error) => console.log('Error occured in reset-badge endpoint ', error));
+}
 
 
 class PushNotificationManager extends PureComponent {
@@ -92,7 +100,8 @@ class PushNotificationManager extends PureComponent {
     firebase
       .notifications()
       .getInitialNotification()
-      .then((notificationData) => notificationData && this.handleGoto(notificationData.notification.data));
+      .then((notificationData) => notificationData && this.handleGoto(notificationData.notification.data))
+      .catch((error) => console.log('Error occured in getInitialNotification ', error));
 
     // onNotificationOpened when app is in background and launched by clicking on push notification
     this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationData) => {
@@ -101,11 +110,7 @@ class PushNotificationManager extends PureComponent {
     });
 
     this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
-      if (this.props.currentUserId) {
-        new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
-          .post()
-          .then((responseData) => console.log('reset-badge :: responseData', responseData));
-      }
+      resetUserBadge(this.props.currentUserId);
     });
   }
 
@@ -139,7 +144,7 @@ class PushNotificationManager extends PureComponent {
   }
 
   clearNotifications() {
-    if (Platform.OS == 'ios') {
+    if (Utilities.isIos()) {
       firebase
         .notifications()
         .getBadge()
@@ -148,7 +153,8 @@ class PushNotificationManager extends PureComponent {
             console.log(`clearNotifications :: as badge count (${count}) > 0`);
             this.clearFirebaseNotifications();
           }
-        });
+        })
+        .catch((error) => console.log('Error occured in getBadge ', error));
     } else {
       this.clearFirebaseNotifications();
     }
@@ -156,11 +162,7 @@ class PushNotificationManager extends PureComponent {
 
   clearFirebaseNotifications() {
     // Reset badge and clear notifications on device
-    if (this.props.currentUserId) {
-      new PepoApi(`/users/${this.props.currentUserId}/reset-badge`)
-        .post()
-        .then((responseData) => console.log('reset-badge :: responseData', responseData));
-    }
+    resetUserBadge(this.props.currentUserId);
     firebase
       .notifications()
       .removeAllDeliveredNotifications()

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { TouchableOpacity, View, Image, BackHandler, AppState, Text } from 'react-native';
 import Video from 'react-native-video';
 import NavigationService from '../../services/NavigationService';
-import ProgressBar from './ProgressBarWrapper';
+import ProgressBar from '../CommonComponents/ProgressBarWrapper';
 import playIcon from '../../assets/preview_play_icon.png';
 import Store from '../../store';
 import { upsertRecordedVideo, videoInProcessing } from '../../actions';
@@ -210,7 +210,7 @@ class Base extends PureComponent {
           paused={this.isPaused()}
           repeat={this.repeat}
         />
-        <ProgressBar ref={this.setProgressBarRef}/>
+        <ProgressBar ref={this.setProgressBarRef} style={styles.progressBar} />
         <TouchableOpacity onPressIn={this.cancleVideoHandling} style={styles.closeBtWrapper}>
           <Image style={styles.closeIconSkipFont} source={closeIcon}></Image>
         </TouchableOpacity>

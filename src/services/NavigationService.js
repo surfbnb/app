@@ -51,6 +51,21 @@ const findCurrentRoute = (navState) => {
   }
 }
 
+const findCurrentStack = (navState, lastRoute) => {
+  if ( !navState ) {
+    navState = getTopLevelNavigator().state.nav;
+  }
+
+  let index = navState.index;
+  if (typeof index !== "number") {
+    //No more index.
+    return lastRoute;
+  } else {
+    //Call recursive;
+    return findCurrentStack(navState.routes[index], navState.routeName );
+  }
+}
+
 const getStackNumber = (routes , index , num , whiteListedStacks) => {
   if (typeof index !== "number" || !whiteListedStacks.length) {
     return num;
@@ -86,5 +101,6 @@ export default {
   getActiveTab,
   getStackNumber,
   reset,
-  goBack
+  goBack,
+  findCurrentStack
 };

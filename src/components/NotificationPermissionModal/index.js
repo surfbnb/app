@@ -24,7 +24,7 @@ function enableAccess() {
         })
         .catch((err) => console.error('An error occurred', err));
     }
-  } 
+  }
 
 export default class NotificationPermissionModal extends React.PureComponent{
 
@@ -44,29 +44,33 @@ export default class NotificationPermissionModal extends React.PureComponent{
         }
         });
     }).finally(() => {
-        utilities.saveItem(`notification-permission-${this.props.userId}`, true);
-        utilities.saveItem(`notification-permission-show-${this.props.userId}`, true);
-        utilities.saveItem(`notification-permission-app`, true);
-        PushNotificationMethods.getToken(this.props.userId);
+        console.log('handlePermissionButtonClick.askForPNPermission: finally');
+        PushNotificationMethods.getToken(this.props.userId, () => {
+            console.log('on callback of getToken');
+            utilities.saveItem(`notification-permission-${this.props.userId}`, true);
+            utilities.saveItem(`notification-permission-show-${this.props.userId}`, true);
+            utilities.saveItem(`notification-permission-app`, true);
+        });
+
         this.props.onPermissionModalDismiss && this.props.onPermissionModalDismiss();
     });
-    }
+    };
 
     handlePermissionDismiss = () => {
         utilities.saveItem(`notification-permission-show-${this.props.userId}`, true);
         this.props.onPermissionModalDismiss && this.props.onPermissionModalDismiss();
-    }
+    };
 
     render() {
         return (
             <Modal style={styles.backgroundStyle} transparent={true}>
               <View style={styles.wrappedView}>
                 <Text style={styles.headerText}>Don't miss out!</Text>
-      
+
                 <Text style={styles.smallText}>
                 Get updates about important activity, videos, people, and communities you follow.
                 </Text>
-      
+
                 <LinearGradient
                   colors={['#ff7499', '#ff5566']}
                   locations={[0, 1]}
@@ -84,7 +88,7 @@ export default class NotificationPermissionModal extends React.PureComponent{
                     </Text>
                   </TouchableOpacity>
                 </LinearGradient>
-      
+
                 <TouchableOpacity
                     onPress={this.handlePermissionDismiss}
                     style={[Theme.Button.btn, { borderWidth: 0, marginTop: 10 }]}
@@ -96,7 +100,7 @@ export default class NotificationPermissionModal extends React.PureComponent{
                     No, Thanks
                   </Text>
                 </TouchableOpacity>
-      
+
               </View>
             </Modal>
           );

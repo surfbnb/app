@@ -38,17 +38,6 @@ class FfmpegProcesser {
     });
   }
 
-  getTextPath = () => {
-    let inputUriArr = this.inputFiles[0].split('/');
-    let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
-
-    outputPath.push(`test.txt`);
-    this.testPath = outputPath.join('/');
-    return this.testPath;
-  };
-
-
-
   localConcat = () => {
     return new Promise(async (resolve, reject) => {
       RNFFmpeg.cancel();
@@ -89,6 +78,23 @@ class FfmpegProcesser {
     });
   };
 
+  getVideoInfo = async ()=> {
+    let strToExecute = `-i ${this.inputFiles.length > 0 && this.inputFiles[0]} `;
+    let executeResponse = await RNFFmpeg.getMediaInformation(this.inputFiles[0]);
+    console.log('******** executeResponse', executeResponse, 'strToExecute', strToExecute);
+    return executeResponse
+
+  };
+
+  getTextPath = () => {
+    let inputUriArr = this.inputFiles[0].split('/');
+    let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
+
+    outputPath.push(`test.txt`);
+    this.testPath = outputPath.join('/');
+    return this.testPath;
+  };
+
   getLocalConcatCommand = (path) => {
     return `-f concat -safe 0 -i ${path} -codec copy ${this.getLocalFilePath()}`;
 
@@ -102,19 +108,6 @@ class FfmpegProcesser {
     return command;
   };
 
-
-  // getLocalConcatCommand = () => {
-  //   let command = '';
-  //   let intermediateFiles = [];
-  //   for (let index in this.inputFiles){
-  //     command +=  ` -i ${this.inputFiles[index]} -c copy -bsf:v h264_mp4toannexb -f mpegts ${this.getIntermediateFile(index)};`;
-  //     intermediateFiles.push(this.getIntermediateFile(index));
-  //   }
-  //   command += ` -i concat:${intermediateFiles.join('|')} -c copy -bsf:a aac_adtstoasc ${this.getLocalFilePath()}`;
-  //   console.log(command, 'commandcommandcommandcommandcommands');
-  //   return command.trim();
-  // };
-
   getIntermediateFile = (index) => {
     let inputUriArr = this.inputFiles[0].split('/');
     let outputPath = inputUriArr.slice(0, inputUriArr.length - 1);
@@ -124,18 +117,6 @@ class FfmpegProcesser {
   };
 
 
-  // getLocalConcatCommand = () => {
-  //   let command = '-f concat -safe 0';
-  //   let intermediateFiles = [];
-  //   for (let index in this.inputFiles){
-  //     // command +=  ` -i ${this.inputFiles[index]} -c copy -bsf:v h264_mp4toannexb -f mpegts intermediate${index}.ts;`;
-  //     intermediateFiles.push(this.inputFiles[index]);
-  //     command += ` -i ${this.inputFiles[index]}`
-  //   }
-  //   command += ` -codec copy ${this.getLocalFilePath()}`;
-  //   console.log(command, 'commandcommandcommandcommandcommandhhh');
-  //   return command.trim();
-  // }
 
   getLocalFilePath = () => {
     let inputUriArr = this.inputFiles[0].split('/');
@@ -153,7 +134,7 @@ class FfmpegProcesser {
       command +=  `-i ${this.inputFiles[index]} `;
       complexFilter += `[${index}:v][${index}:a]`
     }
-    command += `-filter_complex ${complexFilter}concat=n=${this.inputFiles.length}:v=1:a=1[v][a] -map [v] -map [a] -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -crf ${AppConfig.compressionConstants.CRF} -preset ${AppConfig.compressionConstants.PRESET} -pix_fmt ${AppConfig.compressionConstants.PIX_FMT} -vcodec h264 -ss 00:00:00.0 -t 00:00:30.0 ${this.outputPath}`;
+    command += `-filter_complex ${complexFilter}concat=n=${this.inputFiles.length}:v=1:a=1[v][a] -map [v] -map [a] -s ${AppConfig.compressionConstants.COMPRESSION_SIZE} -crf ${AppConfig.compressionConstants.CRF} -preset ${AppConfig.compressionConstants.PRESET} -pix_fmt ${AppConfig.compressionConstants.PIX_FMT} -vcodec h264 ${this.outputPath}`;
     return command;
   }
 
