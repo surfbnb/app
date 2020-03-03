@@ -19,6 +19,8 @@ import io.invertase.firebase.links.RNFirebaseLinksPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import com.pepo2.bridge.PepoNativePackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -61,6 +63,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    Fabric.with(this, new Crashlytics());
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
     OstWalletUI.setLoaderManager(LoaderManager.getInstance());
     OstSdkErrors.init(this.getApplicationContext());

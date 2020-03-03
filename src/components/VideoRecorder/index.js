@@ -37,8 +37,8 @@ const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_REFRESH_INTERVAL = 300;
-const PROGRESS_FACTOR = (1/(AppConfig.videoRecorderConstants.videoMaxLength*1000))*PROGRESS_REFRESH_INTERVAL;
 const MIN_VIDEO_LENGTH_IN_SEC = 1;
+const BUFFERED_MAX_DURATION_MS  = ( AppConfig.videoRecorderConstants.videoMaxLength -  MIN_VIDEO_LENGTH_IN_SEC  ) * 1000;
 
 const TAP_TO_RECORD = AppConfig.videoRecorderConstants.tabToRecord;
 const LONG_PRESS_TO_RECORD = AppConfig.videoRecorderConstants.longPressToRecord;
@@ -106,7 +106,7 @@ class VideoRecorder extends Component {
   _onAppStateChangeToBackground = ( ) => {
       if (this.isRecording()){
         this.stoppedUnexpectedly = true;
-        this.cameraStopRecording();
+        this.stopRecording();
       } else {
         this.accidentalGoToPreviewScreen();
       }
@@ -181,7 +181,7 @@ class VideoRecorder extends Component {
   }
 
   cancelVideo = () => {
-    this.cameraStopRecording();
+    this.stopRecording();
   };
 
   _handleBackPress = () => {
@@ -214,7 +214,6 @@ class VideoRecorder extends Component {
   ifLocalVideoPresent = async  () => {
     let recordedVideoList = this.recordedVideoObj.raw_video_list || [];
     recordedVideoList = recordedVideoList.map((ele)=>ele.uri);
-    console.log(recordedVideoList, '=====recordedVideoList=====');
     if (recordedVideoList.length === 0){
       return false;
     }
@@ -290,20 +289,10 @@ class VideoRecorder extends Component {
 
         return <View style={styles.backgroundStyle}>
           <View style={{ padding: 26 }}>
-            <Text style={styles.headerText}>Submit your first video</Text>
+            <Text style={styles.headerText}>Create your first 30 second video</Text>
 
             <Text style={styles.smallText}>
-              Create a 30 second video update. Share what you're working on, what excites you, or anything on your
-              mind.
-            </Text>
-
-            <View style={{ backgroundColor: 'white', marginVertical: 26, height: 1 }} />
-
-            <Text style={styles.headerText}>Approval process</Text>
-
-            <Text style={styles.smallText}>
-              The Pepo team will review your first video before it is shared publicly. We'll get in touch with you
-              ASAP!
+              Introduce yourself. Share your passions, projects, and your unique personality!
             </Text>
 
             <LinearGradient
@@ -321,7 +310,7 @@ class VideoRecorder extends Component {
                   Theme.Button.btnPinkText,
                   { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
                 ]}>
-                  Get Started
+                  Start Creating
                 </Text>
               </TouchableOpacity>
             </LinearGradient>
@@ -484,15 +473,18 @@ class VideoRecorder extends Component {
   };
 
   deleteLastSegment = () => {
-    if(this.videoUrlsList.length > 0 && this.separationBars.length > 0){
+    if(this.videoUrlsList.length > 0 ){
       let lastElementIndex = this.videoUrlsList.length - 1;
       let lastSegment = this.videoUrlsList[lastElementIndex] || {};
       this.videoLength = this.videoLength -  lastSegment.durationInMS;
       this.videoUrlsList.pop();
-      this.separationBars.pop();
       let lastSegmentProgress = (this.videoUrlsList[lastElementIndex - 1] || {}).progress || 0;
-      console.log(lastSegmentProgress, 'deleteLastSegment');
       this.updateProgress(lastSegmentProgress);
+
+      if(this.separationBars.length > 0){
+        this.separationBars.pop();
+      }
+
       this.forceUpdate();
     }
   };
@@ -501,7 +493,6 @@ class VideoRecorder extends Component {
     let lastElementIndex = this.videoUrlsList.length - 1;
     let lastSegment = this.videoUrlsList[lastElementIndex] || {};
     let lastSegmentProgress =   lastSegment.progress || 0;
-    console.log('goToLastProgress:lastSegmentProgress', lastSegmentProgress);
     this.updateProgress(lastSegmentProgress);
   };
 
@@ -544,10 +535,11 @@ class VideoRecorder extends Component {
     this.camera && this.camera.stopRecording();
   };
 
-  stopRecording = () => {
+  stopRecording = (stopNativeRecording = true) => {
     // Stop camera recording
     // this.stoppedByAction = true;
     // Stop button animation
+    stopNativeRecording && this.cameraStopRecording();
     this.recordActionButton && this.recordActionButton.stopAnimation();
     // Release button disabled status as soon as video recording completed or failed.
     this.recordActionButton && this.recordActionButton.styleAsDisabled(false);
@@ -575,7 +567,7 @@ class VideoRecorder extends Component {
 
   handleOnPressIn = () => {
     if(this.isRecording()){
-      this.cameraStopRecording();
+      this.stopRecording();
     } else {
       this.recordVideoAsync();
     }
@@ -583,7 +575,7 @@ class VideoRecorder extends Component {
 
   handleOnPressOut = () => {
      if (this.isLongPressRecordingMode() && this.isRecording()){
-      this.cameraStopRecording();
+      this.stopRecording();
     }
   };
 
@@ -617,9 +609,12 @@ class VideoRecorder extends Component {
     }
   };
 
-  getActionButton() {
+  isVideoDurationBufferReached(length){
+    return length >= BUFFERED_MAX_DURATION_MS ;
+  }
 
-    if(this.videoLength >= AppConfig.videoRecorderConstants.videoMaxLength * 1000){
+  getActionButton() {
+    if(this.isVideoDurationBufferReached(this.videoLength) ){
       this.actionButtonDisabled = true;
     } else {
       this.actionButtonDisabled = false;
@@ -656,12 +651,11 @@ class VideoRecorder extends Component {
       (Date.now() - this.lastUpdateProgressTimeStamp) : PROGRESS_REFRESH_INTERVAL;
     this.lastUpdateProgressTimeStamp = Date.now();
     let factor = this.progressFactor();
-    logger('factor time: ',factor * 30000);
     let progress = currentProgress + factor;
     if (currentProgress <= 1) {
       this.updateProgress(progress);
     } else {
-      this.cameraStopRecording();
+      this.stopRecording();
     }
   };
 
@@ -681,7 +675,6 @@ class VideoRecorder extends Component {
   preRecording = () => {
     //Start after some delya as actual recording starts after some delay.
     clearTimeout(this.preRecordingTimeOut);
-    console.log("AppConfig.videoRecorderConstants.recordingDelay" , AppConfig.videoRecorderConstants.recordingDelay);
     this.preRecordingTimeOut = setTimeout(() => {
       this.progressBarStateUpdate();
       this.initProgressBar();
@@ -714,25 +707,23 @@ class VideoRecorder extends Component {
 
     try {
         assumedStartTime = Date.now() + this.correctedRecordingDelay;
-        logger('this.correctedRecordingDelay', this.correctedRecordingDelay);
-        logger('assumedStartTime', assumedStartTime);
         data = await this.camera.recordAsync(this.getRecordingOptions());
     } catch(exception) {
-      console.log('recordVideoAsync:::::catch', exception);
       this.goToLastProgress();
       this.stopRecording();
       return;
     }
-    this.stopRecording();
+
+    this.stopRecording(false);
     endTime = Date.now();
 
     //Stop recording
 
     //Sanitize Segments
-    logger('durationByCode', (endTime - assumedStartTime));
     await this.sanitizeSegments(data, (endTime - assumedStartTime));
-    // Stop recording state update
-    this.stopRecordingStateUpdate();
+
+    // Just to re-render
+    this.forceUpdate();
 
     //If application goes Inactive while recording go to preview screen
     if(this.stoppedUnexpectedly) {
@@ -744,24 +735,16 @@ class VideoRecorder extends Component {
       let durationByProgress = this.getLastSegmentProgress() * AppConfig.videoRecorderConstants.videoMaxLength * 1000;
       const correctionVal =  this.correctedRecordingDelay - (duration - durationByCode);
       this.setCorrectionValue( correctionVal );
-      let logMsg = `DF ${duration.toFixed(2)} DC ${durationByCode.toFixed(2)} CD ${this.correctedRecordingDelay.toFixed(2)}`;
-      console.log(`**||** ${logMsg}`);
-      Toast.show({text:logMsg, icon: 'success'});
+      // let logMsg = `DF ${duration.toFixed(2)} DC ${durationByCode.toFixed(2)} CD ${this.correctedRecordingDelay.toFixed(2)}`;
+      // Toast.show({text:logMsg, icon: 'success'});
       Utilities.saveItem(AppConfig.videoRecorderConstants.recordingDelayKey, this.correctedRecordingDelay);
   };
 
   setCorrectionValue(val){
     if(!val) return;
-    //TODO: Remove commented code
-    // if(val <= 0){
-    //   this.correctedRecordingDelay = 0;
-    //   return;
-    // }
     if (val < (5 * AppConfig.videoRecorderConstants.recordingDelay)){
-      logger('setCorrectionValue set', val);
-      this.correctedRecordingDelay =  val;
-    } else {
-      logger('setCorrectionValue NOT set!', val);
+      let valToSet = Utilities.isAndroid() ? Math.min(val, AppConfig.videoRecorderConstants.recordingDelay) : val;
+      this.correctedRecordingDelay =  valToSet;
     }
   }
 
@@ -780,7 +763,6 @@ class VideoRecorder extends Component {
     try{
       videoInfo = await FfmpegProcesser.getVideoInfo();
     } catch (e){
-      logger(e);
       this.goToLastProgress();
       return ;
     }
@@ -788,20 +770,21 @@ class VideoRecorder extends Component {
     if ( videoInfo.duration >= (MIN_VIDEO_LENGTH_IN_SEC * 1000)) {
       this.videoLength += videoInfo.duration;
       this.videoUrlsList.push({uri: data.uri, progress: this.progress, durationInMS: videoInfo.duration });
-      logger('FfmpegProcesser duration', videoInfo.duration);
       this.recordingDelayCorrection(videoInfo.duration, durationByCode);
       this.correctProgress();
       this.appendNewBar();
     } else {
-      logger("sanitizeSegments:goToLastProgress");
       this.goToLastProgress();
     }
   };
 
   correctProgress = () => {
     let correctedProgress = (this.videoLength / 1000) / AppConfig.videoRecorderConstants.videoMaxLength;
-    this.updateProgress(correctedProgress);
     this.updateVideoUrlsListProgress(correctedProgress);
+    if(this.isVideoDurationBufferReached(this.videoLength)){
+      correctedProgress =  1;
+    }
+    this.updateProgress(correctedProgress);
   };
 
   updateVideoUrlsListProgress = (correctedProgress) => {
@@ -865,11 +848,6 @@ class VideoRecorder extends Component {
     return this.cameraView();
   }
 }
-
-
-const logger = (key, data) => {
-  console.log(`-----=====${key}=====-----`, data);
-};
 
 //make this component available to the app
 export default withNavigation(VideoRecorder);
