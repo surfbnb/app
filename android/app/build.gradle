@@ -137,8 +137,8 @@ android {
         applicationId "com.pepo.v2.production"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 31
-        versionName "1.0.4"
+        versionCode 32
+        versionName "1.0.5"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
             appAuthRedirectScheme: 'com.pepo.v2.production'
