@@ -28,7 +28,7 @@ import {TransactionExecutor} from './TransactionExecutor';
 import { ostSdkErrors } from '../services/OstSdkErrors';
 import AppConfig from '../constants/AppConfig';
 import { fetchVideo } from '../helpers/helpers';
-import {getPixelDataOnFanVideoSuccess, getPixelDataOnReplyVideoSuccess} from "../helpers/cameraHelper";
+import {getPixelDataOnFanVideoSuccess, getPixelDataOnReplyVideoSuccess, getCameraObjKeyAsyncStorage} from "../helpers/cameraHelper";
 
 const recordedVideoStates = [
   'raw_video_list',
@@ -861,9 +861,8 @@ class CameraWorker extends PureComponent {
 
   getCurrentUserRecordedVideoKey() {
     if (this.props.currentUserId) {
-      return `user-${this.props.currentUserId}-recorded_video`;
+      return getCameraObjKeyAsyncStorage(this.props.currentUserId);
     }
-    return;
   }
 
   getDataforAsync() {

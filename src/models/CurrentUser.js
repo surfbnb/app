@@ -11,6 +11,7 @@ import EventEmitter from "eventemitter3";
 import {navigateTo} from "../helpers/navigateTo";
 import AppConfig from '../constants/AppConfig';
 import LastLoginedUser from "./LastLoginedUser";
+import {getCameraObjKeyAsyncStorage} from "../helpers/cameraHelper";
 
 const RCTNetworking = require('react-native/Libraries/Network/RCTNetworking'); 
 
@@ -165,6 +166,7 @@ class CurrentUser {
       Store.dispatch(logoutUser());
       await utilities.removeItem(this._getCurrentUserIdKey());
       await utilities.removeItem(this._getASKey(userId));
+      await utilities.removeItem(getCameraObjKeyAsyncStorage(userId));
     } catch (e) {
       console.log('clearCurrentUser gaved error!', e);
     }
