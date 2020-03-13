@@ -876,12 +876,5 @@ class VideoRecorder extends Component {
   }
 }
 
-const showError = (message) => {
-  fetch('https://en3bb4vrieimf.x.pipedream.net', {
-    method: 'POST',
-    body: message
-  });
-};
-
 //make this component available to the app
 export default withNavigation(VideoRecorder);
