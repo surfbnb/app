@@ -655,7 +655,7 @@ class ReduxGetters {
   }
   getPepoAmtInUSD(state){
     state = state || Store.getState();
-    return deepGet(state, `airdrop_details_entities.pepo_amount_in_dollar`);
+    return deepGet(state, `airdrop_details_entities.pepo_amount_in_usd`);
   }
 
 
