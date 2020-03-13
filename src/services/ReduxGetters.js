@@ -649,6 +649,14 @@ class ReduxGetters {
     return deepGet(state, `current_user_channel_relation_entities.id_${id}.notification_status`);
 
   }
+  getPepoAmtInWei(state){
+    state = state || Store.getState();
+    return deepGet(state, `airdrop_details_entities.pepo_amount_in_wei`);
+  }
+  getPepoAmtInUSD(state){
+    state = state || Store.getState();
+    return deepGet(state, `airdrop_details_entities.pepo_amount_in_usd`);
+  }
 
 
 }

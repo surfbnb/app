@@ -73,7 +73,8 @@ const backendToAppEntities = {
   channel_user_relations: {
     key :  'channel_user_relation_entities', 
     parser: parser_merge
-  }
+  },
+  airdrop_details : 'airdrop_details_entities'
 };
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.

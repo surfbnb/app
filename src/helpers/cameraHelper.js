@@ -36,6 +36,10 @@ const getVideoReplyObject = (videoId, creatorUserId) => {
   };
 };
 
+const getCameraObjKeyAsyncStorage = (userId) => {
+  return `user-${userId}-recorded_video`;
+};
+
 
 const navigateToCamera = (videoId , userId , navigation) => {
   let activeTab = NavigationService.getActiveTab();
@@ -181,4 +185,4 @@ const replyPreValidationAndMessage = (videoId , userId) => {
 }
 
 
-export { getVideoReplyObject  , navigateToCamera  , replyPreValidationAndMessage, getPixelDataOnFanVideoSuccess, getPixelDataOnReplyVideoSuccess}
+export { getVideoReplyObject  , navigateToCamera  , replyPreValidationAndMessage, getPixelDataOnFanVideoSuccess, getPixelDataOnReplyVideoSuccess, getCameraObjKeyAsyncStorage}

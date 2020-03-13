@@ -20,7 +20,6 @@ import profilePicture from "../../assets/default_user_icon.png";
 import WebLogins from '../../services/WebLogins';
 import { analyticsSetCurrentScreen } from '../../helpers/helpers';
 import {globalEvents,  globalEventsMap} from "../../helpers/GlobalEvents";
-import debounce from "lodash/debounce";
 
 import {testProps} from "../../constants/AppiumAutomation";
 
@@ -29,7 +28,7 @@ const btnPostText = 'Connecting...';
 const versionIOS = DeviceInfo.getSystemVersion();
 const finalVersionIOS = parseFloat( versionIOS ) <= 13;
 
-let sequenceOfLoginServices = [serviceTypes.twitter, serviceTypes.google, serviceTypes.github ] ;
+let sequenceOfLoginServices = [serviceTypes.twitter, serviceTypes.google ] ; // Initially also had: serviceTypes.github
 if( Platform.OS == 'ios' && !finalVersionIOS ){
   sequenceOfLoginServices.splice(1, 0, serviceTypes.apple);
 }
@@ -43,7 +42,7 @@ class loginPopover extends React.Component {
       showAllOptions : !this.isLastLoginUser(),
       currentConnecting: ''
     };
-    this.resetBtnTimeOut = 0
+    this.resetBtnTimeOut = 0;
     this.setLoginServicesConfig();
   }
 
@@ -62,7 +61,7 @@ class loginPopover extends React.Component {
     this.resetBtnTimeOut  = setTimeout(()=> {
       this.setState({disableLoginBtn : false, currentConnecting: ""});
     } , 100)
-  }
+  };
 
   setLoginServicesConfig = () => {
     this.loginServicesConfig = {
@@ -93,15 +92,15 @@ class loginPopover extends React.Component {
         connectingHeader: btnPostText,
         testIdName: 'continue-with-google'
       },
-      [serviceTypes.github]: {
-        header: 'Continue with GitHub',
-        pressHandler: this.githubPressHandler,
-        icon: LastLoginedUser.getOAuthIcon(serviceTypes.github),
-        width: 19,
-        height: 18.5,
-        connectingHeader: btnPostText,
-        testIdName: 'continue-with-github'
-      },
+      // [serviceTypes.github]: {
+      //   header: 'Continue with GitHub',
+      //   pressHandler: this.githubPressHandler,
+      //   icon: LastLoginedUser.getOAuthIcon(serviceTypes.github),
+      //   width: 19,
+      //   height: 18.5,
+      //   connectingHeader: btnPostText,
+      //   testIdName: 'continue-with-github'
+      // },
     };
   };
 
@@ -109,27 +108,27 @@ class loginPopover extends React.Component {
   beforeOAuthInvoke = (service ) => {
     analyticsSetCurrentScreen( service );
     this.setState({disableLoginBtn : true , currentConnecting:  AppConfig.authServiceTypes[service] })
-  }
+  };
 
   gmailPressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.google);
     GoogleOAuth.signIn();
-  }
+  };
 
   githubPressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.github);
     WebLogins.openGitHubWebLogin();
-  }
+  };
 
   twitterPressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.twitter);
     WebLogins.openTwitterWebLogin();
-  }
+  };
 
   applePressHandler = () => {
     this.beforeOAuthInvoke(AppConfig.authServiceTypes.apple);
     AppleOAuth.signIn();
-  }
+  };
 
   //Use this function if needed to handle hardware back handling for android.
   closeModal = () => {
@@ -193,7 +192,7 @@ class loginPopover extends React.Component {
 
   onMoreOptionClick = () => {
     this.setState({showAllOptions : true});
-  }
+  };
 
   getProfileImageMarkup(){
     const profilePic = LastLoginedUser.getProfileImage();
@@ -208,7 +207,7 @@ class loginPopover extends React.Component {
 
   signInViaLastLoginService = () => {
     const serviceConfig = this.loginServicesConfig[LastLoginedUser.getLastLoginServiceType()];
-    if(serviceConfig.pressHandler){
+    if(serviceConfig && serviceConfig.pressHandler){
       serviceConfig.pressHandler.apply(this);
       return;
     }
@@ -217,9 +216,9 @@ class loginPopover extends React.Component {
      * This should never happen. But just incase if it dose user can still login.
      * The app wont be blocking for it.
      */
-    console.warn("AS services was found but pressHandler was unavaialable in serviceConfig LoginPopover.");
+    console.warn("AS services / pressHandler was unavaialable in serviceConfig LoginPopover.");
     this.setState({showAllOptions: true});
-  }
+  };
 
   render() {
     return (

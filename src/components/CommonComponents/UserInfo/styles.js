@@ -3,6 +3,8 @@ import Colors from '../../../theme/styles/Colors';
 import { Dimensions } from 'react-native';
 import {fontFamWeight} from "../../../theme/constants";
 
+const isSmallPhone = Dimensions.get('window').width <= 360;
+
 let stylesMap = {
   infoHeaderWrapper: {
     justifyContent: 'space-between',
@@ -18,8 +20,18 @@ let stylesMap = {
     shadowOffset: {width: 0, height: 0},
     elevation: 5,
     paddingVertical: 8,
-    paddingHorizontal: 15,
+    paddingHorizontal: isSmallPhone ? 8 : 15,
     marginBottom: 20
+  },
+  balanceHeaderIcons: {
+    width: 48,
+    height: 48
+  },
+  dividerLine:{
+    width: 1,
+    height: 20,
+    marginTop: 16.5,
+    marginHorizontal: isSmallPhone ? 5 : 8
   },
   userProfileImageSkipFont: {
     height: 100,

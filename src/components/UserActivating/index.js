@@ -7,6 +7,8 @@ import TouchableButton from '../../theme/components/TouchableButton';
 import Theme from '../../theme/styles';
 import air_drop from '../../assets/airdrop-create-pin.png';
 import styles from './Style';
+import Pricer from '../../services/Pricer';
+import ReduxGetters from '../../services/ReduxGetters';
 
 // create a component
 export default class UserActivatingScreen extends Component {
@@ -21,6 +23,17 @@ export default class UserActivatingScreen extends Component {
   onCreatePin() {
     this.props.navigation.navigate('SetPinScreen');
   }
+
+  getAirDropPepoAmount(){
+    const pepoAmountInWei = ReduxGetters.getPepoAmtInWei();
+    return Pricer.getFromDecimal(pepoAmountInWei);
+  }
+
+  getAirDropUSDAmount(){
+    const pepoAmtInUSD = ReduxGetters.getPepoAmtInUSD();
+    return pepoAmtInUSD ;
+  }
+
 
   render() {
     return (
@@ -37,8 +50,8 @@ export default class UserActivatingScreen extends Component {
               <Image source={air_drop} style={{width: 137.5, height: 192}} />
               <Text style={styles.heading}>Welcome Gift!</Text>
               <View style={styles.valueContainer}>
-                <Text style={styles.desc}>You’ve received <Text style={[styles.desc, {color: '#ff5566', fontWeight: '700'}]}>500 </Text>Pepo!</Text>
-                <Text style={styles.desc}>$5 Value!</Text>
+                <Text style={styles.desc}>You’ve received <Text style={[styles.desc, {color: '#ff5566', fontWeight: '700'}]}> {this.getAirDropPepoAmount()} </Text>Pepo!</Text>
+                <Text style={styles.desc}>${this.getAirDropUSDAmount()} Value!</Text>
               </View>
             </View>
             <View style={{paddingBottom: 30}}>

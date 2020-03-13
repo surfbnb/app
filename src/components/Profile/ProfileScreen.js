@@ -17,7 +17,6 @@ import appConfig from '../../constants/AppConfig';
 import profileEditIcon from '../../assets/profile_edit_icon.png';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import PepoApi from '../../services/PepoApi';
-import ReviewStatusBanner from './ReviewStatusBanner';
 import CustomDrawer from '../CustomDrawer';
 import {DrawerEmitter} from '../../helpers/Emitters';
 import {testProps} from "../../constants/AppiumAutomation";
@@ -133,10 +132,10 @@ class ProfileScreen extends PureComponent {
   onEmailSave = ( email ) => {
     if(!email) return;
     this.state.emailAddress = email;
-  }
+  };
 
   beforeRefresh = () => {
-    fetchUser(CurrentUser.getUserId())
+    fetchUser(CurrentUser.getUserId());
     this.getEmail();
     Pricer.getBalance();
   };
@@ -162,25 +161,25 @@ class ProfileScreen extends PureComponent {
 
   onRefresh =(list , res) => {
     this.setState({ hasVideos : !!list.length });
-  }
+  };
 
   videoInReviewHeader = () => {
     if(this.state.hasVideos){
-      return <ReviewStatusBanner />
+      return <View style={{height:15}} />
     }
-  }
+  };
 
   onClose = ()=>{
     this.setState({
       openDrawer: false
     })
-  }
+  };
 
   onDelete = (list) => {
     if (!list || list.length == 0){
       this.setState({hasVideos: false});
     }
-  }
+  };
 
   render() {
     if(this.props.userId){

@@ -15,7 +15,6 @@ import helpIcon from  '../../assets/settings-support.png';
 import about from '../../assets/settings-about.png';
 import privacy from '../../assets/settings-privacy.png';
 import tac from '../../assets/settings-terms-and-conditions.png';
-import storePink from '../../assets/StorePink.png';
 import Toast from '../../theme/components/NotificationToast';
 import multipleClickHandler from '../../services/MultipleClickHandler';
 import OstWalletSdkHelper from '../../helpers/OstWalletSdkHelper';
@@ -240,18 +239,6 @@ class CustomDrawerContent extends Component {
 
         <View style={{paddingBottom: 80}}>
 
-            <TouchableOpacity
-                onPress={multipleClickHandler(() => {
-                  this.onPepocornsClick();
-                })}
-                disabled={this.state.disableButtons}
-                {...testProps('side-toggle-drawer-pepo-store')}
-            >
-                <View style={styles.itemParent}>
-                  <Image style={{ height: 27, width: 27, resizeMode: 'contain' }} source={storePink} />
-                  <Text style={styles.item}>Pepo.com Store</Text>
-                </View>
-            </TouchableOpacity>
 
           <TouchableOpacity
             onPress={multipleClickHandler(() => {
