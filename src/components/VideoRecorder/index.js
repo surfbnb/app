@@ -735,7 +735,7 @@ class VideoRecorder extends Component {
       let durationByProgress = this.getLastSegmentProgress() * AppConfig.videoRecorderConstants.videoMaxLength * 1000;
       const correctionVal =  this.correctedRecordingDelay - (duration - durationByCode);
       this.setCorrectionValue( correctionVal );
-      // let logMsg = `DF ${duration.toFixed(2)} DC ${durationByCode.toFixed(2)} CD ${this.correctedRecordingDelay.toFixed(2)}`;
+      // let logMsg = `FFmpeg ${duration.toFixed(2)} Code ${durationByCode.toFixed(2)} Delay ${this.correctedRecordingDelay.toFixed(2)}`;
       // Toast.show({text:logMsg, icon: 'success'});
       Utilities.saveItem(AppConfig.videoRecorderConstants.recordingDelayKey, this.correctedRecordingDelay);
   };
@@ -767,6 +767,16 @@ class VideoRecorder extends Component {
       return ;
     }
 
+    // Try parsing to get the video duration else use durationByCode
+    if(!videoInfo.duration) {
+      let duration = this.getVideoDurationFromRawInformation(videoInfo.rawInformation);
+      if(duration){
+        videoInfo.duration = duration;
+      } else {
+        videoInfo.duration = durationByCode;
+      }
+    }
+
     if ( videoInfo.duration >= (MIN_VIDEO_LENGTH_IN_SEC * 1000)) {
       this.videoLength += videoInfo.duration;
       this.videoUrlsList.push({uri: data.uri, progress: this.progress, durationInMS: videoInfo.duration });
@@ -776,6 +786,23 @@ class VideoRecorder extends Component {
     } else {
       this.goToLastProgress();
     }
+  };
+
+  getVideoDurationFromRawInformation = (rawInformation) => {
+    if(rawInformation && rawInformation.trim() === '') return;
+
+    const regex = /duration:(\s)*([0-9]{2,2}:[0-9]{2,2}:[0-9]{2,2}[0-9.]*)/gi;
+    let matches = regex.exec(rawInformation);
+
+    if(matches && matches[2]){
+      let timestamp = matches[2];
+      let timestampParts = timestamp.split(':');
+      let duration = (timestampParts[0] * (60*60*1000)) + (timestampParts[1] * (60*1000)) + (timestampParts[2] * (1000));
+      if(duration > 1) return duration;
+    }
+
+
+
   };
 
   correctProgress = () => {
@@ -848,6 +875,13 @@ class VideoRecorder extends Component {
     return this.cameraView();
   }
 }
+
+const showError = (message) => {
+  fetch('https://en3bb4vrieimf.x.pipedream.net', {
+    method: 'POST',
+    body: message
+  });
+};
 
 //make this component available to the app
 export default withNavigation(VideoRecorder);
