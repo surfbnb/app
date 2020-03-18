@@ -42,6 +42,9 @@
 		1CFD7E34F7464E4AA3E9D3F0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD0883B2ABAC46EFAA326937 /* Octicons.ttf */; };
 		2CCDCA4131374EACB956F66C /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B790C4B6AA24DA88B3F3797 /* Roboto.ttf */; };
 		3750B4AFFD3440459ECAB3C7 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDC2C57A2E14405DABB9390E /* rubicon-icon-font.ttf */; };
+		4B257B202422078100925F01 /* MobileRTCResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4B257B1D2422078100925F01 /* MobileRTCResources.bundle */; };
+		4B257B25242207A600925F01 /* MobileRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B257B1E2422078100925F01 /* MobileRTC.framework */; };
+		4B257B26242207A600925F01 /* MobileRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B257B1E2422078100925F01 /* MobileRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4DDEE877547943B2BDD9C207 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93DFA3EEED0A4387B6401F14 /* MaterialCommunityIcons.ttf */; };
 		5FB6B1777F0D44A9B58CE839 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8E2F1DABD40449BB8D301D1 /* Foundation.ttf */; };
 		6E6D1CED902F9CE027761903 /* libPods-Pepo2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C5230AD75C017304ACC6EEA /* libPods-Pepo2.a */; };
@@ -58,6 +61,20 @@
 		F2E2FD2C11FB48F5BB325B07 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B67A2689E7F467D9415208D /* FontAwesome5_Regular.ttf */; };
 		FCCB8033DFD54EBCA126D2E6 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9FEFBEEBECD644CA99E79329 /* FontAwesome5_Solid.ttf */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4B257B142422066500925F01 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4B257B26242207A600925F01 /* MobileRTC.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00119DFD23D07F18007C9980 /* OstDeviceRegisteredWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OstDeviceRegisteredWrap.h; sourceTree = "<group>"; };
@@ -123,6 +140,9 @@
 		38F0C27B59CC45D396A9DA80 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		3E39B1563E0E44BCA0991124 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		42ECFC1265414B5ABA679B51 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		4B257B1C2422078100925F01 /* MobileRTCScreenShare.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MobileRTCScreenShare.framework; sourceTree = "<group>"; };
+		4B257B1D2422078100925F01 /* MobileRTCResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MobileRTCResources.bundle; sourceTree = "<group>"; };
+		4B257B1E2422078100925F01 /* MobileRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MobileRTC.framework; sourceTree = "<group>"; };
 		5328281794EB4EE48D73FDD1 /* AvenirNext-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AvenirNext-Medium.ttf"; path = "../assets/fonts/AvenirNext-Medium.ttf"; sourceTree = "<group>"; };
 		6035EF365ACA4F34855894CC /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		686211C547DC41A19EB1D03F /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -159,6 +179,7 @@
 			files = (
 				00250EF123C61819005D5AB6 /* StoreKit.framework in Frameworks */,
 				6E6D1CED902F9CE027761903 /* libPods-Pepo2.a in Frameworks */,
+				4B257B25242207A600925F01 /* MobileRTC.framework in Frameworks */,
 				00F894EB23C5E98B00CB41A8 /* OstWalletSdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,6 +337,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4B257B1B2422078100925F01 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				4B257B1C2422078100925F01 /* MobileRTCScreenShare.framework */,
+				4B257B1D2422078100925F01 /* MobileRTCResources.bundle */,
+				4B257B1E2422078100925F01 /* MobileRTC.framework */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -326,6 +357,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4B257B1B2422078100925F01 /* lib */,
 				13B07FAE1A68108700A75B9A /* Pepo2 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* Pepo2Tests */,
@@ -377,6 +409,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00F894DD23C5E6A900CB41A8 /* ShellScript */,
 				00C7E6AA23CC7E0400EE4EEA /* ShellScript */,
+				4B257B142422066500925F01 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -446,6 +479,7 @@
 				F2E2FD2C11FB48F5BB325B07 /* FontAwesome5_Regular.ttf in Resources */,
 				FCCB8033DFD54EBCA126D2E6 /* FontAwesome5_Solid.ttf in Resources */,
 				77FCF766624B4DBC8283282D /* Fontisto.ttf in Resources */,
+				4B257B202422078100925F01 /* MobileRTCResources.bundle in Resources */,
 				5FB6B1777F0D44A9B58CE839 /* Foundation.ttf in Resources */,
 				1000A064487C42E6B7D4C928 /* Ionicons.ttf in Resources */,
 				4DDEE877547943B2BDD9C207 /* MaterialCommunityIcons.ttf in Resources */,
@@ -614,16 +648,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDEE68E0977E1CD9D7ECEC66 /* Pods-Pepo2.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Pepo2/Pepo2.entitlements;
 				CURRENT_PROJECT_VERSION = 30;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = N83K86W6P4;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/lib",
 				);
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -646,15 +681,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 163C39967B27743F50C16C33 /* Pods-Pepo2.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Pepo2/Pepo2.entitlements;
 				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = N83K86W6P4;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/lib",
 				);
 				INFOPLIST_FILE = Pepo2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;

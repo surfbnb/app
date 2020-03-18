@@ -8,6 +8,7 @@
 
 #import "PepoNativeHelper.h"
 #import "PepoEventEmitter.h"
+#import "AppDelegate.h"
 
 @implementation PepoNativeHelper
 
@@ -47,9 +48,13 @@ RCT_EXPORT_METHOD(subscribeForEvent:(NSString *)workflowId
   [instance subscribeCallback:callback forWorkflowId:workflowId];
 }
 
-RCT_EXPORT_METHOD(startZoomChat:(NSString *)zoomChatId) {
-  
+RCT_EXPORT_METHOD(startZoomChat:(NSString *)meetingId
+                  userName:(NSString * _Nullable) userName) {
+  //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+ dispatch_async(dispatch_get_main_queue(), ^{
+      AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+   [delegate joinMeeting:meetingId andUserName: userName];
+  });
 }
-
 
 @end

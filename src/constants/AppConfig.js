@@ -387,7 +387,8 @@ const AppConfig = {
     google: 'GoogleLogin',
     apple :'AppleLogin',
     github: 'GithubLogin',
-    ChannelsScreen: 'Channel'
+    ChannelsScreen: 'Channel',
+    JoinZoomMeeting: 'JoinZoomMeeting',
     //Dont change the key name,  values as u wish end
   },
   default_bt_amt : 10,

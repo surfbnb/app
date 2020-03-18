@@ -65,7 +65,8 @@ import TwitterWebLogin from './src/components/WebLogins/TwitterWebLogin';
 import GitHubWebLogin from './src/components/WebLogins/GitHubWebLogin';
 import ChannelsScreen from "./src/components/ChannelsScreen";
 import MembersScreen from "./src/components/MembersScreen";
-import QrCode from './src/components/CommonComponents/QrCode'
+import QrCode from './src/components/CommonComponents/QrCode';
+import ZoomMeeting from './src/components/Zoom';
 
 const customTabHiddenRoutes = [
   'CaptureVideo',
@@ -279,7 +280,8 @@ const ProfilePushStack = createStackNavigator(
     VideoReplies:VideoReplies ,
     FullScreenReplyCollection: FullScreenReplyCollection,
     ChannelsScreen: ChannelsScreen,
-    MembersScreen: MembersScreen
+    MembersScreen: MembersScreen,
+    JoinZoomMeeting: ZoomMeeting
   },
   {
     headerLayoutPreset: 'center',

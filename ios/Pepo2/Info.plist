@@ -86,7 +86,7 @@
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Application uses bluetooth</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Application users bluetooth</string>
+	<string>Application uses bluetooth</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Application uses calender</string>
 	<key>NSCameraUsageDescription</key>

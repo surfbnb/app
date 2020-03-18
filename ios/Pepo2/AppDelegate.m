@@ -39,6 +39,8 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
  
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+ 
+  
   PepoLoaderManager *loaderManager = [[PepoLoaderManager alloc]init];
   [OstWalletUI setLoaderManager: loaderManager];
   
@@ -58,12 +60,15 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
   [Fabric with:@[[Crashlytics class]]];
 
   [self setupTrustKit];
+  
+  [self initZoomSdk];
+  
   return YES;
 }
-
 
 - (void) setupTrustKit {
   // Initialize TrustKit
@@ -197,6 +202,77 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
                              restorationHandler:restorationHandler];
   return handled;
   
+}
+
+#pragma mark Zoom Sdk
+
+-(void)initZoomSdk {
+  // Step 1: Set SDK Domain and Enable log (You may disable the log feature in release version).
+  // In current sdk this function is not present.
+  // [[MobileRTC sharedRTC] setMobileRTCDomain:kSDKDomain enableLog:YES];
+  
+  MobileRTCSDKInitContext *context = [[MobileRTCSDKInitContext alloc] init];
+  context.domain = kSDKDomain;
+  context.enableLog = YES;
+  
+  BOOL initializeSuc = [[MobileRTC sharedRTC] initialize:context];
+  NSLog(@"initializeSuccessful======>%@",@(initializeSuc));
+  NSLog(@"MobileRTC Version: %@", [[MobileRTC sharedRTC] mobileRTCVersion]);
+  
+  // Step 2: Get Auth Service
+  MobileRTCAuthService *authService = [[MobileRTC sharedRTC] getAuthService];
+    
+  if (authService) {
+      // Step 3: Setup Auth Service
+      authService.delegate        = self;
+      
+      authService.clientKey       = kSDKAppKey;
+      authService.clientSecret    = kSDKAppSecret;
+      // Step 4: Call authentication function to initialize SDK
+      [authService sdkAuth];
+  }else {
+    NSLog(@"MobileRTC unable to fetch: %@", [[MobileRTC sharedRTC] getAuthService]);
+  }
+}
+
+- (void)onMobileRTCAuthReturn:(MobileRTCAuthError)returnValue {
+    NSLog(@"onMobileRTCAuthReturn %d", returnValue);
+    
+    if (returnValue != MobileRTCAuthError_Success)
+    {
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"SDK authentication failed, error code: %zd", @""), returnValue];
+        NSLog(@"%@", message);
+    }
+}
+
+- (void) joinMeeting: (NSString*) meetingNo andUserName:(NSString *)userName {
+    NSLog(@"meetingNO: %@", meetingNo);
+    
+    if(![meetingNo length]) {
+        // If the meeting number is empty, return error.
+        NSLog(@"Please enter a meeting number");
+        return;
+    } else {
+        // If the meeting number is not empty.
+        MobileRTCMeetingService *service = [[MobileRTC sharedRTC] getMeetingService];
+        
+        if (service) {
+            service.delegate = self;
+            // initialize a parameter dictionary to store parameters.
+          NSString *finalUserName = userName;
+          if (nil == finalUserName) {
+            finalUserName = @"Unknown";
+          }
+            NSDictionary *paramDict = @{
+                                        kMeetingParam_Username: finalUserName,
+                                        kMeetingParam_MeetingNumber:meetingNo
+                                        };
+            
+            MobileRTCMeetError response = [service joinMeetingWithDictionary:paramDict];
+            
+            NSLog(@"onJoinMeeting, response: %d", response);
+        }
+    }
 }
 
 
