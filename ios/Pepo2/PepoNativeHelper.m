@@ -47,5 +47,9 @@ RCT_EXPORT_METHOD(subscribeForEvent:(NSString *)workflowId
   [instance subscribeCallback:callback forWorkflowId:workflowId];
 }
 
+RCT_EXPORT_METHOD(startZoomChat:(NSString *)zoomChatId) {
+  
+}
+
 
 @end

@@ -31,6 +31,8 @@ import AuthBaseService from "../../services/AuthServices/Base";
 import AppConfig from "../../constants/AppConfig";
 import {testProps} from "../../constants/AppiumAutomation";
 
+import PepoNativeHelper from '../../helpers/PepoNativeHelper';
+
 const serviceTypes = AppConfig.authServiceTypes;
 const disconnetImageIconStyle = {
   [serviceTypes.twitter] : {
@@ -254,6 +256,8 @@ class CustomDrawerContent extends Component {
           </TouchableOpacity>
           {this.renderWalletSetting()}
 
+          {this.renderZoomChat()}
+
           <TouchableOpacity onPress={multipleClickHandler(() => {
             this.onGetSupport();
           })} disabled={this.state.disableButtons}
@@ -337,6 +341,22 @@ class CustomDrawerContent extends Component {
       </TouchableOpacity>
     );
   };
+
+  renderZoomChat = () => {
+    return (
+      <TouchableOpacity onPress={this.openZoomChat} {...testProps('side-toggle-drawer-wallet-settings')}>
+        <View style={[styles.itemParent]}>
+          <Image style={{ height: 26.6, width: 29, resizeMode: 'contain'  }} source={pepoAmountWallet} />
+          <Text style={styles.item}>Zoom Chat</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  openZoomChat = () => {
+    let zoomChatId = "";
+    PepoNativeHelper.startZoomChat(zoomChatId);
+  }
 }
 
 const mapStateToProps = ({ current_user }) => ({ current_user });
