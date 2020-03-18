@@ -354,7 +354,6 @@ class CustomDrawerContent extends Component {
       </TouchableOpacity>
     );
   }
-
 }
 
 const mapStateToProps = ({ current_user }) => ({ current_user });

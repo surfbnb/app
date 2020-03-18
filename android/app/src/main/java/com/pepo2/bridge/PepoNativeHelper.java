@@ -1,9 +1,12 @@
 package com.pepo2.bridge;
 
+import android.graphics.Paint;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+import com.pepo2.zoom.JoinMeeting;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -73,6 +76,11 @@ public class PepoNativeHelper extends ReactContextBaseJavaModule {
             errorCallback.invoke(e.getLocalizedMessage());
         }
 
+    }
+
+    @ReactMethod
+    public void startZoomChat(String meetingId, String userName) {
+        new JoinMeeting().perform(getReactApplicationContext(), meetingId, userName);
     }
 
 }

@@ -9,7 +9,14 @@ import com.facebook.react.modules.network.OkHttpClientProvider;
 import com.helpers.OkHttpCertificatePin;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
-public class MainActivity extends ReactActivity {
+import us.zoom.sdk.ZoomSDK;
+import us.zoom.sdk.ZoomSDKInitializeListener;
+
+import static com.pepo2.zoom.Constants.APP_KEY;
+import static com.pepo2.zoom.Constants.APP_SECRET;
+import static com.pepo2.zoom.Constants.WEB_DOMAIN;
+
+public class MainActivity extends ReactActivity implements ZoomSDKInitializeListener {
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -36,9 +43,24 @@ public class MainActivity extends ReactActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         rebuildOkHttp();
+        ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+        if(savedInstanceState == null) {
+            zoomSDK.initialize(this, APP_KEY, APP_SECRET, WEB_DOMAIN, this);
+        }
     }
 
     private void rebuildOkHttp() {
         OkHttpClientProvider.setOkHttpClientFactory(new OkHttpCertificatePin(getApplicationContext()));
+    }
+
+    @Override
+    public void onZoomSDKInitializeResult(int i, int i1) {
+
+    }
+
+    @Override
+    public void onZoomAuthIdentityExpired() {
+
     }
 }

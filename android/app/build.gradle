@@ -247,6 +247,9 @@ dependencies {
         transitive = true
     }
 
+    implementation project(':commonlib')
+    implementation project(':mobilertc')
+
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
