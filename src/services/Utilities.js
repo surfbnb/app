@@ -10,7 +10,7 @@ import { LoginPopoverActions } from '../components/LoginPopover';
 import Toast from '../theme/components/NotificationToast';
 import CameraPermissionsApi from '../services/CameraPermissionsApi';
 import { allowAcessModalEventEmitter } from '../components/AllowAccessModalScreen';
-import AppConfig from '../constants/AppConfig';;
+import AppConfig from '../constants/AppConfig';
 import DataContract from '../constants/DataContract';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import * as RNLocalize from "react-native-localize";
@@ -154,12 +154,14 @@ export default {
         text: 'Video uploading in progress.'
       });
     } else {
-      checkVideoPermission(navigation, params);
+      if (this.checkActiveUser()) {
+        checkVideoPermission(navigation, params);
+      }
     }
   },
 
   checkActiveUser(showPopover = true) {
-    if (!CurrentUser.getOstUserId() && showPopover) {
+    if (!null && showPopover) {
       LoginPopoverActions.show();
       return false;
     }

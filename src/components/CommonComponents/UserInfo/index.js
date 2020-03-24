@@ -64,11 +64,15 @@ class UserInfo extends React.PureComponent {
   };
 
   goToSupporting = () => {
-    this.props.navigation.push('SupportingListScreen', { userId: this.props.userId });
+    if (Utilities.checkActiveUser()) {
+      this.props.navigation.push('SupportingListScreen', { userId: this.props.userId });
+    }
   };
 
   goToSupporters = () => {
-    this.props.navigation.push('SupportersListScreen', { userId: this.props.userId });
+    if (Utilities.checkActiveUser()) {
+      this.props.navigation.push('SupportersListScreen', {userId: this.props.userId});
+    }
   };
 
   dividerLine = () => {

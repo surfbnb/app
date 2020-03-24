@@ -12,6 +12,7 @@ import appConfig from "../../../constants/AppConfig";
 import Pricer from "../../../services/Pricer";
 import { DEFAULT_SPENDING_LIMIT } from '../../../constants';
 import {testProps} from '../../../constants/AppiumAutomation';
+import Utilities from "../../../services/Utilities";
 
 const animDuration = appConfig.pepoAnimationDuration;
 const maxThreshold = Number(Pricer.getFromDecimal( DEFAULT_SPENDING_LIMIT ));
@@ -54,6 +55,10 @@ class PepoButton extends React.Component {
   }
 
   keepClapping = () => {
+    if (!Utilities.checkActiveUser()) {
+      return;
+    }
+
     this.setState({ isClapping: true});
     this.clap();
     this.keepclap = setInterval(() => {
@@ -62,6 +67,9 @@ class PepoButton extends React.Component {
   }
 
   stopClapping = () => {
+    if (!this.state.isClapping) {
+      return;
+    }
     if (this.keepclap) {
       clearInterval(this.keepclap);
     }

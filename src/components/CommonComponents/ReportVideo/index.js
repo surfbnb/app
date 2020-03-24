@@ -203,6 +203,11 @@ class ReportVideo extends PureComponent {
   }
   
   showActionSheet = () => {
+
+    if (!Utilities.checkActiveUser()) {
+      return;
+    }
+
     const config = this.getActionSheetConfig();
     ActionSheet.show(
       config.actionSheetConfig,

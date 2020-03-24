@@ -11,6 +11,7 @@ import ReduxGetters from '../../services/ReduxGetters';
 import {fetchUser} from "../../helpers/helpers";
 import { withNavigation } from "react-navigation";
 import ShareOptions from '../CommonComponents/ShareOptions';
+import Utilities from "../../services/Utilities";
 
 
 const ACTION_SHEET_CANCEL_INDEX = 3;
@@ -187,7 +188,7 @@ class UserProfileActionSheet extends PureComponent {
             ],
             {cancelable: true},
         );
-    }
+    };
 
     showBlockAlert = () =>{
         Alert.alert(
@@ -202,9 +203,14 @@ class UserProfileActionSheet extends PureComponent {
             ],
             {cancelable: true},
         );
-    }
+    };
 
     showActionSheet = () => {
+
+      if (!Utilities.checkActiveUser()) {
+          return;
+      }
+
         let actionOptions  = [...this.actionSheetButtons] ,
             blockAction = this.showBlockAlert;
         if(!this.props.canBlockUser){

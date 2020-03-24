@@ -192,6 +192,9 @@ class Base extends PureComponent {
   }
 
   onPressOut = (btAmount, totalBt) => {
+    if (!utilities.checkActiveUser()) {
+      return;
+    }
     this.onLocalUpdate(btAmount, totalBt);
     this.sendTransactionToSdk(btAmount);
   };

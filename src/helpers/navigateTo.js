@@ -71,7 +71,7 @@ class NavigateTo {
         this.goToInvitedUsers(payload);
         break;
       case 'wv':
-        InAppBrowser.openBrowser(deepGet(goToObject, 'v.wu'))
+        InAppBrowser.openBrowser(deepGet(goToObject, 'v.wu'));
         break;
       case 'su':
         this.goToSupport();
@@ -197,9 +197,19 @@ class NavigateTo {
   //Call this function if you want to navigate to screens only if logind user or webview redirects.
   //Eg: UniversalLinkWorker or PushNotificationWorker
   shouldNavigate( goToHome ){
-    if(CurrentUser.isActiveUser() || this.isWebViewLink()) {
+    if(CurrentUser.isActiveUser() || this.isInactiveUserAllowAction()) {
       this.__goToNavigationDecision( goToHome );
    }
+  }
+
+  isInactiveUserAllowAction() {
+    const pn = deepGet(this.getGoTo() , 'pn');
+    const allowedGotoPN = ['p','wv', 'v', 'rd', 't'];
+    if (allowedGotoPN.includes(pn)) {
+      return true;
+    }
+
+    return false;
   }
 
   //This is a controlled navigation for internals flows only.
