@@ -86,7 +86,8 @@ class CoachScreen extends PureComponent{
           </View>
         </View>
       }
-    } 
+    }
+    return null
    }
 
 }
