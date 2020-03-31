@@ -8,6 +8,7 @@ import {
   ScrollView
 } from 'react-native';
 import AppConfig from '../../constants/AppConfig';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 
 import styles from './styles';
 
@@ -40,7 +41,7 @@ export default class VideoLength extends PureComponent{
             var {x, y, width, height} = event.nativeEvent.layout;
             console.log("x,",x,":width,",width);
           }}
-          onPress={this.onPress30} // TODO: Shraddha implement multiclickhandler
+          onPress={multipleClickHandler(() => {this.onPress30()})}
         >
           <Text>30 sec </Text>
         </TouchableOpacity>
@@ -50,7 +51,7 @@ export default class VideoLength extends PureComponent{
             var {x, y, width, height} = event.nativeEvent.layout;
             console.log(" 90 secs x,",x,":width,",width);
           }}
-          onPress={this.onPress90} // TODO: Shraddha implement multiclickhandler
+          onPress={multipleClickHandler(() => {this.onPress90()})}
         >
           <Text>90 sec </Text>
         </TouchableOpacity>

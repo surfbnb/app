@@ -7,7 +7,8 @@ import {
   BackHandler,
   AppState,
   Alert,
-  Animated
+  Animated,
+  Easing
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import deleteCameraSegment  from '../../assets/delete_camera_segment.png';
@@ -72,6 +73,7 @@ class VideoRecorder extends Component {
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
     this.correctedRecordingDelay = AppConfig.videoRecorderConstants.recordingDelay;
     this.videoMaxLength = AppConfig.videoRecorderConstants.videoLengths['30'];
+    this.fadeValue = new Animated.Value(1);
 
     Utilities.getItem(AppConfig.videoRecorderConstants.recordingDelayKey).then((value)=>{
       value =  Number(value);
@@ -390,9 +392,25 @@ class VideoRecorder extends Component {
 
   setVideoLength = ( secondsValue , showSeconds ) =>{
     this.setCurrentVideoMaxLength( secondsValue );
+    this.animateSeconds();
     this.setState({
       showSeconds : showSeconds
     })
+  }
+
+  animateSeconds = () =>{
+    Animated.sequence([
+      Animated.timing(this.fadeValue, {
+        toValue: 1,
+        easing:Easing.linear,
+        duration:10
+      }),
+      Animated.timing(this.fadeValue, {
+        toValue: 0,
+        easing:Easing.linear,
+        duration: 3000
+      })
+    ]).start()
   }
 
   showCancelVideoCTA = () => {
