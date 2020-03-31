@@ -6,7 +6,8 @@ import {
   Text,
   BackHandler,
   AppState,
-  Alert
+  Alert,
+  Animated
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import deleteCameraSegment  from '../../assets/delete_camera_segment.png';
@@ -31,7 +32,7 @@ import RecordActionButton from './RecordActionButton';
 import Utilities from '../../services/Utilities';
 import FfmpegProcesser from '../../services/FfmpegProcesser';
 import ProgressBar from '../CommonComponents/ProgressBarWrapper';
-
+import VideoLength from './VideoLength';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
@@ -52,7 +53,9 @@ class VideoRecorder extends Component {
       showLightBoxOnReply: this.props.showLightBoxOnReply,
       cameraFrontMode: true,
       isLocalVideoPresent: false,
-      currentMode: null
+      currentMode: null,
+      showSeconds:false,
+      secondsValue : 30
     };
     /*
      these variables are used because setting state variables is async task
@@ -409,6 +412,13 @@ class VideoRecorder extends Component {
   };
 
 
+  showSecondsMarkup =()=>{
+    return(
+      <Animated.View style={{alignItems:'center',justifyContent:'center',flex:1,opacity:this.fadeValue}}>
+        <Text style={{color:'#000000',fontSize:60}}> {this.state.secondsValue} </Text>
+      </Animated.View>
+    )
+  }
   showCameraActions = () => {
     if (this.shouldShowActionButtons()) {
       return (
@@ -420,6 +430,9 @@ class VideoRecorder extends Component {
             </React.Fragment>
           </View>
           {this.showCancelVideoCTA()}
+          {this.state.showSeconds &&(
+              this.showSecondsMarkup()
+          )}
           <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
           <View>
             {/*{this.showTooltip()}*/}
@@ -428,6 +441,9 @@ class VideoRecorder extends Component {
               {this.getActionButton()}
               {this.previewButton()}
             </View>
+            <VideoLength
+              setVideoLength = {this.setVideoLength}
+            />
             {/*{this.renderModeRow()}*/}
           </View>
           </View>
@@ -435,6 +451,13 @@ class VideoRecorder extends Component {
       );
     }
   };
+
+  setVideoLength = ( secondsValue , showSeconds ) =>{
+    this.setState({
+      secondsValue : secondsValue,
+      showSeconds : showSeconds
+    })
+  }
 
   showCancelVideoCTA = () => {
     if (this.isRecording()){

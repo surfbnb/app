@@ -199,6 +199,18 @@ let stylesMap = {
     width: 2,
     height: 7,
     position: 'absolute'
+  },
+  videolengthContainer:{
+    flexDirection:'row',
+    position:'absolute',
+    left:'50%',
+    color:"#ffffff",
+    bottom:0,
+    marginLeft:-25 // width/2
+  },
+  videolengthItems :{
+    marginRight:40,
+    width:50,
   }
 
 
