@@ -51,7 +51,11 @@ const AppConfig = {
     tabToRecord : "TAP_TO_RECORD",
     longPressToRecord : "LONG_PRESS_TO_RECORD",
     recordingDelayKey: 'recording-delay',
-    videoMaxLength : 30
+    videoMaxLength : 30,
+    videoLengths :{
+      "30" : 30,
+      "90" : 90
+    }
   },
 
   beKnownErrorCodeMaps : {

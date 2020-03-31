@@ -39,7 +39,6 @@ const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_REFRESH_INTERVAL = 300;
 const MIN_VIDEO_LENGTH_IN_SEC = 1;
-const BUFFERED_MAX_DURATION_MS  = ( AppConfig.videoRecorderConstants.videoMaxLength -  MIN_VIDEO_LENGTH_IN_SEC  ) * 1000;
 
 const TAP_TO_RECORD = AppConfig.videoRecorderConstants.tabToRecord;
 const LONG_PRESS_TO_RECORD = AppConfig.videoRecorderConstants.longPressToRecord;
@@ -54,8 +53,7 @@ class VideoRecorder extends Component {
       cameraFrontMode: true,
       isLocalVideoPresent: false,
       currentMode: null,
-      showSeconds:false,
-      secondsValue : 30
+      showSeconds:false
     };
     /*
      these variables are used because setting state variables is async task
@@ -75,17 +73,31 @@ class VideoRecorder extends Component {
     this.videoLength = 0;
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
     this.correctedRecordingDelay = AppConfig.videoRecorderConstants.recordingDelay;
+    this.videoMaxLength = AppConfig.videoRecorderConstants.videoLengths['30'];
 
     Utilities.getItem(AppConfig.videoRecorderConstants.recordingDelayKey).then((value)=>{
       value =  Number(value);
       if(value){
-        this.correctedRecordingDelay =value;
+        this.correctedRecordingDelay = value;
       }
     });
 
   }
 
-  progressFactor = () => (1/(AppConfig.videoRecorderConstants.videoMaxLength*1000))*(this.actualProgressRefreshInterval || PROGRESS_REFRESH_INTERVAL);
+  getCurrentVideoMaxLength = () => {
+    return this.videoMaxLength ;
+  }
+
+  setCurrentVideoMaxLength =( val ) => {
+    if(!val) return;
+    this.videoMaxLength = val; 
+  }
+
+  getBufferdMaxDuration = () => {
+    return ( this.videoMaxLength -  MIN_VIDEO_LENGTH_IN_SEC  ) * 1000
+  }
+
+  progressFactor = () => (1/(this.getCurrentVideoMaxLength()*1000))*(this.actualProgressRefreshInterval || PROGRESS_REFRESH_INTERVAL);
 
   accidentalGoToPreviewScreen = () => {
     this.stoppedUnexpectedly = false;
@@ -99,7 +111,7 @@ class VideoRecorder extends Component {
           this._onAppStateChangeToBackground();
         }
       }else {
-        if( ! this.isBackgroundHonoured &&  (nextAppState === 'inactive' || nextAppState === 'background' )) {
+        if( !this.isBackgroundHonoured &&  (nextAppState === 'inactive' || nextAppState === 'background' )) {
           this.isBackgroundHonoured = true;
           this._onAppStateChangeToBackground();
         }
@@ -415,7 +427,7 @@ class VideoRecorder extends Component {
   showSecondsMarkup =()=>{
     return(
       <Animated.View style={{alignItems:'center',justifyContent:'center',flex:1,opacity:this.fadeValue}}>
-        <Text style={{color:'#000000',fontSize:60}}> {this.state.secondsValue} </Text>
+        <Text style={{color:'#000000',fontSize:60}}> {this.getCurrentVideoMaxLength()} </Text>
       </Animated.View>
     )
   }
@@ -441,9 +453,7 @@ class VideoRecorder extends Component {
               {this.getActionButton()}
               {this.previewButton()}
             </View>
-            <VideoLength
-              setVideoLength = {this.setVideoLength}
-            />
+            <VideoLength setVideoLength = {this.setVideoLength}/>
             {/*{this.renderModeRow()}*/}
           </View>
           </View>
@@ -453,8 +463,8 @@ class VideoRecorder extends Component {
   };
 
   setVideoLength = ( secondsValue , showSeconds ) =>{
+    this.setCurrentVideoMaxLength( secondsValue );
     this.setState({
-      secondsValue : secondsValue,
       showSeconds : showSeconds
     })
   }
@@ -633,7 +643,7 @@ class VideoRecorder extends Component {
   };
 
   isVideoDurationBufferReached(length){
-    return length >= BUFFERED_MAX_DURATION_MS ;
+    return length >= this.getBufferdMaxDuration() ;
   }
 
   getActionButton() {
@@ -714,7 +724,7 @@ class VideoRecorder extends Component {
       base64: true,
       muted: false,
       orientation:  'portrait',
-      maxDuration: AppConfig.videoRecorderConstants.videoMaxLength
+      maxDuration: this.getCurrentVideoMaxLength()
     };
   };
 
@@ -722,12 +732,8 @@ class VideoRecorder extends Component {
     if (!this.camera) return;
     this.lastUpdateProgressTimeStamp = 0;
     this.preRecording();
-    let data, assumedStartTime, endTime;
-    let stopNativeRecording = false;
-
-    // Reset stoppedByAction here.
-    // this.stoppedByAction = false;
-
+    let data, assumedStartTime, endTime
+    ;
     try {
         assumedStartTime = Date.now() + this.correctedRecordingDelay;
         data = await this.camera.recordAsync(this.getRecordingOptions());
@@ -755,7 +761,6 @@ class VideoRecorder extends Component {
   };
 
   recordingDelayCorrection = (duration, durationByCode) => {
-      let durationByProgress = this.getLastSegmentProgress() * AppConfig.videoRecorderConstants.videoMaxLength * 1000;
       const correctionVal =  this.correctedRecordingDelay - (duration - durationByCode);
       this.setCorrectionValue( correctionVal );
       // let logMsg = `FFmpeg ${duration.toFixed(2)} Code ${durationByCode.toFixed(2)} Delay ${this.correctedRecordingDelay.toFixed(2)}`;
@@ -829,7 +834,7 @@ class VideoRecorder extends Component {
   };
 
   correctProgress = () => {
-    let correctedProgress = (this.videoLength / 1000) / AppConfig.videoRecorderConstants.videoMaxLength;
+    let correctedProgress = (this.videoLength / 1000) / this.getCurrentVideoMaxLength();
     this.updateVideoUrlsListProgress(correctedProgress);
     if(this.isVideoDurationBufferReached(this.videoLength)){
       correctedProgress =  1;

@@ -7,30 +7,26 @@ import {
   Text,
   ScrollView
 } from 'react-native';
+import AppConfig from '../../constants/AppConfig';
 
 import styles from './styles';
 
 export default class VideoLength extends PureComponent{
   constructor(props){
     super(props);
+    this.currentVal = AppConfig.videoRecorderConstants.videoLengths['30'];
   }
 
   onPress30 = () =>{
-    this.showSecondsOnScreen(30);
-
-
-
+    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['30']);
   }
 
   onPress90 = () =>{
-    this.showSecondsOnScreen(90);
-
+    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['90']);
   }
 
   showSecondsOnScreen = ( seconds ) =>{
-    //TODO:Shraddha
-    // store second in local var
-    // if this is true then send true
+    if(this.currentVal == seconds ){ return; }
     this.props.setVideoLength(seconds,true);
   }
 
@@ -63,3 +59,11 @@ export default class VideoLength extends PureComponent{
 
   }
 }
+
+/**
+ * TODO @Shraddha 
+ * Fade in fade out animation complete 
+ * Slide animation 
+ * Try to bring Fade in markup inside
+ * Object loop Buttons creation 
+ **/
