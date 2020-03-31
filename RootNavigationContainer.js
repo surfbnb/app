@@ -39,6 +39,7 @@ import utilities from './src/services/Utilities';
 import { NotificationToastComponent } from './src/theme/components/NotificationToast';
 import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
+import CreateCommunitiesScreen from './src/components/CreateCommunities';
 import FanVideoDetails from './src/components/FanVideoDetails';
 import FanVideoReplyDetails from './src/components/FanVideoReplyDetails';
 import WalletSettingScreen from './src/components/WalletSetting';
@@ -305,7 +306,8 @@ const ProfileStack = createStackNavigator(
 
 const SearchPushStack = createStackNavigator(
   {
-    SearchScreen: SearchScreen,
+    // SearchScreen: SearchScreen,
+    SearchScreen: CreateCommunitiesScreen,
     UsersProfileScreen: UsersProfileScreen,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
