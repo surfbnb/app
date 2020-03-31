@@ -19,13 +19,10 @@ import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/camera-cross-icon.png';
-import closeIconWhite from '../../assets/cross-icon-white.png';
 import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
 import LinearGradient from "react-native-linear-gradient";
-import Theme from "../../theme/styles";
 import multipleClickHandler from "../../services/MultipleClickHandler";
-import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
 import Pricer from "../../services/Pricer";
 import Toast from "../../theme/components/NotificationToast";
 import RecordActionButton from './RecordActionButton';
@@ -310,7 +307,7 @@ class VideoRecorder extends Component {
 
     if (this.props.isVideoTypeReply){
       // If video type is reply and has video replies then we will not show coach and we need to show action buttons
-      return ! this.state.showLightBoxOnReply;
+      return !this.state.showLightBoxOnReply;
     } else {
       // If video type is post and terms and conditions are accepted then we will not show coach and we need to show action buttons
       return this.state.acceptedCameraTnC === 'true';
