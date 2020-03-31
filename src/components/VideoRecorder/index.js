@@ -403,12 +403,14 @@ class VideoRecorder extends Component {
       Animated.timing(this.fadeValue, {
         toValue: 1,
         easing:Easing.linear,
-        duration:10
+        duration:10,
+        useNativeDriver: true
       }),
       Animated.timing(this.fadeValue, {
         toValue: 0,
         easing:Easing.linear,
-        duration: 3000
+        duration: 3000,
+        useNativeDriver: true
       })
     ]).start()
   }

@@ -12,50 +12,62 @@ import multipleClickHandler from '../../services/MultipleClickHandler';
 
 import styles from './styles';
 
+const FOOTER_TAB_WIDTH = 50,
+      ANIMATION_DURATION = 500,
+      ITEM_MARGIN  = 40;
+
+
 export default class VideoLength extends PureComponent{
   constructor(props){
     super(props);
+    this.translateX = new Animated.Value(0);
     this.currentVal = AppConfig.videoRecorderConstants.videoLengths['30'];
   }
 
   onPress30 = () =>{
-    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['30']);
+    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['30'],0); // 0 ==> inorder to reset position
+    this.currentVal = AppConfig.videoRecorderConstants.videoLengths['30'];
   }
 
   onPress90 = () =>{
-    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['90']);
+    let translationPosition = -(FOOTER_TAB_WIDTH+ITEM_MARGIN); ////width + marginRight
+    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['90'],translationPosition);
+    this.currentVal = AppConfig.videoRecorderConstants.videoLengths['90'];
   }
 
-  showSecondsOnScreen = ( seconds ) =>{
+  showSecondsOnScreen = ( seconds , translationPosition ) =>{
     if(this.currentVal == seconds ){ return; }
     this.props.setVideoLength(seconds,true);
+    this.slideTab(translationPosition);
+  }
+
+  slideTab = ( slidevalue ) =>{
+    Animated.timing(this.translateX,
+    {
+      toValue : slidevalue,
+      duration : ANIMATION_DURATION,
+      useNativeDriver:true
+    }).start();
+
   }
 
   render(){
     return (
-      <View
-        style={styles.videolengthContainer}>
+      <Animated.View
+        style={[styles.videolengthContainer,{transform : [{translateX:this.translateX}]}]}>
         <TouchableOpacity
           style={styles.videolengthItems}
-          onLayout={(event)=>{
-            var {x, y, width, height} = event.nativeEvent.layout;
-            console.log("x,",x,":width,",width);
-          }}
           onPress={multipleClickHandler(() => {this.onPress30()})}
         >
-          <Text>30 sec </Text>
+          <Text>30 sec</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.videolengthItems}
-          onLayout={(event)=>{
-            var {x, y, width, height} = event.nativeEvent.layout;
-            console.log(" 90 secs x,",x,":width,",width);
-          }}
           onPress={multipleClickHandler(() => {this.onPress90()})}
         >
-          <Text>90 sec </Text>
+          <Text>90 sec</Text>
         </TouchableOpacity>
-      </View>
+      </Animated.View>
     )
 
   }
