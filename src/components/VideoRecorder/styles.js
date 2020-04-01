@@ -215,18 +215,20 @@ let stylesMap = {
   },
   secondsAnimatedComponent:{
     position:'absolute',
-    width:70,
+    width:84,
     top:'30%',
     left:'50%',
-    marginLeft : -35 // - width/2
+    marginLeft : -42 // - width/2
 
   },
   secondsAnimatedText:{
-    color: Colors.black,    //TODO: SHRADDHA [color = black for testing, change it to white]
-    fontSize:60
+    color: Colors.white,
+    fontSize:73,
+    fontWeight:'700',
+    fontFamily: 'AvenirNext-DemiBold'
   },
   videolengthItemText:{
-    color:Colors.black        //TODO: SHRADDHA [color = black for testing, change it to white]
+    color:Colors.white
   }
 
 
