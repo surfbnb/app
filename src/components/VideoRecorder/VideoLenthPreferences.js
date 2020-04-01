@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react';
 import {
   TouchableOpacity,
-  View,
   Easing,
   Animated,
-  Text,
-  ScrollView
+  Text
 } from 'react-native';
 import AppConfig from '../../constants/AppConfig';
 import multipleClickHandler from '../../services/MultipleClickHandler';
@@ -17,27 +15,26 @@ const FOOTER_TAB_WIDTH = 50,
       ITEM_MARGIN  = 40;
 
 
-export default class VideoLength extends PureComponent{
+export default class VideoLenthPreferences extends PureComponent{
   constructor(props){
     super(props);
     this.state = {
       showSeconds:false,
-      videoMaxLength : AppConfig.videoRecorderConstants.videoLengths['30']
+      videoMaxLength : AppConfig.videoRecorderConstants.videoLenthPreferences['30']
     }
     this.translateX = new Animated.Value(0);
     this.fadeValue = new Animated.Value(1);
-    // this.videoMaxLength = AppConfig.videoRecorderConstants.videoLengths['30'];
   }
 
   onPress30 = () =>{
-    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['30'],0); // 0 ==> inorder to reset position
-    this.setCurrentVideoMaxLength(AppConfig.videoRecorderConstants.videoLengths['30'])
+    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLenthPreferences['30'],0); // 0 ==> inorder to reset position
+    this.setCurrentVideoMaxLength(AppConfig.videoRecorderConstants.videoLenthPreferences['30'])
   }
 
   onPress90 = () =>{
     let translationPosition = -(FOOTER_TAB_WIDTH+ITEM_MARGIN); ////width + marginRight
-    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['90'],translationPosition);
-    this.setCurrentVideoMaxLength(AppConfig.videoRecorderConstants.videoLengths['90'])
+    this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLenthPreferences['90'],translationPosition);
+    this.setCurrentVideoMaxLength(AppConfig.videoRecorderConstants.videoLenthPreferences['90'])
   }
 
   setVideoLength = ( secondsValue , showSeconds ) =>{
@@ -48,12 +45,13 @@ export default class VideoLength extends PureComponent{
     })
   }
 
-  getCurrentVideomaxLength = () => {
+  getCurrentVideoMaxLength = () => {
     return this.state.videoMaxLength;
   }
 
   setCurrentVideoMaxLength = ( val ) =>{
     if (!val) return;
+    this.props.onChange && this.props.onChange(val);
     this.setState({
       videoMaxLength : val
     })
@@ -77,7 +75,7 @@ export default class VideoLength extends PureComponent{
   }
 
   showSecondsOnScreen = ( seconds , translationPosition ) =>{
-    if(this.getCurrentVideomaxLength() == seconds ){ return; }
+    if(this.getCurrentVideoMaxLength() == seconds ){ return; }
     this.setVideoLength(seconds,true);
     this.slideTab(translationPosition);
   }
@@ -95,7 +93,7 @@ export default class VideoLength extends PureComponent{
   showSecondsMarkup =()=>{
     return(
       <Animated.View style={[styles.secondsAnimatedComponent,{opacity:this.fadeValue}]}>
-        <Text style={styles.secondsAnimatedText}>{ this.getCurrentVideomaxLength() } </Text>
+        <Text style={styles.secondsAnimatedText}>{ this.getCurrentVideoMaxLength() } </Text>
       </Animated.View>
     )
   }
@@ -129,8 +127,5 @@ export default class VideoLength extends PureComponent{
 
 /**
  * TODO @Shraddha 
- * Fade in fade out animation complete 
- * Slide animation 
- * Try to bring Fade in markup inside
  * Object loop Buttons creation 
  **/

@@ -52,7 +52,7 @@ const AppConfig = {
     longPressToRecord : "LONG_PRESS_TO_RECORD",
     recordingDelayKey: 'recording-delay',
     videoMaxLength : 30,
-    videoLengths :{
+    videoLenthPreferences :{
       "30" : 30,
       "90" : 90
     }

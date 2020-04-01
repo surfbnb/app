@@ -6,9 +6,7 @@ import {
   Text,
   BackHandler,
   AppState,
-  Alert,
-  Animated,
-  Easing
+  Alert
 } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import deleteCameraSegment  from '../../assets/delete_camera_segment.png';
@@ -29,7 +27,7 @@ import RecordActionButton from './RecordActionButton';
 import Utilities from '../../services/Utilities';
 import FfmpegProcesser from '../../services/FfmpegProcesser';
 import ProgressBar from '../CommonComponents/ProgressBarWrapper';
-import VideoLength from './VideoLength';
+import VideoLenthPreferences from './VideoLenthPreferences';
 import CoachScreen from './CoachScreen';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
@@ -50,7 +48,7 @@ class VideoRecorder extends Component {
       showLightBoxOnReply: this.props.showLightBoxOnReply,
       cameraFrontMode: true,
       isLocalVideoPresent: false,
-      currentMode: null
+      currentMode: null,
       showDurationPreference: true
     };
     /*
@@ -71,7 +69,7 @@ class VideoRecorder extends Component {
     this.videoLength = 0;
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
     this.correctedRecordingDelay = AppConfig.videoRecorderConstants.recordingDelay;
-    this.videoMaxLength = AppConfig.videoRecorderConstants.videoLengths['30'];
+    this.currentVideoMaxLength = AppConfig.videoRecorderConstants.videoLenthPreferences['30'];
 
 
     Utilities.getItem(AppConfig.videoRecorderConstants.recordingDelayKey).then((value)=>{
@@ -84,16 +82,16 @@ class VideoRecorder extends Component {
   }
 
   getCurrentVideoMaxLength = () => {
-    return this.videoMaxLength ;
+    return this.currentVideoMaxLength ;
   }
 
   setCurrentVideoMaxLength =( val ) => {
     if(!val) return;
-    this.videoMaxLength = val; 
+    this.currentVideoMaxLength = val; 
   }
 
   getBufferdMaxDuration = () => {
-    return ( this.videoMaxLength -  MIN_VIDEO_LENGTH_IN_SEC  ) * 1000
+    return ( this.getCurrentVideoMaxLength() -  MIN_VIDEO_LENGTH_IN_SEC  ) * 1000
   }
 
   progressFactor = () => (1/(this.getCurrentVideoMaxLength()*1000))*(this.actualProgressRefreshInterval || PROGRESS_REFRESH_INTERVAL);
@@ -364,15 +362,11 @@ class VideoRecorder extends Component {
               {/*{this.renderModeRow()}*/}
             </View>
           </View>
-          {this.state.showDurationPreference && <VideoLength setVideoLength = {this.setVideoLength}/>}
+          {this.state.showDurationPreference && <VideoLenthPreferences onChange={this.setCurrentVideoMaxLength}/>}
         </React.Fragment>
       );
     }
   };
-
-
-
-
 
   showCancelVideoCTA = () => {
     if (this.isRecording()){
