@@ -11,21 +11,21 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import ChannelCell from '../ChannelCell';
 import Pagination from "../../services/Pagination";
+import Filters from './Filters';
 
 class ChannelsList extends PureComponent {
   constructor(props){
     super(props);
     let list = [];
-    // this.tagsPagination = new Pagination( this.props.getFetchUrl());
-
     this.state = {
       list,
       refreshing : false,
       loadingNext: false
     }
-    this.listRef = null ;
+    this.listRef = null;
+    this.currentFilter = {};
+    this.setDefaultFilter();
   }
-
 
   componentDidMount(){
     this.forcedRefresh();
@@ -36,20 +36,43 @@ class ChannelsList extends PureComponent {
     this.listRef = null;
   }
 
+  setDefaultFilter = () => {
+    for(const key in this.props.filters){
+      if(this.props.filters.hasOwnProperty(key)){
+        const filter = this.props.filters[key]
+        if(filter){
+          this.currentFilter = filter;
+          break; 
+        }
+      }
+    }
+  }
+
+  getCurrentFilter = () => {
+    return this.currentFilter;
+  }
+
+  setCurrentFilter = (filter) => {
+    if(!filter) return;
+    this.currentFilter = filter;
+  }
+
+  updateFilter = ( filter ) => {
+    if(!filter || this.currentFilter.id == filter.id ) return;
+    this.setCurrentFilter(filter);
+    this.forcedRefresh();
+  }
 
   getPagination = () => {
     return this.channelsPagination;
   };
-
-
-  // region - Pagination and Event Handlers
 
   initPagination() {
     // First, take care of existing Pagination if exists.
     this.removePaginationListeners();
 
     // Now, create a new one.
-    let fetchUrl = this.props.getFetchUrl();
+    let fetchUrl = this.props.getFetchUrl( this.currentFilter );
     this.channelsPagination = new Pagination(fetchUrl);
     this.bindPaginationEvents();
   }
@@ -100,7 +123,6 @@ class ChannelsList extends PureComponent {
     this.refresh();
   }
 
-
   getResultList(){
     let list = this.getPagination().getResults();
     return list.length > 0 ? list : [this.props.noResultsData];
@@ -108,8 +130,7 @@ class ChannelsList extends PureComponent {
 
 
   beforeRefresh = ( ) => {
-    //this.props.beforeRefresh && this.props.beforeRefresh();
-    //this.onPullToRefresh();
+    this.props.beforeRefresh && this.props.beforeRefresh();
     let stateObject = {refreshing : true};
     if (this.state.loadingNext) {
       stateObject['loadingNext'] = false;
@@ -148,10 +169,6 @@ class ChannelsList extends PureComponent {
   refresh = () => {
     this.getPagination().refresh();
   }
-
-  // isCurrentUser = () => {
-  //     return this.props.userId === CurrentUser.getUserId();
-  // }
 
   _keyExtractor = (item, index) => {
     return `id_${item.id}`
@@ -206,8 +223,8 @@ class ChannelsList extends PureComponent {
   render(){
     return(
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1}}>
+        <Filters filters={this.props.filters}  getCurrentFilter={this.getCurrentFilter} onChange={this.updateFilter} />
         <FlatList
-          // style={{marginTop: 10}}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingBottom: 20, paddingTop: 10}}
           ref={this.setFlatListRef}
@@ -227,6 +244,10 @@ class ChannelsList extends PureComponent {
     );
   }
 
+}
+
+ChannelsList.defaultProps = {
+  filters: {}
 }
 
 export default withNavigation(ChannelsList);

@@ -16,6 +16,7 @@ import NavigationEmitter from "../../helpers/TabNavigationEvent";
 import appConfig from "../../constants/AppConfig";
 import ChannelsList from "../ChannelsList";
 import DataContract from '../../constants/DataContract';
+import deepGet from "lodash/get";
 
 const tabStyle = NativeBaseTabTheme.tab,
   USER_KIND = DataContract.knownEntityTypes.user,
@@ -69,6 +70,28 @@ const TabMap = {
       console.log('this.emptyData',oThis.noResultsData);
       noResultsData = noResultsData || oThis.noResultsData;
       return <EmptySearchResult  noResultsData={noResultsData}/>
+    },
+    filters : {
+      trending : {
+        text : "Trending",
+        id: "trending",
+        baseUrl: '/search/channels'
+      },
+      new : {
+        text : "New",
+        id: "new",
+        baseUrl: '/search/channels'
+      },
+      joined: {
+        text : "Joined",
+        id: "joined",
+        baseUrl: '/search/channels'
+      },
+      all: {
+        text : "All",
+        id: "all",
+        baseUrl: '/search/channels'
+      }
     },
     supported: true
   },
@@ -254,8 +277,11 @@ class SearchScreen extends PureComponent {
     return this.getUrlForTab(TabMap.top);
   };
 
-  getChannelsTabUrl = () => {
-    return this.getUrlForTab(TabMap.channels);
+  getChannelsTabUrl = ( filter = {}) => {
+    const id  = filter.id, 
+          baseUrl = deepGet(TabMap , `channels.filters.${id}.baseUrl`, null)
+          ; 
+    return this.getUrlForTab(TabMap.channels , baseUrl);
   };
 
   getTagsTabUrl = () => {
@@ -270,8 +296,8 @@ class SearchScreen extends PureComponent {
     return this.getUrlForTab(TabMap.videos);
   };
 
-  getUrlForTab = (tabData) => {
-    let baseUrl = tabData.baseUrl;
+  getUrlForTab = (tabData, url) => {
+    let baseUrl = url || tabData.baseUrl;
 
     let params = tabData.params || {};
     // Copy it.
@@ -406,6 +432,7 @@ class SearchScreen extends PureComponent {
           onRef={this.setChannelFlatListRef}
           noResultsData={TabMap.channels.noResultsData}
           getNoResultsCell={TabMap.channels.renderNoResults}
+          filters={TabMap.channels.filters}
         />
       </Tab>
     }

@@ -306,8 +306,8 @@ const ProfileStack = createStackNavigator(
 
 const SearchPushStack = createStackNavigator(
   {
-    // SearchScreen: SearchScreen,
-    SearchScreen: CreateCommunitiesScreen,
+    SearchScreen: SearchScreen,
+    CreateCommunitiesScreen: CreateCommunitiesScreen,
     UsersProfileScreen: UsersProfileScreen,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
