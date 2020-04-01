@@ -56,8 +56,6 @@ class PreviewRecordedVideo extends PureComponent {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    // Store.dispatch(upsertRecordedVideo({ raw_video_list: this.videoUrlsList, video_length: this.totalVideoLength }));
-
     this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
       this.replayPreview();
     });

@@ -90,12 +90,12 @@ class CaptureVideo extends Component {
     this.proceedWithExisting = true;
     this.videoType = recordedVideoObj.video_type || AppConfig.videoTypes.post ;
     console.log(recordedVideoObj.video_length, 'totalDurationtotalDurationtotalDuration');
+    this.currentPreference = recordedVideoObj.currentPreference;
     this.setState ({
       recordingScreen: false,
       videoUrlsList: recordedVideoObj.raw_video_list,
       totalDuration: recordedVideoObj.video_length,
       previewURL: recordedVideoObj.previewURL,
-
     });
   };
 

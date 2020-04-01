@@ -689,7 +689,6 @@ class VideoRecorder extends Component {
   };
 
   sanitizeSegments = async (data, durationByCode ) => {
-    let lastSegmentProgress = this.getCurrentSegmentProgress();
     let videoInfo;
     FfmpegProcesser.init([data.uri]);
     try{
@@ -717,6 +716,10 @@ class VideoRecorder extends Component {
       this.appendNewBar();
     } else {
       this.goToLastProgress();
+    }
+
+    if(this.videoUrlsList.length == 0){
+     this.setState({showDurationPreference: true});
     }
   };
 

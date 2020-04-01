@@ -49,7 +49,7 @@ class Base extends PureComponent {
         raw_video_list: this.props.videoUrlsList,
         video_length: this.props.totalDuration,
         previewURL:  this.props.previewURL,
-        currentPreference: this.currentPreference
+        currentPreference: this.props.currentPreference
     }));
   }
 
