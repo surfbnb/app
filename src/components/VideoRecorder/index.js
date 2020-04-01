@@ -51,8 +51,7 @@ class VideoRecorder extends Component {
       showLightBoxOnReply: this.props.showLightBoxOnReply,
       cameraFrontMode: true,
       isLocalVideoPresent: false,
-      currentMode: null,
-      showSeconds:false
+      currentMode: null
     };
     /*
      these variables are used because setting state variables is async task
@@ -73,7 +72,7 @@ class VideoRecorder extends Component {
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
     this.correctedRecordingDelay = AppConfig.videoRecorderConstants.recordingDelay;
     this.videoMaxLength = AppConfig.videoRecorderConstants.videoLengths['30'];
-    this.fadeValue = new Animated.Value(1);
+
 
     Utilities.getItem(AppConfig.videoRecorderConstants.recordingDelayKey).then((value)=>{
       value =  Number(value);
@@ -352,13 +351,7 @@ class VideoRecorder extends Component {
   };
 
 
-  showSecondsMarkup =()=>{
-    return(
-      <Animated.View style={{alignItems:'center',justifyContent:'center',flex:1,opacity:this.fadeValue}}>
-        <Text style={{color:'#000000',fontSize:60}}> {this.getCurrentVideoMaxLength()} </Text>
-      </Animated.View>
-    )
-  }
+
   showCameraActions = () => {
     if (this.shouldShowActionButtons()) {
       return (
@@ -370,50 +363,27 @@ class VideoRecorder extends Component {
             </React.Fragment>
           </View>
           {this.showCancelVideoCTA()}
-          {this.state.showSeconds &&(
-              this.showSecondsMarkup()
-          )}
           <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
-          <View>
-            {/*{this.showTooltip()}*/}
-            <View style={styles.bottomWrapper }>
-              {this.flipButton()}
-              {this.getActionButton()}
-              {this.previewButton()}
+            <View>
+              {/*{this.showTooltip()}*/}
+              <View style={styles.bottomWrapper }>
+                {this.flipButton()}
+                {this.getActionButton()}
+                {this.previewButton()}
+              </View>
+
+              {/*{this.renderModeRow()}*/}
             </View>
-            <VideoLength setVideoLength = {this.setVideoLength}/>
-            {/*{this.renderModeRow()}*/}
           </View>
-          </View>
+          <VideoLength />
         </React.Fragment>
       );
     }
   };
 
-  setVideoLength = ( secondsValue , showSeconds ) =>{
-    this.setCurrentVideoMaxLength( secondsValue );
-    this.animateSeconds();
-    this.setState({
-      showSeconds : showSeconds
-    })
-  }
 
-  animateSeconds = () =>{
-    Animated.sequence([
-      Animated.timing(this.fadeValue, {
-        toValue: 1,
-        easing:Easing.linear,
-        duration:10,
-        useNativeDriver: true
-      }),
-      Animated.timing(this.fadeValue, {
-        toValue: 0,
-        easing:Easing.linear,
-        duration: 3000,
-        useNativeDriver: true
-      })
-    ]).start()
-  }
+
+
 
   showCancelVideoCTA = () => {
     if (this.isRecording()){
