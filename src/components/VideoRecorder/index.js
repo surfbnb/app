@@ -24,7 +24,6 @@ import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
 import LinearGradient from "react-native-linear-gradient";
 import multipleClickHandler from "../../services/MultipleClickHandler";
-import Pricer from "../../services/Pricer";
 import Toast from "../../theme/components/NotificationToast";
 import RecordActionButton from './RecordActionButton';
 import Utilities from '../../services/Utilities';
@@ -52,7 +51,8 @@ class VideoRecorder extends Component {
       cameraFrontMode: true,
       isLocalVideoPresent: false,
       currentMode: null,
-      showSeconds:false
+      showSeconds:false,
+      showDurationPreference: true
     };
     /*
      these variables are used because setting state variables is async task
@@ -101,7 +101,7 @@ class VideoRecorder extends Component {
 
   accidentalGoToPreviewScreen = () => {
     this.stoppedUnexpectedly = false;
-    this.videoUrlsList.length && this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+    this.videoUrlsList.length && this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength,  this.getCurrentVideoMaxLength());
   };
 
   _handleAppStateChange = (nextAppState) => {
@@ -242,17 +242,6 @@ class VideoRecorder extends Component {
     return true;
   };
 
-  getPepoAmount = () => {
-    let amount = reduxGetters.getBtAmountForReply(this.props.videoId);
-    return Pricer.getToBT(Pricer.getFromDecimal(amount), 2);
-  };
-
-  getUserFullName = () => {
-    let userId = reduxGetters.getVideoCreatorUserId(this.props.videoId);
-    return reduxGetters.getName(userId)
-  };
-
-
   showCoachForPosting = () => {
     return <CoachScreen videoId={this.props.videoId}
                         isLocalVideoPresent={this.state.isLocalVideoPresent}
@@ -381,7 +370,7 @@ class VideoRecorder extends Component {
               {this.getActionButton()}
               {this.previewButton()}
             </View>
-            <VideoLength setVideoLength = {this.setVideoLength}/>
+            {this.state.showDurationPreference && <VideoLength setVideoLength = {this.setVideoLength}/>}
             {/*{this.renderModeRow()}*/}
           </View>
           </View>
@@ -432,7 +421,7 @@ class VideoRecorder extends Component {
       Toast.show({text:'Please create longer video', icon: 'error' });
       return;
     }
-    this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+    this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength ,  this.getCurrentVideoMaxLength());
   };
 
   onBackPress = () => {
@@ -464,7 +453,12 @@ class VideoRecorder extends Component {
         this.separationBars.pop();
       }
 
-      this.forceUpdate();
+      if(this.videoUrlsList.length == 0){
+        this.setState({showDurationPreference: true});
+      }else{
+        this.forceUpdate();
+      }
+      
     }
   };
 
@@ -661,7 +655,7 @@ class VideoRecorder extends Component {
       this.recordActionButton && this.recordActionButton.loopedAnimation().start();
     }, this.correctedRecordingDelay);
     this.recordActionButton && this.recordActionButton.styleAsDisabled(true);
-    this.changeIsRecording(true);
+    this.changeIsRecording(true , {showDurationPreference: false} );
   };
 
   getRecordingOptions = () => {

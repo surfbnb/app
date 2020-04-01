@@ -386,7 +386,9 @@ class CameraWorker extends PureComponent {
         image_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         video_size: videoSize,
         parent_kind: DataContract.knownEntityTypes.video,
-        parent_id: parentVideoId
+        parent_id: parentVideoId,
+        video_duration:   this.props.recorded_video.video_length,
+        video_duration_preference:  this.props.recorded_video.currentPreference
       };
 
       let payload = payloadWithoutImage;
@@ -797,7 +799,9 @@ class CameraWorker extends PureComponent {
         video_height: appConfig.cameraConstants.VIDEO_HEIGHT,
         image_width: appConfig.cameraConstants.VIDEO_WIDTH,
         image_height: appConfig.cameraConstants.VIDEO_HEIGHT,
-        per_reply_amount_in_wei: this.props.recorded_video.reply_amount
+        per_reply_amount_in_wei: this.props.recorded_video.reply_amount,
+        video_duration:   this.props.recorded_video.video_length,
+        video_duration_preference:  this.props.recorded_video.currentPreference
       };
 
       let payload = payloadWithoutImage;
