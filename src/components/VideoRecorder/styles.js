@@ -206,11 +206,27 @@ let stylesMap = {
     left:'50%',
     color:"#ffffff",
     bottom:0,
-    marginLeft:-25 // width/2
+    marginLeft:-25 ,// width/2
+    marginBottom:10
   },
   videolengthItems :{
     marginRight:40,
     width:50,
+  },
+  secondsAnimatedComponent:{
+    position:'absolute',
+    width:70,
+    top:'30%',
+    left:'50%',
+    marginLeft : -35 // - width/2
+
+  },
+  secondsAnimatedText:{
+    color: Colors.black,    //TODO: SHRADDHA [color = black for testing, change it to white]
+    fontSize:60
+  },
+  videolengthItemText:{
+    color:Colors.black        //TODO: SHRADDHA [color = black for testing, change it to white]
   }
 
 
