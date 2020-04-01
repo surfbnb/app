@@ -25,20 +25,19 @@ export default class VideoLength extends PureComponent{
       videoMaxLength : AppConfig.videoRecorderConstants.videoLengths['30']
     }
     this.translateX = new Animated.Value(0);
-      this.currentVal = AppConfig.videoRecorderConstants.videoLengths['30'];
     this.fadeValue = new Animated.Value(1);
     // this.videoMaxLength = AppConfig.videoRecorderConstants.videoLengths['30'];
   }
 
   onPress30 = () =>{
     this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['30'],0); // 0 ==> inorder to reset position
-    this.currentVal = AppConfig.videoRecorderConstants.videoLengths['30'];
+    this.setCurrentVideoMaxLength(AppConfig.videoRecorderConstants.videoLengths['30'])
   }
 
   onPress90 = () =>{
     let translationPosition = -(FOOTER_TAB_WIDTH+ITEM_MARGIN); ////width + marginRight
     this.showSecondsOnScreen(AppConfig.videoRecorderConstants.videoLengths['90'],translationPosition);
-    this.currentVal = AppConfig.videoRecorderConstants.videoLengths['90'];
+    this.setCurrentVideoMaxLength(AppConfig.videoRecorderConstants.videoLengths['90'])
   }
 
   setVideoLength = ( secondsValue , showSeconds ) =>{
@@ -78,7 +77,7 @@ export default class VideoLength extends PureComponent{
   }
 
   showSecondsOnScreen = ( seconds , translationPosition ) =>{
-    if(this.currentVal == seconds ){ return; }
+    if(this.getCurrentVideomaxLength() == seconds ){ return; }
     this.setVideoLength(seconds,true);
     this.slideTab(translationPosition);
   }
