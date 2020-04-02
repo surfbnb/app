@@ -19,8 +19,8 @@ let stylesMap = {
     marginTop: 20
   },
   imgSizeSkipFont: {
-    width:50,
-    height:50
+    width:28,
+    height:28
   }
 
 }

@@ -54,7 +54,7 @@ class VideoTags extends PureComponent {
     constructor(props) {
         super(props);
         this.noResultsData = {
-            "noResultsMsg": 'No results found. Please try again.',
+            "noResultsMsg": 'No results found.',
             "isEmpty": true
         };
     }
