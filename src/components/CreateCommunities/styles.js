@@ -4,6 +4,11 @@ import { Platform } from 'react-native';
 import uploadPic from "../../assets/new-community-upload-icon.png";
 
 let stylesMap = {
+  safeAreaView:{
+    flexGrow: 1,
+    backgroundColor: Colors.white
+  },
+  scrollViewContainerStyle:{flexGrow: 1, backgroundColor: Colors.white},
   imageBg:{
     width: '100%',
     aspectRatio: 21/9,
@@ -12,6 +17,12 @@ let stylesMap = {
     justifyContent: 'center',
     backgroundColor: Colors.valhalla
   },
+  formWrapper:{paddingHorizontal: 15, paddingBottom: 30},
+  tagsWrapper:{flexDirection:'row',flex:1},
+  linearGradient:{ marginTop: 25, borderRadius: 3 },
+  gradientBtnText:{ fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' },
+  imageWrapper:{display: 'flex', alignItems: 'center'},
+  communityLabelWrapper:{marginTop:10, marginBottom: 8},
   imgBgTxt: {
     fontSize: 11,
     fontWeight: '500',
@@ -90,7 +101,29 @@ let stylesMap = {
     padding:5,
     borderRadius:20,
     margin:3,
-    flexDirection:'row'
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  displayTag:{
+    fontSize:12,
+    color:Colors.wildWatermelon,
+    fontFamily: 'AvenirNext-Regular',
+    fontWeight: 'normal'
+  },
+  crosIconBackground:{
+    backgroundColor:Colors.wildWatermelon,
+    borderRadius:50,
+    padding:3,
+    padding:2,
+    height : 15,
+    width:15,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  crossIcon:{
+    color:Colors.white,
+    fontSize:11,
   }
 };
 

@@ -49,7 +49,7 @@ class CreateCommunitiesScreen extends Component {
     this.type             = this.props.navigation.getParam('type');
 
     this.placeholderText  = "Write Here...";
-    
+
     this.tabIndex = {
       name: 1,
       tagline: 2,
@@ -136,20 +136,20 @@ class CreateCommunitiesScreen extends Component {
       isValid = false;
     }
     if (!this.state.tagline) {
-      this.setState({
+      this.__setState({
         tagline_error: ostErrors.getUIErrorMessage('tagline_req_communities')  //TODO : Shraddha  get ui error msgs from UX
       });
       isValid = false;
     }
     if (!this.state.about_info) {
-      this.setState({
+      this.__setState({
         about_info_error: ostErrors.getUIErrorMessage('about_info_req')  //TODO : Shraddha  get ui error msgs from UX
       });
       isValid = false;
     }
 
     if(!this.state.tags.length){
-      this.setState({
+      this.__setState({
         tags_error: ostErrors.getUIErrorMessage('tags_req')  //TODO : Shraddha  get ui error msgs from UX
       });
     }
@@ -179,7 +179,7 @@ class CreateCommunitiesScreen extends Component {
   }
 
   getImagePostData = () => {
-    //TODO deepesh sir 
+    //TODO deepesh sir
   }
 
   onSubmit() {
@@ -309,7 +309,7 @@ class CreateCommunitiesScreen extends Component {
 
   addAnImage = () => {
     return <View style={inlineStyles.imageBg}>
-      <View style={{display: 'flex', alignItems: 'center'}}>
+      <View style={inlineStyles.imageWrapper}>
         <Image source={uploadPic} style={inlineStyles.uploadPic} />
         <Text style={inlineStyles.imgBgTxt}>Add a community image</Text>
         <Text style={[inlineStyles.imgBgTxt, inlineStyles.imgBgSmallTxt]}>(Min. 1500 x 642 px with max. image size of 3 MB)</Text>
@@ -319,7 +319,7 @@ class CreateCommunitiesScreen extends Component {
 
   communityName = () => {
     return <React.Fragment>
-      <View style={{marginTop:10, marginBottom: 8}}>
+      <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>Community Name</Text>
         <Text style={inlineStyles.labelHint}>Give your community an identity! (Max 20 chars)</Text>
       </View>
@@ -361,7 +361,7 @@ class CreateCommunitiesScreen extends Component {
 
   communityTagline = () => {
     return <React.Fragment>
-      <View style={{marginTop:10, marginBottom: 8}}>
+      <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>Community Tagline</Text>
         <Text style={inlineStyles.labelHint}>Something which shows what your community is about (Max 45 chars)</Text>
       </View>
@@ -402,7 +402,7 @@ class CreateCommunitiesScreen extends Component {
 
   aboutTheCommunity = () => {
     return <React.Fragment>
-      <View style={{marginTop:10, marginBottom: 8}}>
+      <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>About the community</Text>
         <Text style={inlineStyles.labelHint}>Something which best describes it (Max. 400 chars)</Text>
       </View>
@@ -444,7 +444,7 @@ class CreateCommunitiesScreen extends Component {
 
   communityTags = () => {
     return <React.Fragment>
-      <View style={{marginTop:10, marginBottom: 8}}>
+      <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>Community Tags</Text>
         <Text style={inlineStyles.labelHint}>These tags place videos in your community. Learn More</Text>
       </View>
@@ -488,10 +488,11 @@ class CreateCommunitiesScreen extends Component {
   getTagThumbnailMarkup = (index,displayTag) =>{
     return(
       <View style={inlineStyles.tagThumbnail} >
-        <Text key={index}>{displayTag} </Text>
+        <Text key={index} style={inlineStyles.displayTag}>{displayTag} </Text>
         <TouchableOpacity
           onPress={()=> {this.onRemoveTagPress(index)}}
-        ><Text>X</Text>
+          style={inlineStyles.crosIconBackground}
+        ><Text style={inlineStyles.crossIcon}>&#10005;</Text>
         </TouchableOpacity>
       </View>
     )
@@ -500,17 +501,17 @@ class CreateCommunitiesScreen extends Component {
   render() {
     if(!this.isCreate() && !this.isEdit()) return <View style={{flexGrow: 1, backgroundColor: Colors.white, flex:1 }} />;
     return (
-        <SafeAreaView forceInset={{ top: 'never' }} style={{flexGrow: 1, backgroundColor: Colors.white }}>
+        <SafeAreaView forceInset={{ top: 'never' }} style={inlineStyles.safeAreaView}>
           <ScrollView
             contentContainerStyle=
-              {{flexGrow: 1, backgroundColor: Colors.white}}
+              {inlineStyles.scrollViewContainerStyle}
             showsVerticalScrollIndicator={false}>
             {this.addAnImage()}
-            <View style={{paddingHorizontal: 15, paddingBottom: 30}}>
+            <View style={inlineStyles.formWrapper}>
               {this.communityName()}
               {this.communityTagline()}
               {this.aboutTheCommunity()}
-              <View style={{flexDirection:'row',flex:1}}>
+              <View style={inlineStyles.tagsWrapper}>
                 {this.showAddedTags()}
               </View>
 
@@ -520,7 +521,7 @@ class CreateCommunitiesScreen extends Component {
                 locations={[0, 1]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                style={{ marginTop: 25, borderRadius: 3 }}
+                style={inlineStyles.linearGradient}
               >
                 <TouchableOpacity
                   onPress={MultipleClickHandler(() => this.onSubmit())}
@@ -529,7 +530,7 @@ class CreateCommunitiesScreen extends Component {
                   <Text
                     style={[
                       Theme.Button.btnPinkText,
-                      { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
+                      inlineStyles.gradientBtnText
                     ]}
                   >{this.state.btnText}
                   </Text>
