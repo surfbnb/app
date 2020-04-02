@@ -25,8 +25,7 @@ let stylesMap = {
   uploadPic: {
     width: 78,
     height: 62,
-    marginBottom: 8,
-    textAlign: 'center'
+    marginBottom: 8
   },
   label:{
     color: Colors.valhalla,
