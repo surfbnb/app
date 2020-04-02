@@ -3,6 +3,10 @@ import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
 
+  wrapper: {
+    paddingHorizontal: 10
+  },
+
   btnStyle: {
     borderRadius: 18,
     paddingVertical: 5,

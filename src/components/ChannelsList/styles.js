@@ -11,9 +11,7 @@ let stylesMap = {
         color: Colors.pinkRed, 
         fontFamily: 'AvenirNext-DemiBold',
         fontSize: 16
-    },
-  
-    filters: {paddingHorizontal:20}
+    }
 
 };
 

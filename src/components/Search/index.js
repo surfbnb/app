@@ -16,7 +16,6 @@ import NavigationEmitter from "../../helpers/TabNavigationEvent";
 import appConfig from "../../constants/AppConfig";
 import ChannelsList from "../ChannelsList";
 import DataContract from '../../constants/DataContract';
-import deepGet from "lodash/get";
 
 const tabStyle = NativeBaseTabTheme.tab,
   USER_KIND = DataContract.knownEntityTypes.user,
