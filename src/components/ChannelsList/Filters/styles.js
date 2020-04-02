@@ -4,7 +4,7 @@ import Colors from '../../../theme/styles/Colors';
 let stylesMap = {
 
   btnStyle: {
-    borderRadius: 20,
+    borderRadius: 18,
     paddingVertical: 5,
     alignItems: 'center',
     paddingHorizontal: 15,
@@ -15,14 +15,13 @@ let stylesMap = {
 
   textStyle : {
     fontFamily: 'AvenirNext-Medium',
-    fontWeight: '500',
     marginLeft:4
   },
 
   filterBtn: {
     backgroundColor: Colors.white,
     borderWidth: 1,
-    borderColor: Colors.primary
+    borderColor: Colors.valhalla
   },
 
   filterBtnSelected: {
@@ -36,7 +35,7 @@ let stylesMap = {
   },
 
   filterBtnText: {
-    color: Colors.primary
+    color: Colors.valhalla
   },
 
   filterBtnSelectedText: {

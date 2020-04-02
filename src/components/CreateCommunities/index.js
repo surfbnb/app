@@ -109,7 +109,7 @@ class CreateCommunitiesScreen extends Component {
 
   render() {
     return (
-        <SafeAreaView forceInset={{ top: 'never' }} style={{flexGrow: 1}}>
+        <SafeAreaView forceInset={{ top: 'never' }} style={{flexGrow: 1, backgroundColor: Colors.white }}>
           <ScrollView
             contentContainerStyle=
               {{flexGrow: 1, backgroundColor: Colors.white}}

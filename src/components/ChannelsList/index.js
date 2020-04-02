@@ -223,7 +223,7 @@ class ChannelsList extends PureComponent {
   render(){
     return(
       <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1}}>
-        <Filters filters={this.props.filters}  getCurrentFilter={this.getCurrentFilter} onChange={this.updateFilter} />
+        <Filters filters={this.props.filters}  getCurrentFilter={this.getCurrentFilter} onChange={this.updateFilter} style={{paddingHorizontal:20}} />
         <FlatList
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingBottom: 20, paddingTop: 10}}
