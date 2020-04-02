@@ -33,7 +33,7 @@ let stylesMap = {
     fontFamily: 'AvenirNext-Medium'
   },
   labelHint: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: '300',
     color: 'rgba(42, 41, 59, 0.4);'
   },
@@ -47,9 +47,51 @@ let stylesMap = {
     paddingTop: 0,
     paddingBottom: 0,
     height: 28,
-    fontSize: 12,
+    fontSize: 14,
     marginTop: 0,
-    borderBottomColor: Colors.seaMist
+    borderBottomWidth:1,
+    color:Colors.valhalla,
+    borderBottomColor: Colors.seaMist,
+    flex:1
+
+  },
+  customTextAreaBox:{
+    height:150,
+  },
+  textAreaDynamicCountHeight:{
+    height: 150,
+  },
+  hastagPrefilled:{
+    fontSize:14,
+    color:'rgba(42, 41, 59, 0.4);',
+    flex:0,
+    height: 28,
+    borderBottomWidth:1,
+    borderBottomColor: Colors.seaMist,
+    alignSelf:'flex-start'
+  },
+  dynamicCount:{
+    fontSize:14,
+    color:'rgba(42, 41, 59, 0.4);',
+    flex:0,
+    height: 28,
+    borderBottomWidth:1,
+    borderBottomColor: Colors.seaMist,
+  },
+  inputWrapper:{
+    flexDirection:'row'
+  },
+  formInputWrapper:{
+    flexDirection:'column',
+    flex:1
+  },
+  tagThumbnail:{
+    borderWidth:1,
+    borderColor:Colors.wildWatermelon,
+    padding:5,
+    borderRadius:20,
+    margin:3,
+    flexDirection:'row'
   }
 };
 

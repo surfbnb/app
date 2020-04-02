@@ -169,7 +169,15 @@ export default {
                 }
             }
         }
-    }
+    },
+    communities:{
+        getCommunityCreateApi : () => {
+            return "/create"                  //TODO:shraddha replace with actual api endpoints
+        },
+        getCommunityEditApi : () =>{
+          return "/edit";                     //TODO:shraddha replace with actual api endpoints
+        }
+    },
 
 }
 

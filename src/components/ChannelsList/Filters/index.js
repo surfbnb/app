@@ -55,7 +55,9 @@ class Filters extends PureComponent {
   }
 
   onNew = () => {
-    this.props.navigation.push('CreateCommunitiesScreen');
+    this.props.navigation.push('CreateCommunitiesScreen',{
+      isNew : true
+    });
   }
 
   getCreateNewChannelBtn = () => {
