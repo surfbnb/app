@@ -4,27 +4,29 @@ import Colors from '../../../theme/styles/Colors';
 let stylesMap = {
 
   wrapper: {
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    height: 40,
+    alignItems: 'center'
   },
 
   btnStyle: {
-    borderRadius: 18,
-    paddingVertical: 5,
+    borderRadius: 13,
     alignItems: 'center',
-    paddingHorizontal: 15,
-    marginHorizontal: 5,
-    marginTop: 10,
-    flexDirection: 'row'
+    fontSize: 0,
+    height: 22,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    marginHorizontal: 5
   },
 
   textStyle : {
     fontFamily: 'AvenirNext-Medium',
-    marginLeft:4
+    fontSize: 12
   },
 
   filterBtn: {
     backgroundColor: Colors.white,
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: Colors.valhalla
   },
 
@@ -32,27 +34,31 @@ let stylesMap = {
     backgroundColor: Colors.primary
   },
 
-  createNewBtn: {
-    backgroundColor: Colors.white,
-    borderWidth: 1,
-    borderColor: Colors.pinkRed
-  },
-
   filterBtnText: {
-    color: Colors.valhalla
+    color: Colors.valhalla,
+    fontSize: 12
   },
 
   filterBtnSelectedText: {
-    color: Colors.white
-  },
-
-  createNewBtnText: {
-    color: Colors.pinkRed
+    color: Colors.white,
+    fontSize: 12
   },
 
   filterBtnImage: {
     width: 10,
     height: 10.66
+  },
+
+  createNewBtn: {
+    backgroundColor: Colors.white,
+    borderWidth: 0.5,
+    borderColor: Colors.pinkRed
+  },
+
+  createNewBtnText: {
+    color: Colors.pinkRed,
+    fontFamily: 'AvenirNext-Medium',
+    fontSize: 12
   }
 
 };

@@ -68,7 +68,7 @@ class Filters extends PureComponent {
 
   render(){
     return(
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} bounces={false} style={inlineStyles.wrapper}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} bounces={false} contentContainerStyle={inlineStyles.wrapper}>
           {this.getFiltersMarkup()}
           {this.getCreateNewChannelBtn()}
       </ScrollView>

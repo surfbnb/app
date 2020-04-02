@@ -253,7 +253,7 @@ class ChannelsList extends PureComponent {
                   onChange={this.updateFilter}/>
         <FlatList
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 20, paddingTop: 10}}
+          contentContainerStyle={{paddingBottom: 20, paddingTop: 0}}
           ref={this.setFlatListRef}
           data={this.state.list}
           onEndReached={this.getNext}
