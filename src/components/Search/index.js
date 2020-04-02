@@ -85,12 +85,12 @@ const TabMap = {
       {
         text : "Joined",
         id: "joined",
-        baseUrl: '/search/channels/all'
+        baseUrl: '/search/channels/my'
       },
       {
         text : "All",
         id: "all",
-        baseUrl: '/search/channels/my'
+        baseUrl: '/search/channels/all'
       }
     ],
     supported: true
