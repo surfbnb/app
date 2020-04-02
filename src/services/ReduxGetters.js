@@ -611,6 +611,11 @@ class ReduxGetters {
     return deepGet(state, `current_user_channel_relation_entities.id_${id}.is_member`);
   }
 
+  isCurrentUserAdminOfChannel(id, state){
+    state = state || Store.getState();
+    return !!deepGet(state, `current_user_channel_relation_entities.id_${id}.is_admin`);
+  }
+
   isChannelUserAdmin(channelId ,  userId , state){
     state = state || Store.getState();
     return !!deepGet(state, `channel_user_relation_entities.id_${channelId}.${userId}.is_admin` ,  false);

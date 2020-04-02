@@ -11,6 +11,7 @@ import reduxGetters from "../../services/ReduxGetters";
 import {connect} from "react-redux";
 import { withNavigation } from 'react-navigation';
 import Checkmarks from '../../assets/Checkmarks.png';
+import adminUserIcon from '../../assets/user-profile-icon.png'; //TODO Ashutosh get image from UX
 import ChannelJoin from '../../assets/channel-join-icon.png';
 import PepoApi from '../../services/PepoApi';
 import DataContract from '../../constants/DataContract';
@@ -24,7 +25,8 @@ const mapStateToProps = ( state, ownProps ) => {
     channelTagLine: reduxGetters.getChannelTagLine(ownProps.channelId) || '',
     channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId) || 0,
     channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId) || 0,
-    isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId) || false
+    isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId) || false, 
+    isAdmin : reduxGetters.isCurrentUserAdminOfChannel(ownProps.channelId)
   };
 }
 
@@ -50,6 +52,16 @@ class ChannelCell extends PureComponent {
               </View>
             </TouchableOpacity> : <React.Fragment/>
     }
+  }
+
+  admin(){
+    if(this.props.isAdmin){
+      return <View style={styles.adminView}>
+                <Image style={styles.adminIconSkipFont} source={adminUserIcon}/>
+                <Text style={styles.adminText}>Admin</Text>
+            </View>
+    }
+    return null;
   }
 
   onJoinChannel = () => {
@@ -111,7 +123,7 @@ class ChannelCell extends PureComponent {
                     </TouchableOpacity>  
                   </View>
                   <View style={styles.bottomViewRight}>
-                    {this.joined()}
+                    {this.admin() || this.joined()}
                   </View>
                 </View>
               </View>
