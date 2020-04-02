@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import {View, StatusBar, Text, SafeAreaView, ScrollView, Image, TextInput, TouchableOpacity} from 'react-native';
+import {View, StatusBar, Text, SafeAreaView, ScrollView, Image, TouchableOpacity} from 'react-native';
 import Colors from "../../theme/styles/Colors";
 import inlineStyles from "../CreateCommunities/styles";
 import uploadPic from "../../assets/new-community-upload-icon.png";
 import Theme from "../../theme/styles";
-import CustomTextInput from "../CommonComponents/TagsInput/CustomTextInput";
 import LinearGradient from "react-native-linear-gradient";
 import ReduxGetters from '../../services/ReduxGetters';
-import { fetchUser } from '../../helpers/helpers';
 import PepoApi from '../../services/PepoApi';
-import CurrentUser from '../../models/CurrentUser';
 import { ostErrors } from '../../services/OstErrors';
 import DataContract from '../../constants/DataContract'
 import FormInput from '../../theme/components/FormInput';
