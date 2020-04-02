@@ -45,12 +45,11 @@ class Filters extends PureComponent {
   }
 
   getFiltersMarkup = () => {
-   return Object.keys(this.props.filters).map((filter) => {
-     const currentFilter = this.props.filters[filter];
-      return  <TouchableOpacity style={[inlineStyles.btnStyle , this.getFilterBtnStyle(currentFilter)]}
-                  key={filter}
-                  onPress={multipleClickHandler(() => {this.onFilter(currentFilter);})}>
-                  <Text style={[inlineStyles.textStyle , this.getFilterBtnTextStyle(currentFilter)]}>{currentFilter["text"]}</Text>
+   return this.props.filters.map((filter) => {
+      return  <TouchableOpacity style={[inlineStyles.btnStyle , this.getFilterBtnStyle(filter)]}
+                  key={filter.id}
+                  onPress={multipleClickHandler(() => {this.onFilter(filter);})}>
+                  <Text style={[inlineStyles.textStyle , this.getFilterBtnTextStyle(filter)]}>{filter["text"]}</Text>
               </TouchableOpacity>
     });
   }
@@ -79,6 +78,7 @@ class Filters extends PureComponent {
 }
 
 Filters.defaultProps ={
+  filters: [],
   getCurrentFilter: () => {
     return {}
   },

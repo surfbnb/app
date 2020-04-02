@@ -71,28 +71,28 @@ const TabMap = {
       noResultsData = noResultsData || oThis.noResultsData;
       return <EmptySearchResult  noResultsData={noResultsData}/>
     },
-    filters : {
-      trending : {
+    filters : [
+      {
         text : "Trending",
         id: "trending",
-        baseUrl: '/search/channels'
+        baseUrl: '/search/channels/trending'
       },
-      new : {
+     {
         text : "New",
         id: "new",
-        baseUrl: '/search/channels'
+        baseUrl: '/search/channels/new'
       },
-      joined: {
+      {
         text : "Joined",
         id: "joined",
-        baseUrl: '/search/channels'
+        baseUrl: '/search/channels/all'
       },
-      all: {
+      {
         text : "All",
         id: "all",
-        baseUrl: '/search/channels'
+        baseUrl: '/search/channels/my'
       }
-    },
+    ],
     supported: true
   },
   "people": {
@@ -278,9 +278,7 @@ class SearchScreen extends PureComponent {
   };
 
   getChannelsTabUrl = ( filter = {}) => {
-    const id  = filter.id, 
-          baseUrl = deepGet(TabMap , `channels.filters.${id}.baseUrl`, null)
-          ; 
+    const baseUrl = filter.baseUrl; 
     return this.getUrlForTab(TabMap.channels , baseUrl);
   };
 

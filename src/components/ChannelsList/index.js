@@ -37,14 +37,9 @@ class ChannelsList extends PureComponent {
   }
 
   setDefaultFilter = () => {
-    for(const key in this.props.filters){
-      if(this.props.filters.hasOwnProperty(key)){
-        const filter = this.props.filters[key]
-        if(filter){
-          this.currentFilter = filter;
-          break; 
-        }
-      }
+    const filter = this.props.filters[0];
+    if(filter){
+      this.currentFilter = filter;
     }
   }
 
@@ -247,7 +242,7 @@ class ChannelsList extends PureComponent {
 }
 
 ChannelsList.defaultProps = {
-  filters: {}
+  filters: []
 }
 
 export default withNavigation(ChannelsList);
