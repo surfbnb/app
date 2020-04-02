@@ -4,6 +4,7 @@ import { withNavigation } from 'react-navigation';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import inlineStyles from "./styles";
+import AppConfig from '../../../constants/AppConfig';
 
 class Filters extends PureComponent {
   constructor(props){
@@ -56,7 +57,7 @@ class Filters extends PureComponent {
 
   onNew = () => {
     this.props.navigation.push('CreateCommunitiesScreen',{
-      isNew : true
+      type : AppConfig.channelConstants.types.create
     });
   }
 

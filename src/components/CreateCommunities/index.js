@@ -26,19 +26,15 @@ const btnPreText = 'Submit',
 
 class CreateCommunitiesScreen extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
+    const channelName = ReduxGetters.getChannelName(navigation.getParam('channelId')) || AppConfig.channelConstants.newChannelHeaderText
     return {
-      title: 'New Community',
-      headerTitleStyle: {
-        fontFamily: 'AvenirNext-Medium'
-      },
+      title: channelName,
+      headerTitleStyle: { fontFamily: 'AvenirNext-Medium'},
       headerStyle: {
         backgroundColor: Colors.white,
         borderBottomWidth: 0,
         shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 1
-        },
+        shadowOffset: { width: 0, height: 1},
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
@@ -48,16 +44,12 @@ class CreateCommunitiesScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.placeholderText  = "Write Here...";
-    this.channelId        = this.props.navigation.getParam('replyDetailId');
-    this.isNew            = this.props.navigation.getParam('isNew');
-    if(!this.isNew || this.channelId){
-      //determine form submit route here
-      this.apiEndpoint = DataContract.communities.getCommunityEditApi();
-    }else{
-      this.apiEndpoint = DataContract.communities.getCommunityCreateApi();
-    }
 
+    this.channelId        = this.props.navigation.getParam('channelId');
+    this.type             = this.props.navigation.getParam('type');
+
+    this.placeholderText  = "Write Here...";
+    
     this.tabIndex = {
       name: 1,
       tagline: 2,
@@ -75,22 +67,55 @@ class CreateCommunitiesScreen extends Component {
       btnText: btnPreText
     };
 
-
-    this.state={
-      name        : this.channelId ? ReduxGetters.getCurrentUserProfile() : "",
-      tagline     : this.channelId ? ReduxGetters.getCurrentUserProfile() : "",
-      about_info  : this.channelId ? ReduxGetters.getCurrentUserProfile() : "",
-      tags        : this.channelId ? ReduxGetters.getCurrentUserProfile() : [],
+    this.state= {
+      ...this.getInitData(),
+      ...this.defaults,
       current_formField : 0,
-      name_character_count:0,
-      tagline_character_count:0,
-      about_info_character_count:0,
-      tags_count :0,
-      inputTagValue : null,
-      ...this.defaults
+      inputTagValue : null
     }
 
+  }
 
+  isCreate = () => {
+    return ( this.type == AppConfig.channelConstants.types.create && !this.channelId );
+  }
+
+  isEdit = () => {
+    return ( this.type == AppConfig.channelConstants.types.edit && this.channelId );
+  }
+
+  getCreateApiEndPoint = () => {
+    return  DataContract.communities.getCommunityEditApi();
+  }
+
+  getEditApiEndPoint = () => {
+    return DataContract.communities.getCommunityCreateApi();
+  }
+
+  getSubmitEndPoint = () => {
+    if(this.isCreate()){
+      return this.getCreateApiEndPoint();
+    }else if(this.isEdit()){
+      return this.getEditApiEndPoint();
+    }
+  }
+
+  getInitData = () => {
+    if(this.isCreate()){
+     return {
+        name        :  "",
+        tagline     :  "",
+        about_info  :  "",
+        tags        :  []
+      }
+    }else if(this.isEdit()){
+      return {
+        name        :  ReduxGetters.getChannelName(this.channelId),
+        tagline     :  ReduxGetters.getChannelTagLine(this.channelId),
+        about_info  :  ReduxGetters.getChannelDescription(this.channelId),
+        tags        :  ReduxGetters.getChannelTags(this.channelId)
+      }
+    }
   }
 
   __setState = (state) =>{
@@ -116,7 +141,6 @@ class CreateCommunitiesScreen extends Component {
       });
       isValid = false;
     }
-
     if (!this.state.about_info) {
       this.setState({
         about_info_error: ostErrors.getUIErrorMessage('about_info_req')  //TODO : Shraddha  get ui error msgs from UX
@@ -133,63 +157,154 @@ class CreateCommunitiesScreen extends Component {
   }
 
   getParams() {
-    return {
-      name: this.state.name,
-      tagline: this.state.tagline,
-      about_info : this.state.about_info,
-      tags: this.state.tags,
-    };
-  }
-
-  onServerError(res) {
-    const errorMsg = ostErrors.getErrorMessage(res);
-    this.__setState({ server_errors: res, general_error: errorMsg });
-  }
-
-  addTagToTagArray = ( tag ) => {
-    let tagsArray = this.state.tags || [];
-    tagsArray.push(tag);
-    let tagsLength = this.state.tags.length;
-    this.__setState({
-      tags:tagsArray,
-      tags_count:tagsLength
-    });
-  }
-  onSubmitEditing(val) {
-    let inputTag = val.nativeEvent.text;
-    if(this.state.tags.length <  MAX_NO_OF_TAGS){
-      this.addTagToTagArray(inputTag);
-    } else{
-      this.__setState({
-        tags_error:ostErrors.getUIErrorMessage('max_no_tags_communities')               //TODO : Shraddha  get ui error msgs from UX
-      });
+    if(this.isCreate()){
+      return {
+        channel_id: this.channelId,
+        channel_name: this.state.name,
+        channel_tagline: this.state.tagline,
+        channel_description : this.state.about_info,
+        channel_tags: this.state.tags,
+        ...this.getImagePostData()
+      };
+    }else if(this.isEdit()){
+      return {
+        channel_id: this.channelId,
+        channel_name: this.state.name,
+        channel_tagline: this.state.tagline,
+        channel_description : this.state.about_info,
+        channel_tags: this.state.tags,
+        ...this.getImagePostData()
+      };
     }
-    this.__setState({
-      inputTagValue :''
-    })
+  }
 
-
-
+  getImagePostData = () => {
+    //TODO deepesh sir 
   }
 
   onSubmit() {
     this.clearErrors();
     if (this.validateProfileInput()) {
       this.__setState({ btnText: btnPostText });
-      return new PepoApi(this.apiEndpoint)
+      return new PepoApi(this.getSubmitEndPoint())
         .post(this.getParams())
         .then((res) => {
-          this.__setState({ btnText: btnPreText });
           if (res && res.success) {
-            //What to do here ?
+            this.onSubmitSuccess(res)
           } else {
-            this.onServerError(res);
+            this.onSubmitError(res);
           }
         })
         .catch((error) => {
-          this.__setState({ btnText: btnPreText });
-        });
+          this.onSubmitError(res);
+        })
+        .finally(()=> {
+          this.onSubmitComplete();
+        })
+        ;
     }
+  }
+
+  onSubmitSuccess = (res) => {
+    //TODO confrim with UX what to do here.
+  }
+
+  onSubmitError = (res) => {
+    const errorMsg = ostErrors.getErrorMessage(res);
+    this.__setState({ server_errors: res, general_error: errorMsg });
+  }
+
+  onSubmitComplete = () => {
+    this.__setState({ btnText: btnPreText });
+  }
+
+  onNameChange = ( name ) =>{
+    this.__setState({
+      name,
+      name_error: null
+    });
+  }
+
+  onTaglineChange = ( tagline ) =>{
+    this.__setState({
+      tagline,
+      tagline_error: null
+    });
+  }
+
+  onAboutInfoChange = ( about_info ) =>{
+    this.__setState({
+      about_info,
+      about_info_error: null
+    });
+  }
+
+  onTagsChange = ( tagInputvalue ) =>{
+    if(this.state.tags.length >= MAX_NO_OF_TAGS ) return;
+
+    const newState = {
+      tags_error: null
+    };
+
+    if(!this.isValidChar(tagInputvalue)){
+      newState["inputTagValue"] = "";
+      this.addTagToTagArray( tagInputvalue ,  newState);
+      return;
+    }
+
+    newState["inputTagValue"] = tagInputvalue;
+
+    this.__setState(newState);
+  }
+
+  isValidChar(val) {
+    const spaceRegex = /\s/g;
+    return val && !spaceRegex.test(val);
+  }
+
+  addTagToTagArray = ( tag  , newState={}) => {
+    let tagsArray = this.state.tags || [];
+    tagsArray.push(tag);
+    newState["tags"] = tagsArray;
+    this.__setState(newState);
+  }
+
+  onSubmitEditing(val) {
+    let inputTag = val.nativeEvent.text;
+    if(this.state.tags.length <  MAX_NO_OF_TAGS){
+      this.addTagToTagArray(inputTag);
+    } else{
+      this.__setState({
+        tags_error:ostErrors.getUIErrorMessage('max_no_tags_communities')  //TODO : Shraddha  get ui error msgs from UX
+      });
+    }
+    this.__setState({
+      inputTagValue :''
+    })
+  }
+
+  getformattedDisplayTag = (index) =>{
+    if(this.state.tags[index][0] !== "#"){
+      return "#"+this.state.tags[index];
+    }else{
+      return this.state.tags[index];
+    }
+  }
+
+  onRemoveTagPress = ( index , val ) =>{
+    this.state.tags.splice(index , 1);
+    this.__setState({tags: this.state.tags});
+  }
+
+  showAddedTags = () => {
+    if (!this.state.tags.length) return;
+    let tagsDisplay = [],
+        displayTag ='';
+    for(let i = 0 ; i < this.state.tags.length ; i++  ){
+      displayTag = this.getformattedDisplayTag(i);
+      tagsDisplay.push(this.getTagThumbnailMarkup(i,displayTag))
+    }
+    return tagsDisplay;
   }
 
   addAnImage = () => {
@@ -201,37 +316,6 @@ class CreateCommunitiesScreen extends Component {
       </View>
     </View>
   };
-
-  onNameChange = ( name ) =>{
-    this.__setState({
-      name,
-      name_error: null,
-      name_character_count:name.length
-    });
-  }
-
-  onTaglineChange = ( tagline ) =>{
-    this.__setState({
-      tagline,
-      tagline_error: null,
-      tagline_character_count: tagline.length
-    });
-  }
-
-  onAboutInfoChange = ( about_info ) =>{
-    this.__setState({
-      about_info,
-      about_info_error: null,
-      about_info_character_count: about_info.length
-    });
-  }
-
-  onTagsChange = ( tagInputvalue ) =>{
-    this.__setState({
-      tags_error: null,
-      inputTagValue : tagInputvalue
-    });
-  }
 
   communityName = () => {
     return <React.Fragment>
@@ -269,7 +353,7 @@ class CreateCommunitiesScreen extends Component {
         </View>
 
         <View>
-          <Text style={inlineStyles.dynamicCount}>{this.state.name_character_count}/{NAME_MAXLENGTH}</Text>
+          <Text style={inlineStyles.dynamicCount}>{this.state.name.length}/{NAME_MAXLENGTH}</Text>
         </View>
       </View>
     </React.Fragment>
@@ -310,7 +394,7 @@ class CreateCommunitiesScreen extends Component {
           />
         </View>
         <View>
-          <Text style={inlineStyles.dynamicCount}>{this.state.tagline_character_count}/{TAGLINE_MAXLENGTH}</Text>
+          <Text style={inlineStyles.dynamicCount}>{this.state.tagline.length}/{TAGLINE_MAXLENGTH}</Text>
         </View>
       </View>
     </React.Fragment>
@@ -352,7 +436,7 @@ class CreateCommunitiesScreen extends Component {
           />
         </View>
         <View>
-          <Text style={[inlineStyles.dynamicCount,inlineStyles.textAreaDynamicCountHeight]}>{this.state.about_info_character_count}/{ABOUT_INFO_MAXLENGTH}</Text>
+          <Text style={[inlineStyles.dynamicCount,inlineStyles.textAreaDynamicCountHeight]}>{this.state.about_info.length}/{ABOUT_INFO_MAXLENGTH}</Text>
         </View>
       </View>
     </React.Fragment>
@@ -394,48 +478,27 @@ class CreateCommunitiesScreen extends Component {
           />
         </View>
         <View>
-          <Text style={inlineStyles.dynamicCount}>{this.state.tags_count}/{MAX_NO_OF_TAGS}</Text>
+          <Text style={inlineStyles.dynamicCount}>{this.state.tags.length}/{MAX_NO_OF_TAGS}</Text>
         </View>
       </View>
     </React.Fragment>
   };
 
-  getformattedDisplayTag = (index) =>{
-    if(this.state.tags[index][0] !== "#"){
-      return "#"+this.state.tags[index];
-    }else{
-      return this.state.tags[index];
-    }
-  }
-
-  onRemoveTagPress = ( val ) =>{
-
-  }
 
   getTagThumbnailMarkup = (index,displayTag) =>{
     return(
       <View style={inlineStyles.tagThumbnail} >
         <Text key={index}>{displayTag} </Text>
         <TouchableOpacity
-          onPress={this.onRemoveTagPress}
+          onPress={()=> {this.onRemoveTagPress(index)}}
         ><Text>X</Text>
         </TouchableOpacity>
       </View>
     )
   }
 
-  showAddedTags = () => {
-    if (!this.state.tags.length) return;
-    let tagsDisplay = [],
-        displayTag ='';
-    for(let i = 0 ; i < this.state.tags.length ; i++  ){
-      displayTag = this.getformattedDisplayTag(i);
-      tagsDisplay.push(this.getTagThumbnailMarkup(i,displayTag))
-    }
-    return tagsDisplay;
-  }
-
   render() {
+    if(!this.isCreate() && !this.isEdit()) return <View style={{flexGrow: 1, backgroundColor: Colors.white, flex:1 }} />;
     return (
         <SafeAreaView forceInset={{ top: 'never' }} style={{flexGrow: 1, backgroundColor: Colors.white }}>
           <ScrollView

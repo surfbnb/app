@@ -622,6 +622,11 @@ class ReduxGetters {
     return deepGet(state, `text_entities.id_${descId}.text`);
   }
 
+  getChannelTags(id, state){
+    state = state || Store.getState();
+    return deepGet(state, `channel_detail_entities.id_${id}.channel_tags`, []);
+  }
+
   getChannelIncludesEntity(id, tappedText){
     let lowercasedText = tappedText.toLowerCase();
     let state = Store.getState();

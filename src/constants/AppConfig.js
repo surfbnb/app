@@ -460,7 +460,12 @@ const AppConfig = {
   },
 
   channelConstants : {
-    SCREEN_NAME : "ChannelsScreen"
+    SCREEN_NAME : "ChannelsScreen",
+    newChannelHeaderText : "New Community",
+    types: {
+      create : "create",
+      edit: "edit"
+    }
   },
 
   cameraStack : 'CaptureVideo',
