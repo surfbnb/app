@@ -37,7 +37,7 @@ const TabMap = {
     },
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     },
     renderNoResults :  (noResultsData) => {
@@ -62,7 +62,7 @@ const TabMap = {
     title: 'Communities',
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     },
     renderNoResults:  (noResultsData) => {
@@ -101,7 +101,7 @@ const TabMap = {
     title: 'People',
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     },
     renderNoResults :  (noResultsData) => {
@@ -118,7 +118,7 @@ const TabMap = {
     title: 'Tags',
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     },
     renderNoResults:  (noResultsData) => {
@@ -135,7 +135,7 @@ const TabMap = {
     title: 'Video',
     "queryParam": "q",
     "getNoResultData": () =>({
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     }),
     extraParams: {

@@ -3,12 +3,9 @@ import Colors from '../../../theme/styles/Colors';
 
 let stylesMap = {
   emptyWrapper:{
-    margin:15,
+    marginHorizontal:15,
+    marginTop: 15,
     flex:0,
-    borderWidth:1,
-    borderColor: Colors.light,
-    borderStyle: 'dashed',
-    borderRadius :5,
     justifyContent:'center',
     alignItems:'center',
     padding: 20,
@@ -18,7 +15,12 @@ let stylesMap = {
     fontWeight: '500',
     textAlign: 'center',
     fontSize: 14,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: 20
+  },
+  imgSizeSkipFont: {
+    width:50,
+    height:50
   }
 
 }

@@ -114,6 +114,10 @@ class Pagination {
       return this.fetchServices.getAllResults() || [];
     }
 
+    getMeta(){
+      return this.fetchServices.getMeta();
+    }
+
     deleteItem( id , path="id" ){
         if(!id) return;
         this.fetchServices.results =  this.getResults().filter((item)=> {return deepGet( item , path ) !=  id });
