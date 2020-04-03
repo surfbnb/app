@@ -41,6 +41,7 @@ class CreateCommunitiesScreen extends Component {
 
   constructor(props) {
     super(props);
+<<<<<<< Updated upstream
 
     this.channelId        = this.props.navigation.getParam('channelId');
     this.type             = this.props.navigation.getParam('type');
@@ -304,15 +305,30 @@ class CreateCommunitiesScreen extends Component {
     return tagsDisplay;
   }
 
+  
   addAnImage = () => {
     return <View style={inlineStyles.imageBg}>
+      <TouchableOpacity onPress={this.onImageEditClicked}>
       <View style={inlineStyles.imageWrapper}>
         <Image source={uploadPic} style={inlineStyles.uploadPic} />
         <Text style={inlineStyles.imgBgTxt}>Add a community image</Text>
         <Text style={[inlineStyles.imgBgTxt, inlineStyles.imgBgSmallTxt]}>(Min. 1500 x 642 px with max. image size of 3 MB)</Text>
       </View>
+      </TouchableOpacity>
     </View>
   };
+
+  onImageEditClicked = () => {
+    this.props.navigation.push('CommunityBanner', {
+      newCommunityImage: this.newCommunityImage,
+    });
+    console.log("onImageEditClicked, CommunityBanner");
+  }
+
+  newCommunityImage = (imageUri) => {
+    console.log('newCommunityImage: ', imageUri);
+    this.setState({communityBannerUri: imageUri});
+  }
 
   communityName = () => {
     return <React.Fragment>

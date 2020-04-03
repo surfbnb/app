@@ -170,6 +170,11 @@ const AppConfig = {
     HEIGHT: 480
   },
 
+  communityBannerCropConstants: {
+    WIDTH: 1500,
+    HEIGHT: 642
+  },
+
   videoConstant: {
     videoWidth: '576w',
     videoImageWidth: 'original'
@@ -185,6 +190,7 @@ const AppConfig = {
   },
 
   cameraHeightRatio: 0.6,
+  bannerHeightRatio: 0.428,
 
   notificationConstants: {
     profileTxSendKind: PROFILE_TX_SEND_SUCCESS,

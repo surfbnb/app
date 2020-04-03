@@ -1,4 +1,6 @@
 import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
+import Colors from '../../theme/styles/Colors';
+import {fontFamWeight} from "../../theme/constants";
 
 let stylesMap = {
   zoomContainer: {
@@ -21,6 +23,8 @@ let stylesMap = {
       alignItems: 'center',
       backgroundColor: 'transparent',
   }
-};
+  }
+
+;
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
