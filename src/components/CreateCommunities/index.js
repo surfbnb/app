@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, StatusBar, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {View, StatusBar, Text, SafeAreaView, ScrollView, Image, TouchableOpacity,Keyboard, TouchableWithoutFeedback} from 'react-native';
 import Colors from "../../theme/styles/Colors";
 import inlineStyles from "../CreateCommunities/styles";
 import uploadPic from "../../assets/new-community-upload-icon.png";
@@ -270,18 +270,27 @@ class CreateCommunitiesScreen extends Component {
     this.__setState(newState);
   }
 
-  onSubmitEditing(val) {
-    let inputTag = val.nativeEvent.text;
-    if(this.state.tags.length <  MAX_NO_OF_TAGS){
-      this.addTagToTagArray(inputTag);
-    } else{
+  onSubmitEditing(currentIndex,val) {
+    if(currentIndex == this.tabIndex.tags){
+      let inputTag = val.nativeEvent.text;
+      if(this.state.tags.length <  MAX_NO_OF_TAGS){
+        this.addTagToTagArray(inputTag);
+      } else{
+        this.__setState({
+          tags_error:ostErrors.getUIErrorMessage('max_no_tags_communities')  //TODO : Shraddha  get ui error msgs from UX
+        });
+      }
       this.__setState({
-        tags_error:ostErrors.getUIErrorMessage('max_no_tags_communities')  //TODO : Shraddha  get ui error msgs from UX
+        inputTagValue :''
+      });
+      Keyboard.dismiss();
+    }
+    else{
+      this.setState({
+        current_formField: currentIndex + 1
       });
     }
-    this.__setState({
-      inputTagValue :''
-    })
+
   }
 
   getformattedDisplayTag = (index) =>{
@@ -311,7 +320,7 @@ class CreateCommunitiesScreen extends Component {
   addAnImage = () => {
     if(this.state.communityBannerUri) {
       return <TouchableWithoutFeedback onPress={this.onImageEditClicked}>
-        <Image 
+        <Image
           source={{ uri: this.state.communityBannerUri }}
           style={{width:'100%', aspectRatio: 21/9}} />
       </TouchableWithoutFeedback>
@@ -500,7 +509,7 @@ class CreateCommunitiesScreen extends Component {
               });
             }}
             onSubmitEditing={(val) => {
-              this.onSubmitEditing(val,this.tabIndex.tags);
+              this.onSubmitEditing(this.tabIndex.tags,val);
             }}
             value={this.state.inputTagValue}
             errorMsg={this.state.tags_error}
