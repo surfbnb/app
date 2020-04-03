@@ -1,31 +1,26 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableOpacity, TouchableWithoutFeedback, FlatList, Dimensions, SafeAreaView } from 'react-native';
-
 import inlineStyles from './styles';
 import ImageBrowser from '../../services/ImageBrowser';
 import assignIn from 'lodash/assignIn';
-import store from '../../store';
-import CommunityBannerCropperUI from '../ImageCropper/CommunityBannerCropperUI';
-import { upsertProfilePicture } from '../../actions';
-import appConfig from '../../constants/AppConfig';
+import CommunityBannerCropperUI from '../EditCommunityBanner/CommunityBannerCropperUI';
 import tickIcon from '../../assets/tick_icon.png';
+import AppConfig from '../../constants/AppConfig';
 
-class CommunityBanner extends Component {
+class EditCommunityBanner extends Component {
   constructor(props) {
     super(props);
     const { width, height } = Dimensions.get('window');
-    const safeViewSize = {width, height};
     this.state = {
       photos: [],
       imageURI: '',
       isLoading: false,
-      safeViewSize: safeViewSize
+      safeAreaViewHeight: width,
+      safeAreaViewWidth: height,
     };
     this.listRef = null;
     this.cropperRef = null;
     this.firstImageCall = true;
-    this.isLayoutDone = false;
-    
   }
 
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -84,7 +79,11 @@ class CommunityBanner extends Component {
 
   getPhotosHash(photos) {
     const photoHash = photos.reduce(function(map, obj) {
-      map[obj['node']['image']['uri']] = obj;
+      // Filter out the small images.
+      if(!(obj.node.image.width < AppConfig.communityBannerSize.WIDTH
+        || obj.node.image.height < AppConfig.communityBannerSize.HEIGHT)) {
+          map[obj['node']['image']['uri']] = obj;
+        }
       return map;
     }, {});
     return photoHash;
@@ -101,36 +100,17 @@ class CommunityBanner extends Component {
   };
 
   _renderItem = ({ item, index }) => {
+    const width = parseInt(Dimensions.get('window').width / 3);
     return (
       <TouchableWithoutFeedback onPress={this.selectImage.bind(null, item.node.image.uri)}>
         <View>
           <Image
             key={index}
-            style={{
-              width: parseInt(Dimensions.get('window').width / 3),
-              aspectRatio: 1,
-              marginLeft: 3,
-              marginBottom: 3,
-              position: 'relative',
-              backgroundColor: 'rgba(255, 255, 255, 0.5)'
-            }}
+            style={{...inlineStyles.galleryItem, width: width}}
             resize="contain"
             source={{ uri: item.node.image.uri }}
           />
-          {this.getSelected(item.node.image.uri) ? (
-            <View
-              style={{
-                width: parseInt(Dimensions.get('window').width / 3),
-                aspectRatio: 1,
-                marginLeft: 3,
-                marginBottom: 3,
-                backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                position: 'absolute'
-              }}
-            ></View>
-          ) : (
-            <View />
-          )}
+          {this.getSelected(item.node.image.uri) ? <View style={{...inlineStyles.galleryItem, width: width, position: 'absolute'}}/> : <View/>}
         </View>
       </TouchableWithoutFeedback>
     );
@@ -139,15 +119,6 @@ class CommunityBanner extends Component {
   loadMore = () => {
     if (this.state.isLoading) return;
     this.getPhotos();
-  };
-
-  getCroppedImage = (imageUri) => {
-    // store.dispatch(
-    //   upsertProfilePicture({
-    //     cropped_image: imageUri
-    //   })
-    // );
-    this.closeCropper();
   };
 
   closeCropper = () => {
@@ -163,69 +134,44 @@ class CommunityBanner extends Component {
     }
   };
 
-
-
-  getFlexHeightRatio = () => {
-    const { width, height } = this.state.safeViewSize;
-    console.log('this.state.safeViewSize: ', this.state.safeViewSize);
-    const ratio = appConfig.communityBannerCropConstants.HEIGHT/appConfig.communityBannerCropConstants.WIDTH;
-    const bannerSectionRatio = width/height;
-    const cropperRatio = (width*ratio)/height;
-    return {
-      bannerSectionRatio: bannerSectionRatio,
-      cropperRatio: cropperRatio,
-      galleryRatio: 1-bannerSectionRatio,
-      imageAspectRatio: ratio
+  onSafeAreaLayout = (event) => {
+    const layout = event.nativeEvent.layout;          
+    if(this.state.safeAreaViewHeight !== layout.height 
+        || this.state.safeAreaViewWidth !== layout.width) {
+      const safeViewSize = {
+        safeAreaViewWidth: layout.width,
+        safeAreaViewHeight: layout.height
+      };
+      this.setState((prevState) => ({
+        ...prevState,
+        ...safeViewSize
+      }));
     }
   }
   render() {
-    const {bannerSectionRatio, cropperRatio, galleryRatio, imageAspectRatio} = this.getFlexHeightRatio();
-    console.log('cropperRatio: ', cropperRatio);
-    console.log('galleryRatio: ', galleryRatio);
+    const cropSectionFlexRatio = this.state.safeAreaViewWidth/this.state.safeAreaViewHeight;
+    const gallerySectionFlexRatio = 1-cropSectionFlexRatio;    
     return (
       <SafeAreaView style={inlineStyles.container} onLayout= {event => {
-        if(!this.isLayoutDone) {
-          this.isLayoutDone = true;
-          const layout = event.nativeEvent.layout;          
-          const safeViewSize = {width: layout.width, height: layout.height};          
-          this.setState({safeViewSize: safeViewSize});
-        }
+        this.onSafeAreaLayout(event);
       }}>
-        <View style={{ position: 'relative', flex: bannerSectionRatio, backgroundColor: 'black'}}>
+        <View style={{...inlineStyles.cropSection, flex: cropSectionFlexRatio}}>
           {this.state.imageURI ? (
             <CommunityBannerCropperUI
               ref={(ref) => (this.cropperRef = ref)}
               imageUri={this.state.imageURI}
-              minCropWidth={1500}
-              minCropHeight={642}
-              onCrop={this.getCroppedImage}
+              minCropWidth={AppConfig.communityBannerSize.WIDTH}
+              minCropHeight={AppConfig.communityBannerSize.HEIGHT}
               onClose={this.closeCropper}
             />
           ) : (
             <View />
           )}
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              bottom: 22,
-              right: 22,
-              width: 45,
-              height: 45
-            }}
-            onPress={this.cropImage}
-          >
-            <Image
-              source={tickIcon}
-              style={{
-                top: 0,
-                left: 0,
-                width: 45,
-                height: 45
-              }}
-            />
+          <TouchableOpacity style={inlineStyles.tickIconTouchable} onPress={this.cropImage}>
+            <Image source={tickIcon} style={inlineStyles.tickIcon}/>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: galleryRatio, backgroundColor: '#fff', paddingRight: 3, paddingTop: 3 }}>
+        <View style={{...inlineStyles.gallerySection, flex: gallerySectionFlexRatio}}>
           <FlatList
             ref={(ref) => {
               this.listRef = ref;
@@ -245,5 +191,4 @@ class CommunityBanner extends Component {
   }
 }
 
-
-export default CommunityBanner;
+export default EditCommunityBanner;

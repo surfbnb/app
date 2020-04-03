@@ -40,7 +40,7 @@ import { NotificationToastComponent } from './src/theme/components/NotificationT
 import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
 import CreateCommunitiesScreen from './src/components/CreateCommunities';
-import CommunityBanner from './src/components/CommunityBanner';
+import EditCommunityBanner from './src/components/EditCommunityBanner';
 import FanVideoDetails from './src/components/FanVideoDetails';
 import FanVideoReplyDetails from './src/components/FanVideoReplyDetails';
 import WalletSettingScreen from './src/components/WalletSetting';
@@ -323,7 +323,7 @@ const SearchPushStack = createStackNavigator(
     FullScreenReplyCollection: FullScreenReplyCollection,
     ChannelsScreen: ChannelsScreen,
     MembersScreen: MembersScreen,
-    CommunityBanner: CommunityBanner
+    EditCommunityBanner: EditCommunityBanner
   },
   {
     headerLayoutPreset: 'center',

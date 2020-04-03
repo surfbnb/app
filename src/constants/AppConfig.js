@@ -170,7 +170,7 @@ const AppConfig = {
     HEIGHT: 480
   },
 
-  communityBannerCropConstants: {
+  communityBannerSize: {
     WIDTH: 1500,
     HEIGHT: 642
   },

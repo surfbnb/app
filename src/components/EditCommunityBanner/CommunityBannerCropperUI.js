@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import CrossIcon from '../../assets/cross_icon_white.png';
-import inlineStyles from './styles';
 import ZoomView from '../ZoomView';
 import ImageEditor from "@react-native-community/image-editor"; 
 
@@ -224,8 +223,8 @@ export default class CommunityBannerCropperUI extends React.Component {
         <View pointerEvents="none" style={{...styles.overlayView, ...borderStyle,}}/>
 
         {/* This is the close button */}
-        <TouchableOpacity style={inlineStyles.crossIconWrapper} onPress={this.props.onClose}>
-           <Image style={inlineStyles.crossIconSkipFont} source={CrossIcon}/>
+        <TouchableOpacity style={styles.crossIconWrapper} onPress={this.props.onClose}>
+           <Image style={styles.crossIconSkipFont} source={CrossIcon}/>
         </TouchableOpacity>
       </View>
     );
@@ -252,5 +251,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     position: 'absolute',
     borderColor:'rgba(0, 0, 0, 0.6)',
+  },
+  crossIconWrapper: {
+    position: 'absolute',
+    top: 10,
+    left: 0,
+    height: 60,
+    width: 60,
+    zIndex:9
+  },
+  crossIconSkipFont: {
+    marginTop: Platform.OS == 'android' ? 20 : 0,
+    marginLeft: 20,
+    height: 20,
+    width: 20
   }
 });

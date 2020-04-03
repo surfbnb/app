@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, StatusBar, Text, SafeAreaView, ScrollView, Image, TouchableOpacity} from 'react-native';
+import {View, StatusBar, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import Colors from "../../theme/styles/Colors";
 import inlineStyles from "../CreateCommunities/styles";
 import uploadPic from "../../assets/new-community-upload-icon.png";
@@ -12,6 +12,9 @@ import DataContract from '../../constants/DataContract'
 import FormInput from '../../theme/components/FormInput';
 import MultipleClickHandler from '../../services/MultipleClickHandler';
 import AppConfig from '../../constants/AppConfig';
+import CameraPermissionsApi from '../../services/CameraPermissionsApi';
+import AllowAccessModal from '../Profile/AllowAccessModal';
+import GalleryIcon from '../../assets/gallery_icon.png';
 
 const btnPreText = 'Submit',
       btnPostText = 'Submiting...',
@@ -68,7 +71,8 @@ class CreateCommunitiesScreen extends Component {
       ...this.getInitData(),
       ...this.defaults,
       current_formField : 0,
-      inputTagValue : null
+      inputTagValue : null,
+      showGalleryAccessModal: false
     }
 
   }
@@ -304,9 +308,16 @@ class CreateCommunitiesScreen extends Component {
     return tagsDisplay;
   }
 
-  
   addAnImage = () => {
-    return <View style={inlineStyles.imageBg}>
+    console.log('this.state.communityBannerUri: ', this.state.communityBannerUri);
+    if(this.state.communityBannerUri) {
+      return <TouchableWithoutFeedback onPress={this.onImageEditClicked}>
+        <Image 
+          source={{ uri: this.state.communityBannerUri }}
+          style={{width:'100%', aspectRatio: 21/9}} />
+      </TouchableWithoutFeedback>
+    } else {
+      return <View style={inlineStyles.imageBg}>
       <TouchableOpacity onPress={this.onImageEditClicked}>
       <View style={inlineStyles.imageWrapper}>
         <Image source={uploadPic} style={inlineStyles.uploadPic} />
@@ -315,13 +326,21 @@ class CreateCommunitiesScreen extends Component {
       </View>
       </TouchableOpacity>
     </View>
+    }
   };
 
-  onImageEditClicked = () => {
-    this.props.navigation.push('CommunityBanner', {
-      newCommunityImage: this.newCommunityImage,
+  onImageEditClicked = async () => {
+    CameraPermissionsApi.requestPermission('photo').then((result) => {
+      if (result == AppConfig.permisssionStatusMap.granted) {
+        this.props.navigation.push('EditCommunityBanner', {
+          newCommunityImage: this.newCommunityImage
+        });
+      } else if (result == AppConfig.permisssionStatusMap.denied || result == AppConfig.permisssionStatusMap.blocked) {
+        this.setState({
+          showGalleryAccessModal: true
+        });
+      }
     });
-    console.log("onImageEditClicked, CommunityBanner");
   }
 
   newCommunityImage = (imageUri) => {
@@ -550,6 +569,19 @@ class CreateCommunitiesScreen extends Component {
               </LinearGradient>
             </View>
           </ScrollView>
+          <AllowAccessModal
+            onClose={() => {
+              this.setState({
+                showGalleryAccessModal: false
+              });
+            }}
+            modalVisibility={this.state.showGalleryAccessModal}
+            headerText="Library"
+            accessText="Enable Library Access"
+            accessTextDesc="Please allow access to photo library to select your profile picture"
+            imageSrc={GalleryIcon}
+            imageSrcStyle={{ height: 40, width: 40 }}
+          />
         </SafeAreaView>
     );
   }
