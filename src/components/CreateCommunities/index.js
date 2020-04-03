@@ -41,7 +41,6 @@ class CreateCommunitiesScreen extends Component {
 
   constructor(props) {
     super(props);
-<<<<<<< Updated upstream
 
     this.channelId        = this.props.navigation.getParam('channelId');
     this.type             = this.props.navigation.getParam('type');
