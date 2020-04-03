@@ -18,7 +18,11 @@ let stylesMap = {
     backgroundColor: Colors.valhalla
   },
   formWrapper:{paddingHorizontal: 15, paddingBottom: 30},
-  tagsWrapper:{flexDirection:'row',flex:1},
+  tagsWrapper:{
+    flexDirection:'row',
+    flex:1,
+    flexWrap:'wrap'
+  },
   linearGradient:{ marginTop: 25, borderRadius: 3 },
   gradientBtnText:{ fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' },
   imageWrapper:{display: 'flex', alignItems: 'center'},
