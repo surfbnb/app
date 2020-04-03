@@ -131,7 +131,8 @@ const AppConfig = {
 
   fileUploadTypes: {
     video: 'videos',
-    image: 'images'
+    image: 'images',
+    channelImages: "channel_images"
   },
 
   storageKeys: {

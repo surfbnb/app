@@ -16,6 +16,11 @@ import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 import AllowAccessModal from '../Profile/AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
 
+import RNFS from 'react-native-fs';
+import ImageResizer from 'react-native-image-resizer';
+import ImageSize from 'react-native-image-size';
+import UploadToS3 from '../../services/UploadToS3';
+
 const btnPreText = AppConfig.communitiesConstants.btnPreText,
       btnPostText = AppConfig.communitiesConstants.btnPostText,
       MAX_NO_OF_TAGS = AppConfig.communitiesConstants.MAX_NO_OF_TAGS,
@@ -72,8 +77,11 @@ class CreateCommunitiesScreen extends Component {
       ...this.defaults,
       current_formField : 0,
       inputTagValue : null,
-      showGalleryAccessModal: false
+      showGalleryAccessModal: false,
+      communityBannerUri : null
     }
+
+    this.imageInfo = {};
 
   }
 
@@ -86,11 +94,11 @@ class CreateCommunitiesScreen extends Component {
   }
 
   getCreateApiEndPoint = () => {
-    return  DataContract.communities.getCommunityEditApi();
+    return DataContract.communities.getCommunityCreateApi();
   }
 
   getEditApiEndPoint = () => {
-    return DataContract.communities.getCommunityCreateApi();
+    return  DataContract.communities.getCommunityEditApi(this.channelId);
   }
 
   getSubmitEndPoint = () => {
@@ -114,7 +122,8 @@ class CreateCommunitiesScreen extends Component {
         name        :  ReduxGetters.getChannelName(this.channelId),
         tagline     :  ReduxGetters.getChannelTagLine(this.channelId),
         about_info  :  ReduxGetters.getChannelDescription(this.channelId),
-        tags        :  ReduxGetters.getChannelTags(this.channelId)
+        tags        :  ReduxGetters.getChannelTags(this.channelId),
+        coverImage  :  ReduxGetters.getChannelBackgroundImage(this.channelId)
       }
     }
   }
@@ -128,7 +137,15 @@ class CreateCommunitiesScreen extends Component {
     this.__setState(this.defaults);
   }
 
-  validateProfileInput = () =>{
+  validateCommunityForm = () =>{
+
+    if(this.isCreate()){
+      if(!this.state.communityBannerUri ){
+        //TODO show error image is madatory
+        return;
+      }
+    }
+
     let isValid = true;
     if (!this.state.name) {
       this.__setState({
@@ -160,7 +177,6 @@ class CreateCommunitiesScreen extends Component {
   getParams() {
     if(this.isCreate()){
       return {
-        channel_id: this.channelId,
         channel_name: this.state.name,
         channel_tagline: this.state.tagline,
         channel_description : this.state.about_info,
@@ -180,30 +196,112 @@ class CreateCommunitiesScreen extends Component {
   }
 
   getImagePostData = () => {
-    //TODO deepesh sir
+     return this.imageInfo
   }
 
   onSubmit() {
     this.clearErrors();
-    if (this.validateProfileInput()) {
+    if (this.validateCommunityForm()) {
       this.__setState({ btnText: btnPostText });
-      return new PepoApi(this.getSubmitEndPoint())
-        .post(this.getParams())
-        .then((res) => {
-          if (res && res.success) {
-            this.onSubmitSuccess(res)
-          } else {
-            this.onSubmitError(res);
-          }
+      if(this.state.communityBannerUri) {
+        this.getCleanCroppedImage().then((res)=> {
+          this.updateDataToServer();
+        }).catch((erro)=> {
+          //DO nothing as below error will be handle 
         })
-        .catch((error) => {
-          this.onSubmitError(res);
-        })
-        .finally(()=> {
-          this.onSubmitComplete();
-        })
-        ;
+      }else{
+        this.updateDataToServer();
+      }
     }
+  }
+
+  //TODO new image validation 
+  getCleanCroppedImage = () => {
+    if (Platform.OS === 'ios') {
+      const outputPath = `${RNFS.CachesDirectoryPath}/Pepo/${new Date().getTime()}.jpg`;
+      // The imageStore path here is "rct-image-store://0"
+      return ImageResizer.createResizedImage(
+        this.state.communityBannerUri,
+        AppConfig.communityBannerSize.WIDTH,
+        AppConfig.communityBannerSize.HEIGHT,
+        'JPEG',
+        25, //TODO check 
+        0, //TODO check
+        outputPath
+      ).then(async (success) => {
+          return this.onGetCleanCroppedSuccess( success.path );
+        })
+        .catch((err) => {
+          this.onGetCleanCroppedError(err);
+          return Promise.reject(err);
+        });
+    } else {
+      //Android handling 
+      return this.onGetCleanCroppedSuccess( this.state.communityBannerUri );
+    }
+  };
+
+  onGetCleanCroppedSuccess = (imagePath) => {
+    this.__setState({communityBannerUri: imagePath})
+    return this.uploadToS3( imagePath )
+  }
+
+  onGetCleanCroppedError= () => {
+    //TODO 
+  }
+
+
+  uploadToS3( imagePath ) {
+    let uploadToS3 = new UploadToS3([imagePath], "channelImages");
+    return uploadToS3
+      .perform()
+      .then((s3ProfileImage) => {
+        if( s3ProfileImage.length == 1){
+          return this.onUploadToS3Success( s3ProfileImage );
+        }
+      })
+      .catch((error) => {
+        this.onUploadToS3Error(error);
+        return Promise.reject(error);
+      });
+  }
+
+  onUploadToS3Success = (s3ProfileImage) => {
+    return ImageSize.getSize(this.state.communityBannerUri).then(async (sizeInfo) => {
+      const imgWidth = sizeInfo.width;
+      const imgHeight = sizeInfo.height;
+      let imageInfo = await RNFS.stat(this.state.communityBannerUri);
+      let imageSize = imageInfo.size;
+
+      this.imageInfo  = {
+        'cover_image_width' : imgWidth,
+        'cover_image_height' : imgHeight,
+        'cover_image_file_size' : imageSize,
+        'cover_image_url' : s3ProfileImage[0]
+      }
+    });
+  }
+
+  onUploadToS3Error = (error) => {
+    //TODO 
+  }
+
+  updateDataToServer = () => {
+    return new PepoApi(this.getSubmitEndPoint())
+    .post(this.getParams())
+    .then((res) => {
+      if (res && res.success) {
+        this.onSubmitSuccess(res)
+      } else {
+        this.onSubmitError(res);
+      }
+    })
+    .catch((error) => {
+      this.onSubmitError(res);
+    })
+    .finally(()=> {
+      this.onSubmitComplete();
+    });
   }
 
   onSubmitSuccess = (res) => {
@@ -318,22 +416,22 @@ class CreateCommunitiesScreen extends Component {
   }
 
   addAnImage = () => {
-    if(this.state.communityBannerUri) {
+    if(this.state.communityBannerUri || this.state.coverImage ) {
       return <TouchableWithoutFeedback onPress={this.onImageEditClicked}>
         <Image
-          source={{ uri: this.state.communityBannerUri }}
+          source={{ uri: this.state.communityBannerUri || this.state.coverImage }}
           style={{width:'100%', aspectRatio: 21/9}} />
       </TouchableWithoutFeedback>
     } else {
       return <View style={inlineStyles.imageBg}>
-      <TouchableOpacity onPress={this.onImageEditClicked}>
-      <View style={inlineStyles.imageWrapper}>
-        <Image source={uploadPic} style={inlineStyles.uploadPic} />
-        <Text style={inlineStyles.imgBgTxt}>Add a community image</Text>
-        <Text style={[inlineStyles.imgBgTxt, inlineStyles.imgBgSmallTxt]}>(Min. 1500 x 642 px with max. image size of 3 MB)</Text>
-      </View>
-      </TouchableOpacity>
-    </View>
+              <TouchableOpacity onPress={this.onImageEditClicked}>
+                  <View style={inlineStyles.imageWrapper}>
+                    <Image source={uploadPic} style={inlineStyles.uploadPic} />
+                    <Text style={inlineStyles.imgBgTxt}>Add a community image</Text>
+                    <Text style={[inlineStyles.imgBgTxt, inlineStyles.imgBgSmallTxt]}>(Min. 1500 x 642 px with max. image size of 3 MB)</Text>
+                  </View>
+              </TouchableOpacity>
+            </View>
     }
   };
 
@@ -353,7 +451,7 @@ class CreateCommunitiesScreen extends Component {
 
   newCommunityImage = (imageUri) => {
     console.log('newCommunityImage: ', imageUri);
-    this.setState({communityBannerUri: imageUri});
+    this.__setState({communityBannerUri: imageUri});
   }
 
   communityName = () => {

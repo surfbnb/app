@@ -172,10 +172,10 @@ export default {
     },
     communities:{
         getCommunityCreateApi : () => {
-            return "/create"                  //TODO:shraddha replace with actual api endpoints
+            return "/channels"                 
         },
-        getCommunityEditApi : () =>{
-          return "/edit";                     //TODO:shraddha replace with actual api endpoints
+        getCommunityEditApi : (id) =>{
+          return `/channels/${id}/edit`;                     
         }
     },
 
