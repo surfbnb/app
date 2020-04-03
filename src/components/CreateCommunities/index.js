@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, StatusBar, Text, SafeAreaView, ScrollView, Image, TouchableOpacity,Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity,Keyboard, TouchableWithoutFeedback} from 'react-native';
 import Colors from "../../theme/styles/Colors";
 import inlineStyles from "../CreateCommunities/styles";
 import uploadPic from "../../assets/new-community-upload-icon.png";
@@ -17,9 +17,9 @@ import AllowAccessModal from '../Profile/AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
 
 import RNFS from 'react-native-fs';
-import ImageResizer from 'react-native-image-resizer';
 import ImageSize from 'react-native-image-size';
 import UploadToS3 from '../../services/UploadToS3';
+import InlineError from '../../theme/components/FormInput/inlineError';
 
 const btnPreText = AppConfig.communitiesConstants.btnPreText,
       btnPostText = AppConfig.communitiesConstants.btnPostText,
@@ -67,6 +67,7 @@ class CreateCommunitiesScreen extends Component {
       tagline_error: null,
       about_info_error : null,
       tags_error : null,
+      image_error: null,
       server_errors: {},
       general_error: null,
       btnText: btnPreText
@@ -75,10 +76,10 @@ class CreateCommunitiesScreen extends Component {
     this.state= {
       ...this.getInitData(),
       ...this.defaults,
-      current_formField : 0,
       inputTagValue : null,
-      showGalleryAccessModal: false,
-      communityBannerUri : null
+      communityBannerUri : null,
+      current_formField : 0,
+      showGalleryAccessModal: false
     }
 
     this.imageInfo = {};
@@ -138,27 +139,31 @@ class CreateCommunitiesScreen extends Component {
   }
 
   validateCommunityForm = () =>{
+    let isValid = true;
 
     if(this.isCreate()){
       if(!this.state.communityBannerUri ){
-        //TODO show error image is madatory
-        return;
+        this.__setState({
+          image_error: ostErrors.getUIErrorMessage('cover_img_req_communities')
+        });
+        isValid = false;
       }
     }
-
-    let isValid = true;
+    
     if (!this.state.name) {
       this.__setState({
         name_error: ostErrors.getUIErrorMessage('name_req_communities')
       });
       isValid = false;
     }
+
     if (!this.state.tagline) {
       this.__setState({
         tagline_error: ostErrors.getUIErrorMessage('tagline_req_communities')
       });
       isValid = false;
     }
+
     if (!this.state.about_info) {
       this.__setState({
         about_info_error: ostErrors.getUIErrorMessage('about_info_req')
@@ -171,6 +176,7 @@ class CreateCommunitiesScreen extends Component {
         tags_error: ostErrors.getUIErrorMessage('tags_req')
       });
     }
+
     return isValid;
   }
 
@@ -202,43 +208,31 @@ class CreateCommunitiesScreen extends Component {
   onSubmit() {
     this.clearErrors();
     if (this.validateCommunityForm()) {
-      this.__setState({ btnText: btnPostText });
+      this.beforeSubmit();
       if(this.state.communityBannerUri) {
         this.getCleanCroppedImage().then((res)=> {
           this.updateDataToServer();
-        }).catch((erro)=> {
-          //DO nothing as below error will be handle 
-        })
+        }).catch(()=> {});
       }else{
         this.updateDataToServer();
       }
     }
   }
+  
+  beforeSubmit = () =>{
+    this.__setState({ btnText: btnPostText });
+  }
 
-  //TODO new image validation 
   getCleanCroppedImage = () => {
-    if (Platform.OS === 'ios') {
-      const outputPath = `${RNFS.CachesDirectoryPath}/Pepo/${new Date().getTime()}.jpg`;
-      // The imageStore path here is "rct-image-store://0"
-      return ImageResizer.createResizedImage(
-        this.state.communityBannerUri,
-        AppConfig.communityBannerSize.WIDTH,
-        AppConfig.communityBannerSize.HEIGHT,
-        'JPEG',
-        25, //TODO check 
-        0, //TODO check
-        outputPath
-      ).then(async (success) => {
-          return this.onGetCleanCroppedSuccess( success.path );
-        })
-        .catch((err) => {
-          this.onGetCleanCroppedError(err);
-          return Promise.reject(err);
-        });
-    } else {
-      //Android handling 
-      return this.onGetCleanCroppedSuccess( this.state.communityBannerUri );
-    }
+    return UploadToS3.GetCleanImagePath( this.state.communityBannerUri, 
+                                  AppConfig.communityBannerSize.WIDTH,
+                                  AppConfig.communityBannerSize.HEIGHT  )
+      .then((uri) => {
+        return this.onGetCleanCroppedSuccess(uri);
+      }).catch((err) => {
+        this.onGetCleanCroppedError(err);
+        return Promise.reject(err);
+      }); 
   };
 
   onGetCleanCroppedSuccess = (imagePath) => {
@@ -247,9 +241,8 @@ class CreateCommunitiesScreen extends Component {
   }
 
   onGetCleanCroppedError= () => {
-    //TODO 
+    this.__setState({image_error: ostErrors.getUIErrorMessage('cover_img_upload_communities')});
   }
-
 
   uploadToS3( imagePath ) {
     let uploadToS3 = new UploadToS3([imagePath], "channelImages");
@@ -258,9 +251,10 @@ class CreateCommunitiesScreen extends Component {
       .then((s3ProfileImage) => {
         if( s3ProfileImage.length == 1){
           return this.onUploadToS3Success( s3ProfileImage );
+        }else{
+          this.onUploadToS3Error();
         }
-      })
-      .catch((error) => {
+      }).catch((error) => {
         this.onUploadToS3Error(error);
         return Promise.reject(error);
       });
@@ -270,9 +264,8 @@ class CreateCommunitiesScreen extends Component {
     return ImageSize.getSize(this.state.communityBannerUri).then(async (sizeInfo) => {
       const imgWidth = sizeInfo.width;
       const imgHeight = sizeInfo.height;
-      let imageInfo = await RNFS.stat(this.state.communityBannerUri);
-      let imageSize = imageInfo.size;
-
+      let   imageInfo = await RNFS.stat(this.state.communityBannerUri);
+      const imageSize = imageInfo.size;
       this.imageInfo  = {
         'cover_image_width' : imgWidth,
         'cover_image_height' : imgHeight,
@@ -283,7 +276,8 @@ class CreateCommunitiesScreen extends Component {
   }
 
   onUploadToS3Error = (error) => {
-    //TODO 
+    const errorMsg = ostErrors.getErrorMessage(error) || ostErrors.getUIErrorMessage('cover_img_upload_communities');
+    this.__setState({image_error:errorMsg });
   }
 
   updateDataToServer = () => {
@@ -363,9 +357,18 @@ class CreateCommunitiesScreen extends Component {
 
   addTagToTagArray = ( tag  , newState={}) => {
     let tagsArray = this.state.tags || [];
-    tagsArray.push(tag);
+    tagsArray.push(this.getformattedTag(tag));
     newState["tags"] = tagsArray;
     this.__setState(newState);
+  }
+
+  getformattedTag = (val="") =>{
+    val = val.trim()
+    if(val.startsWith('#')){
+      return val;
+    }else{
+      return "#"+val;
+    }
   }
 
   onSubmitEditing(currentIndex,val) {
@@ -373,11 +376,7 @@ class CreateCommunitiesScreen extends Component {
       let inputTag = val.nativeEvent.text;
       if(this.state.tags.length <  MAX_NO_OF_TAGS){
         this.addTagToTagArray(inputTag);
-      } else{
-        this.__setState({
-          tags_error:ostErrors.getUIErrorMessage('max_no_tags_communities')  //TODO : Shraddha  get ui error msgs from UX
-        });
-      }
+      } 
       this.__setState({
         inputTagValue :''
       });
@@ -388,18 +387,9 @@ class CreateCommunitiesScreen extends Component {
         current_formField: currentIndex + 1
       });
     }
-
   }
 
-  getformattedDisplayTag = (index) =>{
-    if(this.state.tags[index][0] !== "#"){
-      return "#"+this.state.tags[index];
-    }else{
-      return this.state.tags[index];
-    }
-  }
-
-  onRemoveTagPress = ( index , val ) =>{
+  onRemoveTagPress = ( index  ) =>{
     this.state.tags.splice(index , 1);
     this.__setState({tags: this.state.tags});
   }
@@ -409,7 +399,7 @@ class CreateCommunitiesScreen extends Component {
     let tagsDisplay = [],
         displayTag ='';
     for(let i = 0 ; i < this.state.tags.length ; i++  ){
-      displayTag = this.getformattedDisplayTag(i);
+      displayTag = this.state.tags[i];
       tagsDisplay.push(this.getTagThumbnailMarkup(i,displayTag))
     }
     return tagsDisplay;
@@ -418,15 +408,15 @@ class CreateCommunitiesScreen extends Component {
   addAnImage = () => {
     if(this.state.communityBannerUri || this.state.coverImage ) {
       return <TouchableWithoutFeedback onPress={this.onImageEditClicked}>
-        <Image
-          source={{ uri: this.state.communityBannerUri || this.state.coverImage }}
-          style={{width:'100%', aspectRatio: 21/9}} />
-      </TouchableWithoutFeedback>
+                <Image
+                  source={{ uri: this.state.communityBannerUri || this.state.coverImage }}
+                  style={{width:'100%', aspectRatio: 21/9}} />
+            </TouchableWithoutFeedback>
     } else {
       return <View style={inlineStyles.imageBg}>
               <TouchableOpacity onPress={this.onImageEditClicked}>
                   <View style={inlineStyles.imageWrapper}>
-                    <Image source={uploadPic} style={inlineStyles.uploadPic} />
+                    <Image source={uploadPic} style={inlineStyles.uploadPicSkipFont} />
                     <Text style={inlineStyles.imgBgTxt}>Add a community image</Text>
                     <Text style={[inlineStyles.imgBgTxt, inlineStyles.imgBgSmallTxt]}>(Min. 1500 x 642 px with max. image size of 3 MB)</Text>
                   </View>
@@ -466,7 +456,7 @@ class CreateCommunitiesScreen extends Component {
             maxLength={NAME_MAXLENGTH}
             editable={true}
             onChangeText={this.onNameChange}
-            fieldName="name"
+            fieldName="channel_name"
             textContentType="none"
             style={[inlineStyles.customTextInputBox]}
             placeholder="Write here..."
@@ -508,7 +498,7 @@ class CreateCommunitiesScreen extends Component {
             maxLength={TAGLINE_MAXLENGTH}
             editable={true}
             onChangeText={this.onTaglineChange}
-            fieldName="tagline"
+            fieldName="channel_tagline"
             textContentType="none"
             style={[inlineStyles.customTextInputBox]}
             placeholder="Write here..."
@@ -550,7 +540,7 @@ class CreateCommunitiesScreen extends Component {
             editable={true}
             multiline={true}
             onChangeText={this.onAboutInfoChange}
-            fieldName="about_info"
+            fieldName="channel_description"
             textContentType="none"
             style={[inlineStyles.customTextInputBox,inlineStyles.customTextAreaBox]}
             placeholder="Write the description here..."
@@ -591,7 +581,7 @@ class CreateCommunitiesScreen extends Component {
           <FormInput
             ref={input=>{this.tagsInputRef = input}}
             editable={true}
-            fieldName="tags"
+            fieldName="channel_tags"
             onChangeText={this.onTagsChange}
             textContentType="none"
             style={[inlineStyles.customTextInputBox]}
@@ -621,10 +611,9 @@ class CreateCommunitiesScreen extends Component {
     </React.Fragment>
   };
 
-
   getTagThumbnailMarkup = (index,displayTag) =>{
     return(
-      <View style={inlineStyles.tagThumbnail} >
+      <View style={inlineStyles.tagThumbnail} key={index}>
         <Text key={index}
               numberOfLines={1}
               ellipsizeMode='tail'
@@ -649,6 +638,9 @@ class CreateCommunitiesScreen extends Component {
               {inlineStyles.scrollViewContainerStyle}
             showsVerticalScrollIndicator={false}>
             {this.addAnImage()}
+            <InlineError style={{paddingLeft : 15, paddingTop: 5}}
+                         fieldName={["cover_image_url" ,"cover_image_file_size" , "cover_image_height", "cover_image_width"]}
+                         errorMsg={this.state.image_error} serverErrors={this.state.server_errors}/>
             <View style={inlineStyles.formWrapper}>
               {this.communityName()}
               {this.communityTagline()}

@@ -51,12 +51,13 @@ const UIErros = {
   leave_channel_failure : "Community leave failed",
   share_via_qrcode_failure : "Error in share via QR Code",
   pay_user_via_qrcode_failure : "Error in pay via QR Code ",
-  name_req_communities : "Channel name is mandatory",
-  tagline_req_communities : "Tagline is mandatory",
-  about_info_req : "About is mandatory",
-  tags_req : "Tags are mandatory",
-  max_no_tags_communities : "You can add only 5 tags"
-
+  name_req_communities : "Channel name is mandatory.",
+  tagline_req_communities : "Tagline is mandatory.",
+  about_info_req : "About is mandatory.",
+  tags_req : "Tags are mandatory.",
+  max_no_tags_communities : "You can add only 5 tags.",
+  cover_img_req_communities: "Cover image is required.",
+  cover_img_upload_communities:"Failed to upload cover image, please try again."
 };
 
 const UIWhitelistedErrorCode = {

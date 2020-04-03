@@ -2,6 +2,10 @@ import PepoApi from './PepoApi';
 import Constants from '../../src/constants/AppConfig';
 import deepGet from "lodash/get";
 
+
+import RNFS from 'react-native-fs';
+import ImageResizer from 'react-native-image-resizer';
+
 export default class UploadToS3 {
   constructor(fileURIs, fileType) {
     this.fileType = fileType;
@@ -101,4 +105,19 @@ export default class UploadToS3 {
     });
     return formData;
   }
+
+  static async GetCleanImagePath ( uri ,width, height,format='JPEG',quality=25, rotation= 0, outputPath=null ){
+    if(!uri || !width || !height) return Promise.reject();
+    if (Platform.OS === 'ios') {
+      outputPath = outputPath || `${RNFS.CachesDirectoryPath}/Pepo/${new Date().getTime()}.jpg`;
+      try {
+        const success = await ImageResizer.createResizedImage(uri, width, height, format, quality, rotation, outputPath);
+        return success.path;
+      }
+      catch (e) { }
+    } else {
+      return uri;
+    }
+  }
+
 }

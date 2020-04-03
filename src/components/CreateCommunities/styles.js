@@ -37,7 +37,7 @@ let stylesMap = {
     fontSize: 8,
     letterSpacing: -0.5
   },
-  uploadPic: {
+  uploadPicSkipFont: {
     width: 78,
     height: 62,
     marginBottom: 8
