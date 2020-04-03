@@ -309,7 +309,6 @@ class CreateCommunitiesScreen extends Component {
   }
 
   addAnImage = () => {
-    console.log('this.state.communityBannerUri: ', this.state.communityBannerUri);
     if(this.state.communityBannerUri) {
       return <TouchableWithoutFeedback onPress={this.onImageEditClicked}>
         <Image 

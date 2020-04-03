@@ -49,13 +49,16 @@ export default class ZoomView extends Component {
       }
     
     componentWillUnmount() {
+        // Clear the image zoom reference.
         this.imageZoomRef = null;
     }
 
     // Get the image dimensions and update the state variable.
     updateImageDimensions(imageUrl) {
+        // If the imageUrl is not provided return.
         if(imageUrl === undefined) return;
 
+        // Get the image size.
         Image.getSize(imageUrl, (width, height) => {
             if(this.currentImageUri === imageUrl) {
                 // The image width and height is available.
@@ -76,8 +79,7 @@ export default class ZoomView extends Component {
                   }));    
             }
         }, (failure)=>{
-            // TODO: check with team, we should not use console.logs.
-            console.log('Image fetch fail: ', failure);
+            // TODO: check with team, what we do for errors.
         });
     }
 
@@ -141,9 +143,9 @@ export default class ZoomView extends Component {
                 height: this.state.imageHeight*scaleFactor,
             }
             // Calculate the max zoom limit.
-            const xZoom = imageSize.width/this.props.maxZoomWidth;
-            const yZoom = imageSize.height/this.props.maxZoomHeight;
-            const maxScale = Math.min(xZoom,yZoom);
+            const xZoom = this.props.maxZoomWidth/this.state.imageWidth;
+            const yZoom = this.props.maxZoomHeight/imageSize.height;
+            const maxScale = Math.max(xZoom,yZoom);
             return (
                 <ImageZoom 
                     ref={this.imageZoomRef}
@@ -152,9 +154,7 @@ export default class ZoomView extends Component {
                     cropHeight={this.state.viewBoundHeight}
                     imageWidth={imageSize.width}
                     imageHeight={imageSize.height}
-                    //maxScale={Math.max(maxScale, 1.001)}
-                    // TODO
-                    maxScale={2}
+                    maxScale={Math.max(maxScale, 1.001)}
                     minScale={1.001}
                 >
                     <Image 

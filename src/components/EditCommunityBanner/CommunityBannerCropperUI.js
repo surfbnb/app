@@ -7,149 +7,62 @@ import ImageEditor from "@react-native-community/image-editor";
 export default class CommunityBannerCropperUI extends React.Component {
   constructor(props) {
     super(props);
+
     this.state= {
+      // The overlay view is rendered with the border, this is will hold the
+      // value for borderLeft and borderRight.
       borderX: 0,
+      // overlay view's borderTop and borderBottom value.
       borderY: 0,
     }
+
+    // A handle of zoom view. This will be used to make function calls on the
+    // zoom view.
     this.zoomViewRef = React.createRef();
   }
 
   componentWillUnmount() {
+    // Clear the reference.
     this.zoomViewRef = null;
   }
 
   // Crop the image
-  cropImage(callback) {
-    // Get the latest state of the image.
+  cropImage(callback) {    
+    // Get the current info of the image.
     const currentImagePosition = this.zoomViewRef.current.getImagePosition();
-
-    console.log('------------------------------');
-    console.log('currentImagePosition: ', currentImagePosition);
+    
+    // Calculate the actual starting position / offset of the image.
     const scaledImageViewWidth = currentImagePosition.imageWidth * currentImagePosition.scale;
     const scaledImageViewHeight = currentImagePosition.imageHeight * currentImagePosition.scale;
-
     const xDiff = ((scaledImageViewWidth-currentImagePosition.viewWidth)/2)/currentImagePosition.scale;
     const yDiff = ((scaledImageViewHeight-currentImagePosition.viewHeight)/2)/currentImagePosition.scale;
+    const imageWidth = this.zoomViewRef.current.getImageSize().width;
+    const imageHeight = this.zoomViewRef.current.getImageSize().height;
+    const scaleFactor = Math.min(imageWidth/currentImagePosition.viewWidth, imageHeight/currentImagePosition.viewHeight);
+    const x =  (xDiff - currentImagePosition.positionX)*scaleFactor;
+    const y = (yDiff - currentImagePosition.positionY)*scaleFactor;
 
-    console.log('xDiff: ', xDiff);
-    console.log('yDiff: ', yDiff);
+    // TODO: still work in progress.
+    // Calculate the crop image size
+    let calculatedWidth = Math.min(imageWidth-x, currentImagePosition.viewWidth*scaleFactor);
+    let calculatedHeight = Math.min(imageHeight-y, currentImagePosition.viewHeight*scaleFactor);
+    // let calculatedWidth = currentImagePosition.viewWidth;
+    // let calculatedHeight = currentImagePosition.viewHeight;
 
-    const diffWidth = Math.abs(currentImagePosition.imageWidth-currentImagePosition.viewWidth)/2;
-    const diffHeight = Math.abs(currentImagePosition.imageHeight-currentImagePosition.viewHeight)/2;
-    
-    console.log('diffWidth: ', diffWidth);
-    console.log('diffHeight: ', diffHeight);
-    const x =  Math.abs(currentImagePosition.positionX - xDiff);
-    const y = (yDiff - currentImagePosition.positionY) + diffHeight;
-
-    const {width, height} = this.zoomViewRef.current.getImageSize();
-
-    console.log('width: ', width);
-    console.log('height: ', height);
-    console.log('currentImagePosition.imageWidth : ', currentImagePosition.imageWidth );
-    console.log('currentImagePosition.imageHeight: ', currentImagePosition.imageHeight);
-
-
-    const scaledViewWidth = currentImagePosition.viewWidth * currentImagePosition.scale;
-    const scaledViewHeight = currentImagePosition.viewHeight * currentImagePosition.scale;
-
-
-
-    const xScale = Math.abs(scaledImageViewWidth - width)/width;
-    const yScale = Math.abs(scaledImageViewHeight-height)/height;
-    console.log('xScale: ', xScale);
-    console.log('yScale: ', yScale);
-
-     // Prepare the crop data.
+    // Prepare the crop data.
     const cropData = {
-      offset: {x: x*xScale, y: y*yScale},
-      size: {width: width, height: height},
-      displaySize: {width: this.props.minCropWidth, height: this.props.minCropHeight},
-      resizeMode: 'contain',
+      offset: {x: x, y: y},
+      size: {width: calculatedWidth, height: calculatedHeight},
+      displaySize: {width:currentImagePosition.viewWidth, height: currentImagePosition.viewHeight},
+      resizeMode: 'center',
     };
 
-    console.log('cropData: ', cropData);
-
+    // Crop the image.
     ImageEditor.cropImage(this.props.imageUri, cropData).then(url => {
-      console.log("Cropped image uri", url);
       if(callback) {
         callback(url);
       }
     })
-
-    // // Calculate the diff
-    // const xDiff = Math.abs((currentImagePosition.viewWidth - currentImagePosition.imageWidth)/4);
-    // const yDiff = Math.abs((currentImagePosition.viewHeight - currentImagePosition.imageHeight)/4);
-
-    // console.log('------------------------------');
-    // console.log('positionX: ', currentImagePosition.positionX);
-    // console.log('positionY: ', currentImagePosition.positionY);
-    // console.log('scale: ', currentImagePosition.scale);
-    // // console.log('zoomCurrentDistance: ', currentImagePosition.zoomCurrentDistance);
-    // // console.log('imageWidth: ', currentImagePosition.imageWidth);
-    // // console.log('imageHeight: ', currentImagePosition.imageHeight);
-    // // console.log('viewWidth: ', currentImagePosition.viewWidth);
-    // // console.log('viewHeight: ', currentImagePosition.viewHeight);
-    
-    // console.log('scaledXdiff: ', xDiff);
-    // console.log('originalPositionX :',((xDiff - currentImagePosition.positionX)/currentImagePosition.scale));
-    // // const centerX = currentImagePosition.imageWidth/2;
-    // const centerY = currentImagePosition.imageHeight/2;
-    // console.log('Center X: ', centerX);
-    // console.log('Center Y: ', centerY);
-
-
-    // const diffWidth = Math.abs(currentImagePosition.imageWidth-currentImagePosition.viewWidth);
-    // const diffHeight = Math.abs(currentImagePosition.imageHeight-currentImagePosition.viewHeight);
-    
-    // const padding = Math.max(diffWidth,diffHeight)/2;
-
-    // let xOffset = 0;
-    // let yOffset = 0;
-    // if(diffWidth > 0) {
-    //   xOffset = padding;
-    //   yOffset = padding/2;
-    // } else if(diffHeight > 0) {
-    //   xOffset = padding/2;
-    //   yOffset = padding;
-    // }
-
-    
-    // console.log('offset x: ', xOffset);
-    // console.log('offset y: ', yOffset);
-
-    // console.log('calculated x: ', currentImagePosition.positionX+xOffset);
-    // console.log('calculated y: ', currentImagePosition.positionY+yOffset);
-
-    // const scaledImageWidth = currentImagePosition.imageWidth*currentImagePosition.scale;
-    // console.log('scaledImageWidth: ', scaledImageWidth);
-    // const diffWidth = scaledImageWidth - currentImagePosition.imageWidth;
-    // console.log('diffWidth: ', diffWidth);
-    // console.log('diffWidth/2: ', diffWidth/2);
-    // console.log('xDiff/2: ', xDiff/2);
-    // console.log('yDiff/2: ', yDiff/2);
-    // console.log('x+xDiff: ', x+xDiff);
-    // console.log('y+yDiff: ', y+yDiff);
-
-    // // Check if the image is not scaled.
-    // if(currentImagePosition.scale === 1.001) {
-    //   x = currentImagePosition.positionX;
-    //   y =currentImagePosition.positionY;  
-    // } else {
-    //   // Extract the exact frame.x and frame.y from the data.
-    //   x = currentImagePosition.positionX/currentImagePosition.scale;
-    //   y = currentImagePosition.positionY/currentImagePosition.scale;  
-    // }
-
-    // // Prepare the crop data.
-    // const cropData = {
-    //   offset: {x: Math.floor(x+xDiff), y: Math.floor(y+yDiff)},
-    //   size: {width: this.props.minCropWidth, height: this.props.minCropHeight},
-    //   displaySize: {width: this.props.minCropWidth, height: this.props.minCropHeight},
-    //   resizeMode: 'contain',
-    // };
-
-    // console.log('cropData: ', cropData);
   }
 
   // Dynamically calculate the overlay borders.
