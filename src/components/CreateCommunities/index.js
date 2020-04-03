@@ -16,12 +16,12 @@ import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 import AllowAccessModal from '../Profile/AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
 
-const btnPreText = 'Submit',
-      btnPostText = 'Submiting...',
-      MAX_NO_OF_TAGS = 5,
-      NAME_MAXLENGTH = 25,
-      TAGLINE_MAXLENGTH = 45,
-      ABOUT_INFO_MAXLENGTH = 400;
+const btnPreText = AppConfig.communitiesConstants.btnPreText,
+      btnPostText = AppConfig.communitiesConstants.btnPostText,
+      MAX_NO_OF_TAGS = AppConfig.communitiesConstants.MAX_NO_OF_TAGS,
+      NAME_MAXLENGTH = AppConfig.communitiesConstants.NAME_MAXLENGTH,
+      TAGLINE_MAXLENGTH = AppConfig.communitiesConstants.TAGLINE_MAXLENGTH,
+      ABOUT_INFO_MAXLENGTH = AppConfig.communitiesConstants.ABOUT_INFO_MAXLENGTH;
 
 
 class CreateCommunitiesScreen extends Component {
@@ -527,7 +527,12 @@ class CreateCommunitiesScreen extends Component {
   getTagThumbnailMarkup = (index,displayTag) =>{
     return(
       <View style={inlineStyles.tagThumbnail} >
-        <Text key={index} style={inlineStyles.displayTag}>{displayTag} </Text>
+        <Text key={index}
+              numberOfLines={1}
+              ellipsizeMode='tail'
+              style={inlineStyles.displayTag}>
+              {displayTag}
+        </Text>
         <TouchableOpacity
           onPress={()=> {this.onRemoveTagPress(index)}}
           style={inlineStyles.crosIconBackground}

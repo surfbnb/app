@@ -473,6 +473,15 @@ const AppConfig = {
       edit: "edit"
     }
   },
+  communitiesConstants:{
+    SCREEN_NAME:'CreateCommunities',
+    btnPreText : 'Submit',
+    btnPostText : 'Submiting...',
+    MAX_NO_OF_TAGS : 5,
+    NAME_MAXLENGTH : 25,
+    TAGLINE_MAXLENGTH : 45,
+    ABOUT_INFO_MAXLENGTH : 400
+  },
 
   cameraStack : 'CaptureVideo',
 

@@ -113,7 +113,8 @@ let stylesMap = {
     fontSize:12,
     color:Colors.wildWatermelon,
     fontFamily: 'AvenirNext-Regular',
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    margin:3
   },
   crosIconBackground:{
     backgroundColor:Colors.wildWatermelon,
