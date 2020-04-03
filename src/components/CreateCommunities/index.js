@@ -311,14 +311,13 @@ class CreateCommunitiesScreen extends Component {
   }
 
   onSubmitSuccess = (res) => {
-    if(this.isCreate){
+    if(this.isCreate()){
       this.props.navigation.goBack();
       setTimeout(()=> {
         const channelId = deepGet(res , "data.channel.id");
         this.props.navigation.push("ChannelsScreen", {channelId:channelId} );
       }, 100);
     }else if(this.isEdit()){
-      fetchChannel(this.channelId);
       this.props.navigation.goBack();
     }
   }
