@@ -42,12 +42,9 @@ export default class CommunityBannerCropperUI extends React.Component {
     const x =  (xDiff - currentImagePosition.positionX)*scaleFactor;
     const y = (yDiff - currentImagePosition.positionY)*scaleFactor;
 
-    // TODO: still work in progress.
     // Calculate the crop image size
-    let calculatedWidth = Math.min(imageWidth-x, currentImagePosition.viewWidth*scaleFactor);
-    let calculatedHeight = Math.min(imageHeight-y, currentImagePosition.viewHeight*scaleFactor);
-    // let calculatedWidth = currentImagePosition.viewWidth;
-    // let calculatedHeight = currentImagePosition.viewHeight;
+    let calculatedWidth = (currentImagePosition.viewWidth*scaleFactor)/currentImagePosition.scale;
+    let calculatedHeight = (currentImagePosition.viewHeight*scaleFactor)/currentImagePosition.scale;
 
     // Prepare the crop data.
     const cropData = {
