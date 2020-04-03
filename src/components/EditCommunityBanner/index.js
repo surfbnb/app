@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, TouchableWithoutFeedback, FlatList, Dimensions, SafeAreaView } from 'react-native';
+import { View, Image, TouchableOpacity, TouchableWithoutFeedback, FlatList, Dimensions, SafeAreaView, Text } from 'react-native';
 import inlineStyles from './styles';
 import ImageBrowser from '../../services/ImageBrowser';
 import assignIn from 'lodash/assignIn';
 import CommunityBannerCropperUI from '../EditCommunityBanner/CommunityBannerCropperUI';
 import tickIcon from '../../assets/tick_icon.png';
 import AppConfig from '../../constants/AppConfig';
+import GalleryIcon from '../../assets/gallery_icon.png';
 
 class EditCommunityBanner extends Component {
   constructor(props) {
@@ -58,7 +59,7 @@ class EditCommunityBanner extends Component {
             photos: finalPhotoArray
           },
           () => {
-            if (this.firstImageCall) {
+            if (this.firstImageCall && this.state.photos.length > 0) {
               this.firstImageCall = false;
               this.setState({
                 imageURI: this.state.photos[0].node.image.uri
@@ -79,11 +80,7 @@ class EditCommunityBanner extends Component {
 
   getPhotosHash(photos) {
     const photoHash = photos.reduce(function(map, obj) {
-      // Filter out the small images.
-      if(!(obj.node.image.width < AppConfig.communityBannerSize.WIDTH
-        || obj.node.image.height < AppConfig.communityBannerSize.HEIGHT)) {
-          map[obj['node']['image']['uri']] = obj;
-        }
+        map[obj['node']['image']['uri']] = obj;
       return map;
     }, {});
     return photoHash;
@@ -171,7 +168,31 @@ class EditCommunityBanner extends Component {
             <Image source={tickIcon} style={inlineStyles.tickIcon}/>
           </TouchableOpacity>
         </View>
-        <View style={{...inlineStyles.gallerySection, flex: gallerySectionFlexRatio}}>
+        <View style={{
+            ...inlineStyles.gallerySection,
+            flex: gallerySectionFlexRatio,
+            display: this.state.photos.length>0 ? 'none' : 'flex'
+        }}>          
+          <View style={{
+            alignItems: 'center',
+            flex: 1,
+            marginTop: '25%',
+            marginHorizontal: 30
+          }}>
+            <Image source={GalleryIcon} style={{height: 40, width: 40,}} />
+            <Text style={{
+              fontSize: 15,
+              textAlign: 'center',
+              fontWeight: '500',
+              marginVertical: 20
+            }}>{'No photo available'}</Text>
+          </View>
+        </View>
+        <View style={{
+          ...inlineStyles.gallerySection,
+          flex: gallerySectionFlexRatio,
+          display: this.state.photos.length>0 ? 'flex' : 'none'
+        }}>
           <FlatList
             ref={(ref) => {
               this.listRef = ref;

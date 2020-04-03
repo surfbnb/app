@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, View} from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import inlineStyles from './styles';
+import ImageSize from 'react-native-image-size';
 
 export default class ZoomView extends Component {
     constructor(props) {
@@ -59,12 +60,12 @@ export default class ZoomView extends Component {
         if(imageUrl === undefined) return;
 
         // Get the image size.
-        Image.getSize(imageUrl, (width, height) => {
+        ImageSize.getSize(imageUrl).then(sizeInfo => {
             if(this.currentImageUri === imageUrl) {
                 // The image width and height is available.
                 const newLayout = {
-                    imageWidth: width,
-                    imageHeight: height,
+                    imageWidth: sizeInfo.width,
+                    imageHeight: sizeInfo.height,
                     // Set it to true as the image size is available.
                     isImageSizeAvailable: true,
                     // If the view size is also available then the zoom view is
