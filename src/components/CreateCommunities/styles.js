@@ -107,14 +107,15 @@ let stylesMap = {
     margin:3,
     flexDirection:'row',
     alignItems:'center',
-    justifyContent:'center'
+    justifyContent:'space-between',
   },
   displayTag:{
     fontSize:12,
     color:Colors.wildWatermelon,
     fontFamily: 'AvenirNext-Regular',
     fontWeight: 'normal',
-    margin:3
+    margin:3,
+    maxWidth:'85%'
   },
   crosIconBackground:{
     backgroundColor:Colors.wildWatermelon,

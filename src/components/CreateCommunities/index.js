@@ -149,26 +149,26 @@ class CreateCommunitiesScreen extends Component {
     let isValid = true;
     if (!this.state.name) {
       this.__setState({
-        name_error: ostErrors.getUIErrorMessage('name_req_communities')    //TODO : Shraddha  get ui error msgs from UX
+        name_error: ostErrors.getUIErrorMessage('name_req_communities')
       });
       isValid = false;
     }
     if (!this.state.tagline) {
       this.__setState({
-        tagline_error: ostErrors.getUIErrorMessage('tagline_req_communities')  //TODO : Shraddha  get ui error msgs from UX
+        tagline_error: ostErrors.getUIErrorMessage('tagline_req_communities')
       });
       isValid = false;
     }
     if (!this.state.about_info) {
       this.__setState({
-        about_info_error: ostErrors.getUIErrorMessage('about_info_req')  //TODO : Shraddha  get ui error msgs from UX
+        about_info_error: ostErrors.getUIErrorMessage('about_info_req')
       });
       isValid = false;
     }
 
     if(!this.state.tags.length){
       this.__setState({
-        tags_error: ostErrors.getUIErrorMessage('tags_req')  //TODO : Shraddha  get ui error msgs from UX
+        tags_error: ostErrors.getUIErrorMessage('tags_req')
       });
     }
     return isValid;
