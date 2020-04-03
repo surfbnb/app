@@ -20,6 +20,8 @@ import RNFS from 'react-native-fs';
 import ImageSize from 'react-native-image-size';
 import UploadToS3 from '../../services/UploadToS3';
 import InlineError from '../../theme/components/FormInput/inlineError';
+import { fetchChannel } from '../../helpers/helpers';
+import deepGet from "lodash/get";
 
 const btnPreText = AppConfig.communitiesConstants.btnPreText,
       btnPostText = AppConfig.communitiesConstants.btnPostText,
@@ -123,10 +125,20 @@ class CreateCommunitiesScreen extends Component {
         name        :  ReduxGetters.getChannelName(this.channelId),
         tagline     :  ReduxGetters.getChannelTagLine(this.channelId),
         about_info  :  ReduxGetters.getChannelDescription(this.channelId),
-        tags        :  ReduxGetters.getChannelTags(this.channelId),
+        tags        :  this.getChannelTags(),
         coverImage  :  ReduxGetters.getChannelBackgroundImage(this.channelId)
       }
     }
+  }
+
+  getChannelTags = () => {
+    let tags = ReduxGetters.getChannelTagIds(this.channelId)
+        tagNames = [] , currTag = null 
+     ; 
+     return tags.map((item)=> {
+        currTag = ReduxGetters.getHashTag(item) || {} ; 
+        return  currTag.text;
+     })
   }
 
   __setState = (state) =>{
@@ -299,7 +311,16 @@ class CreateCommunitiesScreen extends Component {
   }
 
   onSubmitSuccess = (res) => {
-    //TODO confrim with UX what to do here.
+    if(this.isCreate){
+      this.props.navigation.goBack();
+      setTimeout(()=> {
+        const channelId = deepGet(res , "data.channel.id");
+        this.props.navigation.push("ChannelsScreen", {channelId:channelId} );
+      }, 100);
+    }else if(this.isEdit()){
+      fetchChannel(this.channelId);
+      this.props.navigation.goBack();
+    }
   }
 
   onSubmitError = (res) => {
@@ -355,20 +376,11 @@ class CreateCommunitiesScreen extends Component {
     return val && !spaceRegex.test(val);
   }
 
-  addTagToTagArray = ( tag  , newState={}) => {
+  addTagToTagArray = ( tag=""  , newState={}) => {
     let tagsArray = this.state.tags || [];
-    tagsArray.push(this.getformattedTag(tag));
+    tagsArray.push(tag.trim());
     newState["tags"] = tagsArray;
     this.__setState(newState);
-  }
-
-  getformattedTag = (val="") =>{
-    val = val.trim()
-    if(val.startsWith('#')){
-      return val;
-    }else{
-      return "#"+val;
-    }
   }
 
   onSubmitEditing(currentIndex,val) {
@@ -399,10 +411,20 @@ class CreateCommunitiesScreen extends Component {
     let tagsDisplay = [],
         displayTag ='';
     for(let i = 0 ; i < this.state.tags.length ; i++  ){
-      displayTag = this.state.tags[i];
+      displayTag = this.getformattedTag(this.state.tags[i]);
       tagsDisplay.push(this.getTagThumbnailMarkup(i,displayTag))
     }
     return tagsDisplay;
+  }
+
+
+  getformattedTag = (val="") =>{
+    val = val.trim()
+    if(val.startsWith('#')){
+      return val;
+    }else{
+      return "#"+val;
+    }
   }
 
   addAnImage = () => {

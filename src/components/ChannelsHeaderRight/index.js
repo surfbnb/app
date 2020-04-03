@@ -11,8 +11,8 @@ import { ActionSheet } from 'native-base';
 import PepoApi from '../../services/PepoApi';
 import reduxGetters from '../../services/ReduxGetters';
 import ShareOptions from '../CommonComponents/ShareOptions';
-import { fetchChannel } from '../../helpers/helpers';
 import {ostErrors} from '../../services/OstErrors';
+import AppConfig from '../../constants/AppConfig';
 
 
 class ChannelsHeaderRight extends PureComponent {
@@ -22,6 +22,19 @@ class ChannelsHeaderRight extends PureComponent {
 
   getDefaultConfig = () => {
     return {
+      adminConfig : {
+        actionConfig: {
+          0: "eidtChannel",
+          1: this.checkMuteStatus() ? 'showUnMuteChannelAlert' : 'showMuteChannelAlert',
+          2: 'showReportAlert',
+          3: 'cancel'
+        },
+        actionSheetConfig: {
+          options: ["Edit" , this.getMuteOptionText(), 'Report Community', 'Cancel'],
+          cancelButtonIndex: 3,
+          destructiveButtonIndex: 2
+        }
+      },
       memberConfig: {
         actionConfig: {
           0: this.checkMuteStatus() ? 'showUnMuteChannelAlert' : 'showMuteChannelAlert',
@@ -50,8 +63,9 @@ class ChannelsHeaderRight extends PureComponent {
   };
 
   getConfig = () => {
-    let isMember = reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId);
-    if (isMember) {
+    if( reduxGetters.isCurrentUserAdminOfChannel(this.props.channelId) ){
+      return this.getDefaultConfig().adminConfig;
+    }else if (reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId)) {
       return this.getDefaultConfig().memberConfig;
     } else {
       return this.getDefaultConfig().nonMemberConfig;
@@ -194,6 +208,13 @@ class ChannelsHeaderRight extends PureComponent {
       }
     });
   };
+
+  eidtChannel = () => {
+    this.props.navigation.push('CreateCommunitiesScreen',{
+      type : AppConfig.channelConstants.types.edit, 
+      channelId : this.props.channelId
+    });
+  }
 
   render() {
     return !this.props.isDeleted && (
