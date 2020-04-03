@@ -172,8 +172,8 @@ const AppConfig = {
   },
 
   communityBannerSize: {
-    WIDTH: 1500,
-    HEIGHT: 642
+    WIDTH: 1517,
+    HEIGHT: 650
   },
 
   videoConstant: {

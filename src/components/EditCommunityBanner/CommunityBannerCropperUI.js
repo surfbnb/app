@@ -30,7 +30,7 @@ export default class CommunityBannerCropperUI extends React.Component {
   cropImage(callback) {    
     // Get the current info of the image.
     const currentImagePosition = this.zoomViewRef.current.getImagePosition();
-    
+
     // Calculate the actual starting position / offset of the image.
     const scaledImageViewWidth = currentImagePosition.imageWidth * currentImagePosition.scale;
     const scaledImageViewHeight = currentImagePosition.imageHeight * currentImagePosition.scale;
@@ -51,7 +51,7 @@ export default class CommunityBannerCropperUI extends React.Component {
       offset: {x: x, y: y},
       size: {width: calculatedWidth, height: calculatedHeight},
       displaySize: {width:currentImagePosition.viewWidth, height: currentImagePosition.viewHeight},
-      resizeMode: 'center',
+      resizeMode: 'stretch',
     };
 
     // Crop the image.
