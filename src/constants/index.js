@@ -14,7 +14,7 @@ const BundleConstants = {
   'com.pepo.staging': {
     API_ROOT: 'https://stagingpepo.com/api/v1',
     WEB_ROOT: 'https://pepo:Pepo-Admin-20!9*@stagingpepo.com',
-    PLATFORM_API_ENDPOINT: 'https://api.ost.com/testnet/v2/',
+    PLATFORM_API_ENDPOINT: 'https://api.ost.com/testnet/v2',
     TRACKER_ENDPOINT: 'https://px.pepo.com/devp101_pixel.png',
     TOKEN_ID: '1539',
     VIEW_END_POINT: 'https://view.ost.com/testnet/',
