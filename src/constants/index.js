@@ -14,12 +14,12 @@ const BundleConstants = {
   'com.pepo.staging': {
     API_ROOT: 'https://stagingpepo.com/api/v1',
     WEB_ROOT: 'https://pepo:Pepo-Admin-20!9*@stagingpepo.com',
-    PLATFORM_API_ENDPOINT: 'https://api.stagingost.com/testnet/v2',
+    PLATFORM_API_ENDPOINT: 'https://api.ost.com/testnet/v2',
     TRACKER_ENDPOINT: 'https://px.pepo.com/devp101_pixel.png',
-    TOKEN_ID: '1185',
+    TOKEN_ID: '1539',
     TWITTER_CONSUMER_KEY: 'NEo4gEXzdQZaoTsqzpZvepfKb',
     TWITTER_CONSUMER_SECRET: 'iM5UMt4px8rwoqEoRV9gJGrJGtEoMUxOYkaWXSges7t4bk564t',
-    VIEW_END_POINT: 'https://ost:Ax23!sdQ*kN-201~96@view.stagingost.com/testnet/',
+    VIEW_END_POINT: 'https://view.ost.com/testnet/',
     DEFAULT_SPENDING_LIMIT: DefaultSpendingLimitStaging.toString( 10 ),
     MAX_SPENDING_LIMIT: MaxSpendingLimitStaging.toString( 10 ),
     DEFAULT_SESSION_KEY_EXPIRY_TIME: 60 * 60 * 1, //1 hour + buffer from config 1 hr = 2 hr
