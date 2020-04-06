@@ -84,8 +84,26 @@ class CreateCommunitiesScreen extends Component {
       showGalleryAccessModal: false
     }
 
+    this.localBannerImageUri = '';
     this.imageInfo = {};
 
+  }
+
+  componentWillUnmount() {
+    this.deleteLocalBannerImage();
+  }
+
+  async deleteLocalBannerImage() {
+    if(this.localBannerImageUri !== '') {
+      await RNFS.exists(this.localBannerImageUri)
+        .then(async (result) => {
+            if(result){
+              return RNFS.unlink(this.localBannerImageUri)
+                .catch((err) => {});
+            }
+          })
+          .catch((err) => {});
+    }
   }
 
   isCreate = () => {
@@ -394,7 +412,7 @@ class CreateCommunitiesScreen extends Component {
       Keyboard.dismiss();
     }
     else{
-      this.setState({
+      this.__setState({
         current_formField: currentIndex + 1
       });
     }
@@ -453,7 +471,7 @@ class CreateCommunitiesScreen extends Component {
           newCommunityImage: this.newCommunityImage
         });
       } else if (result == AppConfig.permisssionStatusMap.denied || result == AppConfig.permisssionStatusMap.blocked) {
-        this.setState({
+        this.__setState({
           showGalleryAccessModal: true
         });
       }
@@ -461,7 +479,7 @@ class CreateCommunitiesScreen extends Component {
   }
 
   newCommunityImage = (imageUri) => {
-    console.log('newCommunityImage: ', imageUri);
+    this.localBannerImageUri = imageUri;
     this.__setState({communityBannerUri: imageUri});
   }
 
@@ -695,7 +713,7 @@ class CreateCommunitiesScreen extends Component {
           </ScrollView>
           <AllowAccessModal
             onClose={() => {
-              this.setState({
+              this.__setState({
                 showGalleryAccessModal: false
               });
             }}
