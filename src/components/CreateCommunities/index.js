@@ -105,15 +105,15 @@ class CreateCommunitiesScreen extends Component {
   }
 
   componentWillUnmount() {
-    this.deleteLocalBannerImage();
+    this.deleteLocalBannerImage(this.localBannerImageUri);
   }
 
-  async deleteLocalBannerImage() {
-    if(this.localBannerImageUri !== '') {
-      await RNFS.exists(this.localBannerImageUri)
+  async deleteLocalBannerImage(imageUri) {
+    if(imageUri !== '') {
+      await RNFS.exists(imageUri)
         .then(async (result) => {
             if(result){
-              return RNFS.unlink(this.localBannerImageUri)
+              return RNFS.unlink(imageUri)
                 .catch((err) => {});
             }
           })
@@ -258,11 +258,11 @@ class CreateCommunitiesScreen extends Component {
     if (this.validateCommunityForm()) {
       this.beforeSubmit();
       if(this.state.communityBannerUri) {
-        this.getCleanCroppedImage().then((res)=> {
-          this.updateDataToServer();
-        }).catch(async ()=> {
-          this.onSubmitComplete();
-        });
+        this.uploadToS3(this.state.communityBannerUri)
+          .then(()=>{this.updateDataToServer()})
+          .catch(async ()=> {
+            this.onSubmitComplete();
+           });
       }else{
         this.updateDataToServer();
       }
@@ -271,27 +271,6 @@ class CreateCommunitiesScreen extends Component {
   
   beforeSubmit = () =>{
     this.__setState({ btnText: btnPostText });
-  }
-
-  getCleanCroppedImage = () => {
-    return UploadToS3.GetCleanImagePath( this.state.communityBannerUri, 
-                                  AppConfig.communityBannerSize.WIDTH,
-                                  AppConfig.communityBannerSize.HEIGHT  )
-      .then((uri) => {
-        return this.onGetCleanCroppedSuccess(uri);
-      }).catch((err) => {
-        this.onGetCleanCroppedError(err);
-        return Promise.reject(err);
-      }); 
-  };
-
-  onGetCleanCroppedSuccess = (imagePath) => {
-    this.__setState({communityBannerUri: imagePath})
-    return this.uploadToS3( imagePath )
-  }
-
-  onGetCleanCroppedError= () => {
-    this.__setState({image_error: ostErrors.getUIErrorMessage('cover_img_upload_communities')});
   }
 
   uploadToS3( imagePath ) {
@@ -518,6 +497,8 @@ class CreateCommunitiesScreen extends Component {
   }
 
   newCommunityImage = (imageUri) => {
+    // Delete the old image.
+    this.deleteLocalBannerImage(this.localBannerImageUri);
     this.localBannerImageUri = imageUri;
     this.__setState({communityBannerUri: imageUri});
   }

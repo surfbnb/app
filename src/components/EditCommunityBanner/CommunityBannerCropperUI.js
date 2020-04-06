@@ -3,6 +3,9 @@ import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import CrossIcon from '../../assets/cross_icon_white.png';
 import ZoomView from '../ZoomView';
 import ImageEditor from "@react-native-community/image-editor"; 
+import RNFS from 'react-native-fs';
+import AppConfig from '../../constants/AppConfig';
+import ImageResizer from 'react-native-image-resizer';
 
 export default class CommunityBannerCropperUI extends React.Component {
   constructor(props) {
@@ -46,22 +49,60 @@ export default class CommunityBannerCropperUI extends React.Component {
     let calculatedWidth = (currentImagePosition.viewWidth*scaleFactor)/currentImagePosition.scale;
     let calculatedHeight = (currentImagePosition.viewHeight*scaleFactor)/currentImagePosition.scale;
 
+    let displayWidth = calculatedWidth;
+    let displayHeight = calculatedHeight;
+    
+    if(currentImagePosition.viewWidth > calculatedWidth) {
+      displayWidth = currentImagePosition.viewWidth;
+      displayHeight = currentImagePosition.viewWidth;
+    }
     // Prepare the crop data.
     const cropData = {
       offset: {x: x, y: y},
       size: {width: calculatedWidth, height: calculatedHeight},
-      displaySize: {width:currentImagePosition.viewWidth, height: currentImagePosition.viewHeight},
+      displaySize: {width:displayWidth, height: displayHeight},
       resizeMode: 'stretch',
     };
 
-    // Crop the image.
-    ImageEditor.cropImage(this.props.imageUri, cropData).then(url => {
-      if(callback) {
-        callback(url);
-      }
-    })
+    ImageEditor.cropImage(this.props.imageUri, cropData)
+      .then((url) => {
+        const croppedImageUrl = url.replace("file://", "")
+        //The cropped image may be smaller than the required dimension.
+        // So resize the cropped image.
+        ImageResizer.createResizedImage(
+          croppedImageUrl,
+          AppConfig.communityBannerSize.WIDTH,
+          AppConfig.communityBannerSize.HEIGHT,
+          'JPEG',
+          25,
+          0,
+        ).then((resizedUrl) => {
+          this.deleteLocalImage(croppedImageUrl);
+          if(callback && resizedUrl !== null) {
+            callback(resizedUrl.uri);
+          }
+        }).catch(() => {
+          // Do nothing.
+        });
+      })
+      .catch(()=>{
+        // Do nothing.
+      }); 
   }
 
+  // Delete the local file.
+  deleteLocalImage(imageUri) {
+    if(imageUri !== '') {
+      RNFS.exists(imageUri)
+        .then(async (result) => {
+            if(result){
+              return RNFS.unlink(imageUri)
+                .catch((err) => {});
+            }
+          })
+          .catch((err) => {});
+    }
+  }
   // Dynamically calculate the overlay borders.
   updateOverlayLayout(event) {
     // Get the layout object from the events.
