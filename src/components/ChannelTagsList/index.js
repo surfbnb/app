@@ -25,7 +25,8 @@ class ChannelTagsList extends PureComponent {
         }  
         const selectedTag = props.selectedTag || this.allTag;
         this.state = {
-            selectedTag
+            selectedTag, 
+            ln : this.props.tagIds.length
         }
         this.initialScrollIndex = findIndex(this.props.tagIds , (id)=> (id == selectedTag.id)) || 0;
         this.setAllOption();
@@ -49,6 +50,7 @@ class ChannelTagsList extends PureComponent {
 
     componentDidUpdate(){
         this.setAllOption();
+        this.setState({ln : this.props.tagIds.length})
     }
 
     _keyExtractor = (item, index) => {
@@ -94,7 +96,7 @@ class ChannelTagsList extends PureComponent {
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
                     ref={(ref) => (this.flatlistRef = ref)}
-                    extraData={this.state.selectedTag}
+                    extraData={this.state}
                     initialScrollIndex={this.initialScrollIndex}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
