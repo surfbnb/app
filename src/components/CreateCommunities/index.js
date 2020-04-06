@@ -540,7 +540,7 @@ class CreateCommunitiesScreen extends Component {
     return <React.Fragment>
       <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>Community Name</Text>
-        <Text style={inlineStyles.labelHint}>Give your community an identity! (Max 20 chars)</Text>
+        <Text style={inlineStyles.labelHint}>Give your community an identity! (Max 25 chars)</Text>
       </View>
       <View style={inlineStyles.inputWrapper}>
         <View style={inlineStyles.formInputWrapper}>
