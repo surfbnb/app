@@ -22,7 +22,12 @@ export default class VideoLenthPreferences extends PureComponent{
       showSeconds:false,
       videoMaxLength : this.props.getInitialPref()
     }
-    this.translateX = new Animated.Value(0);
+    if(props.currentVideoMaxLength === 30){
+      this.translateX = new Animated.Value(0);
+    }else{
+      this.translateX = new Animated.Value(-(FOOTER_TAB_WIDTH+ITEM_MARGIN));
+    }
+
     this.fadeValue = new Animated.Value(1);
   }
 
