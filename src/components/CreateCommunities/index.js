@@ -671,6 +671,9 @@ class CreateCommunitiesScreen extends Component {
         <Text style={inlineStyles.label}>Community Tags</Text>
         <Text style={inlineStyles.labelHint}>These tags place videos in your community. Learn More</Text>
       </View>
+      <View style={inlineStyles.tagsWrapper}>
+        {this.showAddedTags()}
+      </View>
       <View style={inlineStyles.inputWrapper}>
         <Text style={inlineStyles.hastagPrefilled}>#</Text>
         <View style={inlineStyles.formInputWrapper}>
@@ -746,9 +749,7 @@ class CreateCommunitiesScreen extends Component {
               {this.communityName()}
               {this.communityTagline()}
               {this.aboutTheCommunity()}
-              <View style={inlineStyles.tagsWrapper}>
-                {this.showAddedTags()}
-              </View>
+
 
               {this.communityTags()}
               <Text style={inlineStyles.errorText}>{this.state.general_error} </Text>
