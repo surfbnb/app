@@ -92,7 +92,8 @@ class CreateCommunitiesScreen extends Component {
       inputTagValue : null,
       communityBannerUri : null,
       current_formField : 0,
-      showGalleryAccessModal: false
+      showGalleryAccessModal: false,
+      isSubmitting : false
     }
 
     this.localBannerImageUri = '';
@@ -248,6 +249,9 @@ class CreateCommunitiesScreen extends Component {
 
   onSubmit() {
     this.clearErrors();
+    this.__setState({
+      isSubmitting:true
+    })
     if (this.validateCommunityForm()) {
       this.beforeSubmit();
       if(this.state.communityBannerUri) {
@@ -342,6 +346,9 @@ class CreateCommunitiesScreen extends Component {
   }
 
   onSubmitSuccess = (res) => {
+    this.__setState({
+      isSubmitting:false
+    });
     if(this.isCreate()){
       const channelId = deepGet(res , "data.channel.id");
       this.props.navigation.replace("ChannelsScreen", {channelId:channelId} );
@@ -352,11 +359,11 @@ class CreateCommunitiesScreen extends Component {
 
   onSubmitError = (res) => {
     const errorMsg = ostErrors.getErrorMessage(res);
-    this.__setState({ server_errors: res, general_error: errorMsg });
+    this.__setState({ server_errors: res, general_error: errorMsg, isSubmitting:false });
   }
 
   onSubmitComplete = () => {
-    this.__setState({ btnText: btnPreText });
+    this.__setState({ btnText: btnPreText, isSubmitting:false });
   }
 
   onNameChange = ( name ) =>{
@@ -464,7 +471,9 @@ class CreateCommunitiesScreen extends Component {
 
   addAnImage = () => {
     if(this.state.communityBannerUri || this.state.coverImage ) {
-      return <TouchableWithoutFeedback onPress={this.onImageEditClicked}>
+      return <TouchableWithoutFeedback
+                disabled={this.state.isSubmitting}
+                onPress={this.onImageEditClicked}>
                 <Image
                   source={{ uri: this.state.communityBannerUri || this.state.coverImage }}
                   style={{width:'100%', aspectRatio: 21/9}} />
@@ -525,7 +534,7 @@ class CreateCommunitiesScreen extends Component {
         <View style={inlineStyles.formInputWrapper}>
           <FormInput
             maxLength={NAME_MAXLENGTH}
-            editable={true}
+            editable={!this.state.isSubmitting}
             onChangeText={this.onNameChange}
             fieldName="channel_name"
             textContentType="none"
@@ -567,7 +576,7 @@ class CreateCommunitiesScreen extends Component {
         <View style={inlineStyles.formInputWrapper}>
           <FormInput
             maxLength={TAGLINE_MAXLENGTH}
-            editable={true}
+            editable={!this.state.isSubmitting}
             onChangeText={this.onTaglineChange}
             fieldName="channel_tagline"
             textContentType="none"
@@ -608,7 +617,7 @@ class CreateCommunitiesScreen extends Component {
         <View style={inlineStyles.formInputWrapper}>
           <FormInput
             maxLength={ABOUT_INFO_MAXLENGTH}
-            editable={true}
+            editable={!this.state.isSubmitting}
             multiline={true}
             onChangeText={this.onAboutInfoChange}
             fieldName="channel_description"
@@ -652,7 +661,7 @@ class CreateCommunitiesScreen extends Component {
         <View style={inlineStyles.formInputWrapper}>
           <FormInput
             ref={input=>{this.tagsInputRef = input}}
-            editable={true}
+            editable={!this.state.isSubmitting}
             fieldName="channel_tags"
             onChangeText={this.onTagsChange}
             textContentType="none"
@@ -694,6 +703,7 @@ class CreateCommunitiesScreen extends Component {
               {displayTag}
         </Text>
         <TouchableOpacity
+          disabled={this.state.isSubmitting}
           onPress={()=> {this.onRemoveTagPress(index)}}
           style={inlineStyles.crosIconBackground}
         ><Text style={inlineStyles.crossIcon}>&#10005;</Text>
@@ -732,6 +742,7 @@ class CreateCommunitiesScreen extends Component {
                 style={inlineStyles.linearGradient}
               >
                 <TouchableOpacity
+                  disabled={this.state.isSubmitting}
                   onPress={MultipleClickHandler(() => this.onSubmit())}
                   style={[Theme.Button.btn, { borderWidth: 0 }]}
                 >
@@ -744,6 +755,7 @@ class CreateCommunitiesScreen extends Component {
                   </Text>
                 </TouchableOpacity>
               </LinearGradient>
+              <Text style={inlineStyles.errorText}>{this.state.general_error} </Text>
             </View>
           </ScrollView>
           <AllowAccessModal

@@ -134,6 +134,12 @@ let stylesMap = {
   crossIcon:{
     color:Colors.white,
     fontSize:11,
+  },
+  errorText: {
+    marginTop:5,
+    color: Colors.primary,
+    fontSize: 12,
+    textAlign:'center'
   }
 };
 
