@@ -99,7 +99,6 @@ export default class VideoLenthPreferences extends PureComponent{
   }
 
   render(){
-    if(!this.state.showPreferences) return null;
     return (
       <React.Fragment>
         <Animated.View
@@ -128,6 +127,5 @@ export default class VideoLenthPreferences extends PureComponent{
 VideoLenthPreferences.defaultProps = {
   getInitialPref : () => {
     return AppConfig.videoRecorderConstants.videoLenthPreferences['30'];
-  },
-  showPreferences : true
+  }
 }
