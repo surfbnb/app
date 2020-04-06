@@ -9,8 +9,10 @@ import findIndex from "lodash/findIndex";
 
 const defaultArray  = [];
 const mapStateToProps = (state, ownProps) => {
+    const tagIds =  reduxGetter.getChannelTagIds(ownProps.channelId, state) || defaultArray
     return {
-      tagIds: reduxGetter.getChannelTagIds(ownProps.channelId, state) || defaultArray
+      tagIds: tagIds,
+      tagIdsLn : tagIds.length
     };
   };
 
@@ -25,32 +27,16 @@ class ChannelTagsList extends PureComponent {
         }  
         const selectedTag = props.selectedTag || this.allTag;
         this.state = {
-            selectedTag, 
-            ln : this.props.tagIds.length
+            selectedTag
         }
         this.initialScrollIndex = findIndex(this.props.tagIds , (id)=> (id == selectedTag.id)) || 0;
-        this.setAllOption();
         this.setInitialSelectedTag();
-    }
-
-    setAllOption = () => {
-        if(this.props.tagIds.length <= 1){
-            this.tagIds = this.props.tagIds
-        }else{
-            this.tagIds = this.props.tagIds.slice(0);
-            this.tagIds.unshift('0');
-        }      
     }
 
     setInitialSelectedTag(){
         if(this.props.tagIds.length == 1){
             this.state.selectedTag = reduxGetter.getHashTag(this.props.tagIds[0]);
         }
-    }
-
-    componentDidUpdate(){
-        this.setAllOption();
-        this.setState({ln : this.props.tagIds.length})
     }
 
     _keyExtractor = (item, index) => {
@@ -86,17 +72,26 @@ class ChannelTagsList extends PureComponent {
         console.log("======onScrollToIndexFailed=====" , info );
     }
 
+    getAllOption = () => {
+        const tagIds = this.props.tagIds.slice(0);
+        if(tagIds.length > 1){
+            tagIds.unshift(0);
+        }
+        return tagIds;
+    }
+    
     render() {
-        return this.tagIds && (
+        const tagIds = this.getAllOption();
+        return tagIds && (
             <View style={inlineStyles.tagListWrapper}>
                 <FlatList
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    data={this.tagIds}
+                    data={tagIds}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
                     ref={(ref) => (this.flatlistRef = ref)}
-                    extraData={this.state}
+                    extraData={this.state.selectedTag}
                     initialScrollIndex={this.initialScrollIndex}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
