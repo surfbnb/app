@@ -242,7 +242,9 @@ class CreateCommunitiesScreen extends Component {
       if(this.state.communityBannerUri) {
         this.getCleanCroppedImage().then((res)=> {
           this.updateDataToServer();
-        }).catch(()=> {});
+        }).catch(async ()=> {
+          this.onSubmitComplete();
+        });
       }else{
         this.updateDataToServer();
       }
