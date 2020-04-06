@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
-import {View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity,Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native';
 import Colors from "../../theme/styles/Colors";
 import inlineStyles from "../CreateCommunities/styles";
 import uploadPic from "../../assets/new-community-upload-icon.png";
@@ -690,6 +701,7 @@ class CreateCommunitiesScreen extends Component {
     if(!this.isCreate() && !this.isEdit()) return <View style={{flexGrow: 1, backgroundColor: Colors.white, flex:1 }} />;
     return (
         <SafeAreaView forceInset={{ top: 'never' }} style={inlineStyles.safeAreaView}>
+          <KeyboardAvoidingView behavior={Platform.OS == 'android' ?'padding' :''} style={{ flex: 1 }} keyboardVerticalOffset={30}>
           <ScrollView
             contentContainerStyle=
               {inlineStyles.scrollViewContainerStyle}
@@ -742,6 +754,7 @@ class CreateCommunitiesScreen extends Component {
             imageSrc={GalleryIcon}
             imageSrcStyle={{ height: 40, width: 40 }}
           />
+          </KeyboardAvoidingView>
         </SafeAreaView>
     );
   }
