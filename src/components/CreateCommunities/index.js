@@ -483,6 +483,20 @@ class CreateCommunitiesScreen extends Component {
     this.__setState({communityBannerUri: imageUri});
   }
 
+  onTagsBlur = () => {
+    if(this.state.tags.length >= MAX_NO_OF_TAGS ) return;
+    let tagInputValue = this.state.inputTagValue;
+    if(tagInputValue){
+      const newState = {
+        tags_error: null
+      };
+      this.addTagToTagArray(tagInputValue,newState);
+    }
+    this.__setState({
+      inputTagValue :''
+    })
+  }
+
   communityName = () => {
     return <React.Fragment>
       <View style={inlineStyles.communityLabelWrapper}>
@@ -641,6 +655,7 @@ class CreateCommunitiesScreen extends Component {
             value={this.state.inputTagValue}
             errorMsg={this.state.tags_error}
             serverErrors={this.state.server_errors}
+            onBlur={this.onTagsBlur}
           />
         </View>
         <View>
