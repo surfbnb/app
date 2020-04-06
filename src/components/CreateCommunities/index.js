@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
-import {View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity,Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native';
 import Colors from "../../theme/styles/Colors";
 import inlineStyles from "../CreateCommunities/styles";
 import uploadPic from "../../assets/new-community-upload-icon.png";
@@ -83,7 +94,8 @@ class CreateCommunitiesScreen extends Component {
       inputTagValue : null,
       communityBannerUri : null,
       current_formField : 0,
-      showGalleryAccessModal: false
+      showGalleryAccessModal: false,
+      isSubmitting : false
     }
 
     this.localBannerImageUri = '';
@@ -239,6 +251,9 @@ class CreateCommunitiesScreen extends Component {
 
   onSubmit() {
     this.clearErrors();
+    this.__setState({
+      isSubmitting:true
+    })
     if (this.validateCommunityForm()) {
       this.beforeSubmit();
       if(this.state.communityBannerUri) {
@@ -333,16 +348,18 @@ class CreateCommunitiesScreen extends Component {
   }
 
   onSubmitSuccess = (res) => {
+    this.__setState({
+      isSubmitting:false
+    });
     if(this.isCreate()){
       Toast.show({
         text: AppConfig.channelConstants.createSuccessMsg,
         icon: 'success'
       });
-      this.props.navigation.goBack();
       setTimeout(()=> {
         const channelId = deepGet(res , "data.channel.id");
-        this.props.navigation.push("ChannelsScreen", {channelId:channelId} );
-      }, 100);
+        this.props.navigation.replace("ChannelsScreen", {channelId:channelId} );
+      }, 300);
     }else if(this.isEdit()){
       Toast.show({
         text: AppConfig.channelConstants.editSuccessMsg,
@@ -356,11 +373,11 @@ class CreateCommunitiesScreen extends Component {
 
   onSubmitError = (res) => {
     const errorMsg = ostErrors.getErrorMessage(res);
-    this.__setState({ server_errors: res, general_error: errorMsg });
+    this.__setState({ server_errors: res, general_error: errorMsg, isSubmitting:false });
   }
 
   onSubmitComplete = () => {
-    this.__setState({ btnText: btnPreText });
+    this.__setState({ btnText: btnPreText, isSubmitting:false });
   }
 
   onNameChange = ( name ) =>{
@@ -408,10 +425,18 @@ class CreateCommunitiesScreen extends Component {
   }
 
   addTagToTagArray = ( tag=""  , newState={}) => {
-    let tagsArray = this.state.tags || [];
-    tagsArray.push(tag.trim());
-    newState["tags"] = tagsArray;
-    this.__setState(newState);
+    tag = tag.trim();
+    // Check if the tag has any character other than just space.
+    if(tag.length > 0 ) {
+      let tagsArray = this.state.tags || [];
+      // Check if the tag is already present.
+      const index = tagsArray.findIndex(item => tag.toLowerCase() === item.toLowerCase());
+      if(index < 0) {
+        tagsArray.push(tag.trim());
+        newState["tags"] = tagsArray;
+        this.__setState(newState);
+      }
+    }
   }
 
   onSubmitEditing(currentIndex,val) {
@@ -460,7 +485,9 @@ class CreateCommunitiesScreen extends Component {
 
   addAnImage = () => {
     if(this.state.communityBannerUri || this.state.coverImage ) {
-      return <TouchableWithoutFeedback onPress={this.onImageEditClicked}>
+      return <TouchableWithoutFeedback
+                disabled={this.state.isSubmitting}
+                onPress={this.onImageEditClicked}>
                 <Image
                   source={{ uri: this.state.communityBannerUri || this.state.coverImage }}
                   style={{width:'100%', aspectRatio: 21/9}} />
@@ -521,7 +548,7 @@ class CreateCommunitiesScreen extends Component {
         <View style={inlineStyles.formInputWrapper}>
           <FormInput
             maxLength={NAME_MAXLENGTH}
-            editable={true}
+            editable={!this.state.isSubmitting}
             onChangeText={this.onNameChange}
             fieldName="channel_name"
             textContentType="none"
@@ -563,7 +590,7 @@ class CreateCommunitiesScreen extends Component {
         <View style={inlineStyles.formInputWrapper}>
           <FormInput
             maxLength={TAGLINE_MAXLENGTH}
-            editable={true}
+            editable={!this.state.isSubmitting}
             onChangeText={this.onTaglineChange}
             fieldName="channel_tagline"
             textContentType="none"
@@ -604,7 +631,7 @@ class CreateCommunitiesScreen extends Component {
         <View style={inlineStyles.formInputWrapper}>
           <FormInput
             maxLength={ABOUT_INFO_MAXLENGTH}
-            editable={true}
+            editable={!this.state.isSubmitting}
             multiline={true}
             onChangeText={this.onAboutInfoChange}
             fieldName="channel_description"
@@ -612,6 +639,7 @@ class CreateCommunitiesScreen extends Component {
             style={[inlineStyles.customTextInputBox,inlineStyles.customTextAreaBox]}
             placeholder="Write the description here..."
             returnKeyType="next"
+            textAlignVertical={'top'}
             returnKeyLabel="Next"
             placeholderTextColor="'rgba(42, 41, 59, 0.4);'"
             blurOnSubmit={false}
@@ -647,7 +675,7 @@ class CreateCommunitiesScreen extends Component {
         <View style={inlineStyles.formInputWrapper}>
           <FormInput
             ref={input=>{this.tagsInputRef = input}}
-            editable={true}
+            editable={!this.state.isSubmitting}
             fieldName="channel_tags"
             onChangeText={this.onTagsChange}
             textContentType="none"
@@ -689,6 +717,7 @@ class CreateCommunitiesScreen extends Component {
               {displayTag}
         </Text>
         <TouchableOpacity
+          disabled={this.state.isSubmitting}
           onPress={()=> {this.onRemoveTagPress(index)}}
           style={inlineStyles.crosIconBackground}
         ><Text style={inlineStyles.crossIcon}>&#10005;</Text>
@@ -701,6 +730,7 @@ class CreateCommunitiesScreen extends Component {
     if(!this.isCreate() && !this.isEdit()) return <View style={{flexGrow: 1, backgroundColor: Colors.white, flex:1 }} />;
     return (
         <SafeAreaView forceInset={{ top: 'never' }} style={inlineStyles.safeAreaView}>
+          <KeyboardAvoidingView behavior={Platform.OS == 'android' ?'padding' :''} style={{ flex: 1 }} keyboardVerticalOffset={30}>
           <ScrollView
             contentContainerStyle=
               {inlineStyles.scrollViewContainerStyle}
@@ -718,6 +748,7 @@ class CreateCommunitiesScreen extends Component {
               </View>
 
               {this.communityTags()}
+              <Text style={inlineStyles.errorText}>this is error{this.state.general_error} </Text>
               <LinearGradient
                 colors={['#ff7499', '#ff5566']}
                 locations={[0, 1]}
@@ -726,6 +757,7 @@ class CreateCommunitiesScreen extends Component {
                 style={inlineStyles.linearGradient}
               >
                 <TouchableOpacity
+                  disabled={this.state.isSubmitting}
                   onPress={MultipleClickHandler(() => this.onSubmit())}
                   style={[Theme.Button.btn, { borderWidth: 0 }]}
                 >
@@ -753,6 +785,7 @@ class CreateCommunitiesScreen extends Component {
             imageSrc={GalleryIcon}
             imageSrcStyle={{ height: 40, width: 40 }}
           />
+          </KeyboardAvoidingView>
         </SafeAreaView>
     );
   }
