@@ -404,10 +404,18 @@ class CreateCommunitiesScreen extends Component {
   }
 
   addTagToTagArray = ( tag=""  , newState={}) => {
-    let tagsArray = this.state.tags || [];
-    tagsArray.push(tag.trim());
-    newState["tags"] = tagsArray;
-    this.__setState(newState);
+    tag = tag.trim();
+    // Check if the tag has any character other than just space.
+    if(tag.length > 0 ) {
+      let tagsArray = this.state.tags || [];
+      // Check if the tag is already present.
+      const index = tagsArray.findIndex(item => tag.toLowerCase() === item.toLowerCase());
+      if(index < 0) {
+        tagsArray.push(tag.trim());
+        newState["tags"] = tagsArray;
+        this.__setState(newState);
+      }
+    }
   }
 
   onSubmitEditing(currentIndex,val) {
