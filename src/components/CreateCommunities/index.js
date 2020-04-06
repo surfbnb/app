@@ -734,6 +734,7 @@ class CreateCommunitiesScreen extends Component {
               </View>
 
               {this.communityTags()}
+              <Text style={inlineStyles.errorText}>this is error{this.state.general_error} </Text>
               <LinearGradient
                 colors={['#ff7499', '#ff5566']}
                 locations={[0, 1]}
@@ -755,7 +756,6 @@ class CreateCommunitiesScreen extends Component {
                   </Text>
                 </TouchableOpacity>
               </LinearGradient>
-              <Text style={inlineStyles.errorText}>{this.state.general_error} </Text>
             </View>
           </ScrollView>
           <AllowAccessModal
