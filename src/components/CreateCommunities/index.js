@@ -386,15 +386,12 @@ class CreateCommunitiesScreen extends Component {
       tags_error: null
     };
 
-    if(!this.isValidChar(tagInputvalue)){
-      newState["inputTagValue"] = "";
-      this.addTagToTagArray( tagInputvalue ,  newState);
-      return;
-    }
-
     newState["inputTagValue"] = tagInputvalue;
-
-    this.__setState(newState);
+    if(!this.isValidChar(tagInputvalue)){
+      this.addTagToTagArray( tagInputvalue ,  newState);
+    } else {
+      this.__setState(newState);
+    }
   }
 
   isValidChar(val) {
@@ -410,11 +407,14 @@ class CreateCommunitiesScreen extends Component {
       // Check if the tag is already present.
       const index = tagsArray.findIndex(item => tag.toLowerCase() === item.toLowerCase());
       if(index < 0) {
+        newState["inputTagValue"] = "";
         tagsArray.push(tag.trim());
         newState["tags"] = tagsArray;
-        this.__setState(newState);
+      } else {
+        newState["inputTagValue"] = tag;
       }
-    }
+    } 
+    this.__setState(newState);
   }
 
   onSubmitEditing(currentIndex,val) {
