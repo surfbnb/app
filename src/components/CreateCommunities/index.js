@@ -356,10 +356,8 @@ class CreateCommunitiesScreen extends Component {
         text: AppConfig.channelConstants.createSuccessMsg,
         icon: 'success'
       });
-      setTimeout(()=> {
-        const channelId = deepGet(res , "data.channel.id");
-        this.props.navigation.replace("ChannelsScreen", {channelId:channelId} );
-      }, 300);
+      const channelId = deepGet(res , "data.channel.id");
+      this.props.navigation.replace("ChannelsScreen", {channelId:channelId} );
     }else if(this.isEdit()){
       Toast.show({
         text: AppConfig.channelConstants.editSuccessMsg,
@@ -472,7 +470,6 @@ class CreateCommunitiesScreen extends Component {
     }
     return tagsDisplay;
   }
-
 
   getformattedTag = (val="") =>{
     val = val.trim()
