@@ -57,7 +57,7 @@ const TabMap = {
   },
   "channels": {
     id: CHANNEL_KIND,
-    baseUrl : '/search/channels',
+    baseUrl : '/search/channels/trending',
     title: 'Communities',
     "queryParam": "q",
     "noResultsData": {
