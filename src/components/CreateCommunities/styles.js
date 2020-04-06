@@ -132,8 +132,8 @@ let stylesMap = {
     justifyContent:'center'
   },
   crossIcon:{
-    color:Colors.white,
-    fontSize:11,
+    height:10,
+    width:10
   },
   errorText: {
     marginTop:5,

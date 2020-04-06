@@ -32,6 +32,7 @@ import ImageSize from 'react-native-image-size';
 import UploadToS3 from '../../services/UploadToS3';
 import InlineError from '../../theme/components/FormInput/inlineError';
 import { fetchChannel } from '../../helpers/helpers';
+import CrossIconTags from '../../assets/cross_icon_tags.png'
 import deepGet from "lodash/get";
 
 import Toast from '../../theme/components/NotificationToast';
@@ -717,7 +718,8 @@ class CreateCommunitiesScreen extends Component {
           disabled={this.state.isSubmitting}
           onPress={()=> {this.onRemoveTagPress(index)}}
           style={inlineStyles.crosIconBackground}
-        ><Text style={inlineStyles.crossIcon}>&#10005;</Text>
+        >
+          <Image style={inlineStyles.crossIcon} source={CrossIconTags}></Image>
         </TouchableOpacity>
       </View>
     )
@@ -745,7 +747,7 @@ class CreateCommunitiesScreen extends Component {
               </View>
 
               {this.communityTags()}
-              <Text style={inlineStyles.errorText}>this is error{this.state.general_error} </Text>
+              <Text style={inlineStyles.errorText}>{this.state.general_error} </Text>
               <LinearGradient
                 colors={['#ff7499', '#ff5566']}
                 locations={[0, 1]}
