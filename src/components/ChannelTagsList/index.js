@@ -56,7 +56,7 @@ class ChannelTagsList extends PureComponent {
     };
 
     isSelected = (tagId) => {
-       return this.state.selectedTag.id == tagId;
+       return this.state.selectedTag && this.state.selectedTag.id == tagId;
     }
 
     onItemClicked = (tag) => {

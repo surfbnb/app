@@ -79,7 +79,8 @@ const backendToAppEntities = {
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.
 const knownSinglularEntities = {
-  user_profile: 'user_profiles'
+  user_profile: 'user_profiles', 
+  'channel' : 'channel'
 };
 
 const dispatchEntities = (data) => {

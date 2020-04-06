@@ -23,12 +23,14 @@ import InlineError from '../../theme/components/FormInput/inlineError';
 import { fetchChannel } from '../../helpers/helpers';
 import deepGet from "lodash/get";
 
-const btnPreText = AppConfig.communitiesConstants.btnPreText,
-      btnPostText = AppConfig.communitiesConstants.btnPostText,
-      MAX_NO_OF_TAGS = AppConfig.communitiesConstants.MAX_NO_OF_TAGS,
-      NAME_MAXLENGTH = AppConfig.communitiesConstants.NAME_MAXLENGTH,
-      TAGLINE_MAXLENGTH = AppConfig.communitiesConstants.TAGLINE_MAXLENGTH,
-      ABOUT_INFO_MAXLENGTH = AppConfig.communitiesConstants.ABOUT_INFO_MAXLENGTH;
+import Toast from '../../theme/components/NotificationToast';
+
+const btnPreText = AppConfig.channelConstants.btnPreText,
+      btnPostText = AppConfig.channelConstants.btnPostText,
+      MAX_NO_OF_TAGS = AppConfig.channelConstants.MAX_NO_OF_TAGS,
+      NAME_MAXLENGTH = AppConfig.channelConstants.NAME_MAXLENGTH,
+      TAGLINE_MAXLENGTH = AppConfig.channelConstants.TAGLINE_MAXLENGTH,
+      ABOUT_INFO_MAXLENGTH = AppConfig.channelConstants.ABOUT_INFO_MAXLENGTH;
 
 
 class CreateCommunitiesScreen extends Component {
@@ -332,13 +334,23 @@ class CreateCommunitiesScreen extends Component {
 
   onSubmitSuccess = (res) => {
     if(this.isCreate()){
+      Toast.show({
+        text: AppConfig.channelConstants.createSuccessMsg,
+        icon: 'success'
+      });
       this.props.navigation.goBack();
       setTimeout(()=> {
         const channelId = deepGet(res , "data.channel.id");
         this.props.navigation.push("ChannelsScreen", {channelId:channelId} );
       }, 100);
     }else if(this.isEdit()){
-      this.props.navigation.goBack();
+      Toast.show({
+        text: AppConfig.channelConstants.editSuccessMsg,
+        icon: 'success'
+      });
+      fetchChannel(this.channelId,  null, null, ()=> {
+        this.props.navigation.goBack();
+      });
     }
   }
 
