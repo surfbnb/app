@@ -88,7 +88,7 @@ let stylesMap = {
     alignSelf:'flex-start'
   },
   dynamicCount:{
-    fontSize:14,
+    fontSize:12,
     paddingRight:5,
     color:'rgba(42, 41, 59, 0.4);',
     flex:0,
@@ -138,8 +138,13 @@ let stylesMap = {
   errorText: {
     marginTop:5,
     color: Colors.primary,
-    fontSize: 12,
+    fontSize: 11,
     textAlign:'center'
+  },
+  errorInForminput:{
+    fontSize:11,
+    marginTop:5,
+    marginLeft:5
   }
 };
 

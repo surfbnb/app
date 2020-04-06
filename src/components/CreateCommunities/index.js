@@ -568,6 +568,7 @@ class CreateCommunitiesScreen extends Component {
             value={this.state.name}
             errorMsg={this.state.name_error}
             serverErrors={this.state.server_errors}
+            errorStyle={inlineStyles.errorInForminput}
           />
         </View>
 
@@ -610,6 +611,7 @@ class CreateCommunitiesScreen extends Component {
             value={this.state.tagline}
             errorMsg={this.state.tagline_error}
             serverErrors={this.state.server_errors}
+            errorStyle={inlineStyles.errorInForminput}
           />
         </View>
         <View>
@@ -653,6 +655,7 @@ class CreateCommunitiesScreen extends Component {
             value={this.state.about_info}
             errorMsg={this.state.about_info_error}
             serverErrors={this.state.server_errors}
+            errorStyle={inlineStyles.errorInForminput}
           />
         </View>
         <View>
@@ -696,6 +699,7 @@ class CreateCommunitiesScreen extends Component {
             errorMsg={this.state.tags_error}
             serverErrors={this.state.server_errors}
             onBlur={this.onTagsBlur}
+            errorStyle={inlineStyles.errorInForminput}
           />
         </View>
         <View>
@@ -735,7 +739,7 @@ class CreateCommunitiesScreen extends Component {
               {inlineStyles.scrollViewContainerStyle}
             showsVerticalScrollIndicator={false}>
             {this.addAnImage()}
-            <InlineError style={{paddingLeft : 15, paddingTop: 5}}
+            <InlineError style={[{paddingLeft : 15, paddingTop: 5},inlineStyles.errorInForminput]}
                          fieldName={["cover_image_url" ,"cover_image_file_size" , "cover_image_height", "cover_image_width"]}
                          errorMsg={this.state.image_error} serverErrors={this.state.server_errors}/>
             <View style={inlineStyles.formWrapper}>
