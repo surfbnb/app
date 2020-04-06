@@ -21,7 +21,8 @@ let stylesMap = {
   tagsWrapper:{
     flexDirection:'row',
     flex:1,
-    flexWrap:'wrap'
+    flexWrap:'wrap',
+    marginVertical:10
   },
   linearGradient:{ marginTop: 25, borderRadius: 3 },
   gradientBtnText:{ fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' },
@@ -106,8 +107,8 @@ let stylesMap = {
   tagThumbnail:{
     borderWidth:1,
     borderColor:Colors.wildWatermelon,
-    padding:5,
     borderRadius:20,
+    paddingHorizontal:3,
     margin:3,
     flexDirection:'row',
     alignItems:'center',

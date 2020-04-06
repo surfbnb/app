@@ -362,7 +362,8 @@ class VideoRecorder extends Component {
               {/*{this.renderModeRow()}*/}
             </View>
           </View>
-          {this.state.showDurationPreference && <VideoLenthPreferences onChange={this.setCurrentVideoMaxLength}/>}
+         {this.state.showDurationPreference && <VideoLenthPreferences getInitialPref={this.getCurrentVideoMaxLength}
+                                onChange={this.setCurrentVideoMaxLength}/>}
         </React.Fragment>
       );
     }

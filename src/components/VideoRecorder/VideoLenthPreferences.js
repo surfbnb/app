@@ -20,7 +20,7 @@ export default class VideoLenthPreferences extends PureComponent{
     super(props);
     this.state = {
       showSeconds:false,
-      videoMaxLength : AppConfig.videoRecorderConstants.videoLenthPreferences['30']
+      videoMaxLength : this.props.getInitialPref()
     }
     this.translateX = new Animated.Value(0);
     this.fadeValue = new Animated.Value(1);
@@ -99,6 +99,7 @@ export default class VideoLenthPreferences extends PureComponent{
   }
 
   render(){
+    if(!this.state.showPreferences) return null;
     return (
       <React.Fragment>
         <Animated.View
@@ -121,11 +122,12 @@ export default class VideoLenthPreferences extends PureComponent{
         )}
       </React.Fragment>
     )
-
   }
 }
 
-/**
- * TODO @Shraddha 
- * Object loop Buttons creation 
- **/
+VideoLenthPreferences.defaultProps = {
+  getInitialPref : () => {
+    return AppConfig.videoRecorderConstants.videoLenthPreferences['30'];
+  },
+  showPreferences : true
+}
