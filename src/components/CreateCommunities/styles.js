@@ -44,11 +44,14 @@ let stylesMap = {
   },
   label:{
     color: Colors.valhalla,
-    fontFamily: 'AvenirNext-Medium'
+    fontFamily: 'AvenirNext-Medium',
+    fontWeight:'600',
+    fontSize:12
   },
   labelHint: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: '300',
+    fontFamily: 'AvenirNext-Regular',
     color: 'rgba(42, 41, 59, 0.4);'
   },
   customTextInputBox: {
@@ -70,10 +73,10 @@ let stylesMap = {
 
   },
   customTextAreaBox:{
-    height:150,
+    height:120,
   },
   textAreaDynamicCountHeight:{
-    height: 150,
+    height: 120,
   },
   hastagPrefilled:{
     fontSize:14,
@@ -86,6 +89,7 @@ let stylesMap = {
   },
   dynamicCount:{
     fontSize:14,
+    paddingRight:5,
     color:'rgba(42, 41, 59, 0.4);',
     flex:0,
     height: 28,

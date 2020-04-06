@@ -600,6 +600,7 @@ class CreateCommunitiesScreen extends Component {
             style={[inlineStyles.customTextInputBox,inlineStyles.customTextAreaBox]}
             placeholder="Write the description here..."
             returnKeyType="next"
+            textAlignVertical={'top'}
             returnKeyLabel="Next"
             placeholderTextColor="'rgba(42, 41, 59, 0.4);'"
             blurOnSubmit={false}
