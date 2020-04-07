@@ -69,6 +69,7 @@ const backendToAppEntities = {
   channel_stats: 'channel_stat_entities',  
   channel_stat: 'channel_stat_entities',  
   channel_taglines: 'channel_tagline_entities',  
+  channel_allowed_actions: 'channel_allowed_action_entities',
   current_user_channel_relations: 'current_user_channel_relation_entities',  
   channel_user_relations: {
     key :  'channel_user_relation_entities', 

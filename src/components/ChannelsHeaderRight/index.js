@@ -24,18 +24,16 @@ class ChannelsHeaderRight extends PureComponent {
     const optionsArray = [] ,  actionConfig ={} , actionSheetConfig ={ options: [] },
           isAdmin = reduxGetters.isCurrentUserAdminOfChannel(this.props.channelId) ,
           isMember = reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId) ,
-          canEdit = true
+          canEdit = reduxGetters.isCurrentUserEditChannel(this.props.channelId) 
           ;
 
-    if(  isAdmin ){
-        if(canEdit){
-          optionsArray.push({
-            text: "Edit Community",
-            action : "eidtChannel"
-          })
-        }
-    } 
-    
+    if(canEdit){
+      optionsArray.push({
+        text: "Edit Community",
+        action : "eidtChannel"
+      })
+    }
+   
     if ( isMember ) {
       optionsArray.push({
         text: this.getMuteOptionText(),
