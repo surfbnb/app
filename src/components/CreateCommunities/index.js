@@ -165,8 +165,8 @@ class CreateCommunitiesScreen extends Component {
   }
 
   getChannelTags = () => {
-    let tags = ReduxGetters.getChannelTagIds(this.channelId)
-        tagNames = [] , currTag = null 
+    let tags = ReduxGetters.getChannelTagIds(this.channelId) || []
+        ,currTag = null 
      ; 
      return tags.map((item)=> {
         currTag = ReduxGetters.getHashTag(item) || {} ; 
