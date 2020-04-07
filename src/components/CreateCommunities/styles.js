@@ -90,12 +90,14 @@ let stylesMap = {
   },
   dynamicCount:{
     fontSize:12,
-    paddingRight:5,
-    color:'rgba(42, 41, 59, 0.4);',
-    flex:0,
-    height: 28,
+    color:'rgba(42, 41, 59, 0.4);'
+  },
+  dynamicCountWrapper:{
     borderBottomWidth:1,
     borderBottomColor: Colors.seaMist,
+    flex:0,
+    height:28,
+    paddingRight:5
   },
   inputWrapper:{
     flexDirection:'row'
