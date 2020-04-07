@@ -220,6 +220,7 @@ class CreateCommunitiesScreen extends Component {
       this.__setState({
         tags_error: ostErrors.getUIErrorMessage('tags_req')
       });
+      isValid = false;
     }
 
     return isValid;
@@ -256,18 +257,22 @@ class CreateCommunitiesScreen extends Component {
       this.beforeSubmit();
       if(this.state.communityBannerUri) {
         this.uploadToS3(this.state.communityBannerUri)
-          .then(()=>{this.updateDataToServer()})
-          .catch(async ()=> {
+          .then(()=>{
+            return this.updateDataToServer() ;
+          }).catch(()=> {})
+          .finally(()=> {
             this.onSubmitComplete();
-           });
+          });
       }else{
-        this.updateDataToServer();
+        this.updateDataToServer().finally(()=>{
+          this.onSubmitComplete();
+        })
       }
     }
   }
   
   beforeSubmit = () =>{
-    this.__setState({ btnText: btnPostText ,   isSubmitting:true});
+    this.__setState({ btnText: btnPostText , isSubmitting:true});
   }
 
   uploadToS3( imagePath ) {
@@ -282,7 +287,6 @@ class CreateCommunitiesScreen extends Component {
         }
       }).catch((error) => {
         this.onUploadToS3Error(error);
-        return Promise.reject(error);
       });
   }
 
@@ -319,15 +323,9 @@ class CreateCommunitiesScreen extends Component {
     .catch((error) => {
       this.onSubmitError(res);
     })
-    .finally(()=> {
-      this.onSubmitComplete();
-    });
   }
 
   onSubmitSuccess = (res) => {
-    this.__setState({
-      isSubmitting:false
-    });
     if(this.isCreate()){
       Toast.show({
         text: AppConfig.channelConstants.createSuccessMsg,
@@ -348,7 +346,7 @@ class CreateCommunitiesScreen extends Component {
 
   onSubmitError = (res) => {
     const errorMsg = ostErrors.getErrorMessage(res);
-    this.__setState({ server_errors: res, general_error: errorMsg, isSubmitting:false });
+    this.__setState({ server_errors: res, general_error: errorMsg });
   }
 
   onSubmitComplete = () => {

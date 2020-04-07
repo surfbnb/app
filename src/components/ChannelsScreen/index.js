@@ -72,6 +72,18 @@ class ChannelsScreen extends PureComponent {
         }
     }
 
+    componentDidMount() {
+        if(this.channelId){
+          this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
+            this.props.navigation.setParams({ headerTitle:  ReduxGetters.getChannelName(this.channelId) });
+          });
+        }
+    }
+
+    componentWillUnmount(){
+        this.didFocus &&  this.didFocus.remove && this.didFocus.remove();
+    }
+
     getPermissions (){
         Utilities.getItem(`notification-permission-show-${this.props.userId}`).then((value)=> {
           let permissionButtonClicked = value === 'true';
