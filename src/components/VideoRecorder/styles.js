@@ -215,10 +215,10 @@ let stylesMap = {
   },
   secondsAnimatedComponent:{
     position:'absolute',
-    width:84,
+    width:90,
     top:'30%',
     left:'50%',
-    marginLeft : -42 // - width/2
+    marginLeft : -45 // - width/2
 
   },
   secondsAnimatedText:{
