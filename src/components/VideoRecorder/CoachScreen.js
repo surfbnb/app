@@ -65,7 +65,7 @@ class CoachScreen extends PureComponent{
       if (this.props.acceptedCameraTnC !== 'true') {
         return <View style={styles.backgroundStyle}>
           <View style={{ padding: 26 }}>
-            <Text style={styles.headerText}>Create your first 30 second video</Text>
+            <Text style={styles.headerText}>Create your first video</Text>
             <Text style={styles.smallText}>Introduce yourself. Share your passions, projects, and your unique personality!</Text>
             <LinearGradient
               colors={['#ff7499', '#ff5566']}
