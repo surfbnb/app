@@ -553,7 +553,7 @@ class CreateCommunitiesScreen extends Component {
           />
         </View>
 
-        <View>
+        <View style={inlineStyles.dynamicCountWrapper}>
           <Text style={inlineStyles.dynamicCount}>{this.state.name.length}/{NAME_MAXLENGTH}</Text>
         </View>
       </View>
@@ -595,7 +595,7 @@ class CreateCommunitiesScreen extends Component {
             errorStyle={inlineStyles.errorInForminput}
           />
         </View>
-        <View>
+        <View style={inlineStyles.dynamicCountWrapper}>
           <Text style={inlineStyles.dynamicCount}>{this.state.tagline.length}/{TAGLINE_MAXLENGTH}</Text>
         </View>
       </View>
@@ -639,8 +639,8 @@ class CreateCommunitiesScreen extends Component {
             errorStyle={inlineStyles.errorInForminput}
           />
         </View>
-        <View>
-          <Text style={[inlineStyles.dynamicCount,inlineStyles.textAreaDynamicCountHeight]}>{this.state.about_info.length}/{ABOUT_INFO_MAXLENGTH}</Text>
+        <View style={[inlineStyles.dynamicCountWrapper,inlineStyles.textAreaDynamicCountHeight]}>
+          <Text style={[inlineStyles.dynamicCount]}>{this.state.about_info.length}/{ABOUT_INFO_MAXLENGTH}</Text>
         </View>
       </View>
     </React.Fragment>
@@ -686,7 +686,7 @@ class CreateCommunitiesScreen extends Component {
             errorStyle={inlineStyles.errorInForminput}
           />
         </View>
-        <View>
+        <View style={inlineStyles.dynamicCountWrapper}>
           <Text style={inlineStyles.dynamicCount}>{this.state.tags.length}/{MAX_NO_OF_TAGS}</Text>
         </View>
       </View>
@@ -715,9 +715,10 @@ class CreateCommunitiesScreen extends Component {
 
   render() {
     if(!this.isCreate() && !this.isEdit()) return <View style={{flexGrow: 1, backgroundColor: Colors.white, flex:1 }} />;
+    const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 30;
     return (
         <SafeAreaView forceInset={{ top: 'never' }} style={inlineStyles.safeAreaView}>
-          <KeyboardAvoidingView behavior={Platform.OS == 'android' ?'padding' :''} style={{ flex: 1 }} keyboardVerticalOffset={30}>
+          <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }} keyboardVerticalOffset={keyboardVerticalOffset}>
           <ScrollView
             contentContainerStyle=
               {inlineStyles.scrollViewContainerStyle}
