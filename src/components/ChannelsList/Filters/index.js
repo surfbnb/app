@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { ScrollView , Text } from "react-native";
+import { ScrollView , Text, Image } from "react-native";
 import { withNavigation } from 'react-navigation';
 import multipleClickHandler from '../../../services/MultipleClickHandler';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import inlineStyles from "./styles";
 import AppConfig from '../../../constants/AppConfig';
+import newCommunityIcon from '../../../assets/new_communities_icon.png'
 
 class Filters extends PureComponent {
   constructor(props){
@@ -65,7 +66,9 @@ class Filters extends PureComponent {
     return  <TouchableOpacity style={[inlineStyles.btnStyle ,inlineStyles.createNewBtn]}
                 key="createNew"
                 onPress={multipleClickHandler(() => {this.onNew();})}>
-                <Text style={[inlineStyles.textStyle , inlineStyles.createNewBtnText]}>+ NEW</Text>
+                <Image style={inlineStyles.addIcon} source={newCommunityIcon}></Image>
+                <Text style={[inlineStyles.textStyle , inlineStyles.createNewBtnText]}>
+                  NEW</Text>
             </TouchableOpacity>
   }
 

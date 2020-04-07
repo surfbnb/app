@@ -52,13 +52,20 @@ let stylesMap = {
   createNewBtn: {
     backgroundColor: Colors.white,
     borderWidth: 0.5,
-    borderColor: Colors.pinkRed
+    borderColor: Colors.pinkRed,
+    flexDirection:'row'
   },
 
   createNewBtnText: {
     color: Colors.pinkRed,
     fontFamily: 'AvenirNext-Medium',
-    fontSize: 12
+    fontSize: 12,
+    marginLeft:3
+  },
+  addIcon:{
+    height:11,
+    width:11
+
   }
 
 };
