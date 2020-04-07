@@ -252,9 +252,6 @@ class CreateCommunitiesScreen extends Component {
 
   onSubmit() {
     this.clearErrors();
-    this.__setState({
-      isSubmitting:true
-    })
     if (this.validateCommunityForm()) {
       this.beforeSubmit();
       if(this.state.communityBannerUri) {
@@ -270,7 +267,7 @@ class CreateCommunitiesScreen extends Component {
   }
   
   beforeSubmit = () =>{
-    this.__setState({ btnText: btnPostText });
+    this.__setState({ btnText: btnPostText ,   isSubmitting:true});
   }
 
   uploadToS3( imagePath ) {
