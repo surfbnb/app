@@ -715,9 +715,10 @@ class CreateCommunitiesScreen extends Component {
 
   render() {
     if(!this.isCreate() && !this.isEdit()) return <View style={{flexGrow: 1, backgroundColor: Colors.white, flex:1 }} />;
+    const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 30;
     return (
         <SafeAreaView forceInset={{ top: 'never' }} style={inlineStyles.safeAreaView}>
-          <KeyboardAvoidingView behavior={Platform.OS == 'android' ?'padding' :''} style={{ flex: 1 }} keyboardVerticalOffset={30}>
+          <KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }} keyboardVerticalOffset={keyboardVerticalOffset}>
           <ScrollView
             contentContainerStyle=
               {inlineStyles.scrollViewContainerStyle}
