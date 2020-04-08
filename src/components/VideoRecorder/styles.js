@@ -215,14 +215,14 @@ let stylesMap = {
   },
   secondsAnimatedComponent:{
     position:'absolute',
-    width:90,
     top:'30%',
-    left:'50%',
-    marginLeft : -45 // - width/2
-
+    width:'100%',
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center',
   },
   secondsAnimatedText:{
-    color: Colors.white,
+    color: 'rgba(255,255,255,0.5)',
     fontSize:73,
     fontWeight:'700',
     fontFamily: 'AvenirNext-DemiBold'
