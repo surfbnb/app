@@ -11,7 +11,7 @@ import reduxGetters from "../../services/ReduxGetters";
 import {connect} from "react-redux";
 import { withNavigation } from 'react-navigation';
 import Checkmarks from '../../assets/Checkmarks.png';
-import adminUserIcon from '../../assets/user-profile-icon.png'; //TODO Ashutosh get image from UX
+import adminUserIcon from '../../assets/user-filled-person-shape.png';
 import ChannelJoin from '../../assets/channel-join-icon.png';
 import PepoApi from '../../services/PepoApi';
 import DataContract from '../../constants/DataContract';

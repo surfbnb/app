@@ -120,6 +120,7 @@ let stylesMap = {
   adminText: {
     color: Colors.valhalla,
     fontSize: 12,
+    fontWeight:'500',
     fontFamily: 'AvenirNext-Medium',
     marginLeft:4
   },
