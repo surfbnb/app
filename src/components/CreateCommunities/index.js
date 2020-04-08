@@ -26,7 +26,7 @@ import AppConfig from '../../constants/AppConfig';
 import CameraPermissionsApi from '../../services/CameraPermissionsApi';
 import AllowAccessModal from '../Profile/AllowAccessModal';
 import GalleryIcon from '../../assets/gallery_icon.png';
-
+import InAppBrowser from '../../services/InAppBrowser';
 import RNFS from 'react-native-fs';
 import ImageSize from 'react-native-image-size';
 import UploadToS3 from '../../services/UploadToS3';
@@ -655,7 +655,15 @@ class CreateCommunitiesScreen extends Component {
     return <React.Fragment>
       <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>Community Tags</Text>
-        <Text style={inlineStyles.labelHint}>These tags place videos in your community. Learn More</Text>
+        <Text style={inlineStyles.labelHint}>
+          These tags place videos in your community.
+          <Text 
+            style={{color: Colors.valhalla}}
+            // TODO: update the url.
+            onPress={MultipleClickHandler(() => InAppBrowser.openBrowser(AppConfig.redemption.learnMoreLink))}>
+            Learn More
+          </Text>
+        </Text>
       </View>
       <View style={inlineStyles.tagsWrapper}>
         {this.showAddedTags()}
