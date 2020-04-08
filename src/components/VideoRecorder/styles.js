@@ -234,10 +234,6 @@ let stylesMap = {
   boldText : {
     fontWeight:'700'
   }
-
-
-
-
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
