@@ -26,6 +26,7 @@ class ChannelTagsList extends PureComponent {
     constructor( props ){
         super( props );
         this.flatlistRef = null;
+        this.ignoreFirstDidFocus = true;
         this.allTag = {
             id: 0,
             text: "All"
@@ -40,15 +41,23 @@ class ChannelTagsList extends PureComponent {
 
     componentDidMount(){
         this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
-           for(let cnt = 0 ; cnt < this.props.tagIds; cnt++){
-               if(this.isSelected(this.props.tagIds[cnt])){
-                   return;
-               }
+           if(this.ignoreFirstDidFocus){
+            this.ignoreFirstDidFocus = false;
+            return;
            }
-           const tagId = this.props.tagIds[0] ,
-                 tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId); 
-           this.onItemClicked(tag);
+           this.updateSelectedTag();
         });
+    }
+
+    updateSelectedTag = () => {
+        for(let cnt = 0 ; cnt < this.props.tagIds.length; cnt++){
+            if(this.isSelected(this.props.tagIds[cnt])){
+                return;
+            }
+        }
+        const tagId = this.props.tagIds[0] ,
+              tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId); 
+        this.onItemClicked(tag);
     }
 
     componentWillUnmount(){
