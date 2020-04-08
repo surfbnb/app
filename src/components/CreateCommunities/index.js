@@ -37,6 +37,7 @@ import deepGet from "lodash/get";
 import unescape from 'lodash/unescape';
 
 import Toast from '../../theme/components/NotificationToast';
+import BackArrow from '../CommonComponents/BackArrow';
 
 const MAX_NO_OF_TAGS = AppConfig.channelConstants.MAX_NO_OF_TAGS,
       NAME_MAXLENGTH = AppConfig.channelConstants.NAME_MAXLENGTH,
@@ -58,7 +59,8 @@ class CreateCommunitiesScreen extends Component {
         shadowOpacity: 0.1,
         shadowRadius: 3
       },
-      headerBackTitle: null
+      headerBackTitle: null,
+      headerBackImage: <BackArrow />
     };
   };
 

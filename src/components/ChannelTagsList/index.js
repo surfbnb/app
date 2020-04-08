@@ -15,7 +15,8 @@ const mapStateToProps = (state, ownProps) => {
         tagIds.unshift(0);
     }
     return {
-      tagIds: tagIds
+      tagIds: tagIds, 
+      tagIdsLn : tagIds.length
     };
   };
 
