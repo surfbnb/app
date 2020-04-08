@@ -673,7 +673,7 @@ class CreateCommunitiesScreen extends Component {
       <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>Community Tags</Text>
         <Text style={inlineStyles.labelHint}>
-          These tags place videos in your community.
+          These tags place videos in your community.{' '}
           <Text 
             style={{color: Colors.valhalla}}
             // TODO: update the url.

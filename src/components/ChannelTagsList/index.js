@@ -8,12 +8,13 @@ import reduxGetter from '../../services/ReduxGetters';
 import findIndex from "lodash/findIndex";
 import unescape from 'lodash/unescape';
 
-const defaultArray  = [];
 const mapStateToProps = (state, ownProps) => {
-    const tagIds =  reduxGetter.getChannelTagIds(ownProps.channelId, state) || defaultArray
+    const tagIds =  reduxGetter.getChannelTagIds(ownProps.channelId, state).slice(0) || [] ;
+    if(tagIds.length > 1){
+        tagIds.unshift(0);
+    }
     return {
-      tagIds: tagIds,
-      tagIdsLn : tagIds.length
+      tagIds: tagIds
     };
   };
 
@@ -74,23 +75,14 @@ class ChannelTagsList extends PureComponent {
     onScrollToIndexFailed =( info) => {
         console.log("======onScrollToIndexFailed=====" , info );
     }
-
-    getAllOption = () => {
-        const tagIds = this.props.tagIds.slice(0);
-        if(tagIds.length > 1){
-            tagIds.unshift(0);
-        }
-        return tagIds;
-    }
     
     render() {
-        const tagIds = this.getAllOption();
-        return tagIds && (
+        return this.props.tagIds && (
             <View style={inlineStyles.tagListWrapper}>
                 <FlatList
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    data={tagIds}
+                    data={this.props.tagIds}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
                     ref={(ref) => (this.flatlistRef = ref)}
