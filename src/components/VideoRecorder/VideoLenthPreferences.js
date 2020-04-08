@@ -12,7 +12,10 @@ import styles from './styles';
 
 const FOOTER_TAB_WIDTH = 50,
       ANIMATION_DURATION = 500,
-      ITEM_MARGIN  = 40;
+      ITEM_MARGIN  = 40,
+      FADE_IN_DURATION = 200,
+      FADE_OUT_DURATION = 200,
+      DELAY_DURATION = 800;
 
 
 export default class VideoLenthPreferences extends PureComponent{
@@ -67,14 +70,14 @@ export default class VideoLenthPreferences extends PureComponent{
       Animated.timing(this.fadeValue, {
         toValue: 1,
         easing:Easing.fadeIn,
-        duration:150,
+        duration:FADE_IN_DURATION,
         useNativeDriver: true
       }),
-      Animated.delay(700),
+      Animated.delay(DELAY_DURATION),
       Animated.timing(this.fadeValue, {
         toValue: 0,
         easing:Easing.fadeOut,
-        duration: 150,
+        duration: FADE_OUT_DURATION,
         useNativeDriver: true
       })
     ]).start()
