@@ -62,7 +62,7 @@ let stylesMap = {
     fontSize: 12,
     marginLeft:3
   },
-  addIcon:{
+  addIconSkipFont:{
     height:11,
     width:11
 

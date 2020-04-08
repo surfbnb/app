@@ -8,7 +8,7 @@ let stylesMap = {
     position: 'relative',
     backgroundColor: 'black'
   },
-  tickIcon: {
+  tickIconSkipFont: {
     top: 0,
     left: 0,
     width: 45,
@@ -26,7 +26,7 @@ let stylesMap = {
     paddingRight: 3,
     paddingTop: 3 
   },
-  galleryItem: {
+  galleryItemSkipFont: {
     aspectRatio: 1,
     marginLeft: 3,
     marginBottom: 3,

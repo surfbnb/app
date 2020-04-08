@@ -6,8 +6,8 @@
     "android": "react-native run-android --variant=StagingDebug",
     "ios": "react-native run-ios",
     "ios-build": "npm install && cd ios/ && pod install && carthage update --cache-builds --platform ios && cd .. && react-native link",
-    "start": "react-native start",
-    "start-dev": "ENABLE_LOGS=1 react-native start",
+    "start": "react-native start --reset-cache",
+    "start-dev": "ENABLE_LOGS=1 react-native start --reset-cache",
     "debug-genkey": "cd android/app/ && keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000",
     "test": "jest",
     "lint": "eslint ."

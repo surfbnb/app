@@ -103,7 +103,7 @@ class EditCommunityBanner extends Component {
         <View>
           <Image
             key={index}
-            style={{...inlineStyles.galleryItem, width: width}}
+            style={{...inlineStyles.galleryItemSkipFont, width: width}}
             resize="contain"
             source={{ uri: item.node.image.uri }}
           />
@@ -165,7 +165,7 @@ class EditCommunityBanner extends Component {
             <View />
           )}
           <TouchableOpacity style={inlineStyles.tickIconTouchable} onPress={this.cropImage}>
-            <Image source={tickIcon} style={inlineStyles.tickIcon}/>
+            <Image source={tickIcon} style={inlineStyles.tickIconSkipFont}/>
           </TouchableOpacity>
         </View>
         <View style={{
