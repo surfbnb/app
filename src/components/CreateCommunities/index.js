@@ -494,7 +494,7 @@ class CreateCommunitiesScreen extends Component {
     // Delete the old image.
     this.deleteLocalBannerImage(this.localBannerImageUri);
     this.localBannerImageUri = imageUri;
-    this.__setState({communityBannerUri: imageUri});
+    this.__setState({communityBannerUri: imageUri ,image_error: null});
   }
 
   onTagsBlur = () => {
