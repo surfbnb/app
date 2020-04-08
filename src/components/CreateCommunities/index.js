@@ -216,7 +216,7 @@ class CreateCommunitiesScreen extends Component {
       isValid = false;
     }
 
-    if(!this.state.tags.length){
+    if(!this.getLength(this.state.tags)){
       this.__setState({
         tags_error: ostErrors.getUIErrorMessage('tags_req')
       });
@@ -375,7 +375,7 @@ class CreateCommunitiesScreen extends Component {
   }
 
   onTagsChange = ( tagInputvalue ) =>{
-    if(this.state.tags.length >= MAX_NO_OF_TAGS ) return;
+    if(this.getLength(this.state.tags) >= MAX_NO_OF_TAGS ) return;
 
     const newState = {
       tags_error: null
@@ -415,7 +415,7 @@ class CreateCommunitiesScreen extends Component {
   onSubmitEditing(currentIndex,val) {
     if(currentIndex == this.tabIndex.tags){
       let inputTag = val.nativeEvent.text;
-      if(this.state.tags.length <  MAX_NO_OF_TAGS){
+      if(this.getLength(this.state.tags) <  MAX_NO_OF_TAGS){
         this.addTagToTagArray(inputTag);
       } 
       this.__setState({
@@ -436,10 +436,10 @@ class CreateCommunitiesScreen extends Component {
   }
 
   showAddedTags = () => {
-    if (!this.state.tags.length) return;
+    if (!this.getLength(this.state.tags)) return;
     let tagsDisplay = [],
         displayTag ='';
-    for(let i = 0 ; i < this.state.tags.length ; i++  ){
+    for(let i = 0 ; i < this.getLength(this.state.tags) ; i++  ){
       displayTag = this.getformattedTag(this.state.tags[i]);
       tagsDisplay.push(this.getTagThumbnailMarkup(i,displayTag))
     }
@@ -499,7 +499,7 @@ class CreateCommunitiesScreen extends Component {
   }
 
   onTagsBlur = () => {
-    if(this.state.tags.length >= MAX_NO_OF_TAGS ) return;
+    if(this.getLength(this.state.tags) >= MAX_NO_OF_TAGS ) return;
     let tagInputValue = this.state.inputTagValue;
     if(tagInputValue){
       const newState = {
@@ -512,6 +512,16 @@ class CreateCommunitiesScreen extends Component {
     })
   }
 
+  // Get the length of the input param object.
+  // If the param is undefined, return 0.
+  getLength(object) {
+    var length = 0;
+    // Check if the object is defined and has length property
+    if(object && object.hasOwnProperty('length')) {
+      length = object.length;
+    }
+    return length;
+  }
   communityName = () => {
     return <React.Fragment>
       <View style={inlineStyles.communityLabelWrapper}>
@@ -549,7 +559,7 @@ class CreateCommunitiesScreen extends Component {
         </View>
 
         <View style={inlineStyles.dynamicCountWrapper}>
-          <Text style={inlineStyles.dynamicCount}>{this.state.name.length}/{NAME_MAXLENGTH}</Text>
+          <Text style={inlineStyles.dynamicCount}>{this.getLength(this.state.name)}/{NAME_MAXLENGTH}</Text>
         </View>
       </View>
     </React.Fragment>
@@ -591,7 +601,7 @@ class CreateCommunitiesScreen extends Component {
           />
         </View>
         <View style={inlineStyles.dynamicCountWrapper}>
-          <Text style={inlineStyles.dynamicCount}>{this.state.tagline.length}/{TAGLINE_MAXLENGTH}</Text>
+          <Text style={inlineStyles.dynamicCount}>{this.getLength(this.state.tagline)}/{TAGLINE_MAXLENGTH}</Text>
         </View>
       </View>
     </React.Fragment>
@@ -635,7 +645,7 @@ class CreateCommunitiesScreen extends Component {
           />
         </View>
         <View style={[inlineStyles.dynamicCountWrapper,inlineStyles.textAreaDynamicCountHeight]}>
-          <Text style={[inlineStyles.dynamicCount]}>{this.state.about_info.length}/{ABOUT_INFO_MAXLENGTH}</Text>
+          <Text style={[inlineStyles.dynamicCount]}>{this.getLength(this.state.about_info)}/{ABOUT_INFO_MAXLENGTH}</Text>
         </View>
       </View>
     </React.Fragment>
@@ -682,7 +692,7 @@ class CreateCommunitiesScreen extends Component {
           />
         </View>
         <View style={inlineStyles.dynamicCountWrapper}>
-          <Text style={inlineStyles.dynamicCount}>{this.state.tags.length}/{MAX_NO_OF_TAGS}</Text>
+          <Text style={inlineStyles.dynamicCount}>{this.getLength(this.state.tags)}/{MAX_NO_OF_TAGS}</Text>
         </View>
       </View>
     </React.Fragment>
