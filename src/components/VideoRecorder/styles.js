@@ -215,13 +215,13 @@ let stylesMap = {
   },
   secondsAnimatedComponent:{
     position:'absolute',
-    width:90,
-    top:'30%',
-    left:'50%',
-    marginLeft : -45 // - width/2
-
+    height: '90%',
+    width: '90%'
   },
   secondsAnimatedText:{
+    flex: 1,
+    justifyContent: 'center',
+    textAlign: 'center',
     color: Colors.white,
     fontSize:73,
     fontWeight:'700',
@@ -234,10 +234,6 @@ let stylesMap = {
   boldText : {
     fontWeight:'700'
   }
-
-
-
-
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);
