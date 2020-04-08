@@ -22,9 +22,9 @@ class ChannelsHeaderRight extends PureComponent {
 
   getConfig = () => {
     const optionsArray = [] ,  actionConfig ={} , actionSheetConfig ={ options: [] },
-          isAdmin = reduxGetters.isCurrentUserAdminOfChannel(this.props.channelId) ,
           isMember = reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId) ,
-          canEdit = reduxGetters.isCurrentUserEditChannel(this.props.channelId) 
+          canEdit = reduxGetters.canCurrentUserEditChannel(this.props.channelId) ,
+          canLeave = reduxGetters.canCurrentUserLeaveChannel(this.props.channelId)
           ;
 
     if(canEdit){
@@ -41,7 +41,7 @@ class ChannelsHeaderRight extends PureComponent {
       })
     } 
 
-    if(isMember && !isAdmin){
+    if(isMember && canLeave){
       optionsArray.push({
         text: 'Leave Community',
         action : 'showLeaveChannelAlert'

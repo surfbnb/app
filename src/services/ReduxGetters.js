@@ -621,9 +621,14 @@ class ReduxGetters {
     return !!deepGet(state, `channel_user_relation_entities.id_${channelId}.${userId}.is_admin` ,  false);
   }
 
-  isCurrentUserEditChannel(id , state){
+  canCurrentUserEditChannel(id , state){
     state = state || Store.getState();
     return !!deepGet(state, `channel_allowed_action_entities.id_${id}.can_edit`);
+  }
+
+  canCurrentUserLeaveChannel(id , state){
+    state = state || Store.getState();
+    return !!deepGet(state, `channel_allowed_action_entities.id_${id}.can_leave`);
   }
 
   getChannelDescription(id, state){
