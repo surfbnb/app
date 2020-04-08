@@ -66,14 +66,15 @@ export default class VideoLenthPreferences extends PureComponent{
     Animated.sequence([
       Animated.timing(this.fadeValue, {
         toValue: 1,
-        easing:Easing.linear,
-        duration:10,
+        easing:Easing.fadeIn,
+        duration:150,
         useNativeDriver: true
       }),
+      Animated.delay(700),
       Animated.timing(this.fadeValue, {
         toValue: 0,
-        easing:Easing.linear,
-        duration: 3000,
+        easing:Easing.fadeOut,
+        duration: 150,
         useNativeDriver: true
       })
     ]).start()
@@ -103,6 +104,12 @@ export default class VideoLenthPreferences extends PureComponent{
     )
   }
 
+  getSecondsStyle = (seconds) =>{
+    if(this.getCurrentVideoMaxLength() === seconds){
+      return styles.boldText;
+    }
+  }
+
   render(){
     return (
       <React.Fragment>
@@ -112,13 +119,13 @@ export default class VideoLenthPreferences extends PureComponent{
             style={styles.videolengthItems}
             onPress={multipleClickHandler(() => {this.onPress30()})}
           >
-            <Text style={styles.videolengthItemText}>30 sec</Text>
+            <Text style={[styles.videolengthItemText,this.getSecondsStyle(30)]}>30 sec</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.videolengthItems}
             onPress={multipleClickHandler(() => {this.onPress90()})}
           >
-            <Text style={styles.videolengthItemText}>90 sec</Text>
+            <Text style={[styles.videolengthItemText,this.getSecondsStyle(90)]}>90 sec</Text>
           </TouchableOpacity>
         </Animated.View>
         {this.state.showSeconds &&(

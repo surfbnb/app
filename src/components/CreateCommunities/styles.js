@@ -86,7 +86,8 @@ let stylesMap = {
     height: 28,
     borderBottomWidth:1,
     borderBottomColor: Colors.seaMist,
-    alignSelf:'flex-start'
+    alignSelf:'flex-start',
+    textAlignVertical:'center',
   },
   dynamicCount:{
     fontSize:12,

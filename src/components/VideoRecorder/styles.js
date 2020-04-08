@@ -228,7 +228,11 @@ let stylesMap = {
     fontFamily: 'AvenirNext-DemiBold'
   },
   videolengthItemText:{
-    color:Colors.white
+    color:Colors.white,
+    fontWeight:'400'
+  },
+  boldText : {
+    fontWeight:'700'
   }
 
 

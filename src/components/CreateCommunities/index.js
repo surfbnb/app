@@ -38,9 +38,7 @@ import unescape from 'lodash/unescape';
 
 import Toast from '../../theme/components/NotificationToast';
 
-const btnPreText = AppConfig.channelConstants.btnPreText,
-      btnPostText = AppConfig.channelConstants.btnPostText,
-      MAX_NO_OF_TAGS = AppConfig.channelConstants.MAX_NO_OF_TAGS,
+const MAX_NO_OF_TAGS = AppConfig.channelConstants.MAX_NO_OF_TAGS,
       NAME_MAXLENGTH = AppConfig.channelConstants.NAME_MAXLENGTH,
       TAGLINE_MAXLENGTH = AppConfig.channelConstants.TAGLINE_MAXLENGTH,
       ABOUT_INFO_MAXLENGTH = AppConfig.channelConstants.ABOUT_INFO_MAXLENGTH;
@@ -86,8 +84,7 @@ class CreateCommunitiesScreen extends Component {
       tags_error : null,
       image_error: null,
       server_errors: {},
-      general_error: null,
-      btnText: btnPreText
+      general_error: null
     };
 
     this.state= {
@@ -351,7 +348,7 @@ class CreateCommunitiesScreen extends Component {
   }
 
   onSubmitComplete = () => {
-    this.__setState({ btnText: btnPreText, isSubmitting:false });
+    this.__setState({ isSubmitting:false });
   }
 
   onNameChange = ( name ) =>{
@@ -728,6 +725,16 @@ class CreateCommunitiesScreen extends Component {
     )
   }
 
+  getBtnText = () =>{
+    if(this.isCreate()){
+      return this.state.isSubmitting?'Creating...':'Create Community';
+    }else if( this.isEdit()){
+      return this.state.isSubmitting?'Updating...':'Update';
+    }else{
+      return this.state.isSubmitting?'Submiting...':'Submit';
+    }
+  }
+
   render() {
     if(!this.isCreate() && !this.isEdit()) return <View style={{flexGrow: 1, backgroundColor: Colors.white, flex:1 }} />;
     const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 30;
@@ -766,7 +773,7 @@ class CreateCommunitiesScreen extends Component {
                       Theme.Button.btnPinkText,
                       inlineStyles.gradientBtnText
                     ]}
-                  >{this.state.btnText}
+                  >{this.getBtnText()}
                   </Text>
                 </TouchableOpacity>
               </LinearGradient>

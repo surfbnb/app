@@ -13,7 +13,7 @@ let stylesMap = {
     borderRadius: 13,
     alignItems: 'center',
     fontSize: 0,
-    height: 22,
+    height: 26,
     justifyContent: 'center',
     paddingHorizontal: 10,
     marginHorizontal: 5
