@@ -58,7 +58,7 @@ class ChannelTagsList extends PureComponent {
     _renderItem = ( {item, index} ) => {
         let tagId = item;
         let tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId),
-            text = unescape(tag.text)
+            text = tag && unescape(tag.text)
         ;
         return tag && (
             <TouchableOpacity onPress={()=> this.onItemClicked(tag)}>
