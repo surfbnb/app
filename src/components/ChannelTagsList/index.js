@@ -6,6 +6,7 @@ import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import reduxGetter from '../../services/ReduxGetters';
 import findIndex from "lodash/findIndex";
+import unescape from 'lodash/unescape';
 
 const defaultArray  = [];
 const mapStateToProps = (state, ownProps) => {
@@ -56,12 +57,14 @@ class ChannelTagsList extends PureComponent {
 
     _renderItem = ( {item, index} ) => {
         let tagId = item;
-        let tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId);
+        let tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId),
+            text = unescape(tag.text)
+        ;
         return tag && (
             <TouchableOpacity onPress={()=> this.onItemClicked(tag)}>
                 <View style={inlineStyles.tagWrapper}>
                     <Text style={[inlineStyles.text, {color: this.isSelected(tagId) ? Colors.wildWatermelon2 : Colors.valhalla }]}>
-                        {tagId == 0 ? tag.text : `#${tag.text}`}
+                        {tagId == 0 ? text : `#${text}`}
                     </Text>
                 </View>
             </TouchableOpacity>
