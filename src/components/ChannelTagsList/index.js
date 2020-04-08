@@ -9,7 +9,8 @@ import findIndex from "lodash/findIndex";
 import unescape from 'lodash/unescape';
 
 const mapStateToProps = (state, ownProps) => {
-    const tagIds =  reduxGetter.getChannelTagIds(ownProps.channelId, state).slice(0) || [] ;
+    let tagIds =  reduxGetter.getChannelTagIds(ownProps.channelId, state) || [] ;
+    tagIds = tagIds.slice(0);
     if(tagIds.length > 1){
         tagIds.unshift(0);
     }
