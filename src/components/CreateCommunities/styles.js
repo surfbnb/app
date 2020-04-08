@@ -3,6 +3,7 @@ import Colors from '../../theme/styles/Colors';
 import { Platform } from 'react-native';
 import uploadPic from "../../assets/new-community-upload-icon.png";
 
+const isAndroid = Platform.OS === 'android';
 let stylesMap = {
   safeAreaView:{
     flexGrow: 1,
@@ -86,8 +87,10 @@ let stylesMap = {
     height: 28,
     borderBottomWidth:1,
     borderBottomColor: Colors.seaMist,
-    alignSelf:'flex-start',
+    alignSelf:isAndroid?'flex-start':'center',
     textAlignVertical:'center',
+    marginBottom:isAndroid?0:12
+
   },
   dynamicCount:{
     fontSize:12,
