@@ -7,6 +7,7 @@ import Colors from '../../theme/styles/Colors';
 import reduxGetter from '../../services/ReduxGetters';
 import findIndex from "lodash/findIndex";
 import unescape from 'lodash/unescape';
+import { withNavigation } from 'react-navigation';
 
 const mapStateToProps = (state, ownProps) => {
     let tagIds =  reduxGetter.getChannelTagIds(ownProps.channelId, state) || [] ;
@@ -37,6 +38,23 @@ class ChannelTagsList extends PureComponent {
         this.setInitialSelectedTag();
     }
 
+    componentDidMount(){
+        this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
+           for(let cnt = 0 ; cnt < this.props.tagIds; cnt++){
+               if(this.isSelected(this.props.tagIds[cnt])){
+                   return;
+               }
+           }
+           const tagId = this.props.tagIds[0] ,
+                 tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId); 
+           this.onItemClicked(tag);
+        });
+    }
+
+    componentWillUnmount(){
+        this.didFocus &&  this.didFocus.remove &&  this.didFocus.remove()
+    }
+
     setInitialSelectedTag(){
         if(this.props.tagIds.length == 1){
             this.state.selectedTag = reduxGetter.getHashTag(this.props.tagIds[0]);
@@ -52,6 +70,7 @@ class ChannelTagsList extends PureComponent {
     }
 
     onItemClicked = (tag) => {
+        if(!tag) return;
         this.setState({
             selectedTag : tag
         })
@@ -97,4 +116,4 @@ class ChannelTagsList extends PureComponent {
     }
 }
 
-export default connect(mapStateToProps)(ChannelTagsList);
+export default connect(mapStateToProps)(withNavigation( ChannelTagsList ));
