@@ -270,7 +270,7 @@ class CreateCommunitiesScreen extends Component {
   }
   
   beforeSubmit = () =>{
-    this.__setState({ btnText: btnPostText , isSubmitting:true});
+    this.__setState({isSubmitting:true});
   }
 
   uploadToS3( imagePath ) {
