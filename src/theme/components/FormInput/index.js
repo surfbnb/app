@@ -9,6 +9,15 @@ class FormInput extends Component {
     this.state = { errorMsg: null };
   }
 
+  componentWillUnmount(){
+    this.__setState = () => {};
+  }
+
+  __setState = (state)=> {
+    if(!state) return;
+    this.setState(state);
+  }
+
   validate() {
     let errors = this.props.serverErrors,
       msg = '';
@@ -25,7 +34,7 @@ class FormInput extends Component {
     if (msg) {
       this.props.errorHandler && this.props.errorHandler(msg);
     }
-    this.setState({ errorMsg: msg });
+    this.__setState({ errorMsg: msg });
   }
 
   componentDidMount() {
@@ -44,7 +53,7 @@ class FormInput extends Component {
   }
 
   onChange(val) {
-    this.setState({ errorMsg: null });
+    this.__setState({ errorMsg: null });
     this.props.onChangeText && this.props.onChangeText(val);
   }
 

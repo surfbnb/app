@@ -138,7 +138,7 @@ let stylesMap = {
     alignItems:'center',
     justifyContent:'center'
   },
-  crossIcon:{
+  crossIconSkipFont:{
     height:10,
     width:10
   },

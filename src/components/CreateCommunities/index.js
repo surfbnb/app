@@ -737,7 +737,7 @@ class CreateCommunitiesScreen extends Component {
           onPress={()=> {this.onRemoveTagPress(index)}}
           style={inlineStyles.crosIconBackground}
         >
-          <Image style={inlineStyles.crossIcon} source={CrossIconTags}></Image>
+          <Image style={inlineStyles.crossIconSkipFont} source={CrossIconTags}></Image>
         </TouchableOpacity>
       </View>
     )
