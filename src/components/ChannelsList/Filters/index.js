@@ -67,8 +67,7 @@ class Filters extends PureComponent {
                 key="createNew"
                 onPress={multipleClickHandler(() => {this.onNew();})}>
                 <Image style={inlineStyles.addIconSkipFont} source={newCommunityIcon}></Image>
-                <Text style={[inlineStyles.textStyle , inlineStyles.createNewBtnText]}>
-                  NEW</Text>
+                <Text style={[inlineStyles.textStyle , inlineStyles.createNewBtnText]}>Create</Text>
             </TouchableOpacity>
   }
 
