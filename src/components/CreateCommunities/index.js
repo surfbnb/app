@@ -34,6 +34,7 @@ import InlineError from '../../theme/components/FormInput/inlineError';
 import { fetchChannel } from '../../helpers/helpers';
 import CrossIconTags from '../../assets/cross_icon_tags.png'
 import deepGet from "lodash/get";
+import unescape from 'lodash/unescape';
 
 import Toast from '../../theme/components/NotificationToast';
 
@@ -447,7 +448,8 @@ class CreateCommunitiesScreen extends Component {
   }
 
   getformattedTag = (val="") =>{
-    val = val.trim()
+    val = val.trim();
+    val = unescape(val);
     if(val.startsWith('#')){
       return val;
     }else{
@@ -744,10 +746,9 @@ class CreateCommunitiesScreen extends Component {
               {this.communityName()}
               {this.communityTagline()}
               {this.aboutTheCommunity()}
-
-
               {this.communityTags()}
-              <Text style={inlineStyles.errorText}>{this.state.general_error} </Text>
+              <InlineError fieldName={["channel_id"]}
+                         errorMsg={this.state.general_error} serverErrors={this.state.server_errors}/>
               <LinearGradient
                 colors={['#ff7499', '#ff5566']}
                 locations={[0, 1]}
