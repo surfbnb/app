@@ -181,6 +181,14 @@ class CreateCommunitiesScreen extends Component {
     this.__setState(this.defaults);
   }
 
+  // Check of the given test is valid.
+  isInputTextValid(text) {
+    if (!text) {
+      return false;
+    }
+    return text.trim().length>0;
+
+  }
   validateCommunityForm = () =>{
     let isValid = true;
 
@@ -193,21 +201,21 @@ class CreateCommunitiesScreen extends Component {
       }
     }
     
-    if (!this.state.name) {
+    if (!this.isInputTextValid(this.state.name)) {
       this.__setState({
         name_error: ostErrors.getUIErrorMessage('name_req_communities')
       });
       isValid = false;
     }
 
-    if (!this.state.tagline) {
+    if (!this.isInputTextValid(this.state.tagline)) {
       this.__setState({
         tagline_error: ostErrors.getUIErrorMessage('tagline_req_communities')
       });
       isValid = false;
     }
 
-    if (!this.state.about_info) {
+    if (!this.isInputTextValid(this.state.about_info)) {
       this.__setState({
         about_info_error: ostErrors.getUIErrorMessage('about_info_req')
       });
