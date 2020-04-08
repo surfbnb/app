@@ -576,13 +576,13 @@ class ReduxGetters {
 
   getChannelName(id, state){
     state = state || Store.getState();
-    return deepGet(state, `channel_entities.id_${id}.name`);
+    return unescape(deepGet(state, `channel_entities.id_${id}.name`));
   }
 
   getChannelTagLine(id, state){
     state = state || Store.getState();
     let tagId = deepGet(state, `channel_detail_entities.id_${id}.tagline_id`);
-    return deepGet(state, `text_entities.id_${tagId}.text`);
+    return unescape(deepGet(state, `text_entities.id_${tagId}.text`));
   }
 
   getChannelUserCount(id, state){
@@ -629,7 +629,7 @@ class ReduxGetters {
   getChannelDescription(id, state){
     state = state || Store.getState();
     let descId = deepGet(state, `channel_detail_entities.id_${id}.description_id`);
-    return deepGet(state, `text_entities.id_${descId}.text`);
+    return unescape(deepGet(state, `text_entities.id_${descId}.text`));
   }
 
   getChannelIncludesEntity(id, tappedText){

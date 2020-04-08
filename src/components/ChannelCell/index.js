@@ -17,6 +17,7 @@ import PepoApi from '../../services/PepoApi';
 import DataContract from '../../constants/DataContract';
 import Toast from "../../theme/components/NotificationToast";
 import Utilities from '../../services/Utilities';
+import unescape from 'lodash/unescape';
 
 const mapStateToProps = ( state, ownProps ) => {
    return {
