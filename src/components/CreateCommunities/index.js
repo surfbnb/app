@@ -521,6 +521,16 @@ class CreateCommunitiesScreen extends Component {
     }
     return length;
   }
+
+  // Returns true if more tags can be added. 
+  canAddMoreCommunityTag() {
+    return (!this.state.isSubmitting) && this.getLength(this.state.tags) < MAX_NO_OF_TAGS;
+  }
+
+  // Returns the color code for community tag placeholder text.
+  getCommunityTagPlaceholderTextColor() {
+    return this.canAddMoreCommunityTag() ? "'rgba(42, 41, 59, 0.4);'" : "'rgba(42, 41, 59, 0.2);'"
+  }
   communityName = () => {
     return <React.Fragment>
       <View style={inlineStyles.communityLabelWrapper}>
@@ -672,7 +682,7 @@ class CreateCommunitiesScreen extends Component {
         <View style={inlineStyles.formInputWrapper}>
           <FormInput
             ref={input=>{this.tagsInputRef = input}}
-            editable={!this.state.isSubmitting}
+            editable={this.canAddMoreCommunityTag()}
             fieldName="channel_tags"
             onChangeText={this.onTagsChange}
             textContentType="none"
@@ -680,7 +690,7 @@ class CreateCommunitiesScreen extends Component {
             placeholder="Enter Tag..."
             returnKeyType="next"
             returnKeyLabel="Next"
-            placeholderTextColor="'rgba(42, 41, 59, 0.4);'"
+            placeholderTextColor={this.getCommunityTagPlaceholderTextColor()}
             blurOnSubmit={false}
             isFocus={this.state.current_formField == this.tabIndex.tags}
             onFocus={() => {
