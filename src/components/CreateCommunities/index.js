@@ -398,7 +398,7 @@ class CreateCommunitiesScreen extends Component {
   }
 
   isValidChar(val) {
-    const spaceRegex = /\s/g;
+    const spaceRegex = /\s|,/g;
     return val && !spaceRegex.test(val);
   }
 
