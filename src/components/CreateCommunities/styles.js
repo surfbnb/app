@@ -152,6 +152,9 @@ let stylesMap = {
     fontSize:11,
     marginTop:5,
     marginLeft:5
+  },
+  noLeftMargin:{
+    marginLeft:0
   }
 };
 

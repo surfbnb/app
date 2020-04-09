@@ -715,7 +715,7 @@ class CreateCommunitiesScreen extends Component {
             errorMsg={this.state.tags_error}
             serverErrors={this.state.server_errors}
             onBlur={this.onTagsBlur}
-            errorStyle={inlineStyles.errorInForminput}
+            errorStyle={[inlineStyles.errorInForminput,inlineStyles.noLeftMargin]}
           />
         </View>
         <View style={inlineStyles.dynamicCountWrapper}>
