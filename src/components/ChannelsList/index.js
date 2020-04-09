@@ -62,6 +62,7 @@ class ChannelsList extends PureComponent {
   updateFilter = ( filter ) => {
     if(!filter || this.currentFilter.id == filter.id ) return;
     this.setCurrentFilter(filter);
+    this.scrollToTop();
     this.forcedRefresh();
   }
 

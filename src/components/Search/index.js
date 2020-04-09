@@ -278,7 +278,8 @@ class SearchScreen extends PureComponent {
 
   getChannelsTabUrl = ( filter = {}) => {
     const baseUrl = filter.baseUrl; 
-    return this.getUrlForTab(TabMap.channels , baseUrl);
+    if(baseUrl){ TabMap.channels.baseUrl = baseUrl;}
+    return this.getUrlForTab(TabMap.channels);
   };
 
   getTagsTabUrl = () => {
@@ -293,8 +294,8 @@ class SearchScreen extends PureComponent {
     return this.getUrlForTab(TabMap.videos);
   };
 
-  getUrlForTab = (tabData, url) => {
-    let baseUrl = url || tabData.baseUrl;
+  getUrlForTab = (tabData) => {
+    let baseUrl = tabData.baseUrl;
 
     let params = tabData.params || {};
     // Copy it.
