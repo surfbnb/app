@@ -103,7 +103,7 @@ class ChannelCell extends PureComponent {
             <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={styles.imageBg} resizeMode={'cover'}>
               <View style={styles.imageBgOpacity}>
                 <View>
-                  <Text style={styles.header}>{this.props.channelName}</Text>
+                  <Text numberOfLines={1} style={styles.header}>{this.props.channelName}</Text>
                   <Text style={styles.channelDesc}>{this.props.channelTagLine}</Text>
                 </View>
                 <View style={styles.bottomView}>
