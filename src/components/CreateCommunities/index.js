@@ -553,7 +553,7 @@ class CreateCommunitiesScreen extends Component {
     return <React.Fragment>
       <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>Community Name</Text>
-        <Text style={inlineStyles.labelHint}>Give your community an identity! (Max 25 chars)</Text>
+        <Text style={inlineStyles.labelHint}>What will your community be called?</Text>
       </View>
       <View style={inlineStyles.inputWrapper}>
         <View style={inlineStyles.formInputWrapper}>
@@ -596,7 +596,7 @@ class CreateCommunitiesScreen extends Component {
     return <React.Fragment>
       <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>Community Tagline</Text>
-        <Text style={inlineStyles.labelHint}>Something which shows what your community is about (Max 45 chars)</Text>
+        <Text style={inlineStyles.labelHint}>Tell the world what your community is all about in one sentence!</Text>
       </View>
       <View style={inlineStyles.inputWrapper}>
         <View style={inlineStyles.formInputWrapper}>
@@ -638,7 +638,7 @@ class CreateCommunitiesScreen extends Component {
     return <React.Fragment>
       <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>About the community</Text>
-        <Text style={inlineStyles.labelHint}>Something which best describes it (Max. 400 chars)</Text>
+        <Text style={inlineStyles.labelHint}>Ok, now we can go into detail. Describe what makes your community great.</Text>
       </View>
       <View style={inlineStyles.inputWrapper}>
         <View style={inlineStyles.formInputWrapper}>
@@ -683,7 +683,7 @@ class CreateCommunitiesScreen extends Component {
       <View style={inlineStyles.communityLabelWrapper}>
         <Text style={inlineStyles.label}>Community Tags</Text>
         <Text style={inlineStyles.labelHint}>
-          These tags place videos in your community.{' '}
+          Tags are how videos will become part of the community.{' '}
           <Text 
             style={{color: Colors.valhalla}}
             // TODO: update the url.
@@ -753,7 +753,7 @@ class CreateCommunitiesScreen extends Component {
 
   getBtnText = () =>{
     if(this.isCreate()){
-      return this.state.isSubmitting?'Creating...':'Create Community';
+      return this.state.isSubmitting?'Creating...':'Create';
     }else if( this.isEdit()){
       return this.state.isSubmitting?'Updating...':'Update';
     }else{
