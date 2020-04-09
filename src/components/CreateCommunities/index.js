@@ -402,8 +402,16 @@ class CreateCommunitiesScreen extends Component {
     return val && !spaceRegex.test(val);
   }
 
-  addTagToTagArray = ( tag=""  , newState={}) => {
+  getSanitizedHashTag = (tag="") => {
     tag = tag.trim();
+    if(!this.isValidChar(tag)){
+      tag = tag.slice(0, -1);
+    }
+    return tag;
+  }
+
+  addTagToTagArray = ( tag=""  , newState={}) => {
+    tag = this.getSanitizedHashTag(tag);
     // Check if the tag has any character other than just space.
     if(tag.length > 0 ) {
       let tagsArray = this.state.tags || [];
