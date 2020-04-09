@@ -119,6 +119,7 @@ let stylesMap = {
     flexDirection:'row',
     alignItems:'center',
     justifyContent:'space-between',
+    position: "relative"
   },
   displayTag:{
     fontSize:12,
@@ -137,6 +138,14 @@ let stylesMap = {
     width:15,
     alignItems:'center',
     justifyContent:'center'
+  },
+  crosIconBackgroundBtn : {
+    position  : "absolute",
+    right : 0,
+    top: 0,
+    width: 50,
+    height: "100%",
+    zIndex: 10
   },
   crossIconSkipFont:{
     height:10,

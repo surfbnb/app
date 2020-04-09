@@ -742,13 +742,11 @@ class CreateCommunitiesScreen extends Component {
               style={inlineStyles.displayTag}>
               {displayTag}
         </Text>
-        <TouchableOpacity
-          disabled={this.state.isSubmitting}
-          onPress={()=> {this.onRemoveTagPress(index)}}
-          style={inlineStyles.crosIconBackground}
-        >
+        <View style={inlineStyles.crosIconBackground}>
           <Image style={inlineStyles.crossIconSkipFont} source={CrossIconTags}></Image>
-        </TouchableOpacity>
+        </View>
+        <TouchableWithoutFeedback style={inlineStyles.crosIconBackgroundBtn} disabled={this.state.isSubmitting} 
+          onPress={()=> {this.onRemoveTagPress(index)}} ><View style={inlineStyles.crosIconBackgroundBtn}/></TouchableWithoutFeedback>
       </View>
     )
   }
