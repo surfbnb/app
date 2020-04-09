@@ -9,15 +9,10 @@ import findIndex from "lodash/findIndex";
 import unescape from 'lodash/unescape';
 import { withNavigation } from 'react-navigation';
 
+const defaultArray = [];
 const mapStateToProps = (state, ownProps) => {
-    let tagIds =  reduxGetter.getChannelTagIds(ownProps.channelId, state) || [] ;
-    tagIds = tagIds.slice(0);
-    if(tagIds.length > 1){
-        tagIds.unshift(0);
-    }
     return {
-      tagIds: tagIds, 
-      tagIdsLn : tagIds.length
+      tagIds: reduxGetter.getChannelTagIds(ownProps.channelId, state) ||defaultArray 
     };
   };
 
@@ -26,27 +21,32 @@ class ChannelTagsList extends PureComponent {
     constructor( props ){
         super( props );
         this.flatlistRef = null;
-        this.ignoreFirstDidFocus = true;
         this.allTag = {
             id: 0,
             text: "All"
         }  
         const selectedTag = props.selectedTag || this.allTag;
         this.state = {
-            selectedTag
+            selectedTag,
+            didFocus: true
         }
         this.initialScrollIndex = findIndex(this.props.tagIds , (id)=> (id == selectedTag.id)) || 0;
         this.setInitialSelectedTag();
     }
 
     componentDidMount(){
-        this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
-           if(this.ignoreFirstDidFocus){
-            this.ignoreFirstDidFocus = false;
-            return;
-           }
+        this.willFocus = this.props.navigation.addListener('willFocus', (payload) => {
+           this.setState({didFocus:true});
            this.updateSelectedTag();
         });
+        this.didBlur = this.props.navigation.addListener('didBlur', (payload) => {
+           this.setState({didFocus:false});
+        });
+    }
+
+    componentWillUnmount(){
+        this.willFocus &&  this.willFocus.remove &&  this.willFocus.remove();
+        this.didBlur && this.didBlur.remove && this.didBlur.remove();
     }
 
     updateSelectedTag = () => {
@@ -58,10 +58,6 @@ class ChannelTagsList extends PureComponent {
         const tagId = this.props.tagIds[0] ,
               tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId); 
         this.onItemClicked(tag);
-    }
-
-    componentWillUnmount(){
-        this.didFocus &&  this.didFocus.remove &&  this.didFocus.remove()
     }
 
     setInitialSelectedTag(){
@@ -105,18 +101,27 @@ class ChannelTagsList extends PureComponent {
     onScrollToIndexFailed =( info) => {
         console.log("======onScrollToIndexFailed=====" , info );
     }
+
+    getTagIds = () => {
+        let tagIds = this.props.tagIds.slice(0) ;
+        if(tagIds.length > 1){
+            tagIds.unshift(0);
+        }
+        return tagIds;
+    }
     
     render() {
-        return this.props.tagIds && (
+        const tagIds = this.getTagIds();
+        return tagIds && this.state.didFocus && (
             <View style={inlineStyles.tagListWrapper}>
                 <FlatList
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    data={this.props.tagIds}
+                    data={tagIds}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
                     ref={(ref) => (this.flatlistRef = ref)}
-                    extraData={this.state.selectedTag}
+                    extraData={this.state}
                     initialScrollIndex={this.initialScrollIndex}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
