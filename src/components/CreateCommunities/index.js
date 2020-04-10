@@ -686,8 +686,7 @@ class CreateCommunitiesScreen extends Component {
           Tags are how videos will become part of the community.{' '}
           <Text 
             style={{color: Colors.valhalla}}
-            // TODO: update the url.
-            onPress={MultipleClickHandler(() => InAppBrowser.openBrowser(AppConfig.redemption.learnMoreLink))}>
+            onPress={MultipleClickHandler(() => InAppBrowser.openBrowser(AppConfig.channelConstants.learnMoreLink))}>
             Learn More
           </Text>
         </Text>

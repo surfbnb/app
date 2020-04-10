@@ -480,7 +480,8 @@ const AppConfig = {
     TAGLINE_MAXLENGTH : 45,
     ABOUT_INFO_MAXLENGTH : 400,
     createSuccessMsg : 'Community created sucessfully' ,
-    editSuccessMsg : 'Community updated sucessfully'
+    editSuccessMsg : 'Community updated sucessfully',
+    learnMoreLink: "https://intercom.help/pepo/en/articles/3901708-choosing-the-right-hashtags-for-your-community-on-pepo"
   },
 
   cameraStack : 'CaptureVideo',
