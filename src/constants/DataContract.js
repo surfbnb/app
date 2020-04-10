@@ -169,7 +169,15 @@ export default {
                 }
             }
         }
-    }
+    },
+    communities:{
+        getCommunityCreateApi : () => {
+            return "/channels"                 
+        },
+        getCommunityEditApi : (id) =>{
+          return `/channels/${id}/edit`;                     
+        }
+    },
 
 }
 

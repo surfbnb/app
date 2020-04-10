@@ -36,7 +36,7 @@ const TabMap = {
     },
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     },
     renderNoResults :  (noResultsData) => {
@@ -57,11 +57,11 @@ const TabMap = {
   },
   "channels": {
     id: CHANNEL_KIND,
-    baseUrl : '/search/channels',
+    baseUrl : '/search/channels/trending',
     title: 'Communities',
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     },
     renderNoResults:  (noResultsData) => {
@@ -70,6 +70,28 @@ const TabMap = {
       noResultsData = noResultsData || oThis.noResultsData;
       return <EmptySearchResult  noResultsData={noResultsData}/>
     },
+    filters : [
+      {
+        text : "Trending",
+        id: "trending",
+        baseUrl: '/search/channels/trending'
+      },
+     {
+        text : "New",
+        id: "new",
+        baseUrl: '/search/channels/new'
+      },
+      {
+        text : "Joined",
+        id: "joined",
+        baseUrl: '/search/channels/my'
+      },
+      {
+        text : "All",
+        id: "all",
+        baseUrl: '/search/channels/all'
+      }
+    ],
     supported: true
   },
   "people": {
@@ -78,7 +100,7 @@ const TabMap = {
     title: 'People',
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     },
     renderNoResults :  (noResultsData) => {
@@ -95,7 +117,7 @@ const TabMap = {
     title: 'Tags',
     "queryParam": "q",
     "noResultsData": {
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     },
     renderNoResults:  (noResultsData) => {
@@ -112,7 +134,7 @@ const TabMap = {
     title: 'Video',
     "queryParam": "q",
     "getNoResultData": () =>({
-      "noResultsMsg": 'No results found. Please try again.',
+      "noResultsMsg": 'No results found.',
       "isEmpty": true
     }),
     extraParams: {
@@ -254,7 +276,9 @@ class SearchScreen extends PureComponent {
     return this.getUrlForTab(TabMap.top);
   };
 
-  getChannelsTabUrl = () => {
+  getChannelsTabUrl = ( filter = {}) => {
+    const baseUrl = filter.baseUrl; 
+    if(baseUrl){ TabMap.channels.baseUrl = baseUrl;}
     return this.getUrlForTab(TabMap.channels);
   };
 
@@ -406,6 +430,7 @@ class SearchScreen extends PureComponent {
           onRef={this.setChannelFlatListRef}
           noResultsData={TabMap.channels.noResultsData}
           getNoResultsCell={TabMap.channels.renderNoResults}
+          filters={TabMap.channels.filters}
         />
       </Tab>
     }

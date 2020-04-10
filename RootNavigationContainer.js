@@ -39,6 +39,8 @@ import utilities from './src/services/Utilities';
 import { NotificationToastComponent } from './src/theme/components/NotificationToast';
 import SocketManager from './src/services/SocketManager';
 import SearchScreen from './src/components/Search';
+import CreateCommunitiesScreen from './src/components/CreateCommunities';
+import EditCommunityBanner from './src/components/EditCommunityBanner';
 import FanVideoDetails from './src/components/FanVideoDetails';
 import FanVideoReplyDetails from './src/components/FanVideoReplyDetails';
 import WalletSettingScreen from './src/components/WalletSetting';
@@ -306,6 +308,7 @@ const ProfileStack = createStackNavigator(
 const SearchPushStack = createStackNavigator(
   {
     SearchScreen: SearchScreen,
+    CreateCommunitiesScreen: CreateCommunitiesScreen,
     UsersProfileScreen: UsersProfileScreen,
     SupportingListScreen: SupportingListScreen,
     SupportersListScreen: SupportersListScreen,
@@ -319,7 +322,8 @@ const SearchPushStack = createStackNavigator(
     VideoReplies:VideoReplies ,
     FullScreenReplyCollection: FullScreenReplyCollection,
     ChannelsScreen: ChannelsScreen,
-    MembersScreen: MembersScreen
+    MembersScreen: MembersScreen,
+    EditCommunityBanner: EditCommunityBanner
   },
   {
     headerLayoutPreset: 'center',

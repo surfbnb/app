@@ -48,7 +48,8 @@ class Base extends PureComponent {
     Store.dispatch(upsertRecordedVideo({
         raw_video_list: this.props.videoUrlsList,
         video_length: this.props.totalDuration,
-        previewURL:  this.props.previewURL
+        previewURL:  this.props.previewURL,
+        currentPreference: this.props.currentPreference
     }));
   }
 

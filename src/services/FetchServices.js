@@ -155,6 +155,10 @@ class FetchServices {
     return this.results.map((item) => deepGet(item, key));
   }
 
+  getMeta(){
+    return this.meta;
+  }
+
   clone() {
     let Constructor = this.constructor;
     return new Constructor(this.url, this.extraParams, this.id, this.options);

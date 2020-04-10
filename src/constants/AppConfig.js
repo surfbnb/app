@@ -51,7 +51,11 @@ const AppConfig = {
     tabToRecord : "TAP_TO_RECORD",
     longPressToRecord : "LONG_PRESS_TO_RECORD",
     recordingDelayKey: 'recording-delay',
-    videoMaxLength : 30
+    videoMaxLength : 30,
+    videoLenthPreferences :{
+      "30" : 30,
+      "90" : 90
+    }
   },
 
   beKnownErrorCodeMaps : {
@@ -127,7 +131,8 @@ const AppConfig = {
 
   fileUploadTypes: {
     video: 'videos',
-    image: 'images'
+    image: 'images',
+    channelImages: "channel_images"
   },
 
   storageKeys: {
@@ -166,6 +171,11 @@ const AppConfig = {
     HEIGHT: 480
   },
 
+  communityBannerSize: {
+    WIDTH: 1517,
+    HEIGHT: 650
+  },
+
   videoConstant: {
     videoWidth: '576w',
     videoImageWidth: 'original'
@@ -181,6 +191,7 @@ const AppConfig = {
   },
 
   cameraHeightRatio: 0.6,
+  bannerHeightRatio: 0.428,
 
   notificationConstants: {
     profileTxSendKind: PROFILE_TX_SEND_SUCCESS,
@@ -456,7 +467,20 @@ const AppConfig = {
   },
 
   channelConstants : {
-    SCREEN_NAME : "ChannelsScreen"
+    SCREEN_NAME : "ChannelsScreen",
+    newChannelHeaderText : "New Community",
+    types: {
+      create : "create",
+      edit: "edit"
+    },
+    btnPreText : 'Submit',
+    btnPostText : 'Submiting...',
+    MAX_NO_OF_TAGS : 5,
+    NAME_MAXLENGTH : 25,
+    TAGLINE_MAXLENGTH : 45,
+    ABOUT_INFO_MAXLENGTH : 400,
+    createSuccessMsg : 'Community created sucessfully' ,
+    editSuccessMsg : 'Community updated sucessfully'
   },
 
   cameraStack : 'CaptureVideo',

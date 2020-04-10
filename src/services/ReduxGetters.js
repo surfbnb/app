@@ -576,13 +576,13 @@ class ReduxGetters {
 
   getChannelName(id, state){
     state = state || Store.getState();
-    return deepGet(state, `channel_entities.id_${id}.name`);
+    return unescape(deepGet(state, `channel_entities.id_${id}.name`));
   }
 
   getChannelTagLine(id, state){
     state = state || Store.getState();
     let tagId = deepGet(state, `channel_detail_entities.id_${id}.tagline_id`);
-    return deepGet(state, `text_entities.id_${tagId}.text`);
+    return unescape(deepGet(state, `text_entities.id_${tagId}.text`));
   }
 
   getChannelUserCount(id, state){
@@ -611,15 +611,30 @@ class ReduxGetters {
     return deepGet(state, `current_user_channel_relation_entities.id_${id}.is_member`);
   }
 
+  isCurrentUserAdminOfChannel(id, state){
+    state = state || Store.getState();
+    return !!deepGet(state, `current_user_channel_relation_entities.id_${id}.is_admin`);
+  }
+
   isChannelUserAdmin(channelId ,  userId , state){
     state = state || Store.getState();
     return !!deepGet(state, `channel_user_relation_entities.id_${channelId}.${userId}.is_admin` ,  false);
   }
 
+  canCurrentUserEditChannel(id , state){
+    state = state || Store.getState();
+    return !!deepGet(state, `channel_allowed_action_entities.id_${id}.can_edit`);
+  }
+
+  canCurrentUserLeaveChannel(id , state){
+    state = state || Store.getState();
+    return !!deepGet(state, `channel_allowed_action_entities.id_${id}.can_leave`);
+  }
+
   getChannelDescription(id, state){
     state = state || Store.getState();
     let descId = deepGet(state, `channel_detail_entities.id_${id}.description_id`);
-    return deepGet(state, `text_entities.id_${descId}.text`);
+    return unescape(deepGet(state, `text_entities.id_${descId}.text`));
   }
 
   getChannelIncludesEntity(id, tappedText){

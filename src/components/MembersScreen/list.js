@@ -21,7 +21,7 @@ class MembersList extends PureComponent {
 
   getEmptyComponent = () => {
         const noResultsData = {
-            "noResultsMsg":`No members found, Please try again later.`,
+            "noResultsMsg":`No members found.`,
             "isEmpty": true
         };
         return !this.props.refreshing && <EmptySearchResult noResultsData={noResultsData}/>

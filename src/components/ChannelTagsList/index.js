@@ -6,11 +6,13 @@ import inlineStyles from './styles';
 import Colors from '../../theme/styles/Colors';
 import reduxGetter from '../../services/ReduxGetters';
 import findIndex from "lodash/findIndex";
+import unescape from 'lodash/unescape';
+import { withNavigation } from 'react-navigation';
 
-const defaultArray  = [];
+const defaultArray = [];
 const mapStateToProps = (state, ownProps) => {
     return {
-      tagIds: reduxGetter.getChannelTagIds(ownProps.channelId, state) || defaultArray
+      tagIds: reduxGetter.getChannelTagIds(ownProps.channelId, state) ||defaultArray 
     };
   };
 
@@ -25,20 +27,37 @@ class ChannelTagsList extends PureComponent {
         }  
         const selectedTag = props.selectedTag || this.allTag;
         this.state = {
-            selectedTag
+            selectedTag,
+            didFocus: true
         }
         this.initialScrollIndex = findIndex(this.props.tagIds , (id)=> (id == selectedTag.id)) || 0;
-        this.setAllOption();
         this.setInitialSelectedTag();
     }
 
-    setAllOption = () => {
-        if(this.props.tagIds.length <= 1){
-            this.tagIds = this.props.tagIds
-        }else{
-            this.tagIds = this.props.tagIds.slice(0);
-            this.tagIds.unshift('0');
-        }      
+    componentDidMount(){
+        this.willFocus = this.props.navigation.addListener('willFocus', (payload) => {
+           this.setState({didFocus:true});
+           this.updateSelectedTag();
+        });
+        this.didBlur = this.props.navigation.addListener('didBlur', (payload) => {
+           this.setState({didFocus:false});
+        });
+    }
+
+    componentWillUnmount(){
+        this.willFocus &&  this.willFocus.remove &&  this.willFocus.remove();
+        this.didBlur && this.didBlur.remove && this.didBlur.remove();
+    }
+
+    updateSelectedTag = () => {
+        for(let cnt = 0 ; cnt < this.props.tagIds.length; cnt++){
+            if(this.isSelected(this.props.tagIds[cnt])){
+                return;
+            }
+        }
+        const tagId = this.props.tagIds[0] ,
+              tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId); 
+        this.onItemClicked(tag);
     }
 
     setInitialSelectedTag(){
@@ -47,19 +66,16 @@ class ChannelTagsList extends PureComponent {
         }
     }
 
-    componentDidUpdate(){
-        this.setAllOption();
-    }
-
     _keyExtractor = (item, index) => {
         return `id_${item.id}_${index}`;
     };
 
     isSelected = (tagId) => {
-       return this.state.selectedTag.id == tagId;
+       return this.state.selectedTag && this.state.selectedTag.id == tagId;
     }
 
     onItemClicked = (tag) => {
+        if(!tag) return;
         this.setState({
             selectedTag : tag
         })
@@ -68,12 +84,14 @@ class ChannelTagsList extends PureComponent {
 
     _renderItem = ( {item, index} ) => {
         let tagId = item;
-        let tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId);
+        let tag = tagId == 0 ? this.allTag : reduxGetter.getHashTag(tagId),
+            text = tag && unescape(tag.text)
+        ;
         return tag && (
             <TouchableOpacity onPress={()=> this.onItemClicked(tag)}>
                 <View style={inlineStyles.tagWrapper}>
                     <Text style={[inlineStyles.text, {color: this.isSelected(tagId) ? Colors.wildWatermelon2 : Colors.valhalla }]}>
-                        {tagId == 0 ? tag.text : `#${tag.text}`}
+                        {tagId == 0 ? text : `#${text}`}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -84,17 +102,26 @@ class ChannelTagsList extends PureComponent {
         console.log("======onScrollToIndexFailed=====" , info );
     }
 
+    getTagIds = () => {
+        let tagIds = this.props.tagIds.slice(0) ;
+        if(tagIds.length > 1){
+            tagIds.unshift(0);
+        }
+        return tagIds;
+    }
+    
     render() {
-        return this.tagIds && (
+        const tagIds = this.getTagIds();
+        return tagIds && this.state.didFocus && (
             <View style={inlineStyles.tagListWrapper}>
                 <FlatList
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    data={this.tagIds}
+                    data={tagIds}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
                     ref={(ref) => (this.flatlistRef = ref)}
-                    extraData={this.state.selectedTag}
+                    extraData={this.state}
                     initialScrollIndex={this.initialScrollIndex}
                     onScrollToIndexFailed={this.onScrollToIndexFailed}
                 />
@@ -103,4 +130,4 @@ class ChannelTagsList extends PureComponent {
     }
 }
 
-export default connect(mapStateToProps)(ChannelTagsList);
+export default connect(mapStateToProps)(withNavigation( ChannelTagsList ));

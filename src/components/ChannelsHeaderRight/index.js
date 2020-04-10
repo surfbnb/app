@@ -11,8 +11,8 @@ import { ActionSheet } from 'native-base';
 import PepoApi from '../../services/PepoApi';
 import reduxGetters from '../../services/ReduxGetters';
 import ShareOptions from '../CommonComponents/ShareOptions';
-import { fetchChannel } from '../../helpers/helpers';
 import {ostErrors} from '../../services/OstErrors';
+import AppConfig from '../../constants/AppConfig';
 
 
 class ChannelsHeaderRight extends PureComponent {
@@ -20,42 +20,52 @@ class ChannelsHeaderRight extends PureComponent {
     super(props);
   }
 
-  getDefaultConfig = () => {
-    return {
-      memberConfig: {
-        actionConfig: {
-          0: this.checkMuteStatus() ? 'showUnMuteChannelAlert' : 'showMuteChannelAlert',
-          1: 'showLeaveChannelAlert',
-          2: 'showReportAlert',
-          3: 'cancel'
-        },
-        actionSheetConfig: {
-          options: [this.getMuteOptionText(), 'Leave Community', 'Report Community', 'Cancel'],
-          cancelButtonIndex: 3,
-          destructiveButtonIndex: 2
-        }
-      },
-      nonMemberConfig: {
-        actionConfig: {
-          0: 'showReportAlert',
-          1: 'cancel'
-        },
-        actionSheetConfig: {
-          options: ['Report Community', 'Cancel'],
-          cancelButtonIndex: 1,
-          destructiveButtonIndex: 0
-        }
-      }
-    };
-  };
-
   getConfig = () => {
-    let isMember = reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId);
-    if (isMember) {
-      return this.getDefaultConfig().memberConfig;
-    } else {
-      return this.getDefaultConfig().nonMemberConfig;
+    const optionsArray = [] ,  actionConfig ={} , actionSheetConfig ={ options: [] },
+          isMember = reduxGetters.isCurrentUserMemberOfChannel(this.props.channelId) ,
+          canEdit = reduxGetters.canCurrentUserEditChannel(this.props.channelId) ,
+          canLeave = reduxGetters.canCurrentUserLeaveChannel(this.props.channelId)
+          ;
+
+    if(canEdit){
+      optionsArray.push({
+        text: "Edit Community",
+        action : "eidtChannel"
+      })
     }
+   
+    if ( isMember ) {
+      optionsArray.push({
+        text: this.getMuteOptionText(),
+        action : this.checkMuteStatus() ? 'showUnMuteChannelAlert' : 'showMuteChannelAlert'
+      })
+    } 
+
+    if(isMember && canLeave){
+      optionsArray.push({
+        text: 'Leave Community',
+        action : 'showLeaveChannelAlert'
+      })
+    }
+
+    optionsArray.push({
+      text: 'Report Community',
+      action : 'showReportAlert'
+    });
+
+    optionsArray.push({
+      text: 'Cancel',
+      action : 'cancel'
+    })
+
+    for(let cnt = 0 ; cnt < optionsArray.length ; cnt++){
+      actionConfig[cnt] = optionsArray[cnt]['action'];
+      actionSheetConfig.options.push( optionsArray[cnt]['text']);
+    }
+    actionSheetConfig['cancelButtonIndex'] = optionsArray.length -1 ;
+    actionSheetConfig['destructiveButtonIndex'] =  optionsArray.length -2 ;
+
+    return{'actionConfig':actionConfig ,'actionSheetConfig': actionSheetConfig};
   };
 
   checkMuteStatus = () => {
@@ -194,6 +204,13 @@ class ChannelsHeaderRight extends PureComponent {
       }
     });
   };
+
+  eidtChannel = () => {
+    this.props.navigation.push('CreateCommunitiesScreen',{
+      type : AppConfig.channelConstants.types.edit, 
+      channelId : this.props.channelId
+    });
+  }
 
   render() {
     return !this.props.isDeleted && (

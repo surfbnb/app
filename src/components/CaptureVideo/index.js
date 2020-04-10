@@ -30,6 +30,7 @@ class CaptureVideo extends Component {
       showLightBoxOnReply: isChargeble,
       totalDuration: 0
     };
+    this.currentPreference = null;
     this.replyReceiverUserId = null;
     this.replyReceiverVideoId = null;
     this.amountToSendWithReply = null;
@@ -89,12 +90,12 @@ class CaptureVideo extends Component {
     this.proceedWithExisting = true;
     this.videoType = recordedVideoObj.video_type || AppConfig.videoTypes.post ;
     console.log(recordedVideoObj.video_length, 'totalDurationtotalDurationtotalDuration');
+    this.currentPreference = recordedVideoObj.currentPreference;
     this.setState ({
       recordingScreen: false,
       videoUrlsList: recordedVideoObj.raw_video_list,
       totalDuration: recordedVideoObj.video_length,
       previewURL: recordedVideoObj.previewURL,
-
     });
   };
 
@@ -175,7 +176,8 @@ class CaptureVideo extends Component {
     });
   }
 
-  goToPreviewScreen = (videoUrlsList, totalDuration) => {
+  goToPreviewScreen = (videoUrlsList, totalDuration, currentPreference ) => {
+    this.currentPreference = currentPreference ;
     if( videoUrlsList.length == 1){
       this.goToPreviewStateUpdate(videoUrlsList , totalDuration , videoUrlsList[0].uri );
       return;
@@ -222,6 +224,7 @@ class CaptureVideo extends Component {
           totalDuration={this.state.totalDuration}
           previewURL={this.state.previewURL}
           navigation={this.props.navigation}
+          currentPreference={this.currentPreference}
         />
       );
     }

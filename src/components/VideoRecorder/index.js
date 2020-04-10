@@ -18,27 +18,23 @@ import { ActionSheet } from 'native-base';
 import Store from '../../store';
 import { upsertRecordedVideo } from '../../actions';
 import closeIcon from '../../assets/camera-cross-icon.png';
-import closeIconWhite from '../../assets/cross-icon-white.png';
 import { withNavigation } from 'react-navigation';
 import AppConfig from '../../constants/AppConfig';
 import LinearGradient from "react-native-linear-gradient";
-import Theme from "../../theme/styles";
 import multipleClickHandler from "../../services/MultipleClickHandler";
-import TouchableButton from "../FanVideoReplyDetails/TouchableButton";
-import Pricer from "../../services/Pricer";
 import Toast from "../../theme/components/NotificationToast";
 import RecordActionButton from './RecordActionButton';
 import Utilities from '../../services/Utilities';
 import FfmpegProcesser from '../../services/FfmpegProcesser';
 import ProgressBar from '../CommonComponents/ProgressBarWrapper';
-
+import VideoLenthPreferences from './VideoLenthPreferences';
+import CoachScreen from './CoachScreen';
 
 const ACTION_SHEET_BUTTONS = ['Reshoot', 'Continue'];
 const ACTION_SHEET_CONTINUE_INDEX = 1;
 const ACTION_SHEET_RESHOOT_INDEX = 0;
 const PROGRESS_REFRESH_INTERVAL = 300;
 const MIN_VIDEO_LENGTH_IN_SEC = 1;
-const BUFFERED_MAX_DURATION_MS  = ( AppConfig.videoRecorderConstants.videoMaxLength -  MIN_VIDEO_LENGTH_IN_SEC  ) * 1000;
 
 const TAP_TO_RECORD = AppConfig.videoRecorderConstants.tabToRecord;
 const LONG_PRESS_TO_RECORD = AppConfig.videoRecorderConstants.longPressToRecord;
@@ -52,7 +48,8 @@ class VideoRecorder extends Component {
       showLightBoxOnReply: this.props.showLightBoxOnReply,
       cameraFrontMode: true,
       isLocalVideoPresent: false,
-      currentMode: null
+      currentMode: null,
+      showDurationPreference: true
     };
     /*
      these variables are used because setting state variables is async task
@@ -72,21 +69,36 @@ class VideoRecorder extends Component {
     this.videoLength = 0;
     this.recordedVideoObj = reduxGetters.getRecordedVideo();
     this.correctedRecordingDelay = AppConfig.videoRecorderConstants.recordingDelay;
+    this.currentVideoMaxLength = AppConfig.videoRecorderConstants.videoLenthPreferences['30'];
+
 
     Utilities.getItem(AppConfig.videoRecorderConstants.recordingDelayKey).then((value)=>{
       value =  Number(value);
       if(value){
-        this.correctedRecordingDelay =value;
+        this.correctedRecordingDelay = value;
       }
     });
 
   }
 
-  progressFactor = () => (1/(AppConfig.videoRecorderConstants.videoMaxLength*1000))*(this.actualProgressRefreshInterval || PROGRESS_REFRESH_INTERVAL);
+  getCurrentVideoMaxLength = () => {
+    return this.currentVideoMaxLength ;
+  }
+
+  setCurrentVideoMaxLength =( val ) => {
+    if(!val) return;
+    this.currentVideoMaxLength = val; 
+  }
+
+  getBufferdMaxDuration = () => {
+    return ( this.getCurrentVideoMaxLength() -  MIN_VIDEO_LENGTH_IN_SEC  ) * 1000
+  }
+
+  progressFactor = () => (1/(this.getCurrentVideoMaxLength()*1000))*(this.actualProgressRefreshInterval || PROGRESS_REFRESH_INTERVAL);
 
   accidentalGoToPreviewScreen = () => {
     this.stoppedUnexpectedly = false;
-    this.videoUrlsList.length && this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+    this.videoUrlsList.length && this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength,  this.getCurrentVideoMaxLength());
   };
 
   _handleAppStateChange = (nextAppState) => {
@@ -96,7 +108,7 @@ class VideoRecorder extends Component {
           this._onAppStateChangeToBackground();
         }
       }else {
-        if( ! this.isBackgroundHonoured &&  (nextAppState === 'inactive' || nextAppState === 'background' )) {
+        if( !this.isBackgroundHonoured &&  (nextAppState === 'inactive' || nextAppState === 'background' )) {
           this.isBackgroundHonoured = true;
           this._onAppStateChangeToBackground();
         }
@@ -227,99 +239,16 @@ class VideoRecorder extends Component {
     return true;
   };
 
-  getPepoAmount = () => {
-    let amount = reduxGetters.getBtAmountForReply(this.props.videoId);
-    return Pricer.getToBT(Pricer.getFromDecimal(amount), 2);
-  };
-
-  getUserFullName = () => {
-    let userId = reduxGetters.getVideoCreatorUserId(this.props.videoId);
-    return reduxGetters.getName(userId)
-  };
-
-
   showCoachForPosting = () => {
-    // If already recorded video present in local, do not show coach.
-    if (this.state.isLocalVideoPresent) return;
-
-    if (this.props.isVideoTypeReply) {
-      // TODO: return coach for posting
-      if (this.state.showLightBoxOnReply){
-        // Show video
-        return <View style={styles.backgroundStyle}>
-          <TouchableOpacity onPressIn={this.cancleVideoHandling} style={[styles.closeBtWrapper, {top: 25}]}>
-            <Image style={{height: 16.6, width: 16.6}} source={closeIconWhite}></Image>
-          </TouchableOpacity>
-          <View style={{ padding: 26, alignItems: 'center'}}>
-
-            <Text style={[styles.smallText, {fontWeight: '600'}]}>
-              Post a reply
-            </Text>
-
-
-            <Text style={[styles.miniText, {textAlign: 'center'}]}>
-              Reply to {this.getUserFullName()}'s video for {this.getPepoAmount()} Pepo Coins
-            </Text>
-
-            <LinearGradient
-              colors={['#ff7499', '#ff5566']}
-              locations={[0, 1]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
-            >
-              <TouchableButton
-                TouchableStyles={[{ minWidth: '100%', borderColor: 'none', borderWidth: 0 }]}
-                TextStyles={[Theme.Button.btnPinkText]}
-                style={{marginBottom: 20}}
-                textBeforeImage='Reply | '
-                textAfterImage={this.getPepoAmount()}
-                onPress={multipleClickHandler(() => {
-                  this.replyToVideo();
-                })}
-              />
-            </LinearGradient>
-
-          </View>
-        </View>
-      }
-      // if (no video reply present) { return Coach }
-    } else {
-      if (this.state.acceptedCameraTnC !== 'true') {
-
-        return <View style={styles.backgroundStyle}>
-          <View style={{ padding: 26 }}>
-            <Text style={styles.headerText}>Create your first 30 second video</Text>
-
-            <Text style={styles.smallText}>
-              Introduce yourself. Share your passions, projects, and your unique personality!
-            </Text>
-
-            <LinearGradient
-              colors={['#ff7499', '#ff5566']}
-              locations={[0, 1]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={{ alignSelf: 'center', paddingHorizontal: 15, marginTop: 30, borderRadius: 3 }}
-            >
-              <TouchableOpacity
-                onPress={this.acceptCameraTerms}
-                style={[Theme.Button.btn, { borderWidth: 0 }]}
-              >
-                <Text style={[
-                  Theme.Button.btnPinkText,
-                  { fontSize: 16, fontFamily: 'AvenirNext-DemiBold', textAlign: 'center' }
-                ]}>
-                  Start Creating
-                </Text>
-              </TouchableOpacity>
-            </LinearGradient>
-
-          </View>
-        </View>
-
-      }
-    }
+    return <CoachScreen videoId={this.props.videoId}
+                        isLocalVideoPresent={this.state.isLocalVideoPresent}
+                        acceptedCameraTnC={this.state.acceptedCameraTnC}
+                        acceptCameraTerms={this.acceptCameraTerms}
+                        isVideoTypeReply={this.props.isVideoTypeReply}
+                        showLightBoxOnReply={this.state.showLightBoxOnReply}
+                        cancleVideoHandling={this.cancleVideoHandling}
+                        replyToVideo={this.replyToVideo}
+                        />
   };
 
   cameraView() {
@@ -366,7 +295,7 @@ class VideoRecorder extends Component {
 
     if (this.props.isVideoTypeReply){
       // If video type is reply and has video replies then we will not show coach and we need to show action buttons
-      return ! this.state.showLightBoxOnReply;
+      return !this.state.showLightBoxOnReply;
     } else {
       // If video type is post and terms and conditions are accepted then we will not show coach and we need to show action buttons
       return this.state.acceptedCameraTnC === 'true';
@@ -409,6 +338,7 @@ class VideoRecorder extends Component {
   };
 
 
+
   showCameraActions = () => {
     if (this.shouldShowActionButtons()) {
       return (
@@ -421,16 +351,19 @@ class VideoRecorder extends Component {
           </View>
           {this.showCancelVideoCTA()}
           <View style={{flex: 1, justifyContent: 'flex-end', width: '100%'}}>
-          <View>
-            {/*{this.showTooltip()}*/}
-            <View style={styles.bottomWrapper }>
-              {this.flipButton()}
-              {this.getActionButton()}
-              {this.previewButton()}
+            <View>
+              {/*{this.showTooltip()}*/}
+              <View style={styles.bottomWrapper }>
+                {this.flipButton()}
+                {this.getActionButton()}
+                {this.previewButton()}
+              </View>
+
+              {/*{this.renderModeRow()}*/}
             </View>
-            {/*{this.renderModeRow()}*/}
           </View>
-          </View>
+         {this.state.showDurationPreference && <VideoLenthPreferences getInitialPref={this.getCurrentVideoMaxLength}
+                                onChange={this.setCurrentVideoMaxLength}/>}
         </React.Fragment>
       );
     }
@@ -453,7 +386,7 @@ class VideoRecorder extends Component {
       Toast.show({text:'Please create longer video', icon: 'error' });
       return;
     }
-    this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength);
+    this.props.goToPreviewScreen(this.videoUrlsList, this.videoLength ,  this.getCurrentVideoMaxLength());
   };
 
   onBackPress = () => {
@@ -485,7 +418,12 @@ class VideoRecorder extends Component {
         this.separationBars.pop();
       }
 
-      this.forceUpdate();
+      if(this.videoUrlsList.length == 0){
+        this.setState({showDurationPreference: true});
+      }else{
+        this.forceUpdate();
+      }
+      
     }
   };
 
@@ -610,7 +548,7 @@ class VideoRecorder extends Component {
   };
 
   isVideoDurationBufferReached(length){
-    return length >= BUFFERED_MAX_DURATION_MS ;
+    return length >= this.getBufferdMaxDuration() ;
   }
 
   getActionButton() {
@@ -682,7 +620,7 @@ class VideoRecorder extends Component {
       this.recordActionButton && this.recordActionButton.loopedAnimation().start();
     }, this.correctedRecordingDelay);
     this.recordActionButton && this.recordActionButton.styleAsDisabled(true);
-    this.changeIsRecording(true);
+    this.changeIsRecording(true , {showDurationPreference: false} );
   };
 
   getRecordingOptions = () => {
@@ -691,7 +629,7 @@ class VideoRecorder extends Component {
       base64: true,
       muted: false,
       orientation:  'portrait',
-      maxDuration: AppConfig.videoRecorderConstants.videoMaxLength
+      maxDuration: this.getCurrentVideoMaxLength()
     };
   };
 
@@ -699,12 +637,8 @@ class VideoRecorder extends Component {
     if (!this.camera) return;
     this.lastUpdateProgressTimeStamp = 0;
     this.preRecording();
-    let data, assumedStartTime, endTime;
-    let stopNativeRecording = false;
-
-    // Reset stoppedByAction here.
-    // this.stoppedByAction = false;
-
+    let data, assumedStartTime, endTime
+    ;
     try {
         assumedStartTime = Date.now() + this.correctedRecordingDelay;
         data = await this.camera.recordAsync(this.getRecordingOptions());
@@ -732,7 +666,6 @@ class VideoRecorder extends Component {
   };
 
   recordingDelayCorrection = (duration, durationByCode) => {
-      let durationByProgress = this.getLastSegmentProgress() * AppConfig.videoRecorderConstants.videoMaxLength * 1000;
       const correctionVal =  this.correctedRecordingDelay - (duration - durationByCode);
       this.setCorrectionValue( correctionVal );
       // let logMsg = `FFmpeg ${duration.toFixed(2)} Code ${durationByCode.toFixed(2)} Delay ${this.correctedRecordingDelay.toFixed(2)}`;
@@ -757,7 +690,6 @@ class VideoRecorder extends Component {
   };
 
   sanitizeSegments = async (data, durationByCode ) => {
-    let lastSegmentProgress = this.getCurrentSegmentProgress();
     let videoInfo;
     FfmpegProcesser.init([data.uri]);
     try{
@@ -786,6 +718,10 @@ class VideoRecorder extends Component {
     } else {
       this.goToLastProgress();
     }
+
+    if(this.videoUrlsList.length == 0){
+     this.setState({showDurationPreference: true});
+    }
   };
 
   getVideoDurationFromRawInformation = (rawInformation) => {
@@ -806,7 +742,7 @@ class VideoRecorder extends Component {
   };
 
   correctProgress = () => {
-    let correctedProgress = (this.videoLength / 1000) / AppConfig.videoRecorderConstants.videoMaxLength;
+    let correctedProgress = (this.videoLength / 1000) / this.getCurrentVideoMaxLength();
     this.updateVideoUrlsListProgress(correctedProgress);
     if(this.isVideoDurationBufferReached(this.videoLength)){
       correctedProgress =  1;

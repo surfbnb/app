@@ -69,6 +69,7 @@ const backendToAppEntities = {
   channel_stats: 'channel_stat_entities',  
   channel_stat: 'channel_stat_entities',  
   channel_taglines: 'channel_tagline_entities',  
+  channel_allowed_actions: 'channel_allowed_action_entities',
   current_user_channel_relations: 'current_user_channel_relation_entities',  
   channel_user_relations: {
     key :  'channel_user_relation_entities', 
@@ -79,7 +80,8 @@ const backendToAppEntities = {
 
 // This is a map of signular entity result_type w.r.t. result_type of result collect (Array/HashMap) of same type.
 const knownSinglularEntities = {
-  user_profile: 'user_profiles'
+  user_profile: 'user_profiles', 
+  'channel' : 'channel'
 };
 
 const dispatchEntities = (data) => {

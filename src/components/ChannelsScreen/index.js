@@ -24,6 +24,7 @@ import erroMsgStyle from "../CommonComponents/EmptySearchResult/style";
 import {navigateTo} from "../../helpers/navigateTo";
 import NotificationPermissionModal from '../NotificationPermissionModal';
 import CurrentUser from '../../models/CurrentUser';
+import unescape from 'lodash/unescape';
 
 const mapStateToProps = (state) => {
     return {
@@ -70,6 +71,18 @@ class ChannelsScreen extends PureComponent {
             isDeleted: false,
             permissionModalVisible:null
         }
+    }
+
+    componentDidMount() {
+        if(this.channelId){
+          this.didFocus = this.props.navigation.addListener('didFocus', (payload) => {
+            this.props.navigation.setParams({ headerTitle:  ReduxGetters.getChannelName(this.channelId) });
+          });
+        }
+    }
+
+    componentWillUnmount(){
+        this.didFocus &&  this.didFocus.remove && this.didFocus.remove();
     }
 
     getPermissions (){
@@ -160,9 +173,9 @@ class ChannelsScreen extends PureComponent {
           return;
         }
         const resultType = deepGet(res,  DataContract.common.resultType),
-              videoName = deepGet(res , `data.${resultType}.name` )
+              channelName = unescape( deepGet(res , `data.${resultType}.name` ) )
               ;   
-        this.props.navigation.setParams({ headerTitle:videoName });
+        this.props.navigation.setParams({ headerTitle: channelName });
     };
 
     onPermissionModalDismiss = () => {

@@ -1,5 +1,4 @@
-import DefaultStyleGenerator from '../../theme/styles/DefaultStyleGenerator';
-
+import { StyleSheet } from 'react-native';
 let stylesMap = {
   zoomContainer: {
     width:'100%',
@@ -23,4 +22,4 @@ let stylesMap = {
   }
 };
 
-export default styles = DefaultStyleGenerator.generate(stylesMap);
+export default styles = StyleSheet.create(stylesMap)

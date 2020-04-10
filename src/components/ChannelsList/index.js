@@ -1,31 +1,37 @@
 import React, { PureComponent } from 'react';
+import multipleClickHandler from '../../services/MultipleClickHandler';
 import {
   FlatList,
   ActivityIndicator,
   Keyboard, 
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  Text
 } from "react-native";
 import { withNavigation } from 'react-navigation';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import ChannelCell from '../ChannelCell';
 import Pagination from "../../services/Pagination";
+import Filters from './Filters';
+import inlineStyles from "./styles";
+import deepGet from "lodash/get";
+import _find from "lodash/find";
 
 class ChannelsList extends PureComponent {
   constructor(props){
     super(props);
     let list = [];
-    // this.tagsPagination = new Pagination( this.props.getFetchUrl());
-
     this.state = {
       list,
       refreshing : false,
       loadingNext: false
     }
-    this.listRef = null ;
+    this.listRef = null;
+    this.filterRef = null;
+    this.currentFilter = {};
+    this.setDefaultFilter();
   }
-
 
   componentDidMount(){
     this.forcedRefresh();
@@ -34,22 +40,42 @@ class ChannelsList extends PureComponent {
   componentWillUnmount() {
     this.removePaginationListeners();
     this.listRef = null;
+    this.filterRef = null;
   }
 
+  setDefaultFilter = () => {
+    const filter = this.props.filters[0];
+    if(filter){
+      this.currentFilter = filter;
+    }
+  }
+
+  getCurrentFilter = () => {
+    return this.currentFilter;
+  }
+
+  setCurrentFilter = (filter) => {
+    if(!filter) return;
+    this.currentFilter = filter;
+  }
+
+  updateFilter = ( filter ) => {
+    if(!filter || this.currentFilter.id == filter.id ) return;
+    this.setCurrentFilter(filter);
+    this.scrollToTop();
+    this.forcedRefresh();
+  }
 
   getPagination = () => {
     return this.channelsPagination;
   };
-
-
-  // region - Pagination and Event Handlers
 
   initPagination() {
     // First, take care of existing Pagination if exists.
     this.removePaginationListeners();
 
     // Now, create a new one.
-    let fetchUrl = this.props.getFetchUrl();
+    let fetchUrl = this.props.getFetchUrl( this.currentFilter );
     this.channelsPagination = new Pagination(fetchUrl);
     this.bindPaginationEvents();
   }
@@ -94,22 +120,18 @@ class ChannelsList extends PureComponent {
     this.listRef.scrollToOffset({offset: 0});
   }
 
-
-  forcedRefresh (fetchUrl){
+  forcedRefresh (){
     this.initPagination();
     this.refresh();
   }
-
 
   getResultList(){
     let list = this.getPagination().getResults();
     return list.length > 0 ? list : [this.props.noResultsData];
   }
 
-
   beforeRefresh = ( ) => {
-    //this.props.beforeRefresh && this.props.beforeRefresh();
-    //this.onPullToRefresh();
+    this.props.beforeRefresh && this.props.beforeRefresh();
     let stateObject = {refreshing : true};
     if (this.state.loadingNext) {
       stateObject['loadingNext'] = false;
@@ -119,7 +141,6 @@ class ChannelsList extends PureComponent {
 
   onRefresh = ( res ) => {
     const list = this.getResultList() ;
-    console.log('onRefresh',res);
     this.props.onRefresh && this.props.onRefresh( list , res );
     this.setState({ refreshing : false , list : list });
   }
@@ -149,10 +170,6 @@ class ChannelsList extends PureComponent {
     this.getPagination().refresh();
   }
 
-  // isCurrentUser = () => {
-  //     return this.props.userId === CurrentUser.getUserId();
-  // }
-
   _keyExtractor = (item, index) => {
     return `id_${item.id}`
   };
@@ -161,7 +178,7 @@ class ChannelsList extends PureComponent {
     // Check if this is an empty cell.
     if ( item.isEmpty) {
       // Render no results cell here.
-      return this.props.getNoResultsCell(item);
+      return this._getNoResultsCell(item);
     } else {
       // Render Channel cell
       return this._renderChannelCell({item,index});
@@ -180,6 +197,31 @@ class ChannelsList extends PureComponent {
               </TouchableOpacity>
             </View>;
   };
+
+  _getNoResultsCell = (item) => {
+    return <React.Fragment> 
+            {this.props.getNoResultsCell(item)}
+            {this.isSearchInAll() && this.getSearchInAllMarkup()}
+          </React.Fragment>
+  }
+
+  isSearchInAll  = () => {
+    return !!deepGet(this.getPagination().getMeta(), "search_in_all");
+  }
+
+  getSearchInAllMarkup = () => {
+    return  <TouchableOpacity style={inlineStyles.searchInAllBtn} onPress={multipleClickHandler(() => {this.searchInAllClick()})}>
+              <Text style={inlineStyles.searchInAllText}>Search in all communities</Text>
+            </TouchableOpacity>
+  }
+
+  searchInAllClick = () => {
+    this.filterRef && this.filterRef.onFilter(_find(this.props.filters, function(filter) { return filter.id == "all"; }));
+  }
+
+  setFilterRef = (ref) => {
+    this.filterRef = ref;
+  }
 
   renderFooter = () => {
     if (!this.state.loadingNext) return null;
@@ -205,11 +247,14 @@ class ChannelsList extends PureComponent {
 
   render(){
     return(
-      <SafeAreaView forceInset={{ top: 'never' }} style={{ flex: 1}}>
+      <SafeAreaView forceInset={{ top: 'never' }}>
+        <Filters  onRef={this.setFilterRef}
+                  filters={this.props.filters} 
+                  getCurrentFilter={this.getCurrentFilter} 
+                  onChange={this.updateFilter}/>
         <FlatList
-          // style={{marginTop: 10}}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 20, paddingTop: 10}}
+          contentContainerStyle={{paddingBottom: 60, paddingTop: 0}}
           ref={this.setFlatListRef}
           data={this.state.list}
           onEndReached={this.getNext}
@@ -227,6 +272,10 @@ class ChannelsList extends PureComponent {
     );
   }
 
+}
+
+ChannelsList.defaultProps = {
+  filters: []
 }
 
 export default withNavigation(ChannelsList);

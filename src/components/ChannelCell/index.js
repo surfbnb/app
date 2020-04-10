@@ -11,11 +11,13 @@ import reduxGetters from "../../services/ReduxGetters";
 import {connect} from "react-redux";
 import { withNavigation } from 'react-navigation';
 import Checkmarks from '../../assets/Checkmarks.png';
+import adminUserIcon from '../../assets/user-filled-person-shape.png';
 import ChannelJoin from '../../assets/channel-join-icon.png';
 import PepoApi from '../../services/PepoApi';
 import DataContract from '../../constants/DataContract';
 import Toast from "../../theme/components/NotificationToast";
 import Utilities from '../../services/Utilities';
+import unescape from 'lodash/unescape';
 
 const mapStateToProps = ( state, ownProps ) => {
    return {
@@ -24,7 +26,8 @@ const mapStateToProps = ( state, ownProps ) => {
     channelTagLine: reduxGetters.getChannelTagLine(ownProps.channelId) || '',
     channelUserCount: reduxGetters.getChannelUserCount(ownProps.channelId) || 0,
     channelVideoCount:  reduxGetters.getChannelVideoCount(ownProps.channelId) || 0,
-    isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId) || false
+    isChannelMember: reduxGetters.isCurrentUserMemberOfChannel(ownProps.channelId) || false, 
+    isAdmin : reduxGetters.isCurrentUserAdminOfChannel(ownProps.channelId)
   };
 }
 
@@ -50,6 +53,16 @@ class ChannelCell extends PureComponent {
               </View>
             </TouchableOpacity> : <React.Fragment/>
     }
+  }
+
+  admin(){
+    if(this.props.isAdmin){
+      return <View style={styles.adminView}>
+                <Image style={styles.adminIconSkipFont} source={adminUserIcon}/>
+                <Text style={styles.adminText}>Admin</Text>
+            </View>
+    }
+    return null;
   }
 
   onJoinChannel = () => {
@@ -90,7 +103,7 @@ class ChannelCell extends PureComponent {
             <ImageBackground source={ {uri: this.props.backgroundImgUrl} } style={styles.imageBg} resizeMode={'cover'}>
               <View style={styles.imageBgOpacity}>
                 <View>
-                  <Text style={styles.header}>{this.props.channelName}</Text>
+                  <Text numberOfLines={1} style={styles.header}>{this.props.channelName}</Text>
                   <Text style={styles.channelDesc}>{this.props.channelTagLine}</Text>
                 </View>
                 <View style={styles.bottomView}>
@@ -111,7 +124,7 @@ class ChannelCell extends PureComponent {
                     </TouchableOpacity>  
                   </View>
                   <View style={styles.bottomViewRight}>
-                    {this.joined()}
+                    {this.admin() || this.joined()}
                   </View>
                 </View>
               </View>

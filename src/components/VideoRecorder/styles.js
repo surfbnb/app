@@ -199,11 +199,41 @@ let stylesMap = {
     width: 2,
     height: 7,
     position: 'absolute'
+  },
+  videolengthContainer:{
+    flexDirection:'row',
+    position:'absolute',
+    left:'50%',
+    color:"#ffffff",
+    bottom:0,
+    marginLeft:-25 ,// width/2
+    marginBottom:10
+  },
+  videolengthItems :{
+    marginRight:40,
+    width:50,
+  },
+  secondsAnimatedComponent:{
+    position:'absolute',
+    top:'30%',
+    width:'100%',
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  secondsAnimatedText:{
+    color: 'rgba(255,255,255,0.5)',
+    fontSize:73,
+    fontWeight:'700',
+    fontFamily: 'AvenirNext-DemiBold'
+  },
+  videolengthItemText:{
+    color:Colors.white,
+    fontWeight:'400'
+  },
+  boldText : {
+    fontWeight:'700'
   }
-
-
-
-
 };
 
 export default styles = DefaultStyleGenerator.generate(stylesMap);

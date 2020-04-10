@@ -63,7 +63,8 @@ let stylesMap = {
 
   bottomViewRight: {
     flex: 1,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    marginTop: 10
   },
 
   fontRegular: {
@@ -72,6 +73,17 @@ let stylesMap = {
 
   joinedView: {
     backgroundColor: Colors.white,
+    opacity: 0.8,
+    borderRadius: 20,
+    paddingVertical: 3,
+    maxWidth: 90,
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    flexDirection: 'row'
+  },
+
+  adminView: {
+    backgroundColor: Colors.pinkRed,
     opacity: 0.8,
     borderRadius: 20,
     paddingVertical: 3,
@@ -92,6 +104,7 @@ let stylesMap = {
 
   joinedText: {
     color: Colors.valhalla,
+    fontSize: 12,
     fontFamily: 'AvenirNext-Medium',
     fontWeight: '500',
     marginLeft:4
@@ -104,12 +117,25 @@ let stylesMap = {
     marginLeft:4
   },
 
+  adminText: {
+    color: Colors.valhalla,
+    fontSize: 12,
+    fontWeight:'500',
+    fontFamily: 'AvenirNext-Medium',
+    marginLeft:4
+  },
+
   joinedIconSkipFont: {
     width: 10,
     height: 10.66
   },
 
   joinIconSkipFont:{
+    width: 12.5,
+    height: 12.5
+  },
+
+  adminIconSkipFont:{
     width: 12.5,
     height: 12.5
   }
