@@ -13,7 +13,6 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import <Firebase.h>
-#import "RNFirebaseMessaging.h"
 #import "RNFirebaseNotifications.h"
 #import "RNFirebaseLinks.h"
 #import <TrustKit/TrustKit.h>
@@ -45,6 +44,7 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
   [FIROptions defaultOptions].deepLinkURLScheme = CUSTOM_URL_SCHEME;
   [FIRApp configure];
   [RNFirebaseNotifications configure];
+  [self getFCMToken];
   [application registerForRemoteNotifications];
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
@@ -64,6 +64,21 @@ static NSString *const CUSTOM_URL_SCHEME = @"com.pepo.staging";
   return YES;
 }
 
+
+-(void) getFCMToken {
+  [FIRMessaging messaging].delegate = self;
+  
+  [[FIRInstanceID instanceID] instanceIDWithHandler:^(FIRInstanceIDResult * _Nullable result,
+                                                      NSError * _Nullable error) {
+    if (error != nil) {
+      NSLog(@"Error fetching remote instance ID: %@", error);
+    } else {
+      NSLog(@"Remote instance ID token: %@", result.token);
+      NSString* message =
+        [NSString stringWithFormat:@"Remote InstanceID token: %@", result.token];
+    }
+  }];
+}
 
 - (void) setupTrustKit {
   // Initialize TrustKit
