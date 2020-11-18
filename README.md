@@ -1,5 +1,7 @@
 # Pepo 2.0
 
+Pepo features 30 second videos. Tokens are used in the app to support and thank makers (each “like” automatically transfers a token to the maker), for curation and personalization, and soon for replies, messaging and bonding curves.
+
 ### Check-points for build
 
 #### API / Endpoints `(src/constants/index.js)`
