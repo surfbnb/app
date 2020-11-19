@@ -1,4 +1,6 @@
-# Pepo 2.0
+# Get Insider Tips Direct from Pro Surfers
+
+Ambassadors are invited to contribute 30-second videos about surf destinations, using the hashtag #surftravel — and host Affif will select his favorites, he will also post snippets of podcast interviews & webtv series from iconic storytellers. 
 
 A mobile-only app with "channels" of topics that people can join in and to video chat. What I like is the gathering of like-minded folks, or even for people to talk about their surf trip experiences for example. There's even a feature where you can post Insta-story like post which does not disappear after 24 hours (that's great) but can only be taken on the surf spot. As it is with any platform, there will be early adopters before the majority starts to come on. It is my hope that more people will join it because it is honestly such a liberating experience to participate in topics of interests and get insider info and tips into surf spots and destinations. Pepo features 30 second videos. Tokens are used in the app to support and thank makers (each “like” automatically transfers a token to the maker), for curation and personalization, and soon for replies and  messaging.
 
