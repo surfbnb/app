@@ -4,6 +4,8 @@ Ambassadors are invited to contribute 30-second videos about surf destinations, 
 
 A mobile-only app with "channels" of topics that people can join in and to video chat. What I like is the gathering of like-minded folks, or even for people to talk about their surf trip experiences for example. There's even a feature where you can post Insta-story like post which does not disappear after 24 hours (that's great) but can only be taken on the surf spot. As it is with any platform, there will be early adopters before the majority starts to come on. It is my hope that more people will join it because it is honestly such a liberating experience to participate in topics of interests and get insider info and tips into surf spots and destinations. Pepo features 30 second videos. Tokens are used in the app to support and thank makers (each “like” automatically transfers a token to the maker), for curation and personalization, and soon for replies and  messaging.
 
+"The Pepo team decided to build on the Gnosis Safe stack because of its modularity, flexibility, and security, allowing Pepo to take advantage of session keys, multi-device management, and account recovery — granting our users peace of mind while using a new social network."
+
 ### Check-points for build
 
 #### API / Endpoints `(src/constants/index.js)`
